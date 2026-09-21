@@ -390,7 +390,14 @@ def run_distributed_px4_agent(
             raise TimeoutError("local depth camera did not become ready")
         drone.connect()
         connected = True
-        drone.takeoff()
+        try:
+            drone.takeoff()
+        except TimeoutError as exc:
+            if "did not arm" not in str(exc).lower():
+                raise
+            # Five SITL instances occasionally contend during simultaneous
+            # startup. Re-prime OFFBOARD and retry this local vehicle once.
+            drone.takeoff()
         mission_start = monotonic()
         deadline = mission_start + config.mission_timeout_s
         arrived_frames = 0

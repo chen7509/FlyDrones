@@ -237,6 +237,40 @@ def test_worker_records_hybrid_planner_diagnostics(tmp_path):
     assert all("predicted_peer_separation_m" in row for row in trace if row["phase"] != "land")
 
 
+def test_worker_retries_one_transient_px4_arm_timeout(tmp_path):
+    class TransientArmTimeoutDrone(LocalKinematicDrone):
+        def __init__(self, clock):
+            super().__init__(clock)
+            self.takeoff_calls = 0
+
+        def takeoff(self):
+            self.takeoff_calls += 1
+            if self.takeoff_calls == 1:
+                raise TimeoutError("PX4 did not arm within 10 seconds")
+            super().takeoff()
+
+    clock = Clock()
+    drone = TransientArmTimeoutDrone(clock)
+    clock.drone = drone
+    _trace, result = run_distributed_px4_agent(
+        DistributedAgentConfig(
+            vehicle_id=2,
+            output_dir=tmp_path,
+            mission_timeout_s=20.0,
+            land_timeout_s=5.0,
+        ),
+        drone=drone,
+        depth_camera=LocalDepthCamera(),
+        peer_node=LocalPeerNode(),
+        policy=ForwardPolicy(),
+        monotonic=clock.time,
+        wall_time=clock.wall_time,
+        sleep=clock.sleep,
+    )
+    assert result["accepted"], result
+    assert drone.takeoff_calls == 2
+
+
 def test_worker_honors_local_fail_closed_landing_without_waiting_for_timeout(tmp_path):
     clock = Clock()
     drone = LocalKinematicDrone(clock)
