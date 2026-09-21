@@ -68,6 +68,7 @@ class HybridPlannerAgent:
         self._bypass_target: tuple[float, float] | None = None
         self._bypass_until_x = -math.inf
         self._bypass_y: float | None = None
+        self._bypass_stage: str | None = None
 
     @property
     def active_target(self) -> tuple[float, float]:
@@ -153,21 +154,38 @@ class HybridPlannerAgent:
             note="learned-preference",
         )
 
-    def _update_local_bypass(self, position: tuple[float, float, float], depth_observation) -> None:
+    def _update_local_bypass(
+        self,
+        position: tuple[float, float, float],
+        velocity: tuple[float, float, float],
+        depth_observation,
+    ) -> None:
         if not self.enable_local_bypass:
             return
         if self.phase != "escaping":
             self._bypass_target = None
             self._bypass_y = None
+            self._bypass_stage = None
             return
         if self._bypass_target is not None and position[0] >= self._bypass_until_x:
             self._bypass_target = None
             self._bypass_y = None
+            self._bypass_stage = None
         if (
             self._bypass_target is not None
             and self._bypass_y is not None
+            and self._bypass_stage == "lateral"
             and abs(position[1] - self._bypass_y) <= 0.20
         ):
+            self._bypass_stage = "braking"
+            self._bypass_target = (position[0], position[1])
+        if (
+            self._bypass_target is not None
+            and self._bypass_y is not None
+            and self._bypass_stage == "braking"
+            and math.hypot(velocity[0], velocity[1]) <= 0.12
+        ):
+            self._bypass_stage = "forward"
             self._bypass_target = (self._bypass_until_x, self._bypass_y)
         if self._bypass_target is not None:
             return
@@ -178,6 +196,7 @@ class HybridPlannerAgent:
             return
         self._bypass_until_x = position[0] + max(1.40, nearest_ahead + 0.85)
         self._bypass_y = self.corridor_center_y + 1.00
+        self._bypass_stage = "lateral"
         self._bypass_target = (position[0] + 0.25, self._bypass_y)
 
     def command(
@@ -222,7 +241,7 @@ class HybridPlannerAgent:
         if not valid_depth:
             return self._hold(now=timestamp, throttle=altitude_throttle, mode="hold-stale-depth")
 
-        self._update_local_bypass(position, depth_observation)
+        self._update_local_bypass(position, tuple(float(value) for value in velocity), depth_observation)
 
         observation = self._learned_observation(
             global_position=position,
