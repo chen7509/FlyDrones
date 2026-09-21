@@ -151,3 +151,32 @@ def test_udp_track_expires_from_the_receivers_cache():
     finally:
         first.close()
         second.close()
+
+
+def test_udp_poll_survives_windows_connection_reset_from_an_exited_peer():
+    class ResettingSocket:
+        def __init__(self, *_args):
+            self.calls = 0
+
+        def setsockopt(self, *_args):
+            pass
+
+        def bind(self, *_args):
+            pass
+
+        def setblocking(self, *_args):
+            pass
+
+        def recvfrom(self, *_args):
+            self.calls += 1
+            if self.calls == 1:
+                raise ConnectionResetError(10054, "peer exited")
+            raise BlockingIOError
+
+        def close(self):
+            pass
+
+    node = UdpPeerNode(0, [0, 1], base_port=25000, socket_factory=ResettingSocket)
+
+    assert node.poll((0.0, 0.0, 0.0)) == []
+    assert node.metrics["connection_reset_packets"] == 1

@@ -138,6 +138,7 @@ class UdpPeerNode:
             "out_of_range_packets": 0,
             "stale_tracks_expired": 0,
             "out_of_order_packets": 0,
+            "connection_reset_packets": 0,
         }
 
     def _in_blackout(self, mission_elapsed_s: float) -> bool:
@@ -183,6 +184,12 @@ class UdpPeerNode:
                 payload, _address = self._socket.recvfrom(max(2048, _PACKET.size))
             except BlockingIOError:
                 break
+            except ConnectionResetError:
+                # Windows reports an ICMP "port unreachable" from a peer that
+                # has already exited as WSAECONNRESET on the next recvfrom.
+                # A UDP peer disappearing is packet loss, not a controller fault.
+                self.metrics["connection_reset_packets"] += 1
+                continue
             try:
                 packet = decode_peer_datagram(payload)
             except ValueError:
