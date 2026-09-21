@@ -1,9 +1,16 @@
+param(
+    [switch]$ResolveOnly
+)
+
 $ErrorActionPreference = 'Stop'
 
 $repoRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
-$linuxRoot = (wsl -d Ubuntu -- wslpath -a $repoRoot).Trim()
-if ($LASTEXITCODE -ne 0 -or [string]::IsNullOrWhiteSpace($linuxRoot)) {
-    throw 'Unable to resolve the repository path in WSL.'
+$drive = $repoRoot.Substring(0, 1).ToLowerInvariant()
+$pathWithinDrive = $repoRoot.Substring(3).Replace('\', '/')
+$linuxRoot = "/mnt/$drive/$pathWithinDrive"
+if ($ResolveOnly) {
+    Write-Output $linuxRoot
+    exit 0
 }
 
 $completedWindows = @()
