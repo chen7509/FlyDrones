@@ -174,6 +174,16 @@ def test_partial_confirmation_survives_reauction_and_previous_confirmer_cannot_r
     assert claimed.evidence_hash == "b" * 64
 
 
+def test_partial_confirmation_evidence_survives_lease_expiry() -> None:
+    ledger = TaskLedger(3, DIGEST, [confirm_unit()], confirmation_quorum=2)
+    ledger.observe_bid(Bid(confirm_unit().task_id, 3, 8.0, 0, 0.0), now=0.0)
+    ledger.complete(confirm_unit().task_id, 3, "b" * 64, now=1.0)
+    ledger.expire(now=3.01)
+    reopened = ledger.assignment(confirm_unit().task_id)
+    assert reopened.evidence_hash == "b" * 64
+    assert reopened.confirmers == (3,)
+
+
 def test_two_partial_confirmation_records_merge_into_completed_consensus() -> None:
     ledger = TaskLedger(0, DIGEST, [confirm_unit()], confirmation_quorum=2)
     first = TaskAssignment(

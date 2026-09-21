@@ -485,19 +485,8 @@ class MissionAgent:
             self._active_since = None
             self._phase = "auction"
         else:
-            self.ledger.merge_assignment(
-                TaskAssignment(
-                    unit.task_id,
-                    "open",
-                    None,
-                    None,
-                    assignment.allocation_round + 1,
-                    None,
-                    assignment.evidence_hash,
-                    assignment.confirmers,
-                ),
-                now=now,
-            )
+            reopened = self.ledger.release(unit.task_id, winner_id=self.vehicle_id, now=now)
+            outbound.append(("award", {"assignment": asdict(reopened)}))
             self._active_task_id = None
             self._active_since = None
             self._phase = "auction"

@@ -322,7 +322,7 @@ class TaskLedger:
                     utility=None,
                     allocation_round=current.allocation_round + 1,
                     lease_until=None,
-                    evidence_hash=None,
+                    evidence_hash=current.evidence_hash,
                     confirmers=current.confirmers,
                 )
                 expired.append(task_id)

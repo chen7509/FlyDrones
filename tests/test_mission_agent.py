@@ -233,6 +233,22 @@ def test_confirmation_quorum_needs_distinct_vehicle_ids() -> None:
     assert agent.ledger.assignment(task_id).status == "completed"
 
 
+def test_first_confirmation_reopens_immediately_with_evidence() -> None:
+    agent = MissionAgent.for_contract(0, 10, contract())
+    detection = Detection("person", (10.0, 10.0, 20.0), 0.9, "b" * 64)
+    agent.step(0.0, healthy_state(), [], [], [detection])
+    decision = agent.step(1.01, healthy_state(), [], [], [])
+    task_id = next(item for item in agent.work_unit_ids if item.startswith("confirm-"))
+    reopened = agent.ledger.assignment(task_id)
+    assert reopened.status == "open"
+    assert reopened.confirmers == (0,)
+    assert reopened.evidence_hash is not None
+    assert any(
+        kind == "award" and payload["assignment"]["status"] == "open"
+        for kind, payload in decision.outbound_messages
+    )
+
+
 def test_low_connectivity_creates_one_relay_per_five_second_epoch() -> None:
     agent = MissionAgent.for_contract(2, 10, contract())
     agent.step(0.0, healthy_state(), [], [], [])
