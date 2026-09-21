@@ -165,7 +165,7 @@ class HybridPlannerAgent:
 
         rays = tuple(float(value) for value in depth_observation.ray_distances_m)
         nearest_ahead = min(rays)
-        if nearest_ahead >= 1.80:
+        if nearest_ahead >= 2.40:
             return
         self._bypass_until_x = position[0] + max(1.40, nearest_ahead + 0.85)
         self._bypass_target = (

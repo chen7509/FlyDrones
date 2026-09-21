@@ -55,7 +55,11 @@ class DistributedAgentConfig:
 
 def _px4_execution_planner_config() -> LocalPlannerConfig:
     """Add clearance for PX4 response lag beyond the geometric hard limits."""
-    return LocalPlannerConfig(static_margin_m=0.60, peer_minimum_m=1.25)
+    return LocalPlannerConfig(
+        static_margin_m=0.60,
+        peer_minimum_m=1.25,
+        integration_step_s=0.20,
+    )
 
 
 def build_distributed_agent_commands(

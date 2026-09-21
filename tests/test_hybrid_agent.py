@@ -87,7 +87,7 @@ def test_depth_obstacle_creates_and_then_clears_a_local_bypass_target():
     )
     blocked = SimpleNamespace(
         captured_at=1.0,
-        ray_distances_m=(1.8, 1.7, 1.6, 1.0, 0.9, 1.0, 4.0, 4.0, 4.0),
+        ray_distances_m=(4.0, 4.0, 4.0, 2.3, 2.2, 2.3, 4.0, 4.0, 4.0),
     )
     agent.command(
         now=1.0,
