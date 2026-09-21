@@ -455,6 +455,7 @@ def _worker_main(
                 vehicle_id not in reserve_ids
                 or elapsed >= config.failure_at_s + 3.0
             ),
+            preferred_task_id=recovery_map.get(vehicle_id),
         )
         for kind, payload in decision.outbound_messages:
             task_node.send(kind, payload, now=elapsed)  # type: ignore[arg-type]

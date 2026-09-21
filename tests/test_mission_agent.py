@@ -89,6 +89,20 @@ def test_deterministic_reserve_mode_waits_without_bidding() -> None:
     assert all(kind != "bid" for kind, _payload in decision.outbound_messages)
 
 
+def test_reserve_activation_bids_only_its_preferred_recovery_task() -> None:
+    agent = MissionAgent.for_contract(4, 10, contract())
+    decision = agent.step(
+        0.0,
+        healthy_state(position_m=(30.0, 30.0, 20.0)),
+        [],
+        [],
+        [],
+        preferred_task_id="search-0000",
+    )
+    bids = [payload for kind, payload in decision.outbound_messages if kind == "bid"]
+    assert bids[0]["task_id"] == "search-0000"
+
+
 def test_depth_freeze_and_low_battery_release_active_task_once() -> None:
     agent = active_agent()
     held = agent.step(1.0, healthy_state(depth_age_s=0.51), [], [], [])

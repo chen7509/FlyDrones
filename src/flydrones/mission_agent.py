@@ -158,6 +158,7 @@ class MissionAgent:
         detections: list[Detection] | tuple[Detection, ...],
         *,
         bidding_enabled: bool = True,
+        preferred_task_id: str | None = None,
     ) -> AgentDecision:
         timestamp = float(now)
         if not math.isfinite(timestamp):
@@ -205,7 +206,12 @@ class MissionAgent:
                 released,
             )
 
-        self._allocate_or_renew(timestamp, state, outbound)
+        self._allocate_or_renew(
+            timestamp,
+            state,
+            outbound,
+            preferred_task_id=preferred_task_id,
+        )
         self._complete_if_ready(timestamp, state, outbound)
         intent = self._task_intent(state)
         intent = self._apply_peer_separation(intent, state, peer_tracks)
@@ -380,7 +386,14 @@ class MissionAgent:
         now: float,
         state: AgentState,
         outbound: list[tuple[str, dict[str, object]]],
+        *,
+        preferred_task_id: str | None = None,
     ) -> None:
+        if preferred_task_id is not None:
+            if preferred_task_id not in self._work_units:
+                raise ValueError(f"unknown preferred task: {preferred_task_id}")
+            if self.ledger.assignment(preferred_task_id).status == "completed":
+                preferred_task_id = None
         if self._active_task_id is not None:
             current = self.ledger.assignment(self._active_task_id)
             if current.winner_id != self.vehicle_id or current.status in {"completed", "failed", "open"}:
@@ -411,6 +424,8 @@ class MissionAgent:
             for task_id, unit in self._work_units.items()
         )
         for task_id, unit in self._work_units.items():
+            if preferred_task_id is not None and task_id != preferred_task_id:
+                continue
             if unit.kind == "rally" and unfinished_search:
                 continue
             assignment = self.ledger.assignment(task_id)
