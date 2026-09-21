@@ -1,10 +1,18 @@
 from __future__ import annotations
 
 import csv
+import json
+from pathlib import Path
 
 import numpy as np
 
-from flydrones.distributed_px4 import DistributedAgentConfig, run_distributed_px4_agent
+from flydrones.distributed_px4 import (
+    DistributedAgentConfig,
+    aggregate_distributed_artifacts,
+    align_distributed_traces,
+    build_distributed_agent_commands,
+    run_distributed_px4_agent,
+)
 from flydrones.gazebo_depth import DepthObservation
 from flydrones.safety import Telemetry
 
@@ -190,3 +198,98 @@ def test_distributed_worker_lands_and_reports_failure_when_depth_never_becomes_r
     assert "depth" in result["error"].lower()
     assert not drone.connected
     assert depth.closed and peer.closed
+
+
+def test_coordinator_commands_contain_only_static_config_and_one_vehicle_id(tmp_path):
+    commands = build_distributed_agent_commands(
+        python_executable="python3",
+        agent_script=Path("tools/px4_distributed_agent.py"),
+        output_dir=tmp_path,
+        model_path=Path("actor.npz"),
+        vehicle_count=5,
+    )
+
+    assert len(commands) == 5
+    assert {command[command.index("--vehicle-id") + 1] for command in commands} == {"0", "1", "2", "3", "4"}
+    assert all("--neighbor-position" not in command for command in commands)
+    assert all("--telemetry" not in command for command in commands)
+
+
+def test_time_alignment_builds_complete_frames_from_independent_worker_clocks():
+    traces = {
+        0: [
+            {"wall_time_s": 100.00, "vehicle_id": 0, "x_m": 0.0, "y_m": 0.0, "alt_m": 1.8},
+            {"wall_time_s": 100.10, "vehicle_id": 0, "x_m": 0.1, "y_m": 0.0, "alt_m": 1.8},
+        ],
+        1: [
+            {"wall_time_s": 100.02, "vehicle_id": 1, "x_m": 0.0, "y_m": 2.0, "alt_m": 1.8},
+            {"wall_time_s": 100.12, "vehicle_id": 1, "x_m": 0.1, "y_m": 2.0, "alt_m": 1.8},
+        ],
+    }
+
+    aligned = align_distributed_traces(traces, sample_hz=10.0)
+
+    assert aligned
+    by_step = {}
+    for row in aligned:
+        by_step.setdefault(row["step"], []).append(row)
+    assert all({row["vehicle_id"] for row in rows} == {0, 1} for rows in by_step.values())
+
+
+def test_aggregate_distributed_artifacts_accepts_five_distinct_controller_processes(tmp_path):
+    homes = [-4.0, -2.0, 0.0, 2.0, 4.0]
+    targets = [-3.2, -1.6, 0.0, 1.6, 3.2]
+    for vehicle_id in range(5):
+        rows = []
+        for step, (phase, x_m, alt_m) in enumerate([
+            ("escaping", 0.0, 1.8),
+            ("escaping", 5.6, 1.8),
+            ("arrived", 6.5, 1.8),
+            ("land", 6.5, 0.1),
+        ]):
+            rows.append({
+                "step": step,
+                "monotonic_s": float(step),
+                "wall_time_s": 100.0 + step,
+                "mission_elapsed_s": float(step),
+                "vehicle_id": vehicle_id,
+                "system_id": vehicle_id + 1,
+                "phase": phase,
+                "x_m": x_m,
+                "y_m": targets[vehicle_id] if phase in {"arrived", "land"} else homes[vehicle_id],
+                "alt_m": alt_m,
+                "yaw_deg": 90.0,
+                "battery_pct": 100.0,
+                "depth_nearest_m": 19.1,
+                "depth_rays_m": ";".join(["19.100"] * 9),
+                "policy_action_speed": 1.0,
+                "policy_action_yaw": 0.0,
+                "safety_override": False,
+                "local_peer_tracks": 4,
+                "neighbor_source": "udp-peer-cache",
+                "controller_scope": "one-process-one-vehicle",
+                "controller_process_id": 5000 + vehicle_id,
+            })
+        with (tmp_path / f"agent-{vehicle_id}.csv").open("w", newline="", encoding="utf-8") as handle:
+            writer = csv.DictWriter(handle, fieldnames=list(rows[0]))
+            writer.writeheader()
+            writer.writerows(rows)
+        result = {
+            "accepted": True,
+            "metrics": {
+                "controller_process_id": 5000 + vehicle_id,
+                "direct_global_neighbor_reads": 0,
+                "udp_sent_packets": 100,
+                "udp_received_packets": 100,
+                "udp_blackout_dropped_packets": 10,
+            },
+        }
+        (tmp_path / f"agent-{vehicle_id}.json").write_text(json.dumps(result), encoding="utf-8")
+
+    trace, summary = aggregate_distributed_artifacts(tmp_path)
+
+    assert trace
+    assert summary["accepted"], summary
+    assert summary["checks"]["five_distinct_controller_processes"]
+    assert summary["checks"]["zero_direct_global_neighbor_reads"]
+    assert summary["metrics"]["controller_process_ids"] == [5000, 5001, 5002, 5003, 5004]

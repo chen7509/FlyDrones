@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import bisect
 import csv
 import json
 import math
@@ -13,7 +14,13 @@ from pathlib import Path
 from .gazebo_depth import DepthCameraBank, px4_depth_camera_topics
 from .numpy_policy import NumpyMlpPolicy
 from .peer_udp import PeerUdpConfig, UdpPeerNode
-from .sitl_swarm import LearnedDepthForestAgent, px4_swarm_rally_targets, px4_swarm_specs
+from .sitl_swarm import (
+    LearnedDepthForestAgent,
+    evaluate_px4_swarm_trial,
+    px4_swarm_obstacles,
+    px4_swarm_rally_targets,
+    px4_swarm_specs,
+)
 
 
 @dataclass(frozen=True)
@@ -43,6 +50,177 @@ class DistributedAgentConfig:
             raise ValueError("the PX4 forest worker currently requires five vehicles")
         if not 0 <= self.vehicle_id < self.vehicle_count:
             raise ValueError("vehicle id is outside the fleet")
+
+
+def build_distributed_agent_commands(
+    *,
+    python_executable: str,
+    agent_script: str | Path,
+    output_dir: str | Path,
+    model_path: str | Path,
+    vehicle_count: int = 5,
+    peer_base_port: int = 16770,
+    mission_timeout_s: float = 70.0,
+) -> list[list[str]]:
+    if vehicle_count != 5:
+        raise ValueError("the distributed PX4 trial currently requires five workers")
+    return [
+        [
+            str(python_executable),
+            str(agent_script),
+            "--vehicle-id", str(vehicle_id),
+            "--output", str(output_dir),
+            "--model", str(model_path),
+            "--mission-timeout", str(mission_timeout_s),
+            "--peer-base-port", str(peer_base_port),
+        ]
+        for vehicle_id in range(vehicle_count)
+    ]
+
+
+def align_distributed_traces(
+    traces: dict[int, list[dict]],
+    *,
+    sample_hz: float = 10.0,
+) -> list[dict]:
+    """Resample independent wall-clock logs solely for offline scoring."""
+    if not traces or any(not rows for rows in traces.values()):
+        return []
+    ordered = {vehicle_id: sorted(rows, key=lambda row: float(row["wall_time_s"])) for vehicle_id, rows in traces.items()}
+    times = {
+        vehicle_id: [float(row["wall_time_s"]) for row in rows]
+        for vehicle_id, rows in ordered.items()
+    }
+    start = min(values[0] for values in times.values())
+    end = max(values[-1] for values in times.values())
+    period = 1.0 / max(1.0, float(sample_hz))
+    sample_count = max(1, math.ceil((end - start) / period) + 1)
+    aligned: list[dict] = []
+    for step in range(sample_count):
+        target_time = min(end, start + step * period)
+        for vehicle_id in sorted(ordered):
+            vehicle_times = times[vehicle_id]
+            index = bisect.bisect_left(vehicle_times, target_time)
+            candidates = [max(0, index - 1), min(len(vehicle_times) - 1, index)]
+            chosen = min(candidates, key=lambda candidate: abs(vehicle_times[candidate] - target_time))
+            row = dict(ordered[vehicle_id][chosen])
+            row["step"] = step
+            row["t_s"] = round(target_time - start, 4)
+            aligned.append(row)
+    return aligned
+
+
+def _read_agent_trace(path: Path) -> list[dict]:
+    with path.open(encoding="utf-8") as handle:
+        rows = list(csv.DictReader(handle))
+    integer_fields = {"step", "vehicle_id", "system_id", "local_peer_tracks", "controller_process_id"}
+    float_fields = {
+        "monotonic_s", "wall_time_s", "mission_elapsed_s", "x_m", "y_m", "alt_m", "yaw_deg",
+        "battery_pct", "depth_nearest_m", "policy_action_speed", "policy_action_yaw",
+    }
+    for row in rows:
+        for key in integer_fields:
+            if row.get(key) not in {None, ""}:
+                row[key] = int(float(row[key]))
+        for key in float_fields:
+            if row.get(key) not in {None, ""}:
+                row[key] = float(row[key])
+        if row.get("safety_override"):
+            row["safety_override"] = row["safety_override"].lower() == "true"
+    return rows
+
+
+def aggregate_distributed_artifacts(
+    output_dir: str | Path,
+    *,
+    vehicle_count: int = 5,
+    lane_spacing_m: float = 2.0,
+) -> tuple[list[dict], dict]:
+    """Aggregate worker-owned files after all control processes have exited."""
+    output = Path(output_dir)
+    traces = {
+        vehicle_id: _read_agent_trace(output / f"agent-{vehicle_id}.csv")
+        for vehicle_id in range(vehicle_count)
+    }
+    results = [
+        json.loads((output / f"agent-{vehicle_id}.json").read_text(encoding="utf-8"))
+        for vehicle_id in range(vehicle_count)
+    ]
+    aligned = align_distributed_traces(traces)
+    summary = evaluate_px4_swarm_trial(
+        aligned,
+        px4_swarm_rally_targets(lane_spacing_m=lane_spacing_m),
+        px4_swarm_obstacles(lane_spacing_m=lane_spacing_m),
+    )
+    process_ids = sorted({int(result["metrics"]["controller_process_id"]) for result in results})
+    all_rows = [row for rows in traces.values() for row in rows]
+    worker_metrics = [result["metrics"] for result in results]
+    summary["checks"].update({
+        "all_worker_results_accepted": all(result["accepted"] for result in results),
+        "five_distinct_controller_processes": len(process_ids) == vehicle_count,
+        "one_process_owned_each_vehicle": all(
+            row.get("controller_scope") == "one-process-one-vehicle" for row in all_rows
+        ),
+        "neighbor_data_came_only_from_udp_cache": all(
+            row.get("neighbor_source") == "udp-peer-cache" for row in all_rows
+        ),
+        "zero_direct_global_neighbor_reads": sum(
+            int(metrics.get("direct_global_neighbor_reads", 0)) for metrics in worker_metrics
+        ) == 0,
+        "real_udp_peer_transport_exercised": (
+            sum(int(metrics.get("udp_sent_packets", 0)) for metrics in worker_metrics) > 0
+            and sum(int(metrics.get("udp_received_packets", 0)) for metrics in worker_metrics) > 0
+        ),
+        "udp_blackout_exercised": sum(
+            int(metrics.get("udp_blackout_dropped_packets", 0)) for metrics in worker_metrics
+        ) > 0,
+    })
+    summary["metrics"].update({
+        "controller_process_ids": process_ids,
+        "direct_global_neighbor_reads": sum(
+            int(metrics.get("direct_global_neighbor_reads", 0)) for metrics in worker_metrics
+        ),
+        "udp_sent_packets": sum(int(metrics.get("udp_sent_packets", 0)) for metrics in worker_metrics),
+        "udp_received_packets": sum(int(metrics.get("udp_received_packets", 0)) for metrics in worker_metrics),
+        "udp_random_dropped_packets": sum(
+            int(metrics.get("udp_random_dropped_packets", 0)) for metrics in worker_metrics
+        ),
+        "udp_blackout_dropped_packets": sum(
+            int(metrics.get("udp_blackout_dropped_packets", 0)) for metrics in worker_metrics
+        ),
+        "worker_policy_calls": sum(int(metrics.get("policy_calls", 0)) for metrics in worker_metrics),
+        "worker_depth_decode_errors": sum(
+            int(metrics.get("depth_decode_errors", 0)) for metrics in worker_metrics
+        ),
+    })
+    summary["accepted"] = all(summary["checks"].values())
+    if aligned:
+        fields = list(aligned[0])
+        with (output / "flight.csv").open("w", newline="", encoding="utf-8") as handle:
+            writer = csv.DictWriter(handle, fieldnames=fields, extrasaction="ignore")
+            writer.writeheader()
+            writer.writerows(aligned)
+    (output / "summary.json").write_text(
+        json.dumps(summary, ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8",
+    )
+    report = f"""# 五进程 PX4/UDP 去中心化试验
+
+{'**通过。**' if summary['accepted'] else '**未通过。**'} 五个控制器运行在五个独立操作系统进程中。
+
+- 控制进程：{process_ids}
+- 抵达：{summary['metrics'].get('rallied')}/5；落地：{summary['metrics'].get('landed')}/5
+- 树干接触：{summary['metrics'].get('forest_contacts')}
+- 最小树干净空：{summary['metrics'].get('minimum_forest_clearance_m')} m
+- 最小机间距：{summary['metrics'].get('minimum_intervehicle_distance_m')} m
+- UDP 发送/接收：{summary['metrics']['udp_sent_packets']}/{summary['metrics']['udp_received_packets']}
+- 随机丢包/断联丢包：{summary['metrics']['udp_random_dropped_packets']}/{summary['metrics']['udp_blackout_dropped_packets']}
+- 直接读取全局邻机位置：{summary['metrics']['direct_global_neighbor_reads']}
+
+父进程只启动工作者并在退出后读取日志；飞行动作由各工作者独立生成。
+"""
+    (output / "五进程去中心化报告.md").write_text(report, encoding="utf-8")
+    return aligned, summary
 
 
 def _write_agent_artifacts(output_dir: Path, vehicle_id: int, trace: list[dict], result: dict) -> None:
