@@ -121,11 +121,11 @@ def _depth_observation(
         if distance > config.sensor_range_m:
             continue
         relative = _wrap_angle(math.atan2(dy, dx) - world_heading)
-        raw_index = (relative + config.horizontal_fov_rad / 2.0) / ray_width - 0.5
+        raw_index = (config.horizontal_fov_rad / 2.0 - relative) / ray_width - 0.5
         index = int(round(raw_index))
         if not 0 <= index < ray_count:
             continue
-        ray_offset = -config.horizontal_fov_rad / 2.0 + (index + 0.5) * ray_width
+        ray_offset = config.horizontal_fov_rad / 2.0 - (index + 0.5) * ray_width
         if abs(_wrap_angle(relative - ray_offset)) <= ray_width * 0.55:
             rays[index] = min(rays[index], max(0.05, distance))
     return SimpleNamespace(captured_at=now, ray_distances_m=tuple(rays))

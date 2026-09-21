@@ -75,11 +75,14 @@ def test_memory_replaces_older_evidence_in_the_same_world_sector():
     memory = RollingObstacleMemory(config)
     for frame in range(100):
         now = frame * 0.01
+        rays = [19.1] * 9
+        if frame % 2 == 0:
+            rays[4] = 1.0
         memory.update(
             now=now,
             position=(frame * 0.001, 0.0, 1.8),
             yaw_rad=math.pi / 2,
-            depth_observation=depth(now, [19.1] * 9),
+            depth_observation=depth(now, rays),
         )
     snapshot = memory.snapshot(now=1.0)
     assert len(snapshot.rays) <= config.sector_count * 12
