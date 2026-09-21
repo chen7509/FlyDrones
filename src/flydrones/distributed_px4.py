@@ -58,7 +58,7 @@ def _px4_execution_planner_config() -> LocalPlannerConfig:
     return LocalPlannerConfig(
         static_margin_m=0.33,
         peer_minimum_m=1.25,
-        horizon_s=1.8,
+        horizon_s=1.6,
         integration_step_s=0.20,
     )
 
