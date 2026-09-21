@@ -225,8 +225,15 @@ def test_rotation_escape_keeps_one_direction_when_policy_preference_flips():
         preferred_command=FlightCommand(forward=1.0, yaw=-1.0),
         **common,
     )
-    assert first.command.forward == second.command.forward == 0.0
+    third = planner.plan(
+        now=1.2,
+        depth_observation=depth(1.2, rays),
+        preferred_command=FlightCommand(forward=1.0, yaw=0.0),
+        **common,
+    )
+    assert first.command.forward == second.command.forward == third.command.forward == 0.0
     assert first.command.yaw * second.command.yaw > 0.0
+    assert first.command.yaw * third.command.yaw > 0.0
 
 
 def test_planner_rotates_toward_target_instead_of_flying_farther_away():

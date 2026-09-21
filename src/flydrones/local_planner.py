@@ -518,7 +518,9 @@ class HybridLocalPlanner:
                     rejection_counts=rejection_counts,
                     static_clearance=hold_static,
                 )
-            use_persistent_turn = not peer_tuple and abs(preferred.yaw) > 0.20
+            use_persistent_turn = not peer_tuple and (
+                self._escape_yaw_sign is not None or abs(preferred.yaw) > 0.20
+            )
             if not use_persistent_turn:
                 self._escape_yaw_sign = None
                 selected = max(safe_rotations, key=lambda entry: entry[0])
