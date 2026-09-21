@@ -14,6 +14,8 @@ from flydrones.distributed_px4 import (
     run_distributed_px4_agent,
 )
 from flydrones.gazebo_depth import DepthObservation
+from flydrones.motor.command import FlightCommand
+from flydrones.peer_udp import PeerTrack
 from flydrones.safety import Telemetry
 
 
@@ -48,7 +50,16 @@ class LocalPeerNode:
 
     def poll(self, own_position, *, now=None):
         self.poll_positions.append((own_position, now))
-        return []
+        return [
+            PeerTrack(
+                sender_id=4,
+                sequence=1,
+                sent_at=float(now) - 0.1,
+                received_at=float(now) - 0.05,
+                position=(50.0, 50.0, 1.8),
+                velocity=(0.4, -0.2, 0.0),
+            )
+        ]
 
     def neighbors(self):
         return []
@@ -139,6 +150,23 @@ class Clock:
         self.now += seconds
 
 
+class FailClosedAgent:
+    phase = "escaping"
+    should_land = True
+    policy_calls = 0
+    last_decision = None
+
+    def command(self, **_kwargs):
+        return FlightCommand.hover("planner fail closed")
+
+
+class NonFiniteAgent(FailClosedAgent):
+    should_land = False
+
+    def command(self, **_kwargs):
+        return FlightCommand(forward=float("nan"), note="invalid planner output")
+
+
 def test_one_distributed_worker_owns_its_drone_depth_policy_and_udp_cache(tmp_path):
     clock = Clock()
     drone = LocalKinematicDrone(clock)
@@ -171,6 +199,75 @@ def test_one_distributed_worker_owns_its_drone_depth_policy_and_udp_cache(tmp_pa
     assert (tmp_path / "agent-2.json").is_file()
     with (tmp_path / "agent-2.csv").open(encoding="utf-8") as handle:
         assert next(csv.DictReader(handle))["neighbor_source"] == "udp-peer-cache"
+
+
+def test_worker_records_hybrid_planner_diagnostics(tmp_path):
+    clock = Clock()
+    drone = LocalKinematicDrone(clock)
+    clock.drone = drone
+    trace, result = run_distributed_px4_agent(
+        DistributedAgentConfig(
+            vehicle_id=2,
+            output_dir=tmp_path,
+            mission_timeout_s=20.0,
+            land_timeout_s=5.0,
+        ),
+        drone=drone,
+        depth_camera=LocalDepthCamera(),
+        peer_node=LocalPeerNode(),
+        policy=ForwardPolicy(),
+        monotonic=clock.time,
+        wall_time=clock.wall_time,
+        sleep=clock.sleep,
+    )
+    assert result["accepted"], result
+    assert result["metrics"]["planner_calls"] > 0
+    assert result["metrics"]["planner_p95_ms"] >= 0.0
+    assert result["metrics"]["central_control_commands"] == 0
+    assert all("planner_mode" in row for row in trace if row["phase"] != "land")
+    assert all("planner_candidate_id" in row for row in trace if row["phase"] != "land")
+    assert all("predicted_peer_separation_m" in row for row in trace if row["phase"] != "land")
+
+
+def test_worker_honors_local_fail_closed_landing_without_waiting_for_timeout(tmp_path):
+    clock = Clock()
+    drone = LocalKinematicDrone(clock)
+    clock.drone = drone
+    _trace, result = run_distributed_px4_agent(
+        DistributedAgentConfig(vehicle_id=0, output_dir=tmp_path, mission_timeout_s=70.0),
+        drone=drone,
+        depth_camera=LocalDepthCamera(),
+        peer_node=LocalPeerNode(),
+        policy=ForwardPolicy(),
+        agent=FailClosedAgent(),
+        monotonic=clock.time,
+        wall_time=clock.wall_time,
+        sleep=clock.sleep,
+    )
+    assert result["metrics"]["fail_closed_land"]
+    assert clock.now < 10.0
+    assert drone.land_called
+
+
+def test_worker_rejects_non_finite_planner_command_and_lands(tmp_path):
+    clock = Clock()
+    drone = LocalKinematicDrone(clock)
+    clock.drone = drone
+    _trace, result = run_distributed_px4_agent(
+        DistributedAgentConfig(vehicle_id=0, output_dir=tmp_path),
+        drone=drone,
+        depth_camera=LocalDepthCamera(),
+        peer_node=LocalPeerNode(),
+        policy=ForwardPolicy(),
+        agent=NonFiniteAgent(),
+        monotonic=clock.time,
+        wall_time=clock.wall_time,
+        sleep=clock.sleep,
+    )
+    assert not result["accepted"]
+    assert "non-finite" in result["error"]
+    assert drone.land_called
+    assert drone.last_command is None
 
 
 def test_distributed_worker_lands_and_reports_failure_when_depth_never_becomes_ready(tmp_path):

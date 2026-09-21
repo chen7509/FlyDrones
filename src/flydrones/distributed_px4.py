@@ -12,10 +12,11 @@ from dataclasses import dataclass, field
 from pathlib import Path
 
 from .gazebo_depth import DepthCameraBank, px4_depth_camera_topics
+from .hybrid_agent import HybridPlannerAgent
+from .local_planner import LocalPlannerConfig, PlannerPeer
 from .numpy_policy import NumpyMlpPolicy
 from .peer_udp import PeerUdpConfig, UdpPeerNode
 from .sitl_swarm import (
-    LearnedDepthForestAgent,
     evaluate_px4_swarm_trial,
     px4_swarm_obstacles,
     px4_swarm_rally_targets,
@@ -113,10 +114,21 @@ def align_distributed_traces(
 def _read_agent_trace(path: Path) -> list[dict]:
     with path.open(encoding="utf-8") as handle:
         rows = list(csv.DictReader(handle))
-    integer_fields = {"step", "vehicle_id", "system_id", "local_peer_tracks", "controller_process_id"}
+    integer_fields = {
+        "step",
+        "vehicle_id",
+        "system_id",
+        "local_peer_tracks",
+        "controller_process_id",
+        "planner_generated_candidates",
+        "planner_rejected_unknown",
+        "planner_rejected_static",
+        "planner_rejected_peer",
+    }
     float_fields = {
         "monotonic_s", "wall_time_s", "mission_elapsed_s", "x_m", "y_m", "alt_m", "yaw_deg",
         "battery_pct", "depth_nearest_m", "policy_action_speed", "policy_action_yaw",
+        "predicted_static_clearance_m", "predicted_peer_separation_m", "planner_time_ms",
     }
     for row in rows:
         for key in integer_fields:
@@ -174,6 +186,9 @@ def aggregate_distributed_artifacts(
         "udp_blackout_exercised": sum(
             int(metrics.get("udp_blackout_dropped_packets", 0)) for metrics in worker_metrics
         ) > 0,
+        "zero_central_control_commands": sum(
+            int(metrics.get("central_control_commands", 0)) for metrics in worker_metrics
+        ) == 0,
     })
     summary["metrics"].update({
         "controller_process_ids": process_ids,
@@ -191,6 +206,14 @@ def aggregate_distributed_artifacts(
         "worker_policy_calls": sum(int(metrics.get("policy_calls", 0)) for metrics in worker_metrics),
         "worker_depth_decode_errors": sum(
             int(metrics.get("depth_decode_errors", 0)) for metrics in worker_metrics
+        ),
+        "planner_calls": sum(int(metrics.get("planner_calls", 0)) for metrics in worker_metrics),
+        "planner_p95_ms": max(
+            (float(metrics.get("planner_p95_ms", 0.0)) for metrics in worker_metrics),
+            default=0.0,
+        ),
+        "central_control_commands": sum(
+            int(metrics.get("central_control_commands", 0)) for metrics in worker_metrics
         ),
     })
     summary["accepted"] = all(summary["checks"].values())
@@ -246,6 +269,7 @@ def run_distributed_px4_agent(
     depth_camera=None,
     peer_node=None,
     policy=None,
+    agent=None,
     monotonic=time.monotonic,
     wall_time=time.time,
     sleep=time.sleep,
@@ -276,7 +300,7 @@ def run_distributed_px4_agent(
             config=config.peer_config,
             clock=monotonic,
         )
-    if policy is None:
+    if agent is None and policy is None:
         policy = NumpyMlpPolicy.load(config.policy_path)
 
     output_dir = Path(config.output_dir)
@@ -286,20 +310,28 @@ def run_distributed_px4_agent(
     mission_timed_out = False
     error: str | None = None
     depth_ready = False
-    agent = LearnedDepthForestAgent(
-        vehicle_id=config.vehicle_id,
-        rally_target=target,
-        policy=policy,
-        target_altitude_m=config.target_altitude_m,
-        corridor_center_y=spec.home_xy[1],
-    )
+    if agent is None:
+        agent = HybridPlannerAgent(
+            vehicle_id=config.vehicle_id,
+            rally_target=target,
+            policy=policy,
+            config=LocalPlannerConfig(max_speed_mps=0.8),
+            target_altitude_m=config.target_altitude_m,
+            corridor_center_y=spec.home_xy[1],
+        )
     mission_start = 0.0
     previous_position: tuple[float, float, float] | None = None
     previous_time: float | None = None
     step = 0
+    planner_times_ms: list[float] = []
+    planner_calls = 0
+    fail_closed_land = False
 
     def sample(phase: str, position: tuple[float, float, float], telemetry, observation, peer_count: int) -> None:
         nonlocal step
+        decision = getattr(agent, "last_decision", None)
+        rejections = getattr(decision, "rejection_counts", {}) if decision is not None else {}
+        previous_action = getattr(agent, "previous_action", (0.0, 0.0))
         trace.append({
             "step": step,
             "monotonic_s": round(monotonic(), 6),
@@ -315,9 +347,26 @@ def run_distributed_px4_agent(
             "battery_pct": telemetry.battery_pct,
             "depth_nearest_m": round(observation.nearest_distance_m, 4) if observation else None,
             "depth_rays_m": ";".join(f"{value:.3f}" for value in observation.ray_distances_m) if observation else None,
-            "policy_action_speed": round(agent.last_policy_action[0], 5),
-            "policy_action_yaw": round(agent.last_policy_action[1], 5),
-            "safety_override": agent.last_safety_override,
+            "policy_action_speed": round(float(previous_action[0]), 5),
+            "policy_action_yaw": round(float(previous_action[1]), 5),
+            "safety_override": bool(decision and str(decision.mode).startswith("hold")),
+            "planner_mode": decision.mode if decision is not None else None,
+            "planner_candidate_id": decision.candidate_id if decision is not None else None,
+            "planner_generated_candidates": decision.generated_candidates if decision is not None else 0,
+            "planner_rejected_unknown": int(rejections.get("unknown", 0)),
+            "planner_rejected_static": int(rejections.get("static", 0)),
+            "planner_rejected_peer": int(rejections.get("peer", 0)),
+            "predicted_static_clearance_m": (
+                round(decision.minimum_static_clearance_m, 5)
+                if decision is not None and decision.minimum_static_clearance_m is not None
+                else None
+            ),
+            "predicted_peer_separation_m": (
+                round(decision.minimum_peer_separation_m, 5)
+                if decision is not None and decision.minimum_peer_separation_m is not None
+                else None
+            ),
+            "planner_time_ms": round(decision.planning_time_ms, 5) if decision is not None else None,
             "local_peer_tracks": peer_count,
             "neighbor_source": "udp-peer-cache",
             "controller_scope": "one-process-one-vehicle",
@@ -354,14 +403,36 @@ def run_distributed_px4_agent(
             peer_node.broadcast(position, velocity, mission_elapsed_s=elapsed)
             tracks = peer_node.poll(position, now=timestamp)
             observation = depth_camera.latest(config.vehicle_id, now=timestamp, max_age_s=0.35)
+            planner_peers = tuple(
+                PlannerPeer(
+                    sender_id=track.sender_id,
+                    position=track.position,
+                    velocity=track.velocity,
+                    age_s=max(0.0, timestamp - track.received_at),
+                )
+                for track in tracks
+            )
             command = agent.command(
                 now=timestamp,
                 global_position=position,
+                velocity=velocity,
                 yaw_rad=math.radians(float(telemetry.yaw_deg or 0.0)),
-                neighbors=[track.position for track in tracks],
+                peers=planner_peers,
                 depth_observation=observation,
             )
+            if not all(
+                math.isfinite(float(value))
+                for value in (command.throttle, command.yaw, command.forward, command.lateral)
+            ):
+                raise ValueError("non-finite planner command")
+            decision = getattr(agent, "last_decision", None)
+            if decision is not None:
+                planner_calls += 1
+                planner_times_ms.append(float(decision.planning_time_ms))
             sample(agent.phase, position, telemetry, observation, len(tracks))
+            if bool(getattr(agent, "should_land", False)):
+                fail_closed_land = True
+                break
             drone.send(command)
             arrived_frames = arrived_frames + 1 if agent.phase == "arrived" else 0
             if arrived_frames >= max(2, math.ceil(config.rate_hz * 0.5)):
@@ -419,16 +490,27 @@ def run_distributed_px4_agent(
         "no_worker_error": error is None,
         "used_local_policy": agent.policy_calls > 0,
         "zero_direct_global_neighbor_reads": True,
+        "zero_central_control_commands": True,
     }
+    ordered_planner_times = sorted(planner_times_ms)
+    planner_p95_ms = (
+        ordered_planner_times[max(0, math.ceil(0.95 * len(ordered_planner_times)) - 1)]
+        if ordered_planner_times
+        else 0.0
+    )
     metrics = {
         "vehicle_id": config.vehicle_id,
         "controller_process_id": os.getpid(),
         "samples": len(trace),
         "policy_calls": agent.policy_calls,
-        "depth_safety_overrides": agent.neural_triggers,
-        "missing_depth_holds": agent.sensor_holds,
-        "local_corridor_overrides": agent.corridor_overrides,
-        "emergency_latch_overrides": agent.emergency_latch_overrides,
+        "depth_safety_overrides": int(getattr(agent, "neural_triggers", 0)),
+        "missing_depth_holds": int(getattr(agent, "sensor_holds", 0)),
+        "local_corridor_overrides": int(getattr(agent, "corridor_overrides", 0)),
+        "emergency_latch_overrides": int(getattr(agent, "emergency_latch_overrides", 0)),
+        "planner_calls": planner_calls,
+        "planner_p95_ms": round(planner_p95_ms, 5),
+        "fail_closed_land": fail_closed_land,
+        "central_control_commands": 0,
         "direct_global_neighbor_reads": 0,
         "depth_frames": int(depth_camera.frame_counts.get(config.vehicle_id, 0)),
         "depth_decode_errors": int(depth_camera.decode_errors.get(config.vehicle_id, 0)),

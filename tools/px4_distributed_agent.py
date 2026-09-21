@@ -1,4 +1,4 @@
-"""Run exactly one PX4/depth/PPO worker with a direct UDP peer endpoint."""
+"""Run one PX4/depth/hybrid-planner worker with a direct UDP peer endpoint."""
 
 from __future__ import annotations
 
@@ -10,7 +10,9 @@ from flydrones.peer_udp import PeerUdpConfig
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser(
+        description="Run one independently controlled PX4 vehicle with local trajectory safety planning."
+    )
     parser.add_argument("--vehicle-id", type=int, required=True)
     parser.add_argument("--output", default="results/px4-sitl-distributed")
     parser.add_argument("--model", default="results/autonomous-forest-ppo-v1/autonomous-policy-numpy.npz")
