@@ -265,6 +265,13 @@ def _refresh_grace_pending(
         pending.update({assignment.task_id: assignment for assignment in snapshot})
 
 
+def _convergence_grace_seconds(peer_count: int, contract_record_count: int) -> float:
+    """Budget full-ledger delivery to every overlay peer at the 10 datagram/s cap."""
+    estimated_records = contract_record_count + 15
+    estimated_seconds = peer_count * estimated_records / (5 * 10.0) + 5.0
+    return max(15.0, estimated_seconds)
+
+
 def _reassignment_latencies(
     artifacts: list[dict[str, Any]],
     failed_ids: set[int],
@@ -402,7 +409,10 @@ def _worker_main(
     status = "completed"
     step = 0
     grace_step = 0
-    convergence_grace_s = 15.0
+    convergence_grace_s = _convergence_grace_seconds(
+        len(task_node.overlay_peers),
+        len(contract_task_ids),
+    )
     grace_units: deque[dict[str, object]] = deque()
     grace_unit_signatures: set[str] = set()
     grace_pending: dict[str, TaskAssignment] = {}

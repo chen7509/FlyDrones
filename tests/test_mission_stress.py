@@ -6,6 +6,7 @@ import time
 from flydrones.mission_stress import (
     MissionStressConfig,
     _contract_for,
+    _convergence_grace_seconds,
     _initial_position,
     _pop_bounded_assignment_batch,
     _preferred_task_sequences,
@@ -103,6 +104,11 @@ def test_terminal_anti_entropy_restarts_as_soon_as_a_full_cycle_is_sent() -> Non
     pending: dict[str, TaskAssignment] = {}
     _refresh_grace_pending(pending, (assignment,), force=False)
     assert pending == {"search-0000": assignment}
+
+
+def test_convergence_tail_scales_with_overlay_and_contract_size() -> None:
+    assert _convergence_grace_seconds(5, 7) == 15.0
+    assert _convergence_grace_seconds(8, 101) >= 23.0
 
 
 def test_external_contract_path_is_the_trial_contract(tmp_path) -> None:
