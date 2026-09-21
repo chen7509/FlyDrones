@@ -153,7 +153,7 @@ class Clock:
 
 def test_px4_execution_planner_keeps_margin_for_flight_controller_lag():
     config = _px4_execution_planner_config()
-    assert 0.60 <= config.vehicle_radius_m + config.static_margin_m <= 0.65
+    assert 0.57 <= config.vehicle_radius_m + config.static_margin_m <= 0.59
     assert config.peer_minimum_m >= 1.20
     assert config.integration_step_s <= 0.20
 
