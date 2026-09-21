@@ -562,6 +562,19 @@ class MissionAgent:
 
     @staticmethod
     def _assignment_from_payload(payload: object) -> TaskAssignment:
+        if isinstance(payload, list):
+            if len(payload) != 8 or not isinstance(payload[7], list):
+                raise ValueError("compact assignment payload is invalid")
+            return TaskAssignment(
+                str(payload[0]),
+                str(payload[1]),  # type: ignore[arg-type]
+                None if payload[2] is None else int(payload[2]),
+                None if payload[3] is None else float(payload[3]),
+                int(payload[4]),
+                None if payload[5] is None else float(payload[5]),
+                None if payload[6] is None else str(payload[6]),
+                tuple(int(value) for value in payload[7]),
+            )
         if not isinstance(payload, dict):
             raise ValueError("assignment payload must be an object")
         return TaskAssignment(

@@ -213,11 +213,22 @@ def _pop_bounded_assignment_batch(
     pending: dict[str, TaskAssignment],
     mission_id: str,
     mission_digest: str,
-) -> list[dict[str, object]]:
+) -> list[list[object]]:
     selected_ids: list[str] = []
-    selected: list[dict[str, object]] = []
-    for task_id in sorted(pending)[:4]:
-        candidate = [*selected, asdict(pending[task_id])]
+    selected: list[list[object]] = []
+    for task_id in sorted(pending):
+        assignment = pending[task_id]
+        record: list[object] = [
+            assignment.task_id,
+            assignment.status,
+            assignment.winner_id,
+            assignment.utility,
+            assignment.allocation_round,
+            assignment.lease_until,
+            assignment.evidence_hash,
+            list(assignment.confirmers),
+        ]
+        candidate = [*selected, record]
         try:
             encode_task_message(
                 TaskMessage(

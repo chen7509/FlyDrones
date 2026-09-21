@@ -64,6 +64,28 @@ def test_assignment_batch_is_sized_by_wire_encoder() -> None:
     assert pending
 
 
+def test_compact_search_batch_uses_available_datagram_capacity() -> None:
+    pending = {
+        f"search-{index:04d}": TaskAssignment(
+            f"search-{index:04d}",
+            "completed",
+            index,
+            10.0,
+            1,
+            None,
+            "e" * 64,
+            (index,),
+        )
+        for index in range(12)
+    }
+    batch = _pop_bounded_assignment_batch(pending, "mission", "a" * 64)
+    encoded = encode_task_message(
+        TaskMessage("award", "mission", "a" * 64, 0, 1, 1.0, {"assignments": batch})
+    )
+    assert len(encoded) <= 1200
+    assert len(batch) > 4
+
+
 def test_external_contract_path_is_the_trial_contract(tmp_path) -> None:
     source = {
         "schema_version": 1,

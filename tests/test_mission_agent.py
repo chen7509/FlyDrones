@@ -334,6 +334,24 @@ def test_agent_merges_batched_terminal_awards() -> None:
     assert agent.ledger.assignment("search-0001").status == "completed"
 
 
+def test_agent_merges_compact_assignment_batch() -> None:
+    agent = MissionAgent.for_contract(0, 10, contract())
+    record = ["search-0000", "completed", 3, 10.0, 1, None, "e" * 64, [3]]
+    message = TaskMessage(
+        "award",
+        contract().mission_id,
+        contract().digest,
+        3,
+        2,
+        1.0,
+        {"assignments": [record]},
+    )
+    agent.ingest_messages([message], now=2.0)
+    completed = agent.ledger.assignment("search-0000")
+    assert completed.status == "completed"
+    assert completed.winner_id == 3
+
+
 def test_reopened_higher_round_task_is_bid_before_fresh_nearby_task() -> None:
     agent = MissionAgent.for_contract(0, 10, contract())
     agent.ledger.merge_assignment(
