@@ -221,6 +221,42 @@ def test_fresh_confirmation_preempts_remaining_search_work() -> None:
     assert bids[0]["task_id"].startswith("confirm-")
 
 
+def test_cross_task_selection_uses_local_utility_not_unrelated_auction_round() -> None:
+    agent = MissionAgent.for_contract(0, 10, contract())
+    for sequence, task_id, center in (
+        (1, "confirm-near", [10.0, 10.0, 20.0]),
+        (2, "confirm-far", [30.0, 30.0, 20.0]),
+    ):
+        agent.ingest_messages(
+            [
+                TaskMessage(
+                    "evidence",
+                    contract().mission_id,
+                    contract().digest,
+                    1,
+                    sequence,
+                    0.0,
+                    {
+                        "work_unit": {
+                            "task_id": task_id,
+                            "kind": "confirm_detection",
+                            "center_m": center,
+                            "payload": [["required_sensor", "person"]],
+                        }
+                    },
+                )
+            ],
+            now=0.0,
+        )
+    agent.ledger.merge_assignment(
+        TaskAssignment("confirm-far", "open", None, None, 5, None, None, ()),
+        now=0.0,
+    )
+    decision = agent.step(0.1, healthy_state(), [], [], [])
+    bids = [payload for kind, payload in decision.outbound_messages if kind == "bid"]
+    assert bids[0]["task_id"] == "confirm-near"
+
+
 def test_confirmation_quorum_needs_distinct_vehicle_ids() -> None:
     agent = MissionAgent.for_contract(0, 10, contract())
     detection = Detection("person", (10.0, 20.0, 20.0), 0.9, "b" * 64)

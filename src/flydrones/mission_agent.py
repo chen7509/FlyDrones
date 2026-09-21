@@ -450,7 +450,11 @@ class MissionAgent:
                 {"confirm_detection": 4, "search_cell": 3, "relay": 1, "rally": 0}[
                     self._work_units[item.task_id].kind
                 ],
-                item.allocation_round,
+                (
+                    0
+                    if self._work_units[item.task_id].kind == "confirm_detection"
+                    else item.allocation_round
+                ),
                 item.utility,
                 -item.bidder_id,
                 item.task_id,
