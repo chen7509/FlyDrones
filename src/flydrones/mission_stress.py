@@ -94,6 +94,16 @@ def _initial_position(
     return home[0], home[1], home[2] + altitude_offset
 
 
+def _reserve_vehicle_ids(config: MissionStressConfig) -> tuple[int, ...]:
+    excluded = {
+        *config.failed_vehicle_ids,
+        config.low_battery_vehicle_id,
+        config.depth_freeze_vehicle_id,
+    }
+    eligible = [vehicle_id for vehicle_id in range(config.vehicle_count) if vehicle_id not in excluded]
+    return tuple(eligible[-min(10, len(eligible)) :])
+
+
 def _free_base_port(count: int, start: int) -> int:
     step = count + 2
     for base in range(start, 64000 - step, step):
@@ -317,6 +327,7 @@ def _worker_main(
     forwarded: set[str] = set()
     detected_targets: set[int] = set()
     target_indices = {0, len(search_units) // 2, len(search_units) - 1}
+    reserve_ids = set(_reserve_vehicle_ids(config))
     contract_task_ids = {unit.task_id for unit in contract.expand_work_units()}
     status = "completed"
     step = 0
@@ -423,6 +434,10 @@ def _worker_main(
             tracks,
             incoming,
             detections,
+            bidding_enabled=(
+                vehicle_id not in reserve_ids
+                or elapsed >= config.failure_at_s + 3.0
+            ),
         )
         for kind, payload in decision.outbound_messages:
             task_node.send(kind, payload, now=elapsed)  # type: ignore[arg-type]

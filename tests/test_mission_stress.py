@@ -10,6 +10,7 @@ from flydrones.mission_stress import (
     _pop_bounded_assignment_batch,
     _read_start_time,
     _reassignment_latencies,
+    _reserve_vehicle_ids,
     motion_peer_ids,
     overlay_survivors_converge,
     run_mission_process_trial,
@@ -180,3 +181,12 @@ def test_injected_failure_vehicle_starts_high_enough_to_hold_an_active_lease() -
     failing = _initial_position(2, (2,), units)
     assert normal[2] == units[1].center_m[2]
     assert failing[2] - units[2].center_m[2] == 60.0
+
+
+def test_reserve_ids_are_alive_and_exclude_sensor_fault_nodes() -> None:
+    config = MissionStressConfig(vehicle_count=24, failed_vehicle_ids=tuple(range(7, 17)))
+    reserves = _reserve_vehicle_ids(config)
+    assert len(reserves) == 10
+    assert not set(reserves) & set(config.failed_vehicle_ids)
+    assert config.low_battery_vehicle_id not in reserves
+    assert config.depth_freeze_vehicle_id not in reserves

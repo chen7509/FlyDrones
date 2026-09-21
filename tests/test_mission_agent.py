@@ -74,6 +74,21 @@ def test_agent_progresses_without_task_station_or_central_commands() -> None:
     assert claimed.central_control_commands == 0
 
 
+def test_deterministic_reserve_mode_waits_without_bidding() -> None:
+    agent = MissionAgent.for_contract(4, 10, contract())
+    decision = agent.step(
+        0.0,
+        healthy_state(),
+        [],
+        [],
+        [],
+        bidding_enabled=False,
+    )
+    assert decision.phase == "reserve"
+    assert decision.intent.velocity_mps == (0.0, 0.0, 0.0)
+    assert all(kind != "bid" for kind, _payload in decision.outbound_messages)
+
+
 def test_depth_freeze_and_low_battery_release_active_task_once() -> None:
     agent = active_agent()
     held = agent.step(1.0, healthy_state(depth_age_s=0.51), [], [], [])

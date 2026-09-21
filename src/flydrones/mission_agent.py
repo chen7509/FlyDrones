@@ -156,6 +156,8 @@ class MissionAgent:
         peer_tracks: list[PeerTrack] | tuple[PeerTrack, ...],
         messages: list[TaskMessage] | tuple[TaskMessage, ...],
         detections: list[Detection] | tuple[Detection, ...],
+        *,
+        bidding_enabled: bool = True,
     ) -> AgentDecision:
         timestamp = float(now)
         if not math.isfinite(timestamp):
@@ -189,6 +191,16 @@ class MissionAgent:
                 self._phase,
                 safety,
                 NavigationIntent((0.0, 0.0, 0.0), self._active_target(), "safety-depth-hold"),
+                tuple(outbound),
+                released,
+            )
+        if not bidding_enabled:
+            self._phase = "reserve"
+            self._steps += 1
+            return AgentDecision(
+                self._phase,
+                safety,
+                NavigationIntent((0.0, 0.0, 0.0), None, "deterministic-reserve"),
                 tuple(outbound),
                 released,
             )
