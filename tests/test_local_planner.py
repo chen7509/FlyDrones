@@ -217,6 +217,25 @@ def test_all_blocked_scene_returns_horizontal_hold():
     assert decision.command.forward == decision.command.lateral == 0.0
 
 
+def test_rotation_candidates_check_inertial_translation_against_obstacles():
+    planner = HybridLocalPlanner(LocalPlannerConfig())
+    blocked = depth(1.0, [0.55] * 9)
+    decision = planner.plan(
+        now=1.0,
+        position=(0.0, 0.0, 1.8),
+        velocity=(0.8, 0.0, 0.0),
+        yaw_rad=math.pi / 2,
+        target=(6.0, 0.0),
+        depth_observation=blocked,
+        peers=(),
+        preferred_command=FlightCommand(yaw=1.0),
+        corridor_center_y=0.0,
+        inside_forest=True,
+    )
+    assert decision.mode == "hold-no-safe-trajectory"
+    assert decision.rejection_counts["static"] == decision.generated_candidates
+
+
 def test_observed_lateral_clearance_allows_side_escape():
     planner = HybridLocalPlanner(LocalPlannerConfig())
     rays = [4.0, 4.0, 4.0, 0.7, 0.6, 0.7, 19.1, 19.1, 19.1]

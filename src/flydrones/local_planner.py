@@ -412,7 +412,16 @@ class HybridLocalPlanner:
         safe: list[tuple[tuple[float, ...], int, TrajectoryCandidate, float | None, float | None]] = []
 
         for lattice_index, candidate in enumerate(candidates):
-            moving = abs(candidate.forward_mps) > 1e-9 or abs(candidate.lateral_mps) > 1e-9
+            # A zero-translation command still moves while the vehicle bleeds
+            # existing velocity. Gate the simulated path, not only the command.
+            moving = any(
+                math.hypot(
+                    sample[0] - numeric_position[0],
+                    sample[1] - numeric_position[1],
+                )
+                > 1e-9
+                for sample in candidate.samples
+            )
             minimum_static = None
             if obstacle_snapshot.obstacle_points:
                 minimum_static = min(
