@@ -4,7 +4,8 @@ from types import SimpleNamespace
 import numpy as np
 
 from flydrones.hybrid_agent import HybridPlannerAgent
-from flydrones.local_planner import LocalPlannerConfig
+from flydrones.local_planner import LocalPlannerConfig, PlannerDecision
+from flydrones.motor.command import FlightCommand
 
 
 class UnsafeReversePolicy:
@@ -149,3 +150,46 @@ def test_depth_obstacle_creates_and_then_clears_a_local_bypass_target():
         depth_observation=clear,
     )
     assert agent.active_target == agent.rally_target
+
+
+def test_forward_bypass_uses_a_narrow_cross_track_gate():
+    class RecordingPlanner:
+        def __init__(self):
+            self.kwargs = None
+
+        def plan(self, **kwargs):
+            self.kwargs = kwargs
+            return PlannerDecision(
+                command=FlightCommand(),
+                mode="trajectory",
+                candidate_id="recorded",
+                minimum_static_clearance_m=None,
+                minimum_peer_separation_m=None,
+                generated_candidates=1,
+                rejection_counts={"unknown": 0, "static": 0, "peer": 0, "corridor": 0, "invalid": 0},
+                planning_time_ms=0.0,
+            )
+
+    agent = HybridPlannerAgent(
+        2,
+        (6.5, 0.0),
+        UnsafeReversePolicy(),
+        config=LocalPlannerConfig(),
+        corridor_center_y=0.0,
+    )
+    recorder = RecordingPlanner()
+    agent.planner = recorder
+    agent._bypass_target = (3.0, 1.0)
+    agent._bypass_until_x = 3.0
+    agent._bypass_y = 1.0
+    agent._bypass_stage = "forward"
+    clear = SimpleNamespace(captured_at=1.0, ray_distances_m=(19.1,) * 9)
+    agent.command(
+        now=1.0,
+        global_position=(1.0, 1.0, 1.8),
+        velocity=(0.0, 0.0, 0.0),
+        yaw_rad=math.pi / 2,
+        peers=(),
+        depth_observation=clear,
+    )
+    assert recorder.kwargs["corridor_half_width_m"] == 0.18

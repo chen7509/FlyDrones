@@ -311,7 +311,7 @@ class HybridPlannerAgent:
             preferred_command=preference,
             corridor_center_y=(self.active_target[1] if self._bypass_target is not None else self.corridor_center_y),
             inside_forest=self.phase == "escaping",
-            corridor_half_width_m=(0.35 if self._bypass_stage == "forward" else None),
+            corridor_half_width_m=(0.18 if self._bypass_stage == "forward" else None),
         )
         command = replace(decision.command, throttle=altitude_throttle)
         decision = replace(decision, command=command)
