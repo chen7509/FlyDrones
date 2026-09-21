@@ -230,7 +230,7 @@ def _pop_bounded_assignment_batch(
         ]
         candidate = [*selected, record]
         try:
-            encode_task_message(
+            encoded = encode_task_message(
                 TaskMessage(
                     "award",
                     mission_id,
@@ -244,6 +244,8 @@ def _pop_bounded_assignment_batch(
         except ValueError as error:
             if "1200" not in str(error) or not selected:
                 raise
+            break
+        if len(encoded) > 1150 and selected:
             break
         selected = candidate
         selected_ids.append(task_id)

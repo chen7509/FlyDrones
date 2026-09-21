@@ -55,9 +55,18 @@ def test_assignment_batch_is_sized_by_wire_encoder() -> None:
         )
         for index in range(4)
     }
-    batch = _pop_bounded_assignment_batch(pending, "mission", "a" * 64)
+    mission_id = "forest-search-confirm-rally"
+    batch = _pop_bounded_assignment_batch(pending, mission_id, "a" * 64)
     encoded = encode_task_message(
-        TaskMessage("award", "mission", "a" * 64, 0, 1, 1.0, {"assignments": batch})
+        TaskMessage(
+            "award",
+            mission_id,
+            "a" * 64,
+            99,
+            0xFFFFFFFF,
+            75.12345678901234,
+            {"assignments": batch},
+        )
     )
     assert len(encoded) <= 1200
     assert len(batch) < 4
