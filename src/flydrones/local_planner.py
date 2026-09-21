@@ -93,7 +93,7 @@ class ObstacleSnapshot:
 
 
 class RollingObstacleMemory:
-    _SAMPLES_PER_SECTOR_AND_KIND = 8
+    _SAMPLES_PER_SECTOR_AND_KIND = 6
 
     def __init__(self, config: LocalPlannerConfig | None = None) -> None:
         self.config = config or LocalPlannerConfig()

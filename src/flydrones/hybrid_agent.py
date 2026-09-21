@@ -164,16 +164,13 @@ class HybridPlannerAgent:
             return
 
         rays = tuple(float(value) for value in depth_observation.ray_distances_m)
-        nearest_ahead = min(rays[3:6])
+        nearest_ahead = min(rays)
         if nearest_ahead >= 1.80:
             return
-        right_clearance = sum(rays[:3]) / 3.0
-        left_clearance = sum(rays[-3:]) / 3.0
-        bypass_side = 1.0 if left_clearance >= right_clearance else -1.0
         self._bypass_until_x = position[0] + max(1.40, nearest_ahead + 0.85)
         self._bypass_target = (
             self._bypass_until_x,
-            self.corridor_center_y + bypass_side * 1.0,
+            self.corridor_center_y + 1.30,
         )
 
     def command(

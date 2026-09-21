@@ -67,9 +67,9 @@ def test_memory_replaces_older_evidence_in_the_same_world_sector():
             depth_observation=depth(now, [19.1] * 9),
         )
     snapshot = memory.snapshot(now=1.0)
-    assert len(snapshot.rays) <= config.sector_count * 16
+    assert len(snapshot.rays) <= config.sector_count * 12
     assert all(
-        sum(ray.sector == sector for ray in snapshot.rays) <= 16
+        sum(ray.sector == sector for ray in snapshot.rays) <= 12
         for sector in range(config.sector_count)
     )
 

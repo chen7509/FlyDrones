@@ -68,7 +68,7 @@ def _generate_scenarios(rng: random.Random, scenario_count: int) -> list[StressS
                     sender_id=10 + index,
                     position=(
                         2.65 + rng.uniform(-0.10, 0.10),
-                        start_y + lane_side * rng.uniform(0.55, 0.70),
+                        start_y + lane_side * rng.uniform(0.62, 0.77),
                         1.8,
                     ),
                     velocity=(-0.45 + rng.uniform(-0.04, 0.04), rng.uniform(-0.02, 0.02), 0.0),
