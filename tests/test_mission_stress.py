@@ -5,11 +5,14 @@ import time
 
 from flydrones.mission_stress import (
     MissionStressConfig,
+    _pop_bounded_assignment_batch,
     _read_start_time,
     motion_peer_ids,
     overlay_survivors_converge,
     run_mission_process_trial,
 )
+from flydrones.task_consensus import TaskAssignment
+from flydrones.task_udp import TaskMessage, encode_task_message
 
 
 def test_start_marker_read_retries_transient_windows_file_lock() -> None:
@@ -29,6 +32,29 @@ def test_start_marker_read_retries_transient_windows_file_lock() -> None:
     path = FlakyStartFile()
     assert _read_start_time(path, time.monotonic() + 1.0, sleep=lambda _delay: None) == 42.5  # type: ignore[arg-type]
     assert path.calls == 2
+
+
+def test_assignment_batch_is_sized_by_wire_encoder() -> None:
+    pending = {
+        f"confirm-{index}": TaskAssignment(
+            f"confirm-{index}",
+            "completed",
+            index,
+            10.0,
+            2,
+            None,
+            "e" * 64,
+            tuple(range(100)),
+        )
+        for index in range(4)
+    }
+    batch = _pop_bounded_assignment_batch(pending, "mission", "a" * 64)
+    encoded = encode_task_message(
+        TaskMessage("award", "mission", "a" * 64, 0, 1, 1.0, {"assignments": batch})
+    )
+    assert len(encoded) <= 1200
+    assert len(batch) < 4
+    assert pending
 
 
 def test_six_processes_finish_after_station_exit_and_reassign_failed_agent(tmp_path) -> None:

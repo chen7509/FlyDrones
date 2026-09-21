@@ -17,7 +17,15 @@ from typing import Any
 from flydrones.mission_agent import AgentState, Detection, MissionAgent
 from flydrones.mission_contract import MissionContract, WorkUnit
 from flydrones.peer_udp import PeerUdpConfig, UdpPeerNode
-from flydrones.task_udp import MissionTaskStation, TaskUdpConfig, TaskUdpNode, task_overlay_peers
+from flydrones.task_consensus import TaskAssignment
+from flydrones.task_udp import (
+    MissionTaskStation,
+    TaskMessage,
+    TaskUdpConfig,
+    TaskUdpNode,
+    encode_task_message,
+    task_overlay_peers,
+)
 
 
 @dataclass(frozen=True)
@@ -136,6 +144,38 @@ def _read_start_time(
     raise RuntimeError("mission start marker was not readable before its deadline")
 
 
+def _pop_bounded_assignment_batch(
+    pending: dict[str, TaskAssignment],
+    mission_id: str,
+    mission_digest: str,
+) -> list[dict[str, object]]:
+    selected_ids: list[str] = []
+    selected: list[dict[str, object]] = []
+    for task_id in sorted(pending)[:4]:
+        candidate = [*selected, asdict(pending[task_id])]
+        try:
+            encode_task_message(
+                TaskMessage(
+                    "award",
+                    mission_id,
+                    mission_digest,
+                    0,
+                    0,
+                    0.0,
+                    {"assignments": candidate},
+                )
+            )
+        except ValueError as error:
+            if "1200" not in str(error) or not selected:
+                raise
+            break
+        selected = candidate
+        selected_ids.append(task_id)
+    for task_id in selected_ids:
+        del pending[task_id]
+    return selected
+
+
 def _worker_main(
     vehicle_id: int,
     config_data: dict[str, Any],
@@ -226,7 +266,7 @@ def _worker_main(
     convergence_grace_s = 15.0
     grace_units: deque[dict[str, object]] = deque()
     grace_unit_signatures: set[str] = set()
-    grace_pending: dict[str, object] = {}
+    grace_pending: dict[str, TaskAssignment] = {}
     dt = 1.0 / config.rate_hz
     next_tick = start_at[0]
     while True:
@@ -276,8 +316,11 @@ def _worker_main(
             if grace_units:
                 task_node.send("award", grace_units.popleft(), now=elapsed)
             elif grace_pending:
-                task_ids = sorted(grace_pending)[:4]
-                assignments = [asdict(grace_pending.pop(task_id)) for task_id in task_ids]
+                assignments = _pop_bounded_assignment_batch(
+                    grace_pending,
+                    contract.mission_id,
+                    contract.digest,
+                )
                 task_node.send("award", {"assignments": assignments}, now=elapsed)
             trace.append(
                 {
