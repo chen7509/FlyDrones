@@ -4,6 +4,9 @@ from __future__ import annotations
 
 import math
 from dataclasses import dataclass
+from time import perf_counter
+
+from .motor.command import FlightCommand
 
 
 def _finite_vector(values, length: int) -> bool:
@@ -136,3 +139,361 @@ class RollingObstacleMemory:
         rays = tuple(self._rays)
         obstacles = tuple(ray.obstacle_xy for ray in rays if ray.obstacle_xy is not None)
         return ObstacleSnapshot(rays, obstacles, 2.0 * math.pi / self.config.sector_count)
+
+
+@dataclass(frozen=True)
+class PlannerPeer:
+    """A neighbour state expressed in the same world frame as the vehicle."""
+
+    sender_id: int
+    position: tuple[float, float, float]
+    velocity: tuple[float, float, float]
+    age_s: float
+
+
+@dataclass(frozen=True)
+class TrajectoryCandidate:
+    """A deterministic short-horizon body command and its world-frame samples."""
+
+    candidate_id: str
+    forward_mps: float
+    lateral_mps: float
+    yaw_rate_rad_s: float
+    samples: tuple[tuple[float, float, float], ...]
+
+
+@dataclass(frozen=True)
+class PlannerDecision:
+    command: FlightCommand
+    mode: str
+    candidate_id: str
+    minimum_static_clearance_m: float | None
+    minimum_peer_separation_m: float | None
+    generated_candidates: int
+    rejection_counts: dict[str, int]
+    planning_time_ms: float
+
+
+class HybridLocalPlanner:
+    """Select a safe command from a fixed, reproducible trajectory lattice.
+
+    The learned policy supplies only a preference.  Unknown space, remembered
+    obstacles, predicted peer motion, and the forest corridor are hard gates.
+    """
+
+    _FORWARD_SPEEDS = (-0.18, 0.12, 0.25, 0.45, 0.65)
+    _LATERAL_SPEEDS = (-0.35, 0.0, 0.35)
+    _YAW_RATES = (-0.65, 0.0, 0.65)
+
+    def __init__(self, config: LocalPlannerConfig | None = None) -> None:
+        self.config = config or LocalPlannerConfig()
+        self.memory = RollingObstacleMemory(self.config)
+
+    def observe(self, *, now, position, yaw_rad, depth_observation) -> None:
+        self.memory.update(
+            now=now,
+            position=position,
+            yaw_rad=yaw_rad,
+            depth_observation=depth_observation,
+        )
+
+    @staticmethod
+    def _valid_peer(peer: PlannerPeer) -> bool:
+        try:
+            return (
+                isinstance(peer.sender_id, int)
+                and _finite_vector(peer.position, 3)
+                and _finite_vector(peer.velocity, 3)
+                and math.isfinite(float(peer.age_s))
+                and float(peer.age_s) >= 0.0
+            )
+        except (TypeError, ValueError):
+            return False
+
+    def _make_candidate(
+        self,
+        *,
+        candidate_id: str,
+        forward_mps: float,
+        lateral_mps: float,
+        yaw_rate_rad_s: float,
+        position: tuple[float, float, float],
+        velocity: tuple[float, float, float],
+        yaw_rad: float,
+    ) -> TrajectoryCandidate:
+        dt = self.config.integration_step_s
+        steps = max(1, int(round(self.config.horizon_s / dt)))
+        x, y, z = position
+        vx, vy = velocity[0], velocity[1]
+        world_heading = _wrap_angle(math.pi / 2.0 - yaw_rad)
+        actual_yaw_rate = max(
+            -self.config.max_yaw_rate_rad_s,
+            min(self.config.max_yaw_rate_rad_s, yaw_rate_rad_s),
+        )
+        samples: list[tuple[float, float, float]] = []
+        max_delta = self.config.max_acceleration_mps2 * dt
+
+        for _ in range(steps):
+            desired_vx = forward_mps * math.cos(world_heading) + lateral_mps * math.sin(world_heading)
+            desired_vy = forward_mps * math.sin(world_heading) - lateral_mps * math.cos(world_heading)
+            delta_x = desired_vx - vx
+            delta_y = desired_vy - vy
+            delta_norm = math.hypot(delta_x, delta_y)
+            if delta_norm > max_delta:
+                scale = max_delta / delta_norm
+                delta_x *= scale
+                delta_y *= scale
+            vx += delta_x
+            vy += delta_y
+            x += vx * dt
+            y += vy * dt
+            samples.append((x, y, z))
+            # PX4 positive yaw is clockwise; mathematical world heading is CCW.
+            world_heading = _wrap_angle(world_heading - actual_yaw_rate * dt)
+
+        return TrajectoryCandidate(
+            candidate_id,
+            forward_mps,
+            lateral_mps,
+            actual_yaw_rate,
+            tuple(samples),
+        )
+
+    def _candidates(self, *, position, velocity, yaw_rad) -> tuple[TrajectoryCandidate, ...]:
+        candidates: list[TrajectoryCandidate] = []
+        for forward in self._FORWARD_SPEEDS:
+            for lateral in self._LATERAL_SPEEDS:
+                for yaw_rate in self._YAW_RATES:
+                    candidate_id = f"f{forward:+.2f}-l{lateral:+.2f}-y{yaw_rate:+.2f}"
+                    candidates.append(
+                        self._make_candidate(
+                            candidate_id=candidate_id,
+                            forward_mps=forward,
+                            lateral_mps=lateral,
+                            yaw_rate_rad_s=yaw_rate,
+                            position=position,
+                            velocity=velocity,
+                            yaw_rad=yaw_rad,
+                        )
+                    )
+        # Rotation-only options let a vehicle acquire new depth evidence without
+        # translating into unknown space.
+        for yaw_rate in (-0.65, 0.65):
+            candidates.append(
+                self._make_candidate(
+                    candidate_id=f"rotate-y{yaw_rate:+.2f}",
+                    forward_mps=0.0,
+                    lateral_mps=0.0,
+                    yaw_rate_rad_s=yaw_rate,
+                    position=position,
+                    velocity=velocity,
+                    yaw_rad=yaw_rad,
+                )
+            )
+        return tuple(candidates)
+
+    def _hold_decision(
+        self,
+        *,
+        started_at: float,
+        mode: str,
+        candidate_count: int,
+        rejection_counts: dict[str, int],
+        static_clearance: float | None = None,
+        peer_clearance: float | None = None,
+    ) -> PlannerDecision:
+        return PlannerDecision(
+            command=FlightCommand.hover(mode),
+            mode=mode,
+            candidate_id="hold",
+            minimum_static_clearance_m=static_clearance,
+            minimum_peer_separation_m=peer_clearance,
+            generated_candidates=candidate_count,
+            rejection_counts=rejection_counts,
+            planning_time_ms=(perf_counter() - started_at) * 1000.0,
+        )
+
+    def plan(
+        self,
+        *,
+        now,
+        position,
+        velocity,
+        yaw_rad,
+        target,
+        depth_observation,
+        peers,
+        preferred_command,
+        corridor_center_y,
+        inside_forest,
+    ) -> PlannerDecision:
+        started_at = perf_counter()
+        rejection_counts = {"unknown": 0, "static": 0, "peer": 0, "corridor": 0, "invalid": 0}
+
+        if (
+            not math.isfinite(float(now))
+            or not _finite_vector(position, 3)
+            or not _finite_vector(velocity, 3)
+            or not _finite_vector(target, 2)
+            or not math.isfinite(float(yaw_rad))
+            or not math.isfinite(float(corridor_center_y))
+        ):
+            rejection_counts["invalid"] += 1
+            return self._hold_decision(
+                started_at=started_at,
+                mode="hold-invalid-input",
+                candidate_count=0,
+                rejection_counts=rejection_counts,
+            )
+
+        peer_tuple = tuple(peers)
+        if any(not self._valid_peer(peer) for peer in peer_tuple):
+            rejection_counts["invalid"] += 1
+            return self._hold_decision(
+                started_at=started_at,
+                mode="hold-invalid-peer",
+                candidate_count=0,
+                rejection_counts=rejection_counts,
+            )
+
+        numeric_position = tuple(float(value) for value in position)
+        numeric_velocity = tuple(float(value) for value in velocity)
+        numeric_target = tuple(float(value) for value in target)
+        timestamp = float(now)
+        self.observe(
+            now=timestamp,
+            position=numeric_position,
+            yaw_rad=float(yaw_rad),
+            depth_observation=depth_observation,
+        )
+        obstacle_snapshot = self.memory.snapshot(now=timestamp)
+        candidates = self._candidates(
+            position=numeric_position,
+            velocity=numeric_velocity,
+            yaw_rad=float(yaw_rad),
+        )
+        static_requirement = self.config.vehicle_radius_m + self.config.static_margin_m
+        start_target_distance = math.hypot(
+            numeric_target[0] - numeric_position[0],
+            numeric_target[1] - numeric_position[1],
+        )
+        start_corridor_error = abs(numeric_position[1] - float(corridor_center_y))
+        preferred = preferred_command.clipped() if isinstance(preferred_command, FlightCommand) else FlightCommand()
+        safe: list[tuple[tuple[float, ...], int, TrajectoryCandidate, float | None, float | None]] = []
+
+        for lattice_index, candidate in enumerate(candidates):
+            moving = abs(candidate.forward_mps) > 1e-9 or abs(candidate.lateral_mps) > 1e-9
+            minimum_static = None
+            if obstacle_snapshot.obstacle_points:
+                minimum_static = min(
+                    math.hypot(sample[0] - obstacle[0], sample[1] - obstacle[1])
+                    for sample in candidate.samples
+                    for obstacle in obstacle_snapshot.obstacle_points
+                )
+                if moving and minimum_static + 1e-9 < static_requirement:
+                    rejection_counts["static"] += 1
+                    continue
+
+            if moving and self.config.unknown_is_blocked:
+                if any(
+                    not obstacle_snapshot.is_observed_free(sample[:2], margin_m=static_requirement)
+                    for sample in candidate.samples
+                ):
+                    rejection_counts["unknown"] += 1
+                    continue
+
+            minimum_peer = None
+            peer_rejected = False
+            for peer in peer_tuple:
+                required_separation = self.config.peer_minimum_m + min(0.30, peer.age_s * 0.25)
+                for sample_index, sample in enumerate(candidate.samples, start=1):
+                    future_s = sample_index * self.config.integration_step_s
+                    peer_x = peer.position[0] + peer.velocity[0] * (peer.age_s + future_s)
+                    peer_y = peer.position[1] + peer.velocity[1] * (peer.age_s + future_s)
+                    peer_z = peer.position[2] + peer.velocity[2] * (peer.age_s + future_s)
+                    separation = math.sqrt(
+                        (sample[0] - peer_x) ** 2
+                        + (sample[1] - peer_y) ** 2
+                        + (sample[2] - peer_z) ** 2
+                    )
+                    minimum_peer = separation if minimum_peer is None else min(minimum_peer, separation)
+                    if separation + 1e-9 < required_separation:
+                        peer_rejected = True
+            if peer_rejected:
+                rejection_counts["peer"] += 1
+                continue
+
+            final = candidate.samples[-1]
+            final_corridor_error = abs(final[1] - float(corridor_center_y))
+            if (
+                moving
+                and bool(inside_forest)
+                and start_corridor_error > 0.8
+                and final_corridor_error > start_corridor_error + 1e-9
+            ):
+                rejection_counts["corridor"] += 1
+                continue
+
+            final_target_distance = math.hypot(numeric_target[0] - final[0], numeric_target[1] - final[1])
+            progress = start_target_distance - final_target_distance
+            static_score = minimum_static if minimum_static is not None else self.config.sensor_range_m
+            peer_score = minimum_peer if minimum_peer is not None else self.config.sensor_range_m
+            command_delta = (
+                abs(candidate.forward_mps / self.config.max_speed_mps - preferred.forward)
+                + abs(candidate.lateral_mps / self.config.max_speed_mps - preferred.lateral)
+                + abs(candidate.yaw_rate_rad_s / self.config.max_yaw_rate_rad_s - preferred.yaw)
+            )
+            preference_agreement = -command_delta
+            score = (
+                progress,
+                min(static_score, 3.0),
+                min(peer_score, 3.0),
+                -final_corridor_error,
+                preference_agreement,
+                -float(lattice_index),
+            )
+            safe.append((score, lattice_index, candidate, minimum_static, minimum_peer))
+
+        safe_moving = [entry for entry in safe if abs(entry[2].forward_mps) > 1e-9 or abs(entry[2].lateral_mps) > 1e-9]
+        if safe_moving:
+            selected = max(safe_moving, key=lambda entry: entry[0])
+        else:
+            # If every depth ray ends inside the static envelope, turning cannot
+            # reveal a safe translational route and the conservative action is hold.
+            all_depth_blocked = bool(obstacle_snapshot.rays) and all(
+                ray.free_distance_m <= static_requirement + 1e-9 for ray in obstacle_snapshot.rays[-9:]
+            )
+            safe_rotations = [entry for entry in safe if abs(entry[2].yaw_rate_rad_s) > 1e-9]
+            if all_depth_blocked or not safe_rotations:
+                hold_static = None
+                if obstacle_snapshot.obstacle_points:
+                    hold_static = min(
+                        math.hypot(numeric_position[0] - point[0], numeric_position[1] - point[1])
+                        for point in obstacle_snapshot.obstacle_points
+                    )
+                return self._hold_decision(
+                    started_at=started_at,
+                    mode="hold-no-safe-trajectory",
+                    candidate_count=len(candidates),
+                    rejection_counts=rejection_counts,
+                    static_clearance=hold_static,
+                )
+            selected = max(safe_rotations, key=lambda entry: entry[0])
+
+        _, _, candidate, minimum_static, minimum_peer = selected
+        command = FlightCommand(
+            yaw=candidate.yaw_rate_rad_s / self.config.max_yaw_rate_rad_s,
+            forward=candidate.forward_mps / self.config.max_speed_mps,
+            lateral=candidate.lateral_mps / self.config.max_speed_mps,
+            note="hybrid-local-planner",
+        ).clipped()
+        return PlannerDecision(
+            command=command,
+            mode="trajectory",
+            candidate_id=candidate.candidate_id,
+            minimum_static_clearance_m=minimum_static,
+            minimum_peer_separation_m=minimum_peer,
+            generated_candidates=len(candidates),
+            rejection_counts=rejection_counts,
+            planning_time_ms=(perf_counter() - started_at) * 1000.0,
+        )

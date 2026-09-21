@@ -1,7 +1,13 @@
 import math
 from types import SimpleNamespace
 
-from flydrones.local_planner import LocalPlannerConfig, RollingObstacleMemory
+from flydrones.local_planner import (
+    HybridLocalPlanner,
+    LocalPlannerConfig,
+    PlannerPeer,
+    RollingObstacleMemory,
+)
+from flydrones.motor.command import FlightCommand
 
 
 def depth(captured_at, rays):
@@ -47,3 +53,113 @@ def test_max_range_ray_does_not_create_false_obstacle():
     snapshot = memory.snapshot(now=1.1)
     assert snapshot.obstacle_points == ()
     assert snapshot.is_observed_free((3.0, 0.0), margin_m=0.10)
+
+
+def clear_front(now=1.0):
+    return depth(now, [19.1] * 9)
+
+
+def test_unknown_rear_space_forbids_reverse_motion():
+    planner = HybridLocalPlanner(LocalPlannerConfig())
+    decision = planner.plan(
+        now=1.0,
+        position=(0.0, 0.0, 1.8),
+        velocity=(0.0, 0.0, 0.0),
+        yaw_rad=math.pi / 2,
+        target=(6.0, 0.0),
+        depth_observation=clear_front(),
+        peers=(),
+        preferred_command=FlightCommand(forward=-1.0),
+        corridor_center_y=0.0,
+        inside_forest=True,
+    )
+    assert decision.command.forward >= 0.0
+    assert decision.rejection_counts["unknown"] > 0
+
+
+def test_remembered_tree_stays_blocked_after_camera_turns_away():
+    planner = HybridLocalPlanner(LocalPlannerConfig())
+    obstacle = depth(1.0, [19.1] * 4 + [1.0] + [19.1] * 4)
+    planner.observe(now=1.0, position=(0.0, 0.0, 1.8), yaw_rad=math.pi / 2, depth_observation=obstacle)
+    decision = planner.plan(
+        now=1.2,
+        position=(0.0, 0.0, 1.8),
+        velocity=(0.0, 0.0, 0.0),
+        yaw_rad=0.0,
+        target=(3.0, 0.0),
+        depth_observation=clear_front(1.2),
+        peers=(),
+        preferred_command=FlightCommand(lateral=-1.0),
+        corridor_center_y=0.0,
+        inside_forest=True,
+    )
+    assert decision.minimum_static_clearance_m >= 0.60
+
+
+def test_crossing_peer_is_rejected_from_constant_velocity_prediction():
+    planner = HybridLocalPlanner(LocalPlannerConfig())
+    peer = PlannerPeer(7, (1.0, 1.0, 1.8), (0.0, -1.0, 0.0), age_s=0.1)
+    decision = planner.plan(
+        now=1.0,
+        position=(0.0, 0.0, 1.8),
+        velocity=(0.0, 0.0, 0.0),
+        yaw_rad=math.pi / 2,
+        target=(6.0, 0.0),
+        depth_observation=clear_front(),
+        peers=(peer,),
+        preferred_command=FlightCommand(forward=1.0),
+        corridor_center_y=0.0,
+        inside_forest=True,
+    )
+    assert decision.minimum_peer_separation_m >= 0.90
+    assert decision.rejection_counts["peer"] > 0
+
+
+def test_invalid_peer_prediction_rejects_every_moving_candidate():
+    planner = HybridLocalPlanner(LocalPlannerConfig())
+    peer = PlannerPeer(7, (1.0, 0.0, 1.8), (float("nan"), 0.0, 0.0), age_s=-0.1)
+    decision = planner.plan(
+        now=1.0,
+        position=(0.0, 0.0, 1.8), velocity=(0.0, 0.0, 0.0), yaw_rad=math.pi / 2,
+        target=(6.0, 0.0), depth_observation=clear_front(), peers=(peer,),
+        preferred_command=FlightCommand(forward=1.0), corridor_center_y=0.0, inside_forest=True,
+    )
+    assert decision.mode == "hold-invalid-peer"
+    assert decision.command.forward == decision.command.lateral == 0.0
+
+
+def test_equal_scores_use_stable_candidate_order():
+    kwargs = dict(
+        now=1.0,
+        position=(0.0, 0.0, 1.8), velocity=(0.0, 0.0, 0.0), yaw_rad=math.pi / 2,
+        target=(6.0, 0.0), depth_observation=clear_front(), peers=(),
+        preferred_command=FlightCommand(), corridor_center_y=0.0, inside_forest=False,
+    )
+    first = HybridLocalPlanner(LocalPlannerConfig()).plan(**kwargs)
+    second = HybridLocalPlanner(LocalPlannerConfig()).plan(**kwargs)
+    assert first.candidate_id == second.candidate_id
+    assert first.command == second.command
+
+
+def test_all_blocked_scene_returns_horizontal_hold():
+    planner = HybridLocalPlanner(LocalPlannerConfig())
+    blocked = depth(1.0, [0.55] * 9)
+    decision = planner.plan(
+        now=1.0, position=(0.0, 0.0, 1.8), velocity=(0.0, 0.0, 0.0), yaw_rad=math.pi / 2,
+        target=(6.0, 0.0), depth_observation=blocked, peers=(),
+        preferred_command=FlightCommand(forward=1.0), corridor_center_y=0.0, inside_forest=True,
+    )
+    assert decision.mode == "hold-no-safe-trajectory"
+    assert decision.command.forward == decision.command.lateral == 0.0
+
+
+def test_observed_lateral_clearance_allows_side_escape():
+    planner = HybridLocalPlanner(LocalPlannerConfig())
+    rays = [4.0, 4.0, 4.0, 0.7, 0.6, 0.7, 19.1, 19.1, 19.1]
+    decision = planner.plan(
+        now=1.0, position=(0.0, 0.0, 1.8), velocity=(0.0, 0.0, 0.0), yaw_rad=math.pi / 2,
+        target=(6.0, 0.0), depth_observation=depth(1.0, rays), peers=(),
+        preferred_command=FlightCommand(forward=1.0), corridor_center_y=0.0, inside_forest=True,
+    )
+    assert abs(decision.command.lateral) > 0.0 or abs(decision.command.yaw) > 0.0
+    assert decision.command.forward < 1.0
