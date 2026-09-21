@@ -93,17 +93,20 @@ class ObstacleSnapshot:
 
 
 class RollingObstacleMemory:
+    _SAMPLES_PER_SECTOR_AND_KIND = 8
+
     def __init__(self, config: LocalPlannerConfig | None = None) -> None:
         self.config = config or LocalPlannerConfig()
-        self._rays: dict[int, WorldRay] = {}
+        self._rays: dict[tuple[int, bool], list[WorldRay]] = {}
 
     def _purge(self, now: float) -> None:
         cutoff = float(now) - self.config.obstacle_memory_s
-        self._rays = {
-            sector: ray
-            for sector, ray in self._rays.items()
-            if ray.observed_at >= cutoff
-        }
+        retained: dict[tuple[int, bool], list[WorldRay]] = {}
+        for key, rays in self._rays.items():
+            live = [ray for ray in rays if ray.observed_at >= cutoff]
+            if live:
+                retained[key] = live
+        self._rays = retained
 
     def update(self, *, now, position, yaw_rad, depth_observation) -> None:
         timestamp = float(now)
@@ -133,14 +136,28 @@ class RollingObstacleMemory:
                     origin[0] + math.cos(bearing) * distance,
                     origin[1] + math.sin(bearing) * distance,
                 )
-            self._rays[sector] = WorldRay(origin, bearing, distance, obstacle, captured_at, sector)
+            key = (sector, obstacle is not None)
+            ray = WorldRay(
+                origin,
+                bearing,
+                distance,
+                obstacle,
+                captured_at,
+                sector,
+            )
+            self._rays.setdefault(key, []).append(ray)
+            self._rays[key] = self._rays[key][-self._SAMPLES_PER_SECTOR_AND_KIND :]
 
     def snapshot(self, *, now) -> ObstacleSnapshot:
         timestamp = float(now)
         if not math.isfinite(timestamp):
             raise ValueError("snapshot time must be finite")
         self._purge(timestamp)
-        rays = tuple(self._rays[sector] for sector in sorted(self._rays))
+        rays = tuple(
+            ray
+            for key in sorted(self._rays)
+            for ray in self._rays[key]
+        )
         obstacles = tuple(ray.obstacle_xy for ray in rays if ray.obstacle_xy is not None)
         return ObstacleSnapshot(rays, obstacles, 2.0 * math.pi / self.config.sector_count)
 
@@ -460,8 +477,25 @@ class HybridLocalPlanner:
             safe.append((score, lattice_index, candidate, minimum_static, minimum_peer))
 
         safe_moving = [entry for entry in safe if abs(entry[2].forward_mps) > 1e-9 or abs(entry[2].lateral_mps) > 1e-9]
+        safe_rotations = [entry for entry in safe if abs(entry[2].yaw_rate_rad_s) > 1e-9]
         if safe_moving:
-            selected = max(safe_moving, key=lambda entry: entry[0])
+            best_moving = max(safe_moving, key=lambda entry: entry[0])
+            if best_moving[0][0] < -0.05 and safe_rotations and not peer_tuple:
+                world_heading = _wrap_angle(math.pi / 2.0 - float(yaw_rad))
+                target_heading = math.atan2(
+                    numeric_target[1] - numeric_position[1],
+                    numeric_target[0] - numeric_position[0],
+                )
+                target_error = _angle_difference(target_heading, world_heading)
+                target_yaw_sign = 1 if target_error < 0.0 else -1
+                target_rotations = [
+                    entry
+                    for entry in safe_rotations
+                    if entry[2].yaw_rate_rad_s * target_yaw_sign > 0.0
+                ]
+                selected = max(target_rotations or safe_rotations, key=lambda entry: entry[0])
+            else:
+                selected = best_moving
             self._escape_yaw_sign = None
         else:
             # If every depth ray ends inside the static envelope, turning cannot
@@ -469,7 +503,6 @@ class HybridLocalPlanner:
             all_depth_blocked = bool(obstacle_snapshot.rays) and all(
                 ray.free_distance_m <= static_requirement + 1e-9 for ray in obstacle_snapshot.rays[-9:]
             )
-            safe_rotations = [entry for entry in safe if abs(entry[2].yaw_rate_rad_s) > 1e-9]
             if all_depth_blocked or not safe_rotations:
                 self._escape_yaw_sign = None
                 hold_static = None
@@ -485,18 +518,20 @@ class HybridLocalPlanner:
                     rejection_counts=rejection_counts,
                     static_clearance=hold_static,
                 )
-            if self._escape_yaw_sign is None:
-                distances = tuple(float(value) for value in depth_observation.ray_distances_m)
-                right_clearance = sum(distances[:4])
-                left_clearance = sum(distances[-4:])
-                # Positive PX4 yaw turns toward negative camera offsets (right).
-                self._escape_yaw_sign = 1 if right_clearance > left_clearance else -1
-            persistent_rotations = [
-                entry
-                for entry in safe_rotations
-                if entry[2].yaw_rate_rad_s * self._escape_yaw_sign > 0.0
-            ]
-            selected = max(persistent_rotations or safe_rotations, key=lambda entry: entry[0])
+            use_persistent_turn = not peer_tuple and abs(preferred.yaw) > 0.20
+            if not use_persistent_turn:
+                self._escape_yaw_sign = None
+                selected = max(safe_rotations, key=lambda entry: entry[0])
+            else:
+                if self._escape_yaw_sign is None:
+                    selected = max(safe_rotations, key=lambda entry: entry[0])
+                    self._escape_yaw_sign = 1 if selected[2].yaw_rate_rad_s > 0.0 else -1
+                persistent_rotations = [
+                    entry
+                    for entry in safe_rotations
+                    if entry[2].yaw_rate_rad_s * self._escape_yaw_sign > 0.0
+                ]
+                selected = max(persistent_rotations or safe_rotations, key=lambda entry: entry[0])
 
         _, _, candidate, minimum_static, minimum_peer = selected
         command = FlightCommand(

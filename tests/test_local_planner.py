@@ -67,8 +67,28 @@ def test_memory_replaces_older_evidence_in_the_same_world_sector():
             depth_observation=depth(now, [19.1] * 9),
         )
     snapshot = memory.snapshot(now=1.0)
-    assert len(snapshot.rays) <= config.sector_count
-    assert len({ray.sector for ray in snapshot.rays}) == len(snapshot.rays)
+    assert len(snapshot.rays) <= config.sector_count * 16
+    assert all(
+        sum(ray.sector == sector for ray in snapshot.rays) <= 16
+        for sector in range(config.sector_count)
+    )
+
+
+def test_free_ray_does_not_immediately_erase_recent_obstacle_in_same_sector():
+    memory = RollingObstacleMemory(LocalPlannerConfig())
+    memory.update(
+        now=1.0,
+        position=(0.0, 0.0, 1.8),
+        yaw_rad=math.pi / 2,
+        depth_observation=depth(1.0, [19.1] * 4 + [1.0] + [19.1] * 4),
+    )
+    memory.update(
+        now=1.1,
+        position=(0.0, 0.0, 1.8),
+        yaw_rad=math.pi / 2,
+        depth_observation=depth(1.1, [19.1] * 9),
+    )
+    assert memory.snapshot(now=1.1).obstacle_points
 
 
 def clear_front(now=1.0):
@@ -207,3 +227,21 @@ def test_rotation_escape_keeps_one_direction_when_policy_preference_flips():
     )
     assert first.command.forward == second.command.forward == 0.0
     assert first.command.yaw * second.command.yaw > 0.0
+
+
+def test_planner_rotates_toward_target_instead_of_flying_farther_away():
+    planner = HybridLocalPlanner(LocalPlannerConfig())
+    decision = planner.plan(
+        now=1.0,
+        position=(0.0, 0.0, 1.8),
+        velocity=(0.0, 0.0, 0.0),
+        yaw_rad=-math.pi / 2,
+        target=(6.0, 0.0),
+        depth_observation=clear_front(),
+        peers=(),
+        preferred_command=FlightCommand(forward=1.0),
+        corridor_center_y=0.0,
+        inside_forest=True,
+    )
+    assert decision.command.forward == decision.command.lateral == 0.0
+    assert decision.command.yaw > 0.0
