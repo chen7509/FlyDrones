@@ -49,9 +49,10 @@ outdoor tests, geofencing, an independent emergency stop, redundant localization
 
 ## Run five consecutive hybrid-planner trials
 
-The hybrid controller treats the learned forest policy as a preferred direction. A deterministic two-second local
-trajectory planner makes the final horizontal decision from each vehicle's own depth camera, rolling obstacle memory and
-UDP peer position/velocity tracks. Run the complete repeatability gate from PowerShell:
+The hybrid controller treats the learned forest policy as a preferred direction. A deterministic local trajectory
+planner makes the final horizontal decision from each vehicle's own depth camera, rolling obstacle memory and UDP peer
+position/velocity tracks. The PX4 profile uses a 1.6-second horizon with eight 0.20-second samples. Run the complete
+repeatability gate from PowerShell:
 
 ```powershell
 .\Start-PX4-Hybrid-Swarm.ps1
@@ -65,6 +66,17 @@ Acceptance requires five consecutive complete passes. Every documented run check
 below 20 ms, and `central_control_commands` must remain zero. The logs include the chosen trajectory, rejected unknown,
 static and peer candidates, predicted clearances, and per-step planner time. Any failed startup, navigation, separation,
 planner-performance or infrastructure check resets the consecutive count.
+
+The verified 2026-09-22 run passed all five consecutive repetitions. Across the five runs, every one of the 25 PX4
+workers escaped, rallied and landed, with zero tree contacts and zero central flight commands. The worst planner P95 was
+18.79432 ms, the minimum tree-surface clearance was 0.2271 m, and the minimum intervehicle distance was 1.2941 m. The
+aggregate evidence is in `results/px4-hybrid-repeatability/summary.json` and
+`results/px4-hybrid-repeatability/report.md`; each `run-1` through `run-5` directory contains the five worker CSV/JSON
+traces and its offline `summary.json`.
+
+The deterministic randomized gate also passed 100/100 frontal-tree, head-on-peer, crossing-peer and stale-UDP-peer
+scenarios with zero contacts and zero timeouts. Its minimum static clearance was 0.875622 m and minimum peer separation
+was 1.085312 m. Those artifacts are in `results/local-planner-stress/summary.json` and `report.md`.
 
 This is software-in-the-loop validation on one computer. It exercises real PX4 processes, Gazebo dynamics, depth topics
 and loopback UDP, but it does not reproduce physical radio contention, GNSS multipath, aerodynamic interaction, hardware
