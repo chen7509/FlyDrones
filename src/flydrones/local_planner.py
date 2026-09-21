@@ -462,13 +462,21 @@ class HybridLocalPlanner:
             )
             minimum_static = None
             if obstacle_snapshot.obstacle_points:
-                minimum_static_squared = min(
-                    (sample[0] - obstacle[0]) ** 2 + (sample[1] - obstacle[1]) ** 2
-                    for sample in candidate.samples
-                    for obstacle in obstacle_snapshot.obstacle_points
-                )
-                minimum_static = math.sqrt(minimum_static_squared)
-                if moving and minimum_static_squared + 1e-9 < static_requirement ** 2:
+                minimum_static = math.inf
+                static_rejected = False
+                for sample in candidate.samples:
+                    for obstacle in obstacle_snapshot.obstacle_points:
+                        clearance = math.hypot(
+                            sample[0] - obstacle[0],
+                            sample[1] - obstacle[1],
+                        )
+                        minimum_static = min(minimum_static, clearance)
+                        if moving and clearance + 1e-9 < static_requirement:
+                            static_rejected = True
+                            break
+                    if static_rejected:
+                        break
+                if static_rejected:
                     rejection_counts["static"] += 1
                     continue
 
@@ -481,7 +489,7 @@ class HybridLocalPlanner:
                     continue
 
             minimum_peer = None
-            minimum_peer_squared = math.inf
+            minimum_peer_value = math.inf
             peer_rejected = False
             for peer in peer_tuple:
                 required_separation = self.config.peer_minimum_m + min(0.30, peer.age_s * 0.25)
@@ -490,13 +498,13 @@ class HybridLocalPlanner:
                     peer_x = peer.position[0] + peer.velocity[0] * (peer.age_s + future_s)
                     peer_y = peer.position[1] + peer.velocity[1] * (peer.age_s + future_s)
                     peer_z = peer.position[2] + peer.velocity[2] * (peer.age_s + future_s)
-                    separation_squared = (
-                        (sample[0] - peer_x) ** 2
-                        + (sample[1] - peer_y) ** 2
-                        + (sample[2] - peer_z) ** 2
+                    separation = math.hypot(
+                        sample[0] - peer_x,
+                        sample[1] - peer_y,
+                        sample[2] - peer_z,
                     )
-                    minimum_peer_squared = min(minimum_peer_squared, separation_squared)
-                    if separation_squared + 1e-9 < required_separation ** 2:
+                    minimum_peer_value = min(minimum_peer_value, separation)
+                    if separation + 1e-9 < required_separation:
                         peer_rejected = True
                         break
                 if peer_rejected:
@@ -504,8 +512,8 @@ class HybridLocalPlanner:
             if peer_rejected:
                 rejection_counts["peer"] += 1
                 continue
-            if math.isfinite(minimum_peer_squared):
-                minimum_peer = math.sqrt(minimum_peer_squared)
+            if math.isfinite(minimum_peer_value):
+                minimum_peer = minimum_peer_value
 
             final = candidate.samples[-1]
             final_corridor_error = abs(final[1] - float(corridor_center_y))
