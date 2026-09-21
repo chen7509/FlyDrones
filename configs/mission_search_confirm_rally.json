@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "mission_id": "forest-search-001",
+  "mission_type": "search_confirm_rally",
+  "area_polygon_m": [[0, 0], [200, 0], [200, 200], [0, 200]],
+  "search_cell_size_m": 20,
+  "target_classes": ["person"],
+  "confirmation_quorum": 2,
+  "rally_position_m": [220, 100, 20],
+  "deadline_s": 600,
+  "safety": {
+    "maximum_speed_mps": 8,
+    "minimum_separation_m": 3,
+    "geofence_margin_m": 5,
+    "minimum_battery_return_pct": 30
+  }
+}
