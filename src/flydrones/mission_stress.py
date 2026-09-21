@@ -254,6 +254,17 @@ def _pop_bounded_assignment_batch(
     return selected
 
 
+def _refresh_grace_pending(
+    pending: dict[str, TaskAssignment],
+    snapshot: tuple[TaskAssignment, ...],
+    *,
+    force: bool,
+) -> None:
+    """Continuously cycle terminal records while also accepting changed records."""
+    if force or not pending:
+        pending.update({assignment.task_id: assignment for assignment in snapshot})
+
+
 def _reassignment_latencies(
     artifacts: list[dict[str, Any]],
     failed_ids: set[int],
@@ -427,9 +438,12 @@ def _worker_main(
                 grace_pending[assignment.task_id] = assignment
             snapshot = agent.ledger.snapshot()
             dynamic = [item for item in snapshot if item.task_id not in contract_task_ids]
+            _refresh_grace_pending(
+                grace_pending,
+                snapshot,
+                force=grace_step % 50 == 0,
+            )
             if grace_step % 50 == 0:
-                for assignment in snapshot:
-                    grace_pending[assignment.task_id] = assignment
                 for assignment in dynamic:
                     payload = {
                         "task_id": assignment.task_id,

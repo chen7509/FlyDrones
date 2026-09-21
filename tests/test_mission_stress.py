@@ -13,6 +13,7 @@ from flydrones.mission_stress import (
     _reassignment_latencies,
     _recovery_reserve_map,
     _recovery_reserve_sequences,
+    _refresh_grace_pending,
     _reserve_vehicle_ids,
     motion_peer_ids,
     overlay_survivors_converge,
@@ -93,6 +94,15 @@ def test_compact_search_batch_uses_available_datagram_capacity() -> None:
     )
     assert len(encoded) <= 1200
     assert len(batch) > 4
+
+
+def test_terminal_anti_entropy_restarts_as_soon_as_a_full_cycle_is_sent() -> None:
+    assignment = TaskAssignment(
+        "search-0000", "completed", 0, 10.0, 1, None, "e" * 64, (0,)
+    )
+    pending: dict[str, TaskAssignment] = {}
+    _refresh_grace_pending(pending, (assignment,), force=False)
+    assert pending == {"search-0000": assignment}
 
 
 def test_external_contract_path_is_the_trial_contract(tmp_path) -> None:
