@@ -263,6 +263,8 @@ class TaskLedger:
                 evidence_hash=min(evidence_values) if evidence_values else None,
                 confirmers=tuple(sorted(set(current.confirmers) | set(assignment.confirmers))),
             )
+            if len(winner.confirmers) >= self.confirmation_quorum and winner.evidence_hash is not None:
+                winner = replace(winner, status="completed", lease_until=None)
         self._assignments[assignment.task_id] = winner
         return winner
 

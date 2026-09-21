@@ -9,6 +9,7 @@ import multiprocessing as mp
 import os
 import socket
 import time
+from collections import deque
 from dataclasses import asdict, dataclass
 from pathlib import Path
 from typing import Any
@@ -222,7 +223,9 @@ def _worker_main(
     status = "completed"
     step = 0
     grace_step = 0
-    convergence_grace_s = 8.0
+    convergence_grace_s = 15.0
+    grace_queue: deque[tuple[str, dict[str, object]]] = deque()
+    grace_forwarded: set[str] = set()
     dt = 1.0 / config.rate_hz
     next_tick = start_at[0]
     while True:
@@ -232,10 +235,37 @@ def _worker_main(
             break
         incoming = task_node.poll()
         if elapsed >= config.duration_s:
+            before = {
+                item.task_id: (item.status, item.winner_id, item.allocation_round, item.confirmers)
+                for item in agent.ledger.snapshot()
+            }
             agent.ingest_messages(incoming, now=elapsed)
+            for message in incoming:
+                if message.kind == "award" and "work_unit" in message.payload:
+                    signature = json.dumps(message.payload, sort_keys=True)
+                    if signature not in grace_forwarded:
+                        grace_forwarded.add(signature)
+                        grace_queue.append(("award", message.payload))
+            for assignment in agent.ledger.snapshot():
+                value = (
+                    assignment.status,
+                    assignment.winner_id,
+                    assignment.allocation_round,
+                    assignment.confirmers,
+                )
+                if assignment.status != "completed" or before.get(assignment.task_id) == value:
+                    continue
+                payload = {"assignment": asdict(assignment)}
+                signature = json.dumps(payload, sort_keys=True)
+                if signature not in grace_forwarded:
+                    grace_forwarded.add(signature)
+                    grace_queue.append(("award", payload))
             snapshot = agent.ledger.snapshot()
             dynamic = [item for item in snapshot if item.task_id not in contract_task_ids]
-            if dynamic and grace_step % 10 == 0:
+            if grace_queue:
+                kind, payload = grace_queue.popleft()
+                task_node.send(kind, payload, now=elapsed)  # type: ignore[arg-type]
+            elif dynamic and grace_step % 10 == 0:
                 assignment = dynamic[(grace_step // 10 + vehicle_id) % len(dynamic)]
                 task_node.send(
                     "award",
@@ -423,6 +453,7 @@ def _evaluate(
     completed_search: set[str] = set()
     per_agent_completed: list[int] = []
     confirmer_sets: dict[str, set[int]] = {}
+    completed_confirmation_ids: set[str] = set()
     final_views: list[dict[str, tuple[object, object, object]]] = []
     for artifact in survivors:
         view: dict[str, tuple[object, object, object]] = {}
@@ -438,6 +469,8 @@ def _evaluate(
                 agent_completed += 1
             if assignment["task_id"].startswith("confirm-"):
                 confirmer_sets.setdefault(assignment["task_id"], set()).update(assignment["confirmers"])
+                if assignment["status"] == "completed":
+                    completed_confirmation_ids.add(assignment["task_id"])
         final_views.append(view)
         per_agent_completed.append(agent_completed)
     common_ids = set.intersection(*(set(view) for view in final_views)) if final_views else set()
@@ -483,7 +516,10 @@ def _evaluate(
     overlay = overlay_survivors_converge(config.vehicle_count, config.failed_vehicle_ids)
     completion_ratio = len(completed_search) / max(1, len(search_ids))
     minimum_agent_completion = min(per_agent_completed, default=0) / max(1, len(search_ids))
-    confirmed_targets = sum(len(values) >= 2 for values in confirmer_sets.values())
+    confirmed_targets = sum(
+        task_id in completed_confirmation_ids and len(values) >= 2
+        for task_id, values in confirmer_sets.items()
+    )
     required_completion = 0.95 if config.vehicle_count >= 50 else 0.5
     checks = {
         "task_station_absent_during_control": station_closed_at < start_at,
@@ -494,6 +530,7 @@ def _evaluate(
         and minimum_agent_completion >= required_completion,
         "distinct_target_confirmers": confirmed_targets >= min(3, len(search_ids)),
         "zero_collisions": collisions == 0,
+        "safe_minimum_separation": minimum_separation >= contract.safety.minimum_separation_m,
         "safety_faults_exercised": "return" in all_safety or "land" in all_safety,
         "zero_central_control_commands": central_commands == 0,
     }

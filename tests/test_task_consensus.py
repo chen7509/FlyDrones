@@ -155,6 +155,34 @@ def test_partial_confirmation_survives_reauction_and_previous_confirmer_cannot_r
     assert claimed.evidence_hash == "b" * 64
 
 
+def test_two_partial_confirmation_records_merge_into_completed_consensus() -> None:
+    ledger = TaskLedger(0, DIGEST, [confirm_unit()], confirmation_quorum=2)
+    first = TaskAssignment(
+        confirm_unit().task_id,
+        "active",
+        3,
+        8.0,
+        1,
+        4.0,
+        "b" * 64,
+        (3,),
+    )
+    second = TaskAssignment(
+        confirm_unit().task_id,
+        "active",
+        8,
+        7.0,
+        1,
+        4.0,
+        "c" * 64,
+        (8,),
+    )
+    ledger.merge_assignment(first, now=1.0)
+    merged = ledger.merge_assignment(second, now=1.1)
+    assert merged.status == "completed"
+    assert merged.confirmers == (3, 8)
+
+
 def test_dynamic_work_units_are_idempotent_but_conflicts_are_rejected() -> None:
     ledger = TaskLedger(0, DIGEST, [search_unit()])
     dynamic = confirm_unit()

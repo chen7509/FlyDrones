@@ -123,6 +123,13 @@ def test_peer_avoidance_overrides_task_velocity_and_clamps_speed() -> None:
     assert speed <= contract().safety.maximum_speed_mps
 
 
+def test_peer_avoidance_uses_margin_before_contract_minimum_is_breached() -> None:
+    agent = active_agent()
+    track = PeerTrack(1, 1, 0.9, 0.9, (15.5, 10.0, 20.0), (0.0, 0.0, 0.0))
+    decision = agent.step(1.0, healthy_state(), [track], [], [])
+    assert decision.intent.source == "local-separation"
+
+
 def test_detection_creates_one_deterministic_confirmation_task() -> None:
     agent = MissionAgent.for_contract(0, 10, contract())
     detection = Detection("person", (10.2, 19.7, 20.0), 0.95, "b" * 64)
