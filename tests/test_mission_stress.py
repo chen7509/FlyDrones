@@ -1,0 +1,47 @@
+from __future__ import annotations
+
+import json
+
+from flydrones.mission_stress import (
+    MissionStressConfig,
+    overlay_survivors_converge,
+    run_mission_process_trial,
+)
+
+
+def test_six_processes_finish_after_station_exit_and_reassign_failed_agent(tmp_path) -> None:
+    config = MissionStressConfig(
+        vehicle_count=6,
+        output_dir=tmp_path,
+        duration_s=8.0,
+        rate_hz=10.0,
+        search_columns=3,
+        search_rows=2,
+        failed_vehicle_ids=(2,),
+        failure_at_s=2.0,
+        partition_window_s=(3.0, 4.0),
+        low_battery_vehicle_id=4,
+        depth_freeze_vehicle_id=5,
+        sensor_fault_at_s=5.0,
+        task_udp_base_port=0,
+        motion_udp_base_port=0,
+    )
+    summary = run_mission_process_trial(config)
+    assert summary["checks"]["task_station_absent_during_control"]
+    assert summary["checks"]["one_process_per_vehicle"]
+    assert summary["checks"]["failed_tasks_reassigned"]
+    assert summary["checks"]["ledgers_converged_after_partition"]
+    assert summary["metrics"]["central_control_commands"] == 0
+    assert summary["metrics"]["collisions"] == 0
+    assert (tmp_path / "summary.json").exists()
+    assert (tmp_path / "report.md").exists()
+    assert len(json.loads((tmp_path / "summary.json").read_text(encoding="utf-8"))["worker_pids"]) == 6
+
+
+def test_overlay_anti_entropy_survives_ten_adjacent_failures() -> None:
+    removed = tuple(range(7, 17))
+    result = overlay_survivors_converge(24, removed)
+    assert result["connected"]
+    assert result["survivor_count"] == 14
+    assert result["all_records_delivered"]
+
