@@ -4,7 +4,7 @@ import hashlib
 import subprocess
 import sys
 
-from flydrones.mission_agent import AgentState, Detection, MissionAgent
+from flydrones.mission_agent import AgentState, Detection, MissionAgent, _confirmation_affinity
 from flydrones.mission_contract import MissionContract
 from flydrones.peer_udp import PeerTrack
 from flydrones.task_consensus import Bid, TaskAssignment
@@ -255,6 +255,11 @@ def test_cross_task_selection_uses_local_utility_not_unrelated_auction_round() -
     decision = agent.step(0.1, healthy_state(), [], [], [])
     bids = [payload for kind, payload in decision.outbound_messages if kind == "bid"]
     assert bids[0]["task_id"] == "confirm-near"
+
+
+def test_confirmation_affinity_distributes_agents_across_tasks() -> None:
+    assert _confirmation_affinity("confirm-near", 0) > _confirmation_affinity("confirm-far", 0)
+    assert _confirmation_affinity("confirm-near", 1) < _confirmation_affinity("confirm-far", 1)
 
 
 def test_confirmation_quorum_needs_distinct_vehicle_ids() -> None:

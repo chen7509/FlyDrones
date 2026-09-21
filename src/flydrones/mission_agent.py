@@ -97,6 +97,12 @@ def _work_unit_from_payload(payload: object) -> WorkUnit:
     )
 
 
+def _confirmation_affinity(task_id: str, vehicle_id: int) -> int:
+    """Return a stable rendezvous score used to spread confirmation work."""
+    digest = hashlib.sha256(f"{task_id}:{vehicle_id}".encode()).digest()
+    return int.from_bytes(digest[:8], "big")
+
+
 class MissionAgent:
     """One vehicle's mission intelligence; all mutable state is process-local."""
 
@@ -444,22 +450,20 @@ class MissionAgent:
         if not candidates:
             self._phase = "rally" if not unfinished_search else "auction"
             return
-        bid = max(
-            candidates,
-            key=lambda item: (
-                {"confirm_detection": 4, "search_cell": 3, "relay": 1, "rally": 0}[
-                    self._work_units[item.task_id].kind
-                ],
-                (
-                    0
-                    if self._work_units[item.task_id].kind == "confirm_detection"
-                    else item.allocation_round
-                ),
+        def candidate_key(item: Bid) -> tuple[int, int, int, float, int, str]:
+            kind = self._work_units[item.task_id].kind
+            return (
+                {"confirm_detection": 4, "search_cell": 3, "relay": 1, "rally": 0}[kind],
+                0 if kind == "confirm_detection" else item.allocation_round,
+                _confirmation_affinity(item.task_id, self.vehicle_id)
+                if kind == "confirm_detection"
+                else 0,
                 item.utility,
                 -item.bidder_id,
                 item.task_id,
-            ),
-        )
+            )
+
+        bid = max(candidates, key=candidate_key)
         awarded = self.ledger.observe_bid(bid, now=now)
         outbound.append(("bid", asdict(bid)))
         if awarded.winner_id == self.vehicle_id:
