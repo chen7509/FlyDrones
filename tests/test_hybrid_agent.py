@@ -137,7 +137,7 @@ def test_depth_obstacle_creates_and_then_clears_a_local_bypass_target():
         depth_observation=clear,
     )
     forward_target = agent.active_target
-    assert forward_target[0] > 1.0
+    assert forward_target[0] > 3.5
     assert forward_target[1] == lateral_target[1]
 
     clear.captured_at = 2.0

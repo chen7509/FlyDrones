@@ -223,7 +223,7 @@ class HybridPlannerAgent:
         nearest_ahead = min(rays)
         if nearest_ahead >= 2.40:
             return
-        self._bypass_until_x = position[0] + max(1.40, nearest_ahead + 0.85)
+        self._bypass_until_x = position[0] + max(1.40, nearest_ahead + 1.75)
         self._bypass_y = self.corridor_center_y + 1.00
         self._bypass_stage = "lateral"
         self._bypass_target = (position[0] + 0.25, self._bypass_y)
