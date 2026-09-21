@@ -70,6 +70,7 @@ class HybridPlannerAgent:
         self._bypass_y: float | None = None
         self._bypass_stage: str | None = None
         self._bypass_brake_started_at = -math.inf
+        self._bypass_low_speed_started_at = -math.inf
 
     @property
     def active_target(self) -> tuple[float, float]:
@@ -169,27 +170,49 @@ class HybridPlannerAgent:
             self._bypass_y = None
             self._bypass_stage = None
             self._bypass_brake_started_at = -math.inf
+            self._bypass_low_speed_started_at = -math.inf
             return
         if self._bypass_target is not None and position[0] >= self._bypass_until_x:
             self._bypass_target = None
             self._bypass_y = None
             self._bypass_stage = None
             self._bypass_brake_started_at = -math.inf
+            self._bypass_low_speed_started_at = -math.inf
+        lateral_error = (
+            abs(position[1] - self._bypass_y)
+            if self._bypass_y is not None
+            else math.inf
+        )
+        lateral_speed = abs(velocity[1])
+        predicted_braking_distance = (
+            lateral_speed
+            + lateral_speed * lateral_speed / (2.0 * self.config.max_acceleration_mps2)
+            + 0.10
+        )
         if (
             self._bypass_target is not None
             and self._bypass_y is not None
             and self._bypass_stage == "lateral"
-            and abs(position[1] - self._bypass_y) <= 0.20
+            and lateral_error <= max(0.20, predicted_braking_distance)
         ):
             self._bypass_stage = "braking"
             self._bypass_brake_started_at = now
+            self._bypass_low_speed_started_at = -math.inf
             self._bypass_target = (position[0], position[1])
+        horizontal_speed = math.hypot(velocity[0], velocity[1])
+        if self._bypass_stage == "braking":
+            if horizontal_speed <= 0.12:
+                if not math.isfinite(self._bypass_low_speed_started_at):
+                    self._bypass_low_speed_started_at = now
+            else:
+                self._bypass_low_speed_started_at = -math.inf
         if (
             self._bypass_target is not None
             and self._bypass_y is not None
             and self._bypass_stage == "braking"
             and now - self._bypass_brake_started_at >= 1.0
-            and math.hypot(velocity[0], velocity[1]) <= 0.12
+            and math.isfinite(self._bypass_low_speed_started_at)
+            and now - self._bypass_low_speed_started_at >= 0.30
         ):
             self._bypass_stage = "forward"
             self._bypass_target = (self._bypass_until_x, self._bypass_y)

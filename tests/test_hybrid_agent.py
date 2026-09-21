@@ -104,8 +104,8 @@ def test_depth_obstacle_creates_and_then_clears_a_local_bypass_target():
     clear = SimpleNamespace(captured_at=1.4, ray_distances_m=(19.1,) * 9)
     braking_command = agent.command(
         now=1.4,
-        global_position=(lateral_target[0], lateral_target[1], 1.8),
-        velocity=(0.0, 0.4, 0.0),
+        global_position=(lateral_target[0], lateral_target[1] - 0.55, 1.8),
+        velocity=(0.0, 0.5, 0.0),
         yaw_rad=math.pi / 2,
         peers=(),
         depth_observation=clear,
