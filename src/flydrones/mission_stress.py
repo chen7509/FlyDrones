@@ -406,6 +406,9 @@ def _worker_main(
     grace_units: deque[dict[str, object]] = deque()
     grace_unit_signatures: set[str] = set()
     grace_pending: dict[str, TaskAssignment] = {}
+    grace_peer_cycle = 0
+    grace_target_peer = task_node.overlay_peers[0]
+    grace_initialized = False
     dt = 1.0 / config.rate_hz
     next_tick = start_at[0]
     while True:
@@ -438,30 +441,44 @@ def _worker_main(
                 grace_pending[assignment.task_id] = assignment
             snapshot = agent.ledger.snapshot()
             dynamic = [item for item in snapshot if item.task_id not in contract_task_ids]
-            _refresh_grace_pending(
-                grace_pending,
-                snapshot,
-                force=grace_step % 50 == 0,
-            )
-            if grace_step % 50 == 0:
+            if not grace_initialized or (not grace_units and not grace_pending):
+                grace_target_peer = task_node.overlay_peers[
+                    grace_peer_cycle % len(task_node.overlay_peers)
+                ]
+                grace_peer_cycle += 1
+                grace_initialized = True
+                _refresh_grace_pending(grace_pending, snapshot, force=True)
                 for assignment in dynamic:
                     payload = {
                         "task_id": assignment.task_id,
                         "work_unit": _unit_payload(agent.work_unit(assignment.task_id)),
                     }
-                    signature = json.dumps(payload, sort_keys=True)
-                    if signature not in grace_unit_signatures:
-                        grace_unit_signatures.add(signature)
-                        grace_units.append(payload)
+                    grace_units.append(payload)
             if grace_units:
-                task_node.send("award", grace_units.popleft(), now=elapsed)
+                sent = task_node.send(
+                    "award",
+                    grace_units[0],
+                    now=elapsed,
+                    target_peer_id=grace_target_peer,
+                )
+                if sent:
+                    grace_units.popleft()
             elif grace_pending:
                 assignments = _pop_bounded_assignment_batch(
                     grace_pending,
                     contract.mission_id,
                     contract.digest,
                 )
-                task_node.send("award", {"assignments": assignments}, now=elapsed)
+                sent = task_node.send(
+                    "award",
+                    {"assignments": assignments},
+                    now=elapsed,
+                    target_peer_id=grace_target_peer,
+                )
+                if not sent:
+                    for record in assignments:
+                        task_id = str(record[0])
+                        grace_pending[task_id] = agent.ledger.assignment(task_id)
             trace.append(
                 {
                     "step": step,

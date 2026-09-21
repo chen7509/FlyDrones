@@ -170,6 +170,22 @@ def test_rate_budget_counts_each_overlay_datagram() -> None:
             node.close()
 
 
+def test_targeted_anti_entropy_uses_one_overlay_peer() -> None:
+    nodes, _config = make_nodes(3, rate=10.0)
+    try:
+        assert nodes[0].send(
+            "award",
+            {"assignments": []},
+            now=1.0,
+            target_peer_id=1,
+        ) == 1
+        assert len(wait_for_messages(nodes[1], count=1)) == 1
+        assert nodes[2].poll() == []
+    finally:
+        for node in nodes:
+            node.close()
+
+
 def test_poll_rejects_out_of_order_and_accepts_sequence_wrap() -> None:
     nodes, config = make_nodes(2)
     receiver = nodes[1]

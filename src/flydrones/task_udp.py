@@ -314,12 +314,22 @@ class TaskUdpNode:
             )
         )
 
-    def send(self, kind: TaskKind, payload: dict[str, object], *, now: float | None = None) -> int:
+    def send(
+        self,
+        kind: TaskKind,
+        payload: dict[str, object],
+        *,
+        now: float | None = None,
+        target_peer_id: int | None = None,
+    ) -> int:
         timestamp = self._clock() if now is None else now
         if kind in {"mission_offer", "mission_accept"}:
             raise ValueError("mission handshake messages do not use peer gossip")
+        if target_peer_id is not None and target_peer_id not in self.overlay_peers:
+            raise ValueError("target_peer_id must be an overlay peer")
         targets: list[int] = []
-        for peer_id in self.overlay_peers:
+        candidate_peers = self.overlay_peers if target_peer_id is None else (target_peer_id,)
+        for peer_id in candidate_peers:
             if self._partition_filter(self.vehicle_id, peer_id):
                 targets.append(peer_id)
             else:
