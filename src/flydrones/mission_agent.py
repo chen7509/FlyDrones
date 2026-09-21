@@ -161,7 +161,7 @@ class MissionAgent:
         if not math.isfinite(timestamp):
             raise ValueError("now must be finite")
         outbound: list[tuple[str, dict[str, object]]] = []
-        self._merge_messages(messages, timestamp)
+        self.ingest_messages(messages, now=timestamp)
         self.ledger.expire(now=timestamp)
         self._update_detections(detections, outbound)
         self._update_relay_task(timestamp, state, outbound)
@@ -197,6 +197,18 @@ class MissionAgent:
         decision_phase = "auction" if self._steps == 0 else self._phase
         self._steps += 1
         return AgentDecision(decision_phase, safety, intent, tuple(outbound), released)
+
+    def ingest_messages(
+        self,
+        messages: list[TaskMessage] | tuple[TaskMessage, ...],
+        *,
+        now: float,
+    ) -> None:
+        """Merge validated peer records during a communication-only convergence tail."""
+        self._merge_messages(messages, float(now))
+
+    def work_unit(self, task_id: str) -> WorkUnit:
+        return self._work_units[task_id]
 
     def _merge_messages(self, messages: list[TaskMessage] | tuple[TaskMessage, ...], now: float) -> None:
         for message in messages:

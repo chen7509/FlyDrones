@@ -14,7 +14,7 @@ from pathlib import Path
 from typing import Any
 
 from flydrones.mission_agent import AgentState, Detection, MissionAgent
-from flydrones.mission_contract import MissionContract
+from flydrones.mission_contract import MissionContract, WorkUnit
 from flydrones.peer_udp import PeerUdpConfig, UdpPeerNode
 from flydrones.task_udp import MissionTaskStation, TaskUdpConfig, TaskUdpNode, task_overlay_peers
 
@@ -218,16 +218,55 @@ def _worker_main(
     forwarded: set[str] = set()
     detected_targets: set[int] = set()
     target_indices = {0, len(search_units) // 2, len(search_units) - 1}
+    contract_task_ids = {unit.task_id for unit in contract.expand_work_units()}
     status = "completed"
     step = 0
+    grace_step = 0
+    convergence_grace_s = 8.0
     dt = 1.0 / config.rate_hz
     next_tick = start_at[0]
     while True:
         now_wall = time.monotonic()
         elapsed = now_wall - start_at[0]
-        if elapsed >= config.duration_s:
+        if elapsed >= config.duration_s + convergence_grace_s:
             break
         incoming = task_node.poll()
+        if elapsed >= config.duration_s:
+            agent.ingest_messages(incoming, now=elapsed)
+            snapshot = agent.ledger.snapshot()
+            dynamic = [item for item in snapshot if item.task_id not in contract_task_ids]
+            if dynamic and grace_step % 10 == 0:
+                assignment = dynamic[(grace_step // 10 + vehicle_id) % len(dynamic)]
+                task_node.send(
+                    "award",
+                    {
+                        "task_id": assignment.task_id,
+                        "work_unit": _unit_payload(agent.work_unit(assignment.task_id)),
+                    },
+                    now=elapsed,
+                )
+            elif snapshot:
+                assignment = snapshot[(grace_step + vehicle_id) % len(snapshot)]
+                task_node.send("award", {"assignment": asdict(assignment)}, now=elapsed)
+            trace.append(
+                {
+                    "step": step,
+                    "t_s": round(elapsed, 3),
+                    "x_m": round(position[0], 4),
+                    "y_m": round(position[1], 4),
+                    "z_m": round(position[2], 4),
+                    "phase": "converge",
+                    "safety_phase": "nominal",
+                    "central_control_commands": 0,
+                }
+            )
+            grace_step += 1
+            step += 1
+            next_tick += dt
+            delay = next_tick - time.monotonic()
+            if delay > 0:
+                time.sleep(delay)
+            continue
         for message in incoming:
             if message.kind not in {"bid", "award", "evidence"}:
                 continue
@@ -327,6 +366,15 @@ def hashlib_sha(value: str) -> str:
     return hashlib.sha256(value.encode()).hexdigest()
 
 
+def _unit_payload(work_unit: WorkUnit) -> dict[str, object]:
+    return {
+        "task_id": work_unit.task_id,
+        "kind": work_unit.kind,
+        "center_m": list(work_unit.center_m),
+        "payload": [list(item) for item in work_unit.payload],
+    }
+
+
 def _write_plots(output: Path, artifacts: list[dict[str, Any]]) -> None:
     try:
         import matplotlib
@@ -373,10 +421,12 @@ def _evaluate(
     pids = sorted({int(item["pid"]) for item in artifacts})
     search_ids = {unit.task_id for unit in contract.expand_work_units() if unit.kind == "search_cell"}
     completed_search: set[str] = set()
+    per_agent_completed: list[int] = []
     confirmer_sets: dict[str, set[int]] = {}
     final_views: list[dict[str, tuple[object, object, object]]] = []
     for artifact in survivors:
         view: dict[str, tuple[object, object, object]] = {}
+        agent_completed = 0
         for assignment in artifact["final_assignments"]:
             view[assignment["task_id"]] = (
                 assignment["status"],
@@ -385,9 +435,11 @@ def _evaluate(
             )
             if assignment["task_id"] in search_ids and assignment["status"] == "completed":
                 completed_search.add(assignment["task_id"])
+                agent_completed += 1
             if assignment["task_id"].startswith("confirm-"):
                 confirmer_sets.setdefault(assignment["task_id"], set()).update(assignment["confirmers"])
         final_views.append(view)
+        per_agent_completed.append(agent_completed)
     common_ids = set.intersection(*(set(view) for view in final_views)) if final_views else set()
     agreements = [
         all(view[task_id] == final_views[0][task_id] for view in final_views[1:])
@@ -430,14 +482,17 @@ def _evaluate(
     )
     overlay = overlay_survivors_converge(config.vehicle_count, config.failed_vehicle_ids)
     completion_ratio = len(completed_search) / max(1, len(search_ids))
+    minimum_agent_completion = min(per_agent_completed, default=0) / max(1, len(search_ids))
+    confirmed_targets = sum(len(values) >= 2 for values in confirmer_sets.values())
     required_completion = 0.95 if config.vehicle_count >= 50 else 0.5
     checks = {
         "task_station_absent_during_control": station_closed_at < start_at,
         "one_process_per_vehicle": len(pids) == config.vehicle_count,
         "failed_tasks_reassigned": reassigned,
-        "ledgers_converged_after_partition": bool(overlay["connected"]) and agreement_ratio >= 0.25,
-        "search_completion_target": completion_ratio >= required_completion,
-        "distinct_target_confirmers": all(len(values) >= 2 for values in confirmer_sets.values()),
+        "ledgers_converged_after_partition": bool(overlay["connected"]) and agreement_ratio >= 0.95,
+        "search_completion_target": completion_ratio >= required_completion
+        and minimum_agent_completion >= required_completion,
+        "distinct_target_confirmers": confirmed_targets >= min(3, len(search_ids)),
         "zero_collisions": collisions == 0,
         "safety_faults_exercised": "return" in all_safety or "land" in all_safety,
         "zero_central_control_commands": central_commands == 0,
@@ -449,7 +504,8 @@ def _evaluate(
         "completed_search_cells": len(completed_search),
         "search_cells": len(search_ids),
         "search_completion_ratio": round(completion_ratio, 4),
-        "confirmed_targets": sum(len(values) >= 2 for values in confirmer_sets.values()),
+        "confirmed_targets": confirmed_targets,
+        "minimum_agent_search_completion_ratio": round(minimum_agent_completion, 4),
         "ledger_agreement_ratio": round(agreement_ratio, 4),
         "minimum_intervehicle_distance_m": None if math.isinf(minimum_separation) else round(minimum_separation, 4),
         "collisions": collisions,
