@@ -105,6 +105,30 @@ def test_reassignment_latency_is_measured_for_each_failed_active_task() -> None:
     }
 
 
+def test_failed_duplicate_already_completed_before_failure_needs_no_takeover() -> None:
+    failed = {
+        "vehicle_id": 2,
+        "status": "injected_failure",
+        "final_assignments": [
+            {"task_id": "search-0002", "status": "active", "winner_id": 2, "allocation_round": 1}
+        ],
+    }
+    survivor = {
+        "vehicle_id": 3,
+        "status": "completed",
+        "assignment_changes": [
+            {
+                "task_id": "search-0002",
+                "t_s": 1.5,
+                "status": "completed",
+                "winner_id": 3,
+                "allocation_round": 0,
+            }
+        ],
+    }
+    assert _reassignment_latencies([failed, survivor], {2}, failure_at_s=2.0) == {}
+
+
 def test_six_processes_finish_after_station_exit_and_reassign_failed_agent(tmp_path) -> None:
     config = MissionStressConfig(
         vehicle_count=6,

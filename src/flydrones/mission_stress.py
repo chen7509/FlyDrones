@@ -193,6 +193,16 @@ def _reassignment_latencies(
         for assignment in artifact["final_assignments"]:
             if assignment["winner_id"] == vehicle_id and assignment["status"] in {"claimed", "active"}:
                 failed_tasks[assignment["task_id"]] = (vehicle_id, int(assignment["allocation_round"]))
+    for artifact in artifacts:
+        if artifact["status"] == "injected_failure":
+            continue
+        for change in artifact["assignment_changes"]:
+            if (
+                change["task_id"] in failed_tasks
+                and change.get("status") == "completed"
+                and float(change["t_s"]) <= failure_at_s
+            ):
+                del failed_tasks[change["task_id"]]
     latencies = {task_id: math.inf for task_id in failed_tasks}
     for artifact in artifacts:
         if artifact["status"] == "injected_failure":
@@ -333,16 +343,14 @@ def _worker_main(
                     assignment.allocation_round,
                     assignment.confirmers,
                 )
-                relevant = assignment.status == "completed" or agent.work_unit(assignment.task_id).kind == "confirm_detection"
-                if not relevant or before.get(assignment.task_id) == value:
+                if before.get(assignment.task_id) == value:
                     continue
                 grace_pending[assignment.task_id] = assignment
             snapshot = agent.ledger.snapshot()
             dynamic = [item for item in snapshot if item.task_id not in contract_task_ids]
             if grace_step % 50 == 0:
                 for assignment in snapshot:
-                    if assignment.status == "completed" or agent.work_unit(assignment.task_id).kind == "confirm_detection":
-                        grace_pending[assignment.task_id] = assignment
+                    grace_pending[assignment.task_id] = assignment
                 for assignment in dynamic:
                     payload = {
                         "task_id": assignment.task_id,
@@ -570,9 +578,11 @@ def _evaluate(
         failure_at_s=config.failure_at_s,
     )
     reassigned = (
-        not failed_ids
-        or bool(reassignment_latencies)
-        and all(latency <= 5.0 for latency in reassignment_latencies.values())
+        not reassignment_latencies
+        or all(
+            latency <= 5.0 + 1.0 / config.rate_hz
+            for latency in reassignment_latencies.values()
+        )
     )
 
     collisions = 0

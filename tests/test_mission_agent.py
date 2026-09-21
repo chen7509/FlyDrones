@@ -111,6 +111,18 @@ def test_invalid_localization_and_geofence_preempt_tasks() -> None:
     assert outside.safety_phase == "return"
 
 
+def test_contract_rally_point_is_inside_the_allowed_mission_corridor() -> None:
+    agent = MissionAgent.for_contract(0, 10, contract())
+    decision = agent.step(
+        0.0,
+        healthy_state(position_m=contract().rally_position_m),
+        [],
+        [],
+        [],
+    )
+    assert decision.safety_phase == "nominal"
+
+
 def test_peer_avoidance_overrides_task_velocity_and_clamps_speed() -> None:
     agent = active_agent()
     track = PeerTrack(
@@ -234,3 +246,16 @@ def test_reopened_higher_round_task_is_bid_before_fresh_nearby_task() -> None:
     )
     bids = [payload for kind, payload in decision.outbound_messages if kind == "bid"]
     assert bids[0]["task_id"] == "search-0000"
+
+
+def test_active_search_is_not_abandoned_for_remote_reauction() -> None:
+    agent = active_agent()
+    agent.ledger.merge_assignment(
+        TaskAssignment("search-0001", "open", None, None, 2, None, None, ()),
+        now=0.9,
+    )
+    decision = agent.step(1.0, healthy_state(), [], [], [])
+    bids = [payload for kind, payload in decision.outbound_messages if kind == "bid"]
+    releases = [payload for kind, payload in decision.outbound_messages if kind == "award"]
+    assert bids == []
+    assert releases == []

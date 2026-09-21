@@ -345,8 +345,8 @@ class MissionAgent:
 
     def _inside_geofence(self, position: tuple[float, float, float]) -> bool:
         margin = self.contract.safety.geofence_margin_m
-        xs = [point[0] for point in self.contract.area_polygon_m]
-        ys = [point[1] for point in self.contract.area_polygon_m]
+        xs = [point[0] for point in self.contract.area_polygon_m] + [self.contract.rally_position_m[0]]
+        ys = [point[1] for point in self.contract.area_polygon_m] + [self.contract.rally_position_m[1]]
         return min(xs) - margin <= position[0] <= max(xs) + margin and min(ys) - margin <= position[1] <= max(ys) + margin
 
     def _release_active_task(self, now: float) -> tuple[str, ...]:
@@ -424,6 +424,7 @@ class MissionAgent:
         awarded = self.ledger.observe_bid(bid, now=now)
         outbound.append(("bid", asdict(bid)))
         if awarded.winner_id == self.vehicle_id:
+            self._released_tasks.discard(awarded.task_id)
             self._active_task_id = awarded.task_id
             self._active_since = now
             self._phase = "transit"
