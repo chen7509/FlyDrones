@@ -213,6 +213,14 @@ def test_detection_creates_one_deterministic_confirmation_task() -> None:
     assert all(message[0] != "evidence" for message in second.outbound_messages)
 
 
+def test_fresh_confirmation_preempts_remaining_search_work() -> None:
+    agent = MissionAgent.for_contract(0, 10, contract())
+    detection = Detection("person", (10.0, 10.0, 20.0), 0.95, "f" * 64)
+    decision = agent.step(0.0, healthy_state(), [], [], [detection])
+    bids = [payload for kind, payload in decision.outbound_messages if kind == "bid"]
+    assert bids[0]["task_id"].startswith("confirm-")
+
+
 def test_confirmation_quorum_needs_distinct_vehicle_ids() -> None:
     agent = MissionAgent.for_contract(0, 10, contract())
     detection = Detection("person", (10.0, 20.0, 20.0), 0.9, "b" * 64)

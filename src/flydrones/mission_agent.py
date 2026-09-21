@@ -447,7 +447,7 @@ class MissionAgent:
         bid = max(
             candidates,
             key=lambda item: (
-                {"search_cell": 3, "confirm_detection": 2, "relay": 1, "rally": 0}[
+                {"confirm_detection": 4, "search_cell": 3, "relay": 1, "rally": 0}[
                     self._work_units[item.task_id].kind
                 ],
                 item.allocation_round,
