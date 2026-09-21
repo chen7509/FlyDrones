@@ -31,6 +31,19 @@ def test_depth_rays_become_world_frame_evidence_and_expire():
     assert memory.snapshot(now=12.01).rays == ()
 
 
+def test_left_image_ray_projects_to_body_left_in_world_frame():
+    memory = RollingObstacleMemory(LocalPlannerConfig())
+    memory.update(
+        now=1.0,
+        position=(0.0, 0.0, 1.8),
+        yaw_rad=math.pi / 2,
+        depth_observation=depth(1.0, [1.0] + [19.1] * 8),
+    )
+    obstacle_x, obstacle_y = memory.snapshot(now=1.0).obstacle_points[0]
+    assert obstacle_x > 0.0
+    assert obstacle_y > 0.0
+
+
 def test_memory_wraps_world_bearing_across_pi():
     memory = RollingObstacleMemory(LocalPlannerConfig(sector_count=72))
     memory.update(

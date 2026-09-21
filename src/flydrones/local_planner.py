@@ -127,7 +127,9 @@ class RollingObstacleMemory:
         origin = (float(position[0]), float(position[1]))
         for index, raw_distance in enumerate(distances):
             distance = min(raw_distance, self.config.sensor_range_m)
-            offset = -self.config.horizontal_fov_rad / 2.0 + (index + 0.5) * ray_width
+            # Image columns run from visual left to right. In the mathematical
+            # world frame visual left is the positive (counter-clockwise) side.
+            offset = self.config.horizontal_fov_rad / 2.0 - (index + 0.5) * ray_width
             bearing = _wrap_angle(world_heading + offset)
             sector = int(((bearing + math.pi) % (2.0 * math.pi)) / sector_width) % self.config.sector_count
             obstacle = None
