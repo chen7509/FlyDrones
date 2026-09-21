@@ -1,12 +1,34 @@
 from __future__ import annotations
 
 import json
+import time
 
 from flydrones.mission_stress import (
     MissionStressConfig,
+    _read_start_time,
+    motion_peer_ids,
     overlay_survivors_converge,
     run_mission_process_trial,
 )
+
+
+def test_start_marker_read_retries_transient_windows_file_lock() -> None:
+    class FlakyStartFile:
+        calls = 0
+
+        def exists(self) -> bool:
+            return True
+
+        def read_text(self, *, encoding: str) -> str:
+            assert encoding == "utf-8"
+            self.calls += 1
+            if self.calls == 1:
+                raise PermissionError("transient scanner lock")
+            return '{"start_at": 42.5}'
+
+    path = FlakyStartFile()
+    assert _read_start_time(path, time.monotonic() + 1.0, sleep=lambda _delay: None) == 42.5  # type: ignore[arg-type]
+    assert path.calls == 2
 
 
 def test_six_processes_finish_after_station_exit_and_reassign_failed_agent(tmp_path) -> None:
@@ -45,3 +67,6 @@ def test_overlay_anti_entropy_survives_ten_adjacent_failures() -> None:
     assert result["survivor_count"] == 14
     assert result["all_records_delivered"]
 
+
+def test_motion_safety_channel_reaches_every_physical_peer() -> None:
+    assert motion_peer_ids(50, 100) == tuple(range(100))

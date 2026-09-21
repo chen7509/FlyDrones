@@ -417,7 +417,22 @@ class MissionAgent:
             self._active_since = None
             self._phase = "auction"
         else:
-            self._phase = "verify"
+            self.ledger.merge_assignment(
+                TaskAssignment(
+                    unit.task_id,
+                    "open",
+                    None,
+                    None,
+                    assignment.allocation_round + 1,
+                    None,
+                    assignment.evidence_hash,
+                    assignment.confirmers,
+                ),
+                now=now,
+            )
+            self._active_task_id = None
+            self._active_since = None
+            self._phase = "auction"
 
     def _task_intent(self, state: AgentState) -> NavigationIntent:
         target = self._active_target()

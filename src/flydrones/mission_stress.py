@@ -114,6 +114,27 @@ def overlay_survivors_converge(member_count: int, removed_ids: tuple[int, ...]) 
     }
 
 
+def motion_peer_ids(_vehicle_id: int, vehicle_count: int) -> tuple[int, ...]:
+    """Safety telemetry is local-by-range but addressable to every physical peer."""
+    return tuple(range(vehicle_count))
+
+
+def _read_start_time(
+    path: Path,
+    deadline: float,
+    *,
+    sleep=time.sleep,
+) -> float:
+    while time.monotonic() < deadline:
+        try:
+            if path.exists():
+                return float(json.loads(path.read_text(encoding="utf-8"))["start_at"])
+        except (OSError, json.JSONDecodeError, KeyError, TypeError, ValueError):
+            pass
+        sleep(0.005)
+    raise RuntimeError("mission start marker was not readable before its deadline")
+
+
 def _worker_main(
     vehicle_id: int,
     config_data: dict[str, Any],
@@ -143,7 +164,7 @@ def _worker_main(
         config=TaskUdpConfig(base_port=task_port),
         partition_filter=partition_filter,
     )
-    motion_members = tuple(sorted({vehicle_id, *task_overlay_peers(vehicle_id, members)}))
+    motion_members = motion_peer_ids(vehicle_id, config.vehicle_count)
     motion_node = UdpPeerNode(
         vehicle_id,
         motion_members,
@@ -182,10 +203,7 @@ def _worker_main(
         motion_node.close()
         return
 
-    start_file = output / "start.json"
-    while not start_file.exists() and time.monotonic() < handshake_deadline + 5:
-        time.sleep(0.005)
-    start_at[0] = float(json.loads(start_file.read_text(encoding="utf-8"))["start_at"])
+    start_at[0] = _read_start_time(output / "start.json", handshake_deadline + 5)
     while time.monotonic() < start_at[0]:
         time.sleep(0.001)
 
@@ -251,7 +269,8 @@ def _worker_main(
             delta = max(-maximum_delta, min(maximum_delta, desired[axis] - velocity[axis]))
             velocity[axis] += delta
             position[axis] += velocity[axis] * dt
-        motion_node.broadcast(tuple(position), tuple(velocity), mission_elapsed_s=elapsed)
+        if step % 2 == 0:
+            motion_node.broadcast(tuple(position), tuple(velocity), mission_elapsed_s=elapsed)
         snapshot_map: dict[str, tuple[object, ...]] = {}
         for assignment in agent.ledger.snapshot():
             value = (assignment.status, assignment.winner_id, assignment.allocation_round)
@@ -539,4 +558,3 @@ def run_mission_process_trial(config: MissionStressConfig) -> dict[str, Any]:
     (output / "report.md").write_text("\n".join(report) + "\n", encoding="utf-8")
     _write_plots(output, artifacts)
     return summary
-

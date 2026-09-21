@@ -167,6 +167,8 @@ class TaskLedger:
         assignment = self._assignments[task_id]
         if assignment.status == "completed":
             return None
+        if work_unit.kind == "confirm_detection" and capability.vehicle_id in assignment.confirmers:
+            return None
         self._validate_capability(capability)
         if capability.battery_pct <= self.minimum_battery_return_pct:
             return None
@@ -204,6 +206,7 @@ class TaskLedger:
             raise ValueError("bid must be a Bid")
         self._validate_bid(bid)
         self._known_task(bid.task_id)
+        current = self._assignments[bid.task_id]
         candidate = TaskAssignment(
             task_id=bid.task_id,
             status="claimed",
@@ -211,8 +214,8 @@ class TaskLedger:
             utility=bid.utility,
             allocation_round=bid.allocation_round,
             lease_until=timestamp + self.lease_timeout_s,
-            evidence_hash=None,
-            confirmers=(),
+            evidence_hash=current.evidence_hash,
+            confirmers=current.confirmers,
         )
         return self.merge_assignment(candidate, now=timestamp)
 
@@ -233,8 +236,15 @@ class TaskLedger:
 
         if current.status == "completed":
             if assignment.status == "completed":
+                winner_ids = [
+                    winner_id
+                    for winner_id in (current.winner_id, assignment.winner_id)
+                    if winner_id is not None
+                ]
                 current = replace(
                     current,
+                    winner_id=min(winner_ids) if winner_ids else None,
+                    allocation_round=max(current.allocation_round, assignment.allocation_round),
                     confirmers=tuple(sorted(set(current.confirmers) | set(assignment.confirmers))),
                 )
                 self._assignments[current.task_id] = current
@@ -244,6 +254,15 @@ class TaskLedger:
             return assignment
 
         winner = self._choose_noncompleted(current, assignment)
+        if work_unit.kind == "confirm_detection":
+            evidence_values = [
+                value for value in (current.evidence_hash, assignment.evidence_hash) if value is not None
+            ]
+            winner = replace(
+                winner,
+                evidence_hash=min(evidence_values) if evidence_values else None,
+                confirmers=tuple(sorted(set(current.confirmers) | set(assignment.confirmers))),
+            )
         self._assignments[assignment.task_id] = winner
         return winner
 
@@ -414,4 +433,3 @@ class TaskLedger:
         current_lease = current.lease_until if current.lease_until is not None else -math.inf
         candidate_lease = candidate.lease_until if candidate.lease_until is not None else -math.inf
         return candidate if candidate_lease > current_lease else current
-

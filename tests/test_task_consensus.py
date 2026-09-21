@@ -127,6 +127,32 @@ def test_completed_records_merge_confirmer_sets_but_keep_local_evidence() -> Non
     merged = ledger.merge_assignment(remote, now=2.0)
     assert merged.evidence_hash == "b" * 64
     assert merged.confirmers == (3, 8, 11)
+    assert merged.winner_id == 3
+
+
+def test_partial_confirmation_survives_reauction_and_previous_confirmer_cannot_rebid() -> None:
+    ledger = TaskLedger(3, DIGEST, [confirm_unit()], confirmation_quorum=2)
+    ledger.observe_bid(Bid(confirm_unit().task_id, 3, 8.0, 0, 0.0), now=0.0)
+    partial = ledger.complete(confirm_unit().task_id, 3, "b" * 64, now=1.0)
+    ledger.merge_assignment(
+        TaskAssignment(
+            partial.task_id,
+            "open",
+            None,
+            None,
+            partial.allocation_round + 1,
+            None,
+            partial.evidence_hash,
+            partial.confirmers,
+        ),
+        now=1.1,
+    )
+    assert ledger.bid_for(confirm_unit().task_id, capability(vehicle_id=3), now=1.2) is None
+    next_bid = ledger.bid_for(confirm_unit().task_id, capability(vehicle_id=8), now=1.2)
+    assert next_bid is not None
+    claimed = ledger.observe_bid(next_bid, now=1.2)
+    assert claimed.confirmers == (3,)
+    assert claimed.evidence_hash == "b" * 64
 
 
 def test_dynamic_work_units_are_idempotent_but_conflicts_are_rejected() -> None:
