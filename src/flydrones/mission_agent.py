@@ -170,6 +170,8 @@ class MissionAgent:
         released: tuple[str, ...] = ()
         if safety in {"return", "land", "emergency"}:
             released = self._release_active_task(timestamp)
+            for task_id in released:
+                outbound.append(("award", {"assignment": asdict(self.ledger.assignment(task_id))}))
         if safety in {"land", "emergency"}:
             self._phase = "land" if safety == "land" else "emergency"
             intent = NavigationIntent((0.0, 0.0, 0.0), None, f"safety-{safety}")
@@ -229,6 +231,15 @@ class MissionAgent:
                         ),
                         now=now,
                     )
+                elif message.kind == "award" and "assignments" in payload:
+                    assignments = payload["assignments"]
+                    if not isinstance(assignments, list):
+                        continue
+                    for assignment_payload in assignments:
+                        self.ledger.merge_assignment(
+                            self._assignment_from_payload(assignment_payload),
+                            now=now,
+                        )
                 elif message.kind == "award" and "work_unit" in payload:
                     unit = _work_unit_from_payload(payload["work_unit"])
                     self.ledger.add_work_unit(unit)

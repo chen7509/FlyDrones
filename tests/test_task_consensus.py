@@ -130,6 +130,15 @@ def test_completed_records_merge_confirmer_sets_but_keep_local_evidence() -> Non
     assert merged.winner_id == 3
 
 
+def test_non_confirmation_completion_does_not_accumulate_executor_ids() -> None:
+    ledger = TaskLedger(0, DIGEST, [search_unit()])
+    ledger.complete("search-0000", 8, "b" * 64, now=1.0)
+    remote = TaskAssignment("search-0000", "completed", 3, 4.0, 1, None, "c" * 64, (3,))
+    merged = ledger.merge_assignment(remote, now=2.0)
+    assert merged.winner_id == 3
+    assert merged.confirmers == (3,)
+
+
 def test_partial_confirmation_survives_reauction_and_previous_confirmer_cannot_rebid() -> None:
     ledger = TaskLedger(3, DIGEST, [confirm_unit()], confirmation_quorum=2)
     ledger.observe_bid(Bid(confirm_unit().task_id, 3, 8.0, 0, 0.0), now=0.0)

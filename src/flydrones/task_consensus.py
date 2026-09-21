@@ -241,11 +241,17 @@ class TaskLedger:
                     for winner_id in (current.winner_id, assignment.winner_id)
                     if winner_id is not None
                 ]
+                canonical_winner = min(winner_ids) if winner_ids else None
+                confirmers = (
+                    tuple(sorted(set(current.confirmers) | set(assignment.confirmers)))
+                    if work_unit.kind == "confirm_detection"
+                    else (() if canonical_winner is None else (canonical_winner,))
+                )
                 current = replace(
                     current,
-                    winner_id=min(winner_ids) if winner_ids else None,
+                    winner_id=canonical_winner,
                     allocation_round=max(current.allocation_round, assignment.allocation_round),
-                    confirmers=tuple(sorted(set(current.confirmers) | set(assignment.confirmers))),
+                    confirmers=confirmers,
                 )
                 self._assignments[current.task_id] = current
             return current

@@ -224,8 +224,9 @@ def _worker_main(
     step = 0
     grace_step = 0
     convergence_grace_s = 15.0
-    grace_queue: deque[tuple[str, dict[str, object]]] = deque()
-    grace_forwarded: set[str] = set()
+    grace_units: deque[dict[str, object]] = deque()
+    grace_unit_signatures: set[str] = set()
+    grace_pending: dict[str, object] = {}
     dt = 1.0 / config.rate_hz
     next_tick = start_at[0]
     while True:
@@ -243,9 +244,9 @@ def _worker_main(
             for message in incoming:
                 if message.kind == "award" and "work_unit" in message.payload:
                     signature = json.dumps(message.payload, sort_keys=True)
-                    if signature not in grace_forwarded:
-                        grace_forwarded.add(signature)
-                        grace_queue.append(("award", message.payload))
+                    if signature not in grace_unit_signatures:
+                        grace_unit_signatures.add(signature)
+                        grace_units.append(message.payload)
             for assignment in agent.ledger.snapshot():
                 value = (
                     assignment.status,
@@ -253,31 +254,31 @@ def _worker_main(
                     assignment.allocation_round,
                     assignment.confirmers,
                 )
-                if assignment.status != "completed" or before.get(assignment.task_id) == value:
+                relevant = assignment.status == "completed" or agent.work_unit(assignment.task_id).kind == "confirm_detection"
+                if not relevant or before.get(assignment.task_id) == value:
                     continue
-                payload = {"assignment": asdict(assignment)}
-                signature = json.dumps(payload, sort_keys=True)
-                if signature not in grace_forwarded:
-                    grace_forwarded.add(signature)
-                    grace_queue.append(("award", payload))
+                grace_pending[assignment.task_id] = assignment
             snapshot = agent.ledger.snapshot()
             dynamic = [item for item in snapshot if item.task_id not in contract_task_ids]
-            if grace_queue:
-                kind, payload = grace_queue.popleft()
-                task_node.send(kind, payload, now=elapsed)  # type: ignore[arg-type]
-            elif dynamic and grace_step % 10 == 0:
-                assignment = dynamic[(grace_step // 10 + vehicle_id) % len(dynamic)]
-                task_node.send(
-                    "award",
-                    {
+            if grace_step % 50 == 0:
+                for assignment in snapshot:
+                    if assignment.status == "completed" or agent.work_unit(assignment.task_id).kind == "confirm_detection":
+                        grace_pending[assignment.task_id] = assignment
+                for assignment in dynamic:
+                    payload = {
                         "task_id": assignment.task_id,
                         "work_unit": _unit_payload(agent.work_unit(assignment.task_id)),
-                    },
-                    now=elapsed,
-                )
-            elif snapshot:
-                assignment = snapshot[(grace_step + vehicle_id) % len(snapshot)]
-                task_node.send("award", {"assignment": asdict(assignment)}, now=elapsed)
+                    }
+                    signature = json.dumps(payload, sort_keys=True)
+                    if signature not in grace_unit_signatures:
+                        grace_unit_signatures.add(signature)
+                        grace_units.append(payload)
+            if grace_units:
+                task_node.send("award", grace_units.popleft(), now=elapsed)
+            elif grace_pending:
+                task_ids = sorted(grace_pending)[:4]
+                assignments = [asdict(grace_pending.pop(task_id)) for task_id in task_ids]
+                task_node.send("award", {"assignments": assignments}, now=elapsed)
             trace.append(
                 {
                     "step": step,

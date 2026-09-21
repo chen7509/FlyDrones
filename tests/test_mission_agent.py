@@ -7,6 +7,8 @@ import sys
 from flydrones.mission_agent import AgentState, Detection, MissionAgent
 from flydrones.mission_contract import MissionContract
 from flydrones.peer_udp import PeerTrack
+from flydrones.task_consensus import TaskAssignment
+from flydrones.task_udp import TaskMessage
 
 
 def test_mission_agent_import_is_lightweight_for_100_process_startup() -> None:
@@ -86,6 +88,8 @@ def test_depth_freeze_and_low_battery_release_active_task_once() -> None:
     decision = battery_agent.step(1.0, healthy_state(battery_pct=29.0), [], [], [])
     assert decision.safety_phase == "return"
     assert decision.released_task_ids == ("search-0000",)
+    release_messages = [payload for kind, payload in decision.outbound_messages if kind == "award"]
+    assert release_messages[0]["assignment"]["status"] == "open"
 
 
 def test_invalid_localization_and_geofence_preempt_tasks() -> None:
@@ -175,3 +179,23 @@ def test_land_is_terminal_and_completed_tasks_do_not_regress() -> None:
     agent.ledger.complete(task_id, 0, "e" * 64, now=2.1)
     agent.ledger.expire(now=100.0)
     assert agent.ledger.assignment(task_id).status == "completed"
+
+
+def test_agent_merges_batched_terminal_awards() -> None:
+    agent = MissionAgent.for_contract(0, 10, contract())
+    assignments = [
+        TaskAssignment(f"search-{index:04d}", "completed", index, 10.0, 0, None, "e" * 64, (index,))
+        for index in (0, 1)
+    ]
+    message = TaskMessage(
+        "award",
+        contract().mission_id,
+        contract().digest,
+        3,
+        1,
+        1.0,
+        {"assignments": [assignment.__dict__ for assignment in assignments]},
+    )
+    agent.ingest_messages([message], now=1.0)
+    assert agent.ledger.assignment("search-0000").status == "completed"
+    assert agent.ledger.assignment("search-0001").status == "completed"
