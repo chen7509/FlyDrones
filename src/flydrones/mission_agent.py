@@ -103,6 +103,17 @@ def _confirmation_affinity(task_id: str, vehicle_id: int) -> int:
     return int.from_bytes(digest[:8], "big")
 
 
+def _confirmation_cohort(task_id: str, vehicle_count: int) -> tuple[int, ...]:
+    """Select enough deterministic candidates to survive ten failures and two safety exits."""
+    cohort_size = min(14, vehicle_count)
+    ranked = sorted(
+        range(vehicle_count),
+        key=lambda vehicle_id: (_confirmation_affinity(task_id, vehicle_id), -vehicle_id),
+        reverse=True,
+    )
+    return tuple(sorted(ranked[:cohort_size]))
+
+
 class MissionAgent:
     """One vehicle's mission intelligence; all mutable state is process-local."""
 
@@ -437,6 +448,11 @@ class MissionAgent:
         )
         for task_id, unit in self._work_units.items():
             if preferred_task_id is not None and task_id != preferred_task_id:
+                continue
+            if (
+                unit.kind == "confirm_detection"
+                and self.vehicle_id not in _confirmation_cohort(task_id, self.vehicle_count)
+            ):
                 continue
             if unit.kind == "rally" and unfinished_search:
                 continue

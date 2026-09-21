@@ -4,7 +4,13 @@ import hashlib
 import subprocess
 import sys
 
-from flydrones.mission_agent import AgentState, Detection, MissionAgent, _confirmation_affinity
+from flydrones.mission_agent import (
+    AgentState,
+    Detection,
+    MissionAgent,
+    _confirmation_affinity,
+    _confirmation_cohort,
+)
 from flydrones.mission_contract import MissionContract
 from flydrones.peer_udp import PeerTrack
 from flydrones.task_consensus import Bid, TaskAssignment
@@ -260,6 +266,14 @@ def test_cross_task_selection_uses_local_utility_not_unrelated_auction_round() -
 def test_confirmation_affinity_distributes_agents_across_tasks() -> None:
     assert _confirmation_affinity("confirm-near", 0) > _confirmation_affinity("confirm-far", 0)
     assert _confirmation_affinity("confirm-near", 1) < _confirmation_affinity("confirm-far", 1)
+
+
+def test_confirmation_cohort_is_deterministic_and_failure_tolerant() -> None:
+    first = _confirmation_cohort("confirm-edge", 100)
+    second = _confirmation_cohort("confirm-edge", 100)
+    assert first == second
+    assert len(first) == 14
+    assert len(set(first)) == 14
 
 
 def test_confirmation_quorum_needs_distinct_vehicle_ids() -> None:
