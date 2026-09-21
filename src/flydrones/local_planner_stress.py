@@ -163,6 +163,7 @@ def _run_scenario(scenario: StressScenario) -> _StressOutcome:
         config=config,
         corridor_center_y=scenario.start[1],
         deadlock_land_after_s=18.0,
+        enable_local_bypass=False,
     )
     dt = 0.05
     maximum_steps = int(20.0 / dt)
