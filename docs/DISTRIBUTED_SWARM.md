@@ -47,6 +47,30 @@ The navigation policy is a trained forest PPO actor combined with fly-inspired v
 biophysical simulation of every fruit-fly neuron. Real commercial flight still requires staged hardware-in-the-loop and
 outdoor tests, geofencing, an independent emergency stop, redundant localization and the applicable aviation approvals.
 
+## Run five consecutive hybrid-planner trials
+
+The hybrid controller treats the learned forest policy as a preferred direction. A deterministic two-second local
+trajectory planner makes the final horizontal decision from each vehicle's own depth camera, rolling obstacle memory and
+UDP peer position/velocity tracks. Run the complete repeatability gate from PowerShell:
+
+```powershell
+.\Start-PX4-Hybrid-Swarm.ps1
+```
+
+Each repetition starts five fresh PX4/Gazebo instances, uses a unique UDP port range, and writes worker-owned artifacts
+to `results/px4-hybrid-repeatability/run-1` through `run-5`. The aggregate files are
+`results/px4-hybrid-repeatability/summary.json` and `report.md`.
+
+Acceptance requires five consecutive complete passes. Every documented run check must pass, the planner P95 must remain
+below 20 ms, and `central_control_commands` must remain zero. The logs include the chosen trajectory, rejected unknown,
+static and peer candidates, predicted clearances, and per-step planner time. Any failed startup, navigation, separation,
+planner-performance or infrastructure check resets the consecutive count.
+
+This is software-in-the-loop validation on one computer. It exercises real PX4 processes, Gazebo dynamics, depth topics
+and loopback UDP, but it does not reproduce physical radio contention, GNSS multipath, aerodynamic interaction, hardware
+timing, motor failure or aviation approval. Hardware-in-the-loop and progressively larger geofenced outdoor tests remain
+necessary before physical fleet use.
+
 ## Run the autonomous 100-agent mission
 
 This trial adds decentralized task choice above the existing local flight and avoidance layer. From PowerShell:
