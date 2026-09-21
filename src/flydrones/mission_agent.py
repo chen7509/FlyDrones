@@ -7,9 +7,6 @@ import math
 from dataclasses import asdict, dataclass
 from typing import Literal
 
-import numpy as np
-
-from flydrones.high_speed_swarm import time_to_closest_approach
 from flydrones.mission_contract import MissionContract, WorkUnit
 from flydrones.peer_udp import PeerTrack
 from flydrones.task_consensus import AgentCapability, Bid, TaskAssignment, TaskLedger
@@ -56,9 +53,28 @@ def _finite_vector(values: tuple[float, float, float]) -> bool:
     return len(values) == 3 and all(math.isfinite(float(value)) for value in values)
 
 
-def _limit(vector: np.ndarray, maximum: float) -> np.ndarray:
-    magnitude = float(np.linalg.norm(vector))
-    return vector * maximum / magnitude if magnitude > maximum else vector
+def _limit(vector: tuple[float, float, float], maximum: float) -> tuple[float, float, float]:
+    magnitude = math.sqrt(sum(value * value for value in vector))
+    if magnitude <= maximum or magnitude <= 1e-12:
+        return vector
+    scale = maximum / magnitude
+    return tuple(value * scale for value in vector)
+
+
+def _closest_approach(
+    relative_position: tuple[float, float, float],
+    own_velocity: tuple[float, float, float],
+    other_velocity: tuple[float, float, float],
+    horizon_s: float,
+) -> tuple[float, float]:
+    closing = tuple(own_velocity[index] - other_velocity[index] for index in range(3))
+    speed_squared = sum(value * value for value in closing)
+    if speed_squared < 1e-9:
+        return 0.0, math.sqrt(sum(value * value for value in relative_position))
+    time_s = sum(relative_position[index] * closing[index] for index in range(3)) / speed_squared
+    time_s = max(0.0, min(horizon_s, time_s))
+    miss = tuple(relative_position[index] - closing[index] * time_s for index in range(3))
+    return time_s, math.sqrt(sum(value * value for value in miss))
 
 
 def _work_unit_payload(work_unit: WorkUnit) -> dict[str, object]:
@@ -422,9 +438,9 @@ class MissionAgent:
         target: tuple[float, float, float],
         source: str,
     ) -> NavigationIntent:
-        delta = np.asarray(target, dtype=float) - np.asarray(position, dtype=float)
-        velocity = _limit(delta * 0.7, self.contract.safety.maximum_speed_mps)
-        return NavigationIntent(tuple(float(value) for value in velocity), target, source)
+        delta = tuple((target[index] - position[index]) * 0.7 for index in range(3))
+        velocity = _limit(delta, self.contract.safety.maximum_speed_mps)
+        return NavigationIntent(velocity, target, source)
 
     def _apply_peer_separation(
         self,
@@ -432,31 +448,34 @@ class MissionAgent:
         state: AgentState,
         peer_tracks: list[PeerTrack] | tuple[PeerTrack, ...],
     ) -> NavigationIntent:
-        preferred = np.asarray(intent.velocity_mps, dtype=float)
-        correction = np.zeros(3)
+        preferred = intent.velocity_mps
+        correction = [0.0, 0.0, 0.0]
         active = False
-        own_position = np.asarray(state.position_m, dtype=float)
         for track in peer_tracks:
-            relative = np.asarray(track.position, dtype=float) - own_position
-            _time_s, miss = time_to_closest_approach(
+            relative = tuple(track.position[index] - state.position_m[index] for index in range(3))
+            _time_s, miss = _closest_approach(
                 relative,
                 preferred,
-                np.asarray(track.velocity, dtype=float),
+                track.velocity,
                 3.0,
             )
-            distance = float(np.linalg.norm(relative))
+            distance = math.sqrt(sum(value * value for value in relative))
             required = self.contract.safety.minimum_separation_m
             if distance >= required * 1.5 and miss >= required:
                 continue
-            away = -relative / max(distance, 1e-6)
+            away = [-value / max(distance, 1e-6) for value in relative]
             away[2] += 0.35 if self.vehicle_id < track.sender_id else -0.35
-            correction += away * self.contract.safety.maximum_speed_mps
+            for index in range(3):
+                correction[index] += away[index] * self.contract.safety.maximum_speed_mps
             active = True
         if not active:
             return intent
-        velocity = _limit(preferred * 0.3 + correction, self.contract.safety.maximum_speed_mps)
+        velocity = _limit(
+            tuple(preferred[index] * 0.3 + correction[index] for index in range(3)),
+            self.contract.safety.maximum_speed_mps,
+        )
         return NavigationIntent(
-            tuple(float(value) for value in velocity),
+            velocity,
             intent.target_m,
             "local-separation",
         )

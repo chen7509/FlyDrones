@@ -1,10 +1,24 @@
 from __future__ import annotations
 
 import hashlib
+import subprocess
+import sys
 
 from flydrones.mission_agent import AgentState, Detection, MissionAgent
 from flydrones.mission_contract import MissionContract
 from flydrones.peer_udp import PeerTrack
+
+
+def test_mission_agent_import_is_lightweight_for_100_process_startup() -> None:
+    result = subprocess.run(
+        [
+            sys.executable,
+            "-c",
+            "import sys; import flydrones.mission_agent; raise SystemExit('numpy' in sys.modules)",
+        ],
+        check=False,
+    )
+    assert result.returncode == 0
 
 
 def contract() -> MissionContract:
@@ -154,4 +168,3 @@ def test_land_is_terminal_and_completed_tasks_do_not_regress() -> None:
     agent.ledger.complete(task_id, 0, "e" * 64, now=2.1)
     agent.ledger.expire(now=100.0)
     assert agent.ledger.assignment(task_id).status == "completed"
-
