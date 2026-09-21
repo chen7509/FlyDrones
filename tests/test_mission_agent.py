@@ -199,3 +199,20 @@ def test_agent_merges_batched_terminal_awards() -> None:
     agent.ingest_messages([message], now=1.0)
     assert agent.ledger.assignment("search-0000").status == "completed"
     assert agent.ledger.assignment("search-0001").status == "completed"
+
+
+def test_reopened_higher_round_task_is_bid_before_fresh_nearby_task() -> None:
+    agent = MissionAgent.for_contract(0, 10, contract())
+    agent.ledger.merge_assignment(
+        TaskAssignment("search-0000", "open", None, None, 2, None, None, ()),
+        now=0.0,
+    )
+    decision = agent.step(
+        0.0,
+        healthy_state(position_m=(30.0, 30.0, 20.0)),
+        [],
+        [],
+        [],
+    )
+    bids = [payload for kind, payload in decision.outbound_messages if kind == "bid"]
+    assert bids[0]["task_id"] == "search-0000"

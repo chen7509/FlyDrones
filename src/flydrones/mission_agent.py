@@ -411,7 +411,10 @@ class MissionAgent:
         if not candidates:
             self._phase = "rally" if not unfinished_search else "auction"
             return
-        bid = max(candidates, key=lambda item: (item.utility, -item.bidder_id, item.task_id))
+        bid = max(
+            candidates,
+            key=lambda item: (item.allocation_round, item.utility, -item.bidder_id, item.task_id),
+        )
         awarded = self.ledger.observe_bid(bid, now=now)
         outbound.append(("bid", asdict(bid)))
         if awarded.winner_id == self.vehicle_id:

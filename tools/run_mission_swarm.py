@@ -12,7 +12,7 @@ def parse_ids(value: str) -> tuple[int, ...]:
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="Run autonomous multi-process mission simulation")
-    parser.add_argument("--contract", help="Reserved for a future external validated contract")
+    parser.add_argument("--contract", help="Validated mission contract JSON")
     parser.add_argument("--vehicles", type=int, default=100)
     parser.add_argument("--duration", type=float, default=60.0)
     parser.add_argument("--output", default="results/mission-swarm-100")
@@ -37,6 +37,7 @@ def main() -> int:
             depth_freeze_vehicle_id=args.depth_freeze_id,
             sensor_fault_at_s=args.sensor_fault_at,
             seed=args.seed,
+            contract_path=args.contract,
         )
     )
     print(json.dumps(summary, ensure_ascii=False, indent=2))

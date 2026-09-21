@@ -15,7 +15,7 @@ from pathlib import Path
 from typing import Any
 
 from flydrones.mission_agent import AgentState, Detection, MissionAgent
-from flydrones.mission_contract import MissionContract, WorkUnit
+from flydrones.mission_contract import MissionContract, WorkUnit, load_mission_contract
 from flydrones.peer_udp import PeerUdpConfig, UdpPeerNode
 from flydrones.task_consensus import TaskAssignment
 from flydrones.task_udp import (
@@ -45,6 +45,7 @@ class MissionStressConfig:
     task_udp_base_port: int = 0
     motion_udp_base_port: int = 0
     seed: int = 20260921
+    contract_path: str | Path | None = None
 
     def __post_init__(self) -> None:
         if self.vehicle_count < 2 or self.vehicle_count > 100:
@@ -58,6 +59,8 @@ class MissionStressConfig:
 
 
 def _contract_for(config: MissionStressConfig) -> MissionContract:
+    if config.contract_path is not None:
+        return load_mission_contract(config.contract_path)
     width = config.search_columns * 20
     height = config.search_rows * 20
     return MissionContract.from_dict(
@@ -174,6 +177,39 @@ def _pop_bounded_assignment_batch(
     for task_id in selected_ids:
         del pending[task_id]
     return selected
+
+
+def _reassignment_latencies(
+    artifacts: list[dict[str, Any]],
+    failed_ids: set[int],
+    *,
+    failure_at_s: float,
+) -> dict[str, float]:
+    failed_tasks: dict[str, tuple[int, int]] = {}
+    for artifact in artifacts:
+        vehicle_id = int(artifact["vehicle_id"])
+        if vehicle_id not in failed_ids or artifact["status"] != "injected_failure":
+            continue
+        for assignment in artifact["final_assignments"]:
+            if assignment["winner_id"] == vehicle_id and assignment["status"] in {"claimed", "active"}:
+                failed_tasks[assignment["task_id"]] = (vehicle_id, int(assignment["allocation_round"]))
+    latencies = {task_id: math.inf for task_id in failed_tasks}
+    for artifact in artifacts:
+        if artifact["status"] == "injected_failure":
+            continue
+        for change in artifact["assignment_changes"]:
+            failed = failed_tasks.get(change["task_id"])
+            if failed is None or float(change["t_s"]) < failure_at_s:
+                continue
+            failed_id, failed_round = failed
+            winner_id = change["winner_id"]
+            if winner_id is None or int(winner_id) == failed_id:
+                continue
+            if int(change["allocation_round"]) <= failed_round:
+                continue
+            latency = round(float(change["t_s"]) - failure_at_s, 3)
+            latencies[change["task_id"]] = min(latencies[change["task_id"]], latency)
+    return latencies
 
 
 def _worker_main(
@@ -525,15 +561,16 @@ def _evaluate(
     agreement_ratio = sum(agreements) / len(agreements) if agreements else 0.0
 
     failed_ids = set(config.failed_vehicle_ids)
-    reassigned = not failed_ids
-    if failed_ids:
-        reassigned = any(
-            assignment["allocation_round"] > 0
-            and assignment["winner_id"] is not None
-            and assignment["winner_id"] not in failed_ids
-            for artifact in survivors
-            for assignment in artifact["final_assignments"]
-        )
+    reassignment_latencies = _reassignment_latencies(
+        artifacts,
+        failed_ids,
+        failure_at_s=config.failure_at_s,
+    )
+    reassigned = (
+        not failed_ids
+        or len(reassignment_latencies) == len(failed_ids)
+        and all(latency <= 5.0 for latency in reassignment_latencies.values())
+    )
 
     collisions = 0
     minimum_separation = math.inf
@@ -582,6 +619,10 @@ def _evaluate(
         "vehicles": config.vehicle_count,
         "survivors": len(survivors),
         "injected_failures": len(failed),
+        "failed_active_tasks": len(reassignment_latencies),
+        "maximum_reassignment_latency_s": (
+            max(reassignment_latencies.values(), default=0.0)
+        ),
         "completed_search_cells": len(completed_search),
         "search_cells": len(search_ids),
         "search_completion_ratio": round(completion_ratio, 4),

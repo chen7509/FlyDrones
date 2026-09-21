@@ -5,8 +5,10 @@ import time
 
 from flydrones.mission_stress import (
     MissionStressConfig,
+    _contract_for,
     _pop_bounded_assignment_batch,
     _read_start_time,
+    _reassignment_latencies,
     motion_peer_ids,
     overlay_survivors_converge,
     run_mission_process_trial,
@@ -55,6 +57,52 @@ def test_assignment_batch_is_sized_by_wire_encoder() -> None:
     assert len(encoded) <= 1200
     assert len(batch) < 4
     assert pending
+
+
+def test_external_contract_path_is_the_trial_contract(tmp_path) -> None:
+    source = {
+        "schema_version": 1,
+        "mission_id": "external-contract",
+        "mission_type": "search_confirm_rally",
+        "area_polygon_m": [[0, 0], [20, 0], [20, 20], [0, 20]],
+        "search_cell_size_m": 20,
+        "target_classes": ["person"],
+        "confirmation_quorum": 2,
+        "rally_position_m": [30, 10, 10],
+        "deadline_s": 60,
+        "safety": {
+            "maximum_speed_mps": 5,
+            "minimum_separation_m": 3,
+            "geofence_margin_m": 5,
+            "minimum_battery_return_pct": 30,
+        },
+    }
+    path = tmp_path / "mission.json"
+    path.write_text(json.dumps(source), encoding="utf-8")
+    loaded = _contract_for(
+        MissionStressConfig(vehicle_count=2, failed_vehicle_ids=(), contract_path=path)
+    )
+    assert loaded.mission_id == "external-contract"
+
+
+def test_reassignment_latency_is_measured_for_each_failed_active_task() -> None:
+    failed = {
+        "vehicle_id": 2,
+        "status": "injected_failure",
+        "final_assignments": [
+            {"task_id": "search-0002", "status": "active", "winner_id": 2, "allocation_round": 1}
+        ],
+    }
+    survivor = {
+        "vehicle_id": 3,
+        "status": "completed",
+        "assignment_changes": [
+            {"task_id": "search-0002", "t_s": 5.9, "winner_id": 3, "allocation_round": 2}
+        ],
+    }
+    assert _reassignment_latencies([failed, survivor], {2}, failure_at_s=2.0) == {
+        "search-0002": 3.9
+    }
 
 
 def test_six_processes_finish_after_station_exit_and_reassign_failed_agent(tmp_path) -> None:
