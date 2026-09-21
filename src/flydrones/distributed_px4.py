@@ -53,6 +53,11 @@ class DistributedAgentConfig:
             raise ValueError("vehicle id is outside the fleet")
 
 
+def _px4_execution_planner_config() -> LocalPlannerConfig:
+    """Add clearance for PX4 response lag beyond the geometric hard limits."""
+    return LocalPlannerConfig(static_margin_m=0.60, peer_minimum_m=1.25)
+
+
 def build_distributed_agent_commands(
     *,
     python_executable: str,
@@ -315,7 +320,7 @@ def run_distributed_px4_agent(
             vehicle_id=config.vehicle_id,
             rally_target=target,
             policy=policy,
-            config=LocalPlannerConfig(max_speed_mps=0.8),
+            config=_px4_execution_planner_config(),
             target_altitude_m=config.target_altitude_m,
             corridor_center_y=spec.home_xy[1],
         )

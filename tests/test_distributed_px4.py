@@ -8,6 +8,7 @@ import numpy as np
 
 from flydrones.distributed_px4 import (
     DistributedAgentConfig,
+    _px4_execution_planner_config,
     aggregate_distributed_artifacts,
     align_distributed_traces,
     build_distributed_agent_commands,
@@ -148,6 +149,12 @@ class Clock:
         if self.drone is not None:
             self.drone.advance(seconds)
         self.now += seconds
+
+
+def test_px4_execution_planner_keeps_margin_for_flight_controller_lag():
+    config = _px4_execution_planner_config()
+    assert config.vehicle_radius_m + config.static_margin_m >= 0.85
+    assert config.peer_minimum_m >= 1.20
 
 
 class FailClosedAgent:

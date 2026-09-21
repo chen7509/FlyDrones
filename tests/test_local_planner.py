@@ -55,6 +55,22 @@ def test_max_range_ray_does_not_create_false_obstacle():
     assert snapshot.is_observed_free((3.0, 0.0), margin_m=0.10)
 
 
+def test_memory_replaces_older_evidence_in_the_same_world_sector():
+    config = LocalPlannerConfig(sector_count=72, obstacle_memory_s=2.0)
+    memory = RollingObstacleMemory(config)
+    for frame in range(100):
+        now = frame * 0.01
+        memory.update(
+            now=now,
+            position=(frame * 0.001, 0.0, 1.8),
+            yaw_rad=math.pi / 2,
+            depth_observation=depth(now, [19.1] * 9),
+        )
+    snapshot = memory.snapshot(now=1.0)
+    assert len(snapshot.rays) <= config.sector_count
+    assert len({ray.sector for ray in snapshot.rays}) == len(snapshot.rays)
+
+
 def clear_front(now=1.0):
     return depth(now, [19.1] * 9)
 

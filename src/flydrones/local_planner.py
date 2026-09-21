@@ -95,11 +95,15 @@ class ObstacleSnapshot:
 class RollingObstacleMemory:
     def __init__(self, config: LocalPlannerConfig | None = None) -> None:
         self.config = config or LocalPlannerConfig()
-        self._rays: list[WorldRay] = []
+        self._rays: dict[int, WorldRay] = {}
 
     def _purge(self, now: float) -> None:
         cutoff = float(now) - self.config.obstacle_memory_s
-        self._rays = [ray for ray in self._rays if ray.observed_at >= cutoff]
+        self._rays = {
+            sector: ray
+            for sector, ray in self._rays.items()
+            if ray.observed_at >= cutoff
+        }
 
     def update(self, *, now, position, yaw_rad, depth_observation) -> None:
         timestamp = float(now)
@@ -129,14 +133,14 @@ class RollingObstacleMemory:
                     origin[0] + math.cos(bearing) * distance,
                     origin[1] + math.sin(bearing) * distance,
                 )
-            self._rays.append(WorldRay(origin, bearing, distance, obstacle, captured_at, sector))
+            self._rays[sector] = WorldRay(origin, bearing, distance, obstacle, captured_at, sector)
 
     def snapshot(self, *, now) -> ObstacleSnapshot:
         timestamp = float(now)
         if not math.isfinite(timestamp):
             raise ValueError("snapshot time must be finite")
         self._purge(timestamp)
-        rays = tuple(self._rays)
+        rays = tuple(self._rays[sector] for sector in sorted(self._rays))
         obstacles = tuple(ray.obstacle_xy for ray in rays if ray.obstacle_xy is not None)
         return ObstacleSnapshot(rays, obstacles, 2.0 * math.pi / self.config.sector_count)
 
