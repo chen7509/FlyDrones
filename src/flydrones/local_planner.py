@@ -553,10 +553,12 @@ class HybridLocalPlanner:
                     rejection_counts=rejection_counts,
                     static_clearance=hold_static,
                 )
-            reorient_to_target = (
-                not imminent_peer
-                and abs(target_error) > self.config.horizontal_fov_rad / 3.0
+            reorientation_threshold = (
+                0.10
+                if corridor_half_width_m is not None
+                else self.config.horizontal_fov_rad / 3.0
             )
+            reorient_to_target = not imminent_peer and abs(target_error) > reorientation_threshold
             if reorient_to_target:
                 self._escape_yaw_sign = None
                 target_yaw_sign = 1 if target_error < 0.0 else -1

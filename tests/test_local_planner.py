@@ -317,3 +317,22 @@ def test_blocked_planner_reorients_to_target_when_peer_is_not_imminent():
     )
     assert decision.command.forward == 0.0
     assert decision.command.yaw < 0.0
+
+
+def test_narrow_corridor_reorients_small_heading_error_against_policy_preference():
+    planner = HybridLocalPlanner(LocalPlannerConfig(static_margin_m=0.38))
+    decision = planner.plan(
+        now=1.0,
+        position=(0.0, 0.0, 1.8),
+        velocity=(0.0, 0.0, 0.0),
+        yaw_rad=math.pi / 2 - 0.20,
+        target=(4.0, 0.0),
+        depth_observation=depth(1.0, [4.0, 4.0, 4.0, 0.70, 0.65, 0.70, 4.0, 4.0, 4.0]),
+        peers=(PlannerPeer(8, (0.0, 3.0, 1.8), (0.0, 0.0, 0.0), age_s=0.1),),
+        preferred_command=FlightCommand(forward=1.0, yaw=-1.0),
+        corridor_center_y=0.0,
+        corridor_half_width_m=0.18,
+        inside_forest=True,
+    )
+    assert decision.command.forward == 0.0
+    assert decision.command.yaw > 0.0
