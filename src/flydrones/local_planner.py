@@ -478,15 +478,25 @@ class HybridLocalPlanner:
 
         safe_moving = [entry for entry in safe if abs(entry[2].forward_mps) > 1e-9 or abs(entry[2].lateral_mps) > 1e-9]
         safe_rotations = [entry for entry in safe if abs(entry[2].yaw_rate_rad_s) > 1e-9]
+        world_heading = _wrap_angle(math.pi / 2.0 - float(yaw_rad))
+        target_heading = math.atan2(
+            numeric_target[1] - numeric_position[1],
+            numeric_target[0] - numeric_position[0],
+        )
+        target_error = _angle_difference(target_heading, world_heading)
+        imminent_peer = any(
+            math.sqrt(
+                (numeric_position[0] - (peer.position[0] + peer.velocity[0] * (peer.age_s + future_s))) ** 2
+                + (numeric_position[1] - (peer.position[1] + peer.velocity[1] * (peer.age_s + future_s))) ** 2
+                + (numeric_position[2] - (peer.position[2] + peer.velocity[2] * (peer.age_s + future_s))) ** 2
+            )
+            < 1.80
+            for peer in peer_tuple
+            for future_s in (0.0, self.config.horizon_s * 0.5, self.config.horizon_s)
+        )
         if safe_moving:
             best_moving = max(safe_moving, key=lambda entry: entry[0])
-            if best_moving[0][0] < -0.05 and safe_rotations and not peer_tuple:
-                world_heading = _wrap_angle(math.pi / 2.0 - float(yaw_rad))
-                target_heading = math.atan2(
-                    numeric_target[1] - numeric_position[1],
-                    numeric_target[0] - numeric_position[0],
-                )
-                target_error = _angle_difference(target_heading, world_heading)
+            if best_moving[0][0] < -0.05 and safe_rotations and not imminent_peer:
                 target_yaw_sign = 1 if target_error < 0.0 else -1
                 target_rotations = [
                     entry
@@ -518,22 +528,36 @@ class HybridLocalPlanner:
                     rejection_counts=rejection_counts,
                     static_clearance=hold_static,
                 )
-            use_persistent_turn = not peer_tuple and (
-                self._escape_yaw_sign is not None or abs(preferred.yaw) > 0.20
+            reorient_to_target = (
+                not imminent_peer
+                and abs(target_error) > self.config.horizontal_fov_rad / 3.0
             )
-            if not use_persistent_turn:
+            if reorient_to_target:
                 self._escape_yaw_sign = None
-                selected = max(safe_rotations, key=lambda entry: entry[0])
-            else:
-                if self._escape_yaw_sign is None:
-                    selected = max(safe_rotations, key=lambda entry: entry[0])
-                    self._escape_yaw_sign = 1 if selected[2].yaw_rate_rad_s > 0.0 else -1
-                persistent_rotations = [
+                target_yaw_sign = 1 if target_error < 0.0 else -1
+                target_rotations = [
                     entry
                     for entry in safe_rotations
-                    if entry[2].yaw_rate_rad_s * self._escape_yaw_sign > 0.0
+                    if entry[2].yaw_rate_rad_s * target_yaw_sign > 0.0
                 ]
-                selected = max(persistent_rotations or safe_rotations, key=lambda entry: entry[0])
+                selected = max(target_rotations or safe_rotations, key=lambda entry: entry[0])
+            else:
+                use_persistent_turn = not peer_tuple and (
+                    self._escape_yaw_sign is not None or abs(preferred.yaw) > 0.20
+                )
+                if not use_persistent_turn:
+                    self._escape_yaw_sign = None
+                    selected = max(safe_rotations, key=lambda entry: entry[0])
+                else:
+                    if self._escape_yaw_sign is None:
+                        selected = max(safe_rotations, key=lambda entry: entry[0])
+                        self._escape_yaw_sign = 1 if selected[2].yaw_rate_rad_s > 0.0 else -1
+                    persistent_rotations = [
+                        entry
+                        for entry in safe_rotations
+                        if entry[2].yaw_rate_rad_s * self._escape_yaw_sign > 0.0
+                    ]
+                    selected = max(persistent_rotations or safe_rotations, key=lambda entry: entry[0])
 
         _, _, candidate, minimum_static, minimum_peer = selected
         command = FlightCommand(

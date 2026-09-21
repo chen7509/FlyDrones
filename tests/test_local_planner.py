@@ -252,3 +252,21 @@ def test_planner_rotates_toward_target_instead_of_flying_farther_away():
     )
     assert decision.command.forward == decision.command.lateral == 0.0
     assert decision.command.yaw > 0.0
+
+
+def test_blocked_planner_reorients_to_target_when_peer_is_not_imminent():
+    planner = HybridLocalPlanner(LocalPlannerConfig(static_margin_m=0.45))
+    decision = planner.plan(
+        now=1.0,
+        position=(0.0, 0.0, 1.8),
+        velocity=(0.0, 0.0, 0.0),
+        yaw_rad=math.pi / 2 + 0.70,
+        target=(4.0, 0.0),
+        depth_observation=depth(1.0, [4.0, 4.0, 4.0, 0.75, 0.70, 0.75, 4.0, 4.0, 4.0]),
+        peers=(PlannerPeer(8, (0.0, 3.0, 1.8), (0.0, 0.0, 0.0), age_s=0.1),),
+        preferred_command=FlightCommand(forward=1.0, yaw=1.0),
+        corridor_center_y=0.0,
+        inside_forest=True,
+    )
+    assert decision.command.forward == 0.0
+    assert decision.command.yaw < 0.0
