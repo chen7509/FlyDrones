@@ -6,6 +6,7 @@ import time
 from flydrones.mission_stress import (
     MissionStressConfig,
     _contract_for,
+    _initial_position,
     _pop_bounded_assignment_batch,
     _read_start_time,
     _reassignment_latencies,
@@ -168,3 +169,14 @@ def test_overlay_anti_entropy_survives_ten_adjacent_failures() -> None:
 
 def test_motion_safety_channel_reaches_every_physical_peer() -> None:
     assert motion_peer_ids(50, 100) == tuple(range(100))
+
+
+def test_injected_failure_vehicle_starts_high_enough_to_hold_an_active_lease() -> None:
+    mission = _contract_for(
+        MissionStressConfig(vehicle_count=6, failed_vehicle_ids=(2,), search_columns=3, search_rows=2)
+    )
+    units = [unit for unit in mission.expand_work_units() if unit.kind == "search_cell"]
+    normal = _initial_position(1, (2,), units)
+    failing = _initial_position(2, (2,), units)
+    assert normal[2] == units[1].center_m[2]
+    assert failing[2] - units[2].center_m[2] == 60.0

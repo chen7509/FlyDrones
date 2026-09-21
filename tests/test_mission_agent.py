@@ -7,7 +7,7 @@ import sys
 from flydrones.mission_agent import AgentState, Detection, MissionAgent
 from flydrones.mission_contract import MissionContract
 from flydrones.peer_udp import PeerTrack
-from flydrones.task_consensus import TaskAssignment
+from flydrones.task_consensus import Bid, TaskAssignment
 from flydrones.task_udp import TaskMessage
 
 
@@ -162,6 +162,15 @@ def test_low_battery_return_still_passes_through_peer_separation() -> None:
     decision = agent.step(1.0, healthy_state(battery_pct=29.0), [track], [], [])
     assert decision.safety_phase == "return"
     assert decision.intent.source == "local-separation"
+
+
+def test_safety_preemption_ignores_stale_pointer_to_remotely_reassigned_task() -> None:
+    agent = active_agent()
+    agent.ledger.expire(now=4.0)
+    agent.ledger.observe_bid(Bid("search-0000", 3, 9.0, 1, 4.0), now=4.0)
+    decision = agent.step(5.0, healthy_state(battery_pct=29.0), [], [], [])
+    assert decision.safety_phase == "return"
+    assert decision.released_task_ids == ()
 
 
 def test_detection_creates_one_deterministic_confirmation_task() -> None:

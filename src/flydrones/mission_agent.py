@@ -354,7 +354,9 @@ class MissionAgent:
         if task_id is None or task_id in self._released_tasks:
             return ()
         current = self.ledger.assignment(task_id)
-        if current.status == "completed":
+        if current.status == "completed" or current.winner_id != self.vehicle_id:
+            self._active_task_id = None
+            self._active_since = None
             return ()
         self.ledger.release(task_id, winner_id=self.vehicle_id, now=now)
         self._released_tasks.add(task_id)

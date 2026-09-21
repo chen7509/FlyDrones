@@ -84,6 +84,16 @@ def _contract_for(config: MissionStressConfig) -> MissionContract:
     )
 
 
+def _initial_position(
+    vehicle_id: int,
+    failed_vehicle_ids: tuple[int, ...],
+    search_units: list[WorkUnit],
+) -> tuple[float, float, float]:
+    home = search_units[vehicle_id % len(search_units)].center_m
+    altitude_offset = 60.0 if vehicle_id in failed_vehicle_ids else 0.0
+    return home[0], home[1], home[2] + altitude_offset
+
+
 def _free_base_port(count: int, start: int) -> int:
     step = count + 2
     for base in range(start, 64000 - step, step):
@@ -299,8 +309,7 @@ def _worker_main(
 
     agent = MissionAgent.for_contract(vehicle_id, config.vehicle_count, contract)
     search_units = [unit for unit in contract.expand_work_units() if unit.kind == "search_cell"]
-    home = search_units[vehicle_id % len(search_units)].center_m
-    position = [home[0], home[1], home[2] + 25.0 + 4.0 * (vehicle_id % 3)]
+    position = list(_initial_position(vehicle_id, config.failed_vehicle_ids, search_units))
     velocity = [0.0, 0.0, 0.0]
     trace: list[dict[str, object]] = []
     changes: list[dict[str, object]] = []
