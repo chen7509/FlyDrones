@@ -267,6 +267,7 @@ class TaskUdpNode:
         self._latest_sequences: dict[int, int] = {}
         self._tokens = float(config.max_messages_per_second)
         self._last_token_at: float | None = None
+        self._peer_cursor = 0
         self.metrics = {
             "sent_datagrams": 0,
             "received_messages": 0,
@@ -279,10 +280,10 @@ class TaskUdpNode:
             "connection_resets": 0,
         }
 
-    def _consume_tokens(self, count: int, now: float) -> bool:
+    def _take_tokens(self, maximum: int, now: float) -> int:
         timestamp = _finite(now, "now")
-        if count <= 0:
-            return True
+        if maximum <= 0:
+            return 0
         if self._last_token_at is None:
             self._last_token_at = timestamp
         else:
@@ -292,11 +293,12 @@ class TaskUdpNode:
                 self._tokens + elapsed * self.config.max_messages_per_second,
             )
             self._last_token_at = timestamp
-        if self._tokens < count:
+        count = min(maximum, int(self._tokens))
+        if count == 0:
             self.metrics["rate_limited_messages"] += 1
-            return False
+            return 0
         self._tokens -= count
-        return True
+        return count
 
     def _next_datagram(self, kind: TaskKind, payload: dict[str, object], now: float) -> bytes:
         self._sequence = (self._sequence + 1) & 0xFFFFFFFF
@@ -322,11 +324,16 @@ class TaskUdpNode:
                 targets.append(peer_id)
             else:
                 self.metrics["partition_drops"] += 1
-        if not self._consume_tokens(len(targets), timestamp):
+        count = self._take_tokens(len(targets), timestamp)
+        if count == 0:
             return 0
+        start = self._peer_cursor % len(targets)
+        ordered_targets = targets[start:] + targets[:start]
+        selected_targets = ordered_targets[:count]
+        self._peer_cursor = (start + count) % len(targets)
         datagram = self._next_datagram(kind, payload, timestamp)
         sent = 0
-        for peer_id in targets:
+        for peer_id in selected_targets:
             self._socket.sendto(
                 datagram,
                 (self.config.peer_host, self.config.base_port + peer_id),
@@ -345,7 +352,7 @@ class TaskUdpNode:
         if kind != "mission_accept":
             raise ValueError("only mission_accept may be sent to the task station")
         timestamp = self._clock() if now is None else now
-        if not self._consume_tokens(1, timestamp):
+        if self._take_tokens(1, timestamp) != 1:
             return 0
         datagram = self._next_datagram(kind, payload, timestamp)
         self._socket.sendto(

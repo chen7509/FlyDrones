@@ -161,8 +161,9 @@ def test_rate_budget_counts_each_overlay_datagram() -> None:
     sender = nodes[0]
     try:
         assert sender.send("bid", {"task_id": "search-0000"}, now=1.0) == 8
-        assert sender.send("lease", {"task_id": "search-0000"}, now=1.0) == 0
-        assert sender.metrics["sent_datagrams"] == 8
+        assert sender.send("lease", {"task_id": "search-0000"}, now=1.0) == 2
+        assert sender.send("progress", {"done": 0}, now=1.0) == 0
+        assert sender.metrics["sent_datagrams"] == 10
         assert sender.metrics["rate_limited_messages"] == 1
     finally:
         for node in nodes:
