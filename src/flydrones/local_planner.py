@@ -210,12 +210,48 @@ class HybridLocalPlanner:
         self.config = config or LocalPlannerConfig()
         self.memory = RollingObstacleMemory(self.config)
         self._escape_yaw_sign: int | None = None
+        self._pose_history: list[tuple[float, tuple[float, float, float], float]] = []
+        self._last_depth_timestamp = -math.inf
 
     def observe(self, *, now, position, yaw_rad, depth_observation) -> None:
+        timestamp = float(now)
+        numeric_position = tuple(float(value) for value in position)
+        yaw = float(yaw_rad)
+        if (
+            not math.isfinite(timestamp)
+            or not _finite_vector(numeric_position, 3)
+            or not math.isfinite(yaw)
+        ):
+            raise ValueError("pose and time must be finite")
+        self._pose_history.append((timestamp, numeric_position, yaw))
+        cutoff = timestamp - self.config.obstacle_memory_s - 0.5
+        self._pose_history = [sample for sample in self._pose_history if sample[0] >= cutoff]
+
+        captured_at = float(depth_observation.captured_at)
+        if not math.isfinite(captured_at) or captured_at > timestamp + 1e-6:
+            raise ValueError("depth timestamp is invalid")
+        if captured_at <= self._last_depth_timestamp + 1e-9:
+            return
+        self._last_depth_timestamp = captured_at
+
+        capture_position, capture_yaw = numeric_position, yaw
+        for index in range(1, len(self._pose_history)):
+            before = self._pose_history[index - 1]
+            after = self._pose_history[index]
+            if before[0] <= captured_at <= after[0] and after[0] > before[0]:
+                fraction = (captured_at - before[0]) / (after[0] - before[0])
+                capture_position = tuple(
+                    before[1][axis] + fraction * (after[1][axis] - before[1][axis])
+                    for axis in range(3)
+                )
+                capture_yaw = _wrap_angle(
+                    before[2] + fraction * _angle_difference(after[2], before[2])
+                )
+                break
         self.memory.update(
-            now=now,
-            position=position,
-            yaw_rad=yaw_rad,
+            now=timestamp,
+            position=capture_position,
+            yaw_rad=capture_yaw,
             depth_observation=depth_observation,
         )
 

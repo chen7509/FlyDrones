@@ -1,6 +1,8 @@
 import math
 from types import SimpleNamespace
 
+import pytest
+
 from flydrones.local_planner import (
     HybridLocalPlanner,
     LocalPlannerConfig,
@@ -158,6 +160,26 @@ def test_remembered_tree_stays_blocked_after_camera_turns_away():
         inside_forest=True,
     )
     assert decision.minimum_static_clearance_m >= 0.60
+
+
+def test_same_depth_frame_is_not_reprojected_after_vehicle_turns():
+    planner = HybridLocalPlanner(LocalPlannerConfig())
+    obstacle = depth(1.0, [19.1] * 4 + [1.0] + [19.1] * 4)
+    planner.observe(
+        now=1.0,
+        position=(0.0, 0.0, 1.8),
+        yaw_rad=math.pi / 2,
+        depth_observation=obstacle,
+    )
+    planner.observe(
+        now=1.1,
+        position=(0.0, 0.0, 1.8),
+        yaw_rad=0.0,
+        depth_observation=obstacle,
+    )
+    snapshot = planner.memory.snapshot(now=1.1)
+    assert len(snapshot.obstacle_points) == 1
+    assert snapshot.obstacle_points[0] == pytest.approx((1.0, 0.0))
 
 
 def test_crossing_peer_is_rejected_from_constant_velocity_prediction():
