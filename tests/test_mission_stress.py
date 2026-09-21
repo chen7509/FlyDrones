@@ -11,6 +11,7 @@ from flydrones.mission_stress import (
     _read_start_time,
     _reassignment_latencies,
     _recovery_reserve_map,
+    _recovery_reserve_sequences,
     _reserve_vehicle_ids,
     motion_peer_ids,
     overlay_survivors_converge,
@@ -108,6 +109,32 @@ def test_reassignment_latency_is_measured_for_each_failed_active_task() -> None:
     }
 
 
+def test_same_round_new_owner_counts_as_task_reassignment() -> None:
+    failed = {
+        "vehicle_id": 2,
+        "status": "injected_failure",
+        "final_assignments": [
+            {"task_id": "search-0002", "status": "active", "winner_id": 2, "allocation_round": 1}
+        ],
+    }
+    survivor = {
+        "vehicle_id": 3,
+        "status": "completed",
+        "assignment_changes": [
+            {
+                "task_id": "search-0002",
+                "t_s": 5.0,
+                "status": "claimed",
+                "winner_id": 3,
+                "allocation_round": 1,
+            }
+        ],
+    }
+    assert _reassignment_latencies([failed, survivor], {2}, failure_at_s=2.0) == {
+        "search-0002": 3.0
+    }
+
+
 def test_failed_duplicate_already_completed_before_failure_needs_no_takeover() -> None:
     failed = {
         "vehicle_id": 2,
@@ -196,3 +223,5 @@ def test_reserve_ids_are_alive_and_exclude_sensor_fault_nodes() -> None:
     mapping = _recovery_reserve_map(config, units)
     expected_tasks = {units[item % len(units)].task_id for item in config.failed_vehicle_ids}
     assert set(mapping.values()) == expected_tasks
+    sequences = _recovery_reserve_sequences(config, units)
+    assert all(sequence[1] == units[reserve_id].task_id for reserve_id, sequence in sequences.items())

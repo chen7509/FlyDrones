@@ -158,7 +158,7 @@ class MissionAgent:
         detections: list[Detection] | tuple[Detection, ...],
         *,
         bidding_enabled: bool = True,
-        preferred_task_id: str | None = None,
+        preferred_task_ids: tuple[str, ...] = (),
     ) -> AgentDecision:
         timestamp = float(now)
         if not math.isfinite(timestamp):
@@ -210,7 +210,7 @@ class MissionAgent:
             timestamp,
             state,
             outbound,
-            preferred_task_id=preferred_task_id,
+            preferred_task_ids=preferred_task_ids,
         )
         self._complete_if_ready(timestamp, state, outbound)
         intent = self._task_intent(state)
@@ -387,13 +387,19 @@ class MissionAgent:
         state: AgentState,
         outbound: list[tuple[str, dict[str, object]]],
         *,
-        preferred_task_id: str | None = None,
+        preferred_task_ids: tuple[str, ...] = (),
     ) -> None:
-        if preferred_task_id is not None:
-            if preferred_task_id not in self._work_units:
-                raise ValueError(f"unknown preferred task: {preferred_task_id}")
-            if self.ledger.assignment(preferred_task_id).status == "completed":
-                preferred_task_id = None
+        unknown = [task_id for task_id in preferred_task_ids if task_id not in self._work_units]
+        if unknown:
+            raise ValueError(f"unknown preferred task: {unknown[0]}")
+        preferred_task_id = next(
+            (
+                task_id
+                for task_id in preferred_task_ids
+                if self.ledger.assignment(task_id).status != "completed"
+            ),
+            None,
+        )
         if self._active_task_id is not None:
             current = self.ledger.assignment(self._active_task_id)
             if current.winner_id != self.vehicle_id or current.status in {"completed", "failed", "open"}:

@@ -116,6 +116,21 @@ def _recovery_reserve_map(
     return dict(zip(reserves, failed_tasks, strict=False))
 
 
+def _recovery_reserve_sequences(
+    config: MissionStressConfig,
+    search_units: list[WorkUnit],
+) -> dict[int, tuple[str, ...]]:
+    """Preload each reserve with its failover cell followed by its own search cell."""
+    recovery = _recovery_reserve_map(config, search_units)
+    return {
+        reserve_id: (
+            recovery_task_id,
+            search_units[reserve_id % len(search_units)].task_id,
+        )
+        for reserve_id, recovery_task_id in recovery.items()
+    }
+
+
 def _free_base_port(count: int, start: int) -> int:
     step = count + 2
     for base in range(start, 64000 - step, step):
@@ -250,8 +265,6 @@ def _reassignment_latencies(
             change_round = int(change["allocation_round"])
             if change_round < failed_round:
                 continue
-            if change_round == failed_round and change["status"] != "completed":
-                continue
             latency = round(float(change["t_s"]) - failure_at_s, 3)
             latencies[change["task_id"]] = min(latencies[change["task_id"]], latency)
     return latencies
@@ -333,6 +346,7 @@ def _worker_main(
     search_units = [unit for unit in contract.expand_work_units() if unit.kind == "search_cell"]
     reserve_ids_tuple = _reserve_vehicle_ids(config)
     recovery_map = _recovery_reserve_map(config, search_units)
+    recovery_sequences = _recovery_reserve_sequences(config, search_units)
     if vehicle_id in recovery_map:
         position = list(agent.work_unit(recovery_map[vehicle_id]).center_m)
     else:
@@ -455,7 +469,7 @@ def _worker_main(
                 vehicle_id not in reserve_ids
                 or elapsed >= config.failure_at_s + 3.0
             ),
-            preferred_task_id=recovery_map.get(vehicle_id),
+            preferred_task_ids=recovery_sequences.get(vehicle_id, ()),
         )
         for kind, payload in decision.outbound_messages:
             task_node.send(kind, payload, now=elapsed)  # type: ignore[arg-type]
