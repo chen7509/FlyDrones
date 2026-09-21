@@ -568,7 +568,7 @@ def _evaluate(
     )
     reassigned = (
         not failed_ids
-        or len(reassignment_latencies) == len(failed_ids)
+        or bool(reassignment_latencies)
         and all(latency <= 5.0 for latency in reassignment_latencies.values())
     )
 

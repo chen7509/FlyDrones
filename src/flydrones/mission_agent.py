@@ -413,7 +413,15 @@ class MissionAgent:
             return
         bid = max(
             candidates,
-            key=lambda item: (item.allocation_round, item.utility, -item.bidder_id, item.task_id),
+            key=lambda item: (
+                {"search_cell": 3, "confirm_detection": 2, "relay": 1, "rally": 0}[
+                    self._work_units[item.task_id].kind
+                ],
+                item.allocation_round,
+                item.utility,
+                -item.bidder_id,
+                item.task_id,
+            ),
         )
         awarded = self.ledger.observe_bid(bid, now=now)
         outbound.append(("bid", asdict(bid)))
@@ -505,7 +513,7 @@ class MissionAgent:
             if distance >= required * 1.5 and miss >= required:
                 continue
             away = [-value / max(distance, 1e-6) for value in relative]
-            away[2] += 0.35 if self.vehicle_id < track.sender_id else -0.35
+            away[2] += 0.35 if self.vehicle_id > track.sender_id else -0.35
             for index in range(3):
                 correction[index] += away[index] * self.contract.safety.maximum_speed_mps
             active = True
