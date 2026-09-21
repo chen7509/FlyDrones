@@ -97,6 +97,16 @@ def test_renew_requires_current_owner_and_extends_lease() -> None:
     assert renewed.lease_until == pytest.approx(4.0)
 
 
+def test_live_local_owner_ignores_remote_reauction_until_its_lease_expires() -> None:
+    ledger = TaskLedger(3, DIGEST, [search_unit()])
+    ledger.observe_bid(Bid("search-0000", 3, 8.0, 0, 0.0), now=0.0)
+    ledger.renew("search-0000", winner_id=3, allocation_round=0, now=0.1)
+    remote = TaskAssignment("search-0000", "claimed", 8, 100.0, 4, 5.0, None, ())
+    protected = ledger.merge_assignment(remote, now=1.0)
+    assert protected.winner_id == 3
+    assert protected.allocation_round == 0
+
+
 def test_confirmation_requires_two_distinct_agents() -> None:
     ledger = TaskLedger(0, DIGEST, [confirm_unit()], confirmation_quorum=2)
     ledger.observe_bid(Bid(confirm_unit().task_id, 3, 8.0, 0, 0.0), now=0.0)

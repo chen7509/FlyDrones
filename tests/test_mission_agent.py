@@ -144,6 +144,14 @@ def test_higher_vehicle_uses_upward_escape_near_shared_target() -> None:
     assert decision.intent.velocity_mps[2] > 0.0
 
 
+def test_low_battery_return_still_passes_through_peer_separation() -> None:
+    agent = active_agent()
+    track = PeerTrack(1, 1, 0.9, 0.9, (10.5, 10.0, 20.0), (0.0, 0.0, 0.0))
+    decision = agent.step(1.0, healthy_state(battery_pct=29.0), [track], [], [])
+    assert decision.safety_phase == "return"
+    assert decision.intent.source == "local-separation"
+
+
 def test_detection_creates_one_deterministic_confirmation_task() -> None:
     agent = MissionAgent.for_contract(0, 10, contract())
     detection = Detection("person", (10.2, 19.7, 20.0), 0.95, "b" * 64)

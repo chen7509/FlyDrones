@@ -205,7 +205,10 @@ def _reassignment_latencies(
             winner_id = change["winner_id"]
             if winner_id is None or int(winner_id) == failed_id:
                 continue
-            if int(change["allocation_round"]) <= failed_round:
+            change_round = int(change["allocation_round"])
+            if change_round < failed_round:
+                continue
+            if change_round == failed_round and change["status"] != "completed":
                 continue
             latency = round(float(change["t_s"]) - failure_at_s, 3)
             latencies[change["task_id"]] = min(latencies[change["task_id"]], latency)
@@ -621,7 +624,9 @@ def _evaluate(
         "injected_failures": len(failed),
         "failed_active_tasks": len(reassignment_latencies),
         "maximum_reassignment_latency_s": (
-            max(reassignment_latencies.values(), default=0.0)
+            None
+            if any(not math.isfinite(value) for value in reassignment_latencies.values())
+            else max(reassignment_latencies.values(), default=0.0)
         ),
         "completed_search_cells": len(completed_search),
         "search_cells": len(search_ids),

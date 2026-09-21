@@ -227,7 +227,7 @@ class TaskLedger:
         mission_digest: str | None = None,
     ) -> TaskAssignment:
         self._check_digest(mission_digest)
-        _finite(now, "now")
+        timestamp = _finite(now, "now")
         if not isinstance(assignment, TaskAssignment):
             raise ValueError("assignment must be a TaskAssignment")
         work_unit = self._known_task(assignment.task_id)
@@ -258,6 +258,13 @@ class TaskLedger:
         if assignment.status == "completed":
             self._assignments[assignment.task_id] = assignment
             return assignment
+        if (
+            current.status == "active"
+            and current.winner_id == self.vehicle_id
+            and current.lease_until is not None
+            and current.lease_until >= timestamp
+        ):
+            return current
 
         winner = self._choose_noncompleted(current, assignment)
         if work_unit.kind == "confirm_detection":
@@ -320,6 +327,27 @@ class TaskLedger:
                 )
                 expired.append(task_id)
         return tuple(expired)
+
+    def release(self, task_id: str, *, winner_id: int, now: float) -> TaskAssignment:
+        """Release a locally owned lease because the local safety state preempted it."""
+        _finite(now, "now")
+        current = self.assignment(task_id)
+        if current.status == "completed":
+            return current
+        if current.winner_id != winner_id:
+            raise ValueError("only the current winner may release a task lease")
+        released = TaskAssignment(
+            task_id,
+            "open",
+            None,
+            None,
+            current.allocation_round + 1,
+            None,
+            current.evidence_hash,
+            current.confirmers,
+        )
+        self._assignments[task_id] = released
+        return released
 
     def complete(
         self,

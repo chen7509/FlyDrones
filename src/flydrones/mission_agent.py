@@ -180,6 +180,7 @@ class MissionAgent:
         if safety == "return":
             self._phase = "rally"
             intent = self._velocity_toward(state.position_m, self.contract.rally_position_m, "safety-return")
+            intent = self._apply_peer_separation(intent, state, peer_tracks)
             self._steps += 1
             return AgentDecision(self._phase, safety, intent, tuple(outbound), released)
         if safety == "degraded":
@@ -355,10 +356,7 @@ class MissionAgent:
         current = self.ledger.assignment(task_id)
         if current.status == "completed":
             return ()
-        self.ledger.merge_assignment(
-            TaskAssignment(task_id, "open", None, None, current.allocation_round + 1, None, None, current.confirmers),
-            now=now,
-        )
+        self.ledger.release(task_id, winner_id=self.vehicle_id, now=now)
         self._released_tasks.add(task_id)
         self._active_task_id = None
         return (task_id,)
