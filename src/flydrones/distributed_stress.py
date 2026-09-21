@@ -253,8 +253,12 @@ def _find_free_port_range(count: int) -> int:
         try:
             for offset in range(count):
                 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-                sock.bind(("127.0.0.1", base + offset))
-                sockets.append(sock)
+                try:
+                    sock.bind(("127.0.0.1", base + offset))
+                    sockets.append(sock)
+                except OSError:
+                    sock.close()
+                    raise
             return base
         except OSError:
             pass

@@ -200,6 +200,36 @@ def test_distributed_worker_lands_and_reports_failure_when_depth_never_becomes_r
     assert depth.closed and peer.closed
 
 
+def test_distributed_worker_closes_local_resources_when_landing_telemetry_fails(tmp_path):
+    class LostLinkDuringLanding(LocalKinematicDrone):
+        def telemetry(self):
+            if self.land_called:
+                raise RuntimeError("local MAVLink lost during landing")
+            return super().telemetry()
+
+    clock = Clock()
+    drone = LostLinkDuringLanding(clock)
+    clock.drone = drone
+    depth = LocalDepthCamera()
+    peer = LocalPeerNode()
+    config = DistributedAgentConfig(vehicle_id=0, output_dir=tmp_path, mission_timeout_s=0.1)
+
+    _trace, result = run_distributed_px4_agent(
+        config,
+        drone=drone,
+        depth_camera=depth,
+        peer_node=peer,
+        policy=ForwardPolicy(),
+        monotonic=clock.time,
+        wall_time=clock.wall_time,
+        sleep=clock.sleep,
+    )
+
+    assert not result["accepted"]
+    assert "landing telemetry failed" in result["error"]
+    assert depth.closed and peer.closed
+
+
 def test_coordinator_commands_contain_only_static_config_and_one_vehicle_id(tmp_path):
     commands = build_distributed_agent_commands(
         python_executable="python3",

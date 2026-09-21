@@ -380,18 +380,22 @@ def run_distributed_px4_agent(
                 if error is None:
                     error = f"landing command failed: {exc}"
             land_deadline = monotonic() + config.land_timeout_s
-            while True:
-                telemetry = drone.telemetry()
-                position = spec.global_position(
-                    float(telemetry.x_m or 0.0),
-                    float(telemetry.y_m or 0.0),
-                    float(telemetry.alt_m or 0.0),
-                )
-                observation = depth_camera.latest(config.vehicle_id, now=monotonic(), max_age_s=0.35)
-                sample("land", position, telemetry, observation, len(peer_node.neighbors()))
-                if position[2] <= 0.15 or monotonic() >= land_deadline:
-                    break
-                sleep(period)
+            try:
+                while True:
+                    telemetry = drone.telemetry()
+                    position = spec.global_position(
+                        float(telemetry.x_m or 0.0),
+                        float(telemetry.y_m or 0.0),
+                        float(telemetry.alt_m or 0.0),
+                    )
+                    observation = depth_camera.latest(config.vehicle_id, now=monotonic(), max_age_s=0.35)
+                    sample("land", position, telemetry, observation, len(peer_node.neighbors()))
+                    if position[2] <= 0.15 or monotonic() >= land_deadline:
+                        break
+                    sleep(period)
+            except Exception as exc:
+                if error is None:
+                    error = f"landing telemetry failed: {exc}"
         try:
             depth_camera.close()
         finally:
