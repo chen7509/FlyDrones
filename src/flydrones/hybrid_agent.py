@@ -67,6 +67,7 @@ class HybridPlannerAgent:
         self._hold_started_at: float | None = None
         self._bypass_target: tuple[float, float] | None = None
         self._bypass_until_x = -math.inf
+        self._bypass_y: float | None = None
 
     @property
     def active_target(self) -> tuple[float, float]:
@@ -157,9 +158,17 @@ class HybridPlannerAgent:
             return
         if self.phase != "escaping":
             self._bypass_target = None
+            self._bypass_y = None
             return
         if self._bypass_target is not None and position[0] >= self._bypass_until_x:
             self._bypass_target = None
+            self._bypass_y = None
+        if (
+            self._bypass_target is not None
+            and self._bypass_y is not None
+            and abs(position[1] - self._bypass_y) <= 0.20
+        ):
+            self._bypass_target = (self._bypass_until_x, self._bypass_y)
         if self._bypass_target is not None:
             return
 
@@ -168,10 +177,8 @@ class HybridPlannerAgent:
         if nearest_ahead >= 2.40:
             return
         self._bypass_until_x = position[0] + max(1.40, nearest_ahead + 0.85)
-        self._bypass_target = (
-            self._bypass_until_x,
-            self.corridor_center_y + 1.00,
-        )
+        self._bypass_y = self.corridor_center_y + 1.00
+        self._bypass_target = (position[0] + 0.25, self._bypass_y)
 
     def command(
         self,
