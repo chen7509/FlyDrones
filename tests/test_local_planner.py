@@ -179,3 +179,31 @@ def test_observed_lateral_clearance_allows_side_escape():
     )
     assert abs(decision.command.lateral) > 0.0 or abs(decision.command.yaw) > 0.0
     assert decision.command.forward < 1.0
+
+
+def test_rotation_escape_keeps_one_direction_when_policy_preference_flips():
+    planner = HybridLocalPlanner(LocalPlannerConfig(static_margin_m=0.60))
+    rays = [4.0, 4.0, 4.0, 0.95, 0.90, 0.95, 19.1, 19.1, 19.1]
+    common = dict(
+        position=(0.0, 0.0, 1.8),
+        velocity=(0.0, 0.0, 0.0),
+        yaw_rad=math.pi / 2,
+        target=(6.0, 0.0),
+        peers=(),
+        corridor_center_y=0.0,
+        inside_forest=True,
+    )
+    first = planner.plan(
+        now=1.0,
+        depth_observation=depth(1.0, rays),
+        preferred_command=FlightCommand(forward=1.0, yaw=1.0),
+        **common,
+    )
+    second = planner.plan(
+        now=1.1,
+        depth_observation=depth(1.1, rays),
+        preferred_command=FlightCommand(forward=1.0, yaw=-1.0),
+        **common,
+    )
+    assert first.command.forward == second.command.forward == 0.0
+    assert first.command.yaw * second.command.yaw > 0.0

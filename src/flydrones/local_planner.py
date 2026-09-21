@@ -192,6 +192,7 @@ class HybridLocalPlanner:
     def __init__(self, config: LocalPlannerConfig | None = None) -> None:
         self.config = config or LocalPlannerConfig()
         self.memory = RollingObstacleMemory(self.config)
+        self._escape_yaw_sign: int | None = None
 
     def observe(self, *, now, position, yaw_rad, depth_observation) -> None:
         self.memory.update(
@@ -461,6 +462,7 @@ class HybridLocalPlanner:
         safe_moving = [entry for entry in safe if abs(entry[2].forward_mps) > 1e-9 or abs(entry[2].lateral_mps) > 1e-9]
         if safe_moving:
             selected = max(safe_moving, key=lambda entry: entry[0])
+            self._escape_yaw_sign = None
         else:
             # If every depth ray ends inside the static envelope, turning cannot
             # reveal a safe translational route and the conservative action is hold.
@@ -469,6 +471,7 @@ class HybridLocalPlanner:
             )
             safe_rotations = [entry for entry in safe if abs(entry[2].yaw_rate_rad_s) > 1e-9]
             if all_depth_blocked or not safe_rotations:
+                self._escape_yaw_sign = None
                 hold_static = None
                 if obstacle_snapshot.obstacle_points:
                     hold_static = min(
@@ -482,7 +485,18 @@ class HybridLocalPlanner:
                     rejection_counts=rejection_counts,
                     static_clearance=hold_static,
                 )
-            selected = max(safe_rotations, key=lambda entry: entry[0])
+            if self._escape_yaw_sign is None:
+                distances = tuple(float(value) for value in depth_observation.ray_distances_m)
+                right_clearance = sum(distances[:4])
+                left_clearance = sum(distances[-4:])
+                # Positive PX4 yaw turns toward negative camera offsets (right).
+                self._escape_yaw_sign = 1 if right_clearance > left_clearance else -1
+            persistent_rotations = [
+                entry
+                for entry in safe_rotations
+                if entry[2].yaw_rate_rad_s * self._escape_yaw_sign > 0.0
+            ]
+            selected = max(persistent_rotations or safe_rotations, key=lambda entry: entry[0])
 
         _, _, candidate, minimum_static, minimum_peer = selected
         command = FlightCommand(
