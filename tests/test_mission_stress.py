@@ -16,6 +16,7 @@ from flydrones.mission_stress import (
     _recovery_reserve_sequences,
     _refresh_grace_pending,
     _reserve_vehicle_ids,
+    _worker_runtime_budget_s,
     motion_peer_ids,
     overlay_survivors_converge,
     run_mission_process_trial,
@@ -109,6 +110,13 @@ def test_terminal_anti_entropy_restarts_as_soon_as_a_full_cycle_is_sent() -> Non
 def test_convergence_tail_scales_with_overlay_and_contract_size() -> None:
     assert _convergence_grace_seconds(5, 7) == 15.0
     assert _convergence_grace_seconds(8, 101) >= 23.0
+
+
+def test_parent_runtime_budget_includes_scaled_convergence_tail() -> None:
+    config = MissionStressConfig(vehicle_count=100, duration_s=60.0)
+    contract = _contract_for(config)
+    grace = _convergence_grace_seconds(8, len(contract.expand_work_units()))
+    assert _worker_runtime_budget_s(config, contract) >= config.duration_s + grace + 5.0
 
 
 def test_external_contract_path_is_the_trial_contract(tmp_path) -> None:

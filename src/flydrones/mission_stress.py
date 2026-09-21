@@ -272,6 +272,15 @@ def _convergence_grace_seconds(peer_count: int, contract_record_count: int) -> f
     return max(15.0, estimated_seconds)
 
 
+def _worker_runtime_budget_s(
+    config: MissionStressConfig,
+    contract: MissionContract,
+) -> float:
+    peers = task_overlay_peers(0, tuple(range(config.vehicle_count)))
+    grace = _convergence_grace_seconds(len(peers), len(contract.expand_work_units()))
+    return config.duration_s + grace + 5.0
+
+
 def _reassignment_latencies(
     artifacts: list[dict[str, Any]],
     failed_ids: set[int],
@@ -843,7 +852,7 @@ def run_mission_process_trial(config: MissionStressConfig) -> dict[str, Any]:
     temporary = output / "start.json.tmp"
     temporary.write_text(json.dumps({"start_at": start_at}), encoding="utf-8")
     temporary.replace(output / "start.json")
-    join_deadline = time.monotonic() + config.duration_s + 20
+    join_deadline = time.monotonic() + _worker_runtime_budget_s(config, contract)
     for process in processes:
         process.join(max(0.0, join_deadline - time.monotonic()))
     for process in processes:
