@@ -170,7 +170,7 @@ class HybridPlannerAgent:
         self._bypass_until_x = position[0] + max(1.40, nearest_ahead + 0.85)
         self._bypass_target = (
             self._bypass_until_x,
-            self.corridor_center_y + 1.30,
+            self.corridor_center_y + 1.00,
         )
 
     def command(
