@@ -102,7 +102,7 @@ def test_depth_obstacle_creates_and_then_clears_a_local_bypass_target():
     assert lateral_target[1] > 0.5
 
     clear = SimpleNamespace(captured_at=1.4, ray_distances_m=(19.1,) * 9)
-    agent.command(
+    braking_command = agent.command(
         now=1.4,
         global_position=(lateral_target[0], lateral_target[1], 1.8),
         velocity=(0.0, 0.4, 0.0),
@@ -112,6 +112,8 @@ def test_depth_obstacle_creates_and_then_clears_a_local_bypass_target():
     )
     brake_target = agent.active_target
     assert abs(brake_target[0] - lateral_target[0]) < 0.1
+    assert braking_command.forward == braking_command.lateral == 0.0
+    assert agent.last_decision.mode == "bypass-braking"
 
     clear.captured_at = 1.5
     agent.command(

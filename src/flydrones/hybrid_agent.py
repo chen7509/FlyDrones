@@ -242,6 +242,19 @@ class HybridPlannerAgent:
             return self._hold(now=timestamp, throttle=altitude_throttle, mode="hold-stale-depth")
 
         self._update_local_bypass(position, tuple(float(value) for value in velocity), depth_observation)
+        if self._bypass_stage == "braking":
+            command = FlightCommand(throttle=altitude_throttle, note="bypass braking")
+            decision = PlannerDecision(
+                command=command,
+                mode="bypass-braking",
+                candidate_id="bypass-brake",
+                minimum_static_clearance_m=None,
+                minimum_peer_separation_m=None,
+                generated_candidates=0,
+                rejection_counts=self._empty_rejections(),
+                planning_time_ms=0.0,
+            )
+            return self._record_decision(decision, now=timestamp)
 
         observation = self._learned_observation(
             global_position=position,
