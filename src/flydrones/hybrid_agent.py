@@ -193,7 +193,7 @@ class HybridPlannerAgent:
             self._bypass_target is not None
             and self._bypass_y is not None
             and self._bypass_stage == "lateral"
-            and lateral_error <= max(0.20, predicted_braking_distance)
+            and lateral_error <= max(0.70, predicted_braking_distance)
         ):
             self._bypass_stage = "braking"
             self._bypass_brake_started_at = now
