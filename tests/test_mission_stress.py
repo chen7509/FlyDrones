@@ -16,6 +16,7 @@ from flydrones.mission_stress import (
     _recovery_reserve_sequences,
     _refresh_grace_pending,
     _reserve_vehicle_ids,
+    _scheduled_dynamic_task_id,
     _worker_runtime_budget_s,
     motion_peer_ids,
     overlay_survivors_converge,
@@ -117,6 +118,16 @@ def test_parent_runtime_budget_includes_scaled_convergence_tail() -> None:
     contract = _contract_for(config)
     grace = _convergence_grace_seconds(8, len(contract.expand_work_units()))
     assert _worker_runtime_budget_s(config, contract) >= config.duration_s + grace + 5.0
+
+
+def test_dynamic_work_unit_announcement_repeats_at_one_hertz() -> None:
+    known = ("search-0000", "confirm-a", "confirm-b")
+    contract_ids = {"search-0000"}
+    assert _scheduled_dynamic_task_id(known, contract_ids, 9, 10, 99) in {
+        "confirm-a",
+        "confirm-b",
+    }
+    assert _scheduled_dynamic_task_id(known, contract_ids, 10, 10, 99) is None
 
 
 def test_external_contract_path_is_the_trial_contract(tmp_path) -> None:

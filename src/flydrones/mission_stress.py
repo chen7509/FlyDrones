@@ -281,6 +281,21 @@ def _worker_runtime_budget_s(
     return config.duration_s + grace + 5.0
 
 
+def _scheduled_dynamic_task_id(
+    work_unit_ids: tuple[str, ...],
+    contract_task_ids: set[str],
+    step: int,
+    period_steps: int,
+    vehicle_id: int,
+) -> str | None:
+    if step % period_steps != vehicle_id % period_steps:
+        return None
+    dynamic = tuple(sorted(task_id for task_id in work_unit_ids if task_id not in contract_task_ids))
+    if not dynamic:
+        return None
+    return dynamic[(step // period_steps + vehicle_id) % len(dynamic)]
+
+
 def _reassignment_latencies(
     artifacts: list[dict[str, Any]],
     failed_ids: set[int],
@@ -549,6 +564,22 @@ def _worker_main(
             ),
             preferred_task_ids=preferred_sequences[vehicle_id],
         )
+        dynamic_task_id = _scheduled_dynamic_task_id(
+            agent.work_unit_ids,
+            contract_task_ids,
+            step,
+            max(1, int(config.rate_hz)),
+            vehicle_id,
+        )
+        if dynamic_task_id is not None:
+            task_node.send(
+                "award",
+                {
+                    "task_id": dynamic_task_id,
+                    "work_unit": _unit_payload(agent.work_unit(dynamic_task_id)),
+                },
+                now=elapsed,
+            )
         for kind, payload in decision.outbound_messages:
             task_node.send(kind, payload, now=elapsed)  # type: ignore[arg-type]
         if step % max(1, int(config.rate_hz / 2)) == vehicle_id % max(1, int(config.rate_hz / 2)):
