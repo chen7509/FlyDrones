@@ -69,6 +69,7 @@ class HybridPlannerAgent:
         self._bypass_until_x = -math.inf
         self._bypass_y: float | None = None
         self._bypass_stage: str | None = None
+        self._bypass_brake_started_at = -math.inf
 
     @property
     def active_target(self) -> tuple[float, float]:
@@ -156,6 +157,7 @@ class HybridPlannerAgent:
 
     def _update_local_bypass(
         self,
+        now: float,
         position: tuple[float, float, float],
         velocity: tuple[float, float, float],
         depth_observation,
@@ -166,11 +168,13 @@ class HybridPlannerAgent:
             self._bypass_target = None
             self._bypass_y = None
             self._bypass_stage = None
+            self._bypass_brake_started_at = -math.inf
             return
         if self._bypass_target is not None and position[0] >= self._bypass_until_x:
             self._bypass_target = None
             self._bypass_y = None
             self._bypass_stage = None
+            self._bypass_brake_started_at = -math.inf
         if (
             self._bypass_target is not None
             and self._bypass_y is not None
@@ -178,11 +182,13 @@ class HybridPlannerAgent:
             and abs(position[1] - self._bypass_y) <= 0.20
         ):
             self._bypass_stage = "braking"
+            self._bypass_brake_started_at = now
             self._bypass_target = (position[0], position[1])
         if (
             self._bypass_target is not None
             and self._bypass_y is not None
             and self._bypass_stage == "braking"
+            and now - self._bypass_brake_started_at >= 1.0
             and math.hypot(velocity[0], velocity[1]) <= 0.12
         ):
             self._bypass_stage = "forward"
@@ -241,7 +247,12 @@ class HybridPlannerAgent:
         if not valid_depth:
             return self._hold(now=timestamp, throttle=altitude_throttle, mode="hold-stale-depth")
 
-        self._update_local_bypass(position, tuple(float(value) for value in velocity), depth_observation)
+        self._update_local_bypass(
+            timestamp,
+            position,
+            tuple(float(value) for value in velocity),
+            depth_observation,
+        )
         if self._bypass_stage == "braking":
             command = FlightCommand(throttle=altitude_throttle, note="bypass braking")
             decision = PlannerDecision(

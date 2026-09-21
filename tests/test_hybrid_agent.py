@@ -124,6 +124,17 @@ def test_depth_obstacle_creates_and_then_clears_a_local_bypass_target():
         peers=(),
         depth_observation=clear,
     )
+    assert agent.last_decision.mode == "bypass-braking"
+
+    clear.captured_at = 2.5
+    agent.command(
+        now=2.5,
+        global_position=(lateral_target[0], lateral_target[1], 1.8),
+        velocity=(0.0, 0.0, 0.0),
+        yaw_rad=math.pi / 2,
+        peers=(),
+        depth_observation=clear,
+    )
     forward_target = agent.active_target
     assert forward_target[0] > 1.0
     assert forward_target[1] == lateral_target[1]
