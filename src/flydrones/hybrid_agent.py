@@ -172,7 +172,7 @@ class HybridPlannerAgent:
             self._bypass_brake_started_at = -math.inf
             self._bypass_low_speed_started_at = -math.inf
             return
-        if self._bypass_target is not None and position[0] >= self._bypass_until_x:
+        if self._bypass_target is not None and position[0] >= self._bypass_until_x - 0.20:
             self._bypass_target = None
             self._bypass_y = None
             self._bypass_stage = None

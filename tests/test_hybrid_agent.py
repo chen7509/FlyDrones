@@ -140,10 +140,10 @@ def test_depth_obstacle_creates_and_then_clears_a_local_bypass_target():
     assert forward_target[0] > 3.5
     assert forward_target[1] == lateral_target[1]
 
-    clear.captured_at = 2.0
+    clear.captured_at = 3.0
     agent.command(
-        now=2.0,
-        global_position=(forward_target[0] + 0.1, forward_target[1], 1.8),
+        now=3.0,
+        global_position=(forward_target[0] - 0.15, forward_target[1], 1.8),
         velocity=(0.2, 0.0, 0.0),
         yaw_rad=math.pi / 2,
         peers=(),
