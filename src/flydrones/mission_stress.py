@@ -131,6 +131,21 @@ def _recovery_reserve_sequences(
     }
 
 
+def _preferred_task_sequences(
+    config: MissionStressConfig,
+    search_units: list[WorkUnit],
+) -> dict[int, tuple[str, ...]]:
+    """Give every agent a local first responsibility before general auctions."""
+    recovery = _recovery_reserve_sequences(config, search_units)
+    return {
+        vehicle_id: recovery.get(
+            vehicle_id,
+            (search_units[vehicle_id % len(search_units)].task_id,),
+        )
+        for vehicle_id in range(config.vehicle_count)
+    }
+
+
 def _free_base_port(count: int, start: int) -> int:
     step = count + 2
     for base in range(start, 64000 - step, step):
@@ -346,7 +361,7 @@ def _worker_main(
     search_units = [unit for unit in contract.expand_work_units() if unit.kind == "search_cell"]
     reserve_ids_tuple = _reserve_vehicle_ids(config)
     recovery_map = _recovery_reserve_map(config, search_units)
-    recovery_sequences = _recovery_reserve_sequences(config, search_units)
+    preferred_sequences = _preferred_task_sequences(config, search_units)
     if vehicle_id in recovery_map:
         position = list(agent.work_unit(recovery_map[vehicle_id]).center_m)
     else:
@@ -469,7 +484,7 @@ def _worker_main(
                 vehicle_id not in reserve_ids
                 or elapsed >= config.failure_at_s + 3.0
             ),
-            preferred_task_ids=recovery_sequences.get(vehicle_id, ()),
+            preferred_task_ids=preferred_sequences[vehicle_id],
         )
         for kind, payload in decision.outbound_messages:
             task_node.send(kind, payload, now=elapsed)  # type: ignore[arg-type]

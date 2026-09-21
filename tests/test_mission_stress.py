@@ -8,6 +8,7 @@ from flydrones.mission_stress import (
     _contract_for,
     _initial_position,
     _pop_bounded_assignment_batch,
+    _preferred_task_sequences,
     _read_start_time,
     _reassignment_latencies,
     _recovery_reserve_map,
@@ -225,3 +226,6 @@ def test_reserve_ids_are_alive_and_exclude_sensor_fault_nodes() -> None:
     assert set(mapping.values()) == expected_tasks
     sequences = _recovery_reserve_sequences(config, units)
     assert all(sequence[1] == units[reserve_id].task_id for reserve_id, sequence in sequences.items())
+    all_sequences = _preferred_task_sequences(config, units)
+    assert all_sequences[0] == (units[0].task_id,)
+    assert all_sequences[reserves[0]] == sequences[reserves[0]]
