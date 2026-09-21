@@ -348,6 +348,7 @@ class HybridLocalPlanner:
         preferred_command,
         corridor_center_y,
         inside_forest,
+        corridor_half_width_m=None,
     ) -> PlannerDecision:
         started_at = perf_counter()
         rejection_counts = {"unknown": 0, "static": 0, "peer": 0, "corridor": 0, "invalid": 0}
@@ -359,6 +360,13 @@ class HybridLocalPlanner:
             or not _finite_vector(target, 2)
             or not math.isfinite(float(yaw_rad))
             or not math.isfinite(float(corridor_center_y))
+            or (
+                corridor_half_width_m is not None
+                and (
+                    not math.isfinite(float(corridor_half_width_m))
+                    or float(corridor_half_width_m) <= 0.0
+                )
+            )
         ):
             rejection_counts["invalid"] += 1
             return self._hold_decision(
@@ -450,8 +458,16 @@ class HybridLocalPlanner:
             if (
                 moving
                 and bool(inside_forest)
-                and start_corridor_error > 0.8
-                and final_corridor_error > start_corridor_error + 1e-9
+                and (
+                    (
+                        corridor_half_width_m is not None
+                        and final_corridor_error > float(corridor_half_width_m) + 1e-9
+                    )
+                    or (
+                        start_corridor_error > 0.8
+                        and final_corridor_error > start_corridor_error + 1e-9
+                    )
+                )
             ):
                 rejection_counts["corridor"] += 1
                 continue

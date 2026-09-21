@@ -113,6 +113,34 @@ def test_unknown_rear_space_forbids_reverse_motion():
     assert decision.rejection_counts["unknown"] > 0
 
 
+def test_narrow_bypass_corridor_rejects_cross_track_drift():
+    planner = HybridLocalPlanner(LocalPlannerConfig(unknown_is_blocked=False))
+    decision = planner.plan(
+        now=1.0,
+        position=(0.0, 0.0, 1.8),
+        velocity=(0.0, 0.0, 0.0),
+        yaw_rad=math.pi / 2,
+        target=(6.0, 1.0),
+        depth_observation=clear_front(),
+        peers=(),
+        preferred_command=FlightCommand(forward=1.0, lateral=-1.0, yaw=-1.0),
+        corridor_center_y=0.0,
+        corridor_half_width_m=0.35,
+        inside_forest=True,
+    )
+    assert decision.rejection_counts["corridor"] > 0
+    selected = next(
+        candidate
+        for candidate in planner._candidates(
+            position=(0.0, 0.0, 1.8),
+            velocity=(0.0, 0.0, 0.0),
+            yaw_rad=math.pi / 2,
+        )
+        if candidate.candidate_id == decision.candidate_id
+    )
+    assert abs(selected.samples[-1][1]) <= 0.35
+
+
 def test_remembered_tree_stays_blocked_after_camera_turns_away():
     planner = HybridLocalPlanner(LocalPlannerConfig())
     obstacle = depth(1.0, [19.1] * 4 + [1.0] + [19.1] * 4)
