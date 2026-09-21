@@ -46,3 +46,57 @@ The 20/100 trials validate process isolation, the local avoidance interface and 
 The navigation policy is a trained forest PPO actor combined with fly-inspired visual and safety logic; it is not a full
 biophysical simulation of every fruit-fly neuron. Real commercial flight still requires staged hardware-in-the-loop and
 outdoor tests, geofencing, an independent emergency stop, redundant localization and the applicable aviation approvals.
+
+## Run the autonomous 100-agent mission
+
+This trial adds decentralized task choice above the existing local flight and avoidance layer. From PowerShell:
+
+```powershell
+$env:PYTHONPATH = (Resolve-Path 'src').Path
+python tools/run_mission_swarm.py `
+  --contract configs/mission_search_confirm_rally.json `
+  --vehicles 100 `
+  --duration 60 `
+  --failed-ids 8,17,29,41,52,63,74,85,91,97 `
+  --failure-at 8 `
+  --partition-start 12 `
+  --partition-end 17 `
+  --low-battery-id 4 `
+  --depth-freeze-id 11 `
+  --sensor-fault-at 6 `
+  --seed 20260921 `
+  --output results/mission-swarm-100
+```
+
+The mission contract contains a schema version and mission ID, a bounded area polygon and search-cell size, target
+classes and confirmation quorum, one rally position, a deadline, and hard limits for maximum speed, minimum separation,
+geofence margin and return battery percentage. It deliberately contains no per-aircraft waypoint list. Unknown fields,
+duplicate JSON keys, non-finite values and unsupported mission types are rejected before a worker can accept the mission.
+
+The task station repeatedly sends the immutable contract and collects a matching SHA-256 acknowledgement from every
+worker. It then closes its UDP socket and records `station_closed_at`; only afterwards does the launcher atomically write
+the start marker with `start_at`. The acceptance evaluator requires `station_closed_at < start_at`. During control, each
+worker chooses tasks from its local ledger, renews three-second leases, resolves conflicting bids deterministically and
+uses bounded peer-to-peer UDP gossip. The parent reads no live state and the recorded central command count must remain
+zero.
+
+Learning or local task scoring may choose which open task to attempt and may propose a velocity. Deterministic safety
+rules retain final authority: stale depth stops forward motion and then lands, low battery releases the lease and returns,
+invalid localization lands, speed is clamped, and fresh physical-peer tracks enforce separation. A task decision cannot
+override these limits.
+
+`task-timeline.png` shows each worker's local task-state changes over mission time; dense vertical bands correspond to
+auctions, injected failures, partition recovery and terminal anti-entropy. `trajectories.png` shows the offline XY paths.
+The per-agent JSON files are the source evidence; `summary.json` and `report.md` are calculated only after workers exit.
+
+The verified run on 2026-09-21 used 100 distinct worker PIDs. Ten configured workers exited, all 90 survivors continued,
+100/100 search cells completed, all three targets obtained two distinct confirmations, every surviving ledger converged,
+and no central control command was issued. All ten tasks held by failed workers were reassigned; the maximum observed
+reassignment latency was 3.000 s. There were zero collisions and the minimum observed 3-D separation was 3.481 m
+against a 3 m contract minimum. The task layer transmitted 76,763 UDP datagrams while enforcing a per-agent limit of
+10 actual task datagrams per second and a 1,200-byte maximum. The offline evaluator accepted every required check.
+
+This is a single-computer kinematic and real-loopback-UDP validation. It does not represent 100 physical radios, 100 PX4
+physics instances, aerodynamic interaction, GNSS multipath, motor failure or legal approval for a commercial show. The
+next validation level is hardware-in-the-loop with real autopilots, followed by small, geofenced outdoor groups under an
+independent emergency-stop system.
