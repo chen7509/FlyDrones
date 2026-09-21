@@ -279,8 +279,10 @@ class TaskUdpNode:
             "connection_resets": 0,
         }
 
-    def _consume_token(self, now: float) -> bool:
+    def _consume_tokens(self, count: int, now: float) -> bool:
         timestamp = _finite(now, "now")
+        if count <= 0:
+            return True
         if self._last_token_at is None:
             self._last_token_at = timestamp
         else:
@@ -290,10 +292,10 @@ class TaskUdpNode:
                 self._tokens + elapsed * self.config.max_messages_per_second,
             )
             self._last_token_at = timestamp
-        if self._tokens < 1.0:
+        if self._tokens < count:
             self.metrics["rate_limited_messages"] += 1
             return False
-        self._tokens -= 1.0
+        self._tokens -= count
         return True
 
     def _next_datagram(self, kind: TaskKind, payload: dict[str, object], now: float) -> bytes:
@@ -314,14 +316,17 @@ class TaskUdpNode:
         timestamp = self._clock() if now is None else now
         if kind in {"mission_offer", "mission_accept"}:
             raise ValueError("mission handshake messages do not use peer gossip")
-        if not self._consume_token(timestamp):
+        targets: list[int] = []
+        for peer_id in self.overlay_peers:
+            if self._partition_filter(self.vehicle_id, peer_id):
+                targets.append(peer_id)
+            else:
+                self.metrics["partition_drops"] += 1
+        if not self._consume_tokens(len(targets), timestamp):
             return 0
         datagram = self._next_datagram(kind, payload, timestamp)
         sent = 0
-        for peer_id in self.overlay_peers:
-            if not self._partition_filter(self.vehicle_id, peer_id):
-                self.metrics["partition_drops"] += 1
-                continue
+        for peer_id in targets:
             self._socket.sendto(
                 datagram,
                 (self.config.peer_host, self.config.base_port + peer_id),
@@ -340,7 +345,7 @@ class TaskUdpNode:
         if kind != "mission_accept":
             raise ValueError("only mission_accept may be sent to the task station")
         timestamp = self._clock() if now is None else now
-        if not self._consume_token(timestamp):
+        if not self._consume_tokens(1, timestamp):
             return 0
         datagram = self._next_datagram(kind, payload, timestamp)
         self._socket.sendto(
@@ -459,4 +464,3 @@ class MissionTaskStation:
 
     def close(self) -> None:
         self._socket.close()
-

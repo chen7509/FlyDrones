@@ -156,6 +156,19 @@ def test_two_task_nodes_exchange_on_real_loopback_and_rate_limit_sender() -> Non
             node.close()
 
 
+def test_rate_budget_counts_each_overlay_datagram() -> None:
+    nodes, _config = make_nodes(9, rate=10.0)
+    sender = nodes[0]
+    try:
+        assert sender.send("bid", {"task_id": "search-0000"}, now=1.0) == 8
+        assert sender.send("lease", {"task_id": "search-0000"}, now=1.0) == 0
+        assert sender.metrics["sent_datagrams"] == 8
+        assert sender.metrics["rate_limited_messages"] == 1
+    finally:
+        for node in nodes:
+            node.close()
+
+
 def test_poll_rejects_out_of_order_and_accepts_sequence_wrap() -> None:
     nodes, config = make_nodes(2)
     receiver = nodes[1]
@@ -273,4 +286,3 @@ def test_station_offers_contract_and_observes_every_real_agent_acceptance() -> N
         station.close()
         for node in nodes:
             node.close()
-
