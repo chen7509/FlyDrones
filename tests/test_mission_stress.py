@@ -10,6 +10,7 @@ from flydrones.mission_stress import (
     _pop_bounded_assignment_batch,
     _read_start_time,
     _reassignment_latencies,
+    _recovery_reserve_map,
     _reserve_vehicle_ids,
     motion_peer_ids,
     overlay_survivors_converge,
@@ -190,3 +191,8 @@ def test_reserve_ids_are_alive_and_exclude_sensor_fault_nodes() -> None:
     assert not set(reserves) & set(config.failed_vehicle_ids)
     assert config.low_battery_vehicle_id not in reserves
     assert config.depth_freeze_vehicle_id not in reserves
+    mission = _contract_for(config)
+    units = [unit for unit in mission.expand_work_units() if unit.kind == "search_cell"]
+    mapping = _recovery_reserve_map(config, units)
+    expected_tasks = {units[item % len(units)].task_id for item in config.failed_vehicle_ids}
+    assert set(mapping.values()) == expected_tasks

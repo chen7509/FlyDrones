@@ -522,7 +522,7 @@ class MissionAgent:
                 3.0,
             )
             distance = math.sqrt(sum(value * value for value in relative))
-            required = self.contract.safety.minimum_separation_m + 1.5
+            required = self.contract.safety.minimum_separation_m + 2.0
             if distance >= required * 1.5 and miss >= required:
                 continue
             away = [-value / max(distance, 1e-6) for value in relative]

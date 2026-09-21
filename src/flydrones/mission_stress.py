@@ -104,6 +104,18 @@ def _reserve_vehicle_ids(config: MissionStressConfig) -> tuple[int, ...]:
     return tuple(eligible[-min(10, len(eligible)) :])
 
 
+def _recovery_reserve_map(
+    config: MissionStressConfig,
+    search_units: list[WorkUnit],
+) -> dict[int, str]:
+    reserves = _reserve_vehicle_ids(config)
+    failed_tasks = [
+        search_units[vehicle_id % len(search_units)].task_id
+        for vehicle_id in sorted(config.failed_vehicle_ids)
+    ]
+    return dict(zip(reserves, failed_tasks, strict=False))
+
+
 def _free_base_port(count: int, start: int) -> int:
     step = count + 2
     for base in range(start, 64000 - step, step):
@@ -319,7 +331,12 @@ def _worker_main(
 
     agent = MissionAgent.for_contract(vehicle_id, config.vehicle_count, contract)
     search_units = [unit for unit in contract.expand_work_units() if unit.kind == "search_cell"]
-    position = list(_initial_position(vehicle_id, config.failed_vehicle_ids, search_units))
+    reserve_ids_tuple = _reserve_vehicle_ids(config)
+    recovery_map = _recovery_reserve_map(config, search_units)
+    if vehicle_id in recovery_map:
+        position = list(agent.work_unit(recovery_map[vehicle_id]).center_m)
+    else:
+        position = list(_initial_position(vehicle_id, config.failed_vehicle_ids, search_units))
     velocity = [0.0, 0.0, 0.0]
     trace: list[dict[str, object]] = []
     changes: list[dict[str, object]] = []
@@ -327,7 +344,7 @@ def _worker_main(
     forwarded: set[str] = set()
     detected_targets: set[int] = set()
     target_indices = {0, len(search_units) // 2, len(search_units) - 1}
-    reserve_ids = set(_reserve_vehicle_ids(config))
+    reserve_ids = set(reserve_ids_tuple)
     contract_task_ids = {unit.task_id for unit in contract.expand_work_units()}
     status = "completed"
     step = 0
