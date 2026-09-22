@@ -4,6 +4,7 @@ from hashlib import sha256
 import json
 from pathlib import Path
 import random
+from collections.abc import Mapping
 from typing import Any
 
 import numpy as np
@@ -20,9 +21,9 @@ def _digest(path: Path) -> str:
     return digest.hexdigest()
 
 
-def _rng_state() -> dict[str, Any]:
+def capture_rng_state() -> dict[str, Any]:
     numpy_state = np.random.get_state()
-    return {
+    state = {
         "python": random.getstate(),
         "numpy": {
             "bit_generator": numpy_state[0],
@@ -35,6 +36,34 @@ def _rng_state() -> dict[str, Any]:
         },
         "torch": torch.get_rng_state(),
     }
+    if torch.cuda.is_available():
+        state["torch_cuda"] = torch.cuda.get_rng_state_all()
+    return state
+
+
+def restore_rng_state(state: Mapping[str, Any]) -> None:
+    required = {"python", "numpy", "torch"}
+    if not required <= set(state):
+        raise ValueError("RNG state is incomplete")
+    random.setstate(state["python"])
+    numpy_state = state["numpy"]
+    keys = numpy_state["keys"]
+    if isinstance(keys, torch.Tensor):
+        keys = keys.cpu().numpy()
+    np.random.set_state(
+        (
+            str(numpy_state["bit_generator"]),
+            np.asarray(keys, dtype=np.uint32),
+            int(numpy_state["position"]),
+            int(numpy_state["has_gauss"]),
+            float(numpy_state["cached_gaussian"]),
+        )
+    )
+    torch.set_rng_state(torch.as_tensor(state["torch"], dtype=torch.uint8).cpu())
+    if "torch_cuda" in state:
+        if not torch.cuda.is_available():
+            raise ValueError("checkpoint contains CUDA RNG state but CUDA is unavailable")
+        torch.cuda.set_rng_state_all(state["torch_cuda"])
 
 
 def _validate_metadata(metadata: dict) -> None:
@@ -69,7 +98,7 @@ def save_checkpoint(
         "model_state": model_state,
         "optimizer_state": optimizer_state,
         "metadata": dict(metadata),
-        "rng_state": _rng_state(),
+        "rng_state": capture_rng_state(),
     }
     torch.save(payload, payload_path)
     manifest = {
@@ -84,7 +113,11 @@ def save_checkpoint(
     return path
 
 
-def load_checkpoint(path: str | Path) -> dict:
+def load_checkpoint(
+    path: str | Path,
+    *,
+    expected_metadata: Mapping[str, Any] | None = None,
+) -> dict:
     path = Path(path)
     manifest = json.loads((path / "manifest.json").read_text(encoding="utf-8"))
     payload_path = path / "checkpoint.pt"
@@ -103,4 +136,7 @@ def load_checkpoint(path: str | Path) -> dict:
     _validate_metadata(payload["metadata"])
     if payload["metadata"] != manifest.get("metadata"):
         raise ValueError("checkpoint metadata does not match manifest")
+    for key, expected in (expected_metadata or {}).items():
+        if payload["metadata"].get(key) != expected:
+            raise ValueError(f"checkpoint metadata mismatch: {key}")
     return payload
