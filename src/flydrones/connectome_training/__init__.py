@@ -21,11 +21,14 @@ from .model import ConnectomeConstrainedCore, RecurrentState
 from .features import FEATURE_NAMES, sequence_tensors
 from .losses import LossWeights, sequence_loss
 from .trainer import evaluate_sequences, train_epoch
+from .checkpoint import load_checkpoint, save_checkpoint
+from .governance import CurriculumGate, evaluate_gate, validate_dataset_partitions
 
 __all__ = [
     "INPUT_ARRAY_KEYS",
     "ParameterSet",
     "ConnectomeConstrainedCore",
+    "CurriculumGate",
     "FEATURE_NAMES",
     "LossWeights",
     "RecurrentState",
@@ -37,15 +40,19 @@ __all__ = [
     "StructureIdentity",
     "build_structure_identity",
     "evaluate_sequences",
+    "evaluate_gate",
     "initial_parameter_set",
     "load_sequence",
     "profile_controller",
     "load_parameter_set",
+    "load_checkpoint",
     "reject_formal_evidence",
     "summarize_latency",
     "save_parameter_set",
+    "save_checkpoint",
     "sequence_loss",
     "sequence_tensors",
     "train_epoch",
+    "validate_dataset_partitions",
     "write_sequence",
 ]
