@@ -23,30 +23,47 @@ from .losses import LossWeights, sequence_loss
 from .trainer import evaluate_sequences, train_epoch
 from .checkpoint import load_checkpoint, save_checkpoint
 from .governance import CurriculumGate, evaluate_gate, validate_dataset_partitions
+from .curriculum import TrainingSession, run_curriculum
+from .curriculum_config import (
+    CurriculumConfig,
+    CurriculumProfile,
+    CurriculumStage,
+    load_curriculum_config,
+)
+from .curriculum_state import CurriculumState, RunLock, StateStore
 
 __all__ = [
     "INPUT_ARRAY_KEYS",
     "ParameterSet",
     "ConnectomeConstrainedCore",
     "CurriculumGate",
+    "CurriculumConfig",
+    "CurriculumProfile",
+    "CurriculumStage",
+    "CurriculumState",
     "FEATURE_NAMES",
     "LossWeights",
     "RecurrentState",
+    "RunLock",
     "SequenceFrame",
     "SequenceProvenance",
     "TeacherTarget",
     "TrainingSequence",
     "TeacherSequenceRecorder",
     "StructureIdentity",
+    "StateStore",
+    "TrainingSession",
     "build_structure_identity",
     "evaluate_sequences",
     "evaluate_gate",
     "initial_parameter_set",
     "load_sequence",
+    "load_curriculum_config",
     "profile_controller",
     "load_parameter_set",
     "load_checkpoint",
     "reject_formal_evidence",
+    "run_curriculum",
     "summarize_latency",
     "save_parameter_set",
     "save_checkpoint",
