@@ -18,11 +18,16 @@ from .parameters import (
     save_parameter_set,
 )
 from .model import ConnectomeConstrainedCore, RecurrentState
+from .features import FEATURE_NAMES, sequence_tensors
+from .losses import LossWeights, sequence_loss
+from .trainer import evaluate_sequences, train_epoch
 
 __all__ = [
     "INPUT_ARRAY_KEYS",
     "ParameterSet",
     "ConnectomeConstrainedCore",
+    "FEATURE_NAMES",
+    "LossWeights",
     "RecurrentState",
     "SequenceFrame",
     "SequenceProvenance",
@@ -31,6 +36,7 @@ __all__ = [
     "TeacherSequenceRecorder",
     "StructureIdentity",
     "build_structure_identity",
+    "evaluate_sequences",
     "initial_parameter_set",
     "load_sequence",
     "profile_controller",
@@ -38,5 +44,8 @@ __all__ = [
     "reject_formal_evidence",
     "summarize_latency",
     "save_parameter_set",
+    "sequence_loss",
+    "sequence_tensors",
+    "train_epoch",
     "write_sequence",
 ]
