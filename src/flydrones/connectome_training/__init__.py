@@ -17,10 +17,13 @@ from .parameters import (
     load_parameter_set,
     save_parameter_set,
 )
+from .model import ConnectomeConstrainedCore, RecurrentState
 
 __all__ = [
     "INPUT_ARRAY_KEYS",
     "ParameterSet",
+    "ConnectomeConstrainedCore",
+    "RecurrentState",
     "SequenceFrame",
     "SequenceProvenance",
     "TeacherTarget",
