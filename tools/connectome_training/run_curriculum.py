@@ -50,7 +50,14 @@ def _restart(output: Path) -> None:
     resolved = output.resolve()
     if resolved == Path.cwd().resolve() or resolved.parent == resolved:
         raise ValueError("refusing to restart an unsafe output path")
+    ignore_policy = None
+    ignore_path = resolved / ".gitignore"
+    if ignore_path.is_file():
+        ignore_policy = ignore_path.read_text(encoding="utf-8")
     shutil.rmtree(resolved)
+    if ignore_policy is not None:
+        resolved.mkdir(parents=True)
+        (resolved / ".gitignore").write_text(ignore_policy, encoding="utf-8")
 
 
 def _write_summary(output: Path, state, evidence_class: str) -> None:

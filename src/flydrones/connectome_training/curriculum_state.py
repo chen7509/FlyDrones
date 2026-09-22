@@ -6,6 +6,7 @@ import math
 import os
 from pathlib import Path
 from typing import IO
+from uuid import uuid4
 
 SCHEMA = "flydrones-connectome-curriculum-state-v1"
 
@@ -95,18 +96,71 @@ class RunLock:
         self.root = Path(root)
         self.path = self.root / "run.lock"
         self._stream: IO[str] | None = None
+        self._token: str | None = None
+
+    @staticmethod
+    def _process_alive(pid: int) -> bool:
+        if pid <= 0:
+            return False
+        if os.name == "nt":
+            import ctypes
+            from ctypes import wintypes
+
+            open_process = ctypes.windll.kernel32.OpenProcess
+            open_process.argtypes = [wintypes.DWORD, wintypes.BOOL, wintypes.DWORD]
+            open_process.restype = wintypes.HANDLE
+            wait = ctypes.windll.kernel32.WaitForSingleObject
+            wait.argtypes = [wintypes.HANDLE, wintypes.DWORD]
+            wait.restype = wintypes.DWORD
+            handle = open_process(0x00100000, False, pid)
+            if not handle:
+                return ctypes.windll.kernel32.GetLastError() == 5
+            try:
+                return wait(handle, 0) == 258
+            finally:
+                ctypes.windll.kernel32.CloseHandle(handle)
+        try:
+            os.kill(pid, 0)
+        except ProcessLookupError:
+            return False
+        except PermissionError:
+            return True
+        return True
+
+    def _remove_if_stale(self) -> bool:
+        try:
+            payload = json.loads(self.path.read_text(encoding="utf-8"))
+            pid = int(payload["pid"])
+        except (OSError, ValueError, KeyError, TypeError, json.JSONDecodeError):
+            return False
+        if self._process_alive(pid):
+            return False
+        try:
+            self.path.unlink()
+        except FileNotFoundError:
+            pass
+        return True
 
     def __enter__(self) -> RunLock:
         self.root.mkdir(parents=True, exist_ok=True)
-        try:
-            descriptor = os.open(
-                self.path,
-                os.O_CREAT | os.O_EXCL | os.O_WRONLY,
-            )
-        except FileExistsError as error:
-            raise RuntimeError(f"curriculum output is already locked: {self.path}") from error
+        for attempt in range(2):
+            try:
+                descriptor = os.open(
+                    self.path,
+                    os.O_CREAT | os.O_EXCL | os.O_WRONLY,
+                )
+                break
+            except FileExistsError as error:
+                if attempt == 0 and self._remove_if_stale():
+                    continue
+                raise RuntimeError(
+                    f"curriculum output is already locked: {self.path}"
+                ) from error
+        else:
+            raise RuntimeError(f"could not acquire curriculum lock: {self.path}")
+        self._token = uuid4().hex
         self._stream = os.fdopen(descriptor, "w", encoding="utf-8")
-        json.dump({"pid": os.getpid()}, self._stream)
+        json.dump({"pid": os.getpid(), "token": self._token}, self._stream)
         self._stream.write("\n")
         self._stream.flush()
         os.fsync(self._stream.fileno())
@@ -116,4 +170,10 @@ class RunLock:
         if self._stream is not None:
             self._stream.close()
             self._stream = None
-        self.path.unlink(missing_ok=True)
+        try:
+            payload = json.loads(self.path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            payload = {}
+        if payload.get("token") == self._token:
+            self.path.unlink(missing_ok=True)
+        self._token = None

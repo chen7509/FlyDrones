@@ -18,12 +18,12 @@
   "last_committed_batch": "looming:0",
   "latest_checkpoint": "checkpoints/stage-001-looming-batch-000-attempt-000",
   "measured_batches": 2,
-  "model_identity": "tiny-connectome:41056f1a9c164332139f0266409bc56dcd09b315e38712a7ddfaa6fc37a79d4a:d80c750b3d6e9b2e538e453cfc7ed8c044dc232138958785a6b75049f9f64975:device=cpu",
+  "model_identity": "tiny-connectome:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc:41056f1a9c164332139f0266409bc56dcd09b315e38712a7ddfaa6fc37a79d4a:d80c750b3d6e9b2e538e453cfc7ed8c044dc232138958785a6b75049f9f64975:device=cpu",
   "peak_cuda_memory_bytes": 0,
-  "peak_process_memory_bytes": 300523520,
+  "peak_process_memory_bytes": 300064768,
   "profile": "smoke",
   "repository_artifact_scope": "summary-only",
-  "run_id": "cf572ca6ac61474baf4fd6121b589376",
+  "run_id": "e483692f3de04d688710e473766d832f",
   "schema": "flydrones-connectome-curriculum-summary-v1",
   "stage_index": 2,
   "stage_results": {
@@ -41,5 +41,5 @@
     }
   },
   "status": "COMPLETE",
-  "total_training_wall_s": 0.2357124000263866
+  "total_training_wall_s": 0.23135809999075718
 }

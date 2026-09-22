@@ -64,6 +64,17 @@ def test_run_lock_is_exclusive_and_released(tmp_path):
         assert (tmp_path / "run.lock").exists()
 
 
+def test_run_lock_recovers_a_stale_process_lock(tmp_path):
+    (tmp_path / "run.lock").write_text(
+        json.dumps({"pid": 2_000_000_000, "token": "stale"}) + "\n",
+        encoding="utf-8",
+    )
+    with RunLock(tmp_path):
+        payload = json.loads((tmp_path / "run.lock").read_text(encoding="utf-8"))
+        assert payload["pid"] != 2_000_000_000
+    assert not (tmp_path / "run.lock").exists()
+
+
 def test_rng_state_restores_python_numpy_and_torch():
     random.seed(9)
     np.random.seed(9)

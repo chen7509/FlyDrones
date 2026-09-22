@@ -6,6 +6,9 @@ import sys
 import pytest
 import yaml
 
+from flydrones.connectome_training.curriculum_session import verify_source_digest
+from tools.connectome_training.run_curriculum import _restart
+
 
 def smoke_config(tmp_path: Path) -> Path:
     value = yaml.safe_load(
@@ -78,6 +81,16 @@ def test_cli_restart_refuses_an_active_lock(tmp_path):
     assert "already locked" in error.value.stderr
 
 
+def test_restart_preserves_repository_ignore_policy(tmp_path):
+    output = tmp_path / "run"
+    output.mkdir()
+    (output / ".gitignore").write_text("checkpoints/\n", encoding="utf-8")
+    (output / "state.json").write_text("old", encoding="utf-8")
+    _restart(output)
+    assert (output / ".gitignore").read_text(encoding="utf-8") == "checkpoints/\n"
+    assert not (output / "state.json").exists()
+
+
 def test_full_profile_fails_closed_when_sequence_evidence_is_absent(tmp_path):
     completed = subprocess.run(
         [
@@ -97,3 +110,14 @@ def test_full_profile_fails_closed_when_sequence_evidence_is_absent(tmp_path):
     )
     assert completed.returncode != 0
     assert "sequence evidence path does not exist" in completed.stderr
+
+
+def test_complete_source_digest_must_match_parameter_identity(tmp_path):
+    source = tmp_path / "connectome.npz"
+    source.write_bytes(b"exact-source")
+    import hashlib
+
+    expected = hashlib.sha256(source.read_bytes()).hexdigest()
+    assert verify_source_digest(source, expected) == expected
+    with pytest.raises(ValueError, match="source hash"):
+        verify_source_digest(source, "0" * 64)

@@ -32,6 +32,17 @@ from .trainer import evaluate_sequences, train_epoch
 OUTPUT_NAMES = ("vx", "vy", "vz", "yaw_rate")
 
 
+def verify_source_digest(path: str | Path, expected_sha256: str) -> str:
+    digest = sha256()
+    with Path(path).open("rb") as stream:
+        for chunk in iter(lambda: stream.read(1024 * 1024), b""):
+            digest.update(chunk)
+    actual = digest.hexdigest()
+    if actual != expected_sha256.lower():
+        raise ValueError("complete MaleCNS source hash does not match parameter identity")
+    return actual
+
+
 def _peak_process_memory_bytes() -> int:
     if os.name == "nt":
         import ctypes
@@ -231,6 +242,7 @@ def _full_components(
     parameters = load_parameter_set(parameters_path)
     if parameters.identity.label != "full-male-cns":
         raise ValueError("complete curriculum requires a full-male-cns parameter artifact")
+    verify_source_digest(connectome_path, parameters.identity.model_sha256)
     connectome = Connectome.load(connectome_path)
     return connectome, parameters, datasets
 
@@ -270,7 +282,8 @@ class ConnectomeCurriculumSession:
         self.dataset_sha256 = _dataset_digest(datasets)
         self.mapping_sha256 = _mapping_digest(parameters)
         self.model_identity = (
-            f"{config.profile.model_mode}:{parameters.identity.topology_sha256}:"
+            f"{config.profile.model_mode}:{parameters.identity.model_sha256}:"
+            f"{parameters.identity.topology_sha256}:"
             f"{self.mapping_sha256}:device={self.device.type}"
         )
         self.initial_losses = {
