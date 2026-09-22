@@ -53,9 +53,19 @@ def test_cli_smoke_stops_and_resumes_without_replaying_batch(tmp_path):
     assert second_payload["completed_stages"] == ["stability", "looming"]
     reports = list((output / "reports").glob("*.json"))
     assert len(reports) == 2
+    measured = json.loads(reports[0].read_text(encoding="utf-8"))["train_metrics"]
+    assert measured["elapsed_wall_s"] > 0
+    assert measured["peak_process_memory_bytes"] > 0
+    assert measured["device"] == "cpu"
+    assert measured["torch_version"]
     summary = json.loads((output / "summary.json").read_text(encoding="utf-8"))
     assert summary["evidence_class"] == "synthetic-connectome-curriculum-smoke"
+    assert summary["repository_artifact_scope"] == "summary-only"
     assert summary["model_identity"].startswith("tiny-connectome:")
+    assert summary["measured_batches"] == 2
+    assert summary["total_training_wall_s"] > 0
+    assert summary["peak_process_memory_bytes"] > 0
+    assert set(summary["stage_results"]) == {"stability", "looming"}
 
 
 def test_cli_restart_refuses_an_active_lock(tmp_path):

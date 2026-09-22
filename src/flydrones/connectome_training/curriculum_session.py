@@ -2,8 +2,10 @@ from __future__ import annotations
 
 from hashlib import sha256
 import json
+import os
 from pathlib import Path
 import random
+import time
 
 import numpy as np
 from scipy import sparse
@@ -28,6 +30,48 @@ from .parameters import ParameterSet, build_structure_identity, initial_paramete
 from .trainer import evaluate_sequences, train_epoch
 
 OUTPUT_NAMES = ("vx", "vy", "vz", "yaw_rate")
+
+
+def _peak_process_memory_bytes() -> int:
+    if os.name == "nt":
+        import ctypes
+        from ctypes import wintypes
+
+        class ProcessMemoryCounters(ctypes.Structure):
+            _fields_ = [
+                ("cb", wintypes.DWORD),
+                ("PageFaultCount", wintypes.DWORD),
+                ("PeakWorkingSetSize", ctypes.c_size_t),
+                ("WorkingSetSize", ctypes.c_size_t),
+                ("QuotaPeakPagedPoolUsage", ctypes.c_size_t),
+                ("QuotaPagedPoolUsage", ctypes.c_size_t),
+                ("QuotaPeakNonPagedPoolUsage", ctypes.c_size_t),
+                ("QuotaNonPagedPoolUsage", ctypes.c_size_t),
+                ("PagefileUsage", ctypes.c_size_t),
+                ("PeakPagefileUsage", ctypes.c_size_t),
+            ]
+
+        counters = ProcessMemoryCounters()
+        counters.cb = ctypes.sizeof(counters)
+        get_current_process = ctypes.windll.kernel32.GetCurrentProcess
+        get_current_process.restype = wintypes.HANDLE
+        get_memory = ctypes.windll.psapi.GetProcessMemoryInfo
+        get_memory.argtypes = [
+            wintypes.HANDLE,
+            ctypes.POINTER(ProcessMemoryCounters),
+            wintypes.DWORD,
+        ]
+        get_memory.restype = wintypes.BOOL
+        process = get_current_process()
+        if not get_memory(
+            process, ctypes.byref(counters), counters.cb
+        ):
+            raise OSError("GetProcessMemoryInfo failed")
+        return int(counters.PeakWorkingSetSize)
+    import resource
+
+    value = int(resource.getrusage(resource.RUSAGE_SELF).ru_maxrss)
+    return value if __import__("sys").platform == "darwin" else value * 1024
 
 
 def resolve_device(requested: str) -> torch.device:
@@ -239,12 +283,14 @@ class ConnectomeCurriculumSession:
             for stage in config.stages
         }
 
-    def train_batch(self, stage: CurriculumStage, seed: int) -> dict[str, int | float]:
+    def train_batch(self, stage: CurriculumStage, seed: int) -> dict[str, object]:
         random.seed(seed)
         np.random.seed(seed)
         torch.manual_seed(seed)
         if self.device.type == "cuda":
             torch.cuda.manual_seed_all(seed)
+            torch.cuda.reset_peak_memory_stats(self.device)
+        started = time.perf_counter()
         # Rehearse every completed skill while learning the current one. The
         # coordinator still evaluates and gates each stage independently.
         train = [
@@ -267,6 +313,15 @@ class ConnectomeCurriculumSession:
             "updates": stage.epochs_per_batch,
             "environment_steps": frames * stage.epochs_per_batch,
             "train_loss": float(metrics["total"]),
+            "elapsed_wall_s": time.perf_counter() - started,
+            "peak_process_memory_bytes": _peak_process_memory_bytes(),
+            "peak_cuda_memory_bytes": (
+                int(torch.cuda.max_memory_allocated(self.device))
+                if self.device.type == "cuda"
+                else 0
+            ),
+            "device": self.device.type,
+            "torch_version": torch.__version__,
         }
 
     def evaluate(self, stage: CurriculumStage) -> dict[str, float | bool]:

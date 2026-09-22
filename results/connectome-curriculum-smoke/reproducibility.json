@@ -1,0 +1,16 @@
+{
+  "parameter_match": true,
+  "resumed_completed_stages": [
+    "stability",
+    "looming"
+  ],
+  "resumed_parameter_sha256": "6dd9034dd40aa6cd87e254676f80afa8dcda1caf4b02b5ca764acac57600f801",
+  "resumed_report_count": 2,
+  "schema": "flydrones-connectome-curriculum-reproducibility-v1",
+  "uninterrupted_completed_stages": [
+    "stability",
+    "looming"
+  ],
+  "uninterrupted_parameter_sha256": "6dd9034dd40aa6cd87e254676f80afa8dcda1caf4b02b5ca764acac57600f801",
+  "uninterrupted_report_count": 2
+}

@@ -54,9 +54,42 @@ def _restart(output: Path) -> None:
 
 
 def _write_summary(output: Path, state, evidence_class: str) -> None:
+    reports = [
+        json.loads(path.read_text(encoding="utf-8"))
+        for path in sorted((output / "reports").glob("*.json"))
+    ]
+    stage_results = {
+        report["stage_id"]: {
+            "validation_loss": report["current_metrics"]["validation_loss"],
+            "gate_failures": report["gate_failures"],
+            "regression_failures": report["regression_failures"],
+            "promoted": report["promoted"],
+        }
+        for report in reports
+    }
     summary = {
         "schema": "flydrones-connectome-curriculum-summary-v1",
         "evidence_class": evidence_class,
+        "repository_artifact_scope": "summary-only",
+        "measured_batches": len(reports),
+        "total_training_wall_s": sum(
+            float(report["train_metrics"]["elapsed_wall_s"]) for report in reports
+        ),
+        "peak_process_memory_bytes": max(
+            (
+                int(report["train_metrics"]["peak_process_memory_bytes"])
+                for report in reports
+            ),
+            default=0,
+        ),
+        "peak_cuda_memory_bytes": max(
+            (
+                int(report["train_metrics"]["peak_cuda_memory_bytes"])
+                for report in reports
+            ),
+            default=0,
+        ),
+        "stage_results": stage_results,
         **asdict(state),
     }
     temporary = output / "summary.json.writing"

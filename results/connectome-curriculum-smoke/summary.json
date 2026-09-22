@@ -1,0 +1,45 @@
+{
+  "baseline_losses": {
+    "looming": 0.00937692727893591,
+    "stability": 0.00260558002628386
+  },
+  "batch_index": 0,
+  "best_checkpoint": "checkpoints/stage-001-looming-batch-000-attempt-000",
+  "best_score": -0.00937692727893591,
+  "completed_stages": [
+    "stability",
+    "looming"
+  ],
+  "config_digest": "70c3728f7b3ed527ad78d761875e955171c34fd92d224de2b8365e526e64d846",
+  "environment_steps": 384,
+  "evidence_class": "synthetic-connectome-curriculum-smoke",
+  "failed_attempts": 0,
+  "global_updates": 16,
+  "last_committed_batch": "looming:0",
+  "latest_checkpoint": "checkpoints/stage-001-looming-batch-000-attempt-000",
+  "measured_batches": 2,
+  "model_identity": "tiny-connectome:41056f1a9c164332139f0266409bc56dcd09b315e38712a7ddfaa6fc37a79d4a:d80c750b3d6e9b2e538e453cfc7ed8c044dc232138958785a6b75049f9f64975:device=cpu",
+  "peak_cuda_memory_bytes": 0,
+  "peak_process_memory_bytes": 300523520,
+  "profile": "smoke",
+  "repository_artifact_scope": "summary-only",
+  "run_id": "cf572ca6ac61474baf4fd6121b589376",
+  "schema": "flydrones-connectome-curriculum-summary-v1",
+  "stage_index": 2,
+  "stage_results": {
+    "looming": {
+      "gate_failures": [],
+      "promoted": true,
+      "regression_failures": [],
+      "validation_loss": 0.00937692727893591
+    },
+    "stability": {
+      "gate_failures": [],
+      "promoted": true,
+      "regression_failures": [],
+      "validation_loss": 0.00260558002628386
+    }
+  },
+  "status": "COMPLETE",
+  "total_training_wall_s": 0.2357124000263866
+}
