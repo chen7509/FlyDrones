@@ -1,0 +1,10 @@
+{
+  "checkpoint_sha256": "77b9d5c0d0497d8ad5d34ece3033400c8eb59594e418458541b3f399eb330a2a",
+  "metadata": {
+    "dataset_sha256": "908229082955abaea4033894725c2066e0ef352b6aa32fcbe2d1f69c68b90d39",
+    "epoch": 80,
+    "seed": 20260922,
+    "topology_sha256": "41056f1a9c164332139f0266409bc56dcd09b315e38712a7ddfaa6fc37a79d4a"
+  },
+  "schema": "flydrones-connectome-checkpoint-v1"
+}

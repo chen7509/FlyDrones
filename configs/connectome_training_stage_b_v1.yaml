@@ -1,0 +1,15 @@
+schema: flydrones-connectome-training-stage-b-config-v1
+seed: 20260922
+truncate_steps: 4
+optimizer:
+  name: adam
+  learning_rate: 0.03
+  gradient_clip_norm: 5.0
+loss:
+  imitation: 1.0
+  clearance_weighted: 2.0
+  smoothness: 0.05
+  saturation: 0.1
+offline_gate:
+  maximum_loss_ratio: 0.8
+  require_finite_parameters: true

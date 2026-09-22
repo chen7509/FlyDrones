@@ -1,0 +1,42 @@
+{
+  "created_utc": "2026-09-22T14:12:24.182494+00:00",
+  "dataset_sha256": "908229082955abaea4033894725c2066e0ef352b6aa32fcbe2d1f69c68b90d39",
+  "elapsed_wall_s": 0.4515075000235811,
+  "epochs": 80,
+  "final_train_loss": 0.0001425405207555741,
+  "final_train_terms": {
+    "clearance_weighted": 4.759021976497024e-05,
+    "imitation": 4.713091402663849e-05,
+    "saturation": 0.0,
+    "smoothness": 4.5833799049432855e-06,
+    "total": 0.0001425405207555741
+  },
+  "final_validation_loss": 0.00013882387429475784,
+  "final_validation_terms": {
+    "clearance_weighted": 4.6385361201828346e-05,
+    "imitation": 4.582160181598738e-05,
+    "saturation": 0.0,
+    "smoothness": 4.630870535038412e-06,
+    "total": 0.00013882387429475784
+  },
+  "gate_failures": [],
+  "identity": "connectome-constrained-training-smoke",
+  "initial_train_loss": 0.10657647252082825,
+  "initial_validation_loss": 0.10657647252082825,
+  "loss_ratio": 0.0013025752402119285,
+  "parameters_finite": true,
+  "passed_offline_gate": true,
+  "schema": "flydrones-connectome-stage-b-smoke-v1",
+  "scope": "Offline synthetic sequence learning gate; not a flight-success result.",
+  "seed": 20260922,
+  "topology_sha256": "41056f1a9c164332139f0266409bc56dcd09b315e38712a7ddfaa6fc37a79d4a",
+  "torch_version": "2.14.0+cpu",
+  "trainable": [
+    "input_gain",
+    "type_bias_mv",
+    "tau_m_ms",
+    "descending_readout"
+  ],
+  "trainable_parameter_count": 31,
+  "truncate_steps": 4
+}
