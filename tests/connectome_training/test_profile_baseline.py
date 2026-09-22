@@ -15,6 +15,8 @@ def test_profile_cli_writes_versioned_report_with_fake_controller(tmp_path):
             "4",
             "--warmup",
             "1",
+            "--seed",
+            "17",
             "--output",
             str(tmp_path / "profile.json"),
         ],
@@ -27,4 +29,5 @@ def test_profile_cli_writes_versioned_report_with_fake_controller(tmp_path):
     assert report["controller_identity"] == "deterministic-fake"
     assert report["latency"]["samples"] == 4
     assert report["gates"]["complete_fly_p95_s"] == 0.035
+    assert report["model"]["reset_seed"] == 17
     assert json.loads(completed.stdout)["output"].endswith("profile.json")

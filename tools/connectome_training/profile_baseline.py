@@ -51,7 +51,21 @@ def make_observation(index: int, shape=(120, 160)):
 
 class DeterministicFakeController:
     identity = "deterministic-fake"
-    model_metadata = {"neurons": 0, "connections": 0, "sha256": None}
+
+    def __init__(self):
+        self.reset_seed = None
+
+    @property
+    def model_metadata(self):
+        return {
+            "neurons": 0,
+            "connections": 0,
+            "sha256": None,
+            "reset_seed": self.reset_seed,
+        }
+
+    def reset(self, seed: int):
+        self.reset_seed = seed
 
     def step(self, obs):
         return Decision(
@@ -68,17 +82,21 @@ def main():
     if args.fake:
         controller = DeterministicFakeController()
         identity = controller.identity
-        model = controller.model_metadata
     else:
         fly_config = load_config("configs/forest-trained-v2.yaml")
         controller = FullFlyController(
             fly_config, Path("data/malecns_full.npz"), guided=False
         )
         identity = "full-male-cns"
+    controller.reset(args.seed)
+    if args.fake:
+        model = controller.model_metadata
+    else:
         model = {
             "neurons": controller.connectome.n,
             "connections": controller.connectome.n_connections,
             "sha256": controller.model_sha256,
+            "reset_seed": args.seed,
         }
     warmup = [make_observation(i) for i in range(args.warmup)]
     for observation in warmup:
