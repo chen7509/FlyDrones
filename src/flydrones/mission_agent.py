@@ -5,12 +5,15 @@ from __future__ import annotations
 import hashlib
 import math
 from dataclasses import asdict, dataclass
-from typing import Literal
+from typing import TYPE_CHECKING, Literal
 
 from flydrones.mission_contract import MissionContract, WorkUnit
 from flydrones.peer_udp import PeerTrack
 from flydrones.task_consensus import AgentCapability, Bid, TaskAssignment, TaskLedger
 from flydrones.task_udp import TaskMessage
+
+if TYPE_CHECKING:
+    from flydrones.mission_learning import MissionLearningAdapter
 
 SafetyPhase = Literal["nominal", "degraded", "return", "land", "emergency"]
 
@@ -123,11 +126,13 @@ class MissionAgent:
         vehicle_count: int,
         contract: MissionContract,
         ledger: TaskLedger,
+        learning_adapter: MissionLearningAdapter | None = None,
     ) -> None:
         self.vehicle_id = vehicle_id
         self.vehicle_count = vehicle_count
         self.contract = contract
         self.ledger = ledger
+        self.learning_adapter = learning_adapter
         self._work_units = {unit.task_id: unit for unit in contract.expand_work_units()}
         self._phase = "auction"
         self._safety_phase: SafetyPhase = "nominal"
@@ -149,6 +154,7 @@ class MissionAgent:
         vehicle_id: int,
         vehicle_count: int,
         contract: MissionContract,
+        learning_adapter: MissionLearningAdapter | None = None,
     ) -> MissionAgent:
         if vehicle_count <= 0 or not 0 <= vehicle_id < vehicle_count:
             raise ValueError("vehicle ID must fall inside the fleet")
@@ -160,7 +166,7 @@ class MissionAgent:
             confirmation_quorum=contract.confirmation_quorum,
             minimum_battery_return_pct=contract.safety.minimum_battery_return_pct,
         )
-        return cls(vehicle_id, vehicle_count, contract, ledger)
+        return cls(vehicle_id, vehicle_count, contract, ledger, learning_adapter)
 
     @property
     def work_unit_ids(self) -> tuple[str, ...]:
@@ -223,11 +229,15 @@ class MissionAgent:
                 released,
             )
 
+        learned_task_ids: tuple[str, ...] = ()
+        if self.learning_adapter is not None:
+            learned_task_ids = self.learning_adapter.preferred_task_ids(self, state)
+        merged_preferences = tuple(dict.fromkeys((*preferred_task_ids, *learned_task_ids)))
         self._allocate_or_renew(
             timestamp,
             state,
             outbound,
-            preferred_task_ids=preferred_task_ids,
+            preferred_task_ids=merged_preferences,
         )
         self._complete_if_ready(timestamp, state, outbound)
         intent = self._task_intent(state)
