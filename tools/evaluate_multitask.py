@@ -13,6 +13,7 @@ from flydrones.multitask_contract import LocalObservation, PolicyIntent
 from flydrones.multitask_env import MultiTaskEnv
 from flydrones.multitask_policy import PolicyState, SharedRecurrentPolicy
 from flydrones.multitask_scenarios import ScenarioGenerator
+from flydrones.multitask_sitl import MultiTaskSITLAdapter
 from flydrones.training import MultiTaskAcceptance
 
 
@@ -54,6 +55,16 @@ def _parse_seeds(value: str) -> tuple[int, ...]:
 
 def evaluate(args: argparse.Namespace) -> dict[str, object]:
     checkpoint = Path(args.checkpoint)
+    adapter = MultiTaskSITLAdapter(
+        maximum_speed_mps=4.0,
+        maximum_yaw_rate_rps=1.5,
+    )
+    backend_metadata = adapter.validate_backend(args.backend)
+    if args.backend != "fast":
+        raise RuntimeError(
+            "non-fast backends require their external per-vehicle runner; "
+            "the evaluator refuses to relabel fast kinematics as independent physics"
+        )
     actor = SharedRecurrentPolicy.load(checkpoint)
     actor.eval()
     episode_reports: list[dict[str, object]] = []
@@ -145,7 +156,8 @@ def evaluate(args: argparse.Namespace) -> dict[str, object]:
     admission = MultiTaskAcceptance.spec_defaults().evaluate(metrics)
     result = {
         "schema_version": 1,
-        "backend": "fast",
+        "backend": args.backend,
+        "backend_metadata": backend_metadata,
         "checkpoint_digest": hashlib.sha256(checkpoint.read_bytes()).hexdigest(),
         "central_control_commands": central_commands,
         "episodes": episode_reports,
@@ -167,6 +179,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--level", type=int, choices=range(5), default=0)
     parser.add_argument("--fleet-size", type=int, default=1)
     parser.add_argument("--max-steps", type=int, default=80)
+    parser.add_argument("--backend", choices=("fast", "px4", "pybullet"), default="fast")
     parser.add_argument("--report", required=True)
     args = parser.parse_args()
     if args.episodes != len(args.seeds):
