@@ -7,6 +7,7 @@ import hashlib
 import json
 import random
 import subprocess
+from collections.abc import Mapping
 from pathlib import Path
 
 import numpy as np
@@ -46,6 +47,36 @@ def _write_json(path: Path, payload: dict[str, object]) -> None:
         encoding="utf-8",
     )
     temporary.replace(path)
+
+
+def _gae_targets(
+    samples: list[Mapping[str, object]],
+    *,
+    gamma: float,
+    gae_lambda: float,
+) -> tuple[torch.Tensor, torch.Tensor]:
+    """Compute GAE without allowing one vehicle's rewards into another's path."""
+
+    advantages = torch.zeros(len(samples), dtype=torch.float32)
+    by_vehicle: dict[int, list[int]] = {}
+    for index, sample in enumerate(samples):
+        vehicle_id = int(sample["vehicle_id"])
+        by_vehicle.setdefault(vehicle_id, []).append(index)
+    for indices in by_vehicle.values():
+        gae = torch.tensor(0.0)
+        next_value = torch.tensor(0.0)
+        for index in reversed(indices):
+            sample = samples[index]
+            value = torch.as_tensor(sample["value"], dtype=torch.float32)
+            mask = 0.0 if bool(sample["done"]) else 1.0
+            delta = float(sample["reward"]) + gamma * next_value * mask - value
+            gae = delta + gamma * gae_lambda * mask * gae
+            advantages[index] = gae
+            next_value = value
+    values = torch.stack(
+        [torch.as_tensor(sample["value"], dtype=torch.float32) for sample in samples]
+    )
+    return advantages, advantages + values
 
 
 def train(args: argparse.Namespace) -> dict[str, object]:
@@ -127,6 +158,7 @@ def train(args: argparse.Namespace) -> dict[str, object]:
             stored = pending[vehicle_id]
             samples.append(
                 {
+                    "vehicle_id": vehicle_id,
                     "observation": stored[0],
                     "hidden": stored[1],
                     "skill": stored[2],
@@ -135,7 +167,9 @@ def train(args: argparse.Namespace) -> dict[str, object]:
                     "critic_observation": stored[5],
                     "value": stored[6],
                     "reward": float(reward),
-                    "done": bool(terminated or truncated),
+                    "done": bool(
+                        terminated or truncated or vehicle_id not in next_observations
+                    ),
                 }
             )
         observations = next_observations
@@ -150,19 +184,7 @@ def train(args: argparse.Namespace) -> dict[str, object]:
                 for vehicle_id in observations
             }
 
-    rewards_tensor = torch.tensor([sample["reward"] for sample in samples], dtype=torch.float32)
-    values_tensor = torch.stack([sample["value"] for sample in samples]).float()
-    dones_tensor = torch.tensor([sample["done"] for sample in samples], dtype=torch.float32)
-    advantages = torch.zeros_like(rewards_tensor)
-    gae = torch.tensor(0.0)
-    next_value = torch.tensor(0.0)
-    for index in range(len(samples) - 1, -1, -1):
-        mask = 1.0 - dones_tensor[index]
-        delta = rewards_tensor[index] + 0.99 * next_value * mask - values_tensor[index]
-        gae = delta + 0.99 * 0.95 * mask * gae
-        advantages[index] = gae
-        next_value = values_tensor[index]
-    returns = advantages + values_tensor
+    advantages, returns = _gae_targets(samples, gamma=0.99, gae_lambda=0.95)
     if len(advantages) > 1:
         advantages = (advantages - advantages.mean()) / (advantages.std(unbiased=False) + 1e-8)
 

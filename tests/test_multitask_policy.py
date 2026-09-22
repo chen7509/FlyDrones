@@ -110,3 +110,18 @@ def test_actor_accepts_immutable_contract_arrays_without_warning():
     with warnings.catch_warnings():
         warnings.simplefilter("error")
         actor.act(observation(), PolicyState.zeros(64))
+
+
+def test_hard_safety_state_preempts_actor_execution():
+    class ActorMustNotRun:
+        def act(self, observation, state):
+            raise AssertionError("unsafe state must bypass the learned actor")
+
+    result = SafePolicy(ActorMustNotRun(), SafetyProjector()).act(
+        observation(),
+        PolicyState.zeros(64),
+        SafetySnapshot(20.0, True, True, 2.0, False),
+    )
+    assert result.intent.skill is Skill.YIELD_RETURN_LAND
+    assert result.reason == "low-battery"
+    assert result.state.hidden.tolist() == [0.0] * 64

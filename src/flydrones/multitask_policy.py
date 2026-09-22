@@ -298,6 +298,18 @@ class SafePolicy:
         start = time.perf_counter()
         next_state = state
         try:
+            preflight = self.projector.project(
+                self._fallback(),
+                health,
+                reflex_override=reflex_override,
+            )
+        except (TypeError, ValueError, RuntimeError):
+            latency = (time.perf_counter() - start) * 1000.0
+            return SafePolicyResult(self._fallback(), state, True, "invalid-safety-input", latency)
+        if preflight.overrode:
+            latency = (time.perf_counter() - start) * 1000.0
+            return SafePolicyResult(preflight.intent, state, True, preflight.reason, latency)
+        try:
             skill, motion, confidence, next_state = self.actor.act(observation, state)
             learned = PolicyIntent(skill, motion, confidence, 0.2).checked()
         except (TypeError, ValueError, RuntimeError):

@@ -2,6 +2,11 @@ import json
 import subprocess
 import sys
 
+import pytest
+import torch
+
+from tools.train_multitask import _gae_targets
+
 
 def test_train_and_evaluate_smoke_are_reproducible(tmp_path):
     checkpoint = tmp_path / "checkpoint.pt"
@@ -75,3 +80,18 @@ def test_train_and_evaluate_smoke_are_reproducible(tmp_path):
     assert evidence["checkpoint_digest"] == result["checkpoint_digest"]
     assert len(evidence["scenario_digests"]) == 3
     assert evidence["test_result"] == "1 passed"
+
+
+def test_gae_keeps_interleaved_vehicle_trajectories_independent():
+    samples = [
+        {"vehicle_id": 0, "reward": 1.0, "value": torch.tensor(0.0), "done": False},
+        {"vehicle_id": 1, "reward": 10.0, "value": torch.tensor(0.0), "done": False},
+        {"vehicle_id": 0, "reward": 2.0, "value": torch.tensor(0.0), "done": True},
+        {"vehicle_id": 1, "reward": 20.0, "value": torch.tensor(0.0), "done": True},
+    ]
+    advantages, returns = _gae_targets(samples, gamma=0.99, gae_lambda=0.95)
+    factor = 0.99 * 0.95
+    assert advantages.tolist() == pytest.approx(
+        [1.0 + factor * 2.0, 10.0 + factor * 20.0, 2.0, 20.0]
+    )
+    assert returns.tolist() == pytest.approx(advantages.tolist())

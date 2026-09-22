@@ -224,17 +224,21 @@ class MultiTaskEnv(gym.Env):
         obstacle_truth = np.asarray(
             [(item.x, item.y, item.radius) for item in self._obstacles], dtype=np.float32
         ).reshape(-1)
+        padded_obstacles = np.zeros(24 * 3, dtype=np.float32)
+        padded_obstacles[: obstacle_truth.size] = obstacle_truth
         return np.concatenate(
             (
-                self.actor_observation(min(self._active)),
                 self._positions.astype(np.float32).reshape(-1),
                 self._velocities.astype(np.float32).reshape(-1),
                 self._battery.astype(np.float32) / 100.0,
                 active_mask,
                 self._target.astype(np.float32),
                 self._gate.astype(np.float32),
-                obstacle_truth,
+                self._exit.astype(np.float32),
+                padded_obstacles,
                 np.max(self._coverage, axis=0),
+                self._wind.astype(np.float32),
+                np.asarray((self._steps / self.max_steps,), dtype=np.float32),
             )
         ).astype(np.float32)
 
@@ -282,10 +286,13 @@ class MultiTaskEnv(gym.Env):
         expected = self._active - self._failed
         if set(actions) != expected:
             raise ValueError("action vehicle IDs must exactly match active vehicles")
+        previous_positions = self._positions.copy()
+        checked_actions: dict[int, PolicyIntent] = {}
         for vehicle_id, intent in actions.items():
             if not isinstance(intent, PolicyIntent):
                 raise TypeError("each action must be a PolicyIntent")
             checked = intent.checked()
+            checked_actions[vehicle_id] = checked
             command = np.asarray(checked.motion, dtype=np.float64)
             self._velocities[vehicle_id] = command[:3] * self.maximum_speed_mps
             self._headings[vehicle_id] = (
@@ -299,6 +306,7 @@ class MultiTaskEnv(gym.Env):
             self._battery[vehicle_id] -= drain
             self._previous_actions[vehicle_id] = command.astype(np.float32)
             self._last_skill[vehicle_id] = list(Skill).index(checked.skill)
+        actions = checked_actions
 
         self._steps += 1
         target_angle = self._steps * self.dt * 0.25
@@ -310,12 +318,50 @@ class MultiTaskEnv(gym.Env):
             clearance = self._clearance(vehicle_id)
             new_coverage = self._update_coverage(vehicle_id)
             exit_distance = float(np.linalg.norm(self._exit - self._positions[vehicle_id]))
+            previous_exit_distance = float(
+                np.linalg.norm(self._exit - previous_positions[vehicle_id])
+            )
             target_distance = float(np.linalg.norm(self._target - self._positions[vehicle_id]))
+            gate_distance = float(np.linalg.norm(self._gate - self._positions[vehicle_id]))
+            previous_gate_distance = float(
+                np.linalg.norm(self._gate - previous_positions[vehicle_id])
+            )
+            home = np.asarray((-3.0, 0.0, 8.0), dtype=np.float64)
+            home_distance = float(np.linalg.norm(home - self._positions[vehicle_id]))
+            previous_home_distance = float(
+                np.linalg.norm(home - previous_positions[vehicle_id])
+            )
+            active_skill = intent.skill if intent.skill in self.manifest.active_skills else None
             terms = {
                 "time": -0.01,
-                "exit_progress": -0.002 * exit_distance,
-                "target_tracking": -0.001 * abs(target_distance - 5.0),
-                "new_coverage": 0.1 if new_coverage else 0.0,
+                "exit_progress": (
+                    previous_exit_distance - exit_distance
+                    if active_skill is Skill.NAVIGATE_EXIT
+                    else 0.0
+                ),
+                "target_tracking": (
+                    -0.01 * abs(target_distance - 5.0)
+                    if active_skill is Skill.TRACK_TARGET
+                    else 0.0
+                ),
+                "new_coverage": (
+                    0.1 if active_skill is Skill.SEARCH_COVER and new_coverage else 0.0
+                ),
+                "formation_error": (
+                    -0.01 * abs(self._positions[vehicle_id, 1])
+                    if active_skill is Skill.FORMATION_RALLY
+                    else 0.0
+                ),
+                "gate_progress": (
+                    previous_gate_distance - gate_distance
+                    if active_skill is Skill.GATE_COURSE
+                    else 0.0
+                ),
+                "return_progress": (
+                    previous_home_distance - home_distance
+                    if active_skill is Skill.YIELD_RETURN_LAND
+                    else 0.0
+                ),
                 "energy": -0.005 * float(np.linalg.norm(intent.motion[:3])),
                 "safety": 0.0,
             }
@@ -331,12 +377,39 @@ class MultiTaskEnv(gym.Env):
             elif self._battery[vehicle_id] < 30.0 and intent.skill is not Skill.YIELD_RETURN_LAND:
                 terms["safety"] = -100.0
                 safety_failure = "return-reserve"
-            if exit_distance <= 1.0:
+            if Skill.NAVIGATE_EXIT in self.manifest.active_skills and exit_distance <= 1.0:
                 self._completed_evidence.add(f"exit:{vehicle_id}")
-            if target_distance <= 6.0:
+            if Skill.TRACK_TARGET in self.manifest.active_skills and target_distance <= 6.0:
                 self._completed_evidence.add(f"track:{vehicle_id}")
-            if float(np.mean(self._coverage[vehicle_id])) >= 0.95:
+            if (
+                Skill.SEARCH_COVER in self.manifest.active_skills
+                and float(np.mean(self._coverage[vehicle_id])) >= 0.95
+            ):
                 self._completed_evidence.add(f"search:{vehicle_id}")
+            crossed_gate = (
+                previous_positions[vehicle_id, 0] < self._gate[0]
+                <= self._positions[vehicle_id, 0]
+            )
+            aligned_gate = (
+                abs(self._positions[vehicle_id, 1] - self._gate[1]) <= 2.0
+                and abs(self._positions[vehicle_id, 2] - self._gate[2]) <= 2.0
+            )
+            if (
+                Skill.GATE_COURSE in self.manifest.active_skills
+                and crossed_gate
+                and aligned_gate
+            ):
+                self._completed_evidence.add(f"gate:{vehicle_id}")
+            if (
+                Skill.FORMATION_RALLY in self.manifest.active_skills
+                and abs(self._positions[vehicle_id, 1]) <= 0.4
+            ):
+                self._completed_evidence.add(f"formation:{vehicle_id}")
+            if (
+                Skill.YIELD_RETURN_LAND in self.manifest.active_skills
+                and home_distance <= 1.0
+            ):
+                self._completed_evidence.add(f"return:{vehicle_id}")
             rewards[vehicle_id] = float(sum(terms.values()))
             reward_terms[vehicle_id] = terms
 
