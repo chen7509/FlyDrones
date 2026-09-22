@@ -1,0 +1,205 @@
+from __future__ import annotations
+
+from dataclasses import asdict, dataclass
+from hashlib import sha256
+import json
+from pathlib import Path
+
+import numpy as np
+
+SCHEMA = "flydrones-connectome-sequence-v1"
+INPUT_ARRAY_KEYS = (
+    "sim_ns",
+    "frame_ns",
+    "rgb",
+    "depth_m",
+    "position_enu",
+    "velocity_enu",
+    "yaw",
+    "yaw_rate",
+    "goal_enu",
+)
+
+
+@dataclass(frozen=True)
+class SequenceProvenance:
+    split: str
+    seed: int
+    teacher: str
+    world_sha256: str
+    config_sha256: str
+    source: str
+
+
+@dataclass
+class SequenceFrame:
+    sim_ns: int
+    frame_ns: int
+    rgb: np.ndarray
+    depth_m: np.ndarray
+    position_enu: np.ndarray
+    velocity_enu: np.ndarray
+    yaw: float
+    yaw_rate: float
+    goal_enu: np.ndarray
+
+
+@dataclass
+class TeacherTarget:
+    velocity_enu: np.ndarray
+    yaw_rate: float
+    horizon_enu: np.ndarray
+    minimum_clearance_m: float
+    terminal: bool
+
+
+@dataclass
+class TrainingSequence:
+    provenance: SequenceProvenance
+    frames: list[SequenceFrame]
+    targets: list[TeacherTarget]
+
+
+def _finite(name: str, value: np.ndarray) -> None:
+    if not np.isfinite(value).all():
+        raise ValueError(f"{name} contains non-finite values")
+
+
+def _validate(sequence: TrainingSequence) -> None:
+    if not sequence.frames or len(sequence.frames) != len(sequence.targets):
+        raise ValueError("frames and targets must have the same non-zero length")
+    times = np.asarray([frame.sim_ns for frame in sequence.frames], np.int64)
+    if np.any(np.diff(times) <= 0):
+        raise ValueError("frames require strictly increasing sim_ns")
+    for frame in sequence.frames:
+        if frame.frame_ns > frame.sim_ns:
+            raise ValueError("frame_ns cannot be newer than sim_ns")
+        for name in ("depth_m", "position_enu", "velocity_enu", "goal_enu"):
+            _finite(name, np.asarray(getattr(frame, name)))
+    for target in sequence.targets:
+        _finite("teacher_velocity_enu", np.asarray(target.velocity_enu))
+        _finite("teacher_horizon_enu", np.asarray(target.horizon_enu))
+        _finite("teacher_yaw_rate", np.asarray(target.yaw_rate))
+
+
+def _digest(path: Path) -> str:
+    digest = sha256()
+    with path.open("rb") as stream:
+        for chunk in iter(lambda: stream.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
+def _arrays(sequence: TrainingSequence) -> dict[str, np.ndarray]:
+    return {
+        "sim_ns": np.asarray([frame.sim_ns for frame in sequence.frames], np.int64),
+        "frame_ns": np.asarray(
+            [frame.frame_ns for frame in sequence.frames], np.int64
+        ),
+        "rgb": np.stack(
+            [np.asarray(frame.rgb, np.uint8) for frame in sequence.frames]
+        ),
+        "depth_m": np.stack(
+            [np.asarray(frame.depth_m, np.float32) for frame in sequence.frames]
+        ),
+        "position_enu": np.stack(
+            [np.asarray(frame.position_enu, np.float32) for frame in sequence.frames]
+        ),
+        "velocity_enu": np.stack(
+            [np.asarray(frame.velocity_enu, np.float32) for frame in sequence.frames]
+        ),
+        "yaw": np.asarray([frame.yaw for frame in sequence.frames], np.float32),
+        "yaw_rate": np.asarray(
+            [frame.yaw_rate for frame in sequence.frames], np.float32
+        ),
+        "goal_enu": np.stack(
+            [np.asarray(frame.goal_enu, np.float32) for frame in sequence.frames]
+        ),
+        "teacher_velocity_enu": np.stack(
+            [np.asarray(target.velocity_enu, np.float32) for target in sequence.targets]
+        ),
+        "teacher_yaw_rate": np.asarray(
+            [target.yaw_rate for target in sequence.targets], np.float32
+        ),
+        "teacher_horizon_enu": np.stack(
+            [np.asarray(target.horizon_enu, np.float32) for target in sequence.targets]
+        ),
+        "teacher_minimum_clearance_m": np.asarray(
+            [target.minimum_clearance_m for target in sequence.targets], np.float32
+        ),
+        "teacher_terminal": np.asarray(
+            [target.terminal for target in sequence.targets], np.bool_
+        ),
+    }
+
+
+def write_sequence(path: str | Path, sequence: TrainingSequence) -> Path:
+    _validate(sequence)
+    path = Path(path)
+    temporary = path.with_name(path.name + ".writing")
+    if path.exists() or temporary.exists():
+        raise FileExistsError(path if path.exists() else temporary)
+    temporary.mkdir(parents=True)
+    samples = temporary / "samples.npz"
+    np.savez_compressed(samples, **_arrays(sequence))
+    manifest = {
+        "schema": SCHEMA,
+        "provenance": asdict(sequence.provenance),
+        "samples": len(sequence.frames),
+        "samples_sha256": _digest(samples),
+    }
+    (temporary / "manifest.json").write_text(
+        json.dumps(manifest, indent=2, sort_keys=True) + "\n", encoding="utf-8"
+    )
+    temporary.rename(path)
+    return path
+
+
+def load_sequence(path: str | Path) -> TrainingSequence:
+    path = Path(path)
+    manifest = json.loads((path / "manifest.json").read_text(encoding="utf-8"))
+    samples = path / "samples.npz"
+    if manifest.get("schema") != SCHEMA:
+        raise ValueError("unsupported training sequence schema")
+    if manifest.get("samples_sha256") != _digest(samples):
+        raise ValueError("samples.npz hash mismatch")
+    required = set(INPUT_ARRAY_KEYS) | {
+        "teacher_velocity_enu",
+        "teacher_yaw_rate",
+        "teacher_horizon_enu",
+        "teacher_minimum_clearance_m",
+        "teacher_terminal",
+    }
+    with np.load(samples, allow_pickle=False) as arrays:
+        if set(arrays.files) != required:
+            raise ValueError("samples.npz keys do not match the student/teacher contract")
+        sample_count = int(arrays["sim_ns"].shape[0])
+        frames = [
+            SequenceFrame(
+                int(arrays["sim_ns"][i]),
+                int(arrays["frame_ns"][i]),
+                arrays["rgb"][i].copy(),
+                arrays["depth_m"][i].copy(),
+                arrays["position_enu"][i].copy(),
+                arrays["velocity_enu"][i].copy(),
+                float(arrays["yaw"][i]),
+                float(arrays["yaw_rate"][i]),
+                arrays["goal_enu"][i].copy(),
+            )
+            for i in range(sample_count)
+        ]
+        targets = [
+            TeacherTarget(
+                arrays["teacher_velocity_enu"][i].copy(),
+                float(arrays["teacher_yaw_rate"][i]),
+                arrays["teacher_horizon_enu"][i].copy(),
+                float(arrays["teacher_minimum_clearance_m"][i]),
+                bool(arrays["teacher_terminal"][i]),
+            )
+            for i in range(sample_count)
+        ]
+    sequence = TrainingSequence(
+        SequenceProvenance(**manifest["provenance"]), frames, targets
+    )
+    _validate(sequence)
+    return sequence
