@@ -1,0 +1,51 @@
+import json
+import subprocess
+import sys
+
+
+def test_train_and_evaluate_smoke_are_reproducible(tmp_path):
+    checkpoint = tmp_path / "checkpoint.pt"
+    train_report = tmp_path / "train.json"
+    command = [
+        sys.executable,
+        "tools/train_multitask.py",
+        "--level",
+        "0",
+        "--seed",
+        "5",
+        "--steps",
+        "16",
+        "--checkpoint",
+        str(checkpoint),
+        "--report",
+        str(train_report),
+    ]
+    subprocess.run(command, check=True)
+    first = json.loads(train_report.read_text(encoding="utf-8"))
+    subprocess.run(command, check=True)
+    second = json.loads(train_report.read_text(encoding="utf-8"))
+    assert first["manifest_digest"] == second["manifest_digest"]
+    assert first["seed"] == second["seed"] == 5
+    assert checkpoint.exists()
+
+    evaluation = tmp_path / "evaluation.json"
+    subprocess.run(
+        [
+            sys.executable,
+            "tools/evaluate_multitask.py",
+            "--checkpoint",
+            str(checkpoint),
+            "--seeds",
+            "5,6",
+            "--episodes",
+            "2",
+            "--report",
+            str(evaluation),
+        ],
+        check=True,
+    )
+    result = json.loads(evaluation.read_text(encoding="utf-8"))
+    assert result["central_control_commands"] == 0
+    assert len(result["episodes"]) == 2
+    assert result["admission"]["passed"] is False
+    assert result["admission"]["failures"]

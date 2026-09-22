@@ -165,6 +165,8 @@ flydrones demo      --brain data/malecns_brain.npz --config configs/malecns.yaml
 
 For a faster model, keep only neurons within a few synapses of both the eyes and the descending neurons: `flydrones build-brain --core-hops 3`.
 
+For compound multi-task learning, online shadow evaluation and rollback, see [the multi-task learning guide](docs/MULTITASK_LEARNING.md).
+
 ## One fly, three pilots
 
 <p align="center"><img src="assets/swarm.gif" alt="Three simulated drones flown by three copies of the same connectome" width="100%"></p>
