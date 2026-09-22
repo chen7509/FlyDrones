@@ -7,6 +7,7 @@ from .dataset import (
     load_sequence,
     write_sequence,
 )
+from .recorder import TeacherSequenceRecorder, reject_formal_evidence
 
 __all__ = [
     "INPUT_ARRAY_KEYS",
@@ -14,6 +15,8 @@ __all__ = [
     "SequenceProvenance",
     "TeacherTarget",
     "TrainingSequence",
+    "TeacherSequenceRecorder",
     "load_sequence",
+    "reject_formal_evidence",
     "write_sequence",
 ]
