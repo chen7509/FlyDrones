@@ -31,11 +31,13 @@ from .curriculum_config import (
     load_curriculum_config,
 )
 from .curriculum_state import CurriculumState, RunLock, StateStore
+from .curriculum_session import ConnectomeCurriculumSession, resolve_device
 
 __all__ = [
     "INPUT_ARRAY_KEYS",
     "ParameterSet",
     "ConnectomeConstrainedCore",
+    "ConnectomeCurriculumSession",
     "CurriculumGate",
     "CurriculumConfig",
     "CurriculumProfile",
@@ -64,6 +66,7 @@ __all__ = [
     "load_checkpoint",
     "reject_formal_evidence",
     "run_curriculum",
+    "resolve_device",
     "summarize_latency",
     "save_parameter_set",
     "save_checkpoint",
