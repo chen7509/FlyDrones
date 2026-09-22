@@ -1,0 +1,11 @@
+schema: flydrones-connectome-training-config-v1
+latency_gates:
+  complete_fly_p95_s: 0.035
+  derived_student_p95_s: 0.020
+profiling:
+  warmup: 5
+  samples: 30
+  seed: 20260922
+artifacts:
+  root: results/connectome-training
+  stage_a: results/connectome-training/stage-a
