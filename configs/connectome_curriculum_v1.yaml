@@ -1,0 +1,85 @@
+schema: flydrones-connectome-curriculum-v1
+seed: 20260922
+profiles:
+  smoke:
+    data_mode: synthetic-smoke
+    model_mode: tiny-connectome
+    device: cpu
+    stages: [stability, looming]
+  desktop:
+    data_mode: sequence-directories
+    model_mode: full-male-cns
+    device: auto
+    stages: [stability, looming, corridor, forest, dynamic, disturbance]
+  full:
+    data_mode: sequence-directories
+    model_mode: full-male-cns
+    device: auto
+    stages: [stability, looming, corridor, forest, dynamic, disturbance]
+stages:
+  - id: stability
+    order: 0
+    train_seeds: [1101, 1102]
+    validation_seeds: [9101]
+    epochs_per_batch: 8
+    max_batches: 3
+    maximum_validation_loss: 0.02
+    maximum_loss_ratio: 0.80
+    maximum_regression_ratio: 1.02
+    train_paths: [results/connectome-training/sequences/stability/train]
+    validation_paths: [results/connectome-training/sequences/stability/validation]
+  - id: looming
+    order: 1
+    train_seeds: [1201, 1202]
+    validation_seeds: [9201]
+    epochs_per_batch: 8
+    max_batches: 3
+    maximum_validation_loss: 0.02
+    maximum_loss_ratio: 0.80
+    maximum_regression_ratio: 1.02
+    train_paths: [results/connectome-training/sequences/looming/train]
+    validation_paths: [results/connectome-training/sequences/looming/validation]
+  - id: corridor
+    order: 2
+    train_seeds: [1301, 1302]
+    validation_seeds: [9301]
+    epochs_per_batch: 12
+    max_batches: 5
+    maximum_validation_loss: 0.03
+    maximum_loss_ratio: 0.85
+    maximum_regression_ratio: 1.02
+    train_paths: [results/connectome-training/sequences/corridor/train]
+    validation_paths: [results/connectome-training/sequences/corridor/validation]
+  - id: forest
+    order: 3
+    train_seeds: [1401, 1402]
+    validation_seeds: [9401]
+    epochs_per_batch: 16
+    max_batches: 6
+    maximum_validation_loss: 0.04
+    maximum_loss_ratio: 0.90
+    maximum_regression_ratio: 1.02
+    train_paths: [results/connectome-training/sequences/forest/train]
+    validation_paths: [results/connectome-training/sequences/forest/validation]
+  - id: dynamic
+    order: 4
+    train_seeds: [1501, 1502]
+    validation_seeds: [9501]
+    epochs_per_batch: 16
+    max_batches: 6
+    maximum_validation_loss: 0.05
+    maximum_loss_ratio: 0.90
+    maximum_regression_ratio: 1.02
+    train_paths: [results/connectome-training/sequences/dynamic/train]
+    validation_paths: [results/connectome-training/sequences/dynamic/validation]
+  - id: disturbance
+    order: 5
+    train_seeds: [1601, 1602]
+    validation_seeds: [9601]
+    epochs_per_batch: 20
+    max_batches: 8
+    maximum_validation_loss: 0.06
+    maximum_loss_ratio: 0.92
+    maximum_regression_ratio: 1.02
+    train_paths: [results/connectome-training/sequences/disturbance/train]
+    validation_paths: [results/connectome-training/sequences/disturbance/validation]
