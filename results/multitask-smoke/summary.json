@@ -1,0 +1,34 @@
+{
+  "admission_failures": [
+    "compound_success",
+    "duplicate_coverage",
+    "episodes",
+    "exit_success",
+    "formation_rmse_m",
+    "full_scale_episodes",
+    "gate_success",
+    "maximum_skill_drop",
+    "search_coverage",
+    "task_reassign_s",
+    "task_release_s",
+    "task_reopen_s",
+    "tracking_loss_fraction",
+    "tracking_rmse_m",
+    "tracking_success"
+  ],
+  "admission_passed": false,
+  "central_command_count": 0,
+  "checkpoint_digest": "0dff9770e025b11809e3f9e6386da68a3f9031c670df05cce1d278fe5a10e4d7",
+  "collision_count": 0,
+  "config_sha256": "b86d3dd92c99f3ff2a6ebefe516ecef8f7904a34d77f8c9c814b930d2a655f11",
+  "git_commit": "f258ba2c6eed816a0d848d79aea9e858d702d9b0",
+  "scenario_digests": [
+    "a199bfb692924af67c55f5d283ef0bd4c25f9818253c4c60dd50c78a823c5e00",
+    "24d23719b8bfbfdb04aa2145d4ed2cec4d70a84076451f52edfb2db85085f9fd",
+    "80f759b9a16866abdc00a1851657f854145ba164bcf60b3592f13b6c791aa0d9",
+    "ff49929e9eefba544636ed6fc36b7f6eb0f89a85f809e4ffdf9b36a9f4c62991"
+  ],
+  "schema_version": 1,
+  "test_command": "python -m pytest -q",
+  "test_result": "287 passed, 1 existing warning in 173.65s"
+}
