@@ -1,29 +1,29 @@
 {
-  "created_utc": "2026-09-22T14:12:24.182494+00:00",
-  "dataset_sha256": "908229082955abaea4033894725c2066e0ef352b6aa32fcbe2d1f69c68b90d39",
-  "elapsed_wall_s": 0.4515075000235811,
+  "created_utc": "2026-09-22T14:28:41.345267+00:00",
+  "dataset_sha256": "f3cc7d4453c455bb17a1929313910e9d20d57e3abfb73d8cf48654bab54cf3dd",
+  "elapsed_wall_s": 0.3823956999985967,
   "epochs": 80,
-  "final_train_loss": 0.0001425405207555741,
+  "final_train_loss": 0.0001449946139473468,
   "final_train_terms": {
-    "clearance_weighted": 4.759021976497024e-05,
-    "imitation": 4.713091402663849e-05,
+    "clearance_weighted": 4.8413196054752916e-05,
+    "imitation": 4.794569031218998e-05,
     "saturation": 0.0,
-    "smoothness": 4.5833799049432855e-06,
-    "total": 0.0001425405207555741
+    "smoothness": 4.450490905583138e-06,
+    "total": 0.0001449946139473468
   },
-  "final_validation_loss": 0.00013882387429475784,
+  "final_validation_loss": 0.002836044877767563,
   "final_validation_terms": {
-    "clearance_weighted": 4.6385361201828346e-05,
-    "imitation": 4.582160181598738e-05,
+    "clearance_weighted": 0.0009498269646428525,
+    "imitation": 0.0009361659758724272,
     "saturation": 0.0,
-    "smoothness": 4.630870535038412e-06,
-    "total": 0.00013882387429475784
+    "smoothness": 4.49960589321563e-06,
+    "total": 0.002836044877767563
   },
   "gate_failures": [],
   "identity": "connectome-constrained-training-smoke",
-  "initial_train_loss": 0.10657647252082825,
-  "initial_validation_loss": 0.10657647252082825,
-  "loss_ratio": 0.0013025752402119285,
+  "initial_train_loss": 0.10930219292640686,
+  "initial_validation_loss": 0.1174793392419815,
+  "loss_ratio": 0.02414079697814725,
   "parameters_finite": true,
   "passed_offline_gate": true,
   "schema": "flydrones-connectome-stage-b-smoke-v1",
@@ -31,6 +31,7 @@
   "seed": 20260922,
   "topology_sha256": "41056f1a9c164332139f0266409bc56dcd09b315e38712a7ddfaa6fc37a79d4a",
   "torch_version": "2.14.0+cpu",
+  "train_feature_sha256": "e9864b9c219ba9e941347cb9b5517a099680e69b235ab52e6cc4f4fa99e44104",
   "trainable": [
     "input_gain",
     "type_bias_mv",
@@ -38,5 +39,6 @@
     "descending_readout"
   ],
   "trainable_parameter_count": 31,
-  "truncate_steps": 4
+  "truncate_steps": 4,
+  "validation_feature_sha256": "02ea7375102dc6423cdf59e7bc687f6076ef28d378c9763de38811db859bd7a3"
 }

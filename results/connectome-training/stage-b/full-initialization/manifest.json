@@ -11780,6 +11780,6 @@
     "vz",
     "yaw_rate"
   ],
-  "parameters_sha256": "21f8f7a71f632b9547a1cb26758e2ce55a3bd9b26fc7b41624ed7e2e7b2d7e7a",
+  "parameters_sha256": "a44d445e3dd0fa6c477c00dafd845ee5323ebfd8e21321f36318244acb954691",
   "schema": "flydrones-connectome-parameters-v1"
 }

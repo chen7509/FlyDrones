@@ -21,7 +21,7 @@ from flydrones.connectome_training.dataset import (
     TeacherTarget,
     TrainingSequence,
 )
-from flydrones.connectome_training.features import FEATURE_NAMES
+from flydrones.connectome_training.features import FEATURE_NAMES, sequence_tensors
 from flydrones.connectome_training.governance import validate_dataset_partitions
 from flydrones.connectome_training.losses import LossWeights
 from flydrones.connectome_training.model import ConnectomeConstrainedCore
@@ -69,25 +69,26 @@ def _toy_sequence(*, split: str, seed: int, world_sha256: str) -> TrainingSequen
         "generated-training-world" if split == "train" else "generated-validation-world",
     )
     frames, targets = [], []
+    variant = (seed % 19) / 100.0
     for index in range(8):
         phase = index / 7.0
-        depth = np.full((6, 9), 1.5 + 0.8 * phase, np.float32)
+        depth = np.full((6, 9), 1.5 + variant + 0.8 * phase, np.float32)
         frames.append(
             SequenceFrame(
                 (index + 1) * 50_000_000,
                 (index + 1) * 50_000_000,
-                np.full((6, 9, 3), 40 + index * 3, np.uint8),
+                np.full((6, 9, 3), 40 + index * 3 + seed % 7, np.uint8),
                 depth,
-                np.array([phase, 0.0, 1.0], np.float32),
+                np.array([phase, variant, 1.0], np.float32),
                 np.array([0.2, 0.0, 0.0], np.float32),
                 0.0,
                 0.0,
-                np.array([5.0, 0.0, 1.0], np.float32),
+                np.array([5.0, -variant, 1.0], np.float32),
             )
         )
         targets.append(
             TeacherTarget(
-                np.array([0.35 + 0.05 * phase, 0.0, 0.0], np.float32),
+                np.array([0.35 + 0.05 * phase, variant, 0.0], np.float32),
                 0.0,
                 np.array([[1.0 + phase, 0.0, 1.0]], np.float32),
                 0.75 + 0.1 * phase,
@@ -108,14 +109,12 @@ def _toy_model() -> tuple[ConnectomeConstrainedCore, str]:
     )
     identity = build_structure_identity(connectome, "c" * 64)
     parameters = initial_parameter_set(
-        identity, FEATURE_NAMES, OUTPUT_NAMES, output_neurons=4
+        identity,
+        FEATURE_NAMES,
+        OUTPUT_NAMES,
+        output_neurons=np.arange(neurons - 4, neurons),
     )
-    model = ConnectomeConstrainedCore(
-        connectome,
-        parameters,
-        np.arange(len(FEATURE_NAMES)),
-        np.arange(neurons - 4, neurons),
-    )
+    model = ConnectomeConstrainedCore(connectome, parameters)
     return model, identity.topology_sha256
 
 
@@ -145,20 +144,27 @@ def _dataset_digest(sequences: list[TrainingSequence]) -> str:
                 target.horizon_enu,
             ):
                 digest.update(np.ascontiguousarray(value).tobytes())
+            digest.update(np.asarray([frame.sim_ns, frame.frame_ns], np.int64).tobytes())
             digest.update(
                 np.asarray(
                     [
-                        frame.sim_ns,
-                        frame.frame_ns,
                         frame.yaw,
                         frame.yaw_rate,
                         target.yaw_rate,
                         target.minimum_clearance_m,
-                        target.terminal,
                     ],
                     np.float64,
                 ).tobytes()
             )
+            digest.update(np.asarray([target.terminal], np.uint8).tobytes())
+    return digest.hexdigest()
+
+
+def _feature_digest(sequences: list[TrainingSequence]) -> str:
+    digest = sha256()
+    for sequence in sequences:
+        features, _, _ = sequence_tensors(sequence)
+        digest.update(np.ascontiguousarray(features.numpy()).tobytes())
     return digest.hexdigest()
 
 
@@ -169,17 +175,29 @@ def _initialize_full(output: Path) -> None:
         raise ValueError("full MaleCNS model hash does not match the frozen source")
     connectome = Connectome.load(model_path)
     config = load_config("configs/forest-trained-v2.yaml")
+    input_specs = {
+        name: GroupSpec.from_dict(name, value)
+        for name, value in config.get("inputs", {}).items()
+    }
     output_specs = {
         name: GroupSpec.from_dict(name, value)
         for name, value in config.get("outputs", {}).items()
     }
-    connectome.resolve_groups(output_specs)
+    connectome.resolve_groups({**input_specs, **output_specs})
+    input_neurons = np.unique(
+        np.concatenate(
+            [connectome.group(name) for name in input_specs]
+            or [np.zeros(0, np.int64)]
+        )
+    )
     output_neurons = np.unique(
         np.concatenate(
             [connectome.group(name) for name in output_specs]
             or [np.zeros(0, np.int64)]
         )
     )
+    if input_neurons.size == 0:
+        raise ValueError("full MaleCNS input groups resolved to no neurons")
     if output_neurons.size == 0:
         raise ValueError("full MaleCNS output groups resolved to no neurons")
     identity = build_structure_identity(connectome, model_hash)
@@ -187,7 +205,9 @@ def _initialize_full(output: Path) -> None:
         identity,
         FEATURE_NAMES,
         OUTPUT_NAMES,
-        int(output_neurons.size),
+        output_neurons,
+        input_feature_index=np.arange(input_neurons.size) % len(FEATURE_NAMES),
+        input_neuron_index=input_neurons,
         label="full-male-cns",
     )
     destination = output / "full-initialization"
@@ -226,6 +246,13 @@ def _run_smoke(args, config: dict, output: Path) -> None:
         [sequence.provenance for sequence in validation_sequences],
     )
     model, topology_hash = _toy_model()
+    train_feature_hash = _feature_digest(train_sequences)
+    validation_feature_hash = _feature_digest(validation_sequences)
+    if train_feature_hash == validation_feature_hash:
+        raise ValueError("training and validation features must be distinct")
+    optimizer_name = str(config["optimizer"]["name"]).lower()
+    if optimizer_name != "adam":
+        raise ValueError(f"unsupported optimizer: {optimizer_name}")
     learning_rate = float(config["optimizer"]["learning_rate"])
     optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
     loss_weights = LossWeights(**config["loss"])
@@ -284,6 +311,8 @@ def _run_smoke(args, config: dict, output: Path) -> None:
         "truncate_steps": truncate_steps,
         "topology_sha256": topology_hash,
         "dataset_sha256": dataset_hash,
+        "train_feature_sha256": train_feature_hash,
+        "validation_feature_sha256": validation_feature_hash,
         "trainable": [
             "input_gain",
             "type_bias_mv",

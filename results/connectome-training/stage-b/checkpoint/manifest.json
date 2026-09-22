@@ -1,7 +1,7 @@
 {
-  "checkpoint_sha256": "77b9d5c0d0497d8ad5d34ece3033400c8eb59594e418458541b3f399eb330a2a",
+  "checkpoint_sha256": "30f931588bafd430832b1c456804bcc617d4cf6b9ebd9dc06eec61e854bc5c4b",
   "metadata": {
-    "dataset_sha256": "908229082955abaea4033894725c2066e0ef352b6aa32fcbe2d1f69c68b90d39",
+    "dataset_sha256": "f3cc7d4453c455bb17a1929313910e9d20d57e3abfb73d8cf48654bab54cf3dd",
     "epoch": 80,
     "seed": 20260922,
     "topology_sha256": "41056f1a9c164332139f0266409bc56dcd09b315e38712a7ddfaa6fc37a79d4a"

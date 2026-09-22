@@ -43,12 +43,17 @@ def test_parameter_round_trip_is_hashed_and_tamper_evident(tmp_path):
         identity,
         ("depth_left", "goal_x"),
         ("vx", "yaw_rate"),
-        output_neurons=2,
+        output_neurons=np.array([2, 1]),
+        input_feature_index=np.array([0, 0, 1]),
+        input_neuron_index=np.array([0, 2, 1]),
     )
     out = save_parameter_set(tmp_path / "params", params)
     loaded = load_parameter_set(out)
     assert loaded.identity == identity
     assert np.array_equal(loaded.type_bias_mv, params.type_bias_mv)
+    assert np.array_equal(loaded.input_feature_index, np.array([0, 0, 1]))
+    assert np.array_equal(loaded.input_neuron_index, np.array([0, 2, 1]))
+    assert np.array_equal(loaded.output_neuron_index, np.array([2, 1]))
     arrays = out / "parameters.npz"
     arrays.write_bytes(arrays.read_bytes() + b"tamper")
     with pytest.raises(ValueError, match="hash mismatch"):
@@ -60,4 +65,17 @@ def test_full_identity_cannot_be_claimed_with_wrong_counts():
     with pytest.raises(ValueError, match="full-male-cns requires"):
         initial_parameter_set(
             identity, ("depth",), ("vx",), 1, label="full-male-cns"
+        )
+
+
+def test_input_neuron_assignments_must_be_unique():
+    identity = build_structure_identity(tiny_connectome(), "a" * 64)
+    with pytest.raises(ValueError, match="input neuron assignments must be unique"):
+        initial_parameter_set(
+            identity,
+            ("depth", "goal_x"),
+            ("vx",),
+            1,
+            input_feature_index=np.array([0, 1]),
+            input_neuron_index=np.array([2, 2]),
         )

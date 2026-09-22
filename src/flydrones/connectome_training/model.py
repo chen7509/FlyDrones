@@ -31,8 +31,6 @@ class ConnectomeConstrainedCore(nn.Module):
         self,
         connectome: Connectome,
         parameter_set: ParameterSet,
-        input_neuron_index: np.ndarray,
-        output_neuron_index: np.ndarray,
     ):
         super().__init__()
         expected = build_structure_identity(
@@ -55,17 +53,9 @@ class ConnectomeConstrainedCore(nn.Module):
         if not np.isfinite(values).all():
             raise ValueError("connectome weights contain non-finite values")
 
-        inputs = np.asarray(input_neuron_index, np.int64)
-        outputs = np.asarray(output_neuron_index, np.int64)
-        if inputs.shape != (len(parameter_set.input_features),):
-            raise ValueError("one input neuron is required per input feature")
-        if len(np.unique(inputs)) != len(inputs):
-            raise ValueError("input neuron assignments must be unique")
-        if outputs.shape != (parameter_set.readout.shape[1],):
-            raise ValueError("output neuron count does not match readout")
-        for name, indices in (("input", inputs), ("output", outputs)):
-            if np.any(indices < 0) or np.any(indices >= connectome.n):
-                raise ValueError(f"{name} neuron index is out of range")
+        input_features = np.asarray(parameter_set.input_feature_index, np.int64)
+        inputs = np.asarray(parameter_set.input_neuron_index, np.int64)
+        outputs = np.asarray(parameter_set.output_neuron_index, np.int64)
 
         cell_types = parameter_set.identity.cell_types
         type_lookup = {name: index for index, name in enumerate(cell_types)}
@@ -94,6 +84,9 @@ class ConnectomeConstrainedCore(nn.Module):
         self.register_buffer("edge_magnitude", torch.tensor(magnitudes, dtype=torch.float32))
         self.register_buffer("fixed_topology", fixed_topology)
         self.register_buffer("type_index", torch.tensor(type_index, dtype=torch.long))
+        self.register_buffer(
+            "input_feature_index", torch.tensor(input_features, dtype=torch.long)
+        )
         self.register_buffer("input_neuron_index", torch.tensor(inputs, dtype=torch.long))
         self.register_buffer("output_neuron_index", torch.tensor(outputs, dtype=torch.long))
 
@@ -156,7 +149,10 @@ class ConnectomeConstrainedCore(nn.Module):
             features.shape[0], -1
         ).clone()
         drive.index_add_(
-            1, self.input_neuron_index, features * self.input_gain
+            1,
+            self.input_neuron_index,
+            features[:, self.input_feature_index]
+            * self.input_gain[self.input_feature_index],
         )
         recurrent = torch.sparse.mm(
             self.fixed_topology, torch.sigmoid(state.voltage).T

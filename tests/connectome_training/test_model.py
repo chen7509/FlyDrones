@@ -23,11 +23,12 @@ def fixture_model():
     )
     identity = build_structure_identity(connectome, "a" * 64)
     params = initial_parameter_set(
-        identity, ("depth", "goal_x"), ("vx", "yaw_rate"), 2
+        identity,
+        ("depth", "goal_x"),
+        ("vx", "yaw_rate"),
+        np.array([1, 2]),
     )
-    model = ConnectomeConstrainedCore(
-        connectome, params, np.array([0, 1]), np.array([1, 2])
-    )
+    model = ConnectomeConstrainedCore(connectome, params)
     return weights, model
 
 

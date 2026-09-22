@@ -63,14 +63,12 @@ def toy_model():
     )
     identity = build_structure_identity(connectome, "c" * 64)
     params = initial_parameter_set(
-        identity, FEATURE_NAMES, ("vx", "vy", "vz", "yaw_rate"), 4
-    )
-    return ConnectomeConstrainedCore(
-        connectome,
-        params,
-        np.arange(len(FEATURE_NAMES)),
+        identity,
+        FEATURE_NAMES,
+        ("vx", "vy", "vz", "yaw_rate"),
         np.arange(n - 4, n),
     )
+    return ConnectomeConstrainedCore(connectome, params)
 
 
 def test_teacher_labels_do_not_change_deployment_features():

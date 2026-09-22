@@ -11,7 +11,15 @@ import numpy as np
 from flydrones.brain.connectome import Connectome
 
 SCHEMA = "flydrones-connectome-parameters-v1"
-ARRAY_KEYS = ("input_gain", "type_bias_mv", "tau_m_ms", "readout")
+ARRAY_KEYS = (
+    "input_gain",
+    "input_feature_index",
+    "input_neuron_index",
+    "output_neuron_index",
+    "type_bias_mv",
+    "tau_m_ms",
+    "readout",
+)
 FULL_NEURONS = 166_700
 FULL_CONNECTIONS = 25_582_837
 
@@ -32,6 +40,9 @@ class ParameterSet:
     input_features: tuple[str, ...]
     outputs: tuple[str, ...]
     input_gain: np.ndarray
+    input_feature_index: np.ndarray
+    input_neuron_index: np.ndarray
+    output_neuron_index: np.ndarray
     type_bias_mv: np.ndarray
     tau_m_ms: float
     readout: np.ndarray
@@ -121,16 +132,41 @@ def _validate(parameters: ParameterSet) -> None:
     if not parameters.outputs or len(set(parameters.outputs)) != len(parameters.outputs):
         raise ValueError("outputs must be non-empty and unique")
     input_gain = np.asarray(parameters.input_gain)
+    input_feature_index = np.asarray(parameters.input_feature_index)
+    input_neuron_index = np.asarray(parameters.input_neuron_index)
+    output_neuron_index = np.asarray(parameters.output_neuron_index)
     type_bias = np.asarray(parameters.type_bias_mv)
     readout = np.asarray(parameters.readout)
     if input_gain.shape != (len(parameters.input_features),):
         raise ValueError("input_gain shape does not match input_features")
+    if (
+        input_feature_index.ndim != 1
+        or input_neuron_index.shape != input_feature_index.shape
+        or input_feature_index.size < 1
+    ):
+        raise ValueError("input feature and neuron mappings must be matching vectors")
+    if np.any(input_feature_index < 0) or np.any(
+        input_feature_index >= len(parameters.input_features)
+    ):
+        raise ValueError("input feature index is out of range")
+    if np.any(input_neuron_index < 0) or np.any(input_neuron_index >= identity.neurons):
+        raise ValueError("input neuron index is out of range")
+    if len(np.unique(input_neuron_index)) != len(input_neuron_index):
+        raise ValueError("input neuron assignments must be unique")
     if type_bias.shape != (len(identity.cell_types),):
         raise ValueError("type_bias_mv shape does not match cell_types")
     if readout.ndim != 2 or readout.shape[0] != len(parameters.outputs):
         raise ValueError("readout shape does not match outputs")
     if readout.shape[1] < 1:
         raise ValueError("readout requires at least one output neuron")
+    if output_neuron_index.shape != (readout.shape[1],):
+        raise ValueError("output neuron mapping does not match readout")
+    if np.any(output_neuron_index < 0) or np.any(
+        output_neuron_index >= identity.neurons
+    ):
+        raise ValueError("output neuron index is out of range")
+    if len(np.unique(output_neuron_index)) != len(output_neuron_index):
+        raise ValueError("output neuron assignments must be unique")
     for name, value in (
         ("input_gain", input_gain),
         ("type_bias_mv", type_bias),
@@ -149,12 +185,26 @@ def initial_parameter_set(
     identity: StructureIdentity,
     input_features: tuple[str, ...],
     outputs: tuple[str, ...],
-    output_neurons: int,
+    output_neurons: int | np.ndarray,
     *,
+    input_feature_index: np.ndarray | None = None,
+    input_neuron_index: np.ndarray | None = None,
     label: str | None = None,
 ) -> ParameterSet:
-    if output_neurons < 1:
-        raise ValueError("output_neurons must be positive")
+    if np.isscalar(output_neurons):
+        output_count = int(output_neurons)
+        if output_count < 1:
+            raise ValueError("output_neurons must be positive")
+        output_neuron_index = np.arange(output_count, dtype=np.int64)
+    else:
+        output_neuron_index = np.asarray(output_neurons, np.int64)
+        if output_neuron_index.ndim != 1 or output_neuron_index.size < 1:
+            raise ValueError("output_neurons must be a non-empty vector")
+        output_count = int(output_neuron_index.size)
+    if input_feature_index is None:
+        input_feature_index = np.arange(len(input_features), dtype=np.int64)
+    if input_neuron_index is None:
+        input_neuron_index = np.arange(len(input_features), dtype=np.int64)
     if label is not None:
         identity = replace(identity, label=str(label))
     parameters = ParameterSet(
@@ -162,9 +212,12 @@ def initial_parameter_set(
         input_features=tuple(input_features),
         outputs=tuple(outputs),
         input_gain=np.ones(len(input_features), np.float32),
+        input_feature_index=np.asarray(input_feature_index, np.int64),
+        input_neuron_index=np.asarray(input_neuron_index, np.int64),
+        output_neuron_index=output_neuron_index,
         type_bias_mv=np.zeros(len(identity.cell_types), np.float32),
         tau_m_ms=20.0,
-        readout=np.zeros((len(outputs), output_neurons), np.float32),
+        readout=np.zeros((len(outputs), output_count), np.float32),
     )
     _validate(parameters)
     return parameters
@@ -181,6 +234,9 @@ def save_parameter_set(path: str | Path, parameters: ParameterSet) -> Path:
     np.savez_compressed(
         arrays,
         input_gain=np.asarray(parameters.input_gain, np.float32),
+        input_feature_index=np.asarray(parameters.input_feature_index, np.int64),
+        input_neuron_index=np.asarray(parameters.input_neuron_index, np.int64),
+        output_neuron_index=np.asarray(parameters.output_neuron_index, np.int64),
         type_bias_mv=np.asarray(parameters.type_bias_mv, np.float32),
         tau_m_ms=np.asarray(parameters.tau_m_ms, np.float32),
         readout=np.asarray(parameters.readout, np.float32),
@@ -218,6 +274,9 @@ def load_parameter_set(path: str | Path) -> ParameterSet:
             input_features=tuple(manifest["input_features"]),
             outputs=tuple(manifest["outputs"]),
             input_gain=arrays["input_gain"].astype(np.float32, copy=True),
+            input_feature_index=arrays["input_feature_index"].astype(np.int64, copy=True),
+            input_neuron_index=arrays["input_neuron_index"].astype(np.int64, copy=True),
+            output_neuron_index=arrays["output_neuron_index"].astype(np.int64, copy=True),
             type_bias_mv=arrays["type_bias_mv"].astype(np.float32, copy=True),
             tau_m_ms=float(arrays["tau_m_ms"]),
             readout=arrays["readout"].astype(np.float32, copy=True),

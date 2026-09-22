@@ -26,6 +26,6 @@ Initialize the allowed shared parameters against the complete frozen MaleCNS str
 
     $env:PYTHONPATH='src'; python tools/connectome_training/train_stage_b.py --initialize-full
 
-The smoke artifact proves that the differentiable topology-constrained path can reduce held-out sequence loss. It is not a flight-success result. The full initialization artifact binds the permitted input gains, cell-type biases, global membrane time constant and descending readout to the 166,700-neuron, 25,582,837-connection model; it does not claim that full-model optimization has run.
+The smoke artifact proves that the differentiable topology-constrained path can reduce loss on a separately generated validation sequence. Its report records distinct hashes for the training and validation feature tensors. It is not a flight-success result. The full initialization artifact binds the permitted input gains, cell-type biases, global membrane time constant and descending readout to the 166,700-neuron, 25,582,837-connection model. Its hashed parameter archive also records the exact feature-to-sensory-neuron and readout-neuron mappings needed to reconstruct the model. It does not claim that full-model optimization has run.
 
 PX4/Gazebo closed-loop training remains gated on a separate plan. The old formal comparison and its manifest-covered files remain unchanged.
