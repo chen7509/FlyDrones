@@ -18,10 +18,10 @@
   ],
   "admission_passed": false,
   "central_command_count": 0,
-  "checkpoint_digest": "0dff9770e025b11809e3f9e6386da68a3f9031c670df05cce1d278fe5a10e4d7",
+  "checkpoint_digest": "49d84b5b69885bd1f97cd05879c713b94519d3af44a63feb0dadcd3c89ace0f7",
   "collision_count": 0,
   "config_sha256": "b86d3dd92c99f3ff2a6ebefe516ecef8f7904a34d77f8c9c814b930d2a655f11",
-  "git_commit": "f258ba2c6eed816a0d848d79aea9e858d702d9b0",
+  "git_commit": "e4c1b1e76db131aa3f54c6a7be795223ba06dbe0",
   "scenario_digests": [
     "a199bfb692924af67c55f5d283ef0bd4c25f9818253c4c60dd50c78a823c5e00",
     "24d23719b8bfbfdb04aa2145d4ed2cec4d70a84076451f52edfb2db85085f9fd",
@@ -30,5 +30,5 @@
   ],
   "schema_version": 1,
   "test_command": "python -m pytest -q",
-  "test_result": "287 passed, 1 existing warning in 173.65s"
+  "test_result": "291 passed, 1 existing warning in 115.24s"
 }
