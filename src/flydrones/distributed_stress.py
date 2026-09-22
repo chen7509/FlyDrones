@@ -352,8 +352,11 @@ def run_udp_process_trial(config: StressTrialConfig) -> dict:
             if path.is_file():
                 path.unlink()
     start_signal = output / "start.json"
+    start_signal_writing = output / "start.json.writing"
     if start_signal.is_file():
         start_signal.unlink()
+    if start_signal_writing.is_file():
+        start_signal_writing.unlink()
     base_port = config.peer_base_port or _find_free_port_range(config.vehicle_count)
     context = multiprocessing.get_context("spawn")
     processes = [
@@ -374,7 +377,10 @@ def run_udp_process_trial(config: StressTrialConfig) -> dict:
                     process.terminate()
             raise RuntimeError("not all UDP stress workers became ready")
         time.sleep(0.02)
-    start_signal.write_text(json.dumps({"start_at": time.time() + 0.75}), encoding="utf-8")
+    start_signal_writing.write_text(
+        json.dumps({"start_at": time.time() + 0.75}), encoding="utf-8"
+    )
+    start_signal_writing.replace(start_signal)
     join_deadline = time.monotonic() + config.duration_s + 20.0
     for process in processes:
         remaining = max(0.0, join_deadline - time.monotonic())
