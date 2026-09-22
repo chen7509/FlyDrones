@@ -1,0 +1,101 @@
+schema_version: 1
+seed: 42
+algorithm:
+  name: recurrent_ppo_ctde
+  gamma: 0.99
+  gae_lambda: 0.95
+  clip_ratio: 0.20
+  entropy_coefficient: 0.01
+  value_coefficient: 0.50
+  update_epochs: 4
+  actor_hidden_dimension: 64
+frozen:
+  - malecns_reflex
+  - safety_projector
+  - px4_inner_loop
+deployment:
+  maximum_policy_latency_ms: 35
+  central_control_commands_allowed: 0
+  shadow_only_default: true
+  maximum_skill_drop: 0.02
+  maximum_policy_kl: 0.05
+  executable_peer_weight_transfer: false
+curriculum:
+  - level: 0
+    name: regression_baseline
+    fleets: [1]
+    seed_range: [0, 99]
+    minimum_active_factors: 1
+    backend: fast
+  - level: 1
+    name: individual_skills
+    fleets: [1, 5]
+    seed_range: [100, 499]
+    minimum_active_factors: 2
+    backend: fast
+  - level: 2
+    name: paired_tasks
+    fleets: [5, 20]
+    seed_range: [500, 999]
+    minimum_active_factors: 4
+    backend: fast
+  - level: 3
+    name: compound_tasks
+    fleets: [20, 50]
+    seed_range: [1000, 1999]
+    minimum_active_factors: 5
+    backend: fast
+  - level: 4
+    name: full_swarm_stress
+    fleets: [20, 50, 100]
+    seed_range: [2000, 2999]
+    minimum_active_factors: 8
+    backend: fast
+  - level: 5
+    name: px4_sitl
+    fleets: [1, 5, 20, 100]
+    seed_range: [3000, 3099]
+    minimum_active_factors: 8
+    backend: px4
+  - level: 6
+    name: hardware_in_the_loop
+    fleets: [1, 5]
+    seed_range: [3100, 3119]
+    minimum_active_factors: 5
+    backend: hil
+  - level: 7
+    name: tethered_caged_canary
+    fleets: [1, 3]
+    seed_range: [3120, 3129]
+    minimum_active_factors: 4
+    backend: hardware
+  - level: 8
+    name: controlled_real_shadow_canary
+    fleets: [1, 3, 5]
+    seed_range: [3130, 3139]
+    minimum_active_factors: 5
+    backend: hardware
+acceptance:
+  minimums:
+    episodes: 1000
+    full_scale_episodes: 100
+    exit_success: 0.95
+    tracking_success: 0.95
+    search_coverage: 0.95
+    gate_success: 0.90
+    compound_success: 0.90
+  maximums:
+    tracking_rmse_m: 0.75
+    tracking_loss_fraction: 0.05
+    duplicate_coverage: 0.20
+    formation_rmse_m: 0.40
+    task_release_s: 3.0
+    task_reopen_s: 3.2
+    task_reassign_s: 5.0
+    maximum_skill_drop: 0.02
+  zeros:
+    - collisions
+    - geofence_violations
+    - return_reserve_violations
+    - central_control_commands
+    - gate_contacts
