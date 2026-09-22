@@ -49,3 +49,29 @@ def test_train_and_evaluate_smoke_are_reproducible(tmp_path):
     assert len(result["episodes"]) == 2
     assert result["admission"]["passed"] is False
     assert result["admission"]["failures"]
+
+    summary = tmp_path / "summary.json"
+    subprocess.run(
+        [
+            sys.executable,
+            "tools/evaluate_multitask.py",
+            "--summary",
+            "--train-report",
+            str(train_report),
+            "--evaluation-report",
+            str(evaluation),
+            "--config",
+            "configs/multitask_training.yaml",
+            "--test-command",
+            "pytest tests/test_multitask_tools.py -q",
+            "--test-result",
+            "1 passed",
+            "--report",
+            str(summary),
+        ],
+        check=True,
+    )
+    evidence = json.loads(summary.read_text(encoding="utf-8"))
+    assert evidence["checkpoint_digest"] == result["checkpoint_digest"]
+    assert len(evidence["scenario_digests"]) == 3
+    assert evidence["test_result"] == "1 passed"
