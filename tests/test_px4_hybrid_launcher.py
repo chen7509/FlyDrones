@@ -17,5 +17,6 @@ def test_launcher_resolves_repo_to_a_wsl_mount_path_without_starting_simulation(
         text=True,
     )
     resolved = completed.stdout.strip().replace("\\", "/")
-    assert resolved.startswith("/mnt/")
-    assert resolved.endswith("/FlyDrones")
+    repository = Path(__file__).parents[1].resolve()
+    expected = f"/mnt/{repository.drive[0].lower()}{repository.as_posix()[2:]}"
+    assert resolved == expected
