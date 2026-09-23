@@ -342,7 +342,11 @@ class CurriculumStore:
         self._expected_config_digest: str | None = None
 
     def initialize(
-        self, config: CurriculumConfig, *, profile: str = "smoke"
+        self,
+        config: CurriculumConfig,
+        *,
+        profile: str = "smoke",
+        best_actor: str | None = None,
     ) -> CurriculumState:
         if profile not in config.profiles:
             raise ValueError(f"unknown curriculum profile: {profile}")
@@ -363,7 +367,7 @@ class CurriculumStore:
             0,
             None,
             None,
-            None,
+            best_actor,
             None,
             (),
             0,
@@ -461,6 +465,17 @@ class RunLock:
     def _pid_alive(pid: int) -> bool:
         if pid <= 0:
             return False
+        if os.name == "nt":
+            import ctypes
+
+            process_query_limited_information = 0x1000
+            handle = ctypes.windll.kernel32.OpenProcess(
+                process_query_limited_information, False, pid
+            )
+            if handle:
+                ctypes.windll.kernel32.CloseHandle(handle)
+                return True
+            return ctypes.get_last_error() == 5
         try:
             os.kill(pid, 0)
         except OSError:
