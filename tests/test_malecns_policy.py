@@ -73,6 +73,7 @@ def test_descending_neuron_command_is_converted_to_hybrid_policy_action():
     assert policy.last_neural_rates["DNp03_L"] == 170.0
     assert policy.neural_updates == 1
     assert policy.predict_calls == 1
+    assert policy.last_command_note == ""
 
 
 def test_refresh_stride_reuses_last_neural_action_without_rerunning_connectome():
@@ -104,6 +105,19 @@ def test_connectome_failure_uses_explicit_navigation_fallback():
     assert policy.fallback_calls == 1
     assert fallback.predict_calls == 1
     assert "neural runtime stopped" in policy.last_error
+    assert policy.last_command_note is None
+
+
+def test_policy_exposes_decoded_command_note():
+    policy = MaleCNSPolicy(
+        FakeBrain(),
+        FakeDecoder(FlightCommand(forward=0.0, note="malecns:brake")),
+        config=MaleCNSPolicyConfig(refresh_every=1),
+    )
+
+    policy.predict(observation())
+
+    assert policy.last_command_note == "malecns:brake"
 
 
 def test_invalid_policy_observation_fails_closed_before_neural_simulation():

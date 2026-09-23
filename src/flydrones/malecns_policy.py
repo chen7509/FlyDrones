@@ -100,6 +100,7 @@ class MaleCNSPolicy:
         self.last_neural_rates: dict[str, float] = {}
         self.last_inputs: dict[str, float] = {}
         self.last_action: np.ndarray | None = None
+        self.last_command_note: str | None = None
         self._previous_threat = (0.0, 0.0)
         self.update_times_ms: list[float] = []
 
@@ -185,11 +186,13 @@ class MaleCNSPolicy:
             rates = self.brain.tick(self.last_inputs, self.config.neural_window_ms)
             command = self.decoder.update(rates, self.config.neural_window_ms / 1000.0)
             action = self._action_from_command(command)
+            self.last_command_note = command.note
             self.last_neural_rates = {name: float(rate) for name, rate in rates.items()}
             self.last_error = ""
             self.neural_updates += 1
         except Exception as exc:
             self.last_error = f"{type(exc).__name__}: {exc}"
+            self.last_command_note = None
             action = self._fallback_action(values)
         self.update_times_ms.append((time.perf_counter() - started) * 1000.0)
         self.last_action = action
