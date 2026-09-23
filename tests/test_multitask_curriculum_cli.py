@@ -9,7 +9,8 @@ from pathlib import Path
 import pytest
 import yaml
 
-from flydrones.multitask_curriculum import RunLock
+from flydrones.multitask_curriculum import CurriculumConfig, RunLock
+from tools.run_multitask_curriculum import _success_score
 
 CONFIG = Path("configs/multitask_training.yaml")
 
@@ -133,3 +134,48 @@ def test_conventional_reflex_trains_actor_but_cannot_claim_live_malecns(tmp_path
     with pytest.raises(subprocess.CalledProcessError):
         run_cli("--output", str(tmp_path), "--max-batches", "1")
     assert read_state(tmp_path) == state
+
+
+def test_conventional_backend_advances_training_without_deployment_promotion(tmp_path):
+    changed = yaml.safe_load(CONFIG.read_text(encoding="utf-8"))
+    first = changed["profiles"]["desktop"][0]
+    first["steps_per_batch"] = 512
+    first["maximum_batches"] = 1
+    first["patience"] = 1
+    config = tmp_path / "reachable.yaml"
+    config.write_text(yaml.safe_dump(changed), encoding="utf-8")
+    output = tmp_path / "run"
+
+    run_cli(
+        "--profile",
+        "desktop",
+        "--output",
+        str(output),
+        "--reflex-backend",
+        "conventional",
+        "--max-batches",
+        "1",
+        config=config,
+    )
+
+    state = read_state(output)
+    report = json.loads(
+        (output / "reports" / "batch-0-0.json").read_text(encoding="utf-8")
+    )
+    assert report["evaluation"]["metrics"]["exit_success"] == 1.0
+    assert report["promotion"]["curriculum_advanced"] is True
+    assert report["promotion"]["promoted"] is False
+    assert state["stage_index"] == 1
+    assert state["best_score"] is None
+
+
+def test_success_score_uses_positive_outcomes_and_inverts_error_metrics():
+    config = CurriculumConfig.load(CONFIG)
+    search = config.profiles["desktop"][3]
+    formation = config.profiles["desktop"][4]
+
+    assert _success_score(
+        search,
+        {"search_coverage": 1.0, "duplicate_coverage": 0.18},
+    ) == 1.0
+    assert _success_score(formation, {"formation_rmse_m": 0.1}) == 0.75

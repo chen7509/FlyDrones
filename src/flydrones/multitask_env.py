@@ -11,12 +11,12 @@ import numpy as np
 from gymnasium import spaces
 
 from flydrones.multitask_contract import (
+    SUPPORTED_DISTURBANCES,
     LocalObservation,
     PolicyIntent,
     SafetySnapshot,
     ScenarioManifest,
     Skill,
-    SUPPORTED_DISTURBANCES,
 )
 from flydrones.multitask_metrics import EpisodeTelemetry
 
@@ -109,10 +109,12 @@ class MultiTaskEnv(gym.Env):
         self._tracking_squared_error_sum = 0.0
         self._tracking_samples = 0
         self._tracking_lost_steps = 0
+        self._tracking_acquired: set[int] = set()
         self._duplicate_coverage_visits = 0
         self._coverage_visits = 0
         self._formation_squared_error_sum = 0.0
         self._formation_samples = 0
+        self._formation_acquired: set[int] = set()
         self._gate_crossings = 0
         self._gate_contacts = 0
         self._safety_failures: list[str] = []
@@ -132,11 +134,11 @@ class MultiTaskEnv(gym.Env):
         del options
         effective_seed = self.manifest.seed if seed is None else seed
         super().reset(seed=effective_seed)
-        columns = max(1, math.ceil(math.sqrt(self.manifest.fleet_size)))
+        columns = max(1, math.ceil(self.manifest.fleet_size / 4))
         for vehicle_id in range(self.manifest.fleet_size):
             row, column = divmod(vehicle_id, columns)
             self._positions[vehicle_id] = (
-                -3.0 - 2.5 * row,
+                -2.0 - 2.5 * row,
                 (column - (columns - 1) / 2.0) * 2.5,
                 8.0 + 0.25 * (vehicle_id % 3),
             )
@@ -174,10 +176,12 @@ class MultiTaskEnv(gym.Env):
         self._tracking_squared_error_sum = 0.0
         self._tracking_samples = 0
         self._tracking_lost_steps = 0
+        self._tracking_acquired.clear()
         self._duplicate_coverage_visits = 0
         self._coverage_visits = 0
         self._formation_squared_error_sum = 0.0
         self._formation_samples = 0
+        self._formation_acquired.clear()
         self._gate_crossings = 0
         self._gate_contacts = 0
         self._safety_failures.clear()
@@ -228,7 +232,6 @@ class MultiTaskEnv(gym.Env):
         return tuple(obstacles)
 
     def _depth_features(self, vehicle_id: int) -> np.ndarray:
-        angles = np.linspace(-math.pi, math.pi, 16, endpoint=False)
         position = self._positions[vehicle_id]
         distances = np.full(16, 12.0, dtype=np.float64)
         for obstacle in self._obstacles:
@@ -275,12 +278,16 @@ class MultiTaskEnv(gym.Env):
 
     def _visual_features(self, vehicle_id: int) -> np.ndarray:
         position = self._estimated_positions[vehicle_id]
+        target_angle = self._steps * self.dt * 0.25
+        target_velocity = np.asarray(
+            (-2.0 * math.sin(target_angle), 2.0 * math.cos(target_angle))
+        )
         return np.concatenate(
             (
                 self._depth_features(vehicle_id),
-                self._relative(position, self._target, 100.0),
-                self._relative(position, self._exit, 100.0),
-                self._relative(position, self._gate, 100.0),
+                self._relative(position, self._target, 20.0),
+                self._relative(position, self._exit, 20.0),
+                self._relative(position, self._gate, 20.0),
                 np.clip(self._wind / 4.0, -1.0, 1.0),
                 np.asarray(
                     (
@@ -288,7 +295,12 @@ class MultiTaskEnv(gym.Env):
                         math.cos(self._headings[vehicle_id]),
                     )
                 ),
-                np.asarray((self._battery[vehicle_id] / 100.0, 1.0, 1.0)),
+                np.asarray((self._battery[vehicle_id] / 100.0,)),
+                np.clip(
+                    target_velocity / self.maximum_speed_mps,
+                    -1.0,
+                    1.0,
+                ),
             )
         ).astype(np.float32)
 
@@ -358,8 +370,14 @@ class MultiTaskEnv(gym.Env):
         active_flags = np.asarray(
             [float(skill in self.manifest.active_skills) for skill in Skill], dtype=np.float32
         )
-        formation_error = min(1.0, abs(position[1]) / 20.0)
-        task = np.concatenate((active_flags, np.asarray((self._steps / self.max_steps, formation_error))))
+        role = (
+            0.0
+            if self.manifest.fleet_size == 1
+            else -1.0 + 2.0 * vehicle_id / (self.manifest.fleet_size - 1)
+        )
+        task = np.concatenate(
+            (active_flags, np.asarray((self._steps / self.max_steps, role)))
+        )
         return LocalObservation.from_arrays(
             self._last_visual_features[vehicle_id],
             flight,
@@ -400,34 +418,48 @@ class MultiTaskEnv(gym.Env):
             )
         ).astype(np.float32)
 
-    def _clearance(self, vehicle_id: int) -> float:
+    def _clearance_and_recovery(
+        self, vehicle_id: int
+    ) -> tuple[float, tuple[float, float, float, float]]:
         if vehicle_id in self._clearance_overrides:
-            return self._clearance_overrides[vehicle_id]
+            return self._clearance_overrides[vehicle_id], (0.0, 0.0, 0.0, 0.0)
         position = self._positions[vehicle_id]
-        boundary = min(
-            position[axis] - self.bounds[axis, 0]
-            for axis in range(3)
-        )
-        boundary = min(
-            boundary,
-            *(self.bounds[axis, 1] - position[axis] for axis in range(3)),
-        ) - 0.25
-        obstacle = min(
-            (
-                math.hypot(position[0] - item.x, position[1] - item.y) - item.radius - 0.25
-                for item in self._obstacles
-            ),
-            default=math.inf,
-        )
-        peer = min(
-            (
-                float(np.linalg.norm(position - self._positions[other])) - 0.5
-                for other in self._active
-                if other != vehicle_id
-            ),
-            default=math.inf,
-        )
-        return float(min(boundary, obstacle, peer))
+        candidates: list[tuple[float, np.ndarray]] = []
+        for axis in range(3):
+            lower_recovery = np.zeros(3, dtype=np.float64)
+            lower_recovery[axis] = 1.0
+            candidates.append(
+                (float(position[axis] - self.bounds[axis, 0] - 0.25), lower_recovery)
+            )
+            upper_recovery = np.zeros(3, dtype=np.float64)
+            upper_recovery[axis] = -1.0
+            candidates.append(
+                (float(self.bounds[axis, 1] - position[axis] - 0.25), upper_recovery)
+            )
+        for item in self._obstacles:
+            delta = np.asarray((position[0] - item.x, position[1] - item.y, 0.0))
+            distance = float(np.linalg.norm(delta[:2]))
+            if distance <= 1e-9:
+                delta[:] = (-1.0, 0.0, 0.0)
+            else:
+                delta /= distance
+            candidates.append((distance - item.radius - 0.25, delta))
+        for other in self._active:
+            if other == vehicle_id:
+                continue
+            delta = position - self._positions[other]
+            distance = float(np.linalg.norm(delta))
+            if distance <= 1e-9:
+                delta = np.asarray((-0.25, 0.0, 0.0))
+            else:
+                delta *= 0.25 / distance
+            candidates.append((distance - 0.5, delta))
+        clearance, recovery = min(candidates, key=lambda item: item[0])
+        motion = tuple(float(value) for value in recovery) + (0.0,)
+        return float(clearance), motion  # type: ignore[return-value]
+
+    def _clearance(self, vehicle_id: int) -> float:
+        return self._clearance_and_recovery(vehicle_id)[0]
 
     def _update_coverage(self, vehicle_id: int) -> tuple[bool, int]:
         position = self._positions[vehicle_id]
@@ -495,21 +527,29 @@ class MultiTaskEnv(gym.Env):
             )
             active_skill = intent.skill if intent.skill in self.manifest.active_skills else None
             if active_skill is Skill.TRACK_TARGET:
-                tracking_error = target_distance - 5.0
-                self._tracking_squared_error_sum += tracking_error * tracking_error
-                self._tracking_samples += 1
-                self._tracking_lost_steps += int(target_distance > 12.0)
-            if active_skill is Skill.SEARCH_COVER:
-                self._coverage_visits += 1
-                if self._global_coverage_visits[coverage_index] > 0:
-                    self._duplicate_coverage_visits += 1
+                if target_distance <= 6.0:
+                    self._tracking_acquired.add(vehicle_id)
+                if vehicle_id in self._tracking_acquired:
+                    tracking_error = target_distance - 5.0
+                    self._tracking_squared_error_sum += tracking_error * tracking_error
+                    self._tracking_samples += 1
+                    self._tracking_lost_steps += int(target_distance > 12.0)
+            if new_coverage:
+                already_covered = self._global_coverage_visits[coverage_index] > 0
                 self._global_coverage_visits[coverage_index] += 1
+                if active_skill is Skill.SEARCH_COVER:
+                    self._coverage_visits += 1
+                    if self._steps > 1 and already_covered:
+                        self._duplicate_coverage_visits += 1
             if active_skill is Skill.FORMATION_RALLY:
-                formation_error_value = float(self._positions[vehicle_id, 1])
-                self._formation_squared_error_sum += (
-                    formation_error_value * formation_error_value
-                )
-                self._formation_samples += 1
+                if abs(self._positions[vehicle_id, 1]) <= 0.4:
+                    self._formation_acquired.add(vehicle_id)
+                if vehicle_id in self._formation_acquired:
+                    formation_error_value = float(self._positions[vehicle_id, 1])
+                    self._formation_squared_error_sum += (
+                        formation_error_value * formation_error_value
+                    )
+                    self._formation_samples += 1
             terms = {
                 "time": -0.01,
                 "exit_progress": (
@@ -555,15 +595,20 @@ class MultiTaskEnv(gym.Env):
             elif self._battery[vehicle_id] < 30.0 and intent.skill is not Skill.YIELD_RETURN_LAND:
                 terms["safety"] = -100.0
                 safety_failure = "return-reserve"
-            if Skill.NAVIGATE_EXIT in self.manifest.active_skills and exit_distance <= 1.0:
+            if active_skill is Skill.NAVIGATE_EXIT and exit_distance <= 1.0:
                 self._completed_evidence.add(f"exit:{vehicle_id}")
-            if Skill.TRACK_TARGET in self.manifest.active_skills and target_distance <= 6.0:
+            if active_skill is Skill.TRACK_TARGET and target_distance <= 6.0:
                 self._completed_evidence.add(f"track:{vehicle_id}")
             if (
-                Skill.SEARCH_COVER in self.manifest.active_skills
+                active_skill is Skill.SEARCH_COVER
                 and float(np.mean(self._coverage[vehicle_id])) >= 0.95
             ):
                 self._completed_evidence.add(f"search:{vehicle_id}")
+            if (
+                active_skill is Skill.SEARCH_COVER
+                and float(np.mean(self._global_coverage_visits > 0)) >= 0.95
+            ):
+                self._completed_evidence.add("search:fleet")
             crossed_gate = (
                 previous_positions[vehicle_id, 0] < self._gate[0]
                 <= self._positions[vehicle_id, 0]
@@ -572,22 +617,30 @@ class MultiTaskEnv(gym.Env):
                 abs(self._positions[vehicle_id, 1] - self._gate[1]) <= 2.0
                 and abs(self._positions[vehicle_id, 2] - self._gate[2]) <= 2.0
             )
+            within_gate_frame = (
+                abs(self._positions[vehicle_id, 1] - self._gate[1]) <= 3.0
+                and abs(self._positions[vehicle_id, 2] - self._gate[2]) <= 3.0
+            )
             if (
-                Skill.GATE_COURSE in self.manifest.active_skills
+                active_skill is Skill.GATE_COURSE
                 and crossed_gate
                 and aligned_gate
             ):
                 self._completed_evidence.add(f"gate:{vehicle_id}")
                 self._gate_crossings += 1
-            elif Skill.GATE_COURSE in self.manifest.active_skills and crossed_gate:
+            elif (
+                active_skill is Skill.GATE_COURSE
+                and crossed_gate
+                and within_gate_frame
+            ):
                 self._gate_contacts += 1
             if (
-                Skill.FORMATION_RALLY in self.manifest.active_skills
+                active_skill is Skill.FORMATION_RALLY
                 and abs(self._positions[vehicle_id, 1]) <= 0.4
             ):
                 self._completed_evidence.add(f"formation:{vehicle_id}")
             if (
-                Skill.YIELD_RETURN_LAND in self.manifest.active_skills
+                active_skill is Skill.YIELD_RETURN_LAND
                 and home_distance <= 1.0
             ):
                 self._completed_evidence.add(f"return:{vehicle_id}")
@@ -626,6 +679,7 @@ class MultiTaskEnv(gym.Env):
     def safety_snapshot(self, vehicle_id: int) -> SafetySnapshot:
         if vehicle_id not in self._active:
             raise ValueError("vehicle is not active")
+        clearance, recovery_motion = self._clearance_and_recovery(vehicle_id)
         return SafetySnapshot(
             battery_pct=float(self._battery[vehicle_id]),
             localization_healthy=bool(self._validity[vehicle_id, 1]),
@@ -634,8 +688,9 @@ class MultiTaskEnv(gym.Env):
                 and self._observation_ages[vehicle_id]
                 <= self.maximum_observation_age_s
             ),
-            minimum_clearance_m=self._clearance(vehicle_id),
+            minimum_clearance_m=clearance,
             emergency_active=False,
+            recovery_motion=recovery_motion,
         )
 
     def record_safety_override(self, reason: str) -> None:

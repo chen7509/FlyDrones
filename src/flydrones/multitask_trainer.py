@@ -306,6 +306,9 @@ class PPOTrainer:
                         logits, motion_mean, confidence, next_hidden = self.actor(
                             observation_tensor, hidden_tensor
                         )
+                        logits = self.actor.mask_skill_logits(
+                            logits, observation_tensor[:, -1, :]
+                        )
                     skill_distribution = Categorical(logits=logits[0])
                     motion_distribution = Normal(motion_mean[0], 0.15)
                     skill_index = skill_distribution.sample()
@@ -443,6 +446,7 @@ class PPOTrainer:
                 logits, motion_mean, _confidence, _next_hidden = self.actor(
                     observation_batch.unsqueeze(1), hidden_batch
                 )
+                logits = self.actor.mask_skill_logits(logits, observation_batch)
                 skill_distribution = Categorical(logits=logits)
                 motion_distribution = Normal(motion_mean, 0.15)
                 new_log_probability = (
@@ -504,6 +508,7 @@ class PPOTrainer:
             "actor_optimizer_state_dict": self.actor_optimizer.state_dict(),
             "critic_optimizer_state_dict": self.critic_optimizer.state_dict(),
             "actor_metadata": {
+                "schema_version": self.actor.schema_version,
                 "input_dimension": self.actor.input_dimension,
                 "hidden_dimension": self.actor.hidden_dimension,
                 "skill_dimension": self.actor.skill_dimension,
@@ -574,6 +579,7 @@ class PPOTrainer:
             raise ValueError("trainer checkpoint config digest mismatch")
         metadata = payload["actor_metadata"]
         expected_metadata = {
+            "schema_version": SharedRecurrentPolicy.schema_version,
             "input_dimension": SharedRecurrentPolicy.input_dimension,
             "hidden_dimension": SharedRecurrentPolicy.hidden_dimension,
             "skill_dimension": SharedRecurrentPolicy.skill_dimension,

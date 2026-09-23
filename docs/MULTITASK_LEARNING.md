@@ -37,7 +37,7 @@ python tools/run_multitask_curriculum.py `
 
 对同一个输出目录再次运行会从 `latest-trainer.pt` 继续，且不会重复已经提交的批次。`--restart` 会在原目录下创建新的运行子目录，保留之前的状态、报告和检查点。并发写入由 `.curriculum.lock` 拒绝；配置摘要改变、检查点缺失或摘要不符时也会停止且不推进状态。
 
-`--reflex-backend conventional` 使用本地深度扇区进行确定性刹停和转向：空间安全时放行 actor，因此可以在没有 connectome 时学习；近障碍动作会被覆盖且不会进入 actor 损失。该后端会明确报告为 `geometric-v1`，不能冒充 MaleCNS 或获得真机准入。每次续跑必须使用相同后端，改变后端会在推进状态前失败。
+`--reflex-backend conventional` 使用本地深度扇区进行确定性绕障和脱离动作：空间安全时放行 actor，因此可以在没有 connectome 时学习；近障碍动作会被覆盖且不会进入 actor 损失。出口、跟踪、搜索、集合和穿门任务使用本地目标、风速、覆盖图和固定角色生成运动先验，神经网络只学习受限残差。双任务与四任务场景根据每架机本地保存的角色值分工，不使用逐机中台指令。该后端会明确报告为 `geometric-v1`，通过任务、安全和回归阈值后可以推进离线课程，但不能冒充 MaleCNS、更新部署用 `best-actor.pt` 或获得真机准入。每次续跑必须使用相同后端，改变后端会在推进状态前失败。
 
 默认的 `fail-closed` 后端仍用于检查缺少反射数据时的安全行为。要启用真实桥接，请使用 `--reflex-backend malecns`，同时传入 `--malecns-connectome` 和 `--malecns-config`，并可用 `--malecns-readout` 指定读出文件。只有评估全程报告 `malecns-v1.0-live`、零回退、任务阈值、安全零事件、任务接管和旧技能回归全部通过时，`best-actor.pt` 才会更新。
 

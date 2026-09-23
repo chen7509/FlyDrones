@@ -192,3 +192,45 @@ def test_geometric_reflex_escapes_side_obstacle_in_world_frame():
 
     assert decision.intent is not None
     assert decision.intent.motion == (0.0, -0.8, 0.0, -0.8)
+
+
+def test_geometric_reflex_keeps_a_bypass_side_until_the_obstacle_is_clear():
+    observation = local_observation()
+    visual = observation.visual_features.copy()
+    visual[:16] = 0.0
+    visual[12] = 0.95
+    blocked = LocalObservation.from_arrays(
+        visual,
+        observation.flight_state,
+        observation.task_state,
+        observation.local_map,
+        observation.peer_summary,
+        observation.previous_action,
+        observation.validity,
+        maximum_age_s=observation.maximum_age_s,
+        age_s=observation.age_s,
+    )
+    clear_visual = visual.copy()
+    clear_visual[:16] = 0.0
+    clear = LocalObservation.from_arrays(
+        clear_visual,
+        observation.flight_state,
+        observation.task_state,
+        observation.local_map,
+        observation.peer_summary,
+        observation.previous_action,
+        observation.validity,
+        maximum_age_s=observation.maximum_age_s,
+        age_s=observation.age_s,
+    )
+    bridge = GeometricReflexBridge()
+
+    first = bridge.evaluate(blocked)
+    bypass = bridge.evaluate(blocked)
+    released = bridge.evaluate(clear)
+
+    assert first.intent is not None
+    assert first.intent.motion == (0.0, -0.8, 0.0, -0.8)
+    assert bypass.intent is not None
+    assert bypass.intent.motion == (0.6, -0.5, 0.0, 0.0)
+    assert released.intent is None

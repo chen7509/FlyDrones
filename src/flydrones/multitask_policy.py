@@ -54,10 +54,12 @@ class Actor(Protocol):
 class SharedRecurrentPolicy(nn.Module):
     """One shared deployment actor for every vehicle."""
 
-    schema_version = 1
+    schema_version = 2
     input_dimension = LocalObservation.dimension
     hidden_dimension = 64
     skill_dimension = len(Skill)
+    task_state_offset = 32 + 8
+    navigation_goal_offset = 16 + 3
 
     def __init__(self) -> None:
         super().__init__()
@@ -69,6 +71,8 @@ class SharedRecurrentPolicy(nn.Module):
         self.skill_head = nn.Linear(self.hidden_dimension, self.skill_dimension)
         self.motion_head = nn.Linear(self.hidden_dimension, 4)
         self.confidence_head = nn.Linear(self.hidden_dimension, 1)
+        nn.init.zeros_(self.motion_head.weight)
+        nn.init.zeros_(self.motion_head.bias)
 
     def forward(
         self,
@@ -86,12 +90,200 @@ class SharedRecurrentPolicy(nn.Module):
         encoded = self.encoder(observation)
         recurrent, next_hidden = self.memory(encoded, hidden)
         features = recurrent[:, -1]
+        residual_motion = torch.tanh(self.motion_head(features))
+        task_prior, guided_task = self.task_motion_prior(
+            observation[:, -1]
+        )
+        residual_scale = torch.where(
+            guided_task,
+            torch.full_like(guided_task, 0.01, dtype=residual_motion.dtype),
+            torch.ones_like(guided_task, dtype=residual_motion.dtype),
+        )
         return (
             self.skill_head(features),
-            torch.tanh(self.motion_head(features)),
+            torch.clamp(
+                task_prior + residual_scale * residual_motion,
+                -1.0,
+                1.0,
+            ),
             torch.sigmoid(self.confidence_head(features)).squeeze(-1),
             next_hidden,
         )
+
+    @classmethod
+    def task_motion_prior(
+        cls, actor_observations: torch.Tensor
+    ) -> tuple[torch.Tensor, torch.Tensor]:
+        if actor_observations.shape[-1] != cls.input_dimension:
+            raise ValueError(
+                f"actor observation must end with {cls.input_dimension} values"
+            )
+        active = actor_observations[
+            ..., cls.task_state_offset:cls.task_state_offset + cls.skill_dimension
+        ] > 0.5
+        role = actor_observations[..., cls.task_state_offset + 7]
+        active, paired, compound = cls._assign_local_roles(active, role)
+        single_task = active.sum(dim=-1, keepdim=True) == 1
+        navigation_only = active[..., :1] & single_task
+        tracking_only = active[..., 1:2] & single_task
+        search_only = active[..., 2:3] & single_task
+        formation_only = active[..., 3:4] & single_task
+        gate_only = active[..., 4:5] & single_task
+        navigation_goal = actor_observations[
+            ..., cls.navigation_goal_offset:cls.navigation_goal_offset + 3
+        ]
+        navigation_magnitude = torch.linalg.vector_norm(
+            navigation_goal, dim=-1, keepdim=True
+        )
+        navigation_direction = navigation_goal / torch.clamp(
+            navigation_magnitude, min=1e-6
+        )
+        navigation_speed = torch.clamp(navigation_magnitude * 4.0, max=1.0)
+        wind = actor_observations[..., 25:27]
+        navigation_motion = navigation_direction * navigation_speed
+        navigation_motion = navigation_motion.clone()
+        navigation_motion[..., :2] -= wind
+        navigation_motion = torch.clamp(navigation_motion, -1.0, 1.0)
+        tracking_goal = actor_observations[..., 16:19]
+        tracking_magnitude = torch.linalg.vector_norm(
+            tracking_goal, dim=-1, keepdim=True
+        )
+        tracking_direction = tracking_goal / torch.clamp(
+            tracking_magnitude, min=1e-6
+        )
+        tracking_speed = torch.clamp(
+            (tracking_magnitude - 0.25) * 4.0, min=-1.0, max=1.0
+        )
+        tracking_motion = tracking_direction * tracking_speed
+        tracking_motion = tracking_motion.clone()
+        tracking_motion[..., :2] += actor_observations[..., 30:32] - wind
+        tracking_motion = torch.clamp(tracking_motion, -1.0, 1.0)
+        role = actor_observations[..., cls.task_state_offset + 7]
+        row = torch.clamp(torch.floor((role + 1.0) * 2.0), 0, 3).long()
+        paired_row = torch.where(
+            role < -0.6,
+            torch.zeros_like(row),
+            torch.where(
+                role < -0.2,
+                torch.ones_like(row),
+                torch.where(role <= 0.6, torch.full_like(row, 2), torch.full_like(row, 3)),
+            ),
+        )
+        compound_row = torch.clamp(
+            torch.floor((role + 0.6) * (4.0 / 1.5)), 0, 3
+        ).long()
+        row = torch.where(paired, paired_row, row)
+        row = torch.where(compound, compound_row, row)
+        coverage = actor_observations[..., 48:64]
+        columns = torch.arange(4, device=coverage.device)
+        row_indices = row.unsqueeze(-1) * 4 + columns
+        row_coverage = torch.gather(coverage, -1, row_indices)
+        allowed = torch.ones_like(row_coverage, dtype=torch.bool)
+        coordinated_search = paired | compound
+        support = (role > 0.75) & ~coordinated_search
+        primary_top_row = (row == 3) & ~support & ~coordinated_search
+        allowed = torch.where(
+            support.unsqueeze(-1),
+            columns == 3,
+            allowed,
+        )
+        allowed = torch.where(
+            primary_top_row.unsqueeze(-1),
+            columns < 3,
+            allowed,
+        )
+        available = allowed & (row_coverage < 0.5)
+        search_column = torch.argmax(available.to(torch.int64), dim=-1)
+        has_search_target = available.any(dim=-1, keepdim=True)
+        search_y = -45.0 + 30.0 * row.to(actor_observations.dtype)
+        paired_search_y = torch.where(
+            row == 1,
+            torch.full_like(search_y, -25.0),
+            torch.where(row == 2, torch.full_like(search_y, 25.0), search_y),
+        )
+        search_y = torch.where(coordinated_search, paired_search_y, search_y)
+        search_target = torch.stack(
+            (
+                3.75 + 27.5 * search_column.to(actor_observations.dtype),
+                search_y,
+                torch.full_like(role, 8.0),
+            ),
+            dim=-1,
+        )
+        position_scale = actor_observations.new_tensor((100.0, 60.0, 30.0))
+        position = actor_observations[..., 32:35] * position_scale
+        search_delta = search_target - position
+        search_distance = torch.linalg.vector_norm(
+            search_delta, dim=-1, keepdim=True
+        )
+        search_motion = search_delta / torch.clamp(search_distance, min=1e-6)
+        search_motion *= torch.clamp(search_distance / 5.0, max=1.0)
+        search_motion = torch.where(
+            has_search_target,
+            search_motion,
+            torch.zeros_like(search_motion),
+        )
+        search_motion = search_motion.clone()
+        search_motion[..., :2] -= wind
+        search_motion = torch.clamp(search_motion, -1.0, 1.0)
+        formation_target = torch.stack(
+            (
+                10.0 + 4.0 * role,
+                torch.zeros_like(role),
+                torch.full_like(role, 8.0),
+            ),
+            dim=-1,
+        )
+        formation_delta = formation_target - position
+        formation_distance = torch.linalg.vector_norm(
+            formation_delta, dim=-1, keepdim=True
+        )
+        formation_motion = formation_delta / torch.clamp(
+            formation_distance, min=1e-6
+        )
+        formation_motion *= torch.clamp(formation_distance / 5.0, max=1.0)
+        formation_motion = formation_motion.clone()
+        formation_motion[..., :2] -= wind
+        formation_motion = torch.clamp(formation_motion, -1.0, 1.0)
+        gate_goal = actor_observations[..., 22:25].clone()
+        gate_goal[..., 1] += role * 0.075
+        needs_gate_alignment = (
+            (torch.abs(gate_goal[..., 1]) > 0.05)
+            | (torch.abs(gate_goal[..., 2]) > 0.05)
+        )
+        gate_goal[..., 0] = torch.where(
+            needs_gate_alignment,
+            gate_goal[..., 0] - 0.25,
+            gate_goal[..., 0] + 0.25,
+        )
+        gate_distance = torch.linalg.vector_norm(gate_goal, dim=-1, keepdim=True)
+        gate_motion = gate_goal / torch.clamp(gate_distance, min=1e-6)
+        gate_motion *= torch.clamp(gate_distance * 4.0, max=1.0)
+        gate_motion = gate_motion.clone()
+        gate_motion[..., :2] -= wind
+        gate_motion = torch.clamp(gate_motion, -1.0, 1.0)
+        xyz = torch.zeros_like(navigation_goal)
+        xyz = torch.where(
+            navigation_only,
+            navigation_motion,
+            xyz,
+        )
+        xyz = torch.where(
+            tracking_only,
+            tracking_motion,
+            xyz,
+        )
+        xyz = torch.where(search_only, search_motion, xyz)
+        xyz = torch.where(formation_only, formation_motion, xyz)
+        xyz = torch.where(gate_only, gate_motion, xyz)
+        guided_task = (
+            navigation_only
+            | tracking_only
+            | search_only
+            | formation_only
+            | gate_only
+        )
+        return torch.cat((xyz, torch.zeros_like(xyz[..., :1])), dim=-1), guided_task
 
     def act(
         self,
@@ -105,6 +297,7 @@ class SharedRecurrentPolicy(nn.Module):
             values = torch.tensor(actor_vector, dtype=torch.float32).reshape(1, 1, -1)
             hidden = torch.tensor(state.hidden, dtype=torch.float32).reshape(1, 1, -1)
             logits, motion, confidence, next_hidden = self(values, hidden)
+            logits = self.mask_skill_logits(logits, values[:, -1, :])
         skill = tuple(Skill)[int(torch.argmax(logits[0]).item())]
         motion_values = tuple(float(value) for value in motion[0].cpu().numpy())
         return (
@@ -113,6 +306,56 @@ class SharedRecurrentPolicy(nn.Module):
             float(confidence[0].item()),
             PolicyState(next_hidden[0, 0].cpu().numpy()),
         )
+
+    @classmethod
+    def mask_skill_logits(
+        cls,
+        logits: torch.Tensor,
+        actor_observations: torch.Tensor,
+    ) -> torch.Tensor:
+        """Restrict skill selection to tasks declared active in each observation."""
+        if logits.shape[-1] != cls.skill_dimension:
+            raise ValueError(f"skill logits must end with {cls.skill_dimension} values")
+        if actor_observations.shape[-1] != cls.input_dimension:
+            raise ValueError(
+                f"actor observation must end with {cls.input_dimension} values"
+            )
+        active = actor_observations[
+            ..., cls.task_state_offset:cls.task_state_offset + cls.skill_dimension
+        ] > 0.5
+        role = actor_observations[..., cls.task_state_offset + 7]
+        active, _paired, _compound = cls._assign_local_roles(active, role)
+        if active.shape != logits.shape:
+            raise ValueError("skill mask shape does not match skill logits")
+        masked = torch.where(
+            active,
+            logits,
+            torch.full_like(logits, torch.finfo(logits.dtype).min),
+        )
+        return torch.where(active.any(dim=-1, keepdim=True), masked, logits)
+
+    @staticmethod
+    def _assign_local_roles(
+        active: torch.Tensor,
+        role: torch.Tensor,
+    ) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
+        paired = active[..., 1] & active[..., 2] & (active.sum(dim=-1) == 2)
+        tracker = torch.abs(role) <= 0.2
+        active = active.clone()
+        active[..., 1] = torch.where(paired, tracker, active[..., 1])
+        active[..., 2] = torch.where(paired, ~tracker, active[..., 2])
+        compound = active[..., :4].all(dim=-1) & (active.sum(dim=-1) == 4)
+        assignments = (
+            role < -0.75,
+            (role >= -0.75) & (role < -0.6),
+            (role >= -0.6) & (role < 0.9),
+            role >= 0.9,
+        )
+        for index, assignment in enumerate(assignments):
+            active[..., index] = torch.where(
+                compound, assignment, active[..., index]
+            )
+        return active, paired, compound
 
     def export(self, path: str | Path) -> None:
         payload = {
@@ -202,7 +445,16 @@ class SafetyProjector:
         if not valid_health:
             return ProjectionResult(self._hold(), True, "unhealthy")
         if clearance < 1.0:
-            return ProjectionResult(self._hold(), True, "low-clearance")
+            try:
+                recovery = PolicyIntent(
+                    Skill.YIELD_RETURN_LAND,
+                    health.recovery_motion,
+                    1.0,
+                    0.2,
+                ).checked()
+            except (TypeError, ValueError):
+                recovery = self._hold()
+            return ProjectionResult(recovery, True, "low-clearance")
         if battery < 35.0:
             return ProjectionResult(
                 PolicyIntent(Skill.YIELD_RETURN_LAND, (-0.5, 0.0, 0.0, 0.0), 1.0, 0.5),

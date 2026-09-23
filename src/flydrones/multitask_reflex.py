@@ -51,38 +51,48 @@ class GeometricReflexBridge:
         self.turn_strength = float(turn_strength)
         self.calls = 0
         self.overrides = 0
+        self._escape_side: float | None = None
 
     def evaluate(self, observation: LocalObservation) -> ReflexDecision:
         if not isinstance(observation, LocalObservation):
             raise TypeError("observation must be a LocalObservation")
         self.calls += 1
         depth = np.asarray(observation.visual_features[:16], dtype=np.float32)
+        peak = float(np.max(depth))
         front = float(np.max(depth[7:10]))
+        heading = float(observation.flight_state[-1]) * math.pi
         intent = None
-        if front >= self.trigger_proximity:
+        if self._escape_side is not None:
+            if peak < max(0.0, self.trigger_proximity - 0.15):
+                self._escape_side = None
+            else:
+                self.overrides += 1
+                motion = self._world_motion(
+                    0.75 * self.turn_strength,
+                    0.625 * self.turn_strength * self._escape_side,
+                    heading,
+                    0.0,
+                )
+                intent = PolicyIntent(Skill.YIELD_RETURN_LAND, motion, 1.0, 0.2)
+        elif front >= self.trigger_proximity:
             self.overrides += 1
             left = float(np.max(depth[9:13]))
             right = float(np.max(depth[4:8]))
             difference = left - right
             if abs(difference) <= self.direction_margin:
-                motion = (0.0, 0.0, 0.0, 0.0)
+                turn = -self.turn_strength
             else:
                 turn = -self.turn_strength if difference > 0.0 else self.turn_strength
-                heading = float(observation.flight_state[-1]) * math.pi
-                motion = (
-                    self._clean(-turn * math.sin(heading)),
-                    self._clean(turn * math.cos(heading)),
-                    0.0,
-                    turn,
-                )
+            self._escape_side = -1.0 if turn < 0.0 else 1.0
+            motion = self._world_motion(0.0, turn, heading, turn)
             intent = PolicyIntent(Skill.YIELD_RETURN_LAND, motion, 1.0, 0.2)
-        elif float(np.max(depth)) >= self.trigger_proximity:
+        elif peak >= self.trigger_proximity:
             self.overrides += 1
             obstacle_index = int(np.argmax(depth))
             obstacle_angle = -math.pi + obstacle_index * (2.0 * math.pi / 16.0)
-            heading = float(observation.flight_state[-1]) * math.pi
             escape_angle = heading + obstacle_angle + math.pi
             lateral = math.sin(obstacle_angle)
+            self._escape_side = -1.0 if lateral >= 0.0 else 1.0
             yaw = 0.0
             if abs(lateral) > self.direction_margin:
                 yaw = -math.copysign(self.turn_strength, lateral)
@@ -96,6 +106,21 @@ class GeometricReflexBridge:
         return ReflexDecision(
             intent,
             ReflexEvidence(self.source, 0, 0, 0, 0, 0.0),
+        )
+
+    @classmethod
+    def _world_motion(
+        cls,
+        forward: float,
+        lateral: float,
+        heading: float,
+        yaw: float,
+    ) -> tuple[float, float, float, float]:
+        return (
+            cls._clean(forward * math.cos(heading) - lateral * math.sin(heading)),
+            cls._clean(forward * math.sin(heading) + lateral * math.cos(heading)),
+            0.0,
+            cls._clean(yaw),
         )
 
     @staticmethod

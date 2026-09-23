@@ -197,12 +197,27 @@ def _thresholds_pass(stage: CurriculumStage, metrics: Mapping[str, float]) -> tu
 
 
 def _success_score(stage: CurriculumStage, metrics: Mapping[str, float]) -> float:
+    positive_outcomes = {
+        "exit_success",
+        "tracking_success",
+        "search_coverage",
+        "gate_success",
+        "compound_success",
+    }
     candidates = [
         float(metrics[name])
         for name in stage.thresholds
-        if name in metrics and (name.endswith("success") or name.endswith("coverage"))
+        if name in metrics and name in positive_outcomes
     ]
-    return min(candidates, default=0.0)
+    if candidates:
+        return min(candidates)
+
+    error_quality = [
+        max(0.0, min(1.0, 1.0 - float(metrics[name]) / threshold))
+        for name, threshold in stage.thresholds.items()
+        if name in metrics and threshold > 0.0
+    ]
+    return min(error_quality, default=0.0)
 
 
 def _mission_evidence(seed: int) -> tuple[list[dict[str, object]], bool]:
@@ -404,7 +419,7 @@ def run(args: argparse.Namespace) -> dict[str, object]:
                     and evaluation.male_cns_fallbacks == 0
                     and evaluation.reflex_calls == evaluation.local_decisions
                 )
-                current_gate = thresholds_passed and mission_passed and live_backend
+                curriculum_gate = thresholds_passed and mission_passed
                 baselines = _load_baselines(output)
                 regressions = _regression_evidence(
                     config,
@@ -415,17 +430,22 @@ def run(args: argparse.Namespace) -> dict[str, object]:
                 )
                 decision = promotion_decision(
                     current={
-                        "admission_passed": current_gate,
+                        "admission_passed": curriculum_gate,
                         "success": _success_score(stage, evaluation.metrics),
                     },
                     baselines=baselines,
                     regressions=regressions,
                     maximum_drop=float(config.deployment["maximum_skill_drop"]),
                 )
-                eligible = decision.promote and state.batch_index + 1 >= stage.patience
+                curriculum_eligible = (
+                    decision.promote and state.batch_index + 1 >= stage.patience
+                )
+                deployment_eligible = curriculum_eligible and live_backend
                 reasons = list(decision.reasons)
-                if decision.promote and not eligible:
+                if decision.promote and not curriculum_eligible:
                     reasons.append("patience")
+                if curriculum_eligible and not live_backend:
+                    reasons.append("male-cns-backend")
                 report = {
                     "schema_version": 1,
                     "run_id": state.run_id,
@@ -442,7 +462,8 @@ def run(args: argparse.Namespace) -> dict[str, object]:
                     "evaluation": evaluation.to_dict(),
                     "mission_validation": missions,
                     "promotion": {
-                        "promoted": eligible,
+                        "promoted": deployment_eligible,
+                        "curriculum_advanced": curriculum_eligible,
                         "reasons": reasons,
                         "threshold_failures": threshold_failures,
                         "mission_passed": mission_passed,
@@ -462,7 +483,7 @@ def run(args: argparse.Namespace) -> dict[str, object]:
                         "maximum_drop": config.deployment["maximum_skill_drop"],
                     },
                 )
-                if eligible:
+                if curriculum_eligible:
                     updated = dict(baselines)
                     updated[stage.stage_id] = decision.score
                     _atomic_json(output / "baselines.json", updated)
@@ -473,9 +494,9 @@ def run(args: argparse.Namespace) -> dict[str, object]:
                     report=report,
                     global_updates=trainer.global_updates,
                     environment_steps=trainer.environment_steps,
-                    best_actor=actor_path if eligible else None,
-                    best_score=decision.score if eligible else None,
-                    stage_completed=eligible,
+                    best_actor=actor_path if deployment_eligible else None,
+                    best_score=decision.score if deployment_eligible else None,
+                    stage_completed=curriculum_eligible,
                 )
                 committed += 1
                 if args.stop_after_stage and state.stage_index != previous_stage:

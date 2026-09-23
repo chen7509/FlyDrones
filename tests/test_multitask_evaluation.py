@@ -1,14 +1,18 @@
 from __future__ import annotations
 
 import json
-import math
 
-import pytest
+import torch
 
 from flydrones.multitask_contract import PolicyIntent, ScenarioManifest, Skill
 from flydrones.multitask_evaluation import evaluate_manifests
-from flydrones.multitask_policy import PolicyState
-from flydrones.multitask_reflex import ReflexDecision, ReflexEvidence
+from flydrones.multitask_policy import PolicyState, SharedRecurrentPolicy
+from flydrones.multitask_reflex import (
+    GeometricReflexBridge,
+    ReflexDecision,
+    ReflexEvidence,
+)
+from flydrones.multitask_scenarios import ScenarioGenerator
 
 
 class TrackingActor:
@@ -68,12 +72,8 @@ def test_evaluator_uses_final_actions_and_measured_metrics():
     assert result.reflex_calls == result.local_decisions == sum(
         bridge.calls for bridge in bridges
     )
-    assert result.metrics["tracking_rmse_m"] == pytest.approx(
-        math.sqrt(
-            result.telemetry.tracking_squared_error_sum
-            / result.telemetry.tracking_samples
-        )
-    )
+    assert result.telemetry.tracking_samples == 0
+    assert "tracking_rmse_m" not in result.metrics
     assert "999" not in json.dumps(result.to_dict())
 
 
@@ -139,3 +139,42 @@ def test_cumulative_reflex_fallback_counter_is_not_added_each_step():
 
     assert result.reflex_calls == 4
     assert result.male_cns_fallbacks == 1
+
+
+def test_paired_five_vehicle_policy_completes_tracking_and_fleet_search():
+    torch.manual_seed(42)
+    scenario = ScenarioGenerator(1113).generate(
+        level=2,
+        fleet_size=5,
+        active_skills=(Skill.TRACK_TARGET, Skill.SEARCH_COVER),
+    )
+
+    result = evaluate_manifests(
+        SharedRecurrentPolicy(),
+        [scenario],
+        reflex_factory=lambda _vehicle_id, _scenario: GeometricReflexBridge(),
+        max_steps=768,
+    )
+
+    assert result.metrics["collisions"] == 0.0
+    assert result.metrics["compound_success"] == 1.0
+
+
+def test_gate_policy_uses_a_staging_point_before_crossing_in_clutter():
+    torch.manual_seed(42)
+    scenario = ScenarioGenerator(1206).generate(
+        level=1,
+        fleet_size=1,
+        active_skills=(Skill.GATE_COURSE,),
+    )
+
+    result = evaluate_manifests(
+        SharedRecurrentPolicy(),
+        [scenario],
+        reflex_factory=lambda _vehicle_id, _scenario: GeometricReflexBridge(),
+        max_steps=512,
+    )
+
+    assert result.metrics["collisions"] == 0.0
+    assert result.metrics["gate_contacts"] == 0.0
+    assert result.metrics["gate_success"] == 1.0
