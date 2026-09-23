@@ -4,7 +4,7 @@ import numpy as np
 import pytest
 
 from flydrones.multitask_contract import LocalObservation, PolicyIntent, Skill
-from flydrones.multitask_reflex import MaleCNSReflexBridge
+from flydrones.multitask_reflex import GeometricReflexBridge, MaleCNSReflexBridge
 
 
 class StubMaleCNS:
@@ -121,3 +121,51 @@ def test_brake_command_produces_zero_motion_override():
     assert decision.intent == PolicyIntent(
         Skill.YIELD_RETURN_LAND, (0.0, 0.0, 0.0, 0.0), 1.0, 0.2
     )
+
+
+def test_geometric_reflex_releases_actor_when_depth_is_clear():
+    observation = local_observation()
+    visual = observation.visual_features.copy()
+    visual[:16] = 0.0
+    clear = LocalObservation.from_arrays(
+        visual,
+        observation.flight_state,
+        observation.task_state,
+        observation.local_map,
+        observation.peer_summary,
+        observation.previous_action,
+        observation.validity,
+        maximum_age_s=observation.maximum_age_s,
+        age_s=observation.age_s,
+    )
+
+    decision = GeometricReflexBridge().evaluate(clear)
+
+    assert decision.intent is None
+    assert decision.evidence.source == "geometric-v1"
+    assert decision.evidence.fallback_calls == 0
+
+
+def test_geometric_reflex_turns_away_from_near_obstacle():
+    observation = local_observation()
+    visual = observation.visual_features.copy()
+    visual[:16] = 0.0
+    visual[7:10] = (0.2, 0.95, 0.9)
+    blocked = LocalObservation.from_arrays(
+        visual,
+        observation.flight_state,
+        observation.task_state,
+        observation.local_map,
+        observation.peer_summary,
+        observation.previous_action,
+        observation.validity,
+        maximum_age_s=observation.maximum_age_s,
+        age_s=observation.age_s,
+    )
+
+    decision = GeometricReflexBridge().evaluate(blocked)
+
+    assert decision.intent == PolicyIntent(
+        Skill.YIELD_RETURN_LAND, (0.0, -0.8, 0.0, -0.8), 1.0, 0.2
+    )
+    assert decision.evidence.source == "geometric-v1"

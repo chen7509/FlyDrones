@@ -32,7 +32,7 @@ from flydrones.multitask_curriculum import (
 from flydrones.multitask_env import MultiTaskEnv
 from flydrones.multitask_evaluation import evaluate_manifests
 from flydrones.multitask_policy import SharedRecurrentPolicy
-from flydrones.multitask_reflex import MaleCNSReflexBridge
+from flydrones.multitask_reflex import GeometricReflexBridge, MaleCNSReflexBridge
 from flydrones.multitask_scenarios import ScenarioGenerator
 from flydrones.multitask_summary import write_summary
 from flydrones.multitask_trainer import PPOTrainer
@@ -82,8 +82,24 @@ def _device(requested: str) -> str:
 
 
 def _reflex_factory(args: argparse.Namespace) -> Callable | None:
-    if args.malecns_connectome is None and args.malecns_config is None:
+    provided = any(
+        value is not None
+        for value in (
+            args.malecns_connectome,
+            args.malecns_config,
+            args.malecns_readout,
+        )
+    )
+    if args.reflex_backend == "conventional":
+        if provided:
+            raise ValueError("MaleCNS paths cannot be used with conventional reflexes")
+        return lambda _vehicle_id, _manifest: GeometricReflexBridge()
+    if args.reflex_backend == "fail-closed":
+        if provided:
+            raise ValueError("MaleCNS paths require --reflex-backend malecns")
         return None
+    if args.malecns_connectome is None and args.malecns_config is None:
+        raise ValueError("the malecns backend requires connectome and config paths")
     if args.malecns_connectome is None or args.malecns_config is None:
         raise ValueError(
             "--malecns-connectome and --malecns-config must be supplied together"
@@ -291,7 +307,26 @@ def run(args: argparse.Namespace) -> dict[str, object]:
     try:
         with RunLock(output):
             store = CurriculumStore(output)
+            settings_path = output / "run-settings.json"
+            settings = {
+                "schema_version": 1,
+                "reflex_backend": args.reflex_backend,
+            }
             if store.state_path.is_file():
+                if settings_path.is_file():
+                    committed_settings = json.loads(
+                        settings_path.read_text(encoding="utf-8")
+                    )
+                    if committed_settings != settings:
+                        raise ValueError(
+                            "reflex backend differs from committed run settings"
+                        )
+                elif args.reflex_backend != "fail-closed":
+                    raise ValueError(
+                        "existing run has no compatible reflex backend setting"
+                    )
+                else:
+                    _atomic_json(settings_path, settings)
                 state = store.load(config)
                 if state.profile != args.profile:
                     raise ValueError("curriculum profile differs from committed state")
@@ -304,6 +339,7 @@ def run(args: argparse.Namespace) -> dict[str, object]:
                     reflex_factory=reflex_factory,
                 )
             else:
+                _atomic_json(settings_path, settings)
                 first_manifest = manifest_for_batch(
                     config, args.profile, stage_index=0, batch_index=0
                 )
@@ -472,6 +508,11 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--malecns-connectome")
     parser.add_argument("--malecns-config")
     parser.add_argument("--malecns-readout")
+    parser.add_argument(
+        "--reflex-backend",
+        choices=("fail-closed", "conventional", "malecns"),
+        default="fail-closed",
+    )
     parser.add_argument("--summary", action="store_true")
     parser.add_argument("--verification-record")
     return parser.parse_args()

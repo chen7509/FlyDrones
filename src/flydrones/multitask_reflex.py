@@ -30,6 +30,51 @@ class ReflexBridge(Protocol):
     def evaluate(self, observation: LocalObservation) -> ReflexDecision: ...
 
 
+class GeometricReflexBridge:
+    """Deterministic local depth reflex for training without a connectome."""
+
+    source = "geometric-v1"
+
+    def __init__(
+        self,
+        *,
+        trigger_proximity: float = 0.75,
+        direction_margin: float = 0.05,
+        turn_strength: float = 0.8,
+    ) -> None:
+        values = (trigger_proximity, direction_margin, turn_strength)
+        if not all(np.isfinite(value) and 0.0 <= value <= 1.0 for value in values):
+            raise ValueError("geometric reflex values must be finite and between zero and one")
+        self.trigger_proximity = float(trigger_proximity)
+        self.direction_margin = float(direction_margin)
+        self.turn_strength = float(turn_strength)
+        self.calls = 0
+        self.overrides = 0
+
+    def evaluate(self, observation: LocalObservation) -> ReflexDecision:
+        if not isinstance(observation, LocalObservation):
+            raise TypeError("observation must be a LocalObservation")
+        self.calls += 1
+        depth = np.asarray(observation.visual_features[:16], dtype=np.float32)
+        front = float(np.max(depth[7:10]))
+        intent = None
+        if front >= self.trigger_proximity:
+            self.overrides += 1
+            left = float(np.max(depth[9:13]))
+            right = float(np.max(depth[4:8]))
+            difference = left - right
+            if abs(difference) <= self.direction_margin:
+                motion = (0.0, 0.0, 0.0, 0.0)
+            else:
+                turn = -self.turn_strength if difference > 0.0 else self.turn_strength
+                motion = (0.0, turn, 0.0, turn)
+            intent = PolicyIntent(Skill.YIELD_RETURN_LAND, motion, 1.0, 0.2)
+        return ReflexDecision(
+            intent,
+            ReflexEvidence(self.source, 0, 0, 0, 0, 0.0),
+        )
+
+
 class MaleCNSReflexBridge:
     """Own one MaleCNS policy instance and convert decoded commands to overrides."""
 

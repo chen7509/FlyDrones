@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from flydrones.multitask_contract import PolicyIntent, ScenarioManifest, Skill
 from flydrones.multitask_env import MultiTaskEnv
-from flydrones.multitask_reflex import ReflexDecision, ReflexEvidence
+from flydrones.multitask_reflex import GeometricReflexBridge, ReflexDecision, ReflexEvidence
 from flydrones.multitask_trainer import PPOTrainer
 
 
@@ -150,3 +150,22 @@ def test_training_reports_cumulative_reflex_fallbacks_once_per_bridge():
     report = trainer.train_batch(scenario, steps=8)
 
     assert report.male_cns_fallbacks == 1
+
+
+def test_geometric_reflex_allows_safe_actor_samples_to_train():
+    scenario = manifest()
+    environment = MultiTaskEnv(scenario, max_steps=16)
+    environment.reset(seed=scenario.seed)
+    trainer = PPOTrainer(
+        seed=22,
+        critic_input_dimension=int(environment.critic_observation().shape[0]),
+        device="cpu",
+        reflex_factory=lambda vehicle_id, item: GeometricReflexBridge(),
+    )
+    before = trainer.actor_digest()
+
+    report = trainer.train_batch(scenario, steps=8)
+
+    assert report.actor_samples > 0
+    assert report.male_cns_backend == "geometric-v1"
+    assert trainer.actor_digest() != before

@@ -109,3 +109,27 @@ def test_restart_preserves_existing_evidence_in_a_new_run_directory(tmp_path):
     assert restarted_path != tmp_path
     assert read_state(tmp_path) == original
     assert (restarted_path / "state.json").exists()
+
+
+def test_conventional_reflex_trains_actor_but_cannot_claim_live_malecns(tmp_path):
+    run_cli(
+        "--output",
+        str(tmp_path),
+        "--reflex-backend",
+        "conventional",
+        "--max-batches",
+        "1",
+    )
+
+    state = read_state(tmp_path)
+    report_path = next((tmp_path / "reports").glob("batch-*.json"))
+    report = json.loads(report_path.read_text(encoding="utf-8"))
+
+    assert report["training"]["actor_samples"] > 0
+    assert report["training"]["male_cns_backend"] == "geometric-v1"
+    assert report["evaluation"]["male_cns_backend"] == "geometric-v1"
+    assert report["promotion"]["live_malecns"] is False
+    assert report["promotion"]["promoted"] is False
+    with pytest.raises(subprocess.CalledProcessError):
+        run_cli("--output", str(tmp_path), "--max-batches", "1")
+    assert read_state(tmp_path) == state
