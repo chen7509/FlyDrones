@@ -169,3 +169,26 @@ def test_geometric_reflex_turns_away_from_near_obstacle():
         Skill.YIELD_RETURN_LAND, (0.0, -0.8, 0.0, -0.8), 1.0, 0.2
     )
     assert decision.evidence.source == "geometric-v1"
+
+
+def test_geometric_reflex_escapes_side_obstacle_in_world_frame():
+    observation = local_observation()
+    visual = observation.visual_features.copy()
+    visual[:16] = 0.0
+    visual[12] = 0.95
+    blocked = LocalObservation.from_arrays(
+        visual,
+        observation.flight_state,
+        observation.task_state,
+        observation.local_map,
+        observation.peer_summary,
+        observation.previous_action,
+        observation.validity,
+        maximum_age_s=observation.maximum_age_s,
+        age_s=observation.age_s,
+    )
+
+    decision = GeometricReflexBridge().evaluate(blocked)
+
+    assert decision.intent is not None
+    assert decision.intent.motion == (0.0, -0.8, 0.0, -0.8)

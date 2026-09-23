@@ -201,22 +201,17 @@ class SafetyProjector:
             clearance = math.nan
         if not valid_health:
             return ProjectionResult(self._hold(), True, "unhealthy")
-        if reflex_override is not None:
-            return ProjectionResult(reflex_override.checked(), True, "malecns-reflex")
+        if clearance < 1.0:
+            return ProjectionResult(self._hold(), True, "low-clearance")
         if battery < 35.0:
             return ProjectionResult(
                 PolicyIntent(Skill.YIELD_RETURN_LAND, (-0.5, 0.0, 0.0, 0.0), 1.0, 0.5),
                 True,
                 "low-battery",
             )
+        if reflex_override is not None:
+            return ProjectionResult(reflex_override.checked(), True, "malecns-reflex")
         checked = intent.checked()
-        if clearance < 0.65:
-            turn = -1.0 if checked.motion[1] > 0.0 else 1.0
-            return ProjectionResult(
-                PolicyIntent(Skill.YIELD_RETURN_LAND, (0.0, turn, 0.0, turn), 1.0, 0.2),
-                True,
-                "low-clearance",
-            )
         return ProjectionResult(checked, False, "accepted")
 
 

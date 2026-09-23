@@ -79,6 +79,21 @@ def test_arbiter_preflight_skips_actor_for_reflex_and_emergency():
     assert emergency_result.reason == "unhealthy"
 
 
+def test_hard_clearance_preempts_reflex_motion():
+    reflex = PolicyIntent(
+        Skill.YIELD_RETURN_LAND, (1.0, 0.0, 0.0, 0.0), 1.0, 0.2
+    )
+
+    result = SafetyArbiter(SafetyProjector()).preflight(
+        SafetySnapshot(80.0, True, True, 0.8, False),
+        reflex_override=reflex,
+    )
+
+    assert result is not None
+    assert result.reason == "low-clearance"
+    assert result.intent.motion == (0.0, 0.0, 0.0, 0.0)
+
+
 def test_safe_policy_and_training_path_resolve_identically():
     proposed = PolicyIntent(
         Skill.SEARCH_COVER, (0.3, 0.0, 0.0, 0.0), 0.9, 0.2

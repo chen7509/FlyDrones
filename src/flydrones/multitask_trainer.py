@@ -269,7 +269,9 @@ class PPOTrainer:
         central_commands = 0
         reward_terms: dict[str, float] = {}
         backend_sources: set[str] = set()
-        fallback_calls = {vehicle_id: 0 for vehicle_id in observations}
+        completed_fallback_calls = 0
+        current_fallback_calls = {vehicle_id: 0 for vehicle_id in observations}
+        safety_overrides = 0
 
         for batch_step in range(steps):
             actions: dict[int, PolicyIntent] = {}
@@ -283,7 +285,7 @@ class PPOTrainer:
                 local = env.local_observation(vehicle_id)
                 decision = bridges[vehicle_id].evaluate(local)
                 backend_sources.add(decision.evidence.source)
-                fallback_calls[vehicle_id] = decision.evidence.fallback_calls
+                current_fallback_calls[vehicle_id] = decision.evidence.fallback_calls
                 final = arbiters[vehicle_id].preflight(
                     env.safety_snapshot(vehicle_id),
                     reflex_override=decision.intent,
@@ -343,6 +345,7 @@ class PPOTrainer:
                     raise RuntimeError("safety arbitration did not produce a final action")
                 if final.overrode:
                     env.record_safety_override(final.reason)
+                    safety_overrides += 1
                 actions[vehicle_id] = final.intent
                 pending[vehicle_id] = stored
 
@@ -374,6 +377,7 @@ class PPOTrainer:
                 for vehicle_id in observations
             }
             if terminated or truncated:
+                completed_fallback_calls += sum(current_fallback_calls.values())
                 observations, _ = env.reset(seed=episode_seed + batch_step + 1)
                 hidden = {
                     vehicle_id: torch.zeros(
@@ -388,6 +392,9 @@ class PPOTrainer:
                 arbiters = {
                     vehicle_id: SafetyArbiter(SafetyProjector())
                     for vehicle_id in observations
+                }
+                current_fallback_calls = {
+                    vehicle_id: 0 for vehicle_id in observations
                 }
 
         advantages, returns = gae_targets(
@@ -462,7 +469,6 @@ class PPOTrainer:
         self.global_updates += 1
         self.environment_steps += steps
         self._capture_random_state()
-        telemetry = env.telemetry()
         return BatchTrainingReport(
             manifest_digest=manifest.digest,
             steps=steps,
@@ -472,12 +478,14 @@ class PPOTrainer:
             reward_terms=reward_terms,
             collisions=collisions,
             central_control_commands=central_commands,
-            safety_overrides=telemetry.safety_overrides,
+            safety_overrides=safety_overrides,
             critic_reset=critic_reset,
             male_cns_backend=(
                 ",".join(sorted(backend_sources)) if backend_sources else "unavailable"
             ),
-            male_cns_fallbacks=sum(fallback_calls.values()),
+            male_cns_fallbacks=(
+                completed_fallback_calls + sum(current_fallback_calls.values())
+            ),
         )
 
     def save(

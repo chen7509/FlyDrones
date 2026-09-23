@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import math
 from dataclasses import dataclass
 from typing import Protocol
 
@@ -67,12 +68,40 @@ class GeometricReflexBridge:
                 motion = (0.0, 0.0, 0.0, 0.0)
             else:
                 turn = -self.turn_strength if difference > 0.0 else self.turn_strength
-                motion = (0.0, turn, 0.0, turn)
+                heading = float(observation.flight_state[-1]) * math.pi
+                motion = (
+                    self._clean(-turn * math.sin(heading)),
+                    self._clean(turn * math.cos(heading)),
+                    0.0,
+                    turn,
+                )
+            intent = PolicyIntent(Skill.YIELD_RETURN_LAND, motion, 1.0, 0.2)
+        elif float(np.max(depth)) >= self.trigger_proximity:
+            self.overrides += 1
+            obstacle_index = int(np.argmax(depth))
+            obstacle_angle = -math.pi + obstacle_index * (2.0 * math.pi / 16.0)
+            heading = float(observation.flight_state[-1]) * math.pi
+            escape_angle = heading + obstacle_angle + math.pi
+            lateral = math.sin(obstacle_angle)
+            yaw = 0.0
+            if abs(lateral) > self.direction_margin:
+                yaw = -math.copysign(self.turn_strength, lateral)
+            motion = (
+                self._clean(self.turn_strength * math.cos(escape_angle)),
+                self._clean(self.turn_strength * math.sin(escape_angle)),
+                0.0,
+                yaw,
+            )
             intent = PolicyIntent(Skill.YIELD_RETURN_LAND, motion, 1.0, 0.2)
         return ReflexDecision(
             intent,
             ReflexEvidence(self.source, 0, 0, 0, 0, 0.0),
         )
+
+    @staticmethod
+    def _clean(value: float) -> float:
+        rounded = round(float(value), 6)
+        return 0.0 if abs(rounded) < 1e-6 else rounded
 
 
 class MaleCNSReflexBridge:

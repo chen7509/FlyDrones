@@ -169,3 +169,41 @@ def test_geometric_reflex_allows_safe_actor_samples_to_train():
     assert report.actor_samples > 0
     assert report.male_cns_backend == "geometric-v1"
     assert trainer.actor_digest() != before
+
+
+def test_training_report_accumulates_reflex_evidence_across_episode_resets():
+    scenario = manifest()
+    environment = MultiTaskEnv(scenario, max_steps=256)
+    environment.reset(seed=scenario.seed)
+
+    class ForwardFallbackReflex:
+        def __init__(self):
+            self.calls = 0
+
+        def evaluate(self, observation):
+            self.calls += 1
+            return ReflexDecision(
+                PolicyIntent(
+                    Skill.YIELD_RETURN_LAND,
+                    (1.0, 0.0, 0.0, 0.0),
+                    1.0,
+                    0.2,
+                ),
+                ReflexEvidence(
+                    "test-forward", 0, 0, self.calls, self.calls, 0.0
+                ),
+            )
+
+    trainer = PPOTrainer(
+        seed=22,
+        critic_input_dimension=int(environment.critic_observation().shape[0]),
+        device="cpu",
+        reflex_factory=lambda vehicle_id, item: ForwardFallbackReflex(),
+    )
+
+    report = trainer.train_batch(scenario, steps=256)
+
+    assert report.actor_samples == 0
+    assert report.safety_overrides == 256
+    assert report.male_cns_fallbacks == 256
+    assert report.collisions == 0
