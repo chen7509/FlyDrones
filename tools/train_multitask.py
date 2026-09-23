@@ -1,23 +1,19 @@
-"""Train the shared recurrent actor in the fast compound-task simulator."""
+"""Run one resumable PPO batch in the fast compound-task simulator."""
 
 from __future__ import annotations
 
 import argparse
 import hashlib
 import json
-import random
 import subprocess
 from collections.abc import Mapping
 from pathlib import Path
 
-import numpy as np
 import torch
-from torch.distributions import Categorical, Normal
 
-from flydrones.multitask_contract import PolicyIntent, Skill
 from flydrones.multitask_env import MultiTaskEnv
-from flydrones.multitask_policy import CentralizedCritic, SharedRecurrentPolicy
 from flydrones.multitask_scenarios import ScenarioGenerator
+from flydrones.multitask_trainer import PPOTrainer, gae_targets
 
 
 def _positive_int(value: str) -> int:
@@ -55,175 +51,64 @@ def _gae_targets(
     gamma: float,
     gae_lambda: float,
 ) -> tuple[torch.Tensor, torch.Tensor]:
-    """Compute GAE without allowing one vehicle's rewards into another's path."""
+    """Backward-compatible public wrapper for per-vehicle GAE."""
+    return gae_targets(samples, gamma=gamma, gae_lambda=gae_lambda)
 
-    advantages = torch.zeros(len(samples), dtype=torch.float32)
-    by_vehicle: dict[int, list[int]] = {}
-    for index, sample in enumerate(samples):
-        vehicle_id = int(sample["vehicle_id"])
-        by_vehicle.setdefault(vehicle_id, []).append(index)
-    for indices in by_vehicle.values():
-        gae = torch.tensor(0.0)
-        next_value = torch.tensor(0.0)
-        for index in reversed(indices):
-            sample = samples[index]
-            value = torch.as_tensor(sample["value"], dtype=torch.float32)
-            mask = 0.0 if bool(sample["done"]) else 1.0
-            delta = float(sample["reward"]) + gamma * next_value * mask - value
-            gae = delta + gamma * gae_lambda * mask * gae
-            advantages[index] = gae
-            next_value = value
-    values = torch.stack(
-        [torch.as_tensor(sample["value"], dtype=torch.float32) for sample in samples]
-    )
-    return advantages, advantages + values
+
+def _training_config_digest(args: argparse.Namespace) -> str:
+    payload = {
+        "schema_version": 1,
+        "level": args.level,
+        "seed": args.seed,
+        "fleet_size": args.fleet_size,
+        "learning_rate": args.learning_rate,
+        "device": args.device,
+    }
+    return hashlib.sha256(
+        json.dumps(payload, sort_keys=True, separators=(",", ":")).encode()
+    ).hexdigest()
 
 
 def train(args: argparse.Namespace) -> dict[str, object]:
-    random.seed(args.seed)
-    np.random.seed(args.seed)
-    torch.manual_seed(args.seed)
-    torch.use_deterministic_algorithms(True)
-
     manifest = ScenarioGenerator(args.seed).generate(
         level=args.level,
         fleet_size=args.fleet_size,
     )
-    env = MultiTaskEnv(manifest, max_steps=max(args.steps, 16))
-    observations, _ = env.reset(seed=args.seed)
-    actor = SharedRecurrentPolicy()
-    critic_input = int(env.critic_observation().shape[0])
-    critic = CentralizedCritic(critic_input)
-    optimizer = torch.optim.Adam(
-        [*actor.parameters(), *critic.parameters()],
-        lr=args.learning_rate,
+    environment = MultiTaskEnv(manifest, max_steps=max(args.steps, 16))
+    environment.reset(seed=args.seed)
+    critic_dimension = int(environment.critic_observation().shape[0])
+    config_digest = _training_config_digest(args)
+    actor_path = Path(args.checkpoint)
+    trainer_path = (
+        Path(args.trainer_checkpoint)
+        if args.trainer_checkpoint
+        else actor_path.with_suffix(actor_path.suffix + ".trainer.pt")
     )
-    hidden = {
-        vehicle_id: torch.zeros(64, dtype=torch.float32)
-        for vehicle_id in observations
-    }
-    samples: list[dict[str, torch.Tensor | float | bool]] = []
-    total_reward = 0.0
-    collisions = 0
-    central_commands = 0
-    reward_terms: dict[str, float] = {}
-
-    for _step in range(args.steps):
-        actions: dict[int, PolicyIntent] = {}
-        pending: dict[int, tuple[torch.Tensor, ...]] = {}
-        critic_vector = torch.tensor(env.critic_observation(), dtype=torch.float32)
-        value = critic(critic_vector.unsqueeze(0))[0]
-        for vehicle_id, vector in sorted(observations.items()):
-            observation_tensor = torch.tensor(vector, dtype=torch.float32).reshape(1, 1, -1)
-            hidden_tensor = hidden[vehicle_id].reshape(1, 1, -1)
-            logits, motion_mean, confidence, next_hidden = actor(
-                observation_tensor,
-                hidden_tensor,
-            )
-            skill_distribution = Categorical(logits=logits[0])
-            motion_distribution = Normal(motion_mean[0], 0.15)
-            skill_index = skill_distribution.sample()
-            raw_motion = motion_distribution.sample()
-            bounded_motion = torch.clamp(raw_motion, -1.0, 1.0)
-            log_probability = (
-                skill_distribution.log_prob(skill_index)
-                + motion_distribution.log_prob(raw_motion).sum()
-            )
-            actions[vehicle_id] = PolicyIntent(
-                tuple(Skill)[int(skill_index.item())],
-                tuple(float(item) for item in bounded_motion.detach().numpy()),  # type: ignore[arg-type]
-                float(confidence[0].detach().item()),
-                0.2,
-            )
-            pending[vehicle_id] = (
-                observation_tensor[0, 0].detach(),
-                hidden_tensor[0, 0].detach(),
-                skill_index.detach(),
-                raw_motion.detach(),
-                log_probability.detach(),
-                critic_vector.detach(),
-                value.detach(),
-            )
-            hidden[vehicle_id] = next_hidden[0, 0].detach()
-
-        next_observations, rewards, terminated, truncated, info = env.step(actions)
-        central_commands += int(info["central_control_commands"])
-        if info["safety_failure"] == "collision":
-            collisions += 1
-        for vehicle_id, reward in rewards.items():
-            total_reward += reward
-            local_terms = info["reward_terms"][vehicle_id]
-            for name, amount in local_terms.items():
-                reward_terms[name] = reward_terms.get(name, 0.0) + float(amount)
-            stored = pending[vehicle_id]
-            samples.append(
-                {
-                    "vehicle_id": vehicle_id,
-                    "observation": stored[0],
-                    "hidden": stored[1],
-                    "skill": stored[2],
-                    "motion": stored[3],
-                    "old_log_probability": stored[4],
-                    "critic_observation": stored[5],
-                    "value": stored[6],
-                    "reward": float(reward),
-                    "done": bool(
-                        terminated or truncated or vehicle_id not in next_observations
-                    ),
-                }
-            )
-        observations = next_observations
-        hidden = {
-            vehicle_id: hidden.get(vehicle_id, torch.zeros(64, dtype=torch.float32))
-            for vehicle_id in observations
-        }
-        if terminated or truncated:
-            observations, _ = env.reset(seed=args.seed + _step + 1)
-            hidden = {
-                vehicle_id: torch.zeros(64, dtype=torch.float32)
-                for vehicle_id in observations
-            }
-
-    advantages, returns = _gae_targets(samples, gamma=0.99, gae_lambda=0.95)
-    if len(advantages) > 1:
-        advantages = (advantages - advantages.mean()) / (advantages.std(unbiased=False) + 1e-8)
-
-    observation_batch = torch.stack([sample["observation"] for sample in samples])
-    hidden_batch = torch.stack([sample["hidden"] for sample in samples]).unsqueeze(0)
-    skill_batch = torch.stack([sample["skill"] for sample in samples]).long()
-    motion_batch = torch.stack([sample["motion"] for sample in samples])
-    old_log_probability = torch.stack(
-        [sample["old_log_probability"] for sample in samples]
-    ).float()
-    critic_batch = torch.stack([sample["critic_observation"] for sample in samples])
-    for _epoch in range(4):
-        logits, motion_mean, _confidence, _next_hidden = actor(
-            observation_batch.unsqueeze(1),
-            hidden_batch,
+    if args.resume:
+        if not trainer_path.is_file():
+            raise FileNotFoundError(f"trainer checkpoint does not exist: {trainer_path}")
+        trainer = PPOTrainer.load(
+            trainer_path,
+            device=args.device,
+            config_digest=config_digest,
         )
-        skill_distribution = Categorical(logits=logits)
-        motion_distribution = Normal(motion_mean, 0.15)
-        new_log_probability = (
-            skill_distribution.log_prob(skill_batch)
-            + motion_distribution.log_prob(motion_batch).sum(dim=1)
+    else:
+        trainer = PPOTrainer(
+            seed=args.seed,
+            critic_input_dimension=critic_dimension,
+            device=args.device,
+            learning_rate=args.learning_rate,
         )
-        ratio = torch.exp(new_log_probability - old_log_probability)
-        clipped_ratio = torch.clamp(ratio, 0.8, 1.2)
-        policy_loss = -torch.minimum(ratio * advantages, clipped_ratio * advantages).mean()
-        entropy = skill_distribution.entropy().mean() + motion_distribution.entropy().sum(dim=1).mean()
-        predicted_values = critic(critic_batch)
-        value_loss = torch.mean((predicted_values - returns) ** 2)
-        loss = policy_loss + 0.5 * value_loss - 0.01 * entropy
-        optimizer.zero_grad()
-        loss.backward()
-        torch.nn.utils.clip_grad_norm_([*actor.parameters(), *critic.parameters()], 1.0)
-        optimizer.step()
-
-    checkpoint_path = Path(args.checkpoint)
-    actor.export(checkpoint_path)
-    checkpoint_digest = hashlib.sha256(checkpoint_path.read_bytes()).hexdigest()
+    batch = trainer.train_batch(manifest, steps=args.steps)
+    trainer.save(
+        trainer_path,
+        config_digest=config_digest,
+        state_digest=manifest.digest,
+    )
+    trainer.export_actor(actor_path)
+    checkpoint_digest = hashlib.sha256(actor_path.read_bytes()).hexdigest()
     report = {
-        "schema_version": 1,
+        "schema_version": 2,
         "seed": args.seed,
         "level": args.level,
         "fleet_size": args.fleet_size,
@@ -231,17 +116,20 @@ def train(args: argparse.Namespace) -> dict[str, object]:
         "manifest_digest": manifest.digest,
         "code_version": _code_version(),
         "checkpoint_digest": checkpoint_digest,
-        "total_reward": total_reward,
-        "reward_terms": dict(sorted(reward_terms.items())),
-        "collisions": collisions,
-        "central_control_commands": central_commands,
+        "trainer_checkpoint_digest": hashlib.sha256(
+            trainer_path.read_bytes()
+        ).hexdigest(),
+        "config_digest": config_digest,
+        "global_updates": trainer.global_updates,
+        "environment_steps": trainer.environment_steps,
+        **batch.to_dict(),
         "ppo": {
-            "gamma": 0.99,
-            "gae_lambda": 0.95,
-            "clip_ratio": 0.20,
-            "entropy_coefficient": 0.01,
-            "value_coefficient": 0.50,
-            "update_epochs": 4,
+            "gamma": trainer.gamma,
+            "gae_lambda": trainer.gae_lambda,
+            "clip_ratio": trainer.clip_ratio,
+            "entropy_coefficient": trainer.entropy_coefficient,
+            "value_coefficient": trainer.value_coefficient,
+            "update_epochs": trainer.update_epochs,
         },
     }
     _write_json(Path(args.report), report)
@@ -255,7 +143,10 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--fleet-size", type=_positive_int, default=1)
     parser.add_argument("--steps", type=_positive_int, required=True)
     parser.add_argument("--learning-rate", type=float, default=3e-4)
+    parser.add_argument("--device", choices=("cpu", "cuda"), default="cpu")
     parser.add_argument("--checkpoint", required=True)
+    parser.add_argument("--trainer-checkpoint")
+    parser.add_argument("--resume", action="store_true")
     parser.add_argument("--report", required=True)
     return parser.parse_args()
 
