@@ -629,7 +629,7 @@ class MultiTaskEnv(gym.Env):
         return SafetySnapshot(
             battery_pct=float(self._battery[vehicle_id]),
             localization_healthy=bool(self._validity[vehicle_id, 1]),
-            sensors_healthy=(
+            sensors_healthy=bool(
                 bool(self._validity[vehicle_id, 0])
                 and self._observation_ages[vehicle_id]
                 <= self.maximum_observation_age_s
