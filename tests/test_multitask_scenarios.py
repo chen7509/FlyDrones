@@ -34,3 +34,26 @@ def test_held_out_rejects_duplicates_and_sorts_by_seed():
     assert [manifest.seed for manifest in manifests] == [3, 7, 9]
     with pytest.raises(ValueError, match="duplicate"):
         generator.held_out([3, 3], level=2, fleet_size=5)
+
+
+def test_explicit_active_skills_override_random_selection_and_enter_digest():
+    generated = ScenarioGenerator(55).generate(
+        level=2,
+        fleet_size=5,
+        active_skills=(Skill.TRACK_TARGET, Skill.SEARCH_COVER),
+    )
+    changed = ScenarioGenerator(55).generate(
+        level=2,
+        fleet_size=5,
+        active_skills=(Skill.GATE_COURSE, Skill.SEARCH_COVER),
+    )
+
+    assert generated.active_skills == (Skill.TRACK_TARGET, Skill.SEARCH_COVER)
+    assert generated.digest != changed.digest
+
+    with pytest.raises(ValueError, match="active_skills"):
+        ScenarioGenerator(55).generate(
+            level=2,
+            fleet_size=5,
+            active_skills=(Skill.SEARCH_COVER, Skill.SEARCH_COVER),
+        )
