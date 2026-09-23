@@ -220,37 +220,35 @@ class SafetyProjector:
         return ProjectionResult(checked, False, "accepted")
 
 
-@dataclass(frozen=True)
-class SafePolicyResult:
-    intent: PolicyIntent
-    state: PolicyState
-    safety_overrode: bool
-    reason: str
-    latency_ms: float
+class SafetyArbiter:
+    """Share safety preflight, projection, and skill hysteresis across callers."""
 
-
-class SafePolicy:
-    """Measure, validate, debounce, and project actor decisions."""
-
-    def __init__(
-        self,
-        actor: Actor,
-        projector: SafetyProjector,
-        maximum_latency_ms: float = 35.0,
-    ) -> None:
-        if not math.isfinite(maximum_latency_ms) or maximum_latency_ms <= 0.0:
-            raise ValueError("maximum_latency_ms must be positive")
-        self.actor = actor
+    def __init__(self, projector: SafetyProjector) -> None:
         self.projector = projector
-        self.maximum_latency_ms = maximum_latency_ms
         self._current_intent: PolicyIntent | None = None
         self._hold_until = -math.inf
         self._pending_skill: Skill | None = None
         self._pending_count = 0
 
     @staticmethod
-    def _fallback() -> PolicyIntent:
-        return PolicyIntent(Skill.YIELD_RETURN_LAND, (0.0, 0.0, 0.0, 0.0), 1.0, 0.2)
+    def _hold() -> PolicyIntent:
+        return PolicyIntent(
+            Skill.YIELD_RETURN_LAND,
+            (0.0, 0.0, 0.0, 0.0),
+            1.0,
+            0.2,
+        )
+
+    def preflight(
+        self,
+        health: SafetySnapshot,
+        *,
+        reflex_override: PolicyIntent | None = None,
+    ) -> ProjectionResult | None:
+        result = self.projector.project(
+            self._hold(), health, reflex_override=reflex_override
+        )
+        return result if result.overrode else None
 
     def _apply_hysteresis(
         self,
@@ -259,6 +257,8 @@ class SafePolicy:
         now: float,
         task_completed: bool,
     ) -> PolicyIntent:
+        if not math.isfinite(now):
+            raise ValueError("arbitration time must be finite")
         if self._current_intent is None or task_completed:
             self._current_intent = intent
             self._hold_until = now + intent.hold_time_s
@@ -286,6 +286,57 @@ class SafePolicy:
         self._pending_count = 0
         return intent
 
+    def resolve(
+        self,
+        proposed: PolicyIntent,
+        health: SafetySnapshot,
+        *,
+        now: float,
+        reflex_override: PolicyIntent | None = None,
+        task_completed: bool = False,
+    ) -> ProjectionResult:
+        projected = self.projector.project(
+            proposed, health, reflex_override=reflex_override
+        )
+        if projected.overrode:
+            return projected
+        resolved = self._apply_hysteresis(
+            projected.intent,
+            now=now,
+            task_completed=task_completed,
+        )
+        return ProjectionResult(resolved, False, "accepted")
+
+
+@dataclass(frozen=True)
+class SafePolicyResult:
+    intent: PolicyIntent
+    state: PolicyState
+    safety_overrode: bool
+    reason: str
+    latency_ms: float
+
+
+class SafePolicy:
+    """Measure, validate, debounce, and project actor decisions."""
+
+    def __init__(
+        self,
+        actor: Actor,
+        projector: SafetyProjector,
+        maximum_latency_ms: float = 35.0,
+    ) -> None:
+        if not math.isfinite(maximum_latency_ms) or maximum_latency_ms <= 0.0:
+            raise ValueError("maximum_latency_ms must be positive")
+        self.actor = actor
+        self.projector = projector
+        self.arbiter = SafetyArbiter(projector)
+        self.maximum_latency_ms = maximum_latency_ms
+
+    @staticmethod
+    def _fallback() -> PolicyIntent:
+        return PolicyIntent(Skill.YIELD_RETURN_LAND, (0.0, 0.0, 0.0, 0.0), 1.0, 0.2)
+
     def act(
         self,
         observation: LocalObservation,
@@ -294,19 +345,20 @@ class SafePolicy:
         *,
         reflex_override: PolicyIntent | None = None,
         task_completed: bool = False,
+        now: float | None = None,
     ) -> SafePolicyResult:
         start = time.perf_counter()
+        arbitration_time = start if now is None else float(now)
         next_state = state
         try:
-            preflight = self.projector.project(
-                self._fallback(),
+            preflight = self.arbiter.preflight(
                 health,
                 reflex_override=reflex_override,
             )
         except (TypeError, ValueError, RuntimeError):
             latency = (time.perf_counter() - start) * 1000.0
             return SafePolicyResult(self._fallback(), state, True, "invalid-safety-input", latency)
-        if preflight.overrode:
+        if preflight is not None:
             latency = (time.perf_counter() - start) * 1000.0
             return SafePolicyResult(preflight.intent, state, True, preflight.reason, latency)
         try:
@@ -318,11 +370,17 @@ class SafePolicy:
         latency = (time.perf_counter() - start) * 1000.0
         if not math.isfinite(latency) or latency > self.maximum_latency_ms:
             return SafePolicyResult(self._fallback(), state, True, "deadline", latency)
-        projected = self.projector.project(
-            learned,
-            health,
-            reflex_override=reflex_override,
-        )
+        try:
+            projected = self.arbiter.resolve(
+                learned,
+                health,
+                now=arbitration_time,
+                task_completed=task_completed,
+            )
+        except (TypeError, ValueError, RuntimeError):
+            return SafePolicyResult(
+                self._fallback(), state, True, "invalid-safety-input", latency
+            )
         if projected.overrode:
             return SafePolicyResult(
                 projected.intent,
@@ -331,9 +389,6 @@ class SafePolicy:
                 projected.reason,
                 latency,
             )
-        intent = self._apply_hysteresis(
-            projected.intent,
-            now=start,
-            task_completed=task_completed,
+        return SafePolicyResult(
+            projected.intent, next_state, False, projected.reason, latency
         )
-        return SafePolicyResult(intent, next_state, False, "accepted", latency)

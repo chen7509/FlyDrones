@@ -15,6 +15,7 @@ from flydrones.multitask_policy import (
     CentralizedCritic,
     PolicyState,
     SafePolicy,
+    SafetyArbiter,
     SafetyProjector,
     SharedRecurrentPolicy,
 )
@@ -42,6 +43,56 @@ def observation():
         maximum_age_s=0.5,
         age_s=0.0,
     )
+
+
+def healthy_snapshot():
+    return SafetySnapshot(80.0, True, True, 2.0, False)
+
+
+class FixedIntentActor:
+    def __init__(self, intent):
+        self.intent = intent
+
+    def act(self, observation, state):
+        return (
+            self.intent.skill,
+            self.intent.motion,
+            self.intent.confidence,
+            PolicyState.zeros(64),
+        )
+
+
+def test_arbiter_preflight_skips_actor_for_reflex_and_emergency():
+    arbiter = SafetyArbiter(SafetyProjector())
+    reflex = PolicyIntent(
+        Skill.YIELD_RETURN_LAND, (0.0, 1.0, 0.0, 1.0), 1.0, 0.2
+    )
+
+    reflex_result = arbiter.preflight(healthy_snapshot(), reflex_override=reflex)
+    emergency_result = arbiter.preflight(
+        SafetySnapshot(80.0, True, True, 2.0, True)
+    )
+
+    assert reflex_result is not None and reflex_result.intent == reflex
+    assert reflex_result.reason == "malecns-reflex"
+    assert emergency_result is not None
+    assert emergency_result.reason == "unhealthy"
+
+
+def test_safe_policy_and_training_path_resolve_identically():
+    proposed = PolicyIntent(
+        Skill.SEARCH_COVER, (0.3, 0.0, 0.0, 0.0), 0.9, 0.2
+    )
+    direct = SafetyArbiter(SafetyProjector()).resolve(
+        proposed, healthy_snapshot(), now=1.0
+    )
+    wrapped = SafePolicy(FixedIntentActor(proposed), SafetyProjector()).act(
+        observation(), PolicyState.zeros(64), healthy_snapshot(), now=1.0
+    )
+
+    assert direct.intent == wrapped.intent
+    assert direct.overrode == wrapped.safety_overrode
+    assert direct.reason == wrapped.reason
 
 
 def test_safe_policy_accepts_valid_intent_and_projects_low_clearance():
