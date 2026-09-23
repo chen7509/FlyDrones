@@ -38,6 +38,14 @@ _MANIFEST_KEYS = {
     "minimum_active_factors",
 }
 _OBSERVATION_LENGTHS = (32, 8, 8, 16, 16, 4, 6)
+SUPPORTED_DISTURBANCES = (
+    "wind",
+    "sensor_noise",
+    "packet_loss",
+    "frame_drop",
+    "localization_drift",
+    "battery_variation",
+)
 
 
 def _exact_keys(data: Mapping[str, object], expected: set[str], where: str) -> None:

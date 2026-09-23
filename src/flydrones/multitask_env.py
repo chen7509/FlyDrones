@@ -13,9 +13,12 @@ from gymnasium import spaces
 from flydrones.multitask_contract import (
     LocalObservation,
     PolicyIntent,
+    SafetySnapshot,
     ScenarioManifest,
     Skill,
+    SUPPORTED_DISTURBANCES,
 )
+from flydrones.multitask_metrics import EpisodeTelemetry
 
 
 @dataclass(frozen=True)
@@ -34,14 +37,29 @@ class MultiTaskEnv(gym.Env):
 
     metadata = {"render_modes": []}
 
-    def __init__(self, manifest: ScenarioManifest, max_steps: int = 400) -> None:
+    def __init__(
+        self,
+        manifest: ScenarioManifest,
+        max_steps: int = 400,
+        *,
+        maximum_observation_age_s: float = 0.5,
+    ) -> None:
         super().__init__()
         if not isinstance(manifest, ScenarioManifest):
             raise TypeError("manifest must be a ScenarioManifest")
         if isinstance(max_steps, bool) or not isinstance(max_steps, int) or max_steps <= 0:
             raise ValueError("max_steps must be positive")
+        unsupported = set(manifest.disturbances) - set(SUPPORTED_DISTURBANCES)
+        if unsupported:
+            raise ValueError(f"unsupported disturbance: {sorted(unsupported)[0]}")
+        if (
+            not math.isfinite(float(maximum_observation_age_s))
+            or maximum_observation_age_s <= 0.0
+        ):
+            raise ValueError("maximum_observation_age_s must be positive")
         self.manifest = manifest
         self.max_steps = max_steps
+        self.maximum_observation_age_s = float(maximum_observation_age_s)
         self.dt = 0.1
         self.maximum_speed_mps = 4.0
         self.bounds = np.asarray(((-10.0, 100.0), (-60.0, 60.0), (0.0, 30.0)))
@@ -61,12 +79,23 @@ class MultiTaskEnv(gym.Env):
             }
         )
         self._positions = np.zeros((manifest.fleet_size, 3), dtype=np.float64)
+        self._estimated_positions = np.zeros_like(self._positions)
+        self._localization_drift = np.zeros_like(self._positions)
         self._velocities = np.zeros_like(self._positions)
         self._headings = np.zeros(manifest.fleet_size, dtype=np.float64)
         self._battery = np.full(manifest.fleet_size, 100.0, dtype=np.float64)
         self._previous_actions = np.zeros((manifest.fleet_size, 4), dtype=np.float32)
         self._coverage = np.zeros((manifest.fleet_size, 16), dtype=np.float32)
+        self._global_coverage_visits = np.zeros(16, dtype=np.int64)
         self._last_skill = np.zeros(manifest.fleet_size, dtype=np.int64)
+        self._last_visual_features = np.zeros((manifest.fleet_size, 32), dtype=np.float32)
+        self._peer_summaries = np.zeros((manifest.fleet_size, 16), dtype=np.float32)
+        self._validity = np.ones((manifest.fleet_size, 6), dtype=np.float32)
+        self._observation_ages = np.zeros(manifest.fleet_size, dtype=np.float64)
+        self._forced_frame_drops = np.zeros(manifest.fleet_size, dtype=np.int64)
+        self._frame_drop_phases = np.zeros(manifest.fleet_size, dtype=np.int64)
+        self._packet_loss_phases = np.zeros(manifest.fleet_size, dtype=np.int64)
+        self._battery_drain_multipliers = np.ones(manifest.fleet_size, dtype=np.float64)
         self._active: set[int] = set(range(manifest.fleet_size))
         self._failed: set[int] = set()
         self._obstacles: tuple[_Obstacle, ...] = ()
@@ -77,6 +106,27 @@ class MultiTaskEnv(gym.Env):
         self._gate = np.asarray((48.0, 0.0, 9.0), dtype=np.float64)
         self._steps = 0
         self._completed_evidence: set[str] = set()
+        self._tracking_squared_error_sum = 0.0
+        self._tracking_samples = 0
+        self._tracking_lost_steps = 0
+        self._duplicate_coverage_visits = 0
+        self._coverage_visits = 0
+        self._formation_squared_error_sum = 0.0
+        self._formation_samples = 0
+        self._gate_crossings = 0
+        self._gate_contacts = 0
+        self._safety_failures: list[str] = []
+        self._safety_overrides = 0
+        self._central_control_commands = 0
+        self._disturbance_injections = {
+            name: 0 for name in manifest.disturbances
+        }
+        self._disturbance_minimums = {
+            name: math.inf for name in manifest.disturbances
+        }
+        self._disturbance_maximums = {
+            name: -math.inf for name in manifest.disturbances
+        }
 
     def reset(self, *, seed: int | None = None, options: dict | None = None):
         del options
@@ -91,19 +141,58 @@ class MultiTaskEnv(gym.Env):
                 8.0 + 0.25 * (vehicle_id % 3),
             )
         self._velocities.fill(0.0)
+        self._estimated_positions[:] = self._positions
+        self._localization_drift.fill(0.0)
         self._headings.fill(0.0)
         self._battery[:] = self.np_random.uniform(72.0, 100.0, self.manifest.fleet_size)
         self._previous_actions.fill(0.0)
         self._coverage.fill(0.0)
+        self._global_coverage_visits.fill(0)
         self._last_skill.fill(0)
+        self._last_visual_features.fill(0.0)
+        self._peer_summaries.fill(0.0)
+        self._validity.fill(1.0)
+        self._observation_ages.fill(0.0)
+        self._forced_frame_drops.fill(0)
+        self._frame_drop_phases[:] = self.np_random.integers(
+            0, 5, self.manifest.fleet_size
+        )
+        self._packet_loss_phases[:] = self.np_random.integers(
+            0, 4, self.manifest.fleet_size
+        )
+        if "battery_variation" in self.manifest.disturbances:
+            self._battery_drain_multipliers[:] = self.np_random.uniform(
+                0.8, 1.25, self.manifest.fleet_size
+            )
+        else:
+            self._battery_drain_multipliers.fill(1.0)
         self._active = set(range(self.manifest.fleet_size))
         self._failed.clear()
         self._clearance_overrides.clear()
         self._steps = 0
         self._completed_evidence.clear()
-        wind_scale = 0.8 if "wind" in self.manifest.disturbances else 0.05
-        self._wind[:] = self.np_random.uniform(-wind_scale, wind_scale, 2)
+        self._tracking_squared_error_sum = 0.0
+        self._tracking_samples = 0
+        self._tracking_lost_steps = 0
+        self._duplicate_coverage_visits = 0
+        self._coverage_visits = 0
+        self._formation_squared_error_sum = 0.0
+        self._formation_samples = 0
+        self._gate_crossings = 0
+        self._gate_contacts = 0
+        self._safety_failures.clear()
+        self._safety_overrides = 0
+        self._central_control_commands = 0
+        for name in self.manifest.disturbances:
+            self._disturbance_injections[name] = 0
+            self._disturbance_minimums[name] = math.inf
+            self._disturbance_maximums[name] = -math.inf
+        if "wind" in self.manifest.disturbances:
+            self._wind[:] = self.np_random.uniform(-0.8, 0.8, 2)
+        else:
+            self._wind.fill(0.0)
         self._obstacles = self._sample_obstacles()
+        self._refresh_local_measurements(initial=True)
         observations = {
             vehicle_id: self.actor_observation(vehicle_id)
             for vehicle_id in sorted(self._active)
@@ -149,8 +238,6 @@ class MultiTaskEnv(gym.Env):
             index = int(round(angle / (2 * math.pi) * 16)) % 16
             distances[index] = min(distances[index], distance)
         proximity = 1.0 - np.clip(distances / 12.0, 0.0, 1.0)
-        if "sensor_noise" in self.manifest.disturbances:
-            proximity += self.np_random.normal(0.0, 0.01, 16)
         return np.clip(proximity, 0.0, 1.0).astype(np.float32)
 
     @staticmethod
@@ -159,38 +246,108 @@ class MultiTaskEnv(gym.Env):
 
     def _peer_summary(self, vehicle_id: int) -> np.ndarray:
         output = np.zeros(16, dtype=np.float32)
-        position = self._positions[vehicle_id]
+        position = self._estimated_positions[vehicle_id]
         peers = sorted(
             (
-                (float(np.linalg.norm(self._positions[peer] - position)), peer)
+                (float(np.linalg.norm(self._estimated_positions[peer] - position)), peer)
                 for peer in self._active
                 if peer != vehicle_id
             ),
             key=lambda item: (item[0], item[1]),
         )[:4]
         for index, (distance, peer) in enumerate(peers):
-            if "packet_loss" in self.manifest.disturbances and self.np_random.random() < 0.1:
-                continue
-            relative = np.clip((self._positions[peer] - position) / 20.0, -1.0, 1.0)
+            relative = np.clip(
+                (self._estimated_positions[peer] - position) / 20.0, -1.0, 1.0
+            )
             output[index * 4:index * 4 + 3] = relative
             output[index * 4 + 3] = np.clip(distance / 20.0, 0.0, 1.0)
         return output
 
-    def actor_observation(self, vehicle_id: int) -> np.ndarray:
-        if vehicle_id not in self._active:
-            raise ValueError("vehicle is not active")
-        position = self._positions[vehicle_id]
-        visual = np.concatenate(
+    def _record_disturbance(self, name: str, magnitude: float) -> None:
+        value = abs(float(magnitude))
+        self._disturbance_injections[name] += 1
+        self._disturbance_minimums[name] = min(
+            self._disturbance_minimums[name], value
+        )
+        self._disturbance_maximums[name] = max(
+            self._disturbance_maximums[name], value
+        )
+
+    def _visual_features(self, vehicle_id: int) -> np.ndarray:
+        position = self._estimated_positions[vehicle_id]
+        return np.concatenate(
             (
                 self._depth_features(vehicle_id),
                 self._relative(position, self._target, 100.0),
                 self._relative(position, self._exit, 100.0),
                 self._relative(position, self._gate, 100.0),
                 np.clip(self._wind / 4.0, -1.0, 1.0),
-                np.asarray((math.sin(self._headings[vehicle_id]), math.cos(self._headings[vehicle_id]))),
+                np.asarray(
+                    (
+                        math.sin(self._headings[vehicle_id]),
+                        math.cos(self._headings[vehicle_id]),
+                    )
+                ),
                 np.asarray((self._battery[vehicle_id] / 100.0, 1.0, 1.0)),
             )
         ).astype(np.float32)
+
+    def _refresh_local_measurements(self, *, initial: bool = False) -> None:
+        for vehicle_id in sorted(self._active):
+            self._validity[vehicle_id].fill(1.0)
+            if "localization_drift" in self.manifest.disturbances:
+                delta = self.np_random.normal(0.0, 0.015, 3)
+                self._localization_drift[vehicle_id] = np.clip(
+                    self._localization_drift[vehicle_id] + delta, -1.0, 1.0
+                )
+                self._record_disturbance(
+                    "localization_drift",
+                    float(np.linalg.norm(self._localization_drift[vehicle_id])),
+                )
+            else:
+                self._localization_drift[vehicle_id].fill(0.0)
+            self._estimated_positions[vehicle_id] = (
+                self._positions[vehicle_id] + self._localization_drift[vehicle_id]
+            )
+
+            dropped = False
+            if not initial and "frame_drop" in self.manifest.disturbances:
+                dropped = (
+                    self._forced_frame_drops[vehicle_id] > 0
+                    or (self._steps + self._frame_drop_phases[vehicle_id]) % 5 == 0
+                )
+                if self._forced_frame_drops[vehicle_id] > 0:
+                    self._forced_frame_drops[vehicle_id] -= 1
+            if dropped:
+                self._observation_ages[vehicle_id] += self.dt
+                self._record_disturbance(
+                    "frame_drop", self._observation_ages[vehicle_id]
+                )
+            else:
+                visual = self._visual_features(vehicle_id)
+                if "sensor_noise" in self.manifest.disturbances:
+                    noise = self.np_random.normal(0.0, 0.01, 16).astype(np.float32)
+                    visual[:16] = np.clip(visual[:16] + noise, 0.0, 1.0)
+                    self._record_disturbance(
+                        "sensor_noise", float(np.max(np.abs(noise)))
+                    )
+                self._last_visual_features[vehicle_id] = visual
+                self._observation_ages[vehicle_id] = 0.0
+
+            self._peer_summaries[vehicle_id] = self._peer_summary(vehicle_id)
+            if (
+                not initial
+                and "packet_loss" in self.manifest.disturbances
+                and (self._steps + self._packet_loss_phases[vehicle_id]) % 4 == 0
+            ):
+                self._peer_summaries[vehicle_id].fill(0.0)
+                self._validity[vehicle_id, 4] = 0.0
+                self._record_disturbance("packet_loss", 1.0)
+
+    def local_observation(self, vehicle_id: int) -> LocalObservation:
+        if vehicle_id not in self._active:
+            raise ValueError("vehicle is not active")
+        position = self._estimated_positions[vehicle_id]
         flight = np.concatenate(
             (
                 np.clip(position / np.asarray((100.0, 60.0, 30.0)), -1.0, 1.0),
@@ -203,19 +360,20 @@ class MultiTaskEnv(gym.Env):
         )
         formation_error = min(1.0, abs(position[1]) / 20.0)
         task = np.concatenate((active_flags, np.asarray((self._steps / self.max_steps, formation_error))))
-        validity = np.ones(6, dtype=np.float32)
-        observation = LocalObservation.from_arrays(
-            visual,
+        return LocalObservation.from_arrays(
+            self._last_visual_features[vehicle_id],
             flight,
             task,
             self._coverage[vehicle_id],
-            self._peer_summary(vehicle_id),
+            self._peer_summaries[vehicle_id],
             self._previous_actions[vehicle_id],
-            validity,
-            maximum_age_s=0.5,
-            age_s=0.0,
+            self._validity[vehicle_id],
+            maximum_age_s=self.maximum_observation_age_s,
+            age_s=float(self._observation_ages[vehicle_id]),
         )
-        return observation.actor_vector()
+
+    def actor_observation(self, vehicle_id: int) -> np.ndarray:
+        return self.local_observation(vehicle_id).actor_vector()
 
     def critic_observation(self) -> np.ndarray:
         active_mask = np.asarray(
@@ -271,14 +429,14 @@ class MultiTaskEnv(gym.Env):
         )
         return float(min(boundary, obstacle, peer))
 
-    def _update_coverage(self, vehicle_id: int) -> bool:
+    def _update_coverage(self, vehicle_id: int) -> tuple[bool, int]:
         position = self._positions[vehicle_id]
         x_index = int(np.clip((position[0] + 10.0) / 110.0 * 4, 0, 3))
         y_index = int(np.clip((position[1] + 60.0) / 120.0 * 4, 0, 3))
         index = y_index * 4 + x_index
         was_new = self._coverage[vehicle_id, index] == 0.0
         self._coverage[vehicle_id, index] = 1.0
-        return bool(was_new)
+        return bool(was_new), index
 
     def step(self, actions: dict[int, PolicyIntent]):
         if not isinstance(actions, dict):
@@ -300,9 +458,13 @@ class MultiTaskEnv(gym.Env):
             ) % (2 * math.pi)
             drift = np.asarray((self._wind[0], self._wind[1], 0.0))
             self._positions[vehicle_id] += (self._velocities[vehicle_id] + drift) * self.dt
+            if "wind" in self.manifest.disturbances:
+                self._record_disturbance("wind", float(np.linalg.norm(drift)))
             drain = 0.002 + 0.004 * float(np.linalg.norm(command[:3]))
             if "battery_variation" in self.manifest.disturbances:
-                drain *= 1.0 + 0.2 * (vehicle_id % 3)
+                multiplier = self._battery_drain_multipliers[vehicle_id]
+                drain *= multiplier
+                self._record_disturbance("battery_variation", abs(multiplier - 1.0))
             self._battery[vehicle_id] -= drain
             self._previous_actions[vehicle_id] = command.astype(np.float32)
             self._last_skill[vehicle_id] = list(Skill).index(checked.skill)
@@ -316,7 +478,7 @@ class MultiTaskEnv(gym.Env):
         reward_terms: dict[int, dict[str, float]] = {}
         for vehicle_id, intent in actions.items():
             clearance = self._clearance(vehicle_id)
-            new_coverage = self._update_coverage(vehicle_id)
+            new_coverage, coverage_index = self._update_coverage(vehicle_id)
             exit_distance = float(np.linalg.norm(self._exit - self._positions[vehicle_id]))
             previous_exit_distance = float(
                 np.linalg.norm(self._exit - previous_positions[vehicle_id])
@@ -332,6 +494,22 @@ class MultiTaskEnv(gym.Env):
                 np.linalg.norm(home - previous_positions[vehicle_id])
             )
             active_skill = intent.skill if intent.skill in self.manifest.active_skills else None
+            if active_skill is Skill.TRACK_TARGET:
+                tracking_error = target_distance - 5.0
+                self._tracking_squared_error_sum += tracking_error * tracking_error
+                self._tracking_samples += 1
+                self._tracking_lost_steps += int(target_distance > 12.0)
+            if active_skill is Skill.SEARCH_COVER:
+                self._coverage_visits += 1
+                if self._global_coverage_visits[coverage_index] > 0:
+                    self._duplicate_coverage_visits += 1
+                self._global_coverage_visits[coverage_index] += 1
+            if active_skill is Skill.FORMATION_RALLY:
+                formation_error_value = float(self._positions[vehicle_id, 1])
+                self._formation_squared_error_sum += (
+                    formation_error_value * formation_error_value
+                )
+                self._formation_samples += 1
             terms = {
                 "time": -0.01,
                 "exit_progress": (
@@ -400,6 +578,9 @@ class MultiTaskEnv(gym.Env):
                 and aligned_gate
             ):
                 self._completed_evidence.add(f"gate:{vehicle_id}")
+                self._gate_crossings += 1
+            elif Skill.GATE_COURSE in self.manifest.active_skills and crossed_gate:
+                self._gate_contacts += 1
             if (
                 Skill.FORMATION_RALLY in self.manifest.active_skills
                 and abs(self._positions[vehicle_id, 1]) <= 0.4
@@ -417,8 +598,11 @@ class MultiTaskEnv(gym.Env):
             for vehicle_id in self.manifest.failure_vehicle_ids:
                 self._failed.add(vehicle_id)
                 self._active.discard(vehicle_id)
+        if safety_failure is not None:
+            self._safety_failures.append(safety_failure)
         terminated = safety_failure is not None
         truncated = self._steps >= self.max_steps and not terminated
+        self._refresh_local_measurements()
         observations = {
             vehicle_id: self.actor_observation(vehicle_id)
             for vehicle_id in sorted(self._active)
@@ -430,9 +614,67 @@ class MultiTaskEnv(gym.Env):
             "completed_evidence": tuple(sorted(self._completed_evidence)),
             "active_vehicle_ids": tuple(sorted(self._active)),
             "failed_vehicle_ids": tuple(sorted(self._failed)),
-            "central_control_commands": 0,
+            "central_control_commands": self._central_control_commands,
         }
         return observations, rewards, terminated, truncated, info
+
+    def true_positions(self) -> np.ndarray:
+        values = self._positions.copy()
+        values.flags.writeable = False
+        return values
+
+    def safety_snapshot(self, vehicle_id: int) -> SafetySnapshot:
+        if vehicle_id not in self._active:
+            raise ValueError("vehicle is not active")
+        return SafetySnapshot(
+            battery_pct=float(self._battery[vehicle_id]),
+            localization_healthy=bool(self._validity[vehicle_id, 1]),
+            sensors_healthy=(
+                bool(self._validity[vehicle_id, 0])
+                and self._observation_ages[vehicle_id]
+                <= self.maximum_observation_age_s
+            ),
+            minimum_clearance_m=self._clearance(vehicle_id),
+            emergency_active=False,
+        )
+
+    def record_safety_override(self, reason: str) -> None:
+        if not isinstance(reason, str) or not reason:
+            raise ValueError("safety override reason must be a non-empty string")
+        self._safety_overrides += 1
+
+    def telemetry(self) -> EpisodeTelemetry:
+        minimums = {
+            name: (
+                0.0 if not math.isfinite(value) else value
+            )
+            for name, value in self._disturbance_minimums.items()
+        }
+        maximums = {
+            name: (
+                0.0 if not math.isfinite(value) else value
+            )
+            for name, value in self._disturbance_maximums.items()
+        }
+        return EpisodeTelemetry(
+            tracking_squared_error_sum=self._tracking_squared_error_sum,
+            tracking_samples=self._tracking_samples,
+            tracking_lost_steps=self._tracking_lost_steps,
+            union_coverage_cells=int(np.count_nonzero(self._global_coverage_visits)),
+            duplicate_coverage_visits=self._duplicate_coverage_visits,
+            coverage_visits=self._coverage_visits,
+            formation_squared_error_sum=self._formation_squared_error_sum,
+            formation_samples=self._formation_samples,
+            gate_crossings=self._gate_crossings,
+            gate_contacts=self._gate_contacts,
+            safety_failures=tuple(self._safety_failures),
+            safety_overrides=self._safety_overrides,
+            completed_evidence=tuple(sorted(self._completed_evidence)),
+            central_control_commands=self._central_control_commands,
+            disturbance_injections=self._disturbance_injections,
+            disturbance_minimums=minimums,
+            disturbance_maximums=maximums,
+        )
 
     def _debug_set_clearance_m(self, vehicle_id: int, clearance_m: float) -> None:
         """Inject measured clearance for a deterministic safety test only."""
@@ -441,3 +683,16 @@ class MultiTaskEnv(gym.Env):
         if not math.isfinite(float(clearance_m)):
             raise ValueError("clearance_m must be finite")
         self._clearance_overrides[vehicle_id] = float(clearance_m)
+
+    def _debug_force_frame_drops(self, vehicle_id: int, *, count: int) -> None:
+        if vehicle_id not in self._active:
+            raise ValueError("vehicle is not active")
+        if isinstance(count, bool) or not isinstance(count, int) or count < 1:
+            raise ValueError("count must be a positive integer")
+        if "frame_drop" not in self.manifest.disturbances:
+            raise ValueError("frame_drop disturbance is not active")
+        self._observation_ages[vehicle_id] += count * self.dt
+        for _ in range(count):
+            self._record_disturbance(
+                "frame_drop", self._observation_ages[vehicle_id]
+            )
