@@ -20,6 +20,7 @@ from .base import Drone
 
 # ignore position (0-2), acceleration (6-8) and yaw angle (10); use velocity + yaw rate
 TYPE_MASK_VEL_YAWRATE = 0b0000_0101_1100_0111
+ESTIMATOR_REQUIRED_FLAGS = 1 | 2 | 4 | 8 | 32
 
 
 class MavlinkDrone(Drone):
@@ -27,7 +28,8 @@ class MavlinkDrone(Drone):
     has_camera = False
 
     def __init__(self, connection: str = "udpin:0.0.0.0:14550", autopilot: str = "ardupilot", v_max: float = 1.0,
-                 vz_max: float = 0.5, yaw_rate_max_dps: float = 45.0, takeoff_alt: float = 1.5):
+                 vz_max: float = 0.5, yaw_rate_max_dps: float = 45.0, takeoff_alt: float = 1.5,
+                 offboard_rate_hz: float = 20.0, arm_timeout_s: float = 10.0):
         try:
             from pymavlink import mavutil
         except ImportError as e:  # pragma: no cover - optional dependency
@@ -37,9 +39,12 @@ class MavlinkDrone(Drone):
         self.autopilot = autopilot.lower()
         self.v_max, self.vz_max, self.yr_max = v_max, vz_max, math.radians(yaw_rate_max_dps)
         self.takeoff_alt = takeoff_alt
+        self.offboard_rate_hz = max(5.0, float(offboard_rate_hz))
+        self.arm_timeout_s = max(1.0, float(arm_timeout_s))
         self.m = None
         self._tel = Telemetry()
         self.flying = False
+        self._last_controller_heartbeat_at = float("-inf")
 
     def connect(self) -> None:
         if "," in self.conn_str:
@@ -49,29 +54,72 @@ class MavlinkDrone(Drone):
             self.m = self.mavutil.mavlink_connection(self.conn_str)
         self.m.wait_heartbeat(timeout=30)
         print(f"MAVLink heartbeat from system {self.m.target_system}")
+        self._send_controller_heartbeat(time.monotonic())
+        # Ask PX4 for every stream used by the local state-health gate. A stale
+        # or absent stream then becomes an explicit fail-closed condition.
+        for message_id, rate_hz in ((32, 20.0), (30, 20.0), (230, 10.0)):
+            self.m.mav.command_long_send(
+                self.m.target_system,
+                self.m.target_component,
+                self.mavutil.mavlink.MAV_CMD_SET_MESSAGE_INTERVAL,
+                0,
+                message_id,
+                1_000_000.0 / rate_hz,
+                0,
+                0,
+                0,
+                0,
+                0,
+            )
+
+    def _send_controller_heartbeat(self, now: float) -> None:
+        if now - self._last_controller_heartbeat_at < 1.0:
+            return
+        # This is a vehicle-local control endpoint. PX4 classifies the MAVLink
+        # sender as a GCS so its standard data-link health check sees the link;
+        # no shared or central controller is involved.
+        self.m.mav.heartbeat_send(6, 8, 0, 0, 4)
+        self._last_controller_heartbeat_at = now
+
+    def _wait_until_armed(self, *, timeout_s: float) -> None:
+        deadline = time.monotonic() + timeout_s
+        while True:
+            now = time.monotonic()
+            if now >= deadline:
+                raise TimeoutError(f"PX4 did not arm within {timeout_s:.1f} seconds")
+            self._send_controller_heartbeat(now)
+            self.m.recv_match(
+                type="HEARTBEAT",
+                blocking=True,
+                timeout=min(0.25, deadline - now),
+            )
+            if self.m.motors_armed():
+                return
 
     def _send_velocity(self, vx: float, vy: float, vz: float, yaw_rate: float) -> None:
         self.m.mav.set_position_target_local_ned_send(
-            0, self.m.target_system, self.m.target_component, self.mavutil.mavlink.MAV_FRAME_BODY_OFFSET_NED,
+            0, self.m.target_system, self.m.target_component, self.mavutil.mavlink.MAV_FRAME_BODY_NED,
             TYPE_MASK_VEL_YAWRATE, 0, 0, 0, vx, vy, vz, 0, 0, 0, 0, yaw_rate)
 
     def takeoff(self) -> None:
         m = self.m
         if self.autopilot == "px4":
             m.arducopter_arm()
-            m.motors_armed_wait()
+            self._wait_until_armed(timeout_s=self.arm_timeout_s)
             # NaN altitude -> PX4 uses MIS_TAKEOFF_ALT
             m.mav.command_long_send(m.target_system, m.target_component, self.mavutil.mavlink.MAV_CMD_NAV_TAKEOFF,
                                     0, 0, 0, 0, float("nan"), float("nan"), float("nan"), float("nan"))
             time.sleep(6)
-            for _ in range(30):  # PX4 needs a >2 Hz setpoint stream before accepting OFFBOARD
+            prime_period = 1.0 / self.offboard_rate_hz
+            for _ in range(max(10, math.ceil(1.5 * self.offboard_rate_hz))):
+                # PX4 needs a >2 Hz setpoint stream before accepting OFFBOARD.
                 self._send_velocity(0, 0, 0, 0)
-                time.sleep(0.05)
+                time.sleep(prime_period)
             m.set_mode("OFFBOARD")
         else:
             m.set_mode("GUIDED")
             m.arducopter_arm()
-            m.motors_armed_wait()
+            self._wait_until_armed(timeout_s=self.arm_timeout_s)
             m.mav.command_long_send(m.target_system, m.target_component, self.mavutil.mavlink.MAV_CMD_NAV_TAKEOFF,
                                     0, 0, 0, 0, 0, 0, 0, self.takeoff_alt)
             time.sleep(6)
@@ -97,17 +145,36 @@ class MavlinkDrone(Drone):
 
     def telemetry(self) -> Telemetry:
         t = self._tel
+        received_at = time.monotonic()
+        self._send_controller_heartbeat(received_at)
         while True:
-            msg = self.m.recv_match(type=["LOCAL_POSITION_NED", "ATTITUDE", "BATTERY_STATUS", "SYS_STATUS"], blocking=False)
+            msg = self.m.recv_match(
+                type=["LOCAL_POSITION_NED", "ATTITUDE", "ESTIMATOR_STATUS", "BATTERY_STATUS", "SYS_STATUS"],
+                blocking=False,
+            )
             if msg is None:
                 break
             k = msg.get_type()
             if k == "LOCAL_POSITION_NED":
                 t.x_m, t.y_m, t.alt_m, t.vz_mps = msg.x, msg.y, -msg.z, -msg.vz
+                t.position_updated_at = received_at
+                t.position_valid = all(
+                    math.isfinite(float(value))
+                    for value in (t.x_m, t.y_m, t.alt_m, t.vz_mps)
+                )
             elif k == "ATTITUDE":
                 t.yaw_deg, t.yaw_rate_dps = math.degrees(msg.yaw), math.degrees(msg.yawspeed)
+                t.attitude_updated_at = received_at
+                t.attitude_valid = all(
+                    math.isfinite(float(value))
+                    for value in (t.yaw_deg, t.yaw_rate_dps)
+                )
+            elif k == "ESTIMATOR_STATUS":
+                t.estimator_updated_at = received_at
+                flags = int(msg.flags)
+                t.estimator_healthy = (flags & ESTIMATOR_REQUIRED_FLAGS) == ESTIMATOR_REQUIRED_FLAGS
             elif k == "SYS_STATUS" and msg.battery_remaining >= 0:
                 t.battery_pct = float(msg.battery_remaining)
-        t.t = time.monotonic()
+        t.t = received_at
         t.flying = self.flying
         return t

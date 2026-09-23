@@ -25,6 +25,14 @@ class Telemetry:
     y_m: float | None = None
     battery_pct: float | None = None
     flying: bool = False
+    # Host monotonic receipt times preserve sensor freshness independently of
+    # ``t``, which records when the combined telemetry snapshot was read.
+    position_updated_at: float | None = None
+    attitude_updated_at: float | None = None
+    estimator_updated_at: float | None = None
+    position_valid: bool | None = None
+    attitude_valid: bool | None = None
+    estimator_healthy: bool | None = None
 
 
 class SafetyGovernor:

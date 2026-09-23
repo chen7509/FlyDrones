@@ -5,6 +5,7 @@ import json
 from pathlib import Path
 
 import numpy as np
+import pytest
 
 from flydrones.distributed_px4 import (
     DistributedAgentConfig,
@@ -12,6 +13,7 @@ from flydrones.distributed_px4 import (
     aggregate_distributed_artifacts,
     align_distributed_traces,
     build_distributed_agent_commands,
+    evaluate_local_state_health,
     run_distributed_px4_agent,
 )
 from flydrones.gazebo_depth import DepthObservation
@@ -98,6 +100,7 @@ class LocalKinematicDrone:
         self.yaw_deg = 90.0
         self.last_command = None
         self.connected = False
+        self.takeoff_called = False
         self.landing = False
         self.land_called = False
 
@@ -105,6 +108,7 @@ class LocalKinematicDrone:
         self.connected = True
 
     def takeoff(self):
+        self.takeoff_called = True
         self.altitude = 1.8
 
     def send(self, command):
@@ -118,6 +122,12 @@ class LocalKinematicDrone:
             alt_m=self.altitude,
             yaw_deg=self.yaw_deg,
             battery_pct=100.0,
+            position_updated_at=self.clock.now,
+            attitude_updated_at=self.clock.now,
+            estimator_updated_at=self.clock.now,
+            position_valid=True,
+            attitude_valid=True,
+            estimator_healthy=True,
         )
 
     def land(self):
@@ -174,6 +184,59 @@ class NonFiniteAgent(FailClosedAgent):
 
     def command(self, **_kwargs):
         return FlightCommand(forward=float("nan"), note="invalid planner output")
+
+
+def test_local_state_health_requires_fresh_finite_pose_and_attitude():
+    telemetry = Telemetry(
+        t=10.0,
+        x_m=1.0,
+        y_m=-2.0,
+        alt_m=1.8,
+        yaw_deg=45.0,
+        position_updated_at=9.9,
+        attitude_updated_at=9.95,
+        estimator_updated_at=9.98,
+        position_valid=True,
+        attitude_valid=True,
+        estimator_healthy=True,
+    )
+
+    healthy = evaluate_local_state_health(telemetry, now=10.0, max_age_s=0.35)
+    stale = evaluate_local_state_health(telemetry, now=10.4, max_age_s=0.35)
+    telemetry.x_m = float("nan")
+    non_finite = evaluate_local_state_health(telemetry, now=10.0, max_age_s=0.35)
+
+    assert healthy.healthy
+    assert healthy.position_age_s == pytest.approx(0.1)
+    assert stale.reason == "stale-local-position"
+    assert not non_finite.healthy
+    assert non_finite.reason == "non-finite-local-position"
+
+
+def test_local_state_health_requires_a_fresh_healthy_px4_estimator():
+    telemetry = Telemetry(
+        t=10.0,
+        x_m=1.0,
+        y_m=-2.0,
+        alt_m=1.8,
+        yaw_deg=45.0,
+        position_updated_at=9.9,
+        attitude_updated_at=9.95,
+        position_valid=True,
+        attitude_valid=True,
+    )
+
+    missing = evaluate_local_state_health(telemetry, now=10.0, max_age_s=0.35)
+    telemetry.estimator_healthy = False
+    telemetry.estimator_updated_at = 9.98
+    unhealthy = evaluate_local_state_health(telemetry, now=10.0, max_age_s=0.35)
+    telemetry.estimator_healthy = True
+    telemetry.estimator_updated_at = 9.0
+    stale = evaluate_local_state_health(telemetry, now=10.0, max_age_s=0.35)
+
+    assert missing.reason == "missing-estimator-status"
+    assert unhealthy.reason == "unhealthy-estimator"
+    assert stale.reason == "stale-estimator-status"
 
 
 def test_one_distributed_worker_owns_its_drone_depth_policy_and_udp_cache(tmp_path):
@@ -310,7 +373,103 @@ def test_worker_rejects_non_finite_planner_command_and_lands(tmp_path):
     assert not result["accepted"]
     assert "non-finite" in result["error"]
     assert drone.land_called
+
+
+def test_worker_checks_state_after_mavlink_receipt_timestamp(tmp_path):
+    class ReceiptAfterLoopTimestampDrone(LocalKinematicDrone):
+        def telemetry(self):
+            self.clock.now += 0.001
+            return super().telemetry()
+
+    clock = Clock()
+    drone = ReceiptAfterLoopTimestampDrone(clock)
+    clock.drone = drone
+
+    _trace, result = run_distributed_px4_agent(
+        DistributedAgentConfig(vehicle_id=0, output_dir=tmp_path),
+        drone=drone,
+        depth_camera=LocalDepthCamera(),
+        peer_node=LocalPeerNode(),
+        policy=ForwardPolicy(),
+        agent=FailClosedAgent(),
+        monotonic=clock.time,
+        wall_time=clock.wall_time,
+        sleep=clock.sleep,
+    )
+
+    assert drone.takeoff_called
+    assert result["error"] is None
+    assert result["metrics"]["last_state_health_reason"] is None
     assert drone.last_command is None
+
+
+def test_worker_lands_before_planning_when_local_position_is_stale(tmp_path):
+    class StalePositionDrone(LocalKinematicDrone):
+        def telemetry(self):
+            telemetry = super().telemetry()
+            telemetry.position_updated_at = self.clock.now - 1.0
+            return telemetry
+
+    clock = Clock()
+    drone = StalePositionDrone(clock)
+    clock.drone = drone
+    peer = LocalPeerNode()
+    policy = ForwardPolicy()
+
+    _trace, result = run_distributed_px4_agent(
+        DistributedAgentConfig(vehicle_id=0, output_dir=tmp_path),
+        drone=drone,
+        depth_camera=LocalDepthCamera(),
+        peer_node=peer,
+        policy=policy,
+        monotonic=clock.time,
+        wall_time=clock.wall_time,
+        sleep=clock.sleep,
+    )
+
+    assert not result["accepted"]
+    assert result["metrics"]["fail_closed_land"]
+    assert result["metrics"]["state_health_failures"] == 1
+    assert result["metrics"]["last_state_health_reason"] == "stale-local-position"
+    assert policy.predict_calls == 0
+    assert peer.broadcasts == []
+    assert drone.last_command is None
+    assert not drone.takeoff_called
+    assert drone.land_called
+
+
+def test_worker_lands_before_planning_when_local_position_is_non_finite(tmp_path):
+    class NonFinitePositionDrone(LocalKinematicDrone):
+        def telemetry(self):
+            telemetry = super().telemetry()
+            telemetry.x_m = float("nan")
+            return telemetry
+
+    clock = Clock()
+    drone = NonFinitePositionDrone(clock)
+    clock.drone = drone
+    peer = LocalPeerNode()
+    policy = ForwardPolicy()
+
+    _trace, result = run_distributed_px4_agent(
+        DistributedAgentConfig(vehicle_id=0, output_dir=tmp_path),
+        drone=drone,
+        depth_camera=LocalDepthCamera(),
+        peer_node=peer,
+        policy=policy,
+        monotonic=clock.time,
+        wall_time=clock.wall_time,
+        sleep=clock.sleep,
+    )
+
+    assert not result["accepted"]
+    assert result["metrics"]["fail_closed_land"]
+    assert result["metrics"]["last_state_health_reason"] == "non-finite-local-position"
+    assert policy.predict_calls == 0
+    assert peer.broadcasts == []
+    assert drone.last_command is None
+    assert not drone.takeoff_called
+    assert drone.land_called
 
 
 def test_distributed_worker_lands_and_reports_failure_when_depth_never_becomes_ready(tmp_path):

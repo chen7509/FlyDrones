@@ -16,6 +16,19 @@ From PowerShell:
 The result is written to `results/px4-sitl-five-process-udp`. Every worker produces its own CSV, JSON and stdout/stderr
 logs. `summary.json`, `flight.csv`, `trajectory.png` and `五进程去中心化报告.md` are offline aggregate artifacts.
 
+### Local state-estimator gate
+
+Each worker requests `LOCAL_POSITION_NED`, `ATTITUDE` and `ESTIMATOR_STATUS` directly from its own PX4 connection. It
+will not arm or take off until all three streams are present, finite and no more than 0.35 seconds old. The PX4 estimator
+must report valid attitude, horizontal and vertical velocity, relative horizontal position and vertical position. Relative
+horizontal position is used deliberately so the gate can also support a GNSS-denied vehicle whose local position comes
+from VIO, optical flow or another onboard source.
+
+The same gate runs before every autonomous planning step. Missing, invalid or stale state prevents policy evaluation,
+peer broadcast and motor-command generation, then commands that vehicle to land. The worker artifact records
+`state_health_failures`, `last_state_health_reason`, and the position, attitude and estimator ages. This validates the
+software response to a bad estimate; it does not establish that a particular physical sensor installation is accurate.
+
 ## Run the process and UDP scale trial
 
 ```powershell

@@ -36,6 +36,8 @@ class DistributedAgentConfig:
     mission_timeout_s: float = 70.0
     land_timeout_s: float = 45.0
     depth_timeout_s: float = 25.0
+    state_ready_timeout_s: float = 15.0
+    state_max_age_s: float = 0.35
     peer_base_port: int = 16770
     peer_config: PeerUdpConfig = field(default_factory=lambda: PeerUdpConfig(
         range_m=8.0,
@@ -51,6 +53,79 @@ class DistributedAgentConfig:
             raise ValueError("the PX4 forest worker currently requires five vehicles")
         if not 0 <= self.vehicle_id < self.vehicle_count:
             raise ValueError("vehicle id is outside the fleet")
+        if self.state_max_age_s <= 0.0:
+            raise ValueError("state_max_age_s must be positive")
+        if self.state_ready_timeout_s <= 0.0:
+            raise ValueError("state_ready_timeout_s must be positive")
+
+
+@dataclass(frozen=True)
+class LocalStateHealth:
+    healthy: bool
+    reason: str | None
+    position_age_s: float | None
+    attitude_age_s: float | None
+    estimator_age_s: float | None = None
+
+
+def evaluate_local_state_health(telemetry, *, now: float, max_age_s: float) -> LocalStateHealth:
+    """Validate the local pose used by the autonomous PX4 worker.
+
+    Receipt timestamps are deliberately separate from the snapshot timestamp:
+    repeatedly reading an old MAVLink value must never make it fresh again.
+    """
+    position_values = (telemetry.x_m, telemetry.y_m, telemetry.alt_m)
+    if any(value is None for value in position_values):
+        return LocalStateHealth(False, "missing-local-position", None, None)
+    if not all(math.isfinite(float(value)) for value in position_values):
+        return LocalStateHealth(False, "non-finite-local-position", None, None)
+    if telemetry.yaw_deg is None:
+        return LocalStateHealth(False, "missing-attitude", None, None)
+    if not math.isfinite(float(telemetry.yaw_deg)):
+        return LocalStateHealth(False, "non-finite-attitude", None, None)
+    if telemetry.position_valid is False:
+        return LocalStateHealth(False, "invalid-local-position", None, None)
+    if telemetry.attitude_valid is False:
+        return LocalStateHealth(False, "invalid-attitude", None, None)
+    if telemetry.estimator_healthy is None or telemetry.estimator_updated_at is None:
+        return LocalStateHealth(False, "missing-estimator-status", None, None)
+    if telemetry.estimator_healthy is False:
+        return LocalStateHealth(False, "unhealthy-estimator", None, None)
+
+    position_updated_at = telemetry.position_updated_at
+    attitude_updated_at = telemetry.attitude_updated_at
+    if position_updated_at is None:
+        return LocalStateHealth(False, "missing-local-position-timestamp", None, None)
+    if attitude_updated_at is None:
+        return LocalStateHealth(False, "missing-attitude-timestamp", None, None)
+    position_age_s = float(now) - float(position_updated_at)
+    attitude_age_s = float(now) - float(attitude_updated_at)
+    estimator_age_s = float(now) - float(telemetry.estimator_updated_at)
+    if not math.isfinite(position_age_s) or position_age_s < 0.0:
+        return LocalStateHealth(False, "invalid-local-position-timestamp", position_age_s, attitude_age_s)
+    if not math.isfinite(attitude_age_s) or attitude_age_s < 0.0:
+        return LocalStateHealth(False, "invalid-attitude-timestamp", position_age_s, attitude_age_s)
+    if not math.isfinite(estimator_age_s) or estimator_age_s < 0.0:
+        return LocalStateHealth(
+            False,
+            "invalid-estimator-timestamp",
+            position_age_s,
+            attitude_age_s,
+            estimator_age_s,
+        )
+    if position_age_s > max_age_s:
+        return LocalStateHealth(False, "stale-local-position", position_age_s, attitude_age_s)
+    if attitude_age_s > max_age_s:
+        return LocalStateHealth(False, "stale-attitude", position_age_s, attitude_age_s)
+    if estimator_age_s > max_age_s:
+        return LocalStateHealth(
+            False,
+            "stale-estimator-status",
+            position_age_s,
+            attitude_age_s,
+            estimator_age_s,
+        )
+    return LocalStateHealth(True, None, position_age_s, attitude_age_s, estimator_age_s)
 
 
 def _px4_execution_planner_config() -> LocalPlannerConfig:
@@ -336,8 +411,17 @@ def run_distributed_px4_agent(
     planner_times_ms: list[float] = []
     planner_calls = 0
     fail_closed_land = False
+    state_health_failures = 0
+    last_state_health_reason: str | None = None
 
-    def sample(phase: str, position: tuple[float, float, float], telemetry, observation, peer_count: int) -> None:
+    def sample(
+        phase: str,
+        position: tuple[float, float, float],
+        telemetry,
+        observation,
+        peer_count: int,
+        state_health: LocalStateHealth | None = None,
+    ) -> None:
         nonlocal step
         decision = getattr(agent, "last_decision", None)
         rejections = getattr(decision, "rejection_counts", {}) if decision is not None else {}
@@ -355,6 +439,23 @@ def run_distributed_px4_agent(
             "alt_m": round(position[2], 4),
             "yaw_deg": telemetry.yaw_deg,
             "battery_pct": telemetry.battery_pct,
+            "state_healthy": state_health.healthy if state_health is not None else None,
+            "state_health_reason": state_health.reason if state_health is not None else None,
+            "position_age_s": (
+                round(state_health.position_age_s, 5)
+                if state_health is not None and state_health.position_age_s is not None
+                else None
+            ),
+            "attitude_age_s": (
+                round(state_health.attitude_age_s, 5)
+                if state_health is not None and state_health.attitude_age_s is not None
+                else None
+            ),
+            "estimator_age_s": (
+                round(state_health.estimator_age_s, 5)
+                if state_health is not None and state_health.estimator_age_s is not None
+                else None
+            ),
             "depth_nearest_m": round(observation.nearest_distance_m, 4) if observation else None,
             "depth_rays_m": ";".join(f"{value:.3f}" for value in observation.ray_distances_m) if observation else None,
             "policy_action_speed": round(float(previous_action[0]), 5),
@@ -391,6 +492,23 @@ def run_distributed_px4_agent(
             raise TimeoutError("local depth camera did not become ready")
         drone.connect()
         connected = True
+        state_ready_deadline = monotonic() + config.state_ready_timeout_s
+        while True:
+            preflight_telemetry = drone.telemetry()
+            timestamp = monotonic()
+            preflight_health = evaluate_local_state_health(
+                preflight_telemetry,
+                now=timestamp,
+                max_age_s=config.state_max_age_s,
+            )
+            if preflight_health.healthy:
+                break
+            if timestamp >= state_ready_deadline:
+                fail_closed_land = True
+                state_health_failures = 1
+                last_state_health_reason = preflight_health.reason
+                raise TimeoutError(f"local state did not become healthy: {preflight_health.reason}")
+            sleep(period)
         try:
             drone.takeoff()
         except TimeoutError as exc:
@@ -403,12 +521,23 @@ def run_distributed_px4_agent(
         deadline = mission_start + config.mission_timeout_s
         arrived_frames = 0
         while True:
-            timestamp = monotonic()
             telemetry = drone.telemetry()
+            timestamp = monotonic()
+            state_health = evaluate_local_state_health(
+                telemetry,
+                now=timestamp,
+                max_age_s=config.state_max_age_s,
+            )
+            if not state_health.healthy:
+                fail_closed_land = True
+                state_health_failures += 1
+                last_state_health_reason = state_health.reason
+                error = f"local state unhealthy: {state_health.reason}"
+                break
             position = spec.global_position(
-                float(telemetry.x_m or 0.0),
-                float(telemetry.y_m or 0.0),
-                float(telemetry.alt_m or 0.0),
+                float(telemetry.x_m),
+                float(telemetry.y_m),
+                float(telemetry.alt_m),
             )
             if previous_position is None or previous_time is None or timestamp <= previous_time:
                 velocity = (0.0, 0.0, 0.0)
@@ -446,7 +575,7 @@ def run_distributed_px4_agent(
             if decision is not None:
                 planner_calls += 1
                 planner_times_ms.append(float(decision.planning_time_ms))
-            sample(agent.phase, position, telemetry, observation, len(tracks))
+            sample(agent.phase, position, telemetry, observation, len(tracks), state_health)
             if bool(getattr(agent, "should_land", False)):
                 fail_closed_land = True
                 break
@@ -527,6 +656,8 @@ def run_distributed_px4_agent(
         "planner_calls": planner_calls,
         "planner_p95_ms": round(planner_p95_ms, 5),
         "fail_closed_land": fail_closed_land,
+        "state_health_failures": state_health_failures,
+        "last_state_health_reason": last_state_health_reason,
         "central_control_commands": 0,
         "direct_global_neighbor_reads": 0,
         "depth_frames": int(depth_camera.frame_counts.get(config.vehicle_id, 0)),
