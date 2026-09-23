@@ -34,6 +34,7 @@ from flydrones.multitask_evaluation import evaluate_manifests
 from flydrones.multitask_policy import SharedRecurrentPolicy
 from flydrones.multitask_reflex import MaleCNSReflexBridge
 from flydrones.multitask_scenarios import ScenarioGenerator
+from flydrones.multitask_summary import write_summary
 from flydrones.multitask_trainer import PPOTrainer
 
 
@@ -471,12 +472,23 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--malecns-connectome")
     parser.add_argument("--malecns-config")
     parser.add_argument("--malecns-readout")
+    parser.add_argument("--summary", action="store_true")
+    parser.add_argument("--verification-record")
     return parser.parse_args()
 
 
 if __name__ == "__main__":
     try:
-        print(json.dumps(run(parse_args()), sort_keys=True))
+        parsed = parse_args()
+        if parsed.summary:
+            if parsed.verification_record is None:
+                raise ValueError("--summary requires --verification-record")
+            destination = write_summary(
+                parsed.config, parsed.output, parsed.verification_record
+            )
+            print(json.dumps({"summary": str(destination)}, sort_keys=True))
+        else:
+            print(json.dumps(run(parsed), sort_keys=True))
     except BaseException as error:
         print(f"{type(error).__name__}: {error}", file=sys.stderr)
         raise SystemExit(1) from error

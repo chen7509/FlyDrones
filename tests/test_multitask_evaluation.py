@@ -117,3 +117,25 @@ def test_reflex_override_bypasses_actor_and_is_counted_as_final_action():
     assert result.telemetry.safety_overrides == result.local_decisions
     assert "tracking_rmse_m" not in result.metrics
     assert "tracking_rmse_m" in result.missing_evidence
+
+
+def test_cumulative_reflex_fallback_counter_is_not_added_each_step():
+    class OneFallbackReflex(RecordingNoopReflex):
+        def evaluate(self, observation):
+            self.calls += 1
+            return ReflexDecision(
+                None,
+                ReflexEvidence(
+                    "malecns-v1.0-live", 166_700, 25_582_837, self.calls, 1, 1.0
+                ),
+            )
+
+    result = evaluate_manifests(
+        TrackingActor(),
+        [manifest(Skill.NAVIGATE_EXIT)],
+        reflex_factory=lambda vehicle_id, scenario: OneFallbackReflex(),
+        max_steps=4,
+    )
+
+    assert result.reflex_calls == 4
+    assert result.male_cns_fallbacks == 1

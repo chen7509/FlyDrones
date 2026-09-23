@@ -118,3 +118,35 @@ def test_interrupted_and_uninterrupted_batches_have_identical_actor(tmp_path):
     assert resumed.actor_digest() == continuous.actor_digest()
     assert resumed.critic_digest() == continuous.critic_digest()
     assert resumed.random_state_digest() == continuous.random_state_digest()
+
+
+def test_training_reports_cumulative_reflex_fallbacks_once_per_bridge():
+    scenario = manifest()
+    environment = MultiTaskEnv(scenario, max_steps=16)
+    environment.reset(seed=scenario.seed)
+
+    class OneFallbackReflex(NoopLiveReflex):
+        def evaluate(self, observation):
+            decision = super().evaluate(observation)
+            return ReflexDecision(
+                decision.intent,
+                ReflexEvidence(
+                    decision.evidence.source,
+                    decision.evidence.neurons,
+                    decision.evidence.connections,
+                    decision.evidence.neural_updates,
+                    1,
+                    decision.evidence.p95_ms,
+                ),
+            )
+
+    trainer = PPOTrainer(
+        seed=22,
+        critic_input_dimension=int(environment.critic_observation().shape[0]),
+        device="cpu",
+        reflex_factory=lambda vehicle_id, item: OneFallbackReflex(),
+    )
+
+    report = trainer.train_batch(scenario, steps=8)
+
+    assert report.male_cns_fallbacks == 1

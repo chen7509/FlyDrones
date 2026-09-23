@@ -269,7 +269,7 @@ class PPOTrainer:
         central_commands = 0
         reward_terms: dict[str, float] = {}
         backend_sources: set[str] = set()
-        fallback_calls = 0
+        fallback_calls = {vehicle_id: 0 for vehicle_id in observations}
 
         for batch_step in range(steps):
             actions: dict[int, PolicyIntent] = {}
@@ -283,7 +283,7 @@ class PPOTrainer:
                 local = env.local_observation(vehicle_id)
                 decision = bridges[vehicle_id].evaluate(local)
                 backend_sources.add(decision.evidence.source)
-                fallback_calls += decision.evidence.fallback_calls
+                fallback_calls[vehicle_id] = decision.evidence.fallback_calls
                 final = arbiters[vehicle_id].preflight(
                     env.safety_snapshot(vehicle_id),
                     reflex_override=decision.intent,
@@ -477,7 +477,7 @@ class PPOTrainer:
             male_cns_backend=(
                 ",".join(sorted(backend_sources)) if backend_sources else "unavailable"
             ),
-            male_cns_fallbacks=fallback_calls,
+            male_cns_fallbacks=sum(fallback_calls.values()),
         )
 
     def save(

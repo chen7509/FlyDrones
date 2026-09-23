@@ -186,6 +186,7 @@ def evaluate_manifests(
         bridges = {
             vehicle_id: factory(vehicle_id, scenario) for vehicle_id in observations
         }
+        episode_fallbacks = {vehicle_id: 0 for vehicle_id in observations}
         arbiters = {
             vehicle_id: SafetyArbiter(SafetyProjector())
             for vehicle_id in observations
@@ -209,7 +210,7 @@ def evaluate_manifests(
                 decision = bridges[vehicle_id].evaluate(local)
                 reflex_calls += 1
                 backend_sources.add(decision.evidence.source)
-                fallback_calls += decision.evidence.fallback_calls
+                episode_fallbacks[vehicle_id] = decision.evidence.fallback_calls
                 arbiter = arbiters[vehicle_id]
                 try:
                     final = arbiter.preflight(
@@ -241,6 +242,7 @@ def evaluate_manifests(
             step_count += 1
             if terminated or truncated:
                 break
+        fallback_calls += sum(episode_fallbacks.values())
         telemetry = env.telemetry()
         episode_telemetry.append(telemetry)
         episode_reports.append(
