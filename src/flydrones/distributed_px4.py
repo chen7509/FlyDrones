@@ -22,6 +22,7 @@ from .sitl_swarm import (
     px4_swarm_rally_targets,
     px4_swarm_specs,
 )
+from .vio_faults import write_activation
 
 
 @dataclass(frozen=True)
@@ -40,6 +41,7 @@ class DistributedAgentConfig:
     state_max_age_s: float = 0.35
     gps_failure_at_s: float | None = None
     gps_failure_mode: str = "off"
+    fault_marker_path: str | Path | None = None
     external_vision_fusion: bool = False
     local_frame_realign_window_s: float = 3.0
     peer_base_port: int = 16770
@@ -200,6 +202,7 @@ def build_distributed_agent_commands(
     gps_failure_at_s: float = 12.0,
     gps_failure_mode: str = "off",
     external_vision_fusion: bool = False,
+    fault_marker_path: str | Path | None = None,
 ) -> list[list[str]]:
     if vehicle_count != 5:
         raise ValueError("the distributed PX4 trial currently requires five workers")
@@ -223,6 +226,8 @@ def build_distributed_agent_commands(
                 "--gps-failure-at", str(gps_failure_at_s),
                 "--gps-failure-mode", gps_failure_mode,
             ])
+            if fault_marker_path is not None:
+                command.extend(["--fault-marker", str(fault_marker_path)])
         if external_vision_fusion:
             command.append("--external-vision-fusion")
         commands.append(command)
@@ -681,6 +686,11 @@ def run_distributed_px4_agent(
     gps_failure_injected_at_s: float | None = None
     gps_failure_mechanism: str | None = None
     frame_continuity = LocalFrameContinuity()
+    launch_local_origin: tuple[float, float] | None = None
+
+    def position_from_local(local: tuple[float, float, float]) -> tuple[float, float, float]:
+        origin = launch_local_origin or (0.0, 0.0)
+        return spec.global_position(local[0] - origin[0], local[1] - origin[1], local[2])
 
     def sample(
         phase: str,
@@ -826,9 +836,11 @@ def run_distributed_px4_agent(
                 now=timestamp,
                 allow_realign=allow_frame_realign,
             )
-            position = spec.global_position(
-                *continuous_local_position,
-            )
+            if launch_local_origin is None:
+                # PX4 may choose the vehicle takeoff point or the Gazebo world
+                # origin for its local frame. Anchor either to the known spawn.
+                launch_local_origin = (continuous_local_position[0], continuous_local_position[1])
+            position = position_from_local(continuous_local_position)
             if previous_position is None or previous_time is None or timestamp <= previous_time:
                 velocity = (0.0, 0.0, 0.0)
             else:
@@ -848,6 +860,12 @@ def run_distributed_px4_agent(
                     gps_failure_mechanism = "mavlink-failure-injection"
                 gps_failure_injected = True
                 gps_failure_injected_at_s = elapsed
+                if config.fault_marker_path is not None:
+                    write_activation(
+                        config.fault_marker_path,
+                        vehicle_id=config.vehicle_id,
+                        monotonic_s=monotonic(),
+                    )
             peer_node.broadcast(position, velocity, mission_elapsed_s=elapsed)
             tracks = peer_node.poll(position, now=timestamp)
             observation = depth_camera.latest(config.vehicle_id, now=timestamp, max_age_s=0.35)
@@ -912,9 +930,7 @@ def run_distributed_px4_agent(
                         now=timestamp,
                         allow_realign=False,
                     )
-                    position = spec.global_position(
-                        *continuous_local_position,
-                    )
+                    position = position_from_local(continuous_local_position)
                     observation = depth_camera.latest(config.vehicle_id, now=timestamp, max_age_s=0.35)
                     sample("land", position, telemetry, observation, len(peer_node.neighbors()))
                     if position[2] <= 0.15 or monotonic() >= land_deadline:
@@ -977,6 +993,9 @@ def run_distributed_px4_agent(
             else None
         ),
         "external_vision_fusion_enabled": external_vision_fusion_enabled,
+        "local_origin_calibrated": launch_local_origin is not None,
+        "launch_local_origin_north_m": round(launch_local_origin[0], 4) if launch_local_origin else None,
+        "launch_local_origin_east_m": round(launch_local_origin[1], 4) if launch_local_origin else None,
         "local_frame_realignments": frame_continuity.realignments,
         "central_control_commands": 0,
         "direct_global_neighbor_reads": 0,

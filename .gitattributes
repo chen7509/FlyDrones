@@ -1,0 +1,2 @@
+tools/launch_px4_depth_swarm_wsl.sh text eol=lf
+tools/stop_px4_swarm_wsl.sh text eol=lf

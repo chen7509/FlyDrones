@@ -14,9 +14,9 @@ from flydrones.distributed_px4 import (
     aggregate_distributed_artifacts,
     align_distributed_traces,
     build_distributed_agent_commands,
-    evaluate_local_state_health,
     evaluate_gps_fault_artifacts,
     evaluate_gps_vio_fallback_artifacts,
+    evaluate_local_state_health,
     run_distributed_px4_agent,
 )
 from flydrones.gazebo_depth import DepthObservation
@@ -499,6 +499,7 @@ def test_worker_can_disable_gps_fusion_on_older_px4_sitl(tmp_path):
             output_dir=tmp_path,
             gps_failure_at_s=0.0,
             gps_failure_mode="fusion-off",
+            fault_marker_path=tmp_path / "activation.json",
         ),
         drone=drone,
         depth_camera=LocalDepthCamera(),
@@ -514,6 +515,9 @@ def test_worker_can_disable_gps_fusion_on_older_px4_sitl(tmp_path):
     assert result["metrics"]["gps_failure_injected"]
     assert result["metrics"]["gps_failure_mechanism"] == "ekf2-gps-fusion-disabled"
     assert drone.last_command is None
+    marker = json.loads((tmp_path / "activation.json").read_text(encoding="utf-8"))
+    assert marker["vehicle_id"] == 0
+    assert marker["monotonic_s"] >= 0.0
 
 
 def test_worker_enables_external_vision_before_takeoff(tmp_path):
@@ -549,6 +553,32 @@ def test_worker_enables_external_vision_before_takeoff(tmp_path):
 
     assert events[:2] == ["vision-fusion", "takeoff"]
     assert result["metrics"]["external_vision_fusion_enabled"] is True
+
+
+def test_worker_calibrates_arbitrary_px4_local_origin_to_known_launch_pose(tmp_path):
+    class WorldOriginDrone(LocalKinematicDrone):
+        def enable_external_vision_fusion(self):
+            pass
+
+    clock = Clock()
+    drone = WorldOriginDrone(clock)
+    drone.local_north = -4.0
+    clock.drone = drone
+    trace, result = run_distributed_px4_agent(
+        DistributedAgentConfig(vehicle_id=0, output_dir=tmp_path, external_vision_fusion=True),
+        drone=drone,
+        depth_camera=LocalDepthCamera(),
+        peer_node=LocalPeerNode(),
+        policy=ForwardPolicy(),
+        agent=FailClosedAgent(),
+        monotonic=clock.time,
+        wall_time=clock.wall_time,
+        sleep=clock.sleep,
+    )
+
+    assert result["metrics"]["local_origin_calibrated"] is True
+    assert trace[0]["x_m"] == 0.0
+    assert trace[0]["y_m"] == -4.0
 
 
 def test_worker_lands_before_planning_when_local_position_is_stale(tmp_path):
@@ -702,12 +732,15 @@ def test_coordinator_assigns_a_gps_fault_to_only_the_selected_vehicle(tmp_path):
         gps_failure_vehicle_id=2,
         gps_failure_at_s=12.0,
         gps_failure_mode="off",
+        fault_marker_path=tmp_path / "fault-start.json",
     )
 
     faulted = [command for command in commands if "--gps-failure-at" in command]
     assert len(faulted) == 1
     assert faulted[0][faulted[0].index("--vehicle-id") + 1] == "2"
     assert faulted[0][faulted[0].index("--gps-failure-mode") + 1] == "off"
+    assert faulted[0][faulted[0].index("--fault-marker") + 1] == str(tmp_path / "fault-start.json")
+    assert sum("--fault-marker" in command for command in commands) == 1
 
 
 def test_coordinator_enables_external_vision_independently_on_every_vehicle(tmp_path):

@@ -1,0 +1,13 @@
+{
+  "schema": "flydrones-vio-fault-v1",
+  "vehicle_id": 0,
+  "seed": 240903,
+  "delay_ms": 0,
+  "dropout_start_s": 2,
+  "dropout_duration_s": 0.4,
+  "drop_probability": 0,
+  "drift_mps": [0, 0, 0],
+  "false_pose_start_s": 0,
+  "false_pose_duration_s": 0,
+  "false_pose_offset_m": [0, 0, 0]
+}

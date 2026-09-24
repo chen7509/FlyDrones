@@ -61,6 +61,7 @@ def main() -> int:
     parser.add_argument("--external-vision-fusion", action="store_true")
     parser.add_argument("--expect-gps-vio-fallback", action="store_true")
     parser.add_argument("--px4-run-dir")
+    parser.add_argument("--fault-marker")
     args = parser.parse_args()
     if args.expect_fault_landing and args.gps_failure_vehicle is None:
         parser.error("--expect-fault-landing requires --gps-failure-vehicle")
@@ -89,6 +90,7 @@ def main() -> int:
         gps_failure_at_s=args.gps_failure_at,
         gps_failure_mode=args.gps_failure_mode,
         external_vision_fusion=args.external_vision_fusion,
+        fault_marker_path=args.fault_marker,
     )
 
     processes: list[subprocess.Popen] = []

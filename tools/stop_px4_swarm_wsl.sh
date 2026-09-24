@@ -5,6 +5,9 @@ run_dir="${FLYDRONES_PX4_RUN_DIR:-/tmp/flydrones-px4-five}"
 px4_root="${PX4_ROOT:-$HOME/PX4-Autopilot}"
 build="$px4_root/build/px4_sitl_default"
 if [[ -d "$run_dir" ]]; then
+  if [[ -f "$run_dir/vio-relay.pid" ]]; then
+    kill "$(cat "$run_dir/vio-relay.pid")" 2>/dev/null || true
+  fi
   for pid_file in "$run_dir"/instance_*/pid; do
     [[ -f "$pid_file" ]] || continue
     pid="$(cat "$pid_file")"
