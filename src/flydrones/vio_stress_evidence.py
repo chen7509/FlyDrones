@@ -2,8 +2,55 @@
 
 from __future__ import annotations
 
+import bisect
 import math
+import statistics
 from collections.abc import Mapping, Sequence
+
+
+def match_relay_to_visual_odometry(
+    publishes: Sequence[Mapping], visual: Mapping[str, Sequence],
+) -> dict:
+    """Match logged Gazebo relay poses to PX4 uORB poses in a bounded sim-time window.
+
+    The PX4 Gazebo bridge changes ENU to NED and stamps samples on receipt. Matching
+    by both position and source-relative time avoids mistaking topic presence for
+    evidence that the faulted samples reached the estimator input.
+    """
+    required = ("timestamp", "position[0]", "position[1]", "position[2]")
+    if any(field not in visual for field in required):
+        return {"matched_active_samples": 0, "matched_offset_samples": 0,
+                "error": "visual odometry pose fields missing"}
+    times = [float(value) / 1_000_000 for value in visual["timestamp"]]
+    matched: dict[int, tuple[float, bool, float]] = {}
+    for event in publishes:
+        if (event.get("model") != "x500_depth_fly_0" or not event.get("active")
+                or "published_position_m" not in event):
+            continue
+        source_s = float(event["source_stamp_ns"]) / 1_000_000_000
+        delay_s = max(0.0, float(event.get("actual_delay_ms", 0))) / 1000
+        left = bisect.bisect_left(times, source_s - 0.04)
+        right = bisect.bisect_right(times, source_s + delay_s + 0.08)
+        published = event["published_position_m"]
+        expected_ned = (published[1], published[0], -published[2])
+        for index in range(left, right):
+            error = math.dist(expected_ned, tuple(float(visual[f"position[{axis}]"][index])
+                                                    for axis in range(3)))
+            if error > 0.01:
+                continue
+            offset = math.dist(event.get("offset_m", (0, 0, 0)), (0, 0, 0)) > 1e-6
+            prior = matched.get(index)
+            if prior is None or error < prior[0]:
+                matched[index] = (error, offset, (times[index] - source_s) * 1000)
+    return {
+        "matched_active_samples": len(matched),
+        "matched_offset_samples": sum(value[1] for value in matched.values()),
+        "maximum_position_error_m": round(max((value[0] for value in matched.values()), default=0), 6),
+        "median_ulog_minus_source_stamp_ms": round(
+            statistics.median(value[2] for value in matched.values()), 3
+        ) if matched else None,
+        "interpretation": "ENU-to-NED position match; ULog sample time is bridge receipt time, not VIO age",
+    }
 
 
 def _indices_after(dataset: Mapping[str, Sequence], start_s: float) -> list[int]:

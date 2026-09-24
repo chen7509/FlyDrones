@@ -28,6 +28,19 @@ if [[ -n "$vio_fault_profile" && -e "$run_dir" ]]; then
   exit 2
 fi
 
+if [[ -n "$vio_fault_profile" ]]; then
+  mkdir -p "$run_dir/backups"
+  touch "$run_dir/fault-mode"
+  world_source="$run_dir/flydrones_forest.sdf"
+  if [[ -e "$world_target" ]]; then
+    cp -a "$world_target" "$run_dir/backups/world.sdf"
+  fi
+  for model in OakD-Lite-Fly x500_depth_fly; do
+    if [[ -e "$model_root/$model" ]]; then
+      cp -a "$model_root/$model" "$run_dir/backups/$model"
+    fi
+  done
+fi
 PYTHONPATH="$repo_root/src" python3 "$repo_root/tools/generate_px4_forest_world.py" --output "$world_source" --lane-spacing 2.0
 cp "$world_source" "$world_target"
 rm -rf "$model_root/OakD-Lite-Fly" "$model_root/x500_depth_fly"

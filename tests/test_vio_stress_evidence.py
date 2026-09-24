@@ -1,4 +1,4 @@
-from flydrones.vio_stress_evidence import summarize_post_gnss_evidence
+from flydrones.vio_stress_evidence import match_relay_to_visual_odometry, summarize_post_gnss_evidence
 
 
 def _datasets(*, gnss_before=True):
@@ -52,3 +52,24 @@ def test_even_transient_inertial_dead_reckoning_is_reported_as_not_continuous():
     assert not result["checks"]["visual_position_and_velocity_control_active"]
     assert not result["checks"]["no_observed_inertial_dead_reckoning"]
     assert result["metrics"]["dead_reckoning_observed_duration_s"] == 1.0
+
+
+def test_relay_to_px4_requires_matching_transformed_pose_and_time():
+    events = [
+        {"active": True, "model": "x500_depth_fly_0", "source_stamp_ns": 10_000_000_000,
+         "published_position_m": [2.0, -3.0, -1.0], "offset_m": [1.0, 0.0, 0.0],
+         "actual_delay_ms": 120.0},
+        {"active": True, "model": "x500_depth_fly_0", "source_stamp_ns": 11_000_000_000,
+         "published_position_m": [3.0, -4.0, -1.0], "offset_m": [1.0, 0.0, 0.0],
+         "actual_delay_ms": 120.0},
+    ]
+    visual = {"timestamp": [10_120_000, 11_120_000],
+              "position[0]": [-3.0, -4.0], "position[1]": [2.0, 3.0],
+              "position[2]": [1.0, 1.0]}
+    matched = match_relay_to_visual_odometry(events, visual)
+    assert matched["matched_active_samples"] == 2
+    assert matched["matched_offset_samples"] == 2
+    assert matched["maximum_position_error_m"] < 0.001
+    assert matched["median_ulog_minus_source_stamp_ms"] == 120.0
+    visual["position[1]"][1] = 30.0
+    assert match_relay_to_visual_odometry(events, visual)["matched_active_samples"] == 1

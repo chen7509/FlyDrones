@@ -25,6 +25,41 @@ def sha256(path: Path) -> str:
     return digest.hexdigest()
 
 
+def _tree_fingerprint(path: Path) -> tuple | None:
+    if not path.exists():
+        return None
+    if path.is_file():
+        return ("file", sha256(path))
+    return ("directory", tuple(sorted(
+        (item.relative_to(path).as_posix(), sha256(item))
+        for item in path.rglob("*") if item.is_file()
+    )))
+
+
+def shared_px4_files_restored(run_dir: Path, px4_root: Path) -> bool:
+    backup = run_dir / "backups"
+    if not backup.is_dir():
+        return False
+    pairs = (
+        (backup / "world.sdf", px4_root / "Tools/simulation/gz/worlds/flydrones_forest.sdf"),
+        (backup / "OakD-Lite-Fly", px4_root / "Tools/simulation/gz/models/OakD-Lite-Fly"),
+        (backup / "x500_depth_fly", px4_root / "Tools/simulation/gz/models/x500_depth_fly"),
+    )
+    return all(_tree_fingerprint(before) == _tree_fingerprint(after) for before, after in pairs)
+
+
+def relay_closed_cleanly(path: Path) -> bool:
+    if not path.is_file():
+        return False
+    lines = path.read_text(encoding="utf-8", errors="replace").strip().splitlines()
+    if not lines:
+        return False
+    try:
+        return json.loads(lines[-1]).get("event") == "stop"
+    except json.JSONDecodeError:
+        return False
+
+
 def run_trial(*, name: str, profile: Path, fleet_size: int, model: Path) -> dict:
     if not name.replace("-", "").replace("_", "").isalnum() or "/" in name:
         raise ValueError("name must be an alphanumeric trial label")
@@ -54,7 +89,7 @@ def run_trial(*, name: str, profile: Path, fleet_size: int, model: Path) -> dict
         "px4_revision": subprocess.check_output(
             ["git", "-C", str(Path.home() / "PX4-Autopilot"), "rev-parse", "HEAD"], text=True
         ).strip(),
-        "controller_revision": os.environ["FLYDRONES_CONTROLLER_REVISION"],
+        "controller_revision": os.environ.get("FLYDRONES_CONTROLLER_REVISION"),
         "controller_source_sha256": sha256(ROOT / "src/flydrones/distributed_px4.py"),
         "relay_source_sha256": sha256(ROOT / "tools/relay_gazebo_vio.py"),
         "trial_runner_sha256": sha256(Path(__file__)),
@@ -64,47 +99,68 @@ def run_trial(*, name: str, profile: Path, fleet_size: int, model: Path) -> dict
         "errors": [],
     }
     output.mkdir(parents=True)
+    profile_copy = output / "fault-profile.json"
+    model_copy = output / "policy-checkpoint.npz"
+    shutil.copy2(profile, profile_copy)
+    shutil.copy2(model, model_copy)
     environment = os.environ.copy()
     environment.update({
         "FLYDRONES_PX4_RUN_DIR": str(run_dir),
-        "FLYDRONES_VIO_FAULT_PROFILE": str(profile.resolve()),
+        "FLYDRONES_VIO_FAULT_PROFILE": str(profile_copy.resolve()),
         "FLYDRONES_VEHICLE_COUNT": str(fleet_size),
         "PYTHONPATH": str(ROOT / "src"),
     })
     try:
         with (output / "launch.log").open("w", encoding="utf-8") as log:
             launch = subprocess.run(["bash", str(ROOT / "tools/launch_px4_depth_swarm_wsl.sh")],
-                                    env=environment, stdout=log, stderr=subprocess.STDOUT, check=False)
+                                    env=environment, stdout=log, stderr=subprocess.STDOUT, check=False,
+                                    timeout=120)
         manifest["launch_exit_code"] = launch.returncode
         if launch.returncode == 0:
             marker = run_dir / "fault-start.json"
             if fleet_size == 1:
                 worker = [sys.executable, str(ROOT / "tools/px4_distributed_agent.py"),
-                          "--vehicle-id", "0", "--output", str(output), "--model", str(model),
+                          "--vehicle-id", "0", "--output", str(output), "--model", str(model_copy),
                           "--mission-timeout", "70", "--gps-failure-at", "5",
                           "--gps-failure-mode", "fusion-off", "--external-vision-fusion",
                           "--fault-marker", str(marker)]
             else:
                 worker = [sys.executable, str(ROOT / "tools/run_distributed_px4_swarm.py"),
-                          "--output", str(output), "--model", str(model),
+                          "--output", str(output), "--model", str(model_copy),
                           "--mission-timeout", "70", "--process-timeout", "180",
                           "--gps-failure-vehicle", "0", "--gps-failure-at", "5",
                           "--gps-failure-mode", "fusion-off", "--external-vision-fusion",
                           "--fault-marker", str(marker)]
             with (output / "worker.log").open("w", encoding="utf-8") as log:
                 result = subprocess.run(worker, env=environment, stdout=log, stderr=subprocess.STDOUT,
-                                        check=False)
+                                        check=False, timeout=240)
             manifest["worker_exit_code"] = result.returncode
     except Exception as exc:
         manifest["errors"].append(f"execution: {exc}\n{traceback.format_exc()}")
     finally:
-        with (output / "stop.log").open("w", encoding="utf-8") as log:
-            subprocess.run(["bash", str(ROOT / "tools/stop_px4_swarm_wsl.sh")],
-                           env=environment, stdout=log, stderr=subprocess.STDOUT, check=False)
+        try:
+            with (output / "stop.log").open("w", encoding="utf-8") as log:
+                stopped = subprocess.run(["bash", str(ROOT / "tools/stop_px4_swarm_wsl.sh")],
+                                         env=environment, stdout=log, stderr=subprocess.STDOUT,
+                                         check=False, timeout=30)
+            manifest["stop_exit_code"] = stopped.returncode
+        except Exception as exc:
+            manifest["errors"].append(f"stop: {exc}")
+        manifest["shared_px4_files_restored"] = shared_px4_files_restored(
+            run_dir, Path(os.environ.get("PX4_ROOT", Path.home() / "PX4-Autopilot"))
+        )
+        world_source = run_dir / "flydrones_forest.sdf"
+        if world_source.exists():
+            shutil.copy2(world_source, output / "flydrones_forest.sdf")
+            manifest["world_sha256"] = sha256(output / "flydrones_forest.sdf")
         for source_name in ("vio-relay.jsonl", "vio-relay.stdout.log", "vio-relay.stderr.log"):
             source = run_dir / source_name
             if source.exists():
                 shutil.copy2(source, output / source_name)
+        relay_log = output / "vio-relay.jsonl"
+        manifest["relay_closed_cleanly"] = relay_closed_cleanly(relay_log)
+        if not manifest["relay_closed_cleanly"]:
+            manifest["errors"].append("relay log is missing or lacks a complete stop record")
         if run_dir.exists():
             for vehicle_id in range(fleet_size):
                 try:
@@ -131,12 +187,19 @@ def main() -> int:
     parser.add_argument("--name", required=True)
     parser.add_argument("--profile", type=Path, required=True)
     parser.add_argument("--fleet-size", type=int, choices=(1, 5), required=True)
-    parser.add_argument("--model", type=Path, default=ROOT / "results/autonomous-forest-ppo-v1/autonomous-policy-numpy.npz")
+    parser.add_argument("--model", type=Path, default=ROOT / "docs/results/vio-stress/policy-checkpoint.npz")
     args = parser.parse_args()
     manifest = run_trial(name=args.name, profile=args.profile, fleet_size=args.fleet_size, model=args.model)
     print(json.dumps(manifest, ensure_ascii=False, indent=2))
-    return 0 if (manifest["launch_exit_code"] == 0 and manifest["worker_exit_code"] == 0
-                 and manifest["evidence_accepted"]) else 2
+    try:
+        from summarize_vio_stress_wsl import summarize_trial
+
+        summary = summarize_trial(ROOT / "results" / "vio-stress" / args.name)
+        return 0 if (summary["operational_continuity_pass"]
+                     or summary["fault_vehicle_verified_fail_closed_response"] and summary["all_landed"]) else 2
+    except Exception as exc:
+        print(f"trial scoring failed: {exc}", file=sys.stderr)
+        return 2
 
 
 if __name__ == "__main__":

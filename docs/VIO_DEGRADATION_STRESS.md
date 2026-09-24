@@ -4,6 +4,8 @@
 
 固定策略权重的单机在修正坐标原点处理后，基线、120 ms 延迟、400 ms 断流、0.05 m/s 漂移和短时 1 m 错误位姿五组均完成任务并降落。**这不等于五组都安全通过**：400 ms 断流使 EKF 短暂退出视觉位置/速度控制并进入惯性推算，单机 ULog 记录到约 0.04 s，五机故障机 ULog 记录到约 0.03 s。控制器的 MAVLink 健康检查没有报告这两次瞬态。
 
+复核后，功能与几何条件现在还要求启动和控制进程正常结束、GNSS 关闭标记出现、故障在转发端实际发生、改动后的位姿在 PX4 的 `vehicle_visual_odometry` 中可对应、转发日志完整收尾、五机真值中心距离不小于 0.72 m，以及所有机体中心到树干表面至少 0.35 m。按这个**有限的功能/几何代理判定**，修正版单机除断流外为 4/5 组通过；五机仅基线复测和漂移组全队通过。旧轮次没有自动记录 PX4 共享文件恢复状态，因此严格的整轮 `operational_continuity_pass` 标为未验证；新入口的最终单机基线轮次通过了包含清理验证的严格条件。故障机降落与全队完成任务分开记录，尚未证明估计器无效时控制命令及时停止。本判定不是物理安全认证。
+
 五机无扰动基线两次分别完成 3/5、5/5；相同配置的结果波动已经存在。修正后四种五机故障的有效轮次分别完成 4/5、3/5、5/5、4/5。故障机 0 号在这些有效轮次都完成任务；部分未受故障的队友超时，不能凭单次试验归因于 0 号视觉故障。短时错误位姿的首轮在故障注入前已有四机安全降落，列为无效故障轮次并完整保留；重复轮次实际注入了 1 m 错位。
 
 **当前证据支持有限强度的 PX4 SITL 功能验证，不支持真实演出可用或真实相机 VIO 鲁棒性的结论。**
@@ -14,6 +16,7 @@
 - 策略检查点 SHA-256 `3c723587bfdbd15a8dc5976edc13d284b713dc081005b2dac04692c7d1b4accb`，所有轮次不训练、不改权重。控制器 20 Hz、水平速度上限 0.8 m/s、目标高度 1.8 m、任务限时 70 s；五机沿相距 2 m 的通道起飞，共用同一五树世界（SHA-256 `da3e81c10a7d848671c1045f9da267eca65fd312793231dd99a038f55824e8ad`）。
 - 0 号机任务开始后约 5 s 禁用 EKF2 GNSS 融合；其余机不断开 GNSS。故障从禁用确认标记开始计时，仅作用于 0 号机。五机共享相同的视觉转发实现，其余四机直通。各轮次配置和种子保存在 `configs/vio_fault_profiles/`，每个结果目录另存 `fault-profile.json`、世界 SDF、配置/策略 SHA、控制器源码 SHA、原始 PX4 ULog、控制轨迹 CSV 和逐条转发 JSONL。
 - 视觉输入来自 **Gazebo 真值里程计** 经传输层扰动，不是由相机图像与 IMU 求出的 VIO。延迟样本保留原 Gazebo 时间戳，但当前 PX4 Gazebo 桥接器在收到消息时重写 uORB 采样时间；因此 PX4 得到的是旧位姿，却不一定看到正确的样本年龄。测试没有模拟图像模糊、光照、标定、真实 VIO 跟踪失败或机载计算延迟。
+- 逐样本证据把转发端 Gazebo ENU 坐标转换为 PX4 NED，限定源时间附近的接收窗口，再与 PX4 ULog 视觉里程计坐标匹配。修正版五机有效故障轮次中，延迟、断流、漂移、错误位姿分别匹配 616、578、588、576 个活跃样本；漂移轮次 588 个匹配样本含非零错位，错误位姿重复轮次 17 个匹配样本含 1 m 错位。120 ms 延迟轮次的 ULog 接收时间相对源时间中位差为 120 ms。这证明消息跨过 Gazebo→PX4 接口，不证明 PX4 在内部正确使用了原始采样年龄。
 
 ### 修正版结果
 
@@ -36,9 +39,12 @@
 3. 400 ms 断流下，虽然 0 号机最终到达并降落，ULog 仍显示短暂的视觉控制退出和惯性推算。当前 MAVLink 级健康监控没有拦截；实飞前应把 EKF 控制/失效状态明确传给自主安全层，并验证悬停/降落动作。
 4. 五机在无扰动情况下已有 3/5 与 5/5 的结果差异。当前每配置仅一轮或一次复测，不足以估计故障对任务成功率的因果影响；应先稳定多机初始化和避障，再做多随机种子的成组比较。
 5. 真值距离没有证明无碰撞，且没有接触日志、真实 VIO、风/传感器组合故障、机载实时算力、硬件在环或实飞证据。
+6. 初版五机断流轮次虽有 5/5 完成任务和视觉接管记录，但真值最小机体中心距离仅 0.4282 m，低于这里使用的 0.72 m 几何阈值，且控制进程以非零码退出。它不能算通过。所有初版轮次仍完整保留。
+7. 修复试验入口后另做单机基线回归：`single-v3-runner-smoke` 完成任务，519 个视觉位姿样本跨过转发与 PX4 接口，人工比对确认临时文件恢复；随后 `single-v4-runner-cleanup-smoke` 暴露汇总字段漏传，命令非零退出，原始飞行结果和失败均保留，修复后原始数据重算满足条件；最终 `single-v5-runner-final-smoke` 命令以 0 退出，启动、工作、停止与文件恢复均有自动记录，任务完成并降落。这些是入口回归验证，不增加上述故障配置的独立重复次数。最终轮次在 GNSS 禁用前没有观察到位置融合重叠，不能将其称为已证明的 GNSS→视觉接管；旧版更严格的接管证据文件因此给出 `accepted=false`，与禁用后的视觉连续证据并不矛盾。
 
 ## 可复核文件
 
-- 汇总及全部失败：`results/vio-stress/all-trials.json`；各目录的 `trial-manifest.json`、`stress-summary.json`、`vio-relay.jsonl`、`px4-ulogs/agent-0.ulg` 和 `agent-*.csv/json`。
+- 版本化汇总：`docs/results/vio-stress/all-trials.json`，原始文件 SHA-256 索引：`docs/results/vio-stress/raw-artifact-index.json`；小型策略权重副本：`docs/results/vio-stress/policy-checkpoint.npz`。大型原始 ULog、转发日志和轨迹仍在**本机** `results/vio-stress/`，未纳入 Git；只有汇总和哈希的代码分支不能单独重算全部结论。
+- 本机原始汇总及全部失败：`results/vio-stress/all-trials.json`；各目录的 `trial-manifest.json`、`stress-summary.json`、`vio-relay.jsonl`、`px4-ulogs/agent-0.ulg` 和 `agent-*.csv/json`。
 - 交互轨迹回放：`results/vio-stress/fleet-v2-baseline-repeat/trajectory-replay.html`、`fleet-v2-dropout-400ms/trajectory-replay.html`、`fleet-v2-drift-005mps/trajectory-replay.html`、`fleet-v2-false-pose-1m-repeat/trajectory-replay.html`。
 - 运行和分析代码：`tools/run_vio_stress_trial_wsl.py`、`tools/summarize_vio_stress_wsl.py`、`tools/generate_vio_replay.py`。失败轮次的退出码和 ULog 原始字节均保留；`mission_accepted` 仅表示任务完成，不能当作安全认证。

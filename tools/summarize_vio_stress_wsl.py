@@ -10,7 +10,7 @@ import json
 import math
 from pathlib import Path
 
-from flydrones.vio_stress_evidence import summarize_post_gnss_evidence
+from flydrones.vio_stress_evidence import match_relay_to_visual_odometry, summarize_post_gnss_evidence
 
 ROOT = Path(__file__).resolve().parents[1]
 TRIALS = ROOT / "results/vio-stress"
@@ -30,16 +30,24 @@ def _nearest(samples: list[tuple[float, list[float]]], when: float) -> tuple[flo
                key=lambda item: abs(item[0] - when))
 
 
-def _relay_metrics(path: Path, fleet_size: int) -> tuple[dict, dict[str, list[tuple[float, list[float]]]]]:
+def _relay_metrics(path: Path, fleet_size: int) -> tuple[dict, dict[str, list[tuple[float, list[float]]]], list[dict]]:
     ingress = {}
     raw: dict[str, list[tuple[float, list[float]]]] = {}
     publishes = []
     drop_reasons: dict[str, int] = {}
     simulation_clock: list[tuple[float, int]] = []
+    last_event = None
+    malformed_lines = 0
     if not path.exists():
-        return {"error": "relay log missing"}, raw
+        return {"error": "relay log missing"}, raw, publishes
     for line in path.open(encoding="utf-8"):
-        event = json.loads(line)
+        try:
+            event = json.loads(line)
+        except json.JSONDecodeError:
+            malformed_lines += 1
+            last_event = None
+            continue
+        last_event = event.get("event")
         if event["event"] == "ingress":
             if event["reason"] != "queued":
                 drop_reasons[event["reason"]] = drop_reasons.get(event["reason"], 0) + 1
@@ -85,6 +93,8 @@ def _relay_metrics(path: Path, fleet_size: int) -> tuple[dict, dict[str, list[tu
             min_peer = current if min_peer is None else min(min_peer, current)
     return {
         "published_total": len(publishes),
+        "closed_cleanly": last_event == "stop",
+        "malformed_log_lines": malformed_lines,
         "fault_vehicle_active_published": len(active),
         "drop_reasons": drop_reasons,
         "actual_delay_median_ms": delays[len(delays) // 2] if delays else None,
@@ -101,27 +111,89 @@ def _relay_metrics(path: Path, fleet_size: int) -> tuple[dict, dict[str, list[tu
             (simulation_clock[-1][1] - simulation_clock[0][1]) / 1_000_000_000
             / (simulation_clock[-1][0] - simulation_clock[0][0]), 4
         ) if len(simulation_clock) >= 2 and simulation_clock[-1][0] > simulation_clock[0][0] else None,
-    }, raw
+    }, raw, publishes
 
 
-def _ulog_metrics(path: Path) -> dict:
+def _ulog_metrics(path: Path, publishes: list[dict]) -> tuple[dict, dict]:
     from pyulog import ULog
 
     if not path.exists():
-        return {"accepted": False, "error": "ULog missing"}
+        return {"accepted": False, "error": "ULog missing"}, {"matched_active_samples": 0}
     ulog = ULog(str(path))
     datasets = {dataset.name: dataset.data for dataset in ulog.data_list if dataset.multi_id == 0}
     disable = next((float(timestamp) / 1_000_000 for timestamp, name, value in ulog.changed_parameters
                     if name == "EKF2_GPS_CTRL" and int(value) == 0), None)
     result = summarize_post_gnss_evidence(datasets, gps_disable_s=disable)
     result["source"] = {"ulog_sha256": _sha256(path), "ulog_bytes": path.stat().st_size}
-    return result
+    return result, match_relay_to_visual_odometry(publishes, datasets.get("vehicle_visual_odometry", {}))
+
+
+def classify_trial(trial: dict, profile: dict) -> dict:
+    """Keep mission, fail-closed response and limited geometry checks distinct."""
+    workers = trial["workers"]
+    relay = trial["relay"]
+    correspondence = trial["relay_to_px4"]
+    active = relay.get("fault_vehicle_active_published", 0) > 0
+    fault_effect = active
+    if profile.get("delay_ms", 0):
+        fault_effect = fault_effect and (relay.get("actual_delay_median_ms") or 0) >= 0.8 * profile["delay_ms"]
+    if profile.get("dropout_duration_s", 0) or profile.get("drop_probability", 0):
+        fault_effect = fault_effect and sum(relay.get("drop_reasons", {}).get(key, 0)
+                                              for key in ("scheduled-dropout", "random-dropout")) > 0
+    has_offset = any(abs(value) > 0 for field in ("drift_mps", "false_pose_offset_m")
+                     for value in profile.get(field, (0, 0, 0)))
+    if has_offset:
+        fault_effect = fault_effect and relay.get("nonzero_offset_published_samples", 0) > 0
+    px4_effect = fault_effect and correspondence.get("matched_active_samples", 0) >= 10
+    if profile.get("delay_ms", 0):
+        px4_effect = px4_effect and (
+            correspondence.get("median_ulog_minus_source_stamp_ms") or 0
+        ) >= 0.75 * profile["delay_ms"]
+    if has_offset:
+        px4_effect = px4_effect and correspondence.get("matched_offset_samples", 0) >= 3
+    if profile.get("dropout_duration_s", 0):
+        px4_effect = px4_effect and (
+            trial["visual_after_gnss_disable"].get("metrics", {}).get("visual_stream_max_gap_ms") or 0
+        ) >= 0.75 * profile["dropout_duration_s"] * 1000
+    peer = relay.get("minimum_intervehicle_center_distance_m")
+    forest = relay.get("minimum_center_to_trunk_surface_m")
+    peer_geometry = trial["fleet_size"] == 1 or peer is not None and peer >= 0.72
+    # Existing simulated envelope: 0.25 m vehicle radius plus 0.10 m margin.
+    forest_geometry = forest is not None and forest >= 0.35
+    geometry = peer_geometry and forest_geometry
+    all_landed = len(workers) == trial["fleet_size"] and all(worker.get("landed") for worker in workers)
+    all_mission = len(workers) == trial["fleet_size"] and all(worker.get("mission_accepted") for worker in workers)
+    fault_worker = workers[0] if workers else {}
+    ready = (trial["launch_exit_code"] == 0 and relay.get("closed_cleanly", False)
+             and fault_worker.get("gnss_disable_injected") and px4_effect)
+    continuity = (ready and trial["worker_exit_code"] == 0 and all_mission and all_landed
+                  and trial["visual_after_gnss_disable"].get("accepted", False) and geometry)
+    cleanup = trial.get("stop_exit_code") == 0 and trial.get("shared_px4_files_restored") is True
+    return {
+        "fault_effect_observed_at_relay": bool(fault_effect),
+        "fault_effect_proven_at_px4": bool(px4_effect),
+        "geometry_separation_check_pass": bool(peer_geometry),
+        "geometry_forest_clearance_check_pass": bool(forest_geometry),
+        "all_landed": bool(all_landed),
+        "mission_visual_geometry_pass": bool(continuity),
+        "trial_cleanup_verified": bool(cleanup),
+        "fault_vehicle_fail_closed_landing_observed": bool(
+            fault_worker.get("fail_closed_land") and fault_worker.get("landed") and geometry
+        ),
+        "fault_vehicle_verified_fail_closed_response": False,
+        "fail_closed_verification_limit": (
+            "Worker landing alone does not prove command silence during invalid EKF state; "
+            "ULog-to-command timeline correlation is required."
+        ),
+        "operational_continuity_pass": bool(continuity and cleanup),
+        "safety_limit": "Geometry is a center-distance proxy; physical contact is not proven absent.",
+    }
 
 
 def summarize_trial(directory: Path) -> dict:
     manifest = json.loads((directory / "trial-manifest.json").read_text(encoding="utf-8"))
     count = manifest["fleet_size"]
-    relay, raw = _relay_metrics(directory / "vio-relay.jsonl", count)
+    relay, raw, publishes = _relay_metrics(directory / "vio-relay.jsonl", count)
     workers = []
     for vehicle_id in range(count):
         result_path = directory / f"agent-{vehicle_id}.json"
@@ -146,6 +218,7 @@ def summarize_trial(directory: Path) -> dict:
             "fail_closed_land": bool(result["metrics"]["fail_closed_land"]),
             "gnss_disable_injected": bool(result["metrics"]["gps_failure_injected"]),
             "state_health_failures": result["metrics"]["state_health_failures"],
+            "last_state_health_reason": result["metrics"].get("last_state_health_reason"),
             "planner_p95_ms": result["metrics"]["planner_p95_ms"],
             "initial_estimated_vs_truth_horizontal_error_m": round(initial_error, 4)
             if initial_error is not None else None,
@@ -155,22 +228,24 @@ def summarize_trial(directory: Path) -> dict:
             "minimum_depth_range_m": round(min(float(row["depth_nearest_m"]) for row in rows
                                                if row["depth_nearest_m"]), 4) if rows else None,
         })
-    visual = _ulog_metrics(directory / "px4-ulogs/agent-0.ulg")
+    visual, correspondence = _ulog_metrics(directory / "px4-ulogs/agent-0.ulg", publishes)
+    profile = json.loads((directory / "fault-profile.json").read_text(encoding="utf-8"))
     combined = {
-        "schema": "flydrones-vio-stress-summary-v1",
+        "schema": "flydrones-vio-stress-summary-v3",
         "name": manifest["name"],
         "fleet_size": count,
         "profile_sha256": manifest["profile_sha256"],
         "policy_sha256": manifest["policy_sha256"],
         "launch_exit_code": manifest["launch_exit_code"],
         "worker_exit_code": manifest["worker_exit_code"],
+        "stop_exit_code": manifest.get("stop_exit_code"),
+        "shared_px4_files_restored": manifest.get("shared_px4_files_restored"),
         "relay": relay,
+        "relay_to_px4": correspondence,
         "visual_after_gnss_disable": visual,
         "workers": workers,
-        "mission_and_visual_continuity_pass": (
-            all(worker.get("mission_accepted", False) for worker in workers) and visual["accepted"]
-        ),
     }
+    combined.update(classify_trial(combined, profile))
     (directory / "stress-summary.json").write_text(json.dumps(combined, ensure_ascii=False, indent=2) + "\n",
                                                     encoding="utf-8")
     return combined
@@ -184,7 +259,7 @@ def main() -> int:
     (TRIALS / "all-trials.json").write_text(json.dumps(results, ensure_ascii=False, indent=2) + "\n",
                                            encoding="utf-8")
     for item in results:
-        print(item["name"], "mission+EV", item["mission_and_visual_continuity_pass"],
+        print(item["name"], "operational", item["operational_continuity_pass"],
               "handoff", item["visual_after_gnss_disable"]["checks"].get("gnss_to_visual_handoff_proven"),
               "worker", [worker.get("mission_accepted") for worker in item["workers"]])
     return 0
