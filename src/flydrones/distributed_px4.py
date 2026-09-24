@@ -38,6 +38,8 @@ class DistributedAgentConfig:
     depth_timeout_s: float = 25.0
     state_ready_timeout_s: float = 15.0
     state_max_age_s: float = 0.35
+    gps_failure_at_s: float | None = None
+    gps_failure_mode: str = "off"
     peer_base_port: int = 16770
     peer_config: PeerUdpConfig = field(default_factory=lambda: PeerUdpConfig(
         range_m=8.0,
@@ -57,6 +59,10 @@ class DistributedAgentConfig:
             raise ValueError("state_max_age_s must be positive")
         if self.state_ready_timeout_s <= 0.0:
             raise ValueError("state_ready_timeout_s must be positive")
+        if self.gps_failure_at_s is not None and self.gps_failure_at_s < 0.0:
+            raise ValueError("gps_failure_at_s must be non-negative")
+        if self.gps_failure_mode not in {"off", "stuck", "wrong", "fusion-off"}:
+            raise ValueError("unsupported GPS failure mode")
 
 
 @dataclass(frozen=True)
@@ -147,11 +153,19 @@ def build_distributed_agent_commands(
     vehicle_count: int = 5,
     peer_base_port: int = 16770,
     mission_timeout_s: float = 70.0,
+    gps_failure_vehicle_id: int | None = None,
+    gps_failure_at_s: float = 12.0,
+    gps_failure_mode: str = "off",
 ) -> list[list[str]]:
     if vehicle_count != 5:
         raise ValueError("the distributed PX4 trial currently requires five workers")
-    return [
-        [
+    if gps_failure_vehicle_id is not None and not 0 <= gps_failure_vehicle_id < vehicle_count:
+        raise ValueError("GPS failure vehicle id is outside the fleet")
+    if gps_failure_mode not in {"off", "stuck", "wrong", "fusion-off"}:
+        raise ValueError("unsupported GPS failure mode")
+    commands = []
+    for vehicle_id in range(vehicle_count):
+        command = [
             str(python_executable),
             str(agent_script),
             "--vehicle-id", str(vehicle_id),
@@ -160,8 +174,13 @@ def build_distributed_agent_commands(
             "--mission-timeout", str(mission_timeout_s),
             "--peer-base-port", str(peer_base_port),
         ]
-        for vehicle_id in range(vehicle_count)
-    ]
+        if vehicle_id == gps_failure_vehicle_id:
+            command.extend([
+                "--gps-failure-at", str(gps_failure_at_s),
+                "--gps-failure-mode", gps_failure_mode,
+            ])
+        commands.append(command)
+    return commands
 
 
 def align_distributed_traces(
@@ -331,6 +350,86 @@ def aggregate_distributed_artifacts(
     return aligned, summary
 
 
+def evaluate_gps_fault_artifacts(
+    output_dir: str | Path,
+    *,
+    fault_vehicle_id: int,
+    vehicle_count: int = 5,
+) -> tuple[list[dict], dict]:
+    """Score a trial where one vehicle is expected to land after estimator loss."""
+    if not 0 <= fault_vehicle_id < vehicle_count:
+        raise ValueError("GPS fault vehicle id is outside the fleet")
+    output = Path(output_dir)
+    aligned, baseline = aggregate_distributed_artifacts(output, vehicle_count=vehicle_count)
+    results = [
+        json.loads((output / f"agent-{vehicle_id}.json").read_text(encoding="utf-8"))
+        for vehicle_id in range(vehicle_count)
+    ]
+    fault_result = results[fault_vehicle_id]
+    survivors = [result for index, result in enumerate(results) if index != fault_vehicle_id]
+    fault_metrics = fault_result.get("metrics", {})
+    common_checks = baseline["checks"]
+    checks = {
+        "all_reached_altitude": bool(common_checks.get("all_reached_altitude")),
+        "all_escaped": bool(common_checks.get("all_escaped")),
+        "zero_forest_contacts": bool(common_checks.get("zero_forest_contacts")),
+        "safe_forest_clearance": bool(common_checks.get("safe_forest_clearance")),
+        "safe_intervehicle_separation": bool(common_checks.get("safe_intervehicle_separation")),
+        "all_landed": bool(common_checks.get("all_landed")),
+        "five_distinct_controller_processes": bool(common_checks.get("five_distinct_controller_processes")),
+        "one_process_owned_each_vehicle": bool(common_checks.get("one_process_owned_each_vehicle")),
+        "neighbor_data_came_only_from_udp_cache": bool(common_checks.get("neighbor_data_came_only_from_udp_cache")),
+        "zero_direct_global_neighbor_reads": bool(common_checks.get("zero_direct_global_neighbor_reads")),
+        "zero_central_control_commands": bool(common_checks.get("zero_central_control_commands")),
+        "fault_was_injected": bool(fault_metrics.get("gps_failure_injected")),
+        "fault_vehicle_detected_estimator_loss": (
+            int(fault_metrics.get("state_health_failures", 0)) >= 1
+            and fault_metrics.get("last_state_health_reason") == "unhealthy-estimator"
+        ),
+        "fault_vehicle_landed_fail_closed": (
+            bool(fault_metrics.get("fail_closed_land"))
+            and bool(fault_result.get("checks", {}).get("landed"))
+        ),
+        "all_survivors_completed": all(result.get("accepted") for result in survivors),
+    }
+    metrics = dict(baseline["metrics"])
+    metrics.update({
+        "fault_vehicle_id": fault_vehicle_id,
+        "fault_mode": fault_metrics.get("gps_failure_mode"),
+        "fault_mechanism": fault_metrics.get("gps_failure_mechanism"),
+        "fault_injected_at_s": fault_metrics.get("gps_failure_injected_at_s"),
+        "fault_health_reason": fault_metrics.get("last_state_health_reason"),
+        "survivors": vehicle_count - 1,
+        "survivors_rallied": sum(
+            bool(result.get("checks", {}).get("rallied")) for result in survivors
+        ),
+    })
+    summary = {
+        "scenario": "gps-denied-local-state-fail-closed",
+        "accepted": all(checks.values()),
+        "checks": checks,
+        "metrics": metrics,
+    }
+    (output / "gps-fault-summary.json").write_text(
+        json.dumps(summary, ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8",
+    )
+    report = f"""# PX4 GNSS 拒止试验
+
+{'**通过。**' if summary['accepted'] else '**未通过。**'} {fault_vehicle_id} 号机在任务中触发 GNSS 故障计划。
+
+- 故障机制：{metrics['fault_mechanism']}
+- 注入时间：{metrics['fault_injected_at_s']} s
+- 故障机状态响应：{metrics['fault_health_reason']}
+- 其余无人机完成集合：{metrics['survivors_rallied']}/{metrics['survivors']}
+- 树干接触：{metrics.get('forest_contacts')}
+- 最小机间距：{metrics.get('minimum_intervehicle_distance_m')} m
+- 中央控制指令：{metrics.get('central_control_commands')}
+"""
+    (output / "GNSS拒止试验报告.md").write_text(report, encoding="utf-8")
+    return aligned, summary
+
+
 def _write_agent_artifacts(output_dir: Path, vehicle_id: int, trace: list[dict], result: dict) -> None:
     output_dir.mkdir(parents=True, exist_ok=True)
     csv_path = output_dir / f"agent-{vehicle_id}.csv"
@@ -413,6 +512,9 @@ def run_distributed_px4_agent(
     fail_closed_land = False
     state_health_failures = 0
     last_state_health_reason: str | None = None
+    gps_failure_injected = False
+    gps_failure_injected_at_s: float | None = None
+    gps_failure_mechanism: str | None = None
 
     def sample(
         phase: str,
@@ -456,6 +558,7 @@ def run_distributed_px4_agent(
                 if state_health is not None and state_health.estimator_age_s is not None
                 else None
             ),
+            "gps_failure_injected": gps_failure_injected,
             "depth_nearest_m": round(observation.nearest_distance_m, 4) if observation else None,
             "depth_rays_m": ";".join(f"{value:.3f}" for value in observation.ray_distances_m) if observation else None,
             "policy_action_speed": round(float(previous_action[0]), 5),
@@ -492,6 +595,8 @@ def run_distributed_px4_agent(
             raise TimeoutError("local depth camera did not become ready")
         drone.connect()
         connected = True
+        if config.gps_failure_at_s is not None and config.gps_failure_mode != "fusion-off":
+            drone.enable_failure_injection()
         state_ready_deadline = monotonic() + config.state_ready_timeout_s
         while True:
             preflight_telemetry = drone.telemetry()
@@ -546,6 +651,19 @@ def run_distributed_px4_agent(
                 velocity = tuple((position[index] - previous_position[index]) / dt for index in range(3))
             previous_position, previous_time = position, timestamp
             elapsed = timestamp - mission_start
+            if (
+                config.gps_failure_at_s is not None
+                and not gps_failure_injected
+                and elapsed >= config.gps_failure_at_s
+            ):
+                if config.gps_failure_mode == "fusion-off":
+                    drone.disable_gps_fusion()
+                    gps_failure_mechanism = "ekf2-gps-fusion-disabled"
+                else:
+                    drone.inject_gps_failure(config.gps_failure_mode)
+                    gps_failure_mechanism = "mavlink-failure-injection"
+                gps_failure_injected = True
+                gps_failure_injected_at_s = elapsed
             peer_node.broadcast(position, velocity, mission_elapsed_s=elapsed)
             tracks = peer_node.poll(position, now=timestamp)
             observation = depth_camera.latest(config.vehicle_id, now=timestamp, max_age_s=0.35)
@@ -658,6 +776,14 @@ def run_distributed_px4_agent(
         "fail_closed_land": fail_closed_land,
         "state_health_failures": state_health_failures,
         "last_state_health_reason": last_state_health_reason,
+        "gps_failure_injected": gps_failure_injected,
+        "gps_failure_mode": config.gps_failure_mode if config.gps_failure_at_s is not None else None,
+        "gps_failure_mechanism": gps_failure_mechanism,
+        "gps_failure_injected_at_s": (
+            round(gps_failure_injected_at_s, 5)
+            if gps_failure_injected_at_s is not None
+            else None
+        ),
         "central_control_commands": 0,
         "direct_global_neighbor_reads": 0,
         "depth_frames": int(depth_camera.frame_counts.get(config.vehicle_id, 0)),

@@ -21,6 +21,8 @@ from .base import Drone
 # ignore position (0-2), acceleration (6-8) and yaw angle (10); use velocity + yaw rate
 TYPE_MASK_VEL_YAWRATE = 0b0000_0101_1100_0111
 ESTIMATOR_REQUIRED_FLAGS = 1 | 2 | 4 | 8 | 32
+MAV_CMD_INJECT_FAILURE = 420
+GPS_FAILURE_TYPES = {"ok": 0, "off": 1, "stuck": 2, "wrong": 4}
 
 
 class MavlinkDrone(Drone):
@@ -100,6 +102,71 @@ class MavlinkDrone(Drone):
         self.m.mav.set_position_target_local_ned_send(
             0, self.m.target_system, self.m.target_component, self.mavutil.mavlink.MAV_FRAME_BODY_NED,
             TYPE_MASK_VEL_YAWRATE, 0, 0, 0, vx, vy, vz, 0, 0, 0, 0, yaw_rate)
+
+    def inject_gps_failure(self, mode: str, *, timeout_s: float = 3.0) -> None:
+        try:
+            failure_type = GPS_FAILURE_TYPES[mode]
+        except KeyError as exc:
+            raise ValueError(f"unsupported GPS failure mode: {mode}") from exc
+        self.m.mav.command_long_send(
+            self.m.target_system,
+            self.m.target_component,
+            MAV_CMD_INJECT_FAILURE,
+            0,
+            4,
+            failure_type,
+            0,
+            0,
+            0,
+            0,
+            0,
+        )
+        deadline = time.monotonic() + timeout_s
+        while True:
+            remaining = deadline - time.monotonic()
+            if remaining <= 0.0:
+                raise TimeoutError(f"PX4 did not acknowledge GPS failure mode {mode}")
+            acknowledgement = self.m.recv_match(
+                type="COMMAND_ACK",
+                blocking=True,
+                timeout=min(0.25, remaining),
+            )
+            if acknowledgement is None or int(acknowledgement.command) != MAV_CMD_INJECT_FAILURE:
+                continue
+            if int(acknowledgement.result) != 0:
+                raise RuntimeError(
+                    f"PX4 rejected GPS failure mode {mode} with result {acknowledgement.result}"
+                )
+            return
+
+    def _set_parameter(self, name: str, value: int, *, timeout_s: float) -> None:
+        self.m.param_set_send(name, value, 6)
+        deadline = time.monotonic() + timeout_s
+        while True:
+            remaining = deadline - time.monotonic()
+            if remaining <= 0.0:
+                raise TimeoutError(f"PX4 did not acknowledge parameter {name}")
+            acknowledgement = self.m.recv_match(
+                type="PARAM_VALUE",
+                blocking=True,
+                timeout=min(0.25, remaining),
+            )
+            if acknowledgement is None:
+                continue
+            param_id = acknowledgement.param_id
+            if isinstance(param_id, bytes):
+                param_id = param_id.decode("ascii", errors="ignore")
+            if str(param_id).rstrip("\x00") != name:
+                continue
+            if round(float(acknowledgement.param_value)) != value:
+                raise RuntimeError(f"PX4 returned an unexpected value for {name}")
+            return
+
+    def enable_failure_injection(self, *, timeout_s: float = 3.0) -> None:
+        self._set_parameter("SYS_FAILURE_EN", 1, timeout_s=timeout_s)
+
+    def disable_gps_fusion(self, *, timeout_s: float = 3.0) -> None:
+        self._set_parameter("EKF2_GPS_CTRL", 0, timeout_s=timeout_s)
 
     def takeoff(self) -> None:
         m = self.m

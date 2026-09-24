@@ -14,6 +14,7 @@ from flydrones.distributed_px4 import (
     align_distributed_traces,
     build_distributed_agent_commands,
     evaluate_local_state_health,
+    evaluate_gps_fault_artifacts,
     run_distributed_px4_agent,
 )
 from flydrones.gazebo_depth import DepthObservation
@@ -400,6 +401,81 @@ def test_worker_checks_state_after_mavlink_receipt_timestamp(tmp_path):
     assert drone.takeoff_called
     assert result["error"] is None
     assert result["metrics"]["last_state_health_reason"] is None
+
+
+def test_worker_injects_its_own_scheduled_gps_failure_once(tmp_path):
+    class FaultInjectingDrone(LocalKinematicDrone):
+        def __init__(self, clock):
+            super().__init__(clock)
+            self.failure_injection_enabled = False
+            self.injected_modes = []
+
+        def enable_failure_injection(self):
+            self.failure_injection_enabled = True
+
+        def inject_gps_failure(self, mode):
+            self.injected_modes.append(mode)
+
+    clock = Clock()
+    drone = FaultInjectingDrone(clock)
+    clock.drone = drone
+
+    _trace, result = run_distributed_px4_agent(
+        DistributedAgentConfig(
+            vehicle_id=0,
+            output_dir=tmp_path,
+            gps_failure_at_s=0.0,
+            gps_failure_mode="off",
+        ),
+        drone=drone,
+        depth_camera=LocalDepthCamera(),
+        peer_node=LocalPeerNode(),
+        policy=ForwardPolicy(),
+        agent=FailClosedAgent(),
+        monotonic=clock.time,
+        wall_time=clock.wall_time,
+        sleep=clock.sleep,
+    )
+
+    assert drone.failure_injection_enabled
+    assert drone.injected_modes == ["off"]
+    assert result["metrics"]["gps_failure_injected"]
+    assert result["metrics"]["gps_failure_mode"] == "off"
+
+
+def test_worker_can_disable_gps_fusion_on_older_px4_sitl(tmp_path):
+    class FusionControlDrone(LocalKinematicDrone):
+        def __init__(self, clock):
+            super().__init__(clock)
+            self.gps_fusion_disabled = False
+
+        def disable_gps_fusion(self):
+            self.gps_fusion_disabled = True
+
+    clock = Clock()
+    drone = FusionControlDrone(clock)
+    clock.drone = drone
+
+    _trace, result = run_distributed_px4_agent(
+        DistributedAgentConfig(
+            vehicle_id=0,
+            output_dir=tmp_path,
+            gps_failure_at_s=0.0,
+            gps_failure_mode="fusion-off",
+        ),
+        drone=drone,
+        depth_camera=LocalDepthCamera(),
+        peer_node=LocalPeerNode(),
+        policy=ForwardPolicy(),
+        agent=FailClosedAgent(),
+        monotonic=clock.time,
+        wall_time=clock.wall_time,
+        sleep=clock.sleep,
+    )
+
+    assert drone.gps_fusion_disabled
+    assert result["metrics"]["gps_failure_injected"]
+    assert result["metrics"]["gps_failure_mechanism"] == "ekf2-gps-fusion-disabled"
     assert drone.last_command is None
 
 
@@ -544,6 +620,24 @@ def test_coordinator_commands_contain_only_static_config_and_one_vehicle_id(tmp_
     assert all("--telemetry" not in command for command in commands)
 
 
+def test_coordinator_assigns_a_gps_fault_to_only_the_selected_vehicle(tmp_path):
+    commands = build_distributed_agent_commands(
+        python_executable="python3",
+        agent_script=Path("tools/px4_distributed_agent.py"),
+        output_dir=tmp_path,
+        model_path=Path("actor.npz"),
+        vehicle_count=5,
+        gps_failure_vehicle_id=2,
+        gps_failure_at_s=12.0,
+        gps_failure_mode="off",
+    )
+
+    faulted = [command for command in commands if "--gps-failure-at" in command]
+    assert len(faulted) == 1
+    assert faulted[0][faulted[0].index("--vehicle-id") + 1] == "2"
+    assert faulted[0][faulted[0].index("--gps-failure-mode") + 1] == "off"
+
+
 def test_time_alignment_builds_complete_frames_from_independent_worker_clocks():
     traces = {
         0: [
@@ -605,6 +699,7 @@ def test_aggregate_distributed_artifacts_accepts_five_distinct_controller_proces
             writer.writerows(rows)
         result = {
             "accepted": True,
+            "checks": {"rallied": True, "landed": True},
             "metrics": {
                 "controller_process_id": 5000 + vehicle_id,
                 "direct_global_neighbor_reads": 0,
@@ -622,3 +717,28 @@ def test_aggregate_distributed_artifacts_accepts_five_distinct_controller_proces
     assert summary["checks"]["five_distinct_controller_processes"]
     assert summary["checks"]["zero_direct_global_neighbor_reads"]
     assert summary["metrics"]["controller_process_ids"] == [5000, 5001, 5002, 5003, 5004]
+
+    fault_path = tmp_path / "agent-0.json"
+    fault_result = json.loads(fault_path.read_text(encoding="utf-8"))
+    fault_result.update({
+        "accepted": False,
+        "checks": {"landed": True},
+        "error": "local state unhealthy: unhealthy-estimator",
+    })
+    fault_result["metrics"].update({
+        "gps_failure_injected": True,
+        "gps_failure_mode": "fusion-off",
+        "gps_failure_mechanism": "ekf2-gps-fusion-disabled",
+        "fail_closed_land": True,
+        "state_health_failures": 1,
+        "last_state_health_reason": "unhealthy-estimator",
+        "central_control_commands": 0,
+    })
+    fault_path.write_text(json.dumps(fault_result), encoding="utf-8")
+
+    _trace, fault_summary = evaluate_gps_fault_artifacts(tmp_path, fault_vehicle_id=0)
+
+    assert fault_summary["accepted"], fault_summary
+    assert fault_summary["checks"]["fault_vehicle_landed_fail_closed"]
+    assert fault_summary["checks"]["all_survivors_completed"]
+    assert fault_summary["metrics"]["survivors_rallied"] == 4

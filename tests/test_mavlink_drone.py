@@ -31,12 +31,16 @@ class MavSender:
     def __init__(self):
         self.heartbeats = []
         self.setpoints = []
+        self.commands = []
 
     def heartbeat_send(self, *args):
         self.heartbeats.append(args)
 
     def set_position_target_local_ned_send(self, *args):
         self.setpoints.append(args)
+
+    def command_long_send(self, *args):
+        self.commands.append(args)
 
 
 def bare_drone(messages) -> MavlinkDrone:
@@ -92,6 +96,62 @@ def test_velocity_setpoint_uses_the_px4_supported_body_ned_frame():
     drone._send_velocity(1.0, 2.0, -0.5, 0.1)
 
     assert sender.setpoints[0][3] == 8
+
+
+@pytest.mark.parametrize("mode,failure_type", [("off", 1), ("stuck", 2), ("wrong", 4), ("ok", 0)])
+def test_gps_failure_injection_uses_the_standard_mavlink_command(monkeypatch, mode, failure_type):
+    monkeypatch.setattr(mavlink_module.time, "monotonic", lambda: 1.0)
+    drone = object.__new__(MavlinkDrone)
+    sender = MavSender()
+    acknowledgements = [Message("COMMAND_ACK", command=420, result=0)]
+    drone.m = SimpleNamespace(
+        mav=sender,
+        target_system=3,
+        target_component=1,
+        recv_match=lambda **_kwargs: acknowledgements.pop(0) if acknowledgements else None,
+    )
+
+    drone.inject_gps_failure(mode, timeout_s=1.0)
+
+    command = sender.commands[0]
+    assert command[:4] == (3, 1, 420, 0)
+    assert command[4:7] == (4, failure_type, 0)
+
+
+def test_gps_failure_injection_rejects_unknown_modes():
+    drone = object.__new__(MavlinkDrone)
+    with pytest.raises(ValueError, match="GPS failure mode"):
+        drone.inject_gps_failure("drift")
+
+
+def test_enabling_failure_injection_waits_for_the_px4_parameter_echo(monkeypatch):
+    monkeypatch.setattr(mavlink_module.time, "monotonic", lambda: 1.0)
+    parameter_sets = []
+    acknowledgements = [Message("PARAM_VALUE", param_id=b"SYS_FAILURE_EN", param_value=1.0)]
+    drone = object.__new__(MavlinkDrone)
+    drone.m = SimpleNamespace(
+        param_set_send=lambda *args: parameter_sets.append(args),
+        recv_match=lambda **_kwargs: acknowledgements.pop(0) if acknowledgements else None,
+    )
+
+    drone.enable_failure_injection(timeout_s=1.0)
+
+    assert parameter_sets == [("SYS_FAILURE_EN", 1, 6)]
+
+
+def test_disabling_gps_fusion_waits_for_the_px4_parameter_echo(monkeypatch):
+    monkeypatch.setattr(mavlink_module.time, "monotonic", lambda: 1.0)
+    parameter_sets = []
+    acknowledgements = [Message("PARAM_VALUE", param_id="EKF2_GPS_CTRL", param_value=0.0)]
+    drone = object.__new__(MavlinkDrone)
+    drone.m = SimpleNamespace(
+        param_set_send=lambda *args: parameter_sets.append(args),
+        recv_match=lambda **_kwargs: acknowledgements.pop(0) if acknowledgements else None,
+    )
+
+    drone.disable_gps_fusion(timeout_s=1.0)
+
+    assert parameter_sets == [("EKF2_GPS_CTRL", 0, 6)]
 
 
 def test_mavlink_telemetry_records_sensor_receipt_times_and_validity(monkeypatch):

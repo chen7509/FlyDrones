@@ -29,6 +29,30 @@ peer broadcast and motor-command generation, then commands that vehicle to land.
 `state_health_failures`, `last_state_health_reason`, and the position, attitude and estimator ages. This validates the
 software response to a bad estimate; it does not establish that a particular physical sensor installation is accurate.
 
+### Run the GNSS-denied response trial
+
+Current PX4 main supports Gazebo GPS `off`, `stuck` and `wrong` failure injection. The installed PX4 v1.17 Gazebo bridge
+predates that sensor consumer, so its repeatable compatibility trial disables GNSS fusion in EKF2 at runtime instead:
+
+```powershell
+wsl -d Ubuntu -- env `
+  PYTHONPATH='/path/to/FlyDrones/src' `
+  python3 '/path/to/FlyDrones/tools/run_distributed_px4_swarm.py' `
+  --model '/path/to/autonomous-policy-numpy.npz' `
+  --gps-failure-vehicle 0 `
+  --gps-failure-at 12 `
+  --gps-failure-mode fusion-off `
+  --expect-fault-landing `
+  --output '/path/to/results/px4-fusion-off'
+```
+
+The selected worker owns the static fault schedule and sends the parameter or failure command directly to its own PX4;
+the parent does not monitor telemetry or trigger the event. The fault trial passes only if the affected vehicle detects
+estimator loss and lands fail closed, every survivor completes, all vehicles land, separation and forest-clearance checks
+pass, and the recorded central-command count remains zero. `gps-fault-summary.json` and `GNSS拒止试验报告.md` contain
+the offline result. Use `off`, `stuck` or `wrong` with a newer PX4/Gazebo build that implements the corresponding standard
+MAVLink failure consumer.
+
 ## Run the process and UDP scale trial
 
 ```powershell

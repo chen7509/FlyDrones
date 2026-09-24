@@ -12,6 +12,7 @@ from pathlib import Path
 from flydrones.distributed_px4 import (
     aggregate_distributed_artifacts,
     build_distributed_agent_commands,
+    evaluate_gps_fault_artifacts,
 )
 
 
@@ -38,7 +39,13 @@ def main() -> int:
     parser.add_argument("--mission-timeout", type=float, default=70.0)
     parser.add_argument("--process-timeout", type=float, default=150.0)
     parser.add_argument("--peer-base-port", type=int, default=16770)
+    parser.add_argument("--gps-failure-vehicle", type=int)
+    parser.add_argument("--gps-failure-at", type=float, default=12.0)
+    parser.add_argument("--gps-failure-mode", choices=("off", "stuck", "wrong", "fusion-off"), default="off")
+    parser.add_argument("--expect-fault-landing", action="store_true")
     args = parser.parse_args()
+    if args.expect_fault_landing and args.gps_failure_vehicle is None:
+        parser.error("--expect-fault-landing requires --gps-failure-vehicle")
 
     vehicle_count = 5
     output_dir = Path(args.output).resolve()
@@ -52,6 +59,9 @@ def main() -> int:
         vehicle_count=vehicle_count,
         peer_base_port=args.peer_base_port,
         mission_timeout_s=args.mission_timeout,
+        gps_failure_vehicle_id=args.gps_failure_vehicle,
+        gps_failure_at_s=args.gps_failure_at,
+        gps_failure_mode=args.gps_failure_mode,
     )
 
     processes: list[subprocess.Popen] = []
@@ -83,11 +93,18 @@ def main() -> int:
             handle.close()
 
     exit_codes = [process.returncode for process in processes]
-    if any(code != 0 for code in exit_codes):
+    if any(code != 0 for code in exit_codes) and not args.expect_fault_landing:
         print(json.dumps({"worker_exit_codes": exit_codes}, indent=2))
         return 2
 
-    _trace, summary = aggregate_distributed_artifacts(output_dir, vehicle_count=vehicle_count)
+    if args.expect_fault_landing:
+        _trace, summary = evaluate_gps_fault_artifacts(
+            output_dir,
+            fault_vehicle_id=args.gps_failure_vehicle,
+            vehicle_count=vehicle_count,
+        )
+    else:
+        _trace, summary = aggregate_distributed_artifacts(output_dir, vehicle_count=vehicle_count)
     summary["metrics"]["worker_exit_codes"] = exit_codes
     (output_dir / "summary.json").write_text(
         json.dumps(summary, ensure_ascii=False, indent=2) + "\n",
