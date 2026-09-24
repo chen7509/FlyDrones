@@ -12,6 +12,7 @@ mode switch, as PX4 requires).
 from __future__ import annotations
 
 import math
+import struct
 import time
 
 from ..motor.command import FlightCommand
@@ -23,6 +24,16 @@ TYPE_MASK_VEL_YAWRATE = 0b0000_0101_1100_0111
 ESTIMATOR_REQUIRED_FLAGS = 1 | 2 | 4 | 8 | 32
 MAV_CMD_INJECT_FAILURE = 420
 GPS_FAILURE_TYPES = {"ok": 0, "off": 1, "stuck": 2, "wrong": 4}
+
+
+def _encode_int32_parameter(value: int) -> float:
+    """Encode an INT32 parameter in MAVLink's bytewise float field."""
+    return struct.unpack(">f", struct.pack(">i", int(value)))[0]
+
+
+def _decode_int32_parameter(value: float) -> int:
+    """Decode MAVLink's bytewise float field back into an INT32 parameter."""
+    return struct.unpack(">i", struct.pack(">f", float(value)))[0]
 
 
 class MavlinkDrone(Drone):
@@ -140,7 +151,7 @@ class MavlinkDrone(Drone):
             return
 
     def _set_parameter(self, name: str, value: int, *, timeout_s: float) -> None:
-        self.m.param_set_send(name, value, 6)
+        self.m.param_set_send(name, _encode_int32_parameter(value), 6)
         deadline = time.monotonic() + timeout_s
         while True:
             remaining = deadline - time.monotonic()
@@ -158,7 +169,7 @@ class MavlinkDrone(Drone):
                 param_id = param_id.decode("ascii", errors="ignore")
             if str(param_id).rstrip("\x00") != name:
                 continue
-            if round(float(acknowledgement.param_value)) != value:
+            if _decode_int32_parameter(acknowledgement.param_value) != value:
                 raise RuntimeError(f"PX4 returned an unexpected value for {name}")
             return
 
@@ -167,6 +178,13 @@ class MavlinkDrone(Drone):
 
     def disable_gps_fusion(self, *, timeout_s: float = 3.0) -> None:
         self._set_parameter("EKF2_GPS_CTRL", 0, timeout_s=timeout_s)
+
+    def enable_external_vision_fusion(self, *, timeout_s: float = 3.0) -> None:
+        # EKF2_EV_CTRL bit 0 = horizontal position, bit 2 = 3-D velocity.
+        # Barometric altitude and magnetometer yaw remain independent fallback
+        # sources, which avoids coupling this GNSS-loss experiment to a vision
+        # height or heading estimate.
+        self._set_parameter("EKF2_EV_CTRL", 5, timeout_s=timeout_s)
 
     def takeoff(self) -> None:
         m = self.m

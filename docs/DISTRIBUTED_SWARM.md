@@ -53,6 +53,29 @@ pass, and the recorded central-command count remains zero. `gps-fault-summary.js
 the offline result. Use `off`, `stuck` or `wrong` with a newer PX4/Gazebo build that implements the corresponding standard
 MAVLink failure consumer.
 
+### Continue the mission on simulated visual odometry
+
+Run the reproducible five-vehicle GNSS-loss continuation trial from PowerShell:
+
+```powershell
+.\Start-PX4-GNSS-VIO-Fallback.ps1
+```
+
+Every custom `x500_depth_fly` model publishes Gazebo odometry to its own PX4 bridge. Before takeoff each worker enables
+EKF2 horizontal external-vision position and 3-D velocity fusion. Vehicle 0 then disables GNSS fusion five seconds into
+the mission. The worker detects the accompanying PX4 local-origin reset and applies one bounded mission-frame
+realignment, while body-frame velocity control and all safety gates remain active.
+
+The acceptance gate requires all five independent workers to escape, rally and land, including the faulted vehicle;
+zero tree contacts; safe forest and peer separation; no estimator-health failures on the faulted vehicle; five distinct
+controller processes; and zero central flight commands. Results are written to
+`results/px4-vio-fallback/gps-vio-fallback-summary.json` and `GNSS拒止视觉里程计接管报告.md`.
+
+This test uses Gazebo ground-truth odometry as a deterministic stand-in for an onboard VIO output. It validates the PX4
+external-vision input, EKF fusion, local-frame reset handling and autonomous mission continuation. It does not validate
+camera feature tracking, low-texture performance, motion blur, lighting changes or VIO drift. A real VIO implementation
+must later replace the stand-in and pass the same artifact checks with injected delay, drift and dropouts.
+
 ## Run the process and UDP scale trial
 
 ```powershell

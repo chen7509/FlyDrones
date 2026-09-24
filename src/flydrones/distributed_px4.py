@@ -40,6 +40,8 @@ class DistributedAgentConfig:
     state_max_age_s: float = 0.35
     gps_failure_at_s: float | None = None
     gps_failure_mode: str = "off"
+    external_vision_fusion: bool = False
+    local_frame_realign_window_s: float = 3.0
     peer_base_port: int = 16770
     peer_config: PeerUdpConfig = field(default_factory=lambda: PeerUdpConfig(
         range_m=8.0,
@@ -63,6 +65,8 @@ class DistributedAgentConfig:
             raise ValueError("gps_failure_at_s must be non-negative")
         if self.gps_failure_mode not in {"off", "stuck", "wrong", "fusion-off"}:
             raise ValueError("unsupported GPS failure mode")
+        if self.local_frame_realign_window_s <= 0.0:
+            raise ValueError("local_frame_realign_window_s must be positive")
 
 
 @dataclass(frozen=True)
@@ -72,6 +76,45 @@ class LocalStateHealth:
     position_age_s: float | None
     attitude_age_s: float | None
     estimator_age_s: float | None = None
+
+
+class LocalFrameContinuity:
+    """Keep mission coordinates continuous across an authorized EKF origin reset."""
+
+    def __init__(self, *, reset_jump_m: float = 1.5) -> None:
+        if reset_jump_m <= 0.0:
+            raise ValueError("reset_jump_m must be positive")
+        self.reset_jump_m = float(reset_jump_m)
+        self._offset = [0.0, 0.0, 0.0]
+        self._last_position: tuple[float, float, float] | None = None
+        self._last_time: float | None = None
+        self.realignments = 0
+
+    def update(
+        self,
+        raw_position: tuple[float, float, float],
+        *,
+        now: float,
+        allow_realign: bool,
+    ) -> tuple[tuple[float, float, float], bool]:
+        values = tuple(float(value) for value in raw_position)
+        if not all(math.isfinite(value) for value in (*values, float(now))):
+            raise ValueError("local frame continuity requires finite inputs")
+        if self._last_time is not None and now < self._last_time:
+            raise ValueError("local frame continuity time moved backwards")
+        corrected = tuple(values[index] + self._offset[index] for index in range(3))
+        realigned = False
+        if self._last_position is not None:
+            jump = math.dist(corrected, self._last_position)
+            if allow_realign and jump > self.reset_jump_m:
+                for index in range(3):
+                    self._offset[index] += self._last_position[index] - corrected[index]
+                corrected = self._last_position
+                self.realignments += 1
+                realigned = True
+        self._last_position = corrected
+        self._last_time = float(now)
+        return corrected, realigned
 
 
 def evaluate_local_state_health(telemetry, *, now: float, max_age_s: float) -> LocalStateHealth:
@@ -156,6 +199,7 @@ def build_distributed_agent_commands(
     gps_failure_vehicle_id: int | None = None,
     gps_failure_at_s: float = 12.0,
     gps_failure_mode: str = "off",
+    external_vision_fusion: bool = False,
 ) -> list[list[str]]:
     if vehicle_count != 5:
         raise ValueError("the distributed PX4 trial currently requires five workers")
@@ -179,6 +223,8 @@ def build_distributed_agent_commands(
                 "--gps-failure-at", str(gps_failure_at_s),
                 "--gps-failure-mode", gps_failure_mode,
             ])
+        if external_vision_fusion:
+            command.append("--external-vision-fusion")
         commands.append(command)
     return commands
 
@@ -430,6 +476,89 @@ def evaluate_gps_fault_artifacts(
     return aligned, summary
 
 
+def evaluate_gps_vio_fallback_artifacts(
+    output_dir: str | Path,
+    *,
+    fault_vehicle_id: int,
+    vehicle_count: int = 5,
+) -> tuple[list[dict], dict]:
+    """Score a trial where external vision carries the fleet through GNSS loss."""
+    if not 0 <= fault_vehicle_id < vehicle_count:
+        raise ValueError("GPS fault vehicle id is outside the fleet")
+    output = Path(output_dir)
+    aligned, baseline = aggregate_distributed_artifacts(output, vehicle_count=vehicle_count)
+    results = [
+        json.loads((output / f"agent-{vehicle_id}.json").read_text(encoding="utf-8"))
+        for vehicle_id in range(vehicle_count)
+    ]
+    fault_result = results[fault_vehicle_id]
+    fault_metrics = fault_result.get("metrics", {})
+    common_checks = baseline["checks"]
+    checks = {
+        "all_reached_altitude": bool(common_checks.get("all_reached_altitude")),
+        "all_escaped": bool(common_checks.get("all_escaped")),
+        "all_rallied": bool(common_checks.get("all_rallied")),
+        "zero_forest_contacts": bool(common_checks.get("zero_forest_contacts")),
+        "safe_forest_clearance": bool(common_checks.get("safe_forest_clearance")),
+        "safe_intervehicle_separation": bool(common_checks.get("safe_intervehicle_separation")),
+        "all_landed": bool(common_checks.get("all_landed")),
+        "five_distinct_controller_processes": bool(common_checks.get("five_distinct_controller_processes")),
+        "one_process_owned_each_vehicle": bool(common_checks.get("one_process_owned_each_vehicle")),
+        "neighbor_data_came_only_from_udp_cache": bool(common_checks.get("neighbor_data_came_only_from_udp_cache")),
+        "zero_direct_global_neighbor_reads": bool(common_checks.get("zero_direct_global_neighbor_reads")),
+        "zero_central_control_commands": bool(common_checks.get("zero_central_control_commands")),
+        "fault_was_injected": bool(fault_metrics.get("gps_failure_injected")),
+        "all_vehicles_used_external_vision_fusion": all(
+            bool(result.get("metrics", {}).get("external_vision_fusion_enabled"))
+            for result in results
+        ),
+        "fault_vehicle_completed_after_gps_loss": (
+            bool(fault_result.get("accepted"))
+            and bool(fault_result.get("checks", {}).get("rallied"))
+            and not bool(fault_metrics.get("fail_closed_land"))
+            and int(fault_metrics.get("state_health_failures", 0)) == 0
+        ),
+    }
+    metrics = dict(baseline["metrics"])
+    metrics.update({
+        "fault_vehicle_id": fault_vehicle_id,
+        "fault_mode": fault_metrics.get("gps_failure_mode"),
+        "fault_mechanism": fault_metrics.get("gps_failure_mechanism"),
+        "fault_injected_at_s": fault_metrics.get("gps_failure_injected_at_s"),
+        "fault_state_health_failures": int(fault_metrics.get("state_health_failures", 0)),
+        "fault_local_frame_realignments": int(fault_metrics.get("local_frame_realignments", 0)),
+        "fleet_rallied": sum(
+            bool(result.get("checks", {}).get("rallied")) for result in results
+        ),
+    })
+    summary = {
+        "scenario": "gps-denied-external-vision-continuation",
+        "accepted": all(checks.values()),
+        "checks": checks,
+        "metrics": metrics,
+    }
+    (output / "gps-vio-fallback-summary.json").write_text(
+        json.dumps(summary, ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8",
+    )
+    report = f"""# PX4 GNSS 拒止视觉里程计接管试验
+
+{'**通过。**' if summary['accepted'] else '**未通过。**'} {fault_vehicle_id} 号机在任务中停止 GNSS 融合后继续执行任务。
+
+- GNSS 故障机制：{metrics['fault_mechanism']}
+- 注入时间：{metrics['fault_injected_at_s']} s
+- 全部无人机完成集合：{metrics['fleet_rallied']}/{vehicle_count}
+- 故障机状态健康失败：{metrics['fault_state_health_failures']}
+- 故障机坐标原点重对齐：{metrics['fault_local_frame_realignments']}
+- 树干接触：{metrics.get('forest_contacts')}
+- 最小树干净空：{metrics.get('minimum_forest_clearance_m')} m
+- 最小机间距：{metrics.get('minimum_intervehicle_distance_m')} m
+- 中央控制指令：{metrics.get('central_control_commands')}
+"""
+    (output / "GNSS拒止视觉里程计接管报告.md").write_text(report, encoding="utf-8")
+    return aligned, summary
+
+
 def _write_agent_artifacts(output_dir: Path, vehicle_id: int, trace: list[dict], result: dict) -> None:
     output_dir.mkdir(parents=True, exist_ok=True)
     csv_path = output_dir / f"agent-{vehicle_id}.csv"
@@ -513,8 +642,10 @@ def run_distributed_px4_agent(
     state_health_failures = 0
     last_state_health_reason: str | None = None
     gps_failure_injected = False
+    external_vision_fusion_enabled = False
     gps_failure_injected_at_s: float | None = None
     gps_failure_mechanism: str | None = None
+    frame_continuity = LocalFrameContinuity()
 
     def sample(
         phase: str,
@@ -559,6 +690,8 @@ def run_distributed_px4_agent(
                 else None
             ),
             "gps_failure_injected": gps_failure_injected,
+            "external_vision_fusion_enabled": external_vision_fusion_enabled,
+            "local_frame_realignments": frame_continuity.realignments,
             "depth_nearest_m": round(observation.nearest_distance_m, 4) if observation else None,
             "depth_rays_m": ";".join(f"{value:.3f}" for value in observation.ray_distances_m) if observation else None,
             "policy_action_speed": round(float(previous_action[0]), 5),
@@ -595,6 +728,9 @@ def run_distributed_px4_agent(
             raise TimeoutError("local depth camera did not become ready")
         drone.connect()
         connected = True
+        if config.external_vision_fusion:
+            drone.enable_external_vision_fusion()
+            external_vision_fusion_enabled = True
         if config.gps_failure_at_s is not None and config.gps_failure_mode != "fusion-off":
             drone.enable_failure_injection()
         state_ready_deadline = monotonic() + config.state_ready_timeout_s
@@ -639,10 +775,24 @@ def run_distributed_px4_agent(
                 last_state_health_reason = state_health.reason
                 error = f"local state unhealthy: {state_health.reason}"
                 break
+            elapsed = timestamp - mission_start
+            allow_frame_realign = (
+                config.external_vision_fusion
+                and gps_failure_injected_at_s is not None
+                and elapsed - gps_failure_injected_at_s <= config.local_frame_realign_window_s
+                and frame_continuity.realignments == 0
+            )
+            continuous_local_position, _frame_realigned = frame_continuity.update(
+                (
+                    float(telemetry.x_m),
+                    float(telemetry.y_m),
+                    float(telemetry.alt_m),
+                ),
+                now=timestamp,
+                allow_realign=allow_frame_realign,
+            )
             position = spec.global_position(
-                float(telemetry.x_m),
-                float(telemetry.y_m),
-                float(telemetry.alt_m),
+                *continuous_local_position,
             )
             if previous_position is None or previous_time is None or timestamp <= previous_time:
                 velocity = (0.0, 0.0, 0.0)
@@ -650,7 +800,6 @@ def run_distributed_px4_agent(
                 dt = timestamp - previous_time
                 velocity = tuple((position[index] - previous_position[index]) / dt for index in range(3))
             previous_position, previous_time = position, timestamp
-            elapsed = timestamp - mission_start
             if (
                 config.gps_failure_at_s is not None
                 and not gps_failure_injected
@@ -718,12 +867,20 @@ def run_distributed_px4_agent(
             try:
                 while True:
                     telemetry = drone.telemetry()
-                    position = spec.global_position(
-                        float(telemetry.x_m or 0.0),
-                        float(telemetry.y_m or 0.0),
-                        float(telemetry.alt_m or 0.0),
+                    timestamp = monotonic()
+                    continuous_local_position, _frame_realigned = frame_continuity.update(
+                        (
+                            float(telemetry.x_m or 0.0),
+                            float(telemetry.y_m or 0.0),
+                            float(telemetry.alt_m or 0.0),
+                        ),
+                        now=timestamp,
+                        allow_realign=False,
                     )
-                    observation = depth_camera.latest(config.vehicle_id, now=monotonic(), max_age_s=0.35)
+                    position = spec.global_position(
+                        *continuous_local_position,
+                    )
+                    observation = depth_camera.latest(config.vehicle_id, now=timestamp, max_age_s=0.35)
                     sample("land", position, telemetry, observation, len(peer_node.neighbors()))
                     if position[2] <= 0.15 or monotonic() >= land_deadline:
                         break
@@ -784,6 +941,8 @@ def run_distributed_px4_agent(
             if gps_failure_injected_at_s is not None
             else None
         ),
+        "external_vision_fusion_enabled": external_vision_fusion_enabled,
+        "local_frame_realignments": frame_continuity.realignments,
         "central_control_commands": 0,
         "direct_global_neighbor_reads": 0,
         "depth_frames": int(depth_camera.frame_counts.get(config.vehicle_id, 0)),

@@ -6,7 +6,7 @@ from types import SimpleNamespace
 import pytest
 
 from flydrones.drones import mavlink as mavlink_module
-from flydrones.drones.mavlink import MavlinkDrone
+from flydrones.drones.mavlink import MavlinkDrone, _decode_int32_parameter, _encode_int32_parameter
 from flydrones.safety import Telemetry
 
 
@@ -127,7 +127,9 @@ def test_gps_failure_injection_rejects_unknown_modes():
 def test_enabling_failure_injection_waits_for_the_px4_parameter_echo(monkeypatch):
     monkeypatch.setattr(mavlink_module.time, "monotonic", lambda: 1.0)
     parameter_sets = []
-    acknowledgements = [Message("PARAM_VALUE", param_id=b"SYS_FAILURE_EN", param_value=1.0)]
+    acknowledgements = [
+        Message("PARAM_VALUE", param_id=b"SYS_FAILURE_EN", param_value=_encode_int32_parameter(1))
+    ]
     drone = object.__new__(MavlinkDrone)
     drone.m = SimpleNamespace(
         param_set_send=lambda *args: parameter_sets.append(args),
@@ -136,13 +138,17 @@ def test_enabling_failure_injection_waits_for_the_px4_parameter_echo(monkeypatch
 
     drone.enable_failure_injection(timeout_s=1.0)
 
-    assert parameter_sets == [("SYS_FAILURE_EN", 1, 6)]
+    assert len(parameter_sets) == 1
+    assert parameter_sets[0][0::2] == ("SYS_FAILURE_EN", 6)
+    assert _decode_int32_parameter(parameter_sets[0][1]) == 1
 
 
 def test_disabling_gps_fusion_waits_for_the_px4_parameter_echo(monkeypatch):
     monkeypatch.setattr(mavlink_module.time, "monotonic", lambda: 1.0)
     parameter_sets = []
-    acknowledgements = [Message("PARAM_VALUE", param_id="EKF2_GPS_CTRL", param_value=0.0)]
+    acknowledgements = [
+        Message("PARAM_VALUE", param_id="EKF2_GPS_CTRL", param_value=_encode_int32_parameter(0))
+    ]
     drone = object.__new__(MavlinkDrone)
     drone.m = SimpleNamespace(
         param_set_send=lambda *args: parameter_sets.append(args),
@@ -151,7 +157,28 @@ def test_disabling_gps_fusion_waits_for_the_px4_parameter_echo(monkeypatch):
 
     drone.disable_gps_fusion(timeout_s=1.0)
 
-    assert parameter_sets == [("EKF2_GPS_CTRL", 0, 6)]
+    assert len(parameter_sets) == 1
+    assert parameter_sets[0][0::2] == ("EKF2_GPS_CTRL", 6)
+    assert _decode_int32_parameter(parameter_sets[0][1]) == 0
+
+
+def test_enabling_external_vision_fusion_uses_horizontal_position_and_velocity(monkeypatch):
+    monkeypatch.setattr(mavlink_module.time, "monotonic", lambda: 1.0)
+    parameter_sets = []
+    acknowledgements = [
+        Message("PARAM_VALUE", param_id="EKF2_EV_CTRL", param_value=_encode_int32_parameter(5))
+    ]
+    drone = object.__new__(MavlinkDrone)
+    drone.m = SimpleNamespace(
+        param_set_send=lambda *args: parameter_sets.append(args),
+        recv_match=lambda **_kwargs: acknowledgements.pop(0) if acknowledgements else None,
+    )
+
+    drone.enable_external_vision_fusion(timeout_s=1.0)
+
+    assert len(parameter_sets) == 1
+    assert parameter_sets[0][0::2] == ("EKF2_EV_CTRL", 6)
+    assert _decode_int32_parameter(parameter_sets[0][1]) == 5
 
 
 def test_mavlink_telemetry_records_sensor_receipt_times_and_validity(monkeypatch):

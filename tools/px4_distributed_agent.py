@@ -28,6 +28,7 @@ def main() -> int:
     parser.add_argument("--blackout-end", type=float, default=23.0)
     parser.add_argument("--gps-failure-at", type=float)
     parser.add_argument("--gps-failure-mode", choices=("off", "stuck", "wrong", "fusion-off"), default="off")
+    parser.add_argument("--external-vision-fusion", action="store_true")
     args = parser.parse_args()
     radio = PeerUdpConfig(
         range_m=args.peer_range,
@@ -47,6 +48,7 @@ def main() -> int:
         peer_config=radio,
         gps_failure_at_s=args.gps_failure_at,
         gps_failure_mode=args.gps_failure_mode,
+        external_vision_fusion=args.external_vision_fusion,
     )
     _trace, result = run_distributed_px4_agent(config)
     print(json.dumps(result, ensure_ascii=False, indent=2))
