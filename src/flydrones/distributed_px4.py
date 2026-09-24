@@ -494,6 +494,13 @@ def evaluate_gps_vio_fallback_artifacts(
     fault_result = results[fault_vehicle_id]
     fault_metrics = fault_result.get("metrics", {})
     common_checks = baseline["checks"]
+    fusion_evidence_path = output / "px4-ekf-fusion-evidence.json"
+    fusion_evidence = (
+        json.loads(fusion_evidence_path.read_text(encoding="utf-8"))
+        if fusion_evidence_path.is_file()
+        else {"accepted": False, "checks": {}, "metrics": {}, "source": {}}
+    )
+    fusion_checks = fusion_evidence.get("checks", {})
     checks = {
         "all_reached_altitude": bool(common_checks.get("all_reached_altitude")),
         "all_escaped": bool(common_checks.get("all_escaped")),
@@ -508,9 +515,26 @@ def evaluate_gps_vio_fallback_artifacts(
         "zero_direct_global_neighbor_reads": bool(common_checks.get("zero_direct_global_neighbor_reads")),
         "zero_central_control_commands": bool(common_checks.get("zero_central_control_commands")),
         "fault_was_injected": bool(fault_metrics.get("gps_failure_injected")),
-        "all_vehicles_used_external_vision_fusion": all(
+        "all_vehicles_acknowledged_external_vision_configuration": all(
             bool(result.get("metrics", {}).get("external_vision_fusion_enabled"))
             for result in results
+        ),
+        "fault_vehicle_ekf_fusion_proven_from_ulog": bool(fusion_evidence.get("accepted")),
+        "fault_vehicle_external_vision_position_fused_after_gnss_loss": bool(
+            fusion_checks.get("external_vision_position_fused_after_gnss_loss")
+        ),
+        "fault_vehicle_external_vision_velocity_control_active": bool(
+            fusion_checks.get("external_vision_velocity_control_active_after_gnss_loss")
+        ),
+        "fault_vehicle_gnss_fusion_stopped": bool(fusion_checks.get("gnss_fusion_stopped")),
+        "fault_vehicle_not_inertial_dead_reckoning": bool(
+            fusion_checks.get("no_inertial_dead_reckoning_after_switch")
+        ),
+        "fault_vehicle_visual_odometry_stream_continued": bool(
+            fusion_checks.get("visual_odometry_stream_continued")
+        ),
+        "fault_vehicle_local_position_valid_after_switch": bool(
+            fusion_checks.get("local_position_valid_after_switch")
         ),
         "fault_vehicle_completed_after_gps_loss": (
             bool(fault_result.get("accepted"))
@@ -530,6 +554,8 @@ def evaluate_gps_vio_fallback_artifacts(
         "fleet_rallied": sum(
             bool(result.get("checks", {}).get("rallied")) for result in results
         ),
+        "fusion_evidence": fusion_evidence.get("metrics", {}),
+        "fusion_evidence_source": fusion_evidence.get("source", {}),
     })
     summary = {
         "scenario": "gps-denied-external-vision-continuation",
@@ -541,6 +567,8 @@ def evaluate_gps_vio_fallback_artifacts(
         json.dumps(summary, ensure_ascii=False, indent=2) + "\n",
         encoding="utf-8",
     )
+    fusion_metrics = metrics["fusion_evidence"]
+    fusion_source = metrics["fusion_evidence_source"]
     report = f"""# PX4 GNSS 拒止视觉里程计接管试验
 
 {'**通过。**' if summary['accepted'] else '**未通过。**'} {fault_vehicle_id} 号机在任务中停止 GNSS 融合后继续执行任务。
@@ -550,6 +578,13 @@ def evaluate_gps_vio_fallback_artifacts(
 - 全部无人机完成集合：{metrics['fleet_rallied']}/{vehicle_count}
 - 故障机状态健康失败：{metrics['fault_state_health_failures']}
 - 故障机坐标原点重对齐：{metrics['fault_local_frame_realignments']}
+- ULog 证明 EKF 实际融合外部视觉：{checks['fault_vehicle_ekf_fusion_proven_from_ulog']}
+- 故障后外部视觉位置实际融合：{fusion_metrics.get('external_vision_position_fused_samples_after_switch')}/{fusion_metrics.get('external_vision_position_samples_after_switch')} 个样本
+- 故障后外部视觉速度控制状态有效：{checks['fault_vehicle_external_vision_velocity_control_active']}
+- ULog 证明 GNSS 融合退出：{checks['fault_vehicle_gnss_fusion_stopped']}
+- ULog 证明未进入惯性航位推算：{checks['fault_vehicle_not_inertial_dead_reckoning']}
+- 故障后有效本地位置持续：{fusion_metrics.get('local_position_duration_after_switch_s')} s
+- ULog SHA-256：{fusion_source.get('ulog_sha256')}
 - 树干接触：{metrics.get('forest_contacts')}
 - 最小树干净空：{metrics.get('minimum_forest_clearance_m')} m
 - 最小机间距：{metrics.get('minimum_intervehicle_distance_m')} m

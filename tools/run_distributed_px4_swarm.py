@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import shutil
 import subprocess
 import sys
 import time
@@ -15,6 +16,7 @@ from flydrones.distributed_px4 import (
     evaluate_gps_fault_artifacts,
     evaluate_gps_vio_fallback_artifacts,
 )
+from flydrones.px4_ulog_evidence import extract_ulog_fusion_evidence, newest_vehicle_ulog
 
 
 def _clean_previous_worker_artifacts(output_dir: Path, vehicle_count: int) -> None:
@@ -24,6 +26,7 @@ def _clean_previous_worker_artifacts(output_dir: Path, vehicle_count: int) -> No
         "summary.json",
         "gps-fault-summary.json",
         "gps-vio-fallback-summary.json",
+        "px4-ekf-fusion-evidence.json",
         "五进程去中心化报告.md",
         "GNSS拒止试验报告.md",
         "GNSS拒止视觉里程计接管报告.md",
@@ -39,6 +42,9 @@ def _clean_previous_worker_artifacts(output_dir: Path, vehicle_count: int) -> No
         path = output_dir / name
         if path.is_file():
             path.unlink()
+    preserved_ulogs = output_dir / "px4-ulogs"
+    if preserved_ulogs.is_dir():
+        shutil.rmtree(preserved_ulogs)
 
 
 def main() -> int:
@@ -54,6 +60,7 @@ def main() -> int:
     parser.add_argument("--expect-fault-landing", action="store_true")
     parser.add_argument("--external-vision-fusion", action="store_true")
     parser.add_argument("--expect-gps-vio-fallback", action="store_true")
+    parser.add_argument("--px4-run-dir")
     args = parser.parse_args()
     if args.expect_fault_landing and args.gps_failure_vehicle is None:
         parser.error("--expect-fault-landing requires --gps-failure-vehicle")
@@ -61,6 +68,8 @@ def main() -> int:
         parser.error("--expect-gps-vio-fallback requires --gps-failure-vehicle")
     if args.expect_gps_vio_fallback and not args.external_vision_fusion:
         parser.error("--expect-gps-vio-fallback requires --external-vision-fusion")
+    if args.expect_gps_vio_fallback and not args.px4_run_dir:
+        parser.error("--expect-gps-vio-fallback requires --px4-run-dir for ULog evidence")
     if args.expect_gps_vio_fallback and args.expect_fault_landing:
         parser.error("fallback continuation and fault landing are mutually exclusive")
 
@@ -120,6 +129,12 @@ def main() -> int:
         return 2
 
     if args.expect_gps_vio_fallback:
+        source_ulog = newest_vehicle_ulog(args.px4_run_dir, args.gps_failure_vehicle)
+        extract_ulog_fusion_evidence(
+            source_ulog,
+            output_path=output_dir / "px4-ekf-fusion-evidence.json",
+            fault_vehicle_id=args.gps_failure_vehicle,
+        )
         _trace, summary = evaluate_gps_vio_fallback_artifacts(
             output_dir,
             fault_vehicle_id=args.gps_failure_vehicle,

@@ -68,8 +68,13 @@ realignment, while body-frame velocity control and all safety gates remain activ
 
 The acceptance gate requires all five independent workers to escape, rally and land, including the faulted vehicle;
 zero tree contacts; safe forest and peer separation; no estimator-health failures on the faulted vehicle; five distinct
-controller processes; and zero central flight commands. Results are written to
+controller processes; and zero central flight commands. It also reads the faulted vehicle's PX4 ULog and requires
+`estimator_aid_src_ev_pos.fused` to prove actual external-vision position fusion, `cs_ev_vel` to prove the external-vision
+velocity control state remained active, GNSS position/velocity aid sources to stop, and EKF to remain outside inertial dead reckoning. A parameter acknowledgement
+or a published odometry topic alone cannot satisfy this check. Results are written to
 `results/px4-vio-fallback/gps-vio-fallback-summary.json` and `GNSS拒止视觉里程计接管报告.md`.
+The source ULog is preserved under `px4-ulogs/`, and its SHA-256 plus extracted transition evidence are stored in
+`px4-ekf-fusion-evidence.json`.
 
 This test uses Gazebo ground-truth odometry as a deterministic stand-in for an onboard VIO output. It validates the PX4
 external-vision input, EKF fusion, local-frame reset handling and autonomous mission continuation. It does not validate

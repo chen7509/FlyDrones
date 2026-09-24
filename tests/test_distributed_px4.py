@@ -893,9 +893,35 @@ def test_gps_vio_fallback_requires_faulted_vehicle_to_finish_without_fail_closed
         }
         (tmp_path / f"agent-{vehicle_id}.json").write_text(json.dumps(result), encoding="utf-8")
 
+    (tmp_path / "px4-ekf-fusion-evidence.json").write_text(json.dumps({
+        "accepted": True,
+        "checks": {
+            "external_vision_position_fused_before_gnss_loss": True,
+            "external_vision_position_fused_after_gnss_loss": True,
+            "external_vision_velocity_control_active_after_gnss_loss": True,
+            "gnss_fusion_stopped": True,
+            "no_inertial_dead_reckoning_after_switch": True,
+            "visual_odometry_stream_continued": True,
+            "local_position_valid_after_switch": True,
+            "local_origin_reset_observed": True,
+        },
+        "metrics": {
+            "switch_timestamp_s": 30.0,
+            "external_vision_position_fused_samples_after_switch": 100,
+            "external_vision_position_samples_after_switch": 100,
+            "local_position_duration_after_switch_s": 10.0,
+        },
+    }), encoding="utf-8")
+
     _trace, summary = evaluate_gps_vio_fallback_artifacts(tmp_path, fault_vehicle_id=0)
 
     assert summary["accepted"], summary
     assert summary["checks"]["fault_vehicle_completed_after_gps_loss"]
-    assert summary["checks"]["all_vehicles_used_external_vision_fusion"]
+    assert summary["checks"]["all_vehicles_acknowledged_external_vision_configuration"]
     assert summary["metrics"]["fleet_rallied"] == 5
+    assert summary["checks"]["fault_vehicle_ekf_fusion_proven_from_ulog"]
+
+    (tmp_path / "px4-ekf-fusion-evidence.json").unlink()
+    _trace, missing_evidence = evaluate_gps_vio_fallback_artifacts(tmp_path, fault_vehicle_id=0)
+    assert not missing_evidence["accepted"]
+    assert not missing_evidence["checks"]["fault_vehicle_ekf_fusion_proven_from_ulog"]

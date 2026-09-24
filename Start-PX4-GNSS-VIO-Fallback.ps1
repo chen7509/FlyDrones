@@ -20,6 +20,7 @@ try {
         --gps-failure-at 5 `
         --gps-failure-mode fusion-off `
         --external-vision-fusion `
+        --px4-run-dir $runDir `
         --expect-gps-vio-fallback
     if ($LASTEXITCODE -ne 0) { throw 'GNSS-loss VIO-fallback acceptance failed.' }
 }
