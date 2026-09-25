@@ -27,9 +27,19 @@
 
 线程级复测 4/5 完成、无视觉门控。0 号机启动期约 687 ms 原始里程计空窗对应独立时钟约 671 ms 墙钟间隔、仅 4 ms 仿真推进；此间 Gazebo 进程约消耗 690 ms CPU，其中同一线程约消耗 620 ms。后续长间隔也主要由该线程占用。该线程的系统名称只有 `ruby`，没有函数级采样栈，不能据此指定为物理、渲染或里程计插件。这个采样将负载定位到 Gazebo 进程中的一个热线程，但仍缺函数级归因。
 
+## 函数级采样与时钟对齐
+
+又保留了两轮原配置五机诊断。第一轮 `fleet-vio-gate-perf-probe-1` 使用 `perf` 采样，5/5 完成；它的默认采样时间戳与独立 `/clock` 探针使用的 Linux `CLOCK_MONOTONIC` 不同，且两者偏差随运行时间变化，所以只保留总体调用栈，**不用于逐个时钟空窗归因**。第二轮 `fleet-vio-gate-perf-mono-probe-1` 显式使用 `perf record -k mono -F 49 -e cpu-clock -g --call-graph dwarf,8192`，时间戳与探针对齐。第二轮 4/5 完成、5/5 落地、转发正常关闭，1 号机未逃出森林；其 `state_health_failures` 为 0，不能把这次任务失败归咎于视觉新鲜度门控。两轮的 PX4 ULog 证据均接受了 GNSS 关闭后的视觉融合。性能采样会改变线程调度和开销，因此这两轮只用于定位，不并入未采样的完成率基线。
+
+对齐轮次的独立 `/clock` 探针记录了 27 个至少 100 ms 的墙钟间隔，每个间隔只推进 4 ms 仿真时间。启动期最长的两个间隔为 388 和 776 ms，调用栈混合了 Ogre、Mesa Gallium 和内核内存分配/缺页，不能把它们与稳定飞行期混为一谈。从首个时钟样本起 20 秒后，长间隔内的 137 个 CPU 样本中 78 个包含 Mesa Gallium、71 个包含 Ogre、68 个包含 Gazebo sensors 调用栈；同阶段非长间隔的 3984 个样本中分别为 751、636、621 个。渲染相关栈在长间隔内显著富集，而物理相关栈在这些间隔中仅有少数样本。分类可以重叠，样本频率有限，不能据此计算每个系统的独占耗时，也不能宣称渲染是唯一原因；但它将下一轮单变量实验指向渲染后端和传感器更新调度，而不是先放宽 250 ms 安全门控。
+
+另用 `eglinfo -B` 查询同一 WSL 环境：X11/Wayland EGL 初始化失败，无显示（surfaceless）EGL 报告的 OpenGL renderer 是 Mesa `llvmpipe (LLVM 20.1.2, 256 bits)`；临时设置 `MESA_LOADER_DRIVER_OVERRIDE=d3d12` 后仍报告 `llvmpipe`。这说明此环境的无显示 EGL 路径目前是 CPU 渲染，符合 `perf` 中 Mesa Gallium 热栈的方向；查询工具与 Gazebo 并非同一进程，尚未直接证明 Gazebo 的上下文一定选择了该 renderer，也未证明更换后端即可满足五机尾部延迟。查询输出见 `renderer-eglinfo.txt`。
+
+本机原始数据、对齐分析和调用栈摘要分别保存在 `results/vio-stress/fleet-vio-gate-perf-mono-probe-1/gazebo-perf.data`、`perf-window-analysis.txt`、`gazebo-perf-flat.txt`；采样器命令和分析脚本在同一目录。第一轮原始数据保存在 `results/vio-stress/fleet-vio-gate-perf-probe-1/`。两轮的紧凑清单、摘要、轨迹回放哈希和原始文件 SHA-256 由 `tools/snapshot_vio_gate_results.py` 写入 `docs/results/vio-safety-gate/raw-artifact-index.json`。大体积原始数据未提交到 Git；仅有版本化哈希不能独立重算函数级结论。
+
 ## 下一项可判别测试
 
-接下来应记录 Gazebo 热线程的函数级调用栈、世界统计、物理步耗时和传感器/里程计插件的发布时刻，才有依据决定优化哪条计算路径。应以尾部间隔和任务完成率同时验收；不能把阈值调大当作修复。现有六次正式配置的无故障五机基线分别为 1/5、5/5、5/5、4/5、5/5、4/5；差异不允许用单次成功宣称稳定。仍需保留所有失败，不得以平均实时率替代尾部延迟证据。原项目已经开始阶段 0，后续 VIO 替换应按总路线图阶段门槛推进。
+下一轮先记录 Gazebo 进程实际使用的 OpenGL/EGL renderer 与传感器更新耗时，再在相同五机世界、传感器分辨率和更新率下仅改变可用的渲染后端，做成对复测；如无法更换后端，应分别记录渲染与物理步时长以确认热点。验收同时看 `/clock` 与原始视觉流的尾部间隔、PX4 融合和任务完成率，保留所有失败；不能把阈值调大当作修复。现有六次未进行 `perf` 采样、正式配置的无故障五机基线分别为 1/5、5/5、5/5、4/5、5/5、4/5；差异不允许用单次成功宣称稳定。原项目已经开始阶段 0，后续真实相机加 IMU 的 VIO 替换应按总路线图阶段门槛推进。当前转发的是 Gazebo 位姿真值，不是已完成的相机与 IMU VIO。
 
 第三轮大型原始文件保存在本机 `results/vio-stress/fleet-vio-gate-baseline-pause-probe-1/`。`vio-relay.jsonl` SHA-256 为 `c42dcd688bab7c9e5a6c683a03710dd58fab00fa547546d2acbc0d63609fa33e`；`runtime-probe.csv` SHA-256 为 `e7cf1e7b89982b602de0fe59c58face58da5e62d3cb643a3e98dfdcad308a8b8`。诊断探针源码保存在同一原始结果根目录，未纳入控制代码。
 

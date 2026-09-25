@@ -22,11 +22,15 @@ TRIALS = (
     "fleet-vio-gate-depth-quarter-pixels-probe",
     "fleet-vio-gate-process-probe-1",
     "fleet-vio-gate-thread-probe-1",
+    "fleet-vio-gate-perf-probe-1",
+    "fleet-vio-gate-perf-mono-probe-1",
 )
 COMPACT = ("trial-manifest.json", "stress-summary.json", "fault-profile.json")
 RAW = ("vio-relay.jsonl", "trajectory-replay.html", "flydrones_forest.sdf",
        "runtime-probe.csv", "clock-probe.csv", "process-probe.csv", "thread-probe.csv",
-       "diagnostic-depth-model.sdf")
+       "diagnostic-depth-model.sdf", "gazebo-perf.data", "gazebo-perf-report.txt",
+       "gazebo-perf-flat.txt", "perf-window-analysis.txt", "analyze_perf_mono.py",
+       "perf-mono-waiter.sh", "renderer-eglinfo.txt")
 
 
 def sha256(path: Path) -> str:
