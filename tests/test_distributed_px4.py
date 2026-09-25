@@ -23,6 +23,7 @@ from flydrones.gazebo_depth import DepthObservation
 from flydrones.motor.command import FlightCommand
 from flydrones.peer_udp import PeerTrack
 from flydrones.safety import Telemetry
+from flydrones.vio_stream_monitor import VioStreamHealth
 
 
 class ForwardPolicy:
@@ -393,6 +394,235 @@ def test_worker_honors_local_fail_closed_landing_without_waiting_for_timeout(tmp
     assert drone.land_called
 
 
+def test_worker_stops_autonomous_setpoints_on_vio_blackout_and_requests_land(tmp_path):
+    class RecordingDrone(LocalKinematicDrone):
+        def __init__(self, clock):
+            super().__init__(clock)
+            self.sent_at = []
+
+        def send(self, command):
+            self.sent_at.append(self.clock.now)
+            super().send(command)
+
+    class BlackoutMonitor:
+        def __init__(self):
+            self.closed = False
+
+        def health(self, *, now):
+            if now < 0.4:
+                return VioStreamHealth(True, None, 0.02, 0.001, now - 0.001)
+            return VioStreamHealth(False, "stale-vio-frame", 0.27, 0.001, now - 0.27)
+
+        def close(self):
+            self.closed = True
+
+    clock = Clock()
+    drone = RecordingDrone(clock)
+    clock.drone = drone
+    monitor = BlackoutMonitor()
+    trace, result = run_distributed_px4_agent(
+        DistributedAgentConfig(vehicle_id=0, output_dir=tmp_path, land_timeout_s=5.0),
+        drone=drone,
+        depth_camera=LocalDepthCamera(),
+        peer_node=LocalPeerNode(),
+        policy=ForwardPolicy(),
+        vio_monitor=monitor,
+        monotonic=clock.time,
+        wall_time=clock.wall_time,
+        sleep=clock.sleep,
+    )
+
+    assert drone.sent_at and max(drone.sent_at) < 0.4
+    assert drone.land_called and monitor.closed
+    assert result["metrics"]["fail_closed_land"]
+    assert result["metrics"]["last_state_health_reason"] == "stale-vio-frame"
+    assert 0.4 <= result["metrics"]["fail_closed_triggered_at_s"] < 0.5
+    assert result["metrics"]["land_command_at_s"] >= result["metrics"]["fail_closed_triggered_at_s"]
+    assert any(row["phase"] == "fail_closed" and not row["command_sent"] for row in trace)
+
+
+def test_worker_waits_for_fresh_vio_after_blocking_takeoff_before_mission(tmp_path):
+    class BlockingTakeoffDrone(LocalKinematicDrone):
+        def takeoff(self):
+            super().takeoff()
+            self.clock.now += 1.0
+
+    class BackloggedMonitor:
+        def __init__(self):
+            self.post_takeoff_checks = 0
+
+        def health(self, *, now):
+            if now >= 1.0:
+                self.post_takeoff_checks += 1
+                if self.post_takeoff_checks == 1:
+                    return VioStreamHealth(False, "stale-vio-frame", 1.0, 0.001, now - 1.0)
+            return VioStreamHealth(True, None, 0.02, 0.001, now - 0.001)
+
+        def close(self):
+            pass
+
+    clock = Clock()
+    drone = BlockingTakeoffDrone(clock)
+    clock.drone = drone
+    monitor = BackloggedMonitor()
+    _trace, result = run_distributed_px4_agent(
+        DistributedAgentConfig(vehicle_id=0, output_dir=tmp_path, mission_timeout_s=70.0),
+        drone=drone,
+        depth_camera=LocalDepthCamera(),
+        peer_node=LocalPeerNode(),
+        policy=ForwardPolicy(),
+        vio_monitor=monitor,
+        monotonic=clock.time,
+        wall_time=clock.wall_time,
+        sleep=clock.sleep,
+    )
+
+    assert monitor.post_takeoff_checks >= 2
+    assert result["metrics"]["policy_calls"] > 0
+    assert not result["metrics"]["fail_closed_land"]
+
+
+def test_blocking_gnss_fusion_change_cannot_send_a_command_after_vio_expires(tmp_path):
+    class BlockingFusionDrone(LocalKinematicDrone):
+        def __init__(self, clock):
+            super().__init__(clock)
+            self.sent_at = []
+
+        def enable_external_vision_fusion(self):
+            pass
+
+        def disable_gps_fusion(self):
+            self.clock.now += 0.5
+
+        def send(self, command):
+            self.sent_at.append(self.clock.now)
+            super().send(command)
+
+    class ExpiringMonitor:
+        def health(self, *, now):
+            if now < 0.25:
+                return VioStreamHealth(True, None, 0.02, 0.001, now - 0.001)
+            return VioStreamHealth(False, "stale-vio-frame", 0.5, 0.001, now - 0.5)
+
+        def close(self):
+            pass
+
+    clock = Clock()
+    drone = BlockingFusionDrone(clock)
+    clock.drone = drone
+    trace, result = run_distributed_px4_agent(
+        DistributedAgentConfig(
+            vehicle_id=0,
+            output_dir=tmp_path,
+            gps_failure_at_s=0.0,
+            gps_failure_mode="fusion-off",
+            external_vision_fusion=True,
+        ),
+        drone=drone,
+        depth_camera=LocalDepthCamera(),
+        peer_node=LocalPeerNode(),
+        policy=ForwardPolicy(),
+        vio_monitor=ExpiringMonitor(),
+        monotonic=clock.time,
+        wall_time=clock.wall_time,
+        sleep=clock.sleep,
+    )
+
+    assert drone.sent_at == []
+    assert drone.land_called
+    assert result["metrics"]["last_state_health_reason"] == "stale-vio-frame"
+    assert any(row["phase"] == "fail_closed" and not row["command_sent"] for row in trace)
+
+
+def test_blocking_gnss_change_cannot_send_a_plan_based_on_old_position(tmp_path):
+    class BlockingFusionDrone(LocalKinematicDrone):
+        def __init__(self, clock):
+            super().__init__(clock)
+            self.sent_at = []
+
+        def disable_gps_fusion(self):
+            self.clock.now += 0.5
+
+        def send(self, command):
+            self.sent_at.append(self.clock.now)
+            super().send(command)
+
+    class FreshMonitor:
+        def health(self, *, now):
+            return VioStreamHealth(True, None, 0.01, 0.001, now - 0.001)
+
+        def close(self):
+            pass
+
+    clock = Clock()
+    drone = BlockingFusionDrone(clock)
+    clock.drone = drone
+    _trace, result = run_distributed_px4_agent(
+        DistributedAgentConfig(
+            vehicle_id=0,
+            output_dir=tmp_path,
+            gps_failure_at_s=0.0,
+            gps_failure_mode="fusion-off",
+        ),
+        drone=drone,
+        depth_camera=LocalDepthCamera(),
+        peer_node=LocalPeerNode(),
+        policy=ForwardPolicy(),
+        vio_monitor=FreshMonitor(),
+        monotonic=clock.time,
+        wall_time=clock.wall_time,
+        sleep=clock.sleep,
+    )
+
+    assert drone.sent_at == []
+    assert drone.land_called
+    assert result["metrics"]["last_state_health_reason"] == "stale-control-observation"
+
+
+def test_depth_frame_expiring_during_planning_cannot_be_used_for_a_command(tmp_path):
+    class NearExpiryDepth(LocalDepthCamera):
+        def latest(self, vehicle_id, *, now, max_age_s):
+            return DepthObservation(now - 0.34, 19.1, 0.0, 19.1, 19.1, 0.0, (19.1,) * 9)
+
+    class SlowAgent:
+        phase = "escaping"
+        should_land = False
+        policy_calls = 1
+        last_decision = None
+        previous_action = (0.0, 0.0)
+
+        def command(self, **_kwargs):
+            clock.now += 0.05
+            return FlightCommand.hover("slow planning")
+
+    class RecordingDrone(LocalKinematicDrone):
+        def __init__(self, clock):
+            super().__init__(clock)
+            self.sent = 0
+
+        def send(self, command):
+            self.sent += 1
+            super().send(command)
+
+    clock = Clock()
+    drone = RecordingDrone(clock)
+    clock.drone = drone
+    _trace, result = run_distributed_px4_agent(
+        DistributedAgentConfig(vehicle_id=0, output_dir=tmp_path),
+        drone=drone,
+        depth_camera=NearExpiryDepth(),
+        peer_node=LocalPeerNode(),
+        agent=SlowAgent(),
+        monotonic=clock.time,
+        wall_time=clock.wall_time,
+        sleep=clock.sleep,
+    )
+
+    assert drone.sent == 0
+    assert drone.land_called
+    assert result["metrics"]["last_state_health_reason"] == "stale-depth-observation"
+
+
 def test_worker_rejects_non_finite_planner_command_and_lands(tmp_path):
     clock = Clock()
     drone = LocalKinematicDrone(clock)
@@ -754,6 +984,21 @@ def test_coordinator_enables_external_vision_independently_on_every_vehicle(tmp_
     )
 
     assert all("--external-vision-fusion" in command for command in commands)
+
+
+def test_coordinator_routes_vio_health_to_each_matching_worker(tmp_path):
+    commands = build_distributed_agent_commands(
+        python_executable="python3",
+        agent_script=Path("tools/px4_distributed_agent.py"),
+        output_dir=tmp_path,
+        model_path=Path("actor.npz"),
+        vehicle_count=5,
+        vio_health_base_port=16880,
+    )
+
+    assert [int(command[command.index("--vio-health-port") + 1]) for command in commands] == [
+        16880, 16881, 16882, 16883, 16884,
+    ]
 
 
 def test_time_alignment_builds_complete_frames_from_independent_worker_clocks():

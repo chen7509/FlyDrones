@@ -108,6 +108,7 @@ def run_trial(*, name: str, profile: Path, fleet_size: int, model: Path) -> dict
         "FLYDRONES_PX4_RUN_DIR": str(run_dir),
         "FLYDRONES_VIO_FAULT_PROFILE": str(profile_copy.resolve()),
         "FLYDRONES_VEHICLE_COUNT": str(fleet_size),
+        "FLYDRONES_VIO_HEALTH_BASE_PORT": "16880",
         "PYTHONPATH": str(ROOT / "src"),
     })
     try:
@@ -123,14 +124,14 @@ def run_trial(*, name: str, profile: Path, fleet_size: int, model: Path) -> dict
                           "--vehicle-id", "0", "--output", str(output), "--model", str(model_copy),
                           "--mission-timeout", "70", "--gps-failure-at", "5",
                           "--gps-failure-mode", "fusion-off", "--external-vision-fusion",
-                          "--fault-marker", str(marker)]
+                          "--fault-marker", str(marker), "--vio-health-port", "16880"]
             else:
                 worker = [sys.executable, str(ROOT / "tools/run_distributed_px4_swarm.py"),
                           "--output", str(output), "--model", str(model_copy),
                           "--mission-timeout", "70", "--process-timeout", "180",
                           "--gps-failure-vehicle", "0", "--gps-failure-at", "5",
                           "--gps-failure-mode", "fusion-off", "--external-vision-fusion",
-                          "--fault-marker", str(marker)]
+                          "--fault-marker", str(marker), "--vio-health-base-port", "16880"]
             with (output / "worker.log").open("w", encoding="utf-8") as log:
                 result = subprocess.run(worker, env=environment, stdout=log, stderr=subprocess.STDOUT,
                                         check=False, timeout=240)
@@ -196,7 +197,7 @@ def main() -> int:
 
         summary = summarize_trial(ROOT / "results" / "vio-stress" / args.name)
         return 0 if (summary["operational_continuity_pass"]
-                     or summary["fault_vehicle_verified_fail_closed_response"] and summary["all_landed"]) else 2
+                     or summary["fault_vehicle_gate_land_sequence_observed"] and summary["all_landed"]) else 2
     except Exception as exc:
         print(f"trial scoring failed: {exc}", file=sys.stderr)
         return 2

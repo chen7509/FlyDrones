@@ -8,7 +8,7 @@ import json
 import math
 import os
 import time
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from pathlib import Path
 
 from .gazebo_depth import DepthCameraBank, px4_depth_camera_topics
@@ -23,6 +23,7 @@ from .sitl_swarm import (
     px4_swarm_specs,
 )
 from .vio_faults import write_activation
+from .vio_stream_monitor import VioStreamMonitor
 
 
 @dataclass(frozen=True)
@@ -43,6 +44,8 @@ class DistributedAgentConfig:
     gps_failure_mode: str = "off"
     fault_marker_path: str | Path | None = None
     external_vision_fusion: bool = False
+    vio_health_port: int | None = None
+    vio_max_age_s: float = 0.25
     local_frame_realign_window_s: float = 3.0
     peer_base_port: int = 16770
     peer_config: PeerUdpConfig = field(default_factory=lambda: PeerUdpConfig(
@@ -69,6 +72,10 @@ class DistributedAgentConfig:
             raise ValueError("unsupported GPS failure mode")
         if self.local_frame_realign_window_s <= 0.0:
             raise ValueError("local_frame_realign_window_s must be positive")
+        if self.vio_health_port is not None and not 1 <= self.vio_health_port <= 65535:
+            raise ValueError("vio_health_port must be a valid UDP port")
+        if self.vio_max_age_s <= 0.0:
+            raise ValueError("vio_max_age_s must be positive")
 
 
 @dataclass(frozen=True)
@@ -78,6 +85,8 @@ class LocalStateHealth:
     position_age_s: float | None
     attitude_age_s: float | None
     estimator_age_s: float | None = None
+    vision_age_s: float | None = None
+    vision_transport_delay_s: float | None = None
 
 
 class LocalFrameContinuity:
@@ -203,6 +212,7 @@ def build_distributed_agent_commands(
     gps_failure_mode: str = "off",
     external_vision_fusion: bool = False,
     fault_marker_path: str | Path | None = None,
+    vio_health_base_port: int | None = None,
 ) -> list[list[str]]:
     if vehicle_count != 5:
         raise ValueError("the distributed PX4 trial currently requires five workers")
@@ -210,6 +220,8 @@ def build_distributed_agent_commands(
         raise ValueError("GPS failure vehicle id is outside the fleet")
     if gps_failure_mode not in {"off", "stuck", "wrong", "fusion-off"}:
         raise ValueError("unsupported GPS failure mode")
+    if vio_health_base_port is not None and not 1 <= vio_health_base_port <= 65531:
+        raise ValueError("vio_health_base_port must leave room for five workers")
     commands = []
     for vehicle_id in range(vehicle_count):
         command = [
@@ -230,6 +242,8 @@ def build_distributed_agent_commands(
                 command.extend(["--fault-marker", str(fault_marker_path)])
         if external_vision_fusion:
             command.append("--external-vision-fusion")
+        if vio_health_base_port is not None:
+            command.extend(["--vio-health-port", str(vio_health_base_port + vehicle_id)])
         commands.append(command)
     return commands
 
@@ -623,6 +637,7 @@ def run_distributed_px4_agent(
     peer_node=None,
     policy=None,
     agent=None,
+    vio_monitor=None,
     monotonic=time.monotonic,
     wall_time=time.time,
     sleep=time.sleep,
@@ -655,6 +670,12 @@ def run_distributed_px4_agent(
         )
     if agent is None and policy is None:
         policy = NumpyMlpPolicy.load(config.policy_path)
+    if vio_monitor is None and config.vio_health_port is not None:
+        vio_monitor = VioStreamMonitor(
+            vehicle_id=config.vehicle_id,
+            port=config.vio_health_port,
+            max_age_s=config.vio_max_age_s,
+        )
 
     output_dir = Path(config.output_dir)
     period = 1.0 / max(5.0, float(config.rate_hz))
@@ -681,6 +702,11 @@ def run_distributed_px4_agent(
     fail_closed_land = False
     state_health_failures = 0
     last_state_health_reason: str | None = None
+    fail_closed_triggered_at_s: float | None = None
+    last_command_sent_at_s: float | None = None
+    last_command_vision_age_s: float | None = None
+    land_command_at_s: float | None = None
+    land_request_sent = False
     gps_failure_injected = False
     external_vision_fusion_enabled = False
     gps_failure_injected_at_s: float | None = None
@@ -691,6 +717,19 @@ def run_distributed_px4_agent(
     def position_from_local(local: tuple[float, float, float]) -> tuple[float, float, float]:
         origin = launch_local_origin or (0.0, 0.0)
         return spec.global_position(local[0] - origin[0], local[1] - origin[1], local[2])
+
+    def state_and_vision_health(telemetry, *, now: float) -> LocalStateHealth:
+        state = evaluate_local_state_health(telemetry, now=now, max_age_s=config.state_max_age_s)
+        if not state.healthy or vio_monitor is None:
+            return state
+        vision = vio_monitor.health(now=now)
+        return replace(
+            state,
+            healthy=vision.healthy,
+            reason=vision.reason,
+            vision_age_s=vision.sample_age_s,
+            vision_transport_delay_s=vision.transport_delay_s,
+        )
 
     def sample(
         phase: str,
@@ -734,6 +773,19 @@ def run_distributed_px4_agent(
                 if state_health is not None and state_health.estimator_age_s is not None
                 else None
             ),
+            "vision_age_s": (
+                round(state_health.vision_age_s, 5)
+                if state_health is not None and state_health.vision_age_s is not None
+                else None
+            ),
+            "vision_transport_delay_s": (
+                round(state_health.vision_transport_delay_s, 5)
+                if state_health is not None and state_health.vision_transport_delay_s is not None
+                else None
+            ),
+            "command_sent": False,
+            "command_sent_at_s": None,
+            "vision_age_at_send_s": None,
             "gps_failure_injected": gps_failure_injected,
             "external_vision_fusion_enabled": external_vision_fusion_enabled,
             "local_frame_realignments": frame_continuity.realignments,
@@ -782,11 +834,7 @@ def run_distributed_px4_agent(
         while True:
             preflight_telemetry = drone.telemetry()
             timestamp = monotonic()
-            preflight_health = evaluate_local_state_health(
-                preflight_telemetry,
-                now=timestamp,
-                max_age_s=config.state_max_age_s,
-            )
+            preflight_health = state_and_vision_health(preflight_telemetry, now=timestamp)
             if preflight_health.healthy:
                 break
             if timestamp >= state_ready_deadline:
@@ -803,22 +851,43 @@ def run_distributed_px4_agent(
             # Five SITL instances occasionally contend during simultaneous
             # startup. Re-prime OFFBOARD and retry this local vehicle once.
             drone.takeoff()
+        # PX4 takeoff/Offboard priming blocks for several seconds. Drain the
+        # monitor's queued frames and wait for a newly delivered VIO sample
+        # before issuing the first autonomous setpoint.
+        if vio_monitor is not None:
+            post_takeoff_deadline = monotonic() + config.state_ready_timeout_s
+            while True:
+                post_takeoff_telemetry = drone.telemetry()
+                timestamp = monotonic()
+                post_takeoff_health = state_and_vision_health(post_takeoff_telemetry, now=timestamp)
+                if post_takeoff_health.healthy:
+                    break
+                if timestamp >= post_takeoff_deadline:
+                    fail_closed_land = True
+                    state_health_failures += 1
+                    last_state_health_reason = post_takeoff_health.reason
+                    fail_closed_triggered_at_s = timestamp
+                    raise TimeoutError(f"local state did not recover after takeoff: {post_takeoff_health.reason}")
+                sleep(period)
         mission_start = monotonic()
         deadline = mission_start + config.mission_timeout_s
         arrived_frames = 0
         while True:
             telemetry = drone.telemetry()
             timestamp = monotonic()
-            state_health = evaluate_local_state_health(
-                telemetry,
-                now=timestamp,
-                max_age_s=config.state_max_age_s,
-            )
+            state_health = state_and_vision_health(telemetry, now=timestamp)
             if not state_health.healthy:
                 fail_closed_land = True
                 state_health_failures += 1
                 last_state_health_reason = state_health.reason
+                fail_closed_triggered_at_s = timestamp
                 error = f"local state unhealthy: {state_health.reason}"
+                failed_position = position_from_local((
+                    float(telemetry.x_m or 0.0),
+                    float(telemetry.y_m or 0.0),
+                    float(telemetry.alt_m or 0.0),
+                ))
+                sample("fail_closed", failed_position, telemetry, None, 0, state_health)
                 break
             elapsed = timestamp - mission_start
             allow_frame_realign = (
@@ -899,7 +968,49 @@ def run_distributed_px4_agent(
             if bool(getattr(agent, "should_land", False)):
                 fail_closed_land = True
                 break
+            # Parameter changes and planning can block after the loop-entry
+            # check. Re-read both PX4 state and the delivered VIO stream at
+            # the point where the autonomous setpoint actually leaves us.
+            send_telemetry = drone.telemetry()
+            send_check_at_s = monotonic()
+            send_health = state_and_vision_health(send_telemetry, now=send_check_at_s)
+            if not send_health.healthy:
+                fail_closed_land = True
+                state_health_failures += 1
+                last_state_health_reason = send_health.reason
+                fail_closed_triggered_at_s = send_check_at_s
+                error = f"local state unhealthy before command: {send_health.reason}"
+                sample("fail_closed", position, send_telemetry, observation, len(tracks), send_health)
+                break
+            if send_check_at_s - timestamp > config.state_max_age_s:
+                fail_closed_land = True
+                state_health_failures += 1
+                last_state_health_reason = "stale-control-observation"
+                fail_closed_triggered_at_s = send_check_at_s
+                error = "control observation expired before command"
+                stale_plan_health = replace(send_health, healthy=False, reason=last_state_health_reason)
+                sample("fail_closed", position, send_telemetry, observation, len(tracks), stale_plan_health)
+                break
+            if observation is not None:
+                depth_age_s = send_check_at_s - observation.captured_at
+                if not math.isfinite(depth_age_s) or not 0 <= depth_age_s <= 0.35:
+                    fail_closed_land = True
+                    state_health_failures += 1
+                    last_state_health_reason = "stale-depth-observation"
+                    fail_closed_triggered_at_s = send_check_at_s
+                    error = "depth observation expired before command"
+                    stale_depth_health = replace(send_health, healthy=False, reason=last_state_health_reason)
+                    sample("fail_closed", position, send_telemetry, observation, len(tracks), stale_depth_health)
+                    break
             drone.send(command)
+            last_command_sent_at_s = monotonic()
+            trace[-1]["command_sent"] = True
+            trace[-1]["command_sent_at_s"] = round(last_command_sent_at_s, 6)
+            if send_health.vision_age_s is not None:
+                last_command_vision_age_s = send_health.vision_age_s + (
+                    last_command_sent_at_s - send_check_at_s
+                )
+                trace[-1]["vision_age_at_send_s"] = round(last_command_vision_age_s, 6)
             arrived_frames = arrived_frames + 1 if agent.phase == "arrived" else 0
             if arrived_frames >= max(2, math.ceil(config.rate_hz * 0.5)):
                 break
@@ -912,7 +1023,9 @@ def run_distributed_px4_agent(
     finally:
         if connected:
             try:
+                land_command_at_s = monotonic()
                 drone.land()
+                land_request_sent = True
             except Exception as exc:
                 if error is None:
                     error = f"landing command failed: {exc}"
@@ -943,6 +1056,8 @@ def run_distributed_px4_agent(
             depth_camera.close()
         finally:
             peer_node.close()
+            if vio_monitor is not None:
+                vio_monitor.close()
 
     reached_altitude = any(float(row["alt_m"]) >= config.target_altitude_m - 0.2 for row in trace)
     escaped = any(float(row["x_m"]) >= 5.5 for row in trace)
@@ -984,6 +1099,12 @@ def run_distributed_px4_agent(
         "fail_closed_land": fail_closed_land,
         "state_health_failures": state_health_failures,
         "last_state_health_reason": last_state_health_reason,
+        "fail_closed_triggered_at_s": fail_closed_triggered_at_s,
+        "last_command_sent_at_s": last_command_sent_at_s,
+        "last_command_vision_age_s": last_command_vision_age_s,
+        "land_command_at_s": land_command_at_s,
+        "land_request_sent": land_request_sent,
+        "vio_max_age_s": config.vio_max_age_s if vio_monitor is not None else None,
         "gps_failure_injected": gps_failure_injected,
         "gps_failure_mode": config.gps_failure_mode if config.gps_failure_at_s is not None else None,
         "gps_failure_mechanism": gps_failure_mechanism,

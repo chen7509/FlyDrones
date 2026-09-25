@@ -62,6 +62,9 @@ def _relay_metrics(path: Path, fleet_size: int) -> tuple[dict, dict[str, list[tu
     for samples in raw.values():
         samples.sort()
     active = [event for event in publishes if event["model"] == "x500_depth_fly_0" and event["active"]]
+    active_source_stamps = sorted(float(event["source_stamp_ns"]) / 1e6 for event in active)
+    active_source_gaps = [right - left for left, right in
+                          zip(active_source_stamps, active_source_stamps[1:])]
     delays = sorted(event["actual_delay_ms"] for event in active)
     offsets = [math.dist(event["offset_m"], (0, 0, 0)) for event in active]
     errors = []
@@ -96,6 +99,9 @@ def _relay_metrics(path: Path, fleet_size: int) -> tuple[dict, dict[str, list[tu
         "closed_cleanly": last_event == "stop",
         "malformed_log_lines": malformed_lines,
         "fault_vehicle_active_published": len(active),
+        "fault_vehicle_active_source_max_gap_ms": (
+            round(max(active_source_gaps), 3) if active_source_gaps else None
+        ),
         "drop_reasons": drop_reasons,
         "actual_delay_median_ms": delays[len(delays) // 2] if delays else None,
         "actual_delay_p95_ms": delays[min(len(delays) - 1, int(len(delays) * 0.95))] if delays else None,
@@ -114,18 +120,136 @@ def _relay_metrics(path: Path, fleet_size: int) -> tuple[dict, dict[str, list[tu
     }, raw, publishes
 
 
-def _ulog_metrics(path: Path, publishes: list[dict]) -> tuple[dict, dict]:
+def _ulog_metrics(path: Path, publishes: list[dict]) -> tuple[dict, dict, dict]:
     from pyulog import ULog
 
     if not path.exists():
-        return {"accepted": False, "error": "ULog missing"}, {"matched_active_samples": 0}
+        return {"accepted": False, "error": "ULog missing"}, {"matched_active_samples": 0}, {}
     ulog = ULog(str(path))
     datasets = {dataset.name: dataset.data for dataset in ulog.data_list if dataset.multi_id == 0}
     disable = next((float(timestamp) / 1_000_000 for timestamp, name, value in ulog.changed_parameters
                     if name == "EKF2_GPS_CTRL" and int(value) == 0), None)
     result = summarize_post_gnss_evidence(datasets, gps_disable_s=disable)
     result["source"] = {"ulog_sha256": _sha256(path), "ulog_bytes": path.stat().st_size}
-    return result, match_relay_to_visual_odometry(publishes, datasets.get("vehicle_visual_odometry", {}))
+    return (result, match_relay_to_visual_odometry(publishes, datasets.get("vehicle_visual_odometry", {})),
+            datasets.get("vehicle_status", {}))
+
+
+def _relay_sim_clock(path: Path) -> list[tuple[float, float]]:
+    if not path.exists():
+        return []
+    points = []
+    for line in path.open(encoding="utf-8"):
+        try:
+            event = json.loads(line)
+        except json.JSONDecodeError:
+            continue
+        if event.get("event") == "ingress" and event.get("model") == "x500_depth_fly_0":
+            points.append((float(event["received_at"]), float(event["source_stamp_ns"]) / 1e9))
+    return points
+
+
+def verify_px4_land_transition(trigger: float | None, relay_clock: list[tuple[float, float]],
+                               status: dict) -> dict:
+    """Map the host gate time to Gazebo sim time, then inspect PX4 nav state."""
+    result = {"observed": False, "gate_sim_time_s": None,
+              "clock_alignment_error_s": None, "transition_after_gate_s": None}
+    if trigger is None or not relay_clock or "timestamp" not in status or "nav_state" not in status:
+        return result
+    host, sim = min(relay_clock, key=lambda pair: abs(pair[0] - float(trigger)))
+    alignment_error = abs(host - float(trigger))
+    result["clock_alignment_error_s"] = round(alignment_error, 6)
+    if alignment_error > 0.05:
+        return result
+    estimated_gate_sim = sim + (float(trigger) - host)
+    result["gate_sim_time_s"] = round(estimated_gate_sim, 6)
+    prior_nav = None
+    for stamp, nav in zip(status["timestamp"], status["nav_state"]):
+        state = int(nav)
+        timestamp = float(stamp) / 1e6
+        if state == 18 and prior_nav is not None and prior_nav != 18:
+            lag = timestamp - estimated_gate_sim
+            if 0 <= lag <= 0.2:
+                result["observed"] = True
+                result["transition_after_gate_s"] = round(lag, 6)
+                break
+        prior_nav = state
+    return result
+
+
+def verify_command_gate(rows: list[dict], metrics: dict, publishes: list[dict]) -> dict:
+    """Correlate the relay gap with worker command silence and landing request."""
+    trigger = metrics.get("fail_closed_triggered_at_s")
+    last_command = metrics.get("last_command_sent_at_s")
+    land_command = metrics.get("land_command_at_s")
+    result = {
+        "verified": False,
+        "reason": metrics.get("last_state_health_reason"),
+        "trigger_monotonic_s": trigger,
+        "last_command_monotonic_s": last_command,
+        "land_command_monotonic_s": land_command,
+        "relay_gap_covering_trigger_s": None,
+        "relay_sample_age_at_trigger_s": None,
+        "no_autonomous_setpoint_after_trigger": False,
+        "all_sent_setpoints_fresh": False,
+        "max_relay_age_at_send_s": None,
+        "land_request_sent": bool(metrics.get("land_request_sent")),
+        "land_request_latency_s": None,
+    }
+    if trigger is None or last_command is None or land_command is None:
+        return result
+    trigger = float(trigger)
+    relevant = sorted(
+        (event for event in publishes if event.get("model") == "x500_depth_fly_0"
+         and "published_at" in event and "received_at" in event),
+        key=lambda event: float(event["published_at"]),
+    )
+    before = [event for event in relevant if float(event["published_at"]) <= trigger]
+    after = [event for event in relevant if float(event["published_at"]) > trigger]
+    if not before or not after:
+        return result
+    prior, following = before[-1], after[0]
+    gap = float(following["published_at"]) - float(prior["published_at"])
+    age = trigger - float(prior["received_at"])
+    limit = float(metrics.get("vio_max_age_s") or 0.25)
+    sent_rows = [row for row in rows if str(row.get("command_sent", "")).lower() == "true"]
+    later_commands = False
+    fresh_sent = bool(sent_rows)
+    relay_ages = []
+    publish_times = [float(event["published_at"]) for event in relevant]
+    for row in sent_rows:
+        try:
+            sent_at = float(row["command_sent_at_s"])
+            measured_age = float(row["vision_age_at_send_s"])
+        except (KeyError, TypeError, ValueError):
+            fresh_sent = False
+            continue
+        later_commands |= sent_at >= trigger - 0.000001
+        prior_index = bisect.bisect_right(publish_times, sent_at) - 1
+        if prior_index < 0:
+            fresh_sent = False
+            continue
+        relay_age = sent_at - float(relevant[prior_index]["received_at"])
+        relay_ages.append(relay_age)
+        fresh_sent &= (math.isfinite(measured_age) and math.isfinite(relay_age)
+                       and 0 <= measured_age <= limit and 0 <= relay_age <= limit)
+    latency = float(land_command) - trigger
+    result.update({
+        "relay_gap_covering_trigger_s": round(gap, 6),
+        "relay_sample_age_at_trigger_s": round(age, 6),
+        "no_autonomous_setpoint_after_trigger": not later_commands,
+        "all_sent_setpoints_fresh": fresh_sent,
+        "max_relay_age_at_send_s": round(max(relay_ages), 6) if relay_ages else None,
+        "land_request_latency_s": round(latency, 6),
+        "verified": bool(
+            metrics.get("last_state_health_reason") == "stale-vio-frame"
+            and gap > limit and age >= limit
+            and float(last_command) <= trigger
+            and not later_commands and fresh_sent and metrics.get("land_request_sent")
+            and 0.0 <= latency <= 0.2
+        ),
+    })
+    return result
 
 
 def classify_trial(trial: dict, profile: dict) -> dict:
@@ -152,9 +276,10 @@ def classify_trial(trial: dict, profile: dict) -> dict:
     if has_offset:
         px4_effect = px4_effect and correspondence.get("matched_offset_samples", 0) >= 3
     if profile.get("dropout_duration_s", 0):
+        source_gap_ms = relay.get("fault_vehicle_active_source_max_gap_ms") or 0
         px4_effect = px4_effect and (
             trial["visual_after_gnss_disable"].get("metrics", {}).get("visual_stream_max_gap_ms") or 0
-        ) >= 0.75 * profile["dropout_duration_s"] * 1000
+        ) >= 0.75 * source_gap_ms and source_gap_ms >= 60
     peer = relay.get("minimum_intervehicle_center_distance_m")
     forest = relay.get("minimum_center_to_trunk_surface_m")
     peer_geometry = trial["fleet_size"] == 1 or peer is not None and peer >= 0.72
@@ -169,6 +294,11 @@ def classify_trial(trial: dict, profile: dict) -> dict:
     continuity = (ready and trial["worker_exit_code"] == 0 and all_mission and all_landed
                   and trial["visual_after_gnss_disable"].get("accepted", False) and geometry)
     cleanup = trial.get("stop_exit_code") == 0 and trial.get("shared_px4_files_restored") is True
+    gate_land_sequence = bool(
+        fault_worker.get("command_gate", {}).get("verified")
+        and fault_worker.get("px4_land_transition", {}).get("observed")
+        and fault_worker.get("landed") and geometry and px4_effect and cleanup
+    )
     return {
         "fault_effect_observed_at_relay": bool(fault_effect),
         "fault_effect_proven_at_px4": bool(px4_effect),
@@ -180,10 +310,15 @@ def classify_trial(trial: dict, profile: dict) -> dict:
         "fault_vehicle_fail_closed_landing_observed": bool(
             fault_worker.get("fail_closed_land") and fault_worker.get("landed") and geometry
         ),
+        "fault_vehicle_command_gate_verified": bool(
+            fault_worker.get("command_gate", {}).get("verified")
+        ),
+        "fault_vehicle_gate_land_sequence_observed": gate_land_sequence,
         "fault_vehicle_verified_fail_closed_response": False,
         "fail_closed_verification_limit": (
-            "Worker landing alone does not prove command silence during invalid EKF state; "
-            "ULog-to-command timeline correlation is required."
+            "The worker attempted a MAVLink land request and a subsequent PX4 AUTO_LAND "
+            "transition can be correlated in sim time, but no COMMAND_ACK was captured; "
+            "request causality and physical safety are not proven."
         ),
         "operational_continuity_pass": bool(continuity and cleanup),
         "safety_limit": "Geometry is a center-distance proxy; physical contact is not proven absent.",
@@ -219,6 +354,8 @@ def summarize_trial(directory: Path) -> dict:
             "gnss_disable_injected": bool(result["metrics"]["gps_failure_injected"]),
             "state_health_failures": result["metrics"]["state_health_failures"],
             "last_state_health_reason": result["metrics"].get("last_state_health_reason"),
+            "command_gate": verify_command_gate(rows, result["metrics"], publishes)
+            if vehicle_id == 0 else None,
             "planner_p95_ms": result["metrics"]["planner_p95_ms"],
             "initial_estimated_vs_truth_horizontal_error_m": round(initial_error, 4)
             if initial_error is not None else None,
@@ -228,10 +365,16 @@ def summarize_trial(directory: Path) -> dict:
             "minimum_depth_range_m": round(min(float(row["depth_nearest_m"]) for row in rows
                                                if row["depth_nearest_m"]), 4) if rows else None,
         })
-    visual, correspondence = _ulog_metrics(directory / "px4-ulogs/agent-0.ulg", publishes)
+    visual, correspondence, px4_status = _ulog_metrics(directory / "px4-ulogs/agent-0.ulg", publishes)
+    if workers:
+        workers[0]["px4_land_transition"] = verify_px4_land_transition(
+            workers[0].get("command_gate", {}).get("trigger_monotonic_s"),
+            _relay_sim_clock(directory / "vio-relay.jsonl"),
+            px4_status,
+        )
     profile = json.loads((directory / "fault-profile.json").read_text(encoding="utf-8"))
     combined = {
-        "schema": "flydrones-vio-stress-summary-v3",
+        "schema": "flydrones-vio-stress-summary-v4",
         "name": manifest["name"],
         "fleet_size": count,
         "profile_sha256": manifest["profile_sha256"],

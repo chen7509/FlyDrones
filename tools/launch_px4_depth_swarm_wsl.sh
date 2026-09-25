@@ -7,6 +7,7 @@ build="$px4_root/build/px4_sitl_default"
 run_dir="${FLYDRONES_PX4_RUN_DIR:-/tmp/flydrones-px4-five-depth}"
 vehicle_count="${FLYDRONES_VEHICLE_COUNT:-5}"
 vio_fault_profile="${FLYDRONES_VIO_FAULT_PROFILE:-}"
+vio_health_base_port="${FLYDRONES_VIO_HEALTH_BASE_PORT:-}"
 world_source="$repo_root/results/px4-sitl-five-depth/flydrones_forest.sdf"
 world_target="$px4_root/Tools/simulation/gz/worlds/flydrones_forest.sdf"
 model_root="$px4_root/Tools/simulation/gz/models"
@@ -62,9 +63,14 @@ sleep 2
 if [[ -z "$vio_fault_profile" ]]; then rm -rf "$run_dir"; fi
 mkdir -p "$run_dir"
 if [[ -n "$vio_fault_profile" ]]; then
+  relay_health_args=()
+  if [[ -n "$vio_health_base_port" ]]; then
+    relay_health_args=(--health-base-port "$vio_health_base_port")
+  fi
   nohup env PYTHONPATH="$repo_root/src" python3 "$repo_root/tools/relay_gazebo_vio.py" \
     --profile "$vio_fault_profile" --marker "$run_dir/fault-start.json" \
     --output "$run_dir/vio-relay.jsonl" --vehicle-count "$vehicle_count" \
+    "${relay_health_args[@]}" \
     >"$run_dir/vio-relay.stdout.log" 2>"$run_dir/vio-relay.stderr.log" </dev/null &
   echo $! >"$run_dir/vio-relay.pid"
 fi

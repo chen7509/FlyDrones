@@ -1,4 +1,9 @@
-from tools.summarize_vio_stress_wsl import _relay_metrics, classify_trial
+from tools.summarize_vio_stress_wsl import (
+    _relay_metrics,
+    classify_trial,
+    verify_command_gate,
+    verify_px4_land_transition,
+)
 
 
 def _trial():
@@ -71,6 +76,38 @@ def test_delay_must_reach_px4_with_expected_source_age():
     assert classify_trial(trial, profile)["fault_effect_proven_at_px4"]
 
 
+def test_dropout_uses_source_sim_time_gap_when_five_vehicle_simulation_slows():
+    trial = _trial()
+    trial["relay"].update(
+        drop_reasons={"scheduled-dropout": 11},
+        fault_vehicle_active_source_max_gap_ms=240,
+    )
+    trial["visual_after_gnss_disable"]["metrics"]["visual_stream_max_gap_ms"] = 244
+    profile = {"delay_ms": 0, "dropout_duration_s": 0.4,
+               "drift_mps": [0, 0, 0], "false_pose_offset_m": [0, 0, 0]}
+
+    assert classify_trial(trial, profile)["fault_effect_proven_at_px4"]
+    trial["visual_after_gnss_disable"]["metrics"]["visual_stream_max_gap_ms"] = 100
+    assert not classify_trial(trial, profile)["fault_effect_proven_at_px4"]
+
+
+def test_correlated_gate_and_px4_land_sequence_is_not_claimed_as_command_causality():
+    trial = _trial()
+    trial["worker_exit_code"] = 2
+    trial["relay"].update(drop_reasons={"scheduled-dropout": 11},
+                          fault_vehicle_active_source_max_gap_ms=240)
+    trial["visual_after_gnss_disable"]["metrics"]["visual_stream_max_gap_ms"] = 244
+    trial["workers"][0].update(mission_accepted=False, fail_closed_land=True,
+                               command_gate={"verified": True},
+                               px4_land_transition={"observed": True})
+    profile = {"delay_ms": 0, "dropout_duration_s": 0.4,
+               "drift_mps": [0, 0, 0], "false_pose_offset_m": [0, 0, 0]}
+
+    result = classify_trial(trial, profile)
+    assert result["fault_vehicle_gate_land_sequence_observed"]
+    assert not result["fault_vehicle_verified_fail_closed_response"]
+
+
 def test_cleanup_failure_cannot_be_operational_pass():
     trial = _trial()
     profile = {"delay_ms": 0, "dropout_duration_s": 0,
@@ -89,3 +126,46 @@ def test_partial_relay_log_remains_scored_as_incomplete(tmp_path):
     metrics, _raw, _published = _relay_metrics(path, 1)
     assert metrics["malformed_log_lines"] == 1
     assert not metrics["closed_cleanly"]
+
+
+def test_command_gate_requires_relay_gap_no_later_setpoints_and_prompt_land_request():
+    rows = [
+        {"monotonic_s": "10.20", "command_sent": "True", "command_sent_at_s": "10.20",
+         "vision_age_at_send_s": "0.20", "phase": "escaping"},
+        {"monotonic_s": "10.30", "command_sent": "False", "phase": "fail_closed"},
+    ]
+    metrics = {
+        "last_state_health_reason": "stale-vio-frame",
+        "fail_closed_triggered_at_s": 10.30,
+        "last_command_sent_at_s": 10.20,
+        "land_command_at_s": 10.31,
+        "land_request_sent": True,
+    }
+    publishes = [
+        {"model": "x500_depth_fly_0", "received_at": 10.00, "published_at": 10.01},
+        {"model": "x500_depth_fly_0", "received_at": 10.43, "published_at": 10.44},
+    ]
+
+    evidence = verify_command_gate(rows, metrics, publishes)
+    assert evidence["verified"]
+    assert evidence["relay_gap_covering_trigger_s"] == 0.43
+    rows[1]["command_sent"] = "True"
+    assert not verify_command_gate(rows, metrics, publishes)["verified"]
+    rows[1]["command_sent"] = "False"
+    rows[0]["vision_age_at_send_s"] = "0.26"
+    assert not verify_command_gate(rows, metrics, publishes)["verified"]
+    rows[0]["vision_age_at_send_s"] = "0.20"
+    metrics["land_request_sent"] = False
+    assert not verify_command_gate(rows, metrics, publishes)["verified"]
+
+
+def test_px4_land_transition_must_follow_the_correlated_gate_time():
+    relay_clock = [(10.29, 22.985), (10.30, 22.995), (10.31, 23.005)]
+    status = {"timestamp": [22_800_000, 22_996_000, 23_008_000, 23_270_000],
+              "nav_state": [14, 14, 18, 18]}
+
+    evidence = verify_px4_land_transition(10.30, relay_clock, status)
+    assert evidence["observed"]
+    assert evidence["transition_after_gate_s"] == 0.013
+    status["nav_state"] = [18, 18, 18, 18]
+    assert not verify_px4_land_transition(10.30, relay_clock, status)["observed"]
