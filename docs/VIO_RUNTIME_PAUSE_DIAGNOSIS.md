@@ -11,6 +11,7 @@
 | `fleet-vio-gate-baseline-pause-probe-1` | 254.8 ms | 20 ms | 下一帧 1.04 ms | 5/5；无门控，转发正常退出 |
 | `fleet-vio-gate-baseline-pause-probe-2` | 232.9 ms | 20 ms | 正常 | 4/5；3 号机任务超时，无视觉门控 |
 | `fleet-vio-gate-process-probe-1` | 224.5 ms | 20 ms | 正常 | 5/5；无门控，仍有时钟停顿 |
+| `fleet-vio-gate-thread-probe-1` | 232.0 ms | 20 ms | 正常 | 4/5；无门控，仍有时钟停顿 |
 
 第三轮使用控制器提交 `0e9decf`（与第二轮的飞行控制和转发代码一致），策略 SHA-256 `3c723587bfdbd15a8dc5976edc13d284b713dc081005b2dac04692c7d1b4accb`，世界 SHA-256 `da3e81c10a7d848671c1045f9da267eca65fd312793231dd99a038f55824e8ad`，仿真平均速度为 0.8671 倍墙钟。逐机任务、落地、转发收尾和 PX4 文件恢复均通过。
 
@@ -24,9 +25,11 @@
 
 恢复原相机后又做了进程级探针轮次。该轮 5/5 完成，但 0 号机启动期有约 695 ms 原始里程计空窗；独立 `/clock` 回调对应约 680 ms 墙钟间隔、仅 4 ms 仿真推进。Gazebo `gz sim` 进程在这段间隔内累计消耗约 690 ms 用户态加内核态 CPU；后续多个约 150–170 ms 的时钟间隔也各自消耗约 110–150 ms CPU。进程主线程采样状态有时显示 sleeping，但进程总 CPU 仍增加，说明至少有其他线程在持续计算。证据指向 Gazebo 内部计算路径的尖峰负载；尚未定位到物理、渲染或某个模型插件的具体线程/调用栈。
 
+线程级复测 4/5 完成、无视觉门控。0 号机启动期约 687 ms 原始里程计空窗对应独立时钟约 671 ms 墙钟间隔、仅 4 ms 仿真推进；此间 Gazebo 进程约消耗 690 ms CPU，其中同一线程约消耗 620 ms。后续长间隔也主要由该线程占用。该线程的系统名称只有 `ruby`，没有函数级采样栈，不能据此指定为物理、渲染或里程计插件。这个采样将负载定位到 Gazebo 进程中的一个热线程，但仍缺函数级归因。
+
 ## 下一项可判别测试
 
-接下来应记录 Gazebo 世界统计、各线程 CPU/调用栈、物理步耗时和传感器/里程计插件的发布时刻。应优先查明导致仿真时钟尾部停顿的具体计算路径，并以尾部间隔和任务完成率同时验收；不能把阈值调大当作修复。现有四次同配置无故障五机基线为 1/5、5/5、5/5、4/5，另一次进程探针基线为 5/5；其差异不允许用单次成功宣称稳定。仍需保留所有失败，不得以平均实时率替代尾部延迟证据。原项目已经开始阶段 0，后续 VIO 替换应按总路线图阶段门槛推进。
+接下来应记录 Gazebo 热线程的函数级调用栈、世界统计、物理步耗时和传感器/里程计插件的发布时刻，才有依据决定优化哪条计算路径。应以尾部间隔和任务完成率同时验收；不能把阈值调大当作修复。现有六次正式配置的无故障五机基线分别为 1/5、5/5、5/5、4/5、5/5、4/5；差异不允许用单次成功宣称稳定。仍需保留所有失败，不得以平均实时率替代尾部延迟证据。原项目已经开始阶段 0，后续 VIO 替换应按总路线图阶段门槛推进。
 
 第三轮大型原始文件保存在本机 `results/vio-stress/fleet-vio-gate-baseline-pause-probe-1/`。`vio-relay.jsonl` SHA-256 为 `c42dcd688bab7c9e5a6c683a03710dd58fab00fa547546d2acbc0d63609fa33e`；`runtime-probe.csv` SHA-256 为 `e7cf1e7b89982b602de0fe59c58face58da5e62d3cb643a3e98dfdcad308a8b8`。诊断探针源码保存在同一原始结果根目录，未纳入控制代码。
 
@@ -37,3 +40,5 @@
 消融轮次完整原始文件见本机 `results/vio-stress/fleet-vio-gate-depth-quarter-pixels-probe/`；被临时修改的相机 SDF 副本 SHA-256 为 `4a6218067eb9f32c8a14ea2be8b0798edf00243c8ad7c4917d7ff3b36f6ad83c`，恢复后的正式相机文件 SHA-256 为 `f8d49346ec66e02ed3f8caca2d4429ac339380ae6af00f97affa0e1ab3455bcd`。该轮 `vio-relay.jsonl`、`runtime-probe.csv`、`clock-probe.csv` 的 SHA-256 依次为 `60363b0f5a34a69bfaecd3e72aede9a096616573275d44a385ecb69eae10fdc6`、`78d336556f58e6347d6c95eb54069a100b05d7ef8bd1698f6d9579309210f775`、`b5237f7e1fa2f901ce3fc57820ea491663257bdf631d120474f3127e6c5bd05b`。
 
 进程探针轮次原始文件见本机 `results/vio-stress/fleet-vio-gate-process-probe-1/`。`vio-relay.jsonl`、`clock-probe.csv`、`process-probe.csv` 的 SHA-256 依次为 `1a57279dd0fbb9557da2ecc092dbf930be1a261bf0d95468890bd511a959cf65`、`5aa329ab96bb48a6a9d204059a78a407ae6f5b823febc66f7ba6549ef3ec0ba1`、`322ff2a0b663a26b410dbaa015865d2be43d3a50350d7fd7adfb7e7afe7e2d0c`。
+
+线程探针轮次原始文件见本机 `results/vio-stress/fleet-vio-gate-thread-probe-1/`。`vio-relay.jsonl`、`clock-probe.csv`、`thread-probe.csv` 的 SHA-256 依次为 `0d6ac885f1f56859dcd95e927114cf7238aa375f7e61758e9191b9e8c5c7c5e0`、`67a5f47dae80c6122929a89311446cd2279478c274e3715e0d7e86689bffa25f`、`f8da3c1223ebfd22e064bda91556613fdabfc99e9a8f4dd35c3b8b014f4bc03a`。

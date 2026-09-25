@@ -21,10 +21,11 @@ TRIALS = (
     "fleet-vio-gate-baseline-pause-probe-2",
     "fleet-vio-gate-depth-quarter-pixels-probe",
     "fleet-vio-gate-process-probe-1",
+    "fleet-vio-gate-thread-probe-1",
 )
 COMPACT = ("trial-manifest.json", "stress-summary.json", "fault-profile.json")
 RAW = ("vio-relay.jsonl", "trajectory-replay.html", "flydrones_forest.sdf",
-       "runtime-probe.csv", "clock-probe.csv", "process-probe.csv",
+       "runtime-probe.csv", "clock-probe.csv", "process-probe.csv", "thread-probe.csv",
        "diagnostic-depth-model.sdf")
 
 
