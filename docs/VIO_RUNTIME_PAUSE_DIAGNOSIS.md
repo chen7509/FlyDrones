@@ -9,6 +9,7 @@
 | `fleet-vio-gate-frozen-baseline` | 286.3 ms | 20 ms | 下一帧 0.70 ms | 1/5；四机门控，转发退出异常 |
 | `fleet-vio-gate-frozen-baseline-v2` | 244.9 ms | 20 ms | 下一帧 2.19 ms | 5/5；转发正常退出 |
 | `fleet-vio-gate-baseline-pause-probe-1` | 254.8 ms | 20 ms | 下一帧 1.04 ms | 5/5；无门控，转发正常退出 |
+| `fleet-vio-gate-baseline-pause-probe-2` | 232.9 ms | 20 ms | 正常 | 4/5；3 号机任务超时，无视觉门控 |
 
 第三轮使用控制器提交 `0e9decf`（与第二轮的飞行控制和转发代码一致），策略 SHA-256 `3c723587bfdbd15a8dc5976edc13d284b713dc081005b2dac04692c7d1b4accb`，世界 SHA-256 `da3e81c10a7d848671c1045f9da267eca65fd312793231dd99a038f55824e8ad`，仿真平均速度为 0.8671 倍墙钟。逐机任务、落地、转发收尾和 PX4 文件恢复均通过。
 
@@ -16,8 +17,14 @@
 
 门控以墙钟数据新鲜度判断。即使仿真时间几乎没前进，只要实际飞行中观测断流，就应该停止依赖旧位姿；因此不应单凭这些结果把 250 ms 阈值放宽。第三轮 254.8 ms 空窗没有触发门控，仅表示控制循环检查时可能已经收到新帧，不说明该空窗已被修复。
 
+第四轮加了独立的 Gazebo `/clock` 订阅器。1、2 号机约 233 ms 原始里程计空窗内，时钟订阅器仍收到两条消息，但相邻回调的墙钟间隔约 105 和 99 ms，各自只推进 4 ms 仿真时间；0 号机启动期的 684 ms 里程计空窗也与约 668 ms 时钟回调间隔重合。与此同时，独立 WSL 探针整轮最大采样间隔仅 82.1 ms，前述约 233 ms 空窗内记录了 5 个样本，CPU 压力累计只增加约 1.2 ms。这进一步表明 Gazebo 仿真时钟/发布链路出现严重慢速，而非 WSL 整体暂停或转发器发布队列堆积。现有 `/clock` 探针仅记录大于 50 ms 的间隔和每 500 条采样，尚不能区分 Gazebo 物理步、模型里程计插件与 transport 发布内部各自的开销。
+
 ## 下一项可判别测试
 
-在资源空闲时，使用独立进程同时订阅 Gazebo `/clock`、世界统计和原始里程计，记录每个边界的墙钟到达时间与仿真时间；重复至少三轮同配置五机基线。若时钟也停，定位到 Gazebo 仿真或其发布；若时钟不停而里程计停，检查模型传感器/odometry 插件；若原始主题不停而 Python 回调停，检查 transport/调度。仍需保留所有失败，不得以平均实时率或单次 5/5 成功替代尾部延迟证据。当前原项目任务正在执行阶段 0，故未启动下一轮竞争性的 PX4/Gazebo 仿真。
+接下来应记录 Gazebo 世界统计、物理步耗时和传感器/里程计插件的发布时刻，在资源空闲时再重复至少三轮同配置五机基线。应优先查明导致仿真时钟尾部停顿的具体插件或负载，并以尾部间隔和任务完成率同时验收；不能把阈值调大当作修复。仍需保留所有失败，不得以平均实时率或单次 5/5 成功替代尾部延迟证据。原项目已经开始阶段 0，后续 VIO 替换应按总路线图阶段门槛推进。
 
 第三轮大型原始文件保存在本机 `results/vio-stress/fleet-vio-gate-baseline-pause-probe-1/`。`vio-relay.jsonl` SHA-256 为 `c42dcd688bab7c9e5a6c683a03710dd58fab00fa547546d2acbc0d63609fa33e`；`runtime-probe.csv` SHA-256 为 `e7cf1e7b89982b602de0fe59c58face58da5e62d3cb643a3e98dfdcad308a8b8`。诊断探针源码保存在同一原始结果根目录，未纳入控制代码。
+
+第四轮原始文件保存在本机 `results/vio-stress/fleet-vio-gate-baseline-pause-probe-2/`。`vio-relay.jsonl`、`runtime-probe.csv`、`clock-probe.csv` 的 SHA-256 依次为 `62459e4760121331cd822d294c41f51ccc7a3cca16402559499b1f60ad1332e5`、`d3dccc918cb18188afaec45a34e5fc599043a9453b44bd4d684ae8a303331c49`、`606dda0b4b6c35d373d83b0231294659f960ee269a2c381d3ba23e56e3d240af`。
+
+两轮的清单、摘要和故障配置已复制到 `docs/results/vio-safety-gate/`，原始文件哈希见其 `raw-artifact-index.json`。交互轨迹回放也保存在各自原始目录；探针 CSV 和 ULog 仍仅在本机，不能仅凭版本化摘要重算全部时钟结论。

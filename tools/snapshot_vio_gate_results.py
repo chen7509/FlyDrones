@@ -17,9 +17,12 @@ TRIALS = (
     "fleet-vio-gate-frozen-baseline",
     "fleet-vio-gate-frozen-baseline-v2",
     "fleet-vio-gate-frozen-dropout-400ms",
+    "fleet-vio-gate-baseline-pause-probe-1",
+    "fleet-vio-gate-baseline-pause-probe-2",
 )
 COMPACT = ("trial-manifest.json", "stress-summary.json", "fault-profile.json")
-RAW = ("vio-relay.jsonl", "trajectory-replay.html", "flydrones_forest.sdf")
+RAW = ("vio-relay.jsonl", "trajectory-replay.html", "flydrones_forest.sdf",
+       "runtime-probe.csv", "clock-probe.csv")
 
 
 def sha256(path: Path) -> str:
