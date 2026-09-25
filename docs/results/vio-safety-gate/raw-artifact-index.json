@@ -1,0 +1,377 @@
+{
+  "schema": "flydrones-vio-safety-gate-artifacts-v1",
+  "trials": {
+    "single-vio-gate-frozen-baseline": {
+      "agent-0.csv": {
+        "sha256": "3aa068594ce3a5492cb826f3a82b370dc925a135aefa4b4fca6985c9a37f5002",
+        "bytes": 112796
+      },
+      "agent-0.json": {
+        "sha256": "1f41a9afa1d4058944f4f2450c25ceea4a01d767f928660f97e880efa8ddb382",
+        "bytes": 1891
+      },
+      "fault-profile.json": {
+        "sha256": "108c73760140b5bb53090738e6eab9508688ef6fb848ea7e4cf4e0b0d2649718",
+        "bytes": 290
+      },
+      "flydrones_forest.sdf": {
+        "sha256": "da3e81c10a7d848671c1045f9da267eca65fd312793231dd99a038f55824e8ad",
+        "bytes": 4224
+      },
+      "px4-ulogs/agent-0.ulg": {
+        "sha256": "3bf2f60ae90e237fed5b8d833417ee15cc2ab3acba9d0159fc7d76b25726244f",
+        "bytes": 9125580
+      },
+      "stress-summary.json": {
+        "sha256": "fb3b5ef750cc9802660d799e42a77be6de33de3c4a9d0880750b04c80751c58d",
+        "bytes": 4572
+      },
+      "trajectory-replay.html": {
+        "sha256": "5006aee5a6588e16ac4b586580b32741642abf80ece4a082e63584eaa115dc0e",
+        "bytes": 22236
+      },
+      "trial-manifest.json": {
+        "sha256": "9fca0f1b608fa2d55a8967d1a4726aac6da2de184b46e571844ebff8ed7aecac",
+        "bytes": 1289
+      },
+      "vio-relay.jsonl": {
+        "sha256": "cc459c648323259a6dd94694603eb2dab1dde0c2ffcb76ca35d2da455213d064",
+        "bytes": 883060
+      }
+    },
+    "single-vio-gate-frozen-delay-120ms": {
+      "agent-0.csv": {
+        "sha256": "859b285b29a39577af57b1773992547d9a268742b55371f3c21983bc435a2334",
+        "bytes": 123379
+      },
+      "agent-0.json": {
+        "sha256": "79e5536644189a5e0d0f6407b15e1cc1dfa82ada4376608fb0893f18da99c787",
+        "bytes": 1893
+      },
+      "fault-profile.json": {
+        "sha256": "f7889ec1395bf5fe0016908e9f84a9d1cbf6025a10f80ba24f1780ab408c94f0",
+        "bytes": 292
+      },
+      "flydrones_forest.sdf": {
+        "sha256": "da3e81c10a7d848671c1045f9da267eca65fd312793231dd99a038f55824e8ad",
+        "bytes": 4224
+      },
+      "px4-ulogs/agent-0.ulg": {
+        "sha256": "cf902daffdfe99b45f431e8b2a2542f5acbd568abbca7e6b96c47eb866116461",
+        "bytes": 9765015
+      },
+      "stress-summary.json": {
+        "sha256": "ea382c3f611a2805bed558c323da168be0ef843bee70a27d46843540c2903aeb",
+        "bytes": 4595
+      },
+      "trajectory-replay.html": {
+        "sha256": "9c493f62d79de8655eebff34a2e6d2c2101927c930ba35cfb4dd040f28fb1fd5",
+        "bytes": 24802
+      },
+      "trial-manifest.json": {
+        "sha256": "c2f559185c0b76c07694a2265e1ebb1947d9482f0dea66fe5dc7c5f22aa6b121",
+        "bytes": 1298
+      },
+      "vio-relay.jsonl": {
+        "sha256": "ba71c98e80faeebc96eb68c13677ee9c294b16296e34e01ed7e67e6e55531b05",
+        "bytes": 951522
+      }
+    },
+    "single-vio-gate-frozen-dropout-400ms": {
+      "agent-0.csv": {
+        "sha256": "3933451ea2f30b8d51f033553d5953e685d2e1c4f65a2ae0cf564529fd9d24b7",
+        "bytes": 67262
+      },
+      "agent-0.json": {
+        "sha256": "153e46c619f289e7e2ef7e07d71d9ae4ee48a6bee3b2902a8e5adeb8a5ef3d14",
+        "bytes": 1956
+      },
+      "fault-profile.json": {
+        "sha256": "563e380b53cf03cd80653dc1429f41823424288787d4bb16886dec5a36b96ca3",
+        "bytes": 292
+      },
+      "flydrones_forest.sdf": {
+        "sha256": "da3e81c10a7d848671c1045f9da267eca65fd312793231dd99a038f55824e8ad",
+        "bytes": 4224
+      },
+      "px4-ulogs/agent-0.ulg": {
+        "sha256": "58d403d4c2713e50a7f2e02a4037690e186d08dedae3a10a98165d2c6f5e581a",
+        "bytes": 6975601
+      },
+      "stress-summary.json": {
+        "sha256": "8226338a1738f3583d2f0d5be6385551912312e970368b867c71be3c66ae18c9",
+        "bytes": 4685
+      },
+      "trajectory-replay.html": {
+        "sha256": "5ab130db9ae4472f1cc68a858d7eba4661a9af3050dc65669f78f70d0878a357",
+        "bytes": 15479
+      },
+      "trial-manifest.json": {
+        "sha256": "a3d3a576775db36fd7c811480743a8f4ba49e020a4ea732497c6c12e5b3e66f1",
+        "bytes": 1305
+      },
+      "vio-relay.jsonl": {
+        "sha256": "4e9a595e827701a48dce862134a9103396ea9e266341e5bf4516410774f046b9",
+        "bytes": 663706
+      }
+    },
+    "fleet-vio-gate-frozen-baseline": {
+      "agent-0.csv": {
+        "sha256": "33b872e28dec7794611c5bb647cdff1a658f2de2807d01d83b19821846fe532f",
+        "bytes": 60893
+      },
+      "agent-0.json": {
+        "sha256": "dd7ea29e924f887a6056978ea3e28bd91c8a8244b7c64a797ba24b069c1b7e9d",
+        "bytes": 1931
+      },
+      "agent-1.csv": {
+        "sha256": "eb7c0ad936689a0a4e022ae092d46e0fcef34153921278069516866a3a6c5286",
+        "bytes": 63388
+      },
+      "agent-1.json": {
+        "sha256": "e3b210a3e598241eb530946a9412b7495dab398fac09c0c35d5cc478df24724a",
+        "bytes": 1924
+      },
+      "agent-2.csv": {
+        "sha256": "8c8ed4b2483d5b288baef55257c5a5b6e095ce162c76df85aaa041b6910550a4",
+        "bytes": 62321
+      },
+      "agent-2.json": {
+        "sha256": "184dbd3275ac2687f32f3a6383eb4aa6b2579d113741500c019482142b119590",
+        "bytes": 1922
+      },
+      "agent-3.csv": {
+        "sha256": "c6763132a6571da9d2ffe30345a06e467e86553c0cdd1b5952edf3390f5d7546",
+        "bytes": 59191
+      },
+      "agent-3.json": {
+        "sha256": "cf726a9818b95c5c10f32a88367ac175173ad4c1cc665b45d85c699765a80a53",
+        "bytes": 1920
+      },
+      "agent-4.csv": {
+        "sha256": "8b6e9cface2f2a5ceda2f312950ac0df101fcacb45af2e0fe515dda73ae0811b",
+        "bytes": 228621
+      },
+      "agent-4.json": {
+        "sha256": "8440bd9245cacd68821033c06a57e72f021978f4a0856f5e410f223ac584384e",
+        "bytes": 1868
+      },
+      "fault-profile.json": {
+        "sha256": "108c73760140b5bb53090738e6eab9508688ef6fb848ea7e4cf4e0b0d2649718",
+        "bytes": 290
+      },
+      "flydrones_forest.sdf": {
+        "sha256": "da3e81c10a7d848671c1045f9da267eca65fd312793231dd99a038f55824e8ad",
+        "bytes": 4224
+      },
+      "px4-ulogs/agent-0.ulg": {
+        "sha256": "412af8c2af7bab0459d28d45e275bc95315227203f9b895cc825998dc3313ea2",
+        "bytes": 8201126
+      },
+      "px4-ulogs/agent-1.ulg": {
+        "sha256": "a67dc684ad15b1c24caa3d564ef9bddae8ab1d6364434987b4169b30674d28db",
+        "bytes": 7800928
+      },
+      "px4-ulogs/agent-2.ulg": {
+        "sha256": "f4c564a97e1fc9c03a46ef7dddf1af6728b384d2988b54553fc3c98e1c474780",
+        "bytes": 7126997
+      },
+      "px4-ulogs/agent-3.ulg": {
+        "sha256": "f2a4fc578ae410ca445f37df3fca6d4055527a125f6e4af6ccb7690fb95418d7",
+        "bytes": 6556375
+      },
+      "px4-ulogs/agent-4.ulg": {
+        "sha256": "75c26402face02488c0f8145c3065c91d33680b41b16a794156eff1562a03cdc",
+        "bytes": 16413474
+      },
+      "stress-summary.json": {
+        "sha256": "d06e15c0a3a279ecfbc68270f4b47b87f00ab4508fa79660ef174b2bc5888203",
+        "bytes": 5593
+      },
+      "trajectory-replay.html": {
+        "sha256": "2c183740c25ad6c7807113c5e21a208251b3034a6ec3ec6edd8f4a4f03c4ef1e",
+        "bytes": 137345
+      },
+      "trial-manifest.json": {
+        "sha256": "fff460f2ae6e0b11378498ee98767c161dc8c2699f4f338c297c1a2503a94bf4",
+        "bytes": 1351
+      },
+      "vio-relay.jsonl": {
+        "sha256": "bf13ad3f4c749b6f678484755a3bf3f86343f467bfa404bdcde5443436c5bff8",
+        "bytes": 8333285
+      }
+    },
+    "fleet-vio-gate-frozen-baseline-v2": {
+      "agent-0.csv": {
+        "sha256": "75b663ea336ccf8aa4950349e05e8f518acd337b137590c5b95bedc597293e94",
+        "bytes": 144678
+      },
+      "agent-0.json": {
+        "sha256": "0f8692c1bf868a3c4d49f9fc41e71a330d1835dc21c1982647a98e79d6e3f168",
+        "bytes": 1900
+      },
+      "agent-1.csv": {
+        "sha256": "ced2ecd6095d513e1e4636c3f8f980d5e047cf1dee6aaedde3c7cb353ade167b",
+        "bytes": 146277
+      },
+      "agent-1.json": {
+        "sha256": "e0dde11e74e0b7eacff0dcfa0ae58622cd063fbfdaae3ca50a9c2bdae2522f08",
+        "bytes": 1869
+      },
+      "agent-2.csv": {
+        "sha256": "c58a3e35f098e41de5ff8bf72bf5e35805481584122ca4e04e45c8425b7f477d",
+        "bytes": 150995
+      },
+      "agent-2.json": {
+        "sha256": "f43b6ac191ca2910b43252b579aab1609dc972b251ebbdc2007eaf81e9d4abd0",
+        "bytes": 1869
+      },
+      "agent-3.csv": {
+        "sha256": "b641f022780463b17b672da3b5c87fb5c32f00c46aa09b72a3aff3cfb3fc40aa",
+        "bytes": 203422
+      },
+      "agent-3.json": {
+        "sha256": "be8870ef602e4201580685fc66c51048b2a65bd59061e88928063298db5b38a5",
+        "bytes": 1867
+      },
+      "agent-4.csv": {
+        "sha256": "463ac4b62287f04a3ae269e31918c9d8d3f10569be111a9d1f8fe75a6cbf24c2",
+        "bytes": 208446
+      },
+      "agent-4.json": {
+        "sha256": "37b19a1dcc90447d65d8f24459fcd233c2e48ebb81b6cbec06768ef6808942a5",
+        "bytes": 1868
+      },
+      "fault-profile.json": {
+        "sha256": "108c73760140b5bb53090738e6eab9508688ef6fb848ea7e4cf4e0b0d2649718",
+        "bytes": 290
+      },
+      "flydrones_forest.sdf": {
+        "sha256": "da3e81c10a7d848671c1045f9da267eca65fd312793231dd99a038f55824e8ad",
+        "bytes": 4224
+      },
+      "px4-ulogs/agent-0.ulg": {
+        "sha256": "92614313add5281a10528515e24fd16798b059d7338291792328f82e1cfed9ae",
+        "bytes": 12108251
+      },
+      "px4-ulogs/agent-1.ulg": {
+        "sha256": "3282bf7ce0c9ed4e00536a490962aba17e55f78891f523b04e5aac3a92a056e8",
+        "bytes": 11977965
+      },
+      "px4-ulogs/agent-2.ulg": {
+        "sha256": "736feb757fa338e8d875a8c9c3e45ce5c02a44b84fb5e4d3d0eeba1e13a8b512",
+        "bytes": 11585624
+      },
+      "px4-ulogs/agent-3.ulg": {
+        "sha256": "f4559bcfdab2bb6d6e210b667862541634873de31d27230fc3d7a1f293e93584",
+        "bytes": 14002253
+      },
+      "px4-ulogs/agent-4.ulg": {
+        "sha256": "4ea3afab5613e2c5f36b566eda463cdec18eb55d3d0ef461d38785098987f903",
+        "bytes": 15407045
+      },
+      "stress-summary.json": {
+        "sha256": "43be45cd0afb25d75bd3f1e0c19a92677b30eb9e1287cec6d607d434eb631b6a",
+        "bytes": 6403
+      },
+      "trajectory-replay.html": {
+        "sha256": "e80c1accf6701245eaf6b7365f84049c5dc70bb495523fc8565609981e76d6b4",
+        "bytes": 151768
+      },
+      "trial-manifest.json": {
+        "sha256": "4edcc0c534023586842ce06960a0bfa66ebe31bb6d391a0f07da173b88b08409",
+        "bytes": 1293
+      },
+      "vio-relay.jsonl": {
+        "sha256": "4ccf035c5f575deb2af61692d9c44304dca86183b453a72cfe3df3b171b60ad2",
+        "bytes": 8035452
+      }
+    },
+    "fleet-vio-gate-frozen-dropout-400ms": {
+      "agent-0.csv": {
+        "sha256": "5fe522162beb2548f914650e417cef1c50588b2b646d3e2f796709bf631e6bf3",
+        "bytes": 67415
+      },
+      "agent-0.json": {
+        "sha256": "68f5aac27b6944ddde4261a513f3927a46be9626f0f59332938284df74f67be7",
+        "bytes": 1957
+      },
+      "agent-1.csv": {
+        "sha256": "e4cb885da8475483dd7f88a91284c895d58ad6470010cd2ae4580c9e00148417",
+        "bytes": 489630
+      },
+      "agent-1.json": {
+        "sha256": "9b49522b6b005d4ebcae25169215a94a03c2aa50f7eda9fb676edc27f1606049",
+        "bytes": 1876
+      },
+      "agent-2.csv": {
+        "sha256": "a4fb54c4114a040b4579b5d1b46026c719893d32d7f255a9dcb614352e365a5a",
+        "bytes": 126220
+      },
+      "agent-2.json": {
+        "sha256": "e4ededb1db7cb9b14523157f699ce7d9e959f663c626acebadd0e8f54f5ad330",
+        "bytes": 1866
+      },
+      "agent-3.csv": {
+        "sha256": "890dd177685d8c256e1d23e0e5a2b9128dd464d0dd4c43de28abb96ddaae9c28",
+        "bytes": 127069
+      },
+      "agent-3.json": {
+        "sha256": "0e6f30725301486518fc27abcbff47af4089cdbb79e48abc9addb711ab9e4a3b",
+        "bytes": 1864
+      },
+      "agent-4.csv": {
+        "sha256": "a3d6333e6030ed6a9a8baa431d9de1406bb7027c0f270f6862de8606cdbc7143",
+        "bytes": 461578
+      },
+      "agent-4.json": {
+        "sha256": "531a1949bdb4aec3f575484e01509abefaf0fb1cb1b67bc04de85628b24eb4eb",
+        "bytes": 1872
+      },
+      "fault-profile.json": {
+        "sha256": "563e380b53cf03cd80653dc1429f41823424288787d4bb16886dec5a36b96ca3",
+        "bytes": 292
+      },
+      "flydrones_forest.sdf": {
+        "sha256": "da3e81c10a7d848671c1045f9da267eca65fd312793231dd99a038f55824e8ad",
+        "bytes": 4224
+      },
+      "px4-ulogs/agent-0.ulg": {
+        "sha256": "663bf2d90dfccb2de7f110588c17fd039c8f7935f1ed86979cab706db95239a7",
+        "bytes": 9200613
+      },
+      "px4-ulogs/agent-1.ulg": {
+        "sha256": "05dd6ae1ab8cd079c66a5d742582d2396adcedc70a66a8431b9b68cef991aa5a",
+        "bytes": 28585791
+      },
+      "px4-ulogs/agent-2.ulg": {
+        "sha256": "6754dfb407767faa0dd9d05cdf2325450af321e20e72a368fda3a4371b66c7e6",
+        "bytes": 11317898
+      },
+      "px4-ulogs/agent-3.ulg": {
+        "sha256": "9e4fd0224e804247c4eaf34abccb73beb0544dbdfb1249495cdd5cb030d3a284",
+        "bytes": 13669031
+      },
+      "px4-ulogs/agent-4.ulg": {
+        "sha256": "826cf94d0689be3096b2e0aaffebdbb421e3ac9f5f9152302b0ddb4cb4236567",
+        "bytes": 27618046
+      },
+      "stress-summary.json": {
+        "sha256": "20fc69c08c4194d03420d0938e3d1151c8df4bb36a2f87dec04a9bc513936a52",
+        "bytes": 6526
+      },
+      "trajectory-replay.html": {
+        "sha256": "c6f3352c262746a392b187ebebc7e36182ce22f0c70aeb499f0e0d58796d0328",
+        "bytes": 248374
+      },
+      "trial-manifest.json": {
+        "sha256": "c0ae163d17222e526eab3661d5afbc16c7eddc2b1d84d562ff1f5c5d5230e2ba",
+        "bytes": 1303
+      },
+      "vio-relay.jsonl": {
+        "sha256": "823040235b377d9d51a8a3ea0f9f9feaf6e16193f42e48e46953d0e0d14adad0",
+        "bytes": 13642845
+      }
+    }
+  }
+}
