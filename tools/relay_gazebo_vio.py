@@ -84,8 +84,12 @@ def run_relay(*, profile_path: Path, marker_path: Path, output_path: Path,
                 "marker_path": str(marker_path), "models": sorted(model_names), "monotonic_s": time.monotonic()})
 
         def callback(message) -> None:
+            if stop.is_set():
+                return
             now = time.monotonic()
             with lock:
+                if stop.is_set():
+                    return
                 counts["received"] += 1
                 try:
                     frame_id, source_stamp_ns = frame_id_and_stamp(message)
@@ -149,10 +153,18 @@ def run_relay(*, profile_path: Path, marker_path: Path, output_path: Path,
                                                          transformed.pose_with_covariance.pose.position.z]})
                 time.sleep(0.002)
         finally:
+            stop.set()
+            try:
+                if not node.unsubscribe("/flydrones/odometry_raw"):
+                    record({"event": "unsubscribe-failed", "monotonic_s": time.monotonic()})
+            except Exception as exc:
+                record({"event": "unsubscribe-error", "error": str(exc),
+                        "monotonic_s": time.monotonic()})
             if health_socket is not None:
                 health_socket.close()
-            record({"event": "stop", "monotonic_s": time.monotonic(), "counts": counts,
-                    "queued_at_stop": stream.queue_size})
+            with lock:
+                record({"event": "stop", "monotonic_s": time.monotonic(), "counts": counts,
+                        "queued_at_stop": stream.queue_size})
 
 
 def main() -> int:
