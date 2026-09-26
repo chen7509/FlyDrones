@@ -183,3 +183,152 @@ def classify_takeoff_chain(
         "gazebo_physical_climb": physical_climb,
         "estimator_climb": estimator_climb,
     }
+
+
+def actuator_model_names(fleet_size: int) -> tuple[str, ...]:
+    if fleet_size not in (1, 5):
+        raise ValueError("fleet_size must be one or five")
+    return tuple(f"x500_depth_fly_{vehicle_id}" for vehicle_id in range(fleet_size))
+
+
+def summarize_actuator_link(
+    events: list[Mapping[str, object]],
+    *,
+    fleet_size: int,
+    minimum_motor_command: float = 0.1,
+    minimum_altitude_gain_m: float = 0.5,
+) -> dict[str, object]:
+    """Validate and summarize a read-only Gazebo actuator probe event stream."""
+
+    models = actuator_model_names(fleet_size)
+    expected_topics = {model: f"/{model}/command/motor_speed" for model in models}
+    per_vehicle: dict[str, dict[str, object]] = {
+        model: {
+            "model": model,
+            "topic": expected_topics[model],
+            "topology_confirmed": False,
+            "motor_command_samples": 0,
+            "maximum_motor_command": 0.0,
+            "motor_command_received": False,
+            "odometry_samples": 0,
+            "altitude_gain_m": 0.0,
+            "physical_climb": False,
+            "reason": None,
+        }
+        for model in models
+    }
+    altitude_samples: dict[str, list[float]] = {model: [] for model in models}
+    errors = {
+        "malformed_events": 0,
+        "cross_model_events": 0,
+        "out_of_order_events": 0,
+        "probe_errors": 0,
+    }
+    start_count = 0
+    stop_count = 0
+    previous_timestamp: float | None = None
+
+    for raw_event in events:
+        if not isinstance(raw_event, Mapping):
+            errors["malformed_events"] += 1
+            continue
+        try:
+            kind = str(raw_event["event"])
+            timestamp = float(raw_event["monotonic_s"])
+        except (KeyError, TypeError, ValueError):
+            errors["malformed_events"] += 1
+            continue
+        if previous_timestamp is not None and timestamp < previous_timestamp:
+            errors["out_of_order_events"] += 1
+        previous_timestamp = timestamp
+
+        if kind == "start":
+            start_count += 1
+            continue
+        if kind == "stop":
+            stop_count += 1
+            continue
+        if kind == "error":
+            errors["probe_errors"] += 1
+            continue
+        if kind not in {"topology", "motor-command", "odometry"}:
+            errors["malformed_events"] += 1
+            continue
+
+        model = raw_event.get("model")
+        if not isinstance(model, str) or model not in per_vehicle:
+            errors["malformed_events"] += 1
+            continue
+        vehicle = per_vehicle[model]
+        if kind in {"topology", "motor-command"}:
+            topic = raw_event.get("topic")
+            if topic != expected_topics[model]:
+                errors["cross_model_events"] += 1
+                continue
+        if kind == "topology":
+            if raw_event.get("subscription_ok") is not True:
+                errors["probe_errors"] += 1
+                continue
+            vehicle["topology_confirmed"] = True
+        elif kind == "motor-command":
+            velocities = raw_event.get("velocities")
+            if not isinstance(velocities, (list, tuple)) or not velocities:
+                errors["malformed_events"] += 1
+                continue
+            try:
+                peak = max(abs(float(value)) for value in velocities)
+            except (TypeError, ValueError):
+                errors["malformed_events"] += 1
+                continue
+            vehicle["motor_command_samples"] = int(vehicle["motor_command_samples"]) + 1
+            vehicle["maximum_motor_command"] = max(float(vehicle["maximum_motor_command"]), peak)
+        else:
+            position = raw_event.get("position_m")
+            if not isinstance(position, (list, tuple)) or len(position) != 3:
+                errors["malformed_events"] += 1
+                continue
+            try:
+                altitude = float(position[2])
+            except (TypeError, ValueError):
+                errors["malformed_events"] += 1
+                continue
+            altitude_samples[model].append(altitude)
+            vehicle["odometry_samples"] = int(vehicle["odometry_samples"]) + 1
+
+    for model, vehicle in per_vehicle.items():
+        motor_received = (
+            int(vehicle["motor_command_samples"]) > 0
+            and float(vehicle["maximum_motor_command"]) >= minimum_motor_command
+        )
+        samples = altitude_samples[model]
+        altitude_gain = max(samples) - samples[0] if samples else 0.0
+        physical_climb = altitude_gain >= minimum_altitude_gain_m
+        vehicle["motor_command_received"] = motor_received
+        vehicle["altitude_gain_m"] = altitude_gain
+        vehicle["physical_climb"] = physical_climb
+        if not motor_received:
+            vehicle["reason"] = TakeoffFailureReason.GAZEBO_MOTOR_COMMAND_MISSING.value
+        elif not physical_climb:
+            vehicle["reason"] = TakeoffFailureReason.ACTUATOR_RESPONSE_TIMEOUT.value
+
+    closed_cleanly = stop_count == 1 and bool(events) and events[-1].get("event") == "stop"
+    complete = all(
+        bool(vehicle["topology_confirmed"])
+        and int(vehicle["motor_command_samples"]) > 0
+        and int(vehicle["odometry_samples"]) > 0
+        for vehicle in per_vehicle.values()
+    )
+    structurally_valid = (
+        start_count == 1
+        and closed_cleanly
+        and complete
+        and not any(errors.values())
+    )
+    return {
+        "schema": "flydrones-gazebo-actuator-link-summary-v1",
+        "accepted": structurally_valid,
+        "closed_cleanly": closed_cleanly,
+        "fleet_size": fleet_size,
+        "vehicles": per_vehicle,
+        "errors": errors,
+    }
