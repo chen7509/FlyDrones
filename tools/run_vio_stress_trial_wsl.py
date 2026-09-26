@@ -67,7 +67,7 @@ def create_trial_manifest(
     software_versions: Mapping[str, str],
 ) -> dict:
     return {
-        "schema": "flydrones-vio-stress-trial-v2",
+        "schema": "flydrones-vio-stress-trial-v3",
         "name": name,
         "fleet_size": fleet_size,
         "seed": 240901,
@@ -85,6 +85,7 @@ def create_trial_manifest(
         "worker_exit_code": None,
         "stop_exit_code": None,
         "evidence_accepted": False,
+        "actuator_probe_closed_cleanly": False,
         "errors": [],
         "raw_artifact_sha256": {},
     }
@@ -209,6 +210,79 @@ def relay_closed_cleanly(path: Path) -> bool:
         return False
 
 
+def wait_for_probe_readiness(
+    ready_marker: Path,
+    probe,
+    *,
+    timeout_s: float,
+    monotonic: Callable[[], float] = time.monotonic,
+    sleep: Callable[[float], None] = time.sleep,
+) -> None:
+    deadline = monotonic() + timeout_s
+    while True:
+        if ready_marker.is_file():
+            try:
+                payload = json.loads(ready_marker.read_text(encoding="utf-8"))
+            except (OSError, json.JSONDecodeError):
+                payload = {}
+            if payload.get("ready") is True:
+                return
+        return_code = probe.poll()
+        if return_code is not None:
+            raise RuntimeError(f"actuator probe exited before readiness with code {return_code}")
+        if monotonic() >= deadline:
+            raise TimeoutError(f"actuator probe readiness timed out after {timeout_s:.1f}s")
+        sleep(0.05)
+
+
+def apply_actuator_probe_evidence(manifest: dict, path: Path) -> None:
+    clean = relay_closed_cleanly(path)
+    manifest["actuator_probe_closed_cleanly"] = clean
+    if not clean:
+        manifest["evidence_accepted"] = False
+        manifest["errors"].append("actuator probe log is missing or lacks a complete stop record")
+
+
+def copy_px4_console_logs(run_dir: Path, output_dir: Path, *, fleet_size: int) -> list[dict[str, object]]:
+    artifacts: list[dict[str, object]] = []
+    for vehicle_id in range(fleet_size):
+        for name in ("out.log", "err.log"):
+            source = run_dir / f"instance_{vehicle_id}" / name
+            if not source.is_file():
+                continue
+            target = output_dir / "px4-console" / f"instance_{vehicle_id}" / name
+            target.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(source, target)
+            artifacts.append({
+                "vehicle_id": vehicle_id,
+                "stream": name,
+                "path": target.relative_to(output_dir).as_posix(),
+                "bytes": target.stat().st_size,
+                "sha256": sha256(target),
+            })
+    return artifacts
+
+
+def trial_frozen_hashes(*, profile: Path, model: Path, runner_path: Path | None = None) -> dict[str, str]:
+    return {
+        "profile": sha256(profile),
+        "policy": sha256(model),
+        "controller": sha256(ROOT / "src/flydrones/distributed_px4.py"),
+        "relay": sha256(ROOT / "tools/relay_gazebo_vio.py"),
+        "runner": sha256(runner_path or Path(__file__)),
+        "launcher": sha256(ROOT / "tools/launch_px4_depth_swarm_wsl.sh"),
+        "renderer_attestation": sha256(ROOT / "tools/attest_gazebo_renderer_wsl.py"),
+        "renderer_profile": sha256(ROOT / "src/flydrones/gazebo_renderer.py"),
+        "runtime_probe": sha256(ROOT / "tools/probe_gazebo_runtime_wsl.py"),
+        "actuator_probe": sha256(ROOT / "tools/probe_gazebo_actuator_link.py"),
+        "takeoff_readiness": sha256(ROOT / "src/flydrones/takeoff_readiness.py"),
+        "summary": sha256(ROOT / "tools/summarize_vio_stress_wsl.py"),
+        "world_generator": sha256(ROOT / "tools/generate_px4_forest_world.py"),
+        "camera_model": _tree_sha256(ROOT / "assets/gazebo/models/OakD-Lite-Fly"),
+        "vehicle_model": _tree_sha256(ROOT / "assets/gazebo/models/x500_depth_fly"),
+    }
+
+
 def run_trial(
     *,
     name: str,
@@ -230,6 +304,7 @@ def run_trial(
         "/build/px4_sitl_default/bin/px4 -i " in line
         or line.startswith("gz sim ")
         or line.startswith("python3 ") and "tools/relay_gazebo_vio.py" in line
+        or line.startswith("python3 ") and "tools/probe_gazebo_actuator_link.py" in line
     )]
     if occupied:
         raise RuntimeError(f"PX4/Gazebo resources are in use: {occupied}")
@@ -240,21 +315,7 @@ def run_trial(
     px4_root = Path(os.environ.get("PX4_ROOT", Path.home() / "PX4-Autopilot"))
     repository_revision = git_revision(ROOT)
     px4_revision = git_revision(px4_root)
-    frozen_hashes = {
-        "profile": sha256(profile),
-        "policy": sha256(model),
-        "controller": sha256(ROOT / "src/flydrones/distributed_px4.py"),
-        "relay": sha256(ROOT / "tools/relay_gazebo_vio.py"),
-        "runner": sha256(Path(__file__)),
-        "launcher": sha256(ROOT / "tools/launch_px4_depth_swarm_wsl.sh"),
-        "renderer_attestation": sha256(ROOT / "tools/attest_gazebo_renderer_wsl.py"),
-        "renderer_profile": sha256(ROOT / "src/flydrones/gazebo_renderer.py"),
-        "runtime_probe": sha256(ROOT / "tools/probe_gazebo_runtime_wsl.py"),
-        "summary": sha256(ROOT / "tools/summarize_vio_stress_wsl.py"),
-        "world_generator": sha256(ROOT / "tools/generate_px4_forest_world.py"),
-        "camera_model": _tree_sha256(ROOT / "assets/gazebo/models/OakD-Lite-Fly"),
-        "vehicle_model": _tree_sha256(ROOT / "assets/gazebo/models/x500_depth_fly"),
-    }
+    frozen_hashes = trial_frozen_hashes(profile=profile, model=model)
     manifest = create_trial_manifest(
         name=name,
         fleet_size=fleet_size,
@@ -289,7 +350,7 @@ def run_trial(
     })
     completion_marker = output / "trial-complete.marker"
     probe_log = (output / "runtime-probe.log").open("w", encoding="utf-8")
-    probe = subprocess.Popen(
+    runtime_probe = subprocess.Popen(
         [
             sys.executable,
             str(ROOT / "tools/probe_gazebo_runtime_wsl.py"),
@@ -304,6 +365,8 @@ def run_trial(
         start_new_session=True,
     )
     worker_process = None
+    actuator_probe = None
+    actuator_probe_log = None
     try:
         with (output / "launch.log").open("w", encoding="utf-8") as log:
             launch = subprocess.run(["bash", str(ROOT / "tools/launch_px4_depth_swarm_wsl.sh")],
@@ -311,6 +374,27 @@ def run_trial(
                                     timeout=120)
         manifest["launch_exit_code"] = launch.returncode
         if launch.returncode == 0:
+            actuator_probe_log = (output / "actuator-probe.log").open("w", encoding="utf-8")
+            actuator_probe = subprocess.Popen(
+                [
+                    sys.executable,
+                    str(ROOT / "tools/probe_gazebo_actuator_link.py"),
+                    "--output", str(output / "actuator-link.jsonl"),
+                    "--ready-marker", str(output / "actuator-probe-ready.json"),
+                    "--completion-marker", str(completion_marker),
+                    "--vehicle-count", str(fleet_size),
+                    "--duration-s", "300",
+                ],
+                env=environment,
+                stdout=actuator_probe_log,
+                stderr=subprocess.STDOUT,
+                start_new_session=True,
+            )
+            wait_for_probe_readiness(
+                output / "actuator-probe-ready.json",
+                actuator_probe,
+                timeout_s=15.0,
+            )
             marker = run_dir / "fault-start.json"
             if fleet_size == 1:
                 worker = [sys.executable, str(ROOT / "tools/px4_distributed_agent.py"),
@@ -359,18 +443,32 @@ def run_trial(
             manifest["errors"].append(f"stop: {exc}")
         completion_marker.touch()
         try:
-            probe_return_code = probe.wait(timeout=20)
+            probe_return_code = runtime_probe.wait(timeout=20)
             if probe_return_code != 0:
                 manifest["errors"].append(f"runtime probe exited {probe_return_code}")
         except subprocess.TimeoutExpired:
-            probe.terminate()
+            runtime_probe.terminate()
             try:
-                probe.wait(timeout=5)
+                runtime_probe.wait(timeout=5)
             except subprocess.TimeoutExpired:
-                probe.kill()
-                probe.wait(timeout=5)
+                runtime_probe.kill()
+                runtime_probe.wait(timeout=5)
             manifest["errors"].append("runtime probe did not stop after completion marker")
         probe_log.close()
+        if actuator_probe is not None:
+            try:
+                actuator_probe_return_code = actuator_probe.wait(timeout=20)
+                if actuator_probe_return_code != 0:
+                    manifest["errors"].append(f"actuator probe exited {actuator_probe_return_code}")
+            except subprocess.TimeoutExpired:
+                try:
+                    terminate_worker_process_group(actuator_probe.pid, grace_s=2.0)
+                    actuator_probe.wait(timeout=10)
+                except Exception as exc:
+                    manifest["errors"].append(f"actuator probe cleanup: {exc}")
+                manifest["errors"].append("actuator probe did not stop after completion marker")
+        if actuator_probe_log is not None:
+            actuator_probe_log.close()
         manifest["shared_px4_files_restored"] = shared_px4_files_restored(
             run_dir, px4_root
         )
@@ -411,14 +509,23 @@ def run_trial(
                 except Exception as exc:
                     manifest["errors"].append(f"ULog vehicle {vehicle_id}: {exc}")
         manifest["ulog_artifacts"] = ulog_artifacts
+        console_artifacts = copy_px4_console_logs(run_dir, output, fleet_size=fleet_size)
+        manifest["px4_console_artifacts"] = console_artifacts
+        if len(console_artifacts) != 2 * fleet_size:
+            manifest["errors"].append(
+                f"PX4 console logs incomplete: expected {2 * fleet_size}, found {len(console_artifacts)}"
+            )
+        apply_actuator_probe_evidence(manifest, output / "actuator-link.jsonl")
         apply_renderer_attestation(manifest, output / "renderer-attestation.json")
         attestation = manifest["renderer"].get("attestation")
         manifest["evidence_accepted"] = bool(
             attestation and attestation.get("accepted")
             and manifest["relay_closed_cleanly"]
+            and manifest["actuator_probe_closed_cleanly"]
             and manifest.get("stop_exit_code") == 0
             and manifest["shared_px4_files_restored"]
             and len(ulog_artifacts) == fleet_size
+            and len(console_artifacts) == 2 * fleet_size
         )
         raw_paths = [
             path for path in output.rglob("*")

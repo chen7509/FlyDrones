@@ -2,14 +2,20 @@ import json
 import signal
 import subprocess
 
+import pytest
+
 from tools.run_vio_stress_trial_wsl import (
+    apply_actuator_probe_evidence,
     apply_renderer_attestation,
     campaign_run_directory,
+    copy_px4_console_logs,
     create_trial_manifest,
     git_revision,
     relay_closed_cleanly,
     shared_px4_files_restored,
     terminate_worker_process_group,
+    trial_frozen_hashes,
+    wait_for_probe_readiness,
 )
 
 
@@ -67,7 +73,7 @@ def test_truncated_relay_tail_does_not_abort_failure_preservation(tmp_path):
     assert relay_closed_cleanly(path)
 
 
-def test_v2_manifest_freezes_renderer_pair_versions_and_hashes(tmp_path):
+def test_v3_manifest_freezes_renderer_pair_versions_and_hashes(tmp_path):
     manifest = create_trial_manifest(
         name="renderer-pair-1-1-default",
         fleet_size=5,
@@ -92,7 +98,8 @@ def test_v2_manifest_freezes_renderer_pair_versions_and_hashes(tmp_path):
         software_versions={"gazebo": "8.15.0", "mesa": "25.2.8"},
     )
 
-    assert manifest["schema"] == "flydrones-vio-stress-trial-v2"
+    assert manifest["schema"] == "flydrones-vio-stress-trial-v3"
+    assert manifest["actuator_probe_closed_cleanly"] is False
     assert manifest["seed"] == 240901
     assert manifest["repository_revision"] == "repo123"
     assert manifest["px4_revision"] == "px4123"
@@ -126,3 +133,87 @@ def test_worker_timeout_signals_only_the_recorded_process_group():
     terminate_worker_process_group(7331, send_signal=lambda process_group, signum: signals.append((process_group, signum)))
 
     assert signals == [(7331, signal.SIGTERM), (7331, 9)]
+
+
+def test_worker_start_waits_until_actuator_probe_readiness_marker(tmp_path):
+    marker = tmp_path / "actuator-probe-ready.json"
+    events = []
+
+    class Probe:
+        def poll(self):
+            events.append("poll")
+            return None
+
+    times = iter((0.0, 0.1, 0.2, 0.3))
+
+    def sleep(_duration):
+        events.append("sleep")
+        marker.write_text(json.dumps({"ready": True}), encoding="utf-8")
+
+    wait_for_probe_readiness(
+        marker,
+        Probe(),
+        timeout_s=1.0,
+        monotonic=lambda: next(times),
+        sleep=sleep,
+    )
+    events.append("worker-start")
+
+    assert events.index("sleep") < events.index("worker-start")
+    assert marker.is_file()
+
+
+def test_probe_readiness_timeout_and_truncated_log_reject_evidence(tmp_path):
+    class Probe:
+        def poll(self):
+            return None
+
+    times = iter((0.0, 0.2))
+    with pytest.raises(TimeoutError, match="actuator probe readiness"):
+        wait_for_probe_readiness(
+            tmp_path / "missing-ready.json",
+            Probe(),
+            timeout_s=0.1,
+            monotonic=lambda: next(times),
+            sleep=lambda _duration: None,
+        )
+
+    path = tmp_path / "actuator-link.jsonl"
+    original = '{"event":"start","monotonic_s":1.0}\n{"event":"stop"'
+    path.write_text(original, encoding="utf-8")
+    manifest = {"evidence_accepted": True, "errors": []}
+
+    apply_actuator_probe_evidence(manifest, path)
+
+    assert path.read_text(encoding="utf-8") == original
+    assert not manifest["actuator_probe_closed_cleanly"]
+    assert not manifest["evidence_accepted"]
+
+
+def test_all_px4_instance_console_logs_are_copied(tmp_path):
+    run_dir = tmp_path / "run"
+    output = tmp_path / "output"
+    for vehicle_id in range(5):
+        instance = run_dir / f"instance_{vehicle_id}"
+        instance.mkdir(parents=True)
+        (instance / "out.log").write_text(f"out-{vehicle_id}", encoding="utf-8")
+        (instance / "err.log").write_text(f"err-{vehicle_id}", encoding="utf-8")
+
+    artifacts = copy_px4_console_logs(run_dir, output, fleet_size=5)
+
+    assert len(artifacts) == 10
+    assert (output / "px4-console/instance_4/out.log").read_text(encoding="utf-8") == "out-4"
+    assert (output / "px4-console/instance_4/err.log").read_text(encoding="utf-8") == "err-4"
+    assert all(artifact["sha256"] for artifact in artifacts)
+
+
+def test_frozen_hashes_include_actuator_probe_and_readiness_module(tmp_path):
+    profile = tmp_path / "profile.json"
+    model = tmp_path / "policy.npz"
+    profile.write_text("{}", encoding="utf-8")
+    model.write_bytes(b"policy")
+
+    hashes = trial_frozen_hashes(profile=profile, model=model)
+
+    assert hashes["actuator_probe"]
+    assert hashes["takeoff_readiness"]
