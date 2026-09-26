@@ -8,6 +8,7 @@ import pytest
 from flydrones.drones import mavlink as mavlink_module
 from flydrones.drones.mavlink import MavlinkDrone, _decode_int32_parameter, _encode_int32_parameter
 from flydrones.safety import Telemetry
+from flydrones.takeoff_readiness import CommandAckEvidence, TakeoffFailureReason, TakeoffStage
 
 
 class Message:
@@ -22,9 +23,21 @@ class Message:
 class Connection:
     def __init__(self, messages):
         self.messages = list(messages)
+        self.arm_calls = 0
+        self.disarm_calls = 0
+        self.mode_calls = []
 
     def recv_match(self, **_kwargs):
         return self.messages.pop(0) if self.messages else None
+
+    def arducopter_arm(self):
+        self.arm_calls += 1
+
+    def arducopter_disarm(self):
+        self.disarm_calls += 1
+
+    def set_mode(self, mode):
+        self.mode_calls.append(mode)
 
 
 class MavSender:
@@ -50,6 +63,17 @@ def bare_drone(messages) -> MavlinkDrone:
     drone._tel = Telemetry()
     drone.flying = True
     drone._last_controller_heartbeat_at = float("-inf")
+    drone._unmatched_command_acks = []
+    drone._command_acks = []
+    drone.mavutil = SimpleNamespace(
+        mavlink=SimpleNamespace(
+            MAV_MODE_FLAG_SAFETY_ARMED=128,
+            MAV_LANDED_STATE_ON_GROUND=1,
+            MAV_LANDED_STATE_IN_AIR=2,
+            MAV_RESULT_ACCEPTED=0,
+            MAV_RESULT_IN_PROGRESS=5,
+        )
+    )
     return drone
 
 
@@ -240,3 +264,315 @@ def test_mavlink_marks_non_finite_pose_invalid(monkeypatch):
     telemetry = drone.telemetry()
 
     assert telemetry.position_valid is False
+
+
+def test_ingest_tracks_armed_landed_and_offboard_status():
+    drone = bare_drone([])
+
+    drone._ingest_message(Message("HEARTBEAT", base_mode=128, custom_mode=6 << 16), received_at=2.0)
+    drone._ingest_message(Message("EXTENDED_SYS_STATE", landed_state=2), received_at=2.1)
+
+    assert drone._tel.armed is True
+    assert drone._tel.landed is False
+    assert drone._tel.navigation_state == 6
+    assert drone._tel.offboard is True
+    assert drone._tel.status_updated_at == 2.1
+
+
+def test_wait_command_ack_ignores_unrelated_and_wrong_target_acks(monkeypatch):
+    now = iter((0.0, 0.1, 0.2, 0.3))
+    monkeypatch.setattr(mavlink_module.time, "monotonic", lambda: next(now))
+    drone = bare_drone([
+        Message("COMMAND_ACK", command=22, result=0, target_system=3, target_component=1),
+        Message("COMMAND_ACK", command=400, result=0, target_system=9, target_component=1),
+        Message("COMMAND_ACK", command=400, result=0, target_system=3, target_component=1),
+    ])
+    drone.m.target_system = 3
+    drone.m.target_component = 1
+
+    acknowledgement = drone._wait_command_ack(400, timeout_s=1.0)
+
+    assert acknowledgement.command == 400
+    assert acknowledgement.target_system == 3
+    assert len(drone._unmatched_command_acks) == 2
+
+
+def test_wait_command_ack_accepts_in_progress_only_after_final_result(monkeypatch):
+    now = iter((0.0, 0.1, 0.2))
+    monkeypatch.setattr(mavlink_module.time, "monotonic", lambda: next(now))
+    drone = bare_drone([
+        Message("COMMAND_ACK", command=22, result=5, progress=40, target_system=3, target_component=1),
+        Message("COMMAND_ACK", command=22, result=0, progress=100, target_system=3, target_component=1),
+    ])
+    drone.m.target_system = 3
+    drone.m.target_component = 1
+
+    acknowledgement = drone._wait_command_ack(22, timeout_s=1.0)
+
+    assert acknowledgement.result == 0
+    assert acknowledgement.progress == 100
+
+
+def test_wait_command_ack_returns_a_matching_rejection(monkeypatch):
+    now = iter((0.0, 0.1))
+    monkeypatch.setattr(mavlink_module.time, "monotonic", lambda: next(now))
+    drone = bare_drone([Message("COMMAND_ACK", command=22, result=4, target_system=3, target_component=1)])
+    drone.m.target_system = 3
+    drone.m.target_component = 1
+
+    acknowledgement = drone._wait_command_ack(22, timeout_s=1.0)
+
+    assert acknowledgement.result == 4
+
+
+def test_wait_command_ack_has_a_hard_timeout(monkeypatch):
+    now = iter((0.0, 0.2))
+    monkeypatch.setattr(mavlink_module.time, "monotonic", lambda: next(now))
+    drone = bare_drone([])
+    drone.m.target_system = 3
+    drone.m.target_component = 1
+
+    with pytest.raises(TimeoutError, match="command 22"):
+        drone._wait_command_ack(22, timeout_s=0.1)
+
+
+def test_ack_wait_ingests_interleaved_position_and_status(monkeypatch):
+    now = iter((0.0, 0.1, 0.2, 0.3))
+    monkeypatch.setattr(mavlink_module.time, "monotonic", lambda: next(now))
+    drone = bare_drone([
+        Message("LOCAL_POSITION_NED", x=1.0, y=2.0, z=-0.7, vz=-0.1),
+        Message("HEARTBEAT", base_mode=128, custom_mode=6 << 16),
+        Message("COMMAND_ACK", command=22, result=0, target_system=3, target_component=1),
+    ])
+    drone.m.target_system = 3
+    drone.m.target_component = 1
+
+    acknowledgement = drone._wait_command_ack(22, timeout_s=1.0)
+
+    assert acknowledgement.result == 0
+    assert drone._tel.alt_m == 0.7
+    assert drone._tel.position_updated_at == 0.1
+    assert drone._tel.offboard is True
+    assert drone._tel.status_updated_at == 0.2
+
+
+def test_ingest_does_not_refresh_sensor_timestamps_without_sensor_messages():
+    drone = bare_drone([])
+    drone._tel.position_updated_at = 1.0
+    drone._tel.attitude_updated_at = 1.1
+    drone._tel.estimator_updated_at = 1.2
+
+    drone._ingest_message(Message("HEARTBEAT", base_mode=0, custom_mode=0), received_at=5.0)
+
+    assert drone._tel.position_updated_at == 1.0
+    assert drone._tel.attitude_updated_at == 1.1
+    assert drone._tel.estimator_updated_at == 1.2
+    assert drone._tel.status_updated_at == 5.0
+
+
+class FakeClock:
+    def __init__(self):
+        self.now = 0.0
+
+    def monotonic(self):
+        return self.now
+
+    def sleep(self, duration):
+        self.now += duration
+
+
+def transactional_drone(monkeypatch, telemetry_fn, ack_results=None):
+    clock = FakeClock()
+    monkeypatch.setattr(mavlink_module.time, "monotonic", clock.monotonic)
+    monkeypatch.setattr(mavlink_module.time, "sleep", clock.sleep)
+    drone = bare_drone([])
+    drone.flying = False
+    drone.autopilot = "px4"
+    drone.offboard_rate_hz = 2.0
+    drone.arm_timeout_s = 1.0
+    drone.takeoff_alt = 1.5
+    drone.m.target_system = 3
+    drone.m.target_component = 1
+    drone.m.motors_armed = lambda: bool(drone._tel.armed)
+    drone.mavutil.mavlink.MAV_CMD_COMPONENT_ARM_DISARM = 400
+    drone.mavutil.mavlink.MAV_CMD_NAV_TAKEOFF = 22
+    drone.mavutil.mavlink.MAV_CMD_DO_SET_MODE = 176
+    drone.mavutil.mavlink.MAV_CMD_NAV_LAND = 21
+    drone.mavutil.mavlink.MAV_MODE_FLAG_CUSTOM_MODE_ENABLED = 1
+    drone.mavutil.mavlink.MAV_FRAME_BODY_NED = 8
+    results = {400: 0, 22: 0, 176: 0, 21: 0}
+    results.update(ack_results or {})
+    requested_commands = []
+
+    def wait_ack(command, *, timeout_s):
+        requested_commands.append(command)
+        return CommandAckEvidence(command, results[command], 3, 1, clock.now)
+
+    drone._wait_command_ack = wait_ack
+
+    def wait_until_armed(*, timeout_s):
+        drone._tel.armed = True
+        clock.sleep(0.1)
+
+    drone._wait_until_armed = wait_until_armed
+    drone.telemetry = lambda: telemetry_fn(clock, drone)
+    return drone, clock, requested_commands
+
+
+def telemetry_sequence(samples):
+    remaining = list(samples)
+    last = remaining[-1]
+
+    def read(_clock, _drone):
+        nonlocal last
+        if remaining:
+            last = remaining.pop(0)
+        return last
+
+    return read
+
+
+def status_sample(clock, *, altitude, sequence, armed=True, landed=False, offboard=False):
+    return Telemetry(
+        t=clock,
+        alt_m=altitude,
+        position_updated_at=float(sequence),
+        status_updated_at=float(sequence),
+        position_valid=True,
+        estimator_healthy=True,
+        armed=armed,
+        landed=landed,
+        navigation_state=6 if offboard else 4,
+        offboard=offboard,
+    )
+
+
+def test_takeoff_requires_three_fresh_climb_samples_and_offboard_confirmation(monkeypatch):
+    observed_flying = []
+    samples = [
+        status_sample(0.0, altitude=0.0, sequence=0, armed=False, landed=True),
+        status_sample(0.1, altitude=0.0, sequence=1, armed=True, landed=True),
+        status_sample(0.2, altitude=0.55, sequence=2),
+        status_sample(0.3, altitude=0.65, sequence=3),
+        status_sample(0.4, altitude=0.75, sequence=4),
+        status_sample(2.0, altitude=0.75, sequence=5, offboard=True),
+    ]
+    sequence = telemetry_sequence(samples)
+
+    def telemetry(clock, drone):
+        observed_flying.append(drone.flying)
+        return sequence(clock, drone)
+
+    drone, _clock, requested = transactional_drone(monkeypatch, telemetry)
+
+    evidence = drone.takeoff()
+
+    assert evidence.accepted
+    assert evidence.terminal_stage is TakeoffStage.MISSION_READY
+    assert evidence.maximum_altitude_gain_m == pytest.approx(0.75)
+    assert requested == [400, 22, 176]
+    assert observed_flying and not any(observed_flying)
+    assert drone.flying is True
+    assert len(drone.m.mav.setpoints) == 3
+
+
+def test_one_altitude_spike_does_not_confirm_takeoff(monkeypatch):
+    def telemetry(clock, drone):
+        if clock.now == 0.0:
+            return status_sample(clock.now, altitude=0.0, sequence=0, armed=False, landed=True)
+        if drone.m.arm_calls and clock.now < 0.5:
+            return status_sample(clock.now, altitude=0.0, sequence=1, armed=True, landed=True)
+        if clock.now < 1.0:
+            return status_sample(clock.now, altitude=0.7, sequence=2)
+        landed = any(command[2] == 21 for command in drone.m.mav.commands)
+        return status_sample(clock.now, altitude=0.1, sequence=int(clock.now * 10) + 3, landed=landed)
+
+    drone, _clock, _requested = transactional_drone(monkeypatch, telemetry)
+
+    evidence = drone.takeoff()
+
+    assert not evidence.accepted
+    assert evidence.failure_reason is TakeoffFailureReason.ACTUATOR_RESPONSE_TIMEOUT
+    assert drone.m.arm_calls == 1
+    assert sum(command[2] == 22 for command in drone.m.mav.commands) == 1
+    assert drone.flying is False
+
+
+def test_climb_samples_without_confirmed_not_landed_state_do_not_pass(monkeypatch):
+    samples = [
+        status_sample(0.0, altitude=0.0, sequence=0, armed=False, landed=True),
+        status_sample(0.1, altitude=0.0, sequence=1, armed=True, landed=True),
+        status_sample(0.2, altitude=0.6, sequence=2, landed=None),
+        status_sample(0.3, altitude=0.7, sequence=3, landed=None),
+        status_sample(0.4, altitude=0.8, sequence=4, landed=None),
+        status_sample(2.0, altitude=0.8, sequence=5, landed=None, offboard=True),
+    ]
+    sequence = telemetry_sequence(samples)
+
+    def telemetry(clock, drone):
+        if any(command[2] == 21 for command in drone.m.mav.commands):
+            return status_sample(clock.now, altitude=0.0, sequence=99, armed=False, landed=True)
+        return sequence(clock, drone)
+
+    drone, _clock, _requested = transactional_drone(monkeypatch, telemetry)
+
+    evidence = drone.takeoff()
+
+    assert not evidence.accepted
+    assert evidence.failure_reason is TakeoffFailureReason.ACTUATOR_RESPONSE_TIMEOUT
+
+
+def test_accepted_commands_with_stationary_altitude_fail_and_do_not_retry(monkeypatch):
+    def telemetry(clock, drone):
+        if clock.now == 0.0:
+            return status_sample(clock.now, altitude=0.0, sequence=0, armed=False, landed=True)
+        landed = any(command[2] == 21 for command in drone.m.mav.commands)
+        return status_sample(
+            clock.now,
+            altitude=0.02,
+            sequence=int(clock.now * 10) + 1,
+            armed=not landed,
+            landed=landed,
+        )
+
+    drone, _clock, requested = transactional_drone(monkeypatch, telemetry)
+
+    evidence = drone.takeoff()
+
+    assert evidence.failure_reason is TakeoffFailureReason.ACTUATOR_RESPONSE_TIMEOUT
+    assert requested.count(400) == 1
+    assert requested.count(22) == 1
+    assert drone.m.arm_calls == 1
+    assert drone.m.disarm_calls == 1
+
+
+def test_offboard_rejection_fails_after_climb_and_requests_safe_landing(monkeypatch):
+    samples = [
+        status_sample(0.0, altitude=0.0, sequence=0, armed=False, landed=True),
+        status_sample(0.1, altitude=0.0, sequence=1, armed=True, landed=True),
+        status_sample(0.2, altitude=0.6, sequence=2),
+        status_sample(0.3, altitude=0.7, sequence=3),
+        status_sample(0.4, altitude=0.8, sequence=4),
+    ]
+    sequence = telemetry_sequence(samples)
+    post_disarm_reads = []
+
+    def telemetry(clock, drone):
+        if any(command[2] == 21 for command in drone.m.mav.commands):
+            if drone.m.disarm_calls:
+                post_disarm_reads.append(clock.now)
+                return status_sample(clock.now, altitude=0.0, sequence=100, armed=False, landed=True)
+            return status_sample(clock.now, altitude=0.0, sequence=99, armed=True, landed=True)
+        return sequence(clock, drone)
+
+    drone, _clock, requested = transactional_drone(monkeypatch, telemetry, {176: 4})
+
+    evidence = drone.takeoff()
+
+    assert not evidence.accepted
+    assert evidence.failure_reason is TakeoffFailureReason.OFFBOARD_COMMAND_REJECTED
+    assert requested == [400, 22, 176]
+    assert any(command[2] == 21 for command in drone.m.mav.commands)
+    assert drone.m.disarm_calls == 1
+    assert post_disarm_reads
+    assert evidence.cleanup_failure is None

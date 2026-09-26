@@ -30,9 +30,14 @@ class Telemetry:
     position_updated_at: float | None = None
     attitude_updated_at: float | None = None
     estimator_updated_at: float | None = None
+    status_updated_at: float | None = None
     position_valid: bool | None = None
     attitude_valid: bool | None = None
     estimator_healthy: bool | None = None
+    armed: bool | None = None
+    landed: bool | None = None
+    navigation_state: int | None = None
+    offboard: bool | None = None
 
 
 class SafetyGovernor:
