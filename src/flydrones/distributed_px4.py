@@ -14,6 +14,7 @@ from pathlib import Path
 from .gazebo_depth import DepthCameraBank, px4_depth_camera_topics
 from .hybrid_agent import HybridPlannerAgent
 from .local_planner import LocalPlannerConfig, PlannerPeer
+from .motor.command import FlightCommand
 from .numpy_policy import NumpyMlpPolicy
 from .peer_udp import PeerUdpConfig, UdpPeerNode
 from .sitl_swarm import (
@@ -22,6 +23,7 @@ from .sitl_swarm import (
     px4_swarm_rally_targets,
     px4_swarm_specs,
 )
+from .takeoff_readiness import TakeoffEvidence, TakeoffStage
 from .vio_faults import write_activation
 from .vio_stream_monitor import VioStreamMonitor
 
@@ -47,6 +49,7 @@ class DistributedAgentConfig:
     vio_health_port: int | None = None
     vio_max_age_s: float = 0.25
     local_frame_realign_window_s: float = 3.0
+    takeoff_only_hold_s: float | None = None
     peer_base_port: int = 16770
     peer_config: PeerUdpConfig = field(default_factory=lambda: PeerUdpConfig(
         range_m=8.0,
@@ -76,6 +79,8 @@ class DistributedAgentConfig:
             raise ValueError("vio_health_port must be a valid UDP port")
         if self.vio_max_age_s <= 0.0:
             raise ValueError("vio_max_age_s must be positive")
+        if self.takeoff_only_hold_s is not None and self.takeoff_only_hold_s <= 0.0:
+            raise ValueError("takeoff_only_hold_s must be positive when enabled")
 
 
 @dataclass(frozen=True)
@@ -214,6 +219,7 @@ def build_distributed_agent_commands(
     external_vision_fusion: bool = False,
     fault_marker_path: str | Path | None = None,
     vio_health_base_port: int | None = None,
+    takeoff_only_hold_s: float | None = None,
 ) -> list[list[str]]:
     if vehicle_count != 5:
         raise ValueError("the distributed PX4 trial currently requires five workers")
@@ -245,6 +251,8 @@ def build_distributed_agent_commands(
             command.append("--external-vision-fusion")
         if vio_health_base_port is not None:
             command.extend(["--vio-health-port", str(vio_health_base_port + vehicle_id)])
+        if takeoff_only_hold_s is not None:
+            command.extend(["--takeoff-only-hold-s", str(takeoff_only_hold_s)])
         commands.append(command)
     return commands
 
@@ -310,6 +318,49 @@ def _read_agent_trace(path: Path) -> list[dict]:
         if row.get("safety_override"):
             row["safety_override"] = row["safety_override"].lower() == "true"
     return rows
+
+
+def aggregate_takeoff_readiness_artifacts(
+    output_dir: str | Path,
+    *,
+    vehicle_count: int = 5,
+) -> tuple[list[dict], dict]:
+    """Fail closed unless every worker proves takeoff readiness and landing."""
+
+    output = Path(output_dir)
+    workers = [
+        json.loads((output / f"agent-{vehicle_id}.json").read_text(encoding="utf-8"))
+        for vehicle_id in range(vehicle_count)
+    ]
+    mission_ready = sum(
+        bool(result.get("takeoff", {}).get("accepted"))
+        and result.get("takeoff", {}).get("terminal_stage") == TakeoffStage.MISSION_READY.value
+        and bool(result.get("checks", {}).get("takeoff_mission_ready"))
+        for result in workers
+    )
+    landed = sum(bool(result.get("checks", {}).get("landed")) for result in workers)
+    worker_results_accepted = sum(bool(result.get("accepted")) for result in workers)
+    checks = {
+        "all_workers_mission_ready": mission_ready == vehicle_count,
+        "all_workers_landed": landed == vehicle_count,
+        "all_worker_results_accepted": worker_results_accepted == vehicle_count,
+    }
+    summary = {
+        "schema": "flydrones-takeoff-readiness-summary-v1",
+        "accepted": all(checks.values()),
+        "checks": checks,
+        "metrics": {
+            "vehicles": vehicle_count,
+            "mission_ready": mission_ready,
+            "landed": landed,
+            "worker_results_accepted": worker_results_accepted,
+        },
+    }
+    (output / "takeoff-readiness-summary.json").write_text(
+        json.dumps(summary, ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8",
+    )
+    return workers, summary
 
 
 def aggregate_distributed_artifacts(
@@ -722,6 +773,8 @@ def run_distributed_px4_agent(
     gps_failure_mechanism: str | None = None
     frame_continuity = LocalFrameContinuity()
     launch_local_origin: tuple[float, float] | None = None
+    takeoff_evidence: TakeoffEvidence | None = None
+    takeoff_only_hold_completed = False
 
     def position_from_local(local: tuple[float, float, float]) -> tuple[float, float, float]:
         origin = launch_local_origin or (0.0, 0.0)
@@ -852,14 +905,17 @@ def run_distributed_px4_agent(
                 last_state_health_reason = preflight_health.reason
                 raise TimeoutError(f"local state did not become healthy: {preflight_health.reason}")
             sleep(period)
-        try:
-            drone.takeoff()
-        except TimeoutError as exc:
-            if "did not arm" not in str(exc).lower():
-                raise
-            # Five SITL instances occasionally contend during simultaneous
-            # startup. Re-prime OFFBOARD and retry this local vehicle once.
-            drone.takeoff()
+        takeoff_evidence = drone.takeoff()
+        if not isinstance(takeoff_evidence, TakeoffEvidence):
+            raise RuntimeError("takeoff did not return structured readiness evidence")
+        if not takeoff_evidence.accepted or takeoff_evidence.terminal_stage is not TakeoffStage.MISSION_READY:
+            fail_closed_land = True
+            reason = (
+                takeoff_evidence.failure_reason.value
+                if takeoff_evidence.failure_reason is not None
+                else "worker-not-mission-ready"
+            )
+            raise RuntimeError(f"takeoff readiness failed: {reason}")
         # PX4 takeoff/Offboard priming blocks for several seconds. Drain the
         # monitor's queued frames and wait for a newly delivered VIO sample
         # before issuing the first autonomous setpoint.
@@ -879,7 +935,11 @@ def run_distributed_px4_agent(
                     raise TimeoutError(f"local state did not recover after takeoff: {post_takeoff_health.reason}")
                 sleep(period)
         mission_start = monotonic()
-        deadline = mission_start + config.mission_timeout_s
+        deadline = mission_start + (
+            config.takeoff_only_hold_s
+            if config.takeoff_only_hold_s is not None
+            else config.mission_timeout_s
+        )
         arrived_frames = 0
         while True:
             telemetry = drone.telemetry()
@@ -899,6 +959,23 @@ def run_distributed_px4_agent(
                 sample("fail_closed", failed_position, telemetry, None, 0, state_health)
                 break
             elapsed = timestamp - mission_start
+            if config.takeoff_only_hold_s is not None:
+                position = position_from_local((
+                    float(telemetry.x_m),
+                    float(telemetry.y_m),
+                    float(telemetry.alt_m),
+                ))
+                observation = depth_camera.latest(config.vehicle_id, now=timestamp, max_age_s=0.35)
+                sample("takeoff_hold", position, telemetry, observation, 0, state_health)
+                if timestamp >= deadline:
+                    takeoff_only_hold_completed = True
+                    break
+                drone.send(FlightCommand.hover("takeoff-only hold"))
+                last_command_sent_at_s = monotonic()
+                trace[-1]["command_sent"] = True
+                trace[-1]["command_sent_at_s"] = round(last_command_sent_at_s, 6)
+                sleep(period)
+                continue
             allow_frame_realign = (
                 config.external_vision_fusion
                 and gps_failure_injected_at_s is not None
@@ -1076,18 +1153,37 @@ def run_distributed_px4_agent(
         for row in trace
     )
     landed = bool(trace and trace[-1]["phase"] == "land" and float(trace[-1]["alt_m"]) <= 0.18)
-    checks = {
-        "local_depth_ready": depth_ready,
-        "reached_altitude": reached_altitude,
-        "escaped_forest": escaped,
-        "rallied": rallied,
-        "landed": landed,
-        "mission_completed_within_timeout": not mission_timed_out,
-        "no_worker_error": error is None,
-        "used_local_policy": agent.policy_calls > 0,
-        "zero_direct_global_neighbor_reads": True,
-        "zero_central_control_commands": True,
-    }
+    takeoff_mission_ready = bool(
+        takeoff_evidence is not None
+        and takeoff_evidence.accepted
+        and takeoff_evidence.terminal_stage is TakeoffStage.MISSION_READY
+    )
+    if config.takeoff_only_hold_s is not None:
+        checks = {
+            "local_depth_ready": depth_ready,
+            "takeoff_mission_ready": takeoff_mission_ready,
+            "takeoff_only_hold_completed": takeoff_only_hold_completed,
+            "landed": landed,
+            "no_worker_error": error is None,
+            "zero_policy_calls": agent.policy_calls == 0,
+            "zero_planner_calls": planner_calls == 0,
+            "zero_direct_global_neighbor_reads": True,
+            "zero_central_control_commands": True,
+        }
+    else:
+        checks = {
+            "local_depth_ready": depth_ready,
+            "takeoff_mission_ready": takeoff_mission_ready,
+            "reached_altitude": reached_altitude,
+            "escaped_forest": escaped,
+            "rallied": rallied,
+            "landed": landed,
+            "mission_completed_within_timeout": not mission_timed_out,
+            "no_worker_error": error is None,
+            "used_local_policy": agent.policy_calls > 0,
+            "zero_direct_global_neighbor_reads": True,
+            "zero_central_control_commands": True,
+        }
     ordered_planner_times = sorted(planner_times_ms)
     planner_p95_ms = (
         ordered_planner_times[max(0, math.ceil(0.95 * len(ordered_planner_times)) - 1)]
@@ -1138,6 +1234,7 @@ def run_distributed_px4_agent(
         "checks": checks,
         "metrics": metrics,
         "error": error,
+        "takeoff": takeoff_evidence.to_dict() if takeoff_evidence is not None else None,
     }
     _write_agent_artifacts(output_dir, config.vehicle_id, trace, result)
     return trace, result

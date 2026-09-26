@@ -12,6 +12,7 @@ from pathlib import Path
 
 from flydrones.distributed_px4 import (
     aggregate_distributed_artifacts,
+    aggregate_takeoff_readiness_artifacts,
     build_distributed_agent_commands,
     evaluate_gps_fault_artifacts,
     evaluate_gps_vio_fallback_artifacts,
@@ -65,6 +66,7 @@ def main() -> int:
     parser.add_argument("--px4-run-dir")
     parser.add_argument("--fault-marker")
     parser.add_argument("--allow-no-udp-blackout", action="store_true")
+    parser.add_argument("--takeoff-only-hold-s", type=float)
     args = parser.parse_args()
     if args.expect_fault_landing and args.gps_failure_vehicle is None:
         parser.error("--expect-fault-landing requires --gps-failure-vehicle")
@@ -96,6 +98,7 @@ def main() -> int:
         external_vision_fusion=args.external_vision_fusion,
         fault_marker_path=args.fault_marker,
         vio_health_base_port=args.vio_health_base_port,
+        takeoff_only_hold_s=args.takeoff_only_hold_s,
     )
 
     processes: list[subprocess.Popen] = []
@@ -151,6 +154,11 @@ def main() -> int:
         _trace, summary = evaluate_gps_fault_artifacts(
             output_dir,
             fault_vehicle_id=args.gps_failure_vehicle,
+            vehicle_count=vehicle_count,
+        )
+    elif args.takeoff_only_hold_s is not None:
+        _workers, summary = aggregate_takeoff_readiness_artifacts(
+            output_dir,
             vehicle_count=vehicle_count,
         )
     else:

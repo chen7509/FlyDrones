@@ -31,6 +31,7 @@ def main() -> int:
     parser.add_argument("--fault-marker")
     parser.add_argument("--external-vision-fusion", action="store_true")
     parser.add_argument("--vio-health-port", type=int)
+    parser.add_argument("--takeoff-only-hold-s", type=float)
     args = parser.parse_args()
     radio = PeerUdpConfig(
         range_m=args.peer_range,
@@ -53,6 +54,7 @@ def main() -> int:
         fault_marker_path=args.fault_marker,
         external_vision_fusion=args.external_vision_fusion,
         vio_health_port=args.vio_health_port,
+        takeoff_only_hold_s=args.takeoff_only_hold_s,
     )
     _trace, result = run_distributed_px4_agent(config)
     print(json.dumps(result, ensure_ascii=False, indent=2))

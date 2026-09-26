@@ -12,6 +12,7 @@ from flydrones.distributed_px4 import (
     LocalFrameContinuity,
     _px4_execution_planner_config,
     aggregate_distributed_artifacts,
+    aggregate_takeoff_readiness_artifacts,
     align_distributed_traces,
     build_distributed_agent_commands,
     evaluate_gps_fault_artifacts,
@@ -23,6 +24,7 @@ from flydrones.gazebo_depth import DepthObservation
 from flydrones.motor.command import FlightCommand
 from flydrones.peer_udp import PeerTrack
 from flydrones.safety import Telemetry
+from flydrones.takeoff_readiness import TakeoffEvidence, TakeoffFailureReason, TakeoffStage
 from flydrones.vio_stream_monitor import VioStreamHealth
 
 
@@ -114,6 +116,14 @@ class LocalKinematicDrone:
     def takeoff(self):
         self.takeoff_called = True
         self.altitude = 1.8
+        return TakeoffEvidence(
+            target_system=1,
+            target_component=1,
+            terminal_stage=TakeoffStage.MISSION_READY,
+            accepted=True,
+            baseline_altitude_m=0.0,
+            maximum_altitude_gain_m=1.8,
+        )
 
     def send(self, command):
         self.last_command = command
@@ -340,22 +350,33 @@ def test_worker_records_hybrid_planner_diagnostics(tmp_path):
     assert all("predicted_peer_separation_m" in row for row in trace if row["phase"] != "land")
 
 
-def test_worker_retries_one_transient_px4_arm_timeout(tmp_path):
-    class TransientArmTimeoutDrone(LocalKinematicDrone):
-        def __init__(self, clock):
-            super().__init__(clock)
-            self.takeoff_calls = 0
-
+@pytest.mark.parametrize(
+    ("reason", "stage"),
+    [
+        (TakeoffFailureReason.ARM_COMMAND_REJECTED, TakeoffStage.ARM_SENT),
+        (TakeoffFailureReason.TAKEOFF_COMMAND_TIMEOUT, TakeoffStage.TAKEOFF_SENT),
+        (TakeoffFailureReason.ACTUATOR_RESPONSE_TIMEOUT, TakeoffStage.TAKEOFF_ACCEPTED),
+    ],
+)
+def test_worker_never_enters_mission_after_takeoff_readiness_failure(tmp_path, reason, stage):
+    class FailedTakeoffDrone(LocalKinematicDrone):
         def takeoff(self):
-            self.takeoff_calls += 1
-            if self.takeoff_calls == 1:
-                raise TimeoutError("PX4 did not arm within 10 seconds")
-            super().takeoff()
+            self.takeoff_called = True
+            return TakeoffEvidence(
+                target_system=3,
+                target_component=1,
+                terminal_stage=stage,
+                accepted=False,
+                failure_reason=reason,
+                baseline_altitude_m=0.0,
+                maximum_altitude_gain_m=0.0,
+            )
 
     clock = Clock()
-    drone = TransientArmTimeoutDrone(clock)
+    drone = FailedTakeoffDrone(clock)
     clock.drone = drone
-    _trace, result = run_distributed_px4_agent(
+    policy = ForwardPolicy()
+    trace, result = run_distributed_px4_agent(
         DistributedAgentConfig(
             vehicle_id=2,
             output_dir=tmp_path,
@@ -365,13 +386,101 @@ def test_worker_retries_one_transient_px4_arm_timeout(tmp_path):
         drone=drone,
         depth_camera=LocalDepthCamera(),
         peer_node=LocalPeerNode(),
-        policy=ForwardPolicy(),
+        policy=policy,
         monotonic=clock.time,
         wall_time=clock.wall_time,
         sleep=clock.sleep,
     )
+
+    assert not result["accepted"]
+    assert not result["checks"]["takeoff_mission_ready"]
+    assert result["takeoff"]["failure_reason"] == reason.value
+    assert policy.predict_calls == 0
+    assert all(row["phase"] != "escaping" for row in trace)
+    assert drone.land_called
+
+
+def test_takeoff_only_mode_holds_locally_without_policy_or_planner_calls(tmp_path):
+    clock = Clock()
+    drone = LocalKinematicDrone(clock)
+    clock.drone = drone
+    policy = ForwardPolicy()
+
+    trace, result = run_distributed_px4_agent(
+        DistributedAgentConfig(
+            vehicle_id=0,
+            output_dir=tmp_path,
+            takeoff_only_hold_s=2.0,
+            land_timeout_s=5.0,
+        ),
+        drone=drone,
+        depth_camera=LocalDepthCamera(),
+        peer_node=LocalPeerNode(),
+        policy=policy,
+        monotonic=clock.time,
+        wall_time=clock.wall_time,
+        sleep=clock.sleep,
+    )
+
     assert result["accepted"], result
-    assert drone.takeoff_calls == 2
+    assert result["checks"]["takeoff_only_hold_completed"]
+    assert result["metrics"]["policy_calls"] == 0
+    assert result["metrics"]["planner_calls"] == 0
+    assert policy.predict_calls == 0
+    assert any(row["phase"] == "takeoff_hold" for row in trace)
+    assert all(row["phase"] != "escaping" for row in trace)
+    assert drone.last_command == FlightCommand.hover("takeoff-only hold")
+    assert drone.land_called
+    assert clock.now >= 2.0
+
+
+def test_takeoff_readiness_aggregation_requires_all_five_ready_and_landed(tmp_path):
+    for vehicle_id in range(5):
+        result = {
+            "accepted": True,
+            "checks": {"takeoff_mission_ready": True, "landed": True},
+            "takeoff": {
+                "accepted": True,
+                "terminal_stage": "mission-ready",
+                "failure_reason": None,
+            },
+        }
+        (tmp_path / f"agent-{vehicle_id}.json").write_text(json.dumps(result), encoding="utf-8")
+
+    workers, summary = aggregate_takeoff_readiness_artifacts(tmp_path, vehicle_count=5)
+
+    assert len(workers) == 5
+    assert summary["accepted"]
+    assert summary["metrics"]["mission_ready"] == 5
+    assert summary["metrics"]["landed"] == 5
+
+    failed = json.loads((tmp_path / "agent-3.json").read_text(encoding="utf-8"))
+    failed["accepted"] = False
+    failed["checks"]["takeoff_mission_ready"] = False
+    failed["takeoff"].update({
+        "accepted": False,
+        "terminal_stage": "takeoff-accepted",
+        "failure_reason": "actuator-response-timeout",
+    })
+    (tmp_path / "agent-3.json").write_text(json.dumps(failed), encoding="utf-8")
+
+    _workers, rejected = aggregate_takeoff_readiness_artifacts(tmp_path, vehicle_count=5)
+
+    assert not rejected["accepted"]
+    assert rejected["metrics"]["mission_ready"] == 4
+
+
+def test_coordinator_plumbs_takeoff_only_hold_to_every_worker(tmp_path):
+    commands = build_distributed_agent_commands(
+        python_executable="python3",
+        agent_script=Path("tools/px4_distributed_agent.py"),
+        output_dir=tmp_path,
+        model_path=Path("actor.npz"),
+        vehicle_count=5,
+        takeoff_only_hold_s=2.0,
+    )
+
+    assert all(command[command.index("--takeoff-only-hold-s") + 1] == "2.0" for command in commands)
 
 
 def test_worker_honors_local_fail_closed_landing_without_waiting_for_timeout(tmp_path):
@@ -444,8 +553,9 @@ def test_worker_stops_autonomous_setpoints_on_vio_blackout_and_requests_land(tmp
 def test_worker_waits_for_fresh_vio_after_blocking_takeoff_before_mission(tmp_path):
     class BlockingTakeoffDrone(LocalKinematicDrone):
         def takeoff(self):
-            super().takeoff()
+            evidence = super().takeoff()
             self.clock.now += 1.0
+            return evidence
 
     class BackloggedMonitor:
         def __init__(self):
@@ -759,7 +869,7 @@ def test_worker_enables_external_vision_before_takeoff(tmp_path):
 
         def takeoff(self):
             events.append("takeoff")
-            super().takeoff()
+            return super().takeoff()
 
     clock = Clock()
     drone = VisionFusionDrone(clock)
