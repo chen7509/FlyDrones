@@ -99,6 +99,31 @@ def test_external_vision_health_rejects_innovation_rejection_and_estimator_reset
     assert not result["checks"]["no_unexplained_horizontal_estimator_reset"]
 
 
+def test_external_vision_health_allows_a_reset_before_the_evidence_window():
+    datasets = _datasets()
+    datasets["vehicle_local_position"]["xy_reset_counter"][7:] = [1] * 13
+    datasets["vehicle_visual_odometry"]["timestamp"] = [
+        index * 100_000 for index in range(200)
+    ]
+
+    full_run = summarize_external_vision_health(datasets)
+    after_switch = summarize_external_vision_health(datasets, start_s=8.5)
+
+    assert not full_run["accepted"]
+    assert after_switch["accepted"]
+    assert after_switch["metrics"]["evidence_window_start_s"] == 8.5
+
+
+def test_post_gnss_evidence_rejects_a_horizontal_reset_after_the_switch_window():
+    datasets = _datasets()
+    datasets["vehicle_local_position"]["xy_reset_counter"][9:] = [1] * 11
+
+    result = summarize_post_gnss_evidence(datasets, gps_disable_s=5.5)
+
+    assert not result["accepted"]
+    assert not result["checks"]["no_unexplained_horizontal_estimator_reset"]
+
+
 def test_relay_to_px4_requires_matching_transformed_pose_and_time():
     events = [
         {"active": True, "model": "x500_depth_fly_0", "source_stamp_ns": 10_000_000_000,

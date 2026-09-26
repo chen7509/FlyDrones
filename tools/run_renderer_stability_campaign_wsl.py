@@ -276,6 +276,7 @@ def calculate_frozen_hashes(config_path: Path, profile: Path, model: Path) -> di
         "renderer_profile": sha256(ROOT / "src/flydrones/gazebo_renderer.py"),
         "runtime_probe": sha256(ROOT / "tools/probe_gazebo_runtime_wsl.py"),
         "summary": sha256(ROOT / "tools/summarize_vio_stress_wsl.py"),
+        "evidence": sha256(ROOT / "src/flydrones/vio_stress_evidence.py"),
         "world_generator": sha256(ROOT / "tools/generate_px4_forest_world.py"),
         "camera_model": _tree_sha256(ROOT / "assets/gazebo/models/OakD-Lite-Fly"),
         "vehicle_model": _tree_sha256(ROOT / "assets/gazebo/models/x500_depth_fly"),

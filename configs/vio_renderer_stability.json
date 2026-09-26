@@ -38,7 +38,8 @@
     "renderer_attestation": "308ccf54fd1da138174c092f82467a38a645fbc4d8054fe057be536190527902",
     "renderer_profile": "25eb25866978b94d5c7327c688c46112523067f55c29dabe15fe7d17ebe89118",
     "runtime_probe": "e57c7a29137e7443373519550849b39247184c82d0698bb7c43b43c8ec0a5cf6",
-    "summary": "bcddf58abbd61e16be8f8f8e9ae15a0e814b86a62b450ba78d5a96a60c9b467f",
+    "summary": "f26aef4a07d8e83bcf7a52805bbc92aa442462707935591c1d3c1a7ecd5e036b",
+    "evidence": "1a4983a1f12852081073330702d4a8f755e496a94d231c7d554b3bf15c58dd3a",
     "world_generator": "3fd59afbf9f550196caac0422ea2800290a6deb657f02cdf9cffcd6666a1055a",
     "camera_model": "9c8a2916ac3fac5b9cfc09f16b3b8d3d323347980e87b39e476a31c7cdf8593d",
     "vehicle_model": "17d5ef7b94667b37fb46dbffba77ea443dddf1bc24923aec8bf2ab1cb2fca1ed"

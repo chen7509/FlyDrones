@@ -278,7 +278,12 @@ def _ulog_external_vision_health(path: Path) -> dict:
     try:
         ulog = ULog(str(path))
         datasets = {dataset.name: dataset.data for dataset in ulog.data_list if dataset.multi_id == 0}
-        result = summarize_external_vision_health(datasets)
+        disable = next((float(timestamp) / 1_000_000 for timestamp, name, value in ulog.changed_parameters
+                        if name == "EKF2_GPS_CTRL" and int(value) == 0), None)
+        result = summarize_external_vision_health(
+            datasets,
+            start_s=disable + 0.2 if disable is not None else None,
+        )
     except Exception as exc:
         return {"accepted": False, "checks": {}, "metrics": {},
                 "error": f"ULog could not be read: {exc}"}

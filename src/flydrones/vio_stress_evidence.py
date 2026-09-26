@@ -72,6 +72,8 @@ def _observed_duration(dataset: Mapping[str, Sequence], field: str, indices: lis
 
 def summarize_external_vision_health(
     datasets: Mapping[str, Mapping[str, Sequence]],
+    *,
+    start_s: float | None = None,
 ) -> dict:
     """Prove sustained EV estimator health without making a GNSS-handoff claim."""
     required = ("estimator_status_flags", "estimator_aid_src_ev_pos",
@@ -110,10 +112,11 @@ def summarize_external_vision_health(
     if first_fused_s is None:
         return {"accepted": False, "checks": {}, "metrics": {},
                 "error": "external-vision position fusion was never observed"}
-    status_indices = _indices_after(status, first_fused_s)
-    aid_indices = _indices_after(ev_aid, first_fused_s)
-    local_indices = _indices_after(local, first_fused_s)
-    visual_indices = _indices_after(visual, first_fused_s)
+    evidence_start_s = max(first_fused_s, start_s) if start_s is not None else first_fused_s
+    status_indices = _indices_after(status, evidence_start_s)
+    aid_indices = _indices_after(ev_aid, evidence_start_s)
+    local_indices = _indices_after(local, evidence_start_s)
+    visual_indices = _indices_after(visual, evidence_start_s)
     visual_times = [float(visual["timestamp"][index]) / 1_000_000 for index in visual_indices]
     visual_gaps = [right - left for left, right in zip(visual_times, visual_times[1:])]
     visual_duration = visual_times[-1] - visual_times[0] if len(visual_times) >= 2 else 0.0
@@ -155,6 +158,7 @@ def summarize_external_vision_health(
         "accepted": all(checks.values()),
         "checks": checks,
         "metrics": {
+            "evidence_window_start_s": round(evidence_start_s, 6),
             "status_samples": len(status_indices),
             "ev_position_samples": len(aid_indices),
             "ev_position_fused_ratio": round(ev_fused, 6),
@@ -211,6 +215,11 @@ def summarize_post_gnss_evidence(
     visual_gaps = [right - left for left, right in zip(visual_times, visual_times[1:])]
     local_valid = sum(bool(local["xy_valid"][index]) and bool(local["v_xy_valid"][index])
                       for index in local_post) / len(local_post) if local_post else 0.0
+    xy_resets = [int(local["xy_reset_counter"][index]) for index in local_post]
+    vxy_resets = [int(local["vxy_reset_counter"][index]) for index in local_post]
+    reset_free = bool(xy_resets and vxy_resets) and (
+        max(xy_resets) == min(xy_resets) and max(vxy_resets) == min(vxy_resets)
+    )
     ev_fused = _ratio(ev_aid, "fused", aid_post)
     ev_pos = _ratio(status, "cs_ev_pos", status_post)
     ev_vel = _ratio(status, "cs_ev_vel", status_post)
@@ -225,6 +234,7 @@ def summarize_post_gnss_evidence(
         "gnss_fusion_inactive_after_disable": len(status_post) >= 2 and gnss_pos == 0.0 and gnss_vel == 0.0,
         "no_observed_inertial_dead_reckoning": len(status_post) >= 2 and dead_reckoning == 0.0,
         "local_position_valid": len(local_post) >= 10 and local_valid >= 0.95,
+        "no_unexplained_horizontal_estimator_reset": reset_free,
         "visual_stream_present": len(visual_post) >= 10 and visual_duration >= 5.0,
         "gnss_to_visual_handoff_proven": prior_overlap,
     }
@@ -246,6 +256,10 @@ def summarize_post_gnss_evidence(
             "inertial_dead_reckoning_ratio": round(dead_reckoning, 6),
             "dead_reckoning_observed_duration_s": round(dead_reckoning_duration, 6),
             "local_position_valid_ratio": round(local_valid, 6),
+            "xy_reset_counter_start": xy_resets[0] if xy_resets else None,
+            "xy_reset_counter_end": xy_resets[-1] if xy_resets else None,
+            "vxy_reset_counter_start": vxy_resets[0] if vxy_resets else None,
+            "vxy_reset_counter_end": vxy_resets[-1] if vxy_resets else None,
             "visual_stream_duration_s": round(visual_duration, 6),
             "visual_stream_max_gap_ms": round(max(visual_gaps) * 1000, 3) if visual_gaps else None,
         },
