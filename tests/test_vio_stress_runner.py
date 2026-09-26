@@ -217,3 +217,4 @@ def test_frozen_hashes_include_actuator_probe_and_readiness_module(tmp_path):
 
     assert hashes["actuator_probe"]
     assert hashes["takeoff_readiness"]
+    assert hashes["mavlink_drone"]

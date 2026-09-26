@@ -24,9 +24,11 @@ def _ready_evidence() -> TakeoffEvidence:
         arm_ack=CommandAckEvidence(
             command=400,
             result=0,
-            target_system=3,
-            target_component=1,
+            target_system=255,
+            target_component=190,
             received_at_s=1.1,
+            source_system=3,
+            source_component=1,
         ),
         events=(
             TakeoffEvent(stage=TakeoffStage.ARM_SENT, at_s=1.0, target_system=3, target_component=1),
@@ -42,8 +44,10 @@ def test_evidence_serialization_is_json_safe_and_preserves_event_order_and_targe
     assert serialized["target_system"] == 3
     assert serialized["target_component"] == 1
     assert [event["stage"] for event in serialized["events"]] == ["arm-sent", "mission-ready"]
-    assert serialized["arm_ack"]["target_system"] == 3
-    assert serialized["arm_ack"]["target_component"] == 1
+    assert serialized["arm_ack"]["target_system"] == 255
+    assert serialized["arm_ack"]["target_component"] == 190
+    assert serialized["arm_ack"]["source_system"] == 3
+    assert serialized["arm_ack"]["source_component"] == 1
 
 
 def test_accepted_evidence_requires_mission_ready_terminal_stage():

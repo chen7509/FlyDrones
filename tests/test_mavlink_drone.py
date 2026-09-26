@@ -20,6 +20,19 @@ class Message:
         return self.kind
 
 
+class HeaderMessage(Message):
+    def __init__(self, kind: str, *, source_system: int, source_component: int, **values):
+        super().__init__(kind, **values)
+        self._source_system = source_system
+        self._source_component = source_component
+
+    def get_srcSystem(self):
+        return self._source_system
+
+    def get_srcComponent(self):
+        return self._source_component
+
+
 class Connection:
     def __init__(self, messages):
         self.messages = list(messages)
@@ -295,6 +308,61 @@ def test_wait_command_ack_ignores_unrelated_and_wrong_target_acks(monkeypatch):
     assert acknowledgement.command == 400
     assert acknowledgement.target_system == 3
     assert len(drone._unmatched_command_acks) == 2
+
+
+def test_wait_command_ack_matches_px4_header_source_and_local_payload_recipient(monkeypatch):
+    now = iter((0.0, 0.1, 0.2, 0.3))
+    monkeypatch.setattr(mavlink_module.time, "monotonic", lambda: next(now))
+    drone = bare_drone([
+        HeaderMessage(
+            "COMMAND_ACK", command=400, result=0,
+            source_system=2, source_component=1,
+            target_system=255, target_component=190,
+        ),
+        HeaderMessage(
+            "COMMAND_ACK", command=400, result=0,
+            source_system=1, source_component=1,
+            target_system=9, target_component=190,
+        ),
+        HeaderMessage(
+            "COMMAND_ACK", command=400, result=0,
+            source_system=1, source_component=1,
+            target_system=255, target_component=190,
+        ),
+    ])
+    drone.m.target_system = 1
+    drone.m.target_component = 1
+    drone.m.source_system = 255
+    drone.m.source_component = 190
+
+    acknowledgement = drone._wait_command_ack(400, timeout_s=1.0)
+
+    assert acknowledgement.source_system == 1
+    assert acknowledgement.source_component == 1
+    assert acknowledgement.target_system == 255
+    assert acknowledgement.target_component == 190
+    assert len(drone._unmatched_command_acks) == 2
+
+
+def test_wait_command_ack_accepts_missing_mavlink2_target_extensions(monkeypatch):
+    now = iter((0.0, 0.1))
+    monkeypatch.setattr(mavlink_module.time, "monotonic", lambda: next(now))
+    drone = bare_drone([
+        HeaderMessage(
+            "COMMAND_ACK", command=22, result=0,
+            source_system=1, source_component=1,
+        ),
+    ])
+    drone.m.target_system = 1
+    drone.m.target_component = 1
+    drone.m.source_system = 255
+    drone.m.source_component = 190
+
+    acknowledgement = drone._wait_command_ack(22, timeout_s=1.0)
+
+    assert acknowledgement.source_system == 1
+    assert acknowledgement.target_system == 0
+    assert acknowledgement.target_component == 0
 
 
 def test_wait_command_ack_accepts_in_progress_only_after_final_result(monkeypatch):

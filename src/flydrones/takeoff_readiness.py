@@ -46,6 +46,8 @@ class CommandAckEvidence:
     received_at_s: float
     progress: int | None = None
     result_param2: int | None = None
+    source_system: int | None = None
+    source_component: int | None = None
 
     def to_dict(self) -> dict[str, object]:
         return asdict(self)

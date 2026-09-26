@@ -216,3 +216,4 @@ def test_takeoff_config_hashes_match_frozen_inputs():
     )
 
     assert {key: actual[key] for key in config["expected_hashes"]} == config["expected_hashes"]
+    assert actual["mavlink_drone"]

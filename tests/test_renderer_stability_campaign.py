@@ -55,6 +55,7 @@ def test_versioned_config_hashes_match_current_frozen_inputs():
     assert actual["actuator_probe"]
     assert actual["takeoff_readiness"]
     assert actual["takeoff_stability_runner"]
+    assert actual["mavlink_drone"]
 
 
 def test_campaign_cli_can_run_as_a_script_file():

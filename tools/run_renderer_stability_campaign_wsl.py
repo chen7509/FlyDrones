@@ -279,6 +279,7 @@ def calculate_frozen_hashes(config_path: Path, profile: Path, model: Path) -> di
         "runtime_probe": sha256(ROOT / "tools/probe_gazebo_runtime_wsl.py"),
         "actuator_probe": sha256(ROOT / "tools/probe_gazebo_actuator_link.py"),
         "takeoff_readiness": sha256(ROOT / "src/flydrones/takeoff_readiness.py"),
+        "mavlink_drone": sha256(ROOT / "src/flydrones/drones/mavlink.py"),
         "takeoff_stability_runner": sha256(ROOT / "tools/run_takeoff_stability_campaign_wsl.py"),
         "summary": sha256(ROOT / "tools/summarize_vio_stress_wsl.py"),
         "evidence": sha256(ROOT / "src/flydrones/vio_stress_evidence.py"),

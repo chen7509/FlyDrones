@@ -168,18 +168,20 @@ class MavlinkDrone(Drone):
             telemetry.landed = True if landed_state == on_ground else False if landed_state == in_air else None
             telemetry.status_updated_at = received_at
         elif kind == "COMMAND_ACK":
-            target_system = self._message_source(
+            source_system = self._message_source(
                 message,
-                "target_system",
+                "source_system",
                 "get_srcSystem",
                 int(self.m.target_system),
             )
-            target_component = self._message_source(
+            source_component = self._message_source(
                 message,
-                "target_component",
+                "source_component",
                 "get_srcComponent",
                 int(self.m.target_component),
             )
+            target_system = int(getattr(message, "target_system", 0) or 0)
+            target_component = int(getattr(message, "target_component", 0) or 0)
             acknowledgement = CommandAckEvidence(
                 command=int(message.command),
                 result=int(message.result),
@@ -188,6 +190,8 @@ class MavlinkDrone(Drone):
                 received_at_s=received_at,
                 progress=int(message.progress) if getattr(message, "progress", None) is not None else None,
                 result_param2=int(message.result_param2) if getattr(message, "result_param2", None) is not None else None,
+                source_system=source_system,
+                source_component=source_component,
             )
             if not hasattr(self, "_command_acks"):
                 self._command_acks = []
@@ -200,13 +204,17 @@ class MavlinkDrone(Drone):
             self._command_acks = []
         if not hasattr(self, "_unmatched_command_acks"):
             self._unmatched_command_acks = []
+        local_system = int(getattr(self.m, "source_system", self.m.target_system))
+        local_component = int(getattr(self.m, "source_component", self.m.target_component))
         while True:
             retained: list[CommandAckEvidence] = []
             for acknowledgement in self._command_acks:
                 matches = (
                     acknowledgement.command == command
-                    and acknowledgement.target_system in (0, int(self.m.target_system))
-                    and acknowledgement.target_component in (0, int(self.m.target_component))
+                    and acknowledgement.source_system in (0, int(self.m.target_system))
+                    and acknowledgement.source_component in (0, int(self.m.target_component))
+                    and acknowledgement.target_system in (0, local_system)
+                    and acknowledgement.target_component in (0, local_component)
                 )
                 if not matches:
                     self._unmatched_command_acks.append(acknowledgement)

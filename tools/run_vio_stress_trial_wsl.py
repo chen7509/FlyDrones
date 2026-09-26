@@ -276,6 +276,7 @@ def trial_frozen_hashes(*, profile: Path, model: Path, runner_path: Path | None 
         "runtime_probe": sha256(ROOT / "tools/probe_gazebo_runtime_wsl.py"),
         "actuator_probe": sha256(ROOT / "tools/probe_gazebo_actuator_link.py"),
         "takeoff_readiness": sha256(ROOT / "src/flydrones/takeoff_readiness.py"),
+        "mavlink_drone": sha256(ROOT / "src/flydrones/drones/mavlink.py"),
         "summary": sha256(ROOT / "tools/summarize_vio_stress_wsl.py"),
         "world_generator": sha256(ROOT / "tools/generate_px4_forest_world.py"),
         "camera_model": _tree_sha256(ROOT / "assets/gazebo/models/OakD-Lite-Fly"),
