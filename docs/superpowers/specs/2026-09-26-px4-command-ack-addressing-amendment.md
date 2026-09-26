@@ -63,3 +63,34 @@ target extensions, `IN_PROGRESS` followed by a final result, and unchanged
 interleaved telemetry ingestion. After the focused and full automated suites
 pass, all frozen hashes are refreshed once. Live validation restarts with new
 development IDs; the failed run remains immutable.
+
+## Live follow-up: ULog motor layout and landing confirmation
+
+The third D3D12 single-vehicle development run,
+`takeoff-dev-single-d3d12-20260926-3`, completed the intended physical flight:
+PX4 accepted arm, takeoff, and offboard commands; Gazebo and ULog both record
+the climb; the worker exited successfully; and policy and planner call counts
+remained zero. The offline evidence gate nevertheless rejected the run for two
+valid reasons that expose defects in the evidence and shutdown path.
+
+First, real `pyulog` data presents actuator motor outputs as flattened fields
+named `control[0]` through `control[11]`, while the extractor only recognized
+the matrix-shaped `control` field used by its test fixture. Unused flattened
+channels also contain `NaN`. The extractor must support both representations,
+discard non-finite samples, and compute actuator evidence from every remaining
+finite control value.
+
+Second, the worker considered altitude below 0.15 metres sufficient evidence
+of landing and then stopped PX4. The ULog therefore ended while
+`vehicle_land_detected.landed` was still false. The PX4 landing path must send
+LAND, keep ingesting telemetry until both low altitude and `landed=true` are
+observed, issue an ordinary disarm, and then wait until `armed=false`. A
+landing-confirmation or disarm-confirmation timeout is an explicit worker
+failure and may not be converted into an accepted trial.
+
+Regression tests cover flattened actuator fields, non-finite unused channels,
+delayed landed state, disarm only after confirmed landing, and landing and
+disarm timeouts. This follow-up changes no policy weights, planner behavior,
+mission thresholds, PX4 parameters, Gazebo models, sensors, or geometry. After
+the focused and full automated suites pass, frozen hashes are refreshed and
+live validation restarts under a new immutable development ID.
