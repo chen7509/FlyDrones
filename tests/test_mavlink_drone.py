@@ -445,6 +445,27 @@ def test_ack_wait_ingests_interleaved_position_and_status(monkeypatch):
     assert drone._tel.status_updated_at == 0.2
 
 
+def test_ack_wait_calls_keepalive_while_ingesting_interleaved_messages(monkeypatch):
+    now = iter((0.0, 0.1, 0.2, 0.3))
+    monkeypatch.setattr(mavlink_module.time, "monotonic", lambda: next(now))
+    drone = bare_drone([
+        Message("LOCAL_POSITION_NED", x=1.0, y=2.0, z=-0.7, vz=-0.1),
+        Message("COMMAND_ACK", command=176, result=0, target_system=3, target_component=1),
+    ])
+    drone.m.target_system = 3
+    drone.m.target_component = 1
+    keepalive_calls = []
+
+    acknowledgement = drone._wait_command_ack(
+        176,
+        timeout_s=1.0,
+        keepalive=lambda: keepalive_calls.append(True),
+    )
+
+    assert acknowledgement.result == 0
+    assert keepalive_calls
+
+
 def test_ack_wait_drains_a_queued_telemetry_burst_before_the_deadline(monkeypatch):
     clock = FakeClock()
     monkeypatch.setattr(mavlink_module.time, "monotonic", clock.monotonic)
@@ -552,8 +573,10 @@ def transactional_drone(monkeypatch, telemetry_fn, ack_results=None):
     results.update(ack_results or {})
     requested_commands = []
 
-    def wait_ack(command, *, timeout_s):
+    def wait_ack(command, *, timeout_s, keepalive=None):
         requested_commands.append(command)
+        if keepalive is not None:
+            keepalive()
         return CommandAckEvidence(command, results[command], 3, 1, clock.now)
 
     drone._wait_command_ack = wait_ack
@@ -691,7 +714,7 @@ def test_takeoff_requires_three_fresh_climb_samples_and_offboard_confirmation(mo
     assert requested == [400, 22, 176]
     assert observed_flying and not any(observed_flying)
     assert drone.flying is True
-    assert len(drone.m.mav.setpoints) == 3
+    assert len(drone.m.mav.setpoints) >= 5
 
 
 def test_offboard_priming_drains_telemetry_between_setpoints(monkeypatch):
@@ -726,8 +749,64 @@ def test_offboard_priming_drains_telemetry_between_setpoints(monkeypatch):
     assert evidence.accepted
     assert all(
         later > earlier
-        for earlier, later in zip(setpoint_telemetry_counts, setpoint_telemetry_counts[1:])
+        for earlier, later in zip(
+            setpoint_telemetry_counts[:3], setpoint_telemetry_counts[1:3]
+        )
     )
+
+
+def test_takeoff_streams_setpoints_until_delayed_offboard_state_is_observed(monkeypatch):
+    reads = 0
+
+    def telemetry(clock, drone):
+        nonlocal reads
+        reads += 1
+        if reads == 1:
+            return status_sample(clock.now, altitude=0.0, sequence=reads, armed=False, landed=True)
+        if reads == 2:
+            return status_sample(clock.now, altitude=0.0, sequence=reads, armed=True, landed=True)
+        altitude = min(0.75, 0.45 + reads * 0.05)
+        return status_sample(
+            clock.now,
+            altitude=altitude,
+            sequence=reads,
+            offboard=bool(drone.m.mode_calls) and len(drone.m.mav.setpoints) >= 7,
+        )
+
+    drone, _clock, _requested = transactional_drone(monkeypatch, telemetry)
+
+    evidence = drone.takeoff()
+
+    assert evidence.accepted
+    # Three priming setpoints, one ACK keepalive, and three state-poll holds.
+    assert len(drone.m.mav.setpoints) >= 7
+
+
+def test_offboard_state_timeout_keeps_streaming_then_fails_closed(monkeypatch):
+    def telemetry(clock, drone):
+        landing_requested = any(command[2] == 21 for command in drone.m.mav.commands)
+        if landing_requested:
+            return status_sample(clock.now, altitude=0.0, sequence=99, armed=False, landed=True)
+        if clock.now == 0.0:
+            return status_sample(clock.now, altitude=0.0, sequence=0, armed=False, landed=True)
+        if clock.now < 0.2:
+            return status_sample(clock.now, altitude=0.0, sequence=1, armed=True, landed=True)
+        return status_sample(
+            clock.now,
+            altitude=0.75,
+            sequence=int(clock.now * 10) + 2,
+            offboard=False,
+        )
+
+    drone, _clock, _requested = transactional_drone(monkeypatch, telemetry)
+
+    evidence = drone.takeoff()
+
+    assert not evidence.accepted
+    assert evidence.failure_reason is TakeoffFailureReason.OFFBOARD_STATE_TIMEOUT
+    assert len(drone.m.mav.setpoints) >= 10
+    assert any(command[2] == 21 for command in drone.m.mav.commands)
+    assert drone.flying is False
 
 
 def test_one_altitude_spike_does_not_confirm_takeoff(monkeypatch):
@@ -850,10 +929,10 @@ def test_offboard_ack_timeout_is_distinct_from_an_explicit_rejection(monkeypatch
     drone, _clock, _requested = transactional_drone(monkeypatch, telemetry)
     original_wait = drone._wait_command_ack
 
-    def wait_ack(command, *, timeout_s):
+    def wait_ack(command, *, timeout_s, keepalive=None):
         if command == 176:
             raise TimeoutError("queued ACK was not observed")
-        return original_wait(command, timeout_s=timeout_s)
+        return original_wait(command, timeout_s=timeout_s, keepalive=keepalive)
 
     drone._wait_command_ack = wait_ack
 

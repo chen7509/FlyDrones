@@ -14,6 +14,7 @@ from __future__ import annotations
 import math
 import struct
 import time
+from collections.abc import Callable
 
 from ..motor.command import FlightCommand
 from ..safety import Telemetry
@@ -200,7 +201,13 @@ class MavlinkDrone(Drone):
                 self._command_acks = []
             self._command_acks.append(acknowledgement)
 
-    def _wait_command_ack(self, command: int, *, timeout_s: float) -> CommandAckEvidence:
+    def _wait_command_ack(
+        self,
+        command: int,
+        *,
+        timeout_s: float,
+        keepalive: Callable[[], None] | None = None,
+    ) -> CommandAckEvidence:
         deadline = time.monotonic() + timeout_s
         in_progress = int(getattr(self.mavutil.mavlink, "MAV_RESULT_IN_PROGRESS", 5))
         if not hasattr(self, "_command_acks"):
@@ -235,6 +242,8 @@ class MavlinkDrone(Drone):
             now = time.monotonic()
             if now >= deadline:
                 raise TimeoutError(f"PX4 did not acknowledge command {command} within {timeout_s:.1f} seconds")
+            if keepalive is not None:
+                keepalive()
             self._send_controller_heartbeat(now)
             message = self.m.recv_match(blocking=True, timeout=min(0.25, deadline - now))
             if message is not None:
@@ -618,7 +627,11 @@ class MavlinkDrone(Drone):
             m.set_mode("OFFBOARD")
             offboard_command = int(self.mavutil.mavlink.MAV_CMD_DO_SET_MODE)
             try:
-                offboard_ack = self._wait_command_ack(offboard_command, timeout_s=3.0)
+                offboard_ack = self._wait_command_ack(
+                    offboard_command,
+                    timeout_s=3.0,
+                    keepalive=lambda: self._send_velocity(0, 0, 0, 0),
+                )
             except TimeoutError:
                 return self._takeoff_failure(
                     stage=TakeoffStage.OFFBOARD_PRIMED,
@@ -651,6 +664,7 @@ class MavlinkDrone(Drone):
                 )
             offboard_deadline = time.monotonic() + 3.0
             while time.monotonic() < offboard_deadline:
+                self._send_velocity(0, 0, 0, 0)
                 if self.telemetry().offboard is True:
                     offboard_confirmed_at_s = time.monotonic()
                     events.append(
