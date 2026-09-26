@@ -1,4 +1,8 @@
-from flydrones.vio_stress_evidence import match_relay_to_visual_odometry, summarize_post_gnss_evidence
+from flydrones.vio_stress_evidence import (
+    match_relay_to_visual_odometry,
+    summarize_external_vision_health,
+    summarize_post_gnss_evidence,
+)
 
 
 def _datasets(*, gnss_before=True):
@@ -52,6 +56,27 @@ def test_even_transient_inertial_dead_reckoning_is_reported_as_not_continuous():
     assert not result["checks"]["visual_position_and_velocity_control_active"]
     assert not result["checks"]["no_observed_inertial_dead_reckoning"]
     assert result["metrics"]["dead_reckoning_observed_duration_s"] == 1.0
+
+
+def test_external_vision_health_is_proven_without_claiming_gnss_handoff():
+    datasets = _datasets()
+    datasets["vehicle_visual_odometry"]["timestamp"] = [index * 100_000 for index in range(61)]
+    result = summarize_external_vision_health(datasets)
+
+    assert result["accepted"]
+    assert result["checks"]["visual_position_and_velocity_control_active"]
+    assert result["checks"]["visual_odometry_stream_continuous"]
+    assert "gnss_to_visual_handoff_proven" not in result["checks"]
+
+
+def test_external_vision_health_rejects_missing_or_dead_reckoning_evidence():
+    datasets = _datasets()
+    del datasets["vehicle_local_position"]
+    assert not summarize_external_vision_health(datasets)["accepted"]
+
+    datasets = _datasets()
+    datasets["estimator_status_flags"]["cs_inertial_dead_reckoning"][7] = 1
+    assert not summarize_external_vision_health(datasets)["accepted"]
 
 
 def test_relay_to_px4_requires_matching_transformed_pose_and_time():

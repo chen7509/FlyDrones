@@ -10,11 +10,123 @@ import json
 import math
 from pathlib import Path
 
-from flydrones.vio_stress_evidence import match_relay_to_visual_odometry, summarize_post_gnss_evidence
+from flydrones.runtime_timing import summarize_gap_series
+from flydrones.vio_stress_evidence import (
+    match_relay_to_visual_odometry,
+    summarize_external_vision_health,
+    summarize_post_gnss_evidence,
+)
 
 ROOT = Path(__file__).resolve().parents[1]
 TRIALS = ROOT / "results/vio-stress"
 TREE_CENTERS = [(2.5, (index - 2) * 2.0 + 0.05) for index in range(5)]
+
+
+def _csv_rows(path: Path) -> list[dict[str, str]]:
+    if not path.is_file():
+        return []
+    with path.open(newline="", encoding="utf-8") as handle:
+        return list(csv.DictReader(handle))
+
+
+def _rtf(rows: list[dict[str, str]], epoch_start_s: float | None = None) -> float | None:
+    selected = [
+        row for row in rows
+        if epoch_start_s is None or float(row["monotonic_s"]) >= epoch_start_s
+    ]
+    if len(selected) < 2:
+        return None
+    wall_delta = float(selected[-1]["monotonic_s"]) - float(selected[0]["monotonic_s"])
+    sim_delta = (float(selected[-1]["sim_ns"]) - float(selected[0]["sim_ns"])) / 1_000_000_000
+    return sim_delta / wall_delta if wall_delta > 0 else None
+
+
+def summarize_runtime_evidence(
+    directory: Path,
+    *,
+    raw: dict[str, list[tuple[float, list[float]]]],
+    worker_rows: list[list[dict[str, str]]],
+    fleet_size: int,
+) -> dict[str, object]:
+    errors = []
+    healthy_starts = []
+    if len(worker_rows) == fleet_size:
+        for rows in worker_rows:
+            first = next((
+                float(row["monotonic_s"])
+                for row in rows
+                if row.get("state_healthy", "").lower() == "true"
+                and row.get("phase") not in {"preflight", "fail_closed"}
+            ), None)
+            if first is None:
+                break
+            healthy_starts.append(first)
+    epoch = max(healthy_starts) if len(healthy_starts) == fleet_size else None
+    if epoch is None:
+        errors.append("steady-state epoch unavailable")
+
+    clock_rows = _csv_rows(directory / "clock-probe.csv")
+    resource_rows = _csv_rows(directory / "resource-probe.csv")
+    gpu_rows = _csv_rows(directory / "gpu-probe.csv")
+    if not clock_rows:
+        errors.append("clock-probe.csv missing")
+    if not resource_rows:
+        errors.append("resource-probe.csv missing")
+    if not gpu_rows:
+        errors.append("gpu-probe.csv missing")
+
+    clock = summarize_gap_series(clock_rows, epoch_start_s=epoch) if clock_rows else {
+        "full_run": None,
+        "steady_state_valid": False,
+        "steady_state": None,
+        "steady_state_epoch_monotonic_s": epoch,
+    }
+    if clock_rows and not clock["steady_state_valid"]:
+        errors.append("steady-state clock gaps missing")
+    raw_by_vehicle = {}
+    for vehicle_id in range(fleet_size):
+        samples = raw.get(f"x500_depth_fly_{vehicle_id}", [])
+        gap_rows = [
+            {
+                "monotonic_s": str(current[0]),
+                "interval_start_s": str(previous[0]),
+                "wall_gap_ms": str((current[0] - previous[0]) * 1000),
+            }
+            for previous, current in zip(samples, samples[1:])
+        ]
+        raw_by_vehicle[str(vehicle_id)] = summarize_gap_series(gap_rows, epoch_start_s=epoch)
+        if not gap_rows:
+            errors.append(f"raw VIO gaps missing for vehicle {vehicle_id}")
+        elif not raw_by_vehicle[str(vehicle_id)]["steady_state_valid"]:
+            errors.append(f"steady-state raw VIO gaps missing for vehicle {vehicle_id}")
+
+    if epoch is not None and resource_rows and not any(
+        float(row["monotonic_s"]) >= epoch for row in resource_rows
+    ):
+        errors.append("steady-state resource samples missing")
+    if epoch is not None and gpu_rows and not any(
+        float(row["monotonic_s"]) >= epoch for row in gpu_rows
+    ):
+        errors.append("steady-state GPU availability samples missing")
+
+    gpu_available = any(
+        row.get("gpu_utilization_percent") not in {None, "", "unavailable"}
+        for row in gpu_rows
+    )
+    return {
+        "accepted": not errors,
+        "errors": errors,
+        "steady_state_epoch_monotonic_s": epoch,
+        "clock": clock,
+        "raw_vio_by_vehicle": raw_by_vehicle,
+        "rtf": {
+            "full_run": _rtf(clock_rows),
+            "steady_state": _rtf(clock_rows, epoch),
+        },
+        "resource_samples": len(resource_rows),
+        "gpu_samples": len(gpu_rows),
+        "gpu_metrics_available": gpu_available,
+    }
 
 
 def _sha256(path: Path) -> str:
@@ -133,6 +245,22 @@ def _ulog_metrics(path: Path, publishes: list[dict]) -> tuple[dict, dict, dict]:
     result["source"] = {"ulog_sha256": _sha256(path), "ulog_bytes": path.stat().st_size}
     return (result, match_relay_to_visual_odometry(publishes, datasets.get("vehicle_visual_odometry", {})),
             datasets.get("vehicle_status", {}))
+
+
+def _ulog_external_vision_health(path: Path) -> dict:
+    from pyulog import ULog
+
+    if not path.exists():
+        return {"accepted": False, "checks": {}, "metrics": {}, "error": "ULog missing"}
+    try:
+        ulog = ULog(str(path))
+        datasets = {dataset.name: dataset.data for dataset in ulog.data_list if dataset.multi_id == 0}
+        result = summarize_external_vision_health(datasets)
+    except Exception as exc:
+        return {"accepted": False, "checks": {}, "metrics": {},
+                "error": f"ULog could not be read: {exc}"}
+    result["source"] = {"ulog_sha256": _sha256(path), "ulog_bytes": path.stat().st_size}
+    return result
 
 
 def _relay_sim_clock(path: Path) -> list[tuple[float, float]]:
@@ -289,7 +417,12 @@ def classify_trial(trial: dict, profile: dict) -> dict:
     all_landed = len(workers) == trial["fleet_size"] and all(worker.get("landed") for worker in workers)
     all_mission = len(workers) == trial["fleet_size"] and all(worker.get("mission_accepted") for worker in workers)
     fault_worker = workers[0] if workers else {}
+    runtime = trial.get("runtime")
+    runtime_ready = runtime is None or bool(
+        runtime.get("accepted") and runtime.get("startup_reliability_pass")
+    )
     ready = (trial["launch_exit_code"] == 0 and relay.get("closed_cleanly", False)
+             and runtime_ready
              and fault_worker.get("gnss_disable_injected") and px4_effect)
     continuity = (ready and trial["worker_exit_code"] == 0 and all_mission and all_landed
                   and trial["visual_after_gnss_disable"].get("accepted", False) and geometry)
@@ -330,15 +463,18 @@ def summarize_trial(directory: Path) -> dict:
     count = manifest["fleet_size"]
     relay, raw, publishes = _relay_metrics(directory / "vio-relay.jsonl", count)
     workers = []
+    worker_rows = []
     for vehicle_id in range(count):
         result_path = directory / f"agent-{vehicle_id}.json"
         csv_path = directory / f"agent-{vehicle_id}.csv"
         if not result_path.exists() or not csv_path.exists():
             workers.append({"vehicle_id": vehicle_id, "error": "worker artifacts missing"})
+            worker_rows.append([])
             continue
         result = json.loads(result_path.read_text(encoding="utf-8"))
         with csv_path.open(newline="", encoding="utf-8") as handle:
             rows = list(csv.DictReader(handle))
+        worker_rows.append(rows)
         model = f"x500_depth_fly_{vehicle_id}"
         initial_error = None
         if rows and raw.get(model):
@@ -366,6 +502,12 @@ def summarize_trial(directory: Path) -> dict:
                                                if row["depth_nearest_m"]), 4) if rows else None,
         })
     visual, correspondence, px4_status = _ulog_metrics(directory / "px4-ulogs/agent-0.ulg", publishes)
+    external_vision_by_vehicle = {
+        str(vehicle_id): _ulog_external_vision_health(
+            directory / "px4-ulogs" / f"agent-{vehicle_id}.ulg"
+        )
+        for vehicle_id in range(count)
+    }
     if workers:
         workers[0]["px4_land_transition"] = verify_px4_land_transition(
             workers[0].get("command_gate", {}).get("trigger_monotonic_s"),
@@ -373,8 +515,22 @@ def summarize_trial(directory: Path) -> dict:
             px4_status,
         )
     profile = json.loads((directory / "fault-profile.json").read_text(encoding="utf-8"))
+    runtime = summarize_runtime_evidence(
+        directory,
+        raw=raw,
+        worker_rows=worker_rows,
+        fleet_size=count,
+    )
+    renderer = manifest.get("renderer", {})
+    runtime["startup_reliability_pass"] = bool(
+        manifest.get("launch_exit_code") == 0
+        and renderer.get("attestation", {}).get("accepted") is True
+        and runtime["accepted"]
+        and len(workers) == count
+        and all("error" not in worker for worker in workers)
+    )
     combined = {
-        "schema": "flydrones-vio-stress-summary-v4",
+        "schema": "flydrones-vio-stress-summary-v5",
         "name": manifest["name"],
         "fleet_size": count,
         "profile_sha256": manifest["profile_sha256"],
@@ -383,9 +539,12 @@ def summarize_trial(directory: Path) -> dict:
         "worker_exit_code": manifest["worker_exit_code"],
         "stop_exit_code": manifest.get("stop_exit_code"),
         "shared_px4_files_restored": manifest.get("shared_px4_files_restored"),
+        "renderer": renderer,
+        "runtime": runtime,
         "relay": relay,
         "relay_to_px4": correspondence,
         "visual_after_gnss_disable": visual,
+        "external_vision_health_by_vehicle": external_vision_by_vehicle,
         "workers": workers,
     }
     combined.update(classify_trial(combined, profile))

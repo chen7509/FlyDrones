@@ -70,6 +70,88 @@ def _observed_duration(dataset: Mapping[str, Sequence], field: str, indices: lis
     )
 
 
+def summarize_external_vision_health(
+    datasets: Mapping[str, Mapping[str, Sequence]],
+) -> dict:
+    """Prove sustained EV estimator health without making a GNSS-handoff claim."""
+    required = ("estimator_status_flags", "estimator_aid_src_ev_pos",
+                "vehicle_visual_odometry", "vehicle_local_position")
+    missing = [name for name in required if name not in datasets]
+    if missing:
+        return {"accepted": False, "checks": {}, "metrics": {},
+                "error": f"missing ULog datasets: {', '.join(missing)}"}
+
+    status = datasets["estimator_status_flags"]
+    ev_aid = datasets["estimator_aid_src_ev_pos"]
+    visual = datasets["vehicle_visual_odometry"]
+    local = datasets["vehicle_local_position"]
+    required_fields = {
+        "estimator_status_flags": ("timestamp", "cs_ev_pos", "cs_ev_vel",
+                                     "cs_inertial_dead_reckoning"),
+        "estimator_aid_src_ev_pos": ("timestamp", "fused"),
+        "vehicle_visual_odometry": ("timestamp",),
+        "vehicle_local_position": ("timestamp", "xy_valid", "v_xy_valid"),
+    }
+    missing_fields = [
+        f"{name}.{field}"
+        for name, fields in required_fields.items()
+        for field in fields if field not in datasets[name]
+    ]
+    if missing_fields:
+        return {"accepted": False, "checks": {}, "metrics": {},
+                "error": f"missing ULog fields: {', '.join(missing_fields)}"}
+
+    status_indices = list(range(len(status["timestamp"])))
+    aid_indices = list(range(len(ev_aid["timestamp"])))
+    local_indices = list(range(len(local["timestamp"])))
+    visual_times = [float(value) / 1_000_000 for value in visual["timestamp"]]
+    visual_gaps = [right - left for left, right in zip(visual_times, visual_times[1:])]
+    visual_duration = visual_times[-1] - visual_times[0] if len(visual_times) >= 2 else 0.0
+    ev_fused = _ratio(ev_aid, "fused", aid_indices)
+    ev_pos = _ratio(status, "cs_ev_pos", status_indices)
+    ev_vel = _ratio(status, "cs_ev_vel", status_indices)
+    dead_reckoning = _ratio(status, "cs_inertial_dead_reckoning", status_indices)
+    local_valid = (
+        sum(bool(local["xy_valid"][index]) and bool(local["v_xy_valid"][index])
+            for index in local_indices) / len(local_indices)
+        if local_indices else 0.0
+    )
+    checks = {
+        "visual_position_fused": len(aid_indices) >= 10 and ev_fused >= 0.90,
+        "visual_position_and_velocity_control_active": (
+            len(status_indices) >= 2 and ev_pos == 1.0 and ev_vel == 1.0
+        ),
+        "no_observed_inertial_dead_reckoning": (
+            len(status_indices) >= 2 and dead_reckoning == 0.0
+        ),
+        "local_position_valid": len(local_indices) >= 10 and local_valid >= 0.95,
+        "visual_odometry_stream_continuous": (
+            len(visual_times) >= 10 and visual_duration >= 5.0
+            and bool(visual_gaps) and max(visual_gaps) <= 0.20
+        ),
+    }
+    return {
+        "schema": "flydrones-external-vision-health-v1",
+        "accepted": all(checks.values()),
+        "checks": checks,
+        "metrics": {
+            "status_samples": len(status_indices),
+            "ev_position_samples": len(aid_indices),
+            "ev_position_fused_ratio": round(ev_fused, 6),
+            "ev_position_control_ratio": round(ev_pos, 6),
+            "ev_velocity_control_ratio": round(ev_vel, 6),
+            "inertial_dead_reckoning_ratio": round(dead_reckoning, 6),
+            "local_position_valid_ratio": round(local_valid, 6),
+            "visual_stream_samples": len(visual_times),
+            "visual_stream_duration_s": round(visual_duration, 6),
+            "visual_stream_max_gap_ms": (
+                round(max(visual_gaps) * 1000, 3) if visual_gaps else None
+            ),
+        },
+        "claim_limit": "This proves logged EV health only; it does not prove GNSS-to-EV handoff.",
+    }
+
+
 def summarize_post_gnss_evidence(
     datasets: Mapping[str, Mapping[str, Sequence]], *, gps_disable_s: float | None,
 ) -> dict:

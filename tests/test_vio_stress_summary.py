@@ -1,6 +1,9 @@
+import pytest
+
 from tools.summarize_vio_stress_wsl import (
     _relay_metrics,
     classify_trial,
+    summarize_runtime_evidence,
     verify_command_gate,
     verify_px4_land_transition,
 )
@@ -169,3 +172,103 @@ def test_px4_land_transition_must_follow_the_correlated_gate_time():
     assert evidence["transition_after_gate_s"] == 0.013
     status["nav_state"] = [18, 18, 18, 18]
     assert not verify_px4_land_transition(10.30, relay_clock, status)["observed"]
+
+
+def test_runtime_evidence_separates_startup_tail_and_computes_rtf(tmp_path):
+    (tmp_path / "clock-probe.csv").write_text(
+        "monotonic_s,sim_ns,wall_gap_ms,sim_gap_ms,seen\n"
+        "1.0,0,0,0,1\n"
+        "1.6,600000000,600,600,2\n"
+        "10.0,9000000000,20,20,3\n"
+        "11.0,10000000000,20,1000,4\n",
+        encoding="utf-8",
+    )
+    (tmp_path / "resource-probe.csv").write_text(
+        "monotonic_s,pid,cpu_user_s,cpu_system_s,rss_bytes,threads\n10.0,1,2,1,1000,8\n",
+        encoding="utf-8",
+    )
+    (tmp_path / "gpu-probe.csv").write_text(
+        "monotonic_s,gpu_utilization_percent,memory_used_mib\n10.0,unavailable,unavailable\n",
+        encoding="utf-8",
+    )
+    raw = {
+        "x500_depth_fly_0": [(1.0, [0, 0, 0]), (1.6, [0, 0, 0]), (10.0, [0, 0, 0]), (10.02, [0, 0, 0])],
+        **{
+            f"x500_depth_fly_{vehicle_id}": [(10.0, [0, 0, 0]), (10.02, [0, 0, 0])]
+            for vehicle_id in range(1, 5)
+        },
+    }
+    worker_rows = [[{"monotonic_s": "10.0", "state_healthy": "True", "phase": "escaping"}]
+                   for _ in range(5)]
+
+    evidence = summarize_runtime_evidence(tmp_path, raw=raw, worker_rows=worker_rows, fleet_size=5)
+
+    assert evidence["accepted"]
+    assert evidence["steady_state_epoch_monotonic_s"] == 10.0
+    assert evidence["clock"]["full_run"]["max_ms"] == 600.0
+    assert evidence["clock"]["steady_state"]["max_ms"] == 20.0
+    assert evidence["raw_vio_by_vehicle"]["0"]["full_run"]["max_ms"] == 8400.0
+    assert evidence["raw_vio_by_vehicle"]["0"]["steady_state"]["max_ms"] == pytest.approx(20.0)
+    assert evidence["rtf"]["full_run"] == pytest.approx(1.0)
+    assert evidence["rtf"]["steady_state"] == pytest.approx(1.0)
+    assert evidence["gpu_metrics_available"] is False
+
+
+def test_missing_probe_evidence_is_not_silently_accepted(tmp_path):
+    evidence = summarize_runtime_evidence(tmp_path, raw={}, worker_rows=[], fleet_size=5)
+
+    assert not evidence["accepted"]
+    assert "clock-probe.csv missing" in evidence["errors"]
+    assert "steady-state epoch unavailable" in evidence["errors"]
+
+
+def test_probe_rows_before_shared_epoch_do_not_count_as_steady_state(tmp_path):
+    (tmp_path / "clock-probe.csv").write_text(
+        "monotonic_s,sim_ns,wall_gap_ms,sim_gap_ms,seen\n1.0,0,0,0,1\n1.1,100000000,100,100,2\n",
+        encoding="utf-8",
+    )
+    (tmp_path / "resource-probe.csv").write_text(
+        "monotonic_s,pid,cpu_user_s,cpu_system_s,rss_bytes,threads\n1.0,1,2,1,1000,8\n",
+        encoding="utf-8",
+    )
+    (tmp_path / "gpu-probe.csv").write_text(
+        "monotonic_s,gpu_utilization_percent,memory_used_mib\n1.0,unavailable,unavailable\n",
+        encoding="utf-8",
+    )
+    raw = {
+        f"x500_depth_fly_{vehicle_id}": [(1.0, [0, 0, 0]), (1.1, [0, 0, 0])]
+        for vehicle_id in range(5)
+    }
+    worker_rows = [[{"monotonic_s": "10.0", "state_healthy": "True", "phase": "escaping"}]
+                   for _ in range(5)]
+
+    evidence = summarize_runtime_evidence(tmp_path, raw=raw, worker_rows=worker_rows, fleet_size=5)
+
+    assert not evidence["accepted"]
+    assert "steady-state clock gaps missing" in evidence["errors"]
+    assert "steady-state raw VIO gaps missing for vehicle 0" in evidence["errors"]
+
+
+def test_successful_steady_metrics_cannot_hide_startup_failure():
+    trial = _trial()
+    trial["launch_exit_code"] = 3
+    trial["runtime"] = {"accepted": True, "startup_reliability_pass": False}
+    result = classify_trial(
+        trial,
+        {"delay_ms": 0, "dropout_duration_s": 0, "drift_mps": [0, 0, 0], "false_pose_offset_m": [0, 0, 0]},
+    )
+
+    assert not result["operational_continuity_pass"]
+
+
+def test_missing_runtime_evidence_cannot_be_hidden_by_successful_mission():
+    trial = _trial()
+    trial["runtime"] = {"accepted": False, "startup_reliability_pass": False}
+
+    result = classify_trial(
+        trial,
+        {"delay_ms": 0, "dropout_duration_s": 0, "drift_mps": [0, 0, 0],
+         "false_pose_offset_m": [0, 0, 0]},
+    )
+
+    assert not result["operational_continuity_pass"]
