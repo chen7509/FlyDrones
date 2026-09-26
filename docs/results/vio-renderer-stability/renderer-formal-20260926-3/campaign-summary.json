@@ -1,0 +1,17 @@
+{
+  "schema": "flydrones-renderer-stability-partial-v1",
+  "campaign_id": "renderer-formal-20260926-3",
+  "phase": "formal",
+  "completed_trials": [
+    "renderer-pair-1-1-default",
+    "renderer-pair-1-2-d3d12-nvidia",
+    "renderer-pair-2-1-d3d12-nvidia"
+  ],
+  "stopped_after": "renderer-pair-2-1-d3d12-nvidia",
+  "stop_reasons": [
+    "mission_count_not_5",
+    "operational_continuity_failed"
+  ],
+  "trials": [],
+  "passed": false
+}

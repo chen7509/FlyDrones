@@ -1,0 +1,97 @@
+{
+  "schema": "flydrones-owned-process-cleanup-v1",
+  "registry": "/tmp/flydrones-vio-renderer-formal-20260926-3-renderer-pair-2-1-d3d12-nvidia/owned-processes.json",
+  "recorded_processes": 7,
+  "stopped": [
+    {
+      "pid": 567051,
+      "start_ticks": 47837588,
+      "argv": [
+        "/home/yuchen7509/PX4-Autopilot/build/px4_sitl_default/bin/px4",
+        "-i",
+        "4",
+        "-d",
+        "/home/yuchen7509/PX4-Autopilot/build/px4_sitl_default/etc"
+      ],
+      "role": "px4-4"
+    },
+    {
+      "pid": 566647,
+      "start_ticks": 47837369,
+      "argv": [
+        "/home/yuchen7509/PX4-Autopilot/build/px4_sitl_default/bin/px4",
+        "-i",
+        "3",
+        "-d",
+        "/home/yuchen7509/PX4-Autopilot/build/px4_sitl_default/etc"
+      ],
+      "role": "px4-3"
+    },
+    {
+      "pid": 566209,
+      "start_ticks": 47837148,
+      "argv": [
+        "/home/yuchen7509/PX4-Autopilot/build/px4_sitl_default/bin/px4",
+        "-i",
+        "2",
+        "-d",
+        "/home/yuchen7509/PX4-Autopilot/build/px4_sitl_default/etc"
+      ],
+      "role": "px4-2"
+    },
+    {
+      "pid": 565965,
+      "start_ticks": 47836928,
+      "argv": [
+        "/home/yuchen7509/PX4-Autopilot/build/px4_sitl_default/bin/px4",
+        "-i",
+        "1",
+        "-d",
+        "/home/yuchen7509/PX4-Autopilot/build/px4_sitl_default/etc"
+      ],
+      "role": "px4-1"
+    },
+    {
+      "pid": 565751,
+      "start_ticks": 47836709,
+      "argv": [
+        "/home/yuchen7509/PX4-Autopilot/build/px4_sitl_default/bin/px4",
+        "-i",
+        "0",
+        "-d",
+        "/home/yuchen7509/PX4-Autopilot/build/px4_sitl_default/etc"
+      ],
+      "role": "px4-0"
+    },
+    {
+      "pid": 565734,
+      "start_ticks": 47836693,
+      "argv": [
+        "gz sim --headless-rendering -r -s /home/yuchen7509/PX4-Autopilot/Tools/simulation/gz/worlds/flydrones_forest.sdf"
+      ],
+      "role": "gazebo-server"
+    },
+    {
+      "pid": 565729,
+      "start_ticks": 47836675,
+      "argv": [
+        "python3",
+        "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/vio-faults/tools/relay_gazebo_vio.py",
+        "--profile",
+        "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/vio-faults/results/vio-renderer-stability/renderer-formal-20260926-3/renderer-pair-2-1-d3d12-nvidia/fault-profile.json",
+        "--marker",
+        "/tmp/flydrones-vio-renderer-formal-20260926-3-renderer-pair-2-1-d3d12-nvidia/fault-start.json",
+        "--output",
+        "/tmp/flydrones-vio-renderer-formal-20260926-3-renderer-pair-2-1-d3d12-nvidia/vio-relay.jsonl",
+        "--vehicle-count",
+        "5",
+        "--health-base-port",
+        "16880"
+      ],
+      "role": "vio-relay"
+    }
+  ],
+  "already_gone": [],
+  "ownership_mismatch": [],
+  "failed_to_stop": []
+}
