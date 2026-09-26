@@ -124,6 +124,56 @@ def test_post_gnss_evidence_rejects_a_horizontal_reset_after_the_switch_window()
     assert not result["checks"]["no_unexplained_horizontal_estimator_reset"]
 
 
+def test_landing_phase_reset_is_excluded_from_the_mission_evidence_window():
+    datasets = _datasets()
+    datasets["vehicle_command"] = {
+        "timestamp": [12_000_000, 17_000_000, 19_000_000],
+        "command": [176, 21, 21],
+    }
+    datasets["vehicle_visual_odometry"]["timestamp"] = [
+        index * 100_000 for index in range(200)
+    ]
+    datasets["vehicle_local_position"]["vxy_reset_counter"][17:] = [1] * 3
+
+    health = summarize_external_vision_health(datasets, start_s=5.7)
+    post_gnss = summarize_post_gnss_evidence(datasets, gps_disable_s=5.5)
+
+    assert health["accepted"]
+    assert post_gnss["accepted"]
+    assert health["metrics"]["evidence_window_end_s"] == 17.0
+    assert post_gnss["metrics"]["evidence_window_end_s"] == 17.0
+    assert health["metrics"]["evidence_window_end_source"] == "first-land-command"
+
+
+def test_reset_before_land_remains_rejected():
+    datasets = _datasets()
+    datasets["vehicle_command"] = {
+        "timestamp": [15_000_000],
+        "command": [21],
+    }
+    datasets["vehicle_local_position"]["vxy_reset_counter"][9:] = [1] * 11
+
+    result = summarize_post_gnss_evidence(datasets, gps_disable_s=5.5)
+
+    assert not result["accepted"]
+    assert not result["checks"]["no_unexplained_horizontal_estimator_reset"]
+
+
+def test_missing_land_command_does_not_hide_a_late_reset():
+    datasets = _datasets()
+    datasets["vehicle_command"] = {
+        "timestamp": [15_000_000],
+        "command": [176],
+    }
+    datasets["vehicle_local_position"]["vxy_reset_counter"][15:] = [1] * 5
+
+    result = summarize_post_gnss_evidence(datasets, gps_disable_s=5.5)
+
+    assert not result["accepted"]
+    assert result["metrics"]["evidence_window_end_s"] is None
+    assert result["metrics"]["evidence_window_end_source"] == "end-of-log"
+
+
 def test_relay_to_px4_requires_matching_transformed_pose_and_time():
     events = [
         {"active": True, "model": "x500_depth_fly_0", "source_stamp_ns": 10_000_000_000,

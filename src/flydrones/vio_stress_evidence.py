@@ -53,9 +53,28 @@ def match_relay_to_visual_odometry(
     }
 
 
-def _indices_after(dataset: Mapping[str, Sequence], start_s: float) -> list[int]:
+def _indices_after(
+    dataset: Mapping[str, Sequence],
+    start_s: float,
+    *,
+    end_s: float | None = None,
+) -> list[int]:
     return [index for index, timestamp in enumerate(dataset["timestamp"])
-            if float(timestamp) / 1_000_000 >= start_s]
+            if float(timestamp) / 1_000_000 >= start_s
+            and (end_s is None or float(timestamp) / 1_000_000 < end_s)]
+
+
+def _first_land_command_s(
+    datasets: Mapping[str, Mapping[str, Sequence]],
+) -> float | None:
+    commands = datasets.get("vehicle_command")
+    if not commands or "timestamp" not in commands or "command" not in commands:
+        return None
+    return min((
+        float(timestamp) / 1_000_000
+        for timestamp, command in zip(commands["timestamp"], commands["command"])
+        if int(command) == 21
+    ), default=None)
 
 
 def _ratio(dataset: Mapping[str, Sequence], field: str, indices: list[int]) -> float:
@@ -113,10 +132,11 @@ def summarize_external_vision_health(
         return {"accepted": False, "checks": {}, "metrics": {},
                 "error": "external-vision position fusion was never observed"}
     evidence_start_s = max(first_fused_s, start_s) if start_s is not None else first_fused_s
-    status_indices = _indices_after(status, evidence_start_s)
-    aid_indices = _indices_after(ev_aid, evidence_start_s)
-    local_indices = _indices_after(local, evidence_start_s)
-    visual_indices = _indices_after(visual, evidence_start_s)
+    evidence_end_s = _first_land_command_s(datasets)
+    status_indices = _indices_after(status, evidence_start_s, end_s=evidence_end_s)
+    aid_indices = _indices_after(ev_aid, evidence_start_s, end_s=evidence_end_s)
+    local_indices = _indices_after(local, evidence_start_s, end_s=evidence_end_s)
+    visual_indices = _indices_after(visual, evidence_start_s, end_s=evidence_end_s)
     visual_times = [float(visual["timestamp"][index]) / 1_000_000 for index in visual_indices]
     visual_gaps = [right - left for left, right in zip(visual_times, visual_times[1:])]
     visual_duration = visual_times[-1] - visual_times[0] if len(visual_times) >= 2 else 0.0
@@ -159,6 +179,12 @@ def summarize_external_vision_health(
         "checks": checks,
         "metrics": {
             "evidence_window_start_s": round(evidence_start_s, 6),
+            "evidence_window_end_s": (
+                round(evidence_end_s, 6) if evidence_end_s is not None else None
+            ),
+            "evidence_window_end_source": (
+                "first-land-command" if evidence_end_s is not None else "end-of-log"
+            ),
             "status_samples": len(status_indices),
             "ev_position_samples": len(aid_indices),
             "ev_position_fused_ratio": round(ev_fused, 6),
@@ -201,10 +227,11 @@ def summarize_post_gnss_evidence(
     local = datasets["vehicle_local_position"]
     # Ignore the first 0.2 s while PX4 applies the parameter update.
     start_s = gps_disable_s + 0.2
-    status_post = _indices_after(status, start_s)
-    aid_post = _indices_after(ev_aid, start_s)
-    visual_post = _indices_after(visual, start_s)
-    local_post = _indices_after(local, start_s)
+    evidence_end_s = _first_land_command_s(datasets)
+    status_post = _indices_after(status, start_s, end_s=evidence_end_s)
+    aid_post = _indices_after(ev_aid, start_s, end_s=evidence_end_s)
+    visual_post = _indices_after(visual, start_s, end_s=evidence_end_s)
+    local_post = _indices_after(local, start_s, end_s=evidence_end_s)
     prior_overlap = any(
         float(timestamp) / 1_000_000 < gps_disable_s
         and all(bool(status[field][index]) for field in
@@ -245,6 +272,12 @@ def summarize_post_gnss_evidence(
         "checks": checks,
         "metrics": {
             "gps_disable_timestamp_s": round(gps_disable_s, 6),
+            "evidence_window_end_s": (
+                round(evidence_end_s, 6) if evidence_end_s is not None else None
+            ),
+            "evidence_window_end_source": (
+                "first-land-command" if evidence_end_s is not None else "end-of-log"
+            ),
             "post_status_samples": len(status_post),
             "ev_position_fused_samples": sum(bool(ev_aid["fused"][index]) for index in aid_post),
             "ev_position_samples": len(aid_post),
