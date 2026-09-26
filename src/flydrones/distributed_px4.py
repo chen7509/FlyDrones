@@ -716,6 +716,7 @@ def run_distributed_px4_agent(
             v_max=0.8,
             vz_max=0.5,
             offboard_rate_hz=config.rate_hz,
+            land_timeout_s=config.land_timeout_s,
         )
     if depth_camera is None:
         topic = px4_depth_camera_topics(count=config.vehicle_count)[config.vehicle_id]
@@ -775,6 +776,7 @@ def run_distributed_px4_agent(
     launch_local_origin: tuple[float, float] | None = None
     takeoff_evidence: TakeoffEvidence | None = None
     takeoff_only_hold_completed = False
+    landing_confirmed = False
 
     def position_from_local(local: tuple[float, float, float]) -> tuple[float, float, float]:
         origin = launch_local_origin or (0.0, 0.0)
@@ -818,6 +820,8 @@ def run_distributed_px4_agent(
             "alt_m": round(position[2], 4),
             "yaw_deg": telemetry.yaw_deg,
             "battery_pct": telemetry.battery_pct,
+            "armed": telemetry.armed,
+            "landed": telemetry.landed,
             "state_healthy": state_health.healthy if state_health is not None else None,
             "state_health_reason": state_health.reason if state_health is not None else None,
             "position_age_s": (
@@ -1132,7 +1136,12 @@ def run_distributed_px4_agent(
                     position = position_from_local(continuous_local_position)
                     observation = depth_camera.latest(config.vehicle_id, now=timestamp, max_age_s=0.35)
                     sample("land", position, telemetry, observation, len(peer_node.neighbors()))
-                    if position[2] <= 0.15 or monotonic() >= land_deadline:
+                    if position[2] <= 0.15 and telemetry.landed is True:
+                        landing_confirmed = True
+                        break
+                    if monotonic() >= land_deadline:
+                        if error is None:
+                            error = "landing confirmation timed out"
                         break
                     sleep(period)
             except Exception as exc:
@@ -1152,7 +1161,7 @@ def run_distributed_px4_agent(
         and math.hypot(float(row["x_m"]) - target[0], float(row["y_m"]) - target[1]) <= 0.6
         for row in trace
     )
-    landed = bool(trace and trace[-1]["phase"] == "land" and float(trace[-1]["alt_m"]) <= 0.18)
+    landed = landing_confirmed
     takeoff_mission_ready = bool(
         takeoff_evidence is not None
         and takeoff_evidence.accepted

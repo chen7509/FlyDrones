@@ -142,6 +142,8 @@ class LocalKinematicDrone:
             position_valid=True,
             attitude_valid=True,
             estimator_healthy=True,
+            armed=self.altitude > 0.15,
+            landed=self.altitude <= 0.15,
         )
 
     def land(self):
@@ -432,6 +434,40 @@ def test_takeoff_only_mode_holds_locally_without_policy_or_planner_calls(tmp_pat
     assert drone.last_command == FlightCommand.hover("takeoff-only hold")
     assert drone.land_called
     assert clock.now >= 2.0
+
+
+def test_worker_rejects_low_altitude_without_px4_landed_confirmation(tmp_path):
+    class UnconfirmedLandingDrone(LocalKinematicDrone):
+        def telemetry(self):
+            telemetry = super().telemetry()
+            if self.land_called:
+                telemetry.armed = True
+                telemetry.landed = False
+            return telemetry
+
+    clock = Clock()
+    drone = UnconfirmedLandingDrone(clock)
+    clock.drone = drone
+
+    _trace, result = run_distributed_px4_agent(
+        DistributedAgentConfig(
+            vehicle_id=0,
+            output_dir=tmp_path,
+            takeoff_only_hold_s=0.2,
+            land_timeout_s=0.4,
+        ),
+        drone=drone,
+        depth_camera=LocalDepthCamera(),
+        peer_node=LocalPeerNode(),
+        policy=ForwardPolicy(),
+        monotonic=clock.time,
+        wall_time=clock.wall_time,
+        sleep=clock.sleep,
+    )
+
+    assert not result["accepted"]
+    assert not result["checks"]["landed"]
+    assert "landing confirmation timed out" in result["error"]
 
 
 def test_takeoff_readiness_aggregation_requires_all_five_ready_and_landed(tmp_path):

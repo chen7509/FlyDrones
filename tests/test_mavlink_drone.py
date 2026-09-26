@@ -508,6 +508,76 @@ def transactional_drone(monkeypatch, telemetry_fn, ack_results=None):
     return drone, clock, requested_commands
 
 
+def landing_drone(monkeypatch, telemetry_fn):
+    clock = FakeClock()
+    monkeypatch.setattr(mavlink_module.time, "monotonic", clock.monotonic)
+    monkeypatch.setattr(mavlink_module.time, "sleep", clock.sleep)
+    drone = bare_drone([])
+    drone.autopilot = "px4"
+    drone.m.target_system = 3
+    drone.m.target_component = 1
+    drone.mavutil.mavlink.MAV_CMD_NAV_LAND = 21
+    drone.telemetry = lambda: telemetry_fn(clock, drone)
+    return drone, clock
+
+
+def test_px4_land_waits_for_landed_then_disarms_and_confirms_disarmed(monkeypatch):
+    disarm_times = []
+
+    def telemetry(clock, drone):
+        if drone.m.disarm_calls:
+            return status_sample(clock.now, altitude=0.04, sequence=4, armed=False, landed=True)
+        if clock.now < 0.2:
+            return status_sample(clock.now, altitude=0.04, sequence=2, armed=True, landed=False)
+        return status_sample(clock.now, altitude=0.04, sequence=3, armed=True, landed=True)
+
+    drone, clock = landing_drone(monkeypatch, telemetry)
+    original_disarm = drone.m.arducopter_disarm
+
+    def record_disarm():
+        disarm_times.append(clock.now)
+        original_disarm()
+
+    drone.m.arducopter_disarm = record_disarm
+
+    drone.land(timeout_s=0.5)
+
+    assert any(command[2] == 21 for command in drone.m.mav.commands)
+    assert disarm_times == [pytest.approx(0.2)]
+    assert drone.m.disarm_calls == 1
+    assert drone.flying is False
+
+
+def test_px4_land_times_out_without_landed_confirmation_and_does_not_disarm(monkeypatch):
+    drone, _clock = landing_drone(
+        monkeypatch,
+        lambda clock, _drone: status_sample(
+            clock.now, altitude=0.02, sequence=1, armed=True, landed=False
+        ),
+    )
+
+    with pytest.raises(TimeoutError, match="landed state"):
+        drone.land(timeout_s=0.3)
+
+    assert drone.m.disarm_calls == 0
+    assert drone.flying is False
+
+
+def test_px4_land_times_out_without_disarm_confirmation(monkeypatch):
+    drone, _clock = landing_drone(
+        monkeypatch,
+        lambda clock, _drone: status_sample(
+            clock.now, altitude=0.02, sequence=1, armed=True, landed=True
+        ),
+    )
+
+    with pytest.raises(TimeoutError, match="disarmed state"):
+        drone.land(timeout_s=0.3)
+
+    assert drone.m.disarm_calls == 1
+    assert drone.flying is False
+
+
 def telemetry_sequence(samples):
     remaining = list(samples)
     last = remaining[-1]

@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import math
 from collections.abc import Mapping
 from dataclasses import asdict, dataclass, field
 from enum import Enum
@@ -188,13 +189,24 @@ def summarize_ulog_takeoff(
     motors = _mapping(datasets["actuator_motors"])
     controls = _values(motors, "control")
     motor_values: list[float] = []
-    for row in controls:
-        if hasattr(row, "tolist"):
-            row = row.tolist()
-        if isinstance(row, (list, tuple)):
-            motor_values.extend(float(value) for value in row)
-        else:
-            motor_values.append(float(row))
+    control_fields = ["control"] if controls else sorted(
+        (
+            field_name
+            for field_name in motors
+            if field_name.startswith("control[") and field_name.endswith("]")
+        ),
+        key=lambda field_name: int(field_name.removeprefix("control[").removesuffix("]")),
+    )
+    for field_name in control_fields:
+        for row in _values(motors, field_name):
+            if hasattr(row, "tolist"):
+                row = row.tolist()
+            values = row if isinstance(row, (list, tuple)) else (row,)
+            motor_values.extend(
+                value
+                for item in values
+                if math.isfinite(value := float(item))
+            )
     maximum_motor = max((abs(value) for value in motor_values), default=0.0)
     actuator_output_present = maximum_motor >= minimum_motor_command
     estimator_gain = _ned_altitude_gain(_mapping(datasets["vehicle_local_position"]))

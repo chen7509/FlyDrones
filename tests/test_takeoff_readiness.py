@@ -188,6 +188,24 @@ def test_ulog_takeoff_extracts_accepted_commands_climb_and_raw_source_timestamps
     assert "esc_status" not in evidence
 
 
+def test_ulog_takeoff_extracts_flattened_motor_controls_and_ignores_non_finite_channels():
+    datasets = _ulog_datasets()
+    datasets["actuator_motors"] = {
+        "timestamp": [2_200_000, 2_300_000],
+        "control[0]": [0.0, 0.78],
+        "control[1]": [0.0, 0.79],
+        "control[2]": [0.0, 0.80],
+        "control[3]": [0.0, 0.77],
+        "control[4]": [float("nan"), float("nan")],
+    }
+
+    evidence = summarize_ulog_takeoff(datasets)
+
+    assert evidence["accepted"]
+    assert evidence["actuator_output_present"]
+    assert evidence["maximum_actuator_output"] == pytest.approx(0.80)
+
+
 def test_ulog_takeoff_distinguishes_physics_and_estimator_failures():
     stationary = summarize_ulog_takeoff(_ulog_datasets(groundtruth_gain=0.02))
     estimator_stale = summarize_ulog_takeoff(_ulog_datasets(estimator_gain=0.02, groundtruth_gain=0.8))

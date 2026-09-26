@@ -49,7 +49,8 @@ class MavlinkDrone(Drone):
 
     def __init__(self, connection: str = "udpin:0.0.0.0:14550", autopilot: str = "ardupilot", v_max: float = 1.0,
                  vz_max: float = 0.5, yaw_rate_max_dps: float = 45.0, takeoff_alt: float = 1.5,
-                 offboard_rate_hz: float = 20.0, arm_timeout_s: float = 10.0):
+                 offboard_rate_hz: float = 20.0, arm_timeout_s: float = 10.0,
+                 land_timeout_s: float = 45.0):
         try:
             from pymavlink import mavutil
         except ImportError as e:  # pragma: no cover - optional dependency
@@ -61,6 +62,7 @@ class MavlinkDrone(Drone):
         self.takeoff_alt = takeoff_alt
         self.offboard_rate_hz = max(5.0, float(offboard_rate_hz))
         self.arm_timeout_s = max(1.0, float(arm_timeout_s))
+        self.land_timeout_s = max(1.0, float(land_timeout_s))
         self.m = None
         self._tel = Telemetry()
         self.flying = False
@@ -679,10 +681,32 @@ class MavlinkDrone(Drone):
         # NED body frame: +x forward, +y right, +z DOWN; yaw rate + = clockwise
         self._send_velocity(cmd.forward * self.v_max, cmd.lateral * self.v_max, -cmd.throttle * self.vz_max, cmd.yaw * self.yr_max)
 
-    def land(self) -> None:
+    def land(self, *, timeout_s: float | None = None) -> None:
         if self.autopilot == "px4":
             self.m.mav.command_long_send(self.m.target_system, self.m.target_component, self.mavutil.mavlink.MAV_CMD_NAV_LAND,
                                          0, 0, 0, 0, 0, 0, 0, 0)
+            timeout = self.land_timeout_s if timeout_s is None else max(0.1, float(timeout_s))
+            landing_deadline = time.monotonic() + timeout
+            while time.monotonic() < landing_deadline:
+                telemetry = self.telemetry()
+                if (
+                    telemetry.landed is True
+                    and telemetry.alt_m is not None
+                    and math.isfinite(float(telemetry.alt_m))
+                    and float(telemetry.alt_m) <= 0.18
+                ):
+                    self.m.arducopter_disarm()
+                    disarm_deadline = time.monotonic() + timeout
+                    while time.monotonic() < disarm_deadline:
+                        if self.telemetry().armed is False:
+                            self.flying = False
+                            return
+                        time.sleep(min(0.1, max(0.0, disarm_deadline - time.monotonic())))
+                    self.flying = False
+                    raise TimeoutError("disarmed state was not confirmed before landing timeout")
+                time.sleep(min(0.1, max(0.0, landing_deadline - time.monotonic())))
+            self.flying = False
+            raise TimeoutError("landed state was not confirmed before landing timeout")
         else:
             self.m.set_mode("LAND")
         self.flying = False
