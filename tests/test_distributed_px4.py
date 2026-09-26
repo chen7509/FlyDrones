@@ -973,6 +973,27 @@ def test_coordinator_assigns_a_gps_fault_to_only_the_selected_vehicle(tmp_path):
     assert sum("--fault-marker" in command for command in commands) == 1
 
 
+def test_renderer_trial_disables_gps_fusion_on_every_vehicle_but_marks_one_fault(tmp_path):
+    commands = build_distributed_agent_commands(
+        python_executable="python3",
+        agent_script=Path("tools/px4_distributed_agent.py"),
+        output_dir=tmp_path,
+        model_path=Path("actor.npz"),
+        vehicle_count=5,
+        gps_failure_vehicle_id=0,
+        gps_failure_all=True,
+        gps_failure_at_s=5.0,
+        gps_failure_mode="fusion-off",
+        fault_marker_path=tmp_path / "fault-start.json",
+    )
+
+    assert all("--gps-failure-at" in command for command in commands)
+    assert all(command[command.index("--gps-failure-mode") + 1] == "fusion-off" for command in commands)
+    marked = [command for command in commands if "--fault-marker" in command]
+    assert len(marked) == 1
+    assert marked[0][marked[0].index("--vehicle-id") + 1] == "0"
+
+
 def test_coordinator_enables_external_vision_independently_on_every_vehicle(tmp_path):
     commands = build_distributed_agent_commands(
         python_executable="python3",

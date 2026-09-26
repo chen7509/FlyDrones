@@ -55,6 +55,7 @@ def main() -> int:
     parser.add_argument("--process-timeout", type=float, default=150.0)
     parser.add_argument("--peer-base-port", type=int, default=16770)
     parser.add_argument("--gps-failure-vehicle", type=int)
+    parser.add_argument("--gps-failure-all", action="store_true")
     parser.add_argument("--gps-failure-at", type=float, default=12.0)
     parser.add_argument("--gps-failure-mode", choices=("off", "stuck", "wrong", "fusion-off"), default="off")
     parser.add_argument("--expect-fault-landing", action="store_true")
@@ -88,6 +89,7 @@ def main() -> int:
         peer_base_port=args.peer_base_port,
         mission_timeout_s=args.mission_timeout,
         gps_failure_vehicle_id=args.gps_failure_vehicle,
+        gps_failure_all=args.gps_failure_all,
         gps_failure_at_s=args.gps_failure_at,
         gps_failure_mode=args.gps_failure_mode,
         external_vision_fusion=args.external_vision_fusion,

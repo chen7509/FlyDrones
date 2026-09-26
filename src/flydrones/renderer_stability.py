@@ -108,6 +108,18 @@ def score_renderer_trial(manifest: Mapping[str, object], summary: Mapping[str, o
     ):
         failures.append("per_vehicle_external_vision_evidence_rejected")
 
+    post_gnss = _mapping(summary.get("post_gnss_evidence_by_vehicle"))
+    if len(post_gnss) != 5 or any(
+        _mapping(post_gnss.get(str(vehicle_id))).get("accepted") is not True
+        for vehicle_id in range(5)
+    ):
+        failures.append("per_vehicle_post_gnss_evidence_rejected")
+    if len(workers) != 5 or any(
+        not isinstance(worker, Mapping) or worker.get("gnss_disable_injected") is not True
+        for worker in workers
+    ):
+        failures.append("per_vehicle_gnss_disable_not_injected")
+
     runtime = _mapping(summary.get("runtime"))
     if runtime.get("accepted") is not True or runtime.get("startup_reliability_pass") is not True:
         failures.append("runtime_or_startup_evidence_rejected")

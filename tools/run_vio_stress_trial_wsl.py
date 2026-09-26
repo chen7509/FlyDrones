@@ -15,7 +15,7 @@ import traceback
 from collections.abc import Callable, Mapping
 from pathlib import Path
 
-from flydrones.px4_ulog_evidence import extract_ulog_fusion_evidence, newest_vehicle_ulog
+from flydrones.px4_ulog_evidence import newest_vehicle_ulog
 
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_OUTPUT_ROOT = ROOT / "results" / "vio-stress"
@@ -323,7 +323,8 @@ def run_trial(
                           "--output", str(output), "--model", str(model_copy),
                           "--mission-timeout", "70", "--process-timeout", "180",
                           "--gps-failure-vehicle", "0", "--gps-failure-at", "5",
-                          "--gps-failure-mode", "fusion-off", "--external-vision-fusion",
+                          "--gps-failure-mode", "fusion-off", "--gps-failure-all",
+                          "--external-vision-fusion",
                           "--fault-marker", str(marker), "--vio-health-base-port", "16880"]
             with (output / "worker.log").open("w", encoding="utf-8") as log:
                 worker_process = subprocess.Popen(
@@ -393,7 +394,6 @@ def run_trial(
         manifest["relay_closed_cleanly"] = relay_closed_cleanly(relay_log)
         if not manifest["relay_closed_cleanly"]:
             manifest["errors"].append("relay log is missing or lacks a complete stop record")
-        vehicle_zero_fusion_accepted = False
         ulog_artifacts = []
         if run_dir.exists():
             for vehicle_id in range(fleet_size):
@@ -408,12 +408,6 @@ def run_trial(
                         "bytes": target.stat().st_size,
                         "sha256": sha256(target),
                     })
-                    if vehicle_id == 0:
-                        evidence = extract_ulog_fusion_evidence(
-                            target, output_path=output / "px4-ekf-fusion-evidence.json",
-                            fault_vehicle_id=0, preserve_ulog=False,
-                        )
-                        vehicle_zero_fusion_accepted = bool(evidence["accepted"])
                 except Exception as exc:
                     manifest["errors"].append(f"ULog vehicle {vehicle_id}: {exc}")
         manifest["ulog_artifacts"] = ulog_artifacts
@@ -421,7 +415,6 @@ def run_trial(
         attestation = manifest["renderer"].get("attestation")
         manifest["evidence_accepted"] = bool(
             attestation and attestation.get("accepted")
-            and vehicle_zero_fusion_accepted
             and manifest["relay_closed_cleanly"]
             and manifest.get("stop_exit_code") == 0
             and manifest["shared_px4_files_restored"]

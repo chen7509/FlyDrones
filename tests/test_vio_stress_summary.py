@@ -30,11 +30,14 @@ def _trial():
         "relay_to_px4": {"matched_active_samples": 30, "matched_offset_samples": 0,
                          "median_ulog_minus_source_stamp_ms": 0},
         "visual_after_gnss_disable": {"accepted": True, "metrics": {"visual_stream_max_gap_ms": 30}},
-        "workers": [{"mission_accepted": True, "landed": True, "fail_closed_land": False,
-                     "gnss_disable_injected": True}] + [
-                         {"mission_accepted": True, "landed": True, "fail_closed_land": False}
-                         for _ in range(4)
-                     ],
+        "post_gnss_evidence_by_vehicle": {
+            str(vehicle_id): {"accepted": True} for vehicle_id in range(5)
+        },
+        "workers": [
+            {"mission_accepted": True, "landed": True, "fail_closed_land": False,
+             "gnss_disable_injected": True}
+            for _ in range(5)
+        ],
     }
 
 
@@ -128,6 +131,19 @@ def test_cleanup_failure_cannot_be_operational_pass():
     assert result["mission_visual_geometry_pass"]
     assert not result["trial_cleanup_verified"]
     assert not result["operational_continuity_pass"]
+
+
+def test_operational_pass_requires_post_gnss_evidence_for_every_vehicle():
+    trial = _trial()
+    profile = {"delay_ms": 0, "dropout_duration_s": 0,
+               "drift_mps": [0, 0, 0], "false_pose_offset_m": [0, 0, 0]}
+
+    trial["post_gnss_evidence_by_vehicle"]["4"]["accepted"] = False
+    assert not classify_trial(trial, profile)["operational_continuity_pass"]
+
+    trial = _trial()
+    trial["workers"][4]["gnss_disable_injected"] = False
+    assert not classify_trial(trial, profile)["operational_continuity_pass"]
 
 
 def test_partial_relay_log_remains_scored_as_incomplete(tmp_path):

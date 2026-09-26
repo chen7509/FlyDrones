@@ -208,6 +208,7 @@ def build_distributed_agent_commands(
     peer_base_port: int = 16770,
     mission_timeout_s: float = 70.0,
     gps_failure_vehicle_id: int | None = None,
+    gps_failure_all: bool = False,
     gps_failure_at_s: float = 12.0,
     gps_failure_mode: str = "off",
     external_vision_fusion: bool = False,
@@ -233,12 +234,12 @@ def build_distributed_agent_commands(
             "--mission-timeout", str(mission_timeout_s),
             "--peer-base-port", str(peer_base_port),
         ]
-        if vehicle_id == gps_failure_vehicle_id:
+        if gps_failure_all or vehicle_id == gps_failure_vehicle_id:
             command.extend([
                 "--gps-failure-at", str(gps_failure_at_s),
                 "--gps-failure-mode", gps_failure_mode,
             ])
-            if fault_marker_path is not None:
+            if fault_marker_path is not None and vehicle_id == gps_failure_vehicle_id:
                 command.extend(["--fault-marker", str(fault_marker_path)])
         if external_vision_fusion:
             command.append("--external-vision-fusion")

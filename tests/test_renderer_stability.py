@@ -49,6 +49,7 @@ def _trial(item):
             "landed": True,
             "fail_closed_land": False,
             "state_health_failures": 0,
+            "gnss_disable_injected": True,
         }
         for vehicle_id in range(5)
     ]
@@ -66,6 +67,9 @@ def _trial(item):
         "renderer": manifest["renderer"],
         "workers": workers,
         "external_vision_health_by_vehicle": {
+            str(vehicle_id): {"accepted": True} for vehicle_id in range(5)
+        },
+        "post_gnss_evidence_by_vehicle": {
             str(vehicle_id): {"accepted": True} for vehicle_id in range(5)
         },
         "runtime": {
@@ -137,6 +141,7 @@ def test_campaign_rejects_schedule_or_frozen_input_drift(mutation):
         ("clearance", "safety_geometry_failed"),
         ("vio_gate", "normal_run_vio_gate_triggered"),
         ("ulog", "per_vehicle_external_vision_evidence_rejected"),
+        ("post_gnss", "per_vehicle_post_gnss_evidence_rejected"),
         ("raw_max", "raw_vio_max_not_below_250_ms"),
         ("clock_max", "clock_max_not_below_250_ms"),
         ("p99", "tail_p99_above_100_ms"),
@@ -158,6 +163,8 @@ def test_every_d3d12_hard_gate_is_fail_closed(mutation, expected_reason):
         summary["workers"][0]["fail_closed_land"] = True
     elif mutation == "ulog":
         summary["external_vision_health_by_vehicle"]["3"]["accepted"] = False
+    elif mutation == "post_gnss":
+        summary["post_gnss_evidence_by_vehicle"]["3"]["accepted"] = False
     elif mutation == "raw_max":
         summary["runtime"]["raw_vio_by_vehicle"]["2"]["steady_state"]["max_ms"] = 250.0
     elif mutation == "clock_max":

@@ -240,17 +240,32 @@ def _relay_metrics(path: Path, fleet_size: int) -> tuple[dict, dict[str, list[tu
     }, raw, publishes
 
 
-def _ulog_metrics(path: Path, publishes: list[dict]) -> tuple[dict, dict, dict]:
+def _ulog_post_gnss_evidence(path: Path) -> dict:
     from pyulog import ULog
 
     if not path.exists():
-        return {"accepted": False, "error": "ULog missing"}, {"matched_active_samples": 0}, {}
+        return {"accepted": False, "checks": {}, "metrics": {}, "error": "ULog missing"}
+    try:
+        ulog = ULog(str(path))
+        datasets = {dataset.name: dataset.data for dataset in ulog.data_list if dataset.multi_id == 0}
+        disable = next((float(timestamp) / 1_000_000 for timestamp, name, value in ulog.changed_parameters
+                        if name == "EKF2_GPS_CTRL" and int(value) == 0), None)
+        result = summarize_post_gnss_evidence(datasets, gps_disable_s=disable)
+    except Exception as exc:
+        return {"accepted": False, "checks": {}, "metrics": {},
+                "error": f"ULog could not be read: {exc}"}
+    result["source"] = {"ulog_sha256": _sha256(path), "ulog_bytes": path.stat().st_size}
+    return result
+
+
+def _ulog_metrics(path: Path, publishes: list[dict]) -> tuple[dict, dict, dict]:
+    from pyulog import ULog
+
+    result = _ulog_post_gnss_evidence(path)
+    if not path.exists():
+        return result, {"matched_active_samples": 0}, {}
     ulog = ULog(str(path))
     datasets = {dataset.name: dataset.data for dataset in ulog.data_list if dataset.multi_id == 0}
-    disable = next((float(timestamp) / 1_000_000 for timestamp, name, value in ulog.changed_parameters
-                    if name == "EKF2_GPS_CTRL" and int(value) == 0), None)
-    result = summarize_post_gnss_evidence(datasets, gps_disable_s=disable)
-    result["source"] = {"ulog_sha256": _sha256(path), "ulog_bytes": path.stat().st_size}
     return (result, match_relay_to_visual_odometry(publishes, datasets.get("vehicle_visual_odometry", {})),
             datasets.get("vehicle_status", {}))
 
@@ -429,9 +444,17 @@ def classify_trial(trial: dict, profile: dict) -> dict:
     runtime_ready = runtime is None or bool(
         runtime.get("accepted") and runtime.get("startup_reliability_pass")
     )
+    post_gnss = trial.get("post_gnss_evidence_by_vehicle", {})
+    all_post_gnss = len(post_gnss) == trial["fleet_size"] and all(
+        post_gnss.get(str(vehicle_id), {}).get("accepted") is True
+        for vehicle_id in range(trial["fleet_size"])
+    )
+    all_gnss_disabled = len(workers) == trial["fleet_size"] and all(
+        worker.get("gnss_disable_injected") is True for worker in workers
+    )
     ready = (trial["launch_exit_code"] == 0 and relay.get("closed_cleanly", False)
              and runtime_ready
-             and fault_worker.get("gnss_disable_injected") and px4_effect)
+             and all_gnss_disabled and all_post_gnss and px4_effect)
     continuity = (ready and trial["worker_exit_code"] == 0 and all_mission and all_landed
                   and trial["visual_after_gnss_disable"].get("accepted", False) and geometry)
     cleanup = trial.get("stop_exit_code") == 0 and trial.get("shared_px4_files_restored") is True
@@ -516,6 +539,12 @@ def summarize_trial(directory: Path) -> dict:
         )
         for vehicle_id in range(count)
     }
+    post_gnss_by_vehicle = {
+        str(vehicle_id): _ulog_post_gnss_evidence(
+            directory / "px4-ulogs" / f"agent-{vehicle_id}.ulg"
+        )
+        for vehicle_id in range(count)
+    }
     if workers:
         workers[0]["px4_land_transition"] = verify_px4_land_transition(
             workers[0].get("command_gate", {}).get("trigger_monotonic_s"),
@@ -553,6 +582,7 @@ def summarize_trial(directory: Path) -> dict:
         "relay_to_px4": correspondence,
         "visual_after_gnss_disable": visual,
         "external_vision_health_by_vehicle": external_vision_by_vehicle,
+        "post_gnss_evidence_by_vehicle": post_gnss_by_vehicle,
         "workers": workers,
     }
     combined.update(classify_trial(combined, profile))
