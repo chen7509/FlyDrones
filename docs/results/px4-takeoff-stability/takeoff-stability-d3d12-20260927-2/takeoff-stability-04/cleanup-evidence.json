@@ -1,0 +1,97 @@
+{
+  "schema": "flydrones-owned-process-cleanup-v1",
+  "registry": "/tmp/flydrones-vio-takeoff-stability-d3d12-20260927-2-takeoff-stability-04/owned-processes.json",
+  "recorded_processes": 7,
+  "stopped": [
+    {
+      "pid": 624477,
+      "start_ticks": 52171954,
+      "argv": [
+        "/home/yuchen7509/PX4-Autopilot/build/px4_sitl_default/bin/px4",
+        "-i",
+        "4",
+        "-d",
+        "/home/yuchen7509/PX4-Autopilot/build/px4_sitl_default/etc"
+      ],
+      "role": "px4-4"
+    },
+    {
+      "pid": 624074,
+      "start_ticks": 52171736,
+      "argv": [
+        "/home/yuchen7509/PX4-Autopilot/build/px4_sitl_default/bin/px4",
+        "-i",
+        "3",
+        "-d",
+        "/home/yuchen7509/PX4-Autopilot/build/px4_sitl_default/etc"
+      ],
+      "role": "px4-3"
+    },
+    {
+      "pid": 623642,
+      "start_ticks": 52171519,
+      "argv": [
+        "/home/yuchen7509/PX4-Autopilot/build/px4_sitl_default/bin/px4",
+        "-i",
+        "2",
+        "-d",
+        "/home/yuchen7509/PX4-Autopilot/build/px4_sitl_default/etc"
+      ],
+      "role": "px4-2"
+    },
+    {
+      "pid": 623393,
+      "start_ticks": 52171301,
+      "argv": [
+        "/home/yuchen7509/PX4-Autopilot/build/px4_sitl_default/bin/px4",
+        "-i",
+        "1",
+        "-d",
+        "/home/yuchen7509/PX4-Autopilot/build/px4_sitl_default/etc"
+      ],
+      "role": "px4-1"
+    },
+    {
+      "pid": 623180,
+      "start_ticks": 52171082,
+      "argv": [
+        "/home/yuchen7509/PX4-Autopilot/build/px4_sitl_default/bin/px4",
+        "-i",
+        "0",
+        "-d",
+        "/home/yuchen7509/PX4-Autopilot/build/px4_sitl_default/etc"
+      ],
+      "role": "px4-0"
+    },
+    {
+      "pid": 623163,
+      "start_ticks": 52171065,
+      "argv": [
+        "gz sim --headless-rendering -r -s /home/yuchen7509/PX4-Autopilot/Tools/simulation/gz/worlds/flydrones_forest.sdf"
+      ],
+      "role": "gazebo-server"
+    },
+    {
+      "pid": 623158,
+      "start_ticks": 52171051,
+      "argv": [
+        "python3",
+        "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/vio-faults/tools/relay_gazebo_vio.py",
+        "--profile",
+        "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/vio-faults/results/px4-takeoff-stability/takeoff-stability-d3d12-20260927-2/takeoff-stability-04/fault-profile.json",
+        "--marker",
+        "/tmp/flydrones-vio-takeoff-stability-d3d12-20260927-2-takeoff-stability-04/fault-start.json",
+        "--output",
+        "/tmp/flydrones-vio-takeoff-stability-d3d12-20260927-2-takeoff-stability-04/vio-relay.jsonl",
+        "--vehicle-count",
+        "5",
+        "--health-base-port",
+        "16880"
+      ],
+      "role": "vio-relay"
+    }
+  ],
+  "already_gone": [],
+  "ownership_mismatch": [],
+  "failed_to_stop": []
+}

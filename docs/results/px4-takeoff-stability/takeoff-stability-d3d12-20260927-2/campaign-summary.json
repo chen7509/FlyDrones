@@ -1,0 +1,108 @@
+{
+  "schema": "flydrones-px4-takeoff-stability-summary-v1",
+  "campaign_id": "takeoff-stability-d3d12-20260927-2",
+  "accepted": true,
+  "completed_trials": [
+    "takeoff-stability-01",
+    "takeoff-stability-02",
+    "takeoff-stability-03",
+    "takeoff-stability-04",
+    "takeoff-stability-05",
+    "takeoff-stability-06",
+    "takeoff-stability-07",
+    "takeoff-stability-08",
+    "takeoff-stability-09",
+    "takeoff-stability-10"
+  ],
+  "stopped_after": null,
+  "stop_reasons": [],
+  "metrics": {
+    "mission_ready": 50,
+    "landed": 50,
+    "clean_trials": 10,
+    "expected_vehicles": 50,
+    "expected_trials": 10
+  },
+  "trials": [
+    {
+      "name": "takeoff-stability-01",
+      "passed": true,
+      "failures": [],
+      "mission_ready": 5,
+      "landed": 5,
+      "clean": true
+    },
+    {
+      "name": "takeoff-stability-02",
+      "passed": true,
+      "failures": [],
+      "mission_ready": 5,
+      "landed": 5,
+      "clean": true
+    },
+    {
+      "name": "takeoff-stability-03",
+      "passed": true,
+      "failures": [],
+      "mission_ready": 5,
+      "landed": 5,
+      "clean": true
+    },
+    {
+      "name": "takeoff-stability-04",
+      "passed": true,
+      "failures": [],
+      "mission_ready": 5,
+      "landed": 5,
+      "clean": true
+    },
+    {
+      "name": "takeoff-stability-05",
+      "passed": true,
+      "failures": [],
+      "mission_ready": 5,
+      "landed": 5,
+      "clean": true
+    },
+    {
+      "name": "takeoff-stability-06",
+      "passed": true,
+      "failures": [],
+      "mission_ready": 5,
+      "landed": 5,
+      "clean": true
+    },
+    {
+      "name": "takeoff-stability-07",
+      "passed": true,
+      "failures": [],
+      "mission_ready": 5,
+      "landed": 5,
+      "clean": true
+    },
+    {
+      "name": "takeoff-stability-08",
+      "passed": true,
+      "failures": [],
+      "mission_ready": 5,
+      "landed": 5,
+      "clean": true
+    },
+    {
+      "name": "takeoff-stability-09",
+      "passed": true,
+      "failures": [],
+      "mission_ready": 5,
+      "landed": 5,
+      "clean": true
+    },
+    {
+      "name": "takeoff-stability-10",
+      "passed": true,
+      "failures": [],
+      "mission_ready": 5,
+      "landed": 5,
+      "clean": true
+    }
+  ]
+}

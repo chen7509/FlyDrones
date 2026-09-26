@@ -15,7 +15,7 @@ from tools.run_renderer_stability_campaign_wsl import (
     smoke_schedule,
     validate_existing_campaign,
 )
-from tools.snapshot_vio_gate_results import snapshot_renderer_campaign
+from tools.snapshot_vio_gate_results import snapshot_renderer_campaign, snapshot_takeoff_campaign
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -232,3 +232,51 @@ def test_campaign_snapshot_reads_manifest_names_and_indexes_raw_evidence(tmp_pat
     assert "px4-ulogs/agent-0.ulg" in indexed
     assert "trajectory-replay.html" in indexed
     assert "gazebo.stdout.log" in indexed
+
+
+def test_campaign_snapshot_bounds_long_summary_sequences_and_hashes_the_raw_summary(tmp_path):
+    source = tmp_path / "source"
+    target = tmp_path / "target"
+    trial_name = "bounded-summary-trial"
+    source.mkdir()
+    (source / "campaign-manifest.json").write_text(
+        json.dumps({"campaign_id": "c", "schedule": [{"name": trial_name}]}), encoding="utf-8"
+    )
+    (source / "campaign-summary.json").write_text("{}", encoding="utf-8")
+    trial = source / trial_name
+    trial.mkdir()
+    summary = {"schema": "summary-v1", "samples": list(range(100))}
+    (trial / "stress-summary.json").write_text(json.dumps(summary), encoding="utf-8")
+
+    index = snapshot_renderer_campaign(source, target)
+
+    compact = json.loads((target / trial_name / "stress-summary.json").read_text(encoding="utf-8"))
+    assert compact["samples"]["_compact_sequence"] is True
+    assert compact["samples"]["length"] == 100
+    assert compact["samples"]["head"] == [0, 1, 2, 3]
+    assert compact["samples"]["tail"] == [96, 97, 98, 99]
+    assert len(compact["samples"]["sha256"]) == 64
+    assert "stress-summary.json" in index["trials"][trial_name]
+
+
+def test_takeoff_campaign_snapshot_copies_takeoff_summary_and_uses_takeoff_schema(tmp_path):
+    source = tmp_path / "source"
+    target = tmp_path / "target"
+    trial_name = "takeoff-stability-01"
+    source.mkdir()
+    (source / "campaign-manifest.json").write_text(
+        json.dumps({"campaign_id": "takeoff-c", "schedule": [{"name": trial_name}]}),
+        encoding="utf-8",
+    )
+    (source / "campaign-summary.json").write_text("{}", encoding="utf-8")
+    trial = source / trial_name
+    trial.mkdir()
+    (trial / "takeoff-readiness-summary.json").write_text(
+        json.dumps({"mission_ready": 5}), encoding="utf-8"
+    )
+    (trial / "stress-summary.json").write_text("{}", encoding="utf-8")
+
+    index = snapshot_takeoff_campaign(source, target)
+
+    assert index["schema"] == "flydrones-px4-takeoff-stability-artifacts-v1"
+    assert (target / trial_name / "takeoff-readiness-summary.json").is_file()

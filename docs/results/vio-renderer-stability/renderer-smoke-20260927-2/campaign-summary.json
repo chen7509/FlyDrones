@@ -1,0 +1,30 @@
+{
+  "schema": "flydrones-renderer-stability-smoke-v1",
+  "campaign_id": "renderer-smoke-20260927-2",
+  "phase": "smoke",
+  "completed_trials": [
+    "smoke-default-single",
+    "smoke-d3d12-single",
+    "smoke-d3d12-five-startup"
+  ],
+  "stopped_after": null,
+  "stop_reasons": [],
+  "trials": [
+    {
+      "name": "smoke-default-single",
+      "passed": true,
+      "failures": []
+    },
+    {
+      "name": "smoke-d3d12-single",
+      "passed": true,
+      "failures": []
+    },
+    {
+      "name": "smoke-d3d12-five-startup",
+      "passed": true,
+      "failures": []
+    }
+  ],
+  "passed": true
+}

@@ -1,0 +1,444 @@
+{
+  "schema": "flydrones-renderer-stability-campaign-v1",
+  "formal_artifacts_complete": true,
+  "validation_failures": [],
+  "campaign_failures": [
+    "d3d12_sustained_tail_degradation"
+  ],
+  "trials": [
+    {
+      "name": "renderer-pair-1-1-default",
+      "renderer_profile": "default",
+      "pair": {
+        "id": 1,
+        "position": 1
+      },
+      "passed": false,
+      "failures": [
+        "mission_count_not_5",
+        "normal_run_vio_gate_triggered",
+        "per_vehicle_post_gnss_evidence_rejected",
+        "per_vehicle_gnss_disable_not_injected",
+        "raw_vio_max_not_below_250_ms",
+        "clock_max_not_below_250_ms",
+        "tail_p99_above_100_ms",
+        "rtf_below_0_95",
+        "operational_continuity_failed"
+      ],
+      "metrics": {
+        "mission_count": 1,
+        "landing_count": 5,
+        "raw_vio_p99_max_ms": 152.9724489664659,
+        "raw_vio_max_ms": 285.45528603717685,
+        "clock_p99_ms": 95.418749,
+        "clock_max_ms": 269.482436,
+        "tail_p99_ms": 152.9724489664659,
+        "tail_max_ms": 285.45528603717685,
+        "rtf": 0.5466290573701296
+      }
+    },
+    {
+      "name": "renderer-pair-1-2-d3d12-nvidia",
+      "renderer_profile": "d3d12-nvidia",
+      "pair": {
+        "id": 1,
+        "position": 2
+      },
+      "passed": true,
+      "failures": [],
+      "metrics": {
+        "mission_count": 5,
+        "landing_count": 5,
+        "raw_vio_p99_max_ms": 24.09923996310681,
+        "raw_vio_max_ms": 67.47713102959096,
+        "clock_p99_ms": 5.860226,
+        "clock_max_ms": 50.610012,
+        "tail_p99_ms": 24.09923996310681,
+        "tail_max_ms": 67.47713102959096,
+        "rtf": 0.9957792369087349
+      }
+    },
+    {
+      "name": "renderer-pair-2-1-d3d12-nvidia",
+      "renderer_profile": "d3d12-nvidia",
+      "pair": {
+        "id": 2,
+        "position": 1
+      },
+      "passed": true,
+      "failures": [],
+      "metrics": {
+        "mission_count": 5,
+        "landing_count": 5,
+        "raw_vio_p99_max_ms": 25.064790970645845,
+        "raw_vio_max_ms": 73.1171389343217,
+        "clock_p99_ms": 6.156839,
+        "clock_max_ms": 57.251971,
+        "tail_p99_ms": 25.064790970645845,
+        "tail_max_ms": 73.1171389343217,
+        "rtf": 0.9925140845453885
+      }
+    },
+    {
+      "name": "renderer-pair-2-2-default",
+      "renderer_profile": "default",
+      "pair": {
+        "id": 2,
+        "position": 2
+      },
+      "passed": false,
+      "failures": [
+        "raw_vio_max_not_below_250_ms",
+        "tail_p99_above_100_ms",
+        "rtf_below_0_95"
+      ],
+      "metrics": {
+        "mission_count": 5,
+        "landing_count": 5,
+        "raw_vio_p99_max_ms": 190.94925897661597,
+        "raw_vio_max_ms": 251.877196948044,
+        "clock_p99_ms": 21.402307,
+        "clock_max_ms": 234.981803,
+        "tail_p99_ms": 190.94925897661597,
+        "tail_max_ms": 251.877196948044,
+        "rtf": 0.7948820406374756
+      }
+    },
+    {
+      "name": "renderer-pair-3-1-default",
+      "renderer_profile": "default",
+      "pair": {
+        "id": 3,
+        "position": 1
+      },
+      "passed": false,
+      "failures": [
+        "mission_count_not_5",
+        "normal_run_vio_gate_triggered",
+        "per_vehicle_external_vision_evidence_rejected",
+        "per_vehicle_post_gnss_evidence_rejected",
+        "per_vehicle_gnss_disable_not_injected",
+        "raw_vio_max_not_below_250_ms",
+        "tail_p99_above_100_ms",
+        "rtf_below_0_95",
+        "operational_continuity_failed"
+      ],
+      "metrics": {
+        "mission_count": 1,
+        "landing_count": 5,
+        "raw_vio_p99_max_ms": 194.27155901212245,
+        "raw_vio_max_ms": 262.5466079916805,
+        "clock_p99_ms": 104.600496,
+        "clock_max_ms": 244.537265,
+        "tail_p99_ms": 194.27155901212245,
+        "tail_max_ms": 262.5466079916805,
+        "rtf": 0.5174249607078708
+      }
+    },
+    {
+      "name": "renderer-pair-3-2-d3d12-nvidia",
+      "renderer_profile": "d3d12-nvidia",
+      "pair": {
+        "id": 3,
+        "position": 2
+      },
+      "passed": true,
+      "failures": [],
+      "metrics": {
+        "mission_count": 5,
+        "landing_count": 5,
+        "raw_vio_p99_max_ms": 28.7977890111506,
+        "raw_vio_max_ms": 73.80657899193466,
+        "clock_p99_ms": 7.027257,
+        "clock_max_ms": 55.95013,
+        "tail_p99_ms": 28.7977890111506,
+        "tail_max_ms": 73.80657899193466,
+        "rtf": 0.9815797031617977
+      }
+    },
+    {
+      "name": "renderer-pair-4-1-d3d12-nvidia",
+      "renderer_profile": "d3d12-nvidia",
+      "pair": {
+        "id": 4,
+        "position": 1
+      },
+      "passed": true,
+      "failures": [],
+      "metrics": {
+        "mission_count": 5,
+        "landing_count": 5,
+        "raw_vio_p99_max_ms": 28.862021979875863,
+        "raw_vio_max_ms": 67.13869399391115,
+        "clock_p99_ms": 6.890208,
+        "clock_max_ms": 49.594205,
+        "tail_p99_ms": 28.862021979875863,
+        "tail_max_ms": 67.13869399391115,
+        "rtf": 0.9830819841352487
+      }
+    },
+    {
+      "name": "renderer-pair-4-2-default",
+      "renderer_profile": "default",
+      "pair": {
+        "id": 4,
+        "position": 2
+      },
+      "passed": false,
+      "failures": [
+        "mission_count_not_5",
+        "normal_run_vio_gate_triggered",
+        "per_vehicle_post_gnss_evidence_rejected",
+        "per_vehicle_gnss_disable_not_injected",
+        "raw_vio_max_not_below_250_ms",
+        "clock_max_not_below_250_ms",
+        "tail_p99_above_100_ms",
+        "rtf_below_0_95",
+        "operational_continuity_failed"
+      ],
+      "metrics": {
+        "mission_count": 1,
+        "landing_count": 5,
+        "raw_vio_p99_max_ms": 208.24921200983226,
+        "raw_vio_max_ms": 280.7270990451798,
+        "clock_p99_ms": 132.5726,
+        "clock_max_ms": 264.967423,
+        "tail_p99_ms": 208.24921200983226,
+        "tail_max_ms": 280.7270990451798,
+        "rtf": 0.4655587782112418
+      }
+    },
+    {
+      "name": "renderer-pair-5-1-default",
+      "renderer_profile": "default",
+      "pair": {
+        "id": 5,
+        "position": 1
+      },
+      "passed": false,
+      "failures": [
+        "tail_p99_above_100_ms",
+        "rtf_below_0_95"
+      ],
+      "metrics": {
+        "mission_count": 5,
+        "landing_count": 5,
+        "raw_vio_p99_max_ms": 211.61235310137272,
+        "raw_vio_max_ms": 247.61876894626766,
+        "clock_p99_ms": 30.497253,
+        "clock_max_ms": 229.035561,
+        "tail_p99_ms": 211.61235310137272,
+        "tail_max_ms": 247.61876894626766,
+        "rtf": 0.7324964041112219
+      }
+    },
+    {
+      "name": "renderer-pair-5-2-d3d12-nvidia",
+      "renderer_profile": "d3d12-nvidia",
+      "pair": {
+        "id": 5,
+        "position": 2
+      },
+      "passed": true,
+      "failures": [],
+      "metrics": {
+        "mission_count": 5,
+        "landing_count": 5,
+        "raw_vio_p99_max_ms": 26.774897007271647,
+        "raw_vio_max_ms": 85.80196602270007,
+        "clock_p99_ms": 6.514885,
+        "clock_max_ms": 67.762019,
+        "tail_p99_ms": 26.774897007271647,
+        "tail_max_ms": 85.80196602270007,
+        "rtf": 0.9806842005822866
+      }
+    }
+  ],
+  "pairs": [
+    {
+      "pair_id": 1,
+      "default_trial": "renderer-pair-1-1-default",
+      "d3d12_trial": "renderer-pair-1-2-d3d12-nvidia",
+      "deltas": {
+        "tail_p99_ms": -128.87320900335908,
+        "tail_max_ms": -217.97815500758588,
+        "rtf": 0.44915017953860537,
+        "mission_count": 4.0
+      }
+    },
+    {
+      "pair_id": 2,
+      "default_trial": "renderer-pair-2-2-default",
+      "d3d12_trial": "renderer-pair-2-1-d3d12-nvidia",
+      "deltas": {
+        "tail_p99_ms": -165.88446800597012,
+        "tail_max_ms": -178.7600580137223,
+        "rtf": 0.1976320439079129,
+        "mission_count": 0.0
+      }
+    },
+    {
+      "pair_id": 3,
+      "default_trial": "renderer-pair-3-1-default",
+      "d3d12_trial": "renderer-pair-3-2-d3d12-nvidia",
+      "deltas": {
+        "tail_p99_ms": -165.47377000097185,
+        "tail_max_ms": -188.74002899974585,
+        "rtf": 0.46415474245392685,
+        "mission_count": 4.0
+      }
+    },
+    {
+      "pair_id": 4,
+      "default_trial": "renderer-pair-4-2-default",
+      "d3d12_trial": "renderer-pair-4-1-d3d12-nvidia",
+      "deltas": {
+        "tail_p99_ms": -179.3871900299564,
+        "tail_max_ms": -213.58840505126864,
+        "rtf": 0.5175232059240069,
+        "mission_count": 4.0
+      }
+    },
+    {
+      "pair_id": 5,
+      "default_trial": "renderer-pair-5-1-default",
+      "d3d12_trial": "renderer-pair-5-2-d3d12-nvidia",
+      "deltas": {
+        "tail_p99_ms": -184.83745609410107,
+        "tail_max_ms": -161.8168029235676,
+        "rtf": 0.2481877964710647,
+        "mission_count": 0.0
+      }
+    }
+  ],
+  "renderer_aggregates": {
+    "default": {
+      "trial_count": 5,
+      "tail_p99_ms": [
+        152.9724489664659,
+        190.94925897661597,
+        194.27155901212245,
+        208.24921200983226,
+        211.61235310137272
+      ],
+      "tail_p99_ms_distribution": {
+        "min": 152.9724489664659,
+        "median": 194.27155901212245,
+        "max": 211.61235310137272
+      },
+      "tail_max_ms": [
+        285.45528603717685,
+        251.877196948044,
+        262.5466079916805,
+        280.7270990451798,
+        247.61876894626766
+      ],
+      "tail_max_ms_distribution": {
+        "min": 247.61876894626766,
+        "median": 262.5466079916805,
+        "max": 285.45528603717685
+      },
+      "rtf": [
+        0.5466290573701296,
+        0.7948820406374756,
+        0.5174249607078708,
+        0.4655587782112418,
+        0.7324964041112219
+      ],
+      "rtf_distribution": {
+        "min": 0.4655587782112418,
+        "median": 0.5466290573701296,
+        "max": 0.7948820406374756
+      },
+      "mission_count": [
+        1.0,
+        5.0,
+        1.0,
+        1.0,
+        5.0
+      ],
+      "mission_count_distribution": {
+        "min": 1.0,
+        "median": 1.0,
+        "max": 5.0
+      },
+      "landing_count": [
+        5.0,
+        5.0,
+        5.0,
+        5.0,
+        5.0
+      ],
+      "landing_count_distribution": {
+        "min": 5.0,
+        "median": 5.0,
+        "max": 5.0
+      }
+    },
+    "d3d12-nvidia": {
+      "trial_count": 5,
+      "tail_p99_ms": [
+        24.09923996310681,
+        25.064790970645845,
+        28.7977890111506,
+        28.862021979875863,
+        26.774897007271647
+      ],
+      "tail_p99_ms_distribution": {
+        "min": 24.09923996310681,
+        "median": 26.774897007271647,
+        "max": 28.862021979875863
+      },
+      "tail_max_ms": [
+        67.47713102959096,
+        73.1171389343217,
+        73.80657899193466,
+        67.13869399391115,
+        85.80196602270007
+      ],
+      "tail_max_ms_distribution": {
+        "min": 67.13869399391115,
+        "median": 73.1171389343217,
+        "max": 85.80196602270007
+      },
+      "rtf": [
+        0.9957792369087349,
+        0.9925140845453885,
+        0.9815797031617977,
+        0.9830819841352487,
+        0.9806842005822866
+      ],
+      "rtf_distribution": {
+        "min": 0.9806842005822866,
+        "median": 0.9830819841352487,
+        "max": 0.9957792369087349
+      },
+      "mission_count": [
+        5.0,
+        5.0,
+        5.0,
+        5.0,
+        5.0
+      ],
+      "mission_count_distribution": {
+        "min": 5.0,
+        "median": 5.0,
+        "max": 5.0
+      },
+      "landing_count": [
+        5.0,
+        5.0,
+        5.0,
+        5.0,
+        5.0
+      ],
+      "landing_count_distribution": {
+        "min": 5.0,
+        "median": 5.0,
+        "max": 5.0
+      }
+    }
+  },
+  "d3d12_no_sustained_degradation": false,
+  "d3d12_stability_gate_pass": false
+}

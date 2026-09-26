@@ -38,6 +38,12 @@ RENDERER_COMPACT = (
     "renderer-attestation.json",
     "cleanup-evidence.json",
 )
+TAKEOFF_COMPACT = (
+    *RENDERER_COMPACT,
+    "summary.json",
+    "takeoff-readiness-summary.json",
+)
+MAX_COMPACT_SEQUENCE = 8
 
 
 def sha256(path: Path) -> str:
@@ -48,7 +54,48 @@ def sha256(path: Path) -> str:
     return digest.hexdigest()
 
 
-def snapshot_renderer_campaign(source: Path, target: Path) -> dict:
+def _json_sha256(value: object) -> str:
+    payload = json.dumps(
+        value, ensure_ascii=False, sort_keys=True, separators=(",", ":")
+    ).encode("utf-8")
+    return hashlib.sha256(payload).hexdigest()
+
+
+def _compact_json(value: object) -> object:
+    if isinstance(value, dict):
+        return {key: _compact_json(item) for key, item in value.items()}
+    if isinstance(value, list):
+        if len(value) <= MAX_COMPACT_SEQUENCE:
+            return [_compact_json(item) for item in value]
+        edge = MAX_COMPACT_SEQUENCE // 2
+        return {
+            "_compact_sequence": True,
+            "length": len(value),
+            "sha256": _json_sha256(value),
+            "head": [_compact_json(item) for item in value[:edge]],
+            "tail": [_compact_json(item) for item in value[-edge:]],
+        }
+    return value
+
+
+def _copy_compact(path: Path, target: Path) -> None:
+    if path.name != "stress-summary.json":
+        shutil.copy2(path, target)
+        return
+    value = json.loads(path.read_text(encoding="utf-8"))
+    target.write_text(
+        json.dumps(_compact_json(value), ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8",
+    )
+
+
+def _snapshot_campaign(
+    source: Path,
+    target: Path,
+    *,
+    compact_files: tuple[str, ...],
+    index_schema: str,
+) -> dict:
     manifest = json.loads((source / "campaign-manifest.json").read_text(encoding="utf-8"))
     names = [item["name"] for item in manifest["schedule"]]
     target.mkdir(parents=True, exist_ok=True)
@@ -61,10 +108,10 @@ def snapshot_renderer_campaign(source: Path, target: Path) -> dict:
         trial_source = source / name
         trial_target = target / name
         trial_target.mkdir(parents=True, exist_ok=True)
-        for filename in RENDERER_COMPACT:
+        for filename in compact_files:
             path = trial_source / filename
             if path.is_file():
-                shutil.copy2(path, trial_target / filename)
+                _copy_compact(path, trial_target / filename)
         raw_paths = set(trial_source.rglob("*.csv"))
         raw_paths.update(trial_source.rglob("*.ulg"))
         raw_paths.update(trial_source.rglob("*.html"))
@@ -73,7 +120,7 @@ def snapshot_renderer_campaign(source: Path, target: Path) -> dict:
             "vio-relay.jsonl", "flydrones_forest.sdf",
         })
         raw_paths.update(
-            trial_source / filename for filename in RENDERER_COMPACT
+            trial_source / filename for filename in compact_files
             if (trial_source / filename).is_file()
         )
         trials[name] = {
@@ -84,7 +131,7 @@ def snapshot_renderer_campaign(source: Path, target: Path) -> dict:
             for path in sorted(raw_paths) if path.is_file()
         }
     index = {
-        "schema": "flydrones-renderer-stability-artifacts-v1",
+        "schema": index_schema,
         "campaign_id": manifest.get("campaign_id"),
         "trials": trials,
     }
@@ -92,6 +139,24 @@ def snapshot_renderer_campaign(source: Path, target: Path) -> dict:
         json.dumps(index, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
     )
     return index
+
+
+def snapshot_renderer_campaign(source: Path, target: Path) -> dict:
+    return _snapshot_campaign(
+        source,
+        target,
+        compact_files=RENDERER_COMPACT,
+        index_schema="flydrones-renderer-stability-artifacts-v1",
+    )
+
+
+def snapshot_takeoff_campaign(source: Path, target: Path) -> dict:
+    return _snapshot_campaign(
+        source,
+        target,
+        compact_files=TAKEOFF_COMPACT,
+        index_schema="flydrones-px4-takeoff-stability-artifacts-v1",
+    )
 
 
 def snapshot_legacy_vio_gate() -> None:
@@ -125,7 +190,13 @@ def main() -> int:
         snapshot_legacy_vio_gate()
         return 0
     target = args.target or ROOT / "docs/results/vio-renderer-stability" / args.campaign_dir.name
-    snapshot_renderer_campaign(args.campaign_dir, target)
+    manifest = json.loads(
+        (args.campaign_dir / "campaign-manifest.json").read_text(encoding="utf-8")
+    )
+    if manifest.get("schema") == "flydrones-px4-takeoff-stability-campaign-manifest-v1":
+        snapshot_takeoff_campaign(args.campaign_dir, target)
+    else:
+        snapshot_renderer_campaign(args.campaign_dir, target)
     return 0
 
 

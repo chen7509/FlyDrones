@@ -1,0 +1,15 @@
+{
+  "schema": "flydrones-takeoff-readiness-summary-v1",
+  "accepted": true,
+  "checks": {
+    "all_workers_mission_ready": true,
+    "all_workers_landed": true,
+    "all_worker_results_accepted": true
+  },
+  "metrics": {
+    "vehicles": 5,
+    "mission_ready": 5,
+    "landed": 5,
+    "worker_results_accepted": 5
+  }
+}

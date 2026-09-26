@@ -1,0 +1,4092 @@
+{
+  "schema": "flydrones-vio-stress-summary-v6",
+  "name": "renderer-pair-3-1-default",
+  "fleet_size": 5,
+  "profile_sha256": "108c73760140b5bb53090738e6eab9508688ef6fb848ea7e4cf4e0b0d2649718",
+  "policy_sha256": "3c723587bfdbd15a8dc5976edc13d284b713dc081005b2dac04692c7d1b4accb",
+  "launch_exit_code": 0,
+  "worker_exit_code": 2,
+  "stop_exit_code": 0,
+  "shared_px4_files_restored": true,
+  "renderer": {
+    "requested_profile": "default",
+    "attestation": {
+      "schema": "flydrones-gazebo-renderer-attestation-v1",
+      "accepted": true,
+      "reasons": [],
+      "requested_profile": "default",
+      "requested_environment": {},
+      "egl_renderer": "llvmpipe (LLVM 20.1.2, 256 bits)",
+      "mapped_libraries": {
+        "_compact_sequence": true,
+        "length": 289,
+        "sha256": "bb8ba23f94d5582bafa49361cee99d453c624834b84cc65a450155202b36fc54",
+        "head": [
+          "/home/yuchen7509/PX4-Autopilot/build/px4_sitl_default/OpticalFlow/install/lib/libOpticalFlow.so",
+          "/home/yuchen7509/PX4-Autopilot/build/px4_sitl_default/src/modules/simulation/gz_plugins/libGstCameraSystem.so",
+          "/home/yuchen7509/PX4-Autopilot/build/px4_sitl_default/src/modules/simulation/gz_plugins/libOpticalFlowSystem.so",
+          "/usr/lib/libarmadillo.so.12.6.7"
+        ],
+        "tail": [
+          "/usr/lib/x86_64-linux-gnu/ruby/3.2.0/pathname.so",
+          "/usr/lib/x86_64-linux-gnu/ruby/3.2.0/psych.so",
+          "/usr/lib/x86_64-linux-gnu/ruby/3.2.0/stringio.so",
+          "/usr/lib/x86_64-linux-gnu/ruby/3.2.0/strscan.so"
+        ]
+      },
+      "expected_depth_topics": 5,
+      "depth_observations": {
+        "/world/flydrones_forest/model/x500_depth_fly_0/link/camera_link/sensor/StereoOV7251/depth_image": {
+          "width": 160,
+          "height": 120,
+          "frequency_hz": 9.0,
+          "message_count": 11
+        },
+        "/world/flydrones_forest/model/x500_depth_fly_1/link/camera_link/sensor/StereoOV7251/depth_image": {
+          "width": 160,
+          "height": 120,
+          "frequency_hz": 9.0,
+          "message_count": 11
+        },
+        "/world/flydrones_forest/model/x500_depth_fly_2/link/camera_link/sensor/StereoOV7251/depth_image": {
+          "width": 160,
+          "height": 120,
+          "frequency_hz": 10.000000000000036,
+          "message_count": 11
+        },
+        "/world/flydrones_forest/model/x500_depth_fly_3/link/camera_link/sensor/StereoOV7251/depth_image": {
+          "width": 160,
+          "height": 120,
+          "frequency_hz": 9.0,
+          "message_count": 11
+        },
+        "/world/flydrones_forest/model/x500_depth_fly_4/link/camera_link/sensor/StereoOV7251/depth_image": {
+          "width": 160,
+          "height": 120,
+          "frequency_hz": 9.0,
+          "message_count": 11
+        }
+      },
+      "wall_frequency_errors": {
+        "/world/flydrones_forest/model/x500_depth_fly_0/link/camera_link/sensor/StereoOV7251/depth_image": "Command '['gz', 'topic', '-f', '-t', '/world/flydrones_forest/model/x500_depth_fly_0/link/camera_link/sensor/StereoOV7251/depth_image', '-d', '2']' timed out after 10 seconds",
+        "/world/flydrones_forest/model/x500_depth_fly_1/link/camera_link/sensor/StereoOV7251/depth_image": "Command '['gz', 'topic', '-f', '-t', '/world/flydrones_forest/model/x500_depth_fly_1/link/camera_link/sensor/StereoOV7251/depth_image', '-d', '2']' timed out after 10 seconds",
+        "/world/flydrones_forest/model/x500_depth_fly_2/link/camera_link/sensor/StereoOV7251/depth_image": "Command '['gz', 'topic', '-f', '-t', '/world/flydrones_forest/model/x500_depth_fly_2/link/camera_link/sensor/StereoOV7251/depth_image', '-d', '2']' timed out after 10 seconds",
+        "/world/flydrones_forest/model/x500_depth_fly_3/link/camera_link/sensor/StereoOV7251/depth_image": "Command '['gz', 'topic', '-f', '-t', '/world/flydrones_forest/model/x500_depth_fly_3/link/camera_link/sensor/StereoOV7251/depth_image', '-d', '2']' timed out after 10 seconds",
+        "/world/flydrones_forest/model/x500_depth_fly_4/link/camera_link/sensor/StereoOV7251/depth_image": "Command '['gz', 'topic', '-f', '-t', '/world/flydrones_forest/model/x500_depth_fly_4/link/camera_link/sensor/StereoOV7251/depth_image', '-d', '2']' timed out after 10 seconds"
+      },
+      "wall_frequency_hz": {
+        "/world/flydrones_forest/model/x500_depth_fly_0/link/camera_link/sensor/StereoOV7251/depth_image": "unavailable",
+        "/world/flydrones_forest/model/x500_depth_fly_1/link/camera_link/sensor/StereoOV7251/depth_image": "unavailable",
+        "/world/flydrones_forest/model/x500_depth_fly_2/link/camera_link/sensor/StereoOV7251/depth_image": "unavailable",
+        "/world/flydrones_forest/model/x500_depth_fly_3/link/camera_link/sensor/StereoOV7251/depth_image": "unavailable",
+        "/world/flydrones_forest/model/x500_depth_fly_4/link/camera_link/sensor/StereoOV7251/depth_image": "unavailable"
+      }
+    }
+  },
+  "runtime": {
+    "accepted": true,
+    "errors": [],
+    "steady_state_epoch_monotonic_s": 530240.546445,
+    "clock": {
+      "full_run": {
+        "sample_count": 26574,
+        "p50_ms": 4.007852,
+        "p95_ms": 4.47142,
+        "p99_ms": 9.467997,
+        "max_ms": 706.207205,
+        "at_or_over_100_ms": 86,
+        "at_or_over_200_ms": 7,
+        "at_or_over_250_ms": 2
+      },
+      "steady_state_valid": true,
+      "steady_state": {
+        "sample_count": 5767,
+        "p50_ms": 4.014464,
+        "p95_ms": 5.161825,
+        "p99_ms": 104.600496,
+        "max_ms": 244.537265,
+        "at_or_over_100_ms": 74,
+        "at_or_over_200_ms": 5,
+        "at_or_over_250_ms": 0
+      },
+      "steady_state_epoch_monotonic_s": 530240.546445
+    },
+    "raw_vio_by_vehicle": {
+      "0": {
+        "full_run": {
+          "sample_count": 5247,
+          "p50_ms": 20.065187010914087,
+          "p95_ms": 26.434646919369698,
+          "p99_ms": 123.06216696742922,
+          "max_ms": 722.7192390710115,
+          "at_or_over_100_ms": 178,
+          "at_or_over_200_ms": 13,
+          "at_or_over_250_ms": 4
+        },
+        "steady_state_valid": true,
+        "steady_state": {
+          "sample_count": 1153,
+          "p50_ms": 20.351303974166512,
+          "p95_ms": 119.77538105566055,
+          "p99_ms": 194.15704300627112,
+          "max_ms": 260.5058819754049,
+          "at_or_over_100_ms": 173,
+          "at_or_over_200_ms": 8,
+          "at_or_over_250_ms": 2
+        },
+        "steady_state_epoch_monotonic_s": 530240.546445
+      },
+      "1": {
+        "full_run": {
+          "sample_count": 5205,
+          "p50_ms": 20.0766590423882,
+          "p95_ms": 25.575458887033165,
+          "p99_ms": 123.085752944462,
+          "max_ms": 262.2930110665038,
+          "at_or_over_100_ms": 178,
+          "at_or_over_200_ms": 11,
+          "at_or_over_250_ms": 3
+        },
+        "steady_state_valid": true,
+        "steady_state": {
+          "sample_count": 1152,
+          "p50_ms": 20.369346952065825,
+          "p95_ms": 120.64524099696428,
+          "p99_ms": 193.65079200360924,
+          "max_ms": 262.2930110665038,
+          "at_or_over_100_ms": 175,
+          "at_or_over_200_ms": 8,
+          "at_or_over_250_ms": 2
+        },
+        "steady_state_epoch_monotonic_s": 530240.546445
+      },
+      "2": {
+        "full_run": {
+          "sample_count": 5102,
+          "p50_ms": 20.083075971342623,
+          "p95_ms": 26.102245086804032,
+          "p99_ms": 123.17472510039806,
+          "max_ms": 261.62477396428585,
+          "at_or_over_100_ms": 177,
+          "at_or_over_200_ms": 10,
+          "at_or_over_250_ms": 3
+        },
+        "steady_state_valid": true,
+        "steady_state": {
+          "sample_count": 1152,
+          "p50_ms": 20.37020493298769,
+          "p95_ms": 121.01984501350671,
+          "p99_ms": 193.6910110525787,
+          "max_ms": 261.62477396428585,
+          "at_or_over_100_ms": 175,
+          "at_or_over_200_ms": 8,
+          "at_or_over_250_ms": 2
+        },
+        "steady_state_epoch_monotonic_s": 530240.546445
+      },
+      "3": {
+        "full_run": {
+          "sample_count": 5005,
+          "p50_ms": 20.091723068617284,
+          "p95_ms": 26.99434501118958,
+          "p99_ms": 122.49996408354491,
+          "max_ms": 260.39495097938925,
+          "at_or_over_100_ms": 175,
+          "at_or_over_200_ms": 8,
+          "at_or_over_250_ms": 2
+        },
+        "steady_state_valid": true,
+        "steady_state": {
+          "sample_count": 1153,
+          "p50_ms": 20.331133040599525,
+          "p95_ms": 120.36877498030663,
+          "p99_ms": 194.1883439430967,
+          "max_ms": 260.39495097938925,
+          "at_or_over_100_ms": 173,
+          "at_or_over_200_ms": 8,
+          "at_or_over_250_ms": 2
+        },
+        "steady_state_epoch_monotonic_s": 530240.546445
+      },
+      "4": {
+        "full_run": {
+          "sample_count": 4904,
+          "p50_ms": 20.077181048691273,
+          "p95_ms": 27.877110056579113,
+          "p99_ms": 121.67247093748301,
+          "max_ms": 262.5466079916805,
+          "at_or_over_100_ms": 175,
+          "at_or_over_200_ms": 8,
+          "at_or_over_250_ms": 2
+        },
+        "steady_state_valid": true,
+        "steady_state": {
+          "sample_count": 1153,
+          "p50_ms": 20.323068019934,
+          "p95_ms": 119.79466199409217,
+          "p99_ms": 194.27155901212245,
+          "max_ms": 262.5466079916805,
+          "at_or_over_100_ms": 175,
+          "at_or_over_200_ms": 8,
+          "at_or_over_250_ms": 2
+        },
+        "steady_state_epoch_monotonic_s": 530240.546445
+      }
+    },
+    "rtf": {
+      "full_run": 0.8123425069933727,
+      "steady_state": 0.5174249607078708
+    },
+    "resource_samples": 1887,
+    "gpu_samples": 247,
+    "gpu_metrics_available": true,
+    "startup_reliability_pass": true
+  },
+  "relay": {
+    "published_total": 25468,
+    "closed_cleanly": true,
+    "malformed_log_lines": 0,
+    "fault_vehicle_active_published": 1014,
+    "fault_vehicle_active_source_max_gap_ms": 20.0,
+    "drop_reasons": {},
+    "actual_delay_median_ms": 1.2506,
+    "actual_delay_p95_ms": 2.4759,
+    "maximum_position_offset_m": 0.0,
+    "nonzero_offset_published_samples": 0,
+    "maximum_transformation_error_m": 0.0,
+    "position_error_vs_raw_truth_at_publish_p95_m": 0.0,
+    "position_error_vs_raw_truth_at_publish_max_m": 0.0,
+    "minimum_center_to_trunk_surface_m": 0.6423,
+    "minimum_intervehicle_center_distance_m": 1.8541,
+    "simulated_seconds_per_wall_second": 0.8146
+  },
+  "relay_to_px4": {
+    "matched_active_samples": 200,
+    "matched_offset_samples": 0,
+    "maximum_position_error_m": 0.004012,
+    "median_ulog_minus_source_stamp_ms": 0.0,
+    "interpretation": "ENU-to-NED position match; ULog sample time is bridge receipt time, not VIO age"
+  },
+  "visual_after_gnss_disable": {
+    "schema": "flydrones-vio-post-gnss-evidence-v1",
+    "accepted": false,
+    "checks": {
+      "visual_position_fused_after_gnss_disable": true,
+      "visual_position_and_velocity_control_active": false,
+      "gnss_fusion_inactive_after_disable": false,
+      "no_observed_inertial_dead_reckoning": false,
+      "local_position_valid": true,
+      "no_unexplained_horizontal_estimator_reset": true,
+      "visual_stream_present": false,
+      "gnss_to_visual_handoff_proven": true
+    },
+    "metrics": {
+      "gps_disable_timestamp_s": 86.02,
+      "evidence_window_end_s": 86.616,
+      "evidence_window_end_source": "first-land-command",
+      "post_status_samples": 0,
+      "ev_position_fused_samples": 20,
+      "ev_position_samples": 20,
+      "ev_position_fused_ratio": 1.0,
+      "ev_position_control_ratio": 0.0,
+      "ev_velocity_control_ratio": 0.0,
+      "gnss_position_control_ratio": 0.0,
+      "gnss_velocity_control_ratio": 0.0,
+      "inertial_dead_reckoning_ratio": 0.0,
+      "dead_reckoning_observed_duration_s": 0,
+      "local_position_valid_ratio": 1.0,
+      "xy_reset_counter_start": 5,
+      "xy_reset_counter_end": 5,
+      "vxy_reset_counter_start": 4,
+      "vxy_reset_counter_end": 4,
+      "visual_stream_duration_s": 0.38,
+      "visual_stream_max_gap_ms": 44.0
+    },
+    "source": {
+      "ulog_sha256": "d24ef3ae766152ff4260cc6ac2b5a90106ef2a10efa75fa33a8de11ebc243a54",
+      "ulog_bytes": 27780746
+    }
+  },
+  "external_vision_health_by_vehicle": {
+    "0": {
+      "schema": "flydrones-external-vision-health-v1",
+      "accepted": false,
+      "checks": {
+        "visual_position_fused": true,
+        "visual_position_and_velocity_control_active": false,
+        "no_observed_inertial_dead_reckoning": false,
+        "no_visual_innovation_rejection": true,
+        "no_unexplained_horizontal_estimator_reset": true,
+        "local_position_valid": true,
+        "visual_odometry_stream_continuous": false
+      },
+      "metrics": {
+        "evidence_window_start_s": 86.22,
+        "evidence_window_end_s": 86.616,
+        "evidence_window_end_source": "first-land-command",
+        "status_samples": 0,
+        "ev_position_samples": 20,
+        "ev_position_fused_ratio": 1.0,
+        "ev_position_control_ratio": 0.0,
+        "ev_velocity_control_ratio": 0.0,
+        "inertial_dead_reckoning_ratio": 0.0,
+        "visual_innovation_rejected_ratio": 0.0,
+        "xy_reset_counter_start": 5,
+        "xy_reset_counter_end": 5,
+        "vxy_reset_counter_start": 4,
+        "vxy_reset_counter_end": 4,
+        "local_position_valid_ratio": 1.0,
+        "visual_stream_samples": 14,
+        "visual_stream_duration_s": 0.38,
+        "visual_stream_max_gap_ms": 44.0
+      },
+      "claim_limit": "This proves logged EV health only; it does not prove GNSS-to-EV handoff.",
+      "source": {
+        "ulog_sha256": "d24ef3ae766152ff4260cc6ac2b5a90106ef2a10efa75fa33a8de11ebc243a54",
+        "ulog_bytes": 27780746
+      }
+    },
+    "1": {
+      "schema": "flydrones-external-vision-health-v1",
+      "accepted": true,
+      "checks": {
+        "visual_position_fused": true,
+        "visual_position_and_velocity_control_active": true,
+        "no_observed_inertial_dead_reckoning": true,
+        "no_visual_innovation_rejection": true,
+        "no_unexplained_horizontal_estimator_reset": true,
+        "local_position_valid": true,
+        "visual_odometry_stream_continuous": true
+      },
+      "metrics": {
+        "evidence_window_start_s": 5.096,
+        "evidence_window_end_s": 85.104,
+        "evidence_window_end_source": "first-land-command",
+        "status_samples": 84,
+        "ev_position_samples": 4000,
+        "ev_position_fused_ratio": 1.0,
+        "ev_position_control_ratio": 1.0,
+        "ev_velocity_control_ratio": 1.0,
+        "inertial_dead_reckoning_ratio": 0.0,
+        "visual_innovation_rejected_ratio": 0.0,
+        "xy_reset_counter_start": 4,
+        "xy_reset_counter_end": 4,
+        "vxy_reset_counter_start": 3,
+        "vxy_reset_counter_end": 3,
+        "local_position_valid_ratio": 1.0,
+        "visual_stream_samples": 2667,
+        "visual_stream_duration_s": 79.984,
+        "visual_stream_max_gap_ms": 48.0
+      },
+      "claim_limit": "This proves logged EV health only; it does not prove GNSS-to-EV handoff.",
+      "source": {
+        "ulog_sha256": "9f6fafe66b415cb48094942543dc3b6044aee26f5c6a5f58d2cc9d132adf773a",
+        "ulog_bytes": 26921805
+      }
+    },
+    "2": {
+      "schema": "flydrones-external-vision-health-v1",
+      "accepted": true,
+      "checks": {
+        "visual_position_fused": true,
+        "visual_position_and_velocity_control_active": true,
+        "no_observed_inertial_dead_reckoning": true,
+        "no_visual_innovation_rejection": true,
+        "no_unexplained_horizontal_estimator_reset": true,
+        "local_position_valid": true,
+        "visual_odometry_stream_continuous": true
+      },
+      "metrics": {
+        "evidence_window_start_s": 86.124,
+        "evidence_window_end_s": 101.2,
+        "evidence_window_end_source": "first-land-command",
+        "status_samples": 16,
+        "ev_position_samples": 755,
+        "ev_position_fused_ratio": 1.0,
+        "ev_position_control_ratio": 1.0,
+        "ev_velocity_control_ratio": 1.0,
+        "inertial_dead_reckoning_ratio": 0.0,
+        "visual_innovation_rejected_ratio": 0.0,
+        "xy_reset_counter_start": 5,
+        "xy_reset_counter_end": 5,
+        "vxy_reset_counter_start": 3,
+        "vxy_reset_counter_end": 3,
+        "local_position_valid_ratio": 1.0,
+        "visual_stream_samples": 502,
+        "visual_stream_duration_s": 15.036,
+        "visual_stream_max_gap_ms": 44.0
+      },
+      "claim_limit": "This proves logged EV health only; it does not prove GNSS-to-EV handoff.",
+      "source": {
+        "ulog_sha256": "1c75da2e4f3523b80d29f9e2e8ae495c35dff8cf3de6ad215af917a7b6ad0a00",
+        "ulog_bytes": 30840180
+      }
+    },
+    "3": {
+      "schema": "flydrones-external-vision-health-v1",
+      "accepted": false,
+      "checks": {
+        "visual_position_fused": true,
+        "visual_position_and_velocity_control_active": false,
+        "no_observed_inertial_dead_reckoning": false,
+        "no_visual_innovation_rejection": true,
+        "no_unexplained_horizontal_estimator_reset": true,
+        "local_position_valid": true,
+        "visual_odometry_stream_continuous": false
+      },
+      "metrics": {
+        "evidence_window_start_s": 86.1,
+        "evidence_window_end_s": 86.6,
+        "evidence_window_end_source": "first-land-command",
+        "status_samples": 0,
+        "ev_position_samples": 25,
+        "ev_position_fused_ratio": 1.0,
+        "ev_position_control_ratio": 0.0,
+        "ev_velocity_control_ratio": 0.0,
+        "inertial_dead_reckoning_ratio": 0.0,
+        "visual_innovation_rejected_ratio": 0.0,
+        "xy_reset_counter_start": 5,
+        "xy_reset_counter_end": 5,
+        "vxy_reset_counter_start": 3,
+        "vxy_reset_counter_end": 3,
+        "local_position_valid_ratio": 1.0,
+        "visual_stream_samples": 17,
+        "visual_stream_duration_s": 0.484,
+        "visual_stream_max_gap_ms": 44.0
+      },
+      "claim_limit": "This proves logged EV health only; it does not prove GNSS-to-EV handoff.",
+      "source": {
+        "ulog_sha256": "de635e9671d62b96401acf600b7d62804230022f8c08c5d0da8e6de55aa5a785",
+        "ulog_bytes": 25981321
+      }
+    },
+    "4": {
+      "schema": "flydrones-external-vision-health-v1",
+      "accepted": false,
+      "checks": {
+        "visual_position_fused": true,
+        "visual_position_and_velocity_control_active": false,
+        "no_observed_inertial_dead_reckoning": false,
+        "no_visual_innovation_rejection": true,
+        "no_unexplained_horizontal_estimator_reset": true,
+        "local_position_valid": true,
+        "visual_odometry_stream_continuous": false
+      },
+      "metrics": {
+        "evidence_window_start_s": 86.2,
+        "evidence_window_end_s": 86.612,
+        "evidence_window_end_source": "first-land-command",
+        "status_samples": 0,
+        "ev_position_samples": 21,
+        "ev_position_fused_ratio": 1.0,
+        "ev_position_control_ratio": 0.0,
+        "ev_velocity_control_ratio": 0.0,
+        "inertial_dead_reckoning_ratio": 0.0,
+        "visual_innovation_rejected_ratio": 0.0,
+        "xy_reset_counter_start": 5,
+        "xy_reset_counter_end": 5,
+        "vxy_reset_counter_start": 3,
+        "vxy_reset_counter_end": 3,
+        "local_position_valid_ratio": 1.0,
+        "visual_stream_samples": 14,
+        "visual_stream_duration_s": 0.4,
+        "visual_stream_max_gap_ms": 44.0
+      },
+      "claim_limit": "This proves logged EV health only; it does not prove GNSS-to-EV handoff.",
+      "source": {
+        "ulog_sha256": "fededa2afab44e737e7c04edae045032cc2c313a7bf25116670e0c532312be5c",
+        "ulog_bytes": 25389032
+      }
+    }
+  },
+  "post_gnss_evidence_by_vehicle": {
+    "0": {
+      "schema": "flydrones-vio-post-gnss-evidence-v1",
+      "accepted": false,
+      "checks": {
+        "visual_position_fused_after_gnss_disable": true,
+        "visual_position_and_velocity_control_active": false,
+        "gnss_fusion_inactive_after_disable": false,
+        "no_observed_inertial_dead_reckoning": false,
+        "local_position_valid": true,
+        "no_unexplained_horizontal_estimator_reset": true,
+        "visual_stream_present": false,
+        "gnss_to_visual_handoff_proven": true
+      },
+      "metrics": {
+        "gps_disable_timestamp_s": 86.02,
+        "evidence_window_end_s": 86.616,
+        "evidence_window_end_source": "first-land-command",
+        "post_status_samples": 0,
+        "ev_position_fused_samples": 20,
+        "ev_position_samples": 20,
+        "ev_position_fused_ratio": 1.0,
+        "ev_position_control_ratio": 0.0,
+        "ev_velocity_control_ratio": 0.0,
+        "gnss_position_control_ratio": 0.0,
+        "gnss_velocity_control_ratio": 0.0,
+        "inertial_dead_reckoning_ratio": 0.0,
+        "dead_reckoning_observed_duration_s": 0,
+        "local_position_valid_ratio": 1.0,
+        "xy_reset_counter_start": 5,
+        "xy_reset_counter_end": 5,
+        "vxy_reset_counter_start": 4,
+        "vxy_reset_counter_end": 4,
+        "visual_stream_duration_s": 0.38,
+        "visual_stream_max_gap_ms": 44.0
+      },
+      "source": {
+        "ulog_sha256": "d24ef3ae766152ff4260cc6ac2b5a90106ef2a10efa75fa33a8de11ebc243a54",
+        "ulog_bytes": 27780746
+      }
+    },
+    "1": {
+      "accepted": false,
+      "checks": {},
+      "metrics": {},
+      "error": "EKF2_GPS_CTRL=0 change was not recorded",
+      "source": {
+        "ulog_sha256": "9f6fafe66b415cb48094942543dc3b6044aee26f5c6a5f58d2cc9d132adf773a",
+        "ulog_bytes": 26921805
+      }
+    },
+    "2": {
+      "schema": "flydrones-vio-post-gnss-evidence-v1",
+      "accepted": true,
+      "checks": {
+        "visual_position_fused_after_gnss_disable": true,
+        "visual_position_and_velocity_control_active": true,
+        "gnss_fusion_inactive_after_disable": true,
+        "no_observed_inertial_dead_reckoning": true,
+        "local_position_valid": true,
+        "no_unexplained_horizontal_estimator_reset": true,
+        "visual_stream_present": true,
+        "gnss_to_visual_handoff_proven": true
+      },
+      "metrics": {
+        "gps_disable_timestamp_s": 85.924,
+        "evidence_window_end_s": 101.2,
+        "evidence_window_end_source": "first-land-command",
+        "post_status_samples": 16,
+        "ev_position_fused_samples": 755,
+        "ev_position_samples": 755,
+        "ev_position_fused_ratio": 1.0,
+        "ev_position_control_ratio": 1.0,
+        "ev_velocity_control_ratio": 1.0,
+        "gnss_position_control_ratio": 0.0,
+        "gnss_velocity_control_ratio": 0.0,
+        "inertial_dead_reckoning_ratio": 0.0,
+        "dead_reckoning_observed_duration_s": 0,
+        "local_position_valid_ratio": 1.0,
+        "xy_reset_counter_start": 5,
+        "xy_reset_counter_end": 5,
+        "vxy_reset_counter_start": 3,
+        "vxy_reset_counter_end": 3,
+        "visual_stream_duration_s": 15.036,
+        "visual_stream_max_gap_ms": 44.0
+      },
+      "source": {
+        "ulog_sha256": "1c75da2e4f3523b80d29f9e2e8ae495c35dff8cf3de6ad215af917a7b6ad0a00",
+        "ulog_bytes": 30840180
+      }
+    },
+    "3": {
+      "schema": "flydrones-vio-post-gnss-evidence-v1",
+      "accepted": false,
+      "checks": {
+        "visual_position_fused_after_gnss_disable": true,
+        "visual_position_and_velocity_control_active": false,
+        "gnss_fusion_inactive_after_disable": false,
+        "no_observed_inertial_dead_reckoning": false,
+        "local_position_valid": true,
+        "no_unexplained_horizontal_estimator_reset": true,
+        "visual_stream_present": false,
+        "gnss_to_visual_handoff_proven": true
+      },
+      "metrics": {
+        "gps_disable_timestamp_s": 85.9,
+        "evidence_window_end_s": 86.6,
+        "evidence_window_end_source": "first-land-command",
+        "post_status_samples": 0,
+        "ev_position_fused_samples": 25,
+        "ev_position_samples": 25,
+        "ev_position_fused_ratio": 1.0,
+        "ev_position_control_ratio": 0.0,
+        "ev_velocity_control_ratio": 0.0,
+        "gnss_position_control_ratio": 0.0,
+        "gnss_velocity_control_ratio": 0.0,
+        "inertial_dead_reckoning_ratio": 0.0,
+        "dead_reckoning_observed_duration_s": 0,
+        "local_position_valid_ratio": 1.0,
+        "xy_reset_counter_start": 5,
+        "xy_reset_counter_end": 5,
+        "vxy_reset_counter_start": 3,
+        "vxy_reset_counter_end": 3,
+        "visual_stream_duration_s": 0.484,
+        "visual_stream_max_gap_ms": 44.0
+      },
+      "source": {
+        "ulog_sha256": "de635e9671d62b96401acf600b7d62804230022f8c08c5d0da8e6de55aa5a785",
+        "ulog_bytes": 25981321
+      }
+    },
+    "4": {
+      "schema": "flydrones-vio-post-gnss-evidence-v1",
+      "accepted": false,
+      "checks": {
+        "visual_position_fused_after_gnss_disable": true,
+        "visual_position_and_velocity_control_active": false,
+        "gnss_fusion_inactive_after_disable": false,
+        "no_observed_inertial_dead_reckoning": false,
+        "local_position_valid": true,
+        "no_unexplained_horizontal_estimator_reset": true,
+        "visual_stream_present": false,
+        "gnss_to_visual_handoff_proven": true
+      },
+      "metrics": {
+        "gps_disable_timestamp_s": 86.0,
+        "evidence_window_end_s": 86.612,
+        "evidence_window_end_source": "first-land-command",
+        "post_status_samples": 0,
+        "ev_position_fused_samples": 21,
+        "ev_position_samples": 21,
+        "ev_position_fused_ratio": 1.0,
+        "ev_position_control_ratio": 0.0,
+        "ev_velocity_control_ratio": 0.0,
+        "gnss_position_control_ratio": 0.0,
+        "gnss_velocity_control_ratio": 0.0,
+        "inertial_dead_reckoning_ratio": 0.0,
+        "dead_reckoning_observed_duration_s": 0,
+        "local_position_valid_ratio": 1.0,
+        "xy_reset_counter_start": 5,
+        "xy_reset_counter_end": 5,
+        "vxy_reset_counter_start": 3,
+        "vxy_reset_counter_end": 3,
+        "visual_stream_duration_s": 0.4,
+        "visual_stream_max_gap_ms": 44.0
+      },
+      "source": {
+        "ulog_sha256": "fededa2afab44e737e7c04edae045032cc2c313a7bf25116670e0c532312be5c",
+        "ulog_bytes": 25389032
+      }
+    }
+  },
+  "workers": [
+    {
+      "vehicle_id": 0,
+      "mission_accepted": false,
+      "landed": true,
+      "takeoff": {
+        "target_system": 1,
+        "target_component": 0,
+        "terminal_stage": "mission-ready",
+        "accepted": true,
+        "failure_reason": null,
+        "baseline_altitude_m": -0.055482909083366394,
+        "maximum_altitude_gain_m": 1.8007953613996506,
+        "arm_ack": {
+          "command": 400,
+          "result": 0,
+          "target_system": 255,
+          "target_component": 0,
+          "received_at_s": 530230.256642212,
+          "progress": 0,
+          "result_param2": 0,
+          "source_system": 1,
+          "source_component": 1
+        },
+        "takeoff_ack": {
+          "command": 22,
+          "result": 0,
+          "target_system": 255,
+          "target_component": 0,
+          "received_at_s": 530231.124654496,
+          "progress": 0,
+          "result_param2": 0,
+          "source_system": 1,
+          "source_component": 1
+        },
+        "offboard_ack": {
+          "command": 176,
+          "result": 0,
+          "target_system": 255,
+          "target_component": 0,
+          "received_at_s": 530239.566209457,
+          "progress": 0,
+          "result_param2": 0,
+          "source_system": 1,
+          "source_component": 1
+        },
+        "armed_at_s": 530231.121478001,
+        "takeoff_accepted_at_s": 530231.128695935,
+        "climb_confirmed_at_s": 530238.031787394,
+        "offboard_confirmed_at_s": 530240.490963268,
+        "events": {
+          "_compact_sequence": true,
+          "length": 9,
+          "sha256": "34152cafa4afd203e4c41dc2d8b242203ba04344d190f1558169e10883ed24ba",
+          "head": [
+            {
+              "stage": "preflight-ready",
+              "at_s": 530230.25604313,
+              "target_system": 1,
+              "target_component": 0,
+              "command": null,
+              "ack_result": null,
+              "armed": null,
+              "landed": null,
+              "navigation_state": null,
+              "offboard": null,
+              "altitude_m": -0.055482909083366394,
+              "status_age_s": null,
+              "detail": null
+            },
+            {
+              "stage": "arm-sent",
+              "at_s": 530230.256154867,
+              "target_system": 1,
+              "target_component": 0,
+              "command": 400,
+              "ack_result": null,
+              "armed": null,
+              "landed": null,
+              "navigation_state": null,
+              "offboard": null,
+              "altitude_m": -0.055482909083366394,
+              "status_age_s": null,
+              "detail": null
+            },
+            {
+              "stage": "armed",
+              "at_s": 530231.121478001,
+              "target_system": 1,
+              "target_component": 0,
+              "command": null,
+              "ack_result": 0,
+              "armed": true,
+              "landed": true,
+              "navigation_state": 4,
+              "offboard": false,
+              "altitude_m": -0.05576488375663757,
+              "status_age_s": 0.0007486440008506179,
+              "detail": null
+            },
+            {
+              "stage": "takeoff-sent",
+              "at_s": 530231.121558882,
+              "target_system": 1,
+              "target_component": 0,
+              "command": 22,
+              "ack_result": null,
+              "armed": true,
+              "landed": true,
+              "navigation_state": 4,
+              "offboard": false,
+              "altitude_m": -0.05576488375663757,
+              "status_age_s": 0.0008295249426737428,
+              "detail": null
+            }
+          ],
+          "tail": [
+            {
+              "stage": "climb-confirmed",
+              "at_s": 530238.031787394,
+              "target_system": 1,
+              "target_component": 0,
+              "command": null,
+              "ack_result": null,
+              "armed": true,
+              "landed": false,
+              "navigation_state": 4,
+              "offboard": false,
+              "altitude_m": 1.7453124523162842,
+              "status_age_s": 0.1031474620103836,
+              "detail": null
+            },
+            {
+              "stage": "offboard-primed",
+              "at_s": 530239.565303747,
+              "target_system": 1,
+              "target_component": 0,
+              "command": null,
+              "ack_result": null,
+              "armed": true,
+              "landed": false,
+              "navigation_state": 4,
+              "offboard": false,
+              "altitude_m": 2.0373966693878174,
+              "status_age_s": 0.05146101594436914,
+              "detail": null
+            },
+            {
+              "stage": "offboard-confirmed",
+              "at_s": 530240.490963268,
+              "target_system": 1,
+              "target_component": 0,
+              "command": null,
+              "ack_result": null,
+              "armed": true,
+              "landed": false,
+              "navigation_state": 6,
+              "offboard": true,
+              "altitude_m": 2.0670740604400635,
+              "status_age_s": 0.0008991470094770193,
+              "detail": null
+            },
+            {
+              "stage": "mission-ready",
+              "at_s": 530240.490963268,
+              "target_system": 1,
+              "target_component": 0,
+              "command": null,
+              "ack_result": null,
+              "armed": true,
+              "landed": false,
+              "navigation_state": 6,
+              "offboard": true,
+              "altitude_m": 2.0670740604400635,
+              "status_age_s": 0.0008991470094770193,
+              "detail": null
+            }
+          ]
+        },
+        "cleanup_failure": null
+      },
+      "fail_closed_land": true,
+      "gnss_disable_injected": true,
+      "state_health_failures": 1,
+      "last_state_health_reason": "stale-vio-frame",
+      "command_gate": {
+        "verified": true,
+        "reason": "stale-vio-frame",
+        "trigger_monotonic_s": 530247.327935364,
+        "last_command_monotonic_s": 530247.266664219,
+        "land_command_monotonic_s": 530247.328107057,
+        "relay_gap_covering_trigger_s": 0.25865,
+        "relay_sample_age_at_trigger_s": 0.253863,
+        "no_autonomous_setpoint_after_trigger": true,
+        "all_sent_setpoints_fresh": true,
+        "max_relay_age_at_send_s": 0.21571,
+        "land_request_sent": true,
+        "land_request_latency_s": 0.000172
+      },
+      "planner_p95_ms": 18.22702,
+      "initial_estimated_vs_truth_horizontal_error_m": 0.0097,
+      "initial_estimated_vs_expected_home_error_m": 0.0,
+      "minimum_depth_range_m": 1.6208,
+      "px4_land_transition": {
+        "observed": true,
+        "gate_sim_time_s": 86.613357,
+        "clock_alignment_error_s": 0.006643,
+        "transition_after_gate_s": 0.022643
+      }
+    },
+    {
+      "vehicle_id": 1,
+      "mission_accepted": false,
+      "landed": true,
+      "takeoff": {
+        "target_system": 2,
+        "target_component": 0,
+        "terminal_stage": "mission-ready",
+        "accepted": true,
+        "failure_reason": null,
+        "baseline_altitude_m": 0.0028230249881744385,
+        "maximum_altitude_gain_m": 1.8186599910259247,
+        "arm_ack": {
+          "command": 400,
+          "result": 0,
+          "target_system": 255,
+          "target_component": 0,
+          "received_at_s": 530229.861272688,
+          "progress": 0,
+          "result_param2": 0,
+          "source_system": 2,
+          "source_component": 1
+        },
+        "takeoff_ack": {
+          "command": 22,
+          "result": 0,
+          "target_system": 255,
+          "target_component": 0,
+          "received_at_s": 530230.725779941,
+          "progress": 0,
+          "result_param2": 0,
+          "source_system": 2,
+          "source_component": 1
+        },
+        "offboard_ack": {
+          "command": 176,
+          "result": 0,
+          "target_system": 255,
+          "target_component": 0,
+          "received_at_s": 530239.136245454,
+          "progress": 0,
+          "result_param2": 0,
+          "source_system": 2,
+          "source_component": 1
+        },
+        "armed_at_s": 530230.722972435,
+        "takeoff_accepted_at_s": 530230.73007509,
+        "climb_confirmed_at_s": 530237.597295319,
+        "offboard_confirmed_at_s": 530240.116340682,
+        "events": {
+          "_compact_sequence": true,
+          "length": 9,
+          "sha256": "94dbed986ab3821bd23eb31f1b2232298b9e11a404791521c7102a5c67d02057",
+          "head": [
+            {
+              "stage": "preflight-ready",
+              "at_s": 530229.855119066,
+              "target_system": 2,
+              "target_component": 0,
+              "command": null,
+              "ack_result": null,
+              "armed": null,
+              "landed": null,
+              "navigation_state": null,
+              "offboard": null,
+              "altitude_m": 0.0028230249881744385,
+              "status_age_s": null,
+              "detail": null
+            },
+            {
+              "stage": "arm-sent",
+              "at_s": 530229.855317538,
+              "target_system": 2,
+              "target_component": 0,
+              "command": 400,
+              "ack_result": null,
+              "armed": null,
+              "landed": null,
+              "navigation_state": null,
+              "offboard": null,
+              "altitude_m": 0.0028230249881744385,
+              "status_age_s": null,
+              "detail": null
+            },
+            {
+              "stage": "armed",
+              "at_s": 530230.722972435,
+              "target_system": 2,
+              "target_component": 0,
+              "command": null,
+              "ack_result": 0,
+              "armed": true,
+              "landed": true,
+              "navigation_state": 4,
+              "offboard": false,
+              "altitude_m": 0.0027923583984375,
+              "status_age_s": 0.0009513749973848462,
+              "detail": null
+            },
+            {
+              "stage": "takeoff-sent",
+              "at_s": 530230.723065249,
+              "target_system": 2,
+              "target_component": 0,
+              "command": 22,
+              "ack_result": null,
+              "armed": true,
+              "landed": true,
+              "navigation_state": 4,
+              "offboard": false,
+              "altitude_m": 0.0027923583984375,
+              "status_age_s": 0.001044189091771841,
+              "detail": null
+            }
+          ],
+          "tail": [
+            {
+              "stage": "climb-confirmed",
+              "at_s": 530237.597295319,
+              "target_system": 2,
+              "target_component": 0,
+              "command": null,
+              "ack_result": null,
+              "armed": true,
+              "landed": false,
+              "navigation_state": 4,
+              "offboard": false,
+              "altitude_m": 1.8214830160140991,
+              "status_age_s": 0.1552267149090767,
+              "detail": null
+            },
+            {
+              "stage": "offboard-primed",
+              "at_s": 530239.133785201,
+              "target_system": 2,
+              "target_component": 0,
+              "command": null,
+              "ack_result": null,
+              "armed": true,
+              "landed": false,
+              "navigation_state": 4,
+              "offboard": false,
+              "altitude_m": 2.1186234951019287,
+              "status_age_s": 0.20393604005221277,
+              "detail": null
+            },
+            {
+              "stage": "offboard-confirmed",
+              "at_s": 530240.116340682,
+              "target_system": 2,
+              "target_component": 0,
+              "command": null,
+              "ack_result": null,
+              "armed": true,
+              "landed": false,
+              "navigation_state": 6,
+              "offboard": true,
+              "altitude_m": 2.133549451828003,
+              "status_age_s": 0.0009462250163778663,
+              "detail": null
+            },
+            {
+              "stage": "mission-ready",
+              "at_s": 530240.116340682,
+              "target_system": 2,
+              "target_component": 0,
+              "command": null,
+              "ack_result": null,
+              "armed": true,
+              "landed": false,
+              "navigation_state": 6,
+              "offboard": true,
+              "altitude_m": 2.133549451828003,
+              "status_age_s": 0.0009462250163778663,
+              "detail": null
+            }
+          ]
+        },
+        "cleanup_failure": null
+      },
+      "fail_closed_land": true,
+      "gnss_disable_injected": false,
+      "state_health_failures": 1,
+      "last_state_health_reason": "stale-vio-frame",
+      "command_gate": null,
+      "planner_p95_ms": 27.45691,
+      "initial_estimated_vs_truth_horizontal_error_m": 0.0267,
+      "initial_estimated_vs_expected_home_error_m": 0.0,
+      "minimum_depth_range_m": 1.5247
+    },
+    {
+      "vehicle_id": 2,
+      "mission_accepted": true,
+      "landed": true,
+      "takeoff": {
+        "target_system": 3,
+        "target_component": 0,
+        "terminal_stage": "mission-ready",
+        "accepted": true,
+        "failure_reason": null,
+        "baseline_altitude_m": -0.055691495537757874,
+        "maximum_altitude_gain_m": 1.8193448930978775,
+        "arm_ack": {
+          "command": 400,
+          "result": 0,
+          "target_system": 255,
+          "target_component": 0,
+          "received_at_s": 530230.025046124,
+          "progress": 0,
+          "result_param2": 0,
+          "source_system": 3,
+          "source_component": 1
+        },
+        "takeoff_ack": {
+          "command": 22,
+          "result": 0,
+          "target_system": 255,
+          "target_component": 0,
+          "received_at_s": 530230.888872538,
+          "progress": 0,
+          "result_param2": 0,
+          "source_system": 3,
+          "source_component": 1
+        },
+        "offboard_ack": {
+          "command": 176,
+          "result": 0,
+          "target_system": 255,
+          "target_component": 0,
+          "received_at_s": 530239.290313542,
+          "progress": 0,
+          "result_param2": 0,
+          "source_system": 3,
+          "source_component": 1
+        },
+        "armed_at_s": 530230.885686956,
+        "takeoff_accepted_at_s": 530230.893012703,
+        "climb_confirmed_at_s": 530237.75188338,
+        "offboard_confirmed_at_s": 530240.263453559,
+        "events": {
+          "_compact_sequence": true,
+          "length": 9,
+          "sha256": "a036cc47e87c51846d924641f67adde52180dff04c6c48e38d57e23005a901bf",
+          "head": [
+            {
+              "stage": "preflight-ready",
+              "at_s": 530230.019840272,
+              "target_system": 3,
+              "target_component": 0,
+              "command": null,
+              "ack_result": null,
+              "armed": null,
+              "landed": null,
+              "navigation_state": null,
+              "offboard": null,
+              "altitude_m": -0.055691495537757874,
+              "status_age_s": null,
+              "detail": null
+            },
+            {
+              "stage": "arm-sent",
+              "at_s": 530230.019938099,
+              "target_system": 3,
+              "target_component": 0,
+              "command": 400,
+              "ack_result": null,
+              "armed": null,
+              "landed": null,
+              "navigation_state": null,
+              "offboard": null,
+              "altitude_m": -0.055691495537757874,
+              "status_age_s": null,
+              "detail": null
+            },
+            {
+              "stage": "armed",
+              "at_s": 530230.885686956,
+              "target_system": 3,
+              "target_component": 0,
+              "command": null,
+              "ack_result": 0,
+              "armed": true,
+              "landed": true,
+              "navigation_state": 4,
+              "offboard": false,
+              "altitude_m": -0.05491529405117035,
+              "status_age_s": 0.0009835369419306517,
+              "detail": null
+            },
+            {
+              "stage": "takeoff-sent",
+              "at_s": 530230.886328017,
+              "target_system": 3,
+              "target_component": 0,
+              "command": 22,
+              "ack_result": null,
+              "armed": true,
+              "landed": true,
+              "navigation_state": 4,
+              "offboard": false,
+              "altitude_m": -0.05491529405117035,
+              "status_age_s": 0.0016245979350060225,
+              "detail": null
+            }
+          ],
+          "tail": [
+            {
+              "stage": "climb-confirmed",
+              "at_s": 530237.75188338,
+              "target_system": 3,
+              "target_component": 0,
+              "command": null,
+              "ack_result": null,
+              "armed": true,
+              "landed": false,
+              "navigation_state": 4,
+              "offboard": false,
+              "altitude_m": 1.7636533975601196,
+              "status_age_s": 0.10409851500298828,
+              "detail": null
+            },
+            {
+              "stage": "offboard-primed",
+              "at_s": 530239.288947281,
+              "target_system": 3,
+              "target_component": 0,
+              "command": null,
+              "ack_result": null,
+              "armed": true,
+              "landed": false,
+              "navigation_state": 4,
+              "offboard": false,
+              "altitude_m": 2.047264575958252,
+              "status_age_s": 0.20617594593204558,
+              "detail": null
+            },
+            {
+              "stage": "offboard-confirmed",
+              "at_s": 530240.263453559,
+              "target_system": 3,
+              "target_component": 0,
+              "command": null,
+              "ack_result": null,
+              "armed": true,
+              "landed": false,
+              "navigation_state": 6,
+              "offboard": true,
+              "altitude_m": 2.08324933052063,
+              "status_age_s": 0.0010867250384762883,
+              "detail": null
+            },
+            {
+              "stage": "mission-ready",
+              "at_s": 530240.263453559,
+              "target_system": 3,
+              "target_component": 0,
+              "command": null,
+              "ack_result": null,
+              "armed": true,
+              "landed": false,
+              "navigation_state": 6,
+              "offboard": true,
+              "altitude_m": 2.08324933052063,
+              "status_age_s": 0.0010867250384762883,
+              "detail": null
+            }
+          ]
+        },
+        "cleanup_failure": null
+      },
+      "fail_closed_land": false,
+      "gnss_disable_injected": true,
+      "state_health_failures": 0,
+      "last_state_health_reason": null,
+      "command_gate": null,
+      "planner_p95_ms": 10.4993,
+      "initial_estimated_vs_truth_horizontal_error_m": 0.0129,
+      "initial_estimated_vs_expected_home_error_m": 0.0,
+      "minimum_depth_range_m": 0.6318
+    },
+    {
+      "vehicle_id": 3,
+      "mission_accepted": false,
+      "landed": true,
+      "takeoff": {
+        "target_system": 4,
+        "target_component": 0,
+        "terminal_stage": "mission-ready",
+        "accepted": true,
+        "failure_reason": null,
+        "baseline_altitude_m": 0.009380355477333069,
+        "maximum_altitude_gain_m": 1.8124379962682724,
+        "arm_ack": {
+          "command": 400,
+          "result": 0,
+          "target_system": 255,
+          "target_component": 0,
+          "received_at_s": 530229.938490816,
+          "progress": 0,
+          "result_param2": 0,
+          "source_system": 4,
+          "source_component": 1
+        },
+        "takeoff_ack": {
+          "command": 22,
+          "result": 0,
+          "target_system": 255,
+          "target_component": 0,
+          "received_at_s": 530230.812754099,
+          "progress": 0,
+          "result_param2": 0,
+          "source_system": 4,
+          "source_component": 1
+        },
+        "offboard_ack": {
+          "command": 176,
+          "result": 0,
+          "target_system": 255,
+          "target_component": 0,
+          "received_at_s": 530239.207151748,
+          "progress": 0,
+          "result_param2": 0,
+          "source_system": 4,
+          "source_component": 1
+        },
+        "armed_at_s": 530230.801752945,
+        "takeoff_accepted_at_s": 530230.816693662,
+        "climb_confirmed_at_s": 530237.672220585,
+        "offboard_confirmed_at_s": 530240.181613348,
+        "events": {
+          "_compact_sequence": true,
+          "length": 9,
+          "sha256": "b0afd9655a57a753999d32e082fecffc8c21859820fc0ac3ff67a48bf9796348",
+          "head": [
+            {
+              "stage": "preflight-ready",
+              "at_s": 530229.935561159,
+              "target_system": 4,
+              "target_component": 0,
+              "command": null,
+              "ack_result": null,
+              "armed": null,
+              "landed": null,
+              "navigation_state": null,
+              "offboard": null,
+              "altitude_m": 0.009380355477333069,
+              "status_age_s": null,
+              "detail": null
+            },
+            {
+              "stage": "arm-sent",
+              "at_s": 530229.935689,
+              "target_system": 4,
+              "target_component": 0,
+              "command": 400,
+              "ack_result": null,
+              "armed": null,
+              "landed": null,
+              "navigation_state": null,
+              "offboard": null,
+              "altitude_m": 0.009380355477333069,
+              "status_age_s": null,
+              "detail": null
+            },
+            {
+              "stage": "armed",
+              "at_s": 530230.801752945,
+              "target_system": 4,
+              "target_component": 0,
+              "command": null,
+              "ack_result": 0,
+              "armed": true,
+              "landed": true,
+              "navigation_state": 4,
+              "offboard": false,
+              "altitude_m": 0.00940781831741333,
+              "status_age_s": 0.0007247719913721085,
+              "detail": null
+            },
+            {
+              "stage": "takeoff-sent",
+              "at_s": 530230.801840841,
+              "target_system": 4,
+              "target_component": 0,
+              "command": 22,
+              "ack_result": null,
+              "armed": true,
+              "landed": true,
+              "navigation_state": 4,
+              "offboard": false,
+              "altitude_m": 0.00940781831741333,
+              "status_age_s": 0.0008126680040732026,
+              "detail": null
+            }
+          ],
+          "tail": [
+            {
+              "stage": "climb-confirmed",
+              "at_s": 530237.672220585,
+              "target_system": 4,
+              "target_component": 0,
+              "command": null,
+              "ack_result": null,
+              "armed": true,
+              "landed": false,
+              "navigation_state": 4,
+              "offboard": false,
+              "altitude_m": 1.8218183517456055,
+              "status_age_s": 0.10389927204232663,
+              "detail": null
+            },
+            {
+              "stage": "offboard-primed",
+              "at_s": 530239.205617825,
+              "target_system": 4,
+              "target_component": 0,
+              "command": null,
+              "ack_result": null,
+              "armed": true,
+              "landed": false,
+              "navigation_state": 4,
+              "offboard": false,
+              "altitude_m": 2.0980989933013916,
+              "status_age_s": 0.20339594408869743,
+              "detail": null
+            },
+            {
+              "stage": "offboard-confirmed",
+              "at_s": 530240.181613348,
+              "target_system": 4,
+              "target_component": 0,
+              "command": null,
+              "ack_result": null,
+              "armed": true,
+              "landed": false,
+              "navigation_state": 6,
+              "offboard": true,
+              "altitude_m": 2.118694305419922,
+              "status_age_s": 0.001050489954650402,
+              "detail": null
+            },
+            {
+              "stage": "mission-ready",
+              "at_s": 530240.181613348,
+              "target_system": 4,
+              "target_component": 0,
+              "command": null,
+              "ack_result": null,
+              "armed": true,
+              "landed": false,
+              "navigation_state": 6,
+              "offboard": true,
+              "altitude_m": 2.118694305419922,
+              "status_age_s": 0.001050489954650402,
+              "detail": null
+            }
+          ]
+        },
+        "cleanup_failure": null
+      },
+      "fail_closed_land": true,
+      "gnss_disable_injected": true,
+      "state_health_failures": 1,
+      "last_state_health_reason": "stale-vio-frame",
+      "command_gate": null,
+      "planner_p95_ms": 20.03379,
+      "initial_estimated_vs_truth_horizontal_error_m": 0.0403,
+      "initial_estimated_vs_expected_home_error_m": 0.0,
+      "minimum_depth_range_m": 1.4944
+    },
+    {
+      "vehicle_id": 4,
+      "mission_accepted": false,
+      "landed": true,
+      "takeoff": {
+        "target_system": 5,
+        "target_component": 0,
+        "terminal_stage": "mission-ready",
+        "accepted": true,
+        "failure_reason": null,
+        "baseline_altitude_m": 0.02277149260044098,
+        "maximum_altitude_gain_m": 1.7967667430639267,
+        "arm_ack": {
+          "command": 400,
+          "result": 0,
+          "target_system": 255,
+          "target_component": 0,
+          "received_at_s": 530230.076935051,
+          "progress": 0,
+          "result_param2": 0,
+          "source_system": 5,
+          "source_component": 1
+        },
+        "takeoff_ack": {
+          "command": 22,
+          "result": 0,
+          "target_system": 255,
+          "target_component": 0,
+          "received_at_s": 530230.945335109,
+          "progress": 0,
+          "result_param2": 0,
+          "source_system": 5,
+          "source_component": 1
+        },
+        "offboard_ack": {
+          "command": 176,
+          "result": 0,
+          "target_system": 255,
+          "target_component": 0,
+          "received_at_s": 530239.336273406,
+          "progress": 0,
+          "result_param2": 0,
+          "source_system": 5,
+          "source_component": 1
+        },
+        "armed_at_s": 530230.937876643,
+        "takeoff_accepted_at_s": 530230.949303714,
+        "climb_confirmed_at_s": 530237.803412457,
+        "offboard_confirmed_at_s": 530240.309654697,
+        "events": {
+          "_compact_sequence": true,
+          "length": 9,
+          "sha256": "883665eb3c86ca04484abf9f6f22985ac2d0a3d404d44e8ed765a022f543461b",
+          "head": [
+            {
+              "stage": "preflight-ready",
+              "at_s": 530230.0719065,
+              "target_system": 5,
+              "target_component": 0,
+              "command": null,
+              "ack_result": null,
+              "armed": null,
+              "landed": null,
+              "navigation_state": null,
+              "offboard": null,
+              "altitude_m": 0.02277149260044098,
+              "status_age_s": null,
+              "detail": null
+            },
+            {
+              "stage": "arm-sent",
+              "at_s": 530230.07198629,
+              "target_system": 5,
+              "target_component": 0,
+              "command": 400,
+              "ack_result": null,
+              "armed": null,
+              "landed": null,
+              "navigation_state": null,
+              "offboard": null,
+              "altitude_m": 0.02277149260044098,
+              "status_age_s": null,
+              "detail": null
+            },
+            {
+              "stage": "armed",
+              "at_s": 530230.937876643,
+              "target_system": 5,
+              "target_component": 0,
+              "command": null,
+              "ack_result": 0,
+              "armed": true,
+              "landed": true,
+              "navigation_state": 4,
+              "offboard": false,
+              "altitude_m": 0.02406853437423706,
+              "status_age_s": 0.001132581033743918,
+              "detail": null
+            },
+            {
+              "stage": "takeoff-sent",
+              "at_s": 530230.937958546,
+              "target_system": 5,
+              "target_component": 0,
+              "command": 22,
+              "ack_result": null,
+              "armed": true,
+              "landed": true,
+              "navigation_state": 4,
+              "offboard": false,
+              "altitude_m": 0.02406853437423706,
+              "status_age_s": 0.0012144839856773615,
+              "detail": null
+            }
+          ],
+          "tail": [
+            {
+              "stage": "climb-confirmed",
+              "at_s": 530237.803412457,
+              "target_system": 5,
+              "target_component": 0,
+              "command": null,
+              "ack_result": null,
+              "armed": true,
+              "landed": false,
+              "navigation_state": 4,
+              "offboard": false,
+              "altitude_m": 1.8195382356643677,
+              "status_age_s": 0.10411429300438613,
+              "detail": null
+            },
+            {
+              "stage": "offboard-primed",
+              "at_s": 530239.335086928,
+              "target_system": 5,
+              "target_component": 0,
+              "command": null,
+              "ack_result": null,
+              "armed": true,
+              "landed": false,
+              "navigation_state": 4,
+              "offboard": false,
+              "altitude_m": 2.0819127559661865,
+              "status_age_s": 0.20351615897379816,
+              "detail": null
+            },
+            {
+              "stage": "offboard-confirmed",
+              "at_s": 530240.309654697,
+              "target_system": 5,
+              "target_component": 0,
+              "command": null,
+              "ack_result": null,
+              "armed": true,
+              "landed": false,
+              "navigation_state": 6,
+              "offboard": true,
+              "altitude_m": 2.1425132751464844,
+              "status_age_s": 0.0008737900061532855,
+              "detail": null
+            },
+            {
+              "stage": "mission-ready",
+              "at_s": 530240.309654697,
+              "target_system": 5,
+              "target_component": 0,
+              "command": null,
+              "ack_result": null,
+              "armed": true,
+              "landed": false,
+              "navigation_state": 6,
+              "offboard": true,
+              "altitude_m": 2.1425132751464844,
+              "status_age_s": 0.0008737900061532855,
+              "detail": null
+            }
+          ]
+        },
+        "cleanup_failure": null
+      },
+      "fail_closed_land": true,
+      "gnss_disable_injected": true,
+      "state_health_failures": 1,
+      "last_state_health_reason": "stale-vio-frame",
+      "command_gate": null,
+      "planner_p95_ms": 19.2529,
+      "initial_estimated_vs_truth_horizontal_error_m": 0.0098,
+      "initial_estimated_vs_expected_home_error_m": 0.0,
+      "minimum_depth_range_m": 1.6172
+    }
+  ],
+  "takeoff_chain_by_vehicle": {
+    "0": {
+      "accepted": true,
+      "reason": null,
+      "worker_mission_ready": true,
+      "px4_actuator_output_present": true,
+      "gazebo_motor_command_received": true,
+      "gazebo_physical_climb": true,
+      "estimator_climb": true,
+      "landed": true,
+      "worker_takeoff": {
+        "target_system": 1,
+        "target_component": 0,
+        "terminal_stage": "mission-ready",
+        "accepted": true,
+        "failure_reason": null,
+        "baseline_altitude_m": -0.055482909083366394,
+        "maximum_altitude_gain_m": 1.8007953613996506,
+        "arm_ack": {
+          "command": 400,
+          "result": 0,
+          "target_system": 255,
+          "target_component": 0,
+          "received_at_s": 530230.256642212,
+          "progress": 0,
+          "result_param2": 0,
+          "source_system": 1,
+          "source_component": 1
+        },
+        "takeoff_ack": {
+          "command": 22,
+          "result": 0,
+          "target_system": 255,
+          "target_component": 0,
+          "received_at_s": 530231.124654496,
+          "progress": 0,
+          "result_param2": 0,
+          "source_system": 1,
+          "source_component": 1
+        },
+        "offboard_ack": {
+          "command": 176,
+          "result": 0,
+          "target_system": 255,
+          "target_component": 0,
+          "received_at_s": 530239.566209457,
+          "progress": 0,
+          "result_param2": 0,
+          "source_system": 1,
+          "source_component": 1
+        },
+        "armed_at_s": 530231.121478001,
+        "takeoff_accepted_at_s": 530231.128695935,
+        "climb_confirmed_at_s": 530238.031787394,
+        "offboard_confirmed_at_s": 530240.490963268,
+        "events": {
+          "_compact_sequence": true,
+          "length": 9,
+          "sha256": "34152cafa4afd203e4c41dc2d8b242203ba04344d190f1558169e10883ed24ba",
+          "head": [
+            {
+              "stage": "preflight-ready",
+              "at_s": 530230.25604313,
+              "target_system": 1,
+              "target_component": 0,
+              "command": null,
+              "ack_result": null,
+              "armed": null,
+              "landed": null,
+              "navigation_state": null,
+              "offboard": null,
+              "altitude_m": -0.055482909083366394,
+              "status_age_s": null,
+              "detail": null
+            },
+            {
+              "stage": "arm-sent",
+              "at_s": 530230.256154867,
+              "target_system": 1,
+              "target_component": 0,
+              "command": 400,
+              "ack_result": null,
+              "armed": null,
+              "landed": null,
+              "navigation_state": null,
+              "offboard": null,
+              "altitude_m": -0.055482909083366394,
+              "status_age_s": null,
+              "detail": null
+            },
+            {
+              "stage": "armed",
+              "at_s": 530231.121478001,
+              "target_system": 1,
+              "target_component": 0,
+              "command": null,
+              "ack_result": 0,
+              "armed": true,
+              "landed": true,
+              "navigation_state": 4,
+              "offboard": false,
+              "altitude_m": -0.05576488375663757,
+              "status_age_s": 0.0007486440008506179,
+              "detail": null
+            },
+            {
+              "stage": "takeoff-sent",
+              "at_s": 530231.121558882,
+              "target_system": 1,
+              "target_component": 0,
+              "command": 22,
+              "ack_result": null,
+              "armed": true,
+              "landed": true,
+              "navigation_state": 4,
+              "offboard": false,
+              "altitude_m": -0.05576488375663757,
+              "status_age_s": 0.0008295249426737428,
+              "detail": null
+            }
+          ],
+          "tail": [
+            {
+              "stage": "climb-confirmed",
+              "at_s": 530238.031787394,
+              "target_system": 1,
+              "target_component": 0,
+              "command": null,
+              "ack_result": null,
+              "armed": true,
+              "landed": false,
+              "navigation_state": 4,
+              "offboard": false,
+              "altitude_m": 1.7453124523162842,
+              "status_age_s": 0.1031474620103836,
+              "detail": null
+            },
+            {
+              "stage": "offboard-primed",
+              "at_s": 530239.565303747,
+              "target_system": 1,
+              "target_component": 0,
+              "command": null,
+              "ack_result": null,
+              "armed": true,
+              "landed": false,
+              "navigation_state": 4,
+              "offboard": false,
+              "altitude_m": 2.0373966693878174,
+              "status_age_s": 0.05146101594436914,
+              "detail": null
+            },
+            {
+              "stage": "offboard-confirmed",
+              "at_s": 530240.490963268,
+              "target_system": 1,
+              "target_component": 0,
+              "command": null,
+              "ack_result": null,
+              "armed": true,
+              "landed": false,
+              "navigation_state": 6,
+              "offboard": true,
+              "altitude_m": 2.0670740604400635,
+              "status_age_s": 0.0008991470094770193,
+              "detail": null
+            },
+            {
+              "stage": "mission-ready",
+              "at_s": 530240.490963268,
+              "target_system": 1,
+              "target_component": 0,
+              "command": null,
+              "ack_result": null,
+              "armed": true,
+              "landed": false,
+              "navigation_state": 6,
+              "offboard": true,
+              "altitude_m": 2.0670740604400635,
+              "status_age_s": 0.0008991470094770193,
+              "detail": null
+            }
+          ]
+        },
+        "cleanup_failure": null
+      },
+      "ulog": {
+        "accepted": true,
+        "reason": null,
+        "missing_datasets": [],
+        "command_acks": {
+          "arm": {
+            "command": 400,
+            "result": 0,
+            "timestamp_us": 73304000
+          },
+          "takeoff": {
+            "command": 22,
+            "result": 0,
+            "timestamp_us": 74172000
+          },
+          "offboard": {
+            "command": 176,
+            "result": 0,
+            "timestamp_us": 82248000
+          }
+        },
+        "commands_accepted": true,
+        "actuator_output_present": true,
+        "maximum_actuator_output": 0.8770403861999512,
+        "estimator_altitude_gain_m": 2.0936825374956243,
+        "groundtruth_altitude_gain_m": 2.1702223792672157,
+        "landed_at_end": true,
+        "source": {
+          "sha256": "d24ef3ae766152ff4260cc6ac2b5a90106ef2a10efa75fa33a8de11ebc243a54",
+          "bytes": 27780746
+        },
+        "timestamps_us": {
+          "vehicle_command": {
+            "_compact_sequence": true,
+            "length": 9,
+            "sha256": "09bb2cbeeb98a1448d41bbdce7b7dba775939e6c2f9d4e3967687179f7b39683",
+            "head": [
+              1880000,
+              73300000,
+              74168000,
+              82248000
+            ],
+            "tail": [
+              86888000,
+              86888000,
+              86888000,
+              91000000
+            ]
+          },
+          "vehicle_command_ack": {
+            "_compact_sequence": true,
+            "length": 12,
+            "sha256": "44b448cd01d6ce3b3fe7462f05199f5a68f131be4101de14022493a211afbdd2",
+            "head": [
+              1884000,
+              2980000,
+              73176000,
+              73184000
+            ],
+            "tail": [
+              82248000,
+              82252000,
+              86624000,
+              91004000
+            ]
+          },
+          "actuator_motors": {
+            "_compact_sequence": true,
+            "length": 899,
+            "sha256": "6c7374dd94b631f5189eb14ab4d9a2c5f38730990f78e69b4dce499489c224da",
+            "head": [
+              2248000,
+              2252000,
+              2352000,
+              2452000
+            ],
+            "tail": [
+              91652000,
+              91752000,
+              91852000,
+              91952000
+            ]
+          },
+          "vehicle_local_position": {
+            "_compact_sequence": true,
+            "length": 11208,
+            "sha256": "ad37b9d73bbfdbe6bcf7763323a4a050a727bfb37c91d75527affa96496b3fe8",
+            "head": [
+              2248000,
+              2256000,
+              2264000,
+              2272000
+            ],
+            "tail": [
+              91976000,
+              91984000,
+              91992000,
+              92000000
+            ]
+          },
+          "vehicle_local_position_groundtruth": {
+            "_compact_sequence": true,
+            "length": 4489,
+            "sha256": "d6d468f7f1c7dfe7f242ab2e97c6c8db9629912a4bc49b75a9ee9bf70afdc702",
+            "head": [
+              2244000,
+              2264000,
+              2284000,
+              2304000
+            ],
+            "tail": [
+              91920000,
+              91940000,
+              91956000,
+              91976000
+            ]
+          },
+          "vehicle_land_detected": {
+            "_compact_sequence": true,
+            "length": 100,
+            "sha256": "4b48fd1e1c964d79f26449f851a565b6f12eb2bb3cf7c1335e949721cba85bb5",
+            "head": [
+              1736000,
+              2296000,
+              2336000,
+              2352000
+            ],
+            "tail": [
+              90100000,
+              90452000,
+              90788000,
+              91040000
+            ]
+          }
+        }
+      },
+      "gazebo": {
+        "model": "x500_depth_fly_0",
+        "topic": "/x500_depth_fly_0/command/motor_speed",
+        "topology_confirmed": true,
+        "motor_command_samples": 8853,
+        "maximum_motor_command": 904.0,
+        "motor_command_received": true,
+        "odometry_samples": 1774,
+        "altitude_gain_m": 2.1698111493280017,
+        "physical_climb": true,
+        "reason": null
+      }
+    },
+    "1": {
+      "accepted": true,
+      "reason": null,
+      "worker_mission_ready": true,
+      "px4_actuator_output_present": true,
+      "gazebo_motor_command_received": true,
+      "gazebo_physical_climb": true,
+      "estimator_climb": true,
+      "landed": true,
+      "worker_takeoff": {
+        "target_system": 2,
+        "target_component": 0,
+        "terminal_stage": "mission-ready",
+        "accepted": true,
+        "failure_reason": null,
+        "baseline_altitude_m": 0.0028230249881744385,
+        "maximum_altitude_gain_m": 1.8186599910259247,
+        "arm_ack": {
+          "command": 400,
+          "result": 0,
+          "target_system": 255,
+          "target_component": 0,
+          "received_at_s": 530229.861272688,
+          "progress": 0,
+          "result_param2": 0,
+          "source_system": 2,
+          "source_component": 1
+        },
+        "takeoff_ack": {
+          "command": 22,
+          "result": 0,
+          "target_system": 255,
+          "target_component": 0,
+          "received_at_s": 530230.725779941,
+          "progress": 0,
+          "result_param2": 0,
+          "source_system": 2,
+          "source_component": 1
+        },
+        "offboard_ack": {
+          "command": 176,
+          "result": 0,
+          "target_system": 255,
+          "target_component": 0,
+          "received_at_s": 530239.136245454,
+          "progress": 0,
+          "result_param2": 0,
+          "source_system": 2,
+          "source_component": 1
+        },
+        "armed_at_s": 530230.722972435,
+        "takeoff_accepted_at_s": 530230.73007509,
+        "climb_confirmed_at_s": 530237.597295319,
+        "offboard_confirmed_at_s": 530240.116340682,
+        "events": {
+          "_compact_sequence": true,
+          "length": 9,
+          "sha256": "94dbed986ab3821bd23eb31f1b2232298b9e11a404791521c7102a5c67d02057",
+          "head": [
+            {
+              "stage": "preflight-ready",
+              "at_s": 530229.855119066,
+              "target_system": 2,
+              "target_component": 0,
+              "command": null,
+              "ack_result": null,
+              "armed": null,
+              "landed": null,
+              "navigation_state": null,
+              "offboard": null,
+              "altitude_m": 0.0028230249881744385,
+              "status_age_s": null,
+              "detail": null
+            },
+            {
+              "stage": "arm-sent",
+              "at_s": 530229.855317538,
+              "target_system": 2,
+              "target_component": 0,
+              "command": 400,
+              "ack_result": null,
+              "armed": null,
+              "landed": null,
+              "navigation_state": null,
+              "offboard": null,
+              "altitude_m": 0.0028230249881744385,
+              "status_age_s": null,
+              "detail": null
+            },
+            {
+              "stage": "armed",
+              "at_s": 530230.722972435,
+              "target_system": 2,
+              "target_component": 0,
+              "command": null,
+              "ack_result": 0,
+              "armed": true,
+              "landed": true,
+              "navigation_state": 4,
+              "offboard": false,
+              "altitude_m": 0.0027923583984375,
+              "status_age_s": 0.0009513749973848462,
+              "detail": null
+            },
+            {
+              "stage": "takeoff-sent",
+              "at_s": 530230.723065249,
+              "target_system": 2,
+              "target_component": 0,
+              "command": 22,
+              "ack_result": null,
+              "armed": true,
+              "landed": true,
+              "navigation_state": 4,
+              "offboard": false,
+              "altitude_m": 0.0027923583984375,
+              "status_age_s": 0.001044189091771841,
+              "detail": null
+            }
+          ],
+          "tail": [
+            {
+              "stage": "climb-confirmed",
+              "at_s": 530237.597295319,
+              "target_system": 2,
+              "target_component": 0,
+              "command": null,
+              "ack_result": null,
+              "armed": true,
+              "landed": false,
+              "navigation_state": 4,
+              "offboard": false,
+              "altitude_m": 1.8214830160140991,
+              "status_age_s": 0.1552267149090767,
+              "detail": null
+            },
+            {
+              "stage": "offboard-primed",
+              "at_s": 530239.133785201,
+              "target_system": 2,
+              "target_component": 0,
+              "command": null,
+              "ack_result": null,
+              "armed": true,
+              "landed": false,
+              "navigation_state": 4,
+              "offboard": false,
+              "altitude_m": 2.1186234951019287,
+              "status_age_s": 0.20393604005221277,
+              "detail": null
+            },
+            {
+              "stage": "offboard-confirmed",
+              "at_s": 530240.116340682,
+              "target_system": 2,
+              "target_component": 0,
+              "command": null,
+              "ack_result": null,
+              "armed": true,
+              "landed": false,
+              "navigation_state": 6,
+              "offboard": true,
+              "altitude_m": 2.133549451828003,
+              "status_age_s": 0.0009462250163778663,
+              "detail": null
+            },
+            {
+              "stage": "mission-ready",
+              "at_s": 530240.116340682,
+              "target_system": 2,
+              "target_component": 0,
+              "command": null,
+              "ack_result": null,
+              "armed": true,
+              "landed": false,
+              "navigation_state": 6,
+              "offboard": true,
+              "altitude_m": 2.133549451828003,
+              "status_age_s": 0.0009462250163778663,
+              "detail": null
+            }
+          ]
+        },
+        "cleanup_failure": null
+      },
+      "ulog": {
+        "accepted": true,
+        "reason": null,
+        "missing_datasets": [],
+        "command_acks": {
+          "arm": {
+            "command": 400,
+            "result": 0,
+            "timestamp_us": 72908000
+          },
+          "takeoff": {
+            "command": 22,
+            "result": 0,
+            "timestamp_us": 73772000
+          },
+          "offboard": {
+            "command": 176,
+            "result": 0,
+            "timestamp_us": 81816000
+          }
+        },
+        "commands_accepted": true,
+        "actuator_output_present": true,
+        "maximum_actuator_output": 0.8496241569519043,
+        "estimator_altitude_gain_m": 2.1670355065143667,
+        "groundtruth_altitude_gain_m": 2.1562383584678173,
+        "landed_at_end": true,
+        "source": {
+          "sha256": "9f6fafe66b415cb48094942543dc3b6044aee26f5c6a5f58d2cc9d132adf773a",
+          "bytes": 26921805
+        },
+        "timestamps_us": {
+          "vehicle_command": {
+            "_compact_sequence": true,
+            "length": 9,
+            "sha256": "19fd1014c017028d386c747a0c974bb5b74ea86f86dfd9c08aecb00d65f8faba",
+            "head": [
+              3420000,
+              72900000,
+              73768000,
+              81816000
+            ],
+            "tail": [
+              85380000,
+              85380000,
+              85380000,
+              89396000
+            ]
+          },
+          "vehicle_command_ack": {
+            "_compact_sequence": true,
+            "length": 12,
+            "sha256": "340db12926cc8f4e708364734cefc2a2d3eb1038a5f675e0a42bcb92cb170206",
+            "head": [
+              3664000,
+              4720000,
+              72776000,
+              72784000
+            ],
+            "tail": [
+              81816000,
+              81820000,
+              85112000,
+              89408000
+            ]
+          },
+          "actuator_motors": {
+            "_compact_sequence": true,
+            "length": 867,
+            "sha256": "09113e0633a07b83f770c74d35e56179bfa7eea4c5c999c95fbcee7a3762cbc3",
+            "head": [
+              3888000,
+              3892000,
+              3992000,
+              4092000
+            ],
+            "tail": [
+              90092000,
+              90192000,
+              90292000,
+              90392000
+            ]
+          },
+          "vehicle_local_position": {
+            "_compact_sequence": true,
+            "length": 10802,
+            "sha256": "3e381b0d1cf4be71243cbfc90da71fc6a2692cd0207037ef21a1aecc52a1bb50",
+            "head": [
+              3888000,
+              3896000,
+              3904000,
+              3912000
+            ],
+            "tail": [
+              90376000,
+              90384000,
+              90392000,
+              90400000
+            ]
+          },
+          "vehicle_local_position_groundtruth": {
+            "_compact_sequence": true,
+            "length": 4327,
+            "sha256": "347c976229798d15d0e8e4a0723504a983dc80e0f5fdc43728c653f9fb1a5869",
+            "head": [
+              3872000,
+              3892000,
+              3912000,
+              3932000
+            ],
+            "tail": [
+              90320000,
+              90340000,
+              90360000,
+              90380000
+            ]
+          },
+          "vehicle_land_detected": {
+            "_compact_sequence": true,
+            "length": 96,
+            "sha256": "a014e8a4505e0640dbd928c92a8f2ce298343f9e3a44d8cd939958beeff0d32e",
+            "head": [
+              3356000,
+              3920000,
+              3960000,
+              3984000
+            ],
+            "tail": [
+              88648000,
+              89000000,
+              89336000,
+              89576000
+            ]
+          }
+        }
+      },
+      "gazebo": {
+        "model": "x500_depth_fly_1",
+        "topic": "/x500_depth_fly_1/command/motor_speed",
+        "topology_confirmed": true,
+        "motor_command_samples": 8849,
+        "maximum_motor_command": 965.0,
+        "motor_command_received": true,
+        "odometry_samples": 1773,
+        "altitude_gain_m": 2.156158838387726,
+        "physical_climb": true,
+        "reason": null
+      }
+    },
+    "2": {
+      "accepted": true,
+      "reason": null,
+      "worker_mission_ready": true,
+      "px4_actuator_output_present": true,
+      "gazebo_motor_command_received": true,
+      "gazebo_physical_climb": true,
+      "estimator_climb": true,
+      "landed": true,
+      "worker_takeoff": {
+        "target_system": 3,
+        "target_component": 0,
+        "terminal_stage": "mission-ready",
+        "accepted": true,
+        "failure_reason": null,
+        "baseline_altitude_m": -0.055691495537757874,
+        "maximum_altitude_gain_m": 1.8193448930978775,
+        "arm_ack": {
+          "command": 400,
+          "result": 0,
+          "target_system": 255,
+          "target_component": 0,
+          "received_at_s": 530230.025046124,
+          "progress": 0,
+          "result_param2": 0,
+          "source_system": 3,
+          "source_component": 1
+        },
+        "takeoff_ack": {
+          "command": 22,
+          "result": 0,
+          "target_system": 255,
+          "target_component": 0,
+          "received_at_s": 530230.888872538,
+          "progress": 0,
+          "result_param2": 0,
+          "source_system": 3,
+          "source_component": 1
+        },
+        "offboard_ack": {
+          "command": 176,
+          "result": 0,
+          "target_system": 255,
+          "target_component": 0,
+          "received_at_s": 530239.290313542,
+          "progress": 0,
+          "result_param2": 0,
+          "source_system": 3,
+          "source_component": 1
+        },
+        "armed_at_s": 530230.885686956,
+        "takeoff_accepted_at_s": 530230.893012703,
+        "climb_confirmed_at_s": 530237.75188338,
+        "offboard_confirmed_at_s": 530240.263453559,
+        "events": {
+          "_compact_sequence": true,
+          "length": 9,
+          "sha256": "a036cc47e87c51846d924641f67adde52180dff04c6c48e38d57e23005a901bf",
+          "head": [
+            {
+              "stage": "preflight-ready",
+              "at_s": 530230.019840272,
+              "target_system": 3,
+              "target_component": 0,
+              "command": null,
+              "ack_result": null,
+              "armed": null,
+              "landed": null,
+              "navigation_state": null,
+              "offboard": null,
+              "altitude_m": -0.055691495537757874,
+              "status_age_s": null,
+              "detail": null
+            },
+            {
+              "stage": "arm-sent",
+              "at_s": 530230.019938099,
+              "target_system": 3,
+              "target_component": 0,
+              "command": 400,
+              "ack_result": null,
+              "armed": null,
+              "landed": null,
+              "navigation_state": null,
+              "offboard": null,
+              "altitude_m": -0.055691495537757874,
+              "status_age_s": null,
+              "detail": null
+            },
+            {
+              "stage": "armed",
+              "at_s": 530230.885686956,
+              "target_system": 3,
+              "target_component": 0,
+              "command": null,
+              "ack_result": 0,
+              "armed": true,
+              "landed": true,
+              "navigation_state": 4,
+              "offboard": false,
+              "altitude_m": -0.05491529405117035,
+              "status_age_s": 0.0009835369419306517,
+              "detail": null
+            },
+            {
+              "stage": "takeoff-sent",
+              "at_s": 530230.886328017,
+              "target_system": 3,
+              "target_component": 0,
+              "command": 22,
+              "ack_result": null,
+              "armed": true,
+              "landed": true,
+              "navigation_state": 4,
+              "offboard": false,
+              "altitude_m": -0.05491529405117035,
+              "status_age_s": 0.0016245979350060225,
+              "detail": null
+            }
+          ],
+          "tail": [
+            {
+              "stage": "climb-confirmed",
+              "at_s": 530237.75188338,
+              "target_system": 3,
+              "target_component": 0,
+              "command": null,
+              "ack_result": null,
+              "armed": true,
+              "landed": false,
+              "navigation_state": 4,
+              "offboard": false,
+              "altitude_m": 1.7636533975601196,
+              "status_age_s": 0.10409851500298828,
+              "detail": null
+            },
+            {
+              "stage": "offboard-primed",
+              "at_s": 530239.288947281,
+              "target_system": 3,
+              "target_component": 0,
+              "command": null,
+              "ack_result": null,
+              "armed": true,
+              "landed": false,
+              "navigation_state": 4,
+              "offboard": false,
+              "altitude_m": 2.047264575958252,
+              "status_age_s": 0.20617594593204558,
+              "detail": null
+            },
+            {
+              "stage": "offboard-confirmed",
+              "at_s": 530240.263453559,
+              "target_system": 3,
+              "target_component": 0,
+              "command": null,
+              "ack_result": null,
+              "armed": true,
+              "landed": false,
+              "navigation_state": 6,
+              "offboard": true,
+              "altitude_m": 2.08324933052063,
+              "status_age_s": 0.0010867250384762883,
+              "detail": null
+            },
+            {
+              "stage": "mission-ready",
+              "at_s": 530240.263453559,
+              "target_system": 3,
+              "target_component": 0,
+              "command": null,
+              "ack_result": null,
+              "armed": true,
+              "landed": false,
+              "navigation_state": 6,
+              "offboard": true,
+              "altitude_m": 2.08324933052063,
+              "status_age_s": 0.0010867250384762883,
+              "detail": null
+            }
+          ]
+        },
+        "cleanup_failure": null
+      },
+      "ulog": {
+        "accepted": true,
+        "reason": null,
+        "missing_datasets": [],
+        "command_acks": {
+          "arm": {
+            "command": 400,
+            "result": 0,
+            "timestamp_us": 73072000
+          },
+          "takeoff": {
+            "command": 22,
+            "result": 0,
+            "timestamp_us": 73936000
+          },
+          "offboard": {
+            "command": 176,
+            "result": 0,
+            "timestamp_us": 81972000
+          }
+        },
+        "commands_accepted": true,
+        "actuator_output_present": true,
+        "maximum_actuator_output": 0.8937451243400574,
+        "estimator_altitude_gain_m": 2.0999087393283844,
+        "groundtruth_altitude_gain_m": 2.157752097584307,
+        "landed_at_end": true,
+        "source": {
+          "sha256": "1c75da2e4f3523b80d29f9e2e8ae495c35dff8cf3de6ad215af917a7b6ad0a00",
+          "bytes": 30840180
+        },
+        "timestamps_us": {
+          "vehicle_command": {
+            "_compact_sequence": true,
+            "length": 9,
+            "sha256": "90cba699296d93c24be69e518e430001f6492044a7979c26ea4bb09fad2056d7",
+            "head": [
+              5636000,
+              73064000,
+              73932000,
+              81972000
+            ],
+            "tail": [
+              101476000,
+              101476000,
+              101476000,
+              105556000
+            ]
+          },
+          "vehicle_command_ack": {
+            "_compact_sequence": true,
+            "length": 12,
+            "sha256": "a877488ed278c9cbb367f65c903978df99bebe28689e2a461b65d33a3f03f76f",
+            "head": [
+              5640000,
+              6736000,
+              72940000,
+              72948000
+            ],
+            "tail": [
+              81972000,
+              81984000,
+              101208000,
+              105564000
+            ]
+          },
+          "actuator_motors": {
+            "_compact_sequence": true,
+            "length": 1004,
+            "sha256": "2059312815489b5d471911aa6cbd7ae824b471e51b2e14b4265781b9055cbed2",
+            "head": [
+              6084000,
+              6088000,
+              6188000,
+              6288000
+            ],
+            "tail": [
+              105988000,
+              106088000,
+              106188000,
+              106288000
+            ]
+          },
+          "vehicle_local_position": {
+            "_compact_sequence": true,
+            "length": 12519,
+            "sha256": "07766e87a71a009763ce600126096f86c4829dc6f8a76b92b788be2d9bc9a486",
+            "head": [
+              6080000,
+              6088000,
+              6096000,
+              6104000
+            ],
+            "tail": [
+              106268000,
+              106276000,
+              106284000,
+              106292000
+            ]
+          },
+          "vehicle_local_position_groundtruth": {
+            "_compact_sequence": true,
+            "length": 5012,
+            "sha256": "8e8e64be260eeee10e5baf2aef056659e58195db7ce9c9a4fc690fcd50c9e1dd",
+            "head": [
+              6076000,
+              6096000,
+              6112000,
+              6132000
+            ],
+            "tail": [
+              106224000,
+              106244000,
+              106260000,
+              106280000
+            ]
+          },
+          "vehicle_land_detected": {
+            "_compact_sequence": true,
+            "length": 108,
+            "sha256": "8cb69fa73089997e6c05a50655166e34d88362795a49c04c7f4d452657a780c0",
+            "head": [
+              6064000,
+              6104000,
+              6120000,
+              7120000
+            ],
+            "tail": [
+              104604000,
+              104748000,
+              105100000,
+              105436000
+            ]
+          }
+        }
+      },
+      "gazebo": {
+        "model": "x500_depth_fly_2",
+        "topic": "/x500_depth_fly_2/command/motor_speed",
+        "topology_confirmed": true,
+        "motor_command_samples": 8862,
+        "maximum_motor_command": 916.0,
+        "motor_command_received": true,
+        "odometry_samples": 1773,
+        "altitude_gain_m": 2.157717504741679,
+        "physical_climb": true,
+        "reason": null
+      }
+    },
+    "3": {
+      "accepted": true,
+      "reason": null,
+      "worker_mission_ready": true,
+      "px4_actuator_output_present": true,
+      "gazebo_motor_command_received": true,
+      "gazebo_physical_climb": true,
+      "estimator_climb": true,
+      "landed": true,
+      "worker_takeoff": {
+        "target_system": 4,
+        "target_component": 0,
+        "terminal_stage": "mission-ready",
+        "accepted": true,
+        "failure_reason": null,
+        "baseline_altitude_m": 0.009380355477333069,
+        "maximum_altitude_gain_m": 1.8124379962682724,
+        "arm_ack": {
+          "command": 400,
+          "result": 0,
+          "target_system": 255,
+          "target_component": 0,
+          "received_at_s": 530229.938490816,
+          "progress": 0,
+          "result_param2": 0,
+          "source_system": 4,
+          "source_component": 1
+        },
+        "takeoff_ack": {
+          "command": 22,
+          "result": 0,
+          "target_system": 255,
+          "target_component": 0,
+          "received_at_s": 530230.812754099,
+          "progress": 0,
+          "result_param2": 0,
+          "source_system": 4,
+          "source_component": 1
+        },
+        "offboard_ack": {
+          "command": 176,
+          "result": 0,
+          "target_system": 255,
+          "target_component": 0,
+          "received_at_s": 530239.207151748,
+          "progress": 0,
+          "result_param2": 0,
+          "source_system": 4,
+          "source_component": 1
+        },
+        "armed_at_s": 530230.801752945,
+        "takeoff_accepted_at_s": 530230.816693662,
+        "climb_confirmed_at_s": 530237.672220585,
+        "offboard_confirmed_at_s": 530240.181613348,
+        "events": {
+          "_compact_sequence": true,
+          "length": 9,
+          "sha256": "b0afd9655a57a753999d32e082fecffc8c21859820fc0ac3ff67a48bf9796348",
+          "head": [
+            {
+              "stage": "preflight-ready",
+              "at_s": 530229.935561159,
+              "target_system": 4,
+              "target_component": 0,
+              "command": null,
+              "ack_result": null,
+              "armed": null,
+              "landed": null,
+              "navigation_state": null,
+              "offboard": null,
+              "altitude_m": 0.009380355477333069,
+              "status_age_s": null,
+              "detail": null
+            },
+            {
+              "stage": "arm-sent",
+              "at_s": 530229.935689,
+              "target_system": 4,
+              "target_component": 0,
+              "command": 400,
+              "ack_result": null,
+              "armed": null,
+              "landed": null,
+              "navigation_state": null,
+              "offboard": null,
+              "altitude_m": 0.009380355477333069,
+              "status_age_s": null,
+              "detail": null
+            },
+            {
+              "stage": "armed",
+              "at_s": 530230.801752945,
+              "target_system": 4,
+              "target_component": 0,
+              "command": null,
+              "ack_result": 0,
+              "armed": true,
+              "landed": true,
+              "navigation_state": 4,
+              "offboard": false,
+              "altitude_m": 0.00940781831741333,
+              "status_age_s": 0.0007247719913721085,
+              "detail": null
+            },
+            {
+              "stage": "takeoff-sent",
+              "at_s": 530230.801840841,
+              "target_system": 4,
+              "target_component": 0,
+              "command": 22,
+              "ack_result": null,
+              "armed": true,
+              "landed": true,
+              "navigation_state": 4,
+              "offboard": false,
+              "altitude_m": 0.00940781831741333,
+              "status_age_s": 0.0008126680040732026,
+              "detail": null
+            }
+          ],
+          "tail": [
+            {
+              "stage": "climb-confirmed",
+              "at_s": 530237.672220585,
+              "target_system": 4,
+              "target_component": 0,
+              "command": null,
+              "ack_result": null,
+              "armed": true,
+              "landed": false,
+              "navigation_state": 4,
+              "offboard": false,
+              "altitude_m": 1.8218183517456055,
+              "status_age_s": 0.10389927204232663,
+              "detail": null
+            },
+            {
+              "stage": "offboard-primed",
+              "at_s": 530239.205617825,
+              "target_system": 4,
+              "target_component": 0,
+              "command": null,
+              "ack_result": null,
+              "armed": true,
+              "landed": false,
+              "navigation_state": 4,
+              "offboard": false,
+              "altitude_m": 2.0980989933013916,
+              "status_age_s": 0.20339594408869743,
+              "detail": null
+            },
+            {
+              "stage": "offboard-confirmed",
+              "at_s": 530240.181613348,
+              "target_system": 4,
+              "target_component": 0,
+              "command": null,
+              "ack_result": null,
+              "armed": true,
+              "landed": false,
+              "navigation_state": 6,
+              "offboard": true,
+              "altitude_m": 2.118694305419922,
+              "status_age_s": 0.001050489954650402,
+              "detail": null
+            },
+            {
+              "stage": "mission-ready",
+              "at_s": 530240.181613348,
+              "target_system": 4,
+              "target_component": 0,
+              "command": null,
+              "ack_result": null,
+              "armed": true,
+              "landed": false,
+              "navigation_state": 6,
+              "offboard": true,
+              "altitude_m": 2.118694305419922,
+              "status_age_s": 0.001050489954650402,
+              "detail": null
+            }
+          ]
+        },
+        "cleanup_failure": null
+      },
+      "ulog": {
+        "accepted": true,
+        "reason": null,
+        "missing_datasets": [],
+        "command_acks": {
+          "arm": {
+            "command": 400,
+            "result": 0,
+            "timestamp_us": 72984000
+          },
+          "takeoff": {
+            "command": 22,
+            "result": 0,
+            "timestamp_us": 73860000
+          },
+          "offboard": {
+            "command": 176,
+            "result": 0,
+            "timestamp_us": 81888000
+          }
+        },
+        "commands_accepted": true,
+        "actuator_output_present": true,
+        "maximum_actuator_output": 0.8866679072380066,
+        "estimator_altitude_gain_m": 2.1525624990463257,
+        "groundtruth_altitude_gain_m": 2.150137393735349,
+        "landed_at_end": true,
+        "source": {
+          "sha256": "de635e9671d62b96401acf600b7d62804230022f8c08c5d0da8e6de55aa5a785",
+          "bytes": 25981321
+        },
+        "timestamps_us": {
+          "vehicle_command": {
+            "_compact_sequence": true,
+            "length": 9,
+            "sha256": "23a1ba555ee13fc2b92f458ccaaa92aaf1836e857973dc83fc1b5a5b72d1bcef",
+            "head": [
+              7568000,
+              72980000,
+              73848000,
+              81888000
+            ],
+            "tail": [
+              86880000,
+              86880000,
+              86880000,
+              90900000
+            ]
+          },
+          "vehicle_command_ack": {
+            "_compact_sequence": true,
+            "length": 12,
+            "sha256": "d6fac83c7881f77d4ed1a586a26c53dfa589497a63d7100588b17546067467b4",
+            "head": [
+              7596000,
+              8668000,
+              72856000,
+              72864000
+            ],
+            "tail": [
+              81888000,
+              81900000,
+              86612000,
+              90908000
+            ]
+          },
+          "actuator_motors": {
+            "_compact_sequence": true,
+            "length": 841,
+            "sha256": "c1a911f35b722d93ecde35f4d3c137905f8e0d33193a6fb2ab6c996459265b24",
+            "head": [
+              7988000,
+              7992000,
+              8088000,
+              8192000
+            ],
+            "tail": [
+              91592000,
+              91688000,
+              91792000,
+              91892000
+            ]
+          },
+          "vehicle_local_position": {
+            "_compact_sequence": true,
+            "length": 10479,
+            "sha256": "679038c5c056cbe54b5c80be2632ebfab4c8e15e3dee0700f9b80b697a68a778",
+            "head": [
+              7984000,
+              7992000,
+              8000000,
+              8012000
+            ],
+            "tail": [
+              91880000,
+              91888000,
+              91896000,
+              91904000
+            ]
+          },
+          "vehicle_local_position_groundtruth": {
+            "_compact_sequence": true,
+            "length": 4197,
+            "sha256": "95cef9938d6f328bca0d09527d6b635fb4bd69d8a886f7cd100e2dd0c9e280e0",
+            "head": [
+              7984000,
+              8004000,
+              8024000,
+              8044000
+            ],
+            "tail": [
+              91824000,
+              91844000,
+              91864000,
+              91900000
+            ]
+          },
+          "vehicle_land_detected": {
+            "_compact_sequence": true,
+            "length": 93,
+            "sha256": "d9a8540784f8e0fface4db3d0f91db41c2f9f71bc1eb4dad00fc92b62ad13cb7",
+            "head": [
+              7960000,
+              8020000,
+              8040000,
+              9044000
+            ],
+            "tail": [
+              90400000,
+              90736000,
+              90896000,
+              91896000
+            ]
+          }
+        }
+      },
+      "gazebo": {
+        "model": "x500_depth_fly_3",
+        "topic": "/x500_depth_fly_3/command/motor_speed",
+        "topology_confirmed": true,
+        "motor_command_samples": 8856,
+        "maximum_motor_command": 947.0,
+        "motor_command_received": true,
+        "odometry_samples": 1774,
+        "altitude_gain_m": 2.150094487340196,
+        "physical_climb": true,
+        "reason": null
+      }
+    },
+    "4": {
+      "accepted": true,
+      "reason": null,
+      "worker_mission_ready": true,
+      "px4_actuator_output_present": true,
+      "gazebo_motor_command_received": true,
+      "gazebo_physical_climb": true,
+      "estimator_climb": true,
+      "landed": true,
+      "worker_takeoff": {
+        "target_system": 5,
+        "target_component": 0,
+        "terminal_stage": "mission-ready",
+        "accepted": true,
+        "failure_reason": null,
+        "baseline_altitude_m": 0.02277149260044098,
+        "maximum_altitude_gain_m": 1.7967667430639267,
+        "arm_ack": {
+          "command": 400,
+          "result": 0,
+          "target_system": 255,
+          "target_component": 0,
+          "received_at_s": 530230.076935051,
+          "progress": 0,
+          "result_param2": 0,
+          "source_system": 5,
+          "source_component": 1
+        },
+        "takeoff_ack": {
+          "command": 22,
+          "result": 0,
+          "target_system": 255,
+          "target_component": 0,
+          "received_at_s": 530230.945335109,
+          "progress": 0,
+          "result_param2": 0,
+          "source_system": 5,
+          "source_component": 1
+        },
+        "offboard_ack": {
+          "command": 176,
+          "result": 0,
+          "target_system": 255,
+          "target_component": 0,
+          "received_at_s": 530239.336273406,
+          "progress": 0,
+          "result_param2": 0,
+          "source_system": 5,
+          "source_component": 1
+        },
+        "armed_at_s": 530230.937876643,
+        "takeoff_accepted_at_s": 530230.949303714,
+        "climb_confirmed_at_s": 530237.803412457,
+        "offboard_confirmed_at_s": 530240.309654697,
+        "events": {
+          "_compact_sequence": true,
+          "length": 9,
+          "sha256": "883665eb3c86ca04484abf9f6f22985ac2d0a3d404d44e8ed765a022f543461b",
+          "head": [
+            {
+              "stage": "preflight-ready",
+              "at_s": 530230.0719065,
+              "target_system": 5,
+              "target_component": 0,
+              "command": null,
+              "ack_result": null,
+              "armed": null,
+              "landed": null,
+              "navigation_state": null,
+              "offboard": null,
+              "altitude_m": 0.02277149260044098,
+              "status_age_s": null,
+              "detail": null
+            },
+            {
+              "stage": "arm-sent",
+              "at_s": 530230.07198629,
+              "target_system": 5,
+              "target_component": 0,
+              "command": 400,
+              "ack_result": null,
+              "armed": null,
+              "landed": null,
+              "navigation_state": null,
+              "offboard": null,
+              "altitude_m": 0.02277149260044098,
+              "status_age_s": null,
+              "detail": null
+            },
+            {
+              "stage": "armed",
+              "at_s": 530230.937876643,
+              "target_system": 5,
+              "target_component": 0,
+              "command": null,
+              "ack_result": 0,
+              "armed": true,
+              "landed": true,
+              "navigation_state": 4,
+              "offboard": false,
+              "altitude_m": 0.02406853437423706,
+              "status_age_s": 0.001132581033743918,
+              "detail": null
+            },
+            {
+              "stage": "takeoff-sent",
+              "at_s": 530230.937958546,
+              "target_system": 5,
+              "target_component": 0,
+              "command": 22,
+              "ack_result": null,
+              "armed": true,
+              "landed": true,
+              "navigation_state": 4,
+              "offboard": false,
+              "altitude_m": 0.02406853437423706,
+              "status_age_s": 0.0012144839856773615,
+              "detail": null
+            }
+          ],
+          "tail": [
+            {
+              "stage": "climb-confirmed",
+              "at_s": 530237.803412457,
+              "target_system": 5,
+              "target_component": 0,
+              "command": null,
+              "ack_result": null,
+              "armed": true,
+              "landed": false,
+              "navigation_state": 4,
+              "offboard": false,
+              "altitude_m": 1.8195382356643677,
+              "status_age_s": 0.10411429300438613,
+              "detail": null
+            },
+            {
+              "stage": "offboard-primed",
+              "at_s": 530239.335086928,
+              "target_system": 5,
+              "target_component": 0,
+              "command": null,
+              "ack_result": null,
+              "armed": true,
+              "landed": false,
+              "navigation_state": 4,
+              "offboard": false,
+              "altitude_m": 2.0819127559661865,
+              "status_age_s": 0.20351615897379816,
+              "detail": null
+            },
+            {
+              "stage": "offboard-confirmed",
+              "at_s": 530240.309654697,
+              "target_system": 5,
+              "target_component": 0,
+              "command": null,
+              "ack_result": null,
+              "armed": true,
+              "landed": false,
+              "navigation_state": 6,
+              "offboard": true,
+              "altitude_m": 2.1425132751464844,
+              "status_age_s": 0.0008737900061532855,
+              "detail": null
+            },
+            {
+              "stage": "mission-ready",
+              "at_s": 530240.309654697,
+              "target_system": 5,
+              "target_component": 0,
+              "command": null,
+              "ack_result": null,
+              "armed": true,
+              "landed": false,
+              "navigation_state": 6,
+              "offboard": true,
+              "altitude_m": 2.1425132751464844,
+              "status_age_s": 0.0008737900061532855,
+              "detail": null
+            }
+          ]
+        },
+        "cleanup_failure": null
+      },
+      "ulog": {
+        "accepted": true,
+        "reason": null,
+        "missing_datasets": [],
+        "command_acks": {
+          "arm": {
+            "command": 400,
+            "result": 0,
+            "timestamp_us": 73128000
+          },
+          "takeoff": {
+            "command": 22,
+            "result": 0,
+            "timestamp_us": 73992000
+          },
+          "offboard": {
+            "command": 176,
+            "result": 0,
+            "timestamp_us": 82016000
+          }
+        },
+        "commands_accepted": true,
+        "actuator_output_present": true,
+        "maximum_actuator_output": 0.8255652189254761,
+        "estimator_altitude_gain_m": 2.1424127519130707,
+        "groundtruth_altitude_gain_m": 2.143668401055038,
+        "landed_at_end": true,
+        "source": {
+          "sha256": "fededa2afab44e737e7c04edae045032cc2c313a7bf25116670e0c532312be5c",
+          "bytes": 25389032
+        },
+        "timestamps_us": {
+          "vehicle_command": {
+            "_compact_sequence": true,
+            "length": 9,
+            "sha256": "e867ecabad6d5b890ac861146fbb4a9d169e189002201c55c326651fd9beed70",
+            "head": [
+              9584000,
+              73116000,
+              73984000,
+              82016000
+            ],
+            "tail": [
+              86892000,
+              86892000,
+              86892000,
+              91000000
+            ]
+          },
+          "vehicle_command_ack": {
+            "_compact_sequence": true,
+            "length": 12,
+            "sha256": "73ac720fc6b0b73b999c4531863ed9d33a314f07cb3d6063a45339da6eae411c",
+            "head": [
+              9588000,
+              10684000,
+              72992000,
+              73000000
+            ],
+            "tail": [
+              82016000,
+              82020000,
+              86624000,
+              91004000
+            ]
+          },
+          "actuator_motors": {
+            "_compact_sequence": true,
+            "length": 820,
+            "sha256": "5916e923508e953f80016a15c658f5d2487ca3a80a9f8d6be2163faaa9264280",
+            "head": [
+              10136000,
+              10140000,
+              10236000,
+              10336000
+            ],
+            "tail": [
+              91636000,
+              91736000,
+              91836000,
+              91936000
+            ]
+          },
+          "vehicle_local_position": {
+            "_compact_sequence": true,
+            "length": 10222,
+            "sha256": "1e641836c61f5318377c61eaae804e07e7cb07df8a97287bedffc9ce6a646c62",
+            "head": [
+              10132000,
+              10140000,
+              10148000,
+              10156000
+            ],
+            "tail": [
+              91976000,
+              91984000,
+              91992000,
+              92000000
+            ]
+          },
+          "vehicle_local_position_groundtruth": {
+            "_compact_sequence": true,
+            "length": 4095,
+            "sha256": "57e4e6eebe5f45d3e628f7ecdc4161146f1b0ac5b5f7d80728efd0aad418f031",
+            "head": [
+              10136000,
+              10156000,
+              10176000,
+              10192000
+            ],
+            "tail": [
+              91920000,
+              91940000,
+              91976000,
+              91996000
+            ]
+          },
+          "vehicle_land_detected": {
+            "_compact_sequence": true,
+            "length": 88,
+            "sha256": "00bf3765da02ab1af561402d32732b9dceedfe1690b3ebc73995ec4aaebb387a",
+            "head": [
+              10100000,
+              11100000,
+              12100000,
+              13100000
+            ],
+            "tail": [
+              90120000,
+              90472000,
+              90812000,
+              91004000
+            ]
+          }
+        }
+      },
+      "gazebo": {
+        "model": "x500_depth_fly_4",
+        "topic": "/x500_depth_fly_4/command/motor_speed",
+        "topology_confirmed": true,
+        "motor_command_samples": 8851,
+        "maximum_motor_command": 954.0,
+        "motor_command_received": true,
+        "odometry_samples": 1774,
+        "altitude_gain_m": 2.14363237846671,
+        "physical_climb": true,
+        "reason": null
+      }
+    }
+  },
+  "all_takeoff_chains_proven": true,
+  "actuator_link": {
+    "schema": "flydrones-gazebo-actuator-link-summary-v1",
+    "accepted": true,
+    "closed_cleanly": true,
+    "fleet_size": 5,
+    "vehicles": {
+      "x500_depth_fly_0": {
+        "model": "x500_depth_fly_0",
+        "topic": "/x500_depth_fly_0/command/motor_speed",
+        "topology_confirmed": true,
+        "motor_command_samples": 8853,
+        "maximum_motor_command": 904.0,
+        "motor_command_received": true,
+        "odometry_samples": 1774,
+        "altitude_gain_m": 2.1698111493280017,
+        "physical_climb": true,
+        "reason": null
+      },
+      "x500_depth_fly_1": {
+        "model": "x500_depth_fly_1",
+        "topic": "/x500_depth_fly_1/command/motor_speed",
+        "topology_confirmed": true,
+        "motor_command_samples": 8849,
+        "maximum_motor_command": 965.0,
+        "motor_command_received": true,
+        "odometry_samples": 1773,
+        "altitude_gain_m": 2.156158838387726,
+        "physical_climb": true,
+        "reason": null
+      },
+      "x500_depth_fly_2": {
+        "model": "x500_depth_fly_2",
+        "topic": "/x500_depth_fly_2/command/motor_speed",
+        "topology_confirmed": true,
+        "motor_command_samples": 8862,
+        "maximum_motor_command": 916.0,
+        "motor_command_received": true,
+        "odometry_samples": 1773,
+        "altitude_gain_m": 2.157717504741679,
+        "physical_climb": true,
+        "reason": null
+      },
+      "x500_depth_fly_3": {
+        "model": "x500_depth_fly_3",
+        "topic": "/x500_depth_fly_3/command/motor_speed",
+        "topology_confirmed": true,
+        "motor_command_samples": 8856,
+        "maximum_motor_command": 947.0,
+        "motor_command_received": true,
+        "odometry_samples": 1774,
+        "altitude_gain_m": 2.150094487340196,
+        "physical_climb": true,
+        "reason": null
+      },
+      "x500_depth_fly_4": {
+        "model": "x500_depth_fly_4",
+        "topic": "/x500_depth_fly_4/command/motor_speed",
+        "topology_confirmed": true,
+        "motor_command_samples": 8851,
+        "maximum_motor_command": 954.0,
+        "motor_command_received": true,
+        "odometry_samples": 1774,
+        "altitude_gain_m": 2.14363237846671,
+        "physical_climb": true,
+        "reason": null
+      }
+    },
+    "errors": {
+      "malformed_events": 0,
+      "cross_model_events": 0,
+      "out_of_order_events": 0,
+      "probe_errors": 0
+    },
+    "source": {
+      "sha256": "9efa10882281228c9949a3d36db1e98bdc44a46d050b641003e3a8f05b69070b",
+      "bytes": 9702005
+    }
+  },
+  "ulog_takeoff_by_vehicle": {
+    "0": {
+      "accepted": true,
+      "reason": null,
+      "missing_datasets": [],
+      "command_acks": {
+        "arm": {
+          "command": 400,
+          "result": 0,
+          "timestamp_us": 73304000
+        },
+        "takeoff": {
+          "command": 22,
+          "result": 0,
+          "timestamp_us": 74172000
+        },
+        "offboard": {
+          "command": 176,
+          "result": 0,
+          "timestamp_us": 82248000
+        }
+      },
+      "commands_accepted": true,
+      "actuator_output_present": true,
+      "maximum_actuator_output": 0.8770403861999512,
+      "estimator_altitude_gain_m": 2.0936825374956243,
+      "groundtruth_altitude_gain_m": 2.1702223792672157,
+      "landed_at_end": true,
+      "source": {
+        "sha256": "d24ef3ae766152ff4260cc6ac2b5a90106ef2a10efa75fa33a8de11ebc243a54",
+        "bytes": 27780746
+      },
+      "timestamps_us": {
+        "vehicle_command": {
+          "_compact_sequence": true,
+          "length": 9,
+          "sha256": "09bb2cbeeb98a1448d41bbdce7b7dba775939e6c2f9d4e3967687179f7b39683",
+          "head": [
+            1880000,
+            73300000,
+            74168000,
+            82248000
+          ],
+          "tail": [
+            86888000,
+            86888000,
+            86888000,
+            91000000
+          ]
+        },
+        "vehicle_command_ack": {
+          "_compact_sequence": true,
+          "length": 12,
+          "sha256": "44b448cd01d6ce3b3fe7462f05199f5a68f131be4101de14022493a211afbdd2",
+          "head": [
+            1884000,
+            2980000,
+            73176000,
+            73184000
+          ],
+          "tail": [
+            82248000,
+            82252000,
+            86624000,
+            91004000
+          ]
+        },
+        "actuator_motors": {
+          "_compact_sequence": true,
+          "length": 899,
+          "sha256": "6c7374dd94b631f5189eb14ab4d9a2c5f38730990f78e69b4dce499489c224da",
+          "head": [
+            2248000,
+            2252000,
+            2352000,
+            2452000
+          ],
+          "tail": [
+            91652000,
+            91752000,
+            91852000,
+            91952000
+          ]
+        },
+        "vehicle_local_position": {
+          "_compact_sequence": true,
+          "length": 11208,
+          "sha256": "ad37b9d73bbfdbe6bcf7763323a4a050a727bfb37c91d75527affa96496b3fe8",
+          "head": [
+            2248000,
+            2256000,
+            2264000,
+            2272000
+          ],
+          "tail": [
+            91976000,
+            91984000,
+            91992000,
+            92000000
+          ]
+        },
+        "vehicle_local_position_groundtruth": {
+          "_compact_sequence": true,
+          "length": 4489,
+          "sha256": "d6d468f7f1c7dfe7f242ab2e97c6c8db9629912a4bc49b75a9ee9bf70afdc702",
+          "head": [
+            2244000,
+            2264000,
+            2284000,
+            2304000
+          ],
+          "tail": [
+            91920000,
+            91940000,
+            91956000,
+            91976000
+          ]
+        },
+        "vehicle_land_detected": {
+          "_compact_sequence": true,
+          "length": 100,
+          "sha256": "4b48fd1e1c964d79f26449f851a565b6f12eb2bb3cf7c1335e949721cba85bb5",
+          "head": [
+            1736000,
+            2296000,
+            2336000,
+            2352000
+          ],
+          "tail": [
+            90100000,
+            90452000,
+            90788000,
+            91040000
+          ]
+        }
+      }
+    },
+    "1": {
+      "accepted": true,
+      "reason": null,
+      "missing_datasets": [],
+      "command_acks": {
+        "arm": {
+          "command": 400,
+          "result": 0,
+          "timestamp_us": 72908000
+        },
+        "takeoff": {
+          "command": 22,
+          "result": 0,
+          "timestamp_us": 73772000
+        },
+        "offboard": {
+          "command": 176,
+          "result": 0,
+          "timestamp_us": 81816000
+        }
+      },
+      "commands_accepted": true,
+      "actuator_output_present": true,
+      "maximum_actuator_output": 0.8496241569519043,
+      "estimator_altitude_gain_m": 2.1670355065143667,
+      "groundtruth_altitude_gain_m": 2.1562383584678173,
+      "landed_at_end": true,
+      "source": {
+        "sha256": "9f6fafe66b415cb48094942543dc3b6044aee26f5c6a5f58d2cc9d132adf773a",
+        "bytes": 26921805
+      },
+      "timestamps_us": {
+        "vehicle_command": {
+          "_compact_sequence": true,
+          "length": 9,
+          "sha256": "19fd1014c017028d386c747a0c974bb5b74ea86f86dfd9c08aecb00d65f8faba",
+          "head": [
+            3420000,
+            72900000,
+            73768000,
+            81816000
+          ],
+          "tail": [
+            85380000,
+            85380000,
+            85380000,
+            89396000
+          ]
+        },
+        "vehicle_command_ack": {
+          "_compact_sequence": true,
+          "length": 12,
+          "sha256": "340db12926cc8f4e708364734cefc2a2d3eb1038a5f675e0a42bcb92cb170206",
+          "head": [
+            3664000,
+            4720000,
+            72776000,
+            72784000
+          ],
+          "tail": [
+            81816000,
+            81820000,
+            85112000,
+            89408000
+          ]
+        },
+        "actuator_motors": {
+          "_compact_sequence": true,
+          "length": 867,
+          "sha256": "09113e0633a07b83f770c74d35e56179bfa7eea4c5c999c95fbcee7a3762cbc3",
+          "head": [
+            3888000,
+            3892000,
+            3992000,
+            4092000
+          ],
+          "tail": [
+            90092000,
+            90192000,
+            90292000,
+            90392000
+          ]
+        },
+        "vehicle_local_position": {
+          "_compact_sequence": true,
+          "length": 10802,
+          "sha256": "3e381b0d1cf4be71243cbfc90da71fc6a2692cd0207037ef21a1aecc52a1bb50",
+          "head": [
+            3888000,
+            3896000,
+            3904000,
+            3912000
+          ],
+          "tail": [
+            90376000,
+            90384000,
+            90392000,
+            90400000
+          ]
+        },
+        "vehicle_local_position_groundtruth": {
+          "_compact_sequence": true,
+          "length": 4327,
+          "sha256": "347c976229798d15d0e8e4a0723504a983dc80e0f5fdc43728c653f9fb1a5869",
+          "head": [
+            3872000,
+            3892000,
+            3912000,
+            3932000
+          ],
+          "tail": [
+            90320000,
+            90340000,
+            90360000,
+            90380000
+          ]
+        },
+        "vehicle_land_detected": {
+          "_compact_sequence": true,
+          "length": 96,
+          "sha256": "a014e8a4505e0640dbd928c92a8f2ce298343f9e3a44d8cd939958beeff0d32e",
+          "head": [
+            3356000,
+            3920000,
+            3960000,
+            3984000
+          ],
+          "tail": [
+            88648000,
+            89000000,
+            89336000,
+            89576000
+          ]
+        }
+      }
+    },
+    "2": {
+      "accepted": true,
+      "reason": null,
+      "missing_datasets": [],
+      "command_acks": {
+        "arm": {
+          "command": 400,
+          "result": 0,
+          "timestamp_us": 73072000
+        },
+        "takeoff": {
+          "command": 22,
+          "result": 0,
+          "timestamp_us": 73936000
+        },
+        "offboard": {
+          "command": 176,
+          "result": 0,
+          "timestamp_us": 81972000
+        }
+      },
+      "commands_accepted": true,
+      "actuator_output_present": true,
+      "maximum_actuator_output": 0.8937451243400574,
+      "estimator_altitude_gain_m": 2.0999087393283844,
+      "groundtruth_altitude_gain_m": 2.157752097584307,
+      "landed_at_end": true,
+      "source": {
+        "sha256": "1c75da2e4f3523b80d29f9e2e8ae495c35dff8cf3de6ad215af917a7b6ad0a00",
+        "bytes": 30840180
+      },
+      "timestamps_us": {
+        "vehicle_command": {
+          "_compact_sequence": true,
+          "length": 9,
+          "sha256": "90cba699296d93c24be69e518e430001f6492044a7979c26ea4bb09fad2056d7",
+          "head": [
+            5636000,
+            73064000,
+            73932000,
+            81972000
+          ],
+          "tail": [
+            101476000,
+            101476000,
+            101476000,
+            105556000
+          ]
+        },
+        "vehicle_command_ack": {
+          "_compact_sequence": true,
+          "length": 12,
+          "sha256": "a877488ed278c9cbb367f65c903978df99bebe28689e2a461b65d33a3f03f76f",
+          "head": [
+            5640000,
+            6736000,
+            72940000,
+            72948000
+          ],
+          "tail": [
+            81972000,
+            81984000,
+            101208000,
+            105564000
+          ]
+        },
+        "actuator_motors": {
+          "_compact_sequence": true,
+          "length": 1004,
+          "sha256": "2059312815489b5d471911aa6cbd7ae824b471e51b2e14b4265781b9055cbed2",
+          "head": [
+            6084000,
+            6088000,
+            6188000,
+            6288000
+          ],
+          "tail": [
+            105988000,
+            106088000,
+            106188000,
+            106288000
+          ]
+        },
+        "vehicle_local_position": {
+          "_compact_sequence": true,
+          "length": 12519,
+          "sha256": "07766e87a71a009763ce600126096f86c4829dc6f8a76b92b788be2d9bc9a486",
+          "head": [
+            6080000,
+            6088000,
+            6096000,
+            6104000
+          ],
+          "tail": [
+            106268000,
+            106276000,
+            106284000,
+            106292000
+          ]
+        },
+        "vehicle_local_position_groundtruth": {
+          "_compact_sequence": true,
+          "length": 5012,
+          "sha256": "8e8e64be260eeee10e5baf2aef056659e58195db7ce9c9a4fc690fcd50c9e1dd",
+          "head": [
+            6076000,
+            6096000,
+            6112000,
+            6132000
+          ],
+          "tail": [
+            106224000,
+            106244000,
+            106260000,
+            106280000
+          ]
+        },
+        "vehicle_land_detected": {
+          "_compact_sequence": true,
+          "length": 108,
+          "sha256": "8cb69fa73089997e6c05a50655166e34d88362795a49c04c7f4d452657a780c0",
+          "head": [
+            6064000,
+            6104000,
+            6120000,
+            7120000
+          ],
+          "tail": [
+            104604000,
+            104748000,
+            105100000,
+            105436000
+          ]
+        }
+      }
+    },
+    "3": {
+      "accepted": true,
+      "reason": null,
+      "missing_datasets": [],
+      "command_acks": {
+        "arm": {
+          "command": 400,
+          "result": 0,
+          "timestamp_us": 72984000
+        },
+        "takeoff": {
+          "command": 22,
+          "result": 0,
+          "timestamp_us": 73860000
+        },
+        "offboard": {
+          "command": 176,
+          "result": 0,
+          "timestamp_us": 81888000
+        }
+      },
+      "commands_accepted": true,
+      "actuator_output_present": true,
+      "maximum_actuator_output": 0.8866679072380066,
+      "estimator_altitude_gain_m": 2.1525624990463257,
+      "groundtruth_altitude_gain_m": 2.150137393735349,
+      "landed_at_end": true,
+      "source": {
+        "sha256": "de635e9671d62b96401acf600b7d62804230022f8c08c5d0da8e6de55aa5a785",
+        "bytes": 25981321
+      },
+      "timestamps_us": {
+        "vehicle_command": {
+          "_compact_sequence": true,
+          "length": 9,
+          "sha256": "23a1ba555ee13fc2b92f458ccaaa92aaf1836e857973dc83fc1b5a5b72d1bcef",
+          "head": [
+            7568000,
+            72980000,
+            73848000,
+            81888000
+          ],
+          "tail": [
+            86880000,
+            86880000,
+            86880000,
+            90900000
+          ]
+        },
+        "vehicle_command_ack": {
+          "_compact_sequence": true,
+          "length": 12,
+          "sha256": "d6fac83c7881f77d4ed1a586a26c53dfa589497a63d7100588b17546067467b4",
+          "head": [
+            7596000,
+            8668000,
+            72856000,
+            72864000
+          ],
+          "tail": [
+            81888000,
+            81900000,
+            86612000,
+            90908000
+          ]
+        },
+        "actuator_motors": {
+          "_compact_sequence": true,
+          "length": 841,
+          "sha256": "c1a911f35b722d93ecde35f4d3c137905f8e0d33193a6fb2ab6c996459265b24",
+          "head": [
+            7988000,
+            7992000,
+            8088000,
+            8192000
+          ],
+          "tail": [
+            91592000,
+            91688000,
+            91792000,
+            91892000
+          ]
+        },
+        "vehicle_local_position": {
+          "_compact_sequence": true,
+          "length": 10479,
+          "sha256": "679038c5c056cbe54b5c80be2632ebfab4c8e15e3dee0700f9b80b697a68a778",
+          "head": [
+            7984000,
+            7992000,
+            8000000,
+            8012000
+          ],
+          "tail": [
+            91880000,
+            91888000,
+            91896000,
+            91904000
+          ]
+        },
+        "vehicle_local_position_groundtruth": {
+          "_compact_sequence": true,
+          "length": 4197,
+          "sha256": "95cef9938d6f328bca0d09527d6b635fb4bd69d8a886f7cd100e2dd0c9e280e0",
+          "head": [
+            7984000,
+            8004000,
+            8024000,
+            8044000
+          ],
+          "tail": [
+            91824000,
+            91844000,
+            91864000,
+            91900000
+          ]
+        },
+        "vehicle_land_detected": {
+          "_compact_sequence": true,
+          "length": 93,
+          "sha256": "d9a8540784f8e0fface4db3d0f91db41c2f9f71bc1eb4dad00fc92b62ad13cb7",
+          "head": [
+            7960000,
+            8020000,
+            8040000,
+            9044000
+          ],
+          "tail": [
+            90400000,
+            90736000,
+            90896000,
+            91896000
+          ]
+        }
+      }
+    },
+    "4": {
+      "accepted": true,
+      "reason": null,
+      "missing_datasets": [],
+      "command_acks": {
+        "arm": {
+          "command": 400,
+          "result": 0,
+          "timestamp_us": 73128000
+        },
+        "takeoff": {
+          "command": 22,
+          "result": 0,
+          "timestamp_us": 73992000
+        },
+        "offboard": {
+          "command": 176,
+          "result": 0,
+          "timestamp_us": 82016000
+        }
+      },
+      "commands_accepted": true,
+      "actuator_output_present": true,
+      "maximum_actuator_output": 0.8255652189254761,
+      "estimator_altitude_gain_m": 2.1424127519130707,
+      "groundtruth_altitude_gain_m": 2.143668401055038,
+      "landed_at_end": true,
+      "source": {
+        "sha256": "fededa2afab44e737e7c04edae045032cc2c313a7bf25116670e0c532312be5c",
+        "bytes": 25389032
+      },
+      "timestamps_us": {
+        "vehicle_command": {
+          "_compact_sequence": true,
+          "length": 9,
+          "sha256": "e867ecabad6d5b890ac861146fbb4a9d169e189002201c55c326651fd9beed70",
+          "head": [
+            9584000,
+            73116000,
+            73984000,
+            82016000
+          ],
+          "tail": [
+            86892000,
+            86892000,
+            86892000,
+            91000000
+          ]
+        },
+        "vehicle_command_ack": {
+          "_compact_sequence": true,
+          "length": 12,
+          "sha256": "73ac720fc6b0b73b999c4531863ed9d33a314f07cb3d6063a45339da6eae411c",
+          "head": [
+            9588000,
+            10684000,
+            72992000,
+            73000000
+          ],
+          "tail": [
+            82016000,
+            82020000,
+            86624000,
+            91004000
+          ]
+        },
+        "actuator_motors": {
+          "_compact_sequence": true,
+          "length": 820,
+          "sha256": "5916e923508e953f80016a15c658f5d2487ca3a80a9f8d6be2163faaa9264280",
+          "head": [
+            10136000,
+            10140000,
+            10236000,
+            10336000
+          ],
+          "tail": [
+            91636000,
+            91736000,
+            91836000,
+            91936000
+          ]
+        },
+        "vehicle_local_position": {
+          "_compact_sequence": true,
+          "length": 10222,
+          "sha256": "1e641836c61f5318377c61eaae804e07e7cb07df8a97287bedffc9ce6a646c62",
+          "head": [
+            10132000,
+            10140000,
+            10148000,
+            10156000
+          ],
+          "tail": [
+            91976000,
+            91984000,
+            91992000,
+            92000000
+          ]
+        },
+        "vehicle_local_position_groundtruth": {
+          "_compact_sequence": true,
+          "length": 4095,
+          "sha256": "57e4e6eebe5f45d3e628f7ecdc4161146f1b0ac5b5f7d80728efd0aad418f031",
+          "head": [
+            10136000,
+            10156000,
+            10176000,
+            10192000
+          ],
+          "tail": [
+            91920000,
+            91940000,
+            91976000,
+            91996000
+          ]
+        },
+        "vehicle_land_detected": {
+          "_compact_sequence": true,
+          "length": 88,
+          "sha256": "00bf3765da02ab1af561402d32732b9dceedfe1690b3ebc73995ec4aaebb387a",
+          "head": [
+            10100000,
+            11100000,
+            12100000,
+            13100000
+          ],
+          "tail": [
+            90120000,
+            90472000,
+            90812000,
+            91004000
+          ]
+        }
+      }
+    }
+  },
+  "fault_effect_observed_at_relay": true,
+  "fault_effect_proven_at_px4": true,
+  "geometry_separation_check_pass": true,
+  "geometry_forest_clearance_check_pass": true,
+  "all_landed": true,
+  "mission_visual_geometry_pass": false,
+  "trial_cleanup_verified": true,
+  "fault_vehicle_fail_closed_landing_observed": true,
+  "fault_vehicle_command_gate_verified": true,
+  "fault_vehicle_gate_land_sequence_observed": true,
+  "fault_vehicle_verified_fail_closed_response": false,
+  "fail_closed_verification_limit": "The worker attempted a MAVLink land request and a subsequent PX4 AUTO_LAND transition can be correlated in sim time, but no COMMAND_ACK was captured; request causality and physical safety are not proven.",
+  "operational_continuity_pass": false,
+  "safety_limit": "Geometry is a center-distance proxy; physical contact is not proven absent."
+}
