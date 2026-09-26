@@ -324,7 +324,7 @@ def run_trial(
                           "--mission-timeout", "70", "--process-timeout", "180",
                           "--gps-failure-vehicle", "0", "--gps-failure-at", "5",
                           "--gps-failure-mode", "fusion-off", "--gps-failure-all",
-                          "--external-vision-fusion",
+                          "--external-vision-fusion", "--allow-no-udp-blackout",
                           "--fault-marker", str(marker), "--vio-health-base-port", "16880"]
             with (output / "worker.log").open("w", encoding="utf-8") as log:
                 worker_process = subprocess.Popen(

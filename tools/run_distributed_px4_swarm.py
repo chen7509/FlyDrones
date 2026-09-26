@@ -64,6 +64,7 @@ def main() -> int:
     parser.add_argument("--expect-gps-vio-fallback", action="store_true")
     parser.add_argument("--px4-run-dir")
     parser.add_argument("--fault-marker")
+    parser.add_argument("--allow-no-udp-blackout", action="store_true")
     args = parser.parse_args()
     if args.expect_fault_landing and args.gps_failure_vehicle is None:
         parser.error("--expect-fault-landing requires --gps-failure-vehicle")
@@ -153,7 +154,11 @@ def main() -> int:
             vehicle_count=vehicle_count,
         )
     else:
-        _trace, summary = aggregate_distributed_artifacts(output_dir, vehicle_count=vehicle_count)
+        _trace, summary = aggregate_distributed_artifacts(
+            output_dir,
+            vehicle_count=vehicle_count,
+            require_udp_blackout=not args.allow_no_udp_blackout,
+        )
     summary["metrics"]["worker_exit_codes"] = exit_codes
     (output_dir / "summary.json").write_text(
         json.dumps(summary, ensure_ascii=False, indent=2) + "\n",

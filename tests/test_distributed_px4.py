@@ -1102,6 +1102,25 @@ def test_aggregate_distributed_artifacts_accepts_five_distinct_controller_proces
     assert summary["checks"]["zero_direct_global_neighbor_reads"]
     assert summary["metrics"]["controller_process_ids"] == [5000, 5001, 5002, 5003, 5004]
 
+    for vehicle_id in range(5):
+        path = tmp_path / f"agent-{vehicle_id}.json"
+        result = json.loads(path.read_text(encoding="utf-8"))
+        result["metrics"]["udp_blackout_dropped_packets"] = 0
+        path.write_text(json.dumps(result), encoding="utf-8")
+    _trace, strict = aggregate_distributed_artifacts(tmp_path)
+    _trace, renderer_trial = aggregate_distributed_artifacts(
+        tmp_path,
+        require_udp_blackout=False,
+    )
+    assert not strict["accepted"]
+    assert renderer_trial["accepted"]
+    assert not renderer_trial["acceptance_policy"]["udp_blackout_required"]
+    for vehicle_id in range(5):
+        path = tmp_path / f"agent-{vehicle_id}.json"
+        result = json.loads(path.read_text(encoding="utf-8"))
+        result["metrics"]["udp_blackout_dropped_packets"] = 10
+        path.write_text(json.dumps(result), encoding="utf-8")
+
     fault_path = tmp_path / "agent-0.json"
     fault_result = json.loads(fault_path.read_text(encoding="utf-8"))
     fault_result.update({

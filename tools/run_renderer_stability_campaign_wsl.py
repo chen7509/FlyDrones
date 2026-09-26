@@ -269,6 +269,7 @@ def calculate_frozen_hashes(config_path: Path, profile: Path, model: Path) -> di
         "profile": sha256(profile),
         "policy": sha256(model),
         "controller": sha256(ROOT / "src/flydrones/distributed_px4.py"),
+        "coordinator": sha256(ROOT / "tools/run_distributed_px4_swarm.py"),
         "relay": sha256(ROOT / "tools/relay_gazebo_vio.py"),
         "runner": sha256(ROOT / "tools/run_vio_stress_trial_wsl.py"),
         "launcher": sha256(ROOT / "tools/launch_px4_depth_swarm_wsl.sh"),

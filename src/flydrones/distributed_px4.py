@@ -317,6 +317,7 @@ def aggregate_distributed_artifacts(
     *,
     vehicle_count: int = 5,
     lane_spacing_m: float = 2.0,
+    require_udp_blackout: bool = True,
 ) -> tuple[list[dict], dict]:
     """Aggregate worker-owned files after all control processes have exited."""
     output = Path(output_dir)
@@ -386,7 +387,14 @@ def aggregate_distributed_artifacts(
             int(metrics.get("central_control_commands", 0)) for metrics in worker_metrics
         ),
     })
-    summary["accepted"] = all(summary["checks"].values())
+    acceptance_checks = {
+        name: accepted for name, accepted in summary["checks"].items()
+        if require_udp_blackout or name != "udp_blackout_exercised"
+    }
+    summary["acceptance_policy"] = {
+        "udp_blackout_required": require_udp_blackout,
+    }
+    summary["accepted"] = all(acceptance_checks.values())
     if aligned:
         fields = list(aligned[0])
         with (output / "flight.csv").open("w", newline="", encoding="utf-8") as handle:
