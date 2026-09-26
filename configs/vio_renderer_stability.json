@@ -91,7 +91,7 @@
     "runtime_probe": "e57c7a29137e7443373519550849b39247184c82d0698bb7c43b43c8ec0a5cf6",
     "actuator_probe": "e2e8797a0ea16e4215ef266b5243041d599f16abc50bd4514bf692aa6cc0d5ad",
     "takeoff_readiness": "2ffc2a3d4f4daef4b790b7d649ed7d3407c401deaa1a852d4f53f55982fb0f76",
-    "mavlink_drone": "2ba92c4cf8cb128566f1172dc6b8d273643b73e31f36a90631597bdba3f2ec95",
+    "mavlink_drone": "7f19e3651a59242b38dddf9033bd6603ef83b49734a38b28030a696b6864555c",
     "takeoff_stability_runner": "dbc199e7d59e7bcb6244d5b0ab9c786a1de29de8f9b648052deaf1843cff9099",
     "summary": "1deffc6b244ce55d393c548c3f7c7474ad4775fef58c53ecc2b7e081bd23a5eb",
     "evidence": "1a4983a1f12852081073330702d4a8f755e496a94d231c7d554b3bf15c58dd3a",

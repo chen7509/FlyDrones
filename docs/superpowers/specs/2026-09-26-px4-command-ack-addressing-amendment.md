@@ -38,8 +38,9 @@ An acknowledgement matches a pending command only when all of these hold:
 
 1. the command ID matches;
 2. the header source system matches the connected PX4 target system;
-3. the header source component is broadcast/unknown or matches the connected
-   PX4 target component;
+3. when discovery selects a specific PX4 target component, the header source
+   component is broadcast/unknown or matches it; a discovered target component
+   of `0` is a wildcard and accepts the responding PX4 component;
 4. the payload target system is absent/broadcast (`0`) or matches the local
    MAVLink source system;
 5. the payload target component is absent/broadcast (`0`) or matches the local

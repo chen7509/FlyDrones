@@ -204,6 +204,7 @@ class MavlinkDrone(Drone):
             self._command_acks = []
         if not hasattr(self, "_unmatched_command_acks"):
             self._unmatched_command_acks = []
+        vehicle_component = int(self.m.target_component)
         local_system = int(getattr(self.m, "source_system", self.m.target_system))
         local_component = int(getattr(self.m, "source_component", self.m.target_component))
         while True:
@@ -212,7 +213,10 @@ class MavlinkDrone(Drone):
                 matches = (
                     acknowledgement.command == command
                     and acknowledgement.source_system in (0, int(self.m.target_system))
-                    and acknowledgement.source_component in (0, int(self.m.target_component))
+                    and (
+                        vehicle_component == 0
+                        or acknowledgement.source_component in (0, vehicle_component)
+                    )
                     and acknowledgement.target_system in (0, local_system)
                     and acknowledgement.target_component in (0, local_component)
                 )

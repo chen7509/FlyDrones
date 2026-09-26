@@ -365,6 +365,27 @@ def test_wait_command_ack_accepts_missing_mavlink2_target_extensions(monkeypatch
     assert acknowledgement.target_component == 0
 
 
+def test_wait_command_ack_treats_connected_target_component_zero_as_wildcard(monkeypatch):
+    now = iter((0.0, 0.1))
+    monkeypatch.setattr(mavlink_module.time, "monotonic", lambda: next(now))
+    drone = bare_drone([
+        HeaderMessage(
+            "COMMAND_ACK", command=400, result=0,
+            source_system=1, source_component=1,
+            target_system=255, target_component=0,
+        ),
+    ])
+    drone.m.target_system = 1
+    drone.m.target_component = 0
+    drone.m.source_system = 255
+    drone.m.source_component = 0
+
+    acknowledgement = drone._wait_command_ack(400, timeout_s=1.0)
+
+    assert acknowledgement.source_component == 1
+    assert acknowledgement.target_system == 255
+
+
 def test_wait_command_ack_accepts_in_progress_only_after_final_result(monkeypatch):
     now = iter((0.0, 0.1, 0.2))
     monkeypatch.setattr(mavlink_module.time, "monotonic", lambda: next(now))
