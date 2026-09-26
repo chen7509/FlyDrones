@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -euo pipefail
+set -Eeuo pipefail
 
 repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 px4_root="${PX4_ROOT:-$HOME/PX4-Autopilot}"
@@ -8,9 +8,23 @@ run_dir="${FLYDRONES_PX4_RUN_DIR:-/tmp/flydrones-px4-five-depth}"
 vehicle_count="${FLYDRONES_VEHICLE_COUNT:-5}"
 vio_fault_profile="${FLYDRONES_VIO_FAULT_PROFILE:-}"
 vio_health_base_port="${FLYDRONES_VIO_HEALTH_BASE_PORT:-}"
+renderer_profile="${FLYDRONES_GZ_RENDER_PROFILE:-default}"
 world_source="$repo_root/results/px4-sitl-five-depth/flydrones_forest.sdf"
 world_target="$px4_root/Tools/simulation/gz/worlds/flydrones_forest.sdf"
 model_root="$px4_root/Tools/simulation/gz/models"
+registry="$run_dir/owned-processes.json"
+renderer_env=()
+
+case "$renderer_profile" in
+  default) ;;
+  d3d12-nvidia)
+    renderer_env=(GALLIUM_DRIVER=d3d12 MESA_D3D12_DEFAULT_ADAPTER_NAME=NVIDIA)
+    ;;
+  *)
+    echo "unsupported Gazebo renderer profile: $renderer_profile" >&2
+    exit 2
+    ;;
+esac
 
 if [[ ! -x "$build/bin/px4" ]]; then
   echo "PX4 SITL binary is missing: $build/bin/px4" >&2
@@ -24,23 +38,44 @@ if [[ -n "$vio_fault_profile" && ! -f "$vio_fault_profile" ]]; then
   echo "VIO fault profile is missing: $vio_fault_profile" >&2
   exit 2
 fi
-if [[ -n "$vio_fault_profile" && -e "$run_dir" ]]; then
-  echo "Fault-trial run directory already exists; refusing to overwrite: $run_dir" >&2
+if [[ -e "$run_dir" ]]; then
+  echo "PX4 run directory already exists; refusing to overwrite: $run_dir" >&2
   exit 2
 fi
 
-if [[ -n "$vio_fault_profile" ]]; then
-  mkdir -p "$run_dir/backups"
-  touch "$run_dir/fault-mode"
-  world_source="$run_dir/flydrones_forest.sdf"
-  if [[ -e "$world_target" ]]; then
-    cp -a "$world_target" "$run_dir/backups/world.sdf"
+for port in 14580 14581 14582 14583 14584; do
+  if ss -H -lunp "sport = :$port" 2>/dev/null | grep -q .; then
+    echo "PX4/Gazebo resource is in use: UDP port $port" >&2
+    exit 4
   fi
-  for model in OakD-Lite-Fly x500_depth_fly; do
-    if [[ -e "$model_root/$model" ]]; then
-      cp -a "$model_root/$model" "$run_dir/backups/$model"
-    fi
-  done
+done
+if pgrep -x px4 >/dev/null 2>&1 || pgrep -x px4-gz_bridge >/dev/null 2>&1 \
+    || pgrep -f '^gz sim .*flydrones_forest.sdf$' >/dev/null 2>&1; then
+  echo "PX4/Gazebo resources are already in use; refusing to terminate them" >&2
+  exit 4
+fi
+
+mkdir -p "$run_dir/backups"
+touch "$run_dir/fault-mode"
+cleanup_on_error() {
+  status=$?
+  trap - ERR INT TERM
+  FLYDRONES_PX4_RUN_DIR="$run_dir" bash "$repo_root/tools/stop_px4_swarm_wsl.sh" >/dev/null 2>&1 || true
+  exit "$status"
+}
+trap cleanup_on_error ERR INT TERM
+
+if [[ -e "$world_target" ]]; then
+  cp -a "$world_target" "$run_dir/backups/world.sdf"
+fi
+for model in OakD-Lite-Fly x500_depth_fly; do
+  if [[ -e "$model_root/$model" ]]; then
+    cp -a "$model_root/$model" "$run_dir/backups/$model"
+  fi
+done
+
+if [[ -n "$vio_fault_profile" ]]; then
+  world_source="$run_dir/flydrones_forest.sdf"
 fi
 PYTHONPATH="$repo_root/src" python3 "$repo_root/tools/generate_px4_forest_world.py" --output "$world_source" --lane-spacing 2.0
 cp "$world_source" "$world_target"
@@ -51,17 +86,17 @@ if [[ -n "$vio_fault_profile" ]]; then
   python3 "$repo_root/tools/configure_gazebo_vio_model.py" "$model_root/x500_depth_fly/model.sdf"
 fi
 
-for port in 14580 14581 14582 14583 14584; do
-  pids="$(ss -H -lunp "sport = :$port" 2>/dev/null | sed -n 's/.*pid=\([0-9][0-9]*\).*/\1/p' | sort -u)"
-  if [[ -n "$pids" ]]; then kill $pids 2>/dev/null || true; fi
-done
-pkill -9 -f "^$build/bin/px4 -i [0-4] -d $build/etc$" 2>/dev/null || true
-pkill -9 -f '^px4-gz_bridge --instance [0-4] start -w flydrones_forest' 2>/dev/null || true
-pkill -9 -f '^gz sim .*Tools/simulation/gz/worlds/flydrones_forest.sdf$' 2>/dev/null || true
-sleep 2
+record_process() {
+  PYTHONPATH="$repo_root/src" python3 - "$registry" "$1" "$2" <<'PY'
+import sys
+from pathlib import Path
 
-if [[ -z "$vio_fault_profile" ]]; then rm -rf "$run_dir"; fi
-mkdir -p "$run_dir"
+from flydrones.process_ownership import append_process_identity
+
+append_process_identity(Path(sys.argv[1]), int(sys.argv[2]), sys.argv[3])
+PY
+}
+
 if [[ -n "$vio_fault_profile" ]]; then
   relay_health_args=()
   if [[ -n "$vio_health_base_port" ]]; then
@@ -73,14 +108,28 @@ if [[ -n "$vio_fault_profile" ]]; then
     "${relay_health_args[@]}" \
     >"$run_dir/vio-relay.stdout.log" 2>"$run_dir/vio-relay.stderr.log" </dev/null &
   echo $! >"$run_dir/vio-relay.pid"
+  record_process "$(cat "$run_dir/vio-relay.pid")" "vio-relay"
 fi
+
+export GZ_SIM_RESOURCE_PATH="${GZ_SIM_RESOURCE_PATH:-}"
+export GZ_SIM_SYSTEM_PLUGIN_PATH="${GZ_SIM_SYSTEM_PLUGIN_PATH:-}"
+set +u
+source "$build/rootfs/gz_env.sh"
+set -u
+(
+  exec env -u GALLIUM_DRIVER -u MESA_D3D12_DEFAULT_ADAPTER_NAME "${renderer_env[@]}" \
+    gz sim --headless-rendering -r -s "$world_target"
+) >"$run_dir/gazebo.stdout.log" 2>"$run_dir/gazebo.stderr.log" </dev/null &
+gazebo_pid=$!
+echo "$gazebo_pid" >"$run_dir/gazebo.pid"
+record_process "$gazebo_pid" "gazebo-server"
+
 poses=(-4.0 -2.0 0.0 2.0 4.0)
 for ((instance_id=0; instance_id<vehicle_count; instance_id++)); do
   instance_dir="$run_dir/instance_$instance_id"
   mkdir -p "$instance_dir"
   ln -sf "$build/rootfs/gz_env.sh" "$instance_dir/gz_env.sh"
-  extra_env=()
-  if [[ "$instance_id" -gt 0 ]]; then extra_env+=(PX4_GZ_STANDALONE=1); fi
+  extra_env=(PX4_GZ_STANDALONE=1)
   # Register EKF external-vision aid topics before logger startup. A late
   # MAVLink parameter change can enable fusion without logging those topics.
   if [[ -n "$vio_fault_profile" ]]; then extra_env+=(PX4_PARAM_EKF2_EV_CTRL=5); fi
@@ -92,7 +141,8 @@ for ((instance_id=0; instance_id<vehicle_count; instance_id++)); do
       >"$instance_dir/out.log" 2>"$instance_dir/err.log" </dev/null &
     echo $! >"$instance_dir/pid"
   )
-  if [[ "$instance_id" -eq 0 ]]; then sleep 7; else sleep 2; fi
+  record_process "$(cat "$instance_dir/pid")" "px4-$instance_id"
+  sleep 2
 done
 
 for _ in $(seq 1 40); do
@@ -102,13 +152,36 @@ for _ in $(seq 1 40); do
     if kill -0 "$pid" 2>/dev/null; then running=$((running + 1)); fi
   done
   depth_topics="$(gz topic -l 2>/dev/null | grep -c '/sensor/StereoOV7251/depth_image$' || true)"
-  if [[ "$running" -eq "$vehicle_count" ]] && [[ "$depth_topics" -eq "$vehicle_count" ]]; then
+  bridge_pids=()
+  while read -r bridge_pid; do
+    [[ -n "$bridge_pid" ]] || continue
+    bridge_args="$(tr '\0' ' ' <"/proc/$bridge_pid/cmdline" 2>/dev/null || true)"
+    if [[ "$bridge_args" == *"px4-gz_bridge --instance "*" start -w flydrones_forest"* ]]; then
+      bridge_pids+=("$bridge_pid")
+    fi
+  done < <(pgrep -x px4-gz_bridge 2>/dev/null || true)
+  if [[ "$running" -eq "$vehicle_count" ]] && [[ "$depth_topics" -eq "$vehicle_count" ]] \
+      && [[ "${#bridge_pids[@]}" -eq "$vehicle_count" ]]; then
     if [[ -n "$vio_fault_profile" ]] && ! kill -0 "$(cat "$run_dir/vio-relay.pid")" 2>/dev/null; then
       echo "VIO relay exited before PX4 startup completed" >&2
       cat "$run_dir/vio-relay.stderr.log" >&2
       exit 3
     fi
+    for bridge_pid in "${bridge_pids[@]}"; do
+      bridge_args="$(tr '\0' ' ' <"/proc/$bridge_pid/cmdline")"
+      bridge_instance="$(sed -n 's/.*--instance \([0-9][0-9]*\).*/\1/p' <<<"$bridge_args")"
+      record_process "$bridge_pid" "px4-gz-bridge-$bridge_instance"
+    done
+    if ! env -u GALLIUM_DRIVER -u MESA_D3D12_DEFAULT_ADAPTER_NAME "${renderer_env[@]}" \
+      PYTHONPATH="$repo_root/src" python3 "$repo_root/tools/attest_gazebo_renderer_wsl.py" \
+      --profile "$renderer_profile" --gazebo-pid "$gazebo_pid" \
+      --expected-depth-topics "$vehicle_count" --output "$run_dir/renderer-attestation.json"; then
+      echo "Gazebo renderer attestation failed" >&2
+      exit 3
+    fi
+    trap - ERR INT TERM
     echo "$vehicle_count PX4 x500_depth_fly instances and $vehicle_count isolated depth topics are ready."
+    echo "Gazebo renderer profile: $renderer_profile"
     echo "MAVLink ports start at 14540"
     echo "Logs: $run_dir"
     exit 0

@@ -18,7 +18,7 @@ from flydrones.gazebo_renderer import (
 )
 
 
-def parse_depth_messages(text: str) -> tuple[int, int, int]:
+def _json_messages(text: str) -> list[dict]:
     decoder = json.JSONDecoder()
     index = 0
     messages: list[dict] = []
@@ -30,11 +30,29 @@ def parse_depth_messages(text: str) -> tuple[int, int, int]:
         value, index = decoder.raw_decode(text, index)
         if isinstance(value, dict):
             messages.append(value)
+    return messages
+
+
+def parse_depth_messages(text: str) -> tuple[int, int, int]:
+    messages = _json_messages(text)
     widths = {int(message.get("width", 0)) for message in messages}
     heights = {int(message.get("height", 0)) for message in messages}
     width = widths.pop() if len(widths) == 1 else 0
     height = heights.pop() if len(heights) == 1 else 0
     return width, height, len(messages)
+
+
+def parse_depth_sim_frequency(text: str) -> float:
+    timestamps = []
+    for message in _json_messages(text):
+        stamp = message.get("header", {}).get("stamp", {})
+        try:
+            timestamps.append(float(stamp["sec"]) + float(stamp["nsec"]) / 1_000_000_000)
+        except (KeyError, TypeError, ValueError):
+            continue
+    if len(timestamps) < 2 or timestamps[-1] <= timestamps[0]:
+        return 0.0
+    return (len(timestamps) - 1) / (timestamps[-1] - timestamps[0])
 
 
 def parse_topic_frequency(text: str) -> float:
@@ -113,15 +131,17 @@ def main() -> int:
         errors.append(f"topic-list: {exc}")
 
     observations: dict[str, DepthObservation] = {}
+    wall_frequencies: dict[str, float] = {}
     for topic in topics:
         try:
             messages = _run(
-                ["gz", "topic", "-e", "--json-output", "-t", topic, "-n", "2"],
+                ["gz", "topic", "-e", "--json-output", "-t", topic, "-n", "3"],
                 environment=environment,
                 timeout=15,
             )
             width, height, count = parse_depth_messages(messages)
-            frequency = parse_topic_frequency(_run(
+            frequency = parse_depth_sim_frequency(messages)
+            wall_frequencies[topic] = parse_topic_frequency(_run(
                 ["gz", "topic", "-f", "-t", topic, "-d", "2"],
                 environment=environment,
                 timeout=10,
@@ -145,6 +165,7 @@ def main() -> int:
         result["accepted"] = False
         result["reasons"] = [*result["reasons"], "probe_error"]
         result["probe_errors"] = errors
+    result["wall_frequency_hz"] = wall_frequencies
     _atomic_json(args.output, result)
     return 0 if result["accepted"] else 2
 

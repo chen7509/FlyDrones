@@ -6,7 +6,11 @@ from flydrones.gazebo_renderer import (
     parse_egl_renderer,
     resolve_renderer_profile,
 )
-from tools.attest_gazebo_renderer_wsl import parse_depth_messages, parse_topic_frequency
+from tools.attest_gazebo_renderer_wsl import (
+    parse_depth_messages,
+    parse_depth_sim_frequency,
+    parse_topic_frequency,
+)
 
 
 def test_d3d12_profile_pins_nvidia_without_changing_default_environment():
@@ -139,6 +143,16 @@ def test_depth_message_parser_counts_concatenated_json_messages():
     output = '{"width":160,"height":120,"data":"AA=="}\n{"width":160,"height":120,"data":"AQ=="}\n'
 
     assert parse_depth_messages(output) == (160, 120, 2)
+
+
+def test_depth_frequency_uses_message_simulation_timestamps_instead_of_wall_rate():
+    output = "\n".join([
+        '{"width":160,"height":120,"header":{"stamp":{"sec":7,"nsec":0}}}',
+        '{"width":160,"height":120,"header":{"stamp":{"sec":7,"nsec":100000000}}}',
+        '{"width":160,"height":120,"header":{"stamp":{"sec":7,"nsec":200000000}}}',
+    ])
+
+    assert parse_depth_sim_frequency(output) == pytest.approx(10.0)
 
 
 @pytest.mark.parametrize(
