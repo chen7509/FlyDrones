@@ -16,12 +16,18 @@ def _datasets(*, gnss_before=True):
             "cs_gnss_vel": [int(gnss_before)] * 5 + [0] * 15,
             "cs_inertial_dead_reckoning": [0] * 20,
         },
-        "estimator_aid_src_ev_pos": {"timestamp": timestamps, "fused": [1] * 20},
+        "estimator_aid_src_ev_pos": {
+            "timestamp": timestamps,
+            "fused": [1] * 20,
+            "innovation_rejected": [0] * 20,
+        },
         "vehicle_visual_odometry": {"timestamp": timestamps},
         "vehicle_local_position": {
             "timestamp": timestamps,
             "xy_valid": [1] * 20,
             "v_xy_valid": [1] * 20,
+            "xy_reset_counter": [0] * 20,
+            "vxy_reset_counter": [0] * 20,
         },
     }
 
@@ -60,7 +66,7 @@ def test_even_transient_inertial_dead_reckoning_is_reported_as_not_continuous():
 
 def test_external_vision_health_is_proven_without_claiming_gnss_handoff():
     datasets = _datasets()
-    datasets["vehicle_visual_odometry"]["timestamp"] = [index * 100_000 for index in range(61)]
+    datasets["vehicle_visual_odometry"]["timestamp"] = [index * 100_000 for index in range(70)]
     result = summarize_external_vision_health(datasets)
 
     assert result["accepted"]
@@ -77,6 +83,20 @@ def test_external_vision_health_rejects_missing_or_dead_reckoning_evidence():
     datasets = _datasets()
     datasets["estimator_status_flags"]["cs_inertial_dead_reckoning"][7] = 1
     assert not summarize_external_vision_health(datasets)["accepted"]
+
+
+def test_external_vision_health_rejects_innovation_rejection_and_estimator_resets():
+    datasets = _datasets()
+    datasets["estimator_aid_src_ev_pos"]["innovation_rejected"][7] = 1
+    result = summarize_external_vision_health(datasets)
+    assert not result["accepted"]
+    assert not result["checks"]["no_visual_innovation_rejection"]
+
+    datasets = _datasets()
+    datasets["vehicle_local_position"]["xy_reset_counter"][8:] = [1] * 12
+    result = summarize_external_vision_health(datasets)
+    assert not result["accepted"]
+    assert not result["checks"]["no_unexplained_horizontal_estimator_reset"]
 
 
 def test_relay_to_px4_requires_matching_transformed_pose_and_time():

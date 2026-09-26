@@ -88,9 +88,11 @@ def summarize_external_vision_health(
     required_fields = {
         "estimator_status_flags": ("timestamp", "cs_ev_pos", "cs_ev_vel",
                                      "cs_inertial_dead_reckoning"),
-        "estimator_aid_src_ev_pos": ("timestamp", "fused"),
+        "estimator_aid_src_ev_pos": ("timestamp", "fused", "innovation_rejected"),
         "vehicle_visual_odometry": ("timestamp",),
-        "vehicle_local_position": ("timestamp", "xy_valid", "v_xy_valid"),
+        "vehicle_local_position": (
+            "timestamp", "xy_valid", "v_xy_valid", "xy_reset_counter", "vxy_reset_counter",
+        ),
     }
     missing_fields = [
         f"{name}.{field}"
@@ -101,20 +103,34 @@ def summarize_external_vision_health(
         return {"accepted": False, "checks": {}, "metrics": {},
                 "error": f"missing ULog fields: {', '.join(missing_fields)}"}
 
-    status_indices = list(range(len(status["timestamp"])))
-    aid_indices = list(range(len(ev_aid["timestamp"])))
-    local_indices = list(range(len(local["timestamp"])))
-    visual_times = [float(value) / 1_000_000 for value in visual["timestamp"]]
+    first_fused_s = next((
+        float(ev_aid["timestamp"][index]) / 1_000_000
+        for index, fused in enumerate(ev_aid["fused"]) if bool(fused)
+    ), None)
+    if first_fused_s is None:
+        return {"accepted": False, "checks": {}, "metrics": {},
+                "error": "external-vision position fusion was never observed"}
+    status_indices = _indices_after(status, first_fused_s)
+    aid_indices = _indices_after(ev_aid, first_fused_s)
+    local_indices = _indices_after(local, first_fused_s)
+    visual_indices = _indices_after(visual, first_fused_s)
+    visual_times = [float(visual["timestamp"][index]) / 1_000_000 for index in visual_indices]
     visual_gaps = [right - left for left, right in zip(visual_times, visual_times[1:])]
     visual_duration = visual_times[-1] - visual_times[0] if len(visual_times) >= 2 else 0.0
     ev_fused = _ratio(ev_aid, "fused", aid_indices)
     ev_pos = _ratio(status, "cs_ev_pos", status_indices)
     ev_vel = _ratio(status, "cs_ev_vel", status_indices)
     dead_reckoning = _ratio(status, "cs_inertial_dead_reckoning", status_indices)
+    innovation_rejected = _ratio(ev_aid, "innovation_rejected", aid_indices)
     local_valid = (
         sum(bool(local["xy_valid"][index]) and bool(local["v_xy_valid"][index])
             for index in local_indices) / len(local_indices)
         if local_indices else 0.0
+    )
+    xy_resets = [int(local["xy_reset_counter"][index]) for index in local_indices]
+    vxy_resets = [int(local["vxy_reset_counter"][index]) for index in local_indices]
+    reset_free = bool(xy_resets and vxy_resets) and (
+        max(xy_resets) == min(xy_resets) and max(vxy_resets) == min(vxy_resets)
     )
     checks = {
         "visual_position_fused": len(aid_indices) >= 10 and ev_fused >= 0.90,
@@ -124,6 +140,10 @@ def summarize_external_vision_health(
         "no_observed_inertial_dead_reckoning": (
             len(status_indices) >= 2 and dead_reckoning == 0.0
         ),
+        "no_visual_innovation_rejection": (
+            len(aid_indices) >= 10 and innovation_rejected == 0.0
+        ),
+        "no_unexplained_horizontal_estimator_reset": reset_free,
         "local_position_valid": len(local_indices) >= 10 and local_valid >= 0.95,
         "visual_odometry_stream_continuous": (
             len(visual_times) >= 10 and visual_duration >= 5.0
@@ -141,6 +161,11 @@ def summarize_external_vision_health(
             "ev_position_control_ratio": round(ev_pos, 6),
             "ev_velocity_control_ratio": round(ev_vel, 6),
             "inertial_dead_reckoning_ratio": round(dead_reckoning, 6),
+            "visual_innovation_rejected_ratio": round(innovation_rejected, 6),
+            "xy_reset_counter_start": xy_resets[0] if xy_resets else None,
+            "xy_reset_counter_end": xy_resets[-1] if xy_resets else None,
+            "vxy_reset_counter_start": vxy_resets[0] if vxy_resets else None,
+            "vxy_reset_counter_end": vxy_resets[-1] if vxy_resets else None,
             "local_position_valid_ratio": round(local_valid, 6),
             "visual_stream_samples": len(visual_times),
             "visual_stream_duration_s": round(visual_duration, 6),
