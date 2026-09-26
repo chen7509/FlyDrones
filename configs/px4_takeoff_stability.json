@@ -1,0 +1,42 @@
+{
+  "schema": "flydrones-px4-takeoff-stability-config-v1",
+  "seed": 240901,
+  "profile": "configs/vio_fault_profiles/baseline.json",
+  "policy": "docs/results/vio-stress/policy-checkpoint.npz",
+  "renderer_profile": "d3d12-nvidia",
+  "fleet_size": 5,
+  "takeoff_only_hold_s": 2.0,
+  "run_count": 10,
+  "schedule": [
+    "takeoff-stability-01",
+    "takeoff-stability-02",
+    "takeoff-stability-03",
+    "takeoff-stability-04",
+    "takeoff-stability-05",
+    "takeoff-stability-06",
+    "takeoff-stability-07",
+    "takeoff-stability-08",
+    "takeoff-stability-09",
+    "takeoff-stability-10"
+  ],
+  "expected_hashes": {
+    "profile": "108c73760140b5bb53090738e6eab9508688ef6fb848ea7e4cf4e0b0d2649718",
+    "policy": "3c723587bfdbd15a8dc5976edc13d284b713dc081005b2dac04692c7d1b4accb",
+    "controller": "10f25d0de11612a8c024aab5034e3beb07a42a37b47ea81a79f1936e45f31af8",
+    "coordinator": "b0e73e2cae54e3cbae263f7412ecac5eb92fc281d468ec8c494f9aaef901c075",
+    "agent": "8b14eee7262cc7e1dfc4ce3e1979aeaf4fa39a5e88878d18e75859e42f5e13b6",
+    "relay": "a0f63da547ea7c481e4836ea1949655cdf86cea25fe8ec7f0f4220c768932b3f",
+    "trial_runner": "960f0bff723681bf810ffc7e4029d5b41aff01ee461b456317254d909c02b78e",
+    "takeoff_stability_runner": "1f79364120239aead0b5a10b969084e65819bfbba8d0b456ce75c64294825f49",
+    "launcher": "350368d16ce4b1b9b7cab839ac3639d0d1f70aa48aff9b3c5710a1f1465fe1c6",
+    "renderer_attestation": "308ccf54fd1da138174c092f82467a38a645fbc4d8054fe057be536190527902",
+    "renderer_profile": "25eb25866978b94d5c7327c688c46112523067f55c29dabe15fe7d17ebe89118",
+    "runtime_probe": "e57c7a29137e7443373519550849b39247184c82d0698bb7c43b43c8ec0a5cf6",
+    "actuator_probe": "e2e8797a0ea16e4215ef266b5243041d599f16abc50bd4514bf692aa6cc0d5ad",
+    "takeoff_readiness": "78022f49fe88ecb37a330fc2b64beac1c4ecede4a7fdeae2b94d931a32eebdcd",
+    "summary": "1deffc6b244ce55d393c548c3f7c7474ad4775fef58c53ecc2b7e081bd23a5eb",
+    "world_generator": "3fd59afbf9f550196caac0422ea2800290a6deb657f02cdf9cffcd6666a1055a",
+    "camera_model": "9c8a2916ac3fac5b9cfc09f16b3b8d3d323347980e87b39e476a31c7cdf8593d",
+    "vehicle_model": "17d5ef7b94667b37fb46dbffba77ea443dddf1bc24923aec8bf2ab1cb2fca1ed"
+  }
+}

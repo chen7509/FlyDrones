@@ -294,11 +294,14 @@ def run_trial(
     pair_position: int | None = None,
     campaign_id: str | None = None,
     output_root: Path = DEFAULT_OUTPUT_ROOT,
+    takeoff_only_hold_s: float | None = None,
 ) -> dict:
     if not name.replace("-", "").replace("_", "").isalnum() or "/" in name:
         raise ValueError("name must be an alphanumeric trial label")
     if fleet_size not in (1, 5):
         raise ValueError("fleet_size must be 1 or 5")
+    if takeoff_only_hold_s is not None and takeoff_only_hold_s <= 0.0:
+        raise ValueError("takeoff_only_hold_s must be positive when enabled")
     processes = subprocess.check_output(["ps", "-eo", "args="], text=True)
     occupied = [line for line in processes.splitlines() if (
         "/build/px4_sitl_default/bin/px4 -i " in line
@@ -333,6 +336,7 @@ def run_trial(
     )
     manifest["px4_run_dir"] = str(run_dir)
     manifest["controller_revision"] = os.environ.get("FLYDRONES_CONTROLLER_REVISION", repository_revision)
+    manifest["takeoff_only_hold_s"] = takeoff_only_hold_s
     output.mkdir(parents=True)
     profile_copy = output / "fault-profile.json"
     model_copy = output / "policy-checkpoint.npz"
@@ -399,17 +403,25 @@ def run_trial(
             if fleet_size == 1:
                 worker = [sys.executable, str(ROOT / "tools/px4_distributed_agent.py"),
                           "--vehicle-id", "0", "--output", str(output), "--model", str(model_copy),
-                          "--mission-timeout", "70", "--gps-failure-at", "5",
-                          "--gps-failure-mode", "fusion-off", "--external-vision-fusion",
+                          "--mission-timeout", "70", "--external-vision-fusion",
                           "--fault-marker", str(marker), "--vio-health-port", "16880"]
+                if takeoff_only_hold_s is None:
+                    worker.extend([
+                        "--gps-failure-at", "5", "--gps-failure-mode", "fusion-off",
+                    ])
             else:
                 worker = [sys.executable, str(ROOT / "tools/run_distributed_px4_swarm.py"),
                           "--output", str(output), "--model", str(model_copy),
                           "--mission-timeout", "70", "--process-timeout", "180",
-                          "--gps-failure-vehicle", "0", "--gps-failure-at", "5",
-                          "--gps-failure-mode", "fusion-off", "--gps-failure-all",
                           "--external-vision-fusion", "--allow-no-udp-blackout",
                           "--fault-marker", str(marker), "--vio-health-base-port", "16880"]
+                if takeoff_only_hold_s is None:
+                    worker.extend([
+                        "--gps-failure-vehicle", "0", "--gps-failure-at", "5",
+                        "--gps-failure-mode", "fusion-off", "--gps-failure-all",
+                    ])
+            if takeoff_only_hold_s is not None:
+                worker.extend(["--takeoff-only-hold-s", str(takeoff_only_hold_s)])
             with (output / "worker.log").open("w", encoding="utf-8") as log:
                 worker_process = subprocess.Popen(
                     worker,
@@ -550,6 +562,7 @@ def main() -> int:
     parser.add_argument("--pair-position", type=int, choices=(1, 2))
     parser.add_argument("--campaign-id")
     parser.add_argument("--output-root", type=Path, default=DEFAULT_OUTPUT_ROOT)
+    parser.add_argument("--takeoff-only-hold-s", type=float)
     args = parser.parse_args()
     manifest = run_trial(
         name=args.name,
@@ -561,12 +574,15 @@ def main() -> int:
         pair_position=args.pair_position,
         campaign_id=args.campaign_id,
         output_root=args.output_root,
+        takeoff_only_hold_s=args.takeoff_only_hold_s,
     )
     print(json.dumps(manifest, ensure_ascii=False, indent=2))
     try:
         from summarize_vio_stress_wsl import summarize_trial
 
         summary = summarize_trial(args.output_root / args.name)
+        if args.takeoff_only_hold_s is not None:
+            return 0 if summary.get("all_takeoff_chains_proven") else 2
         return 0 if (summary["operational_continuity_pass"]
                      or summary["fault_vehicle_gate_land_sequence_observed"] and summary["all_landed"]) else 2
     except Exception as exc:

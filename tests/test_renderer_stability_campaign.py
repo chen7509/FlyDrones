@@ -52,6 +52,9 @@ def test_versioned_config_hashes_match_current_frozen_inputs():
     )
 
     assert {key: actual[key] for key in config["expected_hashes"]} == config["expected_hashes"]
+    assert actual["actuator_probe"]
+    assert actual["takeoff_readiness"]
+    assert actual["takeoff_stability_runner"]
 
 
 def test_campaign_cli_can_run_as_a_script_file():

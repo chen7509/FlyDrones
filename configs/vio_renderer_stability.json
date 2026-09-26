@@ -17,29 +17,82 @@
     "landing_count": 5
   },
   "schedule": [
-    {"name": "renderer-pair-1-1-default", "pair_id": 1, "pair_position": 1, "renderer_profile": "default"},
-    {"name": "renderer-pair-1-2-d3d12-nvidia", "pair_id": 1, "pair_position": 2, "renderer_profile": "d3d12-nvidia"},
-    {"name": "renderer-pair-2-1-d3d12-nvidia", "pair_id": 2, "pair_position": 1, "renderer_profile": "d3d12-nvidia"},
-    {"name": "renderer-pair-2-2-default", "pair_id": 2, "pair_position": 2, "renderer_profile": "default"},
-    {"name": "renderer-pair-3-1-default", "pair_id": 3, "pair_position": 1, "renderer_profile": "default"},
-    {"name": "renderer-pair-3-2-d3d12-nvidia", "pair_id": 3, "pair_position": 2, "renderer_profile": "d3d12-nvidia"},
-    {"name": "renderer-pair-4-1-d3d12-nvidia", "pair_id": 4, "pair_position": 1, "renderer_profile": "d3d12-nvidia"},
-    {"name": "renderer-pair-4-2-default", "pair_id": 4, "pair_position": 2, "renderer_profile": "default"},
-    {"name": "renderer-pair-5-1-default", "pair_id": 5, "pair_position": 1, "renderer_profile": "default"},
-    {"name": "renderer-pair-5-2-d3d12-nvidia", "pair_id": 5, "pair_position": 2, "renderer_profile": "d3d12-nvidia"}
+    {
+      "name": "renderer-pair-1-1-default",
+      "pair_id": 1,
+      "pair_position": 1,
+      "renderer_profile": "default"
+    },
+    {
+      "name": "renderer-pair-1-2-d3d12-nvidia",
+      "pair_id": 1,
+      "pair_position": 2,
+      "renderer_profile": "d3d12-nvidia"
+    },
+    {
+      "name": "renderer-pair-2-1-d3d12-nvidia",
+      "pair_id": 2,
+      "pair_position": 1,
+      "renderer_profile": "d3d12-nvidia"
+    },
+    {
+      "name": "renderer-pair-2-2-default",
+      "pair_id": 2,
+      "pair_position": 2,
+      "renderer_profile": "default"
+    },
+    {
+      "name": "renderer-pair-3-1-default",
+      "pair_id": 3,
+      "pair_position": 1,
+      "renderer_profile": "default"
+    },
+    {
+      "name": "renderer-pair-3-2-d3d12-nvidia",
+      "pair_id": 3,
+      "pair_position": 2,
+      "renderer_profile": "d3d12-nvidia"
+    },
+    {
+      "name": "renderer-pair-4-1-d3d12-nvidia",
+      "pair_id": 4,
+      "pair_position": 1,
+      "renderer_profile": "d3d12-nvidia"
+    },
+    {
+      "name": "renderer-pair-4-2-default",
+      "pair_id": 4,
+      "pair_position": 2,
+      "renderer_profile": "default"
+    },
+    {
+      "name": "renderer-pair-5-1-default",
+      "pair_id": 5,
+      "pair_position": 1,
+      "renderer_profile": "default"
+    },
+    {
+      "name": "renderer-pair-5-2-d3d12-nvidia",
+      "pair_id": 5,
+      "pair_position": 2,
+      "renderer_profile": "d3d12-nvidia"
+    }
   ],
   "expected_hashes": {
     "profile": "108c73760140b5bb53090738e6eab9508688ef6fb848ea7e4cf4e0b0d2649718",
     "policy": "3c723587bfdbd15a8dc5976edc13d284b713dc081005b2dac04692c7d1b4accb",
-    "controller": "907175973a6e9c3ec362f53b06992ddd170125b73479156b6facda9c55649c59",
-    "coordinator": "d07891291a21b6d567f25cf80554c287dba1bb42ea3bd0cd4ead51f6734b3aaa",
+    "controller": "10f25d0de11612a8c024aab5034e3beb07a42a37b47ea81a79f1936e45f31af8",
+    "coordinator": "b0e73e2cae54e3cbae263f7412ecac5eb92fc281d468ec8c494f9aaef901c075",
     "relay": "a0f63da547ea7c481e4836ea1949655cdf86cea25fe8ec7f0f4220c768932b3f",
-    "runner": "5e2023478b15f88c05bd51734c8caa8fe5815414b7b06ce5ef1785f5ab0e16b0",
+    "runner": "960f0bff723681bf810ffc7e4029d5b41aff01ee461b456317254d909c02b78e",
     "launcher": "350368d16ce4b1b9b7cab839ac3639d0d1f70aa48aff9b3c5710a1f1465fe1c6",
     "renderer_attestation": "308ccf54fd1da138174c092f82467a38a645fbc4d8054fe057be536190527902",
     "renderer_profile": "25eb25866978b94d5c7327c688c46112523067f55c29dabe15fe7d17ebe89118",
     "runtime_probe": "e57c7a29137e7443373519550849b39247184c82d0698bb7c43b43c8ec0a5cf6",
-    "summary": "f26aef4a07d8e83bcf7a52805bbc92aa442462707935591c1d3c1a7ecd5e036b",
+    "actuator_probe": "e2e8797a0ea16e4215ef266b5243041d599f16abc50bd4514bf692aa6cc0d5ad",
+    "takeoff_readiness": "78022f49fe88ecb37a330fc2b64beac1c4ecede4a7fdeae2b94d931a32eebdcd",
+    "takeoff_stability_runner": "1f79364120239aead0b5a10b969084e65819bfbba8d0b456ce75c64294825f49",
+    "summary": "1deffc6b244ce55d393c548c3f7c7474ad4775fef58c53ecc2b7e081bd23a5eb",
     "evidence": "1a4983a1f12852081073330702d4a8f755e496a94d231c7d554b3bf15c58dd3a",
     "world_generator": "3fd59afbf9f550196caac0422ea2800290a6deb657f02cdf9cffcd6666a1055a",
     "camera_model": "9c8a2916ac3fac5b9cfc09f16b3b8d3d323347980e87b39e476a31c7cdf8593d",
