@@ -1,12 +1,19 @@
 import pytest
 
 from tools.summarize_vio_stress_wsl import (
+    _manifest_frozen_hash,
     _relay_metrics,
     classify_trial,
     summarize_runtime_evidence,
     verify_command_gate,
     verify_px4_land_transition,
 )
+
+
+def test_summary_reads_hashes_from_v2_frozen_hashes_and_keeps_v1_compatibility():
+    assert _manifest_frozen_hash({"frozen_hashes": {"profile": "v2"}}, "profile") == "v2"
+    assert _manifest_frozen_hash({"profile_sha256": "v1"}, "profile") == "v1"
+    assert _manifest_frozen_hash({}, "profile") is None
 
 
 def _trial():

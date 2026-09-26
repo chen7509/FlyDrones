@@ -51,10 +51,16 @@ def resolve_renderer_profile(name: str) -> RendererProfile:
 
 
 def parse_egl_renderer(text: str) -> str | None:
-    prefix = "OpenGL renderer string:"
+    prefixes = (
+        "OpenGL renderer string:",
+        "OpenGL core profile renderer:",
+        "OpenGL compatibility profile renderer:",
+    )
     for line in text.splitlines():
-        if line.strip().startswith(prefix):
-            return line.strip()[len(prefix):].strip() or None
+        stripped = line.strip()
+        for prefix in prefixes:
+            if stripped.startswith(prefix):
+                return stripped[len(prefix):].strip() or None
     return None
 
 

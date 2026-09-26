@@ -21,6 +21,35 @@ ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_OUTPUT_ROOT = ROOT / "results" / "vio-stress"
 
 
+def git_revision(
+    path: Path,
+    *,
+    check_output: Callable[..., str] = subprocess.check_output,
+) -> str:
+    command = ["git", "-C", str(path), "rev-parse", "HEAD"]
+    try:
+        return check_output(command, text=True, stderr=subprocess.DEVNULL).strip()
+    except (OSError, subprocess.CalledProcessError):
+        windows_path = check_output(["wslpath", "-w", str(path)], text=True).strip()
+        return check_output(
+            ["git.exe", "-C", windows_path, "rev-parse", "HEAD"],
+            text=True,
+            stderr=subprocess.DEVNULL,
+        ).strip()
+
+
+def campaign_run_directory(
+    name: str,
+    campaign_id: str | None,
+    *,
+    temp_root: Path = Path("/tmp"),
+) -> Path:
+    label = f"{campaign_id}-{name}" if campaign_id else name
+    if not label.replace("-", "").replace("_", "").isalnum() or "/" in label:
+        raise ValueError("campaign and trial labels must be alphanumeric")
+    return temp_root / f"flydrones-vio-{label}"
+
+
 def create_trial_manifest(
     *,
     name: str,
@@ -205,12 +234,12 @@ def run_trial(
     if occupied:
         raise RuntimeError(f"PX4/Gazebo resources are in use: {occupied}")
     output = output_root / name
-    run_dir = Path("/tmp") / f"flydrones-vio-{name}"
+    run_dir = campaign_run_directory(name, campaign_id)
     if output.exists() or run_dir.exists():
         raise FileExistsError(f"trial output already exists: {output} or {run_dir}")
     px4_root = Path(os.environ.get("PX4_ROOT", Path.home() / "PX4-Autopilot"))
-    repository_revision = subprocess.check_output(["git", "-C", str(ROOT), "rev-parse", "HEAD"], text=True).strip()
-    px4_revision = subprocess.check_output(["git", "-C", str(px4_root), "rev-parse", "HEAD"], text=True).strip()
+    repository_revision = git_revision(ROOT)
+    px4_revision = git_revision(px4_root)
     frozen_hashes = {
         "profile": sha256(profile),
         "policy": sha256(model),
@@ -218,6 +247,10 @@ def run_trial(
         "relay": sha256(ROOT / "tools/relay_gazebo_vio.py"),
         "runner": sha256(Path(__file__)),
         "launcher": sha256(ROOT / "tools/launch_px4_depth_swarm_wsl.sh"),
+        "renderer_attestation": sha256(ROOT / "tools/attest_gazebo_renderer_wsl.py"),
+        "renderer_profile": sha256(ROOT / "src/flydrones/gazebo_renderer.py"),
+        "runtime_probe": sha256(ROOT / "tools/probe_gazebo_runtime_wsl.py"),
+        "summary": sha256(ROOT / "tools/summarize_vio_stress_wsl.py"),
         "world_generator": sha256(ROOT / "tools/generate_px4_forest_world.py"),
         "camera_model": _tree_sha256(ROOT / "assets/gazebo/models/OakD-Lite-Fly"),
         "vehicle_model": _tree_sha256(ROOT / "assets/gazebo/models/x500_depth_fly"),

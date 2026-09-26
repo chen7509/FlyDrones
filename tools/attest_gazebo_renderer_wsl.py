@@ -8,7 +8,9 @@ import os
 import re
 import subprocess
 import tempfile
+from collections.abc import Callable
 from pathlib import Path
+from typing import Any
 
 from flydrones.gazebo_renderer import (
     DepthObservation,
@@ -80,6 +82,40 @@ def _run(command: list[str], *, environment: dict[str, str], timeout: float) -> 
     return result.stdout
 
 
+def probe_egl_renderer(
+    environment: dict[str, str],
+    *,
+    run: Callable[..., Any] = subprocess.run,
+) -> str:
+    result = run(
+        ["eglinfo", "-B"],
+        env=environment,
+        text=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.STDOUT,
+        timeout=15,
+        check=False,
+    )
+    renderer = parse_egl_renderer(result.stdout)
+    if renderer is None:
+        raise RuntimeError(f"eglinfo exited {result.returncode} without a renderer: {result.stdout.strip()}")
+    return renderer
+
+
+def finalize_renderer_attestation(
+    result: dict[str, object],
+    *,
+    probe_errors: list[str],
+    wall_frequency_errors: dict[str, str],
+) -> None:
+    if probe_errors:
+        result["accepted"] = False
+        result["reasons"] = [*result.get("reasons", []), "probe_error"]
+        result["probe_errors"] = probe_errors
+    if wall_frequency_errors:
+        result["wall_frequency_errors"] = wall_frequency_errors
+
+
 def _atomic_json(path: Path, payload: dict[str, object]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     with tempfile.NamedTemporaryFile("w", encoding="utf-8", dir=path.parent, delete=False) as handle:
@@ -108,7 +144,7 @@ def main() -> int:
     errors: list[str] = []
 
     try:
-        egl_renderer = parse_egl_renderer(_run(["eglinfo", "-B"], environment=environment, timeout=15))
+        egl_renderer = probe_egl_renderer(environment)
     except (OSError, subprocess.SubprocessError, RuntimeError) as exc:
         egl_renderer = None
         errors.append(f"eglinfo: {exc}")
@@ -131,25 +167,31 @@ def main() -> int:
         errors.append(f"topic-list: {exc}")
 
     observations: dict[str, DepthObservation] = {}
-    wall_frequencies: dict[str, float] = {}
+    wall_frequencies: dict[str, float | str] = {}
+    wall_frequency_errors: dict[str, str] = {}
     for topic in topics:
         try:
             messages = _run(
-                ["gz", "topic", "-e", "--json-output", "-t", topic, "-n", "3"],
+                ["gz", "topic", "-e", "--json-output", "-t", topic, "-n", "11"],
                 environment=environment,
                 timeout=15,
             )
             width, height, count = parse_depth_messages(messages)
             frequency = parse_depth_sim_frequency(messages)
+            observations[topic] = DepthObservation(width, height, frequency, count)
+        except (ValueError, OSError, subprocess.SubprocessError, RuntimeError) as exc:
+            observations[topic] = DepthObservation(0, 0, 0.0, 0)
+            errors.append(f"depth-topic {topic}: {exc}")
+            continue
+        try:
             wall_frequencies[topic] = parse_topic_frequency(_run(
                 ["gz", "topic", "-f", "-t", topic, "-d", "2"],
                 environment=environment,
                 timeout=10,
             ))
-            observations[topic] = DepthObservation(width, height, frequency, count)
         except (ValueError, OSError, subprocess.SubprocessError, RuntimeError) as exc:
-            observations[topic] = DepthObservation(0, 0, 0.0, 0)
-            errors.append(f"depth-topic {topic}: {exc}")
+            wall_frequencies[topic] = "unavailable"
+            wall_frequency_errors[topic] = str(exc)
 
     result = evaluate_renderer_attestation(
         profile=profile,
@@ -161,10 +203,11 @@ def main() -> int:
         expected_height=args.expected_height,
         expected_frequency_hz=args.expected_frequency_hz,
     )
-    if errors:
-        result["accepted"] = False
-        result["reasons"] = [*result["reasons"], "probe_error"]
-        result["probe_errors"] = errors
+    finalize_renderer_attestation(
+        result,
+        probe_errors=errors,
+        wall_frequency_errors=wall_frequency_errors,
+    )
     result["wall_frequency_hz"] = wall_frequencies
     _atomic_json(args.output, result)
     return 0 if result["accepted"] else 2

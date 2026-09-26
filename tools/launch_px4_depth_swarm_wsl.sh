@@ -147,9 +147,15 @@ done
 
 for _ in $(seq 1 40); do
   running=0
-  for pid_file in "$run_dir"/instance_*/pid; do
+  bridge_ready=0
+  for ((instance_id=0; instance_id<vehicle_count; instance_id++)); do
+    pid_file="$run_dir/instance_$instance_id/pid"
     pid="$(cat "$pid_file")"
     if kill -0 "$pid" 2>/dev/null; then running=$((running + 1)); fi
+    if grep -Fq "[gz_bridge] world: flydrones_forest, model: x500_depth_fly_$instance_id" \
+        "$run_dir/instance_$instance_id/out.log" 2>/dev/null; then
+      bridge_ready=$((bridge_ready + 1))
+    fi
   done
   depth_topics="$(gz topic -l 2>/dev/null | grep -c '/sensor/StereoOV7251/depth_image$' || true)"
   bridge_pids=()
@@ -161,12 +167,15 @@ for _ in $(seq 1 40); do
     fi
   done < <(pgrep -x px4-gz_bridge 2>/dev/null || true)
   if [[ "$running" -eq "$vehicle_count" ]] && [[ "$depth_topics" -eq "$vehicle_count" ]] \
-      && [[ "${#bridge_pids[@]}" -eq "$vehicle_count" ]]; then
+      && [[ "$bridge_ready" -eq "$vehicle_count" ]]; then
     if [[ -n "$vio_fault_profile" ]] && ! kill -0 "$(cat "$run_dir/vio-relay.pid")" 2>/dev/null; then
       echo "VIO relay exited before PX4 startup completed" >&2
       cat "$run_dir/vio-relay.stderr.log" >&2
       exit 3
     fi
+    # Recent PX4 builds run gz_bridge inside each owned PX4 process. Older
+    # builds may still expose a separate process; record it when present, but
+    # prove per-instance bridge readiness from each PX4 console either way.
     for bridge_pid in "${bridge_pids[@]}"; do
       bridge_args="$(tr '\0' ' ' <"/proc/$bridge_pid/cmdline")"
       bridge_instance="$(sed -n 's/.*--instance \([0-9][0-9]*\).*/\1/p' <<<"$bridge_args")"

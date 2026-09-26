@@ -22,6 +22,14 @@ TRIALS = ROOT / "results/vio-stress"
 TREE_CENTERS = [(2.5, (index - 2) * 2.0 + 0.05) for index in range(5)]
 
 
+def _manifest_frozen_hash(manifest: dict, name: str) -> str | None:
+    frozen = manifest.get("frozen_hashes")
+    if isinstance(frozen, dict) and frozen.get(name):
+        return str(frozen[name])
+    legacy = manifest.get(f"{name}_sha256")
+    return str(legacy) if legacy else None
+
+
 def _csv_rows(path: Path) -> list[dict[str, str]]:
     if not path.is_file():
         return []
@@ -533,8 +541,8 @@ def summarize_trial(directory: Path) -> dict:
         "schema": "flydrones-vio-stress-summary-v5",
         "name": manifest["name"],
         "fleet_size": count,
-        "profile_sha256": manifest["profile_sha256"],
-        "policy_sha256": manifest["policy_sha256"],
+        "profile_sha256": _manifest_frozen_hash(manifest, "profile"),
+        "policy_sha256": _manifest_frozen_hash(manifest, "policy"),
         "launch_exit_code": manifest["launch_exit_code"],
         "worker_exit_code": manifest["worker_exit_code"],
         "stop_exit_code": manifest.get("stop_exit_code"),

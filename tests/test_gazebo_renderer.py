@@ -1,3 +1,6 @@
+import json
+import subprocess
+
 import pytest
 
 from flydrones.gazebo_renderer import (
@@ -7,9 +10,11 @@ from flydrones.gazebo_renderer import (
     resolve_renderer_profile,
 )
 from tools.attest_gazebo_renderer_wsl import (
+    finalize_renderer_attestation,
     parse_depth_messages,
     parse_depth_sim_frequency,
     parse_topic_frequency,
+    probe_egl_renderer,
 )
 
 
@@ -139,6 +144,30 @@ def test_default_attestation_records_backend_without_requiring_d3d12():
     assert result["reasons"] == []
 
 
+def test_eglinfo_nonzero_exit_keeps_a_parseable_renderer():
+    output = "OpenGL core profile renderer: llvmpipe (LLVM 20.1.2, 256 bits)\n"
+
+    renderer = probe_egl_renderer(
+        {},
+        run=lambda *_args, **_kwargs: subprocess.CompletedProcess([], 3, output),
+    )
+
+    assert renderer == "llvmpipe (LLVM 20.1.2, 256 bits)"
+
+
+def test_optional_wall_frequency_failure_is_recorded_without_rejecting_core_attestation():
+    result = {"accepted": True, "reasons": []}
+
+    finalize_renderer_attestation(
+        result,
+        probe_errors=[],
+        wall_frequency_errors={"/depth": "timed out"},
+    )
+
+    assert result["accepted"]
+    assert result["wall_frequency_errors"] == {"/depth": "timed out"}
+
+
 def test_depth_message_parser_counts_concatenated_json_messages():
     output = '{"width":160,"height":120,"data":"AA=="}\n{"width":160,"height":120,"data":"AQ=="}\n'
 
@@ -151,6 +180,24 @@ def test_depth_frequency_uses_message_simulation_timestamps_instead_of_wall_rate
         '{"width":160,"height":120,"header":{"stamp":{"sec":7,"nsec":100000000}}}',
         '{"width":160,"height":120,"header":{"stamp":{"sec":7,"nsec":200000000}}}',
     ])
+
+    assert parse_depth_sim_frequency(output) == pytest.approx(10.0)
+
+
+def test_longer_depth_window_averages_gazebo_step_quantization():
+    intervals_ns = [88_000_000, 112_000_000] * 5
+    stamps = [7_000_000_000]
+    for interval in intervals_ns:
+        stamps.append(stamps[-1] + interval)
+    output = "\n".join(
+        json.dumps({
+            "width": 160,
+            "height": 120,
+            "header": {"stamp": {"sec": stamp // 1_000_000_000,
+                                   "nsec": stamp % 1_000_000_000}},
+        })
+        for stamp in stamps
+    )
 
     assert parse_depth_sim_frequency(output) == pytest.approx(10.0)
 

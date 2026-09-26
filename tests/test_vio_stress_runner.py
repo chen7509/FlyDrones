@@ -1,13 +1,43 @@
 import json
 import signal
+import subprocess
 
 from tools.run_vio_stress_trial_wsl import (
     apply_renderer_attestation,
+    campaign_run_directory,
     create_trial_manifest,
+    git_revision,
     relay_closed_cleanly,
     shared_px4_files_restored,
     terminate_worker_process_group,
 )
+
+
+def test_git_revision_falls_back_to_windows_git_for_windows_managed_wsl_worktree(tmp_path):
+    calls = []
+
+    def fake_check_output(command, **_kwargs):
+        calls.append(command)
+        if command[0] == "git":
+            raise subprocess.CalledProcessError(128, command)
+        if command[0] == "wslpath":
+            return "C:\\worktree\n"
+        return "revision123\n"
+
+    assert git_revision(tmp_path, check_output=fake_check_output) == "revision123"
+    assert calls == [
+        ["git", "-C", str(tmp_path), "rev-parse", "HEAD"],
+        ["wslpath", "-w", str(tmp_path)],
+        ["git.exe", "-C", "C:\\worktree", "rev-parse", "HEAD"],
+    ]
+
+
+def test_campaign_run_directories_are_isolated_by_campaign_id(tmp_path):
+    first = campaign_run_directory("same-trial", "campaign-a", temp_root=tmp_path)
+    second = campaign_run_directory("same-trial", "campaign-b", temp_root=tmp_path)
+
+    assert first != second
+    assert first.name == "flydrones-vio-campaign-a-same-trial"
 
 
 def test_shared_px4_restoration_requires_all_files_to_match(tmp_path):
