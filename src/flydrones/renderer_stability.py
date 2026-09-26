@@ -59,9 +59,11 @@ def score_renderer_trial(manifest: Mapping[str, object], summary: Mapping[str, o
     name = str(manifest.get("name", summary.get("name", "unknown")))
     profile = str(_mapping(manifest.get("renderer")).get("requested_profile", "unknown"))
 
-    if manifest.get("schema") != "flydrones-vio-stress-trial-v2":
+    if manifest.get("schema") != "flydrones-vio-stress-trial-v3":
         failures.append("invalid_trial_manifest_schema")
-    if summary.get("schema") != "flydrones-vio-stress-summary-v5":
+        if manifest.get("schema") == "flydrones-vio-stress-trial-v2":
+            failures.append("legacy_takeoff_evidence")
+    if summary.get("schema") != "flydrones-vio-stress-summary-v6":
         failures.append("invalid_trial_summary_schema")
     if manifest.get("fleet_size") != 5 or summary.get("fleet_size") != 5:
         failures.append("fleet_size_not_5")
@@ -119,6 +121,13 @@ def score_renderer_trial(manifest: Mapping[str, object], summary: Mapping[str, o
         for worker in workers
     ):
         failures.append("per_vehicle_gnss_disable_not_injected")
+
+    takeoff_chains = _mapping(summary.get("takeoff_chain_by_vehicle"))
+    if summary.get("all_takeoff_chains_proven") is not True or len(takeoff_chains) != 5 or any(
+        _mapping(takeoff_chains.get(str(vehicle_id))).get("accepted") is not True
+        for vehicle_id in range(5)
+    ):
+        failures.append("per_vehicle_takeoff_chain_rejected")
 
     runtime = _mapping(summary.get("runtime"))
     if runtime.get("accepted") is not True or runtime.get("startup_reliability_pass") is not True:
@@ -223,9 +232,9 @@ def _validate_campaign(
             failures.append(f"trial_{index + 1}_profile_mismatch")
         if pair.get("id") != scheduled.pair_id or pair.get("position") != scheduled.pair_position:
             failures.append(f"trial_{index + 1}_pair_metadata_mismatch")
-        if manifest.get("schema") != "flydrones-vio-stress-trial-v2":
+        if manifest.get("schema") != "flydrones-vio-stress-trial-v3":
             failures.append(f"trial_{index + 1}_manifest_schema_invalid")
-        if summary.get("schema") != "flydrones-vio-stress-summary-v5":
+        if summary.get("schema") != "flydrones-vio-stress-summary-v6":
             failures.append(f"trial_{index + 1}_summary_schema_invalid")
         if baseline is not None and _frozen_value(manifest) != baseline:
             failures.append(f"trial_{index + 1}_frozen_inputs_mismatch")

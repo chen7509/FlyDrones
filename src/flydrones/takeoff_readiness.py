@@ -33,6 +33,7 @@ class TakeoffFailureReason(str, Enum):
     ESTIMATOR_RESPONSE_TIMEOUT = "estimator-response-timeout"
     TAKEOFF_STATE_STALE = "takeoff-state-stale"
     WORKER_NOT_MISSION_READY = "worker-not-mission-ready"
+    LANDING_NOT_CONFIRMED = "landing-not-confirmed"
     LEGACY_UNVERIFIED = "legacy-unverified"
 
 
@@ -122,6 +123,112 @@ def _mapping(value: object) -> Mapping[str, object]:
     return value if isinstance(value, Mapping) else {}
 
 
+def _values(dataset: Mapping[str, object], field: str) -> list[object]:
+    value = dataset.get(field, [])
+    if hasattr(value, "tolist"):
+        value = value.tolist()
+    return list(value) if isinstance(value, (list, tuple)) else []
+
+
+def _ned_altitude_gain(dataset: Mapping[str, object]) -> float:
+    z_values = [float(value) for value in _values(dataset, "z")]
+    return max(0.0, z_values[0] - min(z_values)) if z_values else 0.0
+
+
+def summarize_ulog_takeoff(
+    datasets: Mapping[str, Mapping[str, object]],
+    *,
+    source_sha256: str | None = None,
+    minimum_altitude_gain_m: float = 0.5,
+    minimum_motor_command: float = 0.1,
+) -> dict[str, object]:
+    """Extract takeoff evidence from ULog datasets without inferring Gazebo receipt."""
+
+    required = (
+        "vehicle_command",
+        "vehicle_command_ack",
+        "actuator_motors",
+        "vehicle_local_position",
+        "vehicle_local_position_groundtruth",
+        "vehicle_land_detected",
+    )
+    missing = [name for name in required if not isinstance(datasets.get(name), Mapping)]
+    if missing:
+        return {
+            "accepted": False,
+            "reason": TakeoffFailureReason.LEGACY_UNVERIFIED.value,
+            "missing_datasets": missing,
+            "source": {"sha256": source_sha256},
+            "timestamps_us": {},
+        }
+
+    acknowledgements = _mapping(datasets["vehicle_command_ack"])
+    ack_timestamps = _values(acknowledgements, "timestamp")
+    ack_commands = _values(acknowledgements, "command")
+    ack_results = _values(acknowledgements, "result")
+    command_names = {"arm": 400, "takeoff": 22, "offboard": 176}
+    command_acks: dict[str, dict[str, int] | None] = {}
+    for name, command in command_names.items():
+        command_acks[name] = next((
+            {
+                "command": command,
+                "result": int(result),
+                "timestamp_us": int(timestamp),
+            }
+            for timestamp, ack_command, result in zip(ack_timestamps, ack_commands, ack_results)
+            if int(ack_command) == command
+        ), None)
+    commands_accepted = all(
+        evidence is not None and evidence["result"] == 0
+        for evidence in command_acks.values()
+    )
+
+    motors = _mapping(datasets["actuator_motors"])
+    controls = _values(motors, "control")
+    motor_values: list[float] = []
+    for row in controls:
+        if hasattr(row, "tolist"):
+            row = row.tolist()
+        if isinstance(row, (list, tuple)):
+            motor_values.extend(float(value) for value in row)
+        else:
+            motor_values.append(float(row))
+    maximum_motor = max((abs(value) for value in motor_values), default=0.0)
+    actuator_output_present = maximum_motor >= minimum_motor_command
+    estimator_gain = _ned_altitude_gain(_mapping(datasets["vehicle_local_position"]))
+    groundtruth_gain = _ned_altitude_gain(_mapping(datasets["vehicle_local_position_groundtruth"]))
+    landed_values = _values(_mapping(datasets["vehicle_land_detected"]), "landed")
+    landed_at_end = bool(landed_values and bool(landed_values[-1]))
+
+    reason: str | None
+    if not commands_accepted or not actuator_output_present:
+        reason = TakeoffFailureReason.PX4_ACTUATOR_OUTPUT_MISSING.value
+    elif groundtruth_gain < minimum_altitude_gain_m:
+        reason = TakeoffFailureReason.ACTUATOR_RESPONSE_TIMEOUT.value
+    elif estimator_gain < minimum_altitude_gain_m:
+        reason = TakeoffFailureReason.ESTIMATOR_RESPONSE_TIMEOUT.value
+    else:
+        reason = None
+    timestamps = {
+        name: [int(value) for value in _values(_mapping(datasets[name]), "timestamp")]
+        for name in required
+    }
+    return {
+        "accepted": reason is None,
+        "reason": reason,
+        "missing_datasets": [],
+        "command_acks": command_acks,
+        "commands_accepted": commands_accepted,
+        "actuator_output_present": actuator_output_present,
+        "maximum_actuator_output": maximum_motor,
+        "estimator_altitude_gain_m": estimator_gain,
+        "groundtruth_altitude_gain_m": groundtruth_gain,
+        "landed_at_end": landed_at_end,
+        "source": {"sha256": source_sha256},
+        "timestamps_us": timestamps,
+    }
+
+
 def classify_takeoff_chain(
     worker: Mapping[str, object] | None,
     ulog: Mapping[str, object] | None,
@@ -163,6 +270,8 @@ def classify_takeoff_chain(
     reason: str | None
     if not worker_ready:
         reason = str(worker_data.get("failure_reason") or TakeoffFailureReason.WORKER_NOT_MISSION_READY.value)
+    elif ulog_data.get("accepted") is False:
+        reason = str(ulog_data.get("reason") or TakeoffFailureReason.LEGACY_UNVERIFIED.value)
     elif not px4_output:
         reason = TakeoffFailureReason.PX4_ACTUATOR_OUTPUT_MISSING.value
     elif not motor_received:

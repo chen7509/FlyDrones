@@ -9,6 +9,7 @@ from flydrones.takeoff_readiness import (
     TakeoffFailureReason,
     TakeoffStage,
     classify_takeoff_chain,
+    summarize_ulog_takeoff,
 )
 
 
@@ -137,3 +138,66 @@ def test_complete_matching_chain_is_accepted():
 
     assert result["accepted"]
     assert result["reason"] is None
+
+
+def _ulog_datasets(*, estimator_gain=0.8, groundtruth_gain=0.8):
+    return {
+        "vehicle_command": {
+            "timestamp": [1_000_000, 2_000_000, 3_000_000],
+            "command": [400, 22, 176],
+        },
+        "vehicle_command_ack": {
+            "timestamp": [1_100_000, 2_100_000, 3_100_000],
+            "command": [400, 22, 176],
+            "result": [0, 0, 0],
+        },
+        "actuator_motors": {
+            "timestamp": [2_200_000, 2_300_000],
+            "control": [[0.0, 0.0, 0.0, 0.0], [0.8, 0.8, 0.8, 0.8]],
+        },
+        "vehicle_local_position": {
+            "timestamp": [1_000_000, 2_500_000],
+            "z": [0.0, -estimator_gain],
+        },
+        "vehicle_local_position_groundtruth": {
+            "timestamp": [1_000_000, 2_500_000],
+            "z": [0.0, -groundtruth_gain],
+        },
+        "vehicle_land_detected": {
+            "timestamp": [1_000_000, 4_000_000],
+            "landed": [1, 1],
+        },
+    }
+
+
+def test_ulog_takeoff_extracts_accepted_commands_climb_and_raw_source_timestamps():
+    evidence = summarize_ulog_takeoff(_ulog_datasets(), source_sha256="ulog-sha")
+
+    assert evidence["accepted"]
+    assert evidence["reason"] is None
+    assert evidence["actuator_output_present"]
+    assert evidence["estimator_altitude_gain_m"] == pytest.approx(0.8)
+    assert evidence["groundtruth_altitude_gain_m"] == pytest.approx(0.8)
+    assert evidence["command_acks"]["takeoff"]["timestamp_us"] == 2_100_000
+    assert evidence["source"]["sha256"] == "ulog-sha"
+    assert evidence["timestamps_us"]["actuator_motors"] == [2_200_000, 2_300_000]
+    assert "esc_status" not in evidence
+
+
+def test_ulog_takeoff_distinguishes_physics_and_estimator_failures():
+    stationary = summarize_ulog_takeoff(_ulog_datasets(groundtruth_gain=0.02))
+    estimator_stale = summarize_ulog_takeoff(_ulog_datasets(estimator_gain=0.02, groundtruth_gain=0.8))
+
+    assert stationary["reason"] == TakeoffFailureReason.ACTUATOR_RESPONSE_TIMEOUT.value
+    assert estimator_stale["reason"] == TakeoffFailureReason.ESTIMATOR_RESPONSE_TIMEOUT.value
+
+
+def test_ulog_takeoff_missing_dataset_is_legacy_unverified():
+    datasets = _ulog_datasets()
+    del datasets["vehicle_local_position_groundtruth"]
+
+    evidence = summarize_ulog_takeoff(datasets)
+
+    assert not evidence["accepted"]
+    assert evidence["reason"] == TakeoffFailureReason.LEGACY_UNVERIFIED.value
+    assert evidence["missing_datasets"] == ["vehicle_local_position_groundtruth"]

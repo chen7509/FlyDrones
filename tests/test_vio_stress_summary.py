@@ -3,6 +3,7 @@ import pytest
 from tools.summarize_vio_stress_wsl import (
     _manifest_frozen_hash,
     _relay_metrics,
+    build_takeoff_chain_summary,
     classify_trial,
     summarize_runtime_evidence,
     verify_command_gate,
@@ -23,6 +24,11 @@ def _trial():
         "worker_exit_code": 0,
         "stop_exit_code": 0,
         "shared_px4_files_restored": True,
+        "all_takeoff_chains_proven": True,
+        "takeoff_chain_by_vehicle": {
+            str(vehicle_id): {"accepted": True, "reason": None, "landed": True}
+            for vehicle_id in range(5)
+        },
         "relay": {"fault_vehicle_active_published": 100, "drop_reasons": {}, "closed_cleanly": True,
                   "nonzero_offset_published_samples": 10,
                   "minimum_center_to_trunk_surface_m": 0.6,
@@ -39,6 +45,91 @@ def _trial():
             for _ in range(5)
         ],
     }
+
+
+def test_takeoff_chain_join_requires_v3_worker_ulog_gazebo_and_landing():
+    workers = [
+        {
+            "accepted": True,
+            "checks": {"landed": True, "takeoff_mission_ready": True},
+            "takeoff": {
+                "accepted": True,
+                "terminal_stage": "mission-ready",
+                "maximum_altitude_gain_m": 0.8,
+            },
+        }
+        for _ in range(5)
+    ]
+    ulogs = {
+        str(vehicle_id): {
+            "accepted": True,
+            "reason": None,
+            "actuator_output_present": True,
+            "estimator_altitude_gain_m": 0.8,
+        }
+        for vehicle_id in range(5)
+    }
+    gazebo = {
+        "accepted": True,
+        "vehicles": {
+            f"x500_depth_fly_{vehicle_id}": {
+                "motor_command_received": True,
+                "maximum_motor_command": 0.9,
+                "altitude_gain_m": 0.8,
+            }
+            for vehicle_id in range(5)
+        },
+    }
+
+    joined = build_takeoff_chain_summary(
+        {"schema": "flydrones-vio-stress-trial-v3"},
+        workers,
+        ulogs,
+        gazebo,
+        fleet_size=5,
+    )
+
+    assert joined["all_takeoff_chains_proven"]
+    assert len(joined["takeoff_chain_by_vehicle"]) == 5
+
+    legacy = build_takeoff_chain_summary(
+        {"schema": "flydrones-vio-stress-trial-v2"},
+        workers,
+        ulogs,
+        gazebo,
+        fleet_size=5,
+    )
+    assert not legacy["all_takeoff_chains_proven"]
+    assert {item["reason"] for item in legacy["takeoff_chain_by_vehicle"].values()} == {"legacy-unverified"}
+
+    workers[2]["checks"]["landed"] = False
+    not_landed = build_takeoff_chain_summary(
+        {"schema": "flydrones-vio-stress-trial-v3"},
+        workers,
+        ulogs,
+        gazebo,
+        fleet_size=5,
+    )
+    assert not not_landed["all_takeoff_chains_proven"]
+    assert not_landed["takeoff_chain_by_vehicle"]["2"]["reason"] == "landing-not-confirmed"
+
+
+def test_operational_continuity_requires_all_takeoff_chains():
+    trial = _trial()
+    trial["all_takeoff_chains_proven"] = False
+    trial["takeoff_chain_by_vehicle"]["3"] = {
+        "accepted": False,
+        "reason": "gazebo-motor-command-missing",
+        "landed": True,
+    }
+
+    result = classify_trial(
+        trial,
+        {"delay_ms": 0, "dropout_duration_s": 0, "drift_mps": [0, 0, 0], "false_pose_offset_m": [0, 0, 0]},
+    )
+
+    assert not result["all_takeoff_chains_proven"]
+    assert not result["operational_continuity_pass"]
 
 
 def test_mission_success_does_not_hide_close_approach_or_bad_exit():

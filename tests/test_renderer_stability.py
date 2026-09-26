@@ -27,7 +27,7 @@ def _trial(item):
         "reasons": [],
     }
     manifest = {
-        "schema": "flydrones-vio-stress-trial-v2",
+        "schema": "flydrones-vio-stress-trial-v3",
         "name": item.name,
         "fleet_size": 5,
         "seed": 240901,
@@ -61,7 +61,7 @@ def _trial(item):
         for vehicle_id in range(5)
     }
     summary = {
-        "schema": "flydrones-vio-stress-summary-v5",
+        "schema": "flydrones-vio-stress-summary-v6",
         "name": item.name,
         "fleet_size": 5,
         "renderer": manifest["renderer"],
@@ -72,6 +72,11 @@ def _trial(item):
         "post_gnss_evidence_by_vehicle": {
             str(vehicle_id): {"accepted": True} for vehicle_id in range(5)
         },
+        "takeoff_chain_by_vehicle": {
+            str(vehicle_id): {"accepted": True, "reason": None, "landed": True}
+            for vehicle_id in range(5)
+        },
+        "all_takeoff_chains_proven": True,
         "runtime": {
             "accepted": True,
             "startup_reliability_pass": True,
@@ -142,6 +147,7 @@ def test_campaign_rejects_schedule_or_frozen_input_drift(mutation):
         ("vio_gate", "normal_run_vio_gate_triggered"),
         ("ulog", "per_vehicle_external_vision_evidence_rejected"),
         ("post_gnss", "per_vehicle_post_gnss_evidence_rejected"),
+        ("takeoff", "per_vehicle_takeoff_chain_rejected"),
         ("raw_max", "raw_vio_max_not_below_250_ms"),
         ("clock_max", "clock_max_not_below_250_ms"),
         ("p99", "tail_p99_above_100_ms"),
@@ -165,6 +171,12 @@ def test_every_d3d12_hard_gate_is_fail_closed(mutation, expected_reason):
         summary["external_vision_health_by_vehicle"]["3"]["accepted"] = False
     elif mutation == "post_gnss":
         summary["post_gnss_evidence_by_vehicle"]["3"]["accepted"] = False
+    elif mutation == "takeoff":
+        summary["takeoff_chain_by_vehicle"]["3"].update({
+            "accepted": False,
+            "reason": "gazebo-motor-command-missing",
+        })
+        summary["all_takeoff_chains_proven"] = False
     elif mutation == "raw_max":
         summary["runtime"]["raw_vio_by_vehicle"]["2"]["steady_state"]["max_ms"] = 250.0
     elif mutation == "clock_max":
@@ -206,6 +218,17 @@ def test_rejected_renderer_attestation_is_a_recorded_d3d12_failure():
 
     assert not result["d3d12_stability_gate_pass"]
     assert "renderer_attestation_rejected" in result["trials"][1]["failures"]
+
+
+def test_legacy_v2_manifest_is_explicitly_rejected_for_missing_takeoff_chain():
+    manifest, summary = _trial(campaign_schedule()[0])
+    manifest["schema"] = "flydrones-vio-stress-trial-v2"
+    summary.pop("takeoff_chain_by_vehicle")
+    summary["all_takeoff_chains_proven"] = False
+
+    result = score_campaign([(manifest, summary)] + _passing_campaign()[1:])
+
+    assert "legacy_takeoff_evidence" in result["trials"][0]["failures"]
 
 
 def test_campaign_loader_preserves_all_ten_slots_when_artifacts_are_missing(tmp_path):

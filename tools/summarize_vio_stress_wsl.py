@@ -11,6 +11,12 @@ import math
 from pathlib import Path
 
 from flydrones.runtime_timing import summarize_gap_series
+from flydrones.takeoff_readiness import (
+    TakeoffFailureReason,
+    classify_takeoff_chain,
+    summarize_actuator_link,
+    summarize_ulog_takeoff,
+)
 from flydrones.vio_stress_evidence import (
     match_relay_to_visual_odometry,
     summarize_external_vision_health,
@@ -291,6 +297,94 @@ def _ulog_external_vision_health(path: Path) -> dict:
     return result
 
 
+def _ulog_takeoff_evidence(path: Path) -> dict:
+    from pyulog import ULog
+
+    if not path.exists():
+        return summarize_ulog_takeoff({})
+    try:
+        ulog = ULog(str(path))
+        datasets = {dataset.name: dataset.data for dataset in ulog.data_list if dataset.multi_id == 0}
+        result = summarize_ulog_takeoff(datasets, source_sha256=_sha256(path))
+        result["source"]["bytes"] = path.stat().st_size
+        return result
+    except Exception as exc:
+        return {
+            "accepted": False,
+            "reason": TakeoffFailureReason.LEGACY_UNVERIFIED.value,
+            "missing_datasets": [],
+            "source": {"sha256": _sha256(path), "bytes": path.stat().st_size},
+            "error": f"ULog takeoff evidence could not be read: {exc}",
+        }
+
+
+def _actuator_link_summary(path: Path, fleet_size: int) -> dict:
+    events = []
+    last_timestamp = 0.0
+    if path.is_file():
+        for line in path.read_text(encoding="utf-8", errors="replace").splitlines():
+            try:
+                event = json.loads(line)
+            except json.JSONDecodeError as exc:
+                event = {"event": "error", "monotonic_s": last_timestamp, "error": str(exc)}
+            if isinstance(event, dict):
+                try:
+                    last_timestamp = float(event.get("monotonic_s", last_timestamp))
+                except (TypeError, ValueError):
+                    pass
+                events.append(event)
+    result = summarize_actuator_link(events, fleet_size=fleet_size)
+    result["source"] = {
+        "sha256": _sha256(path) if path.is_file() else None,
+        "bytes": path.stat().st_size if path.is_file() else 0,
+    }
+    return result
+
+
+def build_takeoff_chain_summary(
+    manifest: dict,
+    worker_results: list[dict | None],
+    ulog_by_vehicle: dict[str, dict],
+    actuator_summary: dict,
+    *,
+    fleet_size: int,
+) -> dict[str, object]:
+    chains: dict[str, dict[str, object]] = {}
+    legacy = manifest.get("schema") != "flydrones-vio-stress-trial-v3"
+    gazebo_vehicles = actuator_summary.get("vehicles", {}) if actuator_summary.get("accepted") else {}
+    for vehicle_id in range(fleet_size):
+        key = str(vehicle_id)
+        result = worker_results[vehicle_id] if vehicle_id < len(worker_results) else None
+        landed = bool(result and result.get("checks", {}).get("landed"))
+        if legacy:
+            chain = {
+                "accepted": False,
+                "reason": TakeoffFailureReason.LEGACY_UNVERIFIED.value,
+                "missing_sections": ["v3-manifest"],
+            }
+        else:
+            worker = result.get("takeoff") if result else None
+            ulog = ulog_by_vehicle.get(key)
+            gazebo = gazebo_vehicles.get(f"x500_depth_fly_{vehicle_id}")
+            chain = classify_takeoff_chain(worker, ulog, gazebo)
+        if chain.get("accepted") and not landed:
+            chain["accepted"] = False
+            chain["reason"] = TakeoffFailureReason.LANDING_NOT_CONFIRMED.value
+        chain["landed"] = landed
+        chain["worker_takeoff"] = result.get("takeoff") if result else None
+        chain["ulog"] = ulog_by_vehicle.get(key)
+        chain["gazebo"] = gazebo_vehicles.get(f"x500_depth_fly_{vehicle_id}")
+        chains[key] = chain
+    return {
+        "takeoff_chain_by_vehicle": chains,
+        "all_takeoff_chains_proven": len(chains) == fleet_size and all(
+            chain.get("accepted") is True for chain in chains.values()
+        ),
+        "actuator_link": actuator_summary,
+        "ulog_takeoff_by_vehicle": ulog_by_vehicle,
+    }
+
+
 def _relay_sim_clock(path: Path) -> list[tuple[float, float]]:
     if not path.exists():
         return []
@@ -457,9 +551,10 @@ def classify_trial(trial: dict, profile: dict) -> dict:
     all_gnss_disabled = len(workers) == trial["fleet_size"] and all(
         worker.get("gnss_disable_injected") is True for worker in workers
     )
+    all_takeoff_chains = bool(trial.get("all_takeoff_chains_proven"))
     ready = (trial["launch_exit_code"] == 0 and relay.get("closed_cleanly", False)
              and runtime_ready
-             and all_gnss_disabled and all_post_gnss and px4_effect)
+             and all_gnss_disabled and all_post_gnss and all_takeoff_chains and px4_effect)
     continuity = (ready and trial["worker_exit_code"] == 0 and all_mission and all_landed
                   and trial["visual_after_gnss_disable"].get("accepted", False) and geometry)
     cleanup = trial.get("stop_exit_code") == 0 and trial.get("shared_px4_files_restored") is True
@@ -474,6 +569,7 @@ def classify_trial(trial: dict, profile: dict) -> dict:
         "geometry_separation_check_pass": bool(peer_geometry),
         "geometry_forest_clearance_check_pass": bool(forest_geometry),
         "all_landed": bool(all_landed),
+        "all_takeoff_chains_proven": all_takeoff_chains,
         "mission_visual_geometry_pass": bool(continuity),
         "trial_cleanup_verified": bool(cleanup),
         "fault_vehicle_fail_closed_landing_observed": bool(
@@ -499,15 +595,18 @@ def summarize_trial(directory: Path) -> dict:
     count = manifest["fleet_size"]
     relay, raw, publishes = _relay_metrics(directory / "vio-relay.jsonl", count)
     workers = []
+    worker_results: list[dict | None] = []
     worker_rows = []
     for vehicle_id in range(count):
         result_path = directory / f"agent-{vehicle_id}.json"
         csv_path = directory / f"agent-{vehicle_id}.csv"
         if not result_path.exists() or not csv_path.exists():
             workers.append({"vehicle_id": vehicle_id, "error": "worker artifacts missing"})
+            worker_results.append(None)
             worker_rows.append([])
             continue
         result = json.loads(result_path.read_text(encoding="utf-8"))
+        worker_results.append(result)
         with csv_path.open(newline="", encoding="utf-8") as handle:
             rows = list(csv.DictReader(handle))
         worker_rows.append(rows)
@@ -522,6 +621,7 @@ def summarize_trial(directory: Path) -> dict:
             "vehicle_id": vehicle_id,
             "mission_accepted": bool(result["accepted"]),
             "landed": bool(result["checks"]["landed"]),
+            "takeoff": result.get("takeoff"),
             "fail_closed_land": bool(result["metrics"]["fail_closed_land"]),
             "gnss_disable_injected": bool(result["metrics"]["gps_failure_injected"]),
             "state_health_failures": result["metrics"]["state_health_failures"],
@@ -550,6 +650,20 @@ def summarize_trial(directory: Path) -> dict:
         )
         for vehicle_id in range(count)
     }
+    ulog_takeoff_by_vehicle = {
+        str(vehicle_id): _ulog_takeoff_evidence(
+            directory / "px4-ulogs" / f"agent-{vehicle_id}.ulg"
+        )
+        for vehicle_id in range(count)
+    }
+    actuator_summary = _actuator_link_summary(directory / "actuator-link.jsonl", count)
+    takeoff_chain = build_takeoff_chain_summary(
+        manifest,
+        worker_results,
+        ulog_takeoff_by_vehicle,
+        actuator_summary,
+        fleet_size=count,
+    )
     if workers:
         workers[0]["px4_land_transition"] = verify_px4_land_transition(
             workers[0].get("command_gate", {}).get("trigger_monotonic_s"),
@@ -572,7 +686,7 @@ def summarize_trial(directory: Path) -> dict:
         and all("error" not in worker for worker in workers)
     )
     combined = {
-        "schema": "flydrones-vio-stress-summary-v5",
+        "schema": "flydrones-vio-stress-summary-v6",
         "name": manifest["name"],
         "fleet_size": count,
         "profile_sha256": _manifest_frozen_hash(manifest, "profile"),
@@ -589,6 +703,7 @@ def summarize_trial(directory: Path) -> dict:
         "external_vision_health_by_vehicle": external_vision_by_vehicle,
         "post_gnss_evidence_by_vehicle": post_gnss_by_vehicle,
         "workers": workers,
+        **takeoff_chain,
     }
     combined.update(classify_trial(combined, profile))
     (directory / "stress-summary.json").write_text(json.dumps(combined, ensure_ascii=False, indent=2) + "\n",
