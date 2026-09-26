@@ -445,6 +445,65 @@ def test_ack_wait_ingests_interleaved_position_and_status(monkeypatch):
     assert drone._tel.status_updated_at == 0.2
 
 
+def test_ack_wait_drains_a_queued_telemetry_burst_before_the_deadline(monkeypatch):
+    clock = FakeClock()
+    monkeypatch.setattr(mavlink_module.time, "monotonic", clock.monotonic)
+
+    class BackloggedConnection(Connection):
+        def recv_match(self, **kwargs):
+            if kwargs.get("blocking"):
+                clock.now += 0.2
+            return super().recv_match(**kwargs)
+
+    messages = [
+        Message("LOCAL_POSITION_NED", x=float(index), y=2.0, z=-0.7, vz=-0.1)
+        for index in range(20)
+    ]
+    messages.append(Message("COMMAND_ACK", command=22, result=0, target_system=3, target_component=1))
+    drone = bare_drone([])
+    drone.m = BackloggedConnection(messages)
+    drone.m.mav = MavSender()
+    drone.m.target_system = 3
+    drone.m.target_component = 1
+
+    acknowledgement = drone._wait_command_ack(22, timeout_s=1.0)
+
+    assert acknowledgement.result == 0
+    assert drone._tel.x_m == 19.0
+    assert clock.now == pytest.approx(0.2)
+
+
+def test_ack_wait_limits_each_nonblocking_queue_drain(monkeypatch):
+    clock = FakeClock()
+    monkeypatch.setattr(mavlink_module.time, "monotonic", clock.monotonic)
+
+    class EndlessConnection(Connection):
+        def __init__(self):
+            super().__init__([])
+            self.nonblocking_since_wait = 0
+            self.maximum_nonblocking = 0
+
+        def recv_match(self, **kwargs):
+            if kwargs.get("blocking"):
+                self.maximum_nonblocking = max(self.maximum_nonblocking, self.nonblocking_since_wait)
+                self.nonblocking_since_wait = 0
+                clock.now += 0.6
+            else:
+                self.nonblocking_since_wait += 1
+            return Message("HEARTBEAT", base_mode=128, custom_mode=4 << 16)
+
+    drone = bare_drone([])
+    drone.m = EndlessConnection()
+    drone.m.mav = MavSender()
+    drone.m.target_system = 3
+    drone.m.target_component = 1
+
+    with pytest.raises(TimeoutError, match="command 22"):
+        drone._wait_command_ack(22, timeout_s=1.0)
+
+    assert drone.m.maximum_nonblocking <= mavlink_module.ACK_BURST_LIMIT
+
+
 def test_ingest_does_not_refresh_sensor_timestamps_without_sensor_messages():
     drone = bare_drone([])
     drone._tel.position_updated_at = 1.0
@@ -635,6 +694,42 @@ def test_takeoff_requires_three_fresh_climb_samples_and_offboard_confirmation(mo
     assert len(drone.m.mav.setpoints) == 3
 
 
+def test_offboard_priming_drains_telemetry_between_setpoints(monkeypatch):
+    samples = [
+        status_sample(0.0, altitude=0.0, sequence=0, armed=False, landed=True),
+        status_sample(0.1, altitude=0.0, sequence=1, armed=True, landed=True),
+        status_sample(0.2, altitude=0.55, sequence=2),
+        status_sample(0.3, altitude=0.65, sequence=3),
+        status_sample(0.4, altitude=0.75, sequence=4),
+        status_sample(2.0, altitude=0.75, sequence=5, offboard=True),
+    ]
+    sequence = telemetry_sequence(samples)
+    telemetry_calls = 0
+
+    def telemetry(clock, drone):
+        nonlocal telemetry_calls
+        telemetry_calls += 1
+        return sequence(clock, drone)
+
+    drone, _clock, _requested = transactional_drone(monkeypatch, telemetry)
+    setpoint_telemetry_counts = []
+    original_send_velocity = drone._send_velocity
+
+    def send_velocity(*args):
+        setpoint_telemetry_counts.append(telemetry_calls)
+        original_send_velocity(*args)
+
+    drone._send_velocity = send_velocity
+
+    evidence = drone.takeoff()
+
+    assert evidence.accepted
+    assert all(
+        later > earlier
+        for earlier, later in zip(setpoint_telemetry_counts, setpoint_telemetry_counts[1:])
+    )
+
+
 def test_one_altitude_spike_does_not_confirm_takeoff(monkeypatch):
     def telemetry(clock, drone):
         if clock.now == 0.0:
@@ -734,4 +829,36 @@ def test_offboard_rejection_fails_after_climb_and_requests_safe_landing(monkeypa
     assert any(command[2] == 21 for command in drone.m.mav.commands)
     assert drone.m.disarm_calls == 1
     assert post_disarm_reads
+    assert evidence.cleanup_failure is None
+
+
+def test_offboard_ack_timeout_is_distinct_from_an_explicit_rejection(monkeypatch):
+    samples = [
+        status_sample(0.0, altitude=0.0, sequence=0, armed=False, landed=True),
+        status_sample(0.1, altitude=0.0, sequence=1, armed=True, landed=True),
+        status_sample(0.2, altitude=0.6, sequence=2),
+        status_sample(0.3, altitude=0.7, sequence=3),
+        status_sample(0.4, altitude=0.8, sequence=4),
+    ]
+    sequence = telemetry_sequence(samples)
+
+    def telemetry(clock, drone):
+        if any(command[2] == 21 for command in drone.m.mav.commands):
+            return status_sample(clock.now, altitude=0.0, sequence=99, armed=False, landed=True)
+        return sequence(clock, drone)
+
+    drone, _clock, _requested = transactional_drone(monkeypatch, telemetry)
+    original_wait = drone._wait_command_ack
+
+    def wait_ack(command, *, timeout_s):
+        if command == 176:
+            raise TimeoutError("queued ACK was not observed")
+        return original_wait(command, timeout_s=timeout_s)
+
+    drone._wait_command_ack = wait_ack
+
+    evidence = drone.takeoff()
+
+    assert not evidence.accepted
+    assert evidence.failure_reason is TakeoffFailureReason.OFFBOARD_COMMAND_TIMEOUT
     assert evidence.cleanup_failure is None

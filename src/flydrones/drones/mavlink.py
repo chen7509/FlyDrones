@@ -31,6 +31,7 @@ TYPE_MASK_VEL_YAWRATE = 0b0000_0101_1100_0111
 ESTIMATOR_REQUIRED_FLAGS = 1 | 2 | 4 | 8 | 32
 MAV_CMD_INJECT_FAILURE = 420
 GPS_FAILURE_TYPES = {"ok": 0, "off": 1, "stuck": 2, "wrong": 4}
+ACK_BURST_LIMIT = 512
 
 
 def _encode_int32_parameter(value: int) -> float:
@@ -238,6 +239,11 @@ class MavlinkDrone(Drone):
             message = self.m.recv_match(blocking=True, timeout=min(0.25, deadline - now))
             if message is not None:
                 self._ingest_message(message, received_at=now)
+            for _ in range(ACK_BURST_LIMIT):
+                queued_message = self.m.recv_match(blocking=False)
+                if queued_message is None:
+                    break
+                self._ingest_message(queued_message, received_at=time.monotonic())
 
     def _send_velocity(self, vx: float, vy: float, vz: float, yaw_rate: float) -> None:
         self.m.mav.set_position_target_local_ned_send(
@@ -603,6 +609,9 @@ class MavlinkDrone(Drone):
             prime_period = 1.0 / self.offboard_rate_hz
             for _ in range(max(1, math.ceil(1.5 * self.offboard_rate_hz))):
                 # PX4 needs a >2 Hz setpoint stream before accepting OFFBOARD.
+                # Drain the current telemetry burst so its ACK cannot be
+                # trapped behind the priming traffic on a loaded fleet.
+                self.telemetry()
                 self._send_velocity(0, 0, 0, 0)
                 time.sleep(prime_period)
             events.append(self._takeoff_event(TakeoffStage.OFFBOARD_PRIMED, at_s=time.monotonic()))
@@ -611,8 +620,21 @@ class MavlinkDrone(Drone):
             try:
                 offboard_ack = self._wait_command_ack(offboard_command, timeout_s=3.0)
             except TimeoutError:
-                offboard_ack = None
-            if offboard_ack is None or offboard_ack.result != accepted_result:
+                return self._takeoff_failure(
+                    stage=TakeoffStage.OFFBOARD_PRIMED,
+                    reason=TakeoffFailureReason.OFFBOARD_COMMAND_TIMEOUT,
+                    events=events,
+                    baseline_altitude_m=baseline,
+                    maximum_altitude_gain_m=maximum_gain,
+                    arm_ack=arm_ack,
+                    takeoff_ack=takeoff_ack,
+                    offboard_ack=None,
+                    armed_at_s=armed_at_s,
+                    takeoff_accepted_at_s=takeoff_accepted_at_s,
+                    climb_confirmed_at_s=climb_confirmed_at_s,
+                    recover=True,
+                )
+            if offboard_ack.result != accepted_result:
                 return self._takeoff_failure(
                     stage=TakeoffStage.OFFBOARD_PRIMED,
                     reason=TakeoffFailureReason.OFFBOARD_COMMAND_REJECTED,

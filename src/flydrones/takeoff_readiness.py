@@ -27,6 +27,7 @@ class TakeoffFailureReason(str, Enum):
     TAKEOFF_COMMAND_REJECTED = "takeoff-command-rejected"
     TAKEOFF_COMMAND_TIMEOUT = "takeoff-command-timeout"
     OFFBOARD_COMMAND_REJECTED = "offboard-command-rejected"
+    OFFBOARD_COMMAND_TIMEOUT = "offboard-command-timeout"
     OFFBOARD_STATE_TIMEOUT = "offboard-state-timeout"
     GAZEBO_MOTOR_COMMAND_MISSING = "gazebo-motor-command-missing"
     PX4_ACTUATOR_OUTPUT_MISSING = "px4-actuator-output-missing"
