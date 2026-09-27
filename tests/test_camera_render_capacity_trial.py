@@ -7,6 +7,7 @@ import pytest
 
 from flydrones.camera_render_capacity import capacity_schedule
 from tools.run_camera_render_capacity_trial_wsl import (
+    _atomic_text,
     _auxiliary_closed_cleanly,
     _capacity_phase_summary,
     _capacity_run_directory,
@@ -67,6 +68,15 @@ def test_scored_resource_summary_pins_gazebo_cpu_rss_and_gpu(tmp_path: Path):
     assert result["gazebo"]["rss_peak_bytes"] == 3500
     assert result["gazebo"]["threads_peak"] == 6
     assert result["gpu"]["utilization_peak_percent"] == 75.0
+
+
+def test_atomic_text_never_leaves_the_temporary_file(tmp_path: Path):
+    destination = tmp_path / "observer.pid"
+
+    _atomic_text(destination, "4321\n")
+
+    assert destination.read_text(encoding="utf-8") == "4321\n"
+    assert list(tmp_path.iterdir()) == [destination]
 
 
 def test_capacity_run_directory_is_stable_per_output_and_unique_across_campaigns(tmp_path: Path):

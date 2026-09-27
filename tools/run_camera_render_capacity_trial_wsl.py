@@ -49,6 +49,14 @@ def _atomic_json(path: Path, value: Mapping[str, object]) -> None:
     temporary.replace(path)
 
 
+def _atomic_text(path: Path, value: str) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with tempfile.NamedTemporaryFile("w", encoding="utf-8", dir=path.parent, delete=False) as handle:
+        handle.write(value)
+        temporary = Path(handle.name)
+    temporary.replace(path)
+
+
 def _sha256(path: Path) -> str:
     digest = hashlib.sha256()
     with path.open("rb") as handle:
@@ -538,8 +546,9 @@ class SubprocessCapacityBackend:
             self.processes[role] = process
             append_process_identity(run_dir / "owned-processes.json", process.pid, role)
             if role == "observer":
-                Path(environment["FLYDRONES_CAPACITY_OBSERVER_PID_FILE"]).write_text(
-                    f"{process.pid}\n", encoding="utf-8"
+                _atomic_text(
+                    Path(environment["FLYDRONES_CAPACITY_OBSERVER_PID_FILE"]),
+                    f"{process.pid}\n",
                 )
         _atomic_json(
             run_dir / "camera-aux-started.marker",
@@ -583,8 +592,9 @@ class SubprocessCapacityBackend:
             self.processes[role] = process
             append_process_identity(run_dir / "owned-processes.json", process.pid, role)
             self._wait_marker(output / "camera-phase-selected-ready.json", process, 20.0)
-            Path(environment["FLYDRONES_CAPACITY_OBSERVER_PID_FILE"]).write_text(
-                f"{process.pid}\n", encoding="utf-8"
+            _atomic_text(
+                Path(environment["FLYDRONES_CAPACITY_OBSERVER_PID_FILE"]),
+                f"{process.pid}\n",
             )
 
     @staticmethod
@@ -993,7 +1003,7 @@ def run_capacity_trial(
         )
         observer = getattr(backend, "processes", {}).get("observer")
         if observer is not None:
-            (output / "observer.pid").write_text(f"{observer.pid}\n", encoding="utf-8")
+            _atomic_text(output / "observer.pid", f"{observer.pid}\n")
         readiness = backend.wait_ready(timeout_s=readiness_timeout_s, run=run, output=output)
         if readiness.get("schema") != "flydrones-camera-capacity-ready-v1":
             raise RuntimeError("capacity readiness schema mismatch")
