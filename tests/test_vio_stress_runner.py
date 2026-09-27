@@ -114,6 +114,7 @@ def test_v3_manifest_freezes_renderer_pair_versions_and_hashes(tmp_path):
     assert manifest["software_versions"]["mesa"] == "25.2.8"
     assert manifest["output_root"] == str(tmp_path / "campaign-a")
     assert manifest["camera_schedule_mode"] == "phased"
+    assert manifest["camera_scheduler_stop_after_trigger_count"] is None
     assert manifest["camera_model_evidence"] is None
     assert manifest["camera_scheduler_closed_cleanly"] is False
     assert manifest["camera_phase_probe_closed_cleanly"] is False

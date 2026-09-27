@@ -95,6 +95,7 @@ PYTHONPATH="$repo_root/src" python3 "$repo_root/tools/configure_gazebo_camera_ph
   "$repo_root/assets/gazebo/models/OakD-Lite-Fly/model.sdf" \
   "$model_root/OakD-Lite-Fly/model.sdf" \
   --mode "$camera_schedule_mode" --evidence "$run_dir/camera-model-evidence.json"
+cp "$model_root/OakD-Lite-Fly/model.sdf" "$run_dir/camera-model-configured.sdf"
 if [[ -n "$vio_fault_profile" ]]; then
   python3 "$repo_root/tools/configure_gazebo_vio_model.py" "$model_root/x500_depth_fly/model.sdf"
 fi

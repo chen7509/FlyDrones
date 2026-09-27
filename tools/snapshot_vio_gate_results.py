@@ -43,6 +43,11 @@ TAKEOFF_COMPACT = (
     "summary.json",
     "takeoff-readiness-summary.json",
 )
+CAMERA_PHASE_COMPACT = (
+    *RENDERER_COMPACT,
+    "camera-model-evidence.json",
+    "camera-phase-summary.json",
+)
 MAX_COMPACT_SEQUENCE = 8
 
 
@@ -117,7 +122,8 @@ def _snapshot_campaign(
         raw_paths.update(trial_source.rglob("*.html"))
         raw_paths.update(trial_source.rglob("*.log"))
         raw_paths.update(path for path in trial_source.rglob("*") if path.name in {
-            "vio-relay.jsonl", "flydrones_forest.sdf",
+            "vio-relay.jsonl", "camera-scheduler.jsonl", "camera-phase.jsonl",
+            "flydrones_forest.sdf", "camera-model-configured.sdf",
         })
         raw_paths.update(
             trial_source / filename for filename in compact_files
@@ -159,6 +165,15 @@ def snapshot_takeoff_campaign(source: Path, target: Path) -> dict:
     )
 
 
+def snapshot_camera_phase_campaign(source: Path, target: Path) -> dict:
+    return _snapshot_campaign(
+        source,
+        target,
+        compact_files=CAMERA_PHASE_COMPACT,
+        index_schema="flydrones-camera-phase-stability-artifacts-v1",
+    )
+
+
 def snapshot_legacy_vio_gate() -> None:
     index = {}
     for name in TRIALS:
@@ -195,6 +210,8 @@ def main() -> int:
     )
     if manifest.get("schema") == "flydrones-px4-takeoff-stability-campaign-manifest-v1":
         snapshot_takeoff_campaign(args.campaign_dir, target)
+    elif manifest.get("schema") == "flydrones-camera-phase-stability-campaign-manifest-v1":
+        snapshot_camera_phase_campaign(args.campaign_dir, target)
     else:
         snapshot_renderer_campaign(args.campaign_dir, target)
     return 0

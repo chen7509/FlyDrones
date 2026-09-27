@@ -15,7 +15,11 @@ from tools.run_renderer_stability_campaign_wsl import (
     smoke_schedule,
     validate_existing_campaign,
 )
-from tools.snapshot_vio_gate_results import snapshot_renderer_campaign, snapshot_takeoff_campaign
+from tools.snapshot_vio_gate_results import (
+    snapshot_camera_phase_campaign,
+    snapshot_renderer_campaign,
+    snapshot_takeoff_campaign,
+)
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -280,3 +284,34 @@ def test_takeoff_campaign_snapshot_copies_takeoff_summary_and_uses_takeoff_schem
 
     assert index["schema"] == "flydrones-px4-takeoff-stability-artifacts-v1"
     assert (target / trial_name / "takeoff-readiness-summary.json").is_file()
+
+
+def test_camera_phase_snapshot_copies_compact_phase_evidence_and_indexes_raw_logs(tmp_path):
+    source = tmp_path / "source"
+    target = tmp_path / "target"
+    trial_name = "camera-phase-pair-1-1-simultaneous"
+    source.mkdir()
+    (source / "campaign-manifest.json").write_text(
+        json.dumps({"campaign_id": "phase-c", "schedule": [{"name": trial_name}]}),
+        encoding="utf-8",
+    )
+    (source / "campaign-summary.json").write_text("{}", encoding="utf-8")
+    trial = source / trial_name
+    trial.mkdir()
+    for name in (
+        "trial-manifest.json", "stress-summary.json", "camera-model-evidence.json",
+        "camera-phase-summary.json", "renderer-attestation.json", "cleanup-evidence.json",
+    ):
+        (trial / name).write_text("{}", encoding="utf-8")
+    (trial / "camera-phase.jsonl").write_text('{"event":"stop"}\n', encoding="utf-8")
+    (trial / "camera-scheduler.jsonl").write_text('{"event":"stop"}\n', encoding="utf-8")
+    (trial / "camera-model-configured.sdf").write_text("<sdf/>", encoding="utf-8")
+
+    index = snapshot_camera_phase_campaign(source, target)
+
+    assert index["schema"] == "flydrones-camera-phase-stability-artifacts-v1"
+    assert (target / trial_name / "camera-phase-summary.json").is_file()
+    assert (target / trial_name / "camera-model-evidence.json").is_file()
+    assert "camera-phase.jsonl" in index["trials"][trial_name]
+    assert "camera-scheduler.jsonl" in index["trials"][trial_name]
+    assert "camera-model-configured.sdf" in index["trials"][trial_name]

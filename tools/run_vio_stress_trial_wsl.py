@@ -67,6 +67,7 @@ def create_trial_manifest(
     frozen_hashes: Mapping[str, str],
     software_versions: Mapping[str, str],
     camera_schedule_mode: str = "simultaneous",
+    camera_scheduler_stop_after_trigger_count: int | None = None,
 ) -> dict:
     return {
         "schema": "flydrones-vio-stress-trial-v3",
@@ -89,6 +90,7 @@ def create_trial_manifest(
         "evidence_accepted": False,
         "actuator_probe_closed_cleanly": False,
         "camera_schedule_mode": camera_schedule_mode,
+        "camera_scheduler_stop_after_trigger_count": camera_scheduler_stop_after_trigger_count,
         "camera_model_evidence": None,
         "camera_scheduler_closed_cleanly": False,
         "camera_phase_probe_closed_cleanly": False,
@@ -438,6 +440,7 @@ def run_trial(
         frozen_hashes=frozen_hashes,
         software_versions=_software_versions(),
         camera_schedule_mode=camera_schedule_mode,
+        camera_scheduler_stop_after_trigger_count=camera_scheduler_stop_after_trigger_count,
     )
     manifest["px4_run_dir"] = str(run_dir)
     manifest["controller_revision"] = os.environ.get("FLYDRONES_CONTROLLER_REVISION", repository_revision)
@@ -527,10 +530,10 @@ def run_trial(
         )
         try:
             manifest["launch_exit_code"] = launcher_process.wait(timeout=120)
-        except subprocess.TimeoutExpired:
+        except subprocess.TimeoutExpired as exc:
             terminate_worker_process_group(launcher_process.pid, grace_s=2.0)
             manifest["launch_exit_code"] = launcher_process.wait(timeout=10)
-            raise TimeoutError("PX4 launcher timed out after camera auxiliary handshake")
+            raise TimeoutError("PX4 launcher timed out after camera auxiliary handshake") from exc
         if manifest["launch_exit_code"] == 0:
             camera_by_role = {role: process for role, process, _log in camera_processes}
             if camera_schedule_mode == "phased":
@@ -689,6 +692,7 @@ def run_trial(
             "vio-relay.stdout.log",
             "vio-relay.stderr.log",
             "camera-model-evidence.json",
+            "camera-model-configured.sdf",
             "gazebo-base-ready.json",
             "camera-aux-started.marker",
             "renderer-attestation.json",
