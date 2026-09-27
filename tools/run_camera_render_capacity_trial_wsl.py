@@ -88,6 +88,14 @@ def _depth_topic(vehicle_id: int, world: str = "flydrones_forest") -> str:
     )
 
 
+def capacity_telemetry_ready(telemetry: object) -> bool:
+    return (
+        getattr(telemetry, "estimator_healthy", None) is True
+        and getattr(telemetry, "armed", None) is False
+        and getattr(telemetry, "landed", None) is True
+    )
+
+
 def _capacity_run_directory(run: CapacityRun, output: Path) -> Path:
     identity = hashlib.sha256(str(output.resolve()).encode("utf-8")).hexdigest()[:12]
     return Path("/tmp") / f"flydrones-capacity-{run.name}-{identity}"

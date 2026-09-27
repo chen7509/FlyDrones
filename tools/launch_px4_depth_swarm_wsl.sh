@@ -335,6 +335,7 @@ from pathlib import Path
 from flydrones.drones.mavlink import MavlinkDrone
 from tools.run_camera_render_capacity_trial_wsl import (
     _depth_topic,
+    capacity_telemetry_ready,
     validate_depth_topic_connections,
 )
 
@@ -388,11 +389,7 @@ def sample(vehicle_id: int) -> dict:
     telemetry = drone.telemetry()
     while time.monotonic() < deadline:
         telemetry = drone.telemetry()
-        if (
-            telemetry.estimator_healthy is not None
-            and telemetry.armed is not None
-            and telemetry.landed is not None
-        ):
+        if capacity_telemetry_ready(telemetry):
             break
         time.sleep(0.05)
     if drone.m is not None:

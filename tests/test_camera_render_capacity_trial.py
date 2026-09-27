@@ -16,6 +16,7 @@ from tools.run_camera_render_capacity_trial_wsl import (
     _renderer_witness_command,
     _scored_resource_summary,
     capacity_auxiliary_commands,
+    capacity_telemetry_ready,
     run_capacity_trial,
     validate_depth_topic_connections,
 )
@@ -78,6 +79,32 @@ def test_atomic_text_never_leaves_the_temporary_file(tmp_path: Path):
 
     assert destination.read_text(encoding="utf-8") == "4321\n"
     assert list(tmp_path.iterdir()) == [destination]
+
+
+@pytest.mark.parametrize(
+    "estimator_healthy,armed,landed,accepted",
+    (
+        (True, False, True, True),
+        (False, False, True, False),
+        (None, False, True, False),
+        (True, True, False, False),
+        (True, False, None, False),
+    ),
+)
+def test_capacity_telemetry_waits_for_the_complete_safe_state(
+    estimator_healthy, armed, landed, accepted
+):
+    telemetry = type(
+        "Telemetry",
+        (),
+        {
+            "estimator_healthy": estimator_healthy,
+            "armed": armed,
+            "landed": landed,
+        },
+    )()
+
+    assert capacity_telemetry_ready(telemetry) is accepted
 
 
 def test_capacity_run_directory_is_stable_per_output_and_unique_across_campaigns(tmp_path: Path):
