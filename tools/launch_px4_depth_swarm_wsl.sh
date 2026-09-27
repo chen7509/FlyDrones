@@ -154,9 +154,11 @@ export GZ_SIM_SYSTEM_PLUGIN_PATH="${GZ_SIM_SYSTEM_PLUGIN_PATH:-}"
 set +u
 source "$build/rootfs/gz_env.sh"
 set -u
+gazebo_run_args=(-s "$world_target")
+if [[ "$capacity_mode" != 1 ]]; then gazebo_run_args=(-r "${gazebo_run_args[@]}"); fi
 (
   exec env -u GALLIUM_DRIVER -u MESA_D3D12_DEFAULT_ADAPTER_NAME "${renderer_env[@]}" \
-    gz sim --headless-rendering -r -s "$world_target"
+    gz sim --headless-rendering "${gazebo_run_args[@]}"
 ) >"$run_dir/gazebo.stdout.log" 2>"$run_dir/gazebo.stderr.log" </dev/null &
 gazebo_pid=$!
 echo "$gazebo_pid" >"$run_dir/gazebo.pid"
@@ -238,7 +240,6 @@ while [[ ! -f "$aux_started" ]]; do
 done
 
 poses=(-4.0 -2.0 0.0 2.0 4.0)
-px4_startup_deadline=$((SECONDS + 150))
 for ((instance_id=0; instance_id<vehicle_count; instance_id++)); do
   instance_dir="$run_dir/instance_$instance_id"
   mkdir -p "$instance_dir"
@@ -257,58 +258,22 @@ for ((instance_id=0; instance_id<vehicle_count; instance_id++)); do
   )
   record_process "$(cat "$instance_dir/pid")" "px4-$instance_id"
   if [[ "$capacity_mode" == 1 ]]; then
-    remaining_startup_s=$((px4_startup_deadline - SECONDS))
-    if (( remaining_startup_s <= 0 )); then
-      echo "PX4 sensor readiness budget expired before instance $instance_id" >&2
-      exit 3
-    fi
-    if ! PYTHONPATH="$repo_root/src:$repo_root" python3 - \
-      "$instance_id" "$remaining_startup_s" "$instance_dir/startup-health.json" <<'PY'
-import json
-import sys
-from pathlib import Path
-
-from flydrones.drones.mavlink import MavlinkDrone
-from tools.run_camera_render_capacity_trial_wsl import (
-    capacity_telemetry_ready,
-    wait_for_capacity_telemetry,
-)
-
-vehicle_id = int(sys.argv[1])
-timeout_s = max(1.0, float(sys.argv[2]))
-output = Path(sys.argv[3])
-drone = MavlinkDrone(
-    connection=f"udpin:0.0.0.0:{14540 + vehicle_id}",
-    autopilot="px4",
-)
-try:
-    drone.connect()
-    telemetry = wait_for_capacity_telemetry(drone, timeout_s=timeout_s)
-finally:
-    if drone.m is not None:
-        drone.m.close()
-payload = {
-    "schema": "flydrones-px4-capacity-startup-health-v1",
-    "vehicle_id": vehicle_id,
-    "timeout_s": timeout_s,
-    "estimator_healthy": telemetry.estimator_healthy,
-    "armed": telemetry.armed,
-    "landed": telemetry.landed,
-}
-output.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
-if not capacity_telemetry_ready(telemetry):
-    raise SystemExit(3)
-PY
-    then
-      echo "PX4 sensor readiness failed at instance $instance_id" >&2
-      tail -50 "$instance_dir/out.log" >&2 || true
-      tail -50 "$instance_dir/err.log" >&2 || true
-      exit 3
-    fi
+    sleep 0.25
   else
     sleep 2
   fi
 done
+
+if [[ "$capacity_mode" == 1 ]]; then
+  if ! gz service -s "/world/flydrones_forest/control" \
+    --reqtype gz.msgs.WorldControl --reptype gz.msgs.Boolean \
+    --timeout 5000 --req "pause: false" \
+    >"$run_dir/capacity-world-resume.log" 2>&1; then
+    echo "Gazebo capacity world resume failed" >&2
+    cat "$run_dir/capacity-world-resume.log" >&2 || true
+    exit 3
+  fi
+fi
 
 for _ in $(seq 1 40); do
   running=0

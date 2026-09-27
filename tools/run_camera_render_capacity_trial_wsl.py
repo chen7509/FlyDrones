@@ -927,6 +927,7 @@ class SubprocessCapacityBackend:
             "camera-model-evidence.json",
             "camera-model-configured.sdf",
             "depth-topic-connections-launcher.json",
+            "capacity-world-resume.log",
         ):
             source = self.run_dir / name
             if not source.is_file():
