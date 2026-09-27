@@ -538,6 +538,8 @@ def test_capacity_launcher_uses_temporary_attestation_and_stable_gazebo_identity
     barrier = launcher.index('echo "PX4 pre-resume bridge barrier timed out"')
     final_resume = launcher.index('>"$run_dir/capacity-world-resume.log"')
     assert barrier < final_resume
+    sensor_topology = launcher.index('"$run_dir/px4-sensor-topic-connections.json"')
+    assert barrier < sensor_topology < final_resume
     assert 'capacity-world-instance-$instance_id-resume.log' not in launcher
     assert 'capacity-world-instance-$instance_id-pause.log' not in launcher
     assert 'echo "PX4 concurrent sensor readiness failed"' in launcher
