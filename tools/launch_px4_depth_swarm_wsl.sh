@@ -160,6 +160,23 @@ set -u
 ) >"$run_dir/gazebo.stdout.log" 2>"$run_dir/gazebo.stderr.log" </dev/null &
 gazebo_pid=$!
 echo "$gazebo_pid" >"$run_dir/gazebo.pid"
+gazebo_argv_stable=0
+for _ in $(seq 1 100); do
+  if ! kill -0 "$gazebo_pid" 2>/dev/null; then
+    echo "Gazebo exited before process identity stabilized" >&2
+    exit 3
+  fi
+  gazebo_argv="$(tr '\0' ' ' <"/proc/$gazebo_pid/cmdline")"
+  if [[ "$gazebo_argv" == "gz sim "* ]]; then
+    gazebo_argv_stable=1
+    break
+  fi
+  sleep 0.02
+done
+if [[ "$gazebo_argv_stable" -ne 1 ]]; then
+  echo "Gazebo launcher did not reach stable gz sim argv" >&2
+  exit 3
+fi
 record_process "$gazebo_pid" "gazebo-server"
 
 base_ready="$run_dir/gazebo-base-ready.json"
@@ -293,10 +310,14 @@ for _ in $(seq 1 40); do
       echo "camera phase evidence readiness timed out" >&2
       exit 3
     fi
+    renderer_phase_args=()
+    if [[ "$capacity_mode" != 1 ]]; then
+      renderer_phase_args=(--phase-ready-marker "$camera_phase_ready_marker")
+    fi
     if ! env -u GALLIUM_DRIVER -u MESA_D3D12_DEFAULT_ADAPTER_NAME "${renderer_env[@]}" \
       PYTHONPATH="$repo_root/src" python3 "$repo_root/tools/attest_gazebo_renderer_wsl.py" \
       --profile "$renderer_profile" --gazebo-pid "$gazebo_pid" \
-      --expected-depth-topics "$vehicle_count" --phase-ready-marker "$camera_phase_ready_marker" \
+      --expected-depth-topics "$vehicle_count" "${renderer_phase_args[@]}" \
       --output "$run_dir/renderer-attestation.json"; then
       echo "Gazebo renderer attestation failed" >&2
       exit 3

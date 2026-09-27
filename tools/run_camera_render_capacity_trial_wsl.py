@@ -240,7 +240,7 @@ def _auxiliary_closed_cleanly(
     if exit_code != 0 or len(stops) != 1:
         return False
     stop = stops[0]
-    if implementation == "native":
+    if implementation in {"native", "native-cpp"}:
         return True
     if implementation == "python":
         return stop.get("exit_code") == 0 and stop.get("completed") is True

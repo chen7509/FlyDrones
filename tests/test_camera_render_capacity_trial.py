@@ -24,9 +24,9 @@ from tools.run_camera_render_capacity_trial_wsl import (
         ("python", [{"event": "stop", "exit_code": 0, "completed": True}], 0, True),
         ("python", [{"event": "stop", "exit_code": 0, "completed": False}], 0, False),
         ("python", [{"event": "stop", "exit_code": 0}], 0, False),
-        ("native", [{"event": "stop"}], 0, True),
-        ("native", [{"event": "stop"}], 1, False),
-        ("native", [{"event": "malformed-native-jsonl"}], 0, False),
+        ("native-cpp", [{"event": "stop"}], 0, True),
+        ("native-cpp", [{"event": "stop"}], 1, False),
+        ("native-cpp", [{"event": "malformed-native-jsonl"}], 0, False),
     ),
 )
 def test_auxiliary_clean_close_requires_one_complete_success_record(
@@ -279,6 +279,20 @@ def test_depth_topic_connection_validation_rejects_duplicates_and_unexpected_sub
     assert validate_depth_topic_connections(unexpected, subscriber_count=0)["accepted"] is False
     with pytest.raises(ValueError, match="subscriber count"):
         validate_depth_topic_connections({0: "malformed"}, subscriber_count=1)
+
+
+def test_capacity_launcher_uses_temporary_attestation_and_stable_gazebo_identity():
+    launcher = (Path(__file__).parents[1] / "tools/launch_px4_depth_swarm_wsl.sh").read_text(
+        encoding="utf-8"
+    )
+    assert "renderer_phase_args=()" in launcher
+    assert 'if [[ "$capacity_mode" != 1 ]]; then' in launcher
+    assert 'renderer_phase_args=(--phase-ready-marker "$camera_phase_ready_marker")' in launcher
+    assert '"${renderer_phase_args[@]}"' in launcher
+    assert "Gazebo launcher did not reach stable gz sim argv" in launcher
+    assert launcher.index("Gazebo launcher did not reach stable gz sim argv") < launcher.index(
+        'record_process "$gazebo_pid" "gazebo-server"'
+    )
 
 
 @pytest.mark.parametrize("cell", ("idle-0", "native-1", "python-5", "native-5"))
