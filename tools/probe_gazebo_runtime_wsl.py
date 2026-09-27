@@ -4,11 +4,22 @@ from __future__ import annotations
 
 import argparse
 import csv
+import json
 import os
 import subprocess
+import tempfile
 import threading
 import time
 from pathlib import Path
+
+
+def _atomic_json(path: Path, payload: dict[str, object]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with tempfile.NamedTemporaryFile("w", encoding="utf-8", dir=path.parent, delete=False) as handle:
+        json.dump(payload, handle, indent=2, sort_keys=True)
+        handle.write("\n")
+        temporary = Path(handle.name)
+    temporary.replace(path)
 
 
 def _stat_fields(text: str) -> list[str]:
@@ -76,7 +87,10 @@ def main() -> int:
     parser.add_argument("--output-dir", type=Path, required=True)
     parser.add_argument("--completion-marker", type=Path, required=True)
     parser.add_argument("--duration-s", type=float, default=300.0)
+    parser.add_argument("--ready-marker", type=Path)
     args = parser.parse_args()
+    if args.ready_marker is not None:
+        args.ready_marker.unlink(missing_ok=True)
 
     from gz.msgs10.clock_pb2 import Clock
     from gz.transport13 import Node
@@ -127,9 +141,25 @@ def main() -> int:
     deadline = time.monotonic() + args.duration_s
     gazebo_pid = None
     next_gpu = 0.0
+    ready_written = False
     try:
         while time.monotonic() < deadline and not args.completion_marker.exists():
             now = time.monotonic()
+            with lock:
+                clock_snapshot = last_clock
+                clock_seen = seen
+            if not ready_written and clock_snapshot is not None:
+                if args.ready_marker is not None:
+                    _atomic_json(
+                        args.ready_marker,
+                        {
+                            "schema": "flydrones-gazebo-runtime-ready-v1",
+                            "sim_ns": clock_snapshot[1],
+                            "monotonic_s": clock_snapshot[0],
+                            "clock_samples": clock_seen,
+                        },
+                    )
+                ready_written = True
             if gazebo_pid is None and (args.run_dir / "gazebo.pid").exists():
                 gazebo_pid = int((args.run_dir / "gazebo.pid").read_text(encoding="utf-8").strip())
             if gazebo_pid is not None:

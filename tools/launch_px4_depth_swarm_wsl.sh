@@ -12,6 +12,10 @@ renderer_profile="${FLYDRONES_GZ_RENDER_PROFILE:-default}"
 camera_schedule_mode="${FLYDRONES_CAMERA_SCHEDULE_MODE:-simultaneous}"
 camera_aux_timeout_s="${FLYDRONES_CAMERA_AUX_TIMEOUT_S:-45}"
 camera_phase_ready_marker="${FLYDRONES_CAMERA_PHASE_READY_MARKER:-}"
+capacity_mode="${FLYDRONES_CAPACITY_MODE:-0}"
+capacity_ready_marker="${FLYDRONES_CAPACITY_READY_MARKER:-}"
+capacity_observer_pid_file="${FLYDRONES_CAPACITY_OBSERVER_PID_FILE:-}"
+capacity_subscriber_count="${FLYDRONES_CAPACITY_SUBSCRIBER_COUNT:-}"
 world_source="$repo_root/results/px4-sitl-five-depth/flydrones_forest.sdf"
 world_target="$px4_root/Tools/simulation/gz/worlds/flydrones_forest.sdf"
 model_root="$px4_root/Tools/simulation/gz/models"
@@ -51,6 +55,21 @@ fi
 if [[ -z "$camera_phase_ready_marker" ]]; then
   echo "FLYDRONES_CAMERA_PHASE_READY_MARKER is required" >&2
   exit 2
+fi
+if [[ "$capacity_mode" != 0 && "$capacity_mode" != 1 ]]; then
+  echo "FLYDRONES_CAPACITY_MODE must be 0 or 1" >&2
+  exit 2
+fi
+if [[ "$capacity_mode" == 1 ]]; then
+  if [[ -z "$capacity_ready_marker" || -z "$capacity_observer_pid_file" ]]; then
+    echo "capacity readiness marker and observer PID file are required" >&2
+    exit 2
+  fi
+  if [[ "$capacity_subscriber_count" != 0 && "$capacity_subscriber_count" != 1 \
+      && "$capacity_subscriber_count" != 5 ]]; then
+    echo "FLYDRONES_CAPACITY_SUBSCRIBER_COUNT must be 0, 1, or 5" >&2
+    exit 2
+  fi
 fi
 if [[ -e "$run_dir" ]]; then
   echo "PX4 run directory already exists; refusing to overwrite: $run_dir" >&2
@@ -281,6 +300,114 @@ for _ in $(seq 1 40); do
       --output "$run_dir/renderer-attestation.json"; then
       echo "Gazebo renderer attestation failed" >&2
       exit 3
+    fi
+    if [[ "$capacity_mode" == 1 ]]; then
+      PYTHONPATH="$repo_root/src:$repo_root" python3 - \
+        "$capacity_ready_marker" "$run_dir" "$capacity_observer_pid_file" \
+        "$capacity_subscriber_count" "$vehicle_count" <<'PY'
+import concurrent.futures
+import json
+import os
+import subprocess
+import sys
+import tempfile
+import time
+from pathlib import Path
+
+from flydrones.drones.mavlink import MavlinkDrone
+from tools.run_camera_render_capacity_trial_wsl import (
+    _depth_topic,
+    validate_depth_topic_connections,
+)
+
+ready_path = Path(sys.argv[1])
+run_dir = Path(sys.argv[2])
+observer_pid_file = Path(sys.argv[3])
+subscriber_count = int(sys.argv[4])
+vehicle_count = int(sys.argv[5])
+if not observer_pid_file.is_file():
+    raise SystemExit("capacity observer PID file is missing")
+observer_pid = int(observer_pid_file.read_text(encoding="utf-8").strip())
+try:
+    os.kill(observer_pid, 0)
+except OSError as exc:
+    raise SystemExit("capacity observer is not alive") from exc
+
+raw = {}
+for vehicle_id in range(vehicle_count):
+    result = subprocess.run(
+        ["gz", "topic", "-i", "-t", _depth_topic(vehicle_id)],
+        text=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.STDOUT,
+        timeout=10,
+        check=False,
+    )
+    if result.returncode != 0:
+        raise SystemExit(f"depth topic introspection failed for vehicle {vehicle_id}")
+    raw[vehicle_id] = result.stdout
+connections = validate_depth_topic_connections(raw, subscriber_count=subscriber_count)
+connections["stage"] = "launcher-after-attestation"
+connections["observer_pid"] = observer_pid
+connections["raw"] = {str(key): value for key, value in raw.items()}
+(run_dir / "depth-topic-connections-launcher.json").write_text(
+    json.dumps(connections, indent=2, sort_keys=True) + "\n", encoding="utf-8"
+)
+if not connections["accepted"]:
+    raise SystemExit("capacity depth subscriber topology rejected")
+
+def sample(vehicle_id: int) -> dict:
+    drone = MavlinkDrone(
+        connection=f"udpin:0.0.0.0:{14540 + vehicle_id}",
+        autopilot="px4",
+    )
+    drone.connect()
+    deadline = time.monotonic() + 10.0
+    telemetry = drone.telemetry()
+    while time.monotonic() < deadline:
+        telemetry = drone.telemetry()
+        if (
+            telemetry.estimator_healthy is not None
+            and telemetry.armed is not None
+            and telemetry.landed is not None
+        ):
+            break
+        time.sleep(0.05)
+    if drone.m is not None:
+        drone.m.close()
+    return {
+        "vehicle_id": vehicle_id,
+        "estimator_healthy": telemetry.estimator_healthy,
+        "armed": telemetry.armed,
+        "landed": telemetry.landed,
+    }
+
+with concurrent.futures.ThreadPoolExecutor(max_workers=vehicle_count) as executor:
+    states = list(executor.map(sample, range(vehicle_count)))
+payload = {
+    "schema": "flydrones-camera-capacity-ready-v1",
+    "observer_pid": observer_pid,
+    "subscriber_count": subscriber_count,
+    "renderer_attestation_accepted": True,
+    "px4_vehicle_count": len(states),
+    "px4_all_healthy": all(item["estimator_healthy"] is True for item in states),
+    "px4_all_disarmed": all(item["armed"] is False for item in states),
+    "px4_all_landed": all(item["landed"] is True for item in states),
+    "px4_states": states,
+}
+ready_path.parent.mkdir(parents=True, exist_ok=True)
+with tempfile.NamedTemporaryFile("w", encoding="utf-8", dir=ready_path.parent, delete=False) as handle:
+    json.dump(payload, handle, indent=2, sort_keys=True)
+    handle.write("\n")
+    temporary = Path(handle.name)
+temporary.replace(ready_path)
+if not (
+    payload["px4_all_healthy"]
+    and payload["px4_all_disarmed"]
+    and payload["px4_all_landed"]
+):
+    raise SystemExit("PX4 capacity health/disarmed/landed gate failed")
+PY
     fi
     trap - ERR INT TERM
     echo "$vehicle_count PX4 x500_depth_fly instances and $vehicle_count isolated depth topics are ready."

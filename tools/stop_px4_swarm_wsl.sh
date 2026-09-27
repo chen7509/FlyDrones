@@ -21,11 +21,61 @@ if [[ -f "$run_dir/fault-mode" ]]; then
     rm -f "$world_target"
   fi
   for model in OakD-Lite-Fly x500_depth_fly; do
-    rm -rf "$model_root/$model"
+    rm -rf "${model_root:?}/$model"
     if [[ -d "$run_dir/backups/$model" ]]; then
       cp -a "$run_dir/backups/$model" "$model_root/$model"
     fi
   done
+  python3 - "$run_dir" "$world_target" "$model_root" <<'PY'
+import hashlib
+import json
+import sys
+import tempfile
+from pathlib import Path
+
+run_dir = Path(sys.argv[1])
+world_target = Path(sys.argv[2])
+model_root = Path(sys.argv[3])
+backup_root = run_dir / "backups"
+
+def digest(path: Path):
+    if not path.exists():
+        return None
+    if path.is_file():
+        return hashlib.sha256(path.read_bytes()).hexdigest()
+    digest = hashlib.sha256()
+    for item in sorted(candidate for candidate in path.rglob("*") if candidate.is_file()):
+        digest.update(item.relative_to(path).as_posix().encode("utf-8"))
+        digest.update(b"\0")
+        digest.update(item.read_bytes())
+        digest.update(b"\0")
+    return digest.hexdigest()
+
+pairs = {
+    "world": (backup_root / "world.sdf", world_target),
+    "OakD-Lite-Fly": (backup_root / "OakD-Lite-Fly", model_root / "OakD-Lite-Fly"),
+    "x500_depth_fly": (backup_root / "x500_depth_fly", model_root / "x500_depth_fly"),
+}
+items = {
+    name: {
+        "backup_sha256": digest(before),
+        "restored_sha256": digest(after),
+        "matched": digest(before) == digest(after),
+    }
+    for name, (before, after) in pairs.items()
+}
+payload = {
+    "schema": "flydrones-px4-shared-restoration-v1",
+    "restored": all(item["matched"] for item in items.values()),
+    "items": items,
+}
+target = run_dir / "restoration-evidence.json"
+with tempfile.NamedTemporaryFile("w", encoding="utf-8", dir=run_dir, delete=False) as handle:
+    json.dump(payload, handle, indent=2, sort_keys=True)
+    handle.write("\n")
+    temporary = Path(handle.name)
+temporary.replace(target)
+PY
   rm -f "$run_dir/fault-mode"
 fi
 echo "FlyDrones five-vehicle PX4/Gazebo processes stopped."

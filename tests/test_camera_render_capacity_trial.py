@@ -1,0 +1,374 @@
+from __future__ import annotations
+
+import json
+from pathlib import Path
+
+import pytest
+
+from flydrones.camera_render_capacity import capacity_schedule
+from tools.run_camera_render_capacity_trial_wsl import (
+    _auxiliary_closed_cleanly,
+    _scored_resource_summary,
+    capacity_auxiliary_commands,
+    run_capacity_trial,
+    validate_depth_topic_connections,
+)
+
+
+@pytest.mark.parametrize(
+    "implementation,events,exit_code,accepted",
+    (
+        ("scheduler", [{"event": "stop", "exit_code": 0}], 0, True),
+        ("scheduler", [{"event": "stop", "exit_code": 1}], 0, False),
+        ("scheduler", [{"event": "stop", "exit_code": 0}] * 2, 0, False),
+        ("python", [{"event": "stop", "exit_code": 0, "completed": True}], 0, True),
+        ("python", [{"event": "stop", "exit_code": 0, "completed": False}], 0, False),
+        ("python", [{"event": "stop", "exit_code": 0}], 0, False),
+        ("native", [{"event": "stop"}], 0, True),
+        ("native", [{"event": "stop"}], 1, False),
+        ("native", [{"event": "malformed-native-jsonl"}], 0, False),
+    ),
+)
+def test_auxiliary_clean_close_requires_one_complete_success_record(
+    implementation: str,
+    events: list[dict[str, object]],
+    exit_code: int,
+    accepted: bool,
+):
+    assert _auxiliary_closed_cleanly(
+        events, exit_code=exit_code, implementation=implementation
+    ) is accepted
+
+
+def test_scored_resource_summary_pins_gazebo_cpu_rss_and_gpu(tmp_path: Path):
+    (tmp_path / "resource-probe.csv").write_text(
+        "monotonic_s,pid,cpu_user_s,cpu_system_s,rss_bytes,threads\n"
+        "49.0,12,1.0,0.5,1000,4\n"
+        "50.0,12,2.0,1.0,2000,5\n"
+        "65.0,12,4.0,2.0,3500,6\n"
+        "81.0,12,8.0,3.0,3000,5\n"
+        "82.0,12,9.0,4.0,5000,7\n",
+        encoding="utf-8",
+    )
+    (tmp_path / "gpu-probe.csv").write_text(
+        "monotonic_s,gpu_utilization_percent,memory_used_mib\n"
+        "50.0,25,100\n65.0,75,150\n81.0,unavailable,unavailable\n",
+        encoding="utf-8",
+    )
+
+    result = _scored_resource_summary(tmp_path, start_monotonic_s=50.0, end_monotonic_s=81.0)
+
+    assert result["accepted"] is True
+    assert result["gazebo"]["cpu_seconds_delta"] == 8.0
+    assert result["gazebo"]["rss_peak_bytes"] == 3500
+    assert result["gazebo"]["threads_peak"] == 6
+    assert result["gpu"]["utilization_peak_percent"] == 75.0
+
+
+def _run(cell: str):
+    return next(run for run in capacity_schedule() if run.cell.name == cell)
+
+
+def _config() -> dict[str, object]:
+    return {
+        "scored_duration_s": 30.0,
+        "wall_timeout_s": 120.0,
+        "readiness_timeout_s": 45.0,
+        "renderer_profile": "d3d12-nvidia",
+        "world": "flydrones_forest",
+        "vehicle_count": 5,
+    }
+
+
+def _phase_events() -> list[dict[str, object]]:
+    epoch = 1_000_000_000
+    topics = [
+        f"/world/flydrones_forest/model/x500_depth_fly_{vehicle}"
+        "/link/camera_link/sensor/StereoOV7251/depth_image"
+        for vehicle in range(5)
+    ]
+    events: list[dict[str, object]] = [
+        {"event": "start", "epoch_ns": epoch},
+        {"event": "topology", "depth_topics": topics},
+        {"event": "ready", "epoch_ns": epoch},
+    ]
+    for cycle in range(11):
+        for vehicle in range(5):
+            planned = epoch + cycle * 100_000_000 + vehicle * 20_000_000
+            events.extend(
+                (
+                    {
+                        "event": "trigger",
+                        "vehicle_id": vehicle,
+                        "cycle": cycle,
+                        "planned_sim_ns": planned,
+                        "published_sim_ns": planned + 4_000_000,
+                    },
+                    {
+                        "event": "image",
+                        "vehicle_id": vehicle,
+                        "topic": topics[vehicle],
+                        "sim_ns": planned,
+                        "sequence": cycle,
+                    },
+                )
+            )
+    events.append({"event": "stop"})
+    return events
+
+
+class FakeBackend:
+    def __init__(self, *, failure: str | None = None, busy: bool = False):
+        self.failure = failure
+        self.busy = busy
+        self.calls: list[str] = []
+        self.commands: list[list[str]] = []
+
+    def occupied_resources(self) -> list[str]:
+        self.calls.append("occupied_resources")
+        return ["gz sim"] if self.busy else []
+
+    def start(self, *, commands, **_kwargs):
+        self.calls.append("start")
+        self.commands = commands
+        if self.failure == "start":
+            raise RuntimeError("launcher failed")
+
+    def wait_ready(self, **_kwargs):
+        self.calls.append("wait_ready")
+        if self.failure == "readiness_timeout":
+            raise TimeoutError("capacity readiness timed out")
+        if self.failure == "completion_before_readiness":
+            raise RuntimeError("completion before readiness")
+        if self.failure == "observer_early_exit":
+            raise RuntimeError("observer exited before readiness")
+        if self.failure == "runtime_probe_early_exit":
+            raise RuntimeError("runtime probe exited before readiness")
+        return {
+            "schema": "flydrones-camera-capacity-ready-v1",
+            "renderer_attestation_accepted": self.failure != "renderer_rejected",
+            "px4_vehicle_count": 5,
+            "px4_all_healthy": self.failure != "px4_unhealthy",
+            "px4_all_disarmed": self.failure != "px4_armed",
+            "px4_all_landed": self.failure != "px4_armed",
+            "observer_pid": 4321,
+        }
+
+    def capture_connections(self, *, stage: str, subscriber_count: int):
+        self.calls.append(f"connections:{stage}")
+        selected = set(range(subscriber_count))
+        if self.failure == "wrong_subscriber_count":
+            selected.add(4 if subscriber_count < 5 else 0)
+        return {
+            vehicle: f"Subscribers: {2 if self.failure == 'wrong_subscriber_count' and vehicle in selected else int(vehicle in selected)}"
+            for vehicle in range(5)
+        }
+
+    def run_scored_window(self, **_kwargs):
+        self.calls.append("run_scored_window")
+        if self.failure == "wall_timeout":
+            raise TimeoutError("120 second wall timeout")
+        return {
+            "start_sim_ns": 2_000_000_000,
+            "end_sim_ns": 32_000_000_000,
+            "start_monotonic_s": 50.0,
+            "end_monotonic_s": 81.0,
+            "rtf": 30.0 / 31.0,
+        }
+
+    def collect(self, **_kwargs):
+        self.calls.append("collect")
+        return {
+            "phase_events": _phase_events(),
+            "observer_exit_code": 0,
+            "scheduler_exit_code": 0,
+            "runtime_probe_exit_code": 0,
+            "observer_closed_cleanly": True,
+            "scheduler_closed_cleanly": True,
+            "native_metrics": {
+                "callback_cpu_ns": 100,
+                "writer_cpu_ns": 200,
+                "queue_high_watermark": 3,
+                "image_payload_bytes_seen": 1234,
+            },
+            "resource_metrics": {
+                "accepted": True,
+                "gazebo": {
+                    "samples": 3,
+                    "cpu_seconds_delta": 8.0,
+                    "rss_peak_bytes": 3500,
+                },
+                "gpu": {"numeric_samples": 2, "utilization_peak_percent": 75.0},
+            },
+        }
+
+    def preserve_artifacts(self, **_kwargs):
+        self.calls.append("preserve_artifacts")
+        return {
+            "ulog_artifacts": [
+                {
+                    "vehicle_id": vehicle_id,
+                    "path": f"px4-ulogs/agent-{vehicle_id}.ulg",
+                    "bytes": 100 + vehicle_id,
+                    "sha256": f"hash-{vehicle_id}",
+                }
+                for vehicle_id in range(5)
+            ],
+            "copied_evidence": ["renderer-attestation.json", "cleanup-evidence.json"],
+        }
+
+    def stop(self, **_kwargs) -> int:
+        self.calls.append("stop")
+        return 1 if self.failure == "stopper_failure" else 0
+
+    def shared_files_restored(self, **_kwargs) -> bool:
+        self.calls.append("shared_files_restored")
+        return self.failure != "restoration_failure"
+
+    def cleanup_verified(self, **_kwargs) -> bool:
+        self.calls.append("cleanup_verified")
+        return self.failure != "cleanup_failure"
+
+
+@pytest.mark.parametrize(
+    "cell,subscriber_count,implementation",
+    (
+        ("idle-0", "0", "native"),
+        ("native-1", "1", "native"),
+        ("python-5", "5", "python"),
+        ("native-5", "5", "native"),
+    ),
+)
+def test_auxiliary_commands_are_exact_and_never_construct_worker(
+    tmp_path: Path, cell: str, subscriber_count: str, implementation: str
+):
+    commands = capacity_auxiliary_commands(
+        run=_run(cell),
+        output=tmp_path,
+        completion_marker=tmp_path / "complete.marker",
+        native_executable=tmp_path / "flydrones_camera_phase_native",
+    )
+
+    assert len(commands) == 2
+    scheduler, observer = commands
+    assert scheduler[1].endswith("run_camera_phase_scheduler_wsl.py")
+    assert "--formal" in scheduler
+    assert "--dispatch-delay-ns" in scheduler and "4000000" in scheduler
+    if implementation == "native":
+        assert observer[0].endswith("flydrones_camera_phase_native")
+        assert observer[1] == "observe"
+        assert observer[observer.index("--subscriber-count") + 1] == subscriber_count
+    else:
+        assert observer[1].endswith("probe_camera_phase_wsl.py")
+        assert observer[observer.index("--vehicle-count") + 1] == "5"
+    assert all("worker" not in part and "distributed_agent" not in part for cmd in commands for part in cmd)
+
+
+def test_depth_topic_connection_validation_rejects_duplicates_and_unexpected_subscribers():
+    zero = {vehicle: "Subscribers: 0" for vehicle in range(5)}
+    one = {vehicle: f"Subscribers: {int(vehicle == 0)}" for vehicle in range(5)}
+    five = {vehicle: "Subscribers: 1" for vehicle in range(5)}
+    assert validate_depth_topic_connections(zero, subscriber_count=0)["accepted"] is True
+    assert validate_depth_topic_connections(one, subscriber_count=1)["accepted"] is True
+    assert validate_depth_topic_connections(five, subscriber_count=5)["accepted"] is True
+    duplicate = dict(five)
+    duplicate[0] = "Subscribers: 2"
+    assert validate_depth_topic_connections(duplicate, subscriber_count=5)["accepted"] is False
+    unexpected = dict(zero)
+    unexpected[4] = "Subscribers: 1"
+    assert validate_depth_topic_connections(unexpected, subscriber_count=0)["accepted"] is False
+    with pytest.raises(ValueError, match="subscriber count"):
+        validate_depth_topic_connections({0: "malformed"}, subscriber_count=1)
+
+
+@pytest.mark.parametrize("cell", ("idle-0", "native-1", "python-5", "native-5"))
+def test_successful_trial_writes_manifest_summary_epoch_and_no_worker(tmp_path: Path, cell: str):
+    backend = FakeBackend()
+    native_executable = tmp_path / "flydrones_camera_phase_native"
+    native_executable.write_bytes(b"native capacity test executable")
+    result = run_capacity_trial(
+        run=_run(cell),
+        config=_config(),
+        output_root=tmp_path,
+        native_executable=native_executable,
+        _backend=backend,
+    )
+
+    output = tmp_path / _run(cell).name
+    manifest = json.loads((output / "manifest.json").read_text(encoding="utf-8"))
+    summary = json.loads((output / "summary.json").read_text(encoding="utf-8"))
+    epoch = json.loads((output / "scored-epoch.json").read_text(encoding="utf-8"))
+    assert result["manifest"] == manifest
+    assert manifest["schema"] == "flydrones-camera-render-capacity-manifest-v1"
+    assert summary["schema"] == "flydrones-camera-render-capacity-summary-v1"
+    assert epoch["target_sim_duration_s"] == 30.0
+    assert epoch["wall_timeout_s"] == 120.0
+    assert manifest["worker_command_constructed"] is False
+    assert manifest["stop_exit_code"] == 0
+    assert manifest["trial_cleanup_verified"] is True
+    assert manifest["frozen_hashes"]["native_executable"]
+    assert manifest["frozen_hashes"]["runner"]
+    assert manifest["source_hashes_match"] is True
+    assert manifest["native_executable_hash_match"] is True
+    assert len(manifest["ulog_artifacts"]) == 5
+    assert manifest["config_artifact"] == "trial-config.json"
+    assert (output / "trial-config.json").is_file()
+    assert (output / "depth-topic-connections.json").is_file()
+    assert summary["native_metrics"]["queue_high_watermark"] == 3
+    assert summary["runtime"]["resources"]["gazebo"]["rss_peak_bytes"] == 3500
+    assert "stop" in backend.calls
+    assert "preserve_artifacts" in backend.calls
+    if cell == "idle-0":
+        assert summary["camera_phase"]["depth_subscription_absent"] is True
+    else:
+        assert summary["camera_phase"]["accepted"] is True
+
+
+@pytest.mark.parametrize(
+    "failure,reason",
+    (
+        ("renderer_rejected", "renderer attestation rejected"),
+        ("px4_unhealthy", "PX4 health/disarmed/landed gate failed"),
+        ("px4_armed", "PX4 health/disarmed/landed gate failed"),
+        ("wrong_subscriber_count", "depth subscriber topology rejected"),
+        ("readiness_timeout", "capacity readiness timed out"),
+        ("completion_before_readiness", "completion before readiness"),
+        ("observer_early_exit", "observer exited before readiness"),
+        ("runtime_probe_early_exit", "runtime probe exited before readiness"),
+        ("wall_timeout", "120 second wall timeout"),
+        ("stopper_failure", "stopper exited 1"),
+        ("restoration_failure", "shared PX4 files were not restored"),
+        ("cleanup_failure", "owned process cleanup was not verified"),
+    ),
+)
+def test_trial_preserves_failures_and_always_runs_cleanup(
+    tmp_path: Path, failure: str, reason: str
+):
+    backend = FakeBackend(failure=failure)
+    result = run_capacity_trial(
+        run=_run("native-5"),
+        config=_config(),
+        output_root=tmp_path,
+        native_executable=tmp_path / "native",
+        _backend=backend,
+    )
+
+    assert result["manifest"]["evidence_accepted"] is False
+    assert any(reason in error for error in result["manifest"]["errors"])
+    assert "stop" in backend.calls
+    assert "shared_files_restored" in backend.calls
+    assert "cleanup_verified" in backend.calls
+
+
+def test_occupied_resources_abort_before_output_or_process_start(tmp_path: Path):
+    backend = FakeBackend(busy=True)
+    with pytest.raises(RuntimeError, match="resources are in use"):
+        run_capacity_trial(
+            run=_run("idle-0"),
+            config=_config(),
+            output_root=tmp_path,
+            native_executable=tmp_path / "native",
+            _backend=backend,
+        )
+    assert not (tmp_path / _run("idle-0").name).exists()
+    assert "start" not in backend.calls
