@@ -239,6 +239,12 @@ while [[ ! -f "$aux_started" ]]; do
   sleep 0.05
 done
 
+sensor_suffixes=(
+  "imu_sensor/imu"
+  "magnetometer_sensor/magnetometer"
+  "navsat_sensor/navsat"
+  "air_pressure_sensor/air_pressure"
+)
 poses=(-4.0 -2.0 0.0 2.0 4.0)
 for ((instance_id=0; instance_id<vehicle_count; instance_id++)); do
   instance_dir="$run_dir/instance_$instance_id"
@@ -258,7 +264,33 @@ for ((instance_id=0; instance_id<vehicle_count; instance_id++)); do
   )
   record_process "$(cat "$instance_dir/pid")" "px4-$instance_id"
   if [[ "$capacity_mode" == 1 ]]; then
-    sleep 0.25
+    instance_publishers_ready=0
+    for _ in $(seq 1 300); do
+      pid="$(cat "$instance_dir/pid")"
+      if ! kill -0 "$pid" 2>/dev/null; then
+        echo "PX4 instance $instance_id exited during sensor publisher registration" >&2
+        tail -30 "$instance_dir/out.log" >&2 || true
+        tail -30 "$instance_dir/err.log" >&2 || true
+        exit 3
+      fi
+      topic_list="$(gz topic -l 2>/dev/null || true)"
+      advertised=0
+      for suffix in "${sensor_suffixes[@]}"; do
+        topic="/world/flydrones_forest/model/x500_depth_fly_$instance_id/link/base_link/sensor/$suffix"
+        if grep -Fxq "$topic" <<<"$topic_list"; then advertised=$((advertised + 1)); fi
+      done
+      if [[ "$advertised" -eq "${#sensor_suffixes[@]}" ]]; then
+        instance_publishers_ready=1
+        break
+      fi
+      sleep 0.1
+    done
+    if [[ "$instance_publishers_ready" != 1 ]]; then
+      echo "PX4 instance $instance_id sensor publisher registration timed out" >&2
+      tail -30 "$instance_dir/out.log" >&2 || true
+      tail -30 "$instance_dir/err.log" >&2 || true
+      exit 3
+    fi
   else
     sleep 2
   fi
@@ -302,12 +334,6 @@ if [[ "$capacity_mode" == 1 ]]; then
     exit 3
   fi
 
-  sensor_suffixes=(
-    "imu_sensor/imu"
-    "magnetometer_sensor/magnetometer"
-    "navsat_sensor/navsat"
-    "air_pressure_sensor/air_pressure"
-  )
   sensor_publishers_ready=0
   for _ in $(seq 1 300); do
     topic_list="$(gz topic -l 2>/dev/null || true)"
