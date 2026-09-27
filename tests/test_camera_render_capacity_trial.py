@@ -529,6 +529,14 @@ def test_capacity_launcher_uses_temporary_attestation_and_stable_gazebo_identity
     assert 'echo "PX4 pre-resume bridge barrier timed out"' in launcher
     barrier = launcher.index('echo "PX4 pre-resume bridge barrier timed out"')
     assert barrier < resume
+    rebind_stop = launcher.index('px4-gz_bridge" --instance "$instance_id" stop')
+    rebind_start = launcher.index(
+        'px4-gz_bridge" --instance "$instance_id" start -w flydrones_forest'
+    )
+    assert resume < rebind_stop < rebind_start
+    assert "px4-sensor-topic-connections.json" in launcher
+    assert "px4-sensor-topic-connections.json" in runner
+    assert '"px4-bridge-rebind/agent-{vehicle_id}.log"' in runner
     assert resume < launcher.index("  running=0", resume)
 
 

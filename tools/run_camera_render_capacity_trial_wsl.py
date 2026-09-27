@@ -927,6 +927,7 @@ class SubprocessCapacityBackend:
             "camera-model-evidence.json",
             "camera-model-configured.sdf",
             "depth-topic-connections-launcher.json",
+            "px4-sensor-topic-connections.json",
             "capacity-world-resume.log",
         ):
             source = self.run_dir / name
@@ -934,6 +935,16 @@ class SubprocessCapacityBackend:
                 artifact_errors.append(f"required run evidence is missing: {name}")
                 continue
             shutil.copy2(source, self.output / name)
+            copied_evidence.append(name)
+        for vehicle_id in range(5):
+            source = self.run_dir / f"instance_{vehicle_id}" / "gz-bridge-rebind.log"
+            name = f"px4-bridge-rebind/agent-{vehicle_id}.log"
+            if not source.is_file():
+                artifact_errors.append(f"required run evidence is missing: {name}")
+                continue
+            target = self.output / name
+            target.parent.mkdir(exist_ok=True)
+            shutil.copy2(source, target)
             copied_evidence.append(name)
         for name in (
             "renderer-phase.jsonl",

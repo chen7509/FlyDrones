@@ -301,6 +301,138 @@ if [[ "$capacity_mode" == 1 ]]; then
     cat "$run_dir/capacity-world-resume.log" >&2 || true
     exit 3
   fi
+
+  sensor_suffixes=(
+    "imu_sensor/imu"
+    "magnetometer_sensor/magnetometer"
+    "navsat_sensor/navsat"
+    "air_pressure_sensor/air_pressure"
+  )
+  sensor_publishers_ready=0
+  for _ in $(seq 1 300); do
+    topic_list="$(gz topic -l 2>/dev/null || true)"
+    advertised=0
+    for ((instance_id=0; instance_id<vehicle_count; instance_id++)); do
+      for suffix in "${sensor_suffixes[@]}"; do
+        topic="/world/flydrones_forest/model/x500_depth_fly_$instance_id/link/base_link/sensor/$suffix"
+        if grep -Fxq "$topic" <<<"$topic_list"; then advertised=$((advertised + 1)); fi
+      done
+    done
+    if [[ "$advertised" -eq $((vehicle_count * ${#sensor_suffixes[@]})) ]]; then
+      sensor_publishers_ready=1
+      break
+    fi
+    sleep 0.1
+  done
+  if [[ "$sensor_publishers_ready" != 1 ]]; then
+    echo "PX4 sensor publishers were incomplete before bridge rebind" >&2
+    exit 3
+  fi
+
+  for ((instance_id=0; instance_id<vehicle_count; instance_id++)); do
+    pid="$(cat "$run_dir/instance_$instance_id/pid")"
+    if ! kill -0 "$pid" 2>/dev/null; then
+      echo "PX4 instance $instance_id exited before bridge rebind" >&2
+      exit 3
+    fi
+    rebind_log="$run_dir/instance_$instance_id/gz-bridge-rebind.log"
+    if ! "$build/bin/px4-gz_bridge" --instance "$instance_id" stop >"$rebind_log" 2>&1; then
+      echo "PX4 instance $instance_id bridge stop failed" >&2
+      cat "$rebind_log" >&2 || true
+      exit 3
+    fi
+    if ! "$build/bin/px4-gz_bridge" --instance "$instance_id" start -w flydrones_forest \
+      -n "x500_depth_fly_$instance_id" >>"$rebind_log" 2>&1; then
+      echo "PX4 instance $instance_id bridge restart failed" >&2
+      cat "$rebind_log" >&2 || true
+      exit 3
+    fi
+  done
+
+  PYTHONPATH="$repo_root/src:$repo_root" python3 - \
+    "$run_dir/px4-sensor-topic-connections.json" "$vehicle_count" <<'PY'
+import concurrent.futures
+import json
+import subprocess
+import sys
+import tempfile
+import time
+from pathlib import Path
+
+output = Path(sys.argv[1])
+vehicle_count = int(sys.argv[2])
+suffixes = {
+    "imu": "imu_sensor/imu",
+    "magnetometer": "magnetometer_sensor/magnetometer",
+    "gps": "navsat_sensor/navsat",
+    "barometer": "air_pressure_sensor/air_pressure",
+}
+topics = {
+    f"{vehicle_id}:{sensor}": (
+        f"/world/flydrones_forest/model/x500_depth_fly_{vehicle_id}"
+        f"/link/base_link/sensor/{suffix}"
+    )
+    for vehicle_id in range(vehicle_count)
+    for sensor, suffix in suffixes.items()
+}
+
+def inspect(item: tuple[str, str]) -> tuple[str, dict[str, object]]:
+    key, topic = item
+    try:
+        result = subprocess.run(
+            ["gz", "topic", "-i", "-t", topic],
+            text=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+            timeout=3,
+            check=False,
+        )
+        raw = result.stdout
+        return key, {
+            "topic": topic,
+            "returncode": result.returncode,
+            "publisher": "Publishers [Address, Message Type]:" in raw,
+            "subscriber": "Subscribers [Address, Message Type]:" in raw,
+            "raw": raw,
+        }
+    except subprocess.TimeoutExpired as exc:
+        return key, {
+            "topic": topic,
+            "returncode": None,
+            "publisher": False,
+            "subscriber": False,
+            "raw": (exc.stdout or "") if isinstance(exc.stdout, str) else "",
+            "error": "introspection_timeout",
+        }
+
+deadline = time.monotonic() + 30.0
+observations: dict[str, dict[str, object]] = {}
+while time.monotonic() < deadline:
+    with concurrent.futures.ThreadPoolExecutor(max_workers=len(topics)) as executor:
+        observations = dict(executor.map(inspect, topics.items()))
+    if all(item["publisher"] and item["subscriber"] for item in observations.values()):
+        break
+    time.sleep(0.25)
+
+payload = {
+    "schema": "flydrones-px4-sensor-topic-connections-v1",
+    "accepted": bool(observations) and all(
+        item["publisher"] and item["subscriber"] for item in observations.values()
+    ),
+    "expected_topic_count": len(topics),
+    "publisher_count": sum(bool(item["publisher"]) for item in observations.values()),
+    "subscriber_count": sum(bool(item["subscriber"]) for item in observations.values()),
+    "topics": observations,
+}
+output.parent.mkdir(parents=True, exist_ok=True)
+with tempfile.NamedTemporaryFile("w", encoding="utf-8", dir=output.parent, delete=False) as handle:
+    json.dump(payload, handle, indent=2, sort_keys=True)
+    handle.write("\n")
+    temporary = Path(handle.name)
+temporary.replace(output)
+if not payload["accepted"]:
+    raise SystemExit("PX4 sensor topic publisher/subscriber topology rejected")
+PY
 fi
 
 for _ in $(seq 1 40); do
