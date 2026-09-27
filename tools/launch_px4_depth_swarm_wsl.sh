@@ -322,7 +322,7 @@ for _ in $(seq 1 40); do
     if [[ "$capacity_mode" == 1 ]]; then
       PYTHONPATH="$repo_root/src:$repo_root" python3 - \
         "$capacity_ready_marker" "$run_dir" "$capacity_observer_pid_file" \
-        "$capacity_subscriber_count" "$vehicle_count" <<'PY'
+        "$capacity_subscriber_count" "$vehicle_count" "$camera_aux_timeout_s" <<'PY'
 import concurrent.futures
 import json
 import os
@@ -343,7 +343,8 @@ run_dir = Path(sys.argv[2])
 observer_pid_file = Path(sys.argv[3])
 subscriber_count = int(sys.argv[4])
 vehicle_count = int(sys.argv[5])
-deadline = time.monotonic() + 20.0
+observer_timeout_s = float(sys.argv[6])
+deadline = time.monotonic() + observer_timeout_s
 while not observer_pid_file.is_file() and time.monotonic() < deadline:
     time.sleep(0.05)
 if not observer_pid_file.is_file():

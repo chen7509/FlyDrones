@@ -11,6 +11,7 @@
 #include <chrono>
 #include <cstdio>
 #include <fstream>
+#include <iomanip>
 #include <functional>
 #include <iomanip>
 #include <memory>
@@ -395,6 +396,47 @@ std::string TriggerTopic(const std::string& world, int vehicleId) {
   return DepthTopic(world, vehicleId) + "/trigger";
 }
 
+std::string PhaseReadyMarkerJson(
+    const ProbeOptions& options, std::int64_t epochNs,
+    const std::vector<DepthObservation>& observations) {
+  if (observations.size() != static_cast<std::size_t>(options.subscriberCount)) {
+    throw std::invalid_argument("depth observation count mismatch");
+  }
+  std::ostringstream json;
+  json << std::setprecision(17)
+       << "{\"schema\":\"flydrones-camera-phase-ready-v1\""
+       << ",\"mode\":\"phased\""
+       << ",\"vehicle_count\":" << options.vehicleCount
+       << ",\"epoch_ns\":" << epochNs
+       << ",\"warmup_image_counts\":{";
+  for (int vehicle = 0; vehicle < options.subscriberCount; ++vehicle) {
+    if (vehicle) json << ',';
+    json << '\"' << vehicle << "\":" << observations[vehicle].messageCount;
+  }
+  json << "},\"depth_topics\":[";
+  for (int vehicle = 0; vehicle < options.vehicleCount; ++vehicle) {
+    if (vehicle) json << ',';
+    json << '\"' << JsonEscape(DepthTopic(options.world, vehicle)) << '\"';
+  }
+  json << "],\"depth_observations\":{";
+  for (int vehicle = 0; vehicle < options.subscriberCount; ++vehicle) {
+    if (vehicle) json << ',';
+    const auto& observation = observations[vehicle];
+    const auto frequency =
+        observation.messageCount >= 2 && observation.lastSimNs > observation.firstSimNs
+            ? static_cast<double>(observation.messageCount - 1) * 1'000'000'000.0 /
+                  static_cast<double>(observation.lastSimNs - observation.firstSimNs)
+            : 0.0;
+    json << '\"' << JsonEscape(DepthTopic(options.world, vehicle)) << "\":{"
+         << "\"width\":" << observation.width
+         << ",\"height\":" << observation.height
+         << ",\"frequency_hz\":" << frequency
+         << ",\"message_count\":" << observation.messageCount << '}';
+  }
+  json << "}}";
+  return json.str();
+}
+
 int RunProbe(const ProbeOptions& options, std::atomic_bool& stopRequested) {
   if ((options.vehicleCount != 1 && options.vehicleCount != 5) ||
       options.subscriberCount < 0 ||
@@ -415,6 +457,16 @@ int RunProbe(const ProbeOptions& options, std::atomic_bool& stopRequested) {
   std::atomic<std::uint64_t> triggerCount{0};
   std::vector<std::atomic<std::uint64_t>> imageSequences(options.vehicleCount);
   std::vector<std::atomic<std::uint64_t>> triggerSequences(options.vehicleCount);
+  std::vector<std::atomic<std::int64_t>> firstImageSimNs(options.vehicleCount);
+  std::vector<std::atomic<std::int64_t>> lastImageSimNs(options.vehicleCount);
+  std::vector<std::atomic<std::uint32_t>> imageWidths(options.vehicleCount);
+  std::vector<std::atomic<std::uint32_t>> imageHeights(options.vehicleCount);
+  for (int vehicle = 0; vehicle < options.vehicleCount; ++vehicle) {
+    firstImageSimNs[vehicle].store(-1);
+    lastImageSimNs[vehicle].store(-1);
+    imageWidths[vehicle].store(0);
+    imageHeights[vehicle].store(0);
+  }
   std::atomic<std::int64_t> writerCpuNs{0};
 
   std::ofstream output(options.output, std::ios::trunc);
@@ -518,6 +570,10 @@ int RunProbe(const ProbeOptions& options, std::atomic_bool& stopRequested) {
         CopyText(event.format,
                  gz::msgs::PixelFormatType_Name(message.pixel_format_type()));
         event.messageBytes = message.ByteSizeLong();
+        if (event.sequence == 0) firstImageSimNs[vehicle].store(sourceSimNs);
+        lastImageSimNs[vehicle].store(sourceSimNs);
+        imageWidths[vehicle].store(message.width());
+        imageHeights[vehicle].store(message.height());
         if (!queue.TryPush(std::move(event))) {
           integrityRejected.store(true);
           lifecycle.Fail("queue_overflow");
@@ -578,7 +634,15 @@ int RunProbe(const ProbeOptions& options, std::atomic_bool& stopRequested) {
       for (const auto& publisher : publishers) {
         publishersReady = publishersReady && publisher.HasConnections();
       }
-      if (topologyReady && publishersReady && latestClockNs.load() >= 0) break;
+      bool imagesReady = true;
+      for (int vehicle = 0; vehicle < options.subscriberCount; ++vehicle) {
+        imagesReady = imagesReady &&
+                      imageSequences[vehicle].load() >= options.warmupImageCountMin;
+      }
+      if (topologyReady && publishersReady && imagesReady &&
+          latestClockNs.load() >= 0) {
+        break;
+      }
       if (SteadyClock::now() >= readinessDeadline) {
         throw std::runtime_error("readiness_timeout");
       }
@@ -595,11 +659,16 @@ int RunProbe(const ProbeOptions& options, std::atomic_bool& stopRequested) {
     ready.kind = EventKind::kReady;
     ready.sourceSimNs = epochNs;
     if (!queue.TryPush(std::move(ready))) throw std::runtime_error("queue_overflow");
+    std::vector<DepthObservation> observations;
+    observations.reserve(options.subscriberCount);
+    for (int vehicle = 0; vehicle < options.subscriberCount; ++vehicle) {
+      observations.push_back(DepthObservation{
+          imageWidths[vehicle].load(), imageHeights[vehicle].load(),
+          imageSequences[vehicle].load(), firstImageSimNs[vehicle].load(),
+          lastImageSimNs[vehicle].load()});
+    }
     WriteMarker(options.readyMarker,
-                "{\"schema\":\"flydrones-camera-phase-native-ready-v1\","
-                "\"epoch_ns\":" + std::to_string(epochNs) +
-                ",\"subscriber_count\":" +
-                std::to_string(options.subscriberCount) + "}");
+                PhaseReadyMarkerJson(options, epochNs, observations));
     if (!lifecycle.MarkRunning()) throw std::runtime_error("lifecycle_running_failed");
 
     std::optional<TriggerScheduler> scheduler;

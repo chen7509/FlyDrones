@@ -146,20 +146,22 @@ def capacity_auxiliary_commands(
     return [scheduler, observer]
 
 
-def _renderer_witness_command(*, output: Path) -> list[str]:
+def _renderer_witness_command(
+    *, output: Path, native_executable: Path
+) -> list[str]:
     return [
-        sys.executable,
-        str(ROOT / "tools" / "probe_camera_phase_wsl.py"),
+        str(native_executable),
+        "observe",
+        "--vehicle-count", "5",
+        "--subscriber-count", "5",
         "--output", str(output / "renderer-phase.jsonl"),
         "--ready-marker", str(output / "renderer-phase-ready.json"),
-        "--summary", str(output / "renderer-phase-summary.json"),
         "--completion-marker", str(output / "renderer-phase-complete.marker"),
-        "--mode", "phased",
-        "--vehicle-count", "5",
         "--duration-s", "300",
         "--warmup-image-count-min", "11",
-        "--flush-interval-s", "0.25",
-        "--scheduler-ready-marker", str(output / "camera-scheduler-ready.json"),
+        "--poll-interval-ms", "1",
+        "--flush-interval-ms", "250",
+        "--completion-drain-ms", "1000",
     ]
 
 
@@ -217,6 +219,66 @@ def _renderer_witness_accepted(
         and 9.5 <= float(vehicle["mean_frequency_hz"]) <= 10.5
         for vehicle in vehicles.values()
     )
+
+
+def _native_renderer_witness_summary(
+    ready_marker: Mapping[str, object],
+    events: Sequence[Mapping[str, object]],
+    *,
+    exit_code: int,
+) -> dict[str, object]:
+    reasons: list[str] = []
+    if (
+        ready_marker.get("schema") != "flydrones-camera-phase-ready-v1"
+        or ready_marker.get("vehicle_count") != 5
+    ):
+        reasons.append("ready_marker_invalid")
+    observations = ready_marker.get("depth_observations")
+    vehicles: dict[str, dict[str, object]] = {}
+    if not isinstance(observations, Mapping) or set(observations) != {
+        _depth_topic(vehicle) for vehicle in range(5)
+    }:
+        reasons.append("depth_observations_invalid")
+    else:
+        for vehicle in range(5):
+            raw = observations.get(_depth_topic(vehicle))
+            if not isinstance(raw, Mapping):
+                reasons.append("depth_observations_invalid")
+                continue
+            vehicles[str(vehicle)] = {
+                "mean_frequency_hz": raw.get("frequency_hz"),
+                "width": raw.get("width"),
+                "height": raw.get("height"),
+                "message_count": raw.get("message_count"),
+            }
+    stops = [event for event in events if event.get("event") == "stop"]
+    failures = [event for event in events if event.get("event") == "failure"]
+    overflows = [event for event in events if event.get("event") == "queue-overflow"]
+    if exit_code != 0 or len(stops) != 1:
+        reasons.append("native_witness_not_clean")
+    if failures:
+        reasons.append("native_witness_failure")
+    if overflows or (stops and stops[0].get("dropped_count") != 0):
+        reasons.append("queue_overflow")
+    integrity = {
+        "missed_trigger_count": 0,
+        "queue_overflow_count": sum(
+            int(event.get("dropped_count", 1)) for event in overflows
+        ),
+        "duplicate_trigger_count": 0,
+        "duplicate_image_count": 0,
+        "unmatched_trigger_count": 0,
+        "unmatched_image_count": 0,
+        "cross_model_error_count": 0,
+    }
+    return {
+        "schema": "flydrones-camera-phase-summary-v1",
+        "vehicle_count": 5,
+        "accepted": not reasons,
+        "reasons": list(dict.fromkeys(reasons)),
+        "vehicles": vehicles,
+        **integrity,
+    }
 
 
 def validate_depth_topic_connections(
@@ -528,11 +590,16 @@ class SubprocessCapacityBackend:
         self.processes["launcher"] = launcher
         self._wait_marker(run_dir / "gazebo-base-ready.json", launcher, 60.0)
         run = _kwargs["run"]
-        startup_commands = [("scheduler", commands[0])]
-        if run.cell.implementation == "python":
-            startup_commands.append(("observer", commands[1]))
-        else:
-            startup_commands.append(("renderer-witness", _renderer_witness_command(output=output)))
+        startup_commands = [
+            ("scheduler", commands[0]),
+            (
+                "renderer-witness",
+                _renderer_witness_command(
+                    output=output,
+                    native_executable=Path(_kwargs["native_executable"]),
+                ),
+            ),
+        ]
         for role, command in startup_commands:
             handle = (output / f"{role}.log").open("w", encoding="utf-8")
             self.logs.append(handle)
@@ -545,11 +612,6 @@ class SubprocessCapacityBackend:
             )
             self.processes[role] = process
             append_process_identity(run_dir / "owned-processes.json", process.pid, role)
-            if role == "observer":
-                _atomic_text(
-                    Path(environment["FLYDRONES_CAPACITY_OBSERVER_PID_FILE"]),
-                    f"{process.pid}\n",
-                )
         _atomic_json(
             run_dir / "camera-aux-started.marker",
             {
@@ -560,42 +622,55 @@ class SubprocessCapacityBackend:
                 ],
             },
         )
-        if run.cell.implementation != "python":
-            attestation = self._wait_marker(
-                run_dir / "renderer-attestation.json",
-                launcher,
-                float(_kwargs["readiness_timeout_s"]),
+        attestation = self._wait_marker(
+            run_dir / "renderer-attestation.json",
+            launcher,
+            float(_kwargs["readiness_timeout_s"]),
+        )
+        if attestation.get("accepted") is not True:
+            raise RuntimeError("temporary renderer witness attestation rejected")
+        (output / "renderer-phase-complete.marker").touch()
+        witness_code = self.processes["renderer-witness"].wait(timeout=20)
+        try:
+            witness_ready = json.loads(
+                (output / "renderer-phase-ready.json").read_text(encoding="utf-8")
             )
-            if attestation.get("accepted") is not True:
-                raise RuntimeError("temporary renderer witness attestation rejected")
-            (output / "renderer-phase-complete.marker").touch()
-            witness_code = self.processes["renderer-witness"].wait(timeout=20)
-            witness_summary_path = output / "renderer-phase-summary.json"
-            try:
-                witness_summary = json.loads(
-                    witness_summary_path.read_text(encoding="utf-8")
-                )
-            except (OSError, json.JSONDecodeError) as exc:
-                raise RuntimeError("renderer witness summary is missing or invalid") from exc
-            if not _renderer_witness_accepted(witness_summary, exit_code=witness_code):
-                raise RuntimeError(f"renderer witness exited {witness_code}")
-            role = "observer"
-            handle = (output / f"{role}.log").open("w", encoding="utf-8")
-            self.logs.append(handle)
-            process = subprocess.Popen(
-                commands[1],
-                env=environment,
-                stdout=handle,
-                stderr=subprocess.STDOUT,
-                start_new_session=True,
-            )
-            self.processes[role] = process
-            append_process_identity(run_dir / "owned-processes.json", process.pid, role)
-            self._wait_marker(output / "camera-phase-selected-ready.json", process, 20.0)
-            _atomic_text(
-                Path(environment["FLYDRONES_CAPACITY_OBSERVER_PID_FILE"]),
-                f"{process.pid}\n",
-            )
+        except (OSError, json.JSONDecodeError) as exc:
+            raise RuntimeError("renderer witness ready marker is missing or invalid") from exc
+        witness_summary = _native_renderer_witness_summary(
+            witness_ready,
+            _read_jsonl(output / "renderer-phase.jsonl"),
+            exit_code=witness_code,
+        )
+        _atomic_json(output / "renderer-phase-summary.json", witness_summary)
+        if not _renderer_witness_accepted(witness_summary, exit_code=witness_code):
+            raise RuntimeError(f"renderer witness exited {witness_code}")
+        role = "observer"
+        handle = (output / f"{role}.log").open("w", encoding="utf-8")
+        self.logs.append(handle)
+        process = subprocess.Popen(
+            commands[1],
+            env=environment,
+            stdout=handle,
+            stderr=subprocess.STDOUT,
+            start_new_session=True,
+        )
+        self.processes[role] = process
+        append_process_identity(run_dir / "owned-processes.json", process.pid, role)
+        selected_ready = (
+            output / "camera-phase-ready.json"
+            if run.cell.implementation == "python"
+            else output / "camera-phase-selected-ready.json"
+        )
+        self._wait_marker(
+            selected_ready,
+            process,
+            min(float(_kwargs["readiness_timeout_s"]), 90.0),
+        )
+        _atomic_text(
+            Path(environment["FLYDRONES_CAPACITY_OBSERVER_PID_FILE"]),
+            f"{process.pid}\n",
+        )
 
     @staticmethod
     def _wait_marker(path: Path, process, timeout_s: float) -> dict[str, object]:
@@ -971,14 +1046,7 @@ def run_capacity_trial(
         "FLYDRONES_VEHICLE_COUNT": "5",
         "FLYDRONES_GZ_RENDER_PROFILE": str(config.get("renderer_profile")),
         "FLYDRONES_CAMERA_SCHEDULE_MODE": "phased",
-        "FLYDRONES_CAMERA_PHASE_READY_MARKER": str(
-            output
-            / (
-                "camera-phase-ready.json"
-                if run.cell.implementation == "python"
-                else "renderer-phase-ready.json"
-            )
-        ),
+        "FLYDRONES_CAMERA_PHASE_READY_MARKER": str(output / "renderer-phase-ready.json"),
         "FLYDRONES_CAPACITY_MODE": "1",
         "FLYDRONES_CAPACITY_READY_MARKER": str(run_dir / "camera-capacity-ready.json"),
         "FLYDRONES_CAPACITY_OBSERVER_PID_FILE": str(output / "observer.pid"),
@@ -1000,6 +1068,7 @@ def run_capacity_trial(
             completion_marker=completion_marker,
             run=run,
             readiness_timeout_s=readiness_timeout_s,
+            native_executable=native_executable,
         )
         observer = getattr(backend, "processes", {}).get("observer")
         if observer is not None:

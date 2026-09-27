@@ -13,6 +13,7 @@ from tools.run_camera_render_capacity_trial_wsl import (
     _capacity_run_directory,
     _depth_topic,
     _renderer_witness_accepted,
+    _renderer_witness_command,
     _scored_resource_summary,
     capacity_auxiliary_commands,
     run_capacity_trial,
@@ -234,6 +235,20 @@ def test_renderer_witness_accepts_setup_phase_jitter_but_rejects_integrity_error
     assert _renderer_witness_accepted(summary, exit_code=2) is True
     summary["unmatched_trigger_count"] = 1
     assert _renderer_witness_accepted(summary, exit_code=2) is False
+
+
+def test_renderer_witness_uses_native_five_camera_warmup(tmp_path: Path):
+    executable = tmp_path / "flydrones_camera_phase_native"
+
+    command = _renderer_witness_command(output=tmp_path, native_executable=executable)
+
+    assert command[:2] == [str(executable), "observe"]
+    assert command[command.index("--vehicle-count") + 1] == "5"
+    assert command[command.index("--subscriber-count") + 1] == "5"
+    assert command[command.index("--warmup-image-count-min") + 1] == "11"
+    assert command[command.index("--ready-marker") + 1].endswith(
+        "renderer-phase-ready.json"
+    )
 
 
 class FakeBackend:

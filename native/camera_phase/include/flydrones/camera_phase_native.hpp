@@ -134,7 +134,20 @@ struct ProbeOptions {
   std::optional<std::uint64_t> stopAfterTriggerCount;
   std::string world{"flydrones_forest"};
   std::size_t queueCapacity{4096};
+  std::uint64_t warmupImageCountMin{11};
 };
+
+struct DepthObservation {
+  std::uint32_t width{};
+  std::uint32_t height{};
+  std::uint64_t messageCount{};
+  std::int64_t firstSimNs{-1};
+  std::int64_t lastSimNs{-1};
+};
+
+std::string PhaseReadyMarkerJson(const ProbeOptions& options,
+                                 std::int64_t epochNs,
+                                 const std::vector<DepthObservation>& observations);
 
 std::int64_t AlignEpochNs(std::int64_t simNs);
 bool ValidSourceTimestamp(bool hasHeader, bool hasStamp,

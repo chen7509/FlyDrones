@@ -203,6 +203,34 @@ void TestSourceTimestampValidation() {
           "positive image simulation time must be accepted");
 }
 
+void TestPhaseReadyMarkerCarriesElevenFrameDepthEvidence() {
+  camera::ProbeOptions options;
+  options.mode = "observe";
+  options.vehicleCount = 5;
+  options.subscriberCount = 5;
+  std::vector<camera::DepthObservation> observations;
+  for (int vehicle = 0; vehicle < 5; ++vehicle) {
+    observations.push_back(camera::DepthObservation{
+        160, 120, 11, 1'000'000'000 + vehicle * camera::kPhaseStepNs,
+        2'000'000'000 + vehicle * camera::kPhaseStepNs});
+  }
+
+  const auto marker = camera::PhaseReadyMarkerJson(options, 1'000'000'000,
+                                                    observations);
+
+  Require(marker.find("\"schema\":\"flydrones-camera-phase-ready-v1\"") !=
+              std::string::npos,
+          "phase-ready schema missing");
+  Require(marker.find("\"vehicle_count\":5") != std::string::npos,
+          "phase-ready vehicle count missing");
+  Require(marker.find("\"message_count\":11") != std::string::npos,
+          "phase-ready warmup count missing");
+  Require(marker.find("\"frequency_hz\":10") != std::string::npos,
+          "phase-ready frequency missing");
+  Require(marker.find(DepthTopic(4)) != std::string::npos,
+          "phase-ready fifth topic missing");
+}
+
 void TestLifecycleAndUniqueStopRecord() {
   camera::Lifecycle normal;
   Require(normal.MarkReady(), "ready transition failed");
@@ -278,6 +306,7 @@ int main() {
     TestSharedScheduleVectors();
     TestQueueBoundsAndHighWatermark();
     TestSourceTimestampValidation();
+    TestPhaseReadyMarkerCarriesElevenFrameDepthEvidence();
     TestLifecycleAndUniqueStopRecord();
     TestCompletionBeforeReadinessRunProbe();
     ExportParityFixture();
