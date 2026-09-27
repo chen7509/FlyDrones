@@ -1,6 +1,7 @@
 from copy import deepcopy
+from xml.etree import ElementTree
 
-from tools.check_triggered_depth_camera_wsl import classify_probe
+from tools.check_triggered_depth_camera_wsl import _probe_world, classify_probe
 
 IMAGE_TOPIC = "/world/trigger_probe/model/camera_model/link/camera_link/sensor/depth/depth_image"
 TRIGGER_TOPIC = f"{IMAGE_TOPIC}/trigger"
@@ -124,3 +125,11 @@ def test_probe_abnormal_exit_is_reported_without_hiding_resource_release():
 
     assert result["accepted"] is True
     assert result["warnings"] == ["owned_process_abnormal_exit"]
+
+
+def test_probe_world_verifies_the_installed_default_trigger_topic():
+    camera = ElementTree.fromstring(_probe_world()).find(".//sensor[@name='depth']/camera")
+
+    assert camera is not None
+    assert camera.findtext("triggered") == "true"
+    assert camera.find("trigger_topic") is None

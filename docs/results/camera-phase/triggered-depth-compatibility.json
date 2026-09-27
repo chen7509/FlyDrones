@@ -16,9 +16,9 @@
       "2": 1
     },
     "image_sim_ns": [
-      1520000000,
-      1932000000,
-      2100000000
+      1512000000,
+      1680000000,
+      1848000000
     ]
   },
   "accepted": true,
@@ -30,14 +30,14 @@
     "gz_sim": "Gazebo Sim, version 8.15.0\nCopyright (C) 2018 Open Source Robotics Foundation.\nReleased under the Apache 2.0 License.",
     "gz_transport": "The 'gz' command provides a command line interface to the Gazebo Tools.\n\n  gz <command> [options]\n\nList of available commands:\n\n  help:          Print this help text.\n  fuel:          Manage simulation resources.\n  gui:           Launch graphical interfaces.\n  launch:        Run and manage executables and plugins.\n  log:           Record or playback topics.\n  model:         Print information about models.\n  msg:           Print information about messages.\n  param:         List, get or set parameters.\n  plugin:        Print information about plugins.\n  sdf:           Utilities for SDF files.\n  service:       Print information about services.\n  sim:           Run and manage the Gazebo Simulator.\n  topic:         Print information about topics.\n\nOptions:\n\n  --force-version <VERSION>  Use a specific library version.\n  --versions                 Show the available versions.\n  --commands                 Show the available commands.\nUse 'gz help <command>' to print help for a command."
   },
-  "duration_wall_s": 13.739056537044235,
+  "duration_wall_s": 13.82443754200358,
   "events": [
     {
       "event": "start",
       "image_topic": "/trigger_probe/depth",
       "trigger_topic": "/trigger_probe/depth/trigger",
       "renderer_profile": "d3d12-nvidia",
-      "wall_monotonic_s": 553119.034731944
+      "wall_monotonic_s": 554276.530675903
     },
     {
       "event": "pretrigger_window_complete"
@@ -48,14 +48,14 @@
       "topic": "/trigger_probe/depth/trigger",
       "message_type": "gz.msgs.Boolean",
       "published": true,
-      "wall_monotonic_s": 553123.900582776
+      "wall_monotonic_s": 554282.135163573
     },
     {
       "event": "image",
       "trigger_index": 0,
       "topic": "/trigger_probe/depth",
-      "sim_ns": 1520000000,
-      "wall_monotonic_s": 553124.152543792,
+      "sim_ns": 1512000000,
+      "wall_monotonic_s": 554282.410135203,
       "width": 16,
       "height": 12
     },
@@ -65,14 +65,14 @@
       "topic": "/trigger_probe/depth/trigger",
       "message_type": "gz.msgs.Boolean",
       "published": true,
-      "wall_monotonic_s": 553124.312690603
+      "wall_monotonic_s": 554282.567495144
     },
     {
       "event": "image",
       "trigger_index": 1,
       "topic": "/trigger_probe/depth",
-      "sim_ns": 1932000000,
-      "wall_monotonic_s": 553124.323731825,
+      "sim_ns": 1680000000,
+      "wall_monotonic_s": 554282.577474311,
       "width": 16,
       "height": 12
     },
@@ -82,14 +82,14 @@
       "topic": "/trigger_probe/depth/trigger",
       "message_type": "gz.msgs.Boolean",
       "published": true,
-      "wall_monotonic_s": 553124.483080271
+      "wall_monotonic_s": 554282.737951827
     },
     {
       "event": "image",
       "trigger_index": 2,
       "topic": "/trigger_probe/depth",
-      "sim_ns": 2100000000,
-      "wall_monotonic_s": 553124.490816733,
+      "sim_ns": 1848000000,
+      "wall_monotonic_s": 554282.746340533,
       "width": 16,
       "height": 12
     },

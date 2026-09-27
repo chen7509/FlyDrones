@@ -162,7 +162,6 @@ def _probe_world() -> str:
         <sensor name="depth" type="depth_camera">
           <camera>
             <triggered>true</triggered>
-            <trigger_topic>{TRIGGER_TOPIC}</trigger_topic>
             <horizontal_fov>1.047</horizontal_fov>
             <image><width>16</width><height>12</height><format>R_FLOAT32</format></image>
             <clip><near>0.1</near><far>10</far></clip>
