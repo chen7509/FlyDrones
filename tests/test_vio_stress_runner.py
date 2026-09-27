@@ -7,6 +7,8 @@ import pytest
 from tools.run_vio_stress_trial_wsl import (
     apply_actuator_probe_evidence,
     apply_renderer_attestation,
+    camera_aux_closed_cleanly,
+    camera_auxiliary_commands,
     campaign_run_directory,
     copy_px4_console_logs,
     create_trial_manifest,
@@ -15,6 +17,7 @@ from tools.run_vio_stress_trial_wsl import (
     shared_px4_files_restored,
     terminate_worker_process_group,
     trial_frozen_hashes,
+    validate_camera_schedule_options,
     wait_for_probe_readiness,
 )
 
@@ -96,6 +99,7 @@ def test_v3_manifest_freezes_renderer_pair_versions_and_hashes(tmp_path):
             "launcher": "launcher-sha",
         },
         software_versions={"gazebo": "8.15.0", "mesa": "25.2.8"},
+        camera_schedule_mode="phased",
     )
 
     assert manifest["schema"] == "flydrones-vio-stress-trial-v3"
@@ -109,6 +113,52 @@ def test_v3_manifest_freezes_renderer_pair_versions_and_hashes(tmp_path):
     assert manifest["frozen_hashes"]["camera_model"] == "camera-sha"
     assert manifest["software_versions"]["mesa"] == "25.2.8"
     assert manifest["output_root"] == str(tmp_path / "campaign-a")
+    assert manifest["camera_schedule_mode"] == "phased"
+    assert manifest["camera_model_evidence"] is None
+    assert manifest["camera_scheduler_closed_cleanly"] is False
+    assert manifest["camera_phase_probe_closed_cleanly"] is False
+    assert manifest["base_camera_asset_unchanged"] is None
+
+
+def test_camera_schedule_options_default_and_formal_fault_injection_gate():
+    assert validate_camera_schedule_options("simultaneous", None, pair_id=None) == "simultaneous"
+    assert validate_camera_schedule_options("phased", 7, pair_id=None) == "phased"
+    with pytest.raises(ValueError, match="camera_schedule_mode"):
+        validate_camera_schedule_options("staggered", None, pair_id=None)
+    with pytest.raises(ValueError, match="positive"):
+        validate_camera_schedule_options("phased", 0, pair_id=None)
+    with pytest.raises(ValueError, match="formal"):
+        validate_camera_schedule_options("phased", 7, pair_id=1)
+
+
+def test_camera_auxiliary_commands_start_observer_in_both_modes_and_scheduler_only_phased(tmp_path):
+    simultaneous = camera_auxiliary_commands(
+        mode="simultaneous", output=tmp_path, completion_marker=tmp_path / "done",
+        fleet_size=5,
+    )
+    assert len(simultaneous) == 1
+    assert simultaneous[0][1].endswith("probe_camera_phase_wsl.py")
+    assert "--mode" in simultaneous[0] and "simultaneous" in simultaneous[0]
+
+    phased = camera_auxiliary_commands(
+        mode="phased", output=tmp_path, completion_marker=tmp_path / "done",
+        fleet_size=5,
+    )
+    assert len(phased) == 2
+    assert phased[0][1].endswith("run_camera_phase_scheduler_wsl.py")
+    assert "--formal" in phased[0]
+    assert phased[1][1].endswith("probe_camera_phase_wsl.py")
+    assert str(tmp_path / "camera-scheduler-ready.json") in phased[1]
+
+
+def test_camera_aux_clean_stop_requires_complete_successful_stop_record(tmp_path):
+    log = tmp_path / "camera-phase.jsonl"
+    log.write_text('{"event":"ready"}\n{"event":"stop","exit_code":0,"completed":true}\n', encoding="utf-8")
+    assert camera_aux_closed_cleanly(log, require_completed=True)
+    log.write_text('{"event":"ready"}\n{"event":"stop","exit_code":0,"completed":false}\n', encoding="utf-8")
+    assert not camera_aux_closed_cleanly(log, require_completed=True)
+    log.write_text('{"event":"ready"}\n{"event":"stop"', encoding="utf-8")
+    assert not camera_aux_closed_cleanly(log, require_completed=False)
 
 
 def test_rejected_or_missing_renderer_attestation_invalidates_evidence(tmp_path):
@@ -218,3 +268,30 @@ def test_frozen_hashes_include_actuator_probe_and_readiness_module(tmp_path):
     assert hashes["actuator_probe"]
     assert hashes["takeoff_readiness"]
     assert hashes["mavlink_drone"]
+    assert hashes["camera_phase"]
+    assert hashes["camera_model_configurator"]
+    assert hashes["camera_phase_scheduler"]
+    assert hashes["camera_phase_probe"]
+
+
+def test_schema_readiness_marker_can_gate_worker_start(tmp_path):
+    marker = tmp_path / "camera-phase-ready.json"
+
+    class Probe:
+        def poll(self):
+            return None
+
+    times = iter((0.0, 0.1, 0.2, 0.3))
+
+    def sleep(_duration):
+        marker.write_text(json.dumps({"schema": "flydrones-camera-phase-ready-v1"}), encoding="utf-8")
+
+    wait_for_probe_readiness(
+        marker,
+        Probe(),
+        timeout_s=1.0,
+        required_schema="flydrones-camera-phase-ready-v1",
+        label="camera phase probe",
+        monotonic=lambda: next(times),
+        sleep=sleep,
+    )

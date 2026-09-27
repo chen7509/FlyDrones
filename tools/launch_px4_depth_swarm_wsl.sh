@@ -9,6 +9,8 @@ vehicle_count="${FLYDRONES_VEHICLE_COUNT:-5}"
 vio_fault_profile="${FLYDRONES_VIO_FAULT_PROFILE:-}"
 vio_health_base_port="${FLYDRONES_VIO_HEALTH_BASE_PORT:-}"
 renderer_profile="${FLYDRONES_GZ_RENDER_PROFILE:-default}"
+camera_schedule_mode="${FLYDRONES_CAMERA_SCHEDULE_MODE:-simultaneous}"
+camera_aux_timeout_s="${FLYDRONES_CAMERA_AUX_TIMEOUT_S:-45}"
 world_source="$repo_root/results/px4-sitl-five-depth/flydrones_forest.sdf"
 world_target="$px4_root/Tools/simulation/gz/worlds/flydrones_forest.sdf"
 model_root="$px4_root/Tools/simulation/gz/models"
@@ -22,6 +24,13 @@ case "$renderer_profile" in
     ;;
   *)
     echo "unsupported Gazebo renderer profile: $renderer_profile" >&2
+    exit 2
+    ;;
+esac
+case "$camera_schedule_mode" in
+  simultaneous|phased) ;;
+  *)
+    echo "unsupported camera schedule mode: $camera_schedule_mode" >&2
     exit 2
     ;;
 esac
@@ -82,6 +91,10 @@ cp "$world_source" "$world_target"
 rm -rf "$model_root/OakD-Lite-Fly" "$model_root/x500_depth_fly"
 cp -r "$repo_root/assets/gazebo/models/OakD-Lite-Fly" "$model_root/OakD-Lite-Fly"
 cp -r "$repo_root/assets/gazebo/models/x500_depth_fly" "$model_root/x500_depth_fly"
+PYTHONPATH="$repo_root/src" python3 "$repo_root/tools/configure_gazebo_camera_phase.py" \
+  "$repo_root/assets/gazebo/models/OakD-Lite-Fly/model.sdf" \
+  "$model_root/OakD-Lite-Fly/model.sdf" \
+  --mode "$camera_schedule_mode" --evidence "$run_dir/camera-model-evidence.json"
 if [[ -n "$vio_fault_profile" ]]; then
   python3 "$repo_root/tools/configure_gazebo_vio_model.py" "$model_root/x500_depth_fly/model.sdf"
 fi
@@ -123,6 +136,64 @@ set -u
 gazebo_pid=$!
 echo "$gazebo_pid" >"$run_dir/gazebo.pid"
 record_process "$gazebo_pid" "gazebo-server"
+
+base_ready="$run_dir/gazebo-base-ready.json"
+aux_started="$run_dir/camera-aux-started.marker"
+for _ in $(seq 1 40); do
+  if ! kill -0 "$gazebo_pid" 2>/dev/null; then
+    echo "Gazebo exited before base readiness" >&2
+    tail -50 "$run_dir/gazebo.stderr.log" >&2 || true
+    exit 3
+  fi
+  if [[ -n "$vio_fault_profile" ]] && ! kill -0 "$(cat "$run_dir/vio-relay.pid")" 2>/dev/null; then
+    echo "VIO relay exited before Gazebo base readiness" >&2
+    exit 3
+  fi
+  if gz topic -l 2>/dev/null | grep -Fxq '/clock'; then
+    python3 - "$base_ready" "$gazebo_pid" "$camera_schedule_mode" <<'PY'
+import json
+import os
+import sys
+import tempfile
+from pathlib import Path
+
+target = Path(sys.argv[1])
+payload = {
+    "schema": "flydrones-gazebo-base-ready-v1",
+    "gazebo_pid": int(sys.argv[2]),
+    "camera_schedule_mode": sys.argv[3],
+}
+with tempfile.NamedTemporaryFile("w", encoding="utf-8", dir=target.parent, delete=False) as handle:
+    json.dump(payload, handle, indent=2)
+    handle.write("\n")
+    temporary = Path(handle.name)
+temporary.replace(target)
+PY
+    break
+  fi
+  sleep 1
+done
+if [[ ! -f "$base_ready" ]]; then
+  echo "Gazebo /clock base readiness timed out" >&2
+  exit 3
+fi
+
+aux_deadline=$((SECONDS + camera_aux_timeout_s))
+while [[ ! -f "$aux_started" ]]; do
+  if ! kill -0 "$gazebo_pid" 2>/dev/null; then
+    echo "Gazebo exited while waiting for camera auxiliaries" >&2
+    exit 3
+  fi
+  if [[ -n "$vio_fault_profile" ]] && ! kill -0 "$(cat "$run_dir/vio-relay.pid")" 2>/dev/null; then
+    echo "VIO relay exited while waiting for camera auxiliaries" >&2
+    exit 3
+  fi
+  if (( SECONDS >= aux_deadline )); then
+    echo "camera auxiliary startup handshake timed out" >&2
+    exit 3
+  fi
+  sleep 0.05
+done
 
 poses=(-4.0 -2.0 0.0 2.0 4.0)
 for ((instance_id=0; instance_id<vehicle_count; instance_id++)); do

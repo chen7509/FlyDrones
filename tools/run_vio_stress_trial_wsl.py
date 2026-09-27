@@ -15,6 +15,7 @@ import traceback
 from collections.abc import Callable, Mapping
 from pathlib import Path
 
+from flydrones.process_ownership import append_process_identity
 from flydrones.px4_ulog_evidence import newest_vehicle_ulog
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -65,6 +66,7 @@ def create_trial_manifest(
     px4_revision: str,
     frozen_hashes: Mapping[str, str],
     software_versions: Mapping[str, str],
+    camera_schedule_mode: str = "simultaneous",
 ) -> dict:
     return {
         "schema": "flydrones-vio-stress-trial-v3",
@@ -86,6 +88,11 @@ def create_trial_manifest(
         "stop_exit_code": None,
         "evidence_accepted": False,
         "actuator_probe_closed_cleanly": False,
+        "camera_schedule_mode": camera_schedule_mode,
+        "camera_model_evidence": None,
+        "camera_scheduler_closed_cleanly": False,
+        "camera_phase_probe_closed_cleanly": False,
+        "base_camera_asset_unchanged": None,
         "errors": [],
         "raw_artifact_sha256": {},
     }
@@ -210,6 +217,85 @@ def relay_closed_cleanly(path: Path) -> bool:
         return False
 
 
+def camera_aux_closed_cleanly(path: Path, *, require_completed: bool) -> bool:
+    """Return whether an auxiliary JSONL log ends with a complete success stop."""
+    if not path.is_file():
+        return False
+    lines = path.read_text(encoding="utf-8", errors="replace").strip().splitlines()
+    if not lines:
+        return False
+    try:
+        event = json.loads(lines[-1])
+    except json.JSONDecodeError:
+        return False
+    return bool(
+        event.get("event") == "stop"
+        and event.get("exit_code") == 0
+        and (not require_completed or event.get("completed") is True)
+    )
+
+
+def validate_camera_schedule_options(
+    mode: str,
+    stop_after_trigger_count: int | None,
+    *,
+    pair_id: int | None,
+) -> str:
+    if mode not in {"simultaneous", "phased"}:
+        raise ValueError("camera_schedule_mode must be simultaneous or phased")
+    if stop_after_trigger_count is not None:
+        if stop_after_trigger_count <= 0:
+            raise ValueError("camera_scheduler_stop_after_trigger_count must be positive")
+        if mode != "phased":
+            raise ValueError("camera scheduler fault injection requires phased mode")
+        if pair_id is not None:
+            raise ValueError("formal paired trials cannot use camera scheduler fault injection")
+    return mode
+
+
+def camera_auxiliary_commands(
+    *,
+    mode: str,
+    output: Path,
+    completion_marker: Path,
+    fleet_size: int,
+    stop_after_trigger_count: int | None = None,
+) -> list[list[str]]:
+    """Build scheduler/observer commands in their required startup order."""
+    commands: list[list[str]] = []
+    scheduler_ready = output / "camera-scheduler-ready.json"
+    if mode == "phased":
+        scheduler = [
+            sys.executable,
+            str(ROOT / "tools/run_camera_phase_scheduler_wsl.py"),
+            "--output", str(output / "camera-scheduler.jsonl"),
+            "--ready-marker", str(scheduler_ready),
+            "--completion-marker", str(completion_marker),
+            "--vehicle-count", str(fleet_size),
+            "--duration-s", "300",
+        ]
+        if stop_after_trigger_count is None:
+            scheduler.append("--formal")
+        else:
+            scheduler.extend(["--stop-after-trigger-count", str(stop_after_trigger_count)])
+        commands.append(scheduler)
+    observer = [
+        sys.executable,
+        str(ROOT / "tools/probe_camera_phase_wsl.py"),
+        "--output", str(output / "camera-phase.jsonl"),
+        "--ready-marker", str(output / "camera-phase-ready.json"),
+        "--summary", str(output / "camera-phase-summary.json"),
+        "--completion-marker", str(completion_marker),
+        "--mode", mode,
+        "--vehicle-count", str(fleet_size),
+        "--duration-s", "300",
+    ]
+    if mode == "phased":
+        observer.extend(["--scheduler-ready-marker", str(scheduler_ready)])
+    commands.append(observer)
+    return commands
+
+
 def wait_for_probe_readiness(
     ready_marker: Path,
     probe,
@@ -217,6 +303,8 @@ def wait_for_probe_readiness(
     timeout_s: float,
     monotonic: Callable[[], float] = time.monotonic,
     sleep: Callable[[float], None] = time.sleep,
+    required_schema: str | None = None,
+    label: str = "actuator probe",
 ) -> None:
     deadline = monotonic() + timeout_s
     while True:
@@ -225,13 +313,15 @@ def wait_for_probe_readiness(
                 payload = json.loads(ready_marker.read_text(encoding="utf-8"))
             except (OSError, json.JSONDecodeError):
                 payload = {}
-            if payload.get("ready") is True:
+            if (required_schema is None and payload.get("ready") is True) or (
+                required_schema is not None and payload.get("schema") == required_schema
+            ):
                 return
         return_code = probe.poll()
         if return_code is not None:
-            raise RuntimeError(f"actuator probe exited before readiness with code {return_code}")
+            raise RuntimeError(f"{label} exited before readiness with code {return_code}")
         if monotonic() >= deadline:
-            raise TimeoutError(f"actuator probe readiness timed out after {timeout_s:.1f}s")
+            raise TimeoutError(f"{label} readiness timed out after {timeout_s:.1f}s")
         sleep(0.05)
 
 
@@ -277,6 +367,10 @@ def trial_frozen_hashes(*, profile: Path, model: Path, runner_path: Path | None 
         "actuator_probe": sha256(ROOT / "tools/probe_gazebo_actuator_link.py"),
         "takeoff_readiness": sha256(ROOT / "src/flydrones/takeoff_readiness.py"),
         "mavlink_drone": sha256(ROOT / "src/flydrones/drones/mavlink.py"),
+        "camera_phase": sha256(ROOT / "src/flydrones/camera_phase.py"),
+        "camera_model_configurator": sha256(ROOT / "tools/configure_gazebo_camera_phase.py"),
+        "camera_phase_scheduler": sha256(ROOT / "tools/run_camera_phase_scheduler_wsl.py"),
+        "camera_phase_probe": sha256(ROOT / "tools/probe_camera_phase_wsl.py"),
         "summary": sha256(ROOT / "tools/summarize_vio_stress_wsl.py"),
         "world_generator": sha256(ROOT / "tools/generate_px4_forest_world.py"),
         "camera_model": _tree_sha256(ROOT / "assets/gazebo/models/OakD-Lite-Fly"),
@@ -296,6 +390,8 @@ def run_trial(
     campaign_id: str | None = None,
     output_root: Path = DEFAULT_OUTPUT_ROOT,
     takeoff_only_hold_s: float | None = None,
+    camera_schedule_mode: str = "simultaneous",
+    camera_scheduler_stop_after_trigger_count: int | None = None,
 ) -> dict:
     if not name.replace("-", "").replace("_", "").isalnum() or "/" in name:
         raise ValueError("name must be an alphanumeric trial label")
@@ -303,12 +399,19 @@ def run_trial(
         raise ValueError("fleet_size must be 1 or 5")
     if takeoff_only_hold_s is not None and takeoff_only_hold_s <= 0.0:
         raise ValueError("takeoff_only_hold_s must be positive when enabled")
+    validate_camera_schedule_options(
+        camera_schedule_mode,
+        camera_scheduler_stop_after_trigger_count,
+        pair_id=pair_id if pair_id is not None or campaign_id is None else 0,
+    )
     processes = subprocess.check_output(["ps", "-eo", "args="], text=True)
     occupied = [line for line in processes.splitlines() if (
         "/build/px4_sitl_default/bin/px4 -i " in line
         or line.startswith("gz sim ")
         or line.startswith("python3 ") and "tools/relay_gazebo_vio.py" in line
         or line.startswith("python3 ") and "tools/probe_gazebo_actuator_link.py" in line
+        or line.startswith("python3 ") and "tools/probe_camera_phase_wsl.py" in line
+        or line.startswith("python3 ") and "tools/run_camera_phase_scheduler_wsl.py" in line
     )]
     if occupied:
         raise RuntimeError(f"PX4/Gazebo resources are in use: {occupied}")
@@ -334,6 +437,7 @@ def run_trial(
         px4_revision=px4_revision,
         frozen_hashes=frozen_hashes,
         software_versions=_software_versions(),
+        camera_schedule_mode=camera_schedule_mode,
     )
     manifest["px4_run_dir"] = str(run_dir)
     manifest["controller_revision"] = os.environ.get("FLYDRONES_CONTROLLER_REVISION", repository_revision)
@@ -350,6 +454,7 @@ def run_trial(
         "FLYDRONES_VEHICLE_COUNT": str(fleet_size),
         "FLYDRONES_VIO_HEALTH_BASE_PORT": "16880",
         "FLYDRONES_GZ_RENDER_PROFILE": renderer_profile,
+        "FLYDRONES_CAMERA_SCHEDULE_MODE": camera_schedule_mode,
         "FLYDRONES_SEED": "240901",
         "PYTHONPATH": str(ROOT / "src"),
     })
@@ -370,15 +475,79 @@ def run_trial(
         start_new_session=True,
     )
     worker_process = None
+    launcher_process = None
+    launcher_log = None
     actuator_probe = None
     actuator_probe_log = None
+    camera_processes: list[tuple[str, subprocess.Popen, object]] = []
     try:
-        with (output / "launch.log").open("w", encoding="utf-8") as log:
-            launch = subprocess.run(["bash", str(ROOT / "tools/launch_px4_depth_swarm_wsl.sh")],
-                                    env=environment, stdout=log, stderr=subprocess.STDOUT, check=False,
-                                    timeout=120)
-        manifest["launch_exit_code"] = launch.returncode
-        if launch.returncode == 0:
+        launcher_log = (output / "launch.log").open("w", encoding="utf-8")
+        launcher_process = subprocess.Popen(
+            ["bash", str(ROOT / "tools/launch_px4_depth_swarm_wsl.sh")],
+            env=environment,
+            stdout=launcher_log,
+            stderr=subprocess.STDOUT,
+            start_new_session=True,
+        )
+        wait_for_probe_readiness(
+            run_dir / "gazebo-base-ready.json",
+            launcher_process,
+            timeout_s=60.0,
+            required_schema="flydrones-gazebo-base-ready-v1",
+            label="Gazebo base launcher",
+        )
+        for command in camera_auxiliary_commands(
+            mode=camera_schedule_mode,
+            output=output,
+            completion_marker=completion_marker,
+            fleet_size=fleet_size,
+            stop_after_trigger_count=camera_scheduler_stop_after_trigger_count,
+        ):
+            role = "camera-scheduler" if command[1].endswith("run_camera_phase_scheduler_wsl.py") else "camera-phase-probe"
+            process_log = (output / f"{role}.log").open("w", encoding="utf-8")
+            process = subprocess.Popen(
+                command,
+                env=environment,
+                stdout=process_log,
+                stderr=subprocess.STDOUT,
+                start_new_session=True,
+            )
+            camera_processes.append((role, process, process_log))
+            append_process_identity(run_dir / "owned-processes.json", process.pid, role)
+        _atomic_json(
+            run_dir / "camera-aux-started.marker",
+            {
+                "schema": "flydrones-camera-aux-started-v1",
+                "camera_schedule_mode": camera_schedule_mode,
+                "processes": [
+                    {"role": role, "pid": process.pid}
+                    for role, process, _log in camera_processes
+                ],
+            },
+        )
+        try:
+            manifest["launch_exit_code"] = launcher_process.wait(timeout=120)
+        except subprocess.TimeoutExpired:
+            terminate_worker_process_group(launcher_process.pid, grace_s=2.0)
+            manifest["launch_exit_code"] = launcher_process.wait(timeout=10)
+            raise TimeoutError("PX4 launcher timed out after camera auxiliary handshake")
+        if manifest["launch_exit_code"] == 0:
+            camera_by_role = {role: process for role, process, _log in camera_processes}
+            if camera_schedule_mode == "phased":
+                wait_for_probe_readiness(
+                    output / "camera-scheduler-ready.json",
+                    camera_by_role["camera-scheduler"],
+                    timeout_s=20.0,
+                    required_schema="flydrones-camera-scheduler-ready-v1",
+                    label="camera scheduler",
+                )
+            wait_for_probe_readiness(
+                output / "camera-phase-ready.json",
+                camera_by_role["camera-phase-probe"],
+                timeout_s=20.0,
+                required_schema="flydrones-camera-phase-ready-v1",
+                label="camera phase probe",
+            )
             actuator_probe_log = (output / "actuator-probe.log").open("w", encoding="utf-8")
             actuator_probe = subprocess.Popen(
                 [
@@ -446,15 +615,21 @@ def run_trial(
                 worker_process.wait(timeout=10)
             except Exception as exc:
                 manifest["errors"].append(f"worker cleanup: {exc}")
-        try:
-            with (output / "stop.log").open("w", encoding="utf-8") as log:
-                stopped = subprocess.run(["bash", str(ROOT / "tools/stop_px4_swarm_wsl.sh")],
-                                         env=environment, stdout=log, stderr=subprocess.STDOUT,
-                                         check=False, timeout=30)
-            manifest["stop_exit_code"] = stopped.returncode
-        except Exception as exc:
-            manifest["errors"].append(f"stop: {exc}")
         completion_marker.touch()
+        for role, process, process_log in reversed(camera_processes):
+            try:
+                return_code = process.wait(timeout=20)
+                manifest[f"{role.replace('-', '_')}_exit_code"] = return_code
+                if return_code != 0:
+                    manifest["errors"].append(f"{role} exited {return_code}")
+            except subprocess.TimeoutExpired:
+                try:
+                    terminate_worker_process_group(process.pid, grace_s=2.0)
+                    process.wait(timeout=10)
+                except Exception as exc:
+                    manifest["errors"].append(f"{role} cleanup: {exc}")
+                manifest["errors"].append(f"{role} did not stop after completion marker")
+            process_log.close()
         try:
             probe_return_code = runtime_probe.wait(timeout=20)
             if probe_return_code != 0:
@@ -482,8 +657,28 @@ def run_trial(
                 manifest["errors"].append("actuator probe did not stop after completion marker")
         if actuator_probe_log is not None:
             actuator_probe_log.close()
+        if launcher_process is not None and launcher_process.poll() is None:
+            try:
+                terminate_worker_process_group(launcher_process.pid, grace_s=2.0)
+                launcher_process.wait(timeout=10)
+            except Exception as exc:
+                manifest["errors"].append(f"launcher cleanup: {exc}")
+        if launcher_log is not None:
+            launcher_log.close()
+        try:
+            with (output / "stop.log").open("w", encoding="utf-8") as log:
+                stopped = subprocess.run(["bash", str(ROOT / "tools/stop_px4_swarm_wsl.sh")],
+                                         env=environment, stdout=log, stderr=subprocess.STDOUT,
+                                         check=False, timeout=30)
+            manifest["stop_exit_code"] = stopped.returncode
+        except Exception as exc:
+            manifest["errors"].append(f"stop: {exc}")
         manifest["shared_px4_files_restored"] = shared_px4_files_restored(
             run_dir, px4_root
+        )
+        manifest["base_camera_asset_unchanged"] = (
+            _tree_sha256(ROOT / "assets/gazebo/models/OakD-Lite-Fly")
+            == manifest["frozen_hashes"].get("camera_model")
         )
         world_source = run_dir / "flydrones_forest.sdf"
         if world_source.exists():
@@ -493,6 +688,9 @@ def run_trial(
             "vio-relay.jsonl",
             "vio-relay.stdout.log",
             "vio-relay.stderr.log",
+            "camera-model-evidence.json",
+            "gazebo-base-ready.json",
+            "camera-aux-started.marker",
             "renderer-attestation.json",
             "cleanup-evidence.json",
             "gazebo.stdout.log",
@@ -501,6 +699,16 @@ def run_trial(
             source = run_dir / source_name
             if source.exists():
                 shutil.copy2(source, output / source_name)
+        camera_model_evidence_path = output / "camera-model-evidence.json"
+        if camera_model_evidence_path.is_file():
+            try:
+                manifest["camera_model_evidence"] = json.loads(
+                    camera_model_evidence_path.read_text(encoding="utf-8")
+                )
+            except (OSError, json.JSONDecodeError) as exc:
+                manifest["errors"].append(f"camera model evidence unreadable: {exc}")
+        else:
+            manifest["errors"].append("camera model evidence missing")
         relay_log = output / "vio-relay.jsonl"
         manifest["relay_closed_cleanly"] = relay_closed_cleanly(relay_log)
         if not manifest["relay_closed_cleanly"]:
@@ -530,6 +738,24 @@ def run_trial(
             )
         apply_actuator_probe_evidence(manifest, output / "actuator-link.jsonl")
         apply_renderer_attestation(manifest, output / "renderer-attestation.json")
+        manifest["camera_phase_probe_closed_cleanly"] = camera_aux_closed_cleanly(
+            output / "camera-phase.jsonl", require_completed=True
+        )
+        manifest["camera_scheduler_closed_cleanly"] = bool(
+            camera_schedule_mode == "simultaneous"
+            or camera_aux_closed_cleanly(output / "camera-scheduler.jsonl", require_completed=False)
+        )
+        if not manifest["camera_phase_probe_closed_cleanly"]:
+            manifest["errors"].append("camera phase probe log lacks a complete successful stop record")
+        if not manifest["camera_scheduler_closed_cleanly"]:
+            manifest["errors"].append("camera scheduler log lacks a complete successful stop record")
+        camera_phase_summary = None
+        try:
+            camera_phase_summary = json.loads(
+                (output / "camera-phase-summary.json").read_text(encoding="utf-8")
+            )
+        except (OSError, json.JSONDecodeError) as exc:
+            manifest["errors"].append(f"camera phase summary missing or unreadable: {exc}")
         attestation = manifest["renderer"].get("attestation")
         manifest["evidence_accepted"] = bool(
             attestation and attestation.get("accepted")
@@ -537,8 +763,13 @@ def run_trial(
             and manifest["actuator_probe_closed_cleanly"]
             and manifest.get("stop_exit_code") == 0
             and manifest["shared_px4_files_restored"]
+            and manifest["base_camera_asset_unchanged"]
             and len(ulog_artifacts) == fleet_size
             and len(console_artifacts) == 2 * fleet_size
+            and manifest["camera_phase_probe_closed_cleanly"]
+            and manifest["camera_scheduler_closed_cleanly"]
+            and (manifest.get("camera_model_evidence") or {}).get("mode") == camera_schedule_mode
+            and camera_phase_summary and camera_phase_summary.get("accepted") is True
         )
         raw_paths = [
             path for path in output.rglob("*")
@@ -564,6 +795,10 @@ def main() -> int:
     parser.add_argument("--campaign-id")
     parser.add_argument("--output-root", type=Path, default=DEFAULT_OUTPUT_ROOT)
     parser.add_argument("--takeoff-only-hold-s", type=float)
+    parser.add_argument(
+        "--camera-schedule-mode", choices=("simultaneous", "phased"), default="simultaneous"
+    )
+    parser.add_argument("--camera-scheduler-stop-after-trigger-count", type=int)
     args = parser.parse_args()
     manifest = run_trial(
         name=args.name,
@@ -576,6 +811,8 @@ def main() -> int:
         campaign_id=args.campaign_id,
         output_root=args.output_root,
         takeoff_only_hold_s=args.takeoff_only_hold_s,
+        camera_schedule_mode=args.camera_schedule_mode,
+        camera_scheduler_stop_after_trigger_count=args.camera_scheduler_stop_after_trigger_count,
     )
     print(json.dumps(manifest, ensure_ascii=False, indent=2))
     try:

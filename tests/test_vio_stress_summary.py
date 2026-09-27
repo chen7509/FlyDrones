@@ -5,10 +5,46 @@ from tools.summarize_vio_stress_wsl import (
     _relay_metrics,
     build_takeoff_chain_summary,
     classify_trial,
+    load_camera_phase_summary,
     summarize_runtime_evidence,
     verify_command_gate,
     verify_px4_land_transition,
 )
+
+
+def test_camera_phase_summary_is_loaded_verbatim_and_preserves_reasons(tmp_path):
+    payload = {
+        "schema": "flydrones-camera-phase-summary-v1",
+        "accepted": False,
+        "reasons": ["phase_error_exceeded", "missing_vehicle_images"],
+        "vehicles": {"0": {"phase_error_p95_ms": 9.1}},
+    }
+    (tmp_path / "camera-phase-summary.json").write_text(
+        __import__("json").dumps(payload), encoding="utf-8"
+    )
+
+    assert load_camera_phase_summary(
+        tmp_path, {"camera_schedule_mode": "phased"}
+    ) == payload
+
+
+def test_missing_camera_phase_evidence_is_explicit_for_new_trials_and_omitted_for_history(tmp_path):
+    assert load_camera_phase_summary(tmp_path, {}) is None
+    assert load_camera_phase_summary(tmp_path, {"camera_schedule_mode": "simultaneous"}) == {
+        "accepted": False,
+        "reasons": ["camera_phase_summary_missing"],
+    }
+
+
+def test_unreadable_camera_phase_evidence_is_rejected_without_policy_or_safety_projection(tmp_path):
+    (tmp_path / "camera-phase-summary.json").write_text("{", encoding="utf-8")
+    result = load_camera_phase_summary(tmp_path, {"camera_schedule_mode": "phased"})
+
+    assert result["accepted"] is False
+    assert result["reasons"] == ["camera_phase_summary_unreadable"]
+    assert "workers" not in result
+    assert "policy" not in result
+    assert "safety" not in result
 
 
 def test_summary_reads_hashes_from_v2_frozen_hashes_and_keeps_v1_compatibility():

@@ -705,10 +705,29 @@ def summarize_trial(directory: Path) -> dict:
         "workers": workers,
         **takeoff_chain,
     }
+    camera_phase = load_camera_phase_summary(directory, manifest)
+    if camera_phase is not None:
+        combined["camera_phase"] = camera_phase
     combined.update(classify_trial(combined, profile))
     (directory / "stress-summary.json").write_text(json.dumps(combined, ensure_ascii=False, indent=2) + "\n",
                                                     encoding="utf-8")
     return combined
+
+
+def load_camera_phase_summary(directory: Path, manifest: dict) -> dict | None:
+    """Load optional camera evidence without projecting it into control inputs."""
+    if "camera_schedule_mode" not in manifest:
+        return None
+    path = directory / "camera-phase-summary.json"
+    if not path.is_file():
+        return {"accepted": False, "reasons": ["camera_phase_summary_missing"]}
+    try:
+        payload = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return {"accepted": False, "reasons": ["camera_phase_summary_unreadable"]}
+    if not isinstance(payload, dict):
+        return {"accepted": False, "reasons": ["camera_phase_summary_unreadable"]}
+    return payload
 
 
 def main() -> int:
