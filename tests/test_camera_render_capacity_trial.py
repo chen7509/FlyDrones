@@ -526,6 +526,9 @@ def test_capacity_launcher_uses_temporary_attestation_and_stable_gazebo_identity
     assert '"pause: false"' in launcher
     resume = launcher.index('gz service -s "/world/flydrones_forest/control"')
     assert launcher.index('record_process "$(cat "$instance_dir/pid")" "px4-$instance_id"') < resume
+    assert 'echo "PX4 pre-resume bridge barrier timed out"' in launcher
+    barrier = launcher.index('echo "PX4 pre-resume bridge barrier timed out"')
+    assert barrier < resume
     assert resume < launcher.index("  running=0", resume)
 
 

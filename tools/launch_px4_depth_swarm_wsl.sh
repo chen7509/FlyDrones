@@ -265,6 +265,34 @@ for ((instance_id=0; instance_id<vehicle_count; instance_id++)); do
 done
 
 if [[ "$capacity_mode" == 1 ]]; then
+  pre_resume_ready=0
+  for _ in $(seq 1 600); do
+    running=0
+    bridge_ready=0
+    for ((instance_id=0; instance_id<vehicle_count; instance_id++)); do
+      pid_file="$run_dir/instance_$instance_id/pid"
+      if [[ -f "$pid_file" ]] && kill -0 "$(cat "$pid_file")" 2>/dev/null; then
+        running=$((running + 1))
+      fi
+      if grep -Fq "[gz_bridge] world: flydrones_forest, model: x500_depth_fly_$instance_id" \
+        "$run_dir/instance_$instance_id/out.log"; then
+        bridge_ready=$((bridge_ready + 1))
+      fi
+    done
+    if [[ "$running" -eq "$vehicle_count" && "$bridge_ready" -eq "$vehicle_count" ]]; then
+      pre_resume_ready=1
+      break
+    fi
+    sleep 0.1
+  done
+  if [[ "$pre_resume_ready" != 1 ]]; then
+    echo "PX4 pre-resume bridge barrier timed out" >&2
+    for ((instance_id=0; instance_id<vehicle_count; instance_id++)); do
+      tail -30 "$run_dir/instance_$instance_id/out.log" >&2 || true
+      tail -30 "$run_dir/instance_$instance_id/err.log" >&2 || true
+    done
+    exit 3
+  fi
   if ! gz service -s "/world/flydrones_forest/control" \
     --reqtype gz.msgs.WorldControl --reptype gz.msgs.Boolean \
     --timeout 5000 --req "pause: false" \
