@@ -122,7 +122,7 @@ def capacity_auxiliary_commands(
             "--vehicle-count", "5",
             "--subscriber-count", str(run.cell.subscriber_count),
             "--output", str(output / "camera-phase.jsonl"),
-            "--ready-marker", str(output / "camera-phase-ready.json"),
+            "--ready-marker", str(output / "camera-phase-selected-ready.json"),
             "--completion-marker", str(completion_marker),
             "--duration-s", "300",
             "--poll-interval-ms", "1",
@@ -130,6 +130,23 @@ def capacity_auxiliary_commands(
             "--completion-drain-ms", "1000",
         ]
     return [scheduler, observer]
+
+
+def _renderer_witness_command(*, output: Path) -> list[str]:
+    return [
+        sys.executable,
+        str(ROOT / "tools" / "probe_camera_phase_wsl.py"),
+        "--output", str(output / "renderer-phase.jsonl"),
+        "--ready-marker", str(output / "renderer-phase-ready.json"),
+        "--summary", str(output / "renderer-phase-summary.json"),
+        "--completion-marker", str(output / "renderer-phase-complete.marker"),
+        "--mode", "phased",
+        "--vehicle-count", "5",
+        "--duration-s", "300",
+        "--warmup-image-count-min", "11",
+        "--flush-interval-s", "0.25",
+        "--scheduler-ready-marker", str(output / "camera-scheduler-ready.json"),
+    ]
 
 
 def _subscriber_count(text: str) -> int:
@@ -364,8 +381,13 @@ class SubprocessCapacityBackend:
         )
         self.processes["launcher"] = launcher
         self._wait_marker(run_dir / "gazebo-base-ready.json", launcher, 60.0)
-        for index, command in enumerate(commands):
-            role = "scheduler" if index == 0 else "observer"
+        run = _kwargs["run"]
+        startup_commands = [("scheduler", commands[0])]
+        if run.cell.implementation == "python":
+            startup_commands.append(("observer", commands[1]))
+        else:
+            startup_commands.append(("renderer-witness", _renderer_witness_command(output=output)))
+        for role, command in startup_commands:
             handle = (output / f"{role}.log").open("w", encoding="utf-8")
             self.logs.append(handle)
             process = subprocess.Popen(
@@ -387,10 +409,38 @@ class SubprocessCapacityBackend:
                 "schema": "flydrones-camera-aux-started-v1",
                 "processes": [
                     {"role": role, "pid": self.processes[role].pid}
-                    for role in ("scheduler", "observer")
+                    for role, _command in startup_commands
                 ],
             },
         )
+        if run.cell.implementation != "python":
+            attestation = self._wait_marker(
+                run_dir / "renderer-attestation.json",
+                launcher,
+                float(_kwargs["readiness_timeout_s"]),
+            )
+            if attestation.get("accepted") is not True:
+                raise RuntimeError("temporary renderer witness attestation rejected")
+            (output / "renderer-phase-complete.marker").touch()
+            witness_code = self.processes["renderer-witness"].wait(timeout=20)
+            if witness_code != 0:
+                raise RuntimeError(f"renderer witness exited {witness_code}")
+            role = "observer"
+            handle = (output / f"{role}.log").open("w", encoding="utf-8")
+            self.logs.append(handle)
+            process = subprocess.Popen(
+                commands[1],
+                env=environment,
+                stdout=handle,
+                stderr=subprocess.STDOUT,
+                start_new_session=True,
+            )
+            self.processes[role] = process
+            append_process_identity(run_dir / "owned-processes.json", process.pid, role)
+            self._wait_marker(output / "camera-phase-selected-ready.json", process, 20.0)
+            Path(environment["FLYDRONES_CAPACITY_OBSERVER_PID_FILE"]).write_text(
+                f"{process.pid}\n", encoding="utf-8"
+            )
 
     @staticmethod
     def _wait_marker(path: Path, process, timeout_s: float) -> dict[str, object]:
@@ -405,6 +455,7 @@ class SubprocessCapacityBackend:
         raise TimeoutError(f"capacity readiness timed out after {timeout_s:.1f}s")
 
     def wait_ready(self, *, timeout_s: float, **_kwargs) -> dict[str, object]:
+        run = _kwargs["run"]
         payload = self._wait_marker(
             self.run_dir / "camera-capacity-ready.json",
             self.processes["launcher"],
@@ -424,7 +475,12 @@ class SubprocessCapacityBackend:
             min(timeout_s, 20.0),
         )
         self._wait_marker(
-            self.output / "camera-phase-ready.json",
+            self.output
+            / (
+                "camera-phase-ready.json"
+                if run.cell.implementation == "python"
+                else "camera-phase-selected-ready.json"
+            ),
             self.processes["observer"],
             min(timeout_s, 20.0),
         )
@@ -749,7 +805,14 @@ def run_capacity_trial(
         "FLYDRONES_VEHICLE_COUNT": "5",
         "FLYDRONES_GZ_RENDER_PROFILE": str(config.get("renderer_profile")),
         "FLYDRONES_CAMERA_SCHEDULE_MODE": "phased",
-        "FLYDRONES_CAMERA_PHASE_READY_MARKER": str(output / "camera-phase-ready.json"),
+        "FLYDRONES_CAMERA_PHASE_READY_MARKER": str(
+            output
+            / (
+                "camera-phase-ready.json"
+                if run.cell.implementation == "python"
+                else "renderer-phase-ready.json"
+            )
+        ),
         "FLYDRONES_CAPACITY_MODE": "1",
         "FLYDRONES_CAPACITY_READY_MARKER": str(run_dir / "camera-capacity-ready.json"),
         "FLYDRONES_CAPACITY_OBSERVER_PID_FILE": str(output / "observer.pid"),
@@ -770,6 +833,7 @@ def run_capacity_trial(
             environment=environment,
             completion_marker=completion_marker,
             run=run,
+            readiness_timeout_s=readiness_timeout_s,
         )
         observer = getattr(backend, "processes", {}).get("observer")
         if observer is not None:

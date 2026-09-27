@@ -299,13 +299,15 @@ def test_capacity_launcher_uses_temporary_attestation_and_stable_gazebo_identity
     launcher = (Path(__file__).parents[1] / "tools/launch_px4_depth_swarm_wsl.sh").read_text(
         encoding="utf-8"
     )
-    assert "renderer-phase-ready.json" in launcher
-    assert "renderer-phase-complete.marker" in launcher
-    assert "renderer-phase.jsonl" in launcher
-    assert "renderer-phase-summary.json" in launcher
-    assert 'renderer_phase_args=(--phase-ready-marker "$renderer_phase_ready")' in launcher
-    assert "temporary renderer phase probe failed" in launcher
-    assert '"${renderer_phase_args[@]}"' in launcher
+    runner = (
+        Path(__file__).parents[1] / "tools/run_camera_render_capacity_trial_wsl.py"
+    ).read_text(encoding="utf-8")
+    assert "renderer-phase-ready.json" in runner
+    assert "renderer-phase-complete.marker" in runner
+    assert "renderer-phase.jsonl" in runner
+    assert "renderer-phase-summary.json" in runner
+    assert '--phase-ready-marker "$camera_phase_ready_marker"' in launcher
+    assert "camera-phase-selected-ready.json" in runner
     assert "Gazebo launcher did not reach stable gz sim argv" in launcher
     assert launcher.index("Gazebo launcher did not reach stable gz sim argv") < launcher.index(
         'record_process "$gazebo_pid" "gazebo-server"'
