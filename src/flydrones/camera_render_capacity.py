@@ -193,6 +193,30 @@ def score_capacity_run(
         evidence.append("shared_px4_files_not_restored")
     if manifest.get("trial_cleanup_verified") is not True:
         evidence.append("cleanup_not_verified")
+    if manifest.get("evidence_accepted") is not True:
+        evidence.append("manifest_evidence_rejected")
+    ulogs = manifest.get("ulog_artifacts")
+    if (
+        not isinstance(ulogs, list)
+        or len(ulogs) != 5
+        or {
+            item.get("vehicle_id")
+            for item in ulogs
+            if isinstance(item, Mapping)
+        }
+        != set(range(5))
+        or any(
+            not isinstance(item, Mapping)
+            or not isinstance(item.get("path"), str)
+            or not item.get("path")
+            or not isinstance(item.get("bytes"), int)
+            or item.get("bytes", 0) <= 0
+            or not isinstance(item.get("sha256"), str)
+            or len(item.get("sha256", "")) != 64
+            for item in ulogs
+        )
+    ):
+        evidence.append("px4_ulogs_incomplete")
 
     phase = _mapping(summary.get("camera_phase"))
     if phase.get("trigger_stream_count") != 5:
@@ -227,6 +251,8 @@ def score_capacity_run(
                 performance.append("spacing_error_exceeded")
 
     runtime = _mapping(summary.get("runtime"))
+    if _mapping(runtime.get("resources")).get("accepted") is not True:
+        evidence.append("resource_evidence_invalid")
     rtf = _finite_number(_mapping(runtime.get("rtf")).get("scored_window"))
     if rtf is None:
         evidence.append("rtf_missing_or_invalid")

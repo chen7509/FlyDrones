@@ -64,6 +64,16 @@ def _good_pair(run, *, rtf: float = 0.97) -> tuple[dict, dict]:
         "stop_exit_code": 0,
         "shared_px4_files_restored": True,
         "trial_cleanup_verified": True,
+        "evidence_accepted": True,
+        "ulog_artifacts": [
+            {
+                "vehicle_id": vehicle_id,
+                "path": f"px4-ulogs/agent-{vehicle_id}.ulg",
+                "bytes": 100,
+                "sha256": f"{vehicle_id:064x}",
+            }
+            for vehicle_id in range(5)
+        ],
     }
     vehicles = {
         str(vehicle_id): {
@@ -77,7 +87,10 @@ def _good_pair(run, *, rtf: float = 0.97) -> tuple[dict, dict]:
     }
     summary = {
         "schema": "flydrones-camera-render-capacity-summary-v1",
-        "runtime": {"rtf": {"scored_window": rtf}},
+        "runtime": {
+            "rtf": {"scored_window": rtf},
+            "resources": {"accepted": True, "gazebo": {"samples": 3}},
+        },
         "camera_phase": {
             "accepted": active > 0,
             "vehicles": vehicles,
@@ -211,6 +224,9 @@ def test_good_capacity_run_has_valid_evidence_and_passes_performance(cell_name):
         (lambda m, s: m.update(stop_exit_code=1), "stop_failed"),
         (lambda m, s: m.update(shared_px4_files_restored=False), "shared_px4_files_not_restored"),
         (lambda m, s: m.update(trial_cleanup_verified=False), "cleanup_not_verified"),
+        (lambda m, s: m.update(evidence_accepted=False), "manifest_evidence_rejected"),
+        (lambda m, s: m.update(ulog_artifacts=m["ulog_artifacts"][:-1]), "px4_ulogs_incomplete"),
+        (lambda m, s: s["runtime"]["resources"].update(accepted=False), "resource_evidence_invalid"),
         (lambda m, s: s["camera_phase"].update(queue_overflow_count=1), "camera_integrity_error"),
         (lambda m, s: s["camera_phase"].update(unmatched_image_count=1), "camera_integrity_error"),
         (lambda m, s: s["camera_phase"]["vehicles"]["0"].update(width=161), "camera_dimensions_invalid"),

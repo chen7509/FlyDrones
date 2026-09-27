@@ -1,0 +1,165 @@
+{
+  "schema": "flydrones-camera-render-capacity-config-v1",
+  "profile": "configs/vio_fault_profiles/baseline.json",
+  "policy": "docs/results/vio-stress/policy-checkpoint.npz",
+  "camera_model": "assets/gazebo/models/OakD-Lite-Fly",
+  "vehicle_model": "assets/gazebo/models/x500_depth_fly",
+  "world": "flydrones_forest",
+  "renderer_profile": "d3d12-nvidia",
+  "camera_schedule_mode": "phased",
+  "vehicle_count": 5,
+  "readiness_timeout_s": 45.0,
+  "scored_duration_s": 30.0,
+  "wall_timeout_s": 120.0,
+  "px4_revision": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+  "software_versions": {
+    "gz_transport": "13.6.0",
+    "gz_msgs": "10.4.0"
+  },
+  "sensor": {
+    "depth_width": 160,
+    "depth_height": 120,
+    "depth_format": "R_FLOAT32",
+    "depth_frequency_hz": 10.0,
+    "phase_offsets_ms": [
+      0,
+      20,
+      40,
+      60,
+      80
+    ]
+  },
+  "thresholds": {
+    "min_rtf": 0.95,
+    "min_image_hz": 9.5,
+    "max_image_hz": 10.5,
+    "max_phase_error_p95_ns": 8000000,
+    "max_spacing_median_error_ns": 8000000,
+    "scored_duration_s": 30.0,
+    "wall_timeout_s": 120.0,
+    "repeatability_rtf_range_max": 0.03,
+    "native_improvement_min": 0.05
+  },
+  "schedule": [
+    {
+      "name": "capacity-01-idle-0-r1",
+      "cell": "idle-0",
+      "subscriber_count": 0,
+      "implementation": "native-cpp",
+      "repetition": 1,
+      "sequence": 1
+    },
+    {
+      "name": "capacity-02-native-1-r1",
+      "cell": "native-1",
+      "subscriber_count": 1,
+      "implementation": "native-cpp",
+      "repetition": 1,
+      "sequence": 2
+    },
+    {
+      "name": "capacity-03-python-5-r1",
+      "cell": "python-5",
+      "subscriber_count": 5,
+      "implementation": "python",
+      "repetition": 1,
+      "sequence": 3
+    },
+    {
+      "name": "capacity-04-native-5-r1",
+      "cell": "native-5",
+      "subscriber_count": 5,
+      "implementation": "native-cpp",
+      "repetition": 1,
+      "sequence": 4
+    },
+    {
+      "name": "capacity-05-native-5-r2",
+      "cell": "native-5",
+      "subscriber_count": 5,
+      "implementation": "native-cpp",
+      "repetition": 2,
+      "sequence": 5
+    },
+    {
+      "name": "capacity-06-python-5-r2",
+      "cell": "python-5",
+      "subscriber_count": 5,
+      "implementation": "python",
+      "repetition": 2,
+      "sequence": 6
+    },
+    {
+      "name": "capacity-07-native-1-r2",
+      "cell": "native-1",
+      "subscriber_count": 1,
+      "implementation": "native-cpp",
+      "repetition": 2,
+      "sequence": 7
+    },
+    {
+      "name": "capacity-08-idle-0-r2",
+      "cell": "idle-0",
+      "subscriber_count": 0,
+      "implementation": "native-cpp",
+      "repetition": 2,
+      "sequence": 8
+    },
+    {
+      "name": "capacity-09-python-5-r3",
+      "cell": "python-5",
+      "subscriber_count": 5,
+      "implementation": "python",
+      "repetition": 3,
+      "sequence": 9
+    },
+    {
+      "name": "capacity-10-idle-0-r3",
+      "cell": "idle-0",
+      "subscriber_count": 0,
+      "implementation": "native-cpp",
+      "repetition": 3,
+      "sequence": 10
+    },
+    {
+      "name": "capacity-11-native-5-r3",
+      "cell": "native-5",
+      "subscriber_count": 5,
+      "implementation": "native-cpp",
+      "repetition": 3,
+      "sequence": 11
+    },
+    {
+      "name": "capacity-12-native-1-r3",
+      "cell": "native-1",
+      "subscriber_count": 1,
+      "implementation": "native-cpp",
+      "repetition": 3,
+      "sequence": 12
+    }
+  ],
+  "expected_hashes": {
+    "profile": "108c73760140b5bb53090738e6eab9508688ef6fb848ea7e4cf4e0b0d2649718",
+    "policy": "3c723587bfdbd15a8dc5976edc13d284b713dc081005b2dac04692c7d1b4accb",
+    "capacity_contract": "59280c53d0f1c870e4d349fff5a0a39ec8fc8540a7b556a3d8c91a176a5500e5",
+    "camera_phase": "35e9ce8b3fb5bdc030a5998e446ce1d3f2b278528007ae5692ea57e1dc529d37",
+    "trial_runner": "e4b9a34578c1ed23009bcff7a0271185454ce2264633a3b96e1929d82289ce56",
+    "campaign_runner": "77e4eb66333163d48baada939928b6730501a082241d4e090a89d554df68b9df",
+    "launcher": "2332f6b15f7e17ff791924a213d05030b7036dafcfc1428fc8580563a7277839",
+    "runtime_probe": "2eefd164e168d6e4528b3d6e8d5572ee1be66f7a9a2f71e59fd0eeeab4a91d11",
+    "stopper": "c424d813e5ccda76a488c63ab81e2612e9c621f701c5300d1cfa422e86bb1806",
+    "renderer_attestation": "aaca8d92981d88b0c72bfb91ef5f7f4e589fcc4d5612b81dfe6e2caccab844bc",
+    "renderer_profile": "25eb25866978b94d5c7327c688c46112523067f55c29dabe15fe7d17ebe89118",
+    "camera_model_configurator": "8e0361a68c5755251324cdece392f470daba131446b6ee444b5f168e96677505",
+    "camera_scheduler": "64c456f66b68e0ab99ebd6e4f4e3fddd5731055c78a2ba1b75b5670fdc24b741",
+    "python_observer": "eabda7d963762ad3799f2823f37aad91dea459d6243724d2212759b681e2273b",
+    "world_generator": "3fd59afbf9f550196caac0422ea2800290a6deb657f02cdf9cffcd6666a1055a",
+    "native_build": "4e5dc358c2644c8ee644af704eff0fab21be3d2dc25eb9ace05e4c182b0b960b",
+    "native_cmake": "f047d007804ee2b3fd1f4f392ab75e103929f185f3999826a5044fa9ae3e4949",
+    "native_executable": "f2257e35f419ed10b1726f85b23867eaf228782b6891085a7831bf7f23676d3f",
+    "config_contract": "3a4f84abe7224408f0a6c8e934779c07621ea266561020f6b5b6a867ea12f32d",
+    "camera_model": "bf75df5e0dc2d359f270342b0b60230af402ee6d6834f8e7afd7a79f3521c734",
+    "vehicle_model": "a88b4ec30efde7a91d53d4a9d7e8541a250b185f35b3ac10915069c3d84a5afa",
+    "native_source": "641592b446f9e57d08dae30097cca577190e0a8110ac85d07ce43f69c96c3696"
+  }
+}
