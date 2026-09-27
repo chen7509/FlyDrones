@@ -1,6 +1,8 @@
 #include "flydrones/camera_phase_native.hpp"
 
 #include <atomic>
+#include <array>
+#include <cstdio>
 #include <cstdlib>
 #include <filesystem>
 #include <fstream>
@@ -50,6 +52,82 @@ std::vector<std::int64_t> JsonArray(const std::string& object,
     values.push_back(std::stoll((*iterator)[0].str()));
   }
   return values;
+}
+
+std::string Sha256(const std::filesystem::path& path) {
+  const auto text = path.string();
+  Require(text.find('\'') == std::string::npos, "unsupported quote in executable path");
+  const auto command = "sha256sum '" + text + "'";
+  std::array<char, 128> buffer{};
+  std::string output;
+  FILE* pipe = popen(command.c_str(), "r");
+  Require(pipe != nullptr, "sha256sum could not start");
+  while (fgets(buffer.data(), static_cast<int>(buffer.size()), pipe) != nullptr) {
+    output.append(buffer.data());
+  }
+  Require(pclose(pipe) == 0, "sha256sum failed");
+  const auto separator = output.find_first_of(" \t\r\n");
+  const auto hash = output.substr(0, separator);
+  Require(hash.size() == 64, "sha256sum returned an invalid digest");
+  return hash;
+}
+
+std::string DepthTopic(int vehicleId) {
+  return "/world/flydrones_forest/model/x500_depth_fly_" +
+         std::to_string(vehicleId) +
+         "/link/camera_link/sensor/StereoOV7251/depth_image";
+}
+
+void ExportParityFixture() {
+  const auto fixture = ReadFile(CAMERA_PHASE_VECTOR_PATH);
+  const auto epoch = JsonInteger(fixture, "epoch_ns");
+  const auto count = static_cast<int>(JsonInteger(fixture, "vehicle_count"));
+  const auto delay = JsonInteger(fixture, "dispatch_delay_ns");
+  const auto testExecutable = std::filesystem::canonical("/proc/self/exe");
+  const auto buildDirectory = testExecutable.parent_path();
+  const auto nativeExecutable = buildDirectory / "flydrones_camera_phase_native";
+  Require(std::filesystem::is_regular_file(nativeExecutable),
+          "native executable is missing beside CTest target");
+  const auto outputPath = buildDirectory / "camera-phase-native-parity.jsonl";
+  std::ofstream output(outputPath, std::ios::trunc);
+  Require(static_cast<bool>(output), "native parity JSONL cannot be created");
+  output << "{\"event\":\"native-build\",\"executable_sha256\":\""
+         << Sha256(nativeExecutable) << "\"}\n";
+  output << "{\"event\":\"start\",\"epoch_ns\":" << epoch << "}\n";
+  output << "{\"event\":\"topology\",\"depth_topics\":[";
+  for (int vehicle = 0; vehicle < count; ++vehicle) {
+    if (vehicle) output << ',';
+    output << '\"' << DepthTopic(vehicle) << '\"';
+  }
+  output << "]}\n";
+  output << "{\"event\":\"ready\",\"epoch_ns\":" << epoch << "}\n";
+
+  camera::TriggerScheduler scheduler(count, epoch, delay);
+  for (std::int64_t cycle = 0; cycle < 11; ++cycle) {
+    for (int vehicle = 0; vehicle < count; ++vehicle) {
+      const auto planned = epoch + cycle * camera::kPeriodNs +
+                           vehicle * camera::kPhaseStepNs;
+      const auto slots = scheduler.Advance(planned + delay);
+      Require(slots.size() == 1, "native parity schedule emitted wrong slot count");
+      const auto& slot = slots.front();
+      Require(slot.vehicleId == vehicle && slot.cycle == cycle &&
+                  scheduler.MissedSlots().empty(),
+              "native parity schedule identity mismatch");
+      output << "{\"event\":\"trigger\",\"vehicle_id\":" << vehicle
+             << ",\"cycle\":" << cycle << ",\"topic\":\""
+             << DepthTopic(vehicle) << "/trigger\",\"planned_sim_ns\":"
+             << slot.plannedSimNs << ",\"published_sim_ns\":"
+             << slot.publishedSimNs << "}\n";
+      output << "{\"event\":\"image\",\"vehicle_id\":" << vehicle
+             << ",\"topic\":\"" << DepthTopic(vehicle)
+             << "\",\"sim_ns\":" << slot.plannedSimNs
+             << ",\"sequence\":" << cycle
+             << ",\"width\":160,\"height\":120,\"format\":\"R_FLOAT32\"}\n";
+    }
+  }
+  output << "{\"event\":\"stop\"}\n";
+  output.flush();
+  Require(static_cast<bool>(output), "native parity JSONL write failed");
 }
 
 void TestSharedScheduleVectors() {
@@ -202,6 +280,7 @@ int main() {
     TestSourceTimestampValidation();
     TestLifecycleAndUniqueStopRecord();
     TestCompletionBeforeReadinessRunProbe();
+    ExportParityFixture();
   } catch (const std::exception& error) {
     std::cerr << "camera_phase_native_test: " << error.what() << '\n';
     return EXIT_FAILURE;

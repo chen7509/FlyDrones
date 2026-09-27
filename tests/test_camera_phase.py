@@ -10,6 +10,7 @@ from flydrones.camera_phase import (
     TriggerSchedulerState,
     align_epoch_ns,
     camera_phase_offsets_ns,
+    canonical_phase_score_fields,
     depth_topic_vehicle_id,
     summarize_camera_phase,
 )
@@ -367,3 +368,58 @@ def test_summary_requires_each_lifecycle_event(missing_event: str, reason: str):
 
     assert result["accepted"] is False
     assert reason in result["reasons"]
+
+
+def test_canonical_phase_score_fields_pin_every_scored_value():
+    canonical = canonical_phase_score_fields(summarize(phased_events()))
+
+    assert canonical == {
+        "mode": "phased",
+        "vehicle_count": 5,
+        "accepted": True,
+        "reasons": [],
+        "epoch_ns": EPOCH_NS,
+        "target_offsets_ns": [0, 20_000_000, 40_000_000, 60_000_000, 80_000_000],
+        "vehicles": {
+            str(vehicle_id): {
+                "image_count": 11,
+                "mean_frequency_hz": 10.0,
+                "interval_p50_ns": PERIOD_NS,
+                "interval_p95_ns": PERIOD_NS,
+                "interval_p99_ns": PERIOD_NS,
+                "interval_max_ns": PERIOD_NS,
+                "phase_median_ns": vehicle_id * 20_000_000,
+                "phase_error_p50_ns": 0,
+                "phase_error_p95_ns": 0,
+                "phase_error_max_ns": 0,
+            }
+            for vehicle_id in range(5)
+        },
+        "adjacent_spacing_median_error_ns": {
+            "0-1": 0,
+            "1-2": 0,
+            "2-3": 0,
+            "3-4": 0,
+            "4-0": 0,
+        },
+        "max_simultaneous_cameras_10ms": 1,
+        "missed_trigger_count": 0,
+        "queue_overflow_count": 0,
+        "duplicate_trigger_count": 0,
+        "duplicate_image_count": 0,
+        "unmatched_trigger_count": 0,
+        "unmatched_image_count": 0,
+        "cross_model_error_count": 0,
+    }
+
+
+def test_canonical_phase_score_fields_reject_wrong_schema_and_missing_values():
+    summary = summarize(phased_events())
+    summary["schema"] = "other"
+    with pytest.raises(ValueError, match="schema"):
+        canonical_phase_score_fields(summary)
+
+    summary = summarize(phased_events())
+    del summary["unmatched_image_count"]
+    with pytest.raises(ValueError, match="unmatched_image_count"):
+        canonical_phase_score_fields(summary)

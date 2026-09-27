@@ -426,3 +426,111 @@ def summarize_camera_phase(
         "unmatched_image_count": unmatched_image_count,
         "cross_model_error_count": cross_model_errors,
     }
+
+
+_CANONICAL_VEHICLE_FIELDS = (
+    "image_count",
+    "mean_frequency_hz",
+    "interval_p50_ns",
+    "interval_p95_ns",
+    "interval_p99_ns",
+    "interval_max_ns",
+    "phase_median_ns",
+    "phase_error_p50_ns",
+    "phase_error_p95_ns",
+    "phase_error_max_ns",
+)
+_CANONICAL_INTEGRITY_FIELDS = (
+    "missed_trigger_count",
+    "queue_overflow_count",
+    "duplicate_trigger_count",
+    "duplicate_image_count",
+    "unmatched_trigger_count",
+    "unmatched_image_count",
+    "cross_model_error_count",
+)
+
+
+def canonical_phase_score_fields(summary: Mapping[str, object]) -> dict[str, object]:
+    """Return the complete deterministic subset used to compare phase scoring."""
+    if not isinstance(summary, Mapping):
+        raise ValueError("summary must be a mapping")
+    if summary.get("schema") != "flydrones-camera-phase-summary-v1":
+        raise ValueError("camera phase summary schema is invalid")
+
+    mode = summary.get("mode")
+    vehicle_count = summary.get("vehicle_count")
+    accepted = summary.get("accepted")
+    reasons = summary.get("reasons")
+    epoch_ns = summary.get("epoch_ns")
+    offsets = summary.get("target_offsets_ns")
+    vehicles = summary.get("vehicles")
+    spacing = summary.get("adjacent_spacing_median_error_ns")
+    simultaneous = summary.get("max_simultaneous_cameras_10ms")
+    if mode not in {item.value for item in CameraScheduleMode}:
+        raise ValueError("mode is missing or invalid")
+    if not _valid_int(vehicle_count) or int(vehicle_count) not in (1, 5):
+        raise ValueError("vehicle_count is missing or invalid")
+    if not isinstance(accepted, bool):
+        raise ValueError("accepted is missing or invalid")
+    if not isinstance(reasons, list) or not all(isinstance(reason, str) for reason in reasons):
+        raise ValueError("reasons is missing or invalid")
+    if not _valid_int(epoch_ns) or int(epoch_ns) < 0:
+        raise ValueError("epoch_ns is missing or invalid")
+    if (
+        not isinstance(offsets, list)
+        or len(offsets) != int(vehicle_count)
+        or not all(_valid_int(offset) for offset in offsets)
+    ):
+        raise ValueError("target_offsets_ns is missing or invalid")
+    if not isinstance(vehicles, Mapping):
+        raise ValueError("vehicles is missing or invalid")
+    if set(vehicles) != {str(index) for index in range(int(vehicle_count))}:
+        raise ValueError("vehicles identities are incomplete")
+
+    canonical_vehicles: dict[str, dict[str, object]] = {}
+    for vehicle_id in range(int(vehicle_count)):
+        key = str(vehicle_id)
+        vehicle = vehicles[key]
+        if not isinstance(vehicle, Mapping):
+            raise ValueError(f"vehicle {key} summary is invalid")
+        canonical_vehicle: dict[str, object] = {}
+        for field_name in _CANONICAL_VEHICLE_FIELDS:
+            if field_name not in vehicle:
+                raise ValueError(f"vehicle {key} missing {field_name}")
+            value = vehicle[field_name]
+            if isinstance(value, bool) or not isinstance(value, (int, float)):
+                raise ValueError(f"vehicle {key} {field_name} is invalid")
+            if isinstance(value, float) and not math.isfinite(value):
+                raise ValueError(f"vehicle {key} {field_name} is non-finite")
+            canonical_vehicle[field_name] = value
+        canonical_vehicles[key] = canonical_vehicle
+
+    if not isinstance(spacing, Mapping) or not all(
+        isinstance(key, str) and _valid_int(value) for key, value in spacing.items()
+    ):
+        raise ValueError("adjacent_spacing_median_error_ns is missing or invalid")
+    if not _valid_int(simultaneous):
+        raise ValueError("max_simultaneous_cameras_10ms is missing or invalid")
+
+    integrity: dict[str, int] = {}
+    for field_name in _CANONICAL_INTEGRITY_FIELDS:
+        value = summary.get(field_name)
+        if not _valid_int(value) or int(value) < 0:
+            raise ValueError(f"{field_name} is missing or invalid")
+        integrity[field_name] = int(value)
+
+    return {
+        "mode": mode,
+        "vehicle_count": int(vehicle_count),
+        "accepted": accepted,
+        "reasons": list(reasons),
+        "epoch_ns": int(epoch_ns),
+        "target_offsets_ns": [int(offset) for offset in offsets],
+        "vehicles": canonical_vehicles,
+        "adjacent_spacing_median_error_ns": {
+            key: int(spacing[key]) for key in sorted(spacing)
+        },
+        "max_simultaneous_cameras_10ms": int(simultaneous),
+        **integrity,
+    }

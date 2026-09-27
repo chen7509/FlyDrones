@@ -92,7 +92,7 @@
     "actuator_probe": "b0a09b36e7e4309dd4e4b46d9f1f0c5aa991d47b8628ab5e6c4dc27f23aad875",
     "takeoff_readiness": "87f6fc7a25835298c6267c5ee7a6861a4fd5611a8ab4806fae1704fdc58f9ce1",
     "mavlink_drone": "b007a1cdd302f35446992517620a472d5a4d51cabf0663ac90e9a6387d2ca020",
-    "camera_phase": "9cad6d057770c36a24e9598187b231f013ad41075ae9eccfa0f9fa745594009e",
+    "camera_phase": "35e9ce8b3fb5bdc030a5998e446ce1d3f2b278528007ae5692ea57e1dc529d37",
     "camera_model_configurator": "8e0361a68c5755251324cdece392f470daba131446b6ee444b5f168e96677505",
     "camera_phase_scheduler": "64c456f66b68e0ab99ebd6e4f4e3fddd5731055c78a2ba1b75b5670fdc24b741",
     "camera_phase_probe": "eabda7d963762ad3799f2823f37aad91dea459d6243724d2212759b681e2273b",
