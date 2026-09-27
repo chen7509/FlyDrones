@@ -20,6 +20,21 @@ class ProbeFailure(RuntimeError):
     pass
 
 
+def subscribe_retained(
+    node: object,
+    callback_references: list[Callable[..., object]],
+    message_type: object,
+    topic: str,
+    callback: Callable[..., object],
+) -> bool:
+    """Subscribe while retaining callback ownership on the Python side."""
+    callback_references.append(callback)
+    if node.subscribe(message_type, topic, callback) is False:
+        callback_references.pop()
+        return False
+    return True
+
+
 class CallbackBuffer:
     """Bounded callback handoff; callbacks never write files or score evidence."""
 
@@ -116,7 +131,7 @@ class CallbackBuffer:
 class JsonlWriter:
     def __init__(self, path: Path, monotonic: Callable[[], float]) -> None:
         path.parent.mkdir(parents=True, exist_ok=True)
-        self._handle = path.open("w", encoding="utf-8", buffering=1)
+        self._handle = path.open("w", encoding="utf-8", buffering=65_536)
         self._monotonic = monotonic
 
     def write(self, event: Mapping[str, object] | str, **fields: object) -> None:
@@ -125,6 +140,8 @@ class JsonlWriter:
         else:
             payload = dict(event)
         self._handle.write(json.dumps(payload, ensure_ascii=False, separators=(",", ":")) + "\n")
+
+    def flush(self) -> None:
         self._handle.flush()
 
     def close(self) -> None:
@@ -231,8 +248,32 @@ def run_probe(
     if not isinstance(world, str) or not world:
         raise ValueError("world must be a non-empty string")
     topology_timeout_s = _positive_number(config, "topology_timeout_s")
+    stream_timeout_value = config.get("stream_timeout_s", 90.0)
+    if (
+        isinstance(stream_timeout_value, bool)
+        or not isinstance(stream_timeout_value, (int, float))
+        or float(stream_timeout_value) <= 0
+    ):
+        raise ValueError("stream_timeout_s must be positive")
+    stream_timeout_s = float(stream_timeout_value)
     duration_s = _positive_number(config, "duration_s")
     poll_interval_s = _positive_number(config, "poll_interval_s")
+    completion_drain_value = config.get("completion_drain_s", 1.0)
+    if (
+        isinstance(completion_drain_value, bool)
+        or not isinstance(completion_drain_value, (int, float))
+        or float(completion_drain_value) <= 0
+    ):
+        raise ValueError("completion_drain_s must be positive")
+    completion_drain_s = float(completion_drain_value)
+    flush_interval_s = _positive_number(config, "flush_interval_s")
+    warmup_image_count_min = config.get("warmup_image_count_min", 11)
+    if (
+        isinstance(warmup_image_count_min, bool)
+        or not isinstance(warmup_image_count_min, int)
+        or warmup_image_count_min < 2
+    ):
+        raise ValueError("warmup_image_count_min must be an integer of at least two")
     queue_capacity = config.get("queue_capacity", 2048)
     if isinstance(queue_capacity, bool) or not isinstance(queue_capacity, int) or queue_capacity < 500:
         raise ValueError("queue_capacity must hold at least 10 seconds of five 10 Hz streams")
@@ -277,23 +318,40 @@ def run_probe(
         vehicle_count=vehicle_count,
         world=world,
         queue_capacity=queue_capacity,
+        completion_drain_s=completion_drain_s,
+        stream_timeout_s=stream_timeout_s,
+        flush_interval_s=flush_interval_s,
+        warmup_image_count_min=warmup_image_count_min,
     )
+    writer.flush()
     node = None
-    subscribed_topics: list[str] = []
+    subscription_nodes: list[object] = []
+    subscribed_topics: list[tuple[object, str]] = []
+    callback_references: list[Callable[..., object]] = []
     status = 3
     completed = False
     overflow_total = 0
     epoch_ns = 0
     depth_topics: dict[int, str] = {}
     trigger_topics: dict[int, str] = {}
+    observation_start_sim_ns = 0
     started = monotonic()
+    completion_seen_at: float | None = None
+    last_event_at = started
     try:
         node = node_factory()
         if node is None:
             raise ProbeFailure("node_factory_returned_none")
-        if node.subscribe(clock_type, "/clock", buffer.clock_callback) is False:
+        clock_callback = buffer.clock_callback
+        if not subscribe_retained(
+            node,
+            callback_references,
+            clock_type,
+            "/clock",
+            clock_callback,
+        ):
             raise ProbeFailure("clock_subscription_failed")
-        subscribed_topics.append("/clock")
+        subscribed_topics.append((node, "/clock"))
 
         deadline = monotonic() + topology_timeout_s
         while monotonic() < deadline:
@@ -316,19 +374,33 @@ def run_probe(
                 depth_topics = mapped
                 trigger_topics = {vehicle_id: f"{topic}/trigger" for vehicle_id, topic in mapped.items()}
                 for vehicle_id in range(vehicle_count):
+                    subscription_node = node_factory()
+                    if subscription_node is None:
+                        raise ProbeFailure("subscription_node_factory_returned_none")
+                    subscription_nodes.append(subscription_node)
                     topic = depth_topics[vehicle_id]
-                    if node.subscribe(image_type, topic, buffer.image_callback(vehicle_id, topic)) is False:
+                    image_callback = buffer.image_callback(vehicle_id, topic)
+                    if not subscribe_retained(
+                        subscription_node,
+                        callback_references,
+                        image_type,
+                        topic,
+                        image_callback,
+                    ):
                         raise ProbeFailure("image_subscription_failed")
-                    subscribed_topics.append(topic)
+                    subscribed_topics.append((subscription_node, topic))
                     if mode_value == "phased":
                         trigger_topic = trigger_topics[vehicle_id]
-                        if node.subscribe(
+                        trigger_callback = buffer.trigger_callback(vehicle_id, trigger_topic)
+                        if not subscribe_retained(
+                            subscription_node,
+                            callback_references,
                             trigger_type,
                             trigger_topic,
-                            buffer.trigger_callback(vehicle_id, trigger_topic),
-                        ) is False:
+                            trigger_callback,
+                        ):
                             raise ProbeFailure("trigger_subscription_failed")
-                        subscribed_topics.append(trigger_topic)
+                        subscribed_topics.append((subscription_node, trigger_topic))
                 writer.write(
                     "topology",
                     accepted=True,
@@ -340,6 +412,7 @@ def run_probe(
                         else []
                     ),
                 )
+                writer.flush()
                 break
             sleep(poll_interval_s)
         else:
@@ -369,12 +442,89 @@ def run_probe(
         else:
             raise ProbeFailure("readiness_timeout")
 
+        warmup_image_counts = {vehicle_id: 0 for vehicle_id in range(vehicle_count)}
+        warmup_trigger_counts = {vehicle_id: 0 for vehicle_id in range(vehicle_count)}
+        warmup_first_sim_ns: dict[int, int] = {}
+        warmup_last_sim_ns: dict[int, int] = {}
+        warmup_dimensions: dict[int, tuple[int, int]] = {}
+        stream_deadline = monotonic() + stream_timeout_s
+        while monotonic() < stream_deadline:
+            for event in buffer.drain():
+                vehicle_id = event.get("vehicle_id")
+                if not isinstance(vehicle_id, int) or vehicle_id not in warmup_image_counts:
+                    continue
+                if event.get("event") == "image":
+                    warmup_image_counts[vehicle_id] += 1
+                    sim_ns = event.get("sim_ns")
+                    width = event.get("width")
+                    height = event.get("height")
+                    if not all(isinstance(value, int) for value in (sim_ns, width, height)):
+                        raise ProbeFailure("warmup_image_metadata_invalid")
+                    dimensions = (int(width), int(height))
+                    previous_dimensions = warmup_dimensions.setdefault(vehicle_id, dimensions)
+                    if dimensions != previous_dimensions:
+                        raise ProbeFailure("warmup_image_dimensions_changed")
+                    warmup_first_sim_ns.setdefault(vehicle_id, int(sim_ns))
+                    warmup_last_sim_ns[vehicle_id] = int(sim_ns)
+                elif event.get("event") == "trigger-received":
+                    warmup_trigger_counts[vehicle_id] += 1
+            dropped = buffer.take_overflow_count()
+            if dropped:
+                overflow_total += dropped
+                writer.write("queue-overflow", dropped_count=dropped, phase="warmup")
+                raise ProbeFailure("callback_queue_overflow")
+            if all(count >= warmup_image_count_min for count in warmup_image_counts.values()):
+                latest_clock, _ = buffer.clock_snapshot()
+                if latest_clock is None:
+                    raise ProbeFailure("clock_sample_missing")
+                observation_start_sim_ns = align_epoch_ns(latest_clock + 1)
+                break
+            if completion_marker.exists():
+                raise ProbeFailure("completion_before_stream_readiness")
+            sleep(poll_interval_s)
+        else:
+            writer.write(
+                "warmup",
+                accepted=False,
+                image_counts=warmup_image_counts,
+                trigger_counts=warmup_trigger_counts,
+            )
+            raise ProbeFailure("stream_readiness_timeout")
+
+        writer.write(
+            "warmup",
+            accepted=True,
+            image_counts=warmup_image_counts,
+            trigger_counts=warmup_trigger_counts,
+            observation_start_sim_ns=observation_start_sim_ns,
+        )
+        writer.flush()
+
+        depth_observations: dict[str, dict[str, int | float]] = {}
+        for vehicle_id in range(vehicle_count):
+            first_sim_ns = warmup_first_sim_ns[vehicle_id]
+            last_sim_ns = warmup_last_sim_ns[vehicle_id]
+            count = warmup_image_counts[vehicle_id]
+            if last_sim_ns <= first_sim_ns:
+                raise ProbeFailure("warmup_image_frequency_invalid")
+            width, height = warmup_dimensions[vehicle_id]
+            depth_observations[depth_topics[vehicle_id]] = {
+                "width": width,
+                "height": height,
+                "frequency_hz": (count - 1) * 1_000_000_000 / (last_sim_ns - first_sim_ns),
+                "message_count": count,
+            }
+
         ready_payload = {
             "schema": "flydrones-camera-phase-ready-v1",
             "mode": mode_value,
             "vehicle_count": vehicle_count,
             "epoch_ns": epoch_ns,
+            "observation_start_sim_ns": observation_start_sim_ns,
+            "warmup_image_counts": warmup_image_counts,
+            "warmup_trigger_counts": warmup_trigger_counts,
             "depth_topics": [depth_topics[index] for index in range(vehicle_count)],
+            "depth_observations": depth_observations,
             "trigger_topics": (
                 [trigger_topics[index] for index in range(vehicle_count)]
                 if mode_value == "phased"
@@ -383,10 +533,15 @@ def run_probe(
         }
         _atomic_json(ready_marker, ready_payload)
         writer.write("ready", **{key: value for key, value in ready_payload.items() if key != "schema"})
+        writer.flush()
 
         offsets = camera_phase_offsets_ns(vehicle_count)
+        last_flush_at = monotonic()
         while monotonic() - started < duration_s:
-            for event in buffer.drain():
+            drained_events = buffer.drain()
+            if drained_events:
+                last_event_at = monotonic()
+            for event in drained_events:
                 if event["event"] == "trigger-received":
                     vehicle_id = int(event["vehicle_id"])
                     receipt_sim_ns = event.get("receipt_sim_ns")
@@ -394,43 +549,75 @@ def run_probe(
                         writer.write({**event, "event": "malformed"})
                         continue
                     cycle = round((receipt_sim_ns - epoch_ns - offsets[vehicle_id]) / 100_000_000)
+                    planned_sim_ns = epoch_ns + cycle * 100_000_000 + offsets[vehicle_id]
+                    if planned_sim_ns < observation_start_sim_ns:
+                        continue
                     writer.write({
                         "event": "trigger",
                         "vehicle_id": vehicle_id,
                         "cycle": cycle,
                         "topic": event["topic"],
-                        "planned_sim_ns": epoch_ns + cycle * 100_000_000 + offsets[vehicle_id],
+                        "planned_sim_ns": planned_sim_ns,
                         "published_sim_ns": receipt_sim_ns,
                         "receipt_monotonic_s": event["receipt_monotonic_s"],
                         "sequence": event["sequence"],
                     })
                 else:
+                    if event.get("event") == "image":
+                        sim_ns = event.get("sim_ns")
+                        vehicle_id = event.get("vehicle_id")
+                        if not isinstance(sim_ns, int) or not isinstance(vehicle_id, int):
+                            writer.write({**event, "event": "malformed"})
+                            continue
+                        if mode_value == "phased":
+                            cycle = round(
+                                (sim_ns - epoch_ns - offsets[vehicle_id]) / 100_000_000
+                            )
+                            target_sim_ns = (
+                                epoch_ns + cycle * 100_000_000 + offsets[vehicle_id]
+                            )
+                            if target_sim_ns < observation_start_sim_ns:
+                                continue
+                        elif sim_ns < observation_start_sim_ns:
+                            continue
                     writer.write(event)
             dropped = buffer.take_overflow_count()
             if dropped:
                 overflow_total += dropped
                 writer.write("queue-overflow", dropped_count=dropped)
-            if completion_marker.exists() and buffer.empty():
-                completed = True
-                status = 2 if overflow_total else 0
-                break
+            now = monotonic()
+            if now - last_flush_at >= flush_interval_s:
+                writer.flush()
+                last_flush_at = now
+            if completion_marker.exists():
+                if completion_seen_at is None:
+                    completion_seen_at = now
+                quiet_since = max(completion_seen_at, last_event_at)
+                if buffer.empty() and now - quiet_since >= completion_drain_s:
+                    completed = True
+                    status = 2 if overflow_total else 0
+                    break
             sleep(poll_interval_s)
         else:
             raise ProbeFailure("duration_timeout")
     except ProbeFailure as exc:
         writer.write("error", reason=str(exc), message=str(exc))
+        writer.flush()
         status = 3
     except Exception as exc:
         writer.write("error", reason="runtime_error", message=f"{type(exc).__name__}: {exc}")
+        writer.flush()
         status = 3
     finally:
         if node is not None:
-            for topic in reversed(subscribed_topics):
+            for owner, topic in reversed(subscribed_topics):
                 try:
-                    node.unsubscribe(topic)
+                    owner.unsubscribe(topic)
                 except Exception as exc:
                     writer.write("error", reason="unsubscribe_failed", topic=topic, message=str(exc))
                     status = 3
+        callback_references.clear()
+        subscription_nodes.clear()
         writer.write("stop", exit_code=status, completed=completed, overflow_count=overflow_total)
         writer.close()
 
@@ -458,8 +645,12 @@ def main() -> int:
     parser.add_argument("--world", default="flydrones_forest")
     parser.add_argument("--scheduler-ready-marker", type=Path)
     parser.add_argument("--topology-timeout-s", type=float, default=30.0)
+    parser.add_argument("--stream-timeout-s", type=float, default=90.0)
     parser.add_argument("--duration-s", type=float, default=300.0)
     parser.add_argument("--poll-interval-s", type=float, default=0.01)
+    parser.add_argument("--completion-drain-s", type=float, default=1.0)
+    parser.add_argument("--flush-interval-s", type=float, default=0.25)
+    parser.add_argument("--warmup-image-count-min", type=int, default=11)
     parser.add_argument("--queue-capacity", type=int, default=2048)
     args = parser.parse_args()
     if args.mode == "phased" and args.scheduler_ready_marker is None:
@@ -475,8 +666,12 @@ def main() -> int:
             "world": args.world,
             "scheduler_ready_marker": args.scheduler_ready_marker,
             "topology_timeout_s": args.topology_timeout_s,
+            "stream_timeout_s": args.stream_timeout_s,
             "duration_s": args.duration_s,
             "poll_interval_s": args.poll_interval_s,
+            "completion_drain_s": args.completion_drain_s,
+            "flush_interval_s": args.flush_interval_s,
+            "warmup_image_count_min": args.warmup_image_count_min,
             "queue_capacity": args.queue_capacity,
         },
         node_factory=None,

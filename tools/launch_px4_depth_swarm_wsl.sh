@@ -11,6 +11,7 @@ vio_health_base_port="${FLYDRONES_VIO_HEALTH_BASE_PORT:-}"
 renderer_profile="${FLYDRONES_GZ_RENDER_PROFILE:-default}"
 camera_schedule_mode="${FLYDRONES_CAMERA_SCHEDULE_MODE:-simultaneous}"
 camera_aux_timeout_s="${FLYDRONES_CAMERA_AUX_TIMEOUT_S:-45}"
+camera_phase_ready_marker="${FLYDRONES_CAMERA_PHASE_READY_MARKER:-}"
 world_source="$repo_root/results/px4-sitl-five-depth/flydrones_forest.sdf"
 world_target="$px4_root/Tools/simulation/gz/worlds/flydrones_forest.sdf"
 model_root="$px4_root/Tools/simulation/gz/models"
@@ -45,6 +46,10 @@ if [[ "$vehicle_count" != 1 && "$vehicle_count" != 5 ]]; then
 fi
 if [[ -n "$vio_fault_profile" && ! -f "$vio_fault_profile" ]]; then
   echo "VIO fault profile is missing: $vio_fault_profile" >&2
+  exit 2
+fi
+if [[ -z "$camera_phase_ready_marker" ]]; then
+  echo "FLYDRONES_CAMERA_PHASE_READY_MARKER is required" >&2
   exit 2
 fi
 if [[ -e "$run_dir" ]]; then
@@ -253,10 +258,27 @@ for _ in $(seq 1 40); do
       bridge_instance="$(sed -n 's/.*--instance \([0-9][0-9]*\).*/\1/p' <<<"$bridge_args")"
       record_process "$bridge_pid" "px4-gz-bridge-$bridge_instance"
     done
+    phase_ready=0
+    for _ in $(seq 1 $((camera_aux_timeout_s * 10))); do
+      if [[ -f "$camera_phase_ready_marker" ]]; then
+        phase_ready=1
+        break
+      fi
+      if ! kill -0 "$gazebo_pid" 2>/dev/null; then
+        echo "Gazebo exited before camera phase evidence was ready" >&2
+        exit 3
+      fi
+      sleep 0.1
+    done
+    if [[ "$phase_ready" -ne 1 ]]; then
+      echo "camera phase evidence readiness timed out" >&2
+      exit 3
+    fi
     if ! env -u GALLIUM_DRIVER -u MESA_D3D12_DEFAULT_ADAPTER_NAME "${renderer_env[@]}" \
       PYTHONPATH="$repo_root/src" python3 "$repo_root/tools/attest_gazebo_renderer_wsl.py" \
       --profile "$renderer_profile" --gazebo-pid "$gazebo_pid" \
-      --expected-depth-topics "$vehicle_count" --output "$run_dir/renderer-attestation.json"; then
+      --expected-depth-topics "$vehicle_count" --phase-ready-marker "$camera_phase_ready_marker" \
+      --output "$run_dir/renderer-attestation.json"; then
       echo "Gazebo renderer attestation failed" >&2
       exit 3
     fi

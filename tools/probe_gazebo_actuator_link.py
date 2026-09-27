@@ -7,9 +7,25 @@ import json
 import signal
 import threading
 import time
+from collections.abc import Callable
 from pathlib import Path
 
 from flydrones.takeoff_readiness import actuator_model_names
+
+
+def subscribe_retained(
+    node: object,
+    callback_references: list[Callable[..., object]],
+    message_type: object,
+    topic: str,
+    callback: Callable[..., object],
+) -> bool:
+    """Subscribe while retaining callback ownership on the Python side."""
+    callback_references.append(callback)
+    if node.subscribe(message_type, topic, callback) is False:
+        callback_references.pop()
+        return False
+    return True
 
 
 def actuator_motor_topics(fleet_size: int) -> dict[str, str]:
@@ -106,9 +122,17 @@ def run_probe(
                 record({"event": "error", "monotonic_s": time.monotonic(), "error": str(exc)})
 
         subscriptions: list[str] = []
+        callback_references: list[Callable[..., object]] = []
         try:
             for model, topic in topics.items():
-                subscribed = node.subscribe(Actuators, topic, motor_callback(model, topic))
+                callback = motor_callback(model, topic)
+                subscribed = subscribe_retained(
+                    node,
+                    callback_references,
+                    Actuators,
+                    topic,
+                    callback,
+                )
                 record({
                     "event": "topology",
                     "monotonic_s": time.monotonic(),
@@ -119,7 +143,13 @@ def run_probe(
                 if subscribed is False:
                     raise RuntimeError(f"failed to subscribe to Gazebo motor topic: {topic}")
                 subscriptions.append(topic)
-            if node.subscribe(OdometryWithCovariance, "/flydrones/odometry_raw", receive_odometry) is False:
+            if not subscribe_retained(
+                node,
+                callback_references,
+                OdometryWithCovariance,
+                "/flydrones/odometry_raw",
+                receive_odometry,
+            ):
                 raise RuntimeError("failed to subscribe to raw Gazebo odometry")
             subscriptions.append("/flydrones/odometry_raw")
             ready_marker.write_text(
@@ -149,7 +179,11 @@ def run_probe(
                 except Exception as exc:
                     counts["error"] += 1
                     record({"event": "error", "monotonic_s": time.monotonic(), "error": str(exc)})
+            callback_references.clear()
             record({"event": "stop", "monotonic_s": time.monotonic(), "counts": counts})
+    # Destroy the transport node while Python still owns a valid GIL instead of
+    # deferring callback-handler teardown to interpreter shutdown.
+    del node
 
 
 def main() -> int:

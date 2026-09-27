@@ -129,6 +129,7 @@ def config(tmp_path: Path, *, vehicle_count: int = 5, **updates: object) -> dict
         "topology_timeout_s": 0.2,
         "duration_s": 2.0,
         "poll_interval_s": 0.01,
+        "flush_interval_s": 0.25,
         "stop_after_trigger_count": None,
         "formal": False,
     }
@@ -268,6 +269,29 @@ def test_scheduler_pause_4ms_steps_and_wrap_publish_each_slot_once(tmp_path):
         (0, 1),
     ]
     assert not [event for event in events if event["event"] == "missed"]
+
+
+def test_scheduler_records_fixed_dispatch_delay_without_changing_output_targets(tmp_path):
+    node = FakeNode([depth_topic(0)])
+    selected = config(tmp_path, vehicle_count=1, dispatch_delay_ns=4_000_000)
+
+    status, events = run_fake(
+        tmp_path,
+        node=node,
+        clocks=[EPOCH_NS, EPOCH_NS + 4_000_000, EPOCH_NS + 104_000_000],
+        complete_after_publishes=2,
+        scheduler_config=selected,
+    )
+
+    assert status == 0
+    ready = next(event for event in events if event["event"] == "ready")
+    assert ready["dispatch_delay_ns"] == 4_000_000
+    triggers = [event for event in events if event["event"] == "trigger"]
+    assert [event["planned_sim_ns"] for event in triggers] == [
+        EPOCH_NS,
+        EPOCH_NS + 100_000_000,
+    ]
+    assert [event["late_ns"] for event in triggers] == [4_000_000, 4_000_000]
 
 
 def test_scheduler_jump_logs_misses_without_catchup_batch(tmp_path):

@@ -8,7 +8,7 @@ import os
 import re
 import subprocess
 import tempfile
-from collections.abc import Callable
+from collections.abc import Callable, Sequence
 from pathlib import Path
 from typing import Any
 
@@ -65,6 +65,51 @@ def parse_topic_frequency(text: str) -> float:
         if values:
             return float(values[-1])
     return 0.0
+
+
+def load_phase_depth_observations(
+    marker: Path,
+    *,
+    expected_topics: Sequence[str],
+    minimum_message_count: int,
+) -> dict[str, DepthObservation]:
+    """Load depth evidence from the permanent phase observer readiness marker."""
+
+    payload = json.loads(marker.read_text(encoding="utf-8"))
+    if payload.get("schema") != "flydrones-camera-phase-ready-v1":
+        raise ValueError("phase ready marker schema is invalid")
+    topics = payload.get("depth_topics")
+    raw_observations = payload.get("depth_observations")
+    if topics != list(expected_topics) or not isinstance(raw_observations, dict):
+        raise ValueError("phase ready marker depth topics do not match topology")
+    observations: dict[str, DepthObservation] = {}
+    for topic in expected_topics:
+        raw = raw_observations.get(topic)
+        if not isinstance(raw, dict):
+            raise ValueError(f"depth observation missing for {topic}")
+        width = raw.get("width")
+        height = raw.get("height")
+        frequency_hz = raw.get("frequency_hz")
+        message_count = raw.get("message_count")
+        if (
+            isinstance(width, bool)
+            or not isinstance(width, int)
+            or isinstance(height, bool)
+            or not isinstance(height, int)
+            or isinstance(frequency_hz, bool)
+            or not isinstance(frequency_hz, (int, float))
+            or isinstance(message_count, bool)
+            or not isinstance(message_count, int)
+            or message_count < minimum_message_count
+        ):
+            raise ValueError(f"depth observation message_count or dimensions invalid for {topic}")
+        observations[topic] = DepthObservation(
+            width=width,
+            height=height,
+            frequency_hz=float(frequency_hz),
+            message_count=message_count,
+        )
+    return observations
 
 
 def _run(command: list[str], *, environment: dict[str, str], timeout: float) -> str:
@@ -133,6 +178,7 @@ def main() -> int:
     parser.add_argument("--expected-width", type=int, default=160)
     parser.add_argument("--expected-height", type=int, default=120)
     parser.add_argument("--expected-frequency-hz", type=float, default=10.0)
+    parser.add_argument("--phase-ready-marker", type=Path)
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
 
@@ -169,29 +215,42 @@ def main() -> int:
     observations: dict[str, DepthObservation] = {}
     wall_frequencies: dict[str, float | str] = {}
     wall_frequency_errors: dict[str, str] = {}
-    for topic in topics:
+    if args.phase_ready_marker is not None:
         try:
-            messages = _run(
-                ["gz", "topic", "-e", "--json-output", "-t", topic, "-n", "11"],
-                environment=environment,
-                timeout=15,
+            observations = load_phase_depth_observations(
+                args.phase_ready_marker,
+                expected_topics=topics,
+                minimum_message_count=11,
             )
-            width, height, count = parse_depth_messages(messages)
-            frequency = parse_depth_sim_frequency(messages)
-            observations[topic] = DepthObservation(width, height, frequency, count)
-        except (ValueError, OSError, subprocess.SubprocessError, RuntimeError) as exc:
-            observations[topic] = DepthObservation(0, 0, 0.0, 0)
-            errors.append(f"depth-topic {topic}: {exc}")
-            continue
-        try:
-            wall_frequencies[topic] = parse_topic_frequency(_run(
-                ["gz", "topic", "-f", "-t", topic, "-d", "2"],
-                environment=environment,
-                timeout=10,
-            ))
-        except (ValueError, OSError, subprocess.SubprocessError, RuntimeError) as exc:
-            wall_frequencies[topic] = "unavailable"
-            wall_frequency_errors[topic] = str(exc)
+            wall_frequencies = {
+                topic: observation.frequency_hz for topic, observation in observations.items()
+            }
+        except (ValueError, OSError, json.JSONDecodeError) as exc:
+            errors.append(f"phase-depth-evidence: {exc}")
+    else:
+        for topic in topics:
+            try:
+                messages = _run(
+                    ["gz", "topic", "-e", "--json-output", "-t", topic, "-n", "11"],
+                    environment=environment,
+                    timeout=15,
+                )
+                width, height, count = parse_depth_messages(messages)
+                frequency = parse_depth_sim_frequency(messages)
+                observations[topic] = DepthObservation(width, height, frequency, count)
+            except (ValueError, OSError, subprocess.SubprocessError, RuntimeError) as exc:
+                observations[topic] = DepthObservation(0, 0, 0.0, 0)
+                errors.append(f"depth-topic {topic}: {exc}")
+                continue
+            try:
+                wall_frequencies[topic] = parse_topic_frequency(_run(
+                    ["gz", "topic", "-f", "-t", topic, "-d", "2"],
+                    environment=environment,
+                    timeout=10,
+                ))
+            except (ValueError, OSError, subprocess.SubprocessError, RuntimeError) as exc:
+                wall_frequencies[topic] = "unavailable"
+                wall_frequency_errors[topic] = str(exc)
 
     result = evaluate_renderer_attestation(
         profile=profile,

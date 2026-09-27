@@ -1,7 +1,34 @@
+import gc
+import weakref
+
 import pytest
 
 from flydrones.takeoff_readiness import TakeoffFailureReason, classify_takeoff_chain, summarize_actuator_link
-from tools.probe_gazebo_actuator_link import actuator_motor_topics
+from tools.probe_gazebo_actuator_link import actuator_motor_topics, subscribe_retained
+
+
+class WeakCallbackNode:
+    def __init__(self) -> None:
+        self.callback: weakref.ReferenceType | None = None
+
+    def subscribe(self, _message_type, _topic, callback) -> bool:
+        self.callback = weakref.ref(callback)
+        return True
+
+
+def test_subscription_callback_is_owned_until_explicit_cleanup():
+    node = WeakCallbackNode()
+    callback_references: list[object] = []
+
+    def callback(_message) -> None:
+        return None
+
+    assert subscribe_retained(node, callback_references, object, "/motor", callback) is True
+    del callback
+    gc.collect()
+
+    assert node.callback is not None
+    assert node.callback() is callback_references[0]
 
 
 def _events(fleet_size=1, *, altitude_gain=0.8, motor_peak=0.9, include_stop=True):

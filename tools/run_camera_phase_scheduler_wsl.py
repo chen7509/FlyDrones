@@ -23,12 +23,14 @@ class SchedulerFailure(RuntimeError):
 class JsonlWriter:
     def __init__(self, path: Path, monotonic: Callable[[], float]) -> None:
         path.parent.mkdir(parents=True, exist_ok=True)
-        self._handle = path.open("w", encoding="utf-8", buffering=1)
+        self._handle = path.open("w", encoding="utf-8", buffering=65_536)
         self._monotonic = monotonic
 
     def write(self, event: str, **fields: object) -> None:
         payload = {"event": event, "wall_monotonic_s": self._monotonic(), **fields}
         self._handle.write(json.dumps(payload, ensure_ascii=False, separators=(",", ":")) + "\n")
+
+    def flush(self) -> None:
         self._handle.flush()
 
     def close(self) -> None:
@@ -114,6 +116,15 @@ def run_scheduler(
     topology_timeout_s = _positive_float(config, "topology_timeout_s")
     duration_s = _positive_float(config, "duration_s")
     poll_interval_s = _positive_float(config, "poll_interval_s")
+    flush_interval_s = _positive_float(config, "flush_interval_s")
+    dispatch_delay_ns = config.get("dispatch_delay_ns", 0)
+    if (
+        isinstance(dispatch_delay_ns, bool)
+        or not isinstance(dispatch_delay_ns, int)
+        or dispatch_delay_ns < 0
+        or dispatch_delay_ns >= 20_000_000
+    ):
+        raise ValueError("dispatch_delay_ns must be an integer in [0, 20000000)")
     stop_after = config.get("stop_after_trigger_count")
     if stop_after is not None and (
         isinstance(stop_after, bool) or not isinstance(stop_after, int) or stop_after <= 0
@@ -121,6 +132,8 @@ def run_scheduler(
         raise ValueError("stop_after_trigger_count must be a positive integer or null")
     if config.get("formal") is True and stop_after is not None:
         raise ValueError("formal scheduler config forbids development fault injection")
+    if config.get("formal") is True and dispatch_delay_ns != 4_000_000:
+        raise ValueError("formal scheduler config requires the frozen 4000000 ns dispatch delay")
 
     output.parent.mkdir(parents=True, exist_ok=True)
     ready_marker.parent.mkdir(parents=True, exist_ok=True)
@@ -156,8 +169,11 @@ def run_scheduler(
         vehicle_count=vehicle_count,
         world=world,
         stop_after_trigger_count=stop_after,
+        dispatch_delay_ns=dispatch_delay_ns,
         formal=config.get("formal") is True,
+        flush_interval_s=flush_interval_s,
     )
+    writer.flush()
     status = 3
     node = None
     subscribed = False
@@ -220,6 +236,7 @@ def run_scheduler(
                     depth_topics=[depth_topics[key] for key in sorted(depth_topics)],
                     trigger_topics=[trigger_topics[key] for key in sorted(trigger_topics)],
                 )
+                writer.flush()
                 last_topology_signature = signature
             if fatal_reasons:
                 raise SchedulerFailure(fatal_reasons[0])
@@ -251,18 +268,25 @@ def run_scheduler(
         with clock_lock:
             assert latest_clock_ns is not None
             epoch_ns = align_epoch_ns(latest_clock_ns)
-        state = TriggerSchedulerState(vehicle_count=vehicle_count, epoch_ns=epoch_ns)
+        state = TriggerSchedulerState(
+            vehicle_count=vehicle_count,
+            epoch_ns=epoch_ns,
+            dispatch_delay_ns=dispatch_delay_ns,
+        )
         ready_payload = {
             "schema": "flydrones-camera-scheduler-ready-v1",
             "epoch_ns": epoch_ns,
             "vehicle_count": vehicle_count,
+            "dispatch_delay_ns": dispatch_delay_ns,
             "depth_topics": [expected_depth_topics[key] for key in range(vehicle_count)],
             "trigger_topics": [expected_trigger_topics[key] for key in range(vehicle_count)],
         }
         _atomic_json(ready_marker, ready_payload)
         writer.write("ready", **{key: value for key, value in ready_payload.items() if key != "schema"})
+        writer.flush()
 
         processed_clock_sequence = 0
+        last_flush_at = monotonic()
         while monotonic() - started < duration_s:
             if completion_marker.exists():
                 status = 0
@@ -326,14 +350,20 @@ def run_scheduler(
                         break
                 if status == 4:
                     break
+            now = monotonic()
+            if now - last_flush_at >= flush_interval_s:
+                writer.flush()
+                last_flush_at = now
             sleep(poll_interval_s)
         else:
             raise SchedulerFailure("duration_timeout")
     except SchedulerFailure as exc:
         writer.write("error", reason=str(exc), message=str(exc))
+        writer.flush()
         status = 3
     except Exception as exc:
         writer.write("error", reason="runtime_error", message=f"{type(exc).__name__}: {exc}")
+        writer.flush()
         status = 3
     finally:
         if node is not None and subscribed:
@@ -357,6 +387,8 @@ def main() -> int:
     parser.add_argument("--topology-timeout-s", type=float, default=30.0)
     parser.add_argument("--duration-s", type=float, default=300.0)
     parser.add_argument("--poll-interval-s", type=float, default=0.01)
+    parser.add_argument("--flush-interval-s", type=float, default=0.25)
+    parser.add_argument("--dispatch-delay-ns", type=int, default=0)
     parser.add_argument("--stop-after-trigger-count", type=int)
     parser.add_argument("--formal", action="store_true")
     args = parser.parse_args()
@@ -370,6 +402,8 @@ def main() -> int:
             "topology_timeout_s": args.topology_timeout_s,
             "duration_s": args.duration_s,
             "poll_interval_s": args.poll_interval_s,
+            "flush_interval_s": args.flush_interval_s,
+            "dispatch_delay_ns": args.dispatch_delay_ns,
             "stop_after_trigger_count": args.stop_after_trigger_count,
             "formal": args.formal,
         },

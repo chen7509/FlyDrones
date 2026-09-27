@@ -124,6 +124,34 @@ class MavlinkDrone(Drone):
             if self._tel.armed is True or self.m.motors_armed():
                 return
 
+    def _wait_for_safe_arm_state(
+        self,
+        *,
+        timeout_s: float,
+        newer_than_s: float | None = None,
+    ) -> Telemetry:
+        """Wait for explicit disarmed and landed evidence before an arm attempt."""
+
+        deadline = time.monotonic() + timeout_s
+        while True:
+            telemetry = self.telemetry()
+            status_is_new = (
+                newer_than_s is None
+                or (
+                    telemetry.status_updated_at is not None
+                    and telemetry.status_updated_at > newer_than_s
+                )
+            )
+            if telemetry.armed is False and telemetry.landed is True and status_is_new:
+                return telemetry
+            now = time.monotonic()
+            if now >= deadline:
+                raise TimeoutError(
+                    "PX4 did not report a fresh disarmed and landed state "
+                    f"within {timeout_s:.1f} seconds"
+                )
+            time.sleep(min(0.1, max(0.0, deadline - now)))
+
     @staticmethod
     def _message_source(message, field: str, method: str, fallback: int) -> int:
         getter = getattr(message, method, None)
@@ -444,23 +472,15 @@ class MavlinkDrone(Drone):
             armed_at_s = None
             takeoff_accepted_at_s = None
             climb_confirmed_at_s = None
-            baseline = self.telemetry().alt_m
-            maximum_gain = 0.0
-            now = time.monotonic()
-            events.append(self._takeoff_event(TakeoffStage.PREFLIGHT_READY, at_s=now))
-
-            arm_command = int(self.mavutil.mavlink.MAV_CMD_COMPONENT_ARM_DISARM)
-            m.arducopter_arm()
-            events.append(self._takeoff_event(TakeoffStage.ARM_SENT, at_s=time.monotonic(), command=arm_command))
             try:
-                arm_ack = self._wait_command_ack(arm_command, timeout_s=self.arm_timeout_s)
+                preflight_status = self._wait_for_safe_arm_state(timeout_s=self.arm_timeout_s)
             except TimeoutError:
                 return self._takeoff_failure(
-                    stage=TakeoffStage.ARM_SENT,
+                    stage=TakeoffStage.FAILED,
                     reason=TakeoffFailureReason.ARM_STATE_TIMEOUT,
                     events=events,
-                    baseline_altitude_m=baseline,
-                    maximum_altitude_gain_m=maximum_gain,
+                    baseline_altitude_m=self._tel.alt_m,
+                    maximum_altitude_gain_m=0.0,
                     arm_ack=None,
                     takeoff_ack=None,
                     offboard_ack=None,
@@ -469,8 +489,69 @@ class MavlinkDrone(Drone):
                     climb_confirmed_at_s=None,
                     recover=False,
                 )
+            baseline = preflight_status.alt_m
+            maximum_gain = 0.0
+            now = time.monotonic()
+            events.append(self._takeoff_event(TakeoffStage.PREFLIGHT_READY, at_s=now))
+
+            arm_command = int(self.mavutil.mavlink.MAV_CMD_COMPONENT_ARM_DISARM)
             accepted_result = int(getattr(self.mavutil.mavlink, "MAV_RESULT_ACCEPTED", 0))
-            if arm_ack.result != accepted_result:
+            temporary_rejection = int(
+                getattr(self.mavutil.mavlink, "MAV_RESULT_TEMPORARILY_REJECTED", 1)
+            )
+            for arm_attempt in range(2):
+                m.arducopter_arm()
+                events.append(
+                    self._takeoff_event(
+                        TakeoffStage.ARM_SENT,
+                        at_s=time.monotonic(),
+                        command=arm_command,
+                        detail=f"attempt-{arm_attempt + 1}",
+                    )
+                )
+                try:
+                    arm_ack = self._wait_command_ack(
+                        arm_command,
+                        timeout_s=self.arm_timeout_s,
+                    )
+                except TimeoutError:
+                    return self._takeoff_failure(
+                        stage=TakeoffStage.ARM_SENT,
+                        reason=TakeoffFailureReason.ARM_STATE_TIMEOUT,
+                        events=events,
+                        baseline_altitude_m=baseline,
+                        maximum_altitude_gain_m=maximum_gain,
+                        arm_ack=None,
+                        takeoff_ack=None,
+                        offboard_ack=None,
+                        armed_at_s=None,
+                        takeoff_accepted_at_s=None,
+                        climb_confirmed_at_s=None,
+                        recover=False,
+                    )
+                if arm_ack.result == accepted_result:
+                    break
+                can_retry = arm_attempt == 0 and arm_ack.result == temporary_rejection
+                if can_retry:
+                    try:
+                        self._wait_for_safe_arm_state(
+                            timeout_s=self.arm_timeout_s,
+                            newer_than_s=arm_ack.received_at_s,
+                        )
+                    except TimeoutError:
+                        can_retry = False
+                if not can_retry:
+                    break
+                events.append(
+                    self._takeoff_event(
+                        TakeoffStage.ARM_SENT,
+                        at_s=time.monotonic(),
+                        command=arm_command,
+                        acknowledgement=arm_ack,
+                        detail="temporary-arm-rejection-retry",
+                    )
+                )
+            if arm_ack is None or arm_ack.result != accepted_result:
                 return self._takeoff_failure(
                     stage=TakeoffStage.ARM_SENT,
                     reason=TakeoffFailureReason.ARM_COMMAND_REJECTED,

@@ -156,6 +156,27 @@ def test_scheduler_handles_4ms_steps_pause_and_duplicate_clocks_without_duplicat
     assert scheduler.last_missed_slots == ()
 
 
+def test_scheduler_dispatch_delay_preserves_image_target_and_records_publish_lateness():
+    scheduler = TriggerSchedulerState(
+        vehicle_count=1,
+        epoch_ns=EPOCH_NS,
+        dispatch_delay_ns=STEP_NS,
+    )
+
+    assert scheduler.advance(EPOCH_NS) == ()
+    assert scheduler.advance(EPOCH_NS + STEP_NS) == (
+        scheduler.slot_for(
+            vehicle_id=0,
+            cycle=0,
+            observed_sim_ns=EPOCH_NS + STEP_NS,
+        ),
+    )
+    slot = scheduler.advance(EPOCH_NS + PERIOD_NS + STEP_NS)[0]
+    assert slot.planned_sim_ns == EPOCH_NS + PERIOD_NS
+    assert slot.published_sim_ns == EPOCH_NS + PERIOD_NS + STEP_NS
+    assert slot.late_ns == STEP_NS
+
+
 def test_scheduler_rejects_time_reversal_without_advancing_state():
     scheduler = TriggerSchedulerState(vehicle_count=1, epoch_ns=EPOCH_NS)
     assert len(scheduler.advance(EPOCH_NS)) == 1

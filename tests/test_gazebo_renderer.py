@@ -11,6 +11,7 @@ from flydrones.gazebo_renderer import (
 )
 from tools.attest_gazebo_renderer_wsl import (
     finalize_renderer_attestation,
+    load_phase_depth_observations,
     parse_depth_messages,
     parse_depth_sim_frequency,
     parse_topic_frequency,
@@ -166,6 +167,72 @@ def test_optional_wall_frequency_failure_is_recorded_without_rejecting_core_atte
 
     assert result["accepted"]
     assert result["wall_frequency_errors"] == {"/depth": "timed out"}
+
+
+def test_phase_ready_marker_supplies_depth_evidence_without_temporary_subscriptions(tmp_path):
+    marker = tmp_path / "camera-phase-ready.json"
+    topic = (
+        "/world/flydrones_forest/model/x500_depth_fly_0"
+        "/link/camera_link/sensor/StereoOV7251/depth_image"
+    )
+    marker.write_text(
+        json.dumps(
+            {
+                "schema": "flydrones-camera-phase-ready-v1",
+                "vehicle_count": 1,
+                "depth_topics": [topic],
+                "depth_observations": {
+                    topic: {
+                        "width": 160,
+                        "height": 120,
+                        "frequency_hz": 10.0,
+                        "message_count": 11,
+                    }
+                },
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    observations = load_phase_depth_observations(
+        marker,
+        expected_topics=[topic],
+        minimum_message_count=11,
+    )
+
+    assert observations[topic].width == 160
+    assert observations[topic].height == 120
+    assert observations[topic].frequency_hz == pytest.approx(10.0)
+    assert observations[topic].message_count == 11
+
+
+def test_phase_ready_marker_rejects_incomplete_stream_evidence(tmp_path):
+    marker = tmp_path / "camera-phase-ready.json"
+    marker.write_text(
+        json.dumps(
+            {
+                "schema": "flydrones-camera-phase-ready-v1",
+                "vehicle_count": 1,
+                "depth_topics": ["/depth"],
+                "depth_observations": {
+                    "/depth": {
+                        "width": 160,
+                        "height": 120,
+                        "frequency_hz": 10.0,
+                        "message_count": 10,
+                    }
+                },
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    with pytest.raises(ValueError, match="message_count"):
+        load_phase_depth_observations(
+            marker,
+            expected_topics=["/depth"],
+            minimum_message_count=11,
+        )
 
 
 def test_depth_message_parser_counts_concatenated_json_messages():

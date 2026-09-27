@@ -11,6 +11,7 @@ from enum import Enum
 
 PERIOD_NS = 100_000_000
 PHASE_STEP_NS = 20_000_000
+OUTPUT_PHASE_DISPATCH_DELAY_NS = 4_000_000
 SIMULTANEOUS_BIN_NS = 10_000_000
 DEFAULT_WORLD = "flydrones_forest"
 
@@ -57,6 +58,7 @@ def align_epoch_ns(sim_ns: int) -> int:
 class TriggerSchedulerState:
     vehicle_count: int
     epoch_ns: int
+    dispatch_delay_ns: int = 0
     last_missed_slots: tuple[TriggerSlot, ...] = field(default=(), init=False)
     _next_slot_index: int = field(default=0, init=False, repr=False)
     _last_sim_ns: int | None = field(default=None, init=False, repr=False)
@@ -65,6 +67,13 @@ class TriggerSchedulerState:
         camera_phase_offsets_ns(self.vehicle_count)
         if isinstance(self.epoch_ns, bool) or not isinstance(self.epoch_ns, int) or self.epoch_ns < 0:
             raise ValueError("epoch_ns must be a non-negative integer")
+        if (
+            isinstance(self.dispatch_delay_ns, bool)
+            or not isinstance(self.dispatch_delay_ns, int)
+            or self.dispatch_delay_ns < 0
+            or self.dispatch_delay_ns >= PHASE_STEP_NS
+        ):
+            raise ValueError("dispatch_delay_ns must be an integer in [0, 20000000)")
 
     def slot_for(
         self,
@@ -106,7 +115,7 @@ class TriggerSchedulerState:
         due: list[TriggerSlot] = []
         while True:
             slot = self._slot_at_index(self._next_slot_index, observed_sim_ns=None)
-            if slot.planned_sim_ns > sim_ns:
+            if slot.planned_sim_ns + self.dispatch_delay_ns > sim_ns:
                 break
             due.append(slot)
             self._next_slot_index += 1

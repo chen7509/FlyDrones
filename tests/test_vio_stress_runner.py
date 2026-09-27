@@ -148,8 +148,18 @@ def test_camera_auxiliary_commands_start_observer_in_both_modes_and_scheduler_on
     assert len(phased) == 2
     assert phased[0][1].endswith("run_camera_phase_scheduler_wsl.py")
     assert "--formal" in phased[0]
+    poll_index = phased[0].index("--poll-interval-s")
+    assert phased[0][poll_index + 1] == "0.001"
+    delay_index = phased[0].index("--dispatch-delay-ns")
+    assert phased[0][delay_index + 1] == "4000000"
+    scheduler_flush_index = phased[0].index("--flush-interval-s")
+    assert phased[0][scheduler_flush_index + 1] == "0.25"
     assert phased[1][1].endswith("probe_camera_phase_wsl.py")
     assert str(tmp_path / "camera-scheduler-ready.json") in phased[1]
+    warmup_index = phased[1].index("--warmup-image-count-min")
+    assert phased[1][warmup_index + 1] == "11"
+    flush_index = phased[1].index("--flush-interval-s")
+    assert phased[1][flush_index + 1] == "0.25"
 
 
 def test_camera_aux_clean_stop_requires_complete_successful_stop_record(tmp_path):

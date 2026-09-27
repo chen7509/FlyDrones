@@ -275,6 +275,9 @@ def camera_auxiliary_commands(
             "--completion-marker", str(completion_marker),
             "--vehicle-count", str(fleet_size),
             "--duration-s", "300",
+            "--poll-interval-s", "0.001",
+            "--flush-interval-s", "0.25",
+            "--dispatch-delay-ns", "4000000",
         ]
         if stop_after_trigger_count is None:
             scheduler.append("--formal")
@@ -291,6 +294,8 @@ def camera_auxiliary_commands(
         "--mode", mode,
         "--vehicle-count", str(fleet_size),
         "--duration-s", "300",
+        "--warmup-image-count-min", "11",
+        "--flush-interval-s", "0.25",
     ]
     if mode == "phased":
         observer.extend(["--scheduler-ready-marker", str(scheduler_ready)])
@@ -458,6 +463,9 @@ def run_trial(
         "FLYDRONES_VIO_HEALTH_BASE_PORT": "16880",
         "FLYDRONES_GZ_RENDER_PROFILE": renderer_profile,
         "FLYDRONES_CAMERA_SCHEDULE_MODE": camera_schedule_mode,
+        "FLYDRONES_CAMERA_PHASE_READY_MARKER": str(
+            (output / "camera-phase-ready.json").resolve()
+        ),
         "FLYDRONES_SEED": "240901",
         "PYTHONPATH": str(ROOT / "src"),
     })
