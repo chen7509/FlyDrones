@@ -538,20 +538,16 @@ def test_capacity_launcher_uses_temporary_attestation_and_stable_gazebo_identity
     barrier = launcher.index('echo "PX4 pre-resume bridge barrier timed out"')
     final_resume = launcher.index('>"$run_dir/capacity-world-resume.log"')
     assert barrier < final_resume
-    assert 'capacity-world-instance-$instance_id-resume.log' in launcher
-    assert 'capacity-world-instance-$instance_id-pause.log' in launcher
-    assert 'grep -Fq "Startup script returned successfully"' in launcher
-    assert '"$instance_id" "$remaining_startup_s" "$instance_dir/startup-health.json"' in launcher
-    assert 'echo "PX4 sensor readiness failed at instance $instance_id"' in launcher
-    startup_complete = launcher.index('grep -Fq "Startup script returned successfully"')
-    startup_health = launcher.index('"$instance_id" "$remaining_startup_s" "$instance_dir/startup-health.json"')
-    instance_pause = launcher.index('capacity-world-instance-$instance_id-pause.log')
-    assert startup_complete < startup_health < instance_pause
+    assert 'capacity-world-instance-$instance_id-resume.log' not in launcher
+    assert 'capacity-world-instance-$instance_id-pause.log' not in launcher
+    assert 'echo "PX4 concurrent sensor readiness failed"' in launcher
+    startup_health = launcher.index('"startup-health.json"')
+    assert final_resume < startup_health
     assert 'px4-gz_bridge" --instance "$instance_id" stop' not in launcher
     assert 'item["publisher_count"] == 1 and item["subscriber_count"] == 1' in launcher
     assert "px4-sensor-topic-connections.json" in launcher
     assert "px4-sensor-topic-connections.json" in runner
-    assert 'f"capacity-world-instance-{vehicle_id}-{action}.log"' in runner
+    assert 'f"capacity-world-instance-{vehicle_id}-{action}.log"' not in runner
     assert 'f"px4-console/agent-{vehicle_id}-startup-health.json"' in runner
     assert '"px4-console/agent-{vehicle_id}-{stream}.log"' in runner
     assert '"gazebo.stdout.log"' in runner

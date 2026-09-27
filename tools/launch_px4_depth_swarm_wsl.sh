@@ -249,7 +249,6 @@ sensor_suffixes=(
   "air_pressure_sensor/air_pressure"
 )
 poses=(-4.0 -2.0 0.0 2.0 4.0)
-px4_startup_deadline=$((SECONDS + 120))
 for ((instance_id=0; instance_id<vehicle_count; instance_id++)); do
   instance_dir="$run_dir/instance_$instance_id"
   mkdir -p "$instance_dir"
@@ -300,91 +299,6 @@ for ((instance_id=0; instance_id<vehicle_count; instance_id++)); do
       echo "PX4 instance $instance_id sensor publisher registration timed out" >&2
       tail -30 "$instance_dir/out.log" >&2 || true
       tail -30 "$instance_dir/err.log" >&2 || true
-      exit 3
-    fi
-    instance_resume_log="$run_dir/capacity-world-instance-$instance_id-resume.log"
-    if ! gz service -s "/world/flydrones_forest/control" \
-      --reqtype gz.msgs.WorldControl --reptype gz.msgs.Boolean \
-      --timeout 5000 --req "pause: false" >"$instance_resume_log" 2>&1; then
-      echo "Gazebo resume failed while initializing PX4 instance $instance_id" >&2
-      cat "$instance_resume_log" >&2 || true
-      exit 3
-    fi
-    instance_startup_ready=0
-    for _ in $(seq 1 300); do
-      pid="$(cat "$instance_dir/pid")"
-      if ! kill -0 "$pid" 2>/dev/null; then
-        echo "PX4 instance $instance_id exited during bridge initialization" >&2
-        tail -30 "$instance_dir/out.log" >&2 || true
-        tail -30 "$instance_dir/err.log" >&2 || true
-        exit 3
-      fi
-      if grep -Fq "Startup script returned successfully" "$instance_dir/out.log"; then
-        instance_startup_ready=1
-        break
-      fi
-      sleep 0.1
-    done
-    if [[ "$instance_startup_ready" != 1 ]]; then
-      echo "PX4 instance $instance_id bridge initialization timed out" >&2
-      tail -30 "$instance_dir/out.log" >&2 || true
-      tail -30 "$instance_dir/err.log" >&2 || true
-      exit 3
-    fi
-    remaining_startup_s=$((px4_startup_deadline - SECONDS))
-    if (( remaining_startup_s <= 0 )); then
-      echo "PX4 sensor readiness budget expired before instance $instance_id" >&2
-      exit 3
-    fi
-    if ! PYTHONPATH="$repo_root/src:$repo_root" python3 - \
-      "$instance_id" "$remaining_startup_s" "$instance_dir/startup-health.json" <<'PY'
-import json
-import sys
-from pathlib import Path
-
-from flydrones.drones.mavlink import MavlinkDrone
-from tools.run_camera_render_capacity_trial_wsl import (
-    capacity_telemetry_ready,
-    wait_for_capacity_telemetry,
-)
-
-vehicle_id = int(sys.argv[1])
-timeout_s = min(30.0, max(1.0, float(sys.argv[2])))
-output = Path(sys.argv[3])
-drone = MavlinkDrone(
-    connection=f"udpin:0.0.0.0:{14540 + vehicle_id}",
-    autopilot="px4",
-)
-try:
-    drone.connect()
-    telemetry = wait_for_capacity_telemetry(drone, timeout_s=timeout_s)
-finally:
-    if drone.m is not None:
-        drone.m.close()
-payload = {
-    "schema": "flydrones-px4-capacity-startup-health-v1",
-    "vehicle_id": vehicle_id,
-    "timeout_s": timeout_s,
-    "estimator_healthy": telemetry.estimator_healthy,
-    "armed": telemetry.armed,
-    "landed": telemetry.landed,
-}
-output.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
-if not capacity_telemetry_ready(telemetry):
-    raise SystemExit(3)
-PY
-    then
-      echo "PX4 sensor readiness failed at instance $instance_id" >&2
-      tail -50 "$instance_dir/out.log" >&2 || true
-      tail -50 "$instance_dir/err.log" >&2 || true
-      exit 3
-    fi
-    instance_pause_log="$run_dir/capacity-world-instance-$instance_id-pause.log"
-    if ! gz service -s "/world/flydrones_forest/control" \
-      --reqtype gz.msgs.WorldControl --reptype gz.msgs.Boolean \
-      --timeout 5000 --req "pause: true" >"$instance_pause_log" 2>&1; then
-      echo "Gazebo pause failed after initializing PX4 instance $instance_id" >&2
-      cat "$instance_pause_log" >&2 || true
       exit 3
     fi
   else
@@ -556,6 +470,63 @@ temporary.replace(output)
 if not payload["accepted"]:
     raise SystemExit("PX4 sensor topic publisher/subscriber topology rejected")
 PY
+  if ! PYTHONPATH="$repo_root/src:$repo_root" python3 - \
+    "$run_dir" "$vehicle_count" <<'PY'
+import concurrent.futures
+import json
+import sys
+from pathlib import Path
+
+from flydrones.drones.mavlink import MavlinkDrone
+from tools.run_camera_render_capacity_trial_wsl import (
+    capacity_telemetry_ready,
+    wait_for_capacity_telemetry,
+)
+
+run_dir = Path(sys.argv[1])
+vehicle_count = int(sys.argv[2])
+
+def sample(vehicle_id: int) -> dict:
+    drone = MavlinkDrone(
+        connection=f"udpin:0.0.0.0:{14540 + vehicle_id}",
+        autopilot="px4",
+    )
+    try:
+        drone.connect()
+        telemetry = wait_for_capacity_telemetry(drone, timeout_s=60.0)
+    finally:
+        if drone.m is not None:
+            drone.m.close()
+    payload = {
+        "schema": "flydrones-px4-capacity-startup-health-v1",
+        "vehicle_id": vehicle_id,
+        "timeout_s": 60.0,
+        "estimator_healthy": telemetry.estimator_healthy,
+        "armed": telemetry.armed,
+        "landed": telemetry.landed,
+    }
+    output = run_dir / f"instance_{vehicle_id}" / "startup-health.json"
+    output.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    return payload
+
+with concurrent.futures.ThreadPoolExecutor(max_workers=vehicle_count) as executor:
+    states = list(executor.map(sample, range(vehicle_count)))
+if not all(
+    item["estimator_healthy"] is True
+    and item["armed"] is False
+    and item["landed"] is True
+    for item in states
+):
+    raise SystemExit(3)
+PY
+  then
+    echo "PX4 concurrent sensor readiness failed" >&2
+    for ((instance_id=0; instance_id<vehicle_count; instance_id++)); do
+      tail -50 "$run_dir/instance_$instance_id/out.log" >&2 || true
+      tail -50 "$run_dir/instance_$instance_id/err.log" >&2 || true
+    done
+    exit 3
+  fi
 fi
 
 for _ in $(seq 1 40); do
