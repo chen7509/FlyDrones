@@ -238,6 +238,7 @@ while [[ ! -f "$aux_started" ]]; do
 done
 
 poses=(-4.0 -2.0 0.0 2.0 4.0)
+px4_startup_deadline=$((SECONDS + 120))
 for ((instance_id=0; instance_id<vehicle_count; instance_id++)); do
   instance_dir="$run_dir/instance_$instance_id"
   mkdir -p "$instance_dir"
@@ -255,7 +256,27 @@ for ((instance_id=0; instance_id<vehicle_count; instance_id++)); do
     echo $! >"$instance_dir/pid"
   )
   record_process "$(cat "$instance_dir/pid")" "px4-$instance_id"
-  sleep 2
+  instance_ready=0
+  while (( SECONDS < px4_startup_deadline )); do
+    instance_pid="$(cat "$instance_dir/pid")"
+    if ! kill -0 "$instance_pid" 2>/dev/null; then
+      echo "PX4 instance $instance_id exited before sensor readiness" >&2
+      tail -50 "$instance_dir/out.log" >&2 || true
+      tail -50 "$instance_dir/err.log" >&2 || true
+      exit 3
+    fi
+    if grep -Fq "Ready for takeoff!" "$instance_dir/out.log" 2>/dev/null; then
+      instance_ready=1
+      break
+    fi
+    sleep 0.25
+  done
+  if [[ "$instance_ready" -ne 1 ]]; then
+    echo "PX4 sensor readiness timed out at instance $instance_id" >&2
+    tail -50 "$instance_dir/out.log" >&2 || true
+    tail -50 "$instance_dir/err.log" >&2 || true
+    exit 3
+  fi
 done
 
 for _ in $(seq 1 40); do

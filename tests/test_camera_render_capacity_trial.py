@@ -507,6 +507,10 @@ def test_capacity_launcher_uses_temporary_attestation_and_stable_gazebo_identity
     assert launcher.index("Gazebo launcher did not reach stable gz sim argv") < launcher.index(
         'record_process "$gazebo_pid" "gazebo-server"'
     )
+    assert 'px4_startup_deadline=$((SECONDS + 120))' in launcher
+    assert 'grep -Fq "Ready for takeoff!" "$instance_dir/out.log"' in launcher
+    ready_gate = launcher.index('grep -Fq "Ready for takeoff!" "$instance_dir/out.log"')
+    assert ready_gate < launcher.index("  running=0", ready_gate)
 
 
 @pytest.mark.parametrize("cell", ("idle-0", "native-1", "python-5", "native-5"))
