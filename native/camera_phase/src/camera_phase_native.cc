@@ -626,7 +626,8 @@ int RunProbe(const ProbeOptions& options, std::atomic_bool& stopRequested) {
       }
     }
 
-    const auto readinessDeadline = SteadyClock::now() + std::chrono::seconds(30);
+    const auto readinessDeadline =
+        SteadyClock::now() + std::chrono::duration<double>(options.readinessTimeoutS);
     while (!stopRequested.load()) {
       if (std::filesystem::exists(options.completionMarker)) {
         throw std::runtime_error("completion_before_readiness");

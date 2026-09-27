@@ -40,6 +40,7 @@ void PrintHelp() {
       << "  --poll-interval-ms N\n"
       << "  --flush-interval-ms N\n"
       << "  --completion-drain-ms N\n"
+      << "  --readiness-timeout-s SECONDS\n"
       << "  --warmup-image-count-min N\n"
       << "  --observe-triggers 0|1\n"
       << "  --stop-after-trigger-count N\n";
@@ -122,6 +123,8 @@ int main(int argc, char** argv) {
         options.flushIntervalMs = static_cast<int>(ParseInteger(value, option.c_str()));
       } else if (option == "--completion-drain-ms") {
         options.completionDrainMs = static_cast<int>(ParseInteger(value, option.c_str()));
+      } else if (option == "--readiness-timeout-s") {
+        options.readinessTimeoutS = ParsePositiveDouble(value, option.c_str());
       } else if (option == "--warmup-image-count-min") {
         options.warmupImageCountMin =
             static_cast<std::uint64_t>(ParseInteger(value, option.c_str()));

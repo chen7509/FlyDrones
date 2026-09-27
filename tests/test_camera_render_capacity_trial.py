@@ -303,9 +303,22 @@ def test_renderer_witness_uses_native_five_camera_warmup(tmp_path: Path):
     assert command[command.index("--subscriber-count") + 1] == "5"
     assert command[command.index("--warmup-image-count-min") + 1] == "11"
     assert command[command.index("--observe-triggers") + 1] == "0"
+    assert command[command.index("--readiness-timeout-s") + 1] == "150"
     assert command[command.index("--ready-marker") + 1].endswith(
         "renderer-phase-ready.json"
     )
+
+
+def test_capacity_scheduler_allows_sequential_px4_startup(tmp_path: Path):
+    run = _run("native-1")
+    scheduler, _observer = capacity_auxiliary_commands(
+        run=run,
+        output=tmp_path,
+        completion_marker=tmp_path / "complete.marker",
+        native_executable=tmp_path / "flydrones_camera_phase_native",
+    )
+
+    assert scheduler[scheduler.index("--topology-timeout-s") + 1] == "150"
 
 
 class FakeBackend:
