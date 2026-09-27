@@ -119,6 +119,7 @@ class FakeRuntime:
         self.sent_warmup = False
         self.sent_stream = False
         self.post_completion_cycle = 11
+        self.post_completion_pending_image_ns: int | None = None
 
     def monotonic(self) -> float:
         return self.now
@@ -168,13 +169,22 @@ class FakeRuntime:
         if self.sent_stream:
             if not self.continue_after_completion:
                 return
+            if self.post_completion_pending_image_ns is not None:
+                planned = self.post_completion_pending_image_ns
+                self.node.emit_clock(planned)
+                self.node.callbacks[depth_topic(0)](stamp_message(planned))
+                self.post_completion_pending_image_ns = None
+                self.post_completion_cycle += 1
+                return
             planned = observation_start_ns + self.post_completion_cycle * 100_000_000
-            self.post_completion_cycle += 1
             if mode is CameraScheduleMode.PHASED:
                 self.node.emit_clock(planned)
                 self.node.callbacks[f"{depth_topic(0)}/trigger"](SimpleNamespace(data=True))
+                self.post_completion_pending_image_ns = planned
+                return
             self.node.emit_clock(planned)
             self.node.callbacks[depth_topic(0)](stamp_message(planned))
+            self.post_completion_cycle += 1
             return
         for cycle in range(101 if self.force_overflow else 11):
             for vehicle_id in range(vehicle_count):

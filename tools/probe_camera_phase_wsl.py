@@ -536,6 +536,7 @@ def run_probe(
 
         offsets = camera_phase_offsets_ns(vehicle_count)
         last_flush_at = monotonic()
+        pending_trigger_sequences: set[tuple[int, int]] = set()
         while monotonic() - started < duration_s:
             drained_events = buffer.drain()
             for event in drained_events:
@@ -549,6 +550,8 @@ def run_probe(
                     planned_sim_ns = epoch_ns + cycle * 100_000_000 + offsets[vehicle_id]
                     if planned_sim_ns < observation_start_sim_ns:
                         continue
+                    sequence = int(event["sequence"])
+                    pending_trigger_sequences.add((vehicle_id, sequence))
                     writer.write({
                         "event": "trigger",
                         "vehicle_id": vehicle_id,
@@ -557,7 +560,7 @@ def run_probe(
                         "planned_sim_ns": planned_sim_ns,
                         "published_sim_ns": receipt_sim_ns,
                         "receipt_monotonic_s": event["receipt_monotonic_s"],
-                        "sequence": event["sequence"],
+                        "sequence": sequence,
                     })
                 else:
                     if event.get("event") == "image":
@@ -577,6 +580,9 @@ def run_probe(
                                 continue
                         elif sim_ns < observation_start_sim_ns:
                             continue
+                        sequence = event.get("sequence")
+                        if isinstance(sequence, int):
+                            pending_trigger_sequences.discard((vehicle_id, sequence))
                     writer.write(event)
             dropped = buffer.take_overflow_count()
             if dropped:
@@ -589,7 +595,11 @@ def run_probe(
             if completion_marker.exists():
                 if completion_seen_at is None:
                     completion_seen_at = now
-                if buffer.empty() and now - completion_seen_at >= completion_drain_s:
+                if (
+                    buffer.empty()
+                    and not pending_trigger_sequences
+                    and now - completion_seen_at >= completion_drain_s
+                ):
                     completed = True
                     status = 2 if overflow_total else 0
                     break

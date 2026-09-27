@@ -153,7 +153,7 @@
     "renderer_profile": "25eb25866978b94d5c7327c688c46112523067f55c29dabe15fe7d17ebe89118",
     "camera_model_configurator": "8e0361a68c5755251324cdece392f470daba131446b6ee444b5f168e96677505",
     "camera_scheduler": "64c456f66b68e0ab99ebd6e4f4e3fddd5731055c78a2ba1b75b5670fdc24b741",
-    "python_observer": "28624e4d02b1bc78a92ec0d9ec727ec00e1d9cf52804e3dc2e3b29b08fec4ada",
+    "python_observer": "6e984b496e975c7c5a315fc65b15d238815d50d769d540467ea70907889f682b",
     "world_generator": "3fd59afbf9f550196caac0422ea2800290a6deb657f02cdf9cffcd6666a1055a",
     "native_build": "4e5dc358c2644c8ee644af704eff0fab21be3d2dc25eb9ace05e4c182b0b960b",
     "native_cmake": "f047d007804ee2b3fd1f4f392ab75e103929f185f3999826a5044fa9ae3e4949",
