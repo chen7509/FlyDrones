@@ -550,10 +550,12 @@ def run_probe(
 
         offsets = camera_phase_offsets_ns(vehicle_count)
         last_flush_at = monotonic()
-        pending_trigger_sequences: set[tuple[int, int]] = set()
+        last_transport_event_kind: str | None = None
         while monotonic() - started < duration_s:
             drained_events = buffer.drain()
             for event in drained_events:
+                if event.get("event") in {"trigger-received", "image"}:
+                    last_transport_event_kind = str(event["event"])
                 if event["event"] == "trigger-received":
                     vehicle_id = int(event["vehicle_id"])
                     receipt_sim_ns = event.get("receipt_sim_ns")
@@ -565,7 +567,6 @@ def run_probe(
                     if planned_sim_ns < observation_start_sim_ns:
                         continue
                     sequence = int(event["sequence"])
-                    pending_trigger_sequences.add((vehicle_id, sequence))
                     writer.write({
                         "event": "trigger",
                         "vehicle_id": vehicle_id,
@@ -594,9 +595,6 @@ def run_probe(
                                 continue
                         elif sim_ns < observation_start_sim_ns:
                             continue
-                        sequence = event.get("sequence")
-                        if isinstance(sequence, int):
-                            pending_trigger_sequences.discard((vehicle_id, sequence))
                     writer.write(event)
             dropped = buffer.take_overflow_count()
             if dropped:
@@ -611,7 +609,7 @@ def run_probe(
                     completion_seen_at = now
                 if (
                     buffer.empty()
-                    and not pending_trigger_sequences
+                    and last_transport_event_kind == "image"
                     and now - completion_seen_at >= completion_drain_s
                 ):
                     completed = True

@@ -115,6 +115,7 @@ class FakeRuntime:
         force_overflow: bool = False,
         delay_final_image_until_after_completion: bool = False,
         continue_after_completion: bool = False,
+        drop_post_completion_image_once: bool = False,
         warmup_vehicle_ids: tuple[int, ...] | None = None,
     ) -> None:
         self.node = node
@@ -124,6 +125,7 @@ class FakeRuntime:
         self.force_overflow = force_overflow
         self.delay_final_image_until_after_completion = delay_final_image_until_after_completion
         self.continue_after_completion = continue_after_completion
+        self.drop_post_completion_image_once = drop_post_completion_image_once
         self.warmup_vehicle_ids = warmup_vehicle_ids
         self.pending_final: tuple[int, int] | None = None
         self.now = 0.0
@@ -132,6 +134,7 @@ class FakeRuntime:
         self.sent_stream = False
         self.post_completion_cycle = 11
         self.post_completion_pending_image_ns: int | None = None
+        self.dropped_post_completion_image = False
 
     def monotonic(self) -> float:
         return self.now
@@ -183,8 +186,14 @@ class FakeRuntime:
                 return
             if self.post_completion_pending_image_ns is not None:
                 planned = self.post_completion_pending_image_ns
-                self.node.emit_clock(planned)
-                self.node.callbacks[depth_topic(0)](stamp_message(planned))
+                if (
+                    self.drop_post_completion_image_once
+                    and not self.dropped_post_completion_image
+                ):
+                    self.dropped_post_completion_image = True
+                else:
+                    self.node.emit_clock(planned)
+                    self.node.callbacks[depth_topic(0)](stamp_message(planned))
                 self.post_completion_pending_image_ns = None
                 self.post_completion_cycle += 1
                 return
@@ -280,6 +289,7 @@ def run_fake(
     force_overflow: bool = False,
     delay_final_image_until_after_completion: bool = False,
     continue_after_completion: bool = False,
+    drop_post_completion_image_once: bool = False,
     warmup_vehicle_ids: tuple[int, ...] | None = None,
 ) -> tuple[int, FakeNode, dict[str, object], list[dict[str, object]]]:
     selected = config(
@@ -296,6 +306,7 @@ def run_fake(
         force_overflow=force_overflow,
         delay_final_image_until_after_completion=delay_final_image_until_after_completion,
         continue_after_completion=continue_after_completion,
+        drop_post_completion_image_once=drop_post_completion_image_once,
         warmup_vehicle_ids=warmup_vehicle_ids,
     )
     status = run_probe(
@@ -447,6 +458,21 @@ def test_probe_exits_after_drain_window_when_stream_continues_after_completion(t
 
     assert status == 0
     assert json.loads(Path(selected["summary"]).read_text(encoding="utf-8"))["accepted"] is True
+    assert next(event for event in reversed(events) if event["event"] == "stop")["completed"] is True
+
+
+def test_probe_preserves_integrity_rejection_instead_of_hanging_on_sequence_gap(tmp_path):
+    status, _, selected, events = run_fake(
+        tmp_path,
+        mode=CameraScheduleMode.PHASED,
+        continue_after_completion=True,
+        drop_post_completion_image_once=True,
+    )
+
+    assert status == 2
+    summary = json.loads(Path(selected["summary"]).read_text(encoding="utf-8"))
+    assert summary["accepted"] is False
+    assert summary["unmatched_trigger_count"] == 1
     assert next(event for event in reversed(events) if event["event"] == "stop")["completed"] is True
 
 
