@@ -16,6 +16,7 @@ capacity_mode="${FLYDRONES_CAPACITY_MODE:-0}"
 capacity_ready_marker="${FLYDRONES_CAPACITY_READY_MARKER:-}"
 capacity_observer_pid_file="${FLYDRONES_CAPACITY_OBSERVER_PID_FILE:-}"
 capacity_subscriber_count="${FLYDRONES_CAPACITY_SUBSCRIBER_COUNT:-}"
+capacity_scheduler_ready_marker="${FLYDRONES_CAPACITY_SCHEDULER_READY_MARKER:-}"
 world_source="$repo_root/results/px4-sitl-five-depth/flydrones_forest.sdf"
 world_target="$px4_root/Tools/simulation/gz/worlds/flydrones_forest.sdf"
 model_root="$px4_root/Tools/simulation/gz/models"
@@ -61,8 +62,9 @@ if [[ "$capacity_mode" != 0 && "$capacity_mode" != 1 ]]; then
   exit 2
 fi
 if [[ "$capacity_mode" == 1 ]]; then
-  if [[ -z "$capacity_ready_marker" || -z "$capacity_observer_pid_file" ]]; then
-    echo "capacity readiness marker and observer PID file are required" >&2
+  if [[ -z "$capacity_ready_marker" || -z "$capacity_observer_pid_file" \
+      || -z "$capacity_scheduler_ready_marker" ]]; then
+    echo "capacity readiness, observer PID, and scheduler markers are required" >&2
     exit 2
   fi
   if [[ "$capacity_subscriber_count" != 0 && "$capacity_subscriber_count" != 1 \
@@ -310,15 +312,58 @@ for _ in $(seq 1 40); do
       echo "camera phase evidence readiness timed out" >&2
       exit 3
     fi
-    renderer_phase_args=()
-    if [[ "$capacity_mode" != 1 ]]; then
-      renderer_phase_args=(--phase-ready-marker "$camera_phase_ready_marker")
+    renderer_phase_ready="$camera_phase_ready_marker"
+    renderer_probe_pid=""
+    if [[ "$capacity_mode" == 1 ]]; then
+      renderer_phase_ready="$run_dir/renderer-phase-ready.json"
+      renderer_phase_complete="$run_dir/renderer-phase-complete.marker"
+      rm -f "$renderer_phase_ready" "$renderer_phase_complete"
+      nohup env PYTHONPATH="$repo_root/src" python3 "$repo_root/tools/probe_camera_phase_wsl.py" \
+        --output "$run_dir/renderer-phase.jsonl" \
+        --ready-marker "$renderer_phase_ready" \
+        --summary "$run_dir/renderer-phase-summary.json" \
+        --completion-marker "$renderer_phase_complete" \
+        --mode phased --vehicle-count "$vehicle_count" --duration-s 300 \
+        --warmup-image-count-min 11 --flush-interval-s 0.25 \
+        --scheduler-ready-marker "$capacity_scheduler_ready_marker" \
+        >"$run_dir/renderer-phase.stdout.log" \
+        2>"$run_dir/renderer-phase.stderr.log" </dev/null &
+      renderer_probe_pid=$!
+      record_process "$renderer_probe_pid" "renderer-phase-probe"
+      renderer_ready=0
+      for _ in $(seq 1 $((camera_aux_timeout_s * 10))); do
+        if [[ -f "$renderer_phase_ready" ]]; then
+          renderer_ready=1
+          break
+        fi
+        if ! kill -0 "$renderer_probe_pid" 2>/dev/null; then
+          echo "temporary renderer phase probe exited before readiness" >&2
+          cat "$run_dir/renderer-phase.stderr.log" >&2 || true
+          exit 3
+        fi
+        sleep 0.1
+      done
+      if [[ "$renderer_ready" -ne 1 ]]; then
+        echo "temporary renderer phase probe readiness timed out" >&2
+        exit 3
+      fi
     fi
-    if ! env -u GALLIUM_DRIVER -u MESA_D3D12_DEFAULT_ADAPTER_NAME "${renderer_env[@]}" \
+    renderer_phase_args=(--phase-ready-marker "$renderer_phase_ready")
+    attestation_status=0
+    env -u GALLIUM_DRIVER -u MESA_D3D12_DEFAULT_ADAPTER_NAME "${renderer_env[@]}" \
       PYTHONPATH="$repo_root/src" python3 "$repo_root/tools/attest_gazebo_renderer_wsl.py" \
       --profile "$renderer_profile" --gazebo-pid "$gazebo_pid" \
       --expected-depth-topics "$vehicle_count" "${renderer_phase_args[@]}" \
-      --output "$run_dir/renderer-attestation.json"; then
+      --output "$run_dir/renderer-attestation.json" || attestation_status=$?
+    if [[ "$capacity_mode" == 1 ]]; then
+      touch "$renderer_phase_complete"
+      if ! wait "$renderer_probe_pid"; then
+        echo "temporary renderer phase probe failed" >&2
+        cat "$run_dir/renderer-phase.stderr.log" >&2 || true
+        exit 3
+      fi
+    fi
+    if [[ "$attestation_status" -ne 0 ]]; then
       echo "Gazebo renderer attestation failed" >&2
       exit 3
     fi

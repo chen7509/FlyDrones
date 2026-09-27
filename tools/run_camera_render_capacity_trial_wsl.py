@@ -611,6 +611,17 @@ class SubprocessCapacityBackend:
                 continue
             shutil.copy2(source, self.output / name)
             copied_evidence.append(name)
+        for name in (
+            "renderer-phase.jsonl",
+            "renderer-phase-ready.json",
+            "renderer-phase-summary.json",
+            "renderer-phase.stdout.log",
+            "renderer-phase.stderr.log",
+        ):
+            source = self.run_dir / name
+            if source.is_file():
+                shutil.copy2(source, self.output / name)
+                copied_evidence.append(name)
         world_source = ROOT / "results" / "px4-sitl-five-depth" / "flydrones_forest.sdf"
         if world_source.is_file():
             shutil.copy2(world_source, self.output / "world-configured.sdf")
@@ -743,6 +754,9 @@ def run_capacity_trial(
         "FLYDRONES_CAPACITY_READY_MARKER": str(run_dir / "camera-capacity-ready.json"),
         "FLYDRONES_CAPACITY_OBSERVER_PID_FILE": str(output / "observer.pid"),
         "FLYDRONES_CAPACITY_SUBSCRIBER_COUNT": str(run.cell.subscriber_count),
+        "FLYDRONES_CAPACITY_SCHEDULER_READY_MARKER": str(
+            output / "camera-scheduler-ready.json"
+        ),
         "PYTHONPATH": str(ROOT / "src"),
     })
     collected: Mapping[str, object] = {}
