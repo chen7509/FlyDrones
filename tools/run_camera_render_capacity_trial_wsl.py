@@ -150,6 +150,8 @@ def _renderer_witness_command(*, output: Path) -> list[str]:
 
 
 def _subscriber_count(text: str) -> int:
+    if re.search(r"(?im)^\s*No subscribers on topic \[[^\]\r\n]+\]\s*$", text):
+        return 0
     explicit = re.search(r"(?im)^\s*Subscribers\s*:\s*(\d+)\s*$", text)
     if explicit:
         return int(explicit.group(1))

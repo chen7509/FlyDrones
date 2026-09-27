@@ -9,6 +9,7 @@ from flydrones.camera_render_capacity import capacity_schedule
 from tools.run_camera_render_capacity_trial_wsl import (
     _auxiliary_closed_cleanly,
     _capacity_run_directory,
+    _depth_topic,
     _scored_resource_summary,
     capacity_auxiliary_commands,
     run_capacity_trial,
@@ -293,6 +294,22 @@ def test_depth_topic_connection_validation_rejects_duplicates_and_unexpected_sub
     assert validate_depth_topic_connections(unexpected, subscriber_count=0)["accepted"] is False
     with pytest.raises(ValueError, match="subscriber count"):
         validate_depth_topic_connections({0: "malformed"}, subscriber_count=1)
+
+
+def test_depth_topic_connection_validation_accepts_gazebo_no_subscribers_text():
+    no_subscribers = {
+        vehicle: (
+            "Publishers [Address, Message Type]:\n"
+            f"  tcp://127.0.0.1:{42000 + vehicle}, gz.msgs.Image\n"
+            f"No subscribers on topic [{_depth_topic(vehicle)}]\n"
+        )
+        for vehicle in range(5)
+    }
+
+    evidence = validate_depth_topic_connections(no_subscribers, subscriber_count=0)
+
+    assert evidence["accepted"] is True
+    assert evidence["actual"] == {str(vehicle): 0 for vehicle in range(5)}
 
 
 def test_capacity_launcher_uses_temporary_attestation_and_stable_gazebo_identity():
