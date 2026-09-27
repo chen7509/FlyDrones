@@ -38,6 +38,7 @@ from flydrones.process_ownership import append_process_identity  # noqa: E402
 from flydrones.px4_ulog_evidence import newest_vehicle_ulog  # noqa: E402
 
 DEPTH_SUFFIX = "/link/camera_link/sensor/StereoOV7251/depth_image"
+CAPACITY_HEALTH_TIMEOUT_S = 30.0
 
 
 def _atomic_json(path: Path, value: Mapping[str, object]) -> None:
@@ -94,6 +95,21 @@ def capacity_telemetry_ready(telemetry: object) -> bool:
         and getattr(telemetry, "armed", None) is False
         and getattr(telemetry, "landed", None) is True
     )
+
+
+def wait_for_capacity_telemetry(
+    drone: object,
+    *,
+    timeout_s: float = CAPACITY_HEALTH_TIMEOUT_S,
+    monotonic=time.monotonic,
+    sleep=time.sleep,
+) -> object:
+    deadline = monotonic() + timeout_s
+    telemetry = drone.telemetry()
+    while not capacity_telemetry_ready(telemetry) and monotonic() < deadline:
+        sleep(min(0.05, max(0.0, deadline - monotonic())))
+        telemetry = drone.telemetry()
+    return telemetry
 
 
 def _capacity_run_directory(run: CapacityRun, output: Path) -> Path:

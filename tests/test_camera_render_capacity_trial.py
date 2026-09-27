@@ -19,6 +19,7 @@ from tools.run_camera_render_capacity_trial_wsl import (
     capacity_telemetry_ready,
     run_capacity_trial,
     validate_depth_topic_connections,
+    wait_for_capacity_telemetry,
 )
 
 
@@ -105,6 +106,34 @@ def test_capacity_telemetry_waits_for_the_complete_safe_state(
     )()
 
     assert capacity_telemetry_ready(telemetry) is accepted
+
+
+def test_capacity_telemetry_wait_allows_slow_five_vehicle_ekf_convergence():
+    class Drone:
+        def __init__(self) -> None:
+            self.now = 0.0
+
+        def telemetry(self):
+            return type(
+                "Telemetry",
+                (),
+                {
+                    "estimator_healthy": self.now >= 25.0,
+                    "armed": False,
+                    "landed": True,
+                },
+            )()
+
+    drone = Drone()
+
+    result = wait_for_capacity_telemetry(
+        drone,
+        monotonic=lambda: drone.now,
+        sleep=lambda duration: setattr(drone, "now", drone.now + duration),
+    )
+
+    assert result.estimator_healthy is True
+    assert drone.now >= 25.0
 
 
 def test_capacity_run_directory_is_stable_per_output_and_unique_across_campaigns(tmp_path: Path):
