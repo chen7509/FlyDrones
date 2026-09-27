@@ -508,8 +508,8 @@ def test_capacity_launcher_uses_temporary_attestation_and_stable_gazebo_identity
         'record_process "$gazebo_pid" "gazebo-server"'
     )
     assert 'px4_startup_deadline=$((SECONDS + 120))' in launcher
-    assert 'grep -Fq "Ready for takeoff!" "$instance_dir/out.log"' in launcher
-    ready_gate = launcher.index('grep -Fq "Ready for takeoff!" "$instance_dir/out.log"')
+    assert "wait_for_capacity_telemetry(drone, timeout_s=timeout_s)" in launcher
+    ready_gate = launcher.index("wait_for_capacity_telemetry(drone, timeout_s=timeout_s)")
     assert ready_gate < launcher.index("  running=0", ready_gate)
 
 
