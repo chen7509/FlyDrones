@@ -1,0 +1,153 @@
+{
+  "schema": "flydrones-owned-process-cleanup-v1",
+  "registry": "/tmp/flydrones-vio-dev-phased-five-20260927-9/owned-processes.json",
+  "recorded_processes": 9,
+  "stopped": [
+    {
+      "pid": 751303,
+      "start_ticks": 56456057,
+      "argv": [
+        "/home/yuchen7509/PX4-Autopilot/build/px4_sitl_default/bin/px4",
+        "-i",
+        "4",
+        "-d",
+        "/home/yuchen7509/PX4-Autopilot/build/px4_sitl_default/etc"
+      ],
+      "role": "px4-4"
+    },
+    {
+      "pid": 750887,
+      "start_ticks": 56455830,
+      "argv": [
+        "/home/yuchen7509/PX4-Autopilot/build/px4_sitl_default/bin/px4",
+        "-i",
+        "3",
+        "-d",
+        "/home/yuchen7509/PX4-Autopilot/build/px4_sitl_default/etc"
+      ],
+      "role": "px4-3"
+    },
+    {
+      "pid": 750462,
+      "start_ticks": 56455597,
+      "argv": [
+        "/home/yuchen7509/PX4-Autopilot/build/px4_sitl_default/bin/px4",
+        "-i",
+        "2",
+        "-d",
+        "/home/yuchen7509/PX4-Autopilot/build/px4_sitl_default/etc"
+      ],
+      "role": "px4-2"
+    },
+    {
+      "pid": 750218,
+      "start_ticks": 56455378,
+      "argv": [
+        "/home/yuchen7509/PX4-Autopilot/build/px4_sitl_default/bin/px4",
+        "-i",
+        "1",
+        "-d",
+        "/home/yuchen7509/PX4-Autopilot/build/px4_sitl_default/etc"
+      ],
+      "role": "px4-1"
+    },
+    {
+      "pid": 750004,
+      "start_ticks": 56455164,
+      "argv": [
+        "/home/yuchen7509/PX4-Autopilot/build/px4_sitl_default/bin/px4",
+        "-i",
+        "0",
+        "-d",
+        "/home/yuchen7509/PX4-Autopilot/build/px4_sitl_default/etc"
+      ],
+      "role": "px4-0"
+    },
+    {
+      "pid": 749951,
+      "start_ticks": 56454923,
+      "argv": [
+        "gz sim --headless-rendering -r -s /home/yuchen7509/PX4-Autopilot/Tools/simulation/gz/worlds/flydrones_forest.sdf"
+      ],
+      "role": "gazebo-server"
+    },
+    {
+      "pid": 749947,
+      "start_ticks": 56454910,
+      "argv": [
+        "python3",
+        "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/vio-faults/tools/relay_gazebo_vio.py",
+        "--profile",
+        "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/vio-faults/results/camera-phase/dev-phased-five-20260927-9/fault-profile.json",
+        "--marker",
+        "/tmp/flydrones-vio-dev-phased-five-20260927-9/fault-start.json",
+        "--output",
+        "/tmp/flydrones-vio-dev-phased-five-20260927-9/vio-relay.jsonl",
+        "--vehicle-count",
+        "5",
+        "--health-base-port",
+        "16880"
+      ],
+      "role": "vio-relay"
+    }
+  ],
+  "already_gone": [
+    {
+      "pid": 750000,
+      "start_ticks": 56455160,
+      "argv": [
+        "/usr/bin/python3",
+        "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/vio-faults/tools/probe_camera_phase_wsl.py",
+        "--output",
+        "results/camera-phase/dev-phased-five-20260927-9/camera-phase.jsonl",
+        "--ready-marker",
+        "results/camera-phase/dev-phased-five-20260927-9/camera-phase-ready.json",
+        "--summary",
+        "results/camera-phase/dev-phased-five-20260927-9/camera-phase-summary.json",
+        "--completion-marker",
+        "results/camera-phase/dev-phased-five-20260927-9/trial-complete.marker",
+        "--mode",
+        "phased",
+        "--vehicle-count",
+        "5",
+        "--duration-s",
+        "300",
+        "--warmup-image-count-min",
+        "11",
+        "--flush-interval-s",
+        "0.25",
+        "--scheduler-ready-marker",
+        "results/camera-phase/dev-phased-five-20260927-9/camera-scheduler-ready.json"
+      ],
+      "role": "camera-phase-probe"
+    },
+    {
+      "pid": 749999,
+      "start_ticks": 56455160,
+      "argv": [
+        "/usr/bin/python3",
+        "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/vio-faults/tools/run_camera_phase_scheduler_wsl.py",
+        "--output",
+        "results/camera-phase/dev-phased-five-20260927-9/camera-scheduler.jsonl",
+        "--ready-marker",
+        "results/camera-phase/dev-phased-five-20260927-9/camera-scheduler-ready.json",
+        "--completion-marker",
+        "results/camera-phase/dev-phased-five-20260927-9/trial-complete.marker",
+        "--vehicle-count",
+        "5",
+        "--duration-s",
+        "300",
+        "--poll-interval-s",
+        "0.001",
+        "--flush-interval-s",
+        "0.25",
+        "--dispatch-delay-ns",
+        "4000000",
+        "--formal"
+      ],
+      "role": "camera-scheduler"
+    }
+  ],
+  "ownership_mismatch": [],
+  "failed_to_stop": []
+}

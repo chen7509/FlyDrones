@@ -1,0 +1,105 @@
+{
+  "schema": "flydrones-owned-process-cleanup-v1",
+  "registry": "/tmp/flydrones-vio-dev-phased-single-20260927-11/owned-processes.json",
+  "recorded_processes": 5,
+  "stopped": [
+    {
+      "pid": 749195,
+      "start_ticks": 56445529,
+      "argv": [
+        "/home/yuchen7509/PX4-Autopilot/build/px4_sitl_default/bin/px4",
+        "-i",
+        "0",
+        "-d",
+        "/home/yuchen7509/PX4-Autopilot/build/px4_sitl_default/etc"
+      ],
+      "role": "px4-0"
+    },
+    {
+      "pid": 749144,
+      "start_ticks": 56445283,
+      "argv": [
+        "gz sim --headless-rendering -r -s /home/yuchen7509/PX4-Autopilot/Tools/simulation/gz/worlds/flydrones_forest.sdf"
+      ],
+      "role": "gazebo-server"
+    },
+    {
+      "pid": 749139,
+      "start_ticks": 56445272,
+      "argv": [
+        "python3",
+        "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/vio-faults/tools/relay_gazebo_vio.py",
+        "--profile",
+        "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/vio-faults/results/camera-phase/dev-phased-single-20260927-11/fault-profile.json",
+        "--marker",
+        "/tmp/flydrones-vio-dev-phased-single-20260927-11/fault-start.json",
+        "--output",
+        "/tmp/flydrones-vio-dev-phased-single-20260927-11/vio-relay.jsonl",
+        "--vehicle-count",
+        "1",
+        "--health-base-port",
+        "16880"
+      ],
+      "role": "vio-relay"
+    }
+  ],
+  "already_gone": [
+    {
+      "pid": 749191,
+      "start_ticks": 56445526,
+      "argv": [
+        "/usr/bin/python3",
+        "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/vio-faults/tools/probe_camera_phase_wsl.py",
+        "--output",
+        "results/camera-phase/dev-phased-single-20260927-11/camera-phase.jsonl",
+        "--ready-marker",
+        "results/camera-phase/dev-phased-single-20260927-11/camera-phase-ready.json",
+        "--summary",
+        "results/camera-phase/dev-phased-single-20260927-11/camera-phase-summary.json",
+        "--completion-marker",
+        "results/camera-phase/dev-phased-single-20260927-11/trial-complete.marker",
+        "--mode",
+        "phased",
+        "--vehicle-count",
+        "1",
+        "--duration-s",
+        "300",
+        "--warmup-image-count-min",
+        "11",
+        "--flush-interval-s",
+        "0.25",
+        "--scheduler-ready-marker",
+        "results/camera-phase/dev-phased-single-20260927-11/camera-scheduler-ready.json"
+      ],
+      "role": "camera-phase-probe"
+    },
+    {
+      "pid": 749190,
+      "start_ticks": 56445525,
+      "argv": [
+        "/usr/bin/python3",
+        "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/vio-faults/tools/run_camera_phase_scheduler_wsl.py",
+        "--output",
+        "results/camera-phase/dev-phased-single-20260927-11/camera-scheduler.jsonl",
+        "--ready-marker",
+        "results/camera-phase/dev-phased-single-20260927-11/camera-scheduler-ready.json",
+        "--completion-marker",
+        "results/camera-phase/dev-phased-single-20260927-11/trial-complete.marker",
+        "--vehicle-count",
+        "1",
+        "--duration-s",
+        "300",
+        "--poll-interval-s",
+        "0.001",
+        "--flush-interval-s",
+        "0.25",
+        "--dispatch-delay-ns",
+        "4000000",
+        "--formal"
+      ],
+      "role": "camera-scheduler"
+    }
+  ],
+  "ownership_mismatch": [],
+  "failed_to_stop": []
+}

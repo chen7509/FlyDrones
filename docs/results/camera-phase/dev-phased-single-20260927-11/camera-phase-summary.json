@@ -1,0 +1,34 @@
+{
+  "schema": "flydrones-camera-phase-summary-v1",
+  "mode": "phased",
+  "vehicle_count": 1,
+  "accepted": true,
+  "reasons": [],
+  "epoch_ns": 3800000000,
+  "target_offsets_ns": [
+    0
+  ],
+  "vehicles": {
+    "0": {
+      "image_count": 341,
+      "mean_frequency_hz": 10.0,
+      "interval_p50_ns": 100000000,
+      "interval_p95_ns": 104000000,
+      "interval_p99_ns": 104000000,
+      "interval_max_ns": 108000000,
+      "phase_median_ns": 8000000,
+      "phase_error_p50_ns": 8000000,
+      "phase_error_p95_ns": 8000000,
+      "phase_error_max_ns": 12000000
+    }
+  },
+  "adjacent_spacing_median_error_ns": {},
+  "max_simultaneous_cameras_10ms": 1,
+  "missed_trigger_count": 0,
+  "queue_overflow_count": 0,
+  "duplicate_trigger_count": 0,
+  "duplicate_image_count": 0,
+  "unmatched_trigger_count": 0,
+  "unmatched_image_count": 0,
+  "cross_model_error_count": 0
+}
