@@ -940,6 +940,15 @@ class SubprocessCapacityBackend:
             shutil.copy2(source, self.output / name)
             copied_evidence.append(name)
         for vehicle_id in range(5):
+            source = self.run_dir / f"instance_{vehicle_id}" / "startup-health.json"
+            name = f"px4-console/agent-{vehicle_id}-startup-health.json"
+            if not source.is_file():
+                artifact_errors.append(f"required run evidence is missing: {name}")
+            else:
+                target = self.output / name
+                target.parent.mkdir(exist_ok=True)
+                shutil.copy2(source, target)
+                copied_evidence.append(name)
             for action in ("resume", "pause"):
                 source = self.run_dir / f"capacity-world-instance-{vehicle_id}-{action}.log"
                 name = f"capacity-world-instance-{vehicle_id}-{action}.log"

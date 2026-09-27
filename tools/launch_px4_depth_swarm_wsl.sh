@@ -249,6 +249,7 @@ sensor_suffixes=(
   "air_pressure_sensor/air_pressure"
 )
 poses=(-4.0 -2.0 0.0 2.0 4.0)
+px4_startup_deadline=$((SECONDS + 120))
 for ((instance_id=0; instance_id<vehicle_count; instance_id++)); do
   instance_dir="$run_dir/instance_$instance_id"
   mkdir -p "$instance_dir"
@@ -328,6 +329,54 @@ for ((instance_id=0; instance_id<vehicle_count; instance_id++)); do
       echo "PX4 instance $instance_id bridge initialization timed out" >&2
       tail -30 "$instance_dir/out.log" >&2 || true
       tail -30 "$instance_dir/err.log" >&2 || true
+      exit 3
+    fi
+    remaining_startup_s=$((px4_startup_deadline - SECONDS))
+    if (( remaining_startup_s <= 0 )); then
+      echo "PX4 sensor readiness budget expired before instance $instance_id" >&2
+      exit 3
+    fi
+    if ! PYTHONPATH="$repo_root/src:$repo_root" python3 - \
+      "$instance_id" "$remaining_startup_s" "$instance_dir/startup-health.json" <<'PY'
+import json
+import sys
+from pathlib import Path
+
+from flydrones.drones.mavlink import MavlinkDrone
+from tools.run_camera_render_capacity_trial_wsl import (
+    capacity_telemetry_ready,
+    wait_for_capacity_telemetry,
+)
+
+vehicle_id = int(sys.argv[1])
+timeout_s = min(30.0, max(1.0, float(sys.argv[2])))
+output = Path(sys.argv[3])
+drone = MavlinkDrone(
+    connection=f"udpin:0.0.0.0:{14540 + vehicle_id}",
+    autopilot="px4",
+)
+try:
+    drone.connect()
+    telemetry = wait_for_capacity_telemetry(drone, timeout_s=timeout_s)
+finally:
+    if drone.m is not None:
+        drone.m.close()
+payload = {
+    "schema": "flydrones-px4-capacity-startup-health-v1",
+    "vehicle_id": vehicle_id,
+    "timeout_s": timeout_s,
+    "estimator_healthy": telemetry.estimator_healthy,
+    "armed": telemetry.armed,
+    "landed": telemetry.landed,
+}
+output.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+if not capacity_telemetry_ready(telemetry):
+    raise SystemExit(3)
+PY
+    then
+      echo "PX4 sensor readiness failed at instance $instance_id" >&2
+      tail -50 "$instance_dir/out.log" >&2 || true
+      tail -50 "$instance_dir/err.log" >&2 || true
       exit 3
     fi
     instance_pause_log="$run_dir/capacity-world-instance-$instance_id-pause.log"
