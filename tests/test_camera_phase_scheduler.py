@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import json
+import threading
+import time
 from pathlib import Path
 from types import SimpleNamespace
 
@@ -267,6 +269,62 @@ def test_scheduler_pause_4ms_steps_and_wrap_publish_each_slot_once(tmp_path):
         (3, 0),
         (4, 0),
         (0, 1),
+    ]
+    assert not [event for event in events if event["event"] == "missed"]
+
+
+def test_scheduler_dispatch_is_not_blocked_by_slow_topology_health_check(tmp_path):
+    class SlowHealthNode(FakeNode):
+        def __init__(self, topics: list[str]) -> None:
+            super().__init__(topics)
+            self.topic_list_calls = 0
+
+        def topic_list(self) -> list[str]:
+            self.topic_list_calls += 1
+            if self.topic_list_calls > 1:
+                time.sleep(0.03)
+            return super().topic_list()
+
+    node = SlowHealthNode([depth_topic(vehicle_id) for vehicle_id in range(5)])
+    selected = config(
+        tmp_path,
+        topology_timeout_s=1.0,
+        duration_s=2.0,
+        poll_interval_s=0.001,
+    )
+    completion = Path(selected["completion_marker"])
+    stop = threading.Event()
+
+    def emit_clock() -> None:
+        deadline = time.monotonic() + 1.0
+        while node.clock_callback is None and time.monotonic() < deadline:
+            time.sleep(0.001)
+        sim_ns = EPOCH_NS
+        while not stop.is_set() and time.monotonic() < deadline:
+            node.emit_clock(sim_ns)
+            sim_ns += 4_000_000
+            if sum(len(p.messages) for p in node.publishers.values()) >= 6:
+                completion.touch()
+                return
+            time.sleep(0.001)
+
+    emitter = threading.Thread(target=emit_clock, daemon=True)
+    emitter.start()
+    try:
+        status = run_scheduler(selected, node_factory=lambda: node)
+    finally:
+        stop.set()
+        emitter.join(timeout=1.0)
+
+    events = read_events(Path(selected["output"]))
+    assert status == 0
+    assert [event["vehicle_id"] for event in events if event["event"] == "trigger"][:6] == [
+        0,
+        1,
+        2,
+        3,
+        4,
+        0,
     ]
     assert not [event for event in events if event["event"] == "missed"]
 

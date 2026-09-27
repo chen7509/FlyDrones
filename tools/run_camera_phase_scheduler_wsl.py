@@ -25,16 +25,22 @@ class JsonlWriter:
         path.parent.mkdir(parents=True, exist_ok=True)
         self._handle = path.open("w", encoding="utf-8", buffering=65_536)
         self._monotonic = monotonic
+        self._lock = threading.Lock()
 
     def write(self, event: str, **fields: object) -> None:
         payload = {"event": event, "wall_monotonic_s": self._monotonic(), **fields}
-        self._handle.write(json.dumps(payload, ensure_ascii=False, separators=(",", ":")) + "\n")
+        with self._lock:
+            self._handle.write(
+                json.dumps(payload, ensure_ascii=False, separators=(",", ":")) + "\n"
+            )
 
     def flush(self) -> None:
-        self._handle.flush()
+        with self._lock:
+            self._handle.flush()
 
     def close(self) -> None:
-        self._handle.close()
+        with self._lock:
+            self._handle.close()
 
 
 def _atomic_json(path: Path, payload: Mapping[str, object]) -> None:
@@ -180,11 +186,62 @@ def run_scheduler(
     clock_lock = threading.Lock()
     latest_clock_ns: int | None = None
     clock_sequence = 0
+    dispatch_lock = threading.Lock()
+    scheduler_state = None
+    dispatch_enabled = False
+    callback_failure: str | None = None
+    callback_status: int | None = None
     publishers: dict[int, object] = {}
     expected_depth_topics: dict[int, str] = {}
     expected_trigger_topics: dict[int, str] = {}
     trigger_count = 0
     started = monotonic()
+
+    def dispatch_clock(sim_ns: int) -> None:
+        nonlocal callback_failure, callback_status, dispatch_enabled, trigger_count
+        with dispatch_lock:
+            if not dispatch_enabled or scheduler_state is None:
+                return
+            try:
+                due = scheduler_state.advance(sim_ns)
+                for slot in scheduler_state.last_missed_slots:
+                    writer.write(
+                        "missed",
+                        vehicle_id=slot.vehicle_id,
+                        cycle=slot.cycle,
+                        planned_sim_ns=slot.planned_sim_ns,
+                        observed_sim_ns=sim_ns,
+                    )
+                for slot in due:
+                    message = boolean_factory()
+                    message.data = True
+                    publishers[slot.vehicle_id].publish(message)
+                    writer.write(
+                        "trigger",
+                        vehicle_id=slot.vehicle_id,
+                        cycle=slot.cycle,
+                        topic=expected_trigger_topics[slot.vehicle_id],
+                        planned_sim_ns=slot.planned_sim_ns,
+                        published_sim_ns=slot.published_sim_ns,
+                        late_ns=slot.late_ns,
+                    )
+                    trigger_count += 1
+                    if stop_after is not None and trigger_count >= stop_after:
+                        writer.write(
+                            "fault",
+                            reason="development_stop_after_trigger_count",
+                            trigger_count=trigger_count,
+                        )
+                        callback_status = 4
+                        dispatch_enabled = False
+                        break
+            except ValueError as exc:
+                writer.write("clock-reset", sim_ns=sim_ns, message=str(exc))
+                callback_failure = "clock_reversed"
+                dispatch_enabled = False
+            except Exception as exc:
+                callback_failure = f"{type(exc).__name__}: {exc}"
+                dispatch_enabled = False
 
     def on_clock(message) -> None:
         nonlocal latest_clock_ns, clock_sequence
@@ -192,6 +249,7 @@ def run_scheduler(
         with clock_lock:
             latest_clock_ns = sim_ns
             clock_sequence += 1
+        dispatch_clock(sim_ns)
 
     try:
         node = node_factory()
@@ -268,7 +326,7 @@ def run_scheduler(
         with clock_lock:
             assert latest_clock_ns is not None
             epoch_ns = align_epoch_ns(latest_clock_ns)
-        state = TriggerSchedulerState(
+        scheduler_state = TriggerSchedulerState(
             vehicle_count=vehicle_count,
             epoch_ns=epoch_ns,
             dispatch_delay_ns=dispatch_delay_ns,
@@ -284,10 +342,17 @@ def run_scheduler(
         _atomic_json(ready_marker, ready_payload)
         writer.write("ready", **{key: value for key, value in ready_payload.items() if key != "schema"})
         writer.flush()
+        with dispatch_lock:
+            dispatch_enabled = True
+        dispatch_clock(latest_clock_ns)
 
-        processed_clock_sequence = 0
         last_flush_at = monotonic()
         while monotonic() - started < duration_s:
+            if callback_failure is not None:
+                raise SchedulerFailure(callback_failure)
+            if callback_status is not None:
+                status = callback_status
+                break
             if completion_marker.exists():
                 status = 0
                 break
@@ -308,48 +373,6 @@ def run_scheduler(
             if not all(_publisher_connected(publisher) for publisher in publishers.values()):
                 raise SchedulerFailure("trigger_connection_lost")
 
-            with clock_lock:
-                sim_ns = latest_clock_ns
-                sequence = clock_sequence
-            if sim_ns is not None and sequence != processed_clock_sequence:
-                processed_clock_sequence = sequence
-                try:
-                    due = state.advance(sim_ns)
-                except ValueError as exc:
-                    writer.write("clock-reset", sim_ns=sim_ns, message=str(exc))
-                    raise SchedulerFailure("clock_reversed") from exc
-                for slot in state.last_missed_slots:
-                    writer.write(
-                        "missed",
-                        vehicle_id=slot.vehicle_id,
-                        cycle=slot.cycle,
-                        planned_sim_ns=slot.planned_sim_ns,
-                        observed_sim_ns=sim_ns,
-                    )
-                for slot in due:
-                    message = boolean_factory()
-                    message.data = True
-                    publishers[slot.vehicle_id].publish(message)
-                    writer.write(
-                        "trigger",
-                        vehicle_id=slot.vehicle_id,
-                        cycle=slot.cycle,
-                        topic=expected_trigger_topics[slot.vehicle_id],
-                        planned_sim_ns=slot.planned_sim_ns,
-                        published_sim_ns=slot.published_sim_ns,
-                        late_ns=slot.late_ns,
-                    )
-                    trigger_count += 1
-                    if stop_after is not None and trigger_count >= stop_after:
-                        writer.write(
-                            "fault",
-                            reason="development_stop_after_trigger_count",
-                            trigger_count=trigger_count,
-                        )
-                        status = 4
-                        break
-                if status == 4:
-                    break
             now = monotonic()
             if now - last_flush_at >= flush_interval_s:
                 writer.flush()
@@ -366,6 +389,8 @@ def run_scheduler(
         writer.flush()
         status = 3
     finally:
+        with dispatch_lock:
+            dispatch_enabled = False
         if node is not None and subscribed:
             try:
                 node.unsubscribe("/clock")
