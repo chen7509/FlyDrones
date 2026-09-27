@@ -164,6 +164,7 @@ def capacity_auxiliary_commands(
             "--ready-marker", str(output / "camera-phase-selected-ready.json"),
             "--completion-marker", str(completion_marker),
             "--duration-s", "300",
+            "--readiness-timeout-s", "150",
             "--poll-interval-ms", "1",
             "--flush-interval-ms", "250",
             "--completion-drain-ms", "1000",

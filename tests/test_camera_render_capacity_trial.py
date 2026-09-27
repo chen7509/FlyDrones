@@ -309,7 +309,7 @@ def test_renderer_witness_uses_native_five_camera_warmup(tmp_path: Path):
     )
 
 
-def test_capacity_scheduler_allows_sequential_px4_startup(tmp_path: Path):
+def test_capacity_observers_allow_sequential_px4_startup(tmp_path: Path):
     run = _run("native-1")
     scheduler, _observer = capacity_auxiliary_commands(
         run=run,
@@ -319,6 +319,7 @@ def test_capacity_scheduler_allows_sequential_px4_startup(tmp_path: Path):
     )
 
     assert scheduler[scheduler.index("--topology-timeout-s") + 1] == "150"
+    assert _observer[_observer.index("--readiness-timeout-s") + 1] == "150"
 
 
 class FakeBackend:
