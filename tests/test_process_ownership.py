@@ -3,6 +3,8 @@ import shutil
 import signal
 from pathlib import Path
 
+import pytest
+
 from flydrones.process_ownership import (
     ProcessIdentity,
     append_process_identity,
@@ -115,6 +117,44 @@ def test_registry_append_is_atomic_and_idempotent_for_same_identity(tmp_path):
     assert second == first
     assert load_process_registry(registry) == [first]
     assert not list(tmp_path.glob("*.tmp"))
+
+
+def test_registry_append_waits_for_nonempty_argv(tmp_path):
+    proc_root = tmp_path / "proc"
+    _write_process(proc_root, 5, name="native", start_ticks=77, argv=())
+    attempts = []
+
+    def expose_argv(_duration):
+        attempts.append(True)
+        (proc_root / "5/cmdline").write_bytes(b"native\0observe\0")
+
+    record = append_process_identity(
+        tmp_path / "owned-processes.json",
+        5,
+        "observer",
+        proc_root=proc_root,
+        read_attempts=3,
+        read_delay_s=0.0,
+        sleep=expose_argv,
+    )
+
+    assert attempts == [True]
+    assert record.argv == ("native", "observe")
+
+
+def test_registry_append_rejects_persistently_empty_argv(tmp_path):
+    proc_root = tmp_path / "proc"
+    _write_process(proc_root, 5, name="native", start_ticks=77, argv=())
+    with pytest.raises(RuntimeError, match="nonempty argv"):
+        append_process_identity(
+            tmp_path / "owned-processes.json",
+            5,
+            "observer",
+            proc_root=proc_root,
+            read_attempts=2,
+            read_delay_s=0.0,
+            sleep=lambda _duration: None,
+        )
 
 
 def test_owned_stop_signals_only_matching_processes_and_reports_reused_pid(tmp_path):

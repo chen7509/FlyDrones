@@ -8,6 +8,7 @@ import pytest
 from flydrones.camera_render_capacity import capacity_schedule
 from tools.run_camera_render_capacity_trial_wsl import (
     _auxiliary_closed_cleanly,
+    _capacity_run_directory,
     _scored_resource_summary,
     capacity_auxiliary_commands,
     run_capacity_trial,
@@ -63,6 +64,18 @@ def test_scored_resource_summary_pins_gazebo_cpu_rss_and_gpu(tmp_path: Path):
     assert result["gazebo"]["rss_peak_bytes"] == 3500
     assert result["gazebo"]["threads_peak"] == 6
     assert result["gpu"]["utilization_peak_percent"] == 75.0
+
+
+def test_capacity_run_directory_is_stable_per_output_and_unique_across_campaigns(tmp_path: Path):
+    run = _run("native-1")
+    first = _capacity_run_directory(run, tmp_path / "campaign-a" / run.name)
+    repeated = _capacity_run_directory(run, tmp_path / "campaign-a" / run.name)
+    second = _capacity_run_directory(run, tmp_path / "campaign-b" / run.name)
+
+    assert first == repeated
+    assert first != second
+    assert first.parent == Path("/tmp")
+    assert first.name.startswith(f"flydrones-capacity-{run.name}-")
 
 
 def _run(cell: str):

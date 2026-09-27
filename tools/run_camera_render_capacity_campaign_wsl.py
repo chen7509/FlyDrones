@@ -46,6 +46,7 @@ _TRIAL_HASH_MAP = {
     "python_observer": "python_observer",
     "camera_phase": "camera_phase",
     "capacity_contract": "capacity_contract",
+    "process_ownership": "process_ownership",
     "native_executable": "native_executable",
 }
 
@@ -99,6 +100,7 @@ def calculate_capacity_frozen_hashes(
         "profile": ROOT / str(config["profile"]),
         "policy": ROOT / str(config["policy"]),
         "capacity_contract": ROOT / "src/flydrones/camera_render_capacity.py",
+        "process_ownership": ROOT / "src/flydrones/process_ownership.py",
         "camera_phase": ROOT / "src/flydrones/camera_phase.py",
         "trial_runner": ROOT / "tools/run_camera_render_capacity_trial_wsl.py",
         "campaign_runner": Path(__file__),

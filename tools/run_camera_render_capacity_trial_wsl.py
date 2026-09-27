@@ -60,6 +60,7 @@ def _trial_hashes(native_executable: Path) -> dict[str, str]:
         "python_observer": ROOT / "tools" / "probe_camera_phase_wsl.py",
         "camera_phase": ROOT / "src" / "flydrones" / "camera_phase.py",
         "capacity_contract": ROOT / "src" / "flydrones" / "camera_render_capacity.py",
+        "process_ownership": ROOT / "src" / "flydrones" / "process_ownership.py",
         "native_executable": native_executable,
     }
     return {name: _sha256(path) if path.is_file() else "missing" for name, path in paths.items()}
@@ -70,6 +71,11 @@ def _depth_topic(vehicle_id: int, world: str = "flydrones_forest") -> str:
         f"/world/{world}/model/x500_depth_fly_{vehicle_id}"
         f"{DEPTH_SUFFIX}"
     )
+
+
+def _capacity_run_directory(run: CapacityRun, output: Path) -> Path:
+    identity = hashlib.sha256(str(output.resolve()).encode("utf-8")).hexdigest()[:12]
+    return Path("/tmp") / f"flydrones-capacity-{run.name}-{identity}"
 
 
 def capacity_auxiliary_commands(
@@ -634,7 +640,7 @@ def run_capacity_trial(
     if occupied:
         raise RuntimeError(f"PX4/Gazebo/observer resources are in use: {occupied}")
     output = output_root / run.name
-    run_dir = Path("/tmp") / f"flydrones-capacity-{run.name}"
+    run_dir = _capacity_run_directory(run, output)
     if output.exists() or run_dir.exists():
         raise FileExistsError(f"capacity output or run directory already exists: {run.name}")
     output.mkdir(parents=True)

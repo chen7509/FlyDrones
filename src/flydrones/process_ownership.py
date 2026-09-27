@@ -128,8 +128,23 @@ def append_process_identity(
     pid: int,
     role: str,
     proc_root: Path = Path("/proc"),
+    *,
+    read_attempts: int = 20,
+    read_delay_s: float = 0.01,
+    sleep: Callable[[float], None] = time.sleep,
 ) -> ProcessIdentity:
-    record = read_process_identity(pid, proc_root=proc_root, role=role)
+    if read_attempts < 1:
+        raise ValueError("read_attempts must be positive")
+    record = None
+    for attempt in range(read_attempts):
+        candidate = read_process_identity(pid, proc_root=proc_root, role=role)
+        if candidate.argv:
+            record = candidate
+            break
+        if attempt + 1 < read_attempts:
+            sleep(read_delay_s)
+    if record is None:
+        raise RuntimeError(f"PID {pid} did not expose a nonempty argv")
     records = load_process_registry(registry)
     for current in records:
         if current.pid != pid:
