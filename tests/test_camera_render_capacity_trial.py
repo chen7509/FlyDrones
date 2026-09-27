@@ -534,6 +534,9 @@ def test_capacity_launcher_uses_temporary_attestation_and_stable_gazebo_identity
         'px4-gz_bridge" --instance "$instance_id" start -w flydrones_forest'
     )
     assert resume < rebind_stop < rebind_start
+    assert 'timeout 2 "$build/bin/px4-gz_bridge"' in launcher
+    assert 'timeout 10 "$build/bin/px4-gz_bridge"' in launcher
+    assert 'echo "initial sensor topology complete; bridge rebind skipped"' in launcher
     assert "px4-sensor-topic-connections.json" in launcher
     assert "px4-sensor-topic-connections.json" in runner
     assert '"px4-bridge-rebind/agent-{vehicle_id}.log"' in runner

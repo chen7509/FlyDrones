@@ -336,17 +336,35 @@ if [[ "$capacity_mode" == 1 ]]; then
       exit 3
     fi
     rebind_log="$run_dir/instance_$instance_id/gz-bridge-rebind.log"
-    if ! "$build/bin/px4-gz_bridge" --instance "$instance_id" stop >"$rebind_log" 2>&1; then
-      echo "PX4 instance $instance_id bridge stop failed" >&2
-      cat "$rebind_log" >&2 || true
-      exit 3
+    initial_topology_complete=1
+    for suffix in "${sensor_suffixes[@]}"; do
+      topic="/world/flydrones_forest/model/x500_depth_fly_$instance_id/link/base_link/sensor/$suffix"
+      if ! topic_info="$(timeout 3 gz topic -i -t "$topic" 2>&1)" \
+          || [[ "$topic_info" != *"Publishers [Address, Message Type]:"* ]] \
+          || [[ "$topic_info" != *"Subscribers [Address, Message Type]:"* ]]; then
+        initial_topology_complete=0
+      fi
+    done
+    if [[ "$initial_topology_complete" == 1 ]]; then
+      echo "initial sensor topology complete; bridge rebind skipped" >"$rebind_log"
+      continue
     fi
-    if ! "$build/bin/px4-gz_bridge" --instance "$instance_id" start -w flydrones_forest \
+
+    echo "initial sensor topology incomplete; bridge rebind requested" >"$rebind_log"
+    if timeout 2 "$build/bin/px4-gz_bridge" --instance "$instance_id" stop \
+      >>"$rebind_log" 2>&1; then
+      stop_status=0
+    else
+      stop_status=$?
+    fi
+    echo "stop client exit code: $stop_status" >>"$rebind_log"
+    if timeout 10 "$build/bin/px4-gz_bridge" --instance "$instance_id" start -w flydrones_forest \
       -n "x500_depth_fly_$instance_id" >>"$rebind_log" 2>&1; then
-      echo "PX4 instance $instance_id bridge restart failed" >&2
-      cat "$rebind_log" >&2 || true
-      exit 3
+      start_status=0
+    else
+      start_status=$?
     fi
+    echo "start client exit code: $start_status" >>"$rebind_log"
   done
 
   PYTHONPATH="$repo_root/src:$repo_root" python3 - \
