@@ -76,6 +76,7 @@ def _pair(run, *, rtf: float = 0.97) -> tuple[dict[str, object], dict[str, objec
         "observer_closed_cleanly": True,
         "scheduler_closed_cleanly": True,
         "stop_exit_code": 0,
+        "launcher_exit_code": 0,
         "shared_px4_files_restored": True,
         "trial_cleanup_verified": True,
         "evidence_accepted": True,
@@ -152,6 +153,7 @@ def test_versioned_capacity_config_pins_contract_and_current_frozen_inputs():
     assert config["vehicle_count"] == 5
     assert config["scored_duration_s"] == 30.0
     assert config["wall_timeout_s"] == 120.0
+    assert config["readiness_timeout_s"] == 180.0
     assert config["profile"] == "configs/vio_fault_profiles/baseline.json"
     assert config["policy"] == "docs/results/vio-stress/policy-checkpoint.npz"
     assert config["camera_model"] == "assets/gazebo/models/OakD-Lite-Fly"

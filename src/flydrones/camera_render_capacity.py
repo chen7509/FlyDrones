@@ -189,6 +189,8 @@ def score_capacity_run(
         evidence.append("scheduler_not_clean")
     if manifest.get("stop_exit_code") != 0:
         evidence.append("stop_failed")
+    if manifest.get("launcher_exit_code") != 0:
+        evidence.append("launcher_failed")
     if manifest.get("shared_px4_files_restored") is not True:
         evidence.append("shared_px4_files_not_restored")
     if manifest.get("trial_cleanup_verified") is not True:

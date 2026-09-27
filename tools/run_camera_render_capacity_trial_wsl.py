@@ -10,6 +10,7 @@ import json
 import os
 import re
 import shutil
+import signal
 import subprocess
 import sys
 import tempfile
@@ -505,6 +506,20 @@ class SubprocessCapacityBackend:
             except subprocess.TimeoutExpired:
                 process.terminate()
                 exit_codes[role] = process.wait(timeout=5)
+        launcher = self.processes.get("launcher")
+        if launcher is None:
+            exit_codes["launcher"] = None
+        elif launcher.poll() is not None:
+            exit_codes["launcher"] = launcher.returncode
+        else:
+            try:
+                os.killpg(launcher.pid, signal.SIGTERM)
+                exit_codes["launcher"] = launcher.wait(timeout=20)
+            except ProcessLookupError:
+                exit_codes["launcher"] = launcher.poll()
+            except subprocess.TimeoutExpired:
+                os.killpg(launcher.pid, signal.SIGKILL)
+                exit_codes["launcher"] = launcher.wait(timeout=5)
         observer_events = _read_jsonl(self.output / "camera-phase.jsonl")
         scheduler_events = _read_jsonl(self.output / "camera-scheduler.jsonl")
         events = [
@@ -524,6 +539,7 @@ class SubprocessCapacityBackend:
             "observer_exit_code": exit_codes["observer"],
             "scheduler_exit_code": exit_codes["scheduler"],
             "runtime_probe_exit_code": exit_codes["runtime-probe"],
+            "launcher_exit_code": exit_codes["launcher"],
             "observer_closed_cleanly": _auxiliary_closed_cleanly(
                 observer_events,
                 exit_code=exit_codes["observer"],
@@ -578,6 +594,7 @@ class SubprocessCapacityBackend:
 
     def preserve_artifacts(self, **_kwargs) -> dict[str, object]:
         copied_evidence: list[str] = []
+        artifact_errors: list[str] = []
         for name in (
             "renderer-attestation.json",
             "camera-capacity-ready.json",
@@ -590,27 +607,36 @@ class SubprocessCapacityBackend:
         ):
             source = self.run_dir / name
             if not source.is_file():
-                raise FileNotFoundError(f"required run evidence is missing: {name}")
+                artifact_errors.append(f"required run evidence is missing: {name}")
+                continue
             shutil.copy2(source, self.output / name)
             copied_evidence.append(name)
         world_source = ROOT / "results" / "px4-sitl-five-depth" / "flydrones_forest.sdf"
-        if not world_source.is_file():
-            raise FileNotFoundError("configured Gazebo world is missing")
-        shutil.copy2(world_source, self.output / "world-configured.sdf")
-        copied_evidence.append("world-configured.sdf")
+        if world_source.is_file():
+            shutil.copy2(world_source, self.output / "world-configured.sdf")
+            copied_evidence.append("world-configured.sdf")
+        else:
+            artifact_errors.append("configured Gazebo world is missing")
         ulog_artifacts: list[dict[str, object]] = []
         for vehicle_id in range(5):
-            source = newest_vehicle_ulog(self.run_dir, vehicle_id)
-            target = self.output / "px4-ulogs" / f"agent-{vehicle_id}.ulg"
-            target.parent.mkdir(exist_ok=True)
-            shutil.copy2(source, target)
-            ulog_artifacts.append({
-                "vehicle_id": vehicle_id,
-                "path": target.relative_to(self.output).as_posix(),
-                "bytes": target.stat().st_size,
-                "sha256": _sha256(target),
-            })
-        return {"ulog_artifacts": ulog_artifacts, "copied_evidence": copied_evidence}
+            try:
+                source = newest_vehicle_ulog(self.run_dir, vehicle_id)
+                target = self.output / "px4-ulogs" / f"agent-{vehicle_id}.ulg"
+                target.parent.mkdir(exist_ok=True)
+                shutil.copy2(source, target)
+                ulog_artifacts.append({
+                    "vehicle_id": vehicle_id,
+                    "path": target.relative_to(self.output).as_posix(),
+                    "bytes": target.stat().st_size,
+                    "sha256": _sha256(target),
+                })
+            except Exception as exc:
+                artifact_errors.append(f"ULog vehicle {vehicle_id}: {exc}")
+        return {
+            "ulog_artifacts": ulog_artifacts,
+            "copied_evidence": copied_evidence,
+            "artifact_errors": artifact_errors,
+        }
 
 
 def _validate_run(run: CapacityRun) -> None:
@@ -694,6 +720,7 @@ def run_capacity_trial(
         "trial_cleanup_verified": False,
         "ulog_artifacts": [],
         "copied_evidence": [],
+        "artifact_errors": [],
         "config_artifact": "trial-config.json",
         "evidence_accepted": False,
         "errors": [],
@@ -825,6 +852,7 @@ def run_capacity_trial(
         manifest["observer_exit_code"] = collected.get("observer_exit_code")
         manifest["scheduler_exit_code"] = collected.get("scheduler_exit_code")
         manifest["runtime_probe_exit_code"] = collected.get("runtime_probe_exit_code")
+        manifest["launcher_exit_code"] = collected.get("launcher_exit_code")
         summary["native_metrics"] = dict(collected.get("native_metrics") or {})
         resource_metrics = dict(collected.get("resource_metrics") or {})
         summary["runtime"]["resources"] = resource_metrics
@@ -864,6 +892,8 @@ def run_capacity_trial(
             artifacts = backend.preserve_artifacts(run=run, output=output, run_dir=run_dir)
             manifest["ulog_artifacts"] = list(artifacts.get("ulog_artifacts") or [])
             manifest["copied_evidence"] = list(artifacts.get("copied_evidence") or [])
+            manifest["artifact_errors"] = list(artifacts.get("artifact_errors") or [])
+            manifest["errors"].extend(manifest["artifact_errors"])
         except Exception as exc:
             manifest["errors"].append(f"artifact preservation: {exc}")
         if len(manifest["ulog_artifacts"]) != 5:

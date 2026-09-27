@@ -196,6 +196,7 @@ class FakeBackend:
             "observer_exit_code": 0,
             "scheduler_exit_code": 0,
             "runtime_probe_exit_code": 0,
+            "launcher_exit_code": 0,
             "observer_closed_cleanly": True,
             "scheduler_closed_cleanly": True,
             "native_metrics": {
@@ -333,6 +334,7 @@ def test_successful_trial_writes_manifest_summary_epoch_and_no_worker(tmp_path: 
     assert manifest["worker_command_constructed"] is False
     assert manifest["stop_exit_code"] == 0
     assert manifest["trial_cleanup_verified"] is True
+    assert manifest["launcher_exit_code"] == 0
     assert manifest["frozen_hashes"]["native_executable"]
     assert manifest["frozen_hashes"]["runner"]
     assert manifest["source_hashes_match"] is True
