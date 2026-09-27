@@ -541,10 +541,14 @@ def test_capacity_launcher_uses_temporary_attestation_and_stable_gazebo_identity
     assert resume < rebind_stop < rebind_start
     assert 'timeout 2 "$build/bin/px4-gz_bridge"' in launcher
     assert 'timeout 10 "$build/bin/px4-gz_bridge"' in launcher
-    assert 'echo "initial sensor topology complete; bridge rebind skipped"' in launcher
+    assert 'echo "bridge rebind requested after initial topology: $initial_topology_complete"' in launcher
+    assert 'item["publisher_count"] == 1 and item["subscriber_count"] == 1' in launcher
     assert "px4-sensor-topic-connections.json" in launcher
     assert "px4-sensor-topic-connections.json" in runner
     assert '"px4-bridge-rebind/agent-{vehicle_id}.log"' in runner
+    assert '"px4-console/agent-{vehicle_id}-{stream}.log"' in runner
+    assert '"gazebo.stdout.log"' in runner
+    assert '"gazebo.stderr.log"' in runner
     assert resume < launcher.index("  running=0", resume)
 
 

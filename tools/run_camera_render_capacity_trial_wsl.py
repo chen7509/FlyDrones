@@ -929,6 +929,8 @@ class SubprocessCapacityBackend:
             "depth-topic-connections-launcher.json",
             "px4-sensor-topic-connections.json",
             "capacity-world-resume.log",
+            "gazebo.stdout.log",
+            "gazebo.stderr.log",
         ):
             source = self.run_dir / name
             if not source.is_file():
@@ -946,6 +948,16 @@ class SubprocessCapacityBackend:
             target.parent.mkdir(exist_ok=True)
             shutil.copy2(source, target)
             copied_evidence.append(name)
+            for stream in ("out", "err"):
+                source = self.run_dir / f"instance_{vehicle_id}" / f"{stream}.log"
+                name = f"px4-console/agent-{vehicle_id}-{stream}.log"
+                if not source.is_file():
+                    artifact_errors.append(f"required run evidence is missing: {name}")
+                    continue
+                target = self.output / name
+                target.parent.mkdir(exist_ok=True)
+                shutil.copy2(source, target)
+                copied_evidence.append(name)
         for name in (
             "renderer-phase.jsonl",
             "renderer-phase-ready.json",

@@ -371,12 +371,7 @@ if [[ "$capacity_mode" == 1 ]]; then
         initial_topology_complete=0
       fi
     done
-    if [[ "$initial_topology_complete" == 1 ]]; then
-      echo "initial sensor topology complete; bridge rebind skipped" >"$rebind_log"
-      continue
-    fi
-
-    echo "initial sensor topology incomplete; bridge rebind requested" >"$rebind_log"
+    echo "bridge rebind requested after initial topology: $initial_topology_complete" >"$rebind_log"
     if timeout 2 "$build/bin/px4-gz_bridge" --instance "$instance_id" stop \
       >>"$rebind_log" 2>&1; then
       stop_status=0
@@ -432,17 +427,34 @@ def inspect(item: tuple[str, str]) -> tuple[str, dict[str, object]]:
             check=False,
         )
         raw = result.stdout
+        def connection_count(header: str, following: str | None = None) -> int:
+            if header not in raw:
+                return 0
+            section = raw.split(header, 1)[1]
+            if following and following in section:
+                section = section.split(following, 1)[0]
+            return sum(line.startswith("  ") and ", " in line for line in section.splitlines())
+
+        publisher_count = connection_count(
+            "Publishers [Address, Message Type]:",
+            "Subscribers [Address, Message Type]:",
+        )
+        subscriber_count = connection_count("Subscribers [Address, Message Type]:")
         return key, {
             "topic": topic,
             "returncode": result.returncode,
-            "publisher": "Publishers [Address, Message Type]:" in raw,
-            "subscriber": "Subscribers [Address, Message Type]:" in raw,
+            "publisher_count": publisher_count,
+            "subscriber_count": subscriber_count,
+            "publisher": publisher_count == 1,
+            "subscriber": subscriber_count == 1,
             "raw": raw,
         }
     except subprocess.TimeoutExpired as exc:
         return key, {
             "topic": topic,
             "returncode": None,
+            "publisher_count": 0,
+            "subscriber_count": 0,
             "publisher": False,
             "subscriber": False,
             "raw": (exc.stdout or "") if isinstance(exc.stdout, str) else "",
@@ -454,14 +466,18 @@ observations: dict[str, dict[str, object]] = {}
 while time.monotonic() < deadline:
     with concurrent.futures.ThreadPoolExecutor(max_workers=len(topics)) as executor:
         observations = dict(executor.map(inspect, topics.items()))
-    if all(item["publisher"] and item["subscriber"] for item in observations.values()):
+    if all(
+        item["publisher_count"] == 1 and item["subscriber_count"] == 1
+        for item in observations.values()
+    ):
         break
     time.sleep(0.25)
 
 payload = {
     "schema": "flydrones-px4-sensor-topic-connections-v1",
     "accepted": bool(observations) and all(
-        item["publisher"] and item["subscriber"] for item in observations.values()
+        item["publisher_count"] == 1 and item["subscriber_count"] == 1
+        for item in observations.values()
     ),
     "expected_topic_count": len(topics),
     "publisher_count": sum(bool(item["publisher"]) for item in observations.values()),
