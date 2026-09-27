@@ -24,13 +24,12 @@ def _pixel_format_name(message: object) -> str:
     value = getattr(message, "pixel_format_type", None)
     if isinstance(value, str):
         return value
-    descriptor = getattr(message, "DESCRIPTOR", None)
-    fields = getattr(descriptor, "fields_by_name", {})
-    field = fields.get("pixel_format_type") if isinstance(fields, Mapping) else None
-    enum_type = getattr(field, "enum_type", None)
-    values = getattr(enum_type, "values_by_number", {})
-    enum_value = values.get(value) if isinstance(values, Mapping) else None
-    name = getattr(enum_value, "name", None)
+    try:
+        field = message.DESCRIPTOR.fields_by_name["pixel_format_type"]
+        enum_value = field.enum_type.values_by_number[int(value)]
+        name = enum_value.name
+    except (AttributeError, KeyError, TypeError, ValueError):
+        return "UNKNOWN_PIXEL_FORMAT"
     return name if isinstance(name, str) else "UNKNOWN_PIXEL_FORMAT"
 
 

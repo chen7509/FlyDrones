@@ -9,6 +9,7 @@ from types import SimpleNamespace
 from flydrones.camera_phase import CameraPhaseThresholds, CameraScheduleMode
 from tools.probe_camera_phase_wsl import (
     CallbackBuffer,
+    _pixel_format_name,
     run_probe,
     subscribe_retained,
     summarize_probe_log,
@@ -91,6 +92,16 @@ def test_subscribe_retained_keeps_callback_alive_for_weak_transport_binding():
 
     assert node.callback is not None
     assert node.callback() is callback_references[0]
+
+
+def test_pixel_format_name_reads_native_protobuf_descriptor_maps():
+    enum_value = SimpleNamespace(name="R_FLOAT32")
+    enum_type = SimpleNamespace(values_by_number={8: enum_value})
+    field = SimpleNamespace(enum_type=enum_type)
+    descriptor = SimpleNamespace(fields_by_name={"pixel_format_type": field})
+    message = SimpleNamespace(pixel_format_type=8, DESCRIPTOR=descriptor)
+
+    assert _pixel_format_name(message) == "R_FLOAT32"
 
 
 class FakeRuntime:

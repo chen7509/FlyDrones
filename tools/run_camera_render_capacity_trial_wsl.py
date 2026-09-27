@@ -170,6 +170,47 @@ def _subscriber_count(text: str) -> int:
     raise ValueError("subscriber count is missing from gz topic info")
 
 
+def _renderer_witness_accepted(
+    summary: Mapping[str, object], *, exit_code: int
+) -> bool:
+    if exit_code not in (0, 2):
+        return False
+    if (
+        summary.get("schema") != "flydrones-camera-phase-summary-v1"
+        or summary.get("vehicle_count") != 5
+    ):
+        return False
+    reasons = summary.get("reasons")
+    allowed_reasons = {"phase_error_p95_exceeded", "spacing_median_error_exceeded"}
+    if (
+        not isinstance(reasons, list)
+        or not all(isinstance(reason, str) for reason in reasons)
+        or not set(reasons).issubset(allowed_reasons)
+    ):
+        return False
+    for field in (
+        "missed_trigger_count",
+        "queue_overflow_count",
+        "duplicate_trigger_count",
+        "duplicate_image_count",
+        "unmatched_trigger_count",
+        "unmatched_image_count",
+        "cross_model_error_count",
+    ):
+        if summary.get(field) != 0:
+            return False
+    vehicles = summary.get("vehicles")
+    if not isinstance(vehicles, Mapping) or set(vehicles) != {str(index) for index in range(5)}:
+        return False
+    return all(
+        isinstance(vehicle, Mapping)
+        and isinstance(vehicle.get("mean_frequency_hz"), (int, float))
+        and not isinstance(vehicle.get("mean_frequency_hz"), bool)
+        and 9.5 <= float(vehicle["mean_frequency_hz"]) <= 10.5
+        for vehicle in vehicles.values()
+    )
+
+
 def validate_depth_topic_connections(
     topic_info: Mapping[int, str], *, subscriber_count: int
 ) -> dict[str, object]:
@@ -520,7 +561,14 @@ class SubprocessCapacityBackend:
                 raise RuntimeError("temporary renderer witness attestation rejected")
             (output / "renderer-phase-complete.marker").touch()
             witness_code = self.processes["renderer-witness"].wait(timeout=20)
-            if witness_code != 0:
+            witness_summary_path = output / "renderer-phase-summary.json"
+            try:
+                witness_summary = json.loads(
+                    witness_summary_path.read_text(encoding="utf-8")
+                )
+            except (OSError, json.JSONDecodeError) as exc:
+                raise RuntimeError("renderer witness summary is missing or invalid") from exc
+            if not _renderer_witness_accepted(witness_summary, exit_code=witness_code):
                 raise RuntimeError(f"renderer witness exited {witness_code}")
             role = "observer"
             handle = (output / f"{role}.log").open("w", encoding="utf-8")

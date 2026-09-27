@@ -11,6 +11,7 @@ from tools.run_camera_render_capacity_trial_wsl import (
     _capacity_phase_summary,
     _capacity_run_directory,
     _depth_topic,
+    _renderer_witness_accepted,
     _scored_resource_summary,
     capacity_auxiliary_commands,
     run_capacity_trial,
@@ -200,6 +201,29 @@ def test_capacity_phase_summary_uses_only_scored_window_scheduler_epoch_and_meta
         "format": "R_FLOAT32",
     }
     assert summary["vehicles"]["0"]["image_count"] == 300
+
+
+def test_renderer_witness_accepts_setup_phase_jitter_but_rejects_integrity_errors():
+    summary = {
+        "schema": "flydrones-camera-phase-summary-v1",
+        "vehicle_count": 5,
+        "accepted": False,
+        "reasons": ["phase_error_p95_exceeded"],
+        "vehicles": {
+            str(vehicle): {"mean_frequency_hz": 10.0} for vehicle in range(5)
+        },
+        "missed_trigger_count": 0,
+        "queue_overflow_count": 0,
+        "duplicate_trigger_count": 0,
+        "duplicate_image_count": 0,
+        "unmatched_trigger_count": 0,
+        "unmatched_image_count": 0,
+        "cross_model_error_count": 0,
+    }
+
+    assert _renderer_witness_accepted(summary, exit_code=2) is True
+    summary["unmatched_trigger_count"] = 1
+    assert _renderer_witness_accepted(summary, exit_code=2) is False
 
 
 class FakeBackend:
