@@ -14,6 +14,7 @@ from flydrones.sitl_swarm import (
     PeerBroadcastNetwork,
     SwarmVehicleSpec,
     evaluate_px4_swarm_trial,
+    px4_swarm_obstacles,
     px4_swarm_specs,
     render_gazebo_forest_world,
     run_px4_swarm_trial,
@@ -361,6 +362,29 @@ def test_gazebo_forest_world_contains_one_solid_trunk_per_lane():
     trunk_names = [model.attrib["name"] for model in trunks if model.attrib["name"].startswith("trunk_")]
     assert trunk_names == [f"trunk_{index}" for index in range(5)]
     assert len(root.findall(".//model[@name]/link/collision/geometry/cylinder")) == 5
+
+
+def test_gazebo_world_can_preload_named_depth_vehicles():
+    root = ET.fromstring(
+        render_gazebo_forest_world(
+            px4_swarm_obstacles(lane_spacing_m=2.0),
+            vehicle_poses_y=(-4.0, -2.0, 0.0, 2.0, 4.0),
+        )
+    )
+    world = root.find("world")
+    assert world is not None
+    includes = world.findall("include")
+    assert [item.findtext("name") for item in includes] == [
+        f"x500_depth_fly_{vehicle_id}" for vehicle_id in range(5)
+    ]
+    assert {item.findtext("uri") for item in includes} == {"model://x500_depth_fly"}
+    assert [item.findtext("pose") for item in includes] == [
+        "0 -4.0000 0 0 0 0",
+        "0 -2.0000 0 0 0 0",
+        "0 0.0000 0 0 0 0",
+        "0 2.0000 0 0 0 0",
+        "0 4.0000 0 0 0 0",
+    ]
 
 
 def test_write_px4_swarm_artifacts_records_csv_json_and_report(tmp_path):

@@ -913,7 +913,11 @@ def evaluate_px4_swarm_trial(
     return {"accepted": all(checks.values()), "checks": checks, "metrics": metrics}
 
 
-def render_gazebo_forest_world(obstacles: list[tuple[float, float, float]]) -> str:
+def render_gazebo_forest_world(
+    obstacles: list[tuple[float, float, float]],
+    *,
+    vehicle_poses_y: tuple[float, ...] | None = None,
+) -> str:
     trunks = []
     for index, (x, y, radius) in enumerate(obstacles):
         trunks.append(f"""
@@ -928,6 +932,14 @@ def render_gazebo_forest_world(obstacles: list[tuple[float, float, float]]) -> s
         </visual>
       </link>
     </model>""")
+    vehicles = []
+    for vehicle_id, pose_y in enumerate(vehicle_poses_y or ()):
+        vehicles.append(f"""
+    <include>
+      <uri>model://x500_depth_fly</uri>
+      <name>x500_depth_fly_{vehicle_id}</name>
+      <pose>0 {pose_y:.4f} 0 0 0 0</pose>
+    </include>""")
     return f"""<?xml version="1.0" encoding="UTF-8"?>
 <sdf version="1.9">
   <world name="flydrones_forest">
@@ -944,6 +956,7 @@ def render_gazebo_forest_world(obstacles: list[tuple[float, float, float]]) -> s
       </link>
     </model>
     <light name="sun" type="directional"><pose>0 0 100 0 0 0</pose><cast_shadows>true</cast_shadows><direction>-0.3 0.2 -0.9</direction><diffuse>0.9 0.9 0.85 1</diffuse><specular>0.2 0.2 0.2 1</specular><attenuation><range>1000</range><constant>1</constant><linear>0</linear><quadratic>0</quadratic></attenuation></light>
+    {''.join(vehicles)}
     {''.join(trunks)}
     <spherical_coordinates><surface_model>EARTH_WGS84</surface_model><world_frame_orientation>ENU</world_frame_orientation><latitude_deg>47.3979710577</latitude_deg><longitude_deg>8.5461637398</longitude_deg><elevation>0</elevation></spherical_coordinates>
   </world>

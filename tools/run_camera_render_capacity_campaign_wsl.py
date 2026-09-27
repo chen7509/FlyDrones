@@ -113,6 +113,7 @@ def calculate_capacity_frozen_hashes(
         "camera_scheduler": ROOT / "tools/run_camera_phase_scheduler_wsl.py",
         "python_observer": ROOT / "tools/probe_camera_phase_wsl.py",
         "world_generator": ROOT / "tools/generate_px4_forest_world.py",
+        "world_contract": ROOT / "src/flydrones/sitl_swarm.py",
         "native_build": ROOT / "tools/build_camera_phase_native_wsl.sh",
         "native_cmake": ROOT / "native/camera_phase/CMakeLists.txt",
         "native_executable": native_executable,

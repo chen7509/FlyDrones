@@ -110,7 +110,10 @@ done
 if [[ -n "$vio_fault_profile" ]]; then
   world_source="$run_dir/flydrones_forest.sdf"
 fi
-PYTHONPATH="$repo_root/src" python3 "$repo_root/tools/generate_px4_forest_world.py" --output "$world_source" --lane-spacing 2.0
+world_generation_args=(--output "$world_source" --lane-spacing 2.0)
+if [[ "$capacity_mode" == 1 ]]; then world_generation_args+=(--preload-vehicles "$vehicle_count"); fi
+PYTHONPATH="$repo_root/src" python3 "$repo_root/tools/generate_px4_forest_world.py" \
+  "${world_generation_args[@]}"
 cp "$world_source" "$world_target"
 rm -rf "$model_root/OakD-Lite-Fly" "$model_root/x500_depth_fly"
 cp -r "$repo_root/assets/gazebo/models/OakD-Lite-Fly" "$model_root/OakD-Lite-Fly"
@@ -254,10 +257,17 @@ for ((instance_id=0; instance_id<vehicle_count; instance_id++)); do
   # Register EKF external-vision aid topics before logger startup. A late
   # MAVLink parameter change can enable fusion without logging those topics.
   if [[ -n "$vio_fault_profile" ]]; then extra_env+=(PX4_PARAM_EKF2_EV_CTRL=5); fi
+  model_env=(
+    PX4_SIM_MODEL=gz_x500_depth_fly
+    PX4_GZ_MODEL_POSE="0,${poses[$instance_id]},0,0,0,0"
+  )
+  if [[ "$capacity_mode" == 1 ]]; then
+    model_env=(PX4_GZ_MODEL_NAME="x500_depth_fly_$instance_id")
+  fi
   (
     cd "$instance_dir"
     nohup env HEADLESS=1 "${extra_env[@]}" PX4_SYS_AUTOSTART=4001 PX4_GZ_WORLD=flydrones_forest \
-      PX4_SIM_MODEL=gz_x500_depth_fly PX4_GZ_MODEL_POSE="0,${poses[$instance_id]},0,0,0,0" \
+      "${model_env[@]}" \
       "$build/bin/px4" -i "$instance_id" -d "$build/etc" \
       >"$instance_dir/out.log" 2>"$instance_dir/err.log" </dev/null &
     echo $! >"$instance_dir/pid"

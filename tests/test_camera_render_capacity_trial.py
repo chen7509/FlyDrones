@@ -521,6 +521,8 @@ def test_capacity_launcher_uses_temporary_attestation_and_stable_gazebo_identity
         'record_process "$gazebo_pid" "gazebo-server"'
     )
     assert 'gazebo_run_args=(-s "$world_target")' in launcher
+    assert '--preload-vehicles "$vehicle_count"' in launcher
+    assert 'PX4_GZ_MODEL_NAME="x500_depth_fly_$instance_id"' in launcher
     assert 'if [[ "$capacity_mode" != 1 ]]; then gazebo_run_args=(-r "${gazebo_run_args[@]}"); fi' in launcher
     assert 'gz service -s "/world/flydrones_forest/control"' in launcher
     assert '"pause: false"' in launcher
