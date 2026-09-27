@@ -217,6 +217,18 @@ def test_phased_summary_matches_one_step_delayed_images_across_period_wrap():
     assert result["unmatched_image_count"] == 0
 
 
+def test_phased_summary_uses_image_header_time_instead_of_receipt_time():
+    events = phased_events(phase_errors_ns={0: 8_000_000})
+    for event in events:
+        if event.get("event") == "image":
+            event["receipt_sim_ns"] = int(event["sim_ns"]) + 40_000_000
+
+    result = summarize(events)
+
+    assert result["accepted"] is True
+    assert result["vehicles"]["0"]["phase_error_p95_ns"] == 8_000_000
+
+
 @pytest.mark.parametrize(
     "frequency_hz,delta_ns",
     ((9.5, round(1_000_000_000 / 9.5)), (10.5, round(1_000_000_000 / 10.5))),
@@ -281,6 +293,28 @@ def test_summary_reports_missing_duplicate_and_unmatched_evidence():
         "unmatched_trigger",
         "unmatched_image",
     }.issubset(result["reasons"])
+
+
+def test_summary_rejects_repeated_image_stamp_even_with_a_new_sequence():
+    events = phased_events()
+    image = deepcopy(next(event for event in events if event.get("event") == "image"))
+    image["sequence"] = 999
+    events.append(image)
+
+    result = summarize(events)
+
+    assert result["accepted"] is False
+    assert "duplicate_image" in result["reasons"]
+
+
+def test_summary_rejects_callback_queue_overflow_event():
+    events = phased_events()
+    events.append({"event": "queue-overflow", "dropped_count": 1})
+
+    result = summarize(events)
+
+    assert result["accepted"] is False
+    assert "callback_queue_overflow" in result["reasons"]
 
 
 def test_summary_rejects_cross_model_topic_and_malformed_events():

@@ -195,6 +195,9 @@ def summarize_camera_phase(
 
     starts = [event for event in normalized if event.get("event") == "start"]
     epoch_ns = starts[0].get("epoch_ns") if len(starts) == 1 else None
+    if not _valid_int(epoch_ns):
+        ready_events = [event for event in normalized if event.get("event") == "ready"]
+        epoch_ns = ready_events[0].get("epoch_ns") if len(ready_events) == 1 else None
     if not _valid_int(epoch_ns) or int(epoch_ns) < 0:
         reasons.append("malformed_event")
         epoch_ns = 0
@@ -220,6 +223,7 @@ def summarize_camera_phase(
     malformed = False
     cross_model_errors = 0
     missed_trigger_count = 0
+    queue_overflow_count = 0
     for event in normalized:
         event_name = event.get("event")
         if event_name == "image":
@@ -267,21 +271,34 @@ def summarize_camera_phase(
             })
         elif event_name == "missed":
             missed_trigger_count += 1
+        elif event_name == "queue-overflow":
+            dropped = event.get("dropped_count")
+            if not _valid_int(dropped) or int(dropped) <= 0:
+                malformed = True
+            else:
+                queue_overflow_count += int(dropped)
     if malformed:
         reasons.append("malformed_event")
     if cross_model_errors:
         reasons.append("cross_model_topic")
     if missed_trigger_count:
         reasons.append("missed_trigger")
+    if queue_overflow_count:
+        reasons.append("callback_queue_overflow")
 
     duplicate_image_count = 0
     duplicate_trigger_count = 0
     for vehicle_id in range(vehicle_count):
-        image_keys: list[tuple[int, int | None]] = [
-            (int(image["sim_ns"]), image["sequence"] if isinstance(image["sequence"], int) else None)
+        image_stamps = [int(image["sim_ns"]) for image in images[vehicle_id]]
+        image_sequences = [
+            int(image["sequence"])
             for image in images[vehicle_id]
+            if isinstance(image["sequence"], int)
         ]
-        duplicate_image_count += len(image_keys) - len(set(image_keys))
+        duplicate_image_count += max(
+            len(image_stamps) - len(set(image_stamps)),
+            len(image_sequences) - len(set(image_sequences)),
+        )
         trigger_keys = [
             (trigger["cycle"], trigger["planned_sim_ns"])
             for trigger in triggers[vehicle_id]
@@ -393,6 +410,7 @@ def summarize_camera_phase(
             default=0,
         ),
         "missed_trigger_count": missed_trigger_count,
+        "queue_overflow_count": queue_overflow_count,
         "duplicate_trigger_count": duplicate_trigger_count,
         "duplicate_image_count": duplicate_image_count,
         "unmatched_trigger_count": unmatched_trigger_count,
