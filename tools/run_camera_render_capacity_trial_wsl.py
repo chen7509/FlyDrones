@@ -939,15 +939,14 @@ class SubprocessCapacityBackend:
             shutil.copy2(source, self.output / name)
             copied_evidence.append(name)
         for vehicle_id in range(5):
-            source = self.run_dir / f"instance_{vehicle_id}" / "gz-bridge-rebind.log"
-            name = f"px4-bridge-rebind/agent-{vehicle_id}.log"
-            if not source.is_file():
-                artifact_errors.append(f"required run evidence is missing: {name}")
-                continue
-            target = self.output / name
-            target.parent.mkdir(exist_ok=True)
-            shutil.copy2(source, target)
-            copied_evidence.append(name)
+            for action in ("resume", "pause"):
+                source = self.run_dir / f"capacity-world-instance-{vehicle_id}-{action}.log"
+                name = f"capacity-world-instance-{vehicle_id}-{action}.log"
+                if not source.is_file():
+                    artifact_errors.append(f"required run evidence is missing: {name}")
+                    continue
+                shutil.copy2(source, self.output / name)
+                copied_evidence.append(name)
             for stream in ("out", "err"):
                 source = self.run_dir / f"instance_{vehicle_id}" / f"{stream}.log"
                 name = f"px4-console/agent-{vehicle_id}-{stream}.log"

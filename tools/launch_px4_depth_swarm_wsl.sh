@@ -291,6 +291,43 @@ for ((instance_id=0; instance_id<vehicle_count; instance_id++)); do
       tail -30 "$instance_dir/err.log" >&2 || true
       exit 3
     fi
+    instance_resume_log="$run_dir/capacity-world-instance-$instance_id-resume.log"
+    if ! gz service -s "/world/flydrones_forest/control" \
+      --reqtype gz.msgs.WorldControl --reptype gz.msgs.Boolean \
+      --timeout 5000 --req "pause: false" >"$instance_resume_log" 2>&1; then
+      echo "Gazebo resume failed while initializing PX4 instance $instance_id" >&2
+      cat "$instance_resume_log" >&2 || true
+      exit 3
+    fi
+    instance_startup_ready=0
+    for _ in $(seq 1 300); do
+      pid="$(cat "$instance_dir/pid")"
+      if ! kill -0 "$pid" 2>/dev/null; then
+        echo "PX4 instance $instance_id exited during bridge initialization" >&2
+        tail -30 "$instance_dir/out.log" >&2 || true
+        tail -30 "$instance_dir/err.log" >&2 || true
+        exit 3
+      fi
+      if grep -Fq "Startup script returned successfully" "$instance_dir/out.log"; then
+        instance_startup_ready=1
+        break
+      fi
+      sleep 0.1
+    done
+    if [[ "$instance_startup_ready" != 1 ]]; then
+      echo "PX4 instance $instance_id bridge initialization timed out" >&2
+      tail -30 "$instance_dir/out.log" >&2 || true
+      tail -30 "$instance_dir/err.log" >&2 || true
+      exit 3
+    fi
+    instance_pause_log="$run_dir/capacity-world-instance-$instance_id-pause.log"
+    if ! gz service -s "/world/flydrones_forest/control" \
+      --reqtype gz.msgs.WorldControl --reptype gz.msgs.Boolean \
+      --timeout 5000 --req "pause: true" >"$instance_pause_log" 2>&1; then
+      echo "Gazebo pause failed after initializing PX4 instance $instance_id" >&2
+      cat "$instance_pause_log" >&2 || true
+      exit 3
+    fi
   else
     sleep 2
   fi
@@ -351,42 +388,9 @@ if [[ "$capacity_mode" == 1 ]]; then
     sleep 0.1
   done
   if [[ "$sensor_publishers_ready" != 1 ]]; then
-    echo "PX4 sensor publishers were incomplete before bridge rebind" >&2
+    echo "PX4 sensor publishers were incomplete after final resume" >&2
     exit 3
   fi
-
-  for ((instance_id=0; instance_id<vehicle_count; instance_id++)); do
-    pid="$(cat "$run_dir/instance_$instance_id/pid")"
-    if ! kill -0 "$pid" 2>/dev/null; then
-      echo "PX4 instance $instance_id exited before bridge rebind" >&2
-      exit 3
-    fi
-    rebind_log="$run_dir/instance_$instance_id/gz-bridge-rebind.log"
-    initial_topology_complete=1
-    for suffix in "${sensor_suffixes[@]}"; do
-      topic="/world/flydrones_forest/model/x500_depth_fly_$instance_id/link/base_link/sensor/$suffix"
-      if ! topic_info="$(timeout 3 gz topic -i -t "$topic" 2>&1)" \
-          || [[ "$topic_info" != *"Publishers [Address, Message Type]:"* ]] \
-          || [[ "$topic_info" != *"Subscribers [Address, Message Type]:"* ]]; then
-        initial_topology_complete=0
-      fi
-    done
-    echo "bridge rebind requested after initial topology: $initial_topology_complete" >"$rebind_log"
-    if timeout 2 "$build/bin/px4-gz_bridge" --instance "$instance_id" stop \
-      >>"$rebind_log" 2>&1; then
-      stop_status=0
-    else
-      stop_status=$?
-    fi
-    echo "stop client exit code: $stop_status" >>"$rebind_log"
-    if timeout 10 "$build/bin/px4-gz_bridge" --instance "$instance_id" start -w flydrones_forest \
-      -n "x500_depth_fly_$instance_id" >>"$rebind_log" 2>&1; then
-      start_status=0
-    else
-      start_status=$?
-    fi
-    echo "start client exit code: $start_status" >>"$rebind_log"
-  done
 
   PYTHONPATH="$repo_root/src:$repo_root" python3 - \
     "$run_dir/px4-sensor-topic-connections.json" "$vehicle_count" <<'PY'

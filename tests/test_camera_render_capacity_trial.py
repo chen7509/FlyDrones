@@ -533,23 +533,20 @@ def test_capacity_launcher_uses_temporary_attestation_and_stable_gazebo_identity
     assert launcher.index('record_process "$(cat "$instance_dir/pid")" "px4-$instance_id"') < serial_sensor_gate < resume
     assert 'echo "PX4 pre-resume bridge barrier timed out"' in launcher
     barrier = launcher.index('echo "PX4 pre-resume bridge barrier timed out"')
-    assert barrier < resume
-    rebind_stop = launcher.index('px4-gz_bridge" --instance "$instance_id" stop')
-    rebind_start = launcher.index(
-        'px4-gz_bridge" --instance "$instance_id" start -w flydrones_forest'
-    )
-    assert resume < rebind_stop < rebind_start
-    assert 'timeout 2 "$build/bin/px4-gz_bridge"' in launcher
-    assert 'timeout 10 "$build/bin/px4-gz_bridge"' in launcher
-    assert 'echo "bridge rebind requested after initial topology: $initial_topology_complete"' in launcher
+    final_resume = launcher.index('>"$run_dir/capacity-world-resume.log"')
+    assert barrier < final_resume
+    assert 'capacity-world-instance-$instance_id-resume.log' in launcher
+    assert 'capacity-world-instance-$instance_id-pause.log' in launcher
+    assert 'grep -Fq "Startup script returned successfully"' in launcher
+    assert 'px4-gz_bridge" --instance "$instance_id" stop' not in launcher
     assert 'item["publisher_count"] == 1 and item["subscriber_count"] == 1' in launcher
     assert "px4-sensor-topic-connections.json" in launcher
     assert "px4-sensor-topic-connections.json" in runner
-    assert '"px4-bridge-rebind/agent-{vehicle_id}.log"' in runner
+    assert 'f"capacity-world-instance-{vehicle_id}-{action}.log"' in runner
     assert '"px4-console/agent-{vehicle_id}-{stream}.log"' in runner
     assert '"gazebo.stdout.log"' in runner
     assert '"gazebo.stderr.log"' in runner
-    assert resume < launcher.index("  running=0", resume)
+    assert final_resume < launcher.index("  running=0", final_resume)
 
 
 @pytest.mark.parametrize("cell", ("idle-0", "native-1", "python-5", "native-5"))
