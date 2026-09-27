@@ -273,6 +273,7 @@ def test_renderer_witness_uses_native_five_camera_warmup(tmp_path: Path):
     assert command[command.index("--vehicle-count") + 1] == "5"
     assert command[command.index("--subscriber-count") + 1] == "5"
     assert command[command.index("--warmup-image-count-min") + 1] == "11"
+    assert command[command.index("--observe-triggers") + 1] == "0"
     assert command[command.index("--ready-marker") + 1].endswith(
         "renderer-phase-ready.json"
     )

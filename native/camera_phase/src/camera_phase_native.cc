@@ -588,27 +588,30 @@ int RunProbe(const ProbeOptions& options, std::atomic_bool& stopRequested) {
       imageNodes.push_back(std::move(node));
     }
 
-    for (int vehicle = 0; vehicle < options.vehicleCount; ++vehicle) {
-      const auto topic = TriggerTopic(options.world, vehicle);
-      const auto triggerCallback = [&, vehicle, topic](const gz::msgs::Boolean&) {
-        const auto begin = SteadyClock::now();
-        EventRecord event;
-        event.kind = EventKind::kTriggerReceived;
-        event.vehicleId = vehicle;
-        CopyText(event.topic, topic);
-        event.receiptSimNs = latestClockNs.load();
-        event.receiptMonotonicNs = MonotonicNs();
-        event.sequence = triggerSequences[vehicle].fetch_add(1);
-        if (!queue.TryPush(std::move(event))) {
-          integrityRejected.store(true);
-          lifecycle.Fail("queue_overflow");
+    if (options.observeTriggers) {
+      for (int vehicle = 0; vehicle < options.vehicleCount; ++vehicle) {
+        const auto topic = TriggerTopic(options.world, vehicle);
+        const auto triggerCallback = [&, vehicle, topic](const gz::msgs::Boolean&) {
+          const auto begin = SteadyClock::now();
+          EventRecord event;
+          event.kind = EventKind::kTriggerReceived;
+          event.vehicleId = vehicle;
+          CopyText(event.topic, topic);
+          event.receiptSimNs = latestClockNs.load();
+          event.receiptMonotonicNs = MonotonicNs();
+          event.sequence = triggerSequences[vehicle].fetch_add(1);
+          if (!queue.TryPush(std::move(event))) {
+            integrityRejected.store(true);
+            lifecycle.Fail("queue_overflow");
+          }
+          callbackCpuNs.fetch_add(
+              std::chrono::duration_cast<std::chrono::nanoseconds>(
+                  SteadyClock::now() - begin)
+                  .count());
+        };
+        if (!triggerNode->Subscribe<gz::msgs::Boolean>(topic, triggerCallback)) {
+          throw std::runtime_error("trigger_subscription_failed");
         }
-        callbackCpuNs.fetch_add(
-            std::chrono::duration_cast<std::chrono::nanoseconds>(SteadyClock::now() - begin)
-                .count());
-      };
-      if (!triggerNode->Subscribe<gz::msgs::Boolean>(topic, triggerCallback)) {
-        throw std::runtime_error("trigger_subscription_failed");
       }
     }
 

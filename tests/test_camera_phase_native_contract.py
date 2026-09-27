@@ -90,9 +90,15 @@ def test_cli_contract_has_both_modes_all_options_and_stable_exit_codes():
         "--poll-interval-ms",
         "--flush-interval-ms",
         "--completion-drain-ms",
+        "--observe-triggers",
         "--stop-after-trigger-count",
     ):
         assert token in main
+
+    header = _read(NATIVE / "include" / "flydrones" / "camera_phase_native.hpp")
+    implementation = _read(NATIVE / "src" / "camera_phase_native.cc")
+    assert "bool observeTriggers{true}" in header
+    assert "if (options.observeTriggers)" in implementation
     for token in (
         "kComplete = 0",
         "kIntegrityRejected = 2",

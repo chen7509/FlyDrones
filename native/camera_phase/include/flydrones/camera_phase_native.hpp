@@ -131,6 +131,7 @@ struct ProbeOptions {
   int pollIntervalMs{10};
   int flushIntervalMs{250};
   int completionDrainMs{1000};
+  bool observeTriggers{true};
   std::optional<std::uint64_t> stopAfterTriggerCount;
   std::string world{"flydrones_forest"};
   std::size_t queueCapacity{4096};

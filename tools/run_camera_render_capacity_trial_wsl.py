@@ -167,6 +167,7 @@ def _renderer_witness_command(
         "--completion-marker", str(output / "renderer-phase-complete.marker"),
         "--duration-s", "300",
         "--warmup-image-count-min", "11",
+        "--observe-triggers", "0",
         "--poll-interval-ms", "1",
         "--flush-interval-ms", "250",
         "--completion-drain-ms", "1000",

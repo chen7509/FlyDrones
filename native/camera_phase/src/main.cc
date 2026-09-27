@@ -41,6 +41,7 @@ void PrintHelp() {
       << "  --flush-interval-ms N\n"
       << "  --completion-drain-ms N\n"
       << "  --warmup-image-count-min N\n"
+      << "  --observe-triggers 0|1\n"
       << "  --stop-after-trigger-count N\n";
 }
 
@@ -124,6 +125,12 @@ int main(int argc, char** argv) {
       } else if (option == "--warmup-image-count-min") {
         options.warmupImageCountMin =
             static_cast<std::uint64_t>(ParseInteger(value, option.c_str()));
+      } else if (option == "--observe-triggers") {
+        const auto parsed = ParseInteger(value, option.c_str(), true);
+        if (parsed > 1) {
+          throw std::invalid_argument(option + " must be 0 or 1");
+        }
+        options.observeTriggers = parsed == 1;
       } else if (option == "--stop-after-trigger-count") {
         options.stopAfterTriggerCount =
             static_cast<std::uint64_t>(ParseInteger(value, option.c_str()));
