@@ -8,6 +8,7 @@ import pytest
 from flydrones.camera_render_capacity import capacity_schedule
 from tools.run_camera_render_capacity_trial_wsl import (
     _auxiliary_closed_cleanly,
+    _capacity_phase_summary,
     _capacity_run_directory,
     _depth_topic,
     _scored_resource_summary,
@@ -91,6 +92,17 @@ def _config() -> dict[str, object]:
         "renderer_profile": "d3d12-nvidia",
         "world": "flydrones_forest",
         "vehicle_count": 5,
+        "thresholds": {
+            "min_rtf": 0.95,
+            "min_image_hz": 9.5,
+            "max_image_hz": 10.5,
+            "max_phase_error_p95_ns": 8_000_000,
+            "max_spacing_median_error_ns": 8_000_000,
+            "scored_duration_s": 30.0,
+            "wall_timeout_s": 120.0,
+            "repeatability_rtf_range_max": 0.03,
+            "native_improvement_min": 0.05,
+        },
     }
 
 
@@ -106,7 +118,7 @@ def _phase_events() -> list[dict[str, object]]:
         {"event": "topology", "depth_topics": topics},
         {"event": "ready", "epoch_ns": epoch},
     ]
-    for cycle in range(11):
+    for cycle in range(320):
         for vehicle in range(5):
             planned = epoch + cycle * 100_000_000 + vehicle * 20_000_000
             events.extend(
@@ -124,11 +136,70 @@ def _phase_events() -> list[dict[str, object]]:
                         "topic": topics[vehicle],
                         "sim_ns": planned,
                         "sequence": cycle,
+                        "width": 160,
+                        "height": 120,
+                        "format": "R_FLOAT32",
                     },
                 )
             )
     events.append({"event": "stop"})
     return events
+
+
+def test_capacity_phase_summary_uses_only_scored_window_scheduler_epoch_and_metadata():
+    scheduler_epoch = 1_000_000_000
+    scored_start = 2_000_000_000
+    scored_end = 32_000_000_000
+    topic = _depth_topic(0)
+    events: list[dict[str, object]] = [
+        {"event": "start", "epoch_ns": 1_600_000_000},
+        {"event": "topology", "depth_topics": [_depth_topic(i) for i in range(5)]},
+        {"event": "ready", "epoch_ns": 1_600_000_000},
+    ]
+    for cycle in range(320):
+        planned = scheduler_epoch + cycle * 100_000_000
+        events.extend(
+            (
+                {
+                    "event": "trigger",
+                    "vehicle_id": 0,
+                    "cycle": cycle,
+                    "planned_sim_ns": planned,
+                    "published_sim_ns": planned + 4_000_000,
+                },
+                {
+                    "event": "image",
+                    "vehicle_id": 0,
+                    "topic": topic,
+                    "sim_ns": planned + 4_000_000,
+                    "sequence": cycle,
+                    "width": 160,
+                    "height": 120,
+                    "format": "R_FLOAT32",
+                },
+            )
+        )
+    events.append({"event": "stop"})
+
+    summary = _capacity_phase_summary(
+        events,
+        subscriber_count=1,
+        scored_window={"start_sim_ns": scored_start, "end_sim_ns": scored_end},
+        scheduler_epoch_ns=scheduler_epoch,
+    )
+
+    assert summary["accepted"] is True
+    assert summary["epoch_ns"] == scheduler_epoch
+    assert summary["unmatched_trigger_count"] == 0
+    assert summary["unmatched_image_count"] == 0
+    assert summary["vehicles"]["0"] == {
+        **summary["vehicles"]["0"],
+        "frequency_hz": 10.0,
+        "width": 160,
+        "height": 120,
+        "format": "R_FLOAT32",
+    }
+    assert summary["vehicles"]["0"]["image_count"] == 300
 
 
 class FakeBackend:
@@ -194,6 +265,7 @@ class FakeBackend:
         self.calls.append("collect")
         return {
             "phase_events": _phase_events(),
+            "scheduler_epoch_ns": 1_000_000_000,
             "observer_exit_code": 0,
             "scheduler_exit_code": 0,
             "runtime_probe_exit_code": 0,
@@ -225,7 +297,7 @@ class FakeBackend:
                     "vehicle_id": vehicle_id,
                     "path": f"px4-ulogs/agent-{vehicle_id}.ulg",
                     "bytes": 100 + vehicle_id,
-                    "sha256": f"hash-{vehicle_id}",
+                    "sha256": f"{vehicle_id}" * 64,
                 }
                 for vehicle_id in range(5)
             ],
@@ -367,6 +439,9 @@ def test_successful_trial_writes_manifest_summary_epoch_and_no_worker(tmp_path: 
     assert (output / "depth-topic-connections.json").is_file()
     assert summary["native_metrics"]["queue_high_watermark"] == 3
     assert summary["runtime"]["resources"]["gazebo"]["rss_peak_bytes"] == 3500
+    assert result["score"]["evidence_valid"] is True
+    assert result["score"]["performance_pass"] is True
+    assert json.loads((output / "score.json").read_text(encoding="utf-8")) == result["score"]
     assert "stop" in backend.calls
     assert "preserve_artifacts" in backend.calls
     if cell == "idle-0":

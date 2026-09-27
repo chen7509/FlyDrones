@@ -35,6 +35,7 @@ def stamp_message(sim_ns: int, *, width: int = 160, height: int = 120):
         ),
         width=width,
         height=height,
+        pixel_format_type="R_FLOAT32",
     )
 
 
@@ -315,6 +316,7 @@ def test_callback_buffer_enqueues_only_and_retains_header_receipt_and_sequence(t
             "sequence": 0,
             "width": 160,
             "height": 120,
+            "format": "R_FLOAT32",
         }
     ]
 

@@ -25,9 +25,15 @@ if str(ROOT / "src") not in sys.path:
 from flydrones.camera_phase import (  # noqa: E402
     CameraPhaseThresholds,
     CameraScheduleMode,
+    camera_phase_offsets_ns,
     summarize_camera_phase,
 )
-from flydrones.camera_render_capacity import CapacityRun, capacity_schedule  # noqa: E402
+from flydrones.camera_render_capacity import (  # noqa: E402
+    CapacityRun,
+    CapacityThresholds,
+    capacity_schedule,
+    score_capacity_run,
+)
 from flydrones.process_ownership import append_process_identity  # noqa: E402
 from flydrones.px4_ulog_evidence import newest_vehicle_ulog  # noqa: E402
 
@@ -276,21 +282,76 @@ def _auxiliary_closed_cleanly(
 
 
 def _capacity_phase_summary(
-    events: Sequence[Mapping[str, object]], *, subscriber_count: int
+    events: Sequence[Mapping[str, object]],
+    *,
+    subscriber_count: int,
+    scored_window: Mapping[str, object],
+    scheduler_epoch_ns: int | None,
 ) -> dict[str, object]:
+    start_sim_ns = scored_window.get("start_sim_ns")
+    end_sim_ns = scored_window.get("end_sim_ns")
+    window_valid = (
+        isinstance(start_sim_ns, int)
+        and not isinstance(start_sim_ns, bool)
+        and isinstance(end_sim_ns, int)
+        and not isinstance(end_sim_ns, bool)
+        and end_sim_ns > start_sim_ns
+        and isinstance(scheduler_epoch_ns, int)
+        and not isinstance(scheduler_epoch_ns, bool)
+        and scheduler_epoch_ns >= 0
+    )
+    if not window_valid:
+        start_sim_ns = end_sim_ns = 0
+        scheduler_epoch_ns = 0
+    assert isinstance(start_sim_ns, int)
+    assert isinstance(end_sim_ns, int)
+    assert isinstance(scheduler_epoch_ns, int)
+
+    period_ns = CameraPhaseThresholds().period_ns
+    five_camera_offsets = camera_phase_offsets_ns(5)
+
+    def inside_scored_window(event: Mapping[str, object]) -> bool:
+        if event.get("event") in {"trigger", "missed"}:
+            planned = event.get("planned_sim_ns")
+            return (
+                isinstance(planned, int)
+                and not isinstance(planned, bool)
+                and start_sim_ns <= planned < end_sim_ns
+            )
+        if event.get("event") == "image":
+            vehicle_id = event.get("vehicle_id")
+            sim_ns = event.get("sim_ns")
+            if (
+                not isinstance(vehicle_id, int)
+                or isinstance(vehicle_id, bool)
+                or vehicle_id not in range(5)
+                or not isinstance(sim_ns, int)
+                or isinstance(sim_ns, bool)
+            ):
+                return False
+            cycle = round(
+                (sim_ns - scheduler_epoch_ns - five_camera_offsets[vehicle_id])
+                / period_ns
+            )
+            target = scheduler_epoch_ns + cycle * period_ns + five_camera_offsets[vehicle_id]
+            return start_sim_ns <= target < end_sim_ns
+        return True
+
     if subscriber_count == 0:
-        missed_count = sum(event.get("event") == "missed" for event in events)
+        scored_events = [event for event in events if inside_scored_window(event)]
+        missed_count = sum(event.get("event") == "missed" for event in scored_events)
         overflow_count = sum(
             int(event.get("dropped_count", 1))
-            for event in events
+            for event in scored_events
             if event.get("event") == "queue-overflow"
         )
+        reasons = [] if window_valid else ["scored_window_invalid"]
         return {
             "schema": "flydrones-camera-phase-summary-v1",
             "mode": "phased",
             "vehicle_count": 5,
-            "accepted": missed_count == 0 and overflow_count == 0,
-            "reasons": [],
+            "accepted": window_valid and missed_count == 0 and overflow_count == 0,
+            "reasons": reasons,
             "vehicles": {},
             "adjacent_spacing_median_error_ns": None,
             "depth_subscription_absent": True,
@@ -307,7 +368,9 @@ def _capacity_phase_summary(
     filtered: list[Mapping[str, object]] = []
     for event in events:
         name = event.get("event")
-        if name == "topology":
+        if name in {"start", "ready"}:
+            filtered.append({**event, "epoch_ns": scheduler_epoch_ns})
+        elif name == "topology":
             filtered.append({
                 **event,
                 "depth_topics": [
@@ -315,7 +378,10 @@ def _capacity_phase_summary(
                 ],
             })
         elif name in {"image", "trigger"}:
-            if event.get("vehicle_id") in selected:
+            if event.get("vehicle_id") in selected and inside_scored_window(event):
+                filtered.append(event)
+        elif name == "missed":
+            if inside_scored_window(event):
                 filtered.append(event)
         else:
             filtered.append(event)
@@ -327,6 +393,35 @@ def _capacity_phase_summary(
     )
     phase["trigger_stream_count"] = 5
     phase["depth_subscription_absent"] = False
+    spacing_by_pair = phase.get("adjacent_spacing_median_error_ns")
+    if isinstance(spacing_by_pair, Mapping):
+        phase["adjacent_spacing_median_error_by_pair_ns"] = dict(spacing_by_pair)
+        phase["adjacent_spacing_median_error_ns"] = max(
+            (int(value) for value in spacing_by_pair.values()), default=0
+        )
+    metadata_reasons: list[str] = []
+    for vehicle_id in range(subscriber_count):
+        vehicle_images = [
+            event
+            for event in filtered
+            if event.get("event") == "image" and event.get("vehicle_id") == vehicle_id
+        ]
+        width = {event.get("width") for event in vehicle_images}
+        height = {event.get("height") for event in vehicle_images}
+        pixel_format = {event.get("format") for event in vehicle_images}
+        vehicle = phase["vehicles"][str(vehicle_id)]
+        vehicle["frequency_hz"] = vehicle["mean_frequency_hz"]
+        if len(width) == len(height) == len(pixel_format) == 1:
+            vehicle["width"] = next(iter(width))
+            vehicle["height"] = next(iter(height))
+            vehicle["format"] = next(iter(pixel_format))
+        else:
+            metadata_reasons.append("image_metadata_invalid")
+    if not window_valid:
+        metadata_reasons.append("scored_window_invalid")
+    if metadata_reasons:
+        phase["reasons"] = list(dict.fromkeys([*phase["reasons"], *metadata_reasons]))
+        phase["accepted"] = False
     return phase
 
 
@@ -580,6 +675,15 @@ class SubprocessCapacityBackend:
                 exit_codes["launcher"] = launcher.wait(timeout=5)
         observer_events = _read_jsonl(self.output / "camera-phase.jsonl")
         scheduler_events = _read_jsonl(self.output / "camera-scheduler.jsonl")
+        scheduler_ready_path = self.output / "camera-scheduler-ready.json"
+        scheduler_epoch_ns = None
+        if scheduler_ready_path.is_file():
+            try:
+                scheduler_epoch_ns = json.loads(
+                    scheduler_ready_path.read_text(encoding="utf-8")
+                ).get("epoch_ns")
+            except (OSError, json.JSONDecodeError):
+                scheduler_epoch_ns = None
         events = [
             event for event in observer_events if event.get("event") != "trigger-received"
         ]
@@ -594,6 +698,7 @@ class SubprocessCapacityBackend:
             )
         return {
             "phase_events": events,
+            "scheduler_epoch_ns": scheduler_epoch_ns,
             "observer_exit_code": exit_codes["observer"],
             "scheduler_exit_code": exit_codes["scheduler"],
             "runtime_probe_exit_code": exit_codes["runtime-probe"],
@@ -726,6 +831,7 @@ def run_capacity_trial(
     duration_s = float(config.get("scored_duration_s", 0.0))
     wall_timeout_s = float(config.get("wall_timeout_s", 0.0))
     readiness_timeout_s = float(config.get("readiness_timeout_s", 45.0))
+    thresholds = CapacityThresholds.from_mapping(config.get("thresholds", {}))
     if duration_s != 30.0 or wall_timeout_s != 120.0:
         raise ValueError("capacity trial requires frozen 30/120 second durations")
     if config.get("vehicle_count") != 5:
@@ -985,11 +1091,20 @@ def run_capacity_trial(
     summary["camera_phase"] = _capacity_phase_summary(
         phase_events,
         subscriber_count=run.cell.subscriber_count,
+        scored_window=window,
+        scheduler_epoch_ns=collected.get("scheduler_epoch_ns"),
     )
     manifest["evidence_accepted"] = not manifest["errors"]
+    score = score_capacity_run(manifest, summary, thresholds)
     _atomic_json(output / "manifest.json", manifest)
     _atomic_json(output / "summary.json", summary)
-    return {"manifest": manifest, "summary": summary, "output": str(output)}
+    _atomic_json(output / "score.json", score)
+    return {
+        "manifest": manifest,
+        "summary": summary,
+        "score": score,
+        "output": str(output),
+    }
 
 
 def main(argv: Sequence[str] | None = None) -> int:
@@ -1009,7 +1124,7 @@ def main(argv: Sequence[str] | None = None) -> int:
         output_root=args.output_root,
         native_executable=args.native_executable,
     )
-    return 0 if result["manifest"]["evidence_accepted"] else 2
+    return 0 if result["score"]["performance_pass"] else 2
 
 
 if __name__ == "__main__":

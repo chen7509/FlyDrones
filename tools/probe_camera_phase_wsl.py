@@ -20,6 +20,20 @@ class ProbeFailure(RuntimeError):
     pass
 
 
+def _pixel_format_name(message: object) -> str:
+    value = getattr(message, "pixel_format_type", None)
+    if isinstance(value, str):
+        return value
+    descriptor = getattr(message, "DESCRIPTOR", None)
+    fields = getattr(descriptor, "fields_by_name", {})
+    field = fields.get("pixel_format_type") if isinstance(fields, Mapping) else None
+    enum_type = getattr(field, "enum_type", None)
+    values = getattr(enum_type, "values_by_number", {})
+    enum_value = values.get(value) if isinstance(values, Mapping) else None
+    name = getattr(enum_value, "name", None)
+    return name if isinstance(name, str) else "UNKNOWN_PIXEL_FORMAT"
+
+
 def subscribe_retained(
     node: object,
     callback_references: list[Callable[..., object]],
@@ -87,6 +101,7 @@ class CallbackBuffer:
                 "sequence": sequence,
                 "width": int(message.width),
                 "height": int(message.height),
+                "format": _pixel_format_name(message),
             })
 
         return receive
