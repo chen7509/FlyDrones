@@ -520,8 +520,9 @@ def test_capacity_launcher_uses_temporary_attestation_and_stable_gazebo_identity
     assert launcher.index("Gazebo launcher did not reach stable gz sim argv") < launcher.index(
         'record_process "$gazebo_pid" "gazebo-server"'
     )
-    assert 'px4_startup_deadline=$((SECONDS + 120))' in launcher
+    assert 'px4_startup_deadline=$((SECONDS + 150))' in launcher
     assert "wait_for_capacity_telemetry(drone, timeout_s=timeout_s)" in launcher
+    assert "timeout_s = max(1.0, float(sys.argv[2]))" in launcher
     ready_gate = launcher.index("wait_for_capacity_telemetry(drone, timeout_s=timeout_s)")
     assert ready_gate < launcher.index("  running=0", ready_gate)
 

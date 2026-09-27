@@ -238,7 +238,7 @@ while [[ ! -f "$aux_started" ]]; do
 done
 
 poses=(-4.0 -2.0 0.0 2.0 4.0)
-px4_startup_deadline=$((SECONDS + 120))
+px4_startup_deadline=$((SECONDS + 150))
 for ((instance_id=0; instance_id<vehicle_count; instance_id++)); do
   instance_dir="$run_dir/instance_$instance_id"
   mkdir -p "$instance_dir"
@@ -275,7 +275,7 @@ from tools.run_camera_render_capacity_trial_wsl import (
 )
 
 vehicle_id = int(sys.argv[1])
-timeout_s = min(30.0, max(1.0, float(sys.argv[2])))
+timeout_s = max(1.0, float(sys.argv[2]))
 output = Path(sys.argv[3])
 drone = MavlinkDrone(
     connection=f"udpin:0.0.0.0:{14540 + vehicle_id}",
