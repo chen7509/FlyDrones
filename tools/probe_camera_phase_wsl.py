@@ -337,7 +337,6 @@ def run_probe(
     observation_start_sim_ns = 0
     started = monotonic()
     completion_seen_at: float | None = None
-    last_event_at = started
     try:
         node = node_factory()
         if node is None:
@@ -539,8 +538,6 @@ def run_probe(
         last_flush_at = monotonic()
         while monotonic() - started < duration_s:
             drained_events = buffer.drain()
-            if drained_events:
-                last_event_at = monotonic()
             for event in drained_events:
                 if event["event"] == "trigger-received":
                     vehicle_id = int(event["vehicle_id"])
@@ -592,8 +589,7 @@ def run_probe(
             if completion_marker.exists():
                 if completion_seen_at is None:
                     completion_seen_at = now
-                quiet_since = max(completion_seen_at, last_event_at)
-                if buffer.empty() and now - quiet_since >= completion_drain_s:
+                if buffer.empty() and now - completion_seen_at >= completion_drain_s:
                     completed = True
                     status = 2 if overflow_total else 0
                     break

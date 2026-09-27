@@ -102,6 +102,7 @@ class FakeRuntime:
         overflow_batch: bool = False,
         force_overflow: bool = False,
         delay_final_image_until_after_completion: bool = False,
+        continue_after_completion: bool = False,
         warmup_vehicle_ids: tuple[int, ...] | None = None,
     ) -> None:
         self.node = node
@@ -110,12 +111,14 @@ class FakeRuntime:
         self.overflow_batch = overflow_batch
         self.force_overflow = force_overflow
         self.delay_final_image_until_after_completion = delay_final_image_until_after_completion
+        self.continue_after_completion = continue_after_completion
         self.warmup_vehicle_ids = warmup_vehicle_ids
         self.pending_final: tuple[int, int] | None = None
         self.now = 0.0
         self.sent_clock = False
         self.sent_warmup = False
         self.sent_stream = False
+        self.post_completion_cycle = 11
 
     def monotonic(self) -> float:
         return self.now
@@ -158,10 +161,21 @@ class FakeRuntime:
             self.sent_warmup = True
             return
         ready = Path(self.selected["ready_marker"])
-        if not ready.exists() or self.sent_stream:
+        if not ready.exists():
             return
         ready_payload = json.loads(ready.read_text(encoding="utf-8"))
         observation_start_ns = int(ready_payload["observation_start_sim_ns"])
+        if self.sent_stream:
+            if not self.continue_after_completion:
+                return
+            planned = observation_start_ns + self.post_completion_cycle * 100_000_000
+            self.post_completion_cycle += 1
+            if mode is CameraScheduleMode.PHASED:
+                self.node.emit_clock(planned)
+                self.node.callbacks[f"{depth_topic(0)}/trigger"](SimpleNamespace(data=True))
+            self.node.emit_clock(planned)
+            self.node.callbacks[depth_topic(0)](stamp_message(planned))
+            return
         for cycle in range(101 if self.force_overflow else 11):
             for vehicle_id in range(vehicle_count):
                 planned = observation_start_ns + cycle * 100_000_000 + vehicle_id * 20_000_000
@@ -243,6 +257,7 @@ def run_fake(
     overflow_batch: bool = True,
     force_overflow: bool = False,
     delay_final_image_until_after_completion: bool = False,
+    continue_after_completion: bool = False,
     warmup_vehicle_ids: tuple[int, ...] | None = None,
 ) -> tuple[int, FakeNode, dict[str, object], list[dict[str, object]]]:
     selected = config(
@@ -258,6 +273,7 @@ def run_fake(
         overflow_batch=overflow_batch,
         force_overflow=force_overflow,
         delay_final_image_until_after_completion=delay_final_image_until_after_completion,
+        continue_after_completion=continue_after_completion,
         warmup_vehicle_ids=warmup_vehicle_ids,
     )
     status = run_probe(
@@ -397,6 +413,18 @@ def test_probe_drains_delayed_final_image_after_completion_marker(tmp_path):
     assert summary["accepted"] is True
     assert summary["unmatched_trigger_count"] == 0
     assert summary["vehicles"]["0"]["image_count"] == 11
+
+
+def test_probe_exits_after_drain_window_when_stream_continues_after_completion(tmp_path):
+    status, _, selected, events = run_fake(
+        tmp_path,
+        mode=CameraScheduleMode.PHASED,
+        continue_after_completion=True,
+    )
+
+    assert status == 0
+    assert json.loads(Path(selected["summary"]).read_text(encoding="utf-8"))["accepted"] is True
+    assert next(event for event in reversed(events) if event["event"] == "stop")["completed"] is True
 
 
 def test_probe_queue_overflow_is_logged_and_rejects_evidence(tmp_path):
