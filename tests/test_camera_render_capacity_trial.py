@@ -543,14 +543,13 @@ def test_capacity_launcher_uses_temporary_attestation_and_stable_gazebo_identity
     assert first_px4 < serial_sensor_gate < final_resume
     assert 'echo "PX4 pre-resume bridge barrier timed out"' in launcher
     barrier = launcher.index('echo "PX4 pre-resume bridge barrier timed out"')
-    assert barrier < final_resume
     sensor_topology = launcher.index('"$run_dir/px4-sensor-topic-connections.json"')
-    assert barrier < sensor_topology < final_resume
+    assert final_resume < barrier < sensor_topology
     assert 'capacity-world-instance-$instance_id-resume.log' not in launcher
     assert 'capacity-world-instance-$instance_id-pause.log' not in launcher
     assert 'echo "PX4 concurrent sensor readiness failed"' in launcher
     startup_health = launcher.index('"startup-health.json"')
-    assert final_resume < startup_health
+    assert sensor_topology < startup_health
     assert 'px4-gz_bridge" --instance "$instance_id" stop' not in launcher
     assert 'item["publisher_count"] == 1 and item["subscriber_count"] == 1' in launcher
     assert "px4-sensor-topic-connections.json" in launcher

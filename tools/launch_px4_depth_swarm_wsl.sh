@@ -404,6 +404,14 @@ for ((instance_id=0; instance_id<vehicle_count; instance_id++)); do
 done
 
 if [[ "$capacity_mode" == 1 ]]; then
+  if ! gz service -s "/world/flydrones_forest/control" \
+    --reqtype gz.msgs.WorldControl --reptype gz.msgs.Boolean \
+    --timeout 5000 --req "pause: false" \
+    >"$run_dir/capacity-world-resume.log" 2>&1; then
+    echo "Gazebo capacity world resume failed" >&2
+    cat "$run_dir/capacity-world-resume.log" >&2 || true
+    exit 3
+  fi
   pre_resume_ready=0
   for _ in $(seq 1 600); do
     running=0
@@ -558,14 +566,6 @@ temporary.replace(output)
 if not payload["accepted"]:
     raise SystemExit("PX4 sensor topic publisher/subscriber topology rejected")
 PY
-  if ! gz service -s "/world/flydrones_forest/control" \
-    --reqtype gz.msgs.WorldControl --reptype gz.msgs.Boolean \
-    --timeout 5000 --req "pause: false" \
-    >"$run_dir/capacity-world-resume.log" 2>&1; then
-    echo "Gazebo capacity world resume failed" >&2
-    cat "$run_dir/capacity-world-resume.log" >&2 || true
-    exit 3
-  fi
   if ! PYTHONPATH="$repo_root/src:$repo_root" python3 - \
     "$run_dir" "$vehicle_count" <<'PY'
 import concurrent.futures
