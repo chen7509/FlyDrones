@@ -39,6 +39,11 @@ _INTEGRITY_FIELDS = (
     "unmatched_image_count",
     "cross_model_error_count",
 )
+_PHASE_PERFORMANCE_REASONS = {
+    "image_frequency_out_of_range": "image_frequency_out_of_range",
+    "phase_error_p95_exceeded": "phase_error_p95_exceeded",
+    "spacing_median_error_exceeded": "spacing_error_exceeded",
+}
 
 
 def _finite_number(value: Any) -> float | None:
@@ -231,8 +236,6 @@ def score_capacity_run(
         if phase.get("depth_subscription_absent") is not True or vehicles:
             evidence.append("unexpected_depth_subscription")
     elif expected_subscribers > 0:
-        if phase.get("accepted") is not True:
-            evidence.append("camera_phase_summary_rejected")
         if len(vehicles) != expected_subscribers:
             evidence.append("camera_vehicle_count_mismatch")
         for vehicle in vehicles.values():
@@ -251,6 +254,19 @@ def score_capacity_run(
             spacing = _finite_number(phase.get("adjacent_spacing_median_error_ns"))
             if spacing is None or spacing > thresholds.max_spacing_median_error_ns:
                 performance.append("spacing_error_exceeded")
+        if phase.get("accepted") is not True:
+            phase_reasons = phase.get("reasons")
+            if (
+                not isinstance(phase_reasons, list)
+                or not phase_reasons
+                or any(not isinstance(reason, str) for reason in phase_reasons)
+                or any(reason not in _PHASE_PERFORMANCE_REASONS for reason in phase_reasons)
+                or any(
+                    _PHASE_PERFORMANCE_REASONS[reason] not in performance
+                    for reason in phase_reasons
+                )
+            ):
+                evidence.append("camera_phase_summary_rejected")
 
     runtime = _mapping(summary.get("runtime"))
     if _mapping(runtime.get("resources")).get("accepted") is not True:

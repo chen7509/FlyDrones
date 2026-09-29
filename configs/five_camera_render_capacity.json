@@ -142,7 +142,7 @@
   "expected_hashes": {
     "profile": "108c73760140b5bb53090738e6eab9508688ef6fb848ea7e4cf4e0b0d2649718",
     "policy": "3c723587bfdbd15a8dc5976edc13d284b713dc081005b2dac04692c7d1b4accb",
-    "capacity_contract": "8be7ce381290d5ebb1aa0a2c6c395310beef384e03580c22b5ecec72fa185eec",
+    "capacity_contract": "368fcb69acf5f570c5e8601b051c04c1df005d44fcf675ee11a157aece0e545d",
     "process_ownership": "e068fbe3141fda337e72bd4412e36cf9cda7eb11cbdb1ad4b90d79184ced6220",
     "camera_phase": "35e9ce8b3fb5bdc030a5998e446ce1d3f2b278528007ae5692ea57e1dc529d37",
     "trial_runner": "5de32d170a54a2b3e990023e08d4861ce4e9f54d1aabc6101ac169aee2c29e41",

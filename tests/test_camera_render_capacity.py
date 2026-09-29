@@ -264,6 +264,34 @@ def test_capacity_run_preserves_valid_evidence_when_performance_fails(mutate, re
     assert reason in result["failures"]
 
 
+def test_capacity_run_preserves_valid_evidence_when_phase_summary_rejects_only_performance():
+    run = next(run for run in capacity_schedule() if run.cell.name == "native-1")
+    manifest, summary = _good_pair(run)
+    summary["camera_phase"]["accepted"] = False
+    summary["camera_phase"]["reasons"] = ["phase_error_p95_exceeded"]
+    summary["camera_phase"]["vehicles"]["0"]["phase_error_p95_ns"] = 8_200_000
+
+    result = score_capacity_run(manifest, summary, CapacityThresholds.from_mapping(THRESHOLDS))
+
+    assert result["evidence_valid"] is True
+    assert result["performance_pass"] is False
+    assert result["evidence_failures"] == []
+    assert result["performance_failures"] == ["phase_error_p95_exceeded"]
+
+
+@pytest.mark.parametrize("reasons", [[], ["unknown_rejection"], "phase_error_p95_exceeded"])
+def test_capacity_run_rejects_unexplained_or_malformed_phase_summary_rejection(reasons):
+    run = next(run for run in capacity_schedule() if run.cell.name == "native-1")
+    manifest, summary = _good_pair(run)
+    summary["camera_phase"]["accepted"] = False
+    summary["camera_phase"]["reasons"] = reasons
+
+    result = score_capacity_run(manifest, summary, CapacityThresholds.from_mapping(THRESHOLDS))
+
+    assert result["evidence_valid"] is False
+    assert "camera_phase_summary_rejected" in result["evidence_failures"]
+
+
 def test_idle_cell_requires_explicit_absence_and_never_requires_images():
     run = next(run for run in capacity_schedule() if run.cell.name == "idle-0")
     manifest, summary = _good_pair(run)
