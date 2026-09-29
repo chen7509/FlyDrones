@@ -144,6 +144,7 @@ struct DepthObservation {
   std::uint32_t height{};
   std::uint64_t messageCount{};
   std::int64_t firstSimNs{-1};
+  std::int64_t settledFirstSimNs{-1};
   std::int64_t lastSimNs{-1};
 };
 

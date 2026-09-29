@@ -212,6 +212,7 @@ void TestPhaseReadyMarkerCarriesElevenFrameDepthEvidence() {
   for (int vehicle = 0; vehicle < 5; ++vehicle) {
     observations.push_back(camera::DepthObservation{
         160, 120, 11, 1'000'000'000 + vehicle * camera::kPhaseStepNs,
+        1'200'000'000 + vehicle * camera::kPhaseStepNs,
         2'000'000'000 + vehicle * camera::kPhaseStepNs});
   }
 
@@ -229,6 +230,18 @@ void TestPhaseReadyMarkerCarriesElevenFrameDepthEvidence() {
           "phase-ready frequency missing");
   Require(marker.find(DepthTopic(4)) != std::string::npos,
           "phase-ready fifth topic missing");
+
+  camera::ProbeOptions startupOptions;
+  startupOptions.mode = "observe";
+  startupOptions.vehicleCount = 1;
+  startupOptions.subscriberCount = 1;
+  const std::vector<camera::DepthObservation> startupObservations{
+      camera::DepthObservation{160, 120, 13, 1'000'000'000,
+                               1'068'000'000, 2'068'000'000}};
+  const auto startupMarker = camera::PhaseReadyMarkerJson(
+      startupOptions, 1'000'000'000, startupObservations);
+  Require(startupMarker.find("\"frequency_hz\":10") != std::string::npos,
+          "activation images must not bias settled warmup frequency");
 }
 
 void TestLifecycleAndUniqueStopRecord() {

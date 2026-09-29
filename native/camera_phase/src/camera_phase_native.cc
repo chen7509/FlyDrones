@@ -423,9 +423,11 @@ std::string PhaseReadyMarkerJson(
     if (vehicle) json << ',';
     const auto& observation = observations[vehicle];
     const auto frequency =
-        observation.messageCount >= 2 && observation.lastSimNs > observation.firstSimNs
-            ? static_cast<double>(observation.messageCount - 1) * 1'000'000'000.0 /
-                  static_cast<double>(observation.lastSimNs - observation.firstSimNs)
+        observation.messageCount >= 4 &&
+                observation.lastSimNs > observation.settledFirstSimNs
+            ? static_cast<double>(observation.messageCount - 3) * 1'000'000'000.0 /
+                  static_cast<double>(observation.lastSimNs -
+                                      observation.settledFirstSimNs)
             : 0.0;
     json << '\"' << JsonEscape(DepthTopic(options.world, vehicle)) << "\":{"
          << "\"width\":" << observation.width
@@ -458,11 +460,13 @@ int RunProbe(const ProbeOptions& options, std::atomic_bool& stopRequested) {
   std::vector<std::atomic<std::uint64_t>> imageSequences(options.vehicleCount);
   std::vector<std::atomic<std::uint64_t>> triggerSequences(options.vehicleCount);
   std::vector<std::atomic<std::int64_t>> firstImageSimNs(options.vehicleCount);
+  std::vector<std::atomic<std::int64_t>> settledFirstImageSimNs(options.vehicleCount);
   std::vector<std::atomic<std::int64_t>> lastImageSimNs(options.vehicleCount);
   std::vector<std::atomic<std::uint32_t>> imageWidths(options.vehicleCount);
   std::vector<std::atomic<std::uint32_t>> imageHeights(options.vehicleCount);
   for (int vehicle = 0; vehicle < options.vehicleCount; ++vehicle) {
     firstImageSimNs[vehicle].store(-1);
+    settledFirstImageSimNs[vehicle].store(-1);
     lastImageSimNs[vehicle].store(-1);
     imageWidths[vehicle].store(0);
     imageHeights[vehicle].store(0);
@@ -571,6 +575,7 @@ int RunProbe(const ProbeOptions& options, std::atomic_bool& stopRequested) {
                  gz::msgs::PixelFormatType_Name(message.pixel_format_type()));
         event.messageBytes = message.ByteSizeLong();
         if (event.sequence == 0) firstImageSimNs[vehicle].store(sourceSimNs);
+        if (event.sequence == 2) settledFirstImageSimNs[vehicle].store(sourceSimNs);
         lastImageSimNs[vehicle].store(sourceSimNs);
         imageWidths[vehicle].store(message.width());
         imageHeights[vehicle].store(message.height());
@@ -669,6 +674,7 @@ int RunProbe(const ProbeOptions& options, std::atomic_bool& stopRequested) {
       observations.push_back(DepthObservation{
           imageWidths[vehicle].load(), imageHeights[vehicle].load(),
           imageSequences[vehicle].load(), firstImageSimNs[vehicle].load(),
+          settledFirstImageSimNs[vehicle].load(),
           lastImageSimNs[vehicle].load()});
     }
     WriteMarker(options.readyMarker,
