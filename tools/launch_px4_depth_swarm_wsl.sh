@@ -344,6 +344,13 @@ PY
     echo "Gazebo sensor-source warmup failed" >&2
     exit 3
   fi
+  if ! gz service -s "/world/flydrones_forest/control" \
+    --reqtype gz.msgs.WorldControl --reptype gz.msgs.Boolean \
+    --timeout 5000 --req "reset: {time_only: true}, pause: true" \
+    >"$run_dir/capacity-world-warmup-reset.log" 2>&1; then
+    echo "Gazebo sensor-source warmup time reset failed" >&2
+    exit 3
+  fi
 fi
 poses=(-4.0 -2.0 0.0 2.0 4.0)
 for ((instance_id=0; instance_id<vehicle_count; instance_id++)); do

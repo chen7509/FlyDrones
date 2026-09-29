@@ -527,6 +527,7 @@ def test_capacity_launcher_uses_temporary_attestation_and_stable_gazebo_identity
     assert 'if [[ "$capacity_mode" != 1 ]]; then gazebo_run_args=(-r "${gazebo_run_args[@]}"); fi' in launcher
     assert 'capacity-world-warmup-resume.log' in launcher
     assert 'capacity-world-warmup-pause.log' in launcher
+    assert 'capacity-world-warmup-reset.log' in launcher
     assert 'px4-sensor-source-warmup.json' in launcher
     assert 'gz service -s "/world/flydrones_forest/control"' in launcher
     assert '"pause: false"' in launcher
@@ -534,7 +535,9 @@ def test_capacity_launcher_uses_temporary_attestation_and_stable_gazebo_identity
     first_px4 = launcher.index('record_process "$(cat "$instance_dir/pid")" "px4-$instance_id"')
     warmup_resume = launcher.index('capacity-world-warmup-resume.log')
     warmup_pause = launcher.index('capacity-world-warmup-pause.log')
-    assert warmup_resume < warmup_pause < first_px4
+    warmup_reset = launcher.index('capacity-world-warmup-reset.log')
+    assert warmup_resume < warmup_pause < warmup_reset < first_px4
+    assert 'reset: {time_only: true}, pause: true' in launcher
     assert first_px4 < final_resume
     assert 'echo "PX4 instance $instance_id sensor publisher registration timed out"' in launcher
     serial_sensor_gate = launcher.index(
@@ -562,6 +565,7 @@ def test_capacity_launcher_uses_temporary_attestation_and_stable_gazebo_identity
     assert '"px4-sensor-source-warmup.json"' in runner
     assert '"capacity-world-warmup-resume.log"' in runner
     assert '"capacity-world-warmup-pause.log"' in runner
+    assert '"capacity-world-warmup-reset.log"' in runner
     assert final_resume < launcher.index("  running=0", final_resume)
 
 
