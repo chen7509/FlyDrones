@@ -248,16 +248,74 @@ sensor_suffixes=(
   "navsat_sensor/navsat"
   "air_pressure_sensor/air_pressure"
 )
+poses=(-4.0 -2.0 0.0 2.0 4.0)
+for ((instance_id=0; instance_id<vehicle_count; instance_id++)); do
+  instance_dir="$run_dir/instance_$instance_id"
+  mkdir -p "$instance_dir"
+  ln -sf "$build/rootfs/gz_env.sh" "$instance_dir/gz_env.sh"
+  extra_env=(PX4_GZ_STANDALONE=1)
+  # Register EKF external-vision aid topics before logger startup. A late
+  # MAVLink parameter change can enable fusion without logging those topics.
+  if [[ -n "$vio_fault_profile" ]]; then extra_env+=(PX4_PARAM_EKF2_EV_CTRL=5); fi
+  model_env=(
+    PX4_SIM_MODEL=gz_x500_depth_fly
+    PX4_GZ_MODEL_POSE="0,${poses[$instance_id]},0,0,0,0"
+  )
+  if [[ "$capacity_mode" == 1 ]]; then
+    model_env=(PX4_GZ_MODEL_NAME="x500_depth_fly_$instance_id")
+  fi
+  (
+    cd "$instance_dir"
+    nohup env HEADLESS=1 "${extra_env[@]}" PX4_SYS_AUTOSTART=4001 PX4_GZ_WORLD=flydrones_forest \
+      "${model_env[@]}" \
+      "$build/bin/px4" -i "$instance_id" -d "$build/etc" \
+      >"$instance_dir/out.log" 2>"$instance_dir/err.log" </dev/null &
+    echo $! >"$instance_dir/pid"
+  )
+  record_process "$(cat "$instance_dir/pid")" "px4-$instance_id"
+  if [[ "$capacity_mode" == 1 ]]; then
+    instance_publishers_ready=0
+    for _ in $(seq 1 300); do
+      pid="$(cat "$instance_dir/pid")"
+      if ! kill -0 "$pid" 2>/dev/null; then
+        echo "PX4 instance $instance_id exited during sensor publisher registration" >&2
+        tail -30 "$instance_dir/out.log" >&2 || true
+        tail -30 "$instance_dir/err.log" >&2 || true
+        exit 3
+      fi
+      topic_list="$(gz topic -l 2>/dev/null || true)"
+      advertised=0
+      for suffix in "${sensor_suffixes[@]}"; do
+        topic="/world/flydrones_forest/model/x500_depth_fly_$instance_id/link/base_link/sensor/$suffix"
+        if grep -Fxq "$topic" <<<"$topic_list"; then advertised=$((advertised + 1)); fi
+      done
+      if [[ "$advertised" -eq "${#sensor_suffixes[@]}" ]]; then
+        instance_publishers_ready=1
+        break
+      fi
+      sleep 0.1
+    done
+    if [[ "$instance_publishers_ready" != 1 ]]; then
+      echo "PX4 instance $instance_id sensor publisher registration timed out" >&2
+      tail -30 "$instance_dir/out.log" >&2 || true
+      tail -30 "$instance_dir/err.log" >&2 || true
+      exit 3
+    fi
+  else
+    sleep 2
+  fi
+done
+
 if [[ "$capacity_mode" == 1 ]]; then
   if ! gz service -s "/world/flydrones_forest/control" \
     --reqtype gz.msgs.WorldControl --reptype gz.msgs.Boolean \
     --timeout 5000 --req "pause: false" \
-    >"$run_dir/capacity-world-warmup-resume.log" 2>&1; then
-    echo "Gazebo sensor-source warmup resume failed" >&2
+    >"$run_dir/capacity-world-resume.log" 2>&1; then
+    echo "Gazebo capacity world resume failed" >&2
+    cat "$run_dir/capacity-world-resume.log" >&2 || true
     exit 3
   fi
-  warmup_ok=0
-  if PYTHONPATH="$repo_root/src:$repo_root" python3 - \
+  if ! PYTHONPATH="$repo_root/src:$repo_root" python3 - \
     "$run_dir/px4-sensor-source-warmup.json" "$vehicle_count" <<'PY'
 import concurrent.futures
 import json
@@ -331,92 +389,7 @@ if not payload["accepted"]:
     raise SystemExit(3)
 PY
   then
-    warmup_ok=1
-  fi
-  if ! gz service -s "/world/flydrones_forest/control" \
-    --reqtype gz.msgs.WorldControl --reptype gz.msgs.Boolean \
-    --timeout 5000 --req "pause: true" \
-    >"$run_dir/capacity-world-warmup-pause.log" 2>&1; then
-    echo "Gazebo sensor-source warmup pause failed" >&2
-    exit 3
-  fi
-  if [[ "$warmup_ok" != 1 ]]; then
-    echo "Gazebo sensor-source warmup failed" >&2
-    exit 3
-  fi
-  if ! gz service -s "/world/flydrones_forest/control" \
-    --reqtype gz.msgs.WorldControl --reptype gz.msgs.Boolean \
-    --timeout 5000 --req "reset: {time_only: true}, pause: true" \
-    >"$run_dir/capacity-world-warmup-reset.log" 2>&1; then
-    echo "Gazebo sensor-source warmup time reset failed" >&2
-    exit 3
-  fi
-fi
-poses=(-4.0 -2.0 0.0 2.0 4.0)
-for ((instance_id=0; instance_id<vehicle_count; instance_id++)); do
-  instance_dir="$run_dir/instance_$instance_id"
-  mkdir -p "$instance_dir"
-  ln -sf "$build/rootfs/gz_env.sh" "$instance_dir/gz_env.sh"
-  extra_env=(PX4_GZ_STANDALONE=1)
-  # Register EKF external-vision aid topics before logger startup. A late
-  # MAVLink parameter change can enable fusion without logging those topics.
-  if [[ -n "$vio_fault_profile" ]]; then extra_env+=(PX4_PARAM_EKF2_EV_CTRL=5); fi
-  model_env=(
-    PX4_SIM_MODEL=gz_x500_depth_fly
-    PX4_GZ_MODEL_POSE="0,${poses[$instance_id]},0,0,0,0"
-  )
-  if [[ "$capacity_mode" == 1 ]]; then
-    model_env=(PX4_GZ_MODEL_NAME="x500_depth_fly_$instance_id")
-  fi
-  (
-    cd "$instance_dir"
-    nohup env HEADLESS=1 "${extra_env[@]}" PX4_SYS_AUTOSTART=4001 PX4_GZ_WORLD=flydrones_forest \
-      "${model_env[@]}" \
-      "$build/bin/px4" -i "$instance_id" -d "$build/etc" \
-      >"$instance_dir/out.log" 2>"$instance_dir/err.log" </dev/null &
-    echo $! >"$instance_dir/pid"
-  )
-  record_process "$(cat "$instance_dir/pid")" "px4-$instance_id"
-  if [[ "$capacity_mode" == 1 ]]; then
-    instance_publishers_ready=0
-    for _ in $(seq 1 300); do
-      pid="$(cat "$instance_dir/pid")"
-      if ! kill -0 "$pid" 2>/dev/null; then
-        echo "PX4 instance $instance_id exited during sensor publisher registration" >&2
-        tail -30 "$instance_dir/out.log" >&2 || true
-        tail -30 "$instance_dir/err.log" >&2 || true
-        exit 3
-      fi
-      topic_list="$(gz topic -l 2>/dev/null || true)"
-      advertised=0
-      for suffix in "${sensor_suffixes[@]}"; do
-        topic="/world/flydrones_forest/model/x500_depth_fly_$instance_id/link/base_link/sensor/$suffix"
-        if grep -Fxq "$topic" <<<"$topic_list"; then advertised=$((advertised + 1)); fi
-      done
-      if [[ "$advertised" -eq "${#sensor_suffixes[@]}" ]]; then
-        instance_publishers_ready=1
-        break
-      fi
-      sleep 0.1
-    done
-    if [[ "$instance_publishers_ready" != 1 ]]; then
-      echo "PX4 instance $instance_id sensor publisher registration timed out" >&2
-      tail -30 "$instance_dir/out.log" >&2 || true
-      tail -30 "$instance_dir/err.log" >&2 || true
-      exit 3
-    fi
-  else
-    sleep 2
-  fi
-done
-
-if [[ "$capacity_mode" == 1 ]]; then
-  if ! gz service -s "/world/flydrones_forest/control" \
-    --reqtype gz.msgs.WorldControl --reptype gz.msgs.Boolean \
-    --timeout 5000 --req "pause: false" \
-    >"$run_dir/capacity-world-resume.log" 2>&1; then
-    echo "Gazebo capacity world resume failed" >&2
-    cat "$run_dir/capacity-world-resume.log" >&2 || true
+    echo "Gazebo sensor-source witness failed" >&2
     exit 3
   fi
   pre_resume_ready=0
