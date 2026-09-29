@@ -17,6 +17,7 @@ from tools.run_camera_render_capacity_trial_wsl import (
     _renderer_witness_command,
     _scored_resource_summary,
     _selected_overlap_subscriber_counts,
+    _selected_subscriber_counts,
     capacity_auxiliary_commands,
     capacity_telemetry_ready,
     run_capacity_trial,
@@ -313,7 +314,7 @@ def test_renderer_witness_uses_native_five_camera_warmup(tmp_path: Path):
     )
 
 
-def test_capacity_initial_discovery_uses_one_renderer_witness(
+def test_capacity_initial_discovery_starts_permanent_observer_first(
     tmp_path: Path,
 ):
     commands = capacity_auxiliary_commands(
@@ -329,11 +330,15 @@ def test_capacity_initial_discovery_uses_one_renderer_witness(
         native_executable=tmp_path / "flydrones_camera_phase_native",
     )
 
-    assert [role for role, _command in startup] == ["renderer-witness", "scheduler"]
-    assert all(command is not commands[1] for _role, command in startup)
+    assert [role for role, _command in startup] == [
+        "observer",
+        "renderer-witness",
+        "scheduler",
+    ]
+    assert startup[0][1] is commands[1]
 
 
-def test_capacity_selected_observer_uses_staged_overlap_after_attestation():
+def test_capacity_selected_observer_owns_connection_before_witness_and_scheduler():
     runner = (
         Path(__file__).parents[1] / "tools/run_camera_render_capacity_trial_wsl.py"
     ).read_text(encoding="utf-8")
@@ -342,12 +347,12 @@ def test_capacity_selected_observer_uses_staged_overlap_after_attestation():
         1,
     )[1].split("    @staticmethod", 1)[0]
 
-    attestation = backend_start.index("attestation = self._wait_marker")
     selected_observer = backend_start.index('role = "observer"')
-    witness_completion = backend_start.index(
-        '(output / "renderer-phase-complete.marker").touch()'
-    )
-    assert attestation < selected_observer < witness_completion
+    selected_barrier = backend_start.index('stage="selected-permanent"')
+    witness = backend_start.index('role = "renderer-witness"')
+    overlap_barrier = backend_start.index('stage="selected-overlap"')
+    scheduler = backend_start.index('role = "scheduler"')
+    assert selected_observer < selected_barrier < witness < overlap_barrier < scheduler
 
 
 @pytest.mark.parametrize(
@@ -362,19 +367,16 @@ def test_selected_overlap_subscriber_counts(selected_count: int, expected: dict[
     assert _selected_overlap_subscriber_counts(selected_count) == expected
 
 
-def test_renderer_witness_subscription_barrier_precedes_scheduler_start():
-    runner = (
-        Path(__file__).parents[1] / "tools/run_camera_render_capacity_trial_wsl.py"
-    ).read_text(encoding="utf-8")
-    backend_start = runner.split(
-        "    def start(self, *, commands, output, run_dir, environment, completion_marker, **_kwargs):",
-        1,
-    )[1].split("    @staticmethod", 1)[0]
-
-    witness = backend_start.index('role = "renderer-witness"')
-    barrier = backend_start.index('stage="renderer-witness"')
-    scheduler = backend_start.index('role = "scheduler"')
-    assert witness < barrier < scheduler
+@pytest.mark.parametrize(
+    "selected_count,expected",
+    (
+        (0, {0: 0, 1: 0, 2: 0, 3: 0, 4: 0}),
+        (1, {0: 1, 1: 0, 2: 0, 3: 0, 4: 0}),
+        (5, {0: 1, 1: 1, 2: 1, 3: 1, 4: 1}),
+    ),
+)
+def test_selected_subscriber_counts(selected_count: int, expected: dict[int, int]):
+    assert _selected_subscriber_counts(selected_count) == expected
 
 
 def test_capacity_observers_allow_sequential_px4_startup(tmp_path: Path):
@@ -541,6 +543,7 @@ def test_auxiliary_commands_are_exact_and_never_construct_worker(
         assert observer[0].endswith("flydrones_camera_phase_native")
         assert observer[1] == "observe"
         assert observer[observer.index("--subscriber-count") + 1] == subscriber_count
+        assert observer[observer.index("--observe-triggers") + 1] == "0"
     else:
         assert observer[1].endswith("probe_camera_phase_wsl.py")
         assert observer[observer.index("--vehicle-count") + 1] == "5"

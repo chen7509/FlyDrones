@@ -165,6 +165,7 @@ def capacity_auxiliary_commands(
             "--completion-marker", str(completion_marker),
             "--duration-s", "300",
             "--readiness-timeout-s", "150",
+            "--observe-triggers", "0",
             "--poll-interval-ms", "1",
             "--flush-interval-ms", "250",
             "--completion-drain-ms", "1000",
@@ -199,10 +200,11 @@ def _capacity_startup_commands(
     output: Path,
     native_executable: Path,
 ) -> list[tuple[str, list[str]]]:
-    """Start discovery with one authoritative five-camera witness."""
+    """Keep the selected observer as the permanent first subscriber."""
     if len(commands) != 2:
         raise ValueError("capacity commands must contain scheduler and observer")
     return [
+        ("observer", commands[1]),
         (
             "renderer-witness",
             _renderer_witness_command(
@@ -219,6 +221,15 @@ def _selected_overlap_subscriber_counts(selected_count: int) -> dict[int, int]:
         raise ValueError("selected_count must be 0, 1, or 5")
     return {
         vehicle: 1 + int(vehicle < selected_count)
+        for vehicle in range(5)
+    }
+
+
+def _selected_subscriber_counts(selected_count: int) -> dict[int, int]:
+    if selected_count not in (0, 1, 5):
+        raise ValueError("selected_count must be 0, 1, or 5")
+    return {
+        vehicle: int(vehicle < selected_count)
         for vehicle in range(5)
     }
 
@@ -739,16 +750,24 @@ class SubprocessCapacityBackend:
             append_process_identity(run_dir / "owned-processes.json", process.pid, role)
             return process
 
-        role = "renderer-witness"
-        witness_process = start_auxiliary(role, startup_commands[0][1])
+        role = "observer"
+        process = start_auxiliary(role, startup_commands[0][1])
         self._wait_depth_subscriber_counts(
-            expected={vehicle: 1 for vehicle in range(5)},
+            expected=_selected_subscriber_counts(run.cell.subscriber_count),
+            process=process,
+            timeout_s=min(float(_kwargs["readiness_timeout_s"]), 30.0),
+            stage="selected-permanent",
+        )
+        role = "renderer-witness"
+        witness_process = start_auxiliary(role, startup_commands[1][1])
+        self._wait_depth_subscriber_counts(
+            expected=_selected_overlap_subscriber_counts(run.cell.subscriber_count),
             process=witness_process,
             timeout_s=min(float(_kwargs["readiness_timeout_s"]), 30.0),
-            stage="renderer-witness",
+            stage="selected-overlap",
         )
         role = "scheduler"
-        start_auxiliary(role, startup_commands[1][1])
+        start_auxiliary(role, startup_commands[2][1])
         _atomic_json(
             run_dir / "camera-aux-started.marker",
             {
@@ -766,14 +785,6 @@ class SubprocessCapacityBackend:
         )
         if attestation.get("accepted") is not True:
             raise RuntimeError("temporary renderer witness attestation rejected")
-        role = "observer"
-        process = start_auxiliary(role, commands[1])
-        self._wait_depth_subscriber_counts(
-            expected=_selected_overlap_subscriber_counts(run.cell.subscriber_count),
-            process=process,
-            timeout_s=min(float(_kwargs["readiness_timeout_s"]), 30.0),
-            stage="selected-overlap",
-        )
         selected_ready = (
             output / "camera-phase-ready.json"
             if run.cell.implementation == "python"
