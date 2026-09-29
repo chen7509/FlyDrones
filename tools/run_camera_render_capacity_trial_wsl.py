@@ -165,6 +165,9 @@ def capacity_auxiliary_commands(
             "--completion-marker", str(completion_marker),
             "--duration-s", "300",
             "--readiness-timeout-s", "150",
+            "--warmup-subscriber-count", "5",
+            "--attestation-ready-marker", str(output / "renderer-phase-ready.json"),
+            "--attestation-release-marker", str(output / "renderer-phase-complete.marker"),
             "--observe-triggers", "0",
             "--poll-interval-ms", "1",
             "--flush-interval-ms", "250",
@@ -200,6 +203,7 @@ def _capacity_startup_commands(
     output: Path,
     native_executable: Path,
     selected_count: int,
+    implementation: str,
 ) -> list[tuple[str, list[str]]]:
     """Keep the selected observer as the permanent first subscriber."""
     if len(commands) != 2:
@@ -207,7 +211,7 @@ def _capacity_startup_commands(
     if selected_count not in (0, 1, 5):
         raise ValueError("selected_count must be 0, 1, or 5")
     startup = [("observer", commands[1])]
-    if selected_count < 5:
+    if implementation == "python" and selected_count < 5:
         startup.append((
             "renderer-witness",
             _renderer_witness_command(
@@ -224,8 +228,16 @@ def _capacity_attestation_ready_marker(
 ) -> Path:
     if selected_count not in (0, 1, 5):
         raise ValueError("selected_count must be 0, 1, or 5")
-    if selected_count < 5:
+    if implementation in {"native", "native-cpp"}:
         return output / "renderer-phase-ready.json"
+    if implementation == "python" and selected_count == 5:
+        return output / "camera-phase-ready.json"
+    if implementation == "python":
+        return output / "renderer-phase-ready.json"
+    raise ValueError(f"unsupported observer implementation: {implementation}")
+
+
+def _capacity_selected_ready_marker(*, output: Path, implementation: str) -> Path:
     if implementation == "python":
         return output / "camera-phase-ready.json"
     if implementation in {"native", "native-cpp"}:
@@ -752,6 +764,7 @@ class SubprocessCapacityBackend:
             output=output,
             native_executable=Path(_kwargs["native_executable"]),
             selected_count=run.cell.subscriber_count,
+            implementation=run.cell.implementation,
         )
         startup_by_role = dict(startup_commands)
 
@@ -771,11 +784,17 @@ class SubprocessCapacityBackend:
 
         role = "observer"
         process = start_auxiliary(role, startup_by_role[role])
+        native_observer = run.cell.implementation in {"native", "native-cpp"}
+        initial_counts = (
+            {vehicle: 1 for vehicle in range(5)}
+            if native_observer
+            else _selected_subscriber_counts(run.cell.subscriber_count)
+        )
         self._wait_depth_subscriber_counts(
-            expected=_selected_subscriber_counts(run.cell.subscriber_count),
+            expected=initial_counts,
             process=process,
             timeout_s=min(float(_kwargs["readiness_timeout_s"]), 30.0),
-            stage="selected-permanent",
+            stage="native-warmup" if native_observer else "selected-permanent",
         )
         has_witness = "renderer-witness" in startup_by_role
         if has_witness:
@@ -806,16 +825,24 @@ class SubprocessCapacityBackend:
         )
         if attestation.get("accepted") is not True:
             raise RuntimeError("temporary renderer witness attestation rejected")
-        selected_ready = _capacity_attestation_ready_marker(
+        if native_observer:
+            (output / "renderer-phase-complete.marker").touch()
+        selected_ready = _capacity_selected_ready_marker(
             output=output,
             implementation=run.cell.implementation,
-            selected_count=5,
         )
         self._wait_marker(
             selected_ready,
             process,
             min(float(_kwargs["readiness_timeout_s"]), 150.0),
         )
+        if native_observer:
+            self._wait_depth_subscriber_counts(
+                expected=_selected_subscriber_counts(run.cell.subscriber_count),
+                process=process,
+                timeout_s=min(float(_kwargs["readiness_timeout_s"]), 30.0),
+                stage="selected-released",
+            )
         if has_witness:
             (output / "renderer-phase-complete.marker").touch()
             witness_code = self.processes["renderer-witness"].wait(timeout=20)

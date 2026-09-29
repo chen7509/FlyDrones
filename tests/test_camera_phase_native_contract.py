@@ -91,6 +91,9 @@ def test_cli_contract_has_both_modes_all_options_and_stable_exit_codes():
         "--flush-interval-ms",
         "--completion-drain-ms",
         "--readiness-timeout-s",
+        "--warmup-subscriber-count",
+        "--attestation-ready-marker",
+        "--attestation-release-marker",
         "--observe-triggers",
         "--stop-after-trigger-count",
     ):
@@ -100,8 +103,12 @@ def test_cli_contract_has_both_modes_all_options_and_stable_exit_codes():
     implementation = _read(NATIVE / "src" / "camera_phase_native.cc")
     assert "bool observeTriggers{true}" in header
     assert "double readinessTimeoutS{30.0}" in header
+    assert "warmupSubscriberCount" in header
+    assert "attestationReadyMarker" in header
+    assert "attestationReleaseMarker" in header
     assert "if (options.observeTriggers)" in implementation
     assert "options.readinessTimeoutS" in implementation
+    assert "imageNodes[vehicle]->Unsubscribe" in implementation
     for token in (
         "kComplete = 0",
         "kIntegrityRejected = 2",

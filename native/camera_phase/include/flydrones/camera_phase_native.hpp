@@ -124,8 +124,11 @@ struct ProbeOptions {
   std::string mode;
   int vehicleCount{5};
   int subscriberCount{5};
+  int warmupSubscriberCount{-1};
   std::filesystem::path output;
   std::filesystem::path readyMarker;
+  std::filesystem::path attestationReadyMarker;
+  std::filesystem::path attestationReleaseMarker;
   std::filesystem::path completionMarker;
   double durationS{120.0};
   int pollIntervalMs{10};

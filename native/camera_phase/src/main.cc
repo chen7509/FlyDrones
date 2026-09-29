@@ -33,8 +33,11 @@ void PrintHelp() {
       << "options:\n"
       << "  --vehicle-count N\n"
       << "  --subscriber-count N\n"
+      << "  --warmup-subscriber-count N\n"
       << "  --output PATH\n"
       << "  --ready-marker PATH\n"
+      << "  --attestation-ready-marker PATH\n"
+      << "  --attestation-release-marker PATH\n"
       << "  --completion-marker PATH\n"
       << "  --duration-s SECONDS\n"
       << "  --poll-interval-ms N\n"
@@ -109,10 +112,17 @@ int main(int argc, char** argv) {
       } else if (option == "--subscriber-count") {
         options.subscriberCount =
             static_cast<int>(ParseInteger(value, option.c_str(), true));
+      } else if (option == "--warmup-subscriber-count") {
+        options.warmupSubscriberCount =
+            static_cast<int>(ParseInteger(value, option.c_str(), true));
       } else if (option == "--output") {
         options.output = value;
       } else if (option == "--ready-marker") {
         options.readyMarker = value;
+      } else if (option == "--attestation-ready-marker") {
+        options.attestationReadyMarker = value;
+      } else if (option == "--attestation-release-marker") {
+        options.attestationReleaseMarker = value;
       } else if (option == "--completion-marker") {
         options.completionMarker = value;
       } else if (option == "--duration-s") {
@@ -146,11 +156,25 @@ int main(int argc, char** argv) {
       throw std::invalid_argument(
           "--output, --ready-marker, and --completion-marker are required");
     }
+    if (options.warmupSubscriberCount < 0) {
+      options.warmupSubscriberCount = options.subscriberCount;
+    }
     if ((options.vehicleCount != 1 && options.vehicleCount != 5) ||
         (options.subscriberCount != 0 && options.subscriberCount != 1 &&
          options.subscriberCount != 5) ||
-        options.subscriberCount > options.vehicleCount) {
+        options.subscriberCount > options.vehicleCount ||
+        (options.warmupSubscriberCount != 0 &&
+         options.warmupSubscriberCount != 1 &&
+         options.warmupSubscriberCount != 5) ||
+        options.warmupSubscriberCount < options.subscriberCount ||
+        options.warmupSubscriberCount > options.vehicleCount) {
       throw std::invalid_argument("invalid vehicle/subscriber count combination");
+    }
+    if (options.warmupSubscriberCount > options.subscriberCount &&
+        (options.attestationReadyMarker.empty() ||
+         options.attestationReleaseMarker.empty())) {
+      throw std::invalid_argument(
+          "warmup transition requires attestation ready and release markers");
     }
   } catch (const std::invalid_argument& error) {
     std::cerr << error.what() << '\n';

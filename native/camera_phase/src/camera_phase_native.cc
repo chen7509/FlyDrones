@@ -440,16 +440,32 @@ std::string PhaseReadyMarkerJson(
 }
 
 int RunProbe(const ProbeOptions& options, std::atomic_bool& stopRequested) {
+  const int warmupSubscriberCount =
+      options.warmupSubscriberCount < 0 ? options.subscriberCount
+                                        : options.warmupSubscriberCount;
   if ((options.vehicleCount != 1 && options.vehicleCount != 5) ||
       options.subscriberCount < 0 ||
       options.subscriberCount > options.vehicleCount ||
+      warmupSubscriberCount < options.subscriberCount ||
+      warmupSubscriberCount > options.vehicleCount ||
+      (warmupSubscriberCount != 0 && warmupSubscriberCount != 1 &&
+       warmupSubscriberCount != 5) ||
       (options.subscriberCount != 0 && options.subscriberCount != 1 &&
-       options.subscriberCount != 5)) {
+       options.subscriberCount != 5) ||
+      (warmupSubscriberCount > options.subscriberCount &&
+       (options.attestationReadyMarker.empty() ||
+        options.attestationReleaseMarker.empty()))) {
     return 64;
   }
   std::filesystem::create_directories(options.output.parent_path());
   std::error_code ignored;
   std::filesystem::remove(options.readyMarker, ignored);
+  if (!options.attestationReadyMarker.empty()) {
+    std::filesystem::remove(options.attestationReadyMarker, ignored);
+  }
+  if (!options.attestationReleaseMarker.empty()) {
+    std::filesystem::remove(options.attestationReleaseMarker, ignored);
+  }
   BoundedEventQueue queue(options.queueCapacity);
   Lifecycle lifecycle;
   std::atomic<std::int64_t> latestClockNs{-1};
@@ -526,7 +542,7 @@ int RunProbe(const ProbeOptions& options, std::atomic_bool& stopRequested) {
     auto clockNode = std::make_unique<gz::transport::Node>();
     auto triggerNode = std::make_unique<gz::transport::Node>();
     std::vector<std::unique_ptr<gz::transport::Node>> imageNodes;
-    imageNodes.reserve(options.subscriberCount);
+    imageNodes.reserve(warmupSubscriberCount);
 
     const auto clockCallback = [&](const gz::msgs::Clock& message) {
       const auto begin = SteadyClock::now();
@@ -540,7 +556,7 @@ int RunProbe(const ProbeOptions& options, std::atomic_bool& stopRequested) {
       throw std::runtime_error("clock_subscription_failed");
     }
 
-    for (int vehicle = 0; vehicle < options.subscriberCount; ++vehicle) {
+    for (int vehicle = 0; vehicle < warmupSubscriberCount; ++vehicle) {
       auto node = std::make_unique<gz::transport::Node>();
       const auto topic = DepthTopic(options.world, vehicle);
       const auto imageCallback = [&, vehicle, topic](const gz::msgs::Image& message) {
@@ -644,7 +660,7 @@ int RunProbe(const ProbeOptions& options, std::atomic_bool& stopRequested) {
         publishersReady = publishersReady && publisher.HasConnections();
       }
       bool imagesReady = true;
-      for (int vehicle = 0; vehicle < options.subscriberCount; ++vehicle) {
+      for (int vehicle = 0; vehicle < warmupSubscriberCount; ++vehicle) {
         imagesReady = imagesReady &&
                       imageSequences[vehicle].load() >= options.warmupImageCountMin;
       }
@@ -659,26 +675,67 @@ int RunProbe(const ProbeOptions& options, std::atomic_bool& stopRequested) {
     }
     if (stopRequested.load()) throw std::runtime_error("stopped_before_readiness");
 
+    const auto collectObservations = [&](int count) {
+      std::vector<DepthObservation> observations;
+      observations.reserve(count);
+      for (int vehicle = 0; vehicle < count; ++vehicle) {
+        observations.push_back(DepthObservation{
+            imageWidths[vehicle].load(), imageHeights[vehicle].load(),
+            imageSequences[vehicle].load(), firstImageSimNs[vehicle].load(),
+            settledFirstImageSimNs[vehicle].load(),
+            lastImageSimNs[vehicle].load()});
+      }
+      return observations;
+    };
+    const auto epochNs = AlignEpochNs(latestClockNs.load());
+    if (!options.attestationReadyMarker.empty()) {
+      auto attestationOptions = options;
+      attestationOptions.subscriberCount = warmupSubscriberCount;
+      WriteMarker(
+          options.attestationReadyMarker,
+          PhaseReadyMarkerJson(
+              attestationOptions, epochNs,
+              collectObservations(warmupSubscriberCount)));
+    }
+    if (warmupSubscriberCount > options.subscriberCount) {
+      const auto transitionDeadline =
+          SteadyClock::now() +
+          std::chrono::duration<double>(options.readinessTimeoutS);
+      while (!std::filesystem::exists(options.attestationReleaseMarker)) {
+        if (stopRequested.load()) {
+          throw std::runtime_error("stopped_before_attestation_release");
+        }
+        if (std::filesystem::exists(options.completionMarker)) {
+          throw std::runtime_error("completion_before_attestation_release");
+        }
+        if (SteadyClock::now() >= transitionDeadline) {
+          throw std::runtime_error("attestation_release_timeout");
+        }
+        std::this_thread::sleep_for(
+            std::chrono::milliseconds(options.pollIntervalMs));
+      }
+      for (int vehicle = warmupSubscriberCount - 1;
+           vehicle >= options.subscriberCount; --vehicle) {
+        if (!imageNodes[vehicle]->Unsubscribe(
+                DepthTopic(options.world, vehicle))) {
+          throw std::runtime_error("image_unsubscribe_failed");
+        }
+      }
+      imageNodes.resize(options.subscriberCount);
+    }
+
     EventRecord topology;
     topology.kind = EventKind::kTopology;
     if (!queue.TryPush(std::move(topology))) throw std::runtime_error("queue_overflow");
-    const auto epochNs = AlignEpochNs(latestClockNs.load());
     if (!lifecycle.MarkReady()) throw std::runtime_error("lifecycle_ready_failed");
     EventRecord ready;
     ready.kind = EventKind::kReady;
     ready.sourceSimNs = epochNs;
     if (!queue.TryPush(std::move(ready))) throw std::runtime_error("queue_overflow");
-    std::vector<DepthObservation> observations;
-    observations.reserve(options.subscriberCount);
-    for (int vehicle = 0; vehicle < options.subscriberCount; ++vehicle) {
-      observations.push_back(DepthObservation{
-          imageWidths[vehicle].load(), imageHeights[vehicle].load(),
-          imageSequences[vehicle].load(), firstImageSimNs[vehicle].load(),
-          settledFirstImageSimNs[vehicle].load(),
-          lastImageSimNs[vehicle].load()});
-    }
     WriteMarker(options.readyMarker,
-                PhaseReadyMarkerJson(options, epochNs, observations));
+                PhaseReadyMarkerJson(
+                    options, epochNs,
+                    collectObservations(options.subscriberCount)));
     if (!lifecycle.MarkRunning()) throw std::runtime_error("lifecycle_running_failed");
 
     std::optional<TriggerScheduler> scheduler;

@@ -330,13 +330,14 @@ def test_capacity_initial_discovery_starts_permanent_observer_first(
         output=tmp_path,
         native_executable=tmp_path / "flydrones_camera_phase_native",
         selected_count=5,
+        implementation="native",
     )
 
     assert [role for role, _command in startup] == ["observer", "scheduler"]
     assert startup[0][1] is commands[1]
 
 
-def test_capacity_partial_selection_retains_renderer_witness(tmp_path: Path):
+def test_capacity_native_partial_selection_uses_single_process(tmp_path: Path):
     commands = capacity_auxiliary_commands(
         run=_run("native-1"),
         output=tmp_path,
@@ -349,13 +350,10 @@ def test_capacity_partial_selection_retains_renderer_witness(tmp_path: Path):
         output=tmp_path,
         native_executable=tmp_path / "flydrones_camera_phase_native",
         selected_count=1,
+        implementation="native",
     )
 
-    assert [role for role, _command in startup] == [
-        "observer",
-        "renderer-witness",
-        "scheduler",
-    ]
+    assert [role for role, _command in startup] == ["observer", "scheduler"]
 
 
 def test_full_selection_uses_selected_ready_marker_for_renderer_attestation(
@@ -365,7 +363,7 @@ def test_full_selection_uses_selected_ready_marker_for_renderer_attestation(
         output=tmp_path,
         implementation="native",
         selected_count=5,
-    ) == (tmp_path / "camera-phase-selected-ready.json")
+    ) == (tmp_path / "renderer-phase-ready.json")
     assert _capacity_attestation_ready_marker(
         output=tmp_path,
         implementation="python",
@@ -378,7 +376,7 @@ def test_full_selection_uses_selected_ready_marker_for_renderer_attestation(
     ) == (tmp_path / "renderer-phase-ready.json")
 
 
-def test_capacity_selected_observer_owns_connection_before_witness_and_scheduler():
+def test_capacity_selected_observer_warmup_precedes_scheduler():
     runner = (
         Path(__file__).parents[1] / "tools/run_camera_render_capacity_trial_wsl.py"
     ).read_text(encoding="utf-8")
@@ -388,11 +386,9 @@ def test_capacity_selected_observer_owns_connection_before_witness_and_scheduler
     )[1].split("    @staticmethod", 1)[0]
 
     selected_observer = backend_start.index('role = "observer"')
-    selected_barrier = backend_start.index('stage="selected-permanent"')
-    witness = backend_start.index('role = "renderer-witness"')
-    overlap_barrier = backend_start.index('stage="selected-overlap"')
+    selected_barrier = backend_start.index('stage="native-warmup"')
     scheduler = backend_start.index('role = "scheduler"')
-    assert selected_observer < selected_barrier < witness < overlap_barrier < scheduler
+    assert selected_observer < selected_barrier < scheduler
 
 
 @pytest.mark.parametrize(
@@ -584,6 +580,13 @@ def test_auxiliary_commands_are_exact_and_never_construct_worker(
         assert observer[1] == "observe"
         assert observer[observer.index("--subscriber-count") + 1] == subscriber_count
         assert observer[observer.index("--observe-triggers") + 1] == "0"
+        assert observer[observer.index("--warmup-subscriber-count") + 1] == "5"
+        assert observer[observer.index("--attestation-ready-marker") + 1].endswith(
+            "renderer-phase-ready.json"
+        )
+        assert observer[observer.index("--attestation-release-marker") + 1].endswith(
+            "renderer-phase-complete.marker"
+        )
     else:
         assert observer[1].endswith("probe_camera_phase_wsl.py")
         assert observer[observer.index("--vehicle-count") + 1] == "5"
