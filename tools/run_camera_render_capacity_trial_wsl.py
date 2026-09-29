@@ -199,7 +199,7 @@ def _capacity_startup_commands(
     output: Path,
     native_executable: Path,
 ) -> list[tuple[str, list[str]]]:
-    """Start the selected observer before retiring the renderer witness."""
+    """Start discovery with one authoritative five-camera witness."""
     if len(commands) != 2:
         raise ValueError("capacity commands must contain scheduler and observer")
     return [
@@ -211,7 +211,6 @@ def _capacity_startup_commands(
                 native_executable=native_executable,
             ),
         ),
-        ("observer", commands[1]),
     ]
 
 
@@ -681,6 +680,28 @@ class SubprocessCapacityBackend:
         )
         if attestation.get("accepted") is not True:
             raise RuntimeError("temporary renderer witness attestation rejected")
+        role = "observer"
+        handle = (output / f"{role}.log").open("w", encoding="utf-8")
+        self.logs.append(handle)
+        process = subprocess.Popen(
+            commands[1],
+            env=environment,
+            stdout=handle,
+            stderr=subprocess.STDOUT,
+            start_new_session=True,
+        )
+        self.processes[role] = process
+        append_process_identity(run_dir / "owned-processes.json", process.pid, role)
+        selected_ready = (
+            output / "camera-phase-ready.json"
+            if run.cell.implementation == "python"
+            else output / "camera-phase-selected-ready.json"
+        )
+        self._wait_marker(
+            selected_ready,
+            process,
+            min(float(_kwargs["readiness_timeout_s"]), 150.0),
+        )
         (output / "renderer-phase-complete.marker").touch()
         witness_code = self.processes["renderer-witness"].wait(timeout=20)
         try:
@@ -697,17 +718,6 @@ class SubprocessCapacityBackend:
         _atomic_json(output / "renderer-phase-summary.json", witness_summary)
         if not _renderer_witness_accepted(witness_summary, exit_code=witness_code):
             raise RuntimeError(f"renderer witness exited {witness_code}")
-        process = self.processes["observer"]
-        selected_ready = (
-            output / "camera-phase-ready.json"
-            if run.cell.implementation == "python"
-            else output / "camera-phase-selected-ready.json"
-        )
-        self._wait_marker(
-            selected_ready,
-            process,
-            min(float(_kwargs["readiness_timeout_s"]), 150.0),
-        )
         _atomic_text(
             Path(environment["FLYDRONES_CAPACITY_OBSERVER_PID_FILE"]),
             f"{process.pid}\n",

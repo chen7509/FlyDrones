@@ -312,7 +312,7 @@ def test_renderer_witness_uses_native_five_camera_warmup(tmp_path: Path):
     )
 
 
-def test_capacity_selected_observer_starts_before_renderer_witness_handoff(
+def test_capacity_initial_discovery_uses_one_renderer_witness(
     tmp_path: Path,
 ):
     commands = capacity_auxiliary_commands(
@@ -328,12 +328,25 @@ def test_capacity_selected_observer_starts_before_renderer_witness_handoff(
         native_executable=tmp_path / "flydrones_camera_phase_native",
     )
 
-    assert [role for role, _command in startup] == [
-        "scheduler",
-        "renderer-witness",
-        "observer",
-    ]
-    assert startup[2][1] is commands[1]
+    assert [role for role, _command in startup] == ["scheduler", "renderer-witness"]
+    assert all(command is not commands[1] for _role, command in startup)
+
+
+def test_capacity_selected_observer_uses_staged_overlap_after_attestation():
+    runner = (
+        Path(__file__).parents[1] / "tools/run_camera_render_capacity_trial_wsl.py"
+    ).read_text(encoding="utf-8")
+    backend_start = runner.split(
+        "    def start(self, *, commands, output, run_dir, environment, completion_marker, **_kwargs):",
+        1,
+    )[1].split("    @staticmethod", 1)[0]
+
+    attestation = backend_start.index("attestation = self._wait_marker")
+    selected_observer = backend_start.index('role = "observer"')
+    witness_completion = backend_start.index(
+        '(output / "renderer-phase-complete.marker").touch()'
+    )
+    assert attestation < selected_observer < witness_completion
 
 
 def test_capacity_observers_allow_sequential_px4_startup(tmp_path: Path):
