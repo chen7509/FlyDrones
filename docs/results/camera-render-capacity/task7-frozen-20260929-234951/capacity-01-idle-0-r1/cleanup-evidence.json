@@ -1,0 +1,144 @@
+{
+  "schema": "flydrones-owned-process-cleanup-v1",
+  "registry": "/tmp/flydrones-capacity-capacity-01-idle-0-r1-181f0a1ae30e/owned-processes.json",
+  "recorded_processes": 8,
+  "stopped": [
+    {
+      "pid": 1956,
+      "start_ticks": 97802,
+      "argv": [
+        "/home/yuchen7509/PX4-Autopilot/build/px4_sitl_nolockstep/bin/px4",
+        "-i",
+        "4",
+        "-d",
+        "/home/yuchen7509/PX4-Autopilot/build/px4_sitl_nolockstep/etc"
+      ],
+      "role": "px4-4"
+    },
+    {
+      "pid": 1578,
+      "start_ticks": 97570,
+      "argv": [
+        "/home/yuchen7509/PX4-Autopilot/build/px4_sitl_nolockstep/bin/px4",
+        "-i",
+        "3",
+        "-d",
+        "/home/yuchen7509/PX4-Autopilot/build/px4_sitl_nolockstep/etc"
+      ],
+      "role": "px4-3"
+    },
+    {
+      "pid": 1201,
+      "start_ticks": 97341,
+      "argv": [
+        "/home/yuchen7509/PX4-Autopilot/build/px4_sitl_nolockstep/bin/px4",
+        "-i",
+        "2",
+        "-d",
+        "/home/yuchen7509/PX4-Autopilot/build/px4_sitl_nolockstep/etc"
+      ],
+      "role": "px4-2"
+    },
+    {
+      "pid": 823,
+      "start_ticks": 97114,
+      "argv": [
+        "/home/yuchen7509/PX4-Autopilot/build/px4_sitl_nolockstep/bin/px4",
+        "-i",
+        "1",
+        "-d",
+        "/home/yuchen7509/PX4-Autopilot/build/px4_sitl_nolockstep/etc"
+      ],
+      "role": "px4-1"
+    },
+    {
+      "pid": 566,
+      "start_ticks": 96883,
+      "argv": [
+        "/home/yuchen7509/PX4-Autopilot/build/px4_sitl_nolockstep/bin/px4",
+        "-i",
+        "0",
+        "-d",
+        "/home/yuchen7509/PX4-Autopilot/build/px4_sitl_nolockstep/etc"
+      ],
+      "role": "px4-0"
+    },
+    {
+      "pid": 494,
+      "start_ticks": 96624,
+      "argv": [
+        "gz sim --headless-rendering -s /home/yuchen7509/PX4-Autopilot/Tools/simulation/gz/worlds/flydrones_forest.sdf"
+      ],
+      "role": "gazebo-server"
+    }
+  ],
+  "already_gone": [
+    {
+      "pid": 3334,
+      "start_ticks": 104434,
+      "argv": [
+        "/usr/bin/python3",
+        "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/vio-faults/tools/run_camera_phase_scheduler_wsl.py",
+        "--output",
+        "results/camera-render-capacity/task7-frozen-20260929-234951/capacity-01-idle-0-r1/camera-scheduler.jsonl",
+        "--ready-marker",
+        "results/camera-render-capacity/task7-frozen-20260929-234951/capacity-01-idle-0-r1/camera-scheduler-ready.json",
+        "--completion-marker",
+        "results/camera-render-capacity/task7-frozen-20260929-234951/capacity-01-idle-0-r1/trial-complete.marker",
+        "--vehicle-count",
+        "5",
+        "--duration-s",
+        "300",
+        "--topology-timeout-s",
+        "150",
+        "--poll-interval-s",
+        "0.001",
+        "--flush-interval-s",
+        "0.25",
+        "--dispatch-delay-ns",
+        "4000000",
+        "--formal"
+      ],
+      "role": "scheduler"
+    },
+    {
+      "pid": 3053,
+      "start_ticks": 103329,
+      "argv": [
+        "build/native-camera-phase/flydrones_camera_phase_native",
+        "observe",
+        "--vehicle-count",
+        "5",
+        "--subscriber-count",
+        "0",
+        "--output",
+        "results/camera-render-capacity/task7-frozen-20260929-234951/capacity-01-idle-0-r1/camera-phase.jsonl",
+        "--ready-marker",
+        "results/camera-render-capacity/task7-frozen-20260929-234951/capacity-01-idle-0-r1/camera-phase-selected-ready.json",
+        "--completion-marker",
+        "results/camera-render-capacity/task7-frozen-20260929-234951/capacity-01-idle-0-r1/trial-complete.marker",
+        "--duration-s",
+        "300",
+        "--readiness-timeout-s",
+        "150",
+        "--warmup-subscriber-count",
+        "5",
+        "--attestation-ready-marker",
+        "results/camera-render-capacity/task7-frozen-20260929-234951/capacity-01-idle-0-r1/renderer-phase-ready.json",
+        "--attestation-release-marker",
+        "results/camera-render-capacity/task7-frozen-20260929-234951/capacity-01-idle-0-r1/renderer-phase-complete.marker",
+        "--observe-triggers",
+        "0",
+        "--poll-interval-ms",
+        "1",
+        "--flush-interval-ms",
+        "250",
+        "--completion-drain-ms",
+        "1000"
+      ],
+      "role": "observer"
+    }
+  ],
+  "ownership_mismatch": [],
+  "failed_to_stop": []
+}

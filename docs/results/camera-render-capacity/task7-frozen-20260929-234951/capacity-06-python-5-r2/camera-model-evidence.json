@@ -1,0 +1,17 @@
+{
+  "schema": "flydrones-camera-model-phase-v1",
+  "mode": "phased",
+  "source": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/vio-faults/assets/gazebo/models/OakD-Lite-Fly/model.sdf",
+  "target": "/home/yuchen7509/PX4-Autopilot/Tools/simulation/gz/models/OakD-Lite-Fly/model.sdf",
+  "source_sha256": "f8d49346ec66e02ed3f8caca2d4429ac339380ae6af00f97affa0e1ab3455bcd",
+  "target_sha256": "9112dc3d3b331558c56d300bf4ba572f346e51e03989cd0d4273c82a74703e9e",
+  "structural_diff": [
+    "sensor[StereoOV7251]/camera/triggered: <missing> -> true"
+  ],
+  "preserved": {
+    "width": 160,
+    "height": 120,
+    "update_rate_hz": 10.0,
+    "image_format": "R_FLOAT32"
+  }
+}

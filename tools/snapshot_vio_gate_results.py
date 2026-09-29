@@ -48,6 +48,15 @@ CAMERA_PHASE_COMPACT = (
     "camera-model-evidence.json",
     "camera-phase-summary.json",
 )
+CAPACITY_REQUIRED_COMPACT = (
+    "trial-config.json",
+    "manifest.json",
+    "summary.json",
+    "cleanup-evidence.json",
+    "restoration-evidence.json",
+    "px4-build-evidence.json",
+    "camera-model-evidence.json",
+)
 MAX_COMPACT_SEQUENCE = 8
 
 
@@ -174,6 +183,120 @@ def snapshot_camera_phase_campaign(source: Path, target: Path) -> dict:
     )
 
 
+def _capacity_slot_names(source: Path) -> list[str]:
+    manifest = json.loads(
+        (source / "campaign-manifest.json").read_text(encoding="utf-8")
+    )
+    summary = json.loads(
+        (source / "campaign-summary.json").read_text(encoding="utf-8")
+    )
+    schedule = manifest.get("schedule")
+    if not isinstance(schedule, list) or len(schedule) != 12:
+        raise ValueError("capacity snapshot requires exactly twelve scheduled slots")
+    names = [item.get("name") for item in schedule if isinstance(item, dict)]
+    if len(names) != 12 or any(not isinstance(name, str) or not name for name in names):
+        raise ValueError("capacity slot identities are missing or invalid")
+    if len(set(names)) != 12:
+        raise ValueError("capacity slot identities must be unique")
+    if summary.get("completed_slots") != names or summary.get("raw_trial_paths") != names:
+        raise ValueError("capacity summary slot identities differ from the frozen schedule")
+    actual_dirs = {path.name for path in source.iterdir() if path.is_dir()}
+    if actual_dirs != set(names):
+        raise ValueError("capacity source slot identities contain missing or extra directories")
+    return names
+
+
+def _capacity_compact_paths(trial: Path) -> set[Path]:
+    required = {trial / name for name in CAPACITY_REQUIRED_COMPACT}
+    missing = sorted(path.name for path in required if not path.is_file())
+    if missing:
+        raise ValueError(f"capacity compact evidence is missing: {missing}")
+    manifest = json.loads((trial / "manifest.json").read_text(encoding="utf-8"))
+    renderer = trial / "renderer-attestation.json"
+    if manifest.get("evidence_accepted") is True and not renderer.is_file():
+        raise ValueError("accepted capacity slot lacks renderer attestation")
+    return {path for path in trial.glob("*.json") if path.is_file()}
+
+
+def _capacity_raw_index(source: Path, names: list[str]) -> dict[str, dict[str, dict[str, object]]]:
+    trials: dict[str, dict[str, dict[str, object]]] = {}
+    for name in names:
+        trial = source / name
+        compact = _capacity_compact_paths(trial)
+        raw = [path for path in trial.rglob("*") if path.is_file() and path not in compact]
+        trials[name] = {
+            path.relative_to(trial).as_posix(): {
+                "sha256": sha256(path),
+                "bytes": path.stat().st_size,
+            }
+            for path in sorted(raw)
+        }
+    return trials
+
+
+def verify_camera_render_capacity_snapshot(source: Path, target: Path) -> None:
+    names = _capacity_slot_names(source)
+    index_path = target / "raw-artifact-index.json"
+    index = json.loads(index_path.read_text(encoding="utf-8"))
+    if index.get("schema") != "flydrones-camera-render-capacity-artifacts-v1":
+        raise ValueError("capacity raw artifact index schema is invalid")
+    if list(index.get("trials", {})) != names:
+        raise ValueError("capacity snapshot slot identities differ from the frozen schedule")
+    target_dirs = {path.name for path in target.iterdir() if path.is_dir()}
+    if target_dirs != set(names):
+        raise ValueError("capacity target slot identities contain missing or extra directories")
+    if {path.name for path in target.iterdir() if path.is_file()} != {
+        "campaign-manifest.json", "campaign-summary.json", "raw-artifact-index.json"
+    }:
+        raise ValueError("capacity snapshot root contains missing or extra files")
+    for filename in ("campaign-manifest.json", "campaign-summary.json"):
+        if sha256(source / filename) != sha256(target / filename):
+            raise ValueError(f"capacity compact copy differs from source: {filename}")
+    expected_raw = _capacity_raw_index(source, names)
+    if index.get("trials") != expected_raw:
+        raise ValueError("capacity raw artifact index differs from source evidence")
+    for name in names:
+        trial_source = source / name
+        trial_target = target / name
+        compact = _capacity_compact_paths(trial_source)
+        target_files = {path.name for path in trial_target.iterdir() if path.is_file()}
+        if target_files != {path.name for path in compact}:
+            raise ValueError(f"capacity compact files differ for {name}")
+        if any(path.is_dir() for path in trial_target.iterdir()):
+            raise ValueError(f"capacity compact target contains raw directories for {name}")
+        for path in compact:
+            if sha256(path) != sha256(trial_target / path.name):
+                raise ValueError(f"capacity compact copy differs from source: {name}/{path.name}")
+
+
+def snapshot_camera_render_capacity_campaign(source: Path, target: Path) -> dict:
+    names = _capacity_slot_names(source)
+    if target.exists() and any(target.iterdir()):
+        raise ValueError("capacity snapshot target must be empty")
+    target.mkdir(parents=True, exist_ok=True)
+    for filename in ("campaign-manifest.json", "campaign-summary.json"):
+        shutil.copy2(source / filename, target / filename)
+    for name in names:
+        trial_source = source / name
+        trial_target = target / name
+        trial_target.mkdir()
+        for path in sorted(_capacity_compact_paths(trial_source)):
+            shutil.copy2(path, trial_target / path.name)
+    manifest = json.loads(
+        (source / "campaign-manifest.json").read_text(encoding="utf-8")
+    )
+    index = {
+        "schema": "flydrones-camera-render-capacity-artifacts-v1",
+        "campaign_id": manifest.get("campaign_id"),
+        "trials": _capacity_raw_index(source, names),
+    }
+    (target / "raw-artifact-index.json").write_text(
+        json.dumps(index, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
+    )
+    verify_camera_render_capacity_snapshot(source, target)
+    return index
+
+
 def snapshot_legacy_vio_gate() -> None:
     index = {}
     for name in TRIALS:
@@ -204,15 +327,21 @@ def main() -> int:
     if args.campaign_dir is None:
         snapshot_legacy_vio_gate()
         return 0
-    target = args.target or ROOT / "docs/results/vio-renderer-stability" / args.campaign_dir.name
+    target = args.target
     manifest = json.loads(
         (args.campaign_dir / "campaign-manifest.json").read_text(encoding="utf-8")
     )
-    if manifest.get("schema") == "flydrones-px4-takeoff-stability-campaign-manifest-v1":
+    if manifest.get("schema") == "flydrones-camera-render-capacity-campaign-v1":
+        target = target or ROOT / "docs/results/camera-render-capacity" / args.campaign_dir.name
+        snapshot_camera_render_capacity_campaign(args.campaign_dir, target)
+    elif manifest.get("schema") == "flydrones-px4-takeoff-stability-campaign-manifest-v1":
+        target = target or ROOT / "docs/results/vio-renderer-stability" / args.campaign_dir.name
         snapshot_takeoff_campaign(args.campaign_dir, target)
     elif manifest.get("schema") == "flydrones-camera-phase-stability-campaign-manifest-v1":
+        target = target or ROOT / "docs/results/vio-renderer-stability" / args.campaign_dir.name
         snapshot_camera_phase_campaign(args.campaign_dir, target)
     else:
+        target = target or ROOT / "docs/results/vio-renderer-stability" / args.campaign_dir.name
         snapshot_renderer_campaign(args.campaign_dir, target)
     return 0
 

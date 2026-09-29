@@ -17,8 +17,10 @@ from tools.run_renderer_stability_campaign_wsl import (
 )
 from tools.snapshot_vio_gate_results import (
     snapshot_camera_phase_campaign,
+    snapshot_camera_render_capacity_campaign,
     snapshot_renderer_campaign,
     snapshot_takeoff_campaign,
+    verify_camera_render_capacity_snapshot,
 )
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -315,3 +317,103 @@ def test_camera_phase_snapshot_copies_compact_phase_evidence_and_indexes_raw_log
     assert "camera-phase.jsonl" in index["trials"][trial_name]
     assert "camera-scheduler.jsonl" in index["trials"][trial_name]
     assert "camera-model-configured.sdf" in index["trials"][trial_name]
+
+
+def _capacity_snapshot_source(root: Path) -> tuple[Path, list[str]]:
+    source = root / "capacity-source"
+    source.mkdir()
+    names = [f"capacity-{index:02d}" for index in range(1, 13)]
+    schedule = [{"name": name} for name in names]
+    (source / "campaign-manifest.json").write_text(
+        json.dumps({
+            "schema": "flydrones-camera-render-capacity-campaign-v1",
+            "campaign_id": "capacity-c",
+            "schedule": schedule,
+        }),
+        encoding="utf-8",
+    )
+    (source / "campaign-summary.json").write_text(
+        json.dumps({
+            "schema": "flydrones-camera-render-capacity-campaign-summary-v1",
+            "campaign_id": "capacity-c",
+            "completed_slots": names,
+            "raw_trial_paths": names,
+            "classification": "non_monotonic_or_inconclusive",
+        }),
+        encoding="utf-8",
+    )
+    for index, name in enumerate(names):
+        trial = source / name
+        (trial / "px4-ulogs").mkdir(parents=True)
+        compact = {
+            "trial-config.json": {"schema": "capacity-config-v1"},
+            "manifest.json": {
+                "schema": "flydrones-camera-render-capacity-manifest-v1",
+                "name": name,
+                "sequence": index + 1,
+                "evidence_accepted": index == 0,
+            },
+            "summary.json": {
+                "schema": "flydrones-camera-render-capacity-summary-v1",
+                "camera_phase": {"accepted": index == 0},
+            },
+            "cleanup-evidence.json": {"schema": "cleanup-v1"},
+            "restoration-evidence.json": {"schema": "restoration-v1"},
+            "px4-build-evidence.json": {"binary_sha256": "a" * 64},
+            "camera-model-evidence.json": {"schema": "camera-model-v1"},
+        }
+        if index == 0:
+            compact["renderer-attestation.json"] = {"accepted": True}
+            compact["score.json"] = {"evidence_valid": True}
+        for filename, value in compact.items():
+            (trial / filename).write_text(json.dumps(value), encoding="utf-8")
+        (trial / "camera-phase.jsonl").write_text('{"event":"stop"}\n', encoding="utf-8")
+        (trial / "clock-probe.csv").write_text("monotonic_s,sim_ns\n1,2\n", encoding="utf-8")
+        (trial / "launch.log").write_text("launch\n", encoding="utf-8")
+        (trial / "world-configured.sdf").write_text("<sdf/>\n", encoding="utf-8")
+        (trial / "px4-ulogs/agent-0.ulg").write_bytes(b"ulog")
+    return source, names
+
+
+def test_capacity_snapshot_requires_twelve_slots_and_indexes_every_omitted_file(tmp_path):
+    source, names = _capacity_snapshot_source(tmp_path)
+    target = tmp_path / "capacity-target"
+
+    index = snapshot_camera_render_capacity_campaign(source, target)
+
+    assert index["schema"] == "flydrones-camera-render-capacity-artifacts-v1"
+    assert list(index["trials"]) == names
+    assert (target / "campaign-manifest.json").is_file()
+    assert (target / "campaign-summary.json").is_file()
+    for name in names:
+        assert (target / name / "trial-config.json").is_file()
+        assert (target / name / "manifest.json").is_file()
+        assert (target / name / "summary.json").is_file()
+        assert (target / name / "cleanup-evidence.json").is_file()
+        assert (target / name / "px4-build-evidence.json").is_file()
+        assert set(index["trials"][name]) == {
+            "camera-phase.jsonl",
+            "clock-probe.csv",
+            "launch.log",
+            "px4-ulogs/agent-0.ulg",
+            "world-configured.sdf",
+        }
+    assert (target / names[0] / "renderer-attestation.json").is_file()
+    verify_camera_render_capacity_snapshot(source, target)
+
+
+def test_capacity_snapshot_rejects_missing_extra_or_changed_raw_evidence(tmp_path):
+    source, names = _capacity_snapshot_source(tmp_path)
+    target = tmp_path / "capacity-target"
+    snapshot_camera_render_capacity_campaign(source, target)
+
+    (source / names[0] / "clock-probe.csv").write_text("changed\n", encoding="utf-8")
+    with pytest.raises(ValueError, match="raw artifact index"):
+        verify_camera_render_capacity_snapshot(source, target)
+
+    (source / names[0] / "clock-probe.csv").write_text(
+        "monotonic_s,sim_ns\n1,2\n", encoding="utf-8"
+    )
+    (source / "unexpected-slot").mkdir()
+    with pytest.raises(ValueError, match="slot identities"):
+        verify_camera_render_capacity_snapshot(source, target)

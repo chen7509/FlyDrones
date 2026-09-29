@@ -1,0 +1,81 @@
+{
+  "camera_phase": {
+    "accepted": true,
+    "adjacent_spacing_median_error_by_pair_ns": {},
+    "adjacent_spacing_median_error_ns": 0,
+    "cross_model_error_count": 0,
+    "depth_subscription_absent": false,
+    "duplicate_image_count": 0,
+    "duplicate_trigger_count": 0,
+    "epoch_ns": 72300000000,
+    "max_simultaneous_cameras_10ms": 1,
+    "missed_trigger_count": 0,
+    "mode": "phased",
+    "queue_overflow_count": 0,
+    "reasons": [],
+    "schema": "flydrones-camera-phase-summary-v1",
+    "target_offsets_ns": [
+      0
+    ],
+    "trigger_stream_count": 5,
+    "unmatched_image_count": 0,
+    "unmatched_trigger_count": 0,
+    "vehicle_count": 1,
+    "vehicles": {
+      "0": {
+        "format": "R_FLOAT32",
+        "frequency_hz": 10.001333511134819,
+        "height": 120,
+        "image_count": 301,
+        "interval_max_ns": 116000000,
+        "interval_p50_ns": 100000000,
+        "interval_p95_ns": 104000000,
+        "interval_p99_ns": 116000000,
+        "mean_frequency_hz": 10.001333511134819,
+        "phase_error_max_ns": 12000000,
+        "phase_error_p50_ns": 4000000,
+        "phase_error_p95_ns": 8000000,
+        "phase_median_ns": 4000000,
+        "width": 160
+      }
+    }
+  },
+  "native_metrics": {
+    "callback_cpu_ns": 39588658,
+    "compiler": "13.3.0",
+    "dropped_count": 0,
+    "event": "stop",
+    "executable_sha256": "c5d5275ad34118670a984532ace70eff797d9bf4969a4fdaebdb6fd45b331b85",
+    "gz_msgs_version": "10.4.0",
+    "gz_transport_version": "13.6.0",
+    "image_payload_bytes_seen": 59260912,
+    "implementation": "native-cpp",
+    "queue_high_watermark": 2,
+    "source_sha256": "55d23b4be088a449d62c50f3a7f2106252e37122ebcc5e9ee8887cb83a509801",
+    "subscriber_count": 1,
+    "wall_monotonic_ns": 1364066080237,
+    "writer_cpu_ns": 121448455232
+  },
+  "runtime": {
+    "resources": {
+      "accepted": true,
+      "gazebo": {
+        "cpu_seconds_delta": 142.51,
+        "pid": 3943,
+        "rss_peak_bytes": 581570560,
+        "samples": 627,
+        "threads_peak": 55
+      },
+      "gpu": {
+        "memory_peak_mib": 171.0,
+        "numeric_samples": 99,
+        "samples": 99,
+        "utilization_peak_percent": 1.0
+      }
+    },
+    "rtf": {
+      "scored_window": 0.5792340545208352
+    }
+  },
+  "schema": "flydrones-camera-render-capacity-summary-v1"
+}

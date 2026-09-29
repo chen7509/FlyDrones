@@ -1,0 +1,44 @@
+{
+  "accepted": true,
+  "end": {
+    "accepted": true,
+    "actual": {
+      "0": 1,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0
+    },
+    "expected": {
+      "0": 1,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0
+    },
+    "reasons": [],
+    "schema": "flydrones-depth-topic-connections-v1",
+    "subscriber_count": 1
+  },
+  "schema": "flydrones-depth-topic-connection-pair-v1",
+  "start": {
+    "accepted": true,
+    "actual": {
+      "0": 1,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0
+    },
+    "expected": {
+      "0": 1,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0
+    },
+    "reasons": [],
+    "schema": "flydrones-depth-topic-connections-v1",
+    "subscriber_count": 1
+  }
+}

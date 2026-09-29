@@ -1,0 +1,1614 @@
+{
+  "schema": "flydrones-camera-render-capacity-artifacts-v1",
+  "campaign_id": "task7-frozen-20260929-234951",
+  "trials": {
+    "capacity-01-idle-0-r1": {
+      "camera-model-configured.sdf": {
+        "sha256": "9112dc3d3b331558c56d300bf4ba572f346e51e03989cd0d4273c82a74703e9e",
+        "bytes": 1418
+      },
+      "camera-phase.jsonl": {
+        "sha256": "8d399fb244e68ca82681d6c345b507d1dddd82f6233975e892b166946c6d09d0",
+        "bytes": 76051
+      },
+      "camera-scheduler.jsonl": {
+        "sha256": "d2f19884b8683eaace40d00d3c539bbb42c5a28b8816175ba63dac48eb873eb5",
+        "bytes": 825444
+      },
+      "capacity-world-resume.log": {
+        "sha256": "46eeeedc969f106320d874ff0cb0c5c1ea169952665865f64b8f5318d626c8a3",
+        "bytes": 12
+      },
+      "clock-probe.csv": {
+        "sha256": "3d6fd0f65866adc37e3d909363f61b429566a96f5f40e10716a7b71905636417",
+        "bytes": 1706328
+      },
+      "gazebo.stderr.log": {
+        "sha256": "fb1e4d47aabaf8e1f60fca27d87d801bb6e749fb126f8324ce1a8799262559bb",
+        "bytes": 8435
+      },
+      "gazebo.stdout.log": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "gpu-probe.csv": {
+        "sha256": "b159ff0a3fd978c58f70ba911e45d730df767ba40e81557cd86c9ad31e205744",
+        "bytes": 8343
+      },
+      "launch.log": {
+        "sha256": "2467845d6174adc4c77bad3897d94e23bd1b4b6a766392da27a81fc93d4fe29d",
+        "bytes": 1176
+      },
+      "observer.log": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "observer.pid": {
+        "sha256": "de0cffdcbb781aeca193f4b4cc0175494e61c2b4421681948a4fefdc564b7842",
+        "bytes": 5
+      },
+      "px4-console/agent-0-err.log": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "px4-console/agent-0-out.log": {
+        "sha256": "88f3c7c0426b7877463d17a565e88b98c9e92afbdc6d4655d65ecd71173d601c",
+        "bytes": 4356
+      },
+      "px4-console/agent-0-startup-health.json": {
+        "sha256": "47b3fbb630a9d45e323af3c33cabc5ea08737b7f0c403f1bff5eb3759f3119ef",
+        "bytes": 164
+      },
+      "px4-console/agent-1-err.log": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "px4-console/agent-1-out.log": {
+        "sha256": "3b4422f93c9605cba3794d6f0f348a3d70b9e366a385c0b181fcad85563c1c9d",
+        "bytes": 4423
+      },
+      "px4-console/agent-1-startup-health.json": {
+        "sha256": "0c534d7d3cf1e689f231f7dbd5659f7cedd7a704de4a6575d9ef78fdddc2af7a",
+        "bytes": 164
+      },
+      "px4-console/agent-2-err.log": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "px4-console/agent-2-out.log": {
+        "sha256": "7a20565fe45741aa33d170c6242b7db3d2182e289d880e2fcd58cc1ef8dd56f8",
+        "bytes": 4282
+      },
+      "px4-console/agent-2-startup-health.json": {
+        "sha256": "0dffb8dc115810e121f2e5461d51e3637ca85b8dd6700ed5be463eadb64066f7",
+        "bytes": 164
+      },
+      "px4-console/agent-3-err.log": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "px4-console/agent-3-out.log": {
+        "sha256": "58b68f1a6d4a31fcc92199b9c1e63f258327fac020d6de2c878eb63a4bb3c15d",
+        "bytes": 3897
+      },
+      "px4-console/agent-3-startup-health.json": {
+        "sha256": "23b6068ee4fcb86439bef178538b005ef3771b1ac6680f68ec1ed3ceece7c694",
+        "bytes": 164
+      },
+      "px4-console/agent-4-err.log": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "px4-console/agent-4-out.log": {
+        "sha256": "03418ddca981f259b96a9e26f4a7ec4c5c1606a6c3c92a3e5cae889c8740dd20",
+        "bytes": 3447
+      },
+      "px4-console/agent-4-startup-health.json": {
+        "sha256": "8189f2882417839624909f7ecabe7e94e447a8b93dca496a4e8c2c8500b3f71e",
+        "bytes": 164
+      },
+      "px4-ulogs/agent-0.ulg": {
+        "sha256": "f8a2554e2e112badad2b1227d5be6b05dfb4a8eb74b918175fd8f09c121a8b30",
+        "bytes": 35012130
+      },
+      "px4-ulogs/agent-1.ulg": {
+        "sha256": "ef5ae80b87f84f3e0d99aa19b4b9b7549f5ee3bf6d4fa28c0d573652a95e9e14",
+        "bytes": 34873601
+      },
+      "px4-ulogs/agent-2.ulg": {
+        "sha256": "e679e88fa78bdecae7dc6812a010874ae5746a5b39442d3b595f03a595ea1a84",
+        "bytes": 34918599
+      },
+      "px4-ulogs/agent-3.ulg": {
+        "sha256": "f2ac788dd501fb3c4c64745005bd9273dcf9f4571abf46bbae00355fad85fa1c",
+        "bytes": 34825506
+      },
+      "px4-ulogs/agent-4.ulg": {
+        "sha256": "c0eb31de886f09552c05d8f492ecd05bcf52a8737a80775305f5d37fcbdcb244",
+        "bytes": 43632092
+      },
+      "renderer-phase-complete.marker": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "resource-probe.csv": {
+        "sha256": "d0a100fbde04374ed4fb9d616330540ceef4fdba49b973d589a4d2de59bd5533",
+        "bytes": 103470
+      },
+      "runtime-probe.log": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "scheduler.log": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "stop.log": {
+        "sha256": "8ec3709179d04b20d8395f3dd486e08171c2d1a47c3c6be217276db81fef716b",
+        "bytes": 53
+      },
+      "trial-complete.marker": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "world-configured.sdf": {
+        "sha256": "53af9b48122755d9deb4e250d6a9a58ee6e45cfe767cb5d9d7bea7ec69a71c50",
+        "bytes": 4936
+      }
+    },
+    "capacity-02-native-1-r1": {
+      "camera-model-configured.sdf": {
+        "sha256": "9112dc3d3b331558c56d300bf4ba572f346e51e03989cd0d4273c82a74703e9e",
+        "bytes": 1418
+      },
+      "camera-phase.jsonl": {
+        "sha256": "28017235f92bc9396b1fe6126246b06840cbf7c6d142d544354b693983c092d8",
+        "bytes": 297875
+      },
+      "camera-scheduler.jsonl": {
+        "sha256": "9fe4c5f8bb527472c306f04f6b9ee456affa55344f0fde2700bb454e72458387",
+        "bytes": 852389
+      },
+      "capacity-world-resume.log": {
+        "sha256": "46eeeedc969f106320d874ff0cb0c5c1ea169952665865f64b8f5318d626c8a3",
+        "bytes": 12
+      },
+      "clock-probe.csv": {
+        "sha256": "4785c761ce3b2527847f827646ec2f9eec5e1532c04880493310904622da6d83",
+        "bytes": 1848987
+      },
+      "gazebo.stderr.log": {
+        "sha256": "b90f87c28b97546b0abe73fb8f1ce6b11567f9cbcad964db1f0137693863fbee",
+        "bytes": 8647
+      },
+      "gazebo.stdout.log": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "gpu-probe.csv": {
+        "sha256": "32be0be4b69cfdd48cc34b133fa1dbef3574f0c864290ef30568343dd5e16c64",
+        "bytes": 8686
+      },
+      "launch.log": {
+        "sha256": "2cba4e462332be04322ec9888aee675c15ac4e5e1246ae6b58614f09915e9579",
+        "bytes": 1178
+      },
+      "observer.log": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "observer.pid": {
+        "sha256": "df02aa7a66746b0e4ea11cbaaee7f098ed7688660512a1f737e05ede0d1aa7c1",
+        "bytes": 5
+      },
+      "px4-console/agent-0-err.log": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "px4-console/agent-0-out.log": {
+        "sha256": "19cce327c74e860f70234e474498b9900355e65320e66cdb24c94d7ef9fd5b2f",
+        "bytes": 4314
+      },
+      "px4-console/agent-0-startup-health.json": {
+        "sha256": "47b3fbb630a9d45e323af3c33cabc5ea08737b7f0c403f1bff5eb3759f3119ef",
+        "bytes": 164
+      },
+      "px4-console/agent-1-err.log": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "px4-console/agent-1-out.log": {
+        "sha256": "a537073ad5bcf81abe3d77c4e705ecd568e2a0d51211a7990129eaab3f299553",
+        "bytes": 4381
+      },
+      "px4-console/agent-1-startup-health.json": {
+        "sha256": "0c534d7d3cf1e689f231f7dbd5659f7cedd7a704de4a6575d9ef78fdddc2af7a",
+        "bytes": 164
+      },
+      "px4-console/agent-2-err.log": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "px4-console/agent-2-out.log": {
+        "sha256": "bd54c66e1bd0726a7cde1040e95d0f1206d2f94bcf9ecac848d05486d4f22745",
+        "bytes": 4240
+      },
+      "px4-console/agent-2-startup-health.json": {
+        "sha256": "0dffb8dc115810e121f2e5461d51e3637ca85b8dd6700ed5be463eadb64066f7",
+        "bytes": 164
+      },
+      "px4-console/agent-3-err.log": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "px4-console/agent-3-out.log": {
+        "sha256": "76878fc09c1ea54e3ac16aba9078798d55706435a7ba207357be01dcc5224d25",
+        "bytes": 3714
+      },
+      "px4-console/agent-3-startup-health.json": {
+        "sha256": "23b6068ee4fcb86439bef178538b005ef3771b1ac6680f68ec1ed3ceece7c694",
+        "bytes": 164
+      },
+      "px4-console/agent-4-err.log": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "px4-console/agent-4-out.log": {
+        "sha256": "e09d7c3dea5d1d0f90a5a1634c267bc11e40ef8eb702c94865d56aba71bf7c71",
+        "bytes": 3405
+      },
+      "px4-console/agent-4-startup-health.json": {
+        "sha256": "8189f2882417839624909f7ecabe7e94e447a8b93dca496a4e8c2c8500b3f71e",
+        "bytes": 164
+      },
+      "px4-ulogs/agent-0.ulg": {
+        "sha256": "14e3ce50a8cffb576f1637046d1a77a6c32c77ef96c79a513b89f004655d5e3e",
+        "bytes": 35997067
+      },
+      "px4-ulogs/agent-1.ulg": {
+        "sha256": "82ab7148068856a1ca630d56cadfa12ed50b61eaaa01421221aaeeb3753a7836",
+        "bytes": 35881044
+      },
+      "px4-ulogs/agent-2.ulg": {
+        "sha256": "76b470bd3a6b0681f139547596cd683ac1b5ff8080ca7ad568d4d9fe3bce3463",
+        "bytes": 35840000
+      },
+      "px4-ulogs/agent-3.ulg": {
+        "sha256": "dc01e163dc7a90af54adf37ba6565adc061fe22dc98527a1c74935cef26ceb5c",
+        "bytes": 35744437
+      },
+      "px4-ulogs/agent-4.ulg": {
+        "sha256": "e7c4bc25dfa65af29aec910d57e8b6343ff00011fa6a775ba40c6a4351dc31de",
+        "bytes": 46169453
+      },
+      "renderer-phase-complete.marker": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "resource-probe.csv": {
+        "sha256": "e8f04322802e9f1a66a967cf37167fc6df0f5c20f48af2b3aef34ff8cbced141",
+        "bytes": 111968
+      },
+      "runtime-probe.log": {
+        "sha256": "d30cfe76f67dceafe43cc882b4e21b46e180bf39b2ef2cc26b251a5312baf70c",
+        "bytes": 747
+      },
+      "scheduler.log": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "stop.log": {
+        "sha256": "8ec3709179d04b20d8395f3dd486e08171c2d1a47c3c6be217276db81fef716b",
+        "bytes": 53
+      },
+      "trial-complete.marker": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "world-configured.sdf": {
+        "sha256": "53af9b48122755d9deb4e250d6a9a58ee6e45cfe767cb5d9d7bea7ec69a71c50",
+        "bytes": 4936
+      }
+    },
+    "capacity-03-python-5-r1": {
+      "camera-model-configured.sdf": {
+        "sha256": "9112dc3d3b331558c56d300bf4ba572f346e51e03989cd0d4273c82a74703e9e",
+        "bytes": 1418
+      },
+      "capacity-world-resume.log": {
+        "sha256": "46eeeedc969f106320d874ff0cb0c5c1ea169952665865f64b8f5318d626c8a3",
+        "bytes": 12
+      },
+      "clock-probe.csv": {
+        "sha256": "e9b81a1195bfe7e4ef08b6e11d31011ccba9b8c9387ad000e5b248e34389b49f",
+        "bytes": 999901
+      },
+      "gazebo.stderr.log": {
+        "sha256": "fb1e4d47aabaf8e1f60fca27d87d801bb6e749fb126f8324ce1a8799262559bb",
+        "bytes": 8435
+      },
+      "gazebo.stdout.log": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "gpu-probe.csv": {
+        "sha256": "5447b38d195a14b9da4a575b142edf7c23e33e12ea92930630888f3686ff45b1",
+        "bytes": 3559
+      },
+      "launch.log": {
+        "sha256": "8f8b822717f4cb6c5587e5de8366af6970939b350b9ef34adf5246c7d7977920",
+        "bytes": 15396
+      },
+      "px4-console/agent-0-err.log": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "px4-console/agent-0-out.log": {
+        "sha256": "67553707a1b95add2f3ee994177ce71a5e8ff2c979c2933e7dd6336ab1716d89",
+        "bytes": 3598
+      },
+      "px4-console/agent-0-startup-health.json": {
+        "sha256": "9e22f75fd69afa065be9cc8b65d23ff9163d6c9948debdc43b90aba1aa2674b8",
+        "bytes": 164
+      },
+      "px4-console/agent-1-err.log": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "px4-console/agent-1-out.log": {
+        "sha256": "98c7b8d5582afab367a9e244aaab3537bba6a24b61bebc3542a55933cdf4f1fb",
+        "bytes": 3665
+      },
+      "px4-console/agent-1-startup-health.json": {
+        "sha256": "8f2dff322e75d2eb723717a888c67c81a1939df14625b5693ada930facaac342",
+        "bytes": 164
+      },
+      "px4-console/agent-2-err.log": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "px4-console/agent-2-out.log": {
+        "sha256": "25f016d0a6cb44a0c179346ecc59d501f28e701e29279fcc3a7cb135746e00b3",
+        "bytes": 3524
+      },
+      "px4-console/agent-2-startup-health.json": {
+        "sha256": "002be6964878f6cc27f6dd747f9b4087109209593c0ba3b281087fd2f17de201",
+        "bytes": 164
+      },
+      "px4-console/agent-3-err.log": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "px4-console/agent-3-out.log": {
+        "sha256": "0862aa34eda5422fdcb3f6a7d9a63e01afd2a2ad65bcf825bb4f5ebe85a17ddd",
+        "bytes": 2998
+      },
+      "px4-console/agent-3-startup-health.json": {
+        "sha256": "e846325171dcdf0648c00c16057ec21840c3bab9e72501bb3164059118f6bda8",
+        "bytes": 164
+      },
+      "px4-console/agent-4-err.log": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "px4-console/agent-4-out.log": {
+        "sha256": "d0d3ba238eff8fc343904c113ae462c31dc2d871a409565877e7042cf9841cba",
+        "bytes": 2862
+      },
+      "px4-console/agent-4-startup-health.json": {
+        "sha256": "8189f2882417839624909f7ecabe7e94e447a8b93dca496a4e8c2c8500b3f71e",
+        "bytes": 164
+      },
+      "px4-ulogs/agent-0.ulg": {
+        "sha256": "0c12f600fd0cd7568ce62d7fa700019e7368aa8ba3ba71b86304e3e826c01b61",
+        "bytes": 8960724
+      },
+      "px4-ulogs/agent-1.ulg": {
+        "sha256": "839ecf91305e0d174226e7bfc8da74a5803c5c9b50beec8eb44778aaca2301df",
+        "bytes": 8918109
+      },
+      "px4-ulogs/agent-2.ulg": {
+        "sha256": "85dcfe5f995d5c1b69b4db4a41392bbbffe307eec91f208d77ce919a9926a4d0",
+        "bytes": 8865849
+      },
+      "px4-ulogs/agent-3.ulg": {
+        "sha256": "2b5e37ae00036f796763e84fcf3f669f67e54a0468805edc9228422ceeee66f4",
+        "bytes": 8818300
+      },
+      "px4-ulogs/agent-4.ulg": {
+        "sha256": "2eae0d37bd68619ba66360ad28497b5baa30cbbe9f62bcc235193ba3219e491f",
+        "bytes": 19221711
+      },
+      "resource-probe.csv": {
+        "sha256": "a726caf23b8e8547a80386319e0219ecdb3d4f368b00493fe1bf5031dc6d93a5",
+        "bytes": 50232
+      },
+      "runtime-probe.log": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "stop.log": {
+        "sha256": "8ec3709179d04b20d8395f3dd486e08171c2d1a47c3c6be217276db81fef716b",
+        "bytes": 53
+      },
+      "trial-complete.marker": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "world-configured.sdf": {
+        "sha256": "53af9b48122755d9deb4e250d6a9a58ee6e45cfe767cb5d9d7bea7ec69a71c50",
+        "bytes": 4936
+      }
+    },
+    "capacity-04-native-5-r1": {
+      "camera-model-configured.sdf": {
+        "sha256": "9112dc3d3b331558c56d300bf4ba572f346e51e03989cd0d4273c82a74703e9e",
+        "bytes": 1418
+      },
+      "capacity-world-resume.log": {
+        "sha256": "46eeeedc969f106320d874ff0cb0c5c1ea169952665865f64b8f5318d626c8a3",
+        "bytes": 12
+      },
+      "clock-probe.csv": {
+        "sha256": "9108616967982e8155e38cc25953736f2646ab85ff340b4647b9efdbf2e49bb8",
+        "bytes": 1001369
+      },
+      "gazebo.stderr.log": {
+        "sha256": "fb1e4d47aabaf8e1f60fca27d87d801bb6e749fb126f8324ce1a8799262559bb",
+        "bytes": 8435
+      },
+      "gazebo.stdout.log": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "gpu-probe.csv": {
+        "sha256": "3cdd32d8a98a23fb8dc792a8635e9ea2a5f86ee36f0572f1b1795c68bfe0a925",
+        "bytes": 3559
+      },
+      "launch.log": {
+        "sha256": "3f4f0931697a25e9dfac5cc8f365964f87919932c1a0d674820d0faed98ed988",
+        "bytes": 15396
+      },
+      "px4-console/agent-0-err.log": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "px4-console/agent-0-out.log": {
+        "sha256": "552270dfcc9554e9243fcd15e8cbb2f021747cd3932aa35c128009df7f634130",
+        "bytes": 3598
+      },
+      "px4-console/agent-0-startup-health.json": {
+        "sha256": "9e22f75fd69afa065be9cc8b65d23ff9163d6c9948debdc43b90aba1aa2674b8",
+        "bytes": 164
+      },
+      "px4-console/agent-1-err.log": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "px4-console/agent-1-out.log": {
+        "sha256": "fcfad1a3be04d39c58fb3f779dc4f272ba5bdb8796a8e61ca91500a6db833993",
+        "bytes": 3665
+      },
+      "px4-console/agent-1-startup-health.json": {
+        "sha256": "8f2dff322e75d2eb723717a888c67c81a1939df14625b5693ada930facaac342",
+        "bytes": 164
+      },
+      "px4-console/agent-2-err.log": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "px4-console/agent-2-out.log": {
+        "sha256": "e2567c8607106d4539d9eb28334750f95f696492f589aabdf8b2107af669103c",
+        "bytes": 3524
+      },
+      "px4-console/agent-2-startup-health.json": {
+        "sha256": "002be6964878f6cc27f6dd747f9b4087109209593c0ba3b281087fd2f17de201",
+        "bytes": 164
+      },
+      "px4-console/agent-3-err.log": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "px4-console/agent-3-out.log": {
+        "sha256": "fd93b1adfd66812f2233ceaae86efba1444a80754ee1655b90d52a8991207303",
+        "bytes": 2998
+      },
+      "px4-console/agent-3-startup-health.json": {
+        "sha256": "e846325171dcdf0648c00c16057ec21840c3bab9e72501bb3164059118f6bda8",
+        "bytes": 164
+      },
+      "px4-console/agent-4-err.log": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "px4-console/agent-4-out.log": {
+        "sha256": "d038b31839026152d3cf0e8d9eb9646494fae65f791bcf19efe5ef3e1ec66e78",
+        "bytes": 2862
+      },
+      "px4-console/agent-4-startup-health.json": {
+        "sha256": "8189f2882417839624909f7ecabe7e94e447a8b93dca496a4e8c2c8500b3f71e",
+        "bytes": 164
+      },
+      "px4-ulogs/agent-0.ulg": {
+        "sha256": "7fe77bb9c508b0b70e321c76eb682305cfefe35ded2dfabfbf02608694b48735",
+        "bytes": 8974426
+      },
+      "px4-ulogs/agent-1.ulg": {
+        "sha256": "254514d831961a795d646173e29997e6449160eaa740d32d19b0b1ff4442346e",
+        "bytes": 8925409
+      },
+      "px4-ulogs/agent-2.ulg": {
+        "sha256": "a36066c20888f334e66cb6ccdce0418f1692022465ded118e9a5dbb7bf1daf45",
+        "bytes": 8878200
+      },
+      "px4-ulogs/agent-3.ulg": {
+        "sha256": "cf0b7362e2d9b2876e90902cba3f2010f04c4ec8d3d99bb0d615cf9726e3506f",
+        "bytes": 8819322
+      },
+      "px4-ulogs/agent-4.ulg": {
+        "sha256": "538e8581f687a1c6d307f427b46f7d723f5927de930e751ec50bf3627937e396",
+        "bytes": 19220231
+      },
+      "resource-probe.csv": {
+        "sha256": "222163b7725798e65249416913732752eb316bb344c5752e1f007e524e320555",
+        "bytes": 51121
+      },
+      "runtime-probe.log": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "stop.log": {
+        "sha256": "8ec3709179d04b20d8395f3dd486e08171c2d1a47c3c6be217276db81fef716b",
+        "bytes": 53
+      },
+      "trial-complete.marker": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "world-configured.sdf": {
+        "sha256": "53af9b48122755d9deb4e250d6a9a58ee6e45cfe767cb5d9d7bea7ec69a71c50",
+        "bytes": 4936
+      }
+    },
+    "capacity-05-native-5-r2": {
+      "camera-model-configured.sdf": {
+        "sha256": "9112dc3d3b331558c56d300bf4ba572f346e51e03989cd0d4273c82a74703e9e",
+        "bytes": 1418
+      },
+      "capacity-world-resume.log": {
+        "sha256": "46eeeedc969f106320d874ff0cb0c5c1ea169952665865f64b8f5318d626c8a3",
+        "bytes": 12
+      },
+      "clock-probe.csv": {
+        "sha256": "c6ab8fe80e5fd6c0150c543c908e14d7e30bafb9935b52f309dcc47207b43b7a",
+        "bytes": 1006840
+      },
+      "gazebo.stderr.log": {
+        "sha256": "fb1e4d47aabaf8e1f60fca27d87d801bb6e749fb126f8324ce1a8799262559bb",
+        "bytes": 8435
+      },
+      "gazebo.stdout.log": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "gpu-probe.csv": {
+        "sha256": "1090429231b679c55cb119c7b067f0a27cb194e18f40b217b9a930862a12271d",
+        "bytes": 3582
+      },
+      "launch.log": {
+        "sha256": "99b975c70139cc46d88ea1acb637b2104a245b9e0dcc8da9c4236ba5c1899ad3",
+        "bytes": 15396
+      },
+      "px4-console/agent-0-err.log": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "px4-console/agent-0-out.log": {
+        "sha256": "c4196d8d514201e649e90ee1514d1219574506393508d2c788f312ad4c1aecb1",
+        "bytes": 3598
+      },
+      "px4-console/agent-0-startup-health.json": {
+        "sha256": "9e22f75fd69afa065be9cc8b65d23ff9163d6c9948debdc43b90aba1aa2674b8",
+        "bytes": 164
+      },
+      "px4-console/agent-1-err.log": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "px4-console/agent-1-out.log": {
+        "sha256": "b794d9c2b27c32c5786bb3da98797f5b837e12ee006aa9d33286e1a4f26383e6",
+        "bytes": 3665
+      },
+      "px4-console/agent-1-startup-health.json": {
+        "sha256": "8f2dff322e75d2eb723717a888c67c81a1939df14625b5693ada930facaac342",
+        "bytes": 164
+      },
+      "px4-console/agent-2-err.log": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "px4-console/agent-2-out.log": {
+        "sha256": "b231da12e82f556fcc266feb7c5d3bbfb7b97ed629ca61984bde501e597a0167",
+        "bytes": 3524
+      },
+      "px4-console/agent-2-startup-health.json": {
+        "sha256": "002be6964878f6cc27f6dd747f9b4087109209593c0ba3b281087fd2f17de201",
+        "bytes": 164
+      },
+      "px4-console/agent-3-err.log": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "px4-console/agent-3-out.log": {
+        "sha256": "3d7c99463a639dc95a1bd46462cbc080f62308da34345dfd478016abd93aa43f",
+        "bytes": 2998
+      },
+      "px4-console/agent-3-startup-health.json": {
+        "sha256": "e846325171dcdf0648c00c16057ec21840c3bab9e72501bb3164059118f6bda8",
+        "bytes": 164
+      },
+      "px4-console/agent-4-err.log": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "px4-console/agent-4-out.log": {
+        "sha256": "c1a900134fd55b8628c1309c2bd95cf628004d490ed502e1f555e0a4d6d68155",
+        "bytes": 2862
+      },
+      "px4-console/agent-4-startup-health.json": {
+        "sha256": "8189f2882417839624909f7ecabe7e94e447a8b93dca496a4e8c2c8500b3f71e",
+        "bytes": 164
+      },
+      "px4-ulogs/agent-0.ulg": {
+        "sha256": "84ebe0bbc40c812864e4c43eb9ec1f8be81c42f98f7ec453867321e210545cf4",
+        "bytes": 9002389
+      },
+      "px4-ulogs/agent-1.ulg": {
+        "sha256": "cd08c794672d696b41c3117e54128c73526ca3d00e62e0af42ad28e52736c1ab",
+        "bytes": 8913458
+      },
+      "px4-ulogs/agent-2.ulg": {
+        "sha256": "bbd39200d8fee5014a56565452cb9c51bab51fdf316fc343dcbb7e618ef6a77c",
+        "bytes": 8886860
+      },
+      "px4-ulogs/agent-3.ulg": {
+        "sha256": "0d7e6af6446ee3856fdbed66e42671fec2b8d34df0bf8ca94d2af3eae55e4084",
+        "bytes": 8836097
+      },
+      "px4-ulogs/agent-4.ulg": {
+        "sha256": "29f25a70ef8ba2bd2ee0afa3ddf8324b202f29ffceb073860a7bde5eef00dc7c",
+        "bytes": 19273618
+      },
+      "resource-probe.csv": {
+        "sha256": "714b1f6f93a9083165071f5bf70d4f877aa4778875795a0d4eae1dce6de2dfc5",
+        "bytes": 50660
+      },
+      "runtime-probe.log": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "stop.log": {
+        "sha256": "8ec3709179d04b20d8395f3dd486e08171c2d1a47c3c6be217276db81fef716b",
+        "bytes": 53
+      },
+      "trial-complete.marker": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "world-configured.sdf": {
+        "sha256": "53af9b48122755d9deb4e250d6a9a58ee6e45cfe767cb5d9d7bea7ec69a71c50",
+        "bytes": 4936
+      }
+    },
+    "capacity-06-python-5-r2": {
+      "camera-model-configured.sdf": {
+        "sha256": "9112dc3d3b331558c56d300bf4ba572f346e51e03989cd0d4273c82a74703e9e",
+        "bytes": 1418
+      },
+      "capacity-world-resume.log": {
+        "sha256": "46eeeedc969f106320d874ff0cb0c5c1ea169952665865f64b8f5318d626c8a3",
+        "bytes": 12
+      },
+      "clock-probe.csv": {
+        "sha256": "7fd08ed2a63fc9c847a565e3fc22077a9175c2843e1ae5947a97b545a3d288be",
+        "bytes": 1004447
+      },
+      "gazebo.stderr.log": {
+        "sha256": "fb1e4d47aabaf8e1f60fca27d87d801bb6e749fb126f8324ce1a8799262559bb",
+        "bytes": 8435
+      },
+      "gazebo.stdout.log": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "gpu-probe.csv": {
+        "sha256": "dd3c603447f8a918679c05a957f7ed438e24921fa3e0eae9d3531000519c98bf",
+        "bytes": 3604
+      },
+      "launch.log": {
+        "sha256": "3a7c2a8186f26d764b43098aa4d0112f6834ea109cdffa1db6e8395ad88d8f9e",
+        "bytes": 15368
+      },
+      "px4-console/agent-0-err.log": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "px4-console/agent-0-out.log": {
+        "sha256": "0e34dbff637f62cdbd1a8226d3a4b9db848ba7a932cb4a7169edcb4e5643ef83",
+        "bytes": 3598
+      },
+      "px4-console/agent-0-startup-health.json": {
+        "sha256": "9e22f75fd69afa065be9cc8b65d23ff9163d6c9948debdc43b90aba1aa2674b8",
+        "bytes": 164
+      },
+      "px4-console/agent-1-err.log": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "px4-console/agent-1-out.log": {
+        "sha256": "884f7e73be392243f1e865da89b70035859c3bca24575bc42c57024a65fe6273",
+        "bytes": 3665
+      },
+      "px4-console/agent-1-startup-health.json": {
+        "sha256": "8f2dff322e75d2eb723717a888c67c81a1939df14625b5693ada930facaac342",
+        "bytes": 164
+      },
+      "px4-console/agent-2-err.log": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "px4-console/agent-2-out.log": {
+        "sha256": "29162442d5db7152259b04ef696993066c4f62fac51e16390d67f4377f2f99c4",
+        "bytes": 3524
+      },
+      "px4-console/agent-2-startup-health.json": {
+        "sha256": "002be6964878f6cc27f6dd747f9b4087109209593c0ba3b281087fd2f17de201",
+        "bytes": 164
+      },
+      "px4-console/agent-3-err.log": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "px4-console/agent-3-out.log": {
+        "sha256": "362c5d8f4cf854188623b0736f4dae5138d999bbf5b7a3c5a9da32317acbe9d5",
+        "bytes": 2998
+      },
+      "px4-console/agent-3-startup-health.json": {
+        "sha256": "e846325171dcdf0648c00c16057ec21840c3bab9e72501bb3164059118f6bda8",
+        "bytes": 164
+      },
+      "px4-console/agent-4-err.log": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "px4-console/agent-4-out.log": {
+        "sha256": "6a6aa64afbe61352bcfcd843518f13ef206ea58cdea026f7553d5f65156e60c1",
+        "bytes": 2820
+      },
+      "px4-console/agent-4-startup-health.json": {
+        "sha256": "8189f2882417839624909f7ecabe7e94e447a8b93dca496a4e8c2c8500b3f71e",
+        "bytes": 164
+      },
+      "px4-ulogs/agent-0.ulg": {
+        "sha256": "0ed0bf7bd298d85b6bd200769bda530422af190949bda831d2e0de15ed3c25b8",
+        "bytes": 9041598
+      },
+      "px4-ulogs/agent-1.ulg": {
+        "sha256": "66229adc4ca78c4bd2ad7be669fcff5dacf44a80df61cdcc81376f8b39c75c12",
+        "bytes": 8968124
+      },
+      "px4-ulogs/agent-2.ulg": {
+        "sha256": "55d2042833295fc4beb641a11142f1b3adcb6e05087986fe2b72211c4dc60856",
+        "bytes": 8945037
+      },
+      "px4-ulogs/agent-3.ulg": {
+        "sha256": "ed3bd43cb67c6c56a124ee3e747a561cd60c750148042aaa560d5e15138577e7",
+        "bytes": 8840338
+      },
+      "px4-ulogs/agent-4.ulg": {
+        "sha256": "988f751dc3874bf50f3bd18b6b7b1978a56352c29b30f9fbd6b1e222ca5f2b2f",
+        "bytes": 19291987
+      },
+      "resource-probe.csv": {
+        "sha256": "e41c870a2826003b9c66410996e0ca500686555528a7b55ad9933aae4faf688c",
+        "bytes": 51876
+      },
+      "runtime-probe.log": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "stop.log": {
+        "sha256": "8ec3709179d04b20d8395f3dd486e08171c2d1a47c3c6be217276db81fef716b",
+        "bytes": 53
+      },
+      "trial-complete.marker": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "world-configured.sdf": {
+        "sha256": "53af9b48122755d9deb4e250d6a9a58ee6e45cfe767cb5d9d7bea7ec69a71c50",
+        "bytes": 4936
+      }
+    },
+    "capacity-07-native-1-r2": {
+      "camera-model-configured.sdf": {
+        "sha256": "9112dc3d3b331558c56d300bf4ba572f346e51e03989cd0d4273c82a74703e9e",
+        "bytes": 1418
+      },
+      "capacity-world-resume.log": {
+        "sha256": "46eeeedc969f106320d874ff0cb0c5c1ea169952665865f64b8f5318d626c8a3",
+        "bytes": 12
+      },
+      "clock-probe.csv": {
+        "sha256": "3f394a2f6c7fcad98d8b4940ae6b66e7fbf5f2196df3c816fe0e9162565f8b3d",
+        "bytes": 1000389
+      },
+      "gazebo.stderr.log": {
+        "sha256": "fb1e4d47aabaf8e1f60fca27d87d801bb6e749fb126f8324ce1a8799262559bb",
+        "bytes": 8435
+      },
+      "gazebo.stdout.log": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "gpu-probe.csv": {
+        "sha256": "2448ebf17dfb7464d2912098dc8f726f42526b9221496a3cd9e9bef507658f9c",
+        "bytes": 3559
+      },
+      "launch.log": {
+        "sha256": "459c0f542662f47fbc219a34492d587696a5feda1788b393732a47486a236ccb",
+        "bytes": 15454
+      },
+      "px4-console/agent-0-err.log": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "px4-console/agent-0-out.log": {
+        "sha256": "613f9d15fd75bb6ded91fb267ace8fa54db7f110909974a427ac3bf88aee1acc",
+        "bytes": 3598
+      },
+      "px4-console/agent-0-startup-health.json": {
+        "sha256": "9e22f75fd69afa065be9cc8b65d23ff9163d6c9948debdc43b90aba1aa2674b8",
+        "bytes": 164
+      },
+      "px4-console/agent-1-err.log": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "px4-console/agent-1-out.log": {
+        "sha256": "bb9ebab1b1dc9d324c17277efbac2e5866f9694e52551af611a3195b8e94642a",
+        "bytes": 3665
+      },
+      "px4-console/agent-1-startup-health.json": {
+        "sha256": "8f2dff322e75d2eb723717a888c67c81a1939df14625b5693ada930facaac342",
+        "bytes": 164
+      },
+      "px4-console/agent-2-err.log": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "px4-console/agent-2-out.log": {
+        "sha256": "47157390ee378da81341a8b351ca24058de1b50eb8f34b17de7377d7a6d2443e",
+        "bytes": 3524
+      },
+      "px4-console/agent-2-startup-health.json": {
+        "sha256": "002be6964878f6cc27f6dd747f9b4087109209593c0ba3b281087fd2f17de201",
+        "bytes": 164
+      },
+      "px4-console/agent-3-err.log": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "px4-console/agent-3-out.log": {
+        "sha256": "ff04361fb8a774b2bed4f2f0751d02305369e02256b4c39eb956e0c8be0d9a80",
+        "bytes": 3139
+      },
+      "px4-console/agent-3-startup-health.json": {
+        "sha256": "e846325171dcdf0648c00c16057ec21840c3bab9e72501bb3164059118f6bda8",
+        "bytes": 164
+      },
+      "px4-console/agent-4-err.log": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "px4-console/agent-4-out.log": {
+        "sha256": "3f30ae063c77d3f99393eeb0d6cfa172869e01856781cae3daf239a2f4aa1f28",
+        "bytes": 2862
+      },
+      "px4-console/agent-4-startup-health.json": {
+        "sha256": "8189f2882417839624909f7ecabe7e94e447a8b93dca496a4e8c2c8500b3f71e",
+        "bytes": 164
+      },
+      "px4-ulogs/agent-0.ulg": {
+        "sha256": "1c97e7e4f9fae8df117c92b39933814008d28fa2aba94b2d24c24f717d70409f",
+        "bytes": 8988947
+      },
+      "px4-ulogs/agent-1.ulg": {
+        "sha256": "7046bb295f4ecae728b72928ae6884183193a758b54c34a745ae3a92bf80e396",
+        "bytes": 8915552
+      },
+      "px4-ulogs/agent-2.ulg": {
+        "sha256": "50293911760e777270d57ce7d8d6473a1d3de872f142dffad28f6d4bb46aa492",
+        "bytes": 8871456
+      },
+      "px4-ulogs/agent-3.ulg": {
+        "sha256": "aa3b83197587f3e7b0e5d43e2af37a61c73a1dd771451511275f278e661961da",
+        "bytes": 8807378
+      },
+      "px4-ulogs/agent-4.ulg": {
+        "sha256": "de25250f365e5e7dd125db78875764dcf67735e3cfe03b24e9758dc54a68ce15",
+        "bytes": 19197914
+      },
+      "resource-probe.csv": {
+        "sha256": "dbaf39a721cbdd7a8458631deade8cd3a0ce9ed9277c061e6b2c82c5de622a0a",
+        "bytes": 50897
+      },
+      "runtime-probe.log": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "stop.log": {
+        "sha256": "8ec3709179d04b20d8395f3dd486e08171c2d1a47c3c6be217276db81fef716b",
+        "bytes": 53
+      },
+      "trial-complete.marker": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "world-configured.sdf": {
+        "sha256": "53af9b48122755d9deb4e250d6a9a58ee6e45cfe767cb5d9d7bea7ec69a71c50",
+        "bytes": 4936
+      }
+    },
+    "capacity-08-idle-0-r2": {
+      "camera-model-configured.sdf": {
+        "sha256": "9112dc3d3b331558c56d300bf4ba572f346e51e03989cd0d4273c82a74703e9e",
+        "bytes": 1418
+      },
+      "capacity-world-resume.log": {
+        "sha256": "46eeeedc969f106320d874ff0cb0c5c1ea169952665865f64b8f5318d626c8a3",
+        "bytes": 12
+      },
+      "clock-probe.csv": {
+        "sha256": "43ae9a5e5617904eec3f43b3f6c2ee24b12bca9a935828bdc7679c8322a8f6cc",
+        "bytes": 1005026
+      },
+      "gazebo.stderr.log": {
+        "sha256": "fb1e4d47aabaf8e1f60fca27d87d801bb6e749fb126f8324ce1a8799262559bb",
+        "bytes": 8435
+      },
+      "gazebo.stdout.log": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "gpu-probe.csv": {
+        "sha256": "f779da11b44578b96e8120516adfb272efeddbb752f1d1f27df5020ebd5d9531",
+        "bytes": 3582
+      },
+      "launch.log": {
+        "sha256": "650509495986e502f6d95be0314565ac3213bfed0f84873dc35d18321da00100",
+        "bytes": 15282
+      },
+      "px4-console/agent-0-err.log": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "px4-console/agent-0-out.log": {
+        "sha256": "de8bc549eda8add7df52cc92edd9a4528f57b9a757248d13950fd6a72411ca92",
+        "bytes": 3598
+      },
+      "px4-console/agent-0-startup-health.json": {
+        "sha256": "9e22f75fd69afa065be9cc8b65d23ff9163d6c9948debdc43b90aba1aa2674b8",
+        "bytes": 164
+      },
+      "px4-console/agent-1-err.log": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "px4-console/agent-1-out.log": {
+        "sha256": "d73f11d04883815808978f1dd79a2b16ed375f9d6d4200dd8e739519f457bf43",
+        "bytes": 3707
+      },
+      "px4-console/agent-1-startup-health.json": {
+        "sha256": "8f2dff322e75d2eb723717a888c67c81a1939df14625b5693ada930facaac342",
+        "bytes": 164
+      },
+      "px4-console/agent-2-err.log": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "px4-console/agent-2-out.log": {
+        "sha256": "65bb181cc3ca91f67e31b6739a31683ebcefe276defe5ee40779d691222b2b54",
+        "bytes": 3524
+      },
+      "px4-console/agent-2-startup-health.json": {
+        "sha256": "002be6964878f6cc27f6dd747f9b4087109209593c0ba3b281087fd2f17de201",
+        "bytes": 164
+      },
+      "px4-console/agent-3-err.log": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "px4-console/agent-3-out.log": {
+        "sha256": "ec82c73ceaa97b26c21354cce7e5ed37ae773f1303dcdc749919d9bf81fb0402",
+        "bytes": 2998
+      },
+      "px4-console/agent-3-startup-health.json": {
+        "sha256": "e846325171dcdf0648c00c16057ec21840c3bab9e72501bb3164059118f6bda8",
+        "bytes": 164
+      },
+      "px4-console/agent-4-err.log": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "px4-console/agent-4-out.log": {
+        "sha256": "31a507fedac1c937a3e108ff090f4db00a0d800a23743262936e1d5ab2082a69",
+        "bytes": 2707
+      },
+      "px4-console/agent-4-startup-health.json": {
+        "sha256": "425c437d707c9a0d006214e3496af0a170c54fbffeeb3c8aff4cc9416b1e3cd8",
+        "bytes": 164
+      },
+      "px4-ulogs/agent-0.ulg": {
+        "sha256": "dd49888df45f457cf44864d442458ce682c37138af2c0d48f4bc005c1a1ffaf8",
+        "bytes": 8966306
+      },
+      "px4-ulogs/agent-1.ulg": {
+        "sha256": "bd6305555c34865bb03499dc8cd54502409e806b440f28b55f2ce050b70d7aab",
+        "bytes": 8923075
+      },
+      "px4-ulogs/agent-2.ulg": {
+        "sha256": "8ac586c5c4c009ca3916be39cbc52da23360d8df2b568885c0baaab425aba09f",
+        "bytes": 8863433
+      },
+      "px4-ulogs/agent-3.ulg": {
+        "sha256": "4772a3fd3f46274a439de156afe5e3ac91262ad5e7d617469573d9d9359e0a1f",
+        "bytes": 8803809
+      },
+      "px4-ulogs/agent-4.ulg": {
+        "sha256": "2b90a0d0b2108ea7176de394c18bc8112883bfbb635d3a5823e824779a41f639",
+        "bytes": 8844434
+      },
+      "resource-probe.csv": {
+        "sha256": "87ad978dda4e33f261040d9fe236143d0de82b3f72fd122d032fb007ae0f52f4",
+        "bytes": 51063
+      },
+      "runtime-probe.log": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "stop.log": {
+        "sha256": "8ec3709179d04b20d8395f3dd486e08171c2d1a47c3c6be217276db81fef716b",
+        "bytes": 53
+      },
+      "trial-complete.marker": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "world-configured.sdf": {
+        "sha256": "53af9b48122755d9deb4e250d6a9a58ee6e45cfe767cb5d9d7bea7ec69a71c50",
+        "bytes": 4936
+      }
+    },
+    "capacity-09-python-5-r3": {
+      "camera-model-configured.sdf": {
+        "sha256": "9112dc3d3b331558c56d300bf4ba572f346e51e03989cd0d4273c82a74703e9e",
+        "bytes": 1418
+      },
+      "capacity-world-resume.log": {
+        "sha256": "46eeeedc969f106320d874ff0cb0c5c1ea169952665865f64b8f5318d626c8a3",
+        "bytes": 12
+      },
+      "clock-probe.csv": {
+        "sha256": "0fc2df8b29adf867200a7612313112372b42e26fdd321e6ac28e60f265fbcf30",
+        "bytes": 1002740
+      },
+      "gazebo.stderr.log": {
+        "sha256": "fb1e4d47aabaf8e1f60fca27d87d801bb6e749fb126f8324ce1a8799262559bb",
+        "bytes": 8435
+      },
+      "gazebo.stdout.log": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "gpu-probe.csv": {
+        "sha256": "36995200379cfba69c514ba858cf1ba9ca593c75227a98d8475f211b8b23b055",
+        "bytes": 3559
+      },
+      "launch.log": {
+        "sha256": "e47da120478ea7b0d0a86828ded300837542485d71f3afaac055967e0c50607a",
+        "bytes": 15396
+      },
+      "px4-console/agent-0-err.log": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "px4-console/agent-0-out.log": {
+        "sha256": "7200741f0daf8d209713abf9f763de9285d654534661baa31873b08cbe362991",
+        "bytes": 3598
+      },
+      "px4-console/agent-0-startup-health.json": {
+        "sha256": "9e22f75fd69afa065be9cc8b65d23ff9163d6c9948debdc43b90aba1aa2674b8",
+        "bytes": 164
+      },
+      "px4-console/agent-1-err.log": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "px4-console/agent-1-out.log": {
+        "sha256": "463999cdeed86b5a989bf7b6a28eb799aaaaa57ff0d0025f0fbe36c20ae3250e",
+        "bytes": 3665
+      },
+      "px4-console/agent-1-startup-health.json": {
+        "sha256": "8f2dff322e75d2eb723717a888c67c81a1939df14625b5693ada930facaac342",
+        "bytes": 164
+      },
+      "px4-console/agent-2-err.log": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "px4-console/agent-2-out.log": {
+        "sha256": "114f352398b9802cafee3153261fab61d0054327de8856ec3165a51d4ddc047c",
+        "bytes": 3524
+      },
+      "px4-console/agent-2-startup-health.json": {
+        "sha256": "002be6964878f6cc27f6dd747f9b4087109209593c0ba3b281087fd2f17de201",
+        "bytes": 164
+      },
+      "px4-console/agent-3-err.log": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "px4-console/agent-3-out.log": {
+        "sha256": "f7e2a97de9060d8f7d864e2d6eef19924b560e40479a0a8330eb4d17afb4089a",
+        "bytes": 2998
+      },
+      "px4-console/agent-3-startup-health.json": {
+        "sha256": "e846325171dcdf0648c00c16057ec21840c3bab9e72501bb3164059118f6bda8",
+        "bytes": 164
+      },
+      "px4-console/agent-4-err.log": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "px4-console/agent-4-out.log": {
+        "sha256": "7de5fb17c7f60088f98243ed98d47c70f2b78b7ea5fe031e1a4ebaec45d0aa34",
+        "bytes": 2862
+      },
+      "px4-console/agent-4-startup-health.json": {
+        "sha256": "8189f2882417839624909f7ecabe7e94e447a8b93dca496a4e8c2c8500b3f71e",
+        "bytes": 164
+      },
+      "px4-ulogs/agent-0.ulg": {
+        "sha256": "96a203eeb9fe5c6f7eab17e460315883271e3c2d47bb7b2a992bb854a84b9748",
+        "bytes": 8995627
+      },
+      "px4-ulogs/agent-1.ulg": {
+        "sha256": "4210e41386a0428988710acebc770b45b0da24003a65ef1a600cc3c52e517af7",
+        "bytes": 8904048
+      },
+      "px4-ulogs/agent-2.ulg": {
+        "sha256": "653ef20941d9f3bb350f96a05ce00a24d2dc3a0edaeb561828f5c7b704faec6c",
+        "bytes": 8883335
+      },
+      "px4-ulogs/agent-3.ulg": {
+        "sha256": "43f555cf7eb49e38633013a60a694a1ed96c910ef4c37cb0c7fb4183ce3716cf",
+        "bytes": 8798022
+      },
+      "px4-ulogs/agent-4.ulg": {
+        "sha256": "3639f27b9d01a6925e6ff7a91283ecdd7585db56de1b4103291e439739b11771",
+        "bytes": 19238961
+      },
+      "resource-probe.csv": {
+        "sha256": "e7accb452feaa517926bd4619213cb637a830bc6a0d089f659369e1f63a8e8fe",
+        "bytes": 51194
+      },
+      "runtime-probe.log": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "stop.log": {
+        "sha256": "8ec3709179d04b20d8395f3dd486e08171c2d1a47c3c6be217276db81fef716b",
+        "bytes": 53
+      },
+      "trial-complete.marker": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "world-configured.sdf": {
+        "sha256": "53af9b48122755d9deb4e250d6a9a58ee6e45cfe767cb5d9d7bea7ec69a71c50",
+        "bytes": 4936
+      }
+    },
+    "capacity-10-idle-0-r3": {
+      "camera-model-configured.sdf": {
+        "sha256": "9112dc3d3b331558c56d300bf4ba572f346e51e03989cd0d4273c82a74703e9e",
+        "bytes": 1418
+      },
+      "capacity-world-resume.log": {
+        "sha256": "46eeeedc969f106320d874ff0cb0c5c1ea169952665865f64b8f5318d626c8a3",
+        "bytes": 12
+      },
+      "clock-probe.csv": {
+        "sha256": "c2e39babb398b51f9ee33e401cd56229c0f731f760ffd7870da6302bfaeb76d5",
+        "bytes": 989891
+      },
+      "gazebo.stderr.log": {
+        "sha256": "fb1e4d47aabaf8e1f60fca27d87d801bb6e749fb126f8324ce1a8799262559bb",
+        "bytes": 8435
+      },
+      "gazebo.stdout.log": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "gpu-probe.csv": {
+        "sha256": "20d56ad7f5c775f8e4406089b2a53c6f58a2b41eda61bc04e6c4a7072f91bbad",
+        "bytes": 3559
+      },
+      "launch.log": {
+        "sha256": "f24093d3d04a84704655a248ec0d1d97d81d80447b1e97e0d80ca24c96410903",
+        "bytes": 15338
+      },
+      "px4-console/agent-0-err.log": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "px4-console/agent-0-out.log": {
+        "sha256": "78953151eb52bb1fd5d6f3f6a8e3469a19fdb920637ad6a8efccab57b761ddbb",
+        "bytes": 3598
+      },
+      "px4-console/agent-0-startup-health.json": {
+        "sha256": "9e22f75fd69afa065be9cc8b65d23ff9163d6c9948debdc43b90aba1aa2674b8",
+        "bytes": 164
+      },
+      "px4-console/agent-1-err.log": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "px4-console/agent-1-out.log": {
+        "sha256": "5bbc5d04991f2882e1fc5139addd8f79d492a0ec0690e859fe93394e60752db1",
+        "bytes": 3665
+      },
+      "px4-console/agent-1-startup-health.json": {
+        "sha256": "8f2dff322e75d2eb723717a888c67c81a1939df14625b5693ada930facaac342",
+        "bytes": 164
+      },
+      "px4-console/agent-2-err.log": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "px4-console/agent-2-out.log": {
+        "sha256": "3c0b9d55cfdf0c06ec0950a935047e0f76a4b8404ce32426d165b70e826ef5b1",
+        "bytes": 3524
+      },
+      "px4-console/agent-2-startup-health.json": {
+        "sha256": "002be6964878f6cc27f6dd747f9b4087109209593c0ba3b281087fd2f17de201",
+        "bytes": 164
+      },
+      "px4-console/agent-3-err.log": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "px4-console/agent-3-out.log": {
+        "sha256": "178a09aed47d4bb84a0673a54a192af6cf72b1c86f6d98cc50aba49e41fbedc9",
+        "bytes": 3139
+      },
+      "px4-console/agent-3-startup-health.json": {
+        "sha256": "e846325171dcdf0648c00c16057ec21840c3bab9e72501bb3164059118f6bda8",
+        "bytes": 164
+      },
+      "px4-console/agent-4-err.log": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "px4-console/agent-4-out.log": {
+        "sha256": "28c4a92122751a5486dcae4c2d94f170cc3a8cc689173ea13b4fa2a4e569f25e",
+        "bytes": 2707
+      },
+      "px4-console/agent-4-startup-health.json": {
+        "sha256": "425c437d707c9a0d006214e3496af0a170c54fbffeeb3c8aff4cc9416b1e3cd8",
+        "bytes": 164
+      },
+      "px4-ulogs/agent-0.ulg": {
+        "sha256": "f5f6f6084d3e6d27e608656fc1e79306d1786395b7e14adbd85e6f98ab1221eb",
+        "bytes": 9138070
+      },
+      "px4-ulogs/agent-1.ulg": {
+        "sha256": "2454b225efbedef3a69e11d2bcc3f11d51d4085f4185ee16db768e84c121ff14",
+        "bytes": 9053529
+      },
+      "px4-ulogs/agent-2.ulg": {
+        "sha256": "66e7910286669532b426fb4f71fb8ec7313f791726f41c121baf20b7044bd9a0",
+        "bytes": 9031568
+      },
+      "px4-ulogs/agent-3.ulg": {
+        "sha256": "e4a5f7b20ac4d559129afcaa553070bf50a51fb3788611e39d9de1ad1fc00b85",
+        "bytes": 8932889
+      },
+      "px4-ulogs/agent-4.ulg": {
+        "sha256": "280844f2c6c3c5c82d5a13889b0242ee7f65b580bb69009af1e8faf0746967b8",
+        "bytes": 8983808
+      },
+      "resource-probe.csv": {
+        "sha256": "b7eaf9549739743745b27ea33a49b25d924e6ce8fc046543f635df2f1b4b8782",
+        "bytes": 50538
+      },
+      "runtime-probe.log": {
+        "sha256": "d30cfe76f67dceafe43cc882b4e21b46e180bf39b2ef2cc26b251a5312baf70c",
+        "bytes": 747
+      },
+      "stop.log": {
+        "sha256": "8ec3709179d04b20d8395f3dd486e08171c2d1a47c3c6be217276db81fef716b",
+        "bytes": 53
+      },
+      "trial-complete.marker": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "world-configured.sdf": {
+        "sha256": "53af9b48122755d9deb4e250d6a9a58ee6e45cfe767cb5d9d7bea7ec69a71c50",
+        "bytes": 4936
+      }
+    },
+    "capacity-11-native-5-r3": {
+      "camera-model-configured.sdf": {
+        "sha256": "9112dc3d3b331558c56d300bf4ba572f346e51e03989cd0d4273c82a74703e9e",
+        "bytes": 1418
+      },
+      "capacity-world-resume.log": {
+        "sha256": "46eeeedc969f106320d874ff0cb0c5c1ea169952665865f64b8f5318d626c8a3",
+        "bytes": 12
+      },
+      "clock-probe.csv": {
+        "sha256": "a5e53b2016bb77fedfad54055efb5137179012d329769a8c0bb8239098a45967",
+        "bytes": 1002691
+      },
+      "gazebo.stderr.log": {
+        "sha256": "fb1e4d47aabaf8e1f60fca27d87d801bb6e749fb126f8324ce1a8799262559bb",
+        "bytes": 8435
+      },
+      "gazebo.stdout.log": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "gpu-probe.csv": {
+        "sha256": "0b8b439a9684b8e5bfe6043389c611417a20bd5205e5699cc7a09a36ea6fb463",
+        "bytes": 3581
+      },
+      "launch.log": {
+        "sha256": "c8303e2073b49478e52aac4b160ea4d2e8463fd97ae5f6fe1a85b816ff36bb35",
+        "bytes": 15454
+      },
+      "px4-console/agent-0-err.log": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "px4-console/agent-0-out.log": {
+        "sha256": "59e5edade9d056a7887ccf73a02f5302a5f7205a0b733814abda03a72dcd8d16",
+        "bytes": 3598
+      },
+      "px4-console/agent-0-startup-health.json": {
+        "sha256": "9e22f75fd69afa065be9cc8b65d23ff9163d6c9948debdc43b90aba1aa2674b8",
+        "bytes": 164
+      },
+      "px4-console/agent-1-err.log": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "px4-console/agent-1-out.log": {
+        "sha256": "13cba35a6bdddd1cd198d463fe817eff5d25dbf7aa1c0d2ade03e320e92fc718",
+        "bytes": 3665
+      },
+      "px4-console/agent-1-startup-health.json": {
+        "sha256": "8f2dff322e75d2eb723717a888c67c81a1939df14625b5693ada930facaac342",
+        "bytes": 164
+      },
+      "px4-console/agent-2-err.log": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "px4-console/agent-2-out.log": {
+        "sha256": "241edd364e0804872356e52b17ddf1310575a3ba8202812dfaa94c32d1c701fb",
+        "bytes": 3524
+      },
+      "px4-console/agent-2-startup-health.json": {
+        "sha256": "002be6964878f6cc27f6dd747f9b4087109209593c0ba3b281087fd2f17de201",
+        "bytes": 164
+      },
+      "px4-console/agent-3-err.log": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "px4-console/agent-3-out.log": {
+        "sha256": "68c44154c68268f935b38dfe45780d5a6492199741a5f93df174ce9e02c0e6b6",
+        "bytes": 3139
+      },
+      "px4-console/agent-3-startup-health.json": {
+        "sha256": "e846325171dcdf0648c00c16057ec21840c3bab9e72501bb3164059118f6bda8",
+        "bytes": 164
+      },
+      "px4-console/agent-4-err.log": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "px4-console/agent-4-out.log": {
+        "sha256": "97da3438d0f4295b4861283ddf9365eef8a6e9a2a9d7d2d13176ed8d38ece1b5",
+        "bytes": 2862
+      },
+      "px4-console/agent-4-startup-health.json": {
+        "sha256": "8189f2882417839624909f7ecabe7e94e447a8b93dca496a4e8c2c8500b3f71e",
+        "bytes": 164
+      },
+      "px4-ulogs/agent-0.ulg": {
+        "sha256": "cf2f68abff8f4699c68a323406f306632b401e91b91be18c49929d52e9e8d9d8",
+        "bytes": 8984124
+      },
+      "px4-ulogs/agent-1.ulg": {
+        "sha256": "4f85b47b6701cc454ce502d1175477ea056e3db884526a1e3f8b131f7f6c58e8",
+        "bytes": 8921159
+      },
+      "px4-ulogs/agent-2.ulg": {
+        "sha256": "2fd0e070be980a45f0893a8418f15ddd8035972870adba058b223c1c448e48a3",
+        "bytes": 8899370
+      },
+      "px4-ulogs/agent-3.ulg": {
+        "sha256": "b8483ecc67f2ce7b09f7b648fc2fe74ef4acfeb36f75c90c86a26e82b743cace",
+        "bytes": 8819310
+      },
+      "px4-ulogs/agent-4.ulg": {
+        "sha256": "b30fe7e0eea4c93f1782a8b9066d9bad83c2a07cf16d73fe2af0c0d15ef83b45",
+        "bytes": 19208587
+      },
+      "resource-probe.csv": {
+        "sha256": "86eb48547da5f8a6e12ea8af97e4cd6d52e4baf5eee491ffdbb9ab2c9f186da2",
+        "bytes": 51252
+      },
+      "runtime-probe.log": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "stop.log": {
+        "sha256": "8ec3709179d04b20d8395f3dd486e08171c2d1a47c3c6be217276db81fef716b",
+        "bytes": 53
+      },
+      "trial-complete.marker": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "world-configured.sdf": {
+        "sha256": "53af9b48122755d9deb4e250d6a9a58ee6e45cfe767cb5d9d7bea7ec69a71c50",
+        "bytes": 4936
+      }
+    },
+    "capacity-12-native-1-r3": {
+      "camera-model-configured.sdf": {
+        "sha256": "9112dc3d3b331558c56d300bf4ba572f346e51e03989cd0d4273c82a74703e9e",
+        "bytes": 1418
+      },
+      "capacity-world-resume.log": {
+        "sha256": "46eeeedc969f106320d874ff0cb0c5c1ea169952665865f64b8f5318d626c8a3",
+        "bytes": 12
+      },
+      "clock-probe.csv": {
+        "sha256": "7be36df6984e5387865a77dc76560f2ab04528cfd43d24d1a03db5f44b839e02",
+        "bytes": 990558
+      },
+      "gazebo.stderr.log": {
+        "sha256": "fb1e4d47aabaf8e1f60fca27d87d801bb6e749fb126f8324ce1a8799262559bb",
+        "bytes": 8435
+      },
+      "gazebo.stdout.log": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "gpu-probe.csv": {
+        "sha256": "f59f5d40e65047ed228d99c51cd2951c1bb3a237a95e509f148d795bc441c955",
+        "bytes": 3558
+      },
+      "launch.log": {
+        "sha256": "5330df2331e558d5c277006e073e54253f5a8048cc572d222c6992c2155786ad",
+        "bytes": 15280
+      },
+      "px4-console/agent-0-err.log": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "px4-console/agent-0-out.log": {
+        "sha256": "678039c335ca3aa72e9159e3170ccdd7e273637064ad534f75788ac24bde9c5d",
+        "bytes": 3598
+      },
+      "px4-console/agent-0-startup-health.json": {
+        "sha256": "9e22f75fd69afa065be9cc8b65d23ff9163d6c9948debdc43b90aba1aa2674b8",
+        "bytes": 164
+      },
+      "px4-console/agent-1-err.log": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "px4-console/agent-1-out.log": {
+        "sha256": "592a6e26e0a941c9bdf5f45ff18e9b5918f550d59cc6bcc0a9c8686b4d71e8ce",
+        "bytes": 3665
+      },
+      "px4-console/agent-1-startup-health.json": {
+        "sha256": "8f2dff322e75d2eb723717a888c67c81a1939df14625b5693ada930facaac342",
+        "bytes": 164
+      },
+      "px4-console/agent-2-err.log": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "px4-console/agent-2-out.log": {
+        "sha256": "8c88a0fc32f0b5f4c74904f8f4753dcdb850ce55222be0512e159ca73f43446a",
+        "bytes": 3524
+      },
+      "px4-console/agent-2-startup-health.json": {
+        "sha256": "002be6964878f6cc27f6dd747f9b4087109209593c0ba3b281087fd2f17de201",
+        "bytes": 164
+      },
+      "px4-console/agent-3-err.log": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "px4-console/agent-3-out.log": {
+        "sha256": "276923dc79f569aa95ea374f055aa42dfdd0d9f45ce024d00d9acfc8889ff09f",
+        "bytes": 2998
+      },
+      "px4-console/agent-3-startup-health.json": {
+        "sha256": "e846325171dcdf0648c00c16057ec21840c3bab9e72501bb3164059118f6bda8",
+        "bytes": 164
+      },
+      "px4-console/agent-4-err.log": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "px4-console/agent-4-out.log": {
+        "sha256": "8f870fc6d1eb4facdf1f5afe3f45e916ab02d8e4d33f966671768bf1b21fb1d8",
+        "bytes": 2707
+      },
+      "px4-console/agent-4-startup-health.json": {
+        "sha256": "425c437d707c9a0d006214e3496af0a170c54fbffeeb3c8aff4cc9416b1e3cd8",
+        "bytes": 164
+      },
+      "px4-ulogs/agent-0.ulg": {
+        "sha256": "fa0b435a0d0793921b5d3248aa23538cdae2b4251e27453ac2969e5b5f5920de",
+        "bytes": 8958759
+      },
+      "px4-ulogs/agent-1.ulg": {
+        "sha256": "721c38e771f75bcb22c9351c589f620cb310368df6b23afc0584659c044a0df4",
+        "bytes": 8925782
+      },
+      "px4-ulogs/agent-2.ulg": {
+        "sha256": "2002e390c1d566a2627ba9c85ae86468b13ee677de724a84ce82e3c6b9a2fd22",
+        "bytes": 8872689
+      },
+      "px4-ulogs/agent-3.ulg": {
+        "sha256": "3e410d12800e97d49c4cff501d76a820094b0785b98b38c1f3cc30b2b28c344d",
+        "bytes": 8774405
+      },
+      "px4-ulogs/agent-4.ulg": {
+        "sha256": "0282d0b82e72caaf3d1152303094185d473fd88558f5b07e66af08bd1455e5cf",
+        "bytes": 8830410
+      },
+      "resource-probe.csv": {
+        "sha256": "48b4b5bf115c371423e87855c70b0bfd88640d3e61ec609c7c59a5b4ed5cff48",
+        "bytes": 50394
+      },
+      "runtime-probe.log": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "stop.log": {
+        "sha256": "8ec3709179d04b20d8395f3dd486e08171c2d1a47c3c6be217276db81fef716b",
+        "bytes": 53
+      },
+      "trial-complete.marker": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "world-configured.sdf": {
+        "sha256": "53af9b48122755d9deb4e250d6a9a58ee6e45cfe767cb5d9d7bea7ec69a71c50",
+        "bytes": 4936
+      }
+    }
+  }
+}

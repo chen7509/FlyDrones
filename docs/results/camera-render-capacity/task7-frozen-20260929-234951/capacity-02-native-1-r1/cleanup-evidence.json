@@ -1,0 +1,144 @@
+{
+  "schema": "flydrones-owned-process-cleanup-v1",
+  "registry": "/tmp/flydrones-capacity-capacity-02-native-1-r1-a9ad9d06a3e4/owned-processes.json",
+  "recorded_processes": 8,
+  "stopped": [
+    {
+      "pid": 5391,
+      "start_ticks": 117744,
+      "argv": [
+        "/home/yuchen7509/PX4-Autopilot/build/px4_sitl_nolockstep/bin/px4",
+        "-i",
+        "4",
+        "-d",
+        "/home/yuchen7509/PX4-Autopilot/build/px4_sitl_nolockstep/etc"
+      ],
+      "role": "px4-4"
+    },
+    {
+      "pid": 5013,
+      "start_ticks": 117513,
+      "argv": [
+        "/home/yuchen7509/PX4-Autopilot/build/px4_sitl_nolockstep/bin/px4",
+        "-i",
+        "3",
+        "-d",
+        "/home/yuchen7509/PX4-Autopilot/build/px4_sitl_nolockstep/etc"
+      ],
+      "role": "px4-3"
+    },
+    {
+      "pid": 4636,
+      "start_ticks": 117281,
+      "argv": [
+        "/home/yuchen7509/PX4-Autopilot/build/px4_sitl_nolockstep/bin/px4",
+        "-i",
+        "2",
+        "-d",
+        "/home/yuchen7509/PX4-Autopilot/build/px4_sitl_nolockstep/etc"
+      ],
+      "role": "px4-2"
+    },
+    {
+      "pid": 4259,
+      "start_ticks": 117054,
+      "argv": [
+        "/home/yuchen7509/PX4-Autopilot/build/px4_sitl_nolockstep/bin/px4",
+        "-i",
+        "1",
+        "-d",
+        "/home/yuchen7509/PX4-Autopilot/build/px4_sitl_nolockstep/etc"
+      ],
+      "role": "px4-1"
+    },
+    {
+      "pid": 4002,
+      "start_ticks": 116823,
+      "argv": [
+        "/home/yuchen7509/PX4-Autopilot/build/px4_sitl_nolockstep/bin/px4",
+        "-i",
+        "0",
+        "-d",
+        "/home/yuchen7509/PX4-Autopilot/build/px4_sitl_nolockstep/etc"
+      ],
+      "role": "px4-0"
+    },
+    {
+      "pid": 3943,
+      "start_ticks": 116578,
+      "argv": [
+        "gz sim --headless-rendering -s /home/yuchen7509/PX4-Autopilot/Tools/simulation/gz/worlds/flydrones_forest.sdf"
+      ],
+      "role": "gazebo-server"
+    }
+  ],
+  "already_gone": [
+    {
+      "pid": 6784,
+      "start_ticks": 125363,
+      "argv": [
+        "/usr/bin/python3",
+        "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/vio-faults/tools/run_camera_phase_scheduler_wsl.py",
+        "--output",
+        "results/camera-render-capacity/task7-frozen-20260929-234951/capacity-02-native-1-r1/camera-scheduler.jsonl",
+        "--ready-marker",
+        "results/camera-render-capacity/task7-frozen-20260929-234951/capacity-02-native-1-r1/camera-scheduler-ready.json",
+        "--completion-marker",
+        "results/camera-render-capacity/task7-frozen-20260929-234951/capacity-02-native-1-r1/trial-complete.marker",
+        "--vehicle-count",
+        "5",
+        "--duration-s",
+        "300",
+        "--topology-timeout-s",
+        "150",
+        "--poll-interval-s",
+        "0.001",
+        "--flush-interval-s",
+        "0.25",
+        "--dispatch-delay-ns",
+        "4000000",
+        "--formal"
+      ],
+      "role": "scheduler"
+    },
+    {
+      "pid": 6505,
+      "start_ticks": 124259,
+      "argv": [
+        "build/native-camera-phase/flydrones_camera_phase_native",
+        "observe",
+        "--vehicle-count",
+        "5",
+        "--subscriber-count",
+        "1",
+        "--output",
+        "results/camera-render-capacity/task7-frozen-20260929-234951/capacity-02-native-1-r1/camera-phase.jsonl",
+        "--ready-marker",
+        "results/camera-render-capacity/task7-frozen-20260929-234951/capacity-02-native-1-r1/camera-phase-selected-ready.json",
+        "--completion-marker",
+        "results/camera-render-capacity/task7-frozen-20260929-234951/capacity-02-native-1-r1/trial-complete.marker",
+        "--duration-s",
+        "300",
+        "--readiness-timeout-s",
+        "150",
+        "--warmup-subscriber-count",
+        "5",
+        "--attestation-ready-marker",
+        "results/camera-render-capacity/task7-frozen-20260929-234951/capacity-02-native-1-r1/renderer-phase-ready.json",
+        "--attestation-release-marker",
+        "results/camera-render-capacity/task7-frozen-20260929-234951/capacity-02-native-1-r1/renderer-phase-complete.marker",
+        "--observe-triggers",
+        "0",
+        "--poll-interval-ms",
+        "1",
+        "--flush-interval-ms",
+        "250",
+        "--completion-drain-ms",
+        "1000"
+      ],
+      "role": "observer"
+    }
+  ],
+  "ownership_mismatch": [],
+  "failed_to_stop": []
+}
