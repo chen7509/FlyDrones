@@ -160,6 +160,8 @@ def _config() -> dict[str, object]:
         "renderer_profile": "d3d12-nvidia",
         "world": "flydrones_forest",
         "vehicle_count": 5,
+        "px4_build_name": "px4_sitl_nolockstep",
+        "px4_revision": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
         "thresholds": {
             "min_rtf": 0.95,
             "min_image_hz": 9.5,
@@ -328,6 +330,7 @@ class FakeBackend:
         self.busy = busy
         self.calls: list[str] = []
         self.commands: list[list[str]] = []
+        self.environment: dict[str, str] = {}
 
     def occupied_resources(self) -> list[str]:
         self.calls.append("occupied_resources")
@@ -336,6 +339,7 @@ class FakeBackend:
     def start(self, *, commands, **_kwargs):
         self.calls.append("start")
         self.commands = commands
+        self.environment = dict(_kwargs["environment"])
         if self.failure == "start":
             raise RuntimeError("launcher failed")
 
@@ -356,6 +360,12 @@ class FakeBackend:
             "px4_all_healthy": self.failure != "px4_unhealthy",
             "px4_all_disarmed": self.failure != "px4_armed",
             "px4_all_landed": self.failure != "px4_armed",
+            "px4_build": {
+                "build_name": "px4_sitl_nolockstep",
+                "nolockstep": True,
+                "px4_revision": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+                "binary_sha256": "a" * 64,
+            },
             "observer_pid": 4321,
         }
 
@@ -524,6 +534,11 @@ def test_capacity_launcher_uses_temporary_attestation_and_stable_gazebo_identity
     assert 'gazebo_run_args=(-s "$world_target")' in launcher
     assert '--preload-vehicles "$vehicle_count"' in launcher
     assert 'PX4_GZ_MODEL_NAME="x500_depth_fly_$instance_id"' in launcher
+    assert 'px4_build_name="${PX4_BUILD_NAME:-px4_sitl_default}"' in launcher
+    assert 'build="$px4_root/build/$px4_build_name"' in launcher
+    assert 'PX4_BUILD_NAME must be px4_sitl_nolockstep in capacity mode' in launcher
+    assert '#define CONFIG_BOARD_NOLOCKSTEP 1' in launcher
+    assert 'px4-build-evidence.json' in launcher
     assert 'if [[ "$capacity_mode" != 1 ]]; then gazebo_run_args=(-r "${gazebo_run_args[@]}"); fi' in launcher
     assert 'px4-sensor-source-warmup.json' in launcher
     assert 'gz service -s "/world/flydrones_forest/control"' in launcher
@@ -556,10 +571,46 @@ def test_capacity_launcher_uses_temporary_attestation_and_stable_gazebo_identity
     assert '"gazebo.stdout.log"' in runner
     assert '"gazebo.stderr.log"' in runner
     assert '"px4-sensor-source-warmup.json"' in runner
+    assert '"px4-build-evidence.json"' in runner
     assert '"capacity-world-warmup-resume.log"' not in runner
     assert '"capacity-world-warmup-pause.log"' not in runner
     assert '"capacity-world-warmup-reset.log"' not in runner
     assert final_resume < launcher.index("  running=0", final_resume)
+
+
+def test_capacity_trial_freezes_official_nolockstep_px4_build(tmp_path: Path):
+    backend = FakeBackend()
+    native_executable = tmp_path / "flydrones_camera_phase_native"
+    native_executable.write_bytes(b"native capacity test executable")
+
+    run_capacity_trial(
+        run=_run("native-1"),
+        config=_config(),
+        output_root=tmp_path,
+        native_executable=native_executable,
+        _backend=backend,
+    )
+
+    assert backend.environment["PX4_BUILD_NAME"] == "px4_sitl_nolockstep"
+    assert backend.environment["FLYDRONES_EXPECTED_PX4_REVISION"] == (
+        "d6f12ad1c4f70ad3230afd7d86e971421e02fef4"
+    )
+
+
+def test_capacity_trial_rejects_lockstep_px4_build_before_start(tmp_path: Path):
+    config = _config()
+    config["px4_build_name"] = "px4_sitl_default"
+    native_executable = tmp_path / "flydrones_camera_phase_native"
+    native_executable.write_bytes(b"native capacity test executable")
+
+    with pytest.raises(ValueError, match="px4_sitl_nolockstep"):
+        run_capacity_trial(
+            run=_run("native-1"),
+            config=config,
+            output_root=tmp_path,
+            native_executable=native_executable,
+            _backend=FakeBackend(),
+        )
 
 
 @pytest.mark.parametrize("cell", ("idle-0", "native-1", "python-5", "native-5"))

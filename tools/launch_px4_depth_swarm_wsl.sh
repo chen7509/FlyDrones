@@ -3,7 +3,8 @@ set -Eeuo pipefail
 
 repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 px4_root="${PX4_ROOT:-$HOME/PX4-Autopilot}"
-build="$px4_root/build/px4_sitl_default"
+px4_build_name="${PX4_BUILD_NAME:-px4_sitl_default}"
+build="$px4_root/build/$px4_build_name"
 run_dir="${FLYDRONES_PX4_RUN_DIR:-/tmp/flydrones-px4-five-depth}"
 vehicle_count="${FLYDRONES_VEHICLE_COUNT:-5}"
 vio_fault_profile="${FLYDRONES_VIO_FAULT_PROFILE:-}"
@@ -16,6 +17,7 @@ capacity_mode="${FLYDRONES_CAPACITY_MODE:-0}"
 capacity_ready_marker="${FLYDRONES_CAPACITY_READY_MARKER:-}"
 capacity_observer_pid_file="${FLYDRONES_CAPACITY_OBSERVER_PID_FILE:-}"
 capacity_subscriber_count="${FLYDRONES_CAPACITY_SUBSCRIBER_COUNT:-}"
+expected_px4_revision="${FLYDRONES_EXPECTED_PX4_REVISION:-}"
 world_source="$repo_root/results/px4-sitl-five-depth/flydrones_forest.sdf"
 world_target="$px4_root/Tools/simulation/gz/worlds/flydrones_forest.sdf"
 model_root="$px4_root/Tools/simulation/gz/models"
@@ -61,6 +63,23 @@ if [[ "$capacity_mode" != 0 && "$capacity_mode" != 1 ]]; then
   exit 2
 fi
 if [[ "$capacity_mode" == 1 ]]; then
+  if [[ "$px4_build_name" != "px4_sitl_nolockstep" ]]; then
+    echo "PX4_BUILD_NAME must be px4_sitl_nolockstep in capacity mode" >&2
+    exit 2
+  fi
+  if [[ -z "$expected_px4_revision" ]]; then
+    echo "FLYDRONES_EXPECTED_PX4_REVISION is required in capacity mode" >&2
+    exit 2
+  fi
+  actual_px4_revision="$(git -C "$px4_root" rev-parse HEAD)"
+  if [[ "$actual_px4_revision" != "$expected_px4_revision" ]]; then
+    echo "PX4 revision mismatch: expected $expected_px4_revision, got $actual_px4_revision" >&2
+    exit 2
+  fi
+  if ! grep -Fxq '#define CONFIG_BOARD_NOLOCKSTEP 1' "$build/px4_boardconfig.h"; then
+    echo "PX4 capacity build does not prove CONFIG_BOARD_NOLOCKSTEP" >&2
+    exit 2
+  fi
   if [[ -z "$capacity_ready_marker" || -z "$capacity_observer_pid_file" ]]; then
     echo "capacity readiness marker and observer PID file are required" >&2
     exit 2
@@ -90,6 +109,28 @@ fi
 
 mkdir -p "$run_dir/backups"
 touch "$run_dir/fault-mode"
+if [[ "$capacity_mode" == 1 ]]; then
+  px4_binary_sha256="$(sha256sum "$build/bin/px4" | awk '{print $1}')"
+  px4_boardconfig_sha256="$(sha256sum "$build/px4_boardconfig.h" | awk '{print $1}')"
+  python3 - "$run_dir/px4-build-evidence.json" "$px4_build_name" \
+    "$actual_px4_revision" "$px4_binary_sha256" "$px4_boardconfig_sha256" <<'PY'
+import json
+import sys
+from pathlib import Path
+
+output = Path(sys.argv[1])
+payload = {
+    "schema": "flydrones-px4-build-evidence-v1",
+    "build_name": sys.argv[2],
+    "px4_revision": sys.argv[3],
+    "binary_sha256": sys.argv[4],
+    "boardconfig_sha256": sys.argv[5],
+    "nolockstep": True,
+    "board_definition": "#define CONFIG_BOARD_NOLOCKSTEP 1",
+}
+output.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+PY
+fi
 cleanup_on_error() {
   status=$?
   trap - ERR INT TERM
@@ -692,6 +733,7 @@ observer_pid_file = Path(sys.argv[3])
 subscriber_count = int(sys.argv[4])
 vehicle_count = int(sys.argv[5])
 observer_timeout_s = float(sys.argv[6])
+px4_build = json.loads((run_dir / "px4-build-evidence.json").read_text(encoding="utf-8"))
 deadline = time.monotonic() + observer_timeout_s
 while not observer_pid_file.is_file() and time.monotonic() < deadline:
     time.sleep(0.05)
@@ -754,6 +796,7 @@ payload = {
     "px4_all_disarmed": all(item["armed"] is False for item in states),
     "px4_all_landed": all(item["landed"] is True for item in states),
     "px4_states": states,
+    "px4_build": px4_build,
 }
 ready_path.parent.mkdir(parents=True, exist_ok=True)
 with tempfile.NamedTemporaryFile("w", encoding="utf-8", dir=ready_path.parent, delete=False) as handle:

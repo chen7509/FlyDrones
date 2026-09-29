@@ -576,7 +576,7 @@ class SubprocessCapacityBackend:
     def occupied_resources(self) -> list[str]:
         processes = subprocess.check_output(["ps", "-eo", "args="], text=True)
         needles = (
-            "/build/px4_sitl_default/bin/px4 -i ",
+            "/build/px4_sitl_",
             "gz sim ",
             "probe_camera_phase_wsl.py",
             "run_camera_phase_scheduler_wsl.py",
@@ -928,6 +928,7 @@ class SubprocessCapacityBackend:
             "camera-model-evidence.json",
             "camera-model-configured.sdf",
             "px4-sensor-source-warmup.json",
+            "px4-build-evidence.json",
             "depth-topic-connections-launcher.json",
             "px4-sensor-topic-connections.json",
             "capacity-world-resume.log",
@@ -1022,6 +1023,12 @@ def run_capacity_trial(
         raise ValueError("capacity trial requires frozen 30/120 second durations")
     if config.get("vehicle_count") != 5:
         raise ValueError("capacity trial requires five vehicles")
+    px4_build_name = str(config.get("px4_build_name", ""))
+    if px4_build_name != "px4_sitl_nolockstep":
+        raise ValueError("capacity trial requires px4_sitl_nolockstep")
+    px4_revision = str(config.get("px4_revision", ""))
+    if px4_revision != "d6f12ad1c4f70ad3230afd7d86e971421e02fef4":
+        raise ValueError("capacity trial requires the frozen PX4 revision")
     backend = _backend or SubprocessCapacityBackend()
     occupied = backend.occupied_resources()
     if occupied:
@@ -1104,6 +1111,8 @@ def run_capacity_trial(
         "FLYDRONES_CAPACITY_READY_MARKER": str(run_dir / "camera-capacity-ready.json"),
         "FLYDRONES_CAPACITY_OBSERVER_PID_FILE": str(output / "observer.pid"),
         "FLYDRONES_CAPACITY_SUBSCRIBER_COUNT": str(run.cell.subscriber_count),
+        "PX4_BUILD_NAME": px4_build_name,
+        "FLYDRONES_EXPECTED_PX4_REVISION": px4_revision,
         "FLYDRONES_CAPACITY_SCHEDULER_READY_MARKER": str(
             output / "camera-scheduler-ready.json"
         ),
@@ -1137,6 +1146,7 @@ def run_capacity_trial(
             "px4_all_landed",
         ):
             manifest[key] = readiness.get(key)
+        manifest["px4_build"] = readiness.get("px4_build")
         if readiness.get("renderer_attestation_accepted") is not True:
             manifest["errors"].append("renderer attestation rejected")
         if not (
@@ -1146,6 +1156,15 @@ def run_capacity_trial(
             and readiness.get("px4_all_landed") is True
         ):
             manifest["errors"].append("PX4 health/disarmed/landed gate failed")
+        px4_build = readiness.get("px4_build")
+        if not isinstance(px4_build, Mapping) or not (
+            px4_build.get("build_name") == px4_build_name
+            and px4_build.get("px4_revision") == px4_revision
+            and px4_build.get("nolockstep") is True
+            and isinstance(px4_build.get("binary_sha256"), str)
+            and len(px4_build["binary_sha256"]) == 64
+        ):
+            manifest["errors"].append("PX4 no-lockstep build evidence rejected")
         start_raw = backend.capture_connections(
             stage="start", subscriber_count=run.cell.subscriber_count
         )
