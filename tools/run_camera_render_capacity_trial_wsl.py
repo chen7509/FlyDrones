@@ -700,7 +700,7 @@ class SubprocessCapacityBackend:
         self._wait_marker(
             selected_ready,
             process,
-            min(float(_kwargs["readiness_timeout_s"]), 90.0),
+            min(float(_kwargs["readiness_timeout_s"]), 150.0),
         )
         _atomic_text(
             Path(environment["FLYDRONES_CAPACITY_OBSERVER_PID_FILE"]),
@@ -1114,6 +1114,7 @@ def run_capacity_trial(
         "FLYDRONES_VEHICLE_COUNT": "5",
         "FLYDRONES_GZ_RENDER_PROFILE": str(config.get("renderer_profile")),
         "FLYDRONES_CAMERA_SCHEDULE_MODE": "phased",
+        "FLYDRONES_CAMERA_AUX_TIMEOUT_S": f"{max(readiness_timeout_s, 150.0):g}",
         "FLYDRONES_CAMERA_PHASE_READY_MARKER": str(output / "renderer-phase-ready.json"),
         "FLYDRONES_CAPACITY_MODE": "1",
         "FLYDRONES_CAPACITY_READY_MARKER": str(run_dir / "camera-capacity-ready.json"),

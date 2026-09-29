@@ -604,6 +604,7 @@ def test_capacity_trial_freezes_official_nolockstep_px4_build(tmp_path: Path):
     )
 
     assert backend.environment["PX4_BUILD_NAME"] == "px4_sitl_nolockstep"
+    assert backend.environment["FLYDRONES_CAMERA_AUX_TIMEOUT_S"] == "150"
     assert backend.environment["FLYDRONES_EXPECTED_PX4_REVISION"] == (
         "d6f12ad1c4f70ad3230afd7d86e971421e02fef4"
     )
