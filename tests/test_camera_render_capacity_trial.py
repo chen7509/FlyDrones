@@ -823,6 +823,28 @@ def test_trial_preserves_failures_and_always_runs_cleanup(
     assert "cleanup_verified" in backend.calls
 
 
+def test_pre_readiness_failure_preserves_diagnostics_without_synthesizing_score(
+    tmp_path: Path,
+):
+    backend = FakeBackend(failure="observer_early_exit")
+    run = _run("native-5")
+
+    result = run_capacity_trial(
+        run=run,
+        config=_config(),
+        output_root=tmp_path,
+        native_executable=tmp_path / "native",
+        _backend=backend,
+    )
+
+    output = tmp_path / run.name
+    assert result["score"] is None
+    assert (output / "manifest.json").is_file()
+    assert (output / "summary.json").is_file()
+    assert not (output / "score.json").exists()
+    assert not (output / "scored-epoch.json").exists()
+
+
 def test_occupied_resources_abort_before_output_or_process_start(tmp_path: Path):
     backend = FakeBackend(busy=True)
     with pytest.raises(RuntimeError, match="resources are in use"):

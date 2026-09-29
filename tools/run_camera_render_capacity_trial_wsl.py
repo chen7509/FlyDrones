@@ -1469,10 +1469,15 @@ def run_capacity_trial(
         scheduler_epoch_ns=collected.get("scheduler_epoch_ns"),
     )
     manifest["evidence_accepted"] = not manifest["errors"]
-    score = score_capacity_run(manifest, summary, thresholds)
+    score = (
+        score_capacity_run(manifest, summary, thresholds)
+        if float(manifest["scored_duration_sim_s"]) > 0.0
+        else None
+    )
     _atomic_json(output / "manifest.json", manifest)
     _atomic_json(output / "summary.json", summary)
-    _atomic_json(output / "score.json", score)
+    if score is not None:
+        _atomic_json(output / "score.json", score)
     return {
         "manifest": manifest,
         "summary": summary,
@@ -1498,7 +1503,8 @@ def main(argv: Sequence[str] | None = None) -> int:
         output_root=args.output_root,
         native_executable=args.native_executable,
     )
-    return 0 if result["score"]["performance_pass"] else 2
+    score = result["score"]
+    return 0 if score is not None and score["performance_pass"] else 2
 
 
 if __name__ == "__main__":
