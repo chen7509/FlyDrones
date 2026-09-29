@@ -9,6 +9,7 @@ from flydrones.camera_render_capacity import capacity_schedule
 from tools.run_camera_render_capacity_trial_wsl import (
     _atomic_text,
     _auxiliary_closed_cleanly,
+    _capacity_attestation_ready_marker,
     _capacity_phase_summary,
     _capacity_run_directory,
     _capacity_startup_commands,
@@ -328,6 +329,26 @@ def test_capacity_initial_discovery_starts_permanent_observer_first(
         commands=commands,
         output=tmp_path,
         native_executable=tmp_path / "flydrones_camera_phase_native",
+        selected_count=5,
+    )
+
+    assert [role for role, _command in startup] == ["observer", "scheduler"]
+    assert startup[0][1] is commands[1]
+
+
+def test_capacity_partial_selection_retains_renderer_witness(tmp_path: Path):
+    commands = capacity_auxiliary_commands(
+        run=_run("native-1"),
+        output=tmp_path,
+        completion_marker=tmp_path / "complete.marker",
+        native_executable=tmp_path / "flydrones_camera_phase_native",
+    )
+
+    startup = _capacity_startup_commands(
+        commands=commands,
+        output=tmp_path,
+        native_executable=tmp_path / "flydrones_camera_phase_native",
+        selected_count=1,
     )
 
     assert [role for role, _command in startup] == [
@@ -335,7 +356,26 @@ def test_capacity_initial_discovery_starts_permanent_observer_first(
         "renderer-witness",
         "scheduler",
     ]
-    assert startup[0][1] is commands[1]
+
+
+def test_full_selection_uses_selected_ready_marker_for_renderer_attestation(
+    tmp_path: Path,
+):
+    assert _capacity_attestation_ready_marker(
+        output=tmp_path,
+        implementation="native",
+        selected_count=5,
+    ) == (tmp_path / "camera-phase-selected-ready.json")
+    assert _capacity_attestation_ready_marker(
+        output=tmp_path,
+        implementation="python",
+        selected_count=5,
+    ) == (tmp_path / "camera-phase-ready.json")
+    assert _capacity_attestation_ready_marker(
+        output=tmp_path,
+        implementation="native",
+        selected_count=1,
+    ) == (tmp_path / "renderer-phase-ready.json")
 
 
 def test_capacity_selected_observer_owns_connection_before_witness_and_scheduler():

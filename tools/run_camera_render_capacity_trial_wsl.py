@@ -199,21 +199,38 @@ def _capacity_startup_commands(
     commands: Sequence[list[str]],
     output: Path,
     native_executable: Path,
+    selected_count: int,
 ) -> list[tuple[str, list[str]]]:
     """Keep the selected observer as the permanent first subscriber."""
     if len(commands) != 2:
         raise ValueError("capacity commands must contain scheduler and observer")
-    return [
-        ("observer", commands[1]),
-        (
+    if selected_count not in (0, 1, 5):
+        raise ValueError("selected_count must be 0, 1, or 5")
+    startup = [("observer", commands[1])]
+    if selected_count < 5:
+        startup.append((
             "renderer-witness",
             _renderer_witness_command(
                 output=output,
                 native_executable=native_executable,
             ),
-        ),
-        ("scheduler", commands[0]),
-    ]
+        ))
+    startup.append(("scheduler", commands[0]))
+    return startup
+
+
+def _capacity_attestation_ready_marker(
+    *, output: Path, implementation: str, selected_count: int
+) -> Path:
+    if selected_count not in (0, 1, 5):
+        raise ValueError("selected_count must be 0, 1, or 5")
+    if selected_count < 5:
+        return output / "renderer-phase-ready.json"
+    if implementation == "python":
+        return output / "camera-phase-ready.json"
+    if implementation in {"native", "native-cpp"}:
+        return output / "camera-phase-selected-ready.json"
+    raise ValueError(f"unsupported observer implementation: {implementation}")
 
 
 def _selected_overlap_subscriber_counts(selected_count: int) -> dict[int, int]:
@@ -734,7 +751,9 @@ class SubprocessCapacityBackend:
             commands=commands,
             output=output,
             native_executable=Path(_kwargs["native_executable"]),
+            selected_count=run.cell.subscriber_count,
         )
+        startup_by_role = dict(startup_commands)
 
         def start_auxiliary(role: str, command: list[str]) -> subprocess.Popen:
             handle = (output / f"{role}.log").open("w", encoding="utf-8")
@@ -751,23 +770,25 @@ class SubprocessCapacityBackend:
             return process
 
         role = "observer"
-        process = start_auxiliary(role, startup_commands[0][1])
+        process = start_auxiliary(role, startup_by_role[role])
         self._wait_depth_subscriber_counts(
             expected=_selected_subscriber_counts(run.cell.subscriber_count),
             process=process,
             timeout_s=min(float(_kwargs["readiness_timeout_s"]), 30.0),
             stage="selected-permanent",
         )
-        role = "renderer-witness"
-        witness_process = start_auxiliary(role, startup_commands[1][1])
-        self._wait_depth_subscriber_counts(
-            expected=_selected_overlap_subscriber_counts(run.cell.subscriber_count),
-            process=witness_process,
-            timeout_s=min(float(_kwargs["readiness_timeout_s"]), 30.0),
-            stage="selected-overlap",
-        )
+        has_witness = "renderer-witness" in startup_by_role
+        if has_witness:
+            role = "renderer-witness"
+            witness_process = start_auxiliary(role, startup_by_role[role])
+            self._wait_depth_subscriber_counts(
+                expected=_selected_overlap_subscriber_counts(run.cell.subscriber_count),
+                process=witness_process,
+                timeout_s=min(float(_kwargs["readiness_timeout_s"]), 30.0),
+                stage="selected-overlap",
+            )
         role = "scheduler"
-        start_auxiliary(role, startup_commands[2][1])
+        start_auxiliary(role, startup_by_role[role])
         _atomic_json(
             run_dir / "camera-aux-started.marker",
             {
@@ -785,32 +806,35 @@ class SubprocessCapacityBackend:
         )
         if attestation.get("accepted") is not True:
             raise RuntimeError("temporary renderer witness attestation rejected")
-        selected_ready = (
-            output / "camera-phase-ready.json"
-            if run.cell.implementation == "python"
-            else output / "camera-phase-selected-ready.json"
+        selected_ready = _capacity_attestation_ready_marker(
+            output=output,
+            implementation=run.cell.implementation,
+            selected_count=5,
         )
         self._wait_marker(
             selected_ready,
             process,
             min(float(_kwargs["readiness_timeout_s"]), 150.0),
         )
-        (output / "renderer-phase-complete.marker").touch()
-        witness_code = self.processes["renderer-witness"].wait(timeout=20)
-        try:
-            witness_ready = json.loads(
-                (output / "renderer-phase-ready.json").read_text(encoding="utf-8")
+        if has_witness:
+            (output / "renderer-phase-complete.marker").touch()
+            witness_code = self.processes["renderer-witness"].wait(timeout=20)
+            try:
+                witness_ready = json.loads(
+                    (output / "renderer-phase-ready.json").read_text(encoding="utf-8")
+                )
+            except (OSError, json.JSONDecodeError) as exc:
+                raise RuntimeError(
+                    "renderer witness ready marker is missing or invalid"
+                ) from exc
+            witness_summary = _native_renderer_witness_summary(
+                witness_ready,
+                _read_jsonl(output / "renderer-phase.jsonl"),
+                exit_code=witness_code,
             )
-        except (OSError, json.JSONDecodeError) as exc:
-            raise RuntimeError("renderer witness ready marker is missing or invalid") from exc
-        witness_summary = _native_renderer_witness_summary(
-            witness_ready,
-            _read_jsonl(output / "renderer-phase.jsonl"),
-            exit_code=witness_code,
-        )
-        _atomic_json(output / "renderer-phase-summary.json", witness_summary)
-        if not _renderer_witness_accepted(witness_summary, exit_code=witness_code):
-            raise RuntimeError(f"renderer witness exited {witness_code}")
+            _atomic_json(output / "renderer-phase-summary.json", witness_summary)
+            if not _renderer_witness_accepted(witness_summary, exit_code=witness_code):
+                raise RuntimeError(f"renderer witness exited {witness_code}")
         _atomic_text(
             Path(environment["FLYDRONES_CAPACITY_OBSERVER_PID_FILE"]),
             f"{process.pid}\n",
@@ -1224,7 +1248,13 @@ def run_capacity_trial(
         "FLYDRONES_GZ_RENDER_PROFILE": str(config.get("renderer_profile")),
         "FLYDRONES_CAMERA_SCHEDULE_MODE": "phased",
         "FLYDRONES_CAMERA_AUX_TIMEOUT_S": f"{max(readiness_timeout_s, 150.0):g}",
-        "FLYDRONES_CAMERA_PHASE_READY_MARKER": str(output / "renderer-phase-ready.json"),
+        "FLYDRONES_CAMERA_PHASE_READY_MARKER": str(
+            _capacity_attestation_ready_marker(
+                output=output,
+                implementation=run.cell.implementation,
+                selected_count=run.cell.subscriber_count,
+            )
+        ),
         "FLYDRONES_CAPACITY_MODE": "1",
         "FLYDRONES_CAPACITY_READY_MARKER": str(run_dir / "camera-capacity-ready.json"),
         "FLYDRONES_CAPACITY_OBSERVER_PID_FILE": str(output / "observer.pid"),
