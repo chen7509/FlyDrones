@@ -539,6 +539,7 @@ def test_capacity_launcher_uses_temporary_attestation_and_stable_gazebo_identity
     assert 'PX4_BUILD_NAME must be px4_sitl_nolockstep in capacity mode' in launcher
     assert '#define CONFIG_BOARD_NOLOCKSTEP 1' in launcher
     assert 'px4-build-evidence.json' in launcher
+    assert 'px4-capacity-platform-ready.json' in launcher
     assert 'if [[ "$capacity_mode" != 1 ]]; then gazebo_run_args=(-r "${gazebo_run_args[@]}"); fi' in launcher
     assert 'px4-sensor-source-warmup.json' in launcher
     assert 'gz service -s "/world/flydrones_forest/control"' in launcher
@@ -561,6 +562,16 @@ def test_capacity_launcher_uses_temporary_attestation_and_stable_gazebo_identity
     assert 'echo "PX4 concurrent sensor readiness failed"' in launcher
     startup_health = launcher.index('"startup-health.json"')
     assert sensor_topology < startup_health
+    platform_ready = launcher.index('"$run_dir/px4-capacity-platform-ready.json"')
+    capacity_aux_wait = launcher.index(
+        'echo "capacity camera auxiliaries did not start after platform readiness"'
+    )
+    assert startup_health < platform_ready < capacity_aux_wait
+    backend_platform_wait = runner.index(
+        'run_dir / "px4-capacity-platform-ready.json"'
+    )
+    backend_scheduler_start = runner.index('("scheduler", commands[0])')
+    assert backend_platform_wait < backend_scheduler_start
     assert 'px4-gz_bridge" --instance "$instance_id" stop' not in launcher
     assert 'item["publisher_count"] == 1 and item["subscriber_count"] == 1' in launcher
     assert "px4-sensor-topic-connections.json" in launcher
@@ -572,6 +583,7 @@ def test_capacity_launcher_uses_temporary_attestation_and_stable_gazebo_identity
     assert '"gazebo.stderr.log"' in runner
     assert '"px4-sensor-source-warmup.json"' in runner
     assert '"px4-build-evidence.json"' in runner
+    assert '"px4-capacity-platform-ready.json"' in runner
     assert '"capacity-world-warmup-resume.log"' not in runner
     assert '"capacity-world-warmup-pause.log"' not in runner
     assert '"capacity-world-warmup-reset.log"' not in runner

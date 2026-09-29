@@ -266,22 +266,24 @@ if [[ ! -f "$base_ready" ]]; then
   exit 3
 fi
 
-aux_deadline=$((SECONDS + camera_aux_timeout_s))
-while [[ ! -f "$aux_started" ]]; do
-  if ! kill -0 "$gazebo_pid" 2>/dev/null; then
-    echo "Gazebo exited while waiting for camera auxiliaries" >&2
-    exit 3
-  fi
-  if [[ -n "$vio_fault_profile" ]] && ! kill -0 "$(cat "$run_dir/vio-relay.pid")" 2>/dev/null; then
-    echo "VIO relay exited while waiting for camera auxiliaries" >&2
-    exit 3
-  fi
-  if (( SECONDS >= aux_deadline )); then
-    echo "camera auxiliary startup handshake timed out" >&2
-    exit 3
-  fi
-  sleep 0.05
-done
+if [[ "$capacity_mode" != 1 ]]; then
+  aux_deadline=$((SECONDS + camera_aux_timeout_s))
+  while [[ ! -f "$aux_started" ]]; do
+    if ! kill -0 "$gazebo_pid" 2>/dev/null; then
+      echo "Gazebo exited while waiting for camera auxiliaries" >&2
+      exit 3
+    fi
+    if [[ -n "$vio_fault_profile" ]] && ! kill -0 "$(cat "$run_dir/vio-relay.pid")" 2>/dev/null; then
+      echo "VIO relay exited while waiting for camera auxiliaries" >&2
+      exit 3
+    fi
+    if (( SECONDS >= aux_deadline )); then
+      echo "camera auxiliary startup handshake timed out" >&2
+      exit 3
+    fi
+    sleep 0.05
+  done
+fi
 
 sensor_suffixes=(
   "imu_sensor/imu"
@@ -644,6 +646,40 @@ PY
     done
     exit 3
   fi
+  python3 - "$run_dir/px4-capacity-platform-ready.json" "$vehicle_count" <<'PY'
+import json
+import sys
+import tempfile
+from pathlib import Path
+
+target = Path(sys.argv[1])
+payload = {
+    "schema": "flydrones-px4-capacity-platform-ready-v1",
+    "vehicle_count": int(sys.argv[2]),
+    "sensor_source_topic_count": 20,
+    "sensor_connection_topic_count": 20,
+    "px4_all_healthy": True,
+    "px4_all_disarmed": True,
+    "px4_all_landed": True,
+}
+with tempfile.NamedTemporaryFile("w", encoding="utf-8", dir=target.parent, delete=False) as handle:
+    json.dump(payload, handle, indent=2, sort_keys=True)
+    handle.write("\n")
+    temporary = Path(handle.name)
+temporary.replace(target)
+PY
+  aux_deadline=$((SECONDS + camera_aux_timeout_s))
+  while [[ ! -f "$aux_started" ]]; do
+    if ! kill -0 "$gazebo_pid" 2>/dev/null; then
+      echo "Gazebo exited while waiting for capacity camera auxiliaries" >&2
+      exit 3
+    fi
+    if (( SECONDS >= aux_deadline )); then
+      echo "capacity camera auxiliaries did not start after platform readiness" >&2
+      exit 3
+    fi
+    sleep 0.05
+  done
 fi
 
 for _ in $(seq 1 40); do

@@ -617,6 +617,13 @@ class SubprocessCapacityBackend:
         )
         self.processes["launcher"] = launcher
         self._wait_marker(run_dir / "gazebo-base-ready.json", launcher, 60.0)
+        platform = self._wait_marker(
+            run_dir / "px4-capacity-platform-ready.json",
+            launcher,
+            float(_kwargs["readiness_timeout_s"]),
+        )
+        if platform.get("schema") != "flydrones-px4-capacity-platform-ready-v1":
+            raise RuntimeError("PX4 capacity platform readiness schema mismatch")
         run = _kwargs["run"]
         startup_commands = [
             ("scheduler", commands[0]),
@@ -929,6 +936,7 @@ class SubprocessCapacityBackend:
             "camera-model-configured.sdf",
             "px4-sensor-source-warmup.json",
             "px4-build-evidence.json",
+            "px4-capacity-platform-ready.json",
             "depth-topic-connections-launcher.json",
             "px4-sensor-topic-connections.json",
             "capacity-world-resume.log",
