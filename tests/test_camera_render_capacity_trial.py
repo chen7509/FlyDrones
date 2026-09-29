@@ -16,6 +16,7 @@ from tools.run_camera_render_capacity_trial_wsl import (
     _renderer_witness_accepted,
     _renderer_witness_command,
     _scored_resource_summary,
+    _selected_overlap_subscriber_counts,
     capacity_auxiliary_commands,
     capacity_telemetry_ready,
     run_capacity_trial,
@@ -328,7 +329,7 @@ def test_capacity_initial_discovery_uses_one_renderer_witness(
         native_executable=tmp_path / "flydrones_camera_phase_native",
     )
 
-    assert [role for role, _command in startup] == ["scheduler", "renderer-witness"]
+    assert [role for role, _command in startup] == ["renderer-witness", "scheduler"]
     assert all(command is not commands[1] for _role, command in startup)
 
 
@@ -347,6 +348,33 @@ def test_capacity_selected_observer_uses_staged_overlap_after_attestation():
         '(output / "renderer-phase-complete.marker").touch()'
     )
     assert attestation < selected_observer < witness_completion
+
+
+@pytest.mark.parametrize(
+    "selected_count,expected",
+    (
+        (0, {0: 1, 1: 1, 2: 1, 3: 1, 4: 1}),
+        (1, {0: 2, 1: 1, 2: 1, 3: 1, 4: 1}),
+        (5, {0: 2, 1: 2, 2: 2, 3: 2, 4: 2}),
+    ),
+)
+def test_selected_overlap_subscriber_counts(selected_count: int, expected: dict[int, int]):
+    assert _selected_overlap_subscriber_counts(selected_count) == expected
+
+
+def test_renderer_witness_subscription_barrier_precedes_scheduler_start():
+    runner = (
+        Path(__file__).parents[1] / "tools/run_camera_render_capacity_trial_wsl.py"
+    ).read_text(encoding="utf-8")
+    backend_start = runner.split(
+        "    def start(self, *, commands, output, run_dir, environment, completion_marker, **_kwargs):",
+        1,
+    )[1].split("    @staticmethod", 1)[0]
+
+    witness = backend_start.index('role = "renderer-witness"')
+    barrier = backend_start.index('stage="renderer-witness"')
+    scheduler = backend_start.index('role = "scheduler"')
+    assert witness < barrier < scheduler
 
 
 def test_capacity_observers_allow_sequential_px4_startup(tmp_path: Path):

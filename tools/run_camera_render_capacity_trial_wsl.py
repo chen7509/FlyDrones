@@ -203,7 +203,6 @@ def _capacity_startup_commands(
     if len(commands) != 2:
         raise ValueError("capacity commands must contain scheduler and observer")
     return [
-        ("scheduler", commands[0]),
         (
             "renderer-witness",
             _renderer_witness_command(
@@ -211,7 +210,17 @@ def _capacity_startup_commands(
                 native_executable=native_executable,
             ),
         ),
+        ("scheduler", commands[0]),
     ]
+
+
+def _selected_overlap_subscriber_counts(selected_count: int) -> dict[int, int]:
+    if selected_count not in (0, 1, 5):
+        raise ValueError("selected_count must be 0, 1, or 5")
+    return {
+        vehicle: 1 + int(vehicle < selected_count)
+        for vehicle in range(5)
+    }
 
 
 def _subscriber_count(text: str) -> int:
@@ -605,6 +614,70 @@ class SubprocessCapacityBackend:
         )
         return [line for line in processes.splitlines() if any(item in line for item in needles)]
 
+    def _wait_depth_subscriber_counts(
+        self,
+        *,
+        expected: Mapping[int, int],
+        process: subprocess.Popen,
+        timeout_s: float,
+        stage: str,
+    ) -> dict[int, str]:
+        deadline = time.monotonic() + timeout_s
+        last_raw: dict[int, str] = {}
+        last_actual: dict[int, int | None] = {}
+        while time.monotonic() < deadline:
+            code = process.poll()
+            if code is not None:
+                raise RuntimeError(
+                    f"{stage} process exited before subscriber discovery with code {code}"
+                )
+            raw: dict[int, str] = {}
+            actual: dict[int, int | None] = {}
+            for vehicle in range(5):
+                try:
+                    result = subprocess.run(
+                        ["gz", "topic", "-i", "-t", _depth_topic(vehicle)],
+                        text=True,
+                        stdout=subprocess.PIPE,
+                        stderr=subprocess.STDOUT,
+                        check=False,
+                        timeout=3,
+                    )
+                except subprocess.TimeoutExpired as exc:
+                    raw[vehicle] = exc.stdout if isinstance(exc.stdout, str) else ""
+                    actual[vehicle] = None
+                    continue
+                raw[vehicle] = result.stdout
+                try:
+                    actual[vehicle] = (
+                        _subscriber_count(result.stdout)
+                        if result.returncode == 0
+                        else None
+                    )
+                except ValueError:
+                    actual[vehicle] = None
+            accepted = actual == dict(expected)
+            _atomic_json(
+                self.output / f"depth-topic-connections-{stage}.json",
+                {
+                    "schema": "flydrones-depth-topic-discovery-v1",
+                    "stage": stage,
+                    "expected": {str(key): value for key, value in expected.items()},
+                    "actual": {str(key): value for key, value in actual.items()},
+                    "accepted": accepted,
+                    "raw": {str(key): value for key, value in raw.items()},
+                },
+            )
+            if accepted:
+                return raw
+            last_raw = raw
+            last_actual = actual
+            time.sleep(0.1)
+        raise TimeoutError(
+            f"{stage} subscriber discovery timed out: "
+            f"expected {dict(expected)}, got {last_actual}; topics={sorted(last_raw)}"
+        )
+
     def start(self, *, commands, output, run_dir, environment, completion_marker, **_kwargs):
         self.output = output
         self.run_dir = run_dir
@@ -651,7 +724,8 @@ class SubprocessCapacityBackend:
             output=output,
             native_executable=Path(_kwargs["native_executable"]),
         )
-        for role, command in startup_commands:
+
+        def start_auxiliary(role: str, command: list[str]) -> subprocess.Popen:
             handle = (output / f"{role}.log").open("w", encoding="utf-8")
             self.logs.append(handle)
             process = subprocess.Popen(
@@ -663,6 +737,18 @@ class SubprocessCapacityBackend:
             )
             self.processes[role] = process
             append_process_identity(run_dir / "owned-processes.json", process.pid, role)
+            return process
+
+        role = "renderer-witness"
+        witness_process = start_auxiliary(role, startup_commands[0][1])
+        self._wait_depth_subscriber_counts(
+            expected={vehicle: 1 for vehicle in range(5)},
+            process=witness_process,
+            timeout_s=min(float(_kwargs["readiness_timeout_s"]), 30.0),
+            stage="renderer-witness",
+        )
+        role = "scheduler"
+        start_auxiliary(role, startup_commands[1][1])
         _atomic_json(
             run_dir / "camera-aux-started.marker",
             {
@@ -681,17 +767,13 @@ class SubprocessCapacityBackend:
         if attestation.get("accepted") is not True:
             raise RuntimeError("temporary renderer witness attestation rejected")
         role = "observer"
-        handle = (output / f"{role}.log").open("w", encoding="utf-8")
-        self.logs.append(handle)
-        process = subprocess.Popen(
-            commands[1],
-            env=environment,
-            stdout=handle,
-            stderr=subprocess.STDOUT,
-            start_new_session=True,
+        process = start_auxiliary(role, commands[1])
+        self._wait_depth_subscriber_counts(
+            expected=_selected_overlap_subscriber_counts(run.cell.subscriber_count),
+            process=process,
+            timeout_s=min(float(_kwargs["readiness_timeout_s"]), 30.0),
+            stage="selected-overlap",
         )
-        self.processes[role] = process
-        append_process_identity(run_dir / "owned-processes.json", process.pid, role)
         selected_ready = (
             output / "camera-phase-ready.json"
             if run.cell.implementation == "python"
