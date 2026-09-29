@@ -525,18 +525,24 @@ def test_capacity_launcher_uses_temporary_attestation_and_stable_gazebo_identity
     assert '--preload-vehicles "$vehicle_count"' in launcher
     assert 'PX4_GZ_MODEL_NAME="x500_depth_fly_$instance_id"' in launcher
     assert 'if [[ "$capacity_mode" != 1 ]]; then gazebo_run_args=(-r "${gazebo_run_args[@]}"); fi' in launcher
+    assert 'capacity-world-warmup-resume.log' in launcher
+    assert 'capacity-world-warmup-pause.log' in launcher
+    assert 'px4-sensor-source-warmup.json' in launcher
     assert 'gz service -s "/world/flydrones_forest/control"' in launcher
     assert '"pause: false"' in launcher
-    resume = launcher.index('gz service -s "/world/flydrones_forest/control"')
-    assert launcher.index('record_process "$(cat "$instance_dir/pid")" "px4-$instance_id"') < resume
+    final_resume = launcher.index('>"$run_dir/capacity-world-resume.log"')
+    first_px4 = launcher.index('record_process "$(cat "$instance_dir/pid")" "px4-$instance_id"')
+    warmup_resume = launcher.index('capacity-world-warmup-resume.log')
+    warmup_pause = launcher.index('capacity-world-warmup-pause.log')
+    assert warmup_resume < warmup_pause < first_px4
+    assert first_px4 < final_resume
     assert 'echo "PX4 instance $instance_id sensor publisher registration timed out"' in launcher
     serial_sensor_gate = launcher.index(
         'echo "PX4 instance $instance_id sensor publisher registration timed out"'
     )
-    assert launcher.index('record_process "$(cat "$instance_dir/pid")" "px4-$instance_id"') < serial_sensor_gate < resume
+    assert first_px4 < serial_sensor_gate < final_resume
     assert 'echo "PX4 pre-resume bridge barrier timed out"' in launcher
     barrier = launcher.index('echo "PX4 pre-resume bridge barrier timed out"')
-    final_resume = launcher.index('>"$run_dir/capacity-world-resume.log"')
     assert barrier < final_resume
     sensor_topology = launcher.index('"$run_dir/px4-sensor-topic-connections.json"')
     assert barrier < sensor_topology < final_resume
@@ -554,6 +560,9 @@ def test_capacity_launcher_uses_temporary_attestation_and_stable_gazebo_identity
     assert '"px4-console/agent-{vehicle_id}-{stream}.log"' in runner
     assert '"gazebo.stdout.log"' in runner
     assert '"gazebo.stderr.log"' in runner
+    assert '"px4-sensor-source-warmup.json"' in runner
+    assert '"capacity-world-warmup-resume.log"' in runner
+    assert '"capacity-world-warmup-pause.log"' in runner
     assert final_resume < launcher.index("  running=0", final_resume)
 
 

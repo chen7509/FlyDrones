@@ -248,6 +248,103 @@ sensor_suffixes=(
   "navsat_sensor/navsat"
   "air_pressure_sensor/air_pressure"
 )
+if [[ "$capacity_mode" == 1 ]]; then
+  if ! gz service -s "/world/flydrones_forest/control" \
+    --reqtype gz.msgs.WorldControl --reptype gz.msgs.Boolean \
+    --timeout 5000 --req "pause: false" \
+    >"$run_dir/capacity-world-warmup-resume.log" 2>&1; then
+    echo "Gazebo sensor-source warmup resume failed" >&2
+    exit 3
+  fi
+  warmup_ok=0
+  if PYTHONPATH="$repo_root/src:$repo_root" python3 - \
+    "$run_dir/px4-sensor-source-warmup.json" "$vehicle_count" <<'PY'
+import concurrent.futures
+import json
+import subprocess
+import sys
+import tempfile
+from pathlib import Path
+
+output = Path(sys.argv[1])
+vehicle_count = int(sys.argv[2])
+suffixes = {
+    "imu": "imu_sensor/imu",
+    "magnetometer": "magnetometer_sensor/magnetometer",
+    "gps": "navsat_sensor/navsat",
+    "barometer": "air_pressure_sensor/air_pressure",
+}
+topics = {
+    f"{vehicle_id}:{sensor}": (
+        f"/world/flydrones_forest/model/x500_depth_fly_{vehicle_id}"
+        f"/link/base_link/sensor/{suffix}"
+    )
+    for vehicle_id in range(vehicle_count)
+    for sensor, suffix in suffixes.items()
+}
+
+def witness(item: tuple[str, str]) -> tuple[str, dict[str, object]]:
+    key, topic = item
+    try:
+        result = subprocess.run(
+            ["gz", "topic", "-e", "--json-output", "-n", "1", "-t", topic],
+            text=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+            timeout=20,
+            check=False,
+        )
+        return key, {
+            "topic": topic,
+            "returncode": result.returncode,
+            "message_received": result.returncode == 0 and bool(result.stdout.strip()),
+            "bytes": len(result.stdout.encode("utf-8")),
+            "output": result.stdout,
+        }
+    except subprocess.TimeoutExpired as exc:
+        raw = (exc.stdout or "") if isinstance(exc.stdout, str) else ""
+        return key, {
+            "topic": topic,
+            "returncode": None,
+            "message_received": False,
+            "bytes": len(raw.encode("utf-8")),
+            "output": raw,
+            "error": "source_timeout",
+        }
+
+with concurrent.futures.ThreadPoolExecutor(max_workers=len(topics)) as executor:
+    observations = dict(executor.map(witness, topics.items()))
+payload = {
+    "schema": "flydrones-gazebo-sensor-source-warmup-v1",
+    "accepted": all(item["message_received"] for item in observations.values()),
+    "expected_topic_count": len(topics),
+    "message_topic_count": sum(bool(item["message_received"]) for item in observations.values()),
+    "topics": observations,
+}
+output.parent.mkdir(parents=True, exist_ok=True)
+with tempfile.NamedTemporaryFile("w", encoding="utf-8", dir=output.parent, delete=False) as handle:
+    json.dump(payload, handle, indent=2, sort_keys=True)
+    handle.write("\n")
+    temporary = Path(handle.name)
+temporary.replace(output)
+if not payload["accepted"]:
+    raise SystemExit(3)
+PY
+  then
+    warmup_ok=1
+  fi
+  if ! gz service -s "/world/flydrones_forest/control" \
+    --reqtype gz.msgs.WorldControl --reptype gz.msgs.Boolean \
+    --timeout 5000 --req "pause: true" \
+    >"$run_dir/capacity-world-warmup-pause.log" 2>&1; then
+    echo "Gazebo sensor-source warmup pause failed" >&2
+    exit 3
+  fi
+  if [[ "$warmup_ok" != 1 ]]; then
+    echo "Gazebo sensor-source warmup failed" >&2
+    exit 3
+  fi
+fi
 poses=(-4.0 -2.0 0.0 2.0 4.0)
 for ((instance_id=0; instance_id<vehicle_count; instance_id++)); do
   instance_dir="$run_dir/instance_$instance_id"
