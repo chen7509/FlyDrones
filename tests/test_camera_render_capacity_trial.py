@@ -11,6 +11,7 @@ from tools.run_camera_render_capacity_trial_wsl import (
     _auxiliary_closed_cleanly,
     _capacity_phase_summary,
     _capacity_run_directory,
+    _capacity_startup_commands,
     _depth_topic,
     _renderer_witness_accepted,
     _renderer_witness_command,
@@ -311,6 +312,30 @@ def test_renderer_witness_uses_native_five_camera_warmup(tmp_path: Path):
     )
 
 
+def test_capacity_selected_observer_starts_before_renderer_witness_handoff(
+    tmp_path: Path,
+):
+    commands = capacity_auxiliary_commands(
+        run=_run("native-5"),
+        output=tmp_path,
+        completion_marker=tmp_path / "complete.marker",
+        native_executable=tmp_path / "flydrones_camera_phase_native",
+    )
+
+    startup = _capacity_startup_commands(
+        commands=commands,
+        output=tmp_path,
+        native_executable=tmp_path / "flydrones_camera_phase_native",
+    )
+
+    assert [role for role, _command in startup] == [
+        "scheduler",
+        "renderer-witness",
+        "observer",
+    ]
+    assert startup[2][1] is commands[1]
+
+
 def test_capacity_observers_allow_sequential_px4_startup(tmp_path: Path):
     run = _run("native-1")
     scheduler, _observer = capacity_auxiliary_commands(
@@ -570,7 +595,9 @@ def test_capacity_launcher_uses_temporary_attestation_and_stable_gazebo_identity
     backend_platform_wait = runner.index(
         'run_dir / "px4-capacity-platform-ready.json"'
     )
-    backend_scheduler_start = runner.index('("scheduler", commands[0])')
+    backend_scheduler_start = runner.index(
+        "startup_commands = _capacity_startup_commands"
+    )
     assert backend_platform_wait < backend_scheduler_start
     assert 'px4-gz_bridge" --instance "$instance_id" stop' not in launcher
     assert 'item["publisher_count"] == 1 and item["subscriber_count"] == 1' in launcher

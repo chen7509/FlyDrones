@@ -193,6 +193,28 @@ def _renderer_witness_command(
     ]
 
 
+def _capacity_startup_commands(
+    *,
+    commands: Sequence[list[str]],
+    output: Path,
+    native_executable: Path,
+) -> list[tuple[str, list[str]]]:
+    """Start the selected observer before retiring the renderer witness."""
+    if len(commands) != 2:
+        raise ValueError("capacity commands must contain scheduler and observer")
+    return [
+        ("scheduler", commands[0]),
+        (
+            "renderer-witness",
+            _renderer_witness_command(
+                output=output,
+                native_executable=native_executable,
+            ),
+        ),
+        ("observer", commands[1]),
+    ]
+
+
 def _subscriber_count(text: str) -> int:
     if re.search(r"(?im)^\s*No subscribers on topic \[[^\]\r\n]+\]\s*$", text):
         return 0
@@ -625,16 +647,11 @@ class SubprocessCapacityBackend:
         if platform.get("schema") != "flydrones-px4-capacity-platform-ready-v1":
             raise RuntimeError("PX4 capacity platform readiness schema mismatch")
         run = _kwargs["run"]
-        startup_commands = [
-            ("scheduler", commands[0]),
-            (
-                "renderer-witness",
-                _renderer_witness_command(
-                    output=output,
-                    native_executable=Path(_kwargs["native_executable"]),
-                ),
-            ),
-        ]
+        startup_commands = _capacity_startup_commands(
+            commands=commands,
+            output=output,
+            native_executable=Path(_kwargs["native_executable"]),
+        )
         for role, command in startup_commands:
             handle = (output / f"{role}.log").open("w", encoding="utf-8")
             self.logs.append(handle)
@@ -680,18 +697,7 @@ class SubprocessCapacityBackend:
         _atomic_json(output / "renderer-phase-summary.json", witness_summary)
         if not _renderer_witness_accepted(witness_summary, exit_code=witness_code):
             raise RuntimeError(f"renderer witness exited {witness_code}")
-        role = "observer"
-        handle = (output / f"{role}.log").open("w", encoding="utf-8")
-        self.logs.append(handle)
-        process = subprocess.Popen(
-            commands[1],
-            env=environment,
-            stdout=handle,
-            stderr=subprocess.STDOUT,
-            start_new_session=True,
-        )
-        self.processes[role] = process
-        append_process_identity(run_dir / "owned-processes.json", process.pid, role)
+        process = self.processes["observer"]
         selected_ready = (
             output / "camera-phase-ready.json"
             if run.cell.implementation == "python"
