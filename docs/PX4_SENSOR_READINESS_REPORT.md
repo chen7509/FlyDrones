@@ -56,9 +56,11 @@ Run 10 failed the startup-health gate. Gazebo delivered all 20 source streams an
 
 The failed tenth start is retained. It is not discarded or replaced by an extra successful run.
 
+The original formal manifests and scores were produced by the first readiness scorer. They remain immutable. [`formal-20260930-01-amendment-v2`](results/px4-sensor-readiness/20260930/formal-20260930-01-amendment-v2) binds each original manifest and summary to the raw build, per-topic source/topology, per-process cleanup, and per-file restoration evidence by SHA-256, then replays all ten slots through the hardened scorer. The amendment independently reproduces nine valid passes, one invalid tenth run, `readiness_rate=0.9`, and `camera_rerun_eligible=false`.
+
 ## Evidence
 
-Compact, reviewable evidence is under [`docs/results/px4-sensor-readiness/20260930`](results/px4-sensor-readiness/20260930). It includes every development campaign summary, the ten formal manifests/summaries/scores, the failed run's five startup-health records, source warmup, topic topology, build identity, cleanup/restoration evidence, and the explicit step-4 gated-skip record. The gated camera entry was also exercised against the 9/10 summary: it rejected the summary before writing gate authorization evidence or creating a camera campaign directory.
+Compact, reviewable evidence is under [`docs/results/px4-sensor-readiness/20260930`](results/px4-sensor-readiness/20260930). It includes every development campaign summary, the ten original formal manifests/summaries/scores, the hardened-scorer amendment with source hashes and embedded nested evidence, the failed run's five startup-health records, and the explicit step-4 gated-skip record. The gated camera entry was also exercised against the 9/10 summary: it rejected the summary before writing gate authorization evidence or creating a camera campaign directory.
 
 Raw evidence remains local under `results/px4-sensor-readiness`. It includes approximately 1.05 GB of ULogs, console logs, Gazebo clock/resource/GPU samples, and all failed development attempts. Raw data is excluded from Git to avoid replacing or compressing original evidence into the repository.
 

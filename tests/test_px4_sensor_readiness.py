@@ -55,6 +55,28 @@ def _config(phase: str) -> dict[str, object]:
 
 
 def _good_pair(run, *, rtf: float = 0.97):
+    sensors = {
+        "imu": "imu_sensor/imu",
+        "magnetometer": "magnetometer_sensor/magnetometer",
+        "gps": "navsat_sensor/navsat",
+        "barometer": "air_pressure_sensor/air_pressure",
+    }
+    topics = {
+        f"{vehicle_id}:{sensor}": {
+            "topic": (
+                "/world/flydrones_forest/model/"
+                f"x500_depth_fly_{vehicle_id}/link/base_link/sensor/{suffix}"
+            ),
+            "returncode": 0,
+            "message_received": True,
+            "publisher": True,
+            "subscriber": True,
+            "publisher_count": 1,
+            "subscriber_count": 1,
+        }
+        for vehicle_id in range(run.vehicle_count)
+        for sensor, suffix in sensors.items()
+    }
     manifest = {
         "schema": "flydrones-px4-sensor-readiness-manifest-v1",
         "name": run.name,
@@ -78,12 +100,15 @@ def _good_pair(run, *, rtf: float = 0.97):
             "px4_revision": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
             "nolockstep": True,
             "binary_sha256": "a" * 64,
+            "boardconfig_sha256": "b" * 64,
+            "board_definition": "#define CONFIG_BOARD_NOLOCKSTEP 1",
         },
         "sensor_source_evidence": {
             "schema": "flydrones-gazebo-sensor-source-warmup-v1",
             "accepted": True,
             "expected_topic_count": run.vehicle_count * 4,
             "message_topic_count": run.vehicle_count * 4,
+            "topics": copy.deepcopy(topics),
         },
         "sensor_topology_evidence": {
             "schema": "flydrones-px4-sensor-topic-connections-v1",
@@ -91,16 +116,35 @@ def _good_pair(run, *, rtf: float = 0.97):
             "expected_topic_count": run.vehicle_count * 4,
             "publisher_count": run.vehicle_count * 4,
             "subscriber_count": run.vehicle_count * 4,
+            "topics": copy.deepcopy(topics),
         },
         "cleanup_evidence": {
             "schema": "flydrones-owned-process-cleanup-v1",
             "recorded_processes": run.vehicle_count + 1,
+            "stopped": [
+                {"pid": 100 + vehicle_id, "start_ticks": 10, "role": f"px4-{vehicle_id}"}
+                for vehicle_id in range(run.vehicle_count)
+            ]
+            + [{"pid": 999, "start_ticks": 10, "role": "gazebo-server"}],
+            "already_gone": [],
             "ownership_mismatch": [],
             "failed_to_stop": [],
         },
         "restoration_evidence": {
             "schema": "flydrones-px4-shared-restoration-v1",
             "restored": True,
+            "items": {
+                name: {
+                    "matched": True,
+                    "backup_sha256": character * 64,
+                    "restored_sha256": character * 64,
+                }
+                for name, character in (
+                    ("world", "a"),
+                    ("OakD-Lite-Fly", "b"),
+                    ("x500_depth_fly", "c"),
+                )
+            },
         },
         "ulog_artifacts": [
             {
@@ -215,6 +259,32 @@ def test_good_readiness_run_passes_evidence_and_performance():
         (
             lambda manifest, _summary: manifest.update(restoration_evidence={}),
             "restoration_evidence_invalid",
+        ),
+        (
+            lambda manifest, _summary: manifest["sensor_source_evidence"].pop(
+                "topics"
+            ),
+            "sensor_source_evidence_invalid",
+        ),
+        (
+            lambda manifest, _summary: manifest["sensor_topology_evidence"].pop(
+                "topics"
+            ),
+            "sensor_topology_evidence_invalid",
+        ),
+        (
+            lambda manifest, _summary: manifest["cleanup_evidence"].update(stopped=[]),
+            "cleanup_evidence_invalid",
+        ),
+        (
+            lambda manifest, _summary: manifest["restoration_evidence"].update(items={}),
+            "restoration_evidence_invalid",
+        ),
+        (
+            lambda manifest, _summary: manifest["px4_build_evidence"].update(
+                binary_sha256="z" * 64
+            ),
+            "px4_build_evidence_invalid",
         ),
     ],
 )

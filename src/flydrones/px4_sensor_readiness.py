@@ -32,6 +32,31 @@ def _mapping(value: Any) -> Mapping[str, Any]:
     return value if isinstance(value, Mapping) else {}
 
 
+def _valid_sha256(value: Any) -> bool:
+    return (
+        isinstance(value, str)
+        and len(value) == 64
+        and all(character in "0123456789abcdef" for character in value)
+    )
+
+
+def _sensor_topics(vehicle_count: int) -> dict[str, str]:
+    suffixes = {
+        "imu": "imu_sensor/imu",
+        "magnetometer": "magnetometer_sensor/magnetometer",
+        "gps": "navsat_sensor/navsat",
+        "barometer": "air_pressure_sensor/air_pressure",
+    }
+    return {
+        f"{vehicle_id}:{sensor}": (
+            "/world/flydrones_forest/model/"
+            f"x500_depth_fly_{vehicle_id}/link/base_link/sensor/{suffix}"
+        )
+        for vehicle_id in range(vehicle_count)
+        for sensor, suffix in suffixes.items()
+    }
+
+
 @dataclass(frozen=True)
 class ReadinessRun:
     name: str
@@ -141,31 +166,66 @@ def score_readiness_run(
         and build.get("nolockstep") is True
         and isinstance(build.get("px4_revision"), str)
         and len(str(build.get("px4_revision"))) == 40
-        and isinstance(build.get("binary_sha256"), str)
-        and len(str(build.get("binary_sha256"))) == 64
+        and _valid_sha256(build.get("binary_sha256"))
+        and _valid_sha256(build.get("boardconfig_sha256"))
+        and build.get("board_definition") == "#define CONFIG_BOARD_NOLOCKSTEP 1"
     ):
         evidence.append("px4_build_evidence_invalid")
 
     source = _mapping(manifest.get("sensor_source_evidence"))
+    expected_topic_paths = _sensor_topics(int(vehicle_count)) if valid_vehicle_count else {}
+    source_topics = _mapping(source.get("topics"))
     if not (
         source.get("schema") == "flydrones-gazebo-sensor-source-warmup-v1"
         and source.get("accepted") is True
         and source.get("expected_topic_count") == expected_topics
         and source.get("message_topic_count") == expected_topics
+        and set(source_topics) == set(expected_topic_paths)
+        and all(
+            _mapping(source_topics[key]).get("topic") == topic
+            and _mapping(source_topics[key]).get("returncode") == 0
+            and _mapping(source_topics[key]).get("message_received") is True
+            for key, topic in expected_topic_paths.items()
+        )
     ):
         evidence.append("sensor_source_evidence_invalid")
 
     topology = _mapping(manifest.get("sensor_topology_evidence"))
+    topology_topics = _mapping(topology.get("topics"))
     if not (
         topology.get("schema") == "flydrones-px4-sensor-topic-connections-v1"
         and topology.get("accepted") is True
         and topology.get("expected_topic_count") == expected_topics
         and topology.get("publisher_count") == expected_topics
         and topology.get("subscriber_count") == expected_topics
+        and set(topology_topics) == set(expected_topic_paths)
+        and all(
+            _mapping(topology_topics[key]).get("topic") == topic
+            and _mapping(topology_topics[key]).get("returncode") == 0
+            and _mapping(topology_topics[key]).get("publisher") is True
+            and _mapping(topology_topics[key]).get("subscriber") is True
+            and _mapping(topology_topics[key]).get("publisher_count") == 1
+            and _mapping(topology_topics[key]).get("subscriber_count") == 1
+            for key, topic in expected_topic_paths.items()
+        )
     ):
         evidence.append("sensor_topology_evidence_invalid")
 
     cleanup = _mapping(manifest.get("cleanup_evidence"))
+    stopped = cleanup.get("stopped")
+    already_gone = cleanup.get("already_gone")
+    cleanup_items = [
+        *(stopped if isinstance(stopped, list) else []),
+        *(already_gone if isinstance(already_gone, list) else []),
+    ]
+    expected_roles = {
+        "gazebo-server",
+        *(
+            (f"px4-{vehicle_id}" for vehicle_id in range(int(vehicle_count)))
+            if valid_vehicle_count
+            else ()
+        ),
+    }
     if not (
         cleanup.get("schema") == "flydrones-owned-process-cleanup-v1"
         and cleanup.get("recorded_processes") == (
@@ -173,13 +233,36 @@ def score_readiness_run(
         )
         and cleanup.get("ownership_mismatch") == []
         and cleanup.get("failed_to_stop") == []
+        and isinstance(stopped, list)
+        and isinstance(already_gone, list)
+        and len(cleanup_items) == cleanup.get("recorded_processes")
+        and all(
+            isinstance(item, Mapping)
+            and isinstance(item.get("pid"), int)
+            and item.get("pid", 0) > 0
+            and isinstance(item.get("start_ticks"), int)
+            and item.get("start_ticks", 0) > 0
+            and isinstance(item.get("role"), str)
+            for item in cleanup_items
+        )
+        and {item.get("role") for item in cleanup_items if isinstance(item, Mapping)}
+        == expected_roles
     ):
         evidence.append("cleanup_evidence_invalid")
 
     restoration = _mapping(manifest.get("restoration_evidence"))
+    restoration_items = _mapping(restoration.get("items"))
     if not (
         restoration.get("schema") == "flydrones-px4-shared-restoration-v1"
         and restoration.get("restored") is True
+        and set(restoration_items) == {"world", "OakD-Lite-Fly", "x500_depth_fly"}
+        and all(
+            _mapping(item).get("matched") is True
+            and _valid_sha256(_mapping(item).get("backup_sha256"))
+            and _mapping(item).get("backup_sha256")
+            == _mapping(item).get("restored_sha256")
+            for item in restoration_items.values()
+        )
     ):
         evidence.append("restoration_evidence_invalid")
     if manifest.get("launcher_exit_code") != 0:
