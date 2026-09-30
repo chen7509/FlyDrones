@@ -40,6 +40,14 @@ def _valid_sha256(value: Any) -> bool:
     )
 
 
+def _valid_git_revision(value: Any) -> bool:
+    return (
+        isinstance(value, str)
+        and len(value) == 40
+        and all(character in "0123456789abcdef" for character in value)
+    )
+
+
 def _sensor_topics(vehicle_count: int) -> dict[str, str]:
     suffixes = {
         "imu": "imu_sensor/imu",
@@ -163,8 +171,7 @@ def score_readiness_run(
         build.get("schema") == "flydrones-px4-build-evidence-v1"
         and build.get("build_name") == "px4_sitl_nolockstep"
         and build.get("nolockstep") is True
-        and isinstance(build.get("px4_revision"), str)
-        and len(str(build.get("px4_revision"))) == 40
+        and _valid_git_revision(build.get("px4_revision"))
         and _valid_sha256(build.get("binary_sha256"))
         and _valid_sha256(build.get("boardconfig_sha256"))
         and build.get("board_definition") == "#define CONFIG_BOARD_NOLOCKSTEP 1"
@@ -367,6 +374,9 @@ def classify_readiness_campaign(
     phase: str,
 ) -> dict[str, object]:
     thresholds = ReadinessThresholds.from_mapping(_mapping(config.get("thresholds")))
+    expected_revision = config.get("px4_revision")
+    if not _valid_git_revision(expected_revision):
+        raise ValueError("configured PX4 revision missing or invalid")
     expected_runs = readiness_schedule(phase)
     expected_schedule = [run.as_dict() for run in expected_runs]
     configured = [dict(item) for item in _configured_schedule(config, phase)]
@@ -377,6 +387,12 @@ def classify_readiness_campaign(
     expected_identities = [run.name for run in expected_runs]
     identities = [score.get("name") for score in scores]
     reasons: list[str] = []
+    if any(
+        _mapping(manifest.get("px4_build_evidence")).get("px4_revision")
+        != expected_revision
+        for manifest, _summary in runs
+    ):
+        reasons.append("px4_revision_mismatch")
     if len(scores) != len(expected_runs):
         reasons.append("run_count_mismatch")
     if len(set(identities)) != len(identities):

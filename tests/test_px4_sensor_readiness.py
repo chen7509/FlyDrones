@@ -46,6 +46,7 @@ def test_readiness_uses_versioned_launcher_without_mutating_frozen_camera_inputs
 
 def _config(phase: str) -> dict[str, object]:
     return {
+        "px4_revision": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
         "thresholds": dict(THRESHOLDS),
         "schedules": {
             "development": [run.as_dict() for run in readiness_schedule("development")],
@@ -288,6 +289,12 @@ def test_good_readiness_run_passes_evidence_and_performance():
             "px4_build_evidence_invalid",
         ),
         (
+            lambda manifest, _summary: manifest["px4_build_evidence"].update(
+                px4_revision="z" * 40
+            ),
+            "px4_build_evidence_invalid",
+        ),
+        (
             lambda manifest, _summary: manifest["ulog_artifacts"][0].update(
                 sha256="z" * 64
             ),
@@ -401,6 +408,18 @@ def test_formal_rejects_changed_or_incomplete_schedule():
     result = classify_readiness_campaign(pairs[:-1], _config("formal"), phase="formal")
     assert result["classification"] == "inconclusive_or_invalid"
     assert result["camera_rerun_eligible"] is False
+
+
+def test_formal_rejects_px4_revision_that_differs_from_frozen_config():
+    pairs = [_good_pair(run) for run in readiness_schedule("formal")]
+    for manifest, _summary in pairs:
+        manifest["px4_build_evidence"]["px4_revision"] = "0" * 40
+
+    result = classify_readiness_campaign(pairs, _config("formal"), phase="formal")
+
+    assert result["classification"] == "inconclusive_or_invalid"
+    assert result["camera_rerun_eligible"] is False
+    assert "px4_revision_mismatch" in result["reasons"]
 
 
 def test_camera_rerun_gate_accepts_only_complete_formal_pass():

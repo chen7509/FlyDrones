@@ -56,7 +56,7 @@ Run 10 failed the startup-health gate. Gazebo delivered all 20 source streams an
 
 The failed tenth start is retained. It is not discarded or replaced by an extra successful run.
 
-The original formal manifests and scores were produced by the first readiness scorer. They remain immutable. [`formal-20260930-01-amendment-v3`](results/px4-sensor-readiness/20260930/formal-20260930-01-amendment-v3) binds each original manifest and summary to the raw build, per-topic source/topology, per-process cleanup, and per-file restoration evidence by SHA-256, then replays all ten slots through the current hardened scorer. The amendment independently reproduces nine valid passes, one invalid tenth run, `readiness_rate=0.9`, and `camera_rerun_eligible=false`. The committed v2 directory is retained as the preceding scorer's historical replay rather than rewritten.
+The original formal manifests and scores were produced by the first readiness scorer. They remain immutable. [`formal-20260930-01-amendment-v4`](results/px4-sensor-readiness/20260930/formal-20260930-01-amendment-v4) binds each original manifest and summary to the raw build, frozen PX4 revision, per-topic source/topology, per-process cleanup, and per-file restoration evidence by SHA-256, then replays all ten slots through the current hardened scorer. The amendment independently reproduces nine valid passes, one invalid tenth run, `readiness_rate=0.9`, and `camera_rerun_eligible=false`. The committed v2 and v3 directories are retained as historical replays of their scorer revisions rather than rewritten.
 
 ## Evidence
 

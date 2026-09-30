@@ -1,0 +1,290 @@
+{
+  "classification": {
+    "camera_rerun_eligible": false,
+    "classification": "inconclusive_or_invalid",
+    "readiness_rate": 0.9,
+    "reasons": [
+      "invalid_run_evidence"
+    ],
+    "schema": "flydrones-px4-sensor-readiness-campaign-summary-v1",
+    "scores": [
+      {
+        "evidence_failures": [],
+        "evidence_valid": true,
+        "failures": [],
+        "name": "readiness-formal-01-v5-r1",
+        "performance_failures": [],
+        "performance_pass": true,
+        "phase": "formal",
+        "repetition": 1,
+        "rtf": 0.9997658235424279,
+        "sequence": 1,
+        "vehicle_count": 5
+      },
+      {
+        "evidence_failures": [],
+        "evidence_valid": true,
+        "failures": [],
+        "name": "readiness-formal-02-v5-r2",
+        "performance_failures": [],
+        "performance_pass": true,
+        "phase": "formal",
+        "repetition": 2,
+        "rtf": 0.9995931732610076,
+        "sequence": 2,
+        "vehicle_count": 5
+      },
+      {
+        "evidence_failures": [],
+        "evidence_valid": true,
+        "failures": [],
+        "name": "readiness-formal-03-v5-r3",
+        "performance_failures": [],
+        "performance_pass": true,
+        "phase": "formal",
+        "repetition": 3,
+        "rtf": 0.999597376841719,
+        "sequence": 3,
+        "vehicle_count": 5
+      },
+      {
+        "evidence_failures": [],
+        "evidence_valid": true,
+        "failures": [],
+        "name": "readiness-formal-04-v5-r4",
+        "performance_failures": [],
+        "performance_pass": true,
+        "phase": "formal",
+        "repetition": 4,
+        "rtf": 0.9992987874985452,
+        "sequence": 4,
+        "vehicle_count": 5
+      },
+      {
+        "evidence_failures": [],
+        "evidence_valid": true,
+        "failures": [],
+        "name": "readiness-formal-05-v5-r5",
+        "performance_failures": [],
+        "performance_pass": true,
+        "phase": "formal",
+        "repetition": 5,
+        "rtf": 0.9994601927800879,
+        "sequence": 5,
+        "vehicle_count": 5
+      },
+      {
+        "evidence_failures": [],
+        "evidence_valid": true,
+        "failures": [],
+        "name": "readiness-formal-06-v5-r6",
+        "performance_failures": [],
+        "performance_pass": true,
+        "phase": "formal",
+        "repetition": 6,
+        "rtf": 0.9994516573649022,
+        "sequence": 6,
+        "vehicle_count": 5
+      },
+      {
+        "evidence_failures": [],
+        "evidence_valid": true,
+        "failures": [],
+        "name": "readiness-formal-07-v5-r7",
+        "performance_failures": [],
+        "performance_pass": true,
+        "phase": "formal",
+        "repetition": 7,
+        "rtf": 0.9984050166029744,
+        "sequence": 7,
+        "vehicle_count": 5
+      },
+      {
+        "evidence_failures": [],
+        "evidence_valid": true,
+        "failures": [],
+        "name": "readiness-formal-08-v5-r8",
+        "performance_failures": [],
+        "performance_pass": true,
+        "phase": "formal",
+        "repetition": 8,
+        "rtf": 0.9995888012213013,
+        "sequence": 8,
+        "vehicle_count": 5
+      },
+      {
+        "evidence_failures": [],
+        "evidence_valid": true,
+        "failures": [],
+        "name": "readiness-formal-09-v5-r9",
+        "performance_failures": [],
+        "performance_pass": true,
+        "phase": "formal",
+        "repetition": 9,
+        "rtf": 0.9995042717568354,
+        "sequence": 9,
+        "vehicle_count": 5
+      },
+      {
+        "evidence_failures": [
+          "artifact_collection_failed",
+          "launcher_failed",
+          "platform_not_ready",
+          "initial_health_invalid",
+          "post_window_health_invalid",
+          "scored_duration_incomplete",
+          "vehicle_health_evidence_incomplete",
+          "rtf_missing_or_invalid"
+        ],
+        "evidence_valid": false,
+        "failures": [
+          "artifact_collection_failed",
+          "launcher_failed",
+          "platform_not_ready",
+          "initial_health_invalid",
+          "post_window_health_invalid",
+          "scored_duration_incomplete",
+          "vehicle_health_evidence_incomplete",
+          "rtf_missing_or_invalid"
+        ],
+        "name": "readiness-formal-10-v5-r10",
+        "performance_failures": [],
+        "performance_pass": false,
+        "phase": "formal",
+        "repetition": 10,
+        "rtf": null,
+        "sequence": 10,
+        "vehicle_count": 5
+      }
+    ]
+  },
+  "config": "configs\\px4_sensor_readiness.json",
+  "config_sha256": "4baff43d4f7eace197056d93c6b340dab81411f741f09053d20c8de07913246c",
+  "provenance": [
+    {
+      "name": "readiness-formal-01-v5-r1",
+      "source_hashes": {
+        "cleanup-evidence.json": "9159899a3d7e0c8a6a2ef23a419186269e02c1bb1af1d840cafd13b9939e12e7",
+        "manifest.json": "2f5cbd6a0017e9380466dbb05729fe702aac64a054ffda96c78c396933cdaff6",
+        "px4-build-evidence.json": "86ad950dabb7fa9df824e452151170c6dbcd357c034da117114f3d0ee4234a24",
+        "px4-sensor-source-warmup.json": "bce2967e3524fc0f00664b69855dfca1e0487089e21a61b0a8a08510f55a4cf3",
+        "px4-sensor-topic-connections.json": "932e363cb564c34190958eb38fe30ddc32c52fd509c4ff6e9f56c110409b564d",
+        "restoration-evidence.json": "49d2bd6eeaaa7f442aba0622a3eb5587d0ba67ab6eba6e4c48839c2ff889894c",
+        "summary.json": "41c96cda73d19d453894236b62fdcff6c49a46cf8ac42c27783f89f0d3b26007"
+      }
+    },
+    {
+      "name": "readiness-formal-02-v5-r2",
+      "source_hashes": {
+        "cleanup-evidence.json": "56088bfd8ca26cbf1bd4745c9ada55089dd20e26ba77c485b5ef7f222430584b",
+        "manifest.json": "446cea407ac9a74a7a3d9e8f1572fbade73b23f788153b91fd70891a22a25830",
+        "px4-build-evidence.json": "86ad950dabb7fa9df824e452151170c6dbcd357c034da117114f3d0ee4234a24",
+        "px4-sensor-source-warmup.json": "82abd361be1cdd480c90ae61f982fe30e7c68bfa99338e4f51da188eb58b5f8b",
+        "px4-sensor-topic-connections.json": "c310641379770dd419aa418f23ed757bbc2a51aeddee8f435b6b676a9110c7c9",
+        "restoration-evidence.json": "49d2bd6eeaaa7f442aba0622a3eb5587d0ba67ab6eba6e4c48839c2ff889894c",
+        "summary.json": "9d22436b82811b4e6704a4425421ba4c98dae4a7396b3fd2f833bb1cbd063533"
+      }
+    },
+    {
+      "name": "readiness-formal-03-v5-r3",
+      "source_hashes": {
+        "cleanup-evidence.json": "089a07fa1603b58a8b81f63e6508826a4ed05fb385ce4750609236826c6631f0",
+        "manifest.json": "63a30a9adf5185ae06f758602fbebd0b294a5285c7f9906ef41b88427affe877",
+        "px4-build-evidence.json": "86ad950dabb7fa9df824e452151170c6dbcd357c034da117114f3d0ee4234a24",
+        "px4-sensor-source-warmup.json": "ea3a233c71b8024412e0eaf5b574a6274448ea46ddd677da5d9f79502f810e36",
+        "px4-sensor-topic-connections.json": "3ba31a87b6e4e2be6a0e0e835873f08f98f73b45c191f1844992f1ae7d15756a",
+        "restoration-evidence.json": "49d2bd6eeaaa7f442aba0622a3eb5587d0ba67ab6eba6e4c48839c2ff889894c",
+        "summary.json": "cdc739f25d2b497afd4c7a027a89f11672b03fa9c507c462d06d4d3fee72edd3"
+      }
+    },
+    {
+      "name": "readiness-formal-04-v5-r4",
+      "source_hashes": {
+        "cleanup-evidence.json": "15a11a77a784d79e0b53732200ca227175fe2c971fd153ec5c40caeca016c4a2",
+        "manifest.json": "47a27116f8fd21c55de90a5d24a600b408d4115f36161f94f0c2f6dd750165a2",
+        "px4-build-evidence.json": "86ad950dabb7fa9df824e452151170c6dbcd357c034da117114f3d0ee4234a24",
+        "px4-sensor-source-warmup.json": "51fe388623c504529dd4cc19bbb21378f94c855b9df64055f27b4a9225c45e80",
+        "px4-sensor-topic-connections.json": "6ebfff44c1fa766f9be5c097e85736f3b224e964c16fab60599569123fba30cc",
+        "restoration-evidence.json": "49d2bd6eeaaa7f442aba0622a3eb5587d0ba67ab6eba6e4c48839c2ff889894c",
+        "summary.json": "cb45ffca31b533cb6e21e38f74519d396096b6cb839203d3d9fa8dc9ea96a049"
+      }
+    },
+    {
+      "name": "readiness-formal-05-v5-r5",
+      "source_hashes": {
+        "cleanup-evidence.json": "60ade1053f972b9295d8a1e81f22586219a956dad1edb9e1a8d0802e641f2bfd",
+        "manifest.json": "77dc52129719a867fcb339dfa1301969a30082bec5a3bb890acd1d7baaaff95f",
+        "px4-build-evidence.json": "86ad950dabb7fa9df824e452151170c6dbcd357c034da117114f3d0ee4234a24",
+        "px4-sensor-source-warmup.json": "bb9b26a6a1a4f92f92b01a9d2389f4376f1194d38ecb1a9e6c7c453fae7ea3cf",
+        "px4-sensor-topic-connections.json": "04a2059163adc8cbc6d58b26369009460fb179f048dc9403e1aa19882456e418",
+        "restoration-evidence.json": "49d2bd6eeaaa7f442aba0622a3eb5587d0ba67ab6eba6e4c48839c2ff889894c",
+        "summary.json": "8376cbd2d5c69c60073d20182324da516ba19bae42e6276a04ea310d48871d93"
+      }
+    },
+    {
+      "name": "readiness-formal-06-v5-r6",
+      "source_hashes": {
+        "cleanup-evidence.json": "e34db6eb9eb1b7eac3c519769e91c1a6a9e031fa34d1f39404dd306065c26720",
+        "manifest.json": "386bcea172bfe4b87245509ca38f7b2a2e9ea0b83b61372d593808bb7494028d",
+        "px4-build-evidence.json": "86ad950dabb7fa9df824e452151170c6dbcd357c034da117114f3d0ee4234a24",
+        "px4-sensor-source-warmup.json": "dd2993b79719493830381ebea435d51776535550b851352215ebc47f3c59bf40",
+        "px4-sensor-topic-connections.json": "8f34bf6be615d26b3d9283466cdf1fc76a0c1f0746247de4ce0b96b7bda03ba0",
+        "restoration-evidence.json": "49d2bd6eeaaa7f442aba0622a3eb5587d0ba67ab6eba6e4c48839c2ff889894c",
+        "summary.json": "0f522b41625b3c8599ba58439e03e405ba910ae68f9f8d594bccb01b50395be6"
+      }
+    },
+    {
+      "name": "readiness-formal-07-v5-r7",
+      "source_hashes": {
+        "cleanup-evidence.json": "59a5091b77257690195ddc7070825ac59493fe157ccc14b5cf9ec78264eff017",
+        "manifest.json": "38a3701a2db5e8eaf7c7eaeda766deec411775851c44515831958847d009445d",
+        "px4-build-evidence.json": "86ad950dabb7fa9df824e452151170c6dbcd357c034da117114f3d0ee4234a24",
+        "px4-sensor-source-warmup.json": "4f9de2c7be959615bada613daafa4e69e4e5b6da4b0f040360d81f924cdf58bb",
+        "px4-sensor-topic-connections.json": "bcc60517459f59fdc8b9fc35b4862168faa1b71e0009ff922800b225a23b73d9",
+        "restoration-evidence.json": "49d2bd6eeaaa7f442aba0622a3eb5587d0ba67ab6eba6e4c48839c2ff889894c",
+        "summary.json": "6c583ca613c2765520f6b9191e5904b1a551e332bc3438698c1ad78b05be0c06"
+      }
+    },
+    {
+      "name": "readiness-formal-08-v5-r8",
+      "source_hashes": {
+        "cleanup-evidence.json": "99f209031e75600e5d8faf37459d8ee9bef460f708811d1927ef81167d1c4899",
+        "manifest.json": "36c6ff9f885fe1803a32e05f1d98476ba082a0de83c5622cb5670ddb57a151b2",
+        "px4-build-evidence.json": "86ad950dabb7fa9df824e452151170c6dbcd357c034da117114f3d0ee4234a24",
+        "px4-sensor-source-warmup.json": "70ea990c392264e8045add38dd565967ec77f9494dee6bf74092dc1066708887",
+        "px4-sensor-topic-connections.json": "ea7bc9d4a36b070f1606171cc2461ddca47064b4ce096167f337d78a69f3795f",
+        "restoration-evidence.json": "49d2bd6eeaaa7f442aba0622a3eb5587d0ba67ab6eba6e4c48839c2ff889894c",
+        "summary.json": "1e8ddf3c7b7dde5a81fadf8cd68887b3067f8aa7d5aefbe996dae56d4cc2adf7"
+      }
+    },
+    {
+      "name": "readiness-formal-09-v5-r9",
+      "source_hashes": {
+        "cleanup-evidence.json": "f010131aab7ea5ffb9cd78cc0213f76a5821ca1ed0814e9947a3a9b50788c487",
+        "manifest.json": "986b4f46df6e5803217b4853a613746d43941f710ad16be25972214111a3bbc7",
+        "px4-build-evidence.json": "86ad950dabb7fa9df824e452151170c6dbcd357c034da117114f3d0ee4234a24",
+        "px4-sensor-source-warmup.json": "4e5b70b23f776ac5c2708dd25984cd1cf9aa3699a7c9a0af664a59f7e632067e",
+        "px4-sensor-topic-connections.json": "f0b590163b7e6e37896eae0def3979a3db1a99365426a887f9a31391fde62595",
+        "restoration-evidence.json": "49d2bd6eeaaa7f442aba0622a3eb5587d0ba67ab6eba6e4c48839c2ff889894c",
+        "summary.json": "391e94a69c94fe4c89c2eb886e20fbfcf95b9c4b7652b5f493928c65dadb5a0d"
+      }
+    },
+    {
+      "name": "readiness-formal-10-v5-r10",
+      "source_hashes": {
+        "cleanup-evidence.json": "33d68b2051e2201d21b33dce4281e965bd1657dab2ded9053a4da83fe590c68d",
+        "manifest.json": "7dcfb7891d5ef8c9dd4b4ec47f985d366f05879a0d477faca08fd40263f108f9",
+        "px4-build-evidence.json": "86ad950dabb7fa9df824e452151170c6dbcd357c034da117114f3d0ee4234a24",
+        "px4-sensor-source-warmup.json": "b2c0608e298d49d43df53cb6c1209a8208a0e7e3fe2dd9a4b32b8861a67f6ba4",
+        "px4-sensor-topic-connections.json": "52233b56064b818f52ea1c86a64e8a8a98ff7ea89ea4f4218106556b5719a9b3",
+        "restoration-evidence.json": "49d2bd6eeaaa7f442aba0622a3eb5587d0ba67ab6eba6e4c48839c2ff889894c",
+        "summary.json": "6f6ecdf5e6be492e9a9892941c719048c76f6f3a93faad14887c8fbdfc601c59"
+      }
+    }
+  ],
+  "schema": "flydrones-px4-sensor-readiness-amendment-v1",
+  "scorer_sha256": "a6e8a91b447b326f680586d1286cc6813ca197acc46c460dd4e117ca24dca355",
+  "source_artifacts_unchanged": true,
+  "source_campaign": "results\\px4-sensor-readiness\\formal-20260930-01",
+  "source_campaign_summary_sha256": "4afb7928c006cd38d7d2987a6fbaca8d6e38584594fa2532330367303c1ca195"
+}

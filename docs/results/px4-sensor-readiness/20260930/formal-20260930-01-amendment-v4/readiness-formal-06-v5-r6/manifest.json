@@ -1,0 +1,495 @@
+{
+  "cleanup_evidence": {
+    "already_gone": [],
+    "failed_to_stop": [],
+    "ownership_mismatch": [],
+    "recorded_processes": 6,
+    "registry": "/tmp/flydrones-readiness-readiness-formal-06-v5-r6-f1eb3423d7f5/owned-processes.json",
+    "schema": "flydrones-owned-process-cleanup-v1",
+    "stopped": [
+      {
+        "argv": [
+          "/home/yuchen7509/PX4-Autopilot/build/px4_sitl_nolockstep/bin/px4",
+          "-i",
+          "4",
+          "-d",
+          "/home/yuchen7509/PX4-Autopilot/build/px4_sitl_nolockstep/etc"
+        ],
+        "pid": 21752,
+        "role": "px4-4",
+        "start_ticks": 87240
+      },
+      {
+        "argv": [
+          "/home/yuchen7509/PX4-Autopilot/build/px4_sitl_nolockstep/bin/px4",
+          "-i",
+          "3",
+          "-d",
+          "/home/yuchen7509/PX4-Autopilot/build/px4_sitl_nolockstep/etc"
+        ],
+        "pid": 21586,
+        "role": "px4-3",
+        "start_ticks": 87218
+      },
+      {
+        "argv": [
+          "/home/yuchen7509/PX4-Autopilot/build/px4_sitl_nolockstep/bin/px4",
+          "-i",
+          "2",
+          "-d",
+          "/home/yuchen7509/PX4-Autopilot/build/px4_sitl_nolockstep/etc"
+        ],
+        "pid": 21469,
+        "role": "px4-2",
+        "start_ticks": 87199
+      },
+      {
+        "argv": [
+          "/home/yuchen7509/PX4-Autopilot/build/px4_sitl_nolockstep/bin/px4",
+          "-i",
+          "1",
+          "-d",
+          "/home/yuchen7509/PX4-Autopilot/build/px4_sitl_nolockstep/etc"
+        ],
+        "pid": 21384,
+        "role": "px4-1",
+        "start_ticks": 87183
+      },
+      {
+        "argv": [
+          "/home/yuchen7509/PX4-Autopilot/build/px4_sitl_nolockstep/bin/px4",
+          "-i",
+          "0",
+          "-d",
+          "/home/yuchen7509/PX4-Autopilot/build/px4_sitl_nolockstep/etc"
+        ],
+        "pid": 21332,
+        "role": "px4-0",
+        "start_ticks": 87168
+      },
+      {
+        "argv": [
+          "gz sim --headless-rendering -s /home/yuchen7509/PX4-Autopilot/Tools/simulation/gz/worlds/flydrones_forest.sdf"
+        ],
+        "pid": 21196,
+        "role": "gazebo-server",
+        "start_ticks": 86707
+      }
+    ]
+  },
+  "errors": [],
+  "initial_all_healthy": true,
+  "launcher_exit_code": 0,
+  "name": "readiness-formal-06-v5-r6",
+  "phase": "formal",
+  "platform_ready": true,
+  "post_window_all_healthy": true,
+  "px4_build_evidence": {
+    "binary_sha256": "d1e2b5eec3b061b45216facc7f3d95eb4387cbb3fff0a654ab013207119878f8",
+    "board_definition": "#define CONFIG_BOARD_NOLOCKSTEP 1",
+    "boardconfig_sha256": "e3e8f70d0c9d0424e8b49768ed6eb6ac00cdffcab1444e15d0505c4aadba94e6",
+    "build_name": "px4_sitl_nolockstep",
+    "nolockstep": true,
+    "px4_revision": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+    "schema": "flydrones-px4-build-evidence-v1"
+  },
+  "repetition": 6,
+  "restoration_evidence": {
+    "items": {
+      "OakD-Lite-Fly": {
+        "backup_sha256": "bf75df5e0dc2d359f270342b0b60230af402ee6d6834f8e7afd7a79f3521c734",
+        "matched": true,
+        "restored_sha256": "bf75df5e0dc2d359f270342b0b60230af402ee6d6834f8e7afd7a79f3521c734"
+      },
+      "world": {
+        "backup_sha256": "da3e81c10a7d848671c1045f9da267eca65fd312793231dd99a038f55824e8ad",
+        "matched": true,
+        "restored_sha256": "da3e81c10a7d848671c1045f9da267eca65fd312793231dd99a038f55824e8ad"
+      },
+      "x500_depth_fly": {
+        "backup_sha256": "c76faddefc793fc13383d294f8cbba6a6a0bc37c34e2eca3aeab7c15af83fffe",
+        "matched": true,
+        "restored_sha256": "c76faddefc793fc13383d294f8cbba6a6a0bc37c34e2eca3aeab7c15af83fffe"
+      }
+    },
+    "restored": true,
+    "schema": "flydrones-px4-shared-restoration-v1"
+  },
+  "schema": "flydrones-px4-sensor-readiness-manifest-v1",
+  "scored_duration_sim_s": 30.06,
+  "scored_wall_timeout_s": 120.0,
+  "sensor_source_evidence": {
+    "accepted": true,
+    "expected_topic_count": 20,
+    "message_topic_count": 20,
+    "schema": "flydrones-gazebo-sensor-source-warmup-v1",
+    "topics": {
+      "0:barometer": {
+        "bytes": 179,
+        "message_received": true,
+        "output": "{\"header\":{\"stamp\":{\"nsec\":320000000},\"data\":[{\"key\":\"frame_id\",\"value\":[\"base_link\"]},{\"key\":\"seq\",\"value\":[\"16\"]}]},\"pressure\":101319.51070695212,\"variance\":1.7320508075688772}\n",
+        "returncode": 0,
+        "topic": "/world/flydrones_forest/model/x500_depth_fly_0/link/base_link/sensor/air_pressure_sensor/air_pressure"
+      },
+      "0:gps": {
+        "bytes": 307,
+        "message_received": true,
+        "output": "{\"header\":{\"stamp\":{\"nsec\":300000000},\"data\":[{\"key\":\"seq\",\"value\":[\"9\"]}]},\"latitudeDeg\":47.397935079554529,\"longitudeDeg\":8.54616373980001,\"altitude\":0.22598039917647839,\"velocityEast\":3.046892952899487e-09,\"velocityNorth\":1.6347238164296737e-17,\"velocityUp\":0.00099980982542349252,\"frameId\":\"base_link\"}\n",
+        "returncode": 0,
+        "topic": "/world/flydrones_forest/model/x500_depth_fly_0/link/base_link/sensor/navsat_sensor/navsat"
+      },
+      "0:imu": {
+        "bytes": 716,
+        "message_received": true,
+        "output": "{\"header\":{\"stamp\":{\"nsec\":264000000},\"data\":[{\"key\":\"frame_id\",\"value\":[\"base_link\"]},{\"key\":\"seq\",\"value\":[\"65\"]}]},\"entityName\":\"x500_depth_fly_0::base_link::imu_sensor\",\"orientation\":{\"x\":-1.7695922184637574e-18,\"y\":1.7724454517163427e-09,\"z\":5.9328308272305924e-20,\"w\":1},\"orientationCovariance\":{\"data\":[0,0,0,0,0,0,0,0,0]},\"angularVelocity\":{\"x\":0.00020129426358844643,\"y\":-0.00094779058529849338,\"z\":-0.00083582771807907562},\"angularVelocityCovariance\":{\"data\":[7.61543504e-07,0,0,0,7.61543504e-07,0,0,0,7.61543504e-07]},\"linearAcceleration\":{\"x\":0.011447755997405138,\"y\":0.010169844688092509,\"z\":9.7938220971369745},\"linearAccelerationCovariance\":{\"data\":[4.05769e-05,0,0,0,4.05769e-05,0,0,0,4.70596e-05]}}\n",
+        "returncode": 0,
+        "topic": "/world/flydrones_forest/model/x500_depth_fly_0/link/base_link/sensor/imu_sensor/imu"
+      },
+      "0:magnetometer": {
+        "bytes": 207,
+        "message_received": true,
+        "output": "{\"header\":{\"stamp\":{\"nsec\":260000000},\"data\":[{\"key\":\"frame_id\",\"value\":[\"base_link\"]},{\"key\":\"seq\",\"value\":[\"26\"]}]},\"fieldTesla\":{\"x\":0.2162207435450347,\"y\":0.0098915362615047651,\"z\":0.42927572948569931}}\n",
+        "returncode": 0,
+        "topic": "/world/flydrones_forest/model/x500_depth_fly_0/link/base_link/sensor/magnetometer_sensor/magnetometer"
+      },
+      "1:barometer": {
+        "bytes": 179,
+        "message_received": true,
+        "output": "{\"header\":{\"stamp\":{\"nsec\":300000000},\"data\":[{\"key\":\"frame_id\",\"value\":[\"base_link\"]},{\"key\":\"seq\",\"value\":[\"15\"]}]},\"pressure\":101321.61875041043,\"variance\":1.7320508075688772}\n",
+        "returncode": 0,
+        "topic": "/world/flydrones_forest/model/x500_depth_fly_1/link/base_link/sensor/air_pressure_sensor/air_pressure"
+      },
+      "1:gps": {
+        "bytes": 306,
+        "message_received": true,
+        "output": "{\"header\":{\"stamp\":{\"nsec\":300000000},\"data\":[{\"key\":\"seq\",\"value\":[\"9\"]}]},\"latitudeDeg\":47.3979530686273,\"longitudeDeg\":8.54616373980001,\"altitude\":0.22597945854067802,\"velocityEast\":3.046892953450273e-09,\"velocityNorth\":-5.2908246030863509e-18,\"velocityUp\":0.00099980982542348558,\"frameId\":\"base_link\"}\n",
+        "returncode": 0,
+        "topic": "/world/flydrones_forest/model/x500_depth_fly_1/link/base_link/sensor/navsat_sensor/navsat"
+      },
+      "1:imu": {
+        "bytes": 713,
+        "message_received": true,
+        "output": "{\"header\":{\"stamp\":{\"nsec\":312000000},\"data\":[{\"key\":\"frame_id\",\"value\":[\"base_link\"]},{\"key\":\"seq\",\"value\":[\"77\"]}]},\"entityName\":\"x500_depth_fly_1::base_link::imu_sensor\",\"orientation\":{\"x\":7.2156320905063091e-19,\"y\":2.0945839119502213e-09,\"z\":8.3440986491343936e-21,\"w\":1},\"orientationCovariance\":{\"data\":[0,0,0,0,0,0,0,0,0]},\"angularVelocity\":{\"x\":0.0006609121251490793,\"y\":0.0018146622531098942,\"z\":8.924558854495461e-05},\"angularVelocityCovariance\":{\"data\":[7.61543504e-07,0,0,0,7.61543504e-07,0,0,0,7.61543504e-07]},\"linearAcceleration\":{\"x\":-0.00083102284133236646,\"y\":-0.0050581236253700356,\"z\":9.80755785116955},\"linearAccelerationCovariance\":{\"data\":[4.05769e-05,0,0,0,4.05769e-05,0,0,0,4.70596e-05]}}\n",
+        "returncode": 0,
+        "topic": "/world/flydrones_forest/model/x500_depth_fly_1/link/base_link/sensor/imu_sensor/imu"
+      },
+      "1:magnetometer": {
+        "bytes": 206,
+        "message_received": true,
+        "output": "{\"header\":{\"stamp\":{\"nsec\":292000000},\"data\":[{\"key\":\"frame_id\",\"value\":[\"base_link\"]},{\"key\":\"seq\",\"value\":[\"29\"]}]},\"fieldTesla\":{\"x\":0.21613987876702967,\"y\":0.00974161718444097,\"z\":0.42928533762104709}}\n",
+        "returncode": 0,
+        "topic": "/world/flydrones_forest/model/x500_depth_fly_1/link/base_link/sensor/magnetometer_sensor/magnetometer"
+      },
+      "2:barometer": {
+        "bytes": 179,
+        "message_received": true,
+        "output": "{\"header\":{\"stamp\":{\"nsec\":360000000},\"data\":[{\"key\":\"frame_id\",\"value\":[\"base_link\"]},{\"key\":\"seq\",\"value\":[\"18\"]}]},\"pressure\":101322.88463241301,\"variance\":1.7320508075688772}\n",
+        "returncode": 0,
+        "topic": "/world/flydrones_forest/model/x500_depth_fly_2/link/base_link/sensor/air_pressure_sensor/air_pressure"
+      },
+      "2:gps": {
+        "bytes": 302,
+        "message_received": true,
+        "output": "{\"header\":{\"stamp\":{\"nsec\":300000000},\"data\":[{\"key\":\"seq\",\"value\":[\"9\"]}]},\"latitudeDeg\":47.3979710577,\"longitudeDeg\":8.54616373980001,\"altitude\":0.2259791437536478,\"velocityEast\":3.0468929317030272e-09,\"velocityNorth\":3.7034956316318593e-18,\"velocityUp\":0.00099980982542348558,\"frameId\":\"base_link\"}\n",
+        "returncode": 0,
+        "topic": "/world/flydrones_forest/model/x500_depth_fly_2/link/base_link/sensor/navsat_sensor/navsat"
+      },
+      "2:imu": {
+        "bytes": 712,
+        "message_received": true,
+        "output": "{\"header\":{\"stamp\":{\"nsec\":292000000},\"data\":[{\"key\":\"frame_id\",\"value\":[\"base_link\"]},{\"key\":\"seq\",\"value\":[\"72\"]}]},\"entityName\":\"x500_depth_fly_2::base_link::imu_sensor\",\"orientation\":{\"x\":-2.2406318231370815e-18,\"y\":1.9603595521618947e-09,\"z\":-3.9075040873466713e-19,\"w\":1},\"orientationCovariance\":{\"data\":[0,0,0,0,0,0,0,0,0]},\"angularVelocity\":{\"x\":-0.001000288925573201,\"y\":0.00022134790030320492,\"z\":-0.0016217999242235815},\"angularVelocityCovariance\":{\"data\":[7.61543504e-07,0,0,0,7.61543504e-07,0,0,0,7.61543504e-07]},\"linearAcceleration\":{\"x\":-0.01024957373915541,\"y\":0.011855691223463676,\"z\":9.79508267615756},\"linearAccelerationCovariance\":{\"data\":[4.05769e-05,0,0,0,4.05769e-05,0,0,0,4.70596e-05]}}\n",
+        "returncode": 0,
+        "topic": "/world/flydrones_forest/model/x500_depth_fly_2/link/base_link/sensor/imu_sensor/imu"
+      },
+      "2:magnetometer": {
+        "bytes": 208,
+        "message_received": true,
+        "output": "{\"header\":{\"stamp\":{\"nsec\":292000000},\"data\":[{\"key\":\"frame_id\",\"value\":[\"base_link\"]},{\"key\":\"seq\",\"value\":[\"29\"]}]},\"fieldTesla\":{\"x\":0.21593103720719251,\"y\":0.0096743244498735618,\"z\":0.42930149798159034}}\n",
+        "returncode": 0,
+        "topic": "/world/flydrones_forest/model/x500_depth_fly_2/link/base_link/sensor/magnetometer_sensor/magnetometer"
+      },
+      "3:barometer": {
+        "bytes": 178,
+        "message_received": true,
+        "output": "{\"header\":{\"stamp\":{\"nsec\":300000000},\"data\":[{\"key\":\"frame_id\",\"value\":[\"base_link\"]},{\"key\":\"seq\",\"value\":[\"15\"]}]},\"pressure\":101320.4958088854,\"variance\":1.7320508075688772}\n",
+        "returncode": 0,
+        "topic": "/world/flydrones_forest/model/x500_depth_fly_3/link/base_link/sensor/air_pressure_sensor/air_pressure"
+      },
+      "3:gps": {
+        "bytes": 310,
+        "message_received": true,
+        "output": "{\"header\":{\"stamp\":{\"nsec\":364000000},\"data\":[{\"key\":\"seq\",\"value\":[\"11\"]}]},\"latitudeDeg\":47.397989046772643,\"longitudeDeg\":8.5461637398000132,\"altitude\":0.22604344412684441,\"velocityEast\":3.0468931010303033e-09,\"velocityNorth\":-1.7895801705368771e-17,\"velocityUp\":0.000999809825423483,\"frameId\":\"base_link\"}\n",
+        "returncode": 0,
+        "topic": "/world/flydrones_forest/model/x500_depth_fly_3/link/base_link/sensor/navsat_sensor/navsat"
+      },
+      "3:imu": {
+        "bytes": 716,
+        "message_received": true,
+        "output": "{\"header\":{\"stamp\":{\"nsec\":280000000},\"data\":[{\"key\":\"frame_id\",\"value\":[\"base_link\"]},{\"key\":\"seq\",\"value\":[\"69\"]}]},\"entityName\":\"x500_depth_fly_3::base_link::imu_sensor\",\"orientation\":{\"x\":2.1115660508351148e-19,\"y\":1.8798249359472938e-09,\"z\":-2.2259199139788044e-19,\"w\":1},\"orientationCovariance\":{\"data\":[0,0,0,0,0,0,0,0,0]},\"angularVelocity\":{\"x\":-7.9094176854508521e-05,\"y\":0.00071122940088338125,\"z\":-0.0015054608405590227},\"angularVelocityCovariance\":{\"data\":[7.61543504e-07,0,0,0,7.61543504e-07,0,0,0,7.61543504e-07]},\"linearAcceleration\":{\"x\":0.0054041543145191429,\"y\":0.011397115190517429,\"z\":9.7950176501080648},\"linearAccelerationCovariance\":{\"data\":[4.05769e-05,0,0,0,4.05769e-05,0,0,0,4.70596e-05]}}\n",
+        "returncode": 0,
+        "topic": "/world/flydrones_forest/model/x500_depth_fly_3/link/base_link/sensor/imu_sensor/imu"
+      },
+      "3:magnetometer": {
+        "bytes": 208,
+        "message_received": true,
+        "output": "{\"header\":{\"stamp\":{\"nsec\":292000000},\"data\":[{\"key\":\"frame_id\",\"value\":[\"base_link\"]},{\"key\":\"seq\",\"value\":[\"29\"]}]},\"fieldTesla\":{\"x\":0.21618109723975515,\"y\":0.0096446074503644952,\"z\":0.42922201574809343}}\n",
+        "returncode": 0,
+        "topic": "/world/flydrones_forest/model/x500_depth_fly_3/link/base_link/sensor/magnetometer_sensor/magnetometer"
+      },
+      "4:barometer": {
+        "bytes": 179,
+        "message_received": true,
+        "output": "{\"header\":{\"stamp\":{\"nsec\":360000000},\"data\":[{\"key\":\"frame_id\",\"value\":[\"base_link\"]},{\"key\":\"seq\",\"value\":[\"18\"]}]},\"pressure\":101324.72769853735,\"variance\":1.7320508075688772}\n",
+        "returncode": 0,
+        "topic": "/world/flydrones_forest/model/x500_depth_fly_4/link/base_link/sensor/air_pressure_sensor/air_pressure"
+      },
+      "4:gps": {
+        "bytes": 307,
+        "message_received": true,
+        "output": "{\"header\":{\"stamp\":{\"nsec\":364000000},\"data\":[{\"key\":\"seq\",\"value\":[\"11\"]}]},\"latitudeDeg\":47.398007035845239,\"longitudeDeg\":8.5461637398000132,\"altitude\":0.22604438755661249,\"velocityEast\":3.0468931150001848e-09,\"velocityNorth\":3.28716919471554e-18,\"velocityUp\":0.000999809825423483,\"frameId\":\"base_link\"}\n",
+        "returncode": 0,
+        "topic": "/world/flydrones_forest/model/x500_depth_fly_4/link/base_link/sensor/navsat_sensor/navsat"
+      },
+      "4:imu": {
+        "bytes": 719,
+        "message_received": true,
+        "output": "{\"header\":{\"stamp\":{\"nsec\":340000000},\"data\":[{\"key\":\"frame_id\",\"value\":[\"base_link\"]},{\"key\":\"seq\",\"value\":[\"84\"]}]},\"entityName\":\"x500_depth_fly_4::base_link::imu_sensor\",\"orientation\":{\"x\":-1.1056505229239213e-18,\"y\":2.2824980139825876e-09,\"z\":1.2657165303621889e-19,\"w\":1},\"orientationCovariance\":{\"data\":[0,0,0,0,0,0,0,0,0]},\"angularVelocity\":{\"x\":0.00021416732534769103,\"y\":-0.0014502984298386168,\"z\":-0.00062672148562596349},\"angularVelocityCovariance\":{\"data\":[7.61543504e-07,0,0,0,7.61543504e-07,0,0,0,7.61543504e-07]},\"linearAcceleration\":{\"x\":0.00038760568163374729,\"y\":-0.0014659837280969132,\"z\":9.8055968741421236},\"linearAccelerationCovariance\":{\"data\":[4.05769e-05,0,0,0,4.05769e-05,0,0,0,4.70596e-05]}}\n",
+        "returncode": 0,
+        "topic": "/world/flydrones_forest/model/x500_depth_fly_4/link/base_link/sensor/imu_sensor/imu"
+      },
+      "4:magnetometer": {
+        "bytes": 208,
+        "message_received": true,
+        "output": "{\"header\":{\"stamp\":{\"nsec\":352000000},\"data\":[{\"key\":\"frame_id\",\"value\":[\"base_link\"]},{\"key\":\"seq\",\"value\":[\"35\"]}]},\"fieldTesla\":{\"x\":0.21620593966128235,\"y\":0.0096738361902729327,\"z\":0.42939774562254129}}\n",
+        "returncode": 0,
+        "topic": "/world/flydrones_forest/model/x500_depth_fly_4/link/base_link/sensor/magnetometer_sensor/magnetometer"
+      }
+    }
+  },
+  "sensor_timeout_count": 0,
+  "sensor_topology_evidence": {
+    "accepted": true,
+    "expected_topic_count": 20,
+    "publisher_count": 20,
+    "schema": "flydrones-px4-sensor-topic-connections-v1",
+    "subscriber_count": 20,
+    "topics": {
+      "0:barometer": {
+        "publisher": true,
+        "publisher_count": 1,
+        "raw": "Publishers [Address, Message Type]:\n  tcp://172.28.230.109:38653, gz.msgs.FluidPressure\nSubscribers [Address, Message Type]:\n  tcp://172.28.230.109:36897, gz.msgs.FluidPressure\n",
+        "returncode": 0,
+        "subscriber": true,
+        "subscriber_count": 1,
+        "topic": "/world/flydrones_forest/model/x500_depth_fly_0/link/base_link/sensor/air_pressure_sensor/air_pressure"
+      },
+      "0:gps": {
+        "publisher": true,
+        "publisher_count": 1,
+        "raw": "Publishers [Address, Message Type]:\n  tcp://172.28.230.109:38653, gz.msgs.NavSat\nSubscribers [Address, Message Type]:\n  tcp://172.28.230.109:36897, gz.msgs.NavSat\n",
+        "returncode": 0,
+        "subscriber": true,
+        "subscriber_count": 1,
+        "topic": "/world/flydrones_forest/model/x500_depth_fly_0/link/base_link/sensor/navsat_sensor/navsat"
+      },
+      "0:imu": {
+        "publisher": true,
+        "publisher_count": 1,
+        "raw": "Publishers [Address, Message Type]:\n  tcp://172.28.230.109:38653, gz.msgs.IMU\nSubscribers [Address, Message Type]:\n  tcp://172.28.230.109:36897, gz.msgs.IMU\n",
+        "returncode": 0,
+        "subscriber": true,
+        "subscriber_count": 1,
+        "topic": "/world/flydrones_forest/model/x500_depth_fly_0/link/base_link/sensor/imu_sensor/imu"
+      },
+      "0:magnetometer": {
+        "publisher": true,
+        "publisher_count": 1,
+        "raw": "Publishers [Address, Message Type]:\n  tcp://172.28.230.109:38653, gz.msgs.Magnetometer\nSubscribers [Address, Message Type]:\n  tcp://172.28.230.109:36897, gz.msgs.Magnetometer\n",
+        "returncode": 0,
+        "subscriber": true,
+        "subscriber_count": 1,
+        "topic": "/world/flydrones_forest/model/x500_depth_fly_0/link/base_link/sensor/magnetometer_sensor/magnetometer"
+      },
+      "1:barometer": {
+        "publisher": true,
+        "publisher_count": 1,
+        "raw": "Publishers [Address, Message Type]:\n  tcp://172.28.230.109:38653, gz.msgs.FluidPressure\nSubscribers [Address, Message Type]:\n  tcp://172.28.230.109:41005, gz.msgs.FluidPressure\n",
+        "returncode": 0,
+        "subscriber": true,
+        "subscriber_count": 1,
+        "topic": "/world/flydrones_forest/model/x500_depth_fly_1/link/base_link/sensor/air_pressure_sensor/air_pressure"
+      },
+      "1:gps": {
+        "publisher": true,
+        "publisher_count": 1,
+        "raw": "Publishers [Address, Message Type]:\n  tcp://172.28.230.109:38653, gz.msgs.NavSat\nSubscribers [Address, Message Type]:\n  tcp://172.28.230.109:41005, gz.msgs.NavSat\n",
+        "returncode": 0,
+        "subscriber": true,
+        "subscriber_count": 1,
+        "topic": "/world/flydrones_forest/model/x500_depth_fly_1/link/base_link/sensor/navsat_sensor/navsat"
+      },
+      "1:imu": {
+        "publisher": true,
+        "publisher_count": 1,
+        "raw": "Publishers [Address, Message Type]:\n  tcp://172.28.230.109:38653, gz.msgs.IMU\nSubscribers [Address, Message Type]:\n  tcp://172.28.230.109:41005, gz.msgs.IMU\n",
+        "returncode": 0,
+        "subscriber": true,
+        "subscriber_count": 1,
+        "topic": "/world/flydrones_forest/model/x500_depth_fly_1/link/base_link/sensor/imu_sensor/imu"
+      },
+      "1:magnetometer": {
+        "publisher": true,
+        "publisher_count": 1,
+        "raw": "Publishers [Address, Message Type]:\n  tcp://172.28.230.109:38653, gz.msgs.Magnetometer\nSubscribers [Address, Message Type]:\n  tcp://172.28.230.109:41005, gz.msgs.Magnetometer\n",
+        "returncode": 0,
+        "subscriber": true,
+        "subscriber_count": 1,
+        "topic": "/world/flydrones_forest/model/x500_depth_fly_1/link/base_link/sensor/magnetometer_sensor/magnetometer"
+      },
+      "2:barometer": {
+        "publisher": true,
+        "publisher_count": 1,
+        "raw": "Publishers [Address, Message Type]:\n  tcp://172.28.230.109:38653, gz.msgs.FluidPressure\nSubscribers [Address, Message Type]:\n  tcp://172.28.230.109:36321, gz.msgs.FluidPressure\n",
+        "returncode": 0,
+        "subscriber": true,
+        "subscriber_count": 1,
+        "topic": "/world/flydrones_forest/model/x500_depth_fly_2/link/base_link/sensor/air_pressure_sensor/air_pressure"
+      },
+      "2:gps": {
+        "publisher": true,
+        "publisher_count": 1,
+        "raw": "Publishers [Address, Message Type]:\n  tcp://172.28.230.109:38653, gz.msgs.NavSat\nSubscribers [Address, Message Type]:\n  tcp://172.28.230.109:36321, gz.msgs.NavSat\n",
+        "returncode": 0,
+        "subscriber": true,
+        "subscriber_count": 1,
+        "topic": "/world/flydrones_forest/model/x500_depth_fly_2/link/base_link/sensor/navsat_sensor/navsat"
+      },
+      "2:imu": {
+        "publisher": true,
+        "publisher_count": 1,
+        "raw": "Publishers [Address, Message Type]:\n  tcp://172.28.230.109:38653, gz.msgs.IMU\nSubscribers [Address, Message Type]:\n  tcp://172.28.230.109:36321, gz.msgs.IMU\n",
+        "returncode": 0,
+        "subscriber": true,
+        "subscriber_count": 1,
+        "topic": "/world/flydrones_forest/model/x500_depth_fly_2/link/base_link/sensor/imu_sensor/imu"
+      },
+      "2:magnetometer": {
+        "publisher": true,
+        "publisher_count": 1,
+        "raw": "Publishers [Address, Message Type]:\n  tcp://172.28.230.109:38653, gz.msgs.Magnetometer\nSubscribers [Address, Message Type]:\n  tcp://172.28.230.109:36321, gz.msgs.Magnetometer\n",
+        "returncode": 0,
+        "subscriber": true,
+        "subscriber_count": 1,
+        "topic": "/world/flydrones_forest/model/x500_depth_fly_2/link/base_link/sensor/magnetometer_sensor/magnetometer"
+      },
+      "3:barometer": {
+        "publisher": true,
+        "publisher_count": 1,
+        "raw": "Publishers [Address, Message Type]:\n  tcp://172.28.230.109:38653, gz.msgs.FluidPressure\nSubscribers [Address, Message Type]:\n  tcp://172.28.230.109:43405, gz.msgs.FluidPressure\n",
+        "returncode": 0,
+        "subscriber": true,
+        "subscriber_count": 1,
+        "topic": "/world/flydrones_forest/model/x500_depth_fly_3/link/base_link/sensor/air_pressure_sensor/air_pressure"
+      },
+      "3:gps": {
+        "publisher": true,
+        "publisher_count": 1,
+        "raw": "Publishers [Address, Message Type]:\n  tcp://172.28.230.109:38653, gz.msgs.NavSat\nSubscribers [Address, Message Type]:\n  tcp://172.28.230.109:43405, gz.msgs.NavSat\n",
+        "returncode": 0,
+        "subscriber": true,
+        "subscriber_count": 1,
+        "topic": "/world/flydrones_forest/model/x500_depth_fly_3/link/base_link/sensor/navsat_sensor/navsat"
+      },
+      "3:imu": {
+        "publisher": true,
+        "publisher_count": 1,
+        "raw": "Publishers [Address, Message Type]:\n  tcp://172.28.230.109:38653, gz.msgs.IMU\nSubscribers [Address, Message Type]:\n  tcp://172.28.230.109:43405, gz.msgs.IMU\n",
+        "returncode": 0,
+        "subscriber": true,
+        "subscriber_count": 1,
+        "topic": "/world/flydrones_forest/model/x500_depth_fly_3/link/base_link/sensor/imu_sensor/imu"
+      },
+      "3:magnetometer": {
+        "publisher": true,
+        "publisher_count": 1,
+        "raw": "Publishers [Address, Message Type]:\n  tcp://172.28.230.109:38653, gz.msgs.Magnetometer\nSubscribers [Address, Message Type]:\n  tcp://172.28.230.109:43405, gz.msgs.Magnetometer\n",
+        "returncode": 0,
+        "subscriber": true,
+        "subscriber_count": 1,
+        "topic": "/world/flydrones_forest/model/x500_depth_fly_3/link/base_link/sensor/magnetometer_sensor/magnetometer"
+      },
+      "4:barometer": {
+        "publisher": true,
+        "publisher_count": 1,
+        "raw": "Publishers [Address, Message Type]:\n  tcp://172.28.230.109:38653, gz.msgs.FluidPressure\nSubscribers [Address, Message Type]:\n  tcp://172.28.230.109:36367, gz.msgs.FluidPressure\n",
+        "returncode": 0,
+        "subscriber": true,
+        "subscriber_count": 1,
+        "topic": "/world/flydrones_forest/model/x500_depth_fly_4/link/base_link/sensor/air_pressure_sensor/air_pressure"
+      },
+      "4:gps": {
+        "publisher": true,
+        "publisher_count": 1,
+        "raw": "Publishers [Address, Message Type]:\n  tcp://172.28.230.109:38653, gz.msgs.NavSat\nSubscribers [Address, Message Type]:\n  tcp://172.28.230.109:36367, gz.msgs.NavSat\n",
+        "returncode": 0,
+        "subscriber": true,
+        "subscriber_count": 1,
+        "topic": "/world/flydrones_forest/model/x500_depth_fly_4/link/base_link/sensor/navsat_sensor/navsat"
+      },
+      "4:imu": {
+        "publisher": true,
+        "publisher_count": 1,
+        "raw": "Publishers [Address, Message Type]:\n  tcp://172.28.230.109:38653, gz.msgs.IMU\nSubscribers [Address, Message Type]:\n  tcp://172.28.230.109:36367, gz.msgs.IMU\n",
+        "returncode": 0,
+        "subscriber": true,
+        "subscriber_count": 1,
+        "topic": "/world/flydrones_forest/model/x500_depth_fly_4/link/base_link/sensor/imu_sensor/imu"
+      },
+      "4:magnetometer": {
+        "publisher": true,
+        "publisher_count": 1,
+        "raw": "Publishers [Address, Message Type]:\n  tcp://172.28.230.109:38653, gz.msgs.Magnetometer\nSubscribers [Address, Message Type]:\n  tcp://172.28.230.109:36367, gz.msgs.Magnetometer\n",
+        "returncode": 0,
+        "subscriber": true,
+        "subscriber_count": 1,
+        "topic": "/world/flydrones_forest/model/x500_depth_fly_4/link/base_link/sensor/magnetometer_sensor/magnetometer"
+      }
+    }
+  },
+  "sequence": 6,
+  "shared_px4_files_restored": true,
+  "trial_cleanup_verified": true,
+  "ulog_artifacts": [
+    {
+      "bytes": 15369254,
+      "path": "px4-ulogs/agent-0.ulg",
+      "sha256": "97dd818655d0abf9a7ff92c9fa90ba02521b8376354dce64d7442d9dae39973a",
+      "vehicle_id": 0
+    },
+    {
+      "bytes": 15262701,
+      "path": "px4-ulogs/agent-1.ulg",
+      "sha256": "aa5b6b30cbbea3338e81b80ed48b390ae2cce543e5a892d54073d92702412c1e",
+      "vehicle_id": 1
+    },
+    {
+      "bytes": 15254621,
+      "path": "px4-ulogs/agent-2.ulg",
+      "sha256": "3461c7dd880ed6ef2546b2fc14ab60104a2dd20ac566cb83cab52dca7f803aef",
+      "vehicle_id": 2
+    },
+    {
+      "bytes": 15304000,
+      "path": "px4-ulogs/agent-3.ulg",
+      "sha256": "c2c05a82788304ec2f85dd4a6713a3754813570aeeb05d2dd9c523a4451b72f2",
+      "vehicle_id": 3
+    },
+    {
+      "bytes": 15166577,
+      "path": "px4-ulogs/agent-4.ulg",
+      "sha256": "4a2ddf9d0bfe7e1035e8e63292aa00be1f6da6b4f637078e2c33df49b5e5519a",
+      "vehicle_id": 4
+    }
+  ],
+  "vehicle_count": 5
+}
