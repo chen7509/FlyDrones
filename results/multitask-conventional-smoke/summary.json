@@ -1,0 +1,30 @@
+{
+  "admission_passed": false,
+  "best_actor_digest": "ce34bdbe8df792efcb62f3d15bc98e152f01d1ab62acdb003ccc3f1cd4a37c20",
+  "config_digest": "339577eb4a7beac6225e60705893f2f31a434fffd744c32eaf2aaf00a20d8600",
+  "disturbance_injections": {},
+  "git_commit": "89566992c05b8dbdcd6060605db9afe2f259820b",
+  "last_committed_batch": 2,
+  "male_cns_backend": "geometric-v1",
+  "male_cns_fallbacks": 0,
+  "missing_evidence": [
+    "compound_success",
+    "duplicate_coverage",
+    "formation_rmse_m",
+    "gate_success",
+    "male_cns_backend",
+    "maximum_skill_drop",
+    "search_coverage",
+    "task_reassign_s",
+    "task_release_s",
+    "task_reopen_s",
+    "tracking_loss_fraction",
+    "tracking_rmse_m",
+    "tracking_success"
+  ],
+  "safety_failures": [],
+  "schema_version": 1,
+  "test_command": "python -m pytest -q",
+  "test_result": "274 passed, 1 warning in 140.68s (0:02:20)",
+  "trainer_checkpoint_digest": "8129df9844f8f216f49a819fe910070a573c29bc66a4cdfa9d2df1f61de3eb02"
+}

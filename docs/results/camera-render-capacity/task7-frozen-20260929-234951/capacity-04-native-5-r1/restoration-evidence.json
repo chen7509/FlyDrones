@@ -1,0 +1,21 @@
+{
+  "items": {
+    "OakD-Lite-Fly": {
+      "backup_sha256": "bf75df5e0dc2d359f270342b0b60230af402ee6d6834f8e7afd7a79f3521c734",
+      "matched": true,
+      "restored_sha256": "bf75df5e0dc2d359f270342b0b60230af402ee6d6834f8e7afd7a79f3521c734"
+    },
+    "world": {
+      "backup_sha256": "da3e81c10a7d848671c1045f9da267eca65fd312793231dd99a038f55824e8ad",
+      "matched": true,
+      "restored_sha256": "da3e81c10a7d848671c1045f9da267eca65fd312793231dd99a038f55824e8ad"
+    },
+    "x500_depth_fly": {
+      "backup_sha256": "c76faddefc793fc13383d294f8cbba6a6a0bc37c34e2eca3aeab7c15af83fffe",
+      "matched": true,
+      "restored_sha256": "c76faddefc793fc13383d294f8cbba6a6a0bc37c34e2eca3aeab7c15af83fffe"
+    }
+  },
+  "restored": true,
+  "schema": "flydrones-px4-shared-restoration-v1"
+}

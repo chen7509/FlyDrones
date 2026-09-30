@@ -1,0 +1,109 @@
+{
+  "schema": "flydrones-renderer-stability-campaign-manifest-v1",
+  "campaign_id": "renderer-formal-20260926-3",
+  "phase": "formal",
+  "seed": 240901,
+  "profile": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/vio-faults/configs/vio_fault_profiles/baseline.json",
+  "model": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/vio-faults/docs/results/vio-stress/policy-checkpoint.npz",
+  "controller_revision": "0918a8bc5bffe1ecf9b6a8110e5490b7e4745792",
+  "frozen_hashes": {
+    "config": "fb03c172d8ea5c9ba5aa449716dd337d92fd3b2d032782b8e9da7d7d1303e3f5",
+    "profile": "108c73760140b5bb53090738e6eab9508688ef6fb848ea7e4cf4e0b0d2649718",
+    "policy": "3c723587bfdbd15a8dc5976edc13d284b713dc081005b2dac04692c7d1b4accb",
+    "controller": "907175973a6e9c3ec362f53b06992ddd170125b73479156b6facda9c55649c59",
+    "coordinator": "d07891291a21b6d567f25cf80554c287dba1bb42ea3bd0cd4ead51f6734b3aaa",
+    "relay": "a0f63da547ea7c481e4836ea1949655cdf86cea25fe8ec7f0f4220c768932b3f",
+    "runner": "5e2023478b15f88c05bd51734c8caa8fe5815414b7b06ce5ef1785f5ab0e16b0",
+    "launcher": "350368d16ce4b1b9b7cab839ac3639d0d1f70aa48aff9b3c5710a1f1465fe1c6",
+    "renderer_attestation": "308ccf54fd1da138174c092f82467a38a645fbc4d8054fe057be536190527902",
+    "renderer_profile": "25eb25866978b94d5c7327c688c46112523067f55c29dabe15fe7d17ebe89118",
+    "runtime_probe": "e57c7a29137e7443373519550849b39247184c82d0698bb7c43b43c8ec0a5cf6",
+    "summary": "f26aef4a07d8e83bcf7a52805bbc92aa442462707935591c1d3c1a7ecd5e036b",
+    "evidence": "1a4983a1f12852081073330702d4a8f755e496a94d231c7d554b3bf15c58dd3a",
+    "world_generator": "3fd59afbf9f550196caac0422ea2800290a6deb657f02cdf9cffcd6666a1055a",
+    "camera_model": "9c8a2916ac3fac5b9cfc09f16b3b8d3d323347980e87b39e476a31c7cdf8593d",
+    "vehicle_model": "17d5ef7b94667b37fb46dbffba77ea443dddf1bc24923aec8bf2ab1cb2fca1ed"
+  },
+  "schedule": [
+    {
+      "name": "renderer-pair-1-1-default",
+      "renderer_profile": "default",
+      "fleet_size": 5,
+      "pair_id": 1,
+      "pair_position": 1
+    },
+    {
+      "name": "renderer-pair-1-2-d3d12-nvidia",
+      "renderer_profile": "d3d12-nvidia",
+      "fleet_size": 5,
+      "pair_id": 1,
+      "pair_position": 2
+    },
+    {
+      "name": "renderer-pair-2-1-d3d12-nvidia",
+      "renderer_profile": "d3d12-nvidia",
+      "fleet_size": 5,
+      "pair_id": 2,
+      "pair_position": 1
+    },
+    {
+      "name": "renderer-pair-2-2-default",
+      "renderer_profile": "default",
+      "fleet_size": 5,
+      "pair_id": 2,
+      "pair_position": 2
+    },
+    {
+      "name": "renderer-pair-3-1-default",
+      "renderer_profile": "default",
+      "fleet_size": 5,
+      "pair_id": 3,
+      "pair_position": 1
+    },
+    {
+      "name": "renderer-pair-3-2-d3d12-nvidia",
+      "renderer_profile": "d3d12-nvidia",
+      "fleet_size": 5,
+      "pair_id": 3,
+      "pair_position": 2
+    },
+    {
+      "name": "renderer-pair-4-1-d3d12-nvidia",
+      "renderer_profile": "d3d12-nvidia",
+      "fleet_size": 5,
+      "pair_id": 4,
+      "pair_position": 1
+    },
+    {
+      "name": "renderer-pair-4-2-default",
+      "renderer_profile": "default",
+      "fleet_size": 5,
+      "pair_id": 4,
+      "pair_position": 2
+    },
+    {
+      "name": "renderer-pair-5-1-default",
+      "renderer_profile": "default",
+      "fleet_size": 5,
+      "pair_id": 5,
+      "pair_position": 1
+    },
+    {
+      "name": "renderer-pair-5-2-d3d12-nvidia",
+      "renderer_profile": "d3d12-nvidia",
+      "fleet_size": 5,
+      "pair_id": 5,
+      "pair_position": 2
+    }
+  ],
+  "completed_trials": [
+    "renderer-pair-1-1-default",
+    "renderer-pair-1-2-d3d12-nvidia",
+    "renderer-pair-2-1-d3d12-nvidia"
+  ],
+  "stopped_after": "renderer-pair-2-1-d3d12-nvidia",
+  "stop_reasons": [
+    "mission_count_not_5",
+    "operational_continuity_failed"
+  ]
+}

@@ -1,0 +1,48 @@
+{
+  "schema": "flydrones-camera-phase-vectors-v1",
+  "epoch_ns": 1000000000,
+  "vehicle_count": 5,
+  "dispatch_delay_ns": 4000000,
+  "vectors": [
+    {
+      "name": "before-first-boundary",
+      "sim_ns": 1000000000,
+      "expected_cycle": 0,
+      "expected_vehicle_ids": [],
+      "expected_planned_ns": [],
+      "expected_missed_vehicle_ids": []
+    },
+    {
+      "name": "exact-4ms-dispatch-boundary",
+      "sim_ns": 1004000000,
+      "expected_cycle": 0,
+      "expected_vehicle_ids": [0],
+      "expected_planned_ns": [1000000000],
+      "expected_missed_vehicle_ids": []
+    },
+    {
+      "name": "repeated-clock",
+      "sim_ns": 1004000000,
+      "expected_cycle": 0,
+      "expected_vehicle_ids": [],
+      "expected_planned_ns": [],
+      "expected_missed_vehicle_ids": []
+    },
+    {
+      "name": "skipped-clock-catches-up-in-order",
+      "sim_ns": 1084000000,
+      "expected_cycle": 0,
+      "expected_vehicle_ids": [4],
+      "expected_planned_ns": [1080000000],
+      "expected_missed_vehicle_ids": [1, 2, 3]
+    },
+    {
+      "name": "next-cycle-boundary",
+      "sim_ns": 1104000000,
+      "expected_cycle": 1,
+      "expected_vehicle_ids": [0],
+      "expected_planned_ns": [1100000000],
+      "expected_missed_vehicle_ids": []
+    }
+  ]
+}

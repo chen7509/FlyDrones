@@ -1,0 +1,39 @@
+{
+  "camera_phase": {
+    "accepted": false,
+    "adjacent_spacing_median_error_ns": null,
+    "cross_model_error_count": 0,
+    "depth_subscription_absent": true,
+    "duplicate_image_count": 0,
+    "duplicate_trigger_count": 0,
+    "missed_trigger_count": 0,
+    "mode": "phased",
+    "queue_overflow_count": 0,
+    "reasons": [
+      "scored_window_invalid"
+    ],
+    "schema": "flydrones-camera-phase-summary-v1",
+    "trigger_stream_count": 5,
+    "unmatched_image_count": 0,
+    "unmatched_trigger_count": 0,
+    "vehicle_count": 5,
+    "vehicles": {}
+  },
+  "native_metrics": {},
+  "runtime": {
+    "resources": {
+      "accepted": false,
+      "gazebo": {
+        "samples": 0
+      },
+      "gpu": {
+        "numeric_samples": 0,
+        "samples": 0
+      }
+    },
+    "rtf": {
+      "scored_window": null
+    }
+  },
+  "schema": "flydrones-camera-render-capacity-summary-v1"
+}

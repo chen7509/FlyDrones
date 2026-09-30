@@ -1,0 +1,1479 @@
+{
+  "schema": "flydrones-vio-artifact-index-v1",
+  "trials": {
+    "fleet-baseline": {
+      "fleet-baseline/agent-0.csv": {
+        "sha256": "64396d2dd2c073a604b7f54c95ad253115996702b766f7bb80298572d8129d7b",
+        "bytes": 36796
+      },
+      "fleet-baseline/agent-0.json": {
+        "sha256": "9cba27560674d944ca31430aeaf87b9dd98f6584c6878facf153f73bdbf13f82",
+        "bytes": 1502
+      },
+      "fleet-baseline/agent-1.csv": {
+        "sha256": "4a4254def8e5f696f9c1e87a29a7dc1e9eb839b3d098922a9b801bdcdc8836e0",
+        "bytes": 38770
+      },
+      "fleet-baseline/agent-1.json": {
+        "sha256": "49b3ed4009574b251939e2d2f09a49341ca23e90697692e21338e4b0d781e723",
+        "bytes": 1495
+      },
+      "fleet-baseline/agent-2.csv": {
+        "sha256": "ac1fb0281761250e77947ae5c7d185ee4ebc075351080b7e2e1f8d4e5fd7508b",
+        "bytes": 111849
+      },
+      "fleet-baseline/agent-2.json": {
+        "sha256": "bfb2d8ebf2f68933c7e275232d84569a5f7d8ab8086ee52f47c18dd37f2fefb1",
+        "bytes": 1498
+      },
+      "fleet-baseline/agent-3.csv": {
+        "sha256": "bf90252ce85845428c0fe9f75149aedd658fefee2947ba69e83fc5bfab999dc0",
+        "bytes": 271110
+      },
+      "fleet-baseline/agent-3.json": {
+        "sha256": "cb47950455f2707eafdf0d424ed5bd0e5db0ee8630cda8b54065b729da2703a3",
+        "bytes": 1501
+      },
+      "fleet-baseline/agent-4.csv": {
+        "sha256": "bfff58d7072ec03632adb82dd96502796b234bb1e1e7a5691c063a247b2a7ba2",
+        "bytes": 102161
+      },
+      "fleet-baseline/agent-4.json": {
+        "sha256": "1ba84b3ced0c1698820d6d82cebba05b1d42293e8f9b0aa219060780ec0e94ef",
+        "bytes": 1499
+      },
+      "fleet-baseline/fault-profile.json": {
+        "sha256": "108c73760140b5bb53090738e6eab9508688ef6fb848ea7e4cf4e0b0d2649718",
+        "bytes": 290
+      },
+      "fleet-baseline/flydrones_forest.sdf": {
+        "sha256": "da3e81c10a7d848671c1045f9da267eca65fd312793231dd99a038f55824e8ad",
+        "bytes": 4224
+      },
+      "fleet-baseline/px4-ulogs/agent-0.ulg": {
+        "sha256": "883a1f1ecda194dce7afb7643f925f6858956844de0366ac7699d1fd8d0119ba",
+        "bytes": 8490265
+      },
+      "fleet-baseline/px4-ulogs/agent-1.ulg": {
+        "sha256": "74f92d05c5a5df0ab8c5b6e301b56afc2e4f09d9c774ca5042d446b8ff0e99de",
+        "bytes": 8182151
+      },
+      "fleet-baseline/px4-ulogs/agent-2.ulg": {
+        "sha256": "e1201578b424c99de4d059619ce65c867b02434ebe27cec3390e819908b141a8",
+        "bytes": 11471418
+      },
+      "fleet-baseline/px4-ulogs/agent-3.ulg": {
+        "sha256": "b191f6ba2092ea9893b94611e1c8028e97232a29f8f8aee8610601038a80d2f2",
+        "bytes": 18360215
+      },
+      "fleet-baseline/px4-ulogs/agent-4.ulg": {
+        "sha256": "eec364aaf417cff5da84ca86c6295bf173a41ced302ff17ee6287cd5f2c55311",
+        "bytes": 13197148
+      },
+      "fleet-baseline/stress-summary.json": {
+        "sha256": "7fd88faf731e64b2b1dc817f6466a530a5d41b090b32b6d777449baf4dfdc07e",
+        "bytes": 4439
+      },
+      "fleet-baseline/trial-manifest.json": {
+        "sha256": "168d55bbe0dcade6df06524b6e71912298357e64b7ef64353bfe98675b71cc1a",
+        "bytes": 809
+      },
+      "fleet-baseline/vio-relay.jsonl": {
+        "sha256": "227f2a1bf12da885868dda0225f027ae59317b6c53b0657e2be73ab3830117b9",
+        "bytes": 9007896
+      }
+    },
+    "fleet-baseline-repeat": {
+      "fleet-baseline-repeat/agent-0.csv": {
+        "sha256": "4d692b7127c292641243b0331b75bb83d46481a82a75512d3058f5d122dc80e8",
+        "bytes": 137153
+      },
+      "fleet-baseline-repeat/agent-0.json": {
+        "sha256": "036aaf6e21c68c74712dd1500643e67fe243591a3bdf72895d7136df179d7189",
+        "bytes": 1535
+      },
+      "fleet-baseline-repeat/agent-1.csv": {
+        "sha256": "22ccfac964771be7e8671f07a0da510a28dc014f99e59cea7329a948376d27b0",
+        "bytes": 139655
+      },
+      "fleet-baseline-repeat/agent-1.json": {
+        "sha256": "fc2f2500d744c3309b0c930044353d316e3d252d79de64e6f35a32603de2649d",
+        "bytes": 1501
+      },
+      "fleet-baseline-repeat/agent-2.csv": {
+        "sha256": "b746250ce6d41953b77d7bda9094a49b7aea0563a0c007142e8865fa7d4a1167",
+        "bytes": 118658
+      },
+      "fleet-baseline-repeat/agent-2.json": {
+        "sha256": "2795503c50be56a8f1f39461b4ef595e624b27e1abccc98257eae30b7f4c8ca2",
+        "bytes": 1498
+      },
+      "fleet-baseline-repeat/agent-3.csv": {
+        "sha256": "ae2f5d148f6eaa5715f9938b44f6aacb2af4a7514e2f96ccfede992d1e20bde1",
+        "bytes": 128765
+      },
+      "fleet-baseline-repeat/agent-3.json": {
+        "sha256": "02ba174018b3d2886f741a0e8ea5cc9a3b4a9683ec73ac6bd38cc2e7b4113baa",
+        "bytes": 1500
+      },
+      "fleet-baseline-repeat/agent-4.csv": {
+        "sha256": "afd6533f7c92e3ff87ef495be521106a78487c784861e9e38711a006277f0641",
+        "bytes": 104069
+      },
+      "fleet-baseline-repeat/agent-4.json": {
+        "sha256": "c52203045f9f9e3c435ee9d5b91b96104b6f92859a427e0ea222b443122c29ed",
+        "bytes": 1499
+      },
+      "fleet-baseline-repeat/fault-profile.json": {
+        "sha256": "108c73760140b5bb53090738e6eab9508688ef6fb848ea7e4cf4e0b0d2649718",
+        "bytes": 290
+      },
+      "fleet-baseline-repeat/flydrones_forest.sdf": {
+        "sha256": "da3e81c10a7d848671c1045f9da267eca65fd312793231dd99a038f55824e8ad",
+        "bytes": 4224
+      },
+      "fleet-baseline-repeat/px4-ulogs/agent-0.ulg": {
+        "sha256": "e81f3e1639721e8535cac007c5b74b078100d9b9d51bdff9923deb83ca7e6575",
+        "bytes": 12560408
+      },
+      "fleet-baseline-repeat/px4-ulogs/agent-1.ulg": {
+        "sha256": "42f3e6718f988776eb5f0d7baa1ddea971f0859e9695899a911d667256798546",
+        "bytes": 12520844
+      },
+      "fleet-baseline-repeat/px4-ulogs/agent-2.ulg": {
+        "sha256": "a26c18b30ce815bd3e5eb13cf9344845b61268b86f22952a75d6600626d292b8",
+        "bytes": 10832335
+      },
+      "fleet-baseline-repeat/px4-ulogs/agent-3.ulg": {
+        "sha256": "7e38d662d8ac616f5e34670e06f81c9b761293ad166c3c267b87f679002fb1d1",
+        "bytes": 10686709
+      },
+      "fleet-baseline-repeat/px4-ulogs/agent-4.ulg": {
+        "sha256": "f64fabe237ec237bf3b72876bf026254a812a02c2fe84e40a2d8200605241369",
+        "bytes": 10724254
+      },
+      "fleet-baseline-repeat/stress-summary.json": {
+        "sha256": "cb69ad69765f1babd5496684dfaea0a0edd81f08779a2136a1c2c1b0b165d029",
+        "bytes": 5357
+      },
+      "fleet-baseline-repeat/trial-manifest.json": {
+        "sha256": "4cc6cd473e60b171b9fef34489fc5e4d989d4a0b3fdc69b3b5d78806ec0609b1",
+        "bytes": 822
+      },
+      "fleet-baseline-repeat/vio-relay.jsonl": {
+        "sha256": "dbe9e94f7ac505e0e3228a61b9258438f73ebaab42232089293b4dd887a8bdf9",
+        "bytes": 5828830
+      }
+    },
+    "fleet-delay-120ms": {
+      "fleet-delay-120ms/agent-0.csv": {
+        "sha256": "65649657c24539f63da955e34b2b362e0979b9ffa64e2c0f430782ba78abd99c",
+        "bytes": 114055
+      },
+      "fleet-delay-120ms/agent-0.json": {
+        "sha256": "a75d7147764697e6fdfedeaeb0b8a58467802d9b8fe475cb8d73e9f341cfc539",
+        "bytes": 1531
+      },
+      "fleet-delay-120ms/agent-1.csv": {
+        "sha256": "90e628a90f1ebad43e6fd03e28a18cb83d44f2a43b52bb266128809960ec9253",
+        "bytes": 116938
+      },
+      "fleet-delay-120ms/agent-1.json": {
+        "sha256": "cc33190ff7c3dcdf898fe5463c7951e4f272684a6554fd647debe846cd2f5dda",
+        "bytes": 1499
+      },
+      "fleet-delay-120ms/agent-2.csv": {
+        "sha256": "432f9a796f4345fb73af6de1033d69d3a15e60afe19a3b306ae92878c135b57a",
+        "bytes": 114429
+      },
+      "fleet-delay-120ms/agent-2.json": {
+        "sha256": "056f9e48c0d7662c4c68906019bc7d772b177a09eb9bbc5079b495edd94f84f8",
+        "bytes": 1498
+      },
+      "fleet-delay-120ms/agent-3.csv": {
+        "sha256": "09f8d68776479178584e99a57dd457b241b66f8a864ab7a4a3f0e93649dc88a9",
+        "bytes": 198635
+      },
+      "fleet-delay-120ms/agent-3.json": {
+        "sha256": "7001caa22fc9e1e4a13fd222eda7fadd403dabe91f615c413fdeb57c83705ab3",
+        "bytes": 1501
+      },
+      "fleet-delay-120ms/agent-4.csv": {
+        "sha256": "3c1fc36ec90e42f6733ea3b421733228c9c59ed2843329804c2e7412f3a5844c",
+        "bytes": 90163
+      },
+      "fleet-delay-120ms/agent-4.json": {
+        "sha256": "bb96fa90e41a23b5d8d13950cb79ef1b960f0e7512a8e7b98e476980942620ef",
+        "bytes": 1499
+      },
+      "fleet-delay-120ms/fault-profile.json": {
+        "sha256": "f7889ec1395bf5fe0016908e9f84a9d1cbf6025a10f80ba24f1780ab408c94f0",
+        "bytes": 292
+      },
+      "fleet-delay-120ms/flydrones_forest.sdf": {
+        "sha256": "da3e81c10a7d848671c1045f9da267eca65fd312793231dd99a038f55824e8ad",
+        "bytes": 4224
+      },
+      "fleet-delay-120ms/px4-ulogs/agent-0.ulg": {
+        "sha256": "4fbda08e758f05fd5819044bd6d126b6f4fd0e86ff7511192276640ca99b41e5",
+        "bytes": 11786444
+      },
+      "fleet-delay-120ms/px4-ulogs/agent-1.ulg": {
+        "sha256": "5f89618552dde819e2eaba85e77f051e39830bbaf0104e12d154a26a8d3f0ca7",
+        "bytes": 11694759
+      },
+      "fleet-delay-120ms/px4-ulogs/agent-2.ulg": {
+        "sha256": "e6dccacba7a63fc6dac4a363945b797668cda2148c5764a2b799aa3419598013",
+        "bytes": 11005568
+      },
+      "fleet-delay-120ms/px4-ulogs/agent-3.ulg": {
+        "sha256": "9c9392fcb01b9fb7dbab69bdef577316a231b4fc71a589895551a37ae8bbb945",
+        "bytes": 16502605
+      },
+      "fleet-delay-120ms/px4-ulogs/agent-4.ulg": {
+        "sha256": "5bd2c8b3dd1672583d46fb9aab0ca126e7c55e4649b67126cf3914fcc90ce009",
+        "bytes": 11570828
+      },
+      "fleet-delay-120ms/stress-summary.json": {
+        "sha256": "b61eb0e9d427cb8e6988922cc390dd09acdb59b71369bfe995e061584b1c8677",
+        "bytes": 5360
+      },
+      "fleet-delay-120ms/trial-manifest.json": {
+        "sha256": "06a3c245c735b5dfab25419bb27df632abc4394dfe782141e0b7c5b6d51c941f",
+        "bytes": 817
+      },
+      "fleet-delay-120ms/vio-relay.jsonl": {
+        "sha256": "8bf89e5a73458fb71a906a993decdb5c9e90f662ad0357589b502439b13e69ea",
+        "bytes": 8182274
+      }
+    },
+    "fleet-drift-005mps": {
+      "fleet-drift-005mps/agent-0.csv": {
+        "sha256": "228760bcc692573d9d219a99a704ff51abbd2a3ec52381b5985cac2f2b12c14c",
+        "bytes": 37086
+      },
+      "fleet-drift-005mps/agent-0.json": {
+        "sha256": "797f73840e91054a4204dfb30d476f6ac47c1a395241f621ed33a86b97f4ece9",
+        "bytes": 1501
+      },
+      "fleet-drift-005mps/agent-1.csv": {
+        "sha256": "aeba519b1ac856dae41b1aa93a1213019688d96b92b40676fe99ea645ee259fd",
+        "bytes": 38632
+      },
+      "fleet-drift-005mps/agent-1.json": {
+        "sha256": "ee1d559a3eb1d54428df54b729505f2852ff0e1a4650effc3ca73769d36b7aaf",
+        "bytes": 1494
+      },
+      "fleet-drift-005mps/agent-2.csv": {
+        "sha256": "48be7b3765fe3d80a1f3307f3b0b5dea3e085f9bad5e469490f52255f8d41add",
+        "bytes": 101433
+      },
+      "fleet-drift-005mps/agent-2.json": {
+        "sha256": "16a987edf671e36b7cfd2ee834296c9f44ed20429947b1c4ab5ed4ab4822a762",
+        "bytes": 1496
+      },
+      "fleet-drift-005mps/agent-3.csv": {
+        "sha256": "0255e57f69d7f78eb316dc4915dabf0f4e16e218f8ed8302167286d54eb37f4b",
+        "bytes": 44265
+      },
+      "fleet-drift-005mps/agent-3.json": {
+        "sha256": "d13006cf8e92b6c5879fcb2988863bba5f31460305518d61ba70900ef936e27f",
+        "bytes": 1496
+      },
+      "fleet-drift-005mps/agent-4.csv": {
+        "sha256": "9c0560993164da7c25879e56693a366022533311cd9bc3f22365d8c9b722b5ed",
+        "bytes": 36398
+      },
+      "fleet-drift-005mps/agent-4.json": {
+        "sha256": "513f42599d408d3c317ae0c104fca494206827748ef763d83a6dff18862202cd",
+        "bytes": 1495
+      },
+      "fleet-drift-005mps/fault-profile.json": {
+        "sha256": "e0e34780fe5a02fd4a76e380d65841df8363f109fcb64f5fe2ab8da2e1178d4a",
+        "bytes": 293
+      },
+      "fleet-drift-005mps/flydrones_forest.sdf": {
+        "sha256": "da3e81c10a7d848671c1045f9da267eca65fd312793231dd99a038f55824e8ad",
+        "bytes": 4224
+      },
+      "fleet-drift-005mps/px4-ulogs/agent-0.ulg": {
+        "sha256": "8cc9f2464d0a4a172319b0d945ec901d746c488f0fac75fb73a27fac1fc48644",
+        "bytes": 8482002
+      },
+      "fleet-drift-005mps/px4-ulogs/agent-1.ulg": {
+        "sha256": "07ab0b5fcb1bd61b22a980cd6cfe2b8e3cfb42ec3a1dff4b151e9f3de22a39c9",
+        "bytes": 8100267
+      },
+      "fleet-drift-005mps/px4-ulogs/agent-2.ulg": {
+        "sha256": "88121bc1f55a501d71571df2976f184a3e65c68275dd615026822f18498a0009",
+        "bytes": 9677735
+      },
+      "fleet-drift-005mps/px4-ulogs/agent-3.ulg": {
+        "sha256": "ed4a3230d64e086136e74148147225a1be9ba48f262386ed8d759a81319da55e",
+        "bytes": 8988588
+      },
+      "fleet-drift-005mps/px4-ulogs/agent-4.ulg": {
+        "sha256": "dd33708d0a6aa5b5d46a68f97b0d83d15cd073d01267f8c08eb515b7d6cb884a",
+        "bytes": 8297527
+      },
+      "fleet-drift-005mps/stress-summary.json": {
+        "sha256": "b77417f5bcad0a44f7725b6236aea78666c47459e65fe1e046db91b4cfeac1c3",
+        "bytes": 4439
+      },
+      "fleet-drift-005mps/trial-manifest.json": {
+        "sha256": "426fa73f1828bac46843b75969783d56a8a30cfc653236482cdb2cf98eb230c2",
+        "bytes": 821
+      },
+      "fleet-drift-005mps/vio-relay.jsonl": {
+        "sha256": "68167c83de4dbaafb25954cf9e2f679f6a728386e2017fb7ab627f3945ad8158",
+        "bytes": 4722009
+      }
+    },
+    "fleet-dropout-400ms": {
+      "fleet-dropout-400ms/agent-0.csv": {
+        "sha256": "249e6df0d58ddf12609f2823fba7b899282f9fd74541b68e542c6a1db5b08fe6",
+        "bytes": 347176
+      },
+      "fleet-dropout-400ms/agent-0.json": {
+        "sha256": "8f4c31fbffbc5a4116a3d00e6ddee8a88f975350d54f240aa23bdf982c7d00e5",
+        "bytes": 1536
+      },
+      "fleet-dropout-400ms/agent-1.csv": {
+        "sha256": "147809cfcefaf1a153d5dada3c1b315619e45bf696fff3e8d2ab0423e6dc1c80",
+        "bytes": 312305
+      },
+      "fleet-dropout-400ms/agent-1.json": {
+        "sha256": "e6178e01b7058233b75ae6783d8e516396abb24aea984ae00906845f47e909bc",
+        "bytes": 1502
+      },
+      "fleet-dropout-400ms/agent-2.csv": {
+        "sha256": "22d502bcea96b2f0b9c80d69a6d3c96afa0edab413751a12d1d21b1d34ad4982",
+        "bytes": 152455
+      },
+      "fleet-dropout-400ms/agent-2.json": {
+        "sha256": "3a6917dbb13de7ae48ee6031baceaae630489be2713a776a82d1b3a7f0ef1d02",
+        "bytes": 1502
+      },
+      "fleet-dropout-400ms/agent-3.csv": {
+        "sha256": "5d60a97066189de14cc85e975c256f8bf0002487eb167d1c65057cab11bfe419",
+        "bytes": 182069
+      },
+      "fleet-dropout-400ms/agent-3.json": {
+        "sha256": "6d938a312056d01c9180276b72760350682472421f436f332182238846cdd62d",
+        "bytes": 1503
+      },
+      "fleet-dropout-400ms/agent-4.csv": {
+        "sha256": "d489a417e364c2012950f4be5ddb75741d68e0a7de121deb064ae9d3c7830c6e",
+        "bytes": 156007
+      },
+      "fleet-dropout-400ms/agent-4.json": {
+        "sha256": "768e086147dad774e07e3608d0dfd6ae2dab4a9efa1a3a883281542f51a15375",
+        "bytes": 1503
+      },
+      "fleet-dropout-400ms/fault-profile.json": {
+        "sha256": "563e380b53cf03cd80653dc1429f41823424288787d4bb16886dec5a36b96ca3",
+        "bytes": 292
+      },
+      "fleet-dropout-400ms/flydrones_forest.sdf": {
+        "sha256": "da3e81c10a7d848671c1045f9da267eca65fd312793231dd99a038f55824e8ad",
+        "bytes": 4224
+      },
+      "fleet-dropout-400ms/px4-ulogs/agent-0.ulg": {
+        "sha256": "3d3d3a6830eb8c4c1bf18335088da29ec81dc6a948e88a22b00feef4fbf32cab",
+        "bytes": 20151337
+      },
+      "fleet-dropout-400ms/px4-ulogs/agent-1.ulg": {
+        "sha256": "a69a3c0f5086db2942db02c0c21d25a696c68e2bf872f9f418b864b70c491abf",
+        "bytes": 19854111
+      },
+      "fleet-dropout-400ms/px4-ulogs/agent-2.ulg": {
+        "sha256": "7d837c62661a63978431526990819c75d3d6f641e36dda4bbb7b6e632159851d",
+        "bytes": 11530742
+      },
+      "fleet-dropout-400ms/px4-ulogs/agent-3.ulg": {
+        "sha256": "d52937d1919127bf817cebc9947802238107d962e014e20d1f0702f812a978c8",
+        "bytes": 12272068
+      },
+      "fleet-dropout-400ms/px4-ulogs/agent-4.ulg": {
+        "sha256": "0355b5f5ab0b9fe46389aec7536ac36af9eea23adda1d61dd28c346a8fe85800",
+        "bytes": 13059806
+      },
+      "fleet-dropout-400ms/stress-summary.json": {
+        "sha256": "4673a3a91d40fd97f88781a17b188ce6bb1c66aa4b172b2af83dd4e41a2399b3",
+        "bytes": 5399
+      },
+      "fleet-dropout-400ms/trial-manifest.json": {
+        "sha256": "82c8e9813eaa9b3691b920175963e59e6961c46c9661376b1ba8df2058fc4176",
+        "bytes": 824
+      },
+      "fleet-dropout-400ms/vio-relay.jsonl": {
+        "sha256": "ecf49c58b4b3a54e46365cc1ee2a8dd2e91c0565d147c49ac275d5475b475cdf",
+        "bytes": 9613426
+      }
+    },
+    "fleet-false-pose-1m": {
+      "fleet-false-pose-1m/agent-0.csv": {
+        "sha256": "dcbe1aaa87454feacd9de37537970af35acc919b82a1c452dd964fd1119946c1",
+        "bytes": 423520
+      },
+      "fleet-false-pose-1m/agent-0.json": {
+        "sha256": "0c8fe4731e689a950e95566b27576055f747e6a619605ed5e06b47ec923b4b46",
+        "bytes": 1542
+      },
+      "fleet-false-pose-1m/agent-1.csv": {
+        "sha256": "e4dabac9ab03eb3da9cd1ef19ab8346d68c49e49a08d7ec223294697479ce78b",
+        "bytes": 313525
+      },
+      "fleet-false-pose-1m/agent-1.json": {
+        "sha256": "7e149e19791c19008e3b07c2581e9263ddb4cf43fb09c46d0e4f335bad2b6d7f",
+        "bytes": 1501
+      },
+      "fleet-false-pose-1m/agent-2.csv": {
+        "sha256": "779ad180b5a3974f984c2199a27f850db7a88f609f19857bcf25cdb011fb4764",
+        "bytes": 218577
+      },
+      "fleet-false-pose-1m/agent-2.json": {
+        "sha256": "f02b10ab991f204a8443caf31f00052b0fa0655ac6de4a6610698a42ed2eca9e",
+        "bytes": 1503
+      },
+      "fleet-false-pose-1m/agent-3.csv": {
+        "sha256": "57d2a4a8f59bc0cb24c4b709615e133801fba123582eb8f920165d6ad38754a6",
+        "bytes": 55916
+      },
+      "fleet-false-pose-1m/agent-3.json": {
+        "sha256": "86fc6cbc115970901a12616b03c1965952ee0efca26affec8c358760e579602a",
+        "bytes": 1497
+      },
+      "fleet-false-pose-1m/agent-4.csv": {
+        "sha256": "1247de5cca5b195db1375087c98d3132cb6532fa99924a9db39a0003c322a23b",
+        "bytes": 47034
+      },
+      "fleet-false-pose-1m/agent-4.json": {
+        "sha256": "db0b41a637ebeff0faab6c7ead735b006bed31c21e0640b0d177198b0234b6f7",
+        "bytes": 1498
+      },
+      "fleet-false-pose-1m/fault-profile.json": {
+        "sha256": "1c426d4fa4224ca1f4daf46dd439f18d525bb612cc382d81ee8795c27565c970",
+        "bytes": 292
+      },
+      "fleet-false-pose-1m/flydrones_forest.sdf": {
+        "sha256": "da3e81c10a7d848671c1045f9da267eca65fd312793231dd99a038f55824e8ad",
+        "bytes": 4224
+      },
+      "fleet-false-pose-1m/px4-ulogs/agent-0.ulg": {
+        "sha256": "9cc3bec21b7b385b24a19d230b8721af5b278c7d7cb8776642614196dc8ecd84",
+        "bytes": 23413097
+      },
+      "fleet-false-pose-1m/px4-ulogs/agent-1.ulg": {
+        "sha256": "63195c57b6c85dcc7c83bf5a3776e2510e7a6896933fdd70be370c03e8bdc22f",
+        "bytes": 19090073
+      },
+      "fleet-false-pose-1m/px4-ulogs/agent-2.ulg": {
+        "sha256": "a1614e7aeae71c5355b31d15b149dbaf14c1b4e78f5d2ca9302a5c46af90906f",
+        "bytes": 13830877
+      },
+      "fleet-false-pose-1m/px4-ulogs/agent-3.ulg": {
+        "sha256": "af77244144a1c55eee804d7ac7516f70784f4301aca27a897abbbb60c71d6aa0",
+        "bytes": 8887685
+      },
+      "fleet-false-pose-1m/px4-ulogs/agent-4.ulg": {
+        "sha256": "8a0d1e1bb90d58f4bde669576be4a79087887e3ccc71af4726321e1b886e03d1",
+        "bytes": 8113485
+      },
+      "fleet-false-pose-1m/stress-summary.json": {
+        "sha256": "f1e376703eb661b0607772de92f55bb665cec95dd5b3db2665a8ae427d88a462",
+        "bytes": 5363
+      },
+      "fleet-false-pose-1m/trial-manifest.json": {
+        "sha256": "8f55c91a1f207cb2c33a5f46ef41ec5588488e9fbc13fa03440c6e50da8ce4b5",
+        "bytes": 824
+      },
+      "fleet-false-pose-1m/vio-relay.jsonl": {
+        "sha256": "47cefaa160f2eca48d384f02761fc3062c0805bf0866fcc3595698037166c4e7",
+        "bytes": 11258572
+      }
+    },
+    "fleet-v2-baseline": {
+      "fleet-v2-baseline/agent-0.csv": {
+        "sha256": "9902923f8e48a9e5a94fbd361d5850857f82b75c5116c962f93c0784737b4ce7",
+        "bytes": 101839
+      },
+      "fleet-v2-baseline/agent-0.json": {
+        "sha256": "ea558c69f5d6775751f7afa5293cd217fd69fbad19fe2044c389497deba2fa12",
+        "bytes": 1654
+      },
+      "fleet-v2-baseline/agent-1.csv": {
+        "sha256": "315120fa22ef3508b8fa2481a9df66daf8c860f642df0385817f5b6790453848",
+        "bytes": 441988
+      },
+      "fleet-v2-baseline/agent-1.json": {
+        "sha256": "7fff6cc408f36ed903a63f78bba74f98daaace9dc8655d45d96b376dc277d759",
+        "bytes": 1631
+      },
+      "fleet-v2-baseline/agent-2.csv": {
+        "sha256": "698a903a1e0b6718abf4465d0ecbbfba8fc2e8ac211579fc5ac1e78c640fa53a",
+        "bytes": 109051
+      },
+      "fleet-v2-baseline/agent-2.json": {
+        "sha256": "ae5c75915c274fe2bdf45c981a1cda059749e33a6acc4fe0dd4d4de6bb3c4af7",
+        "bytes": 1621
+      },
+      "fleet-v2-baseline/agent-3.csv": {
+        "sha256": "12e6bb5b5ca87089efddbc522b6e071655602379fb81aafdbcc3c2e10a3f7d4d",
+        "bytes": 440967
+      },
+      "fleet-v2-baseline/agent-3.json": {
+        "sha256": "f1bfdd37d775e31c5abe354e701f347f49ecff14f7f4aa73edbab744cafe6f1a",
+        "bytes": 1630
+      },
+      "fleet-v2-baseline/agent-4.csv": {
+        "sha256": "eb5a1ce056481fef34725383c4ea7b7496b4ef32365a46a7ff9c216a43fad88b",
+        "bytes": 141257
+      },
+      "fleet-v2-baseline/agent-4.json": {
+        "sha256": "15ac42dec08b4d5f7b8b0a7a8889fd7457f7b49e3f565bfca058c161ab7898f4",
+        "bytes": 1625
+      },
+      "fleet-v2-baseline/fault-profile.json": {
+        "sha256": "108c73760140b5bb53090738e6eab9508688ef6fb848ea7e4cf4e0b0d2649718",
+        "bytes": 290
+      },
+      "fleet-v2-baseline/flydrones_forest.sdf": {
+        "sha256": "da3e81c10a7d848671c1045f9da267eca65fd312793231dd99a038f55824e8ad",
+        "bytes": 4224
+      },
+      "fleet-v2-baseline/px4-ulogs/agent-0.ulg": {
+        "sha256": "d53f209bf0b2a5918958b329693186011a07feed96c53f110a1c36d4e995ad70",
+        "bytes": 11611678
+      },
+      "fleet-v2-baseline/px4-ulogs/agent-1.ulg": {
+        "sha256": "7a2eb186b6124a7c6c20922d82acce5e7eec52b99a44c70057532f07cdce2c23",
+        "bytes": 27362767
+      },
+      "fleet-v2-baseline/px4-ulogs/agent-2.ulg": {
+        "sha256": "6a7df23f5ed5d9373f9c3fedfe05c61e6a62ba09f54b049eb043ba217ebbbb49",
+        "bytes": 11139026
+      },
+      "fleet-v2-baseline/px4-ulogs/agent-3.ulg": {
+        "sha256": "f9987941e9068f26bd70753e4dbe5de8df8d5eab4756022094fa8aeab397e75e",
+        "bytes": 26230132
+      },
+      "fleet-v2-baseline/px4-ulogs/agent-4.ulg": {
+        "sha256": "18381afae8e5b38e0bde7afed65390e5171ca4e66b7d0f6d822e0efcd892855f",
+        "bytes": 14570518
+      },
+      "fleet-v2-baseline/stress-summary.json": {
+        "sha256": "25f4376dafe150ccae1a7269573b81ad1a16dc0887a627622491a332888c809a",
+        "bytes": 5334
+      },
+      "fleet-v2-baseline/trial-manifest.json": {
+        "sha256": "b2375c99137cf7a082d3bae730e9b603051a117ddcd265418e9214ad0641996c",
+        "bytes": 1099
+      },
+      "fleet-v2-baseline/vio-relay.jsonl": {
+        "sha256": "e6b41052ee505ddc0ac0f11838d8ab76cd0793f70a062a8b9fc3f395a7f2351f",
+        "bytes": 12643935
+      }
+    },
+    "fleet-v2-baseline-repeat": {
+      "fleet-v2-baseline-repeat/agent-0.csv": {
+        "sha256": "49efb3576bf502a54df391ea73e479611a93005b7ee82b6c97bbaf941e3bdf14",
+        "bytes": 147565
+      },
+      "fleet-v2-baseline-repeat/agent-0.json": {
+        "sha256": "7f44b1b7a28832917c42d01e0e761a83b5458b55339b4d19593b376d34980d7b",
+        "bytes": 1658
+      },
+      "fleet-v2-baseline-repeat/agent-1.csv": {
+        "sha256": "5648ff626ce8db0c775b2d221f631ba7c7238bd3439ac8ff2be6f5224c12cefb",
+        "bytes": 151288
+      },
+      "fleet-v2-baseline-repeat/agent-1.json": {
+        "sha256": "e313059cfde296a7d5e4f4ca2a4e76091b24c1b848f7522f343917abc2896a7f",
+        "bytes": 1625
+      },
+      "fleet-v2-baseline-repeat/agent-2.csv": {
+        "sha256": "b1918743b6d7428637303b9321ca3163a59411cedbe4328a20a3bc48cfa18aa9",
+        "bytes": 156580
+      },
+      "fleet-v2-baseline-repeat/agent-2.json": {
+        "sha256": "0d466fa670c54838f74ecd57ec0d87b228465bb495c9110ec39c09b725e52d4a",
+        "bytes": 1622
+      },
+      "fleet-v2-baseline-repeat/agent-3.csv": {
+        "sha256": "29ddfeb20232ac0ce59ae6eb4b655a2d327d797eef79b3cb17e0a6858be3f311",
+        "bytes": 175634
+      },
+      "fleet-v2-baseline-repeat/agent-3.json": {
+        "sha256": "9517f58613805c7da90b451220d52ae2cb4fe7ef3fa2bbad48e79cb48f293877",
+        "bytes": 1625
+      },
+      "fleet-v2-baseline-repeat/agent-4.csv": {
+        "sha256": "5f918d5b890d6a3943e8106877abf5dbbf84a6dbfc10444b9d44b54812105b14",
+        "bytes": 190425
+      },
+      "fleet-v2-baseline-repeat/agent-4.json": {
+        "sha256": "c150243fd4e3d345d3290329f4f88b0608a99b934ec2d9b323749b8963856851",
+        "bytes": 1625
+      },
+      "fleet-v2-baseline-repeat/fault-profile.json": {
+        "sha256": "108c73760140b5bb53090738e6eab9508688ef6fb848ea7e4cf4e0b0d2649718",
+        "bytes": 290
+      },
+      "fleet-v2-baseline-repeat/flydrones_forest.sdf": {
+        "sha256": "da3e81c10a7d848671c1045f9da267eca65fd312793231dd99a038f55824e8ad",
+        "bytes": 4224
+      },
+      "fleet-v2-baseline-repeat/px4-ulogs/agent-0.ulg": {
+        "sha256": "95f47ba5e0bd5107e494426ba65d5a5c7cd928ffc3379c54d82e3d16e123326c",
+        "bytes": 12529071
+      },
+      "fleet-v2-baseline-repeat/px4-ulogs/agent-1.ulg": {
+        "sha256": "d5c1c89e36dedc1290591dcc1a5f32ccf8f67187203e177e2aa7d3d2e79c8b43",
+        "bytes": 12531397
+      },
+      "fleet-v2-baseline-repeat/px4-ulogs/agent-2.ulg": {
+        "sha256": "142c89166b679f7a4c7d4d712e0e9df8ed1e58bc70440048e13ba278daddf035",
+        "bytes": 12196807
+      },
+      "fleet-v2-baseline-repeat/px4-ulogs/agent-3.ulg": {
+        "sha256": "adbebd2f331871aac62f844f7f2dcf683cb6a9cfba8076a4369e918149495e0c",
+        "bytes": 12584641
+      },
+      "fleet-v2-baseline-repeat/px4-ulogs/agent-4.ulg": {
+        "sha256": "0d344dcfdba61d2348702e9d72380897061ce663ad2354395f84a7d35f27bff7",
+        "bytes": 14868113
+      },
+      "fleet-v2-baseline-repeat/stress-summary.json": {
+        "sha256": "b1e9dc57c7badca9177e6c9250453e1d367b62016aaba16542a8a702a75b8b40",
+        "bytes": 5345
+      },
+      "fleet-v2-baseline-repeat/trial-manifest.json": {
+        "sha256": "52f4fbca0716c74780ca757a6c7b32126fce29b7ae9f9b3884a58793b81823b2",
+        "bytes": 1112
+      },
+      "fleet-v2-baseline-repeat/vio-relay.jsonl": {
+        "sha256": "b4d5bcb49f4fbbbdbdbd64e67521aa48cb7daf25efb454b781117e0762255f16",
+        "bytes": 7724344
+      }
+    },
+    "fleet-v2-delay-120ms": {
+      "fleet-v2-delay-120ms/agent-0.csv": {
+        "sha256": "bd6c48da5238fcc58375dbdbee66840918c2b1684b24efe3dc20d4903d4f529b",
+        "bytes": 113182
+      },
+      "fleet-v2-delay-120ms/agent-0.json": {
+        "sha256": "895f6608179e9670754d774a90b606e225a0b22836bcdfe144e5f22bf9914d4b",
+        "bytes": 1653
+      },
+      "fleet-v2-delay-120ms/agent-1.csv": {
+        "sha256": "546cc853081463eb19a45f421cb3916f170b21d9e04ca761eca3efd4a105e71b",
+        "bytes": 435859
+      },
+      "fleet-v2-delay-120ms/agent-1.json": {
+        "sha256": "2956285efef4bb0c7966544014ac48cd340b0364d2c9bc295f348a5cc60cd894",
+        "bytes": 1630
+      },
+      "fleet-v2-delay-120ms/agent-2.csv": {
+        "sha256": "da907993013284d58679478eb50be022b752b2d2e8173d8c0ae4ea48e3850c28",
+        "bytes": 109417
+      },
+      "fleet-v2-delay-120ms/agent-2.json": {
+        "sha256": "8af066323828f7a9941a4c6aeb53e113cc8f8976515fa4045e5f60d70a4eb466",
+        "bytes": 1619
+      },
+      "fleet-v2-delay-120ms/agent-3.csv": {
+        "sha256": "06a2df399dae6001cea1d2b6e59c15e28a88a2ec37cf95ad4d0f104b6d8d7b1f",
+        "bytes": 110019
+      },
+      "fleet-v2-delay-120ms/agent-3.json": {
+        "sha256": "35ecfb9023e51f26dd692a85cdbd11c33a834c2bebe7677ffddf21dbfb0f42cf",
+        "bytes": 1621
+      },
+      "fleet-v2-delay-120ms/agent-4.csv": {
+        "sha256": "578753378526bdee0dac0a8a97a48518c8a8a8aae7d1133f2ee0f93599890283",
+        "bytes": 105419
+      },
+      "fleet-v2-delay-120ms/agent-4.json": {
+        "sha256": "75446418896ee8b2d05e3c5cf74eaed9d25dd25d04b29a4a79f77a43f39d9ba6",
+        "bytes": 1623
+      },
+      "fleet-v2-delay-120ms/fault-profile.json": {
+        "sha256": "f7889ec1395bf5fe0016908e9f84a9d1cbf6025a10f80ba24f1780ab408c94f0",
+        "bytes": 292
+      },
+      "fleet-v2-delay-120ms/flydrones_forest.sdf": {
+        "sha256": "da3e81c10a7d848671c1045f9da267eca65fd312793231dd99a038f55824e8ad",
+        "bytes": 4224
+      },
+      "fleet-v2-delay-120ms/px4-ulogs/agent-0.ulg": {
+        "sha256": "e755af05b8f8465b2d98f8bec75b4f5b9bd1a2e9e4b72bfd13a09c21a7865b50",
+        "bytes": 12118216
+      },
+      "fleet-v2-delay-120ms/px4-ulogs/agent-1.ulg": {
+        "sha256": "516ce7b57026faf306e607cacbde16ee5984bf8ab061347275c78e1dd2c2def1",
+        "bytes": 27619359
+      },
+      "fleet-v2-delay-120ms/px4-ulogs/agent-2.ulg": {
+        "sha256": "3d7475555094894fa4f79c0a6798901a649e2a72d2d66d4cfc34d210f7fd119a",
+        "bytes": 11099193
+      },
+      "fleet-v2-delay-120ms/px4-ulogs/agent-3.ulg": {
+        "sha256": "3be80ff2332ecf1a2baae1dbebbaee982540e09d0659a0c570e416d1f1c3e074",
+        "bytes": 10559830
+      },
+      "fleet-v2-delay-120ms/px4-ulogs/agent-4.ulg": {
+        "sha256": "bd13f445e713b15b284ec14b3db9c6888e79cd77e9b919f276afda74c504d2ad",
+        "bytes": 13043102
+      },
+      "fleet-v2-delay-120ms/stress-summary.json": {
+        "sha256": "52dae9ea1d39290d987c2cb90f7f48b3054b8ad9c9dadd60acfa7c8e2c89446d",
+        "bytes": 5345
+      },
+      "fleet-v2-delay-120ms/trial-manifest.json": {
+        "sha256": "becbfe39185a222bded0cec8a7f80249daaa91bd76c0f6e164a2334cfe95bd67",
+        "bytes": 1107
+      },
+      "fleet-v2-delay-120ms/vio-relay.jsonl": {
+        "sha256": "f728213221eb106cda3d89d01f99fb77c2682dacf8c9bf7b6f17660696f60054",
+        "bytes": 12797817
+      }
+    },
+    "fleet-v2-drift-005mps": {
+      "fleet-v2-drift-005mps/agent-0.csv": {
+        "sha256": "cc8cfccb059a88c3f3732c01d3ea919c8955361f958f8a6c16de6d9e88ae4bfd",
+        "bytes": 112534
+      },
+      "fleet-v2-drift-005mps/agent-0.json": {
+        "sha256": "876a8271b9c52f3c6936aee4007ce277f3f24f3cd1705c7737f68a14ccd47558",
+        "bytes": 1652
+      },
+      "fleet-v2-drift-005mps/agent-1.csv": {
+        "sha256": "f3d01263ec452453ef78fb19faeaefedb19d6d788a1fe4d36978244e33784c95",
+        "bytes": 123296
+      },
+      "fleet-v2-drift-005mps/agent-1.json": {
+        "sha256": "23cd12336369059a82dc730c67d1e0c1b0a75471ed87e9021c85407b3b3116a2",
+        "bytes": 1624
+      },
+      "fleet-v2-drift-005mps/agent-2.csv": {
+        "sha256": "b348dcecd841040800555e90d7300b315b22d5959c728223da0c5a24d4b7099b",
+        "bytes": 145977
+      },
+      "fleet-v2-drift-005mps/agent-2.json": {
+        "sha256": "f695061f46f3619e79d7165cdbe87aa73def592690a2fc9a7f7e4bc5b8e69a38",
+        "bytes": 1623
+      },
+      "fleet-v2-drift-005mps/agent-3.csv": {
+        "sha256": "6cc31b232fe1ce35d0735e1f25a80f5a72d6469816096cda900ac2efa39e1b66",
+        "bytes": 119688
+      },
+      "fleet-v2-drift-005mps/agent-3.json": {
+        "sha256": "43ae425c71498d9834d2b5faf86d074681dfcc18fc4a09a69c7b7e60eaa86c42",
+        "bytes": 1619
+      },
+      "fleet-v2-drift-005mps/agent-4.csv": {
+        "sha256": "514f9d29c7448af5d3eb25b51364c81c892e7a9c71a0ada7c603ad229bca4c20",
+        "bytes": 105750
+      },
+      "fleet-v2-drift-005mps/agent-4.json": {
+        "sha256": "d40c110bd2e3b06bae7baad681d320bf682e5b4faf4836f1a0414e76845e5d0a",
+        "bytes": 1622
+      },
+      "fleet-v2-drift-005mps/fault-profile.json": {
+        "sha256": "e0e34780fe5a02fd4a76e380d65841df8363f109fcb64f5fe2ab8da2e1178d4a",
+        "bytes": 293
+      },
+      "fleet-v2-drift-005mps/flydrones_forest.sdf": {
+        "sha256": "da3e81c10a7d848671c1045f9da267eca65fd312793231dd99a038f55824e8ad",
+        "bytes": 4224
+      },
+      "fleet-v2-drift-005mps/px4-ulogs/agent-0.ulg": {
+        "sha256": "cfb0629d7e9c756779527898e770bb48b0974adc00adbb329e3dabe1ebd5f391",
+        "bytes": 11507286
+      },
+      "fleet-v2-drift-005mps/px4-ulogs/agent-1.ulg": {
+        "sha256": "f09d72ddda11fcfea69e563616167e80c0d8c3825872ede958a5bc4cf80cf2ff",
+        "bytes": 11911318
+      },
+      "fleet-v2-drift-005mps/px4-ulogs/agent-2.ulg": {
+        "sha256": "8a5b30f2c2841e3e0e9653aafaf0783f35b93539dbfdcba5de1ecfef46a7565e",
+        "bytes": 12397509
+      },
+      "fleet-v2-drift-005mps/px4-ulogs/agent-3.ulg": {
+        "sha256": "2215c85cb6cd271cab961feaf7a16225cc79fac70749383e7a6603cf71234ab6",
+        "bytes": 10735783
+      },
+      "fleet-v2-drift-005mps/px4-ulogs/agent-4.ulg": {
+        "sha256": "728e1bf27af55fc6656a6557d5ba6772688263aae4632a2f0b2f17d8c6d0605b",
+        "bytes": 11478179
+      },
+      "fleet-v2-drift-005mps/stress-summary.json": {
+        "sha256": "0d18cfac5eb39b76d13fa070a9e16c2ce3c2ef0dd7476c1898aa44135a2c5b50",
+        "bytes": 5355
+      },
+      "fleet-v2-drift-005mps/trial-manifest.json": {
+        "sha256": "854793c1e4cb0d8dfcdfbbcef4809d627bc77fd8a86417af8ef1d34f3c20ce81",
+        "bytes": 1110
+      },
+      "fleet-v2-drift-005mps/vio-relay.jsonl": {
+        "sha256": "ed6f5660199839d15e744f9d635eddf44cc4cadf1b5dfc66aff48a401641b40a",
+        "bytes": 6193856
+      }
+    },
+    "fleet-v2-dropout-400ms": {
+      "fleet-v2-dropout-400ms/agent-0.csv": {
+        "sha256": "4adf57b05a09d20811bb5f0f42c5586730f797ab91e53dfd81fe5536f563e023",
+        "bytes": 109407
+      },
+      "fleet-v2-dropout-400ms/agent-0.json": {
+        "sha256": "872c603327ff044f5801c47534b0e27bf8d02e5f6a1fd1c40b98409b128a5cdb",
+        "bytes": 1654
+      },
+      "fleet-v2-dropout-400ms/agent-1.csv": {
+        "sha256": "0751ce4d443b54e7d20ddb55164d70f9a5ac40df6ad892de80705fa9e5d75a36",
+        "bytes": 440021
+      },
+      "fleet-v2-dropout-400ms/agent-1.json": {
+        "sha256": "e85afb6ff898614bcb209acd77fbd88f7ee2b2cd16d61941d9c504be6995a731",
+        "bytes": 1631
+      },
+      "fleet-v2-dropout-400ms/agent-2.csv": {
+        "sha256": "9bbb4304651b77c8dd04e9ba7f37ac7e973ce2bc970082b133d33053c03f757c",
+        "bytes": 116470
+      },
+      "fleet-v2-dropout-400ms/agent-2.json": {
+        "sha256": "6d5fb5d31a8e67133c78d8619558d4d1eb93e5e6db8c0bd02fd73898e7144b36",
+        "bytes": 1621
+      },
+      "fleet-v2-dropout-400ms/agent-3.csv": {
+        "sha256": "254ba3cd8bae87ddaf0a6cf0e2666df59996734386d61acdf71244809432e9c4",
+        "bytes": 442418
+      },
+      "fleet-v2-dropout-400ms/agent-3.json": {
+        "sha256": "c7ed15a61f9776fd8d7c0b074eaffb26bb34ffc7645b9e84fb3fbd561f8cd146",
+        "bytes": 1630
+      },
+      "fleet-v2-dropout-400ms/agent-4.csv": {
+        "sha256": "b1cd1d6030eb5a7cdcf0ad49596bb21dd96b960f1361676771319982d56c2c47",
+        "bytes": 104134
+      },
+      "fleet-v2-dropout-400ms/agent-4.json": {
+        "sha256": "84b8eafce7e54ccdf601aae54e2ec28f1c9590e6f7d0d82e36003d9569abc6aa",
+        "bytes": 1622
+      },
+      "fleet-v2-dropout-400ms/fault-profile.json": {
+        "sha256": "563e380b53cf03cd80653dc1429f41823424288787d4bb16886dec5a36b96ca3",
+        "bytes": 292
+      },
+      "fleet-v2-dropout-400ms/flydrones_forest.sdf": {
+        "sha256": "da3e81c10a7d848671c1045f9da267eca65fd312793231dd99a038f55824e8ad",
+        "bytes": 4224
+      },
+      "fleet-v2-dropout-400ms/px4-ulogs/agent-0.ulg": {
+        "sha256": "f6e34df03855efb5f5cfc02a3eb751f2e82aa4e6859184ee618fc6ecb2ac8283",
+        "bytes": 12043047
+      },
+      "fleet-v2-dropout-400ms/px4-ulogs/agent-1.ulg": {
+        "sha256": "5e545d30eb17aa3403daae57e38557841d94c8e19691b67fd007c089adc60a11",
+        "bytes": 27769041
+      },
+      "fleet-v2-dropout-400ms/px4-ulogs/agent-2.ulg": {
+        "sha256": "544b47161f599428b4f8b25261dcc16e2513b28af7fc27c0f527c066533cc72a",
+        "bytes": 11699431
+      },
+      "fleet-v2-dropout-400ms/px4-ulogs/agent-3.ulg": {
+        "sha256": "f7ddb57745338d415635029973c0c3ffffb1e02d762a55af891d158a241e2632",
+        "bytes": 26575761
+      },
+      "fleet-v2-dropout-400ms/px4-ulogs/agent-4.ulg": {
+        "sha256": "737b10215e3811350263120be72cccc89edb05f47fe78d7affe821c9f06f8686",
+        "bytes": 13109699
+      },
+      "fleet-v2-dropout-400ms/stress-summary.json": {
+        "sha256": "87bded725449d845fea70d5295cd42f354dfb209c51d543299fca698d8b2e6c9",
+        "bytes": 5401
+      },
+      "fleet-v2-dropout-400ms/trial-manifest.json": {
+        "sha256": "19f6985a486de2a5956d5dd79513c8fd54617870f76ea8620496a43789f189d3",
+        "bytes": 1114
+      },
+      "fleet-v2-dropout-400ms/vio-relay.jsonl": {
+        "sha256": "7bb4a7f09e22e61044ad6e8c6b6736d20f30ee5cd069ed57f32d80700d2c511d",
+        "bytes": 12834434
+      }
+    },
+    "fleet-v2-false-pose-1m": {
+      "fleet-v2-false-pose-1m/agent-0.csv": {
+        "sha256": "4d43a30f55e62a2908041d2d3085a6f7e86980b7ec6b943b869dbf558f6d55f3",
+        "bytes": 47431
+      },
+      "fleet-v2-false-pose-1m/agent-0.json": {
+        "sha256": "9342d1a20839a0cddf2c6685622907659a604bd35158cae6e871589f85309728",
+        "bytes": 1674
+      },
+      "fleet-v2-false-pose-1m/agent-1.csv": {
+        "sha256": "d9a930ec25717b90a48c5975670b722a1f925a5e37f112638e8011689a7aa3ef",
+        "bytes": 46025
+      },
+      "fleet-v2-false-pose-1m/agent-1.json": {
+        "sha256": "c634c3b25f0b9d1b6065755c77b148d8652521824bc7b216db2b636dc9c360ac",
+        "bytes": 1683
+      },
+      "fleet-v2-false-pose-1m/agent-2.csv": {
+        "sha256": "92583e0b960908b654151126047af6d2fb4d9a911c80ea718758daac3549280f",
+        "bytes": 47358
+      },
+      "fleet-v2-false-pose-1m/agent-2.json": {
+        "sha256": "86e9481a8ef7d433fbcf3de5b2e32a48645807f48a9f8f28c50757d7e74aa71b",
+        "bytes": 1677
+      },
+      "fleet-v2-false-pose-1m/agent-3.csv": {
+        "sha256": "2ebf24a0c7de0e195ebf199b5ebc7abf1301a6babf0fbf4bfa4b189fdff5b7d1",
+        "bytes": 49375
+      },
+      "fleet-v2-false-pose-1m/agent-3.json": {
+        "sha256": "62d4ce548ac6345c28c32f7546460ae66bbda95f74fcabd2e4a43a4e4f95318d",
+        "bytes": 1683
+      },
+      "fleet-v2-false-pose-1m/agent-4.csv": {
+        "sha256": "9d183f71f18edf4786d11031beb95766179fe1035a619f9ccb2631e2155194be",
+        "bytes": 103205
+      },
+      "fleet-v2-false-pose-1m/agent-4.json": {
+        "sha256": "f11214ceb36545ebcaf9dbf4bca230b22300a53f3f61c8f8d49a41e55d9aee29",
+        "bytes": 1618
+      },
+      "fleet-v2-false-pose-1m/fault-profile.json": {
+        "sha256": "1c426d4fa4224ca1f4daf46dd439f18d525bb612cc382d81ee8795c27565c970",
+        "bytes": 292
+      },
+      "fleet-v2-false-pose-1m/flydrones_forest.sdf": {
+        "sha256": "da3e81c10a7d848671c1045f9da267eca65fd312793231dd99a038f55824e8ad",
+        "bytes": 4224
+      },
+      "fleet-v2-false-pose-1m/px4-ulogs/agent-0.ulg": {
+        "sha256": "a939fca63a840877e58d7770a90ac6f2e59f29100bf49a88669ae4e83094639b",
+        "bytes": 8200159
+      },
+      "fleet-v2-false-pose-1m/px4-ulogs/agent-1.ulg": {
+        "sha256": "a040a055edc6c755f1fdbf2917bbd2227e1a3f359008125e1a8a58ef30e0afb0",
+        "bytes": 7663061
+      },
+      "fleet-v2-false-pose-1m/px4-ulogs/agent-2.ulg": {
+        "sha256": "0d687be25140290829ed7798b5b7d9be97931db34d6406b56c3691979684a9a1",
+        "bytes": 7126482
+      },
+      "fleet-v2-false-pose-1m/px4-ulogs/agent-3.ulg": {
+        "sha256": "c689eb232fbb1e79329b49d6f553bbfe210d57a648eb048392c5208e7bb9e2b5",
+        "bytes": 6584018
+      },
+      "fleet-v2-false-pose-1m/px4-ulogs/agent-4.ulg": {
+        "sha256": "c61316d3fb5e33c76b6c98e0716107b73a960d56ffebaa9ad688d800433fe7f0",
+        "bytes": 11402522
+      },
+      "fleet-v2-false-pose-1m/stress-summary.json": {
+        "sha256": "268c91eb8dcfdbe419832f02dccbd8d2b4a7603444710241addbf90a7be0fce6",
+        "bytes": 4502
+      },
+      "fleet-v2-false-pose-1m/trial-manifest.json": {
+        "sha256": "bf8765ed1fbe7a5c085b3b1e6167d19eaef3421823d88be551c3e5e59d4811ed",
+        "bytes": 1114
+      },
+      "fleet-v2-false-pose-1m/vio-relay.jsonl": {
+        "sha256": "906701d791908c6f638b85e893886611937bc1348f148826073ca79aa05bc17e",
+        "bytes": 6127922
+      }
+    },
+    "fleet-v2-false-pose-1m-repeat": {
+      "fleet-v2-false-pose-1m-repeat/agent-0.csv": {
+        "sha256": "7742e53dfb0d75539a0702824ba3b7291714fb4c5b2e8d8f5df27e079a11a174",
+        "bytes": 110421
+      },
+      "fleet-v2-false-pose-1m-repeat/agent-0.json": {
+        "sha256": "f5e70028843c44c6ab2da4f68a863c0b06a23ebe7082d9ab74de2f631d6b0e4e",
+        "bytes": 1652
+      },
+      "fleet-v2-false-pose-1m-repeat/agent-1.csv": {
+        "sha256": "b932a9d265f78f5b8148e0666adcfb6787c28d0e2440154ea3758365787e1b66",
+        "bytes": 427945
+      },
+      "fleet-v2-false-pose-1m-repeat/agent-1.json": {
+        "sha256": "5f6709ad6cef52bd524c8956c8ea0fffb85792dee02c5b5e15544bbbb0380c98",
+        "bytes": 1631
+      },
+      "fleet-v2-false-pose-1m-repeat/agent-2.csv": {
+        "sha256": "f7d239038d37a4cb2815649458b22d1a8b2a900a462f969900246e1b60d910b0",
+        "bytes": 152079
+      },
+      "fleet-v2-false-pose-1m-repeat/agent-2.json": {
+        "sha256": "f79f7f0310b638cb6d0197cf3991832de99272559816a1b3f12ec056e4c810d5",
+        "bytes": 1622
+      },
+      "fleet-v2-false-pose-1m-repeat/agent-3.csv": {
+        "sha256": "99c0213ce351750cd8a88629018190bd9220d57784776066598277f6352679d7",
+        "bytes": 154966
+      },
+      "fleet-v2-false-pose-1m-repeat/agent-3.json": {
+        "sha256": "9a98a92c3f8a88a42d7b376400acc7c57b9e00e4a142dfabf732615410b83862",
+        "bytes": 1623
+      },
+      "fleet-v2-false-pose-1m-repeat/agent-4.csv": {
+        "sha256": "2a7cb24a0386645809f2c3f3486941b0c17825ec4b01618708b6595e08d4172a",
+        "bytes": 128936
+      },
+      "fleet-v2-false-pose-1m-repeat/agent-4.json": {
+        "sha256": "938812273965dd71de77f3ce3a9f6533eced381d43b4def5a73d4c2fb68f8b3a",
+        "bytes": 1625
+      },
+      "fleet-v2-false-pose-1m-repeat/fault-profile.json": {
+        "sha256": "1c426d4fa4224ca1f4daf46dd439f18d525bb612cc382d81ee8795c27565c970",
+        "bytes": 292
+      },
+      "fleet-v2-false-pose-1m-repeat/flydrones_forest.sdf": {
+        "sha256": "da3e81c10a7d848671c1045f9da267eca65fd312793231dd99a038f55824e8ad",
+        "bytes": 4224
+      },
+      "fleet-v2-false-pose-1m-repeat/px4-ulogs/agent-0.ulg": {
+        "sha256": "4047bf5055e3bd7a19b9b0a0d3a0aaeb30c0841a391a9681ffa7bf081d6e0078",
+        "bytes": 11390915
+      },
+      "fleet-v2-false-pose-1m-repeat/px4-ulogs/agent-1.ulg": {
+        "sha256": "ab7431cf0be13ec3936526f2f0c654d20833c0b8d94b13b8e0470cdec5ec4bb3",
+        "bytes": 26334945
+      },
+      "fleet-v2-false-pose-1m-repeat/px4-ulogs/agent-2.ulg": {
+        "sha256": "d6f286dfc92df732a8ead14e25cc9aa0bdbefef3ec965703c1d41a394eb6c453",
+        "bytes": 12568504
+      },
+      "fleet-v2-false-pose-1m-repeat/px4-ulogs/agent-3.ulg": {
+        "sha256": "373d7535261617568ad5999151c7edf7c8e43bf4809c04987db33b3651da84b2",
+        "bytes": 14668441
+      },
+      "fleet-v2-false-pose-1m-repeat/px4-ulogs/agent-4.ulg": {
+        "sha256": "1ed66fbc6ff2eea1dc79499644ce675b0d47c0624ed7493b4d338cb17add1db3",
+        "bytes": 12763877
+      },
+      "fleet-v2-false-pose-1m-repeat/stress-summary.json": {
+        "sha256": "621f8ed0604fc85dec51d4efd1c43a0d5ea3c5e2fcdf4538b6c5238c3ceb88a7",
+        "bytes": 5351
+      },
+      "fleet-v2-false-pose-1m-repeat/trial-manifest.json": {
+        "sha256": "7747c800388daad1217b3a1e34e631a353748a5d7433f602f378d79ded6fca61",
+        "bytes": 1127
+      },
+      "fleet-v2-false-pose-1m-repeat/vio-relay.jsonl": {
+        "sha256": "60a30c8ae84e586b3d9ba29428d8fedaa485e4ffc19095443b96c77b727bf486",
+        "bytes": 12166207
+      }
+    },
+    "single-delay-120ms": {
+      "single-delay-120ms/agent-0.csv": {
+        "sha256": "cdc347ac08a17f9c6f5e322cdb65f96c1a57716cc4029ce56601d3019dcf4558",
+        "bytes": 151602
+      },
+      "single-delay-120ms/agent-0.json": {
+        "sha256": "d3b3ef6adda08f4226265009a08350552cc4c12fd4d86026d32d69c675096675",
+        "bytes": 1527
+      },
+      "single-delay-120ms/fault-profile.json": {
+        "sha256": "f7889ec1395bf5fe0016908e9f84a9d1cbf6025a10f80ba24f1780ab408c94f0",
+        "bytes": 292
+      },
+      "single-delay-120ms/flydrones_forest.sdf": {
+        "sha256": "da3e81c10a7d848671c1045f9da267eca65fd312793231dd99a038f55824e8ad",
+        "bytes": 4224
+      },
+      "single-delay-120ms/px4-ulogs/agent-0.ulg": {
+        "sha256": "45a9b8b8600506804b58b26a71c6b2e14534c34e25539ef8baace3115cf6a2bd",
+        "bytes": 10411642
+      },
+      "single-delay-120ms/stress-summary.json": {
+        "sha256": "fcce3070601b1b95b815ab767df6c5abef1a3f66bc35827902abc68c185e73f1",
+        "bytes": 3628
+      },
+      "single-delay-120ms/trial-manifest.json": {
+        "sha256": "44690ce1691607664e061f25d017a81ec0526a09adfaf40afbc3b02332c7ef72",
+        "bytes": 819
+      },
+      "single-delay-120ms/vio-relay.jsonl": {
+        "sha256": "0eea4f1408d2fc7d38f966cc607c3b8fb97f0c3696a962a70ca577aaf6985c7f",
+        "bytes": 847236
+      }
+    },
+    "single-drift-005mps": {
+      "single-drift-005mps/agent-0.csv": {
+        "sha256": "d0fc04b3f7f3c0d6a0b989ef4c99ba4d15004d3610d627046dca322e52966e60",
+        "bytes": 149613
+      },
+      "single-drift-005mps/agent-0.json": {
+        "sha256": "23c01334c745f5596475c8588d6e6942428dd04981503459fcd2b0cb0249183a",
+        "bytes": 1529
+      },
+      "single-drift-005mps/fault-profile.json": {
+        "sha256": "e0e34780fe5a02fd4a76e380d65841df8363f109fcb64f5fe2ab8da2e1178d4a",
+        "bytes": 293
+      },
+      "single-drift-005mps/flydrones_forest.sdf": {
+        "sha256": "da3e81c10a7d848671c1045f9da267eca65fd312793231dd99a038f55824e8ad",
+        "bytes": 4224
+      },
+      "single-drift-005mps/px4-ulogs/agent-0.ulg": {
+        "sha256": "950e640db0a63b05be9b75f93f8733be73e572ff879ce1963e1d26e527d4dce1",
+        "bytes": 11544578
+      },
+      "single-drift-005mps/stress-summary.json": {
+        "sha256": "d7227e2466a8a4161a28fc11b3f275f95fe88a9815fc24e06a87b3cc78b276ec",
+        "bytes": 3633
+      },
+      "single-drift-005mps/trial-manifest.json": {
+        "sha256": "b49d858e94fced099ff1f0072bf9d7f86359b83f798edbfc12d26335a01cbc7f",
+        "bytes": 823
+      },
+      "single-drift-005mps/vio-relay.jsonl": {
+        "sha256": "18c3c7f1b186da4077bfd12efdaa93b139c38170e328bcccf0a89ba84d511edc",
+        "bytes": 848005
+      }
+    },
+    "single-dropout-400ms": {
+      "single-dropout-400ms/agent-0.csv": {
+        "sha256": "51cf294a61d77bf40e22d3837a94be6b0b6ed48a342519d295c056689920835f",
+        "bytes": 419565
+      },
+      "single-dropout-400ms/agent-0.json": {
+        "sha256": "a4a8ed5b99cbff53617053444727b2235a5bf4c0627050e25fa5a4839b86d088",
+        "bytes": 1536
+      },
+      "single-dropout-400ms/fault-profile.json": {
+        "sha256": "563e380b53cf03cd80653dc1429f41823424288787d4bb16886dec5a36b96ca3",
+        "bytes": 292
+      },
+      "single-dropout-400ms/flydrones_forest.sdf": {
+        "sha256": "da3e81c10a7d848671c1045f9da267eca65fd312793231dd99a038f55824e8ad",
+        "bytes": 4224
+      },
+      "single-dropout-400ms/px4-ulogs/agent-0.ulg": {
+        "sha256": "415a20275d3554fd33a26469e54f06ae49d57f47acac2dd636d0645da299dd3c",
+        "bytes": 25531556
+      },
+      "single-dropout-400ms/stress-summary.json": {
+        "sha256": "c7e861cfbd0060d1134ef5aa819f3aa19c5da3273eb4a8873e4ba598ba609704",
+        "bytes": 3692
+      },
+      "single-dropout-400ms/trial-manifest.json": {
+        "sha256": "55020edb442f044c85634d3b66195bbeac3e7ef819aea96336a4e8c09a8045fb",
+        "bytes": 826
+      },
+      "single-dropout-400ms/vio-relay.jsonl": {
+        "sha256": "d8e90dce0a9675bd72bee09913b7694f9de6ee233f19dc472a8fcd1713e41ab9",
+        "bytes": 1824148
+      }
+    },
+    "single-false-pose-1m": {
+      "single-false-pose-1m/agent-0.csv": {
+        "sha256": "fff5bcd88541095e57a42159b682e648a826c10005d25ba667396c763e50222b",
+        "bytes": 100837
+      },
+      "single-false-pose-1m/agent-0.json": {
+        "sha256": "26624c2fa36cc4b93447b7bcb85305027db037154a0409ba020553a13fc09a8e",
+        "bytes": 1527
+      },
+      "single-false-pose-1m/fault-profile.json": {
+        "sha256": "1c426d4fa4224ca1f4daf46dd439f18d525bb612cc382d81ee8795c27565c970",
+        "bytes": 292
+      },
+      "single-false-pose-1m/flydrones_forest.sdf": {
+        "sha256": "da3e81c10a7d848671c1045f9da267eca65fd312793231dd99a038f55824e8ad",
+        "bytes": 4224
+      },
+      "single-false-pose-1m/px4-ulogs/agent-0.ulg": {
+        "sha256": "987e4ccddec0a276ccda8a9f8eb6f8d0d8ab8603a4184b7355ad9d4d7df5d79e",
+        "bytes": 9041184
+      },
+      "single-false-pose-1m/stress-summary.json": {
+        "sha256": "017972d3ad2caebefbde89347263c95921b848e3b58ed958f42f4b8264a24d23",
+        "bytes": 3630
+      },
+      "single-false-pose-1m/trial-manifest.json": {
+        "sha256": "918459c17e3e8eea8fde49dd29ee2c99822f5adc7db02e05655f27906b19365c",
+        "bytes": 825
+      },
+      "single-false-pose-1m/vio-relay.jsonl": {
+        "sha256": "d23bdfe47f56e7482b61489946031943d7a755e7e32b33e7a207f5a11d56441c",
+        "bytes": 634124
+      }
+    },
+    "single-v2-baseline": {
+      "single-v2-baseline/agent-0.csv": {
+        "sha256": "8c243b68402487f2d3ca0758dfc9c5b9b0a74360c85aecd72acc7f71d65c549b",
+        "bytes": 100821
+      },
+      "single-v2-baseline/agent-0.json": {
+        "sha256": "4f7be56a4ad3da447f174d782767609bd8a7b64995b50abd99cf18e28ad33877",
+        "bytes": 1647
+      },
+      "single-v2-baseline/fault-profile.json": {
+        "sha256": "108c73760140b5bb53090738e6eab9508688ef6fb848ea7e4cf4e0b0d2649718",
+        "bytes": 290
+      },
+      "single-v2-baseline/flydrones_forest.sdf": {
+        "sha256": "da3e81c10a7d848671c1045f9da267eca65fd312793231dd99a038f55824e8ad",
+        "bytes": 4224
+      },
+      "single-v2-baseline/px4-ulogs/agent-0.ulg": {
+        "sha256": "9e6ee1e5851058656cdba913f0d21f635b16bbe8c118e7b0d44009f32e4aa25d",
+        "bytes": 9002737
+      },
+      "single-v2-baseline/stress-summary.json": {
+        "sha256": "ac56009020dc81be7910d2ac9e35c446676022ef8540797377cef5bbe44174e6",
+        "bytes": 3622
+      },
+      "single-v2-baseline/trial-manifest.json": {
+        "sha256": "bebf5562e8776494876b673d992ea79ab0bacf7196d928758d143639e8feaab4",
+        "bytes": 1101
+      },
+      "single-v2-baseline/vio-relay.jsonl": {
+        "sha256": "945cffa3effaf5715e755db5c11c14e9c7f032ac1f13a3f467296da13e63f5dd",
+        "bytes": 871959
+      }
+    },
+    "single-v2-delay-120ms": {
+      "single-v2-delay-120ms/agent-0.csv": {
+        "sha256": "5ac43032723a42ca952c80bc919c20d49b42f47c82e7b65c47d1ec63396075db",
+        "bytes": 101659
+      },
+      "single-v2-delay-120ms/agent-0.json": {
+        "sha256": "ff5750541625455dcf0544008ba69037793ef35b946419714f3a05c5509a2181",
+        "bytes": 1651
+      },
+      "single-v2-delay-120ms/fault-profile.json": {
+        "sha256": "f7889ec1395bf5fe0016908e9f84a9d1cbf6025a10f80ba24f1780ab408c94f0",
+        "bytes": 292
+      },
+      "single-v2-delay-120ms/flydrones_forest.sdf": {
+        "sha256": "da3e81c10a7d848671c1045f9da267eca65fd312793231dd99a038f55824e8ad",
+        "bytes": 4224
+      },
+      "single-v2-delay-120ms/px4-ulogs/agent-0.ulg": {
+        "sha256": "174fc6103e916097147ef05511cea291f0fd6ec7b47b48d28fc8f9004b0b0c16",
+        "bytes": 9108090
+      },
+      "single-v2-delay-120ms/stress-summary.json": {
+        "sha256": "7550dedc3023a7df93039ebea74992d7104b770bc3a5a655e24b3035773061a0",
+        "bytes": 3637
+      },
+      "single-v2-delay-120ms/trial-manifest.json": {
+        "sha256": "139bca6bff9cf3fa7d1e609f1bf8ab5ae496f35577892000ec07411db69ed7cf",
+        "bytes": 1110
+      },
+      "single-v2-delay-120ms/vio-relay.jsonl": {
+        "sha256": "ae2c4f694b923548afa4b0bf7e4e2b2f5f9b2d674233c21ffe65cc72bedae117",
+        "bytes": 886059
+      }
+    },
+    "single-v2-drift-005mps": {
+      "single-v2-drift-005mps/agent-0.csv": {
+        "sha256": "73b0a6ac0531852339a081dbf2c09f5000f69c8e98a3ca47f45917ee942bab69",
+        "bytes": 102534
+      },
+      "single-v2-drift-005mps/agent-0.json": {
+        "sha256": "70830e34ed35d4cd85453c02dd21e7d511e38302d1d8f15a1038123bcc8167d9",
+        "bytes": 1650
+      },
+      "single-v2-drift-005mps/fault-profile.json": {
+        "sha256": "e0e34780fe5a02fd4a76e380d65841df8363f109fcb64f5fe2ab8da2e1178d4a",
+        "bytes": 293
+      },
+      "single-v2-drift-005mps/flydrones_forest.sdf": {
+        "sha256": "da3e81c10a7d848671c1045f9da267eca65fd312793231dd99a038f55824e8ad",
+        "bytes": 4224
+      },
+      "single-v2-drift-005mps/px4-ulogs/agent-0.ulg": {
+        "sha256": "0d31f00c113c427ef371e6a087e0ecaf71b7bd3c563f88856e01e401588c3499",
+        "bytes": 9100253
+      },
+      "single-v2-drift-005mps/stress-summary.json": {
+        "sha256": "f3dea307d059da42bdf4bb71993f1d0f30b8798a3a1bcf617353d58dccf2432e",
+        "bytes": 3639
+      },
+      "single-v2-drift-005mps/trial-manifest.json": {
+        "sha256": "904461c15d4ee4f0aaf16c688ff986c60cb5c0fb953fa29942551fb50100894e",
+        "bytes": 1112
+      },
+      "single-v2-drift-005mps/vio-relay.jsonl": {
+        "sha256": "5a992dc87894028f7c8b4ef5d04e44cf423f706e7967b1833ab2f190a8bb6e84",
+        "bytes": 907232
+      }
+    },
+    "single-v2-dropout-400ms": {
+      "single-v2-dropout-400ms/agent-0.csv": {
+        "sha256": "6117a79687fdac3c0b28149c89515705da69056135fff315014f9ad2b1da1c52",
+        "bytes": 103317
+      },
+      "single-v2-dropout-400ms/agent-0.json": {
+        "sha256": "a7ed9f39ea4ba7e6384f6d05178d3ad1f0ade3aa7d1e2979a9b7188710dbcaf5",
+        "bytes": 1650
+      },
+      "single-v2-dropout-400ms/fault-profile.json": {
+        "sha256": "563e380b53cf03cd80653dc1429f41823424288787d4bb16886dec5a36b96ca3",
+        "bytes": 292
+      },
+      "single-v2-dropout-400ms/flydrones_forest.sdf": {
+        "sha256": "da3e81c10a7d848671c1045f9da267eca65fd312793231dd99a038f55824e8ad",
+        "bytes": 4224
+      },
+      "single-v2-dropout-400ms/px4-ulogs/agent-0.ulg": {
+        "sha256": "c56c0b3167a31d2e833c45e420ea5ba08cec54f6e04d47b0d9d2f0b1e3ced60c",
+        "bytes": 9128740
+      },
+      "single-v2-dropout-400ms/stress-summary.json": {
+        "sha256": "e9e64a543408ddd5b898746c1cbc03f1854e26cdaebfcf37dd28359c011bebd4",
+        "bytes": 3680
+      },
+      "single-v2-dropout-400ms/trial-manifest.json": {
+        "sha256": "485ca6c804569d2059fd931d1eec543c394015dd6ef2a74c2f5bd1085a29589a",
+        "bytes": 1116
+      },
+      "single-v2-dropout-400ms/vio-relay.jsonl": {
+        "sha256": "ced7df2d3ad342002dd7d9a6421ac00adaae8bc16b34b1be67829ca0136e305d",
+        "bytes": 886191
+      }
+    },
+    "single-v2-false-pose-1m": {
+      "single-v2-false-pose-1m/agent-0.csv": {
+        "sha256": "b3224d394c667b8500e18100fde48d23a9473af1bce0cdc8d57ec12164ef0af1",
+        "bytes": 106585
+      },
+      "single-v2-false-pose-1m/agent-0.json": {
+        "sha256": "bf06c58682935f973774ea5b5b54e296fe120c89e08418e55e8caba80d658b82",
+        "bytes": 1650
+      },
+      "single-v2-false-pose-1m/fault-profile.json": {
+        "sha256": "1c426d4fa4224ca1f4daf46dd439f18d525bb612cc382d81ee8795c27565c970",
+        "bytes": 292
+      },
+      "single-v2-false-pose-1m/flydrones_forest.sdf": {
+        "sha256": "da3e81c10a7d848671c1045f9da267eca65fd312793231dd99a038f55824e8ad",
+        "bytes": 4224
+      },
+      "single-v2-false-pose-1m/px4-ulogs/agent-0.ulg": {
+        "sha256": "ba1aefc75c7e2973aa770d174ed6e00c9cce5077897a704b70e38f6d5a043ddb",
+        "bytes": 9332169
+      },
+      "single-v2-false-pose-1m/stress-summary.json": {
+        "sha256": "3b17e1b264a0518ada3feaf6240ad9e272d64f4c4a35831bffd9b9bc1da10360",
+        "bytes": 3633
+      },
+      "single-v2-false-pose-1m/trial-manifest.json": {
+        "sha256": "79b233d5421d8dd4fd7af09c5d2bf064887eb31842d32b9724a1f4c478d59f94",
+        "bytes": 1115
+      },
+      "single-v2-false-pose-1m/vio-relay.jsonl": {
+        "sha256": "0ef0dad006e9f8a8db74ffb3b40033d0409ccf04c94c951d66e75c36f305a51f",
+        "bytes": 911348
+      }
+    },
+    "single-v3-runner-smoke": {
+      "single-v3-runner-smoke/agent-0.csv": {
+        "sha256": "36228460e52a588ad8240a7087aed426c30bd76ca5a19890aeffcc457bab0375",
+        "bytes": 118966
+      },
+      "single-v3-runner-smoke/agent-0.json": {
+        "sha256": "c83fba89200f733cce4db385b4cc2bf38da087ddae70e67522729d98e4e9bf2e",
+        "bytes": 1650
+      },
+      "single-v3-runner-smoke/fault-profile.json": {
+        "sha256": "108c73760140b5bb53090738e6eab9508688ef6fb848ea7e4cf4e0b0d2649718",
+        "bytes": 290
+      },
+      "single-v3-runner-smoke/flydrones_forest.sdf": {
+        "sha256": "da3e81c10a7d848671c1045f9da267eca65fd312793231dd99a038f55824e8ad",
+        "bytes": 4224
+      },
+      "single-v3-runner-smoke/px4-ulogs/agent-0.ulg": {
+        "sha256": "324f753f5a4259221fd157dde303cc524974880192e7cbe49ecee3a1678cab69",
+        "bytes": 12288000
+      },
+      "single-v3-runner-smoke/stress-summary.json": {
+        "sha256": "0c2c2bd05cd04066c3acb7e6d8263f445ec14f549d926b60f89e651bcf1c54e6",
+        "bytes": 3623
+      },
+      "single-v3-runner-smoke/trial-manifest.json": {
+        "sha256": "f85f9cf4b1d8071cb7ed1d430abaa8cecab3388c6a5c8db6d240270dd19e6e5f",
+        "bytes": 1196
+      },
+      "single-v3-runner-smoke/vio-relay.jsonl": {
+        "sha256": "56bc76137a5844d4966d153e3b45d4275860f8c1a8c437877c4a3d5b9b260043",
+        "bytes": 1242802
+      }
+    },
+    "single-v4-runner-cleanup-smoke": {
+      "single-v4-runner-cleanup-smoke/agent-0.csv": {
+        "sha256": "cb5b4d779b0535d171d35a7515452ebda1264f4540065c77b3cc2d301bdf59e0",
+        "bytes": 117883
+      },
+      "single-v4-runner-cleanup-smoke/agent-0.json": {
+        "sha256": "cfbb9e89739adb9be0d6f8ce1fb75eed6672974bb028a4b76b8c9ac3b21df909",
+        "bytes": 1648
+      },
+      "single-v4-runner-cleanup-smoke/fault-profile.json": {
+        "sha256": "108c73760140b5bb53090738e6eab9508688ef6fb848ea7e4cf4e0b0d2649718",
+        "bytes": 290
+      },
+      "single-v4-runner-cleanup-smoke/flydrones_forest.sdf": {
+        "sha256": "da3e81c10a7d848671c1045f9da267eca65fd312793231dd99a038f55824e8ad",
+        "bytes": 4224
+      },
+      "single-v4-runner-cleanup-smoke/px4-ulogs/agent-0.ulg": {
+        "sha256": "c1a9da35e3570a498f423e1b14cbecd679ebee6e109e552e4ac861364210a248",
+        "bytes": 12760156
+      },
+      "single-v4-runner-cleanup-smoke/stress-summary.json": {
+        "sha256": "dd436d8deca1001e7819bb5665b76663e047e1be0436f3322b7505293427f5bd",
+        "bytes": 3630
+      },
+      "single-v4-runner-cleanup-smoke/trial-manifest.json": {
+        "sha256": "f8bc93539e9082ad5c6f4dc9745b822b0e995e87cc59523820db2e19708915e1",
+        "bytes": 1249
+      },
+      "single-v4-runner-cleanup-smoke/vio-relay.jsonl": {
+        "sha256": "69b30117744286408f065e9523e6816e61986efc5ffe5ed632e106c7a952f181",
+        "bytes": 1229886
+      }
+    },
+    "single-v5-runner-final-smoke": {
+      "single-v5-runner-final-smoke/agent-0.csv": {
+        "sha256": "22d780520a769db4e35a6220365b05e1f086f52468b4f6adaab2e4232d073351",
+        "bytes": 101960
+      },
+      "single-v5-runner-final-smoke/agent-0.json": {
+        "sha256": "353ad084bc33deb26912862d7bd62f0e372484447250ec93f0ba3b541cc73254",
+        "bytes": 1646
+      },
+      "single-v5-runner-final-smoke/fault-profile.json": {
+        "sha256": "108c73760140b5bb53090738e6eab9508688ef6fb848ea7e4cf4e0b0d2649718",
+        "bytes": 290
+      },
+      "single-v5-runner-final-smoke/flydrones_forest.sdf": {
+        "sha256": "da3e81c10a7d848671c1045f9da267eca65fd312793231dd99a038f55824e8ad",
+        "bytes": 4224
+      },
+      "single-v5-runner-final-smoke/px4-ulogs/agent-0.ulg": {
+        "sha256": "a7f2bf79cb0a2e51d80f1789c117e84db8ad37b35cfab8d8bb8536044f0e0146",
+        "bytes": 9172971
+      },
+      "single-v5-runner-final-smoke/stress-summary.json": {
+        "sha256": "5b57f27d71679a6707b904d34f1ff5972c2b68ee9076892aa85fd3fb57aabb9e",
+        "bytes": 3627
+      },
+      "single-v5-runner-final-smoke/trial-manifest.json": {
+        "sha256": "d7a82894fdf5bd178007e5f6be170139294cbe4e72aa62deeca44a54fba5517a",
+        "bytes": 1246
+      },
+      "single-v5-runner-final-smoke/vio-relay.jsonl": {
+        "sha256": "226d508dacc274b6ced343d9d51d66e026f0b050530ae7e142be8cd078a15f54",
+        "bytes": 896506
+      }
+    }
+  }
+}

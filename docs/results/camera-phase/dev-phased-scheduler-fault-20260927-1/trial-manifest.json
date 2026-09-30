@@ -1,0 +1,240 @@
+{
+  "schema": "flydrones-vio-stress-trial-v3",
+  "name": "dev-phased-scheduler-fault-20260927-1",
+  "fleet_size": 5,
+  "seed": 240901,
+  "profile": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/vio-faults/configs/vio_fault_profiles/baseline.json",
+  "policy_checkpoint": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/vio-faults/docs/results/vio-stress/policy-checkpoint.npz",
+  "renderer": {
+    "requested_profile": "d3d12-nvidia",
+    "attestation": null
+  },
+  "pair": {
+    "id": null,
+    "position": null
+  },
+  "campaign_id": null,
+  "output_root": "results/camera-phase",
+  "repository_revision": "9391bcb38c5559e12a66f08a19fbbc968a48d86e",
+  "px4_revision": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+  "frozen_hashes": {
+    "profile": "108c73760140b5bb53090738e6eab9508688ef6fb848ea7e4cf4e0b0d2649718",
+    "policy": "3c723587bfdbd15a8dc5976edc13d284b713dc081005b2dac04692c7d1b4accb",
+    "controller": "7151b7cb75ed347e8ee028e4acb8b6ddc7d8807f2a403d908bb04d7f53c9825b",
+    "relay": "a0f63da547ea7c481e4836ea1949655cdf86cea25fe8ec7f0f4220c768932b3f",
+    "runner": "a7065d214bfb27e4f457dee25714a530dc7583d4b4cdc3e675f89e543f253c08",
+    "launcher": "375036d668b7fa3148f382242d72f4cbc6029d3184ecc5a72940ba354790225c",
+    "renderer_attestation": "aaca8d92981d88b0c72bfb91ef5f7f4e589fcc4d5612b81dfe6e2caccab844bc",
+    "renderer_profile": "25eb25866978b94d5c7327c688c46112523067f55c29dabe15fe7d17ebe89118",
+    "runtime_probe": "e57c7a29137e7443373519550849b39247184c82d0698bb7c43b43c8ec0a5cf6",
+    "actuator_probe": "b0a09b36e7e4309dd4e4b46d9f1f0c5aa991d47b8628ab5e6c4dc27f23aad875",
+    "takeoff_readiness": "87f6fc7a25835298c6267c5ee7a6861a4fd5611a8ab4806fae1704fdc58f9ce1",
+    "mavlink_drone": "b007a1cdd302f35446992517620a472d5a4d51cabf0663ac90e9a6387d2ca020",
+    "camera_phase": "9cad6d057770c36a24e9598187b231f013ad41075ae9eccfa0f9fa745594009e",
+    "camera_model_configurator": "8e0361a68c5755251324cdece392f470daba131446b6ee444b5f168e96677505",
+    "camera_phase_scheduler": "64c456f66b68e0ab99ebd6e4f4e3fddd5731055c78a2ba1b75b5670fdc24b741",
+    "camera_phase_probe": "eabda7d963762ad3799f2823f37aad91dea459d6243724d2212759b681e2273b",
+    "summary": "ed496e94acbc43ec7e185871b90e44bf9808e45239820cc98434554928ed5509",
+    "world_generator": "3fd59afbf9f550196caac0422ea2800290a6deb657f02cdf9cffcd6666a1055a",
+    "camera_model": "9c8a2916ac3fac5b9cfc09f16b3b8d3d323347980e87b39e476a31c7cdf8593d",
+    "vehicle_model": "17d5ef7b94667b37fb46dbffba77ea443dddf1bc24923aec8bf2ab1cb2fca1ed",
+    "world": "da3e81c10a7d848671c1045f9da267eca65fd312793231dd99a038f55824e8ad"
+  },
+  "software_versions": {
+    "gazebo": "Gazebo Sim, version 8.15.0",
+    "gz_rendering": "8.2.3-1~noble",
+    "gz_sensors": "8.2.2-1~noble",
+    "mesa": "25.2.8-0ubuntu0.24.04.2",
+    "kernel": "6.6.87.2-microsoft-standard-WSL2",
+    "python": "3.12.3"
+  },
+  "launch_exit_code": 3,
+  "worker_exit_code": null,
+  "stop_exit_code": 0,
+  "evidence_accepted": false,
+  "actuator_probe_closed_cleanly": false,
+  "camera_schedule_mode": "phased",
+  "camera_scheduler_stop_after_trigger_count": 5,
+  "camera_model_evidence": {
+    "schema": "flydrones-camera-model-phase-v1",
+    "mode": "phased",
+    "source": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/vio-faults/assets/gazebo/models/OakD-Lite-Fly/model.sdf",
+    "target": "/home/yuchen7509/PX4-Autopilot/Tools/simulation/gz/models/OakD-Lite-Fly/model.sdf",
+    "source_sha256": "f8d49346ec66e02ed3f8caca2d4429ac339380ae6af00f97affa0e1ab3455bcd",
+    "target_sha256": "9112dc3d3b331558c56d300bf4ba572f346e51e03989cd0d4273c82a74703e9e",
+    "structural_diff": [
+      "sensor[StereoOV7251]/camera/triggered: <missing> -> true"
+    ],
+    "preserved": {
+      "width": 160,
+      "height": 120,
+      "update_rate_hz": 10.0,
+      "image_format": "R_FLOAT32"
+    }
+  },
+  "camera_scheduler_closed_cleanly": false,
+  "camera_phase_probe_closed_cleanly": false,
+  "base_camera_asset_unchanged": true,
+  "errors": [
+    "camera-phase-probe exited 3",
+    "camera-scheduler exited 4",
+    "actuator probe log is missing or lacks a complete stop record",
+    "renderer attestation missing",
+    "camera phase probe log lacks a complete successful stop record",
+    "camera scheduler log lacks a complete successful stop record",
+    "camera phase summary missing or unreadable: [Errno 2] No such file or directory: 'results/camera-phase/dev-phased-scheduler-fault-20260927-1/camera-phase-summary.json'"
+  ],
+  "raw_artifact_sha256": {
+    "camera-aux-started.marker": "1677595b88a0a75b20ec97206abd160e6327b83f8b55aab267df052c7b89b518",
+    "camera-model-configured.sdf": "9112dc3d3b331558c56d300bf4ba572f346e51e03989cd0d4273c82a74703e9e",
+    "camera-model-evidence.json": "3b7f6535fdbf3f3f976782d8f8c402ff135380f9e3ddafe7d2f45e81a2668b9b",
+    "camera-phase-probe.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "camera-phase.jsonl": "39f0521c84abd1fe3f9e4a2d123ed562fa3645938baa0e524f629f5b7f3c378d",
+    "camera-scheduler-ready.json": "9ae0a425ae1a3ca39b778f64983ddb6a288348e998a01861716c216489a5a811",
+    "camera-scheduler.jsonl": "b3850294b27cfeaaaccd40b6f50c39fc481386938c3ccac95ca5011ff9bb3251",
+    "camera-scheduler.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "cleanup-evidence.json": "31bfb0b624b340e11e8873b8cf835289e368fab2f1d6142c2b187a66649ac53f",
+    "clock-probe.csv": "893916b4a2d80c5eea6237b995d3e531d9453a854a190d845935da145be95333",
+    "fault-profile.json": "108c73760140b5bb53090738e6eab9508688ef6fb848ea7e4cf4e0b0d2649718",
+    "flydrones_forest.sdf": "da3e81c10a7d848671c1045f9da267eca65fd312793231dd99a038f55824e8ad",
+    "gazebo-base-ready.json": "8ecfebbfc95a218353290a1a802516ae2d7826f2bbdf20e0db9889476c8fa87a",
+    "gazebo.stderr.log": "39f660df9f36c96bfb3dcb3462b21b2d735500526d5565e58ea1fa4708a792fa",
+    "gazebo.stdout.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "gpu-probe.csv": "7cbd808e0a65e1205cdfdc4aa9582a5e65d27bb3a87bce68ec0e0e4a530eaa8e",
+    "launch.log": "d954edad8e165b35dbf8829e72e6e917b1d686cbc0d51f6524dd6aa85caecea3",
+    "policy-checkpoint.npz": "3c723587bfdbd15a8dc5976edc13d284b713dc081005b2dac04692c7d1b4accb",
+    "px4-console/instance_0/err.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "px4-console/instance_0/out.log": "33c864abb328ff60110d0e4d33bad88fc8df4ab9f659859f4a1b921f38f71430",
+    "px4-console/instance_1/err.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "px4-console/instance_1/out.log": "70272f7e32ab4675f174335483faae88dd4f5dabb17d116955abc893b136a643",
+    "px4-console/instance_2/err.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "px4-console/instance_2/out.log": "4d923c36d00abf388971c1cbf456e619996055c13d8cc660d352d4fb68fe44e3",
+    "px4-console/instance_3/err.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "px4-console/instance_3/out.log": "214706df8ffd92950733107367e8e1d6d977ca787e2c427ea834c2a4d9b2a43a",
+    "px4-console/instance_4/err.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "px4-console/instance_4/out.log": "94298d58c3208578506329b71448088c1be44e339b3fd19b3ac5cc1004df745f",
+    "px4-ulogs/agent-0.ulg": "f352aafb28e3855f45d0cc5ff14b751719c36a71df09300f0ce3853c71a0240f",
+    "px4-ulogs/agent-1.ulg": "a143f76e1f9b7ecec533aaead684723c1d8b37de14d96fea82825d93c2851388",
+    "px4-ulogs/agent-2.ulg": "48e75f7dac334f7a556d564d191e1a78e636592a002065c43702865404993635",
+    "px4-ulogs/agent-3.ulg": "b37a7300449cc2501ce81de56fd71b771ab47f1e83c96504966a3ebb4aad7b15",
+    "px4-ulogs/agent-4.ulg": "5a04b3f4e7f21025c08f51ffc10fa4a765f186613edee369cf896cbec95bfc67",
+    "resource-probe.csv": "544ef60272011b3c39e04013581294c87bd3904b4bd12d6bde9a3d2914b6f1ef",
+    "runtime-probe.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stop.log": "8ec3709179d04b20d8395f3dd486e08171c2d1a47c3c6be217276db81fef716b",
+    "trial-complete.marker": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "vio-relay.jsonl": "82b6c32cb806c473356233a51c7dd426323a7247a374403f99c261464b607418",
+    "vio-relay.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "vio-relay.stdout.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "px4_run_dir": "/tmp/flydrones-vio-dev-phased-scheduler-fault-20260927-1",
+  "controller_revision": "9391bcb38c5559e12a66f08a19fbbc968a48d86e",
+  "takeoff_only_hold_s": null,
+  "camera_phase_probe_exit_code": 3,
+  "camera_scheduler_exit_code": 4,
+  "shared_px4_files_restored": true,
+  "relay_closed_cleanly": true,
+  "ulog_artifacts": [
+    {
+      "vehicle_id": 0,
+      "path": "px4-ulogs/agent-0.ulg",
+      "bytes": 16000919,
+      "sha256": "f352aafb28e3855f45d0cc5ff14b751719c36a71df09300f0ce3853c71a0240f"
+    },
+    {
+      "vehicle_id": 1,
+      "path": "px4-ulogs/agent-1.ulg",
+      "bytes": 16522289,
+      "sha256": "a143f76e1f9b7ecec533aaead684723c1d8b37de14d96fea82825d93c2851388"
+    },
+    {
+      "vehicle_id": 2,
+      "path": "px4-ulogs/agent-2.ulg",
+      "bytes": 15904914,
+      "sha256": "48e75f7dac334f7a556d564d191e1a78e636592a002065c43702865404993635"
+    },
+    {
+      "vehicle_id": 3,
+      "path": "px4-ulogs/agent-3.ulg",
+      "bytes": 15314118,
+      "sha256": "b37a7300449cc2501ce81de56fd71b771ab47f1e83c96504966a3ebb4aad7b15"
+    },
+    {
+      "vehicle_id": 4,
+      "path": "px4-ulogs/agent-4.ulg",
+      "bytes": 14648870,
+      "sha256": "5a04b3f4e7f21025c08f51ffc10fa4a765f186613edee369cf896cbec95bfc67"
+    }
+  ],
+  "px4_console_artifacts": [
+    {
+      "vehicle_id": 0,
+      "stream": "out.log",
+      "path": "px4-console/instance_0/out.log",
+      "bytes": 3118,
+      "sha256": "33c864abb328ff60110d0e4d33bad88fc8df4ab9f659859f4a1b921f38f71430"
+    },
+    {
+      "vehicle_id": 0,
+      "stream": "err.log",
+      "path": "px4-console/instance_0/err.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "vehicle_id": 1,
+      "stream": "out.log",
+      "path": "px4-console/instance_1/out.log",
+      "bytes": 2800,
+      "sha256": "70272f7e32ab4675f174335483faae88dd4f5dabb17d116955abc893b136a643"
+    },
+    {
+      "vehicle_id": 1,
+      "stream": "err.log",
+      "path": "px4-console/instance_1/err.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "vehicle_id": 2,
+      "stream": "out.log",
+      "path": "px4-console/instance_2/out.log",
+      "bytes": 2799,
+      "sha256": "4d923c36d00abf388971c1cbf456e619996055c13d8cc660d352d4fb68fe44e3"
+    },
+    {
+      "vehicle_id": 2,
+      "stream": "err.log",
+      "path": "px4-console/instance_2/err.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "vehicle_id": 3,
+      "stream": "out.log",
+      "path": "px4-console/instance_3/out.log",
+      "bytes": 2799,
+      "sha256": "214706df8ffd92950733107367e8e1d6d977ca787e2c427ea834c2a4d9b2a43a"
+    },
+    {
+      "vehicle_id": 3,
+      "stream": "err.log",
+      "path": "px4-console/instance_3/err.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "vehicle_id": 4,
+      "stream": "out.log",
+      "path": "px4-console/instance_4/out.log",
+      "bytes": 2878,
+      "sha256": "94298d58c3208578506329b71448088c1be44e339b3fd19b3ac5cc1004df745f"
+    },
+    {
+      "vehicle_id": 4,
+      "stream": "err.log",
+      "path": "px4-console/instance_4/err.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ]
+}

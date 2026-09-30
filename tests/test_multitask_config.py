@@ -1,7 +1,6 @@
 from pathlib import Path
 
-import yaml
-
+from flydrones.multitask_curriculum import CurriculumConfig
 from flydrones.training import MultiTaskAcceptance
 
 
@@ -48,14 +47,21 @@ def test_missing_and_nonfinite_metrics_fail_closed_in_key_order():
     assert gate.evaluate(metrics).failures == ("exit_success", "tracking_rmse_m")
 
 
-def test_canonical_config_contains_all_levels_and_frozen_layers():
-    data = yaml.safe_load(
-        Path("configs/multitask_training.yaml").read_text(encoding="utf-8")
-    )
-    assert [stage["level"] for stage in data["curriculum"]] == list(range(9))
-    assert data["frozen"] == [
+def test_canonical_config_contains_strict_profiles_and_frozen_layers():
+    config = CurriculumConfig.load(Path("configs/multitask_training.yaml"))
+    assert set(config.profiles) == {"smoke", "desktop", "full"}
+    assert config.frozen == (
         "malecns_reflex",
         "safety_projector",
         "px4_inner_loop",
-    ]
-    assert data["deployment"]["central_control_commands_allowed"] == 0
+    )
+    assert config.deployment["central_control_commands_allowed"] == 0
+    assert 100 not in {
+        fleet
+        for profile in (config.profiles["smoke"], config.profiles["desktop"])
+        for stage in profile
+        for fleet in stage.fleets
+    }
+    assert 100 in {
+        fleet for stage in config.profiles["full"] for fleet in stage.fleets
+    }

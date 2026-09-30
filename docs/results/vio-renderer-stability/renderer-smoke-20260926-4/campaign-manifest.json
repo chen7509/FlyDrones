@@ -1,0 +1,55 @@
+{
+  "schema": "flydrones-renderer-stability-campaign-manifest-v1",
+  "campaign_id": "renderer-smoke-20260926-4",
+  "phase": "smoke",
+  "seed": 240901,
+  "profile": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/vio-faults/configs/vio_fault_profiles/baseline.json",
+  "model": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/vio-faults/docs/results/vio-stress/policy-checkpoint.npz",
+  "controller_revision": "86507ee5ffc9dd7bd4c5d443184ee398fce1a233",
+  "frozen_hashes": {
+    "config": "fe4d41988be643328dc3aa2406dece69c6a37c143d1f4eb8f4e80d5365da442c",
+    "profile": "108c73760140b5bb53090738e6eab9508688ef6fb848ea7e4cf4e0b0d2649718",
+    "policy": "3c723587bfdbd15a8dc5976edc13d284b713dc081005b2dac04692c7d1b4accb",
+    "controller": "2905c5b07557ae0f362d05b412ebd1300782a041471b318549ccc4b253f82fc5",
+    "relay": "a0f63da547ea7c481e4836ea1949655cdf86cea25fe8ec7f0f4220c768932b3f",
+    "runner": "201f1e1dbb6d73a57cca124718575b9c04bf8264092df99c1f69e2f0a4e0d894",
+    "launcher": "350368d16ce4b1b9b7cab839ac3639d0d1f70aa48aff9b3c5710a1f1465fe1c6",
+    "renderer_attestation": "308ccf54fd1da138174c092f82467a38a645fbc4d8054fe057be536190527902",
+    "renderer_profile": "25eb25866978b94d5c7327c688c46112523067f55c29dabe15fe7d17ebe89118",
+    "runtime_probe": "e57c7a29137e7443373519550849b39247184c82d0698bb7c43b43c8ec0a5cf6",
+    "summary": "ae074f7d8d1cd1c0e09a472cf3c49039eb457d7ccf2ca1235e040fa7f849aa1e",
+    "world_generator": "3fd59afbf9f550196caac0422ea2800290a6deb657f02cdf9cffcd6666a1055a",
+    "camera_model": "9c8a2916ac3fac5b9cfc09f16b3b8d3d323347980e87b39e476a31c7cdf8593d",
+    "vehicle_model": "17d5ef7b94667b37fb46dbffba77ea443dddf1bc24923aec8bf2ab1cb2fca1ed"
+  },
+  "schedule": [
+    {
+      "name": "smoke-default-single",
+      "renderer_profile": "default",
+      "fleet_size": 1,
+      "pair_id": null,
+      "pair_position": null
+    },
+    {
+      "name": "smoke-d3d12-single",
+      "renderer_profile": "d3d12-nvidia",
+      "fleet_size": 1,
+      "pair_id": null,
+      "pair_position": null
+    },
+    {
+      "name": "smoke-d3d12-five-startup",
+      "renderer_profile": "d3d12-nvidia",
+      "fleet_size": 5,
+      "pair_id": null,
+      "pair_position": null
+    }
+  ],
+  "completed_trials": [
+    "smoke-default-single",
+    "smoke-d3d12-single",
+    "smoke-d3d12-five-startup"
+  ],
+  "stopped_after": null,
+  "stop_reasons": []
+}

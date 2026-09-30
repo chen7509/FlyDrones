@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import shutil
 import subprocess
 import sys
 import time
@@ -11,13 +12,26 @@ from pathlib import Path
 
 from flydrones.distributed_px4 import (
     aggregate_distributed_artifacts,
+    aggregate_takeoff_readiness_artifacts,
     build_distributed_agent_commands,
+    evaluate_gps_fault_artifacts,
+    evaluate_gps_vio_fallback_artifacts,
 )
+from flydrones.px4_ulog_evidence import extract_ulog_fusion_evidence, newest_vehicle_ulog
 
 
 def _clean_previous_worker_artifacts(output_dir: Path, vehicle_count: int) -> None:
     output_dir.mkdir(parents=True, exist_ok=True)
-    names = {"flight.csv", "summary.json", "五进程去中心化报告.md"}
+    names = {
+        "flight.csv",
+        "summary.json",
+        "gps-fault-summary.json",
+        "gps-vio-fallback-summary.json",
+        "px4-ekf-fusion-evidence.json",
+        "五进程去中心化报告.md",
+        "GNSS拒止试验报告.md",
+        "GNSS拒止视觉里程计接管报告.md",
+    }
     for vehicle_id in range(vehicle_count):
         names.update({
             f"agent-{vehicle_id}.csv",
@@ -29,6 +43,9 @@ def _clean_previous_worker_artifacts(output_dir: Path, vehicle_count: int) -> No
         path = output_dir / name
         if path.is_file():
             path.unlink()
+    preserved_ulogs = output_dir / "px4-ulogs"
+    if preserved_ulogs.is_dir():
+        shutil.rmtree(preserved_ulogs)
 
 
 def main() -> int:
@@ -38,7 +55,29 @@ def main() -> int:
     parser.add_argument("--mission-timeout", type=float, default=70.0)
     parser.add_argument("--process-timeout", type=float, default=150.0)
     parser.add_argument("--peer-base-port", type=int, default=16770)
+    parser.add_argument("--gps-failure-vehicle", type=int)
+    parser.add_argument("--gps-failure-all", action="store_true")
+    parser.add_argument("--gps-failure-at", type=float, default=12.0)
+    parser.add_argument("--gps-failure-mode", choices=("off", "stuck", "wrong", "fusion-off"), default="off")
+    parser.add_argument("--expect-fault-landing", action="store_true")
+    parser.add_argument("--external-vision-fusion", action="store_true")
+    parser.add_argument("--vio-health-base-port", type=int)
+    parser.add_argument("--expect-gps-vio-fallback", action="store_true")
+    parser.add_argument("--px4-run-dir")
+    parser.add_argument("--fault-marker")
+    parser.add_argument("--allow-no-udp-blackout", action="store_true")
+    parser.add_argument("--takeoff-only-hold-s", type=float)
     args = parser.parse_args()
+    if args.expect_fault_landing and args.gps_failure_vehicle is None:
+        parser.error("--expect-fault-landing requires --gps-failure-vehicle")
+    if args.expect_gps_vio_fallback and args.gps_failure_vehicle is None:
+        parser.error("--expect-gps-vio-fallback requires --gps-failure-vehicle")
+    if args.expect_gps_vio_fallback and not args.external_vision_fusion:
+        parser.error("--expect-gps-vio-fallback requires --external-vision-fusion")
+    if args.expect_gps_vio_fallback and not args.px4_run_dir:
+        parser.error("--expect-gps-vio-fallback requires --px4-run-dir for ULog evidence")
+    if args.expect_gps_vio_fallback and args.expect_fault_landing:
+        parser.error("fallback continuation and fault landing are mutually exclusive")
 
     vehicle_count = 5
     output_dir = Path(args.output).resolve()
@@ -52,6 +91,14 @@ def main() -> int:
         vehicle_count=vehicle_count,
         peer_base_port=args.peer_base_port,
         mission_timeout_s=args.mission_timeout,
+        gps_failure_vehicle_id=args.gps_failure_vehicle,
+        gps_failure_all=args.gps_failure_all,
+        gps_failure_at_s=args.gps_failure_at,
+        gps_failure_mode=args.gps_failure_mode,
+        external_vision_fusion=args.external_vision_fusion,
+        fault_marker_path=args.fault_marker,
+        vio_health_base_port=args.vio_health_base_port,
+        takeoff_only_hold_s=args.takeoff_only_hold_s,
     )
 
     processes: list[subprocess.Popen] = []
@@ -83,11 +130,43 @@ def main() -> int:
             handle.close()
 
     exit_codes = [process.returncode for process in processes]
-    if any(code != 0 for code in exit_codes):
+    if (
+        any(code != 0 for code in exit_codes)
+        and not args.expect_fault_landing
+        and not args.expect_gps_vio_fallback
+    ):
         print(json.dumps({"worker_exit_codes": exit_codes}, indent=2))
         return 2
 
-    _trace, summary = aggregate_distributed_artifacts(output_dir, vehicle_count=vehicle_count)
+    if args.expect_gps_vio_fallback:
+        source_ulog = newest_vehicle_ulog(args.px4_run_dir, args.gps_failure_vehicle)
+        extract_ulog_fusion_evidence(
+            source_ulog,
+            output_path=output_dir / "px4-ekf-fusion-evidence.json",
+            fault_vehicle_id=args.gps_failure_vehicle,
+        )
+        _trace, summary = evaluate_gps_vio_fallback_artifacts(
+            output_dir,
+            fault_vehicle_id=args.gps_failure_vehicle,
+            vehicle_count=vehicle_count,
+        )
+    elif args.expect_fault_landing:
+        _trace, summary = evaluate_gps_fault_artifacts(
+            output_dir,
+            fault_vehicle_id=args.gps_failure_vehicle,
+            vehicle_count=vehicle_count,
+        )
+    elif args.takeoff_only_hold_s is not None:
+        _workers, summary = aggregate_takeoff_readiness_artifacts(
+            output_dir,
+            vehicle_count=vehicle_count,
+        )
+    else:
+        _trace, summary = aggregate_distributed_artifacts(
+            output_dir,
+            vehicle_count=vehicle_count,
+            require_udp_blackout=not args.allow_no_udp_blackout,
+        )
     summary["metrics"]["worker_exit_codes"] = exit_codes
     (output_dir / "summary.json").write_text(
         json.dumps(summary, ensure_ascii=False, indent=2) + "\n",

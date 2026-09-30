@@ -1,0 +1,218 @@
+{
+  "schema": "flydrones-camera-phase-development-artifacts-v1",
+  "run": "dev-phased-scheduler-fault-20260927-1",
+  "raw_root": "results/camera-phase/dev-phased-scheduler-fault-20260927-1",
+  "file_count": 42,
+  "files": [
+    {
+      "path": "camera-aux-started.marker",
+      "bytes": 243,
+      "sha256": "1677595b88a0a75b20ec97206abd160e6327b83f8b55aab267df052c7b89b518"
+    },
+    {
+      "path": "camera-model-configured.sdf",
+      "bytes": 1418,
+      "sha256": "9112dc3d3b331558c56d300bf4ba572f346e51e03989cd0d4273c82a74703e9e"
+    },
+    {
+      "path": "camera-model-evidence.json",
+      "bytes": 668,
+      "sha256": "3b7f6535fdbf3f3f976782d8f8c402ff135380f9e3ddafe7d2f45e81a2668b9b"
+    },
+    {
+      "path": "camera-phase-probe.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "camera-phase.jsonl",
+      "bytes": 1674,
+      "sha256": "39f0521c84abd1fe3f9e4a2d123ed562fa3645938baa0e524f629f5b7f3c378d"
+    },
+    {
+      "path": "camera-scheduler-ready.json",
+      "bytes": 1254,
+      "sha256": "9ae0a425ae1a3ca39b778f64983ddb6a288348e998a01861716c216489a5a811"
+    },
+    {
+      "path": "camera-scheduler.jsonl",
+      "bytes": 6874,
+      "sha256": "b3850294b27cfeaaaccd40b6f50c39fc481386938c3ccac95ca5011ff9bb3251"
+    },
+    {
+      "path": "camera-scheduler.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "cleanup-evidence.json",
+      "bytes": 4630,
+      "sha256": "31bfb0b624b340e11e8873b8cf835289e368fab2f1d6142c2b187a66649ac53f"
+    },
+    {
+      "path": "clock-probe.csv",
+      "bytes": 731539,
+      "sha256": "893916b4a2d80c5eea6237b995d3e531d9453a854a190d845935da145be95333"
+    },
+    {
+      "path": "fault-profile.json",
+      "bytes": 290,
+      "sha256": "108c73760140b5bb53090738e6eab9508688ef6fb848ea7e4cf4e0b0d2649718"
+    },
+    {
+      "path": "flydrones_forest.sdf",
+      "bytes": 4224,
+      "sha256": "da3e81c10a7d848671c1045f9da267eca65fd312793231dd99a038f55824e8ad"
+    },
+    {
+      "path": "gazebo-base-ready.json",
+      "bytes": 109,
+      "sha256": "8ecfebbfc95a218353290a1a802516ae2d7826f2bbdf20e0db9889476c8fa87a"
+    },
+    {
+      "path": "gazebo.stderr.log",
+      "bytes": 8621,
+      "sha256": "39f660df9f36c96bfb3dcb3462b21b2d735500526d5565e58ea1fa4708a792fa"
+    },
+    {
+      "path": "gazebo.stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "gpu-probe.csv",
+      "bytes": 3196,
+      "sha256": "7cbd808e0a65e1205cdfdc4aa9582a5e65d27bb3a87bce68ec0e0e4a530eaa8e"
+    },
+    {
+      "path": "launch.log",
+      "bytes": 696,
+      "sha256": "d954edad8e165b35dbf8829e72e6e917b1d686cbc0d51f6524dd6aa85caecea3"
+    },
+    {
+      "path": "policy-checkpoint.npz",
+      "bytes": 21194,
+      "sha256": "3c723587bfdbd15a8dc5976edc13d284b713dc081005b2dac04692c7d1b4accb"
+    },
+    {
+      "path": "px4-console/instance_0/err.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "px4-console/instance_0/out.log",
+      "bytes": 3118,
+      "sha256": "33c864abb328ff60110d0e4d33bad88fc8df4ab9f659859f4a1b921f38f71430"
+    },
+    {
+      "path": "px4-console/instance_1/err.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "px4-console/instance_1/out.log",
+      "bytes": 2800,
+      "sha256": "70272f7e32ab4675f174335483faae88dd4f5dabb17d116955abc893b136a643"
+    },
+    {
+      "path": "px4-console/instance_2/err.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "px4-console/instance_2/out.log",
+      "bytes": 2799,
+      "sha256": "4d923c36d00abf388971c1cbf456e619996055c13d8cc660d352d4fb68fe44e3"
+    },
+    {
+      "path": "px4-console/instance_3/err.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "px4-console/instance_3/out.log",
+      "bytes": 2799,
+      "sha256": "214706df8ffd92950733107367e8e1d6d977ca787e2c427ea834c2a4d9b2a43a"
+    },
+    {
+      "path": "px4-console/instance_4/err.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "px4-console/instance_4/out.log",
+      "bytes": 2878,
+      "sha256": "94298d58c3208578506329b71448088c1be44e339b3fd19b3ac5cc1004df745f"
+    },
+    {
+      "path": "px4-ulogs/agent-0.ulg",
+      "bytes": 16000919,
+      "sha256": "f352aafb28e3855f45d0cc5ff14b751719c36a71df09300f0ce3853c71a0240f"
+    },
+    {
+      "path": "px4-ulogs/agent-1.ulg",
+      "bytes": 16522289,
+      "sha256": "a143f76e1f9b7ecec533aaead684723c1d8b37de14d96fea82825d93c2851388"
+    },
+    {
+      "path": "px4-ulogs/agent-2.ulg",
+      "bytes": 15904914,
+      "sha256": "48e75f7dac334f7a556d564d191e1a78e636592a002065c43702865404993635"
+    },
+    {
+      "path": "px4-ulogs/agent-3.ulg",
+      "bytes": 15314118,
+      "sha256": "b37a7300449cc2501ce81de56fd71b771ab47f1e83c96504966a3ebb4aad7b15"
+    },
+    {
+      "path": "px4-ulogs/agent-4.ulg",
+      "bytes": 14648870,
+      "sha256": "5a04b3f4e7f21025c08f51ffc10fa4a765f186613edee369cf896cbec95bfc67"
+    },
+    {
+      "path": "resource-probe.csv",
+      "bytes": 41783,
+      "sha256": "544ef60272011b3c39e04013581294c87bd3904b4bd12d6bde9a3d2914b6f1ef"
+    },
+    {
+      "path": "runtime-probe.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "stop.log",
+      "bytes": 53,
+      "sha256": "8ec3709179d04b20d8395f3dd486e08171c2d1a47c3c6be217276db81fef716b"
+    },
+    {
+      "path": "stress-summary.json",
+      "bytes": 2019552,
+      "sha256": "6e6a50a3b625a224c1f4c8c0e3e0378ef8e9d849b258ffae3607ec2b75830252"
+    },
+    {
+      "path": "trial-complete.marker",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "trial-manifest.json",
+      "bytes": 11835,
+      "sha256": "f2d260917eed92f430655a7ace8154a672b7ba2dd44a2149a89e68db4f7720d9"
+    },
+    {
+      "path": "vio-relay.jsonl",
+      "bytes": 7764590,
+      "sha256": "82b6c32cb806c473356233a51c7dd426323a7247a374403f99c261464b607418"
+    },
+    {
+      "path": "vio-relay.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "vio-relay.stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ]
+}

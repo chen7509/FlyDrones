@@ -16,6 +16,71 @@ From PowerShell:
 The result is written to `results/px4-sitl-five-process-udp`. Every worker produces its own CSV, JSON and stdout/stderr
 logs. `summary.json`, `flight.csv`, `trajectory.png` and `五进程去中心化报告.md` are offline aggregate artifacts.
 
+### Local state-estimator gate
+
+Each worker requests `LOCAL_POSITION_NED`, `ATTITUDE` and `ESTIMATOR_STATUS` directly from its own PX4 connection. It
+will not arm or take off until all three streams are present, finite and no more than 0.35 seconds old. The PX4 estimator
+must report valid attitude, horizontal and vertical velocity, relative horizontal position and vertical position. Relative
+horizontal position is used deliberately so the gate can also support a GNSS-denied vehicle whose local position comes
+from VIO, optical flow or another onboard source.
+
+The same gate runs before every autonomous planning step. Missing, invalid or stale state prevents policy evaluation,
+peer broadcast and motor-command generation, then commands that vehicle to land. The worker artifact records
+`state_health_failures`, `last_state_health_reason`, and the position, attitude and estimator ages. This validates the
+software response to a bad estimate; it does not establish that a particular physical sensor installation is accurate.
+
+### Run the GNSS-denied response trial
+
+Current PX4 main supports Gazebo GPS `off`, `stuck` and `wrong` failure injection. The installed PX4 v1.17 Gazebo bridge
+predates that sensor consumer, so its repeatable compatibility trial disables GNSS fusion in EKF2 at runtime instead:
+
+```powershell
+wsl -d Ubuntu -- env `
+  PYTHONPATH='/path/to/FlyDrones/src' `
+  python3 '/path/to/FlyDrones/tools/run_distributed_px4_swarm.py' `
+  --model '/path/to/autonomous-policy-numpy.npz' `
+  --gps-failure-vehicle 0 `
+  --gps-failure-at 12 `
+  --gps-failure-mode fusion-off `
+  --expect-fault-landing `
+  --output '/path/to/results/px4-fusion-off'
+```
+
+The selected worker owns the static fault schedule and sends the parameter or failure command directly to its own PX4;
+the parent does not monitor telemetry or trigger the event. The fault trial passes only if the affected vehicle detects
+estimator loss and lands fail closed, every survivor completes, all vehicles land, separation and forest-clearance checks
+pass, and the recorded central-command count remains zero. `gps-fault-summary.json` and `GNSS拒止试验报告.md` contain
+the offline result. Use `off`, `stuck` or `wrong` with a newer PX4/Gazebo build that implements the corresponding standard
+MAVLink failure consumer.
+
+### Continue the mission on simulated visual odometry
+
+Run the reproducible five-vehicle GNSS-loss continuation trial from PowerShell:
+
+```powershell
+.\Start-PX4-GNSS-VIO-Fallback.ps1
+```
+
+Every custom `x500_depth_fly` model publishes Gazebo odometry to its own PX4 bridge. Before takeoff each worker enables
+EKF2 horizontal external-vision position and 3-D velocity fusion. Vehicle 0 then disables GNSS fusion five seconds into
+the mission. The worker detects the accompanying PX4 local-origin reset and applies one bounded mission-frame
+realignment, while body-frame velocity control and all safety gates remain active.
+
+The acceptance gate requires all five independent workers to escape, rally and land, including the faulted vehicle;
+zero tree contacts; safe forest and peer separation; no estimator-health failures on the faulted vehicle; five distinct
+controller processes; and zero central flight commands. It also reads the faulted vehicle's PX4 ULog and requires
+`estimator_aid_src_ev_pos.fused` to prove actual external-vision position fusion, `cs_ev_vel` to prove the external-vision
+velocity control state remained active, GNSS position/velocity aid sources to stop, and EKF to remain outside inertial dead reckoning. A parameter acknowledgement
+or a published odometry topic alone cannot satisfy this check. Results are written to
+`results/px4-vio-fallback/gps-vio-fallback-summary.json` and `GNSS拒止视觉里程计接管报告.md`.
+The source ULog is preserved under `px4-ulogs/`, and its SHA-256 plus extracted transition evidence are stored in
+`px4-ekf-fusion-evidence.json`.
+
+This test uses Gazebo ground-truth odometry as a deterministic stand-in for an onboard VIO output. It validates the PX4
+external-vision input, EKF fusion, local-frame reset handling and autonomous mission continuation. It does not validate
+camera feature tracking, low-texture performance, motion blur, lighting changes or VIO drift. A real VIO implementation
+must later replace the stand-in and pass the same artifact checks with injected delay, drift and dropouts.
+
 ## Run the process and UDP scale trial
 
 ```powershell

@@ -50,10 +50,13 @@ def test_train_and_evaluate_smoke_are_reproducible(tmp_path):
         check=True,
     )
     result = json.loads(evaluation.read_text(encoding="utf-8"))
+    assert result["schema_version"] == 2
     assert result["central_control_commands"] == 0
     assert len(result["episodes"]) == 2
     assert result["admission"]["passed"] is False
     assert result["admission"]["failures"]
+    assert result["missing_evidence"]
+    assert "999" not in json.dumps(result)
 
     summary = tmp_path / "summary.json"
     subprocess.run(

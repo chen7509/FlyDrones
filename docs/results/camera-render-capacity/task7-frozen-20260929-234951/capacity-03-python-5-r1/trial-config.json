@@ -1,0 +1,154 @@
+{
+  "camera_model": "assets/gazebo/models/OakD-Lite-Fly",
+  "camera_schedule_mode": "phased",
+  "expected_hashes": {
+    "camera_phase": "35e9ce8b3fb5bdc030a5998e446ce1d3f2b278528007ae5692ea57e1dc529d37",
+    "camera_scheduler": "3aa58507a8be693ccab252c10fef11a0c534e2e4d5e84097aa0be76332db0f70",
+    "capacity_contract": "368fcb69acf5f570c5e8601b051c04c1df005d44fcf675ee11a157aece0e545d",
+    "launcher": "2ef04a1afb4ffa2bd655123c3faae041afd00fc441d96b2e9d4d06f8071703f3",
+    "native_executable": "c5d5275ad34118670a984532ace70eff797d9bf4969a4fdaebdb6fd45b331b85",
+    "process_ownership": "e068fbe3141fda337e72bd4412e36cf9cda7eb11cbdb1ad4b90d79184ced6220",
+    "python_observer": "f39455cbf8fea572fd403dbacbaabddc47cac033f65f8ea8bb76c5a7e23236e0",
+    "runner": "6de954779001caccf1fc3e4bbad03370a9f77ad1c2d7aea18981497e905413d4",
+    "runtime_probe": "2eefd164e168d6e4528b3d6e8d5572ee1be66f7a9a2f71e59fd0eeeab4a91d11",
+    "stopper": "c424d813e5ccda76a488c63ab81e2612e9c621f701c5300d1cfa422e86bb1806"
+  },
+  "policy": "docs/results/vio-stress/policy-checkpoint.npz",
+  "profile": "configs/vio_fault_profiles/baseline.json",
+  "px4_build_name": "px4_sitl_nolockstep",
+  "px4_revision": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+  "readiness_timeout_s": 180.0,
+  "renderer_profile": "d3d12-nvidia",
+  "schedule": [
+    {
+      "cell": "idle-0",
+      "implementation": "native-cpp",
+      "name": "capacity-01-idle-0-r1",
+      "repetition": 1,
+      "sequence": 1,
+      "subscriber_count": 0
+    },
+    {
+      "cell": "native-1",
+      "implementation": "native-cpp",
+      "name": "capacity-02-native-1-r1",
+      "repetition": 1,
+      "sequence": 2,
+      "subscriber_count": 1
+    },
+    {
+      "cell": "python-5",
+      "implementation": "python",
+      "name": "capacity-03-python-5-r1",
+      "repetition": 1,
+      "sequence": 3,
+      "subscriber_count": 5
+    },
+    {
+      "cell": "native-5",
+      "implementation": "native-cpp",
+      "name": "capacity-04-native-5-r1",
+      "repetition": 1,
+      "sequence": 4,
+      "subscriber_count": 5
+    },
+    {
+      "cell": "native-5",
+      "implementation": "native-cpp",
+      "name": "capacity-05-native-5-r2",
+      "repetition": 2,
+      "sequence": 5,
+      "subscriber_count": 5
+    },
+    {
+      "cell": "python-5",
+      "implementation": "python",
+      "name": "capacity-06-python-5-r2",
+      "repetition": 2,
+      "sequence": 6,
+      "subscriber_count": 5
+    },
+    {
+      "cell": "native-1",
+      "implementation": "native-cpp",
+      "name": "capacity-07-native-1-r2",
+      "repetition": 2,
+      "sequence": 7,
+      "subscriber_count": 1
+    },
+    {
+      "cell": "idle-0",
+      "implementation": "native-cpp",
+      "name": "capacity-08-idle-0-r2",
+      "repetition": 2,
+      "sequence": 8,
+      "subscriber_count": 0
+    },
+    {
+      "cell": "python-5",
+      "implementation": "python",
+      "name": "capacity-09-python-5-r3",
+      "repetition": 3,
+      "sequence": 9,
+      "subscriber_count": 5
+    },
+    {
+      "cell": "idle-0",
+      "implementation": "native-cpp",
+      "name": "capacity-10-idle-0-r3",
+      "repetition": 3,
+      "sequence": 10,
+      "subscriber_count": 0
+    },
+    {
+      "cell": "native-5",
+      "implementation": "native-cpp",
+      "name": "capacity-11-native-5-r3",
+      "repetition": 3,
+      "sequence": 11,
+      "subscriber_count": 5
+    },
+    {
+      "cell": "native-1",
+      "implementation": "native-cpp",
+      "name": "capacity-12-native-1-r3",
+      "repetition": 3,
+      "sequence": 12,
+      "subscriber_count": 1
+    }
+  ],
+  "schema": "flydrones-camera-render-capacity-config-v1",
+  "scored_duration_s": 30.0,
+  "sensor": {
+    "depth_format": "R_FLOAT32",
+    "depth_frequency_hz": 10.0,
+    "depth_height": 120,
+    "depth_width": 160,
+    "phase_offsets_ms": [
+      0,
+      20,
+      40,
+      60,
+      80
+    ]
+  },
+  "software_versions": {
+    "gz_msgs": "10.4.0",
+    "gz_transport": "13.6.0"
+  },
+  "thresholds": {
+    "max_image_hz": 10.5,
+    "max_phase_error_p95_ns": 8000000,
+    "max_spacing_median_error_ns": 8000000,
+    "min_image_hz": 9.5,
+    "min_rtf": 0.95,
+    "native_improvement_min": 0.05,
+    "repeatability_rtf_range_max": 0.03,
+    "scored_duration_s": 30.0,
+    "wall_timeout_s": 120.0
+  },
+  "vehicle_count": 5,
+  "vehicle_model": "assets/gazebo/models/x500_depth_fly",
+  "wall_timeout_s": 120.0,
+  "world": "flydrones_forest"
+}

@@ -1,0 +1,23 @@
+{
+  "schema": "flydrones-vio-stress-trial-v1",
+  "name": "fleet-vio-gate-perf-probe-1",
+  "fleet_size": 5,
+  "profile": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/vio-faults/configs/vio_fault_profiles/baseline.json",
+  "profile_sha256": "108c73760140b5bb53090738e6eab9508688ef6fb848ea7e4cf4e0b0d2649718",
+  "policy_checkpoint": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/vio-faults/docs/results/vio-stress/policy-checkpoint.npz",
+  "policy_sha256": "3c723587bfdbd15a8dc5976edc13d284b713dc081005b2dac04692c7d1b4accb",
+  "px4_run_dir": "/tmp/flydrones-vio-fleet-vio-gate-perf-probe-1",
+  "px4_revision": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+  "controller_revision": "b365326",
+  "controller_source_sha256": "2905c5b07557ae0f362d05b412ebd1300782a041471b318549ccc4b253f82fc5",
+  "relay_source_sha256": "a0f63da547ea7c481e4836ea1949655cdf86cea25fe8ec7f0f4220c768932b3f",
+  "trial_runner_sha256": "a796fe7e455a601eaf105a45512b77dd9542fc383be838b338e1ada928a3c8e6",
+  "launch_exit_code": 0,
+  "worker_exit_code": 0,
+  "evidence_accepted": false,
+  "errors": [],
+  "stop_exit_code": 0,
+  "shared_px4_files_restored": true,
+  "world_sha256": "da3e81c10a7d848671c1045f9da267eca65fd312793231dd99a038f55824e8ad",
+  "relay_closed_cleanly": true
+}

@@ -1,14 +1,14 @@
-schema_version: 1
+schema_version: 2
 seed: 42
 algorithm:
   name: recurrent_ppo_ctde
+  learning_rate: 0.0003
   gamma: 0.99
   gae_lambda: 0.95
   clip_ratio: 0.20
   entropy_coefficient: 0.01
   value_coefficient: 0.50
   update_epochs: 4
-  actor_hidden_dimension: 64
 frozen:
   - malecns_reflex
   - safety_projector
@@ -16,65 +16,8 @@ frozen:
 deployment:
   maximum_policy_latency_ms: 35
   central_control_commands_allowed: 0
-  shadow_only_default: true
   maximum_skill_drop: 0.02
-  maximum_policy_kl: 0.05
-  executable_peer_weight_transfer: false
-curriculum:
-  - level: 0
-    name: regression_baseline
-    fleets: [1]
-    seed_range: [0, 99]
-    minimum_active_factors: 1
-    backend: fast
-  - level: 1
-    name: individual_skills
-    fleets: [1, 5]
-    seed_range: [100, 499]
-    minimum_active_factors: 2
-    backend: fast
-  - level: 2
-    name: paired_tasks
-    fleets: [5, 20]
-    seed_range: [500, 999]
-    minimum_active_factors: 4
-    backend: fast
-  - level: 3
-    name: compound_tasks
-    fleets: [20, 50]
-    seed_range: [1000, 1999]
-    minimum_active_factors: 5
-    backend: fast
-  - level: 4
-    name: full_swarm_stress
-    fleets: [20, 50, 100]
-    seed_range: [2000, 2999]
-    minimum_active_factors: 8
-    backend: fast
-  - level: 5
-    name: px4_sitl
-    fleets: [1, 5, 20, 100]
-    seed_range: [3000, 3099]
-    minimum_active_factors: 8
-    backend: px4
-  - level: 6
-    name: hardware_in_the_loop
-    fleets: [1, 5]
-    seed_range: [3100, 3119]
-    minimum_active_factors: 5
-    backend: hil
-  - level: 7
-    name: tethered_caged_canary
-    fleets: [1, 3]
-    seed_range: [3120, 3129]
-    minimum_active_factors: 4
-    backend: hardware
-  - level: 8
-    name: controlled_real_shadow_canary
-    fleets: [1, 3, 5]
-    seed_range: [3130, 3139]
-    minimum_active_factors: 5
-    backend: hardware
+  shadow_only_default: true
 acceptance:
   minimums:
     episodes: 1000
@@ -99,3 +42,163 @@ acceptance:
     - return_reserve_violations
     - central_control_commands
     - gate_contacts
+profiles:
+  smoke:
+    - id: smoke-regression
+      index: 0
+      level: 0
+      active_skills: [navigate_exit]
+      fleets: [1]
+      train_seeds: [1, 2]
+      eval_seeds: [101]
+      regression_seeds: [201]
+      steps_per_batch: 8
+      maximum_batches: 3
+      patience: 2
+      thresholds: {exit_success: 0.95}
+    - id: smoke-tracking
+      index: 1
+      level: 1
+      active_skills: [track_target]
+      fleets: [1, 5]
+      train_seeds: [3, 4]
+      eval_seeds: [102]
+      regression_seeds: [202]
+      steps_per_batch: 8
+      maximum_batches: 3
+      patience: 2
+      thresholds: {tracking_success: 0.95, tracking_rmse_m: 0.75}
+  desktop:
+    - id: desktop-regression
+      index: 0
+      level: 0
+      active_skills: [navigate_exit]
+      fleets: [1]
+      train_seeds: [1001, 1002]
+      eval_seeds: [1101, 1102]
+      regression_seeds: [1201]
+      steps_per_batch: 512
+      maximum_batches: 20
+      patience: 5
+      thresholds: {exit_success: 0.95}
+    - id: desktop-exit
+      index: 1
+      level: 1
+      active_skills: [navigate_exit]
+      fleets: [1, 5]
+      train_seeds: [1003, 1004]
+      eval_seeds: [1103, 1104]
+      regression_seeds: [1202]
+      steps_per_batch: 512
+      maximum_batches: 30
+      patience: 6
+      thresholds: {exit_success: 0.95}
+    - id: desktop-tracking
+      index: 2
+      level: 1
+      active_skills: [track_target]
+      fleets: [1, 5]
+      train_seeds: [1005, 1006]
+      eval_seeds: [1105, 1106]
+      regression_seeds: [1203]
+      steps_per_batch: 512
+      maximum_batches: 30
+      patience: 6
+      thresholds: {tracking_success: 0.95, tracking_rmse_m: 0.75}
+    - id: desktop-search
+      index: 3
+      level: 1
+      active_skills: [search_cover]
+      fleets: [5]
+      train_seeds: [1007, 1008]
+      eval_seeds: [1107, 1108]
+      regression_seeds: [1204]
+      steps_per_batch: 512
+      maximum_batches: 30
+      patience: 6
+      thresholds: {search_coverage: 0.95, duplicate_coverage: 0.20}
+    - id: desktop-formation
+      index: 4
+      level: 1
+      active_skills: [formation_rally]
+      fleets: [5]
+      train_seeds: [1009, 1010]
+      eval_seeds: [1109, 1110]
+      regression_seeds: [1205]
+      steps_per_batch: 512
+      maximum_batches: 30
+      patience: 6
+      thresholds: {formation_rmse_m: 0.40}
+    - id: desktop-gate
+      index: 5
+      level: 1
+      active_skills: [gate_course]
+      fleets: [1, 5]
+      train_seeds: [1011, 1012]
+      eval_seeds: [1111, 1112]
+      regression_seeds: [1206]
+      steps_per_batch: 512
+      maximum_batches: 30
+      patience: 6
+      thresholds: {gate_success: 0.90, gate_contacts: 0}
+    - id: desktop-paired
+      index: 6
+      level: 2
+      active_skills: [track_target, search_cover]
+      fleets: [5, 20]
+      train_seeds: [1013, 1014]
+      eval_seeds: [1113, 1114]
+      regression_seeds: [1207]
+      steps_per_batch: 768
+      maximum_batches: 40
+      patience: 8
+      thresholds: {compound_success: 0.90}
+    - id: desktop-compound
+      index: 7
+      level: 3
+      active_skills: [navigate_exit, track_target, search_cover, formation_rally]
+      fleets: [20]
+      train_seeds: [1015, 1016]
+      eval_seeds: [1115, 1116]
+      regression_seeds: [1208]
+      steps_per_batch: 1024
+      maximum_batches: 50
+      patience: 10
+      thresholds: {compound_success: 0.90}
+  full:
+    - id: full-paired
+      index: 0
+      level: 2
+      active_skills: [track_target, search_cover]
+      fleets: [20, 50]
+      train_seeds: [2001, 2002]
+      eval_seeds: [2101, 2102]
+      regression_seeds: [2201]
+      steps_per_batch: 1024
+      maximum_batches: 50
+      patience: 10
+      thresholds: {compound_success: 0.90}
+    - id: full-compound
+      index: 1
+      level: 3
+      active_skills: [navigate_exit, track_target, search_cover, formation_rally]
+      fleets: [20, 50]
+      train_seeds: [2003, 2004]
+      eval_seeds: [2103, 2104]
+      regression_seeds: [2202]
+      steps_per_batch: 1536
+      maximum_batches: 60
+      patience: 12
+      thresholds: {compound_success: 0.90}
+    - id: full-stress
+      index: 2
+      level: 4
+      active_skills: [navigate_exit, track_target, search_cover, formation_rally, gate_course, yield_return_land]
+      fleets: [20, 50, 100]
+      train_seeds: [2005, 2006]
+      eval_seeds: [2105, 2106]
+      regression_seeds: [2203]
+      steps_per_batch: 2048
+      maximum_batches: 80
+      patience: 15
+      thresholds: {compound_success: 0.90, collisions: 0}

@@ -38,6 +38,14 @@ _MANIFEST_KEYS = {
     "minimum_active_factors",
 }
 _OBSERVATION_LENGTHS = (32, 8, 8, 16, 16, 4, 6)
+SUPPORTED_DISTURBANCES = (
+    "wind",
+    "sensor_noise",
+    "packet_loss",
+    "frame_drop",
+    "localization_drift",
+    "battery_variation",
+)
 
 
 def _exact_keys(data: Mapping[str, object], expected: set[str], where: str) -> None:
@@ -275,6 +283,7 @@ class SafetySnapshot:
     sensors_healthy: bool
     minimum_clearance_m: float
     emergency_active: bool
+    recovery_motion: tuple[float, float, float, float] = (0.0, 0.0, 0.0, 0.0)
 
     @property
     def can_learn(self) -> bool:

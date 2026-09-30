@@ -1,0 +1,120 @@
+{
+  "schema": "flydrones-vio-stress-summary-v4",
+  "name": "single-vio-gate-frozen-dropout-400ms",
+  "fleet_size": 1,
+  "profile_sha256": "563e380b53cf03cd80653dc1429f41823424288787d4bb16886dec5a36b96ca3",
+  "policy_sha256": "3c723587bfdbd15a8dc5976edc13d284b713dc081005b2dac04692c7d1b4accb",
+  "launch_exit_code": 0,
+  "worker_exit_code": 2,
+  "stop_exit_code": 0,
+  "shared_px4_files_restored": true,
+  "relay": {
+    "published_total": 1111,
+    "closed_cleanly": true,
+    "malformed_log_lines": 0,
+    "fault_vehicle_active_published": 246,
+    "fault_vehicle_active_source_max_gap_ms": 420.0,
+    "drop_reasons": {
+      "scheduled-dropout": 20
+    },
+    "actual_delay_median_ms": 1.239,
+    "actual_delay_p95_ms": 2.1024,
+    "maximum_position_offset_m": 0.0,
+    "nonzero_offset_published_samples": 0,
+    "maximum_transformation_error_m": 0.0,
+    "position_error_vs_raw_truth_at_publish_p95_m": 0.0,
+    "position_error_vs_raw_truth_at_publish_max_m": 0.0,
+    "minimum_center_to_trunk_surface_m": 0.5724,
+    "minimum_intervehicle_center_distance_m": null,
+    "simulated_seconds_per_wall_second": 0.9687
+  },
+  "relay_to_px4": {
+    "matched_active_samples": 166,
+    "matched_offset_samples": 0,
+    "maximum_position_error_m": 0.0,
+    "median_ulog_minus_source_stamp_ms": 0.0,
+    "interpretation": "ENU-to-NED position match; ULog sample time is bridge receipt time, not VIO age"
+  },
+  "visual_after_gnss_disable": {
+    "schema": "flydrones-vio-post-gnss-evidence-v1",
+    "accepted": false,
+    "checks": {
+      "visual_position_fused_after_gnss_disable": true,
+      "visual_position_and_velocity_control_active": false,
+      "gnss_fusion_inactive_after_disable": true,
+      "no_observed_inertial_dead_reckoning": false,
+      "local_position_valid": true,
+      "visual_stream_present": true,
+      "gnss_to_visual_handoff_proven": false
+    },
+    "metrics": {
+      "gps_disable_timestamp_s": 20.6,
+      "post_status_samples": 8,
+      "ev_position_fused_samples": 239,
+      "ev_position_samples": 241,
+      "ev_position_fused_ratio": 0.991701,
+      "ev_position_control_ratio": 0.75,
+      "ev_velocity_control_ratio": 0.75,
+      "gnss_position_control_ratio": 0.0,
+      "gnss_velocity_control_ratio": 0.0,
+      "inertial_dead_reckoning_ratio": 0.25,
+      "dead_reckoning_observed_duration_s": 0.04,
+      "local_position_valid_ratio": 1.0,
+      "visual_stream_duration_s": 5.1,
+      "visual_stream_max_gap_ms": 420.0
+    },
+    "source": {
+      "ulog_sha256": "58d403d4c2713e50a7f2e02a4037690e186d08dedae3a10a98165d2c6f5e581a",
+      "ulog_bytes": 6975601
+    }
+  },
+  "workers": [
+    {
+      "vehicle_id": 0,
+      "mission_accepted": false,
+      "landed": true,
+      "fail_closed_land": true,
+      "gnss_disable_injected": true,
+      "state_health_failures": 1,
+      "last_state_health_reason": "stale-vio-frame",
+      "command_gate": {
+        "verified": true,
+        "reason": "stale-vio-frame",
+        "trigger_monotonic_s": 433981.959184411,
+        "last_command_monotonic_s": 433981.908456587,
+        "land_command_monotonic_s": 433981.959254092,
+        "relay_gap_covering_trigger_s": 0.420876,
+        "relay_sample_age_at_trigger_s": 0.268992,
+        "no_autonomous_setpoint_after_trigger": true,
+        "all_sent_setpoints_fresh": true,
+        "max_relay_age_at_send_s": 0.218265,
+        "land_request_sent": true,
+        "land_request_latency_s": 7e-05
+      },
+      "planner_p95_ms": 11.97832,
+      "initial_estimated_vs_truth_horizontal_error_m": 0.0188,
+      "initial_estimated_vs_expected_home_error_m": 0.0,
+      "minimum_depth_range_m": 0.726,
+      "px4_land_transition": {
+        "observed": true,
+        "gate_sim_time_s": 22.869186,
+        "clock_alignment_error_s": 0.009186,
+        "transition_after_gate_s": 0.014814
+      }
+    }
+  ],
+  "fault_effect_observed_at_relay": true,
+  "fault_effect_proven_at_px4": true,
+  "geometry_separation_check_pass": true,
+  "geometry_forest_clearance_check_pass": true,
+  "all_landed": true,
+  "mission_visual_geometry_pass": false,
+  "trial_cleanup_verified": true,
+  "fault_vehicle_fail_closed_landing_observed": true,
+  "fault_vehicle_command_gate_verified": true,
+  "fault_vehicle_gate_land_sequence_observed": true,
+  "fault_vehicle_verified_fail_closed_response": false,
+  "fail_closed_verification_limit": "The worker attempted a MAVLink land request and a subsequent PX4 AUTO_LAND transition can be correlated in sim time, but no COMMAND_ACK was captured; request causality and physical safety are not proven.",
+  "operational_continuity_pass": false,
+  "safety_limit": "Geometry is a center-distance proxy; physical contact is not proven absent."
+}
