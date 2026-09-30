@@ -1,0 +1,78 @@
+{
+  "schema": "flydrones-owned-process-cleanup-v1",
+  "registry": "/tmp/flydrones-readiness-readiness-formal-09-v5-r9-bf12e7df5d2a/owned-processes.json",
+  "recorded_processes": 6,
+  "stopped": [
+    {
+      "pid": 64890,
+      "start_ticks": 278700,
+      "argv": [
+        "/home/yuchen7509/PX4-Autopilot/build/px4_sitl_nolockstep/bin/px4",
+        "-i",
+        "4",
+        "-d",
+        "/home/yuchen7509/PX4-Autopilot/build/px4_sitl_nolockstep/etc"
+      ],
+      "role": "px4-4"
+    },
+    {
+      "pid": 64406,
+      "start_ticks": 276988,
+      "argv": [
+        "/home/yuchen7509/PX4-Autopilot/build/px4_sitl_nolockstep/bin/px4",
+        "-i",
+        "3",
+        "-d",
+        "/home/yuchen7509/PX4-Autopilot/build/px4_sitl_nolockstep/etc"
+      ],
+      "role": "px4-3"
+    },
+    {
+      "pid": 63923,
+      "start_ticks": 275280,
+      "argv": [
+        "/home/yuchen7509/PX4-Autopilot/build/px4_sitl_nolockstep/bin/px4",
+        "-i",
+        "2",
+        "-d",
+        "/home/yuchen7509/PX4-Autopilot/build/px4_sitl_nolockstep/etc"
+      ],
+      "role": "px4-2"
+    },
+    {
+      "pid": 63439,
+      "start_ticks": 273568,
+      "argv": [
+        "/home/yuchen7509/PX4-Autopilot/build/px4_sitl_nolockstep/bin/px4",
+        "-i",
+        "1",
+        "-d",
+        "/home/yuchen7509/PX4-Autopilot/build/px4_sitl_nolockstep/etc"
+      ],
+      "role": "px4-1"
+    },
+    {
+      "pid": 62956,
+      "start_ticks": 271857,
+      "argv": [
+        "/home/yuchen7509/PX4-Autopilot/build/px4_sitl_nolockstep/bin/px4",
+        "-i",
+        "0",
+        "-d",
+        "/home/yuchen7509/PX4-Autopilot/build/px4_sitl_nolockstep/etc"
+      ],
+      "role": "px4-0"
+    },
+    {
+      "pid": 62821,
+      "start_ticks": 271398,
+      "argv": [
+        "gz sim --headless-rendering -s /home/yuchen7509/PX4-Autopilot/Tools/simulation/gz/worlds/flydrones_forest.sdf"
+      ],
+      "role": "gazebo-server"
+    }
+  ],
+  "already_gone": [],
+  "ownership_mismatch": [],
+  "failed_to_stop": []
+}

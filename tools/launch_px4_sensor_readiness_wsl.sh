@@ -18,6 +18,9 @@ capacity_ready_marker="${FLYDRONES_CAPACITY_READY_MARKER:-}"
 capacity_observer_pid_file="${FLYDRONES_CAPACITY_OBSERVER_PID_FILE:-}"
 capacity_subscriber_count="${FLYDRONES_CAPACITY_SUBSCRIBER_COUNT:-}"
 expected_px4_revision="${FLYDRONES_EXPECTED_PX4_REVISION:-}"
+px4_patch="${FLYDRONES_PX4_PATCH:-}"
+expected_px4_patch_sha256="${FLYDRONES_EXPECTED_PX4_PATCH_SHA256:-}"
+expected_vehicle_imu_sha256="${FLYDRONES_EXPECTED_VEHICLE_IMU_SHA256:-}"
 platform_readiness_only="${FLYDRONES_PLATFORM_READINESS_ONLY:-0}"
 world_source="$repo_root/results/px4-sitl-five-depth/flydrones_forest.sdf"
 world_target="$px4_root/Tools/simulation/gz/worlds/flydrones_forest.sdf"
@@ -75,8 +78,9 @@ if [[ "$capacity_mode" == 1 ]]; then
     echo "PX4_BUILD_NAME must be px4_sitl_nolockstep in capacity mode" >&2
     exit 2
   fi
-  if [[ -z "$expected_px4_revision" ]]; then
-    echo "FLYDRONES_EXPECTED_PX4_REVISION is required in capacity mode" >&2
+  if [[ -z "$expected_px4_revision" || -z "$px4_patch" \
+      || -z "$expected_px4_patch_sha256" || -z "$expected_vehicle_imu_sha256" ]]; then
+    echo "PX4 revision, patch, patch hash, and VehicleIMU hash are required in capacity mode" >&2
     exit 2
   fi
   actual_px4_revision="$(git -C "$px4_root" rev-parse HEAD)"
@@ -84,8 +88,28 @@ if [[ "$capacity_mode" == 1 ]]; then
     echo "PX4 revision mismatch: expected $expected_px4_revision, got $actual_px4_revision" >&2
     exit 2
   fi
+  actual_px4_patch_sha256="$(sha256sum "$px4_patch" | awk '{print $1}')"
+  if [[ "$actual_px4_patch_sha256" != "$expected_px4_patch_sha256" ]]; then
+    echo "PX4 patch hash mismatch" >&2
+    exit 2
+  fi
+  if ! git -C "$px4_root" apply --reverse --check "$px4_patch"; then
+    echo "frozen PX4 sensor-readiness patch is not applied" >&2
+    exit 2
+  fi
+  vehicle_imu="$px4_root/src/modules/sensors/vehicle_imu/VehicleIMU.cpp"
+  actual_vehicle_imu_sha256="$(sha256sum "$vehicle_imu" | awk '{print $1}')"
+  if [[ "$actual_vehicle_imu_sha256" != "$expected_vehicle_imu_sha256" ]]; then
+    echo "VehicleIMU.cpp hash mismatch" >&2
+    exit 2
+  fi
   if ! grep -Fxq '#define CONFIG_BOARD_NOLOCKSTEP 1' "$build/px4_boardconfig.h"; then
     echo "PX4 capacity build does not prove CONFIG_BOARD_NOLOCKSTEP" >&2
+    exit 2
+  fi
+  build_attestation="$build/.flydrones-sensor-readiness-build.json"
+  if [[ ! -f "$build_attestation" ]]; then
+    echo "PX4 sensor-readiness build attestation is missing" >&2
     exit 2
   fi
   if [[ "$platform_readiness_only" != 1 \
@@ -121,19 +145,44 @@ touch "$run_dir/fault-mode"
 if [[ "$capacity_mode" == 1 ]]; then
   px4_binary_sha256="$(sha256sum "$build/bin/px4" | awk '{print $1}')"
   px4_boardconfig_sha256="$(sha256sum "$build/px4_boardconfig.h" | awk '{print $1}')"
+  python3 - "$build_attestation" "$px4_build_name" "$actual_px4_revision" \
+    "$actual_px4_patch_sha256" "$actual_vehicle_imu_sha256" \
+    "$px4_binary_sha256" "$px4_boardconfig_sha256" <<'PY'
+import json
+import sys
+from pathlib import Path
+
+value = json.loads(Path(sys.argv[1]).read_text(encoding="utf-8"))
+expected = {
+    "schema": "flydrones-px4-build-attestation-v1",
+    "build_name": sys.argv[2],
+    "px4_revision": sys.argv[3],
+    "px4_patch_sha256": sys.argv[4],
+    "vehicle_imu_sha256": sys.argv[5],
+    "binary_sha256": sys.argv[6],
+    "boardconfig_sha256": sys.argv[7],
+    "nolockstep": True,
+}
+if value != expected:
+    raise SystemExit("PX4 build attestation does not match source and build artifacts")
+PY
   python3 - "$run_dir/px4-build-evidence.json" "$px4_build_name" \
-    "$actual_px4_revision" "$px4_binary_sha256" "$px4_boardconfig_sha256" <<'PY'
+    "$actual_px4_revision" "$px4_binary_sha256" "$px4_boardconfig_sha256" \
+    "$actual_px4_patch_sha256" "$actual_vehicle_imu_sha256" <<'PY'
 import json
 import sys
 from pathlib import Path
 
 output = Path(sys.argv[1])
 payload = {
-    "schema": "flydrones-px4-build-evidence-v1",
+    "schema": "flydrones-px4-build-evidence-v2",
     "build_name": sys.argv[2],
     "px4_revision": sys.argv[3],
     "binary_sha256": sys.argv[4],
     "boardconfig_sha256": sys.argv[5],
+    "px4_patch_sha256": sys.argv[6],
+    "vehicle_imu_sha256": sys.argv[7],
+    "vehicle_imu_patch_applied": True,
     "nolockstep": True,
     "board_definition": "#define CONFIG_BOARD_NOLOCKSTEP 1",
 }
@@ -300,6 +349,34 @@ sensor_suffixes=(
   "navsat_sensor/navsat"
   "air_pressure_sensor/air_pressure"
 )
+wait_for_vehicle_sensor_subscribers() {
+  local instance_id="$1"
+  local pid_file="$run_dir/instance_$instance_id/pid"
+  local ready info subscriber_count topic suffix
+  for _ in $(seq 1 300); do
+    if [[ ! -f "$pid_file" ]] || ! kill -0 "$(cat "$pid_file")" 2>/dev/null; then
+      echo "PX4 instance $instance_id exited during Gazebo bridge attachment" >&2
+      return 3
+    fi
+    ready=0
+    for suffix in "${sensor_suffixes[@]}"; do
+      topic="/world/flydrones_forest/model/x500_depth_fly_$instance_id/link/base_link/sensor/$suffix"
+      info="$(gz topic -i -t "$topic" 2>/dev/null || true)"
+      subscriber_count="$(awk '
+        /^Subscribers \[Address, Message Type\]:/ { in_subscribers=1; next }
+        in_subscribers && /^  / && /, / { count++ }
+        END { print count + 0 }
+      ' <<<"$info")"
+      if [[ "$subscriber_count" -eq 1 ]]; then ready=$((ready + 1)); fi
+    done
+    if [[ "$ready" -eq "${#sensor_suffixes[@]}" ]]; then
+      return 0
+    fi
+    sleep 0.1
+  done
+  echo "PX4 instance $instance_id Gazebo sensor subscriber attachment timed out" >&2
+  return 3
+}
 if [[ "$capacity_mode" == 1 ]]; then
   preloaded_publishers_ready=0
   for _ in $(seq 1 300); do
@@ -347,7 +424,9 @@ for ((instance_id=0; instance_id<vehicle_count; instance_id++)); do
     echo $! >"$instance_dir/pid"
   )
   record_process "$(cat "$instance_dir/pid")" "px4-$instance_id"
-  if [[ "$capacity_mode" != 1 ]]; then
+  if [[ "$capacity_mode" == 1 ]]; then
+    wait_for_vehicle_sensor_subscribers "$instance_id"
+  else
     sleep 2
   fi
 done

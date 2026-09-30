@@ -1,0 +1,7 @@
+{
+  "schema": "flydrones-camera-capacity-scored-epoch-v1",
+  "start_monotonic_s": 5185.386813236,
+  "start_sim_ns": 40560000000,
+  "target_sim_duration_s": 30.0,
+  "wall_timeout_s": 120.0
+}

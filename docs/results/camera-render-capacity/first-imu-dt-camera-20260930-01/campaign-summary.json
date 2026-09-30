@@ -1,0 +1,329 @@
+{
+  "campaign_id": "first-imu-dt-camera-20260930-01",
+  "classification": "non_monotonic_or_inconclusive",
+  "completed_slots": [
+    "capacity-01-idle-0-r1",
+    "capacity-02-native-1-r1",
+    "capacity-03-python-5-r1",
+    "capacity-04-native-5-r1",
+    "capacity-05-native-5-r2",
+    "capacity-06-python-5-r2",
+    "capacity-07-native-1-r2",
+    "capacity-08-idle-0-r2",
+    "capacity-09-python-5-r3",
+    "capacity-10-idle-0-r3",
+    "capacity-11-native-5-r3",
+    "capacity-12-native-1-r3"
+  ],
+  "production_integration_eligible": false,
+  "raw_trial_paths": [
+    "capacity-01-idle-0-r1",
+    "capacity-02-native-1-r1",
+    "capacity-03-python-5-r1",
+    "capacity-04-native-5-r1",
+    "capacity-05-native-5-r2",
+    "capacity-06-python-5-r2",
+    "capacity-07-native-1-r2",
+    "capacity-08-idle-0-r2",
+    "capacity-09-python-5-r3",
+    "capacity-10-idle-0-r3",
+    "capacity-11-native-5-r3",
+    "capacity-12-native-1-r3"
+  ],
+  "reasons": [
+    "invalid_run_evidence"
+  ],
+  "schema": "flydrones-camera-render-capacity-campaign-summary-v1",
+  "scores": [
+    {
+      "cell": "idle-0",
+      "evidence_failures": [
+        "renderer_attestation_rejected",
+        "px4_health_invalid",
+        "px4_not_disarmed",
+        "px4_not_landed",
+        "scored_duration_incomplete",
+        "subscriber_count_mismatch",
+        "observer_not_clean",
+        "scheduler_not_clean",
+        "launcher_failed",
+        "manifest_evidence_rejected",
+        "resource_evidence_invalid",
+        "rtf_missing_or_invalid"
+      ],
+      "evidence_valid": false,
+      "failures": [
+        "renderer_attestation_rejected",
+        "px4_health_invalid",
+        "px4_not_disarmed",
+        "px4_not_landed",
+        "scored_duration_incomplete",
+        "subscriber_count_mismatch",
+        "observer_not_clean",
+        "scheduler_not_clean",
+        "launcher_failed",
+        "manifest_evidence_rejected",
+        "resource_evidence_invalid",
+        "rtf_missing_or_invalid"
+      ],
+      "name": "capacity-01-idle-0-r1",
+      "performance_failures": [],
+      "performance_pass": false,
+      "repetition": 1,
+      "rtf": null,
+      "score_status": "unscored",
+      "sequence": 1
+    },
+    {
+      "cell": "native-1",
+      "evidence_failures": [],
+      "evidence_valid": true,
+      "failures": [
+        "rtf_below_threshold"
+      ],
+      "name": "capacity-02-native-1-r1",
+      "performance_failures": [
+        "rtf_below_threshold"
+      ],
+      "performance_pass": false,
+      "repetition": 1,
+      "rtf": 0.6001154947094474,
+      "score_status": "scored",
+      "sequence": 2
+    },
+    {
+      "cell": "python-5",
+      "evidence_failures": [
+        "renderer_attestation_rejected",
+        "px4_health_invalid",
+        "px4_not_disarmed",
+        "px4_not_landed",
+        "scored_duration_incomplete",
+        "subscriber_count_mismatch",
+        "launcher_failed",
+        "manifest_evidence_rejected",
+        "camera_dimensions_invalid",
+        "camera_format_invalid",
+        "camera_phase_summary_rejected",
+        "resource_evidence_invalid",
+        "rtf_missing_or_invalid"
+      ],
+      "evidence_valid": false,
+      "failures": [
+        "renderer_attestation_rejected",
+        "px4_health_invalid",
+        "px4_not_disarmed",
+        "px4_not_landed",
+        "scored_duration_incomplete",
+        "subscriber_count_mismatch",
+        "launcher_failed",
+        "manifest_evidence_rejected",
+        "camera_dimensions_invalid",
+        "camera_format_invalid",
+        "camera_phase_summary_rejected",
+        "resource_evidence_invalid",
+        "rtf_missing_or_invalid"
+      ],
+      "name": "capacity-03-python-5-r1",
+      "performance_failures": [],
+      "performance_pass": false,
+      "repetition": 1,
+      "rtf": null,
+      "score_status": "unscored",
+      "sequence": 3
+    },
+    {
+      "cell": "native-5",
+      "evidence_failures": [],
+      "evidence_valid": true,
+      "failures": [
+        "phase_error_p95_exceeded",
+        "rtf_below_threshold"
+      ],
+      "name": "capacity-04-native-5-r1",
+      "performance_failures": [
+        "phase_error_p95_exceeded",
+        "rtf_below_threshold"
+      ],
+      "performance_pass": false,
+      "repetition": 1,
+      "rtf": 0.5073097264344697,
+      "score_status": "scored",
+      "sequence": 4
+    },
+    {
+      "cell": "native-5",
+      "evidence_failures": [],
+      "evidence_valid": true,
+      "failures": [
+        "rtf_below_threshold"
+      ],
+      "name": "capacity-05-native-5-r2",
+      "performance_failures": [
+        "rtf_below_threshold"
+      ],
+      "performance_pass": false,
+      "repetition": 2,
+      "rtf": 0.5071928937046264,
+      "score_status": "scored",
+      "sequence": 5
+    },
+    {
+      "cell": "python-5",
+      "evidence_failures": [
+        "camera_integrity_error",
+        "camera_phase_summary_rejected"
+      ],
+      "evidence_valid": false,
+      "failures": [
+        "camera_integrity_error",
+        "camera_phase_summary_rejected",
+        "rtf_below_threshold"
+      ],
+      "name": "capacity-06-python-5-r2",
+      "performance_failures": [
+        "rtf_below_threshold"
+      ],
+      "performance_pass": false,
+      "repetition": 2,
+      "rtf": 0.5949905626234887,
+      "score_status": "scored",
+      "sequence": 6
+    },
+    {
+      "cell": "native-1",
+      "evidence_failures": [
+        "renderer_attestation_rejected",
+        "px4_health_invalid",
+        "px4_not_disarmed",
+        "px4_not_landed",
+        "scored_duration_incomplete",
+        "subscriber_count_mismatch",
+        "observer_not_clean",
+        "scheduler_not_clean",
+        "launcher_failed",
+        "manifest_evidence_rejected",
+        "camera_dimensions_invalid",
+        "camera_format_invalid",
+        "camera_phase_summary_rejected",
+        "resource_evidence_invalid",
+        "rtf_missing_or_invalid"
+      ],
+      "evidence_valid": false,
+      "failures": [
+        "renderer_attestation_rejected",
+        "px4_health_invalid",
+        "px4_not_disarmed",
+        "px4_not_landed",
+        "scored_duration_incomplete",
+        "subscriber_count_mismatch",
+        "observer_not_clean",
+        "scheduler_not_clean",
+        "launcher_failed",
+        "manifest_evidence_rejected",
+        "camera_dimensions_invalid",
+        "camera_format_invalid",
+        "camera_phase_summary_rejected",
+        "resource_evidence_invalid",
+        "rtf_missing_or_invalid"
+      ],
+      "name": "capacity-07-native-1-r2",
+      "performance_failures": [],
+      "performance_pass": false,
+      "repetition": 2,
+      "rtf": null,
+      "score_status": "unscored",
+      "sequence": 7
+    },
+    {
+      "cell": "idle-0",
+      "evidence_failures": [],
+      "evidence_valid": true,
+      "failures": [
+        "rtf_below_threshold"
+      ],
+      "name": "capacity-08-idle-0-r2",
+      "performance_failures": [
+        "rtf_below_threshold"
+      ],
+      "performance_pass": false,
+      "repetition": 2,
+      "rtf": 0.6088927236573959,
+      "score_status": "scored",
+      "sequence": 8
+    },
+    {
+      "cell": "python-5",
+      "evidence_failures": [
+        "camera_integrity_error",
+        "camera_phase_summary_rejected"
+      ],
+      "evidence_valid": false,
+      "failures": [
+        "camera_integrity_error",
+        "camera_phase_summary_rejected",
+        "rtf_below_threshold"
+      ],
+      "name": "capacity-09-python-5-r3",
+      "performance_failures": [
+        "rtf_below_threshold"
+      ],
+      "performance_pass": false,
+      "repetition": 3,
+      "rtf": 0.6133683859638316,
+      "score_status": "scored",
+      "sequence": 9
+    },
+    {
+      "cell": "idle-0",
+      "evidence_failures": [],
+      "evidence_valid": true,
+      "failures": [
+        "rtf_below_threshold"
+      ],
+      "name": "capacity-10-idle-0-r3",
+      "performance_failures": [
+        "rtf_below_threshold"
+      ],
+      "performance_pass": false,
+      "repetition": 3,
+      "rtf": 0.6031550826357261,
+      "score_status": "scored",
+      "sequence": 10
+    },
+    {
+      "cell": "native-5",
+      "evidence_failures": [],
+      "evidence_valid": true,
+      "failures": [
+        "rtf_below_threshold"
+      ],
+      "name": "capacity-11-native-5-r3",
+      "performance_failures": [
+        "rtf_below_threshold"
+      ],
+      "performance_pass": false,
+      "repetition": 3,
+      "rtf": 0.5086898095511974,
+      "score_status": "scored",
+      "sequence": 11
+    },
+    {
+      "cell": "native-1",
+      "evidence_failures": [],
+      "evidence_valid": true,
+      "failures": [
+        "rtf_below_threshold"
+      ],
+      "name": "capacity-12-native-1-r3",
+      "performance_failures": [
+        "rtf_below_threshold"
+      ],
+      "performance_pass": false,
+      "repetition": 3,
+      "rtf": 0.5885356117095607,
+      "score_status": "scored",
+      "sequence": 12
+    }
+  ]
+}

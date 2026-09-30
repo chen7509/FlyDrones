@@ -1,0 +1,143 @@
+{
+  "schema": "flydrones-owned-process-cleanup-v1",
+  "registry": "/tmp/flydrones-capacity-capacity-07-native-1-r2-ebc370fa43fb/owned-processes.json",
+  "recorded_processes": 8,
+  "stopped": [],
+  "already_gone": [
+    {
+      "pid": 94003,
+      "start_ticks": 447422,
+      "argv": [
+        "/usr/bin/python3",
+        "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/px4-sensor-readiness/tools/run_camera_phase_scheduler_wsl.py",
+        "--output",
+        "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/px4-sensor-readiness/results/camera-render-capacity/first-imu-dt-camera-20260930-01/capacity-07-native-1-r2/camera-scheduler.jsonl",
+        "--ready-marker",
+        "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/px4-sensor-readiness/results/camera-render-capacity/first-imu-dt-camera-20260930-01/capacity-07-native-1-r2/camera-scheduler-ready.json",
+        "--completion-marker",
+        "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/px4-sensor-readiness/results/camera-render-capacity/first-imu-dt-camera-20260930-01/capacity-07-native-1-r2/trial-complete.marker",
+        "--vehicle-count",
+        "5",
+        "--duration-s",
+        "300",
+        "--topology-timeout-s",
+        "150",
+        "--poll-interval-s",
+        "0.001",
+        "--flush-interval-s",
+        "0.25",
+        "--dispatch-delay-ns",
+        "4000000",
+        "--formal"
+      ],
+      "role": "scheduler"
+    },
+    {
+      "pid": 93725,
+      "start_ticks": 446323,
+      "argv": [
+        "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/px4-sensor-readiness/build/native-camera-phase/flydrones_camera_phase_native",
+        "observe",
+        "--vehicle-count",
+        "5",
+        "--subscriber-count",
+        "1",
+        "--output",
+        "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/px4-sensor-readiness/results/camera-render-capacity/first-imu-dt-camera-20260930-01/capacity-07-native-1-r2/camera-phase.jsonl",
+        "--ready-marker",
+        "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/px4-sensor-readiness/results/camera-render-capacity/first-imu-dt-camera-20260930-01/capacity-07-native-1-r2/camera-phase-selected-ready.json",
+        "--completion-marker",
+        "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/px4-sensor-readiness/results/camera-render-capacity/first-imu-dt-camera-20260930-01/capacity-07-native-1-r2/trial-complete.marker",
+        "--duration-s",
+        "300",
+        "--readiness-timeout-s",
+        "150",
+        "--warmup-subscriber-count",
+        "5",
+        "--attestation-ready-marker",
+        "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/px4-sensor-readiness/results/camera-render-capacity/first-imu-dt-camera-20260930-01/capacity-07-native-1-r2/renderer-phase-ready.json",
+        "--attestation-release-marker",
+        "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/px4-sensor-readiness/results/camera-render-capacity/first-imu-dt-camera-20260930-01/capacity-07-native-1-r2/renderer-phase-complete.marker",
+        "--observe-triggers",
+        "0",
+        "--poll-interval-ms",
+        "1",
+        "--flush-interval-ms",
+        "250",
+        "--completion-drain-ms",
+        "1000"
+      ],
+      "role": "observer"
+    },
+    {
+      "pid": 92712,
+      "start_ticks": 445223,
+      "argv": [
+        "/home/yuchen7509/PX4-Autopilot/build/px4_sitl_nolockstep/bin/px4",
+        "-i",
+        "4",
+        "-d",
+        "/home/yuchen7509/PX4-Autopilot/build/px4_sitl_nolockstep/etc"
+      ],
+      "role": "px4-4"
+    },
+    {
+      "pid": 92335,
+      "start_ticks": 444995,
+      "argv": [
+        "/home/yuchen7509/PX4-Autopilot/build/px4_sitl_nolockstep/bin/px4",
+        "-i",
+        "3",
+        "-d",
+        "/home/yuchen7509/PX4-Autopilot/build/px4_sitl_nolockstep/etc"
+      ],
+      "role": "px4-3"
+    },
+    {
+      "pid": 91957,
+      "start_ticks": 444764,
+      "argv": [
+        "/home/yuchen7509/PX4-Autopilot/build/px4_sitl_nolockstep/bin/px4",
+        "-i",
+        "2",
+        "-d",
+        "/home/yuchen7509/PX4-Autopilot/build/px4_sitl_nolockstep/etc"
+      ],
+      "role": "px4-2"
+    },
+    {
+      "pid": 91580,
+      "start_ticks": 444538,
+      "argv": [
+        "/home/yuchen7509/PX4-Autopilot/build/px4_sitl_nolockstep/bin/px4",
+        "-i",
+        "1",
+        "-d",
+        "/home/yuchen7509/PX4-Autopilot/build/px4_sitl_nolockstep/etc"
+      ],
+      "role": "px4-1"
+    },
+    {
+      "pid": 91323,
+      "start_ticks": 444307,
+      "argv": [
+        "/home/yuchen7509/PX4-Autopilot/build/px4_sitl_nolockstep/bin/px4",
+        "-i",
+        "0",
+        "-d",
+        "/home/yuchen7509/PX4-Autopilot/build/px4_sitl_nolockstep/etc"
+      ],
+      "role": "px4-0"
+    },
+    {
+      "pid": 91264,
+      "start_ticks": 444063,
+      "argv": [
+        "gz sim --headless-rendering -s /home/yuchen7509/PX4-Autopilot/Tools/simulation/gz/worlds/flydrones_forest.sdf"
+      ],
+      "role": "gazebo-server"
+    }
+  ],
+  "ownership_mismatch": [],
+  "failed_to_stop": []
+}

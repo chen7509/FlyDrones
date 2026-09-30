@@ -1,0 +1,67 @@
+{
+  "schema": "flydrones-camera-phase-ready-v1",
+  "mode": "phased",
+  "vehicle_count": 5,
+  "epoch_ns": 29900000000,
+  "observation_start_sim_ns": 32600000000,
+  "warmup_image_counts": {
+    "0": 12,
+    "1": 11,
+    "2": 11,
+    "3": 11,
+    "4": 11
+  },
+  "warmup_trigger_counts": {
+    "0": 14,
+    "1": 15,
+    "2": 14,
+    "3": 14,
+    "4": 14
+  },
+  "depth_topics": [
+    "/world/flydrones_forest/model/x500_depth_fly_0/link/camera_link/sensor/StereoOV7251/depth_image",
+    "/world/flydrones_forest/model/x500_depth_fly_1/link/camera_link/sensor/StereoOV7251/depth_image",
+    "/world/flydrones_forest/model/x500_depth_fly_2/link/camera_link/sensor/StereoOV7251/depth_image",
+    "/world/flydrones_forest/model/x500_depth_fly_3/link/camera_link/sensor/StereoOV7251/depth_image",
+    "/world/flydrones_forest/model/x500_depth_fly_4/link/camera_link/sensor/StereoOV7251/depth_image"
+  ],
+  "depth_observations": {
+    "/world/flydrones_forest/model/x500_depth_fly_0/link/camera_link/sensor/StereoOV7251/depth_image": {
+      "width": 160,
+      "height": 120,
+      "frequency_hz": 11.316872427983538,
+      "message_count": 12
+    },
+    "/world/flydrones_forest/model/x500_depth_fly_1/link/camera_link/sensor/StereoOV7251/depth_image": {
+      "width": 160,
+      "height": 120,
+      "frequency_hz": 10.121457489878543,
+      "message_count": 11
+    },
+    "/world/flydrones_forest/model/x500_depth_fly_2/link/camera_link/sensor/StereoOV7251/depth_image": {
+      "width": 160,
+      "height": 120,
+      "frequency_hz": 11.013215859030836,
+      "message_count": 11
+    },
+    "/world/flydrones_forest/model/x500_depth_fly_3/link/camera_link/sensor/StereoOV7251/depth_image": {
+      "width": 160,
+      "height": 120,
+      "frequency_hz": 10.775862068965518,
+      "message_count": 11
+    },
+    "/world/flydrones_forest/model/x500_depth_fly_4/link/camera_link/sensor/StereoOV7251/depth_image": {
+      "width": 160,
+      "height": 120,
+      "frequency_hz": 10.548523206751055,
+      "message_count": 11
+    }
+  },
+  "trigger_topics": [
+    "/world/flydrones_forest/model/x500_depth_fly_0/link/camera_link/sensor/StereoOV7251/depth_image/trigger",
+    "/world/flydrones_forest/model/x500_depth_fly_1/link/camera_link/sensor/StereoOV7251/depth_image/trigger",
+    "/world/flydrones_forest/model/x500_depth_fly_2/link/camera_link/sensor/StereoOV7251/depth_image/trigger",
+    "/world/flydrones_forest/model/x500_depth_fly_3/link/camera_link/sensor/StereoOV7251/depth_image/trigger",
+    "/world/flydrones_forest/model/x500_depth_fly_4/link/camera_link/sensor/StereoOV7251/depth_image/trigger"
+  ]
+}

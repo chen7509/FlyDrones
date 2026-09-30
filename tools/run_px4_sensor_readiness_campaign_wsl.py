@@ -83,6 +83,22 @@ def _validate_config(config: Mapping[str, object], phase: str) -> None:
         raise ValueError("sensor-readiness campaign must disable sustained camera subscribers")
     if config.get("px4_build_name") != "px4_sitl_nolockstep":
         raise ValueError("sensor-readiness campaign requires px4_sitl_nolockstep")
+    patch_value = config.get("px4_patch")
+    if not isinstance(patch_value, str) or not patch_value:
+        raise ValueError("sensor-readiness config must pin a PX4 patch")
+    patch = (ROOT / patch_value).resolve()
+    try:
+        patch.relative_to(ROOT.resolve())
+    except ValueError as exc:
+        raise ValueError("PX4 patch must remain inside the repository") from exc
+    if not patch.is_file():
+        raise ValueError(f"configured PX4 patch is missing: {patch}")
+    if _sha256(patch) != config.get("px4_patch_sha256"):
+        raise ValueError("configured PX4 patch hash mismatch")
+    for field in ("px4_patch_sha256", "px4_vehicle_imu_sha256"):
+        value = config.get(field)
+        if not isinstance(value, str) or re.fullmatch(r"[0-9a-f]{64}", value) is None:
+            raise ValueError(f"{field} missing or invalid")
     ReadinessThresholds.from_mapping(config.get("thresholds", {}))
     schedules = config.get("schedules")
     if not isinstance(schedules, Mapping) or schedules.get(phase) != [
@@ -301,6 +317,9 @@ def run_trial(
         "FLYDRONES_CAPACITY_SUBSCRIBER_COUNT": "0",
         "PX4_BUILD_NAME": str(config["px4_build_name"]),
         "FLYDRONES_EXPECTED_PX4_REVISION": str(config["px4_revision"]),
+        "FLYDRONES_PX4_PATCH": str((ROOT / str(config["px4_patch"])).resolve()),
+        "FLYDRONES_EXPECTED_PX4_PATCH_SHA256": str(config["px4_patch_sha256"]),
+        "FLYDRONES_EXPECTED_VEHICLE_IMU_SHA256": str(config["px4_vehicle_imu_sha256"]),
         "PYTHONPATH": f"{ROOT / 'src'}:{ROOT}",
     })
     completion = output / "probe-complete.marker"

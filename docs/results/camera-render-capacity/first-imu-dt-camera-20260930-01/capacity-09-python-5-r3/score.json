@@ -1,0 +1,22 @@
+{
+  "cell": "python-5",
+  "evidence_failures": [
+    "camera_integrity_error",
+    "camera_phase_summary_rejected"
+  ],
+  "evidence_valid": false,
+  "failures": [
+    "camera_integrity_error",
+    "camera_phase_summary_rejected",
+    "rtf_below_threshold"
+  ],
+  "name": "capacity-09-python-5-r3",
+  "performance_failures": [
+    "rtf_below_threshold"
+  ],
+  "performance_pass": false,
+  "repetition": 3,
+  "rtf": 0.6133683859638316,
+  "score_status": "scored",
+  "sequence": 9
+}

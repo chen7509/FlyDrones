@@ -104,6 +104,7 @@ def calculate_capacity_frozen_hashes(
         "camera_phase": ROOT / "src/flydrones/camera_phase.py",
         "trial_runner": ROOT / "tools/run_camera_render_capacity_trial_wsl.py",
         "campaign_runner": Path(__file__),
+        "gate_runner": ROOT / "tools/run_gated_camera_render_capacity_campaign_wsl.py",
         "launcher": ROOT / "tools/launch_px4_depth_swarm_wsl.sh",
         "runtime_probe": ROOT / "tools/probe_gazebo_runtime_wsl.py",
         "stopper": ROOT / "tools/stop_px4_swarm_wsl.sh",
@@ -145,6 +146,62 @@ def _validate_config(config: Mapping[str, object]) -> None:
         raise ValueError("capacity renderer profile must be d3d12-nvidia")
     if config.get("vehicle_count") != 5:
         raise ValueError("capacity config requires five vehicles")
+    identity = config.get("px4_build_identity")
+    if not isinstance(identity, Mapping):
+        raise ValueError("capacity config must freeze the readiness PX4 build identity")
+    expected_identity_fields = {
+        "schema",
+        "build_name",
+        "px4_revision",
+        "binary_sha256",
+        "boardconfig_sha256",
+        "px4_patch",
+        "px4_patch_sha256",
+        "vehicle_imu_sha256",
+        "vehicle_imu_patch_applied",
+        "nolockstep",
+        "board_definition",
+    }
+    if set(identity) != expected_identity_fields:
+        raise ValueError("capacity PX4 build identity fields are incomplete")
+    for field in (
+        "binary_sha256",
+        "boardconfig_sha256",
+        "px4_patch_sha256",
+        "vehicle_imu_sha256",
+    ):
+        value = identity.get(field)
+        if not isinstance(value, str) or len(value) != 64 or any(
+            character not in "0123456789abcdef" for character in value
+        ):
+            raise ValueError(f"capacity PX4 build identity {field} is invalid")
+    if not (
+        identity.get("schema") == "flydrones-px4-build-evidence-v2"
+        and identity.get("build_name") == config.get("px4_build_name")
+        and identity.get("px4_revision") == config.get("px4_revision")
+        and identity.get("vehicle_imu_patch_applied") is True
+        and identity.get("nolockstep") is True
+        and identity.get("board_definition") == "#define CONFIG_BOARD_NOLOCKSTEP 1"
+    ):
+        raise ValueError("capacity PX4 build identity does not match the frozen contract")
+    patch = (ROOT / str(identity.get("px4_patch", ""))).resolve()
+    try:
+        patch.relative_to(ROOT.resolve())
+    except ValueError as exc:
+        raise ValueError("capacity PX4 patch must remain inside the repository") from exc
+    if not patch.is_file() or _sha256(patch) != identity.get("px4_patch_sha256"):
+        raise ValueError("capacity PX4 patch artifact does not match its frozen hash")
+    gate_inputs = config.get("readiness_gate_inputs")
+    if not isinstance(gate_inputs, Mapping) or set(gate_inputs) != {
+        "summary_sha256",
+        "config_sha256",
+    }:
+        raise ValueError("capacity config must freeze the readiness gate input hashes")
+    for field, value in gate_inputs.items():
+        if not isinstance(value, str) or len(value) != 64 or any(
+            character not in "0123456789abcdef" for character in value
+        ):
+            raise ValueError(f"capacity readiness gate {field} is invalid")
     if config.get("world") != "flydrones_forest":
         raise ValueError("capacity world must be flydrones_forest")
     if config.get("camera_model") != "assets/gazebo/models/OakD-Lite-Fly":
@@ -183,6 +240,8 @@ def build_capacity_campaign_manifest(
         "renderer_profile": config["renderer_profile"],
         "vehicle_count": config["vehicle_count"],
         "px4_revision": config["px4_revision"],
+        "px4_build_identity": copy.deepcopy(config["px4_build_identity"]),
+        "readiness_gate_inputs": copy.deepcopy(config["readiness_gate_inputs"]),
         "software_versions": copy.deepcopy(config["software_versions"]),
         "frozen_hashes": dict(frozen_hashes),
         "thresholds": copy.deepcopy(config["thresholds"]),

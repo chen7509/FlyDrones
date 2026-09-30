@@ -1,0 +1,8 @@
+{
+  "armed": false,
+  "estimator_healthy": true,
+  "landed": true,
+  "schema": "flydrones-px4-capacity-startup-health-v1",
+  "timeout_s": 60.0,
+  "vehicle_id": 2
+}

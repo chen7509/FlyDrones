@@ -1,0 +1,107 @@
+{
+  "campaign": "first-imu-dt-camera-20260930-01",
+  "expected_readiness_binary_sha256": "acdde36ea88ac718fedc040d4ecf07beaf55c8f9552a98b2e502c3e1046c6651",
+  "records": [
+    {
+      "binary_matches_readiness": false,
+      "binary_sha256": null,
+      "evidence_valid": false,
+      "legacy_build_evidence_schema": null,
+      "manifest_sha256": "2308ca46e12cab33257ef219bfda02359c4ac22a1d0d12235f942acc3d7a158a",
+      "name": "capacity-01-idle-0-r1"
+    },
+    {
+      "binary_matches_readiness": true,
+      "binary_sha256": "acdde36ea88ac718fedc040d4ecf07beaf55c8f9552a98b2e502c3e1046c6651",
+      "evidence_valid": true,
+      "legacy_build_evidence_schema": "flydrones-px4-build-evidence-v1",
+      "manifest_sha256": "ee8ee607774830a6b95ffd991f24970828effd46db3d8b6db91b4d0ec854db13",
+      "name": "capacity-02-native-1-r1"
+    },
+    {
+      "binary_matches_readiness": false,
+      "binary_sha256": null,
+      "evidence_valid": false,
+      "legacy_build_evidence_schema": null,
+      "manifest_sha256": "e9e60b0584b1290059fa70ec3e831ab517419f03a92ebb83f67308cebe78937a",
+      "name": "capacity-03-python-5-r1"
+    },
+    {
+      "binary_matches_readiness": true,
+      "binary_sha256": "acdde36ea88ac718fedc040d4ecf07beaf55c8f9552a98b2e502c3e1046c6651",
+      "evidence_valid": true,
+      "legacy_build_evidence_schema": "flydrones-px4-build-evidence-v1",
+      "manifest_sha256": "b81b767d9558966b8d439c5a43579463590df0ba4023935c4164beb11f33fb3e",
+      "name": "capacity-04-native-5-r1"
+    },
+    {
+      "binary_matches_readiness": true,
+      "binary_sha256": "acdde36ea88ac718fedc040d4ecf07beaf55c8f9552a98b2e502c3e1046c6651",
+      "evidence_valid": true,
+      "legacy_build_evidence_schema": "flydrones-px4-build-evidence-v1",
+      "manifest_sha256": "dcbd544e364236842abbbb9ead6951d04e3c9a35ceaebe8939b7e95e6c20aafa",
+      "name": "capacity-05-native-5-r2"
+    },
+    {
+      "binary_matches_readiness": true,
+      "binary_sha256": "acdde36ea88ac718fedc040d4ecf07beaf55c8f9552a98b2e502c3e1046c6651",
+      "evidence_valid": false,
+      "legacy_build_evidence_schema": "flydrones-px4-build-evidence-v1",
+      "manifest_sha256": "7e97b00fc768bfb1842795d2eca89338722d2343bf529f6d077503f8709236c9",
+      "name": "capacity-06-python-5-r2"
+    },
+    {
+      "binary_matches_readiness": false,
+      "binary_sha256": null,
+      "evidence_valid": false,
+      "legacy_build_evidence_schema": null,
+      "manifest_sha256": "cf47a81676da874230fc95b746fa998add94adefe41a9581a5e8a6d1647af4aa",
+      "name": "capacity-07-native-1-r2"
+    },
+    {
+      "binary_matches_readiness": true,
+      "binary_sha256": "acdde36ea88ac718fedc040d4ecf07beaf55c8f9552a98b2e502c3e1046c6651",
+      "evidence_valid": true,
+      "legacy_build_evidence_schema": "flydrones-px4-build-evidence-v1",
+      "manifest_sha256": "981f4a25b281c8973b2242a925de9935afbb971ab3132f8b29e93581c86e015a",
+      "name": "capacity-08-idle-0-r2"
+    },
+    {
+      "binary_matches_readiness": true,
+      "binary_sha256": "acdde36ea88ac718fedc040d4ecf07beaf55c8f9552a98b2e502c3e1046c6651",
+      "evidence_valid": false,
+      "legacy_build_evidence_schema": "flydrones-px4-build-evidence-v1",
+      "manifest_sha256": "d10d018095c4deb2cf42e51780e833655eb16e97403ff61e4ceb76a7aef1e897",
+      "name": "capacity-09-python-5-r3"
+    },
+    {
+      "binary_matches_readiness": true,
+      "binary_sha256": "acdde36ea88ac718fedc040d4ecf07beaf55c8f9552a98b2e502c3e1046c6651",
+      "evidence_valid": true,
+      "legacy_build_evidence_schema": "flydrones-px4-build-evidence-v1",
+      "manifest_sha256": "f321d181e2031fa33019a1018ee5d7225dc2fe9fe202bd4f3302e6083081fabf",
+      "name": "capacity-10-idle-0-r3"
+    },
+    {
+      "binary_matches_readiness": true,
+      "binary_sha256": "acdde36ea88ac718fedc040d4ecf07beaf55c8f9552a98b2e502c3e1046c6651",
+      "evidence_valid": true,
+      "legacy_build_evidence_schema": "flydrones-px4-build-evidence-v1",
+      "manifest_sha256": "7cfe57fce564031e3598747757a4ceaf7f300b968fe93d7d2ae54c86790a25e8",
+      "name": "capacity-11-native-5-r3"
+    },
+    {
+      "binary_matches_readiness": true,
+      "binary_sha256": "acdde36ea88ac718fedc040d4ecf07beaf55c8f9552a98b2e502c3e1046c6651",
+      "evidence_valid": true,
+      "legacy_build_evidence_schema": "flydrones-px4-build-evidence-v1",
+      "manifest_sha256": "fd4292c757a045f4779344316316a76bae3d22d3c976e807f673207290cb93a8",
+      "name": "capacity-12-native-1-r3"
+    }
+  ],
+  "schema": "flydrones-camera-px4-binary-postcheck-v1",
+  "slots_with_build_evidence": 9,
+  "slots_with_matching_binary": 9,
+  "valid_slots": 7,
+  "valid_slots_with_matching_binary": 7
+}

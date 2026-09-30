@@ -191,6 +191,8 @@ def score_capacity_run(
         evidence.append("source_hash_mismatch")
     if manifest.get("native_executable_hash_match") is not True:
         evidence.append("native_executable_hash_mismatch")
+    if manifest.get("px4_build_identity_match") is not True:
+        evidence.append("px4_build_identity_mismatch")
     if manifest.get("observer_closed_cleanly") is not True:
         evidence.append("observer_not_clean")
     if manifest.get("scheduler_closed_cleanly") is not True:

@@ -1,0 +1,29 @@
+{
+  "accepted": true,
+  "actual": {
+    "0": 1,
+    "1": 1,
+    "2": 1,
+    "3": 1,
+    "4": 1
+  },
+  "expected": {
+    "0": 1,
+    "1": 1,
+    "2": 1,
+    "3": 1,
+    "4": 1
+  },
+  "observer_pid": 86852,
+  "raw": {
+    "0": "Publishers [Address, Message Type]:\n  tcp://172.28.230.109:42317, gz.msgs.Image\nSubscribers [Address, Message Type]:\n  tcp://172.28.230.109:37441, gz.msgs.Image\n",
+    "1": "Publishers [Address, Message Type]:\n  tcp://172.28.230.109:42317, gz.msgs.Image\nSubscribers [Address, Message Type]:\n  tcp://172.28.230.109:37441, gz.msgs.Image\n",
+    "2": "Publishers [Address, Message Type]:\n  tcp://172.28.230.109:42317, gz.msgs.Image\nSubscribers [Address, Message Type]:\n  tcp://172.28.230.109:37441, gz.msgs.Image\n",
+    "3": "Publishers [Address, Message Type]:\n  tcp://172.28.230.109:42317, gz.msgs.Image\nSubscribers [Address, Message Type]:\n  tcp://172.28.230.109:37441, gz.msgs.Image\n",
+    "4": "Publishers [Address, Message Type]:\n  tcp://172.28.230.109:42317, gz.msgs.Image\nSubscribers [Address, Message Type]:\n  tcp://172.28.230.109:37441, gz.msgs.Image\n"
+  },
+  "reasons": [],
+  "schema": "flydrones-depth-topic-connections-v1",
+  "stage": "launcher-after-attestation",
+  "subscriber_count": 5
+}

@@ -20,3 +20,4 @@ Thumbs.db
 .vscode/
 /results/px4-sensor-readiness/
 /results/px4-sitl-five-depth/
+/results/camera-render-capacity/

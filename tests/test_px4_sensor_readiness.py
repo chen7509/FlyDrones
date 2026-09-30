@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import copy
+import hashlib
+import json
 import math
 from pathlib import Path
 
@@ -14,6 +16,9 @@ from flydrones.px4_sensor_readiness import (
     score_readiness_run,
 )
 from tools.reclassify_px4_sensor_readiness_campaign import reclassify_campaign
+from tools.run_gated_camera_render_capacity_campaign_wsl import (
+    validate_readiness_build_binding,
+)
 
 THRESHOLDS = {
     "min_rtf": 0.95,
@@ -47,6 +52,8 @@ def test_readiness_uses_versioned_launcher_without_mutating_frozen_camera_inputs
 def _config(phase: str) -> dict[str, object]:
     return {
         "px4_revision": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+        "px4_patch_sha256": "c" * 64,
+        "px4_vehicle_imu_sha256": "d" * 64,
         "thresholds": dict(THRESHOLDS),
         "schedules": {
             "development": [run.as_dict() for run in readiness_schedule("development")],
@@ -97,12 +104,15 @@ def _good_pair(run, *, rtf: float = 0.97):
         "shared_px4_files_restored": True,
         "errors": [],
         "px4_build_evidence": {
-            "schema": "flydrones-px4-build-evidence-v1",
+            "schema": "flydrones-px4-build-evidence-v2",
             "build_name": "px4_sitl_nolockstep",
             "px4_revision": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
             "nolockstep": True,
             "binary_sha256": "a" * 64,
             "boardconfig_sha256": "b" * 64,
+            "px4_patch_sha256": "c" * 64,
+            "vehicle_imu_sha256": "d" * 64,
+            "vehicle_imu_patch_applied": True,
             "board_definition": "#define CONFIG_BOARD_NOLOCKSTEP 1",
         },
         "sensor_source_evidence": {
@@ -182,6 +192,40 @@ def test_readiness_schedules_are_exact_and_separate_development_from_formal():
     assert {run.vehicle_count for run in formal} == {5}
     assert [run.repetition for run in formal] == list(range(1, 11))
     assert not ({run.name for run in development} & {run.name for run in formal})
+
+
+def test_readiness_pins_px4_first_imu_sample_patch():
+    config = json.loads(
+        (ROOT / "configs/px4_sensor_readiness.json").read_text(encoding="utf-8")
+    )
+    patch_path = ROOT / config["px4_patch"]
+    patch_bytes = patch_path.read_bytes()
+    patch_text = patch_bytes.decode("utf-8")
+    launcher = (ROOT / "tools/launch_px4_sensor_readiness_wsl.sh").read_text(
+        encoding="utf-8"
+    )
+    runner = (ROOT / "tools/run_px4_sensor_readiness_campaign_wsl.py").read_text(
+        encoding="utf-8"
+    )
+
+    assert hashlib.sha256(patch_bytes).hexdigest() == config["px4_patch_sha256"]
+    assert len(config["px4_vehicle_imu_sha256"]) == 64
+    assert "_accel_timestamp_sample_last == 0" in patch_text
+    assert "_gyro_timestamp_sample_last == 0" in patch_text
+    assert "FLYDRONES_EXPECTED_PX4_PATCH_SHA256" in launcher
+    assert "FLYDRONES_EXPECTED_VEHICLE_IMU_SHA256" in launcher
+    assert "vehicle_imu_patch_applied" in launcher
+    assert "FLYDRONES_EXPECTED_PX4_PATCH_SHA256" in runner
+    assert "FLYDRONES_EXPECTED_VEHICLE_IMU_SHA256" in runner
+
+
+def test_readiness_launcher_serializes_px4_gazebo_bridge_attachment():
+    launcher = (ROOT / "tools/launch_px4_sensor_readiness_wsl.sh").read_text(
+        encoding="utf-8"
+    )
+
+    assert "wait_for_vehicle_sensor_subscribers()" in launcher
+    assert 'wait_for_vehicle_sensor_subscribers "$instance_id"' in launcher
 
 
 def test_good_readiness_run_passes_evidence_and_performance():
@@ -291,6 +335,12 @@ def test_good_readiness_run_passes_evidence_and_performance():
         (
             lambda manifest, _summary: manifest["px4_build_evidence"].update(
                 px4_revision="z" * 40
+            ),
+            "px4_build_evidence_invalid",
+        ),
+        (
+            lambda manifest, _summary: manifest["px4_build_evidence"].update(
+                px4_patch_sha256="z" * 64
             ),
             "px4_build_evidence_invalid",
         ),
@@ -422,6 +472,30 @@ def test_formal_rejects_px4_revision_that_differs_from_frozen_config():
     assert "px4_revision_mismatch" in result["reasons"]
 
 
+def test_formal_rejects_px4_patch_that_differs_from_frozen_config():
+    pairs = [_good_pair(run) for run in readiness_schedule("formal")]
+    for manifest, _summary in pairs:
+        manifest["px4_build_evidence"]["px4_patch_sha256"] = "e" * 64
+
+    result = classify_readiness_campaign(pairs, _config("formal"), phase="formal")
+
+    assert result["classification"] == "inconclusive_or_invalid"
+    assert result["camera_rerun_eligible"] is False
+    assert "px4_patch_mismatch" in result["reasons"]
+
+
+def test_formal_rejects_vehicle_imu_source_that_differs_from_frozen_config():
+    pairs = [_good_pair(run) for run in readiness_schedule("formal")]
+    for manifest, _summary in pairs:
+        manifest["px4_build_evidence"]["vehicle_imu_sha256"] = "e" * 64
+
+    result = classify_readiness_campaign(pairs, _config("formal"), phase="formal")
+
+    assert result["classification"] == "inconclusive_or_invalid"
+    assert result["camera_rerun_eligible"] is False
+    assert "px4_vehicle_imu_source_mismatch" in result["reasons"]
+
+
 def test_camera_rerun_gate_accepts_only_complete_formal_pass():
     pairs = [_good_pair(run) for run in readiness_schedule("formal")]
     config = _config("formal")
@@ -452,3 +526,50 @@ def test_gated_camera_entry_validates_readiness_before_legacy_runner():
     assert gate_call < legacy_call
     assert "--readiness-summary-sha256" in entry
     assert "--readiness-config-sha256" in entry
+    assert "validate_readiness_build_binding(" in entry
+
+
+def test_gated_camera_entry_binds_all_formal_manifests_to_exact_px4_build(tmp_path: Path):
+    pairs = [_good_pair(run) for run in readiness_schedule("formal")]
+    summary = classify_readiness_campaign(pairs, _config("formal"), phase="formal")
+    summary_path = tmp_path / "campaign-summary.json"
+    summary_path.write_text(json.dumps(summary), encoding="utf-8")
+    for (manifest, _), score in zip(pairs, summary["scores"], strict=True):
+        target = tmp_path / score["name"] / "manifest.json"
+        target.parent.mkdir()
+        target.write_text(json.dumps(manifest), encoding="utf-8")
+    identity = dict(pairs[0][0]["px4_build_evidence"])
+    identity["px4_patch"] = "patches/px4/vehicle-imu-first-sample-dt.patch"
+    camera_config = {
+        "readiness_gate_inputs": {
+            "summary_sha256": "e" * 64,
+            "config_sha256": "f" * 64,
+        },
+        "px4_build_identity": identity,
+    }
+
+    result = validate_readiness_build_binding(
+        summary_path=summary_path,
+        summary=summary,
+        readiness_config=_config("formal"),
+        camera_config=camera_config,
+        summary_sha256="e" * 64,
+        readiness_config_sha256="f" * 64,
+    )
+
+    assert result["px4_build_identity"] == identity
+    assert len(result["readiness_manifest_sha256"]) == 10
+
+    first_manifest = tmp_path / summary["scores"][0]["name"] / "manifest.json"
+    changed = json.loads(first_manifest.read_text(encoding="utf-8"))
+    changed["px4_build_evidence"]["binary_sha256"] = "9" * 64
+    first_manifest.write_text(json.dumps(changed), encoding="utf-8")
+    with pytest.raises(ValueError, match="readiness PX4 build identity mismatch"):
+        validate_readiness_build_binding(
+            summary_path=summary_path,
+            summary=summary,
+            readiness_config=_config("formal"),
+            camera_config=camera_config,
+            summary_sha256="e" * 64,
+            readiness_config_sha256="f" * 64,
+        )

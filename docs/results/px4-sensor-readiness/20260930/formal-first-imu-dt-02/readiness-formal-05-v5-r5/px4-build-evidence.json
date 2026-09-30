@@ -1,0 +1,12 @@
+{
+  "binary_sha256": "acdde36ea88ac718fedc040d4ecf07beaf55c8f9552a98b2e502c3e1046c6651",
+  "board_definition": "#define CONFIG_BOARD_NOLOCKSTEP 1",
+  "boardconfig_sha256": "e3e8f70d0c9d0424e8b49768ed6eb6ac00cdffcab1444e15d0505c4aadba94e6",
+  "build_name": "px4_sitl_nolockstep",
+  "nolockstep": true,
+  "px4_patch_sha256": "cd36509e63b3709770366a17a07cca67591be409c02a4475ecd3508923d8fd94",
+  "px4_revision": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+  "schema": "flydrones-px4-build-evidence-v2",
+  "vehicle_imu_patch_applied": true,
+  "vehicle_imu_sha256": "a73997eaf14a5c1b224dcb4f13648874a02863d63608c60b73d8d3dc01a983a1"
+}

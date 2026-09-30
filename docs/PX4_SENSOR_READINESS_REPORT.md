@@ -1,69 +1,93 @@
-# PX4 SITL sensor-readiness gate
+# PX4 SITL sensor-readiness and camera-capacity rerun
 
 Date: 2026-09-30
 
 ## Decision
 
-The camera-capacity rerun is **not authorized**. The frozen formal gate required ten successful five-vehicle starts out of ten. The campaign produced nine valid passes and one invalid start, so the result is `inconclusive_or_invalid` and `camera_rerun_eligible=false`.
+The five-vehicle PX4 sensor-readiness gate now passes 10/10 with a median real-time factor (RTF) of 0.999861 and a range of 0.001119. This authorized a new camera-capacity campaign through the fail-closed gate.
 
-This work tests PX4 SITL and Gazebo on this Windows/WSL host. It is not HITL or real flight evidence. Gazebo `/clock` supplied simulated time, while RTF and startup time were measured against the host monotonic clock. No policy training, reward change, weight update, or autonomous-flight tuning was performed.
+The camera campaign completed all 12 frozen slots, but it is **not eligible for production integration**. Its classification is `non_monotonic_or_inconclusive`: five slots had invalid evidence, and every valid slot missed the 0.95 RTF threshold. The valid no-subscriber renderer baseline was only 0.6032–0.6089 RTF, while the three valid native five-camera slots measured 0.5072–0.5087 RTF.
 
-## Completed steps
+This is PX4 SITL plus Gazebo evidence on one Windows/WSL host. It is not HITL or real flight evidence. No policy training, loss change, reward change, or weight update was performed.
 
-1. PR #1 was merged into the fork integration branch `codex/hybrid-local-planner` at merge commit `8894add6a5cd817a2a7571d66c6e2e2edd6c99d0`.
-2. A versioned no-camera sensor-readiness launcher and diagnostic were added for one, two, and five vehicles. The frozen camera/takeoff launcher and world generator remain byte-for-byte unchanged. The diagnostic records the Gazebo sensor publishers, PX4 subscribers, initial and post-window MAVLink health, EKF2 health, ULogs, Gazebo CPU/RSS/thread samples, simulation clock, cleanup, and restoration evidence.
-3. The formal five-vehicle gate ran ten isolated starts with a 30-second simulated scoring window and a 120-second wall timeout.
-4. The camera rerun was stopped by the gate. No new idle/one-camera/five-camera campaign was launched. Future reruns must use `tools/run_gated_camera_render_capacity_campaign_wsl.py`, which verifies the frozen readiness config and summary hashes and rejects anything other than the exact ten-slot formal pass before it invokes the legacy frozen camera runner.
+## EKF2 startup root cause
 
-## Startup diagnosis and correction
+The earlier formal campaign passed nine starts and failed the tenth because all five EKF2 instances exceeded the 60-second health timeout. Comparing all ten runs showed a deterministic trend:
 
-The first diagnostic batch could not run one- or two-vehicle cases because the world generator only accepted zero or five preloaded vehicles. That was an adapter defect; the failed batch remains preserved as `dev-20260930-01`.
+| Formal run | Mean first EKF2 output | First gyro integration interval |
+|---:|---:|---:|
+| 1 | 24.797 s | 471.952 s |
+| 5 | 40.583 s | 786.936 s |
+| 9 | 59.778 s | 1172.160 s |
+| 10 | 65.773 s | 1281.313 s |
 
-The next batch showed a repeatable `Accel #0 fail: TIMEOUT!` on the last PX4 instance at every fleet size. The launcher restored the Gazebo clock before the final PX4/Gazebo bridge was ready. Moving the bridge barrier before clock resume fixed one- and two-vehicle starts, but made all five PX4 instances wait too long while simulation was paused.
+PX4 revision `d6f12ad1c4f70ad3230afd7d86e971421e02fef4` runs the no-lockstep build against the host monotonic clock. `VehicleIMU::UpdateAccel` and `VehicleIMU::UpdateGyro` previously computed the first integration interval by subtracting the zero-initialized previous timestamp. The resulting hundreds-of-seconds first sample was accepted by the integrator and delayed EKF2 initialization in proportion to accumulated host uptime.
 
-The final sequence is:
+The pinned patch sets the first accelerometer and gyroscope integration interval to zero, using the first sample only as the integration baseline. Subsequent samples retain the original timestamp-difference behavior. The readiness build now binds the PX4 revision, patch SHA-256, patched `VehicleIMU.cpp` SHA-256, board configuration, and binary SHA-256 in a build attestation; launch fails closed if any value differs.
 
-1. Start Gazebo paused with all vehicle models preloaded.
-2. Verify all IMU, magnetometer, GPS, and barometer publishers before starting PX4.
-3. Start all PX4 instances without a per-instance serial publisher wait.
-4. Wait for every PX4/Gazebo bridge.
-5. Resume the world, witness one message on every sensor source, verify one publisher and one PX4 subscriber per source, then sample concurrent MAVLink health.
+Across all 50 ULogs in the successful formal campaign, the first gyroscope integration interval is now 4.451–54.503 ms, with a median of 22.974 ms. The maximum value within the first ten samples is 66.605 ms. These values include host scheduling jitter but eliminate the former 472–1281 second first-sample error.
 
-That sequence passed the final development campaign at every tested scale:
+## Orchestration faults found during rerun
 
-| Vehicles | Evidence | Sensor timeout | RTF |
-|---:|---|---:|---:|
-| 1 | valid/pass | 0 | 0.99971 |
-| 2 | valid/pass | 0 | 0.99969 |
-| 5 | valid/pass | 0 | 0.99951 |
+The first post-patch formal campaign, `formal-first-imu-dt-01`, was retained as an 8/10 invalid result:
 
-These values are from `dev-20260930-05`, rerun after the readiness launcher and world generator were isolated from the legacy frozen camera inputs and after artifact-integrity checks became fail-closed.
+- Run 7 falsely reported failed cleanup because the ownership cleaner waited only 10 ms after `SIGKILL` before recording the process as still alive.
+- Run 9 launched all five Gazebo bridges concurrently; one PX4 instance remained at bridge initialization, leaving 4 of 20 sensor subscribers absent.
 
-## Formal gate result
+The cleanup logic now waits for process disappearance after forced termination. The sensor-readiness launcher starts each PX4 instance only after its four Gazebo sensor subscriptions are visible, then performs the existing all-vehicle barrier before resuming simulated time. A second development campaign passed at one, two, and five vehicles before the new formal campaign began.
 
-Runs 1–9 had valid initial and post-window EKF2 health, five nonempty hashed ULogs per run, no matched sensor timeout, successful owned-process cleanup, restored PX4 shared files, and RTF above 0.95.
+## Successful formal gate
 
-For the nine scored runs:
+Campaign: `formal-first-imu-dt-02`
 
-- RTF minimum: 0.998405
-- RTF median: 0.999504
-- RTF maximum: 0.999766
-- RTF range: 0.001361, within the 0.03 repeatability limit
-- Gazebo process: 55 threads in every scored run
-- Peak Gazebo RSS: approximately 566–575 MB
+| Run | RTF | Evidence | Result |
+|---:|---:|---|---|
+| 1 | 1.000162 | valid | pass |
+| 2 | 0.999871 | valid | pass |
+| 3 | 1.000115 | valid | pass |
+| 4 | 1.000215 | valid | pass |
+| 5 | 0.999851 | valid | pass |
+| 6 | 1.000246 | valid | pass |
+| 7 | 0.999693 | valid | pass |
+| 8 | 0.999579 | valid | pass |
+| 9 | 0.999127 | valid | pass |
+| 10 | 0.999610 | valid | pass |
 
-Run 10 failed the startup-health gate. Gazebo delivered all 20 source streams and topic inspection found exactly 20 publishers and 20 PX4 subscribers. All five PX4 processes emitted ULogs and were cleaned up correctly, but all five startup-health records still reported `estimator_healthy=false` after the 60-second readiness window. The Gazebo clock advanced to about 66.5 simulated seconds, no `Accel/Gyro/BARO/MAG TIMEOUT` was recorded, and every PX4 log continued to report `ekf2 missing data`. This isolates the remaining intermittent fault to EKF2 initialization or delivery into PX4 after transport discovery, rather than camera rendering, port leakage, missing Gazebo publishers, or low RTF.
+Every run has 20/20 Gazebo sensor publishers, 20/20 PX4 subscribers, five healthy startup and post-window states, five nonempty hashed ULogs, no matched sensor timeout, complete owned-process cleanup, restored shared files, and a 30-second simulated scoring window within the 120-second wall limit.
 
-The failed tenth start is retained. It is not discarded or replaced by an extra successful run.
+## Gated camera-capacity result
 
-The original formal manifests and scores were produced by the first readiness scorer. They remain immutable. [`formal-20260930-01-amendment-v4`](results/px4-sensor-readiness/20260930/formal-20260930-01-amendment-v4) binds each original manifest and summary to the raw build, frozen PX4 revision, per-topic source/topology, per-process cleanup, and per-file restoration evidence by SHA-256, then replays all ten slots through the current hardened scorer. The amendment independently reproduces nine valid passes, one invalid tenth run, `readiness_rate=0.9`, and `camera_rerun_eligible=false`. The committed v2 and v3 directories are retained as historical replays of their scorer revisions rather than rewritten.
+Campaign: `first-imu-dt-camera-20260930-01`
+
+The gate evidence binds the successful readiness summary and configuration by SHA-256. All 12 scheduled camera slots ran and were retained.
+
+| Cell | Valid repetitions | Valid RTF values | Finding |
+|---|---:|---|---|
+| `idle-0` | 2/3 | 0.6089, 0.6032 | renderer baseline below real time |
+| `native-1` | 2/3 | 0.6001, 0.5885 | single camera below real time |
+| `native-5` | 3/3 | 0.5073, 0.5072, 0.5087 | five cameras repeatably near half real time |
+| `python-5` | 0/3 | two scored windows at 0.5950 and 0.6134 were evidence-invalid | camera integrity/phase evidence failed |
+
+Three slots failed during the legacy camera launcher's intermittent PX4/camera startup path, and two Python five-camera slots completed a timing window but failed camera integrity and phase evidence. Invalid slots are unscored for acceptance even when an RTF value exists.
+
+The camera launcher now fails closed on the exact readiness-tested PX4 binary, board configuration, patch, and patched `VehicleIMU.cpp` hashes. The gated entry also verifies the build evidence in all ten readiness manifests before starting a campaign. This binding was added after the 12-slot run in response to independent review. A post-run check found PX4 build evidence in 9/12 slots; all nine used the exact readiness-tested binary, including every one of the seven evidence-valid slots. The three slots without build evidence are the retained startup failures and remain invalid.
+
+The valid idle baseline already misses 0.95, so the current data cannot credit the native C++ observer as a production solution. The native five-camera results are highly repeatable but approximately 49% slower than real time. Production native integration and the dependent flight gate remain closed.
 
 ## Evidence
 
-Compact, reviewable evidence is under [`docs/results/px4-sensor-readiness/20260930`](results/px4-sensor-readiness/20260930). It includes every development campaign summary, the ten original formal manifests/summaries/scores, the hardened-scorer amendment with source hashes and embedded nested evidence, the failed run's five startup-health records, and the explicit step-4 gated-skip record. The gated camera entry was also exercised against the 9/10 summary: it rejected the summary before writing gate authorization evidence or creating a camera campaign directory.
+- Compact readiness evidence: [`docs/results/px4-sensor-readiness/20260930/formal-first-imu-dt-02`](results/px4-sensor-readiness/20260930/formal-first-imu-dt-02)
+- ULog first-sample analysis: [`first-imu-dt-evidence.json`](results/px4-sensor-readiness/20260930/formal-first-imu-dt-02/first-imu-dt-evidence.json)
+- Preserved first post-patch 8/10 summary: [`formal-first-imu-dt-01-failed-summary.json`](results/px4-sensor-readiness/20260930/formal-first-imu-dt-01-failed-summary.json)
+- Compact camera evidence and raw artifact index: [`docs/results/camera-render-capacity/first-imu-dt-camera-20260930-01`](results/camera-render-capacity/first-imu-dt-camera-20260930-01)
+- Camera authorization record: [`first-imu-dt-camera-20260930-01-gate.json`](results/camera-render-capacity/first-imu-dt-camera-20260930-01-gate.json)
+- Readiness build binding: [`first-imu-dt-camera-20260930-01-build-binding.json`](results/camera-render-capacity/first-imu-dt-camera-20260930-01-build-binding.json)
+- Camera PX4 binary post-check: [`first-imu-dt-camera-20260930-01-px4-binary-postcheck.json`](results/camera-render-capacity/first-imu-dt-camera-20260930-01-px4-binary-postcheck.json)
+- Raw evidence remains local under `results/px4-sensor-readiness` and `results/camera-render-capacity`.
 
-Raw evidence remains local under `results/px4-sensor-readiness`. It includes approximately 1.05 GB of ULogs, console logs, Gazebo clock/resource/GPU samples, and all failed development attempts. Raw data is excluded from Git to avoid replacing or compressing original evidence into the repository.
+## Next work
 
-## Required next work
-
-The next work package should inspect the failed run's five ULogs for `estimator_status`, `vehicle_local_position`, `sensor_combined`, and `vehicle_imu` timing, and compare them with a passing run. It should add an explicit EKF2 initialization trace and a fail-closed check for simulator timestamp resets or data-age skew. The same frozen ten-run gate must then be executed under a new campaign ID. Camera capacity can resume only after a complete 10/10 pass; the old `task7-frozen-20260929-234951` campaign remains unchanged.
+1. Port the proven pre-resume, per-vehicle sensor-subscription barrier into the camera launcher and run a new development campaign. This must use a new campaign ID and frozen hash set; the completed 12-slot campaign remains immutable.
+2. Profile the Gazebo D3D12 renderer and sensor system with zero, one, and five triggered depth sensors before changing observers. The 0.60 idle baseline shows that Python transport is not the primary bottleneck.
+3. Test reduced camera resolution, rate, or rendering distribution only as separate product configurations. Do not describe a relaxed simulation profile as meeting the existing 160 × 120 at 10 Hz contract.
+4. Repeat the 12-slot capacity gate only after the renderer baseline can sustain at least 0.95 RTF. HITL and real flight remain later stages.

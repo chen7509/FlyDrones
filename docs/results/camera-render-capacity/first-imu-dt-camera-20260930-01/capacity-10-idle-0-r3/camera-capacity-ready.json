@@ -1,0 +1,51 @@
+{
+  "observer_pid": 105454,
+  "px4_all_disarmed": true,
+  "px4_all_healthy": true,
+  "px4_all_landed": true,
+  "px4_build": {
+    "binary_sha256": "acdde36ea88ac718fedc040d4ecf07beaf55c8f9552a98b2e502c3e1046c6651",
+    "board_definition": "#define CONFIG_BOARD_NOLOCKSTEP 1",
+    "boardconfig_sha256": "e3e8f70d0c9d0424e8b49768ed6eb6ac00cdffcab1444e15d0505c4aadba94e6",
+    "build_name": "px4_sitl_nolockstep",
+    "nolockstep": true,
+    "px4_revision": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+    "schema": "flydrones-px4-build-evidence-v1"
+  },
+  "px4_states": [
+    {
+      "armed": false,
+      "estimator_healthy": true,
+      "landed": true,
+      "vehicle_id": 0
+    },
+    {
+      "armed": false,
+      "estimator_healthy": true,
+      "landed": true,
+      "vehicle_id": 1
+    },
+    {
+      "armed": false,
+      "estimator_healthy": true,
+      "landed": true,
+      "vehicle_id": 2
+    },
+    {
+      "armed": false,
+      "estimator_healthy": true,
+      "landed": true,
+      "vehicle_id": 3
+    },
+    {
+      "armed": false,
+      "estimator_healthy": true,
+      "landed": true,
+      "vehicle_id": 4
+    }
+  ],
+  "px4_vehicle_count": 5,
+  "renderer_attestation_accepted": true,
+  "schema": "flydrones-camera-capacity-ready-v1",
+  "subscriber_count": 0
+}

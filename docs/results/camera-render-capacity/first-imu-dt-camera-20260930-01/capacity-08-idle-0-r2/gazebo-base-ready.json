@@ -1,0 +1,5 @@
+{
+  "schema": "flydrones-gazebo-base-ready-v1",
+  "gazebo_pid": 96186,
+  "camera_schedule_mode": "phased"
+}

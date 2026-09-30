@@ -1,0 +1,9 @@
+{
+  "px4_all_disarmed": true,
+  "px4_all_healthy": true,
+  "px4_all_landed": true,
+  "schema": "flydrones-px4-capacity-platform-ready-v1",
+  "sensor_connection_topic_count": 20,
+  "sensor_source_topic_count": 20,
+  "vehicle_count": 5
+}

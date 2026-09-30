@@ -1,0 +1,458 @@
+{
+  "camera_model": "assets/gazebo/models/OakD-Lite-Fly",
+  "campaign_id": "first-imu-dt-camera-20260930-01",
+  "completed_slots": [
+    "capacity-01-idle-0-r1",
+    "capacity-02-native-1-r1",
+    "capacity-03-python-5-r1",
+    "capacity-04-native-5-r1",
+    "capacity-05-native-5-r2",
+    "capacity-06-python-5-r2",
+    "capacity-07-native-1-r2",
+    "capacity-08-idle-0-r2",
+    "capacity-09-python-5-r3",
+    "capacity-10-idle-0-r3",
+    "capacity-11-native-5-r3",
+    "capacity-12-native-1-r3"
+  ],
+  "config_schema": "flydrones-camera-render-capacity-config-v1",
+  "frozen_hashes": {
+    "camera_model": "bf75df5e0dc2d359f270342b0b60230af402ee6d6834f8e7afd7a79f3521c734",
+    "camera_model_configurator": "8e0361a68c5755251324cdece392f470daba131446b6ee444b5f168e96677505",
+    "camera_phase": "e0ac374e4ad37c453ba6ac84767beb3af9539ada4cdc3ab42a884d1ca217a0e4",
+    "camera_scheduler": "bb4f282ff21d71ad4864c46c9b2b8a6911a571d5f53e9ee284c039f9932660a0",
+    "campaign_runner": "be4cdc727668707afa9fa7edd91709da16af4327803d3d02ca48ac1d9d36dc81",
+    "capacity_contract": "df5e3e26452dcb1db2c7e3c3ae68983e04973700e2a9e052c99c10967165e2a5",
+    "config_contract": "f1395cfa246641f862b1f47b5fd5e0a1c3903ccc8d2267673ed9c83eebedbaf0",
+    "launcher": "2ef04a1afb4ffa2bd655123c3faae041afd00fc441d96b2e9d4d06f8071703f3",
+    "native_build": "4a038bed74af562ab506c27d9fc6b1ca93936551bc1ae914886830f1e27d1814",
+    "native_cmake": "731c6a1aab2e06581e4f8be17ea2dc4223b17f7cc99ecfb0eca1c7363c012afb",
+    "native_executable": "abf865fda64b7e6d2620716f190e9b56f3971a587a793384e67e44fa5f77faf2",
+    "native_source": "4d7d4832937b4614650366de5025e44ac3ccc667f50f1553b3a46f534c59f89b",
+    "policy": "3c723587bfdbd15a8dc5976edc13d284b713dc081005b2dac04692c7d1b4accb",
+    "process_ownership": "765ac6946352b477d92a8e379795dce3737d09ed82cd2b73043c926a27607ce7",
+    "profile": "2255213a048356b142f7d38cba5f2d4517368710eb87227c0bff4a8e157cc4f9",
+    "python_observer": "a082d0050ee05738d5809335889c2ce8af643d547707d0c627c04cf23191620b",
+    "renderer_attestation": "a09370859fbed9609bad9599c94bda48fef4e398c0ef67d0930263ee189e8c2e",
+    "renderer_profile": "d8eed32a8fffe2a45112b69927783a02f4c65bf96a6878a9d2d988f03e43fdc3",
+    "runtime_probe": "e5a313e7adafdaacf47a26493b7990cc636bcf8025a2b9c3f5aa31b5991db425",
+    "stopper": "c424d813e5ccda76a488c63ab81e2612e9c621f701c5300d1cfa422e86bb1806",
+    "trial_runner": "3df061608b2bf55e7dc61ef2760a49aa8d4dc7d49dc22e59f934ce4fb15af741",
+    "vehicle_model": "a88b4ec30efde7a91d53d4a9d7e8541a250b185f35b3ac10915069c3d84a5afa",
+    "world_contract": "75d330a75069a97ad199eefd4b2d5dcba95d036a00462016b3cafb13a0d6c56c",
+    "world_generator": "6613fed9212aeed2ff7c7403fee6ee272132e02bbcc2d73eac08f83dd4b401d2"
+  },
+  "policy": "docs/results/vio-stress/policy-checkpoint.npz",
+  "profile": "configs/vio_fault_profiles/baseline.json",
+  "px4_revision": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+  "renderer_profile": "d3d12-nvidia",
+  "schedule": [
+    {
+      "cell": "idle-0",
+      "implementation": "native-cpp",
+      "name": "capacity-01-idle-0-r1",
+      "repetition": 1,
+      "sequence": 1,
+      "subscriber_count": 0
+    },
+    {
+      "cell": "native-1",
+      "implementation": "native-cpp",
+      "name": "capacity-02-native-1-r1",
+      "repetition": 1,
+      "sequence": 2,
+      "subscriber_count": 1
+    },
+    {
+      "cell": "python-5",
+      "implementation": "python",
+      "name": "capacity-03-python-5-r1",
+      "repetition": 1,
+      "sequence": 3,
+      "subscriber_count": 5
+    },
+    {
+      "cell": "native-5",
+      "implementation": "native-cpp",
+      "name": "capacity-04-native-5-r1",
+      "repetition": 1,
+      "sequence": 4,
+      "subscriber_count": 5
+    },
+    {
+      "cell": "native-5",
+      "implementation": "native-cpp",
+      "name": "capacity-05-native-5-r2",
+      "repetition": 2,
+      "sequence": 5,
+      "subscriber_count": 5
+    },
+    {
+      "cell": "python-5",
+      "implementation": "python",
+      "name": "capacity-06-python-5-r2",
+      "repetition": 2,
+      "sequence": 6,
+      "subscriber_count": 5
+    },
+    {
+      "cell": "native-1",
+      "implementation": "native-cpp",
+      "name": "capacity-07-native-1-r2",
+      "repetition": 2,
+      "sequence": 7,
+      "subscriber_count": 1
+    },
+    {
+      "cell": "idle-0",
+      "implementation": "native-cpp",
+      "name": "capacity-08-idle-0-r2",
+      "repetition": 2,
+      "sequence": 8,
+      "subscriber_count": 0
+    },
+    {
+      "cell": "python-5",
+      "implementation": "python",
+      "name": "capacity-09-python-5-r3",
+      "repetition": 3,
+      "sequence": 9,
+      "subscriber_count": 5
+    },
+    {
+      "cell": "idle-0",
+      "implementation": "native-cpp",
+      "name": "capacity-10-idle-0-r3",
+      "repetition": 3,
+      "sequence": 10,
+      "subscriber_count": 0
+    },
+    {
+      "cell": "native-5",
+      "implementation": "native-cpp",
+      "name": "capacity-11-native-5-r3",
+      "repetition": 3,
+      "sequence": 11,
+      "subscriber_count": 5
+    },
+    {
+      "cell": "native-1",
+      "implementation": "native-cpp",
+      "name": "capacity-12-native-1-r3",
+      "repetition": 3,
+      "sequence": 12,
+      "subscriber_count": 1
+    }
+  ],
+  "schema": "flydrones-camera-render-capacity-campaign-v1",
+  "scores": [
+    {
+      "cell": "idle-0",
+      "evidence_failures": [
+        "renderer_attestation_rejected",
+        "px4_health_invalid",
+        "px4_not_disarmed",
+        "px4_not_landed",
+        "scored_duration_incomplete",
+        "subscriber_count_mismatch",
+        "observer_not_clean",
+        "scheduler_not_clean",
+        "launcher_failed",
+        "manifest_evidence_rejected",
+        "resource_evidence_invalid",
+        "rtf_missing_or_invalid"
+      ],
+      "evidence_valid": false,
+      "failures": [
+        "renderer_attestation_rejected",
+        "px4_health_invalid",
+        "px4_not_disarmed",
+        "px4_not_landed",
+        "scored_duration_incomplete",
+        "subscriber_count_mismatch",
+        "observer_not_clean",
+        "scheduler_not_clean",
+        "launcher_failed",
+        "manifest_evidence_rejected",
+        "resource_evidence_invalid",
+        "rtf_missing_or_invalid"
+      ],
+      "name": "capacity-01-idle-0-r1",
+      "performance_failures": [],
+      "performance_pass": false,
+      "repetition": 1,
+      "rtf": null,
+      "score_status": "unscored",
+      "sequence": 1
+    },
+    {
+      "cell": "native-1",
+      "evidence_failures": [],
+      "evidence_valid": true,
+      "failures": [
+        "rtf_below_threshold"
+      ],
+      "name": "capacity-02-native-1-r1",
+      "performance_failures": [
+        "rtf_below_threshold"
+      ],
+      "performance_pass": false,
+      "repetition": 1,
+      "rtf": 0.6001154947094474,
+      "score_status": "scored",
+      "sequence": 2
+    },
+    {
+      "cell": "python-5",
+      "evidence_failures": [
+        "renderer_attestation_rejected",
+        "px4_health_invalid",
+        "px4_not_disarmed",
+        "px4_not_landed",
+        "scored_duration_incomplete",
+        "subscriber_count_mismatch",
+        "launcher_failed",
+        "manifest_evidence_rejected",
+        "camera_dimensions_invalid",
+        "camera_format_invalid",
+        "camera_phase_summary_rejected",
+        "resource_evidence_invalid",
+        "rtf_missing_or_invalid"
+      ],
+      "evidence_valid": false,
+      "failures": [
+        "renderer_attestation_rejected",
+        "px4_health_invalid",
+        "px4_not_disarmed",
+        "px4_not_landed",
+        "scored_duration_incomplete",
+        "subscriber_count_mismatch",
+        "launcher_failed",
+        "manifest_evidence_rejected",
+        "camera_dimensions_invalid",
+        "camera_format_invalid",
+        "camera_phase_summary_rejected",
+        "resource_evidence_invalid",
+        "rtf_missing_or_invalid"
+      ],
+      "name": "capacity-03-python-5-r1",
+      "performance_failures": [],
+      "performance_pass": false,
+      "repetition": 1,
+      "rtf": null,
+      "score_status": "unscored",
+      "sequence": 3
+    },
+    {
+      "cell": "native-5",
+      "evidence_failures": [],
+      "evidence_valid": true,
+      "failures": [
+        "phase_error_p95_exceeded",
+        "rtf_below_threshold"
+      ],
+      "name": "capacity-04-native-5-r1",
+      "performance_failures": [
+        "phase_error_p95_exceeded",
+        "rtf_below_threshold"
+      ],
+      "performance_pass": false,
+      "repetition": 1,
+      "rtf": 0.5073097264344697,
+      "score_status": "scored",
+      "sequence": 4
+    },
+    {
+      "cell": "native-5",
+      "evidence_failures": [],
+      "evidence_valid": true,
+      "failures": [
+        "rtf_below_threshold"
+      ],
+      "name": "capacity-05-native-5-r2",
+      "performance_failures": [
+        "rtf_below_threshold"
+      ],
+      "performance_pass": false,
+      "repetition": 2,
+      "rtf": 0.5071928937046264,
+      "score_status": "scored",
+      "sequence": 5
+    },
+    {
+      "cell": "python-5",
+      "evidence_failures": [
+        "camera_integrity_error",
+        "camera_phase_summary_rejected"
+      ],
+      "evidence_valid": false,
+      "failures": [
+        "camera_integrity_error",
+        "camera_phase_summary_rejected",
+        "rtf_below_threshold"
+      ],
+      "name": "capacity-06-python-5-r2",
+      "performance_failures": [
+        "rtf_below_threshold"
+      ],
+      "performance_pass": false,
+      "repetition": 2,
+      "rtf": 0.5949905626234887,
+      "score_status": "scored",
+      "sequence": 6
+    },
+    {
+      "cell": "native-1",
+      "evidence_failures": [
+        "renderer_attestation_rejected",
+        "px4_health_invalid",
+        "px4_not_disarmed",
+        "px4_not_landed",
+        "scored_duration_incomplete",
+        "subscriber_count_mismatch",
+        "observer_not_clean",
+        "scheduler_not_clean",
+        "launcher_failed",
+        "manifest_evidence_rejected",
+        "camera_dimensions_invalid",
+        "camera_format_invalid",
+        "camera_phase_summary_rejected",
+        "resource_evidence_invalid",
+        "rtf_missing_or_invalid"
+      ],
+      "evidence_valid": false,
+      "failures": [
+        "renderer_attestation_rejected",
+        "px4_health_invalid",
+        "px4_not_disarmed",
+        "px4_not_landed",
+        "scored_duration_incomplete",
+        "subscriber_count_mismatch",
+        "observer_not_clean",
+        "scheduler_not_clean",
+        "launcher_failed",
+        "manifest_evidence_rejected",
+        "camera_dimensions_invalid",
+        "camera_format_invalid",
+        "camera_phase_summary_rejected",
+        "resource_evidence_invalid",
+        "rtf_missing_or_invalid"
+      ],
+      "name": "capacity-07-native-1-r2",
+      "performance_failures": [],
+      "performance_pass": false,
+      "repetition": 2,
+      "rtf": null,
+      "score_status": "unscored",
+      "sequence": 7
+    },
+    {
+      "cell": "idle-0",
+      "evidence_failures": [],
+      "evidence_valid": true,
+      "failures": [
+        "rtf_below_threshold"
+      ],
+      "name": "capacity-08-idle-0-r2",
+      "performance_failures": [
+        "rtf_below_threshold"
+      ],
+      "performance_pass": false,
+      "repetition": 2,
+      "rtf": 0.6088927236573959,
+      "score_status": "scored",
+      "sequence": 8
+    },
+    {
+      "cell": "python-5",
+      "evidence_failures": [
+        "camera_integrity_error",
+        "camera_phase_summary_rejected"
+      ],
+      "evidence_valid": false,
+      "failures": [
+        "camera_integrity_error",
+        "camera_phase_summary_rejected",
+        "rtf_below_threshold"
+      ],
+      "name": "capacity-09-python-5-r3",
+      "performance_failures": [
+        "rtf_below_threshold"
+      ],
+      "performance_pass": false,
+      "repetition": 3,
+      "rtf": 0.6133683859638316,
+      "score_status": "scored",
+      "sequence": 9
+    },
+    {
+      "cell": "idle-0",
+      "evidence_failures": [],
+      "evidence_valid": true,
+      "failures": [
+        "rtf_below_threshold"
+      ],
+      "name": "capacity-10-idle-0-r3",
+      "performance_failures": [
+        "rtf_below_threshold"
+      ],
+      "performance_pass": false,
+      "repetition": 3,
+      "rtf": 0.6031550826357261,
+      "score_status": "scored",
+      "sequence": 10
+    },
+    {
+      "cell": "native-5",
+      "evidence_failures": [],
+      "evidence_valid": true,
+      "failures": [
+        "rtf_below_threshold"
+      ],
+      "name": "capacity-11-native-5-r3",
+      "performance_failures": [
+        "rtf_below_threshold"
+      ],
+      "performance_pass": false,
+      "repetition": 3,
+      "rtf": 0.5086898095511974,
+      "score_status": "scored",
+      "sequence": 11
+    },
+    {
+      "cell": "native-1",
+      "evidence_failures": [],
+      "evidence_valid": true,
+      "failures": [
+        "rtf_below_threshold"
+      ],
+      "name": "capacity-12-native-1-r3",
+      "performance_failures": [
+        "rtf_below_threshold"
+      ],
+      "performance_pass": false,
+      "repetition": 3,
+      "rtf": 0.5885356117095607,
+      "score_status": "scored",
+      "sequence": 12
+    }
+  ],
+  "software_versions": {
+    "gz_msgs": "10.4.0",
+    "gz_transport": "13.6.0"
+  },
+  "thresholds": {
+    "max_image_hz": 10.5,
+    "max_phase_error_p95_ns": 8000000,
+    "max_spacing_median_error_ns": 8000000,
+    "min_image_hz": 9.5,
+    "min_rtf": 0.95,
+    "native_improvement_min": 0.05,
+    "repeatability_rtf_range_max": 0.03,
+    "scored_duration_s": 30.0,
+    "wall_timeout_s": 120.0
+  },
+  "vehicle_count": 5,
+  "vehicle_model": "assets/gazebo/models/x500_depth_fly",
+  "world": "flydrones_forest"
+}

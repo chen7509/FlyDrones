@@ -1197,6 +1197,35 @@ def run_capacity_trial(
     px4_revision = str(config.get("px4_revision", ""))
     if px4_revision != "d6f12ad1c4f70ad3230afd7d86e971421e02fef4":
         raise ValueError("capacity trial requires the frozen PX4 revision")
+    px4_build_identity = config.get("px4_build_identity")
+    if not isinstance(px4_build_identity, Mapping):
+        raise ValueError("capacity trial requires the readiness PX4 build identity")
+    required_build_fields = {
+        "schema": "flydrones-px4-build-evidence-v2",
+        "build_name": px4_build_name,
+        "px4_revision": px4_revision,
+        "vehicle_imu_patch_applied": True,
+        "nolockstep": True,
+        "board_definition": "#define CONFIG_BOARD_NOLOCKSTEP 1",
+    }
+    if any(px4_build_identity.get(key) != value for key, value in required_build_fields.items()):
+        raise ValueError("capacity trial PX4 build identity conflicts with the frozen contract")
+    for field in (
+        "binary_sha256",
+        "boardconfig_sha256",
+        "px4_patch_sha256",
+        "vehicle_imu_sha256",
+    ):
+        value = px4_build_identity.get(field)
+        if not isinstance(value, str) or re.fullmatch(r"[0-9a-f]{64}", value) is None:
+            raise ValueError(f"capacity trial PX4 build identity {field} is invalid")
+    patch = (ROOT / str(px4_build_identity.get("px4_patch", ""))).resolve()
+    try:
+        patch.relative_to(ROOT.resolve())
+    except ValueError as exc:
+        raise ValueError("capacity trial PX4 patch must remain inside the repository") from exc
+    if not patch.is_file() or _sha256(patch) != px4_build_identity.get("px4_patch_sha256"):
+        raise ValueError("capacity trial PX4 patch artifact does not match its frozen hash")
     backend = _backend or SubprocessCapacityBackend()
     occupied = backend.occupied_resources()
     if occupied:
@@ -1249,6 +1278,7 @@ def run_capacity_trial(
         "frozen_hashes": frozen_hashes,
         "source_hashes_match": source_hashes_match,
         "native_executable_hash_match": native_executable_hash_match,
+        "px4_build_identity_match": False,
         "observer_closed_cleanly": False,
         "scheduler_closed_cleanly": False,
         "stop_exit_code": None,
@@ -1288,6 +1318,19 @@ def run_capacity_trial(
         "FLYDRONES_CAPACITY_SUBSCRIBER_COUNT": str(run.cell.subscriber_count),
         "PX4_BUILD_NAME": px4_build_name,
         "FLYDRONES_EXPECTED_PX4_REVISION": px4_revision,
+        "FLYDRONES_PX4_PATCH": str(patch),
+        "FLYDRONES_EXPECTED_PX4_BINARY_SHA256": str(
+            px4_build_identity["binary_sha256"]
+        ),
+        "FLYDRONES_EXPECTED_PX4_BOARDCONFIG_SHA256": str(
+            px4_build_identity["boardconfig_sha256"]
+        ),
+        "FLYDRONES_EXPECTED_PX4_PATCH_SHA256": str(
+            px4_build_identity["px4_patch_sha256"]
+        ),
+        "FLYDRONES_EXPECTED_VEHICLE_IMU_SHA256": str(
+            px4_build_identity["vehicle_imu_sha256"]
+        ),
         "FLYDRONES_CAPACITY_SCHEDULER_READY_MARKER": str(
             output / "camera-scheduler-ready.json"
         ),
@@ -1332,14 +1375,16 @@ def run_capacity_trial(
         ):
             manifest["errors"].append("PX4 health/disarmed/landed gate failed")
         px4_build = readiness.get("px4_build")
-        if not isinstance(px4_build, Mapping) or not (
-            px4_build.get("build_name") == px4_build_name
-            and px4_build.get("px4_revision") == px4_revision
-            and px4_build.get("nolockstep") is True
-            and isinstance(px4_build.get("binary_sha256"), str)
-            and len(px4_build["binary_sha256"]) == 64
-        ):
-            manifest["errors"].append("PX4 no-lockstep build evidence rejected")
+        expected_px4_build = {
+            key: value
+            for key, value in px4_build_identity.items()
+            if key != "px4_patch"
+        }
+        manifest["px4_build_identity_match"] = (
+            isinstance(px4_build, Mapping) and dict(px4_build) == expected_px4_build
+        )
+        if manifest["px4_build_identity_match"] is not True:
+            manifest["errors"].append("PX4 readiness build identity mismatch")
         start_raw = backend.capture_connections(
             stage="start", subscriber_count=run.cell.subscriber_count
         )

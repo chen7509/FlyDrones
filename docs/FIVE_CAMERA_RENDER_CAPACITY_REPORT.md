@@ -1,5 +1,7 @@
 # Five-Camera Render Capacity Report
 
+> Current update (2026-09-30): after fixing the PX4 first-IMU-sample defect, the gated campaign `first-imu-dt-camera-20260930-01` completed all 12 slots. It remains `non_monotonic_or_inconclusive` and is not production-integration eligible. Valid idle runs measured 0.6032–0.6089 RTF; valid native five-camera runs measured 0.5072–0.5087 RTF. Five slots had invalid startup or camera-integrity evidence. The gate now binds the exact readiness-tested PX4 binary, board configuration, patch, and `VehicleIMU.cpp`; a post-run check confirmed the same binary in every evidence-valid slot. See [`PX4_SENSOR_READINESS_REPORT.md`](PX4_SENSOR_READINESS_REPORT.md) and the [new compact evidence](results/camera-render-capacity/first-imu-dt-camera-20260930-01). The report below preserves the preceding `task7-frozen-20260929-234951` campaign for comparison.
+
 Date: 2026-09-30
 
 Campaign: `task7-frozen-20260929-234951`

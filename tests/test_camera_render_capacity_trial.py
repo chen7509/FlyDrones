@@ -166,6 +166,19 @@ def _config() -> dict[str, object]:
         "vehicle_count": 5,
         "px4_build_name": "px4_sitl_nolockstep",
         "px4_revision": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+        "px4_build_identity": {
+            "schema": "flydrones-px4-build-evidence-v2",
+            "build_name": "px4_sitl_nolockstep",
+            "px4_revision": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+            "binary_sha256": "a" * 64,
+            "boardconfig_sha256": "b" * 64,
+            "px4_patch": "patches/px4/vehicle-imu-first-sample-dt.patch",
+            "px4_patch_sha256": "cd36509e63b3709770366a17a07cca67591be409c02a4475ecd3508923d8fd94",
+            "vehicle_imu_sha256": "d" * 64,
+            "vehicle_imu_patch_applied": True,
+            "nolockstep": True,
+            "board_definition": "#define CONFIG_BOARD_NOLOCKSTEP 1",
+        },
         "thresholds": {
             "min_rtf": 0.95,
             "min_image_hz": 9.5,
@@ -465,10 +478,16 @@ class FakeBackend:
             "px4_all_disarmed": self.failure != "px4_armed",
             "px4_all_landed": self.failure != "px4_armed",
             "px4_build": {
+                "schema": "flydrones-px4-build-evidence-v2",
                 "build_name": "px4_sitl_nolockstep",
                 "nolockstep": True,
                 "px4_revision": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
                 "binary_sha256": "a" * 64,
+                "boardconfig_sha256": "b" * 64,
+                "px4_patch_sha256": "cd36509e63b3709770366a17a07cca67591be409c02a4475ecd3508923d8fd94",
+                "vehicle_imu_sha256": "d" * 64,
+                "vehicle_imu_patch_applied": True,
+                "board_definition": "#define CONFIG_BOARD_NOLOCKSTEP 1",
             },
             "observer_pid": 4321,
         }
@@ -650,6 +669,10 @@ def test_capacity_launcher_uses_temporary_attestation_and_stable_gazebo_identity
     assert 'build="$px4_root/build/$px4_build_name"' in launcher
     assert 'PX4_BUILD_NAME must be px4_sitl_nolockstep in capacity mode' in launcher
     assert '#define CONFIG_BOARD_NOLOCKSTEP 1' in launcher
+    assert "FLYDRONES_EXPECTED_PX4_BINARY_SHA256" in launcher
+    assert "FLYDRONES_EXPECTED_PX4_PATCH_SHA256" in launcher
+    assert "FLYDRONES_EXPECTED_VEHICLE_IMU_SHA256" in launcher
+    assert "PX4 readiness build identity mismatch" in launcher
     assert 'px4-build-evidence.json' in launcher
     assert 'px4-capacity-platform-ready.json' in launcher
     assert 'if [[ "$capacity_mode" != 1 ]]; then gazebo_run_args=(-r "${gazebo_run_args[@]}"); fi' in launcher
@@ -722,6 +745,36 @@ def test_capacity_trial_freezes_official_nolockstep_px4_build(tmp_path: Path):
     assert backend.environment["FLYDRONES_EXPECTED_PX4_REVISION"] == (
         "d6f12ad1c4f70ad3230afd7d86e971421e02fef4"
     )
+    assert backend.environment["FLYDRONES_EXPECTED_PX4_BINARY_SHA256"] == "a" * 64
+    assert backend.environment["FLYDRONES_EXPECTED_PX4_PATCH_SHA256"] == (
+        "cd36509e63b3709770366a17a07cca67591be409c02a4475ecd3508923d8fd94"
+    )
+    assert backend.environment["FLYDRONES_EXPECTED_VEHICLE_IMU_SHA256"] == "d" * 64
+
+
+def test_capacity_trial_rejects_px4_build_that_differs_from_readiness(tmp_path: Path):
+    backend = FakeBackend()
+    original_wait_ready = backend.wait_ready
+
+    def mismatched_wait_ready(**kwargs):
+        ready = original_wait_ready(**kwargs)
+        ready["px4_build"]["binary_sha256"] = "e" * 64
+        return ready
+
+    backend.wait_ready = mismatched_wait_ready
+    native_executable = tmp_path / "flydrones_camera_phase_native"
+    native_executable.write_bytes(b"native capacity test executable")
+
+    result = run_capacity_trial(
+        run=_run("native-1"),
+        config=_config(),
+        output_root=tmp_path,
+        native_executable=native_executable,
+        _backend=backend,
+    )
+
+    assert result["score"] is None
+    assert "PX4 readiness build identity mismatch" in result["manifest"]["errors"]
 
 
 def test_capacity_trial_rejects_lockstep_px4_build_before_start(tmp_path: Path):
@@ -770,6 +823,7 @@ def test_successful_trial_writes_manifest_summary_epoch_and_no_worker(tmp_path: 
     assert manifest["frozen_hashes"]["runner"]
     assert manifest["source_hashes_match"] is True
     assert manifest["native_executable_hash_match"] is True
+    assert manifest["px4_build_identity_match"] is True
     assert len(manifest["ulog_artifacts"]) == 5
     assert manifest["config_artifact"] == "trial-config.json"
     assert (output / "trial-config.json").is_file()

@@ -1,0 +1,10 @@
+{
+  "accepted": true,
+  "classification": "stable_sensor_readiness",
+  "readiness_config": "results/px4-sensor-readiness/formal-first-imu-dt-02/campaign-config.json",
+  "readiness_config_sha256": "7b6d497d733041570fda249ae945138cae2155330fa572a3d99d16e812c2b326",
+  "readiness_summary": "results/px4-sensor-readiness/formal-first-imu-dt-02/campaign-summary.json",
+  "readiness_summary_sha256": "4f005bbb4e77c590a50c7229f63706a4ea21a74b4511da09554560149e810f3f",
+  "run_count": 10,
+  "schema": "flydrones-camera-rerun-gate-v1"
+}

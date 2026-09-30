@@ -183,3 +183,31 @@ def test_owned_stop_signals_only_matching_processes_and_reports_reused_pid(tmp_p
     assert evidence["already_gone"] == [missing.to_dict()]
     assert evidence["ownership_mismatch"] == [stale.to_dict()]
     assert evidence["failed_to_stop"] == []
+
+
+def test_owned_stop_waits_for_process_to_disappear_after_sigkill(tmp_path):
+    proc_root = tmp_path / "proc"
+    _write_process(proc_root, 10, name="gz", start_ticks=100, argv=("gz", "sim"))
+    owned = ProcessIdentity(10, 100, ("gz", "sim"), "gazebo-server")
+    signals = []
+    sleeps = []
+
+    def send_signal(pid, signum):
+        signals.append((pid, signum))
+
+    def delayed_exit(_duration):
+        sleeps.append(True)
+        if len(sleeps) == 3:
+            shutil.rmtree(proc_root / "10")
+
+    evidence = stop_owned_processes(
+        [owned],
+        timeout_s=0.1,
+        proc_root=proc_root,
+        send_signal=send_signal,
+        sleep=delayed_exit,
+    )
+
+    assert signals == [(10, signal.SIGTERM), (10, getattr(signal, "SIGKILL", 9))]
+    assert evidence["stopped"] == [owned.to_dict()]
+    assert evidence["failed_to_stop"] == []

@@ -168,12 +168,15 @@ def score_readiness_run(
 
     build = _mapping(manifest.get("px4_build_evidence"))
     if not (
-        build.get("schema") == "flydrones-px4-build-evidence-v1"
+        build.get("schema") == "flydrones-px4-build-evidence-v2"
         and build.get("build_name") == "px4_sitl_nolockstep"
         and build.get("nolockstep") is True
         and _valid_git_revision(build.get("px4_revision"))
         and _valid_sha256(build.get("binary_sha256"))
         and _valid_sha256(build.get("boardconfig_sha256"))
+        and _valid_sha256(build.get("px4_patch_sha256"))
+        and _valid_sha256(build.get("vehicle_imu_sha256"))
+        and build.get("vehicle_imu_patch_applied") is True
         and build.get("board_definition") == "#define CONFIG_BOARD_NOLOCKSTEP 1"
     ):
         evidence.append("px4_build_evidence_invalid")
@@ -377,6 +380,12 @@ def classify_readiness_campaign(
     expected_revision = config.get("px4_revision")
     if not _valid_git_revision(expected_revision):
         raise ValueError("configured PX4 revision missing or invalid")
+    expected_patch_sha256 = config.get("px4_patch_sha256")
+    if not _valid_sha256(expected_patch_sha256):
+        raise ValueError("configured PX4 patch hash missing or invalid")
+    expected_vehicle_imu_sha256 = config.get("px4_vehicle_imu_sha256")
+    if not _valid_sha256(expected_vehicle_imu_sha256):
+        raise ValueError("configured VehicleIMU hash missing or invalid")
     expected_runs = readiness_schedule(phase)
     expected_schedule = [run.as_dict() for run in expected_runs]
     configured = [dict(item) for item in _configured_schedule(config, phase)]
@@ -393,6 +402,18 @@ def classify_readiness_campaign(
         for manifest, _summary in runs
     ):
         reasons.append("px4_revision_mismatch")
+    if any(
+        _mapping(manifest.get("px4_build_evidence")).get("px4_patch_sha256")
+        != expected_patch_sha256
+        for manifest, _summary in runs
+    ):
+        reasons.append("px4_patch_mismatch")
+    if any(
+        _mapping(manifest.get("px4_build_evidence")).get("vehicle_imu_sha256")
+        != expected_vehicle_imu_sha256
+        for manifest, _summary in runs
+    ):
+        reasons.append("px4_vehicle_imu_source_mismatch")
     if len(scores) != len(expected_runs):
         reasons.append("run_count_mismatch")
     if len(set(identities)) != len(identities):
