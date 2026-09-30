@@ -2,9 +2,11 @@ from __future__ import annotations
 
 import copy
 import math
+from pathlib import Path
 
 import pytest
 
+from flydrones.camera_rerun_gate import validate_camera_rerun_gate
 from flydrones.px4_sensor_readiness import (
     ReadinessThresholds,
     classify_readiness_campaign,
@@ -19,6 +21,26 @@ THRESHOLDS = {
     "repeatability_rtf_range_max": 0.03,
     "formal_run_count": 10,
 }
+ROOT = Path(__file__).parents[1]
+
+
+def test_readiness_uses_versioned_launcher_without_mutating_frozen_camera_inputs():
+    launcher = (ROOT / "tools/launch_px4_sensor_readiness_wsl.sh").read_text(
+        encoding="utf-8"
+    )
+    runner = (ROOT / "tools/run_px4_sensor_readiness_campaign_wsl.py").read_text(
+        encoding="utf-8"
+    )
+    generator = (ROOT / "tools/generate_px4_sensor_readiness_world.py").read_text(
+        encoding="utf-8"
+    )
+
+    assert "launch_px4_sensor_readiness_wsl.sh" in runner
+    assert "generate_px4_sensor_readiness_world.py" in launcher
+    assert 'platform_readiness_only="${FLYDRONES_PLATFORM_READINESS_ONLY:-0}"' in launcher
+    assert 'echo "Gazebo preloaded sensor publishers timed out"' in launcher
+    assert "choices=(0, 1, 2, 5)" in generator
+    assert "range(args.preload_vehicles)" in generator
 
 
 def _config(phase: str) -> dict[str, object]:
@@ -49,6 +71,37 @@ def _good_pair(run, *, rtf: float = 0.97):
         "sensor_timeout_count": 0,
         "trial_cleanup_verified": True,
         "shared_px4_files_restored": True,
+        "errors": [],
+        "px4_build_evidence": {
+            "schema": "flydrones-px4-build-evidence-v1",
+            "build_name": "px4_sitl_nolockstep",
+            "px4_revision": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+            "nolockstep": True,
+            "binary_sha256": "a" * 64,
+        },
+        "sensor_source_evidence": {
+            "schema": "flydrones-gazebo-sensor-source-warmup-v1",
+            "accepted": True,
+            "expected_topic_count": run.vehicle_count * 4,
+            "message_topic_count": run.vehicle_count * 4,
+        },
+        "sensor_topology_evidence": {
+            "schema": "flydrones-px4-sensor-topic-connections-v1",
+            "accepted": True,
+            "expected_topic_count": run.vehicle_count * 4,
+            "publisher_count": run.vehicle_count * 4,
+            "subscriber_count": run.vehicle_count * 4,
+        },
+        "cleanup_evidence": {
+            "schema": "flydrones-owned-process-cleanup-v1",
+            "recorded_processes": run.vehicle_count + 1,
+            "ownership_mismatch": [],
+            "failed_to_stop": [],
+        },
+        "restoration_evidence": {
+            "schema": "flydrones-px4-shared-restoration-v1",
+            "restored": True,
+        },
         "ulog_artifacts": [
             {
                 "vehicle_id": vehicle_id,
@@ -132,6 +185,36 @@ def test_good_readiness_run_passes_evidence_and_performance():
                 ulog_artifacts=manifest["ulog_artifacts"][:-1]
             ),
             "px4_ulogs_incomplete",
+        ),
+        (
+            lambda manifest, _summary: manifest.update(errors=["missing artifact"]),
+            "artifact_collection_failed",
+        ),
+        (
+            lambda manifest, _summary: manifest.update(px4_build_evidence={}),
+            "px4_build_evidence_invalid",
+        ),
+        (
+            lambda manifest, _summary: manifest["sensor_source_evidence"].update(
+                message_topic_count=0
+            ),
+            "sensor_source_evidence_invalid",
+        ),
+        (
+            lambda manifest, _summary: manifest["sensor_topology_evidence"].update(
+                subscriber_count=0
+            ),
+            "sensor_topology_evidence_invalid",
+        ),
+        (
+            lambda manifest, _summary: manifest["cleanup_evidence"].update(
+                failed_to_stop=[{"pid": 123}]
+            ),
+            "cleanup_evidence_invalid",
+        ),
+        (
+            lambda manifest, _summary: manifest.update(restoration_evidence={}),
+            "restoration_evidence_invalid",
         ),
     ],
 )
@@ -222,3 +305,35 @@ def test_formal_rejects_changed_or_incomplete_schedule():
     result = classify_readiness_campaign(pairs[:-1], _config("formal"), phase="formal")
     assert result["classification"] == "inconclusive_or_invalid"
     assert result["camera_rerun_eligible"] is False
+
+
+def test_camera_rerun_gate_accepts_only_complete_formal_pass():
+    pairs = [_good_pair(run) for run in readiness_schedule("formal")]
+    config = _config("formal")
+    passed = classify_readiness_campaign(pairs, config, phase="formal")
+
+    gate = validate_camera_rerun_gate(passed, config)
+    assert gate["accepted"] is True
+    assert gate["run_count"] == 10
+
+    failed = copy.deepcopy(passed)
+    failed["scores"][-1]["evidence_valid"] = False
+    with pytest.raises(ValueError, match="ten valid passing runs"):
+        validate_camera_rerun_gate(failed, config)
+
+    failed = copy.deepcopy(passed)
+    failed["camera_rerun_eligible"] = False
+    with pytest.raises(ValueError, match="not eligible"):
+        validate_camera_rerun_gate(failed, config)
+
+
+def test_gated_camera_entry_validates_readiness_before_legacy_runner():
+    entry = (
+        ROOT / "tools/run_gated_camera_render_capacity_campaign_wsl.py"
+    ).read_text(encoding="utf-8")
+
+    gate_call = entry.index("validate_camera_rerun_gate(")
+    legacy_call = entry.index("subprocess.run(")
+    assert gate_call < legacy_call
+    assert "--readiness-summary-sha256" in entry
+    assert "--readiness-config-sha256" in entry

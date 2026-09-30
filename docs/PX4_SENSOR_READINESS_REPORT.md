@@ -11,9 +11,9 @@ This work tests PX4 SITL and Gazebo on this Windows/WSL host. It is not HITL or 
 ## Completed steps
 
 1. PR #1 was merged into the fork integration branch `codex/hybrid-local-planner` at merge commit `8894add6a5cd817a2a7571d66c6e2e2edd6c99d0`.
-2. A no-camera sensor-readiness diagnostic was added for one, two, and five vehicles. It records the Gazebo sensor publishers, PX4 subscribers, initial and post-window MAVLink health, EKF2 health, ULogs, Gazebo CPU/RSS/thread samples, simulation clock, cleanup, and restoration evidence.
+2. A versioned no-camera sensor-readiness launcher and diagnostic were added for one, two, and five vehicles. The frozen camera/takeoff launcher and world generator remain byte-for-byte unchanged. The diagnostic records the Gazebo sensor publishers, PX4 subscribers, initial and post-window MAVLink health, EKF2 health, ULogs, Gazebo CPU/RSS/thread samples, simulation clock, cleanup, and restoration evidence.
 3. The formal five-vehicle gate ran ten isolated starts with a 30-second simulated scoring window and a 120-second wall timeout.
-4. The camera rerun was stopped by the gate. No new idle/one-camera/five-camera campaign was launched.
+4. The camera rerun was stopped by the gate. No new idle/one-camera/five-camera campaign was launched. Future reruns must use `tools/run_gated_camera_render_capacity_campaign_wsl.py`, which verifies the frozen readiness config and summary hashes and rejects anything other than the exact ten-slot formal pass before it invokes the legacy frozen camera runner.
 
 ## Startup diagnosis and correction
 
@@ -33,9 +33,11 @@ That sequence passed the final development campaign at every tested scale:
 
 | Vehicles | Evidence | Sensor timeout | RTF |
 |---:|---|---:|---:|
-| 1 | valid/pass | 0 | 0.99997 |
-| 2 | valid/pass | 0 | 0.99988 |
-| 5 | valid/pass | 0 | 0.99748 |
+| 1 | valid/pass | 0 | 0.99971 |
+| 2 | valid/pass | 0 | 0.99969 |
+| 5 | valid/pass | 0 | 0.99951 |
+
+These values are from `dev-20260930-05`, rerun after the readiness launcher and world generator were isolated from the legacy frozen camera inputs and after artifact-integrity checks became fail-closed.
 
 ## Formal gate result
 
@@ -56,7 +58,7 @@ The failed tenth start is retained. It is not discarded or replaced by an extra 
 
 ## Evidence
 
-Compact, reviewable evidence is under [`docs/results/px4-sensor-readiness/20260930`](results/px4-sensor-readiness/20260930). It includes every development campaign summary, the ten formal manifests/summaries/scores, the failed run's five startup-health records, source warmup, topic topology, build identity, cleanup/restoration evidence, and the explicit step-4 gated-skip record.
+Compact, reviewable evidence is under [`docs/results/px4-sensor-readiness/20260930`](results/px4-sensor-readiness/20260930). It includes every development campaign summary, the ten formal manifests/summaries/scores, the failed run's five startup-health records, source warmup, topic topology, build identity, cleanup/restoration evidence, and the explicit step-4 gated-skip record. The gated camera entry was also exercised against the 9/10 summary: it rejected the summary before writing gate authorization evidence or creating a camera campaign directory.
 
 Raw evidence remains local under `results/px4-sensor-readiness`. It includes approximately 1.05 GB of ULogs, console logs, Gazebo clock/resource/GPU samples, and all failed development attempts. Raw data is excluded from Git to avoid replacing or compressing original evidence into the repository.
 

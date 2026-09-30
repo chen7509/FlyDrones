@@ -129,6 +129,59 @@ def score_readiness_run(
         and not isinstance(vehicle_count, bool)
         and vehicle_count in {1, 2, 5}
     )
+    expected_topics = int(vehicle_count) * 4 if valid_vehicle_count else 0
+    errors = manifest.get("errors")
+    if not isinstance(errors, list) or errors:
+        evidence.append("artifact_collection_failed")
+
+    build = _mapping(manifest.get("px4_build_evidence"))
+    if not (
+        build.get("schema") == "flydrones-px4-build-evidence-v1"
+        and build.get("build_name") == "px4_sitl_nolockstep"
+        and build.get("nolockstep") is True
+        and isinstance(build.get("px4_revision"), str)
+        and len(str(build.get("px4_revision"))) == 40
+        and isinstance(build.get("binary_sha256"), str)
+        and len(str(build.get("binary_sha256"))) == 64
+    ):
+        evidence.append("px4_build_evidence_invalid")
+
+    source = _mapping(manifest.get("sensor_source_evidence"))
+    if not (
+        source.get("schema") == "flydrones-gazebo-sensor-source-warmup-v1"
+        and source.get("accepted") is True
+        and source.get("expected_topic_count") == expected_topics
+        and source.get("message_topic_count") == expected_topics
+    ):
+        evidence.append("sensor_source_evidence_invalid")
+
+    topology = _mapping(manifest.get("sensor_topology_evidence"))
+    if not (
+        topology.get("schema") == "flydrones-px4-sensor-topic-connections-v1"
+        and topology.get("accepted") is True
+        and topology.get("expected_topic_count") == expected_topics
+        and topology.get("publisher_count") == expected_topics
+        and topology.get("subscriber_count") == expected_topics
+    ):
+        evidence.append("sensor_topology_evidence_invalid")
+
+    cleanup = _mapping(manifest.get("cleanup_evidence"))
+    if not (
+        cleanup.get("schema") == "flydrones-owned-process-cleanup-v1"
+        and cleanup.get("recorded_processes") == (
+            int(vehicle_count) + 1 if valid_vehicle_count else -1
+        )
+        and cleanup.get("ownership_mismatch") == []
+        and cleanup.get("failed_to_stop") == []
+    ):
+        evidence.append("cleanup_evidence_invalid")
+
+    restoration = _mapping(manifest.get("restoration_evidence"))
+    if not (
+        restoration.get("schema") == "flydrones-px4-shared-restoration-v1"
+        and restoration.get("restored") is True
+    ):
+        evidence.append("restoration_evidence_invalid")
     if manifest.get("launcher_exit_code") != 0:
         evidence.append("launcher_failed")
     if manifest.get("platform_ready") is not True:

@@ -61,6 +61,13 @@ def _load_json(path: Path) -> dict[str, object]:
     return value
 
 
+def _load_json_or_empty(path: Path) -> dict[str, object]:
+    try:
+        return _load_json(path)
+    except (OSError, ValueError, json.JSONDecodeError):
+        return {}
+
+
 def _sha256(path: Path) -> str:
     digest = hashlib.sha256()
     with path.open("rb") as handle:
@@ -270,6 +277,11 @@ def run_trial(
         "sensor_timeout_count": 0,
         "trial_cleanup_verified": False,
         "shared_px4_files_restored": False,
+        "px4_build_evidence": {},
+        "sensor_source_evidence": {},
+        "sensor_topology_evidence": {},
+        "cleanup_evidence": {},
+        "restoration_evidence": {},
         "ulog_artifacts": [],
         "errors": [],
     }
@@ -307,7 +319,7 @@ def run_trial(
             env=environment, stdout=probe_log, stderr=subprocess.STDOUT, start_new_session=True,
         )
         launcher = subprocess.Popen(
-            ["bash", str(ROOT / "tools/launch_px4_depth_swarm_wsl.sh")],
+            ["bash", str(ROOT / "tools/launch_px4_sensor_readiness_wsl.sh")],
             env=environment, stdout=launch_log, stderr=subprocess.STDOUT, start_new_session=True,
         )
         platform = _wait_marker(
@@ -391,6 +403,21 @@ def run_trial(
         )
         manifest["shared_px4_files_restored"] = _evidence_boolean(
             run_dir, "restoration-evidence.json", "restored"
+        )
+        manifest["px4_build_evidence"] = _load_json_or_empty(
+            run_dir / "px4-build-evidence.json"
+        )
+        manifest["sensor_source_evidence"] = _load_json_or_empty(
+            run_dir / "px4-sensor-source-warmup.json"
+        )
+        manifest["sensor_topology_evidence"] = _load_json_or_empty(
+            run_dir / "px4-sensor-topic-connections.json"
+        )
+        manifest["cleanup_evidence"] = _load_json_or_empty(
+            run_dir / "cleanup-evidence.json"
+        )
+        manifest["restoration_evidence"] = _load_json_or_empty(
+            run_dir / "restoration-evidence.json"
         )
         ulogs, timeout_count, errors = _copy_artifacts(
             run_dir, output, run.vehicle_count

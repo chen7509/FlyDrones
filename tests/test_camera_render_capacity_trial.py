@@ -660,15 +660,15 @@ def test_capacity_launcher_uses_temporary_attestation_and_stable_gazebo_identity
     first_px4 = launcher.index('record_process "$(cat "$instance_dir/pid")" "px4-$instance_id"')
     assert first_px4 < final_resume
     source_warmup = launcher.index('"$run_dir/px4-sensor-source-warmup.json"')
-    assert 'echo "Gazebo preloaded sensor publishers timed out"' in launcher
-    prelaunch_sensor_gate = launcher.index(
-        'echo "Gazebo preloaded sensor publishers timed out"'
+    assert 'echo "PX4 instance $instance_id sensor publisher registration timed out"' in launcher
+    serial_sensor_gate = launcher.index(
+        'echo "PX4 instance $instance_id sensor publisher registration timed out"'
     )
-    assert prelaunch_sensor_gate < first_px4 < final_resume
+    assert first_px4 < serial_sensor_gate < final_resume
     assert 'echo "PX4 pre-resume bridge barrier timed out"' in launcher
     barrier = launcher.index('echo "PX4 pre-resume bridge barrier timed out"')
     sensor_topology = launcher.index('"$run_dir/px4-sensor-topic-connections.json"')
-    assert prelaunch_sensor_gate < first_px4 < barrier < final_resume < source_warmup < sensor_topology
+    assert final_resume < source_warmup < barrier < sensor_topology
     assert 'capacity-world-instance-$instance_id-resume.log' not in launcher
     assert 'capacity-world-instance-$instance_id-pause.log' not in launcher
     assert 'echo "PX4 concurrent sensor readiness failed"' in launcher
@@ -702,35 +702,6 @@ def test_capacity_launcher_uses_temporary_attestation_and_stable_gazebo_identity
     assert '"capacity-world-warmup-pause.log"' not in runner
     assert '"capacity-world-warmup-reset.log"' not in runner
     assert final_resume < launcher.index("  running=0", final_resume)
-
-
-def test_capacity_launcher_supports_platform_only_readiness_for_one_two_and_five():
-    launcher = (Path(__file__).parents[1] / "tools/launch_px4_depth_swarm_wsl.sh").read_text(
-        encoding="utf-8"
-    )
-
-    assert 'platform_readiness_only="${FLYDRONES_PLATFORM_READINESS_ONLY:-0}"' in launcher
-    assert 'case "$vehicle_count" in' in launcher
-    assert '1|2|5)' in launcher
-    assert 'FLYDRONES_VEHICLE_COUNT must be 1, 2, or 5' in launcher
-    assert 'if [[ "$platform_readiness_only" != 1 && -z "$camera_phase_ready_marker" ]]' in launcher
-    assert 'if [[ "$platform_readiness_only" == 1 ]]; then' in launcher
-    assert '"sensor_source_topic_count": int(sys.argv[2]) * 4' in launcher
-    assert '"sensor_connection_topic_count": int(sys.argv[2]) * 4' in launcher
-    platform_only_exit = launcher.index('if [[ "$platform_readiness_only" == 1 ]]; then')
-    camera_aux_wait = launcher.index(
-        'echo "capacity camera auxiliaries did not start after platform readiness"'
-    )
-    assert platform_only_exit < camera_aux_wait
-
-
-def test_px4_forest_generator_accepts_partial_preloaded_fleets():
-    generator = (
-        Path(__file__).parents[1] / "tools/generate_px4_forest_world.py"
-    ).read_text(encoding="utf-8")
-
-    assert "choices=(0, 1, 2, 5)" in generator
-    assert "range(args.preload_vehicles)" in generator
 
 
 def test_capacity_trial_freezes_official_nolockstep_px4_build(tmp_path: Path):
