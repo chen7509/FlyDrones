@@ -18,6 +18,7 @@ capacity_ready_marker="${FLYDRONES_CAPACITY_READY_MARKER:-}"
 capacity_observer_pid_file="${FLYDRONES_CAPACITY_OBSERVER_PID_FILE:-}"
 capacity_subscriber_count="${FLYDRONES_CAPACITY_SUBSCRIBER_COUNT:-}"
 expected_px4_revision="${FLYDRONES_EXPECTED_PX4_REVISION:-}"
+platform_readiness_only="${FLYDRONES_PLATFORM_READINESS_ONLY:-0}"
 world_source="$repo_root/results/px4-sitl-five-depth/flydrones_forest.sdf"
 world_target="$px4_root/Tools/simulation/gz/worlds/flydrones_forest.sdf"
 model_root="$px4_root/Tools/simulation/gz/models"
@@ -46,15 +47,22 @@ if [[ ! -x "$build/bin/px4" ]]; then
   echo "PX4 SITL binary is missing: $build/bin/px4" >&2
   exit 2
 fi
-if [[ "$vehicle_count" != 1 && "$vehicle_count" != 5 ]]; then
-  echo "FLYDRONES_VEHICLE_COUNT must be 1 or 5" >&2
-  exit 2
-fi
+case "$vehicle_count" in
+  1|2|5) ;;
+  *)
+    echo "FLYDRONES_VEHICLE_COUNT must be 1, 2, or 5" >&2
+    exit 2
+    ;;
+esac
 if [[ -n "$vio_fault_profile" && ! -f "$vio_fault_profile" ]]; then
   echo "VIO fault profile is missing: $vio_fault_profile" >&2
   exit 2
 fi
-if [[ -z "$camera_phase_ready_marker" ]]; then
+if [[ "$platform_readiness_only" != 0 && "$platform_readiness_only" != 1 ]]; then
+  echo "FLYDRONES_PLATFORM_READINESS_ONLY must be 0 or 1" >&2
+  exit 2
+fi
+if [[ "$platform_readiness_only" != 1 && -z "$camera_phase_ready_marker" ]]; then
   echo "FLYDRONES_CAMERA_PHASE_READY_MARKER is required" >&2
   exit 2
 fi
@@ -80,7 +88,8 @@ if [[ "$capacity_mode" == 1 ]]; then
     echo "PX4 capacity build does not prove CONFIG_BOARD_NOLOCKSTEP" >&2
     exit 2
   fi
-  if [[ -z "$capacity_ready_marker" || -z "$capacity_observer_pid_file" ]]; then
+  if [[ "$platform_readiness_only" != 1 \
+      && ( -z "$capacity_ready_marker" || -z "$capacity_observer_pid_file" ) ]]; then
     echo "capacity readiness marker and observer PID file are required" >&2
     exit 2
   fi
@@ -291,6 +300,28 @@ sensor_suffixes=(
   "navsat_sensor/navsat"
   "air_pressure_sensor/air_pressure"
 )
+if [[ "$capacity_mode" == 1 ]]; then
+  preloaded_publishers_ready=0
+  for _ in $(seq 1 300); do
+    topic_list="$(gz topic -l 2>/dev/null || true)"
+    advertised=0
+    for ((instance_id=0; instance_id<vehicle_count; instance_id++)); do
+      for suffix in "${sensor_suffixes[@]}"; do
+        topic="/world/flydrones_forest/model/x500_depth_fly_$instance_id/link/base_link/sensor/$suffix"
+        if grep -Fxq "$topic" <<<"$topic_list"; then advertised=$((advertised + 1)); fi
+      done
+    done
+    if [[ "$advertised" -eq $((vehicle_count * ${#sensor_suffixes[@]})) ]]; then
+      preloaded_publishers_ready=1
+      break
+    fi
+    sleep 0.1
+  done
+  if [[ "$preloaded_publishers_ready" != 1 ]]; then
+    echo "Gazebo preloaded sensor publishers timed out" >&2
+    exit 3
+  fi
+fi
 poses=(-4.0 -2.0 0.0 2.0 4.0)
 for ((instance_id=0; instance_id<vehicle_count; instance_id++)); do
   instance_dir="$run_dir/instance_$instance_id"
@@ -316,40 +347,43 @@ for ((instance_id=0; instance_id<vehicle_count; instance_id++)); do
     echo $! >"$instance_dir/pid"
   )
   record_process "$(cat "$instance_dir/pid")" "px4-$instance_id"
-  if [[ "$capacity_mode" == 1 ]]; then
-    instance_publishers_ready=0
-    for _ in $(seq 1 300); do
-      pid="$(cat "$instance_dir/pid")"
-      if ! kill -0 "$pid" 2>/dev/null; then
-        echo "PX4 instance $instance_id exited during sensor publisher registration" >&2
-        tail -30 "$instance_dir/out.log" >&2 || true
-        tail -30 "$instance_dir/err.log" >&2 || true
-        exit 3
-      fi
-      topic_list="$(gz topic -l 2>/dev/null || true)"
-      advertised=0
-      for suffix in "${sensor_suffixes[@]}"; do
-        topic="/world/flydrones_forest/model/x500_depth_fly_$instance_id/link/base_link/sensor/$suffix"
-        if grep -Fxq "$topic" <<<"$topic_list"; then advertised=$((advertised + 1)); fi
-      done
-      if [[ "$advertised" -eq "${#sensor_suffixes[@]}" ]]; then
-        instance_publishers_ready=1
-        break
-      fi
-      sleep 0.1
-    done
-    if [[ "$instance_publishers_ready" != 1 ]]; then
-      echo "PX4 instance $instance_id sensor publisher registration timed out" >&2
-      tail -30 "$instance_dir/out.log" >&2 || true
-      tail -30 "$instance_dir/err.log" >&2 || true
-      exit 3
-    fi
-  else
+  if [[ "$capacity_mode" != 1 ]]; then
     sleep 2
   fi
 done
 
 if [[ "$capacity_mode" == 1 ]]; then
+  # Do not advance simulation time until every PX4 instance has attached its
+  # Gazebo bridge. Resuming earlier makes the last instance miss the initial
+  # IMU stream and emit an Accel TIMEOUT even though it later recovers.
+  pre_resume_ready=0
+  for _ in $(seq 1 600); do
+    running=0
+    bridge_ready=0
+    for ((instance_id=0; instance_id<vehicle_count; instance_id++)); do
+      pid_file="$run_dir/instance_$instance_id/pid"
+      if [[ -f "$pid_file" ]] && kill -0 "$(cat "$pid_file")" 2>/dev/null; then
+        running=$((running + 1))
+      fi
+      if grep -Fq "[gz_bridge] world: flydrones_forest, model: x500_depth_fly_$instance_id" \
+        "$run_dir/instance_$instance_id/out.log"; then
+        bridge_ready=$((bridge_ready + 1))
+      fi
+    done
+    if [[ "$running" -eq "$vehicle_count" && "$bridge_ready" -eq "$vehicle_count" ]]; then
+      pre_resume_ready=1
+      break
+    fi
+    sleep 0.1
+  done
+  if [[ "$pre_resume_ready" != 1 ]]; then
+    echo "PX4 pre-resume bridge barrier timed out" >&2
+    for ((instance_id=0; instance_id<vehicle_count; instance_id++)); do
+      tail -30 "$run_dir/instance_$instance_id/out.log" >&2 || true
+      tail -30 "$run_dir/instance_$instance_id/err.log" >&2 || true
+    done
+    exit 3
+  fi
   if ! gz service -s "/world/flydrones_forest/control" \
     --reqtype gz.msgs.WorldControl --reptype gz.msgs.Boolean \
     --timeout 5000 --req "pause: false" \
@@ -433,34 +467,6 @@ if not payload["accepted"]:
 PY
   then
     echo "Gazebo sensor-source witness failed" >&2
-    exit 3
-  fi
-  pre_resume_ready=0
-  for _ in $(seq 1 600); do
-    running=0
-    bridge_ready=0
-    for ((instance_id=0; instance_id<vehicle_count; instance_id++)); do
-      pid_file="$run_dir/instance_$instance_id/pid"
-      if [[ -f "$pid_file" ]] && kill -0 "$(cat "$pid_file")" 2>/dev/null; then
-        running=$((running + 1))
-      fi
-      if grep -Fq "[gz_bridge] world: flydrones_forest, model: x500_depth_fly_$instance_id" \
-        "$run_dir/instance_$instance_id/out.log"; then
-        bridge_ready=$((bridge_ready + 1))
-      fi
-    done
-    if [[ "$running" -eq "$vehicle_count" && "$bridge_ready" -eq "$vehicle_count" ]]; then
-      pre_resume_ready=1
-      break
-    fi
-    sleep 0.1
-  done
-  if [[ "$pre_resume_ready" != 1 ]]; then
-    echo "PX4 pre-resume bridge barrier timed out" >&2
-    for ((instance_id=0; instance_id<vehicle_count; instance_id++)); do
-      tail -30 "$run_dir/instance_$instance_id/out.log" >&2 || true
-      tail -30 "$run_dir/instance_$instance_id/err.log" >&2 || true
-    done
     exit 3
   fi
   sensor_publishers_ready=0
@@ -656,8 +662,8 @@ target = Path(sys.argv[1])
 payload = {
     "schema": "flydrones-px4-capacity-platform-ready-v1",
     "vehicle_count": int(sys.argv[2]),
-    "sensor_source_topic_count": 20,
-    "sensor_connection_topic_count": 20,
+    "sensor_source_topic_count": int(sys.argv[2]) * 4,
+    "sensor_connection_topic_count": int(sys.argv[2]) * 4,
     "px4_all_healthy": True,
     "px4_all_disarmed": True,
     "px4_all_landed": True,
@@ -668,6 +674,12 @@ with tempfile.NamedTemporaryFile("w", encoding="utf-8", dir=target.parent, delet
     temporary = Path(handle.name)
 temporary.replace(target)
 PY
+  if [[ "$platform_readiness_only" == 1 ]]; then
+    trap - ERR INT TERM
+    echo "$vehicle_count PX4 instances reached platform-only sensor readiness."
+    echo "Logs: $run_dir"
+    exit 0
+  fi
   aux_deadline=$((SECONDS + camera_aux_timeout_s))
   while [[ ! -f "$aux_started" ]]; do
     if ! kill -0 "$gazebo_pid" 2>/dev/null; then

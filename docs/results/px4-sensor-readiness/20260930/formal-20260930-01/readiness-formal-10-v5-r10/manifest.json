@@ -1,0 +1,53 @@
+{
+  "errors": [
+    "execution: launcher exited before px4-capacity-platform-ready.json with code 3",
+    "missing artifact: px4-capacity-platform-ready.json"
+  ],
+  "initial_all_healthy": false,
+  "launcher_exit_code": 3,
+  "name": "readiness-formal-10-v5-r10",
+  "phase": "formal",
+  "platform_ready": false,
+  "post_window_all_healthy": false,
+  "repetition": 10,
+  "schema": "flydrones-px4-sensor-readiness-manifest-v1",
+  "scored_duration_sim_s": 0.0,
+  "scored_wall_timeout_s": 120.0,
+  "sensor_timeout_count": 0,
+  "sequence": 10,
+  "shared_px4_files_restored": true,
+  "trial_cleanup_verified": true,
+  "ulog_artifacts": [
+    {
+      "bytes": 8931451,
+      "path": "px4-ulogs/agent-0.ulg",
+      "sha256": "8995f793452461bafb66b29daa7e0846cd38d839c62f7ced91f3e74a5020c65b",
+      "vehicle_id": 0
+    },
+    {
+      "bytes": 8950454,
+      "path": "px4-ulogs/agent-1.ulg",
+      "sha256": "9a9604089a197263e14226cf79443ba4d7f29f85bef0fa66b888cddeb5ae6e2d",
+      "vehicle_id": 1
+    },
+    {
+      "bytes": 8927144,
+      "path": "px4-ulogs/agent-2.ulg",
+      "sha256": "1f722d9ccd7b6035ddf5cfb1fb6ade411d3b14ee18a4d89123253b0042b985e4",
+      "vehicle_id": 2
+    },
+    {
+      "bytes": 8890605,
+      "path": "px4-ulogs/agent-3.ulg",
+      "sha256": "120a11e8f14125419e46569b7358f2b2dac1224b68995978faaa9eec92acb82d",
+      "vehicle_id": 3
+    },
+    {
+      "bytes": 8908542,
+      "path": "px4-ulogs/agent-4.ulg",
+      "sha256": "4c85408d6888e13faf567e5a53e7cf0f5e680218db65a2c3b1ae86d4ee9f44c5",
+      "vehicle_id": 4
+    }
+  ],
+  "vehicle_count": 5
+}

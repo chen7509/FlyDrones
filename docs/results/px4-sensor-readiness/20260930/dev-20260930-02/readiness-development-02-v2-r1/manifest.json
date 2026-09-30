@@ -1,0 +1,32 @@
+{
+  "errors": [],
+  "initial_all_healthy": true,
+  "launcher_exit_code": 0,
+  "name": "readiness-development-02-v2-r1",
+  "phase": "development",
+  "platform_ready": true,
+  "post_window_all_healthy": true,
+  "repetition": 1,
+  "schema": "flydrones-px4-sensor-readiness-manifest-v1",
+  "scored_duration_sim_s": 30.084,
+  "scored_wall_timeout_s": 120.0,
+  "sensor_timeout_count": 1,
+  "sequence": 2,
+  "shared_px4_files_restored": true,
+  "trial_cleanup_verified": true,
+  "ulog_artifacts": [
+    {
+      "bytes": 10529616,
+      "path": "px4-ulogs/agent-0.ulg",
+      "sha256": "57160292392e6f53dcf40081a1727cfaa446a15589d68a5a0945d2f41c237462",
+      "vehicle_id": 0
+    },
+    {
+      "bytes": 11364124,
+      "path": "px4-ulogs/agent-1.ulg",
+      "sha256": "494ac6c5e5be189c518e5c9ce579e2cb5909ebff04ae9670e393c1fe2c98111b",
+      "vehicle_id": 1
+    }
+  ],
+  "vehicle_count": 2
+}

@@ -1,0 +1,17 @@
+{
+  "evidence_failures": [
+    "sensor_timeout_observed"
+  ],
+  "evidence_valid": false,
+  "failures": [
+    "sensor_timeout_observed"
+  ],
+  "name": "readiness-development-01-v1-r1",
+  "performance_failures": [],
+  "performance_pass": false,
+  "phase": "development",
+  "repetition": 1,
+  "rtf": 0.9996541266697512,
+  "sequence": 1,
+  "vehicle_count": 1
+}

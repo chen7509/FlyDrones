@@ -18,3 +18,5 @@ flight*.csv
 Thumbs.db
 .idea/
 .vscode/
+/results/px4-sensor-readiness/
+/results/px4-sitl-five-depth/
