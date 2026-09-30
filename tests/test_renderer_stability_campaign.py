@@ -7,6 +7,7 @@ from pathlib import Path
 
 import pytest
 
+from flydrones.camera_render_capacity import capacity_schedule
 from flydrones.renderer_stability import campaign_schedule
 from tools.run_renderer_stability_campaign_wsl import (
     build_campaign_manifest,
@@ -24,6 +25,23 @@ from tools.snapshot_vio_gate_results import (
 )
 
 ROOT = Path(__file__).resolve().parents[1]
+
+
+def test_snapshot_cli_help_does_not_require_pythonpath():
+    environment = os.environ.copy()
+    environment.pop("PYTHONPATH", None)
+
+    completed = subprocess.run(
+        [sys.executable, str(ROOT / "tools/snapshot_vio_gate_results.py"), "--help"],
+        cwd=ROOT,
+        env=environment,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+
+    assert completed.returncode == 0, completed.stderr
+    assert "usage:" in completed.stdout
 
 
 def _config():
@@ -322,8 +340,8 @@ def test_camera_phase_snapshot_copies_compact_phase_evidence_and_indexes_raw_log
 def _capacity_snapshot_source(root: Path) -> tuple[Path, list[str]]:
     source = root / "capacity-source"
     source.mkdir()
-    names = [f"capacity-{index:02d}" for index in range(1, 13)]
-    schedule = [{"name": name} for name in names]
+    schedule = [run.as_dict() for run in capacity_schedule()]
+    names = [item["name"] for item in schedule]
     (source / "campaign-manifest.json").write_text(
         json.dumps({
             "schema": "flydrones-camera-render-capacity-campaign-v1",
@@ -415,5 +433,48 @@ def test_capacity_snapshot_rejects_missing_extra_or_changed_raw_evidence(tmp_pat
         "monotonic_s,sim_ns\n1,2\n", encoding="utf-8"
     )
     (source / "unexpected-slot").mkdir()
-    with pytest.raises(ValueError, match="slot identities"):
+    with pytest.raises(ValueError, match="source root"):
         verify_camera_render_capacity_snapshot(source, target)
+
+
+def test_capacity_snapshot_rejects_tampered_frozen_schedule(tmp_path):
+    source, _names = _capacity_snapshot_source(tmp_path)
+    manifest_path = source / "campaign-manifest.json"
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    manifest["schedule"][0]["implementation"] = "python"
+    manifest_path.write_text(json.dumps(manifest), encoding="utf-8")
+
+    with pytest.raises(ValueError, match="frozen schedule"):
+        snapshot_camera_render_capacity_campaign(source, tmp_path / "target")
+
+
+def test_capacity_snapshot_rejects_extra_source_root_file(tmp_path):
+    source, _names = _capacity_snapshot_source(tmp_path)
+    (source / "notes.txt").write_text("unindexed\n", encoding="utf-8")
+
+    with pytest.raises(ValueError, match="source root"):
+        snapshot_camera_render_capacity_campaign(source, tmp_path / "target")
+
+
+def test_capacity_snapshot_verifier_rejects_campaign_id_mismatch(tmp_path):
+    source, _names = _capacity_snapshot_source(tmp_path)
+    target = tmp_path / "capacity-target"
+    snapshot_camera_render_capacity_campaign(source, target)
+    index_path = target / "raw-artifact-index.json"
+    index = json.loads(index_path.read_text(encoding="utf-8"))
+    index["campaign_id"] = "other-campaign"
+    index_path.write_text(json.dumps(index), encoding="utf-8")
+
+    with pytest.raises(ValueError, match="campaign ID"):
+        verify_camera_render_capacity_snapshot(source, target)
+
+
+def test_capacity_snapshot_rejects_summary_campaign_id_mismatch(tmp_path):
+    source, _names = _capacity_snapshot_source(tmp_path)
+    summary_path = source / "campaign-summary.json"
+    summary = json.loads(summary_path.read_text(encoding="utf-8"))
+    summary["campaign_id"] = "other-campaign"
+    summary_path.write_text(json.dumps(summary), encoding="utf-8")
+
+    with pytest.raises(ValueError, match="campaign ID"):
+        snapshot_camera_render_capacity_campaign(source, tmp_path / "target")

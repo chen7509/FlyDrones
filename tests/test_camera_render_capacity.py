@@ -264,6 +264,82 @@ def test_capacity_run_preserves_valid_evidence_when_performance_fails(mutate, re
     assert reason in result["failures"]
 
 
+@pytest.mark.parametrize(
+    ("field", "bad_value", "reason"),
+    [
+        ("frequency_hz", None, "image_frequency_missing_or_invalid"),
+        ("frequency_hz", math.nan, "image_frequency_missing_or_invalid"),
+        ("frequency_hz", math.inf, "image_frequency_missing_or_invalid"),
+        ("phase_error_p95_ns", None, "phase_error_p95_missing_or_invalid"),
+        ("phase_error_p95_ns", math.nan, "phase_error_p95_missing_or_invalid"),
+        ("phase_error_p95_ns", math.inf, "phase_error_p95_missing_or_invalid"),
+        (
+            "adjacent_spacing_median_error_ns",
+            None,
+            "spacing_median_error_missing_or_invalid",
+        ),
+        (
+            "adjacent_spacing_median_error_ns",
+            math.nan,
+            "spacing_median_error_missing_or_invalid",
+        ),
+        (
+            "adjacent_spacing_median_error_ns",
+            math.inf,
+            "spacing_median_error_missing_or_invalid",
+        ),
+    ],
+)
+def test_capacity_run_rejects_missing_or_nonfinite_camera_metrics(
+    field, bad_value, reason
+):
+    run = next(run for run in capacity_schedule() if run.cell.name == "native-5")
+    manifest, summary = _good_pair(run)
+    if field == "adjacent_spacing_median_error_ns":
+        summary["camera_phase"][field] = bad_value
+    else:
+        summary["camera_phase"]["vehicles"]["0"][field] = bad_value
+
+    result = score_capacity_run(
+        manifest, summary, CapacityThresholds.from_mapping(THRESHOLDS)
+    )
+
+    assert result["evidence_valid"] is False
+    assert result["performance_pass"] is False
+    assert reason in result["evidence_failures"]
+
+
+def test_incomplete_scored_window_never_synthesizes_performance_failures():
+    run = next(run for run in capacity_schedule() if run.cell.name == "native-5")
+    manifest, summary = _good_pair(run, rtf=0.1)
+    manifest["scored_duration_sim_s"] = 0.0
+    summary["camera_phase"]["vehicles"]["0"]["frequency_hz"] = 0.0
+    summary["camera_phase"]["vehicles"]["0"]["phase_error_p95_ns"] = 99_000_000
+    summary["camera_phase"]["adjacent_spacing_median_error_ns"] = 99_000_000
+
+    result = score_capacity_run(
+        manifest, summary, CapacityThresholds.from_mapping(THRESHOLDS)
+    )
+
+    assert result["score_status"] == "unscored"
+    assert result["evidence_valid"] is False
+    assert result["performance_failures"] == []
+
+
+@pytest.mark.parametrize("bad_value", [None, math.nan, math.inf, -math.inf])
+def test_campaign_missing_python_metrics_cannot_open_production_gate(bad_value):
+    pairs = _campaign_rtfs(idle=0.98, native_one=0.97, python=0.55, native=0.96)
+    for manifest, summary in pairs:
+        if manifest["cell"] == "python-5":
+            summary["camera_phase"]["vehicles"]["0"]["frequency_hz"] = bad_value
+
+    result = classify_capacity_campaign(pairs, _config())
+
+    assert result["classification"] == "non_monotonic_or_inconclusive"
+    assert result["production_integration_eligible"] is False
+    assert "invalid_run_evidence" in result["reasons"]
+
+
 def test_capacity_run_preserves_valid_evidence_when_phase_summary_rejects_only_performance():
     run = next(run for run in capacity_schedule() if run.cell.name == "native-1")
     manifest, summary = _good_pair(run)

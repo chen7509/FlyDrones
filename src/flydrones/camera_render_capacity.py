@@ -173,7 +173,10 @@ def score_capacity_run(
         evidence.append("px4_not_landed")
 
     duration = _finite_number(manifest.get("scored_duration_sim_s"))
-    if duration is None or duration < thresholds.scored_duration_s:
+    scored_window_complete = (
+        duration is not None and duration >= thresholds.scored_duration_s
+    )
+    if not scored_window_complete:
         evidence.append("scored_duration_incomplete")
     if _finite_number(manifest.get("scored_wall_timeout_s")) != thresholds.wall_timeout_s:
         evidence.append("wall_timeout_mismatch")
@@ -244,16 +247,23 @@ def score_capacity_run(
                 _append_once(evidence, "camera_dimensions_invalid")
             if item.get("format") != "R_FLOAT32":
                 _append_once(evidence, "camera_format_invalid")
-            frequency = _finite_number(item.get("frequency_hz"))
-            if frequency is None or not thresholds.min_image_hz <= frequency <= thresholds.max_image_hz:
-                _append_once(performance, "image_frequency_out_of_range")
-            phase_error = _finite_number(item.get("phase_error_p95_ns"))
-            if phase_error is None or phase_error > thresholds.max_phase_error_p95_ns:
-                _append_once(performance, "phase_error_p95_exceeded")
-        if expected_subscribers == 5:
+            if scored_window_complete:
+                frequency = _finite_number(item.get("frequency_hz"))
+                if frequency is None:
+                    _append_once(evidence, "image_frequency_missing_or_invalid")
+                elif not thresholds.min_image_hz <= frequency <= thresholds.max_image_hz:
+                    _append_once(performance, "image_frequency_out_of_range")
+                phase_error = _finite_number(item.get("phase_error_p95_ns"))
+                if phase_error is None:
+                    _append_once(evidence, "phase_error_p95_missing_or_invalid")
+                elif phase_error > thresholds.max_phase_error_p95_ns:
+                    _append_once(performance, "phase_error_p95_exceeded")
+        if expected_subscribers == 5 and scored_window_complete:
             spacing = _finite_number(phase.get("adjacent_spacing_median_error_ns"))
-            if spacing is None or spacing > thresholds.max_spacing_median_error_ns:
-                performance.append("spacing_error_exceeded")
+            if spacing is None:
+                _append_once(evidence, "spacing_median_error_missing_or_invalid")
+            elif spacing > thresholds.max_spacing_median_error_ns:
+                _append_once(performance, "spacing_error_exceeded")
         if phase.get("accepted") is not True:
             phase_reasons = phase.get("reasons")
             if (
@@ -274,7 +284,7 @@ def score_capacity_run(
     rtf = _finite_number(_mapping(runtime.get("rtf")).get("scored_window"))
     if rtf is None:
         evidence.append("rtf_missing_or_invalid")
-    elif rtf < thresholds.min_rtf:
+    elif scored_window_complete and rtf < thresholds.min_rtf:
         performance.append("rtf_below_threshold")
 
     evidence_valid = not evidence
@@ -285,6 +295,7 @@ def score_capacity_run(
         "repetition": manifest.get("repetition"),
         "sequence": manifest.get("sequence"),
         "rtf": rtf,
+        "score_status": "scored" if scored_window_complete else "unscored",
         "evidence_valid": evidence_valid,
         "performance_pass": performance_pass,
         "evidence_failures": evidence,

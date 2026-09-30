@@ -66,6 +66,13 @@ barometer, gyro, and EKF2 data, including `Accel #0 fail: TIMEOUT!`. None of
 those slots has a scored epoch or per-run `score.json`; each retained its
 failed manifest and summary and consumed its scheduled identity.
 
+Pre-merge review found that the historical campaign-level summary had assigned
+derived performance labels to some of these unscored startup failures. Those
+labels are preserved as provenance but are not measurements and do not support
+the verdict. Amendment 46 changes future scoring so incomplete windows are
+explicitly `unscored` with no performance failures; missing or non-finite camera
+metrics are evidence failures and can never open the production-native gate.
+
 Because each cell needs three valid repetitions, medians and ranges are not
 defined. Native-minus-Python deltas are also not defined. Reporting such values
 from the two valid slots or from empty startup failures would misrepresent the

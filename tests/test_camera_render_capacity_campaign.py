@@ -281,6 +281,47 @@ def test_performance_failure_is_preserved_and_campaign_continues(tmp_path: Path)
     assert "rtf_below_threshold" in result["scores"][0]["failures"]
 
 
+def test_campaign_records_pre_readiness_slot_as_unscored_without_performance(tmp_path: Path):
+    config_path = tmp_path / "config.json"
+    config_path.write_text(json.dumps(_config()), encoding="utf-8")
+
+    def fake_trial(*, run, output_root, **_kwargs):
+        manifest, summary = _pair(run)
+        if run.sequence == 2:
+            manifest["scored_duration_sim_s"] = 0.0
+            manifest["evidence_accepted"] = False
+            manifest["px4_all_healthy"] = False
+            summary["runtime"]["rtf"]["scored_window"] = 0.1
+            summary["camera_phase"]["vehicles"]["0"]["frequency_hz"] = 0.0
+        trial_dir = output_root / run.name
+        trial_dir.mkdir()
+        (trial_dir / "manifest.json").write_text(json.dumps(manifest), encoding="utf-8")
+        (trial_dir / "summary.json").write_text(json.dumps(summary), encoding="utf-8")
+        return {"manifest": manifest, "summary": summary}
+
+    result = execute_capacity_campaign(
+        config_path=config_path,
+        output_root=tmp_path / "results",
+        campaign_id="capacity-a",
+        native_executable=tmp_path / "native",
+        _run_trial_fn=fake_trial,
+        _resources_free_fn=lambda: True,
+        _frozen_hashes={"runner": "hash"},
+        _px4_revision="px4-revision",
+    )
+
+    score = result["scores"][1]
+    assert score["score_status"] == "unscored"
+    assert score["evidence_valid"] is False
+    assert score["performance_failures"] == []
+    campaign_manifest = json.loads(
+        (tmp_path / "results/capacity-a/campaign-manifest.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert campaign_manifest["scores"][1]["performance_failures"] == []
+
+
 def test_occupied_resources_block_start_without_calling_trial(tmp_path: Path):
     config_path = tmp_path / "config.json"
     config_path.write_text(json.dumps(_config()), encoding="utf-8")

@@ -6,9 +6,15 @@ import argparse
 import hashlib
 import json
 import shutil
+import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT / "src") not in sys.path:
+    sys.path.insert(0, str(ROOT / "src"))
+
+from flydrones.camera_render_capacity import capacity_schedule  # noqa: E402
+
 SOURCE = ROOT / "results/vio-stress"
 TARGET = ROOT / "docs/results/vio-safety-gate"
 TRIALS = (
@@ -183,27 +189,34 @@ def snapshot_camera_phase_campaign(source: Path, target: Path) -> dict:
     )
 
 
-def _capacity_slot_names(source: Path) -> list[str]:
+def _capacity_snapshot_identity(source: Path) -> tuple[list[str], str]:
     manifest = json.loads(
         (source / "campaign-manifest.json").read_text(encoding="utf-8")
     )
     summary = json.loads(
         (source / "campaign-summary.json").read_text(encoding="utf-8")
     )
-    schedule = manifest.get("schedule")
-    if not isinstance(schedule, list) or len(schedule) != 12:
-        raise ValueError("capacity snapshot requires exactly twelve scheduled slots")
-    names = [item.get("name") for item in schedule if isinstance(item, dict)]
-    if len(names) != 12 or any(not isinstance(name, str) or not name for name in names):
-        raise ValueError("capacity slot identities are missing or invalid")
-    if len(set(names)) != 12:
-        raise ValueError("capacity slot identities must be unique")
+    if manifest.get("schema") != "flydrones-camera-render-capacity-campaign-v1":
+        raise ValueError("capacity campaign manifest schema is invalid")
+    if summary.get("schema") != "flydrones-camera-render-capacity-campaign-summary-v1":
+        raise ValueError("capacity campaign summary schema is invalid")
+    campaign_id = manifest.get("campaign_id")
+    if not isinstance(campaign_id, str) or not campaign_id:
+        raise ValueError("capacity campaign ID is missing or invalid")
+    if summary.get("campaign_id") != campaign_id:
+        raise ValueError("capacity campaign ID differs between manifest and summary")
+    expected_schedule = [run.as_dict() for run in capacity_schedule()]
+    if manifest.get("schedule") != expected_schedule:
+        raise ValueError("capacity campaign differs from the frozen schedule")
+    names = [item["name"] for item in expected_schedule]
     if summary.get("completed_slots") != names or summary.get("raw_trial_paths") != names:
         raise ValueError("capacity summary slot identities differ from the frozen schedule")
-    actual_dirs = {path.name for path in source.iterdir() if path.is_dir()}
-    if actual_dirs != set(names):
-        raise ValueError("capacity source slot identities contain missing or extra directories")
-    return names
+    expected_root_entries = {*names, "campaign-manifest.json", "campaign-summary.json"}
+    if {path.name for path in source.iterdir()} != expected_root_entries:
+        raise ValueError("capacity source root contains missing or extra entries")
+    if any(not (source / name).is_dir() for name in names):
+        raise ValueError("capacity source slot identities contain missing directories")
+    return names, campaign_id
 
 
 def _capacity_compact_paths(trial: Path) -> set[Path]:
@@ -235,11 +248,13 @@ def _capacity_raw_index(source: Path, names: list[str]) -> dict[str, dict[str, d
 
 
 def verify_camera_render_capacity_snapshot(source: Path, target: Path) -> None:
-    names = _capacity_slot_names(source)
+    names, campaign_id = _capacity_snapshot_identity(source)
     index_path = target / "raw-artifact-index.json"
     index = json.loads(index_path.read_text(encoding="utf-8"))
     if index.get("schema") != "flydrones-camera-render-capacity-artifacts-v1":
         raise ValueError("capacity raw artifact index schema is invalid")
+    if index.get("campaign_id") != campaign_id:
+        raise ValueError("capacity raw artifact index campaign ID differs from source")
     if list(index.get("trials", {})) != names:
         raise ValueError("capacity snapshot slot identities differ from the frozen schedule")
     target_dirs = {path.name for path in target.iterdir() if path.is_dir()}
@@ -270,7 +285,7 @@ def verify_camera_render_capacity_snapshot(source: Path, target: Path) -> None:
 
 
 def snapshot_camera_render_capacity_campaign(source: Path, target: Path) -> dict:
-    names = _capacity_slot_names(source)
+    names, campaign_id = _capacity_snapshot_identity(source)
     if target.exists() and any(target.iterdir()):
         raise ValueError("capacity snapshot target must be empty")
     target.mkdir(parents=True, exist_ok=True)
@@ -282,12 +297,9 @@ def snapshot_camera_render_capacity_campaign(source: Path, target: Path) -> dict
         trial_target.mkdir()
         for path in sorted(_capacity_compact_paths(trial_source)):
             shutil.copy2(path, trial_target / path.name)
-    manifest = json.loads(
-        (source / "campaign-manifest.json").read_text(encoding="utf-8")
-    )
     index = {
         "schema": "flydrones-camera-render-capacity-artifacts-v1",
-        "campaign_id": manifest.get("campaign_id"),
+        "campaign_id": campaign_id,
         "trials": _capacity_raw_index(source, names),
     }
     (target / "raw-artifact-index.json").write_text(
