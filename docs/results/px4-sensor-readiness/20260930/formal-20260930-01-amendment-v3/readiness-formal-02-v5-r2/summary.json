@@ -1,0 +1,110 @@
+{
+  "runtime": {
+    "resources": {
+      "accepted": true,
+      "gazebo_cpu_seconds_delta": 39.31,
+      "gazebo_rss_bytes_max": 567652352,
+      "gazebo_threads_max": 55,
+      "sample_count": 453
+    },
+    "rtf": 0.9995931732610076
+  },
+  "schema": "flydrones-px4-sensor-readiness-summary-v1",
+  "vehicles": {
+    "0": {
+      "initial": {
+        "armed": false,
+        "estimator_healthy": true,
+        "landed": true,
+        "schema": "flydrones-px4-capacity-startup-health-v1",
+        "timeout_s": 60.0,
+        "vehicle_id": 0
+      },
+      "initial_healthy": true,
+      "post_window": {
+        "armed": false,
+        "estimator_healthy": true,
+        "healthy": true,
+        "landed": true,
+        "vehicle_id": 0
+      },
+      "post_window_healthy": true
+    },
+    "1": {
+      "initial": {
+        "armed": false,
+        "estimator_healthy": true,
+        "landed": true,
+        "schema": "flydrones-px4-capacity-startup-health-v1",
+        "timeout_s": 60.0,
+        "vehicle_id": 1
+      },
+      "initial_healthy": true,
+      "post_window": {
+        "armed": false,
+        "estimator_healthy": true,
+        "healthy": true,
+        "landed": true,
+        "vehicle_id": 1
+      },
+      "post_window_healthy": true
+    },
+    "2": {
+      "initial": {
+        "armed": false,
+        "estimator_healthy": true,
+        "landed": true,
+        "schema": "flydrones-px4-capacity-startup-health-v1",
+        "timeout_s": 60.0,
+        "vehicle_id": 2
+      },
+      "initial_healthy": true,
+      "post_window": {
+        "armed": false,
+        "estimator_healthy": true,
+        "healthy": true,
+        "landed": true,
+        "vehicle_id": 2
+      },
+      "post_window_healthy": true
+    },
+    "3": {
+      "initial": {
+        "armed": false,
+        "estimator_healthy": true,
+        "landed": true,
+        "schema": "flydrones-px4-capacity-startup-health-v1",
+        "timeout_s": 60.0,
+        "vehicle_id": 3
+      },
+      "initial_healthy": true,
+      "post_window": {
+        "armed": false,
+        "estimator_healthy": true,
+        "healthy": true,
+        "landed": true,
+        "vehicle_id": 3
+      },
+      "post_window_healthy": true
+    },
+    "4": {
+      "initial": {
+        "armed": false,
+        "estimator_healthy": true,
+        "landed": true,
+        "schema": "flydrones-px4-capacity-startup-health-v1",
+        "timeout_s": 60.0,
+        "vehicle_id": 4
+      },
+      "initial_healthy": true,
+      "post_window": {
+        "armed": false,
+        "estimator_healthy": true,
+        "healthy": true,
+        "landed": true,
+        "vehicle_id": 4
+      },
+      "post_window_healthy": true
+    }
+  }
+}

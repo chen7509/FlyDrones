@@ -134,8 +134,7 @@ def _valid_ulogs(value: Any, vehicle_count: int) -> bool:
         and isinstance(item.get("bytes"), int)
         and not isinstance(item.get("bytes"), bool)
         and item.get("bytes", 0) > 0
-        and isinstance(item.get("sha256"), str)
-        and len(item.get("sha256", "")) == 64
+        and _valid_sha256(item.get("sha256"))
         for item in value
     )
 
@@ -247,6 +246,14 @@ def score_readiness_run(
         )
         and {item.get("role") for item in cleanup_items if isinstance(item, Mapping)}
         == expected_roles
+        and len(
+            {
+                (item.get("pid"), item.get("start_ticks"))
+                for item in cleanup_items
+                if isinstance(item, Mapping)
+            }
+        )
+        == len(cleanup_items)
     ):
         evidence.append("cleanup_evidence_invalid")
 

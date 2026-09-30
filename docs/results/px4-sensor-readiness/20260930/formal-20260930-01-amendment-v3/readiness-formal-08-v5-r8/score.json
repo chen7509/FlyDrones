@@ -1,0 +1,13 @@
+{
+  "evidence_failures": [],
+  "evidence_valid": true,
+  "failures": [],
+  "name": "readiness-formal-08-v5-r8",
+  "performance_failures": [],
+  "performance_pass": true,
+  "phase": "formal",
+  "repetition": 8,
+  "rtf": 0.9995888012213013,
+  "sequence": 8,
+  "vehicle_count": 5
+}

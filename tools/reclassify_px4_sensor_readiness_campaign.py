@@ -55,6 +55,12 @@ def _atomic_json(path: Path, value: Mapping[str, object]) -> None:
 def reclassify_campaign(
     source: Path, output: Path, config_path: Path
 ) -> dict[str, object]:
+    source_resolved = source.resolve()
+    output_resolved = output.resolve()
+    if output_resolved == source_resolved or output_resolved.is_relative_to(
+        source_resolved
+    ):
+        raise ValueError("amendment output must be outside source campaign")
     if output.exists():
         raise FileExistsError(f"amendment output already exists: {output}")
     config = _load_json(config_path)

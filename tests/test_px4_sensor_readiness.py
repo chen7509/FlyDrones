@@ -13,6 +13,7 @@ from flydrones.px4_sensor_readiness import (
     readiness_schedule,
     score_readiness_run,
 )
+from tools.reclassify_px4_sensor_readiness_campaign import reclassify_campaign
 
 THRESHOLDS = {
     "min_rtf": 0.95,
@@ -286,6 +287,19 @@ def test_good_readiness_run_passes_evidence_and_performance():
             ),
             "px4_build_evidence_invalid",
         ),
+        (
+            lambda manifest, _summary: manifest["ulog_artifacts"][0].update(
+                sha256="z" * 64
+            ),
+            "px4_ulogs_incomplete",
+        ),
+        (
+            lambda manifest, _summary: [
+                item.update(pid=999, start_ticks=10)
+                for item in manifest["cleanup_evidence"]["stopped"]
+            ],
+            "cleanup_evidence_invalid",
+        ),
     ],
 )
 def test_readiness_run_rejects_invalid_evidence(mutation, reason):
@@ -300,6 +314,18 @@ def test_readiness_run_rejects_invalid_evidence(mutation, reason):
     assert score["evidence_valid"] is False
     assert score["performance_pass"] is False
     assert reason in score["evidence_failures"]
+
+
+def test_reclassifier_rejects_output_inside_source_campaign(tmp_path):
+    source = tmp_path / "formal-campaign"
+    source.mkdir()
+
+    with pytest.raises(ValueError, match="outside source campaign"):
+        reclassify_campaign(
+            source,
+            source / "amendment",
+            tmp_path / "config-does-not-need-to-exist.json",
+        )
 
 
 @pytest.mark.parametrize("rtf", [None, math.nan, math.inf, -math.inf])
