@@ -1,3 +1,4 @@
+import hashlib
 import json
 import subprocess
 
@@ -10,6 +11,8 @@ from flydrones.gazebo_renderer import (
     resolve_renderer_profile,
 )
 from tools.attest_gazebo_renderer_wsl import (
+    evaluate_expected_plugin,
+    evaluate_expected_server_config,
     finalize_renderer_attestation,
     load_phase_depth_observations,
     parse_depth_messages,
@@ -143,6 +146,97 @@ def test_default_attestation_records_backend_without_requiring_d3d12():
     assert result["accepted"]
     assert result["egl_renderer"] == "llvmpipe (LLVM 20.1.2, 256 bits)"
     assert result["reasons"] == []
+
+
+@pytest.mark.parametrize(
+    ("engine", "libraries", "accepted"),
+    (
+        ("ogre2", {"/usr/lib/gz-rendering/libgz-rendering8-ogre2.so.8"}, True),
+        ("ogre", {"/usr/lib/gz-rendering/libgz-rendering8-ogre.so.8"}, True),
+        ("ogre", {"/usr/lib/gz-rendering/libgz-rendering8-ogre2.so.8"}, False),
+    ),
+)
+def test_attestation_proves_requested_render_engine(engine, libraries, accepted):
+    result = evaluate_renderer_attestation(
+        profile=resolve_renderer_profile("d3d12-nvidia"),
+        egl_renderer="D3D12 (NVIDIA GeForce RTX 3070 Ti Laptop GPU)",
+        mapped_libraries={
+            "/usr/lib/wsl/lib/libd3d12.so",
+            "/usr/lib/wsl/lib/libdxcore.so",
+            *libraries,
+        },
+        depth_observations=_observations(),
+        expected_depth_topics=5,
+        expected_render_engine=engine,
+    )
+
+    assert result["requested_render_engine"] == engine
+    assert result["render_engine_accepted"] is accepted
+    assert result["accepted"] is accepted
+    assert ("render_engine_mismatch" in result["reasons"]) is (not accepted)
+
+
+def test_expected_sensors_plugin_requires_exact_mapped_file_and_hash(tmp_path):
+    plugin = tmp_path / "libgz-sim8-sensors-system.so"
+    plugin.write_bytes(b"development sensor plugin")
+    expected_sha = "073a89a2367a7f57da57a8576ab96e0a5e75dafbc6aa5098db2e7fded9f2cbe7"
+
+    accepted = evaluate_expected_plugin(
+        plugin,
+        expected_sha256=expected_sha,
+        mapped_libraries={str(plugin.resolve())},
+    )
+    missing = evaluate_expected_plugin(
+        plugin,
+        expected_sha256=expected_sha,
+        mapped_libraries=set(),
+    )
+
+    assert accepted["accepted"] is True
+    assert accepted["sha256"] == expected_sha
+    assert accepted["mapped_path"] == str(plugin.resolve())
+    assert missing["accepted"] is False
+    assert "plugin_not_mapped" in missing["reasons"]
+
+
+def test_expected_server_config_binds_hash_and_exact_sensors_plugin(tmp_path):
+    plugin = (tmp_path / "libgz-sim8-sensors-system.so").resolve()
+    config = tmp_path / "custom-server.config"
+    config.write_text(
+        '<plugin entity_name="*" entity_type="world" '
+        f'filename="{plugin}" name="gz::sim::systems::Sensors">\n'
+        "  <render_engine>ogre2</render_engine>\n"
+        "</plugin>\n",
+        encoding="utf-8",
+    )
+    digest = hashlib.sha256(config.read_bytes()).hexdigest()
+
+    accepted = evaluate_expected_server_config(
+        config,
+        expected_sha256=digest,
+        expected_plugin_path=plugin,
+        process_environment={"GZ_SIM_SERVER_CONFIG_PATH": str(config)},
+    )
+    wrong_plugin = evaluate_expected_server_config(
+        config,
+        expected_sha256=digest,
+        expected_plugin_path=tmp_path / "different.so",
+        process_environment={"GZ_SIM_SERVER_CONFIG_PATH": str(config)},
+    )
+    unused_config = evaluate_expected_server_config(
+        config,
+        expected_sha256=digest,
+        expected_plugin_path=plugin,
+        process_environment={"GZ_SIM_SERVER_CONFIG_PATH": str(tmp_path / "other.config")},
+    )
+
+    assert accepted["accepted"] is True
+    assert accepted["sha256"] == digest
+    assert accepted["sensors_plugin_entry_count"] == 1
+    assert wrong_plugin["accepted"] is False
+    assert "sensors_plugin_entry_mismatch" in wrong_plugin["reasons"]
+    assert unused_config["accepted"] is False
+    assert "process_server_config_mismatch" in unused_config["reasons"]
 
 
 def test_eglinfo_nonzero_exit_keeps_a_parseable_renderer():

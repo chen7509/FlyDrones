@@ -240,6 +240,8 @@ def score_capacity_run(
     if expected_subscribers == 0:
         if phase.get("depth_subscription_absent") is not True or vehicles:
             evidence.append("unexpected_depth_subscription")
+        if phase.get("accepted") is not True:
+            evidence.append("camera_phase_summary_rejected")
     elif expected_subscribers > 0:
         if len(vehicles) != expected_subscribers:
             evidence.append("camera_vehicle_count_mismatch")

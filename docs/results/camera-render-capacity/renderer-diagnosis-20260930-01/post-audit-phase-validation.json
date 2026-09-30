@@ -1,0 +1,68 @@
+{
+  "schema": "flydrones-camera-phase-post-audit-v1",
+  "date": "2026-10-01",
+  "validator_sha256": "31357b747ab1f0d0243262130396072d6d5e2b1d1b8af841b481f8473f52a513",
+  "checks": [
+    "exactly one selected phase transition at or before scored start",
+    "zero scored triggers for idle-0",
+    "no scored triggers outside selected vehicle range"
+  ],
+  "runs": [
+    {
+      "label": "ogre2-zero-r1",
+      "raw_root": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-01-idle-0-r1",
+      "subscriber_count": 0,
+      "accepted_by_amended_phase_validator": true,
+      "reasons": [],
+      "transition_count": 1,
+      "scored_window_end_reconstructed_from_manifest_duration": true
+    },
+    {
+      "label": "ogre2-one-r1",
+      "raw_root": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-02-native-1-r1",
+      "subscriber_count": 1,
+      "accepted_by_amended_phase_validator": true,
+      "reasons": [],
+      "transition_count": 1,
+      "scored_window_end_reconstructed_from_manifest_duration": true
+    },
+    {
+      "label": "ogre2-five-r1",
+      "raw_root": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-04-native-5-r1",
+      "subscriber_count": 5,
+      "accepted_by_amended_phase_validator": false,
+      "reasons": [
+        "phase_error_p95_exceeded"
+      ],
+      "transition_count": 1,
+      "scored_window_end_reconstructed_from_manifest_duration": true
+    },
+    {
+      "label": "ogre2-zero-r2",
+      "raw_root": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-08-idle-0-r2",
+      "subscriber_count": 0,
+      "accepted_by_amended_phase_validator": true,
+      "reasons": [],
+      "transition_count": 1,
+      "scored_window_end_reconstructed_from_manifest_duration": true
+    },
+    {
+      "label": "ogre1-zero-r1",
+      "raw_root": "results/camera-render-capacity/trigger-profile-ogre1-dev-20260930-01/trials/capacity-01-idle-0-r1",
+      "subscriber_count": 0,
+      "accepted_by_amended_phase_validator": true,
+      "reasons": [],
+      "transition_count": 1,
+      "scored_window_end_reconstructed_from_manifest_duration": true
+    },
+    {
+      "label": "sensors-throttle-zero-r1",
+      "raw_root": "results/camera-render-capacity/sensor-event-throttled-paused-dev-20260930-01/trials/capacity-01-idle-0-r1",
+      "subscriber_count": 0,
+      "accepted_by_amended_phase_validator": true,
+      "reasons": [],
+      "transition_count": 1,
+      "scored_window_end_reconstructed_from_manifest_duration": true
+    }
+  ]
+}

@@ -1,6 +1,107 @@
 # Five-Camera Render Capacity Report
 
-> Current update (2026-09-30): after fixing the PX4 first-IMU-sample defect, the gated campaign `first-imu-dt-camera-20260930-01` completed all 12 slots. It remains `non_monotonic_or_inconclusive` and is not production-integration eligible. Valid idle runs measured 0.6032–0.6089 RTF; valid native five-camera runs measured 0.5072–0.5087 RTF. Five slots had invalid startup or camera-integrity evidence. The gate now binds the exact readiness-tested PX4 binary, board configuration, patch, and `VehicleIMU.cpp`; a post-run check confirmed the same binary in every evidence-valid slot. See [`PX4_SENSOR_READINESS_REPORT.md`](PX4_SENSOR_READINESS_REPORT.md) and the [new compact evidence](results/camera-render-capacity/first-imu-dt-camera-20260930-01). The report below preserves the preceding `task7-frozen-20260929-234951` campaign for comparison.
+> Current update (2026-10-01): a follow-up audit found that the historical
+> `idle-0` cells had zero depth-image subscribers but still triggered all five
+> cameras at 10 Hz. They were not true zero-render baselines. The scheduler now
+> changes from the five-camera attestation phase to the selected scored trigger
+> count before the scored epoch. Corrected Ogre2 development trials measured
+> 0.7798–0.8349 RTF with zero steady triggers, 0.7024 with one camera, and
+> 0.5135 with five cameras. An independently attested Ogre1 zero-trigger trial
+> measured 0.7567 RTF, so Ogre1 was rejected before expanding to one and five
+> cameras. The formal 0.95 gate remains closed and the 12-slot campaign was not
+> rerun. See the [compact renderer diagnosis](results/camera-render-capacity/renderer-diagnosis-20260930-01).
+
+## Renderer activation diagnosis
+
+The latest evidence separates three loads that the preceding campaign mixed
+together:
+
+| Rendering state | Engine | Steady camera triggers | RTF | Evidence |
+|---|---|---:|---:|---|
+| renderer not initialized; PX4 readiness campaign | Ogre2 default path | 0 | 0.9999 median | formal 10/10 readiness pass |
+| renderer initialized after five-stream attestation | Ogre2 | 0 | 0.8349 | valid development evidence |
+| renderer initialized after five-stream attestation | Ogre2 | 0 | 0.7798 | valid development repeat |
+| renderer initialized | Ogre2 | 1 at 10 Hz | 0.7024 | valid development evidence |
+| renderer initialized | Ogre2 | 5 at 10 Hz | 0.5135 | valid development evidence; phase p95 also exceeded 8 ms |
+| renderer initialized after five-stream attestation | Ogre1 | 0 | 0.7567 | valid development evidence |
+
+All five development trials used the same five PX4 vehicles, no-lockstep PX4
+binary, dynamics, world, depth resolution, camera rate, D3D12 NVIDIA adapter,
+30 simulation-second window, and 0.95 threshold. The two Ogre2 zero-trigger
+repetitions differ by 0.0551, above the 0.03 repeatability limit. Every run
+retained five ULogs and reports successful owned-process cleanup and shared-file
+restoration.
+
+This isolates a large fixed cost after the Gazebo rendering sensor system is
+activated, followed by additional cost for each sustained camera stream. It is
+not a learning-policy, weight, loss-function, PX4 flight-control, or EKF2
+training failure. Sampled NVIDIA utilization remained 0–3% while Gazebo used
+roughly two CPU cores, so the current WSL path is CPU/synchronization limited in
+this test; sampled utilization alone does not prove that the GPU is idle at
+every instant.
+
+The Ogre1 trial loaded `libgz-rendering8-ogre.so.8.2.3` and produced all five
+160 × 120 depth streams at 10 Hz during attestation. It therefore tests a real
+Ogre1 depth path rather than only a command-line flag. Gazebo emitted a
+segmentation-fault stack during commanded teardown, after the scored window;
+the trial still preserved a complete score and clean ownership/restoration
+evidence. This is an additional robustness concern and another reason not to
+adopt Ogre1.
+
+The result agrees with the upstream Gazebo Sensors implementation: its source
+contains a performance TODO explaining that the render-event connection forces
+scene-tree updates at the simulation update rate. Camera sensors suppress image
+generation without consumers, but that does not remove the initialized Sensors
+system's scene-update path. See the upstream
+[Gazebo Sensors system](https://github.com/gazebosim/gz-sim/blob/gz-sim8/src/systems/sensors/Sensors.cc),
+[CameraSensor](https://github.com/gazebosim/gz-sensors/blob/gz-sensors8/src/CameraSensor.cc),
+[DepthCameraSensor](https://github.com/gazebosim/gz-sensors/blob/gz-sensors8/src/DepthCameraSensor.cc),
+and [Gazebo rendering troubleshooting](https://github.com/gazebosim/docs/blob/master/harmonic/troubleshooting.md).
+
+An exact-source isolation experiment then tested that TODO against Gazebo Sim
+8.15.0 tag commit `446a44335a45b704b4d36dabcc5508ee34eeb3d8`.
+The final development plugin kept event updates unthrottled while the world was
+paused for camera startup, capped event-only scene refreshes at 10 Hz after
+resume, and left pending camera triggers unthrottled. Renderer attestation
+proved the exact custom library path and SHA-256 from the Gazebo process map.
+A post-run audit recovered the private server config from the owned run
+directory and confirmed its exact Sensors entry, but the original runtime
+attestation did not bind that config path and hash. The 0.7301 RTF and 98.85
+Gazebo CPU seconds are therefore retained as **diagnostic-only**, not
+evidence-valid under the amended gate. They provide no reason to adopt naive
+event throttling, while the incomplete binding prevents a formal root-cause
+claim. Future custom-plugin runs now require attestation to prove the live
+Gazebo process's `GZ_SIM_SERVER_CONFIG_PATH`, bind its config hash and exact
+Sensors entry, and preserve the config. The reproducible development diff is
+[`sensors-render-event-throttle-10hz.patch`](../patches/gz-sim8/sensors-render-event-throttle-10hz.patch).
+
+Three rejected precursors are also retained: fully suppressing event-only
+updates prevented triggered-camera service readiness; search-path-only plugin
+selection loaded the system library and was rejected by attestation; and
+simulation-time throttling during the paused startup phase prevented the
+trigger handshake. None produced a score. These failures constrain any future
+upstream patch: it must preserve paused-world initialization and triggered
+camera discovery as well as real-time performance.
+
+The next admissible work is a native-Linux runtime comparison or profiler-led
+work below the Sensors event gate, covering `RenderUtil::Update`, scene
+synchronization, and the WSL D3D12 driver path. It must
+first reach at least 0.95 RTF with the renderer initialized, zero steady
+triggers, and a repeatability range no greater than 0.03. Only then should the
+one-camera, five-camera, and frozen 12-slot campaign be repeated. Resolution,
+rate, vehicle count, dynamics, and thresholds must remain unchanged while
+diagnosing the platform.
+
+The original `first-imu-dt-camera-20260930-01` campaign still completed all 12
+slots after the PX4 first-IMU-sample fix. Its historical 0.6032–0.6089
+`idle-0` values now mean **zero subscribers with five cameras still being
+triggered**, not zero rendering. Its native five-camera values remain
+0.5072–0.5087. The campaign remains `non_monotonic_or_inconclusive` and is not
+production-integration eligible. See [`PX4_SENSOR_READINESS_REPORT.md`](PX4_SENSOR_READINESS_REPORT.md)
+and the [formal compact evidence](results/camera-render-capacity/first-imu-dt-camera-20260930-01).
+
+The report below preserves the preceding `task7-frozen-20260929-234951`
+campaign for comparison.
 
 Date: 2026-09-30
 

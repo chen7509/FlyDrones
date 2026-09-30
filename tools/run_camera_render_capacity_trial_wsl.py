@@ -137,6 +137,8 @@ def capacity_auxiliary_commands(
         "--poll-interval-s", "0.001",
         "--flush-interval-s", "0.25",
         "--dispatch-delay-ns", "4000000",
+        "--selected-vehicle-count", str(run.cell.subscriber_count),
+        "--attestation-release-marker", str(output / "renderer-phase-complete.marker"),
         "--formal",
     ]
     if run.cell.implementation == "python":
@@ -546,6 +548,27 @@ def _capacity_phase_summary(
             return start_sim_ns <= target < end_sim_ns
         return True
 
+    transitions = [event for event in events if event.get("event") == "phase-transition"]
+    transition_valid = (
+        len(transitions) == 1
+        and isinstance(transitions[0].get("selected_vehicle_count"), int)
+        and not isinstance(transitions[0].get("selected_vehicle_count"), bool)
+        and transitions[0].get("selected_vehicle_count") == subscriber_count
+        and isinstance(transitions[0].get("sim_ns"), int)
+        and not isinstance(transitions[0].get("sim_ns"), bool)
+        and int(transitions[0]["sim_ns"]) < start_sim_ns
+    )
+    scored_triggers = [
+        event
+        for event in events
+        if event.get("event") == "trigger" and inside_scored_window(event)
+    ]
+    unselected_triggers = [
+        event
+        for event in scored_triggers
+        if event.get("vehicle_id") not in range(subscriber_count)
+    ]
+
     if subscriber_count == 0:
         scored_events = [event for event in events if inside_scored_window(event)]
         missed_count = sum(event.get("event") == "missed" for event in scored_events)
@@ -555,11 +578,21 @@ def _capacity_phase_summary(
             if event.get("event") == "queue-overflow"
         )
         reasons = [] if window_valid else ["scored_window_invalid"]
+        if not transition_valid:
+            reasons.append("selected_phase_transition_invalid")
+        if scored_triggers:
+            reasons.append("unexpected_scored_trigger")
         return {
             "schema": "flydrones-camera-phase-summary-v1",
             "mode": "phased",
             "vehicle_count": 5,
-            "accepted": window_valid and missed_count == 0 and overflow_count == 0,
+            "accepted": (
+                window_valid
+                and transition_valid
+                and not scored_triggers
+                and missed_count == 0
+                and overflow_count == 0
+            ),
             "reasons": reasons,
             "vehicles": {},
             "adjacent_spacing_median_error_ns": None,
@@ -628,6 +661,10 @@ def _capacity_phase_summary(
             metadata_reasons.append("image_metadata_invalid")
     if not window_valid:
         metadata_reasons.append("scored_window_invalid")
+    if not transition_valid:
+        metadata_reasons.append("selected_phase_transition_invalid")
+    if unselected_triggers:
+        metadata_reasons.append("unselected_vehicle_trigger")
     if metadata_reasons:
         phase["reasons"] = list(dict.fromkeys([*phase["reasons"], *metadata_reasons]))
         phase["accepted"] = False
@@ -825,8 +862,7 @@ class SubprocessCapacityBackend:
         )
         if attestation.get("accepted") is not True:
             raise RuntimeError("temporary renderer witness attestation rejected")
-        if native_observer:
-            (output / "renderer-phase-complete.marker").touch()
+        (output / "renderer-phase-complete.marker").touch()
         selected_ready = _capacity_selected_ready_marker(
             output=output,
             implementation=run.cell.implementation,
@@ -844,7 +880,6 @@ class SubprocessCapacityBackend:
                 stage="selected-released",
             )
         if has_witness:
-            (output / "renderer-phase-complete.marker").touch()
             witness_code = self.processes["renderer-witness"].wait(timeout=20)
             try:
                 witness_ready = json.loads(
@@ -1015,7 +1050,11 @@ class SubprocessCapacityBackend:
         events = [
             event for event in observer_events if event.get("event") != "trigger-received"
         ]
-        events.extend(event for event in scheduler_events if event.get("event") in {"trigger", "missed"})
+        events.extend(
+            event
+            for event in scheduler_events
+            if event.get("event") in {"trigger", "missed", "phase-transition"}
+        )
         stops = [event for event in observer_events if event.get("event") == "stop"]
         native_metrics = dict(stops[0]) if len(stops) == 1 else {}
         if native_metrics.get("implementation") == "native-cpp":
@@ -1109,6 +1148,12 @@ class SubprocessCapacityBackend:
                 continue
             shutil.copy2(source, self.output / name)
             copied_evidence.append(name)
+        custom_server_config = self.run_dir / "custom-server.config"
+        if custom_server_config.is_file():
+            shutil.copy2(custom_server_config, self.output / custom_server_config.name)
+            copied_evidence.append(custom_server_config.name)
+        elif self.environment.get("FLYDRONES_GZ_SENSORS_PLUGIN_DIR"):
+            artifact_errors.append("required run evidence is missing: custom-server.config")
         for vehicle_id in range(5):
             source = self.run_dir / f"instance_{vehicle_id}" / "startup-health.json"
             name = f"px4-console/agent-{vehicle_id}-startup-health.json"
@@ -1191,6 +1236,21 @@ def run_capacity_trial(
         raise ValueError("capacity trial requires frozen 30/120 second durations")
     if config.get("vehicle_count") != 5:
         raise ValueError("capacity trial requires five vehicles")
+    render_engine = str(config.get("render_engine", "ogre2"))
+    if render_engine not in {"ogre", "ogre2"}:
+        raise ValueError(f"unsupported Gazebo render engine: {render_engine}")
+    sensors_plugin_directory = config.get("sensors_plugin_directory")
+    sensors_plugin_sha256 = config.get("sensors_plugin_sha256")
+    if (sensors_plugin_directory is None) != (sensors_plugin_sha256 is None):
+        raise ValueError("custom Gazebo Sensors plugin directory and SHA-256 must be paired")
+    resolved_sensors_plugin_directory: Path | None = None
+    if sensors_plugin_directory is not None:
+        resolved_sensors_plugin_directory = Path(str(sensors_plugin_directory)).resolve()
+        sensors_plugin = resolved_sensors_plugin_directory / "libgz-sim8-sensors-system.so"
+        if not sensors_plugin.is_file():
+            raise ValueError(f"custom Gazebo Sensors plugin is missing: {sensors_plugin}")
+        if _sha256(sensors_plugin) != str(sensors_plugin_sha256):
+            raise ValueError("custom Gazebo Sensors plugin SHA-256 mismatch")
     px4_build_name = str(config.get("px4_build_name", ""))
     if px4_build_name != "px4_sitl_nolockstep":
         raise ValueError("capacity trial requires px4_sitl_nolockstep")
@@ -1264,6 +1324,7 @@ def run_capacity_trial(
         "sequence": run.sequence,
         "subscriber_count": run.cell.subscriber_count,
         "observer_implementation": run.cell.implementation,
+        "render_engine": render_engine,
         "worker_command_constructed": False,
         "renderer_attestation_accepted": False,
         "px4_vehicle_count": 0,
@@ -1303,6 +1364,7 @@ def run_capacity_trial(
         "FLYDRONES_PX4_RUN_DIR": str(run_dir),
         "FLYDRONES_VEHICLE_COUNT": "5",
         "FLYDRONES_GZ_RENDER_PROFILE": str(config.get("renderer_profile")),
+        "FLYDRONES_GZ_RENDER_ENGINE": render_engine,
         "FLYDRONES_CAMERA_SCHEDULE_MODE": "phased",
         "FLYDRONES_CAMERA_AUX_TIMEOUT_S": f"{max(readiness_timeout_s, 150.0):g}",
         "FLYDRONES_CAMERA_PHASE_READY_MARKER": str(
@@ -1336,6 +1398,13 @@ def run_capacity_trial(
         ),
         "PYTHONPATH": str(ROOT / "src"),
     })
+    if resolved_sensors_plugin_directory is not None:
+        environment.update({
+            "FLYDRONES_GZ_SENSORS_PLUGIN_DIR": str(resolved_sensors_plugin_directory),
+            "FLYDRONES_EXPECTED_GZ_SENSORS_PLUGIN_SHA256": str(
+                sensors_plugin_sha256
+            ),
+        })
     collected: Mapping[str, object] = {}
     readiness: Mapping[str, object] = {}
     window: Mapping[str, object] = {}

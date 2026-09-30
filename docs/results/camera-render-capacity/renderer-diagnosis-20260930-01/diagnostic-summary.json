@@ -1,0 +1,240 @@
+{
+  "cold_renderer_uninitialized_readiness_median_rtf": 0.9998609,
+  "date": "2026-10-01",
+  "formal_campaign_rerun": false,
+  "formal_gate_changed": false,
+  "interpretation": {
+    "corrected_zero_trigger_definition": "Renderer initialized and attested with five warmup streams, then selected trigger count becomes zero before the scored epoch.",
+    "next_gate": "Do not rerun the 12-slot campaign until a renderer-initialized zero-trigger baseline reaches 0.95 with repeatability range <= 0.03.",
+    "ogre1_decision": "Rejected after the zero-trigger development cell: valid evidence, RTF 0.7566838567526505, below both the 0.95 gate and the measured Ogre2 zero-trigger range.",
+    "ogre2_zero_trigger_range": [
+      0.7797850659880458,
+      0.8348820063978218
+    ],
+    "ogre2_zero_trigger_repeatability_range": 0.05509694040977599,
+    "old_idle_label_correction": "Historical idle-0 used zero output subscribers but still triggered all five depth cameras at 10 Hz.",
+    "sensors_throttle_decision": "Rejected as diagnostic-only: the custom-plugin zero-trigger trial measured 0.7301250688861198 RTF, but its private server config was recovered only after the run and was not bound into the original runtime attestation. Future trials now require and preserve that binding."
+  },
+  "runs": [
+    {
+      "cell": "idle-0",
+      "cleanup_verified": true,
+      "engine": "ogre2",
+      "evidence_valid": true,
+      "failures": [
+        "rtf_below_threshold"
+      ],
+      "gazebo_cpu_seconds_delta": 86.58,
+      "gazebo_rss_peak_bytes": 574812160,
+      "gpu_utilization_peak_percent": 0.0,
+      "name": "capacity-01-idle-0-r1",
+      "performance_pass": false,
+      "raw_root": "results/camera-render-capacity/trigger-profile-dev-20260930-01",
+      "renderer_attestation_accepted": true,
+      "renderer_library": "libgz-rendering8-ogre2.so.8.2.3",
+      "rtf": 0.8348820063978218,
+      "shared_files_restored": true,
+      "subscriber_count": 0
+    },
+    {
+      "cell": "native-1",
+      "cleanup_verified": true,
+      "engine": "ogre2",
+      "evidence_valid": true,
+      "failures": [
+        "rtf_below_threshold"
+      ],
+      "gazebo_cpu_seconds_delta": 106.31,
+      "gazebo_rss_peak_bytes": 578461696,
+      "gpu_utilization_peak_percent": 1.0,
+      "name": "capacity-02-native-1-r1",
+      "performance_pass": false,
+      "raw_root": "results/camera-render-capacity/trigger-profile-dev-20260930-01",
+      "renderer_attestation_accepted": true,
+      "renderer_library": "libgz-rendering8-ogre2.so.8.2.3",
+      "rtf": 0.7023753201613956,
+      "shared_files_restored": true,
+      "subscriber_count": 1
+    },
+    {
+      "cell": "native-5",
+      "cleanup_verified": true,
+      "engine": "ogre2",
+      "evidence_valid": true,
+      "failures": [
+        "phase_error_p95_exceeded",
+        "rtf_below_threshold"
+      ],
+      "gazebo_cpu_seconds_delta": 152.72,
+      "gazebo_rss_peak_bytes": 583708672,
+      "gpu_utilization_peak_percent": 3.0,
+      "name": "capacity-04-native-5-r1",
+      "performance_pass": false,
+      "raw_root": "results/camera-render-capacity/trigger-profile-dev-20260930-01",
+      "renderer_attestation_accepted": true,
+      "renderer_library": "libgz-rendering8-ogre2.so.8.2.3",
+      "rtf": 0.5135422525903519,
+      "shared_files_restored": true,
+      "subscriber_count": 5
+    },
+    {
+      "cell": "idle-0",
+      "cleanup_verified": true,
+      "engine": "ogre2",
+      "evidence_valid": true,
+      "failures": [
+        "rtf_below_threshold"
+      ],
+      "gazebo_cpu_seconds_delta": 93.1,
+      "gazebo_rss_peak_bytes": 575827968,
+      "gpu_utilization_peak_percent": 0.0,
+      "name": "capacity-08-idle-0-r2",
+      "performance_pass": false,
+      "raw_root": "results/camera-render-capacity/trigger-profile-dev-20260930-01",
+      "renderer_attestation_accepted": true,
+      "renderer_library": "libgz-rendering8-ogre2.so.8.2.3",
+      "rtf": 0.7797850659880458,
+      "shared_files_restored": true,
+      "subscriber_count": 0
+    },
+    {
+      "cell": "idle-0",
+      "cleanup_verified": true,
+      "engine": "ogre",
+      "evidence_valid": true,
+      "failures": [
+        "rtf_below_threshold"
+      ],
+      "gazebo_cpu_seconds_delta": 95.15,
+      "gazebo_rss_peak_bytes": 525144064,
+      "gpu_utilization_peak_percent": 0.0,
+      "name": "capacity-01-idle-0-r1",
+      "performance_pass": false,
+      "raw_root": "results/camera-render-capacity/trigger-profile-ogre1-dev-20260930-01",
+      "renderer_attestation_accepted": true,
+      "renderer_library": "libgz-rendering8-ogre.so.8.2.3",
+      "rtf": 0.7566838567526505,
+      "shared_files_restored": true,
+      "subscriber_count": 0
+    }
+  ],
+  "schema": "flydrones-camera-renderer-diagnosis-v1",
+  "sensors_experiments": [
+    {
+      "cleanup_verified": true,
+      "custom_plugin_attestation": null,
+      "development_change": "event-only updates disabled",
+      "errors": [
+        "execution: capacity readiness timed out after 180.0s",
+        "scored Gazebo resource evidence is incomplete",
+        "camera observer log lacks one complete successful stop record",
+        "camera scheduler log lacks one complete successful stop record",
+        "required run evidence is missing: renderer-attestation.json",
+        "required run evidence is missing: camera-capacity-ready.json",
+        "required run evidence is missing: depth-topic-connections-launcher.json"
+      ],
+      "evidence_accepted": false,
+      "gazebo_cpu_seconds_delta": null,
+      "label": "event-suppressed",
+      "outcome": "trigger service connections never completed; no scored window",
+      "performance_pass": null,
+      "raw_root": "results/camera-render-capacity/sensor-event-suppressed-dev-20260930-01",
+      "renderer_attestation_accepted": null,
+      "rtf": null,
+      "shared_files_restored": true,
+      "status": "invalid"
+    },
+    {
+      "cleanup_verified": true,
+      "custom_plugin_attestation": {
+        "accepted": false,
+        "expected_path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/px4-sensor-readiness/build/gazebo-sensors-event-throttled/libgz-sim8-sensors-system.so",
+        "expected_sha256": "77431be7f110e1387d82480cab419b45d6b924270883bab9137b5c4cc404d7a0",
+        "mapped_path": null,
+        "reasons": [
+          "plugin_not_mapped"
+        ],
+        "sha256": "77431be7f110e1387d82480cab419b45d6b924270883bab9137b5c4cc404d7a0"
+      },
+      "development_change": "event-only updates capped at 10 Hz; search-path override",
+      "errors": [
+        "execution: temporary renderer witness attestation rejected",
+        "scored Gazebo resource evidence is incomplete",
+        "camera observer log lacks one complete successful stop record",
+        "required run evidence is missing: camera-capacity-ready.json",
+        "required run evidence is missing: depth-topic-connections-launcher.json"
+      ],
+      "evidence_accepted": false,
+      "gazebo_cpu_seconds_delta": null,
+      "label": "event-throttled-searchpath",
+      "outcome": "standard system plugin loaded; renderer witness correctly rejected the run",
+      "performance_pass": null,
+      "raw_root": "results/camera-render-capacity/sensor-event-throttled-dev-20260930-01",
+      "renderer_attestation_accepted": false,
+      "rtf": null,
+      "shared_files_restored": true,
+      "status": "invalid"
+    },
+    {
+      "cleanup_verified": true,
+      "custom_plugin_attestation": null,
+      "development_change": "event-only updates capped at 10 Hz; explicit server config",
+      "errors": [
+        "execution: capacity readiness timed out after 180.0s",
+        "scored Gazebo resource evidence is incomplete",
+        "camera observer log lacks one complete successful stop record",
+        "camera scheduler log lacks one complete successful stop record",
+        "required run evidence is missing: renderer-attestation.json",
+        "required run evidence is missing: camera-capacity-ready.json",
+        "required run evidence is missing: depth-topic-connections-launcher.json"
+      ],
+      "evidence_accepted": false,
+      "gazebo_cpu_seconds_delta": null,
+      "label": "event-throttled-explicit",
+      "outcome": "custom plugin startup while paused never completed trigger connections",
+      "performance_pass": null,
+      "raw_root": "results/camera-render-capacity/sensor-event-throttled-dev-20260930-02",
+      "renderer_attestation_accepted": null,
+      "rtf": null,
+      "shared_files_restored": true,
+      "status": "invalid"
+    },
+    {
+      "cleanup_verified": true,
+      "custom_plugin_attestation": {
+        "accepted": true,
+        "expected_path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/px4-sensor-readiness/build/gazebo-sensors-event-throttled-paused/libgz-sim8-sensors-system.so",
+        "expected_sha256": "073b3e6bd146886944525e881a473e28547b9e12c1cabc7eee6bd4e3e88945d9",
+        "mapped_path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/px4-sensor-readiness/build/gazebo-sensors-event-throttled-paused/libgz-sim8-sensors-system.so",
+        "reasons": [],
+        "sha256": "073b3e6bd146886944525e881a473e28547b9e12c1cabc7eee6bd4e3e88945d9"
+      },
+      "development_change": "event-only updates unthrottled while paused and capped at 10 Hz while running",
+      "errors": [
+        "post-audit: original renderer attestation did not bind or preserve the private server config"
+      ],
+      "evidence_accepted": false,
+      "gazebo_cpu_seconds_delta": 98.85,
+      "label": "event-throttled-paused",
+      "outcome": "diagnostic RTF 0.7301250688861198; below threshold; original server-config binding incomplete",
+      "performance_pass": false,
+      "raw_root": "results/camera-render-capacity/sensor-event-throttled-paused-dev-20260930-01",
+      "renderer_attestation_accepted": true,
+      "rtf": 0.7301250688861198,
+      "shared_files_restored": true,
+      "status": "diagnostic_only",
+      "historical_manifest_evidence_accepted": true,
+      "post_audit_evidence_valid": false,
+      "server_config_runtime_attestation_bound": false,
+      "server_config_recovery": "sensors-experiments/event-throttled-paused/server-config-recovery.json"
+    }
+  ],
+  "threshold_min_rtf": 0.95,
+  "upstream_source": {
+    "commit": "446a44335a45b704b4d36dabcc5508ee34eeb3d8",
+    "experiment_patch": "patches/gz-sim8/sensors-render-event-throttle-10hz.patch",
+    "experiment_patch_sha256": "73c41fdb632768c9af0f056e9dc37484743dfc201680cf14ced4c5b46b0c04fe",
+    "repository": "https://github.com/gazebosim/gz-sim",
+    "tag": "gz-sim8_8.15.0"
+  }
+}

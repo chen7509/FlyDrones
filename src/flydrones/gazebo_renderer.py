@@ -74,9 +74,22 @@ def evaluate_renderer_attestation(
     expected_width: int = 160,
     expected_height: int = 120,
     expected_frequency_hz: float = 10.0,
+    expected_render_engine: str | None = None,
 ) -> dict[str, object]:
     reasons: list[str] = []
     library_names = {Path(item).name for item in mapped_libraries}
+
+    if expected_render_engine not in {None, "ogre", "ogre2"}:
+        raise ValueError(f"unsupported Gazebo render engine: {expected_render_engine}")
+    engine_library = None
+    if expected_render_engine is not None:
+        prefix = f"libgz-rendering8-{expected_render_engine}.so"
+        engine_library = next(
+            (name for name in sorted(library_names) if name.startswith(prefix)),
+            None,
+        )
+        if engine_library is None:
+            reasons.append("render_engine_mismatch")
 
     if egl_renderer is None:
         reasons.append("egl_renderer_missing")
@@ -115,6 +128,9 @@ def evaluate_renderer_attestation(
         "reasons": reasons,
         "requested_profile": profile.name,
         "requested_environment": dict(profile.environment),
+        "requested_render_engine": expected_render_engine,
+        "render_engine_library": engine_library,
+        "render_engine_accepted": expected_render_engine is None or engine_library is not None,
         "egl_renderer": egl_renderer,
         "mapped_libraries": sorted(mapped_libraries),
         "expected_depth_topics": expected_depth_topics,

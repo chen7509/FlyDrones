@@ -1,0 +1,51 @@
+{
+  "accepted": true,
+  "depth_observations": {
+    "/world/flydrones_forest/model/x500_depth_fly_0/link/camera_link/sensor/StereoOV7251/depth_image": {
+      "frequency_hz": 10.050251256281408,
+      "height": 120,
+      "message_count": 11,
+      "width": 160
+    },
+    "/world/flydrones_forest/model/x500_depth_fly_1/link/camera_link/sensor/StereoOV7251/depth_image": {
+      "frequency_hz": 10.0,
+      "height": 120,
+      "message_count": 11,
+      "width": 160
+    },
+    "/world/flydrones_forest/model/x500_depth_fly_2/link/camera_link/sensor/StereoOV7251/depth_image": {
+      "frequency_hz": 10.0,
+      "height": 120,
+      "message_count": 11,
+      "width": 160
+    },
+    "/world/flydrones_forest/model/x500_depth_fly_3/link/camera_link/sensor/StereoOV7251/depth_image": {
+      "frequency_hz": 10.0,
+      "height": 120,
+      "message_count": 11,
+      "width": 160
+    },
+    "/world/flydrones_forest/model/x500_depth_fly_4/link/camera_link/sensor/StereoOV7251/depth_image": {
+      "frequency_hz": 10.0,
+      "height": 120,
+      "message_count": 11,
+      "width": 160
+    }
+  },
+  "egl_renderer": "D3D12 (NVIDIA GeForce RTX 3070 Ti Laptop GPU)",
+  "expected_depth_topics": 5,
+  "reasons": [],
+  "render_engine_accepted": true,
+  "render_engine_library": "libgz-rendering8-ogre2.so.8.2.3",
+  "requested_profile": "d3d12-nvidia",
+  "requested_render_engine": "ogre2",
+  "schema": "flydrones-gazebo-renderer-attestation-v1",
+  "sensors_plugin": {
+    "accepted": true,
+    "expected_path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/px4-sensor-readiness/build/gazebo-sensors-event-throttled-paused/libgz-sim8-sensors-system.so",
+    "expected_sha256": "073b3e6bd146886944525e881a473e28547b9e12c1cabc7eee6bd4e3e88945d9",
+    "mapped_path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/px4-sensor-readiness/build/gazebo-sensors-event-throttled-paused/libgz-sim8-sensors-system.so",
+    "reasons": [],
+    "sha256": "073b3e6bd146886944525e881a473e28547b9e12c1cabc7eee6bd4e3e88945d9"
+  }
+}

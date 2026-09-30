@@ -1,0 +1,19 @@
+{
+  "cell": "native-5",
+  "evidence_failures": [],
+  "evidence_valid": true,
+  "failures": [
+    "phase_error_p95_exceeded",
+    "rtf_below_threshold"
+  ],
+  "name": "capacity-04-native-5-r1",
+  "performance_failures": [
+    "phase_error_p95_exceeded",
+    "rtf_below_threshold"
+  ],
+  "performance_pass": false,
+  "repetition": 1,
+  "rtf": 0.5135422525903519,
+  "score_status": "scored",
+  "sequence": 4
+}

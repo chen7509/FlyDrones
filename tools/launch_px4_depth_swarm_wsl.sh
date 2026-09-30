@@ -10,6 +10,9 @@ vehicle_count="${FLYDRONES_VEHICLE_COUNT:-5}"
 vio_fault_profile="${FLYDRONES_VIO_FAULT_PROFILE:-}"
 vio_health_base_port="${FLYDRONES_VIO_HEALTH_BASE_PORT:-}"
 renderer_profile="${FLYDRONES_GZ_RENDER_PROFILE:-default}"
+render_engine="${FLYDRONES_GZ_RENDER_ENGINE:-ogre2}"
+sensors_plugin_dir="${FLYDRONES_GZ_SENSORS_PLUGIN_DIR:-}"
+expected_sensors_plugin_sha256="${FLYDRONES_EXPECTED_GZ_SENSORS_PLUGIN_SHA256:-}"
 camera_schedule_mode="${FLYDRONES_CAMERA_SCHEDULE_MODE:-simultaneous}"
 camera_aux_timeout_s="${FLYDRONES_CAMERA_AUX_TIMEOUT_S:-45}"
 camera_phase_ready_marker="${FLYDRONES_CAMERA_PHASE_READY_MARKER:-}"
@@ -39,6 +42,30 @@ case "$renderer_profile" in
     exit 2
     ;;
 esac
+case "$render_engine" in
+  ogre|ogre2) ;;
+  *)
+    echo "unsupported Gazebo render engine: $render_engine" >&2
+    exit 2
+    ;;
+esac
+sensors_plugin_path=""
+if [[ -n "$sensors_plugin_dir" || -n "$expected_sensors_plugin_sha256" ]]; then
+  if [[ -z "$sensors_plugin_dir" || -z "$expected_sensors_plugin_sha256" ]]; then
+    echo "custom Gazebo Sensors plugin directory and SHA-256 must be provided together" >&2
+    exit 2
+  fi
+  sensors_plugin_path="$sensors_plugin_dir/libgz-sim8-sensors-system.so"
+  if [[ ! -f "$sensors_plugin_path" ]]; then
+    echo "custom Gazebo Sensors plugin is missing: $sensors_plugin_path" >&2
+    exit 2
+  fi
+  actual_sensors_plugin_sha256="$(sha256sum "$sensors_plugin_path" | awk '{print $1}')"
+  if [[ "$actual_sensors_plugin_sha256" != "$expected_sensors_plugin_sha256" ]]; then
+    echo "custom Gazebo Sensors plugin SHA-256 mismatch" >&2
+    exit 2
+  fi
+fi
 case "$camera_schedule_mode" in
   simultaneous|phased) ;;
   *)
@@ -223,11 +250,29 @@ export GZ_SIM_SYSTEM_PLUGIN_PATH="${GZ_SIM_SYSTEM_PLUGIN_PATH:-}"
 set +u
 source "$build/rootfs/gz_env.sh"
 set -u
+if [[ -n "$sensors_plugin_dir" ]]; then
+  export GZ_SIM_SYSTEM_PLUGIN_PATH="$sensors_plugin_dir:${GZ_SIM_SYSTEM_PLUGIN_PATH:-}"
+  custom_server_config="$run_dir/custom-server.config"
+  python3 - "$PX4_GZ_SERVER_CONFIG" "$custom_server_config" \
+    "$sensors_plugin_path" <<'PY'
+import sys
+from pathlib import Path
+
+source = Path(sys.argv[1]).read_text(encoding="utf-8")
+needle = 'filename="gz-sim-sensors-system"'
+if source.count(needle) != 1:
+    raise SystemExit("PX4 server config must contain exactly one Gazebo Sensors plugin")
+replacement = f'filename="{sys.argv[3]}"'
+Path(sys.argv[2]).write_text(source.replace(needle, replacement), encoding="utf-8")
+PY
+  custom_server_config_sha256="$(sha256sum "$custom_server_config" | awk '{print $1}')"
+  export GZ_SIM_SERVER_CONFIG_PATH="$custom_server_config"
+fi
 gazebo_run_args=(-s "$world_target")
 if [[ "$capacity_mode" != 1 ]]; then gazebo_run_args=(-r "${gazebo_run_args[@]}"); fi
 (
   exec env -u GALLIUM_DRIVER -u MESA_D3D12_DEFAULT_ADAPTER_NAME "${renderer_env[@]}" \
-    gz sim --headless-rendering "${gazebo_run_args[@]}"
+    gz sim --headless-rendering --render-engine "$render_engine" "${gazebo_run_args[@]}"
 ) >"$run_dir/gazebo.stdout.log" 2>"$run_dir/gazebo.stderr.log" </dev/null &
 gazebo_pid=$!
 echo "$gazebo_pid" >"$run_dir/gazebo.pid"
@@ -759,11 +804,22 @@ for _ in $(seq 1 40); do
       echo "camera phase evidence readiness timed out" >&2
       exit 3
     fi
+    renderer_attestation_args=()
+    if [[ -n "$sensors_plugin_path" ]]; then
+      renderer_attestation_args=(
+        --expected-sensors-plugin "$sensors_plugin_path"
+        --expected-sensors-plugin-sha256 "$expected_sensors_plugin_sha256"
+        --expected-server-config "$custom_server_config"
+        --expected-server-config-sha256 "$custom_server_config_sha256"
+      )
+    fi
     if ! env -u GALLIUM_DRIVER -u MESA_D3D12_DEFAULT_ADAPTER_NAME "${renderer_env[@]}" \
       PYTHONPATH="$repo_root/src" python3 "$repo_root/tools/attest_gazebo_renderer_wsl.py" \
-      --profile "$renderer_profile" --gazebo-pid "$gazebo_pid" \
+      --profile "$renderer_profile" --render-engine "$render_engine" \
+      --gazebo-pid "$gazebo_pid" \
       --expected-depth-topics "$vehicle_count" \
       --phase-ready-marker "$camera_phase_ready_marker" \
+      "${renderer_attestation_args[@]}" \
       --output "$run_dir/renderer-attestation.json"; then
       echo "Gazebo renderer attestation failed" >&2
       exit 3

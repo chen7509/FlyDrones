@@ -94,7 +94,7 @@ def _good_pair(run, *, rtf: float = 0.97) -> tuple[dict, dict]:
             "resources": {"accepted": True, "gazebo": {"samples": 3}},
         },
         "camera_phase": {
-            "accepted": active > 0,
+            "accepted": True,
             "vehicles": vehicles,
             "adjacent_spacing_median_error_ns": 8_000_000 if active == 5 else None,
             "missed_trigger_count": 0,
@@ -378,6 +378,22 @@ def test_idle_cell_requires_explicit_absence_and_never_requires_images():
     result = score_capacity_run(manifest, summary, CapacityThresholds.from_mapping(THRESHOLDS))
     assert result["evidence_valid"] is False
     assert "unexpected_depth_subscription" in result["failures"]
+
+
+def test_idle_cell_rejects_a_rejected_phase_summary():
+    run = next(run for run in capacity_schedule() if run.cell.name == "idle-0")
+    manifest, summary = _good_pair(run)
+    summary["camera_phase"].update(
+        accepted=False,
+        reasons=["unexpected_scored_trigger"],
+    )
+
+    result = score_capacity_run(
+        manifest, summary, CapacityThresholds.from_mapping(THRESHOLDS)
+    )
+
+    assert result["evidence_valid"] is False
+    assert "camera_phase_summary_rejected" in result["evidence_failures"]
 
 
 def test_campaign_rejects_changed_schedule_before_classification():

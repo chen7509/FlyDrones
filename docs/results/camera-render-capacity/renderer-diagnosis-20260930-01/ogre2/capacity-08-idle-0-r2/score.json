@@ -1,0 +1,17 @@
+{
+  "cell": "idle-0",
+  "evidence_failures": [],
+  "evidence_valid": true,
+  "failures": [
+    "rtf_below_threshold"
+  ],
+  "name": "capacity-08-idle-0-r2",
+  "performance_failures": [
+    "rtf_below_threshold"
+  ],
+  "performance_pass": false,
+  "repetition": 2,
+  "rtf": 0.7797850659880458,
+  "score_status": "scored",
+  "sequence": 8
+}

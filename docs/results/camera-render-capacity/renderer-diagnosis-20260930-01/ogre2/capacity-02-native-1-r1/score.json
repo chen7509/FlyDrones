@@ -1,0 +1,17 @@
+{
+  "cell": "native-1",
+  "evidence_failures": [],
+  "evidence_valid": true,
+  "failures": [
+    "rtf_below_threshold"
+  ],
+  "name": "capacity-02-native-1-r1",
+  "performance_failures": [
+    "rtf_below_threshold"
+  ],
+  "performance_pass": false,
+  "repetition": 1,
+  "rtf": 0.7023753201613956,
+  "score_status": "scored",
+  "sequence": 2
+}

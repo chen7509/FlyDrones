@@ -1,0 +1,157 @@
+{
+  "camera_phase": {
+    "accepted": false,
+    "adjacent_spacing_median_error_by_pair_ns": {
+      "0-1": 0,
+      "1-2": 0,
+      "2-3": 0,
+      "3-4": 0,
+      "4-0": 0
+    },
+    "adjacent_spacing_median_error_ns": 0,
+    "cross_model_error_count": 0,
+    "depth_subscription_absent": false,
+    "duplicate_image_count": 0,
+    "duplicate_trigger_count": 0,
+    "epoch_ns": 18300000000,
+    "max_simultaneous_cameras_10ms": 2,
+    "missed_trigger_count": 0,
+    "mode": "phased",
+    "queue_overflow_count": 0,
+    "reasons": [
+      "phase_error_p95_exceeded"
+    ],
+    "schema": "flydrones-camera-phase-summary-v1",
+    "target_offsets_ns": [
+      0,
+      20000000,
+      40000000,
+      60000000,
+      80000000
+    ],
+    "trigger_stream_count": 5,
+    "unmatched_image_count": 0,
+    "unmatched_trigger_count": 0,
+    "vehicle_count": 5,
+    "vehicles": {
+      "0": {
+        "format": "R_FLOAT32",
+        "frequency_hz": 10.0,
+        "height": 120,
+        "image_count": 300,
+        "interval_max_ns": 120000000,
+        "interval_p50_ns": 100000000,
+        "interval_p95_ns": 116000000,
+        "interval_p99_ns": 116000000,
+        "mean_frequency_hz": 10.0,
+        "phase_error_max_ns": 12000000,
+        "phase_error_p50_ns": 4000000,
+        "phase_error_p95_ns": 12000000,
+        "phase_median_ns": 4000000,
+        "width": 160
+      },
+      "1": {
+        "format": "R_FLOAT32",
+        "frequency_hz": 9.998662386302836,
+        "height": 120,
+        "image_count": 300,
+        "interval_max_ns": 120000000,
+        "interval_p50_ns": 100000000,
+        "interval_p95_ns": 116000000,
+        "interval_p99_ns": 116000000,
+        "mean_frequency_hz": 9.998662386302836,
+        "phase_error_max_ns": 12000000,
+        "phase_error_p50_ns": 4000000,
+        "phase_error_p95_ns": 12000000,
+        "phase_median_ns": 24000000,
+        "width": 160
+      },
+      "2": {
+        "format": "R_FLOAT32",
+        "frequency_hz": 10.0,
+        "height": 120,
+        "image_count": 300,
+        "interval_max_ns": 120000000,
+        "interval_p50_ns": 100000000,
+        "interval_p95_ns": 116000000,
+        "interval_p99_ns": 116080000,
+        "mean_frequency_hz": 10.0,
+        "phase_error_max_ns": 12000000,
+        "phase_error_p50_ns": 4000000,
+        "phase_error_p95_ns": 12000000,
+        "phase_median_ns": 44000000,
+        "width": 160
+      },
+      "3": {
+        "format": "R_FLOAT32",
+        "frequency_hz": 9.998662386302836,
+        "height": 120,
+        "image_count": 300,
+        "interval_max_ns": 120000000,
+        "interval_p50_ns": 100000000,
+        "interval_p95_ns": 116000000,
+        "interval_p99_ns": 116000000,
+        "mean_frequency_hz": 9.998662386302836,
+        "phase_error_max_ns": 16000000,
+        "phase_error_p50_ns": 4000000,
+        "phase_error_p95_ns": 12000000,
+        "phase_median_ns": 64000000,
+        "width": 160
+      },
+      "4": {
+        "format": "R_FLOAT32",
+        "frequency_hz": 9.998662386302836,
+        "height": 120,
+        "image_count": 300,
+        "interval_max_ns": 120000000,
+        "interval_p50_ns": 100000000,
+        "interval_p95_ns": 112000000,
+        "interval_p99_ns": 116000000,
+        "mean_frequency_hz": 9.998662386302836,
+        "phase_error_max_ns": 12000000,
+        "phase_error_p50_ns": 4000000,
+        "phase_error_p95_ns": 8200000,
+        "phase_median_ns": 84000000,
+        "width": 160
+      }
+    }
+  },
+  "native_metrics": {
+    "callback_cpu_ns": 121275594,
+    "compiler": "13.3.0",
+    "dropped_count": 0,
+    "event": "stop",
+    "executable_sha256": "abf865fda64b7e6d2620716f190e9b56f3971a587a793384e67e44fa5f77faf2",
+    "gz_msgs_version": "10.4.0",
+    "gz_transport_version": "13.6.0",
+    "image_payload_bytes_seen": 223900560,
+    "implementation": "native-cpp",
+    "queue_high_watermark": 2,
+    "source_sha256": "8df88ce117866096c2c7505f39423a5d7d39e1b4fca3cbb1a1b608e19ec8da05",
+    "subscriber_count": 5,
+    "wall_monotonic_ns": 13007798650532,
+    "writer_cpu_ns": 127046241404
+  },
+  "runtime": {
+    "resources": {
+      "accepted": true,
+      "gazebo": {
+        "cpu_seconds_delta": 152.72,
+        "pid": 120228,
+        "rss_peak_bytes": 583708672,
+        "samples": 704,
+        "threads_peak": 55
+      },
+      "gpu": {
+        "memory_peak_mib": 171.0,
+        "numeric_samples": 111,
+        "samples": 111,
+        "utilization_peak_percent": 3.0
+      }
+    },
+    "rtf": {
+      "scored_window": 0.5135422525903519
+    }
+  },
+  "schema": "flydrones-camera-render-capacity-summary-v1"
+}
