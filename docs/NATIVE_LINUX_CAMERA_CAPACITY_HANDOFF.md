@@ -1,5 +1,47 @@
 # Native Linux camera capacity comparison
 
+## Boot handoff (2026-10-01)
+
+The published baseline is commit `20a6b77ee672dbcbbf2239a13696332eb5b82c2c`
+on `https://github.com/chen7509/FlyDrones.git`, branch
+`codex/px4-sensor-readiness`. The Windows host's internal NVMe currently shows
+only EFI, Microsoft reserved, NTFS, and recovery partitions. The attached LaCie
+USB-C disk shows EFI plus an exFAT data partition. These observations do not
+establish a bootable native Linux installation; Ubuntu available from Windows is
+WSL2. Identify and boot the native Linux medium without repartitioning either
+disk as part of this trial.
+
+After booting Linux, run this read-only preflight before installing packages,
+building, or launching a simulation:
+
+```bash
+uname -a
+lsblk -o NAME,TRAN,SIZE,FSTYPE,MOUNTPOINTS
+command -v nvidia-smi && nvidia-smi --query-gpu=name,driver_version --format=csv,noheader
+command -v eglinfo && eglinfo -B
+command -v gz && gz sim --version
+pkg-config --modversion gz-transport13 gz-msgs10
+```
+
+`uname` must not identify WSL or Microsoft. Preserve the output and boot medium
+description. If the NVIDIA device, Gazebo dependencies, or persistent storage
+are unavailable (for example in an unprepared live USB session), stop before
+the scored trial and prepare the host. Do not use the Windows/WSL PX4 binary.
+
+On a persistent native Linux installation, fetch the frozen source with:
+
+```bash
+git clone --branch codex/px4-sensor-readiness https://github.com/chen7509/FlyDrones.git
+cd FlyDrones
+git rev-parse HEAD
+```
+
+Check that `HEAD` includes the baseline commit above. Subsequent native-host
+adaptations must be recorded as a separate revision; compare frozen model,
+world, profile, policy, and physics inputs against the baseline and explicitly
+list any runner or renderer changes. Reopen the Codex task on Linux with this
+handoff document and the captured preflight output before running the gates.
+
 Status on 2026-10-01: this workstation provides Ubuntu under WSL2 only. A
 native Linux trial has not been run. The current WSL baseline is the three
 committed-byte, five-PX4, renderer-initialized, zero-steady-trigger trials in
