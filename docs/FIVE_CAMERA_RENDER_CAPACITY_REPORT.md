@@ -1,5 +1,17 @@
 # Five-Camera Render Capacity Report
 
+> Follow-up (2026-10-01): the user confirmed that native Linux is not installed
+> on this machine and elected to defer that comparison. It remains **untested**;
+> WSL2 measurements must not be presented as native Linux capacity. Read-only
+> reanalysis of the three committed scored windows found Gazebo process CPU
+> rates of 2.328, 2.335, and 2.347 core-equivalents. Their stability reinforces
+> that the observed sub-0.95 RTF is repeatable, but process CPU totals and
+> `cpu-clock:u` stacks do not identify wall-time blocking or GPU waits. WSL2
+> does not expose the `sched:sched_switch` tracepoint here, so that proposed
+> scheduler probe is unavailable. The next diagnostic must measure the
+> simulation thread's elapsed versus runnable time with an available counter
+> before changing physics, camera semantics, or acceptance thresholds.
+>
 > Current update (2026-10-01, Transport isolation): the runner now clears an
 > inherited `GZ_IP`, accepts only an explicit IPv4 loopback address, and the
 > renderer attester proves the value from the live Gazebo process environment.

@@ -1,5 +1,9 @@
 # Native Linux camera capacity comparison
 
+Status: deferred at the user's request because native Linux is not installed
+on this machine. No native Linux trial has been run. The following handoff is
+retained for a future native-host comparison and is not a current test gate.
+
 ## Boot handoff (2026-10-01)
 
 The published baseline is commit `20a6b77ee672dbcbbf2239a13696332eb5b82c2c`
