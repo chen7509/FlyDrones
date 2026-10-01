@@ -70,6 +70,7 @@ def audit_archive(archive_path: Path, index_path: Path, root: Path = ROOT) -> di
             raise ValueError("expected 20 formal worlds")
 
         missing_sources = []
+        changed_sources = []
         for relative, expected in freeze["files"].items():
             path = (root / relative).resolve()
             if not path.is_relative_to(root.resolve()):
@@ -77,7 +78,7 @@ def audit_archive(archive_path: Path, index_path: Path, root: Path = ROOT) -> di
             if not path.is_file():
                 missing_sources.append(relative)
             elif hashlib.sha256(path.read_bytes()).hexdigest() != expected:
-                raise ValueError(f"changed frozen source: {relative}")
+                changed_sources.append(relative)
 
         world_by_seed = {}
         for item in seeds["worlds"]:
@@ -149,6 +150,7 @@ def audit_archive(archive_path: Path, index_path: Path, root: Path = ROOT) -> di
             "episodes": len(result_paths),
             "status_counts": {name: dict(counts[name]) for name in CONTROLLERS},
             "missing_frozen_sources": missing_sources,
+            "changed_frozen_sources": changed_sources,
             "formal_ulog_count": ulog_count,
         }
 

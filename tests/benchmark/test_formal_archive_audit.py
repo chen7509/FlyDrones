@@ -23,6 +23,7 @@ def test_formal_archive_retains_all_failed_episodes_and_reports_ulog_gap():
         "ego": {"collision": 18, "success": 2},
     }
     assert audit["formal_ulog_count"] == 0
+    assert "src/flydrones/benchmark/gateway.py" in audit["changed_frozen_sources"]
 
 
 def test_formal_archive_rejects_changed_index_digest(tmp_path):

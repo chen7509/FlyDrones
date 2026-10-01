@@ -1,5 +1,7 @@
 # Fly/EGO 历史对照证据重建（2026-10-01）
 
+本文记录归档提交 `2022e6c`。后续 `codex/benchmark-ulog-capture` 分支修改了运行代码；审计器会将这些文件列入 `changed_frozen_sources`，不能再把当前分支当作 2026-09-22 的原冻结代码。
+
 本分支从未提交的历史实验工作区按冻结清单复制源码，在独立工作树中核验，**没有重新运行或调整 20 个正式世界**。原工作区保持不变。归档保存 926 个原始文件（包括开发回合、所有正式终局、逐步路径及日志），逐文件 SHA-256 清单在 `evidence/fly-ego-comparison-2026-09-22.sha256.json`；ZIP 的 SHA-256 为 `22d88d4b331641fde4f3e67d98d47cfabcab060aca62d0ca98aa6e7702de8ce9`。
 
 运行 `python tools/benchmark/audit_archive.py` 可核验归档每个文件、冻结清单与未见世界的封印、20×3 配对和全部终局、每回合世界副本与批量记录，以及汇总表。PX4/Gazebo 后端在每回合把同一架 `x500_benchmark_8` 插入世界 SDF，故运行后的回合 SDF 与初始冻结 SDF 哈希不同；审计器要求这个改动与上游世界及起点**逐字节相符**，不接受其他世界改动。归档是证据快照，不表示在本分支重新完成 PX4 物理仿真。
@@ -11,6 +13,8 @@
 | 上游 EGO-Swarm 单机 | 2/20 | 18 | 0 | 0.0083 s |
 
 冻结清单哈希为 `9d10bb72c1fda4048f0439c9dfb823583d8464a8491349f9e732e9cced87d937`。对手源码为 [ZJU-FAST-Lab/ego-planner-swarm](https://github.com/ZJU-FAST-Lab/ego-planner-swarm) 的 ROS 2 分支提交 `23a8d5a191711dd65633df689bd00f55d4dea8f9`，GPL-3.0；冻结清单另记 Docker 镜像 ID、PX4 提交 `d6f12ad1c4f70ad3230afd7d86e971421e02fef4`、Gazebo 8.15.0。审计器核验的是归档与本地源码字节，不独立证明当时这些二进制确实运行。
+
+更关键的传感器边界：`NativeGazeboPx4Backend.observe()` 把 Gazebo 模型位姿及由其差分得到的速度放入**双方共用**的 `Observation`，相机位姿也由模型真值换算。它使这个历史实验可以在相同理想里程计条件下比较控制器，但不能称为相机+IMU VIO，更不能作为陌生真实环境的自主定位证据。新的评测必须让两方使用同一经过验证的非真值估计器，并保留估计误差与失效日志。
 
 冻结的 89 个输入在原工作区和本次独立快照中均通过哈希核验。`data/malecns_full.npz`（SHA-256 `b6be8b3dd901e2e0893303c04058a110d6e0fb9922a69022b26514efcf06100c`）及 `results/fly-training/connectome-distillation-v2/readout_candidate.json` 因项目忽略规则与模型数据体积没有入 Git。干净检出运行审计器会在 `missing_frozen_sources` 中列出它们；在取得这些**完全相同**的文件之前，不能宣称可从仓库单独重跑完整果蝇。不得用替代连接组、PPO 或反射策略填充缺口后继续沿用“完整果蝇”名称。
 
