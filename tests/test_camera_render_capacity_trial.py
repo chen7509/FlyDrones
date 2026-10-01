@@ -787,6 +787,7 @@ def test_capacity_launcher_uses_temporary_attestation_and_stable_gazebo_identity
     assert 'remove_named_plugin("custom::GstCameraSystem")' in launcher
     assert '--forbidden-server-plugin-name "custom::GstCameraSystem"' in launcher
     assert '--forbidden-mapped-library "libGstCameraSystem.so"' in launcher
+    assert '--expected-gz-ip "$gz_ip"' in launcher
     assert '--expected-sensors-plugin "$sensors_plugin_path"' in launcher
     assert '--expected-server-config "$custom_server_config"' in launcher
     assert '--expected-server-config-sha256 "$custom_server_config_sha256"' in launcher
@@ -969,6 +970,63 @@ def test_capacity_trial_clears_inherited_gstreamer_disable(
     )
 
     assert backend.environment["FLYDRONES_DISABLE_GST_CAMERA_SYSTEM"] == "0"
+
+
+def test_capacity_trial_sets_audited_loopback_gazebo_transport_ip(
+    tmp_path: Path,
+    monkeypatch,
+):
+    monkeypatch.setenv("GZ_IP", "192.0.2.10")
+    backend = FakeBackend()
+    config = _config()
+    config["gazebo_transport_ip"] = "127.0.0.1"
+    native_executable = tmp_path / "flydrones_camera_phase_native"
+    native_executable.write_bytes(b"native capacity test executable")
+
+    run_capacity_trial(
+        run=_run("idle-0"),
+        config=config,
+        output_root=tmp_path,
+        native_executable=native_executable,
+        _backend=backend,
+    )
+
+    assert backend.environment["GZ_IP"] == "127.0.0.1"
+
+
+def test_capacity_trial_clears_inherited_gazebo_transport_ip(tmp_path: Path, monkeypatch):
+    monkeypatch.setenv("GZ_IP", "127.0.0.1")
+    backend = FakeBackend()
+    native_executable = tmp_path / "flydrones_camera_phase_native"
+    native_executable.write_bytes(b"native capacity test executable")
+
+    run_capacity_trial(
+        run=_run("idle-0"),
+        config=_config(),
+        output_root=tmp_path,
+        native_executable=native_executable,
+        _backend=backend,
+    )
+
+    assert "GZ_IP" not in backend.environment
+
+
+@pytest.mark.parametrize("value", ("172.28.0.10", "::1", 127001))
+def test_capacity_trial_rejects_non_ipv4_loopback_gazebo_transport_ip(
+    tmp_path: Path,
+    value,
+):
+    config = _config()
+    config["gazebo_transport_ip"] = value
+
+    with pytest.raises(ValueError, match="gazebo_transport_ip"):
+        run_capacity_trial(
+            run=_run("idle-0"),
+            config=config,
+            output_root=tmp_path,
+            native_executable=tmp_path / "native",
+            _backend=FakeBackend(),
+        )
 
 
 def test_capacity_trial_rejects_non_boolean_gstreamer_disable(tmp_path: Path):

@@ -14,6 +14,7 @@ render_engine="${FLYDRONES_GZ_RENDER_ENGINE:-ogre2}"
 sensors_plugin_dir="${FLYDRONES_GZ_SENSORS_PLUGIN_DIR:-}"
 expected_sensors_plugin_sha256="${FLYDRONES_EXPECTED_GZ_SENSORS_PLUGIN_SHA256:-}"
 disable_gst_camera_system="${FLYDRONES_DISABLE_GST_CAMERA_SYSTEM:-0}"
+gz_ip="${GZ_IP:-}"
 camera_schedule_mode="${FLYDRONES_CAMERA_SCHEDULE_MODE:-simultaneous}"
 camera_aux_timeout_s="${FLYDRONES_CAMERA_AUX_TIMEOUT_S:-45}"
 camera_phase_ready_marker="${FLYDRONES_CAMERA_PHASE_READY_MARKER:-}"
@@ -861,6 +862,9 @@ for _ in $(seq 1 40); do
         --forbidden-server-plugin-name "custom::GstCameraSystem"
         --forbidden-mapped-library "libGstCameraSystem.so"
       )
+    fi
+    if [[ -n "$gz_ip" ]]; then
+      renderer_attestation_args+=(--expected-gz-ip "$gz_ip")
     fi
     if ! env -u GALLIUM_DRIVER -u MESA_D3D12_DEFAULT_ADAPTER_NAME "${renderer_env[@]}" \
       PYTHONPATH="$repo_root/src" python3 "$repo_root/tools/attest_gazebo_renderer_wsl.py" \

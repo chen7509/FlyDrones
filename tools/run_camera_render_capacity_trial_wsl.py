@@ -6,6 +6,7 @@ from __future__ import annotations
 import argparse
 import csv
 import hashlib
+import ipaddress
 import json
 import os
 import re
@@ -1246,6 +1247,18 @@ def run_capacity_trial(
     disable_gst_camera_system = config.get("disable_gst_camera_system", False)
     if not isinstance(disable_gst_camera_system, bool):
         raise ValueError("disable_gst_camera_system must be boolean")
+    gazebo_transport_ip = config.get("gazebo_transport_ip")
+    if gazebo_transport_ip is not None:
+        if not isinstance(gazebo_transport_ip, str):
+            raise ValueError("gazebo_transport_ip must be an IPv4 loopback address")
+        try:
+            parsed_gazebo_transport_ip = ipaddress.ip_address(gazebo_transport_ip)
+        except ValueError as exc:
+            raise ValueError(
+                "gazebo_transport_ip must be an IPv4 loopback address"
+            ) from exc
+        if parsed_gazebo_transport_ip.version != 4 or not parsed_gazebo_transport_ip.is_loopback:
+            raise ValueError("gazebo_transport_ip must be an IPv4 loopback address")
     sensors_plugin_directory = config.get("sensors_plugin_directory")
     sensors_plugin_sha256 = config.get("sensors_plugin_sha256")
     if (sensors_plugin_directory is None) != (sensors_plugin_sha256 is None):
@@ -1367,6 +1380,7 @@ def run_capacity_trial(
         "native_metrics": {},
     }
     environment = os.environ.copy()
+    environment.pop("GZ_IP", None)
     environment.update({
         "FLYDRONES_PX4_RUN_DIR": str(run_dir),
         "FLYDRONES_VEHICLE_COUNT": "5",
@@ -1406,6 +1420,8 @@ def run_capacity_trial(
         ),
         "PYTHONPATH": str(ROOT / "src"),
     })
+    if gazebo_transport_ip is not None:
+        environment["GZ_IP"] = gazebo_transport_ip
     if resolved_sensors_plugin_directory is not None:
         environment.update({
             "FLYDRONES_GZ_SENSORS_PLUGIN_DIR": str(resolved_sensors_plugin_directory),

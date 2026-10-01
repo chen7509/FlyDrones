@@ -139,6 +139,21 @@ def evaluate_forbidden_mapped_libraries(
     return {"accepted": not reasons, "reasons": reasons, "matches": matches}
 
 
+def evaluate_expected_process_environment(
+    process_environment: Mapping[str, str],
+    *,
+    expected_gz_ip: str,
+) -> dict[str, object]:
+    process_gz_ip = process_environment.get("GZ_IP")
+    reasons = [] if process_gz_ip == expected_gz_ip else ["process_gz_ip_mismatch"]
+    return {
+        "accepted": not reasons,
+        "expected_gz_ip": expected_gz_ip,
+        "process_gz_ip": process_gz_ip,
+        "reasons": reasons,
+    }
+
+
 def parse_mapped_libraries(maps: str) -> set[str]:
     """Return shared-library paths without losing spaces or deleted identity."""
     libraries: set[str] = set()
@@ -323,6 +338,7 @@ def main() -> int:
     parser.add_argument("--expected-server-config-sha256")
     parser.add_argument("--forbidden-server-plugin-name", action="append", default=[])
     parser.add_argument("--forbidden-mapped-library", action="append", default=[])
+    parser.add_argument("--expected-gz-ip")
     parser.add_argument("--gazebo-pid", type=int, required=True)
     parser.add_argument("--expected-depth-topics", type=int, required=True)
     parser.add_argument("--expected-width", type=int, default=160)
@@ -365,7 +381,7 @@ def main() -> int:
         errors.append(f"process-maps: {exc}")
 
     process_environment: dict[str, str] = {}
-    if args.expected_server_config is not None:
+    if args.expected_server_config is not None or args.expected_gz_ip is not None:
         try:
             process_environment = read_process_environment(args.gazebo_pid)
         except OSError as exc:
@@ -456,6 +472,18 @@ def main() -> int:
             result["reasons"] = [
                 *result.get("reasons", []),
                 "server_config_rejected",
+            ]
+    if args.expected_gz_ip is not None:
+        transport_environment = evaluate_expected_process_environment(
+            process_environment,
+            expected_gz_ip=args.expected_gz_ip,
+        )
+        result["transport_environment"] = transport_environment
+        if not transport_environment["accepted"]:
+            result["accepted"] = False
+            result["reasons"] = [
+                *result.get("reasons", []),
+                "transport_environment_rejected",
             ]
     if args.forbidden_mapped_library:
         forbidden_libraries = evaluate_forbidden_mapped_libraries(

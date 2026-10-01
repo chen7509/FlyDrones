@@ -1,5 +1,15 @@
 # Five-Camera Render Capacity Report
 
+> Current update (2026-10-01, Transport isolation): the runner now clears an
+> inherited `GZ_IP`, accepts only an explicit IPv4 loopback address, and the
+> renderer attester proves the value from the live Gazebo process environment.
+> Three exact-source, zero-trigger repetitions with `GZ_IP=127.0.0.1` measured
+> 0.8769, 0.8474, and 0.8226 RTF (mean 0.8490; range 0.0543). All three had
+> valid evidence, five healthy PX4 instances, five ULogs, and clean restoration,
+> but they failed both the 0.95 performance gate and 0.03 repeatability gate.
+> The one-camera, five-camera, and 12-slot tests therefore remain blocked. See
+> the [compact loopback evidence](results/camera-render-capacity/renderer-loopback-20261001-01).
+>
 > Current update (2026-10-01): profiler-led work found that PX4's default
 > Gazebo server configuration loaded `custom::GstCameraSystem` even though the
 > test world contains depth cameras and no matching regular `/image` stream.
@@ -27,6 +37,41 @@
 ## Renderer activation diagnosis
 
 ### Profiler-led server-plugin result
+
+#### Gazebo Transport loopback isolation
+
+The no-GStreamer profile left Gazebo Transport discovery as the largest sampled
+cumulative cost. Gazebo's official Transport documentation states that each
+discovery instance periodically re-advertises its local topics, once per second
+by default. The official environment-variable documentation defines `GZ_IP` as
+the IP address advertised for discovery. The WSL host exposed both loopback and
+an Ethernet interface, so a bounded experiment explicitly selected
+`127.0.0.1`; it did not change the discovery heartbeat, topic graph, camera
+contract, physics, or PX4 configuration. See the official
+[Transport discovery documentation](https://gazebosim.org/api/transport/13/development.html),
+[Discovery API source](https://gazebosim.org/api/transport/13/Discovery_8hh_source.html),
+and [environment-variable reference](https://gazebosim.org/api/transport/12/envvars.html).
+
+The first exploratory loopback run reached 0.9122 RTF, and a profiled run
+reached 0.8875 RTF with about 11,000 samples and zero lost samples. Those runs
+motivated an audited implementation but are not part of the exact-source
+repeatability set. In the formal set, the live Gazebo process proved
+`GZ_IP=127.0.0.1` in every repetition:
+
+| Repetition | Evidence | RTF | Result |
+|---:|---|---:|---|
+| 1 | valid | 0.8769 | below 0.95 |
+| 2 | valid | 0.8474 | below 0.95 |
+| 3 | valid | 0.8226 | below 0.95 |
+
+The mean was 0.8490 and the range was 0.0543. Loopback selection is retained as
+an explicit local-test isolation setting because it removes ambient interface
+selection from the experiment, but the measurements do not establish a stable
+performance improvement. The profile composition also remained similar:
+Transport discovery 44.31%, subscriber-change handling 12.44%, Physics update
+29.07%, DART forward step 23.00%, SceneBroadcaster 2.68%, Sensors 2.09%, and
+`RenderUtil::UpdateFromECM` 1.09%. These cumulative percentages span multiple
+threads and are not additive on one critical path.
 
 The first scored-window profile captured 13,683 `cpu-clock:u` samples. The
 unused `libGstCameraSystem.so` accounted for about 7.32% self samples;
@@ -142,9 +187,9 @@ trigger handshake. None produced a score. These failures constrain any future
 upstream patch: it must preserve paused-world initialization and triggered
 camera discovery as well as real-time performance.
 
-The next admissible work is a native-Linux runtime comparison or profiler-led
-work below the Sensors event gate, covering `RenderUtil::Update`, scene
-synchronization, and the WSL D3D12 driver path. It must
+The next admissible work is a native-Linux runtime comparison or a bounded,
+runtime-attested removal of server systems that have no matching sensors in
+this world, followed by profiler-led work below the Sensors event gate. It must
 first reach at least 0.95 RTF with the renderer initialized, zero steady
 triggers, and a repeatability range no greater than 0.03. Only then should the
 one-camera, five-camera, and frozen 12-slot campaign be repeated. Resolution,

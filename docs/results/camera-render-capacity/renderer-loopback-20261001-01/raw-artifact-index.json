@@ -1,0 +1,25 @@
+{
+  "schema": "flydrones-compact-evidence-index-v1",
+  "files": [
+    {
+      "path": "profile-summary.json",
+      "bytes": 740,
+      "sha256": "3ebf1e5c2a2eac39ef82645a0c46b38f11b36cbb6390cf80f0a805c93437f549"
+    },
+    {
+      "path": "README.md",
+      "bytes": 2009,
+      "sha256": "26c0dadc0e544b7715bf1766318bcd1e9de10b694a545231d72a9b7003b1d975"
+    },
+    {
+      "path": "renderer-attestation-summary.json",
+      "bytes": 1776,
+      "sha256": "a80fbe2ef7e96aae8863272a89c545500f592d85d46c0d24178aca43dc07700f"
+    },
+    {
+      "path": "repetitions.json",
+      "bytes": 2420,
+      "sha256": "e6e034d2120ef8895d9459305c27a00da15d204e4eacba2949a02894399589aa"
+    }
+  ]
+}

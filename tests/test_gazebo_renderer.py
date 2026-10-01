@@ -12,6 +12,7 @@ from flydrones.gazebo_renderer import (
 )
 from tools.attest_gazebo_renderer_wsl import (
     evaluate_expected_plugin,
+    evaluate_expected_process_environment,
     evaluate_expected_server_config,
     evaluate_forbidden_mapped_libraries,
     finalize_renderer_attestation,
@@ -308,6 +309,24 @@ def test_process_maps_parser_preserves_spaces_and_deleted_library_identity():
         "/opt/PX4 Plugins/libGstCameraSystem.so",
         "/usr/lib/libgz-sim8.so.8",
     }
+
+
+def test_expected_process_environment_binds_gazebo_to_loopback():
+    accepted = evaluate_expected_process_environment(
+        {"GZ_IP": "127.0.0.1"}, expected_gz_ip="127.0.0.1"
+    )
+    rejected = evaluate_expected_process_environment(
+        {"GZ_IP": "172.28.0.10"}, expected_gz_ip="127.0.0.1"
+    )
+
+    assert accepted == {
+        "accepted": True,
+        "expected_gz_ip": "127.0.0.1",
+        "process_gz_ip": "127.0.0.1",
+        "reasons": [],
+    }
+    assert rejected["accepted"] is False
+    assert rejected["reasons"] == ["process_gz_ip_mismatch"]
 
 
 def test_eglinfo_nonzero_exit_keeps_a_parseable_renderer():
