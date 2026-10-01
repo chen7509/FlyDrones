@@ -2,6 +2,8 @@
 
 本分支在历史对照归档 `2022e6c` 之后新增证据采集；**没有重跑或修改已冻结的 20 个正式世界**。根据 [PX4 上游日志说明](https://docs.px4.io/main/en/dev_log/logging)，PX4 默认在解锁后启动 ULog。新回合使用独立 PX4 runtime，进程退出后从该 runtime 复制全部 `.ulg`，记录大小、SHA-256 与文件头；无日志、头无效或复制失败使回合退出码为 2，同时保留任务终局和失败证据。这个门槛只证明日志文件被保存，不代替 EKF2、安全控制和完整 ULog 语义检查。
 
+源码复核还确认当前 `Gateway.observe()` 的里程计和相机位姿由 Gazebo 模型真值生成，并同样送给两个控制器。新回合的结果会明确写入 `odometry_source=gazebo_model_truth` 与 `camera_pose_source=gazebo_model_truth`；新正式报告缺少这个来源标记就拒绝生成。这没有替换真实 VIO，只是让理想定位条件无法被误报成 VIO。下述开发回合发生在标记字段加入之前，来源仍由当时的 `Gateway.observe()` 源码确定。
+
 单机接入验证使用既有开发世界 `1701`、完整果蝇原始版与 PX4/Gazebo；没有使用正式测试世界。回合任务终局是 **out_of_bounds**，仿真时间 20.9 s、墙钟 275.81 s，因此不能作为策略成功或实时性通过。采集到的 ULog 为 14,219,204 字节，SHA-256 `81de68ef3db6108b1a0860826bd7eca45de8638a7b3f9f3d7a41ab00e6a4b94b`。`pyulog` 能解析 88 个数据集，其中 `estimator_status` 4,732 条、`vehicle_local_position` 5,914 条、`trajectory_setpoint` 238 条、`vehicle_command_ack` 5 条；`vehicle_status` 有 OFFBOARD（14）67 条、AUTO_LOITER（4）51 条，`failsafe` 样本为 0。`estimator_status_flags` 中 GNSS 位置融合有 52 个样本，外部视觉位置融合为 0，符合本回合**没有真实 VIO** 的范围。
 
 原始开发回合的 12 个文件（含 ULog、结果、逐步轨迹、世界和 PX4 日志）在 `evidence/fly-ego-ulog-dev-1701.zip`，逐文件 SHA-256 在同名 `.sha256.json`；ZIP SHA-256 为 `840dc43dc9bfe0e8bf2c92120882539f40de13ac0dea934ae809689d1301ecf7`。这次运行中结果 JSON 的旧字段 `evidence_accepted=true` 仅表示**ULog 复制及文件头门槛**；运行后代码已改用明确的 `px4_ulog_capture_accepted` 名称，避免误读为飞行安全通过。

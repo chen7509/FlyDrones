@@ -1,4 +1,8 @@
-"""Truth-free, SI-unit controller boundary (ENU, counterclockwise yaw)."""
+"""Shared SI-unit controller boundary (ENU, counterclockwise yaw).
+
+The current backend supplies model-truth-derived odometry and camera pose.
+This interface must not be described as a real VIO estimate.
+"""
 
 from dataclasses import dataclass
 from typing import Protocol

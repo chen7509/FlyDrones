@@ -113,6 +113,8 @@ def main() -> int:
         'wall_s': time.perf_counter() - started,
         'decisions': decisions,
         'simulation': 'Gazebo Sim with PX4 SITL; fixed 50 ms steps while decision computation is paused',
+        'odometry_source': 'gazebo_model_truth',
+        'camera_pose_source': 'gazebo_model_truth',
         'contact_truth_available': True,
         'contact_message_count': backend.contact_message_count,
         'contact_records': backend.contact_records,

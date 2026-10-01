@@ -41,6 +41,8 @@ def load_results(formal_dir: Path, freeze_path: Path):
             result = json.loads(path.read_text(encoding='utf-8'))
             if result.get('freeze_manifest_sha256') != freeze['manifest_sha256']:
                 raise ValueError(f'wrong freeze on result: {path}')
+            if result.get('odometry_source') != 'gazebo_model_truth' or result.get('camera_pose_source') != 'gazebo_model_truth':
+                raise ValueError(f'odometry provenance missing or inconsistent: {path}')
             verify_episode_ulog_evidence(path.parent, result)
             episodes.append(result)
     if len(episodes) != 60:
@@ -149,7 +151,7 @@ def main() -> int:
         latency_text = f'{latency:.4f} s' if latency is not None else 'N/A'
         clearance_text = f'{clearance:.3f} m' if clearance is not None else 'N/A'
         lines.append(f'| {controller} | {counts.get("success",0)}/20 | {counts.get("collision",0)} | {counts.get("out_of_bounds",0)} | {counts.get("timeout",0)} | {latency_text} | {clearance_text} |')
-    lines += ['', '## 真实性与限制', '', '- 动力学由 PX4 SITL 与 Gazebo Sim 执行，RGB-D 为 160×120、10 Hz；三方共享速度、加速度、偏航速率、起终点及机体安全包络。', '- 每个控制决策之间仿真停止，随后精确推进 50 个 1 ms 物理步。因此控制器计算延迟被单独记录，不会改变物理时间。', '- 完整果蝇推理由 166,700 个神经元和 25,582,837 条连接执行，明显慢于实时；这项测试不能直接证明真机实时可部署。', '- EGO-Swarm 使用固定上游提交。其 ROS 2 `traj_server` 原始时间戳来自墙钟；报告保留该原始值，并用接收参考时最近的仿真观测时刻做新鲜度校验。', '- 这是软件在环仿真结果，未覆盖真实传感器噪声、气动失配、机载算力和通信故障。']
+    lines += ['', '## 真实性与限制', '', '- 动力学由 PX4 SITL 与 Gazebo Sim 执行，RGB-D 为 160×120、10 Hz；三方共享速度、加速度、偏航速率、起终点及机体安全包络。', '- 双方的里程计与相机位姿来自 Gazebo 模型真值；此实验没有相机+IMU VIO，不能证明真实定位能力。', '- 每个控制决策之间仿真停止，随后精确推进 50 个 1 ms 物理步。因此控制器计算延迟被单独记录，不会改变物理时间。', '- 完整果蝇推理由 166,700 个神经元和 25,582,837 条连接执行，明显慢于实时；这项测试不能直接证明真机实时可部署。', '- EGO-Swarm 使用固定上游提交。其 ROS 2 `traj_server` 原始时间戳来自墙钟；报告保留该原始值，并用接收参考时最近的仿真观测时刻做新鲜度校验。', '- 这是软件在环仿真结果，未覆盖真实传感器噪声、气动失配、机载算力和通信故障。']
     (args.formal_dir / 'report.md').write_text('\n'.join(lines) + '\n', encoding='utf-8')
     print(json.dumps(summary, indent=2))
     return 0
