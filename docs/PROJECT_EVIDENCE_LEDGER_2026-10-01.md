@@ -100,8 +100,19 @@ results in new formal reports. The single fly-raw episode ended
 but it used GNSS and no real VIO. The [development evidence report](https://github.com/chen7509/FlyDrones/blob/codex/benchmark-ulog-capture/docs/BENCHMARK_ULOG_CAPTURE_DEV.md)
 records the hashes, tests and limitations. This is not a new formal comparison.
 
-Next independent work: validate full estimator/safety semantics in development
-ULogs and perform a bounded image+IMU VIO dataset/bridge preflight on one
-vehicle, without claiming the WSL five-camera gate passed. Only then may a
-new held-out comparison be frozen. No 20/100-vehicle or real-flight escalation
-is authorized by the present evidence.
+The [single-vehicle RGB/IMU preflight](https://github.com/chen7509/FlyDrones/pull/4)
+recorded 512 timestamped RGB frames and 12,107 PX4 ULog IMU samples in a
+second development episode of world `1701`. The episode ended `out_of_bounds`.
+Only 484 frames overlap the ULog IMU interval: 28 startup frames have no
+matching IMU data, so full dataset coverage **failed**. The clean-checkout
+archive audit verified all 527 raw evidence files. There is no camera/IMU
+calibration, image-derived VIO estimate, or VIO fusion into EKF2; both
+controllers still consume Gazebo-truth odometry. See the
+[preflight report](https://github.com/chen7509/FlyDrones/blob/codex/benchmark-vio-dataset/docs/IMAGE_IMU_PREFLIGHT_REPORT.md).
+
+Next independent work: fix the startup logging/coverage gap in a separate
+development run, calibrate and time-align the camera/IMU, then evaluate an
+actual upstream VIO estimator and its PX4 EKF2/safety behavior. The WSL
+five-camera 0.95 RTF gate remains failed. Only after these gates can a new
+held-out comparison be frozen; no 20/100-vehicle or real-flight escalation
+is supported by this evidence.
