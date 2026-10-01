@@ -103,8 +103,11 @@ records the hashes, tests and limitations. This is not a new formal comparison.
 The [single-vehicle RGB/IMU preflight](https://github.com/chen7509/FlyDrones/pull/4)
 recorded 512 timestamped RGB frames and 12,107 PX4 ULog IMU samples in a
 second development episode of world `1701`. The episode ended `out_of_bounds`.
-Only 484 frames overlap the ULog IMU interval: 28 startup frames have no
-matching IMU data, so full dataset coverage **failed**. The clean-checkout
+Only 484 frames overlap the ULog IMU interval: 27 early frames and one
+trailing frame have no matching IMU data, so full dataset coverage **failed**.
+Using the PX4 log's first lockstep time as a provisional boundary, 18 of the
+early frames precede it and nine follow it but precede the first logged IMU
+sample. The clean-checkout
 archive audit verified all 527 raw evidence files. There is no camera/IMU
 calibration, image-derived VIO estimate, or VIO fusion into EKF2; both
 controllers still consume Gazebo-truth odometry. See the
