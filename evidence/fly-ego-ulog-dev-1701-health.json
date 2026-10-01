@@ -1,0 +1,28 @@
+{
+  "schema": "flydrones-px4-ulog-health-v1",
+  "topic_counts": {
+    "vehicle_status": 118,
+    "vehicle_local_position": 5914,
+    "estimator_status": 4732,
+    "estimator_status_flags": 55,
+    "trajectory_setpoint": 238,
+    "vehicle_command_ack": 5,
+    "sensor_combined": 11827
+  },
+  "nav_state_counts": {
+    "4": 51,
+    "14": 67
+  },
+  "failsafe_samples": 0,
+  "estimator_filter_fault_samples": 0,
+  "xy_valid_samples": 5778,
+  "z_valid_samples": 5914,
+  "dead_reckoning_samples": 136,
+  "gnss_position_fusion_samples": 52,
+  "external_vision_position_fusion_samples": 0,
+  "failures": [],
+  "basic_topic_gate_passed": true,
+  "ulog_sha256": "81de68ef3db6108b1a0860826bd7eca45de8638a7b3f9f3d7a41ab00e6a4b94b",
+  "ulog_bytes": 14219204,
+  "pyulog_version": "1.2.4"
+}
