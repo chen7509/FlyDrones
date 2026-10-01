@@ -83,9 +83,17 @@ FlyDrones acceptance evidence.
   revision, so the exact historical source tree remains unverified. A new
   campaign requires newly frozen inputs and its own evidence.
 
-Next independent work: package and verify the historical benchmark source and
-raw evidence without overwriting it; define a new held-out acceptance run only
-after its ULog and source-revision gaps are closed. In parallel, a bounded VIO
-dataset/bridge preflight can proceed on one vehicle without claiming the WSL
-five-camera gate passed. No 20/100-vehicle or real-flight escalation is
-authorized by the present evidence.
+The historical comparison is now separately archived on
+[`codex/benchmark-evidence-audit`](https://github.com/chen7509/FlyDrones/tree/codex/benchmark-evidence-audit),
+with a [reconstruction report](https://github.com/chen7509/FlyDrones/blob/codex/benchmark-evidence-audit/docs/BENCHMARK_EVIDENCE_RECONSTRUCTION.md).
+Its clean-checkout audit verifies 926 archived files, 20 worlds and 60
+terminal records. It also detects the two model/readout inputs that remain
+outside Git and the absence of formal per-episode ULogs. This archive has not
+been merged into the PX4 branch and is not a fresh experiment.
+
+Next independent work: instrument a new development episode to retain its
+PX4 ULog and validate the estimator/safety record before freezing a new
+held-out comparison. A bounded image+IMU VIO dataset/bridge preflight can
+proceed on one vehicle without claiming the WSL five-camera gate passed. No
+20/100-vehicle or real-flight escalation is authorized by the present
+evidence.
