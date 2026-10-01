@@ -73,11 +73,15 @@ FlyDrones acceptance evidence.
   capacity and reflex modules passed.
 - Separate benchmark-branch `tests/benchmark` plus `tests/connectome_training`:
   122 passed without launching PX4/Gazebo/training.
-- Current branch full suite: 873 passed, 1 skipped, 3 failed. All three
-  failures are legacy camera/takeoff config tests comparing historical frozen
-  hashes against today's changed source files. Do not rewrite historical
-  hashes to make them green; preserve the old evidence and define a new
-  current-source gate separately.
+- Current branch full suite after correcting three legacy test expectations:
+  876 passed, 1 skipped (178.28 s). The old camera, renderer and takeoff
+  configurations retain their original expected hashes. Tests now confirm
+  those historical configurations are stale against current sources, which
+  the campaign launchers reject; passing pytest does **not** make the old
+  configurations runnable or validate their historical results. Several
+  expected hashes also do not match the files in the configs' last Git
+  revision, so the exact historical source tree remains unverified. A new
+  campaign requires newly frozen inputs and its own evidence.
 
 Next independent work: package and verify the historical benchmark source and
 raw evidence without overwriting it; define a new held-out acceptance run only

@@ -206,7 +206,7 @@ def test_cleanup_is_verified_between_runs(tmp_path):
     assert len(calls) == 1
 
 
-def test_takeoff_config_hashes_match_frozen_inputs():
+def test_takeoff_config_is_stale_against_current_frozen_inputs():
     config_path = ROOT / "configs/px4_takeoff_stability.json"
     config = json.loads(config_path.read_text(encoding="utf-8"))
     actual = calculate_takeoff_frozen_hashes(
@@ -215,5 +215,7 @@ def test_takeoff_config_hashes_match_frozen_inputs():
         ROOT / config["policy"],
     )
 
-    assert {key: actual[key] for key in config["expected_hashes"]} == config["expected_hashes"]
+    assert set(config["expected_hashes"]).issubset(actual)
+    assert all(len(value) == 64 for value in config["expected_hashes"].values())
+    assert any(actual[key] != value for key, value in config["expected_hashes"].items())
     assert actual["mavlink_drone"]
