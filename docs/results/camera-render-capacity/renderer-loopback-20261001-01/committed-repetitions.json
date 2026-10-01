@@ -1,0 +1,108 @@
+{
+  "schema": "flydrones-committed-loopback-repeatability-v1",
+  "trial_source": "committed file bytes on branch codex/px4-sensor-readiness",
+  "runs": [
+    {
+      "name": "capacity-01-idle-0-r1",
+      "rtf": 0.8694998992003911,
+      "evidence_valid": true,
+      "performance_pass": false,
+      "failures": [
+        "rtf_below_threshold"
+      ],
+      "source_hashes_match": true,
+      "native_executable_hash_match": true,
+      "frozen_hashes": {
+        "camera_phase": "b37cdcd419ea32c7e9b961ed4c648a942081f026a183baa49b680ed6713dbae2",
+        "camera_scheduler": "85ec5ba82fc6efbfcd8585320bbfdd46e67eeb8cb1fbd590d888f83f78b18a41",
+        "capacity_contract": "8aa52f8da6da371f043e567c948839fa2ef2c011b2e52aed79380773d36af850",
+        "launcher": "7ad89ce811efbb74faea5c39418aef9f34815c5635b25d1ad20a759ddeced580",
+        "native_executable": "abf865fda64b7e6d2620716f190e9b56f3971a587a793384e67e44fa5f77faf2",
+        "process_ownership": "e002117fe1eb214b891932dbcd85a37a7ec09280c52c24c63852597fa87301f8",
+        "python_observer": "df57e98e0d65eedd0e9ce3f34f963e580c4ca0ef08de657753a4c888161235a4",
+        "renderer_attestation": "a7c1ca89f59e7f061259a0b42669b518f858045241d6ef3a72b5c90c05de94fe",
+        "runner": "299a45c9b1f96ebe1037764bae633e280cbd22e75fb1bd286468ad663946efcd",
+        "runtime_probe": "2eefd164e168d6e4528b3d6e8d5572ee1be66f7a9a2f71e59fd0eeeab4a91d11",
+        "stopper": "c424d813e5ccda76a488c63ab81e2612e9c621f701c5300d1cfa422e86bb1806"
+      },
+      "px4_vehicle_count": 5,
+      "px4_all_healthy": true,
+      "px4_all_disarmed": true,
+      "px4_all_landed": true,
+      "ulog_count": 5,
+      "cleanup_verified": true,
+      "shared_files_restored": true
+    },
+    {
+      "name": "capacity-08-idle-0-r2",
+      "rtf": 0.8772845673111477,
+      "evidence_valid": true,
+      "performance_pass": false,
+      "failures": [
+        "rtf_below_threshold"
+      ],
+      "source_hashes_match": true,
+      "native_executable_hash_match": true,
+      "frozen_hashes": {
+        "camera_phase": "b37cdcd419ea32c7e9b961ed4c648a942081f026a183baa49b680ed6713dbae2",
+        "camera_scheduler": "85ec5ba82fc6efbfcd8585320bbfdd46e67eeb8cb1fbd590d888f83f78b18a41",
+        "capacity_contract": "8aa52f8da6da371f043e567c948839fa2ef2c011b2e52aed79380773d36af850",
+        "launcher": "7ad89ce811efbb74faea5c39418aef9f34815c5635b25d1ad20a759ddeced580",
+        "native_executable": "abf865fda64b7e6d2620716f190e9b56f3971a587a793384e67e44fa5f77faf2",
+        "process_ownership": "e002117fe1eb214b891932dbcd85a37a7ec09280c52c24c63852597fa87301f8",
+        "python_observer": "df57e98e0d65eedd0e9ce3f34f963e580c4ca0ef08de657753a4c888161235a4",
+        "renderer_attestation": "a7c1ca89f59e7f061259a0b42669b518f858045241d6ef3a72b5c90c05de94fe",
+        "runner": "299a45c9b1f96ebe1037764bae633e280cbd22e75fb1bd286468ad663946efcd",
+        "runtime_probe": "2eefd164e168d6e4528b3d6e8d5572ee1be66f7a9a2f71e59fd0eeeab4a91d11",
+        "stopper": "c424d813e5ccda76a488c63ab81e2612e9c621f701c5300d1cfa422e86bb1806"
+      },
+      "px4_vehicle_count": 5,
+      "px4_all_healthy": true,
+      "px4_all_disarmed": true,
+      "px4_all_landed": true,
+      "ulog_count": 5,
+      "cleanup_verified": true,
+      "shared_files_restored": true
+    },
+    {
+      "name": "capacity-10-idle-0-r3",
+      "rtf": 0.8716535041503283,
+      "evidence_valid": true,
+      "performance_pass": false,
+      "failures": [
+        "rtf_below_threshold"
+      ],
+      "source_hashes_match": true,
+      "native_executable_hash_match": true,
+      "frozen_hashes": {
+        "camera_phase": "b37cdcd419ea32c7e9b961ed4c648a942081f026a183baa49b680ed6713dbae2",
+        "camera_scheduler": "85ec5ba82fc6efbfcd8585320bbfdd46e67eeb8cb1fbd590d888f83f78b18a41",
+        "capacity_contract": "8aa52f8da6da371f043e567c948839fa2ef2c011b2e52aed79380773d36af850",
+        "launcher": "7ad89ce811efbb74faea5c39418aef9f34815c5635b25d1ad20a759ddeced580",
+        "native_executable": "abf865fda64b7e6d2620716f190e9b56f3971a587a793384e67e44fa5f77faf2",
+        "process_ownership": "e002117fe1eb214b891932dbcd85a37a7ec09280c52c24c63852597fa87301f8",
+        "python_observer": "df57e98e0d65eedd0e9ce3f34f963e580c4ca0ef08de657753a4c888161235a4",
+        "renderer_attestation": "a7c1ca89f59e7f061259a0b42669b518f858045241d6ef3a72b5c90c05de94fe",
+        "runner": "299a45c9b1f96ebe1037764bae633e280cbd22e75fb1bd286468ad663946efcd",
+        "runtime_probe": "2eefd164e168d6e4528b3d6e8d5572ee1be66f7a9a2f71e59fd0eeeab4a91d11",
+        "stopper": "c424d813e5ccda76a488c63ab81e2612e9c621f701c5300d1cfa422e86bb1806"
+      },
+      "px4_vehicle_count": 5,
+      "px4_all_healthy": true,
+      "px4_all_disarmed": true,
+      "px4_all_landed": true,
+      "ulog_count": 5,
+      "cleanup_verified": true,
+      "shared_files_restored": true
+    }
+  ],
+  "mean_rtf": 0.872812656887289,
+  "rtf_range": 0.007784668110756621,
+  "min_rtf": 0.8694998992003911,
+  "max_rtf": 0.8772845673111477,
+  "performance_threshold": 0.95,
+  "repeatability_limit": 0.03,
+  "performance_gate_passed": false,
+  "repeatability_gate_passed": true,
+  "expansion_allowed": false
+}

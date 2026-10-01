@@ -2,29 +2,59 @@
   "schema": "flydrones-compact-evidence-index-v1",
   "files": [
     {
+      "path": "committed-renderer-attestation.json",
+      "bytes": 1617,
+      "sha256": "bdf63a3c144b42f1fbe7c1f517b8c524a5ba9cfed5643a03f94dfd7c975943bd"
+    },
+    {
+      "path": "committed-repetitions.json",
+      "bytes": 5145,
+      "sha256": "74747fe812d76be186a72fd6179af7d956a37f037cd8dc13513f96772eb0c633"
+    },
+    {
+      "path": "committed-startup-failure.json",
+      "bytes": 1633,
+      "sha256": "8e3259f09ba333818c7b9da7250dc0ccb61683a04cf1a71b3052af92c589b913"
+    },
+    {
+      "path": "committed-trial-config.json",
+      "bytes": 5544,
+      "sha256": "5ad070b22fd103f55ebcce7b44b00d076760f1e72402a86fb0d355a2c9a5804c"
+    },
+    {
       "path": "profile-summary.json",
-      "bytes": 740,
-      "sha256": "3ebf1e5c2a2eac39ef82645a0c46b38f11b36cbb6390cf80f0a805c93437f549"
+      "bytes": 722,
+      "sha256": "09fd2fb868961ca57ef9af4a7e575cd3646730b523659a837749f622d57df957"
+    },
+    {
+      "path": "raw-clock-crosscheck.json",
+      "bytes": 1440,
+      "sha256": "de80ff7e8d520e3f6828c7eaca8fe58cabb69d0bf10ca4ebee181a75a2adf3d1"
     },
     {
       "path": "README.md",
-      "bytes": 2138,
-      "sha256": "34301f6b02aa564aea90080d7355d066ec754dbbf44eb9306edcc8bf1a67b979"
+      "bytes": 3205,
+      "sha256": "cc9c9de88a64d6e8f1bf7fbf9433be21ba8d44b9864e6b943a835da8364ed12e"
     },
     {
       "path": "rejected-server-systems.json",
-      "bytes": 2950,
-      "sha256": "3352501e63755b2435c3c142b6c5dd86caba7decf3e47adefca3a35ac8e03ae4"
+      "bytes": 2874,
+      "sha256": "fc26250a83df4010735442e9d57c4b5ddc5db8e25ab180cb06e67295e2abbda1"
     },
     {
       "path": "renderer-attestation-summary.json",
-      "bytes": 1776,
-      "sha256": "a80fbe2ef7e96aae8863272a89c545500f592d85d46c0d24178aca43dc07700f"
+      "bytes": 1720,
+      "sha256": "bcf420334f23a05fbc7b3b4b13ebc2c4b2a6e65315c4ac9c3aca62137728b4b0"
     },
     {
       "path": "repetitions.json",
-      "bytes": 2420,
-      "sha256": "e6e034d2120ef8895d9459305c27a00da15d204e4eacba2949a02894399589aa"
+      "bytes": 2336,
+      "sha256": "1f18bdc00944b66d2f61ad2333cb5ca434ee60dcfb3753930bc92c2e2ceda137"
+    },
+    {
+      "path": "thread-profile-summary.json",
+      "bytes": 3398,
+      "sha256": "0c1fa4d632a16241f18f80829922371130460bd9b48ed31f64029ed28b8b7c93"
     }
   ]
 }

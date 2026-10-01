@@ -1,16 +1,19 @@
 {
-  "schema": "flydrones-loopback-attestation-summary-v1",
+  "schema": "flydrones-committed-renderer-attestation-v1",
   "runs": [
     {
       "name": "capacity-01-idle-0-r1",
       "accepted": true,
-      "requested_profile": "d3d12-nvidia",
-      "egl_renderer": "D3D12 (NVIDIA GeForce RTX 3070 Ti Laptop GPU)",
-      "requested_render_engine": "ogre2",
       "render_engine_accepted": true,
       "depth_topic_count": 5,
       "server_config_accepted": true,
-      "forbidden_gstreamer_accepted": true,
+      "forbidden_mapped_libraries": {
+        "accepted": true,
+        "reasons": [],
+        "matches": {
+          "libGstCameraSystem.so": []
+        }
+      },
       "transport_environment": {
         "accepted": true,
         "expected_gz_ip": "127.0.0.1",
@@ -21,13 +24,16 @@
     {
       "name": "capacity-08-idle-0-r2",
       "accepted": true,
-      "requested_profile": "d3d12-nvidia",
-      "egl_renderer": "D3D12 (NVIDIA GeForce RTX 3070 Ti Laptop GPU)",
-      "requested_render_engine": "ogre2",
       "render_engine_accepted": true,
       "depth_topic_count": 5,
       "server_config_accepted": true,
-      "forbidden_gstreamer_accepted": true,
+      "forbidden_mapped_libraries": {
+        "accepted": true,
+        "reasons": [],
+        "matches": {
+          "libGstCameraSystem.so": []
+        }
+      },
       "transport_environment": {
         "accepted": true,
         "expected_gz_ip": "127.0.0.1",
@@ -38,13 +44,16 @@
     {
       "name": "capacity-10-idle-0-r3",
       "accepted": true,
-      "requested_profile": "d3d12-nvidia",
-      "egl_renderer": "D3D12 (NVIDIA GeForce RTX 3070 Ti Laptop GPU)",
-      "requested_render_engine": "ogre2",
       "render_engine_accepted": true,
       "depth_topic_count": 5,
       "server_config_accepted": true,
-      "forbidden_gstreamer_accepted": true,
+      "forbidden_mapped_libraries": {
+        "accepted": true,
+        "reasons": [],
+        "matches": {
+          "libGstCameraSystem.so": []
+        }
+      },
       "transport_environment": {
         "accepted": true,
         "expected_gz_ip": "127.0.0.1",

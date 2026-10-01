@@ -3,10 +3,13 @@
 > Current update (2026-10-01, Transport isolation): the runner now clears an
 > inherited `GZ_IP`, accepts only an explicit IPv4 loopback address, and the
 > renderer attester proves the value from the live Gazebo process environment.
-> Three exact-source, zero-trigger repetitions with `GZ_IP=127.0.0.1` measured
-> 0.8769, 0.8474, and 0.8226 RTF (mean 0.8490; range 0.0543). All three had
-> valid evidence, five healthy PX4 instances, five ULogs, and clean restoration,
-> but they failed both the 0.95 performance gate and 0.03 repeatability gate.
+> Three repetitions using the committed runner bytes and `GZ_IP=127.0.0.1`
+> measured 0.8695, 0.8773, and 0.8717 RTF (mean 0.8728; range 0.0078). All
+> three had valid evidence, five healthy PX4 instances, five ULogs, and clean
+> restoration. The 0.03 scored-RTF repeatability gate passed; the 0.95
+> performance gate did not. One earlier attempt with the same committed inputs
+> never reached scoring because camera trigger connections timed out; it is
+> retained as a separate startup reliability failure.
 > The one-camera, five-camera, and 12-slot tests therefore remain blocked. See
 > the [compact loopback evidence](results/camera-render-capacity/renderer-loopback-20261001-01).
 >
@@ -53,32 +56,57 @@ contract, physics, or PX4 configuration. See the official
 and [environment-variable reference](https://gazebosim.org/api/transport/12/envvars.html).
 
 The first exploratory loopback run reached 0.9122 RTF, and a profiled run
-reached 0.8875 RTF with about 11,000 samples and zero lost samples. Those runs
-motivated an audited implementation but are not part of the exact-source
-repeatability set. In the formal set, the live Gazebo process proved
-`GZ_IP=127.0.0.1` in every repetition:
+reached 0.8875 RTF with 11,227 samples and zero lost samples. Those runs
+motivated an audited implementation. A subsequent three-run set used identical
+working-tree bytes and proved live `GZ_IP=127.0.0.1`, but Git's line-ending
+normalization changed the runner hash when it was committed. Those values,
+0.8769, 0.8474, and 0.8226 RTF (mean 0.8490; range 0.0543), remain
+historical development evidence rather than a directly reproducible checkout
+baseline. The committed-byte set is:
 
 | Repetition | Evidence | RTF | Result |
 |---:|---|---:|---|
-| 1 | valid | 0.8769 | below 0.95 |
-| 2 | valid | 0.8474 | below 0.95 |
-| 3 | valid | 0.8226 | below 0.95 |
+| 1 | valid | 0.8695 | below 0.95 |
+| 2 | valid | 0.8773 | below 0.95 |
+| 3 | valid | 0.8717 | below 0.95 |
 
-The mean was 0.8490 and the range was 0.0543. Loopback selection is retained as
-an explicit local-test isolation setting because it removes ambient interface
-selection from the experiment, but the measurements do not establish a stable
-performance improvement. The profile composition also remained similar:
+The committed-byte mean was 0.8728 and the range was 0.0078, so scored RTF
+repeatability passed its 0.03 gate while every RTF failed 0.95. A preceding
+attempt with the same committed bytes reached all five healthy PX4 and depth
+topic discovery but failed while waiting for Gazebo trigger subscribers; it
+was never scored and is not included in the range. Loopback selection is
+retained as an explicit local-test isolation setting, but these runs alone do
+not prove that it improves RTF over the unbound network setting. The profile
+composition remained similar:
 Transport discovery 44.31%, subscriber-change handling 12.44%, Physics update
 29.07%, DART forward step 23.00%, SceneBroadcaster 2.68%, Sensors 2.09%, and
 `RenderUtil::UpdateFromECM` 1.09%. These cumulative percentages span multiple
 threads and are not additive on one critical path.
+
+An independent calculation from each committed run's raw `clock-probe.csv`
+differs from the recorded RTF by 0.00081, 0.00041, and 0.00049 respectively.
+All are below 0.002; the small differences reflect the runner's wall-clock
+polling around the 30 simulation-second boundary. The
+[raw-clock cross-check](results/camera-render-capacity/renderer-loopback-20261001-01/raw-clock-crosscheck.json)
+preserves the CSV and epoch hashes.
+
+Restricting the raw `cpu-clock:u` profile to the scored 33.80 wall-second
+window gives 8,792 samples. Gazebo Transport discovery appears in 3,889 of
+3,897 samples on thread 558. The simulation step appears in 2,932 of 2,976
+samples on a different thread, 514; 2,072 of that thread's samples contain
+DART calls (69.6%). The Sensors system has 181 samples on thread 604. This
+separation rules out treating the 44% cross-thread discovery sample share as
+a 44% potential RTF gain. The profiler samples running user-space CPU only;
+it does not measure time blocked on locks, GPU synchronization, or scheduling.
+The [scored-window thread analysis](results/camera-render-capacity/renderer-loopback-20261001-01/thread-profile-summary.json)
+includes the raw `perf script` and epoch hashes.
 
 A final bounded experiment removed the Contact and PX4 OpticalFlow systems as
 well as the already-unused GStreamer plugin. A repository model/world search
 found no contact or optical-flow sensors, and runtime attestation proved all
 three plugin entries and their mapped libraries absent. The five PX4 vehicles,
 five depth topics, ULogs, cleanup, and restoration remained healthy, but RTF
-was only 0.8315. This is below both 0.95 and the retained loopback three-run
+was only 0.8315. This is below both 0.95 and the first loopback three-run
 mean of 0.8490, so the change was rejected after one screening run and its
 implementation was not retained.
 
@@ -197,7 +225,9 @@ upstream patch: it must preserve paused-world initialization and triggered
 camera discovery as well as real-time performance.
 
 The next admissible work is a native-Linux runtime comparison or profiler-led
-work below the Sensors event gate. It must
+work below the Sensors event gate. The
+[native Linux handoff](NATIVE_LINUX_CAMERA_CAPACITY_HANDOFF.md) records the
+required host checks, matched inputs, and platform-specific hashes. It must
 first reach at least 0.95 RTF with the renderer initialized, zero steady
 triggers, and a repeatability range no greater than 0.03. Only then should the
 one-camera, five-camera, and frozen 12-slot campaign be repeated. Resolution,

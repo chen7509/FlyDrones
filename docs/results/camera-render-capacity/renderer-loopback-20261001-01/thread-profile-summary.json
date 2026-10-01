@@ -1,0 +1,127 @@
+{
+  "schema": "flydrones-scored-perf-thread-analysis-v1",
+  "source": {
+    "trial": "renderer-profiler-loopback-dev-20261001-01/capacity-01-idle-0-r1",
+    "event": "cpu-clock:u",
+    "perf_script_sha256": "f75ba55c4a1b89a7786593dd2e4cb33d8beded2ac8c38d48fb5b93a9fccb6651",
+    "scored_epoch_sha256": "12b545084ecabd98ff88216fb0bc2b6b28470dd0dd357215fc5d8b6a9b4f8cff",
+    "score_sha256": "adf80a81b10046ed35145aed6f3dc0cdb3c1ae180faf427c6f7be1e3af88f2d3"
+  },
+  "window": {
+    "start_monotonic_s": 452.073998178,
+    "estimated_end_monotonic_s": 485.8768026434046,
+    "estimated_wall_duration_s": 33.80280446540456,
+    "rtf": 0.8875003265099928,
+    "all_samples": 11227,
+    "scored_samples": 8792
+  },
+  "scored_stack_counts": {
+    "simulation_step": 2932,
+    "physics_system": 2537,
+    "transport_discovery": 3889,
+    "dart": 2072,
+    "sensors": 181,
+    "render_util": 107
+  },
+  "threads": [
+    {
+      "tid": 558,
+      "samples": 3897,
+      "fraction_of_scored_samples": 0.4432438580527753,
+      "stack_contains": {
+        "transport_discovery": 3889
+      }
+    },
+    {
+      "tid": 514,
+      "samples": 2976,
+      "fraction_of_scored_samples": 0.33848953594176523,
+      "stack_contains": {
+        "simulation_step": 2932,
+        "physics_system": 2537,
+        "dart": 2072,
+        "render_util": 6
+      }
+    },
+    {
+      "tid": 599,
+      "samples": 291,
+      "fraction_of_scored_samples": 0.03309827115559599,
+      "stack_contains": {}
+    },
+    {
+      "tid": 597,
+      "samples": 256,
+      "fraction_of_scored_samples": 0.029117379435850774,
+      "stack_contains": {}
+    },
+    {
+      "tid": 556,
+      "samples": 236,
+      "fraction_of_scored_samples": 0.02684258416742493,
+      "stack_contains": {}
+    },
+    {
+      "tid": 557,
+      "samples": 214,
+      "fraction_of_scored_samples": 0.024340309372156504,
+      "stack_contains": {}
+    },
+    {
+      "tid": 604,
+      "samples": 197,
+      "fraction_of_scored_samples": 0.02240673339399454,
+      "stack_contains": {
+        "sensors": 181,
+        "render_util": 101
+      }
+    },
+    {
+      "tid": 603,
+      "samples": 133,
+      "fraction_of_scored_samples": 0.015127388535031847,
+      "stack_contains": {}
+    },
+    {
+      "tid": 600,
+      "samples": 75,
+      "fraction_of_scored_samples": 0.008530482256596906,
+      "stack_contains": {}
+    },
+    {
+      "tid": 595,
+      "samples": 73,
+      "fraction_of_scored_samples": 0.008303002729754322,
+      "stack_contains": {}
+    },
+    {
+      "tid": 594,
+      "samples": 69,
+      "fraction_of_scored_samples": 0.007848043676069155,
+      "stack_contains": {}
+    },
+    {
+      "tid": 602,
+      "samples": 61,
+      "fraction_of_scored_samples": 0.006938125568698817,
+      "stack_contains": {}
+    },
+    {
+      "tid": 592,
+      "samples": 61,
+      "fraction_of_scored_samples": 0.006938125568698817,
+      "stack_contains": {}
+    },
+    {
+      "tid": 596,
+      "samples": 58,
+      "fraction_of_scored_samples": 0.0065969062784349405,
+      "stack_contains": {}
+    }
+  ],
+  "interpretation": [
+    "Transport discovery and simulation step ran on different sampled thread IDs.",
+    "Stack counts overlap when one call is nested in another; percentages are not additive.",
+    "cpu-clock:u samples CPU execution, not blocked or kernel time, so no direct critical-path speedup follows from the discovery share."
+  ]
+}
