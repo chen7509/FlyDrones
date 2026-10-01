@@ -1,10 +1,11 @@
 # FlyDrones evidence ledger — 2026-10-01
 
 This ledger distinguishes a working interface from an accepted flight result.
-It audits `codex/px4-sensor-readiness` at `9208a10` and the separate, dirty
-`codex/fly-ego-benchmark` worktree at `18587dd`. No training or simulation was
-started for this audit. No `AGENTS.md` was found in either repository or their
-workspace ancestors. Raw result directories are preserved in place.
+The initial audit inspected `codex/px4-sensor-readiness` at `9208a10` and the
+separate, dirty `codex/fly-ego-benchmark` worktree at `18587dd`. A later,
+separately labelled development SITL episode is linked below. No `AGENTS.md`
+was found in either repository or their workspace ancestors. Original raw
+result directories remain in place.
 
 ## Verified at the stated evidence level
 
@@ -14,7 +15,7 @@ workspace ancestors. Raw result directories are preserved in place.
 | Truth-relayed visual fusion and stale-input response | [VIO safety gate](VIO_SAFETY_GATE.md) and [degradation stress](VIO_DEGRADATION_STRESS.md): PX4/Gazebo fault injection, EKF2/ULog and command-gate sequences | External vision is relayed Gazebo pose truth. Several five-vehicle task/fault runs failed; no camera+IMU VIO. |
 | Camera timing mechanism | [Camera phase report](CAMERA_PHASE_STABILITY_REPORT.md): five 10 Hz streams with phased triggers in a development run | Five-vehicle mission/readiness and 0.95 RTF gates failed; single-vehicle result cannot open the fleet gate. |
 | Frozen WSL2 zero-steady-trigger capacity baseline | [Capacity report](FIVE_CAMERA_RENDER_CAPACITY_REPORT.md): three committed-byte scored RTFs 0.8695/0.8773/0.8717; hash, renderer, five PX4, ULog and cleanup evidence | Repeatability passed; 0.95 RTF failed. No one/five sustained-camera expansion or accepted 12-slot rerun. Native Linux is deferred, not passed. |
-| Historical 20-world controller comparison | Separate `fly-ego-benchmark/results/fly-ego-comparison/formal/`: 60 result JSON files and 60 CSV rows; raw fly 0/20, guided fly 0/20, pinned EGO 2/20. All 89 freeze-manifest input files match their present SHA-256; local upstream checkout is clean at `23a8d5a191711dd65633df689bd00f55d4dea8f9`. | Local PX4/Gazebo software-in-loop result only. Its benchmark source and raw outputs are uncommitted in a separate worktree; no per-episode ULog is present. The frozen comparator is GPL-3.0. It is not a project-wide accepted safety or reproducibility gate. |
+| Historical 20-world controller comparison | [Archived comparison](https://github.com/chen7509/FlyDrones/tree/codex/benchmark-evidence-audit): 926 raw files; 60 result JSON files; raw fly 0/20, guided fly 0/20, pinned EGO 2/20. All 89 frozen inputs matched the original worktree, and 87 are represented in Git; two model/readout files remain external. | Local PX4/Gazebo software-in-loop result with **Gazebo-truth odometry and camera pose supplied to both controllers**, not image+IMU VIO. No formal per-episode ULog. The GPL-3.0 comparator is pinned, but binary execution cannot be independently proven from the archive. Not an accepted safety or reproducibility gate. |
 | Offline connectome infrastructure | Separate benchmark worktree: `results/connectome-training/stage-a/baseline_profile.json`, `results/connectome-training/stage-b/smoke_report.json`, and `results/connectome-curriculum-smoke/summary.json` | Stage A full 166,700-neuron inference p95 was 1.798 s against a 0.035 s gate: failed. Stage B loss improved on synthetic sequences, and the resume smoke used a tiny synthetic connectome; neither proves full-model flight learning. |
 
 The comparison's `fly_raw` controller has no goal input; its arrival rate does
@@ -32,10 +33,11 @@ superiority or commercial readiness. All recorded failures remain counted.
   `MaleCNSReflexBridge` checks for a live 166,700-neuron, 25,582,837-synapse
   source and zero fallback; a geometric/PPO run is never labelled a full-fly
   run. Learning speed and task gain for the live full graph are unproven.
-- The historical EGO comparator runs upstream ROS 2 code in a pinned container,
-  but its local source/evidence package has not been committed and its PX4 ULog
-  trace is absent. Preserve this result as historical evidence; do not rerun
-  its sealed test worlds for tuning.
+- The historical EGO comparator used pinned upstream ROS 2 code. Its source
+  and raw evidence are now archived on a separate branch, while two frozen
+  model/readout inputs remain outside Git and formal PX4 ULogs are absent.
+  Preserve this result as historical evidence; do not rerun its sealed test
+  worlds for tuning.
 
 ## Untested or failed prerequisites
 
