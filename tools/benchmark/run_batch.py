@@ -1,15 +1,16 @@
 #!/usr/bin/env python3
+# ruff: noqa: E402 - script inserts repository src before importing FlyDrones
 """Run the frozen 60-episode comparison sequentially and resumably."""
 
 from __future__ import annotations
 
 import argparse
-from datetime import datetime, timezone
 import json
-from pathlib import Path
 import subprocess
 import sys
 import time
+from datetime import datetime, timezone
+from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / 'src'))
@@ -72,7 +73,7 @@ def main() -> int:
     jobs = json.loads(jobs_path.read_text(encoding='utf-8'))
     records = []
     state_path = args.formal_dir / 'batch_state.json'
-    for index, job in enumerate(jobs):
+    for job in jobs:
         verify_freeze_manifest(args.freeze_manifest, ROOT)
         world = worlds[job['seed']]
         episode_dir = args.formal_dir / 'episodes' / str(job['seed']) / job['controller']
@@ -80,7 +81,9 @@ def main() -> int:
         result_path = episode_dir / 'result.json'
         if result_path.exists():
             result = json.loads(result_path.read_text(encoding='utf-8'))
-            records.append({'job': job, 'status': result['status'], 'result': str(result_path.relative_to(ROOT)).replace('\\', '/')})
+            records.append({'job': job, 'status': result['status'],
+                            'ulog_capture_accepted': result.get('px4_ulog_capture_accepted') is True,
+                            'result': str(result_path.relative_to(ROOT)).replace('\\', '/')})
             continue
         container_name = f'fly-ego-{job["seed"]}' if job['controller'] == 'ego' else None
         try:
@@ -107,6 +110,7 @@ def main() -> int:
             'job': job,
             'returncode': completed.returncode,
             'status': result['status'],
+            'ulog_capture_accepted': result.get('px4_ulog_capture_accepted') is True,
             'result': str(result_path.relative_to(ROOT)).replace('\\', '/'),
         })
         atomic_json(state_path, {

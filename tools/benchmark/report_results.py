@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# ruff: noqa: E402 - script inserts repository src before importing FlyDrones
 """Create the final tables, trajectory figure, and interactive replay."""
 
 from __future__ import annotations
@@ -6,12 +7,12 @@ from __future__ import annotations
 import argparse
 import csv
 import json
-from pathlib import Path
 import sys
+from pathlib import Path
 
 import matplotlib.pyplot as plt
-from matplotlib.patches import Circle, Rectangle
 import numpy as np
+from matplotlib.patches import Circle, Rectangle
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / 'src'))
@@ -19,7 +20,7 @@ sys.path.insert(0, str(ROOT / 'src'))
 from flydrones.benchmark.provenance import verify_sealed_manifest
 from flydrones.benchmark.report import path_length, summarize_controller
 from flydrones.benchmark.runner import verify_freeze_manifest
-
+from flydrones.benchmark.ulog_capture import verify_episode_ulog_evidence
 
 CONTROLLERS = ('fly_raw', 'fly_guided', 'ego')
 COLOURS = {'fly_raw': '#7b2cbf', 'fly_guided': '#f77f00', 'ego': '#0077b6'}
@@ -40,6 +41,7 @@ def load_results(formal_dir: Path, freeze_path: Path):
             result = json.loads(path.read_text(encoding='utf-8'))
             if result.get('freeze_manifest_sha256') != freeze['manifest_sha256']:
                 raise ValueError(f'wrong freeze on result: {path}')
+            verify_episode_ulog_evidence(path.parent, result)
             episodes.append(result)
     if len(episodes) != 60:
         raise ValueError(f'expected 60 episodes, found {len(episodes)}')
@@ -82,7 +84,9 @@ def draw_world(ax, world: dict):
     ax.scatter(*world['start'][:2], marker='o', color='black', s=10)
     ax.scatter(*world['goal'][:2], marker='*', color='#2a9d8f', s=30)
     lo, hi = world['bounds']
-    ax.set_xlim(lo[0], hi[0]); ax.set_ylim(lo[1], hi[1]); ax.set_aspect('equal')
+    ax.set_xlim(lo[0], hi[0])
+    ax.set_ylim(lo[1], hi[1])
+    ax.set_aspect('equal')
 
 
 def write_figure(path: Path, seed_manifest: dict, worlds: dict, episodes: list[dict]):

@@ -2,16 +2,17 @@
 
 from __future__ import annotations
 
-from collections import deque
 import json
 import os
-from pathlib import Path
 import re
 import signal
 import subprocess
+import tempfile
 import threading
 import time
 import xml.etree.ElementTree as ET
+from collections import deque
+from pathlib import Path
 
 import numpy as np
 
@@ -19,8 +20,8 @@ from .contract import Command, Observation
 from .geometry import segment_box_clearance, segment_cylinder_clearance
 from .score import ScoreSample
 from .sensors import FrameCache, PoseHistory, camera_pose_from_model
+from .ulog_capture import collect_ulogs
 from .worlds import dynamic_center
-
 
 WORLD_CONTROL_TIMEOUT_MS = 15_000
 
@@ -198,6 +199,9 @@ class NativeGazeboPx4Backend:
         self.vehicle_name = f'x500_benchmark_{self.instance}'
         self.processes: list[subprocess.Popen] = []
         self.log_handles = []
+        self.runtime_path: Path | None = None
+        self.ulog_evidence: list[dict] = []
+        self.ulog_capture_error: str | None = None
         self.node = None
         self.control_node = None
         self.drone = None
@@ -424,12 +428,13 @@ class NativeGazeboPx4Backend:
             tree.write(world_path, encoding='utf-8', xml_declaration=True)
 
     def start(self, world_path: Path) -> None:
-        from gz.sim8 import TestFixture
         from gz.msgs10.contacts_pb2 import Contacts
         from gz.msgs10.image_pb2 import Image
         from gz.msgs10.pose_v_pb2 import Pose_V
         from gz.msgs10.world_stats_pb2 import WorldStatistics
+        from gz.sim8 import TestFixture
         from gz.transport13 import Node
+
         from flydrones.drones.mavlink import MavlinkDrone
         from flydrones.motor.command import FlightCommand
 
@@ -438,8 +443,13 @@ class NativeGazeboPx4Backend:
         self._ensure_vehicle(world_path)
         px4 = Path.home() / 'PX4-Autopilot'
         build = px4 / 'build/px4_sitl_default'
-        runtime = Path.home() / 'fly-ego-benchmark' / 'runtime' / self.run_dir.name
-        runtime.mkdir(parents=True, exist_ok=True)
+        runtime_root = Path.home() / 'fly-ego-benchmark' / 'runtime'
+        runtime_root.mkdir(parents=True, exist_ok=True)
+        runtime = Path(tempfile.mkdtemp(prefix='episode-', dir=runtime_root))
+        self.runtime_path = runtime
+        (self.run_dir / 'px4-runtime.json').write_text(json.dumps({
+            'runtime': str(runtime), 'instance': self.instance,
+        }, indent=2), encoding='utf-8')
         (runtime / 'gz_env.sh').write_text((build / 'rootfs/gz_env.sh').read_text(), encoding='utf-8')
         self.partition = transport_partition(self.run_dir.name, os.getpid())
         os.environ['GZ_PARTITION'] = self.partition
@@ -737,5 +747,10 @@ class NativeGazeboPx4Backend:
                 process.wait(timeout=5)
         for handle in self.log_handles:
             handle.close()
+        if self.runtime_path is not None:
+            try:
+                self.ulog_evidence = collect_ulogs(self.runtime_path, self.run_dir)
+            except Exception as exc:
+                self.ulog_capture_error = repr(exc)
         self.server = None
         self.fixture = None

@@ -8,6 +8,7 @@ pyproject.toml text eol=lf
 Dockerfile* text eol=lf
 # Preserve the exact historical result bytes, including generated line endings.
 results/fly-ego-comparison/** -text
+evidence/*.zip -text
 # These frozen inputs had CRLF in the original experiment worktree.
 src/flydrones/__init__.py text eol=crlf
 src/flydrones/__main__.py text eol=crlf

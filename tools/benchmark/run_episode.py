@@ -1,13 +1,14 @@
 #!/usr/bin/env python3
+# ruff: noqa: E402 - script inserts repository src before importing FlyDrones
 """Run one controller against one isolated PX4/Gazebo world in WSL."""
 
 from __future__ import annotations
 
 import argparse
 import json
-from pathlib import Path
 import sys
 import time
+from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / 'src'))
@@ -18,6 +19,7 @@ from flydrones.benchmark.gateway import Gateway, NativeGazeboPx4Backend
 from flydrones.benchmark.provenance import load_benchmark_config
 from flydrones.benchmark.runner import snapshot_episode_inputs, verify_freeze_manifest
 from flydrones.benchmark.score import EpisodeScorer
+from flydrones.benchmark.ulog_capture import episode_exit_code, ulog_evidence_failures
 from flydrones.config import load_config
 
 
@@ -101,6 +103,7 @@ def main() -> int:
         finally:
             gateway.close()
 
+    evidence_failures = ulog_evidence_failures(backend.ulog_evidence, backend.ulog_capture_error)
     payload = scorer.summary()
     payload.update({
         'controller': args.controller,
@@ -117,12 +120,16 @@ def main() -> int:
         'world_control_records': backend.control_records,
         'gz_partition': backend.partition,
         'freeze_manifest_sha256': frozen['manifest_sha256'] if frozen else None,
+        'px4_ulogs': backend.ulog_evidence,
+        'px4_ulog_capture_error': backend.ulog_capture_error,
+        'evidence_failures': evidence_failures,
+        'px4_ulog_capture_accepted': not evidence_failures,
     })
     temporary = args.output / 'result.json.tmp'
     temporary.write_text(json.dumps(payload, indent=2, allow_nan=False), encoding='utf-8')
     temporary.replace(result_path)
     print(json.dumps({key: payload[key] for key in ('controller', 'seed', 'status', 'elapsed_sim_s', 'wall_s')}, indent=2))
-    return 0 if payload['status'] not in {'infrastructure_error', 'controller_error'} else 2
+    return episode_exit_code(payload['status'], evidence_failures)
 
 
 if __name__ == '__main__':
