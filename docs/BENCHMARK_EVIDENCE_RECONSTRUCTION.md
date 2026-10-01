@@ -14,6 +14,8 @@
 
 冻结清单哈希为 `9d10bb72c1fda4048f0439c9dfb823583d8464a8491349f9e732e9cced87d937`。对手源码为 [ZJU-FAST-Lab/ego-planner-swarm](https://github.com/ZJU-FAST-Lab/ego-planner-swarm) 的 ROS 2 分支提交 `23a8d5a191711dd65633df689bd00f55d4dea8f9`，GPL-3.0；冻结清单另记 Docker 镜像 ID、PX4 提交 `d6f12ad1c4f70ad3230afd7d86e971421e02fef4`、Gazebo 8.15.0。审计器核验的是归档与本地源码字节，不独立证明当时这些二进制确实运行。
 
+更关键的传感器边界：`NativeGazeboPx4Backend.observe()` 把 Gazebo 模型位姿及由其差分得到的速度放入**双方共用**的 `Observation`，相机位姿也由模型真值换算。它使这个历史实验可以在相同理想里程计条件下比较控制器，但不能称为相机+IMU VIO，更不能作为陌生真实环境的自主定位证据。新的评测必须让两方使用同一经过验证的非真值估计器，并保留估计误差与失效日志。
+
 冻结的 89 个输入在原工作区和本次独立快照中均通过哈希核验。`data/malecns_full.npz`（SHA-256 `b6be8b3dd901e2e0893303c04058a110d6e0fb9922a69022b26514efcf06100c`）及 `results/fly-training/connectome-distillation-v2/readout_candidate.json` 因项目忽略规则与模型数据体积没有入 Git。干净检出运行审计器会在 `missing_frozen_sources` 中列出它们；在取得这些**完全相同**的文件之前，不能宣称可从仓库单独重跑完整果蝇。不得用替代连接组、PPO 或反射策略填充缺口后继续沿用“完整果蝇”名称。
 
 正式归档有 60 个结果 JSON、60 份逐回合输入记录，但 **0 份逐回合 ULog**。已有路径、碰撞事件、`px4.log` 和 Gazebo 日志可供排查，却不足以独立逐机核对 EKF2、PX4 安全状态与电机控制链。回合在控制器计算期间暂停仿真时间，因此 0.41 s 决策墙钟不能视为达到实时飞行要求；这也不是带现实相机+IMU VIO、故障注入的安全比较。新的正式对照必须先补齐逐回合 ULog、版本锁定、传感器与安全证据，在开发世界验证后重新冻结并生成新的未见世界，不能据这 20 个世界调参。
