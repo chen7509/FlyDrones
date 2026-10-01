@@ -11,7 +11,7 @@ from .brain import Brain
 from .drones.base import Drone
 from .drones.sim import SimDrone
 from .motor import FlightCommand, MotorDecoder
-from .safety import SafetyGovernor, Telemetry
+from .safety import SafetyGovernor, Telemetry, VisualAvoidance
 from .senses import GestureIllusion, InputEncoder, Retina
 from .senses.gestures import GestureState
 
@@ -45,6 +45,7 @@ class Pilot:
         self.retina = Retina.from_config(cfg)
         self.encoder = InputEncoder(brain.connectome, cfg)
         self.decoder = MotorDecoder(cfg)
+        self.visual_avoidance = VisualAvoidance(cfg)
         self.safety = SafetyGovernor(cfg)
         self.illusion = GestureIllusion()
         self.history: list[dict] = []
@@ -62,6 +63,7 @@ class Pilot:
             rates = self.brain.tick(inputs, ms=dt * 1000.0)
             self.decoder.update(rates, dt)
             t += dt
+        self.decoder.reset_transients()
         self.drone.send(_FC.hover("warmup done"))
 
     def tick(self, t: float, dt: float) -> TickInfo:
@@ -76,6 +78,7 @@ class Pilot:
         inputs = self.encoder.encode(vision, tel.yaw_rate_dps)
         rates = self.brain.tick(inputs, ms=dt * 1000.0)
         raw = self.decoder.update(rates, dt)
+        raw = self.visual_avoidance.update(raw, vision, dt)
         cmd = self.safety.filter(raw, tel, dt)
         if self.safety.land_requested:
             self.drone.land()

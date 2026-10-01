@@ -1,0 +1,65 @@
+# Candidate-only full MaleCNS forest validation. This does not replace defaults.
+brain:
+  source: data/malecns_full.npz
+  seed: 42
+  lif:
+    dt: 0.5
+    noise_mv: 0.0
+  bias:
+    DNg02_L: 8.0
+    DNg02_R: 8.0
+  record_neurons: 600
+inputs:
+  R16_L: {types: ['^R1-R6$'], side: L, feature: brightness, eye: L, max_hz: 40}
+  R16_R: {types: ['^R1-R6$'], side: R, feature: brightness, eye: R, max_hz: 40}
+outputs:
+  DNg02_L: {types: ['^DNg02'], side: L}
+  DNg02_R: {types: ['^DNg02'], side: R}
+  DNp03_L: {types: ['^DNp03$'], side: L}
+  DNp03_R: {types: ['^DNp03$'], side: R}
+  DNp01_L: {types: ['^DNp01$', '^GF$'], side: L}
+  DNp01_R: {types: ['^DNp01$', '^GF$'], side: R}
+  DNg02_a_L: {types: ['^DNg02_a$'], side: L}
+  DNg02_a_R: {types: ['^DNg02_a$'], side: R}
+  DNg02_b_L: {types: ['^DNg02_b$'], side: L}
+  DNg02_b_R: {types: ['^DNg02_b$'], side: R}
+  DNg02_c_L: {types: ['^DNg02_c$'], side: L}
+  DNg02_c_R: {types: ['^DNg02_c$'], side: R}
+  DNg02_d_L: {types: ['^DNg02_d$'], side: L}
+  DNg02_d_R: {types: ['^DNg02_d$'], side: R}
+  DNg02_e_L: {types: ['^DNg02_e$'], side: L}
+  DNg02_e_R: {types: ['^DNg02_e$'], side: R}
+  DNg02_f_L: {types: ['^DNg02_f$'], side: L}
+  DNg02_f_R: {types: ['^DNg02_f$'], side: R}
+  DNg02_g_L: {types: ['^DNg02_g$'], side: L}
+  DNg02_g_R: {types: ['^DNg02_g$'], side: R}
+decoder:
+  settle_s: 0.0
+  readout_file: results/fly-training/connectome-distillation-v2/readout_candidate.json
+  smoothing: 0.35
+  # Preserve one neural turn decision long enough to complete a fly-like
+  # body saccade; the full-connectome yaw readout still selects the direction.
+  saccade_hold:
+    enabled: true
+    trigger: 0.24
+    duration_s: 0.9
+    cooldown_s: 5.0
+    activation_delay_s: 2.0
+    direction_memory_s: 0.0
+    strength: 0.55
+    forward_max: 0.20
+  # The distilled teacher already learns looming turn + reverse/brake. Disable
+  # the older engineered overrides so they cannot replace it with a climb.
+  brake_terms: {}
+  escape:
+    terms: []
+safety:
+  geofence_radius_m: 14
+  max_alt_m: 2.3
+  brain_timeout_s: 60
+  max_flight_s: 3600
+  visual_avoidance:
+    enabled: false
+control:
+  hz: 20
+  takeoff: true

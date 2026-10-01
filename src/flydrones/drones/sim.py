@@ -32,6 +32,7 @@ class Room:
     size_y: float = 6.0
     height: float = 2.7
     boxes: list[Box] = field(default_factory=list)
+    outdoor: bool = False
 
     @staticmethod
     def bedroom() -> Room:
@@ -60,7 +61,7 @@ class RayCamera:
         px, py, pz = pos
         INF = 1e9
         t_best = np.full(dx.shape, INF)
-        shade = np.zeros(dx.shape)
+        shade = np.full(dx.shape, 0.8 if room.outdoor else 0.0)
 
         def safe_div(a, b):
             with np.errstate(divide="ignore", invalid="ignore"):
@@ -71,7 +72,7 @@ class RayCamera:
         hx, hy = room.size_x / 2, room.size_y / 2
         # walls
         for plane, t in (("x+", safe_div(hx - px, dx)), ("x-", safe_div(-hx - px, dx)), ("y+", safe_div(hy - py, dy)), ("y-", safe_div(-hy - py, dy))):
-            m = t < t_best
+            m = (t < t_best) & (not room.outdoor)
             if m.any():
                 along = (py + t * dy) if plane[0] == "x" else (px + t * dx)
                 zz = pz + t * dz
@@ -87,7 +88,7 @@ class RayCamera:
         shade = np.where(m, checker, shade)
         t_best = np.where(m, t, t_best)
         t = safe_div(room.height - pz, dz)
-        m = t < t_best
+        m = (t < t_best) & (not room.outdoor)
         shade = np.where(m, 0.9, shade)
         t_best = np.where(m, t, t_best)
         # boxes (slab method)

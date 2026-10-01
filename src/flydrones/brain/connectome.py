@@ -313,7 +313,16 @@ def build_malecns(
     W = sparse.csc_matrix((vals, (rows, cols)), shape=(n, n), dtype=np.float32)
     log(f"weights: scanned {total:,} rows, kept {W.nnz:,} connections (>= {min_synapses} synapses)")
 
-    sides = ann[side_col].astype(str).str.upper().str[:1].replace({"N": "", "U": ""}).to_numpy() if side_col else np.array([""] * n)
+    # rootSide is absent for many brain neurons in the published dataset.
+    # Fall back per row, rather than selecting one column for the whole table.
+    sides = np.full(n, "", dtype="<U1")
+    for candidate in ("rootSide", "root_side", "somaSide", "soma_side", "side"):
+        column = _pick(ann.columns, candidate)
+        if column is None:
+            continue
+        values = ann[column].fillna("").astype(str).str.upper().str[:1].to_numpy()
+        valid = (sides == "") & np.isin(values, ["L", "R"])
+        sides[valid] = values[valid]
     return Connectome(
         name="malecns-v1.0",
         weights=W,

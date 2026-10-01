@@ -1,0 +1,51 @@
+*.py text eol=lf
+*.yaml text eol=lf
+*.json text eol=lf
+*.sdf text eol=lf
+*.config text eol=lf
+*.sh text eol=lf
+pyproject.toml text eol=lf
+Dockerfile* text eol=lf
+# Preserve the exact historical result bytes, including generated line endings.
+results/fly-ego-comparison/** -text
+# These frozen inputs had CRLF in the original experiment worktree.
+src/flydrones/__init__.py text eol=crlf
+src/flydrones/__main__.py text eol=crlf
+src/flydrones/brain/__init__.py text eol=crlf
+src/flydrones/brain/brain.py text eol=crlf
+src/flydrones/brain/lif.py text eol=crlf
+src/flydrones/brain/synthetic.py text eol=crlf
+src/flydrones/calibrate.py text eol=crlf
+src/flydrones/config.py text eol=crlf
+src/flydrones/data.py text eol=crlf
+src/flydrones/distributed_stress.py text eol=crlf
+src/flydrones/drones/__init__.py text eol=crlf
+src/flydrones/drones/base.py text eol=crlf
+src/flydrones/drones/crazyflie.py text eol=crlf
+src/flydrones/drones/tello.py text eol=crlf
+src/flydrones/drones/udp_bridge.py text eol=crlf
+src/flydrones/mission_agent.py text eol=crlf
+src/flydrones/mission_contract.py text eol=crlf
+src/flydrones/mission_stress.py text eol=crlf
+src/flydrones/motor/__init__.py text eol=crlf
+src/flydrones/motor/command.py text eol=crlf
+src/flydrones/peer_udp.py text eol=crlf
+src/flydrones/senses/__init__.py text eol=crlf
+src/flydrones/senses/encoder.py text eol=crlf
+src/flydrones/senses/gestures.py text eol=crlf
+src/flydrones/senses/retina.py text eol=crlf
+src/flydrones/senses/webcam.py text eol=crlf
+src/flydrones/task_consensus.py text eol=crlf
+src/flydrones/task_udp.py text eol=crlf
+src/flydrones/viz/__init__.py text eol=crlf
+src/flydrones/viz/dashboard.py text eol=crlf
+# These frozen files mixed line endings; Git must preserve their exact bytes.
+pyproject.toml -text
+src/flydrones/brain/connectome.py -text
+src/flydrones/cli.py -text
+src/flydrones/distributed_px4.py -text
+src/flydrones/drones/mavlink.py -text
+src/flydrones/drones/sim.py -text
+src/flydrones/motor/decoder.py -text
+src/flydrones/runtime.py -text
+src/flydrones/safety.py -text

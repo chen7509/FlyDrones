@@ -18,4 +18,4 @@ def test_launcher_resolves_repo_to_a_wsl_mount_path_without_starting_simulation(
     )
     resolved = completed.stdout.strip().replace("\\", "/")
     assert resolved.startswith("/mnt/")
-    assert resolved.endswith("/FlyDrones")
+    assert resolved.endswith("/" + script.parent.name)

@@ -1,0 +1,37 @@
+schema_version: 1
+controllers: [fly_raw, fly_guided, ego]
+control:
+  dt_s: 0.05
+  speed_max_mps: 0.8
+  acceleration_max_mps2: 1.2
+  yaw_rate_max_radps: 0.6
+camera:
+  width: 160
+  height: 120
+  hz: 10
+  hfov_rad: 1.274
+  near_m: 0.2
+  far_m: 19.1
+world:
+  size_m: [24.0, 16.0, 5.0]
+  start_m: [-8.0, 0.0, 1.5]
+  goal_m: [8.0, 0.0, 1.5]
+  altitude_m: [0.5, 3.5]
+task:
+  goal_radius_m: 0.6
+  goal_hold_s: 1.0
+  timeout_s: 120.0
+development_seeds: [1701, 1702, 1703]
+evaluation:
+  worlds_per_family: 5
+  families: [forest, corridor, mixed, disturbed]
+  seed_source: after_freeze_only
+ego:
+  repository: https://github.com/ZJU-FAST-Lab/ego-planner-swarm.git
+  commit: 23a8d5a191711dd65633df689bd00f55d4dea8f9
+  tracking_gain: 0.5
+fly:
+  model: data/malecns_full.npz
+  config: configs/forest-trained-v2.yaml
+  guidance_gain: 0.5
+  neurons: 166700

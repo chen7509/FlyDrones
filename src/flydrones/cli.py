@@ -316,7 +316,7 @@ def build_parser() -> argparse.ArgumentParser:
     sp.add_argument("--seconds", type=float)
     sp.add_argument("--webcam", default="0")
     sp.add_argument("--gestures", default="auto", choices=["auto", "mediapipe", "opencv", "scripted"])
-    sp.add_argument("--mavlink", default="udpin:0.0.0.0:14550")
+    sp.add_argument("--mavlink", help="connection string (default: PX4 UDP 14540, ArduPilot UDP 14550)")
     sp.add_argument("--autopilot", default="ardupilot", choices=["ardupilot", "px4"])
     sp.add_argument("--esp32-host", default="192.168.4.1")
     sp.add_argument("--uri", default="radio://0/80/2M/E7E7E7E7E7")

@@ -33,7 +33,8 @@ tello = ["djitellopy>=2.5", "opencv-python>=4.8"]
 crazyflie = ["cflib>=0.1.25"]
 mavlink = ["pymavlink>=2.4"]
 dev = ["pytest>=7", "ruff>=0.4"]
-all = ["opencv-python>=4.8", "mediapipe>=0.10", "pyarrow>=14", "pandas>=2.0", "djitellopy>=2.5", "cflib>=0.1.25", "pymavlink>=2.4"]
+learning = ["gymnasium>=1.0,<2", "stable-baselines3>=2.4,<3"]
+all = ["opencv-python>=4.8", "mediapipe>=0.10", "pyarrow>=14", "pandas>=2.0", "djitellopy>=2.5", "cflib>=0.1.25", "pymavlink>=2.4", "gymnasium>=1.0,<2", "stable-baselines3>=2.4,<3"]
 
 [project.scripts]
 flydrones = "flydrones.cli:main"

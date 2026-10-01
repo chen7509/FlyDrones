@@ -42,6 +42,83 @@ def test_readout_file(tmp_path):
     assert abs(c.throttle - 0.5) < 1e-6
 
 
+def test_saccade_hold_keeps_neural_turn_direction_and_brakes():
+    cfg = load_config(overrides={"decoder": {
+        "settle_s": 0.0,
+        "smoothing": 1.0,
+        "cruise": 0.7,
+        "axes": {"yaw": {"gain": 1.0, "terms": {"TURN": 1.0}}},
+        "saccade_hold": {"enabled": True, "trigger": 0.2, "duration_s": 0.4,
+                         "strength": 0.6, "forward_max": 0.05},
+    }})
+    dec = MotorDecoder(cfg)
+    first = dec.update({"TURN": 0.5}, 0.05)
+    reversed_input = dec.update({"TURN": -0.8}, 0.05)
+
+    assert first.yaw >= 0.6
+    assert reversed_input.yaw >= 0.6
+    assert reversed_input.forward <= 0.05
+    assert "saccade hold" in reversed_input.note
+
+
+def test_saccade_cooldown_prevents_immediate_opposite_turn():
+    cfg = load_config(overrides={"decoder": {
+        "settle_s": 0.0,
+        "smoothing": 1.0,
+        "axes": {"yaw": {"gain": 1.0, "terms": {"TURN": 1.0}}},
+        "saccade_hold": {"enabled": True, "trigger": 0.2, "duration_s": 0.1,
+                         "cooldown_s": 0.3, "strength": 0.6, "forward_max": 0.05},
+    }})
+    dec = MotorDecoder(cfg)
+    dec.update({"TURN": 0.8}, 0.05)
+    dec.update({"TURN": -0.8}, 0.05)
+    dec.update({"TURN": -0.8}, 0.05)
+    cooling = dec.update({"TURN": -0.8}, 0.05)
+
+    assert cooling.yaw == 0.0
+    assert "saccade cooldown" in cooling.note
+
+
+def test_reset_transients_applies_saccade_activation_delay():
+    cfg = load_config(overrides={"decoder": {
+        "settle_s": 0.0,
+        "smoothing": 1.0,
+        "axes": {"yaw": {"gain": 1.0, "terms": {"TURN": 1.0}}},
+        "saccade_hold": {"enabled": True, "trigger": 0.2, "duration_s": 0.2,
+                         "activation_delay_s": 0.15, "strength": 0.6},
+    }})
+    dec = MotorDecoder(cfg)
+    dec.update({"TURN": 0.8}, 0.2)
+    dec.reset_transients()
+
+    delayed = dec.update({"TURN": -0.8}, 0.05)
+    dec.update({"TURN": -0.8}, 0.05)
+    active = dec.update({"TURN": -0.8}, 0.05)
+
+    assert "saccade hold" not in delayed.note
+    assert "saccade hold" in active.note
+
+
+def test_saccade_direction_memory_reuses_side_after_cooldown():
+    cfg = load_config(overrides={"decoder": {
+        "settle_s": 0.0,
+        "smoothing": 1.0,
+        "axes": {"yaw": {"gain": 1.0, "terms": {"TURN": 1.0}}},
+        "saccade_hold": {"enabled": True, "trigger": 0.2, "duration_s": 0.1,
+                         "cooldown_s": 0.1, "direction_memory_s": 1.0,
+                         "strength": 0.6},
+    }})
+    dec = MotorDecoder(cfg)
+    first = dec.update({"TURN": 0.8}, 0.05)
+    for _ in range(4):
+        dec.update({"TURN": -0.8}, 0.05)
+    repeated = dec.update({"TURN": -0.8}, 0.05)
+
+    assert first.yaw > 0.0
+    assert repeated.yaw > 0.0
+    assert "saccade hold" in repeated.note
+
+
 def test_safety_limits():
     cfg = load_config()
     s = SafetyGovernor(cfg)
@@ -51,7 +128,8 @@ def test_safety_limits():
     c = s.filter(FlightCommand(throttle=0.5), Telemetry(t=1, alt_m=5.0, flying=True), dt=10)
     assert c.throttle < 0
     c = s.filter(FlightCommand(throttle=-0.5), Telemetry(t=2, alt_m=0.1, flying=True), dt=10)
-    assert c.throttle == 0
+    assert c.throttle > 0
+    assert "floor recovery" in c.note
     s.filter(FlightCommand(), Telemetry(t=3, alt_m=1.0, battery_pct=5, flying=True), dt=0.05)
     assert s.land_requested
 
@@ -60,6 +138,39 @@ def test_slew_rate():
     s = SafetyGovernor(load_config())
     c = s.filter(FlightCommand(yaw=0.6), Telemetry(t=0, alt_m=1, flying=True), dt=0.05)
     assert c.yaw <= 2.5 * 0.05 + 1e-9
+
+
+def test_floor_recovery_stays_active_until_above_release_margin():
+    s = SafetyGovernor(load_config())
+    below = s.filter(FlightCommand(throttle=-0.5), Telemetry(t=0, alt_m=0.2, flying=True), dt=1)
+    near = s.filter(FlightCommand(throttle=-0.5), Telemetry(t=1, alt_m=0.31, flying=True), dt=1)
+    still_recovering = s.filter(FlightCommand(throttle=-0.5), Telemetry(t=2, alt_m=0.41, flying=True), dt=1)
+    recovered = s.filter(FlightCommand(throttle=-0.5), Telemetry(t=3, alt_m=0.46, flying=True), dt=1)
+
+    assert below.throttle > 0
+    assert near.throttle > 0
+    assert still_recovering.throttle > 0
+    assert recovered.throttle < 0
+
+
+def test_floor_recovery_starts_early_when_descending_toward_minimum():
+    s = SafetyGovernor(load_config())
+
+    result = s.filter(FlightCommand(throttle=-0.5),
+                      Telemetry(t=0, alt_m=0.35, vz_mps=-0.2, flying=True), dt=1)
+
+    assert result.throttle > 0
+    assert "floor recovery" in result.note
+
+
+def test_floor_recovery_code_defaults_match_default_configuration():
+    s = SafetyGovernor({"safety": {"min_alt_m": 0.3}})
+
+    result = s.filter(FlightCommand(throttle=-0.5),
+                      Telemetry(t=0, alt_m=0.39, vz_mps=-0.2, flying=True), dt=1)
+
+    assert result.throttle > 0
+    assert "floor recovery" in result.note
 
 
 def test_brain_timeout_hovers():
