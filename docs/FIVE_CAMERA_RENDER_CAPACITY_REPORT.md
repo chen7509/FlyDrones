@@ -73,6 +73,15 @@ Transport discovery 44.31%, subscriber-change handling 12.44%, Physics update
 `RenderUtil::UpdateFromECM` 1.09%. These cumulative percentages span multiple
 threads and are not additive on one critical path.
 
+A final bounded experiment removed the Contact and PX4 OpticalFlow systems as
+well as the already-unused GStreamer plugin. A repository model/world search
+found no contact or optical-flow sensors, and runtime attestation proved all
+three plugin entries and their mapped libraries absent. The five PX4 vehicles,
+five depth topics, ULogs, cleanup, and restoration remained healthy, but RTF
+was only 0.8315. This is below both 0.95 and the retained loopback three-run
+mean of 0.8490, so the change was rejected after one screening run and its
+implementation was not retained.
+
 The first scored-window profile captured 13,683 `cpu-clock:u` samples. The
 unused `libGstCameraSystem.so` accounted for about 7.32% self samples;
 `custom::GstCameraSystem::findCameraTopic()` accounted for 5.53% cumulative
@@ -187,9 +196,8 @@ trigger handshake. None produced a score. These failures constrain any future
 upstream patch: it must preserve paused-world initialization and triggered
 camera discovery as well as real-time performance.
 
-The next admissible work is a native-Linux runtime comparison or a bounded,
-runtime-attested removal of server systems that have no matching sensors in
-this world, followed by profiler-led work below the Sensors event gate. It must
+The next admissible work is a native-Linux runtime comparison or profiler-led
+work below the Sensors event gate. It must
 first reach at least 0.95 RTF with the renderer initialized, zero steady
 triggers, and a repeatability range no greater than 0.03. Only then should the
 one-camera, five-camera, and frozen 12-slot campaign be repeated. Resolution,

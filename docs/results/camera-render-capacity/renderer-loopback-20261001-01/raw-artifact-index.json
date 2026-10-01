@@ -8,8 +8,13 @@
     },
     {
       "path": "README.md",
-      "bytes": 2009,
-      "sha256": "26c0dadc0e544b7715bf1766318bcd1e9de10b694a545231d72a9b7003b1d975"
+      "bytes": 2138,
+      "sha256": "34301f6b02aa564aea90080d7355d066ec754dbbf44eb9306edcc8bf1a67b979"
+    },
+    {
+      "path": "rejected-server-systems.json",
+      "bytes": 2950,
+      "sha256": "3352501e63755b2435c3c142b6c5dd86caba7decf3e47adefca3a35ac8e03ae4"
     },
     {
       "path": "renderer-attestation-summary.json",

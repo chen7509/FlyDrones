@@ -1,4 +1,4 @@
-# Gazebo Transport loopback evidence — 2026-10-01
+# Gazebo Transport loopback evidence â€” 2026-10-01
 
 This compact snapshot records the audited `GZ_IP=127.0.0.1` experiment on the
 frozen five-PX4, Ogre2, D3D12/NVIDIA WSL zero-trigger configuration. The
@@ -34,4 +34,6 @@ Files:
 - `renderer-attestation-summary.json`: per-run renderer, depth, server-config,
   GStreamer absence, and live `GZ_IP` proof.
 - `profile-summary.json`: loopback profiler result and hotspot percentages.
+- `rejected-server-systems.json`: valid screening evidence for the rejected
+  Contact/OpticalFlow system-removal experiment.
 - `raw-artifact-index.json`: hashes of this compact snapshot.
