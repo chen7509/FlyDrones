@@ -91,9 +91,15 @@ terminal records. It also detects the two model/readout inputs that remain
 outside Git and the absence of formal per-episode ULogs. This archive has not
 been merged into the PX4 branch and is not a fresh experiment.
 
-Next independent work: instrument a new development episode to retain its
-PX4 ULog and validate the estimator/safety record before freezing a new
-held-out comparison. A bounded image+IMU VIO dataset/bridge preflight can
-proceed on one vehicle without claiming the WSL five-camera gate passed. No
-20/100-vehicle or real-flight escalation is authorized by the present
-evidence.
+The next [ULog capture branch](https://github.com/chen7509/FlyDrones/tree/codex/benchmark-ulog-capture)
+now retains a PX4 ULog for a **development** world (`1701`) and rejects ULog-free
+results in new formal reports. The single fly-raw episode ended
+`out_of_bounds`; its 14.2 MB ULog parsed with EKF2, state and setpoint topics,
+but it used GNSS and no real VIO. The [development evidence report](https://github.com/chen7509/FlyDrones/blob/codex/benchmark-ulog-capture/docs/BENCHMARK_ULOG_CAPTURE_DEV.md)
+records the hashes, tests and limitations. This is not a new formal comparison.
+
+Next independent work: validate full estimator/safety semantics in development
+ULogs and perform a bounded image+IMU VIO dataset/bridge preflight on one
+vehicle, without claiming the WSL five-camera gate passed. Only then may a
+new held-out comparison be frozen. No 20/100-vehicle or real-flight escalation
+is authorized by the present evidence.
