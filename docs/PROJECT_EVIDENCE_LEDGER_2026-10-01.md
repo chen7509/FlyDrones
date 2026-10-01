@@ -110,8 +110,12 @@ calibration, image-derived VIO estimate, or VIO fusion into EKF2; both
 controllers still consume Gazebo-truth odometry. See the
 [preflight report](https://github.com/chen7509/FlyDrones/blob/codex/benchmark-vio-dataset/docs/IMAGE_IMU_PREFLIGHT_REPORT.md).
 
-Next independent work: fix the startup logging/coverage gap in a separate
-development run, calibrate and time-align the camera/IMU, then evaluate an
+The preflight PX4 startup script already defaults `SDLOG_MODE=1`, and its
+logger starts before arming. The early gap is at least partly due to Gazebo
+advancing before PX4 joins the existing model; changing the log mode alone
+is not an evidence-backed fix. Next independent work: classify and retest
+the Gazebo/PX4 startup coverage gap in a separate development run, calibrate
+and time-align the camera/IMU, then evaluate an
 actual upstream VIO estimator and its PX4 EKF2/safety behavior. The WSL
 five-camera 0.95 RTF gate remains failed. Only after these gates can a new
 held-out comparison be frozen; no 20/100-vehicle or real-flight escalation
