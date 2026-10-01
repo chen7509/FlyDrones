@@ -16,6 +16,7 @@ readout*.json
 flight*.csv
 results/fly-ego-comparison/
 results/fly-ego-ulog-dev/
+results/fly-ego-vio-preflight/
 .DS_Store
 Thumbs.db
 .idea/

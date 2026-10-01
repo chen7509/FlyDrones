@@ -18,6 +18,7 @@ import numpy as np
 
 from .contract import Command, Observation
 from .geometry import segment_box_clearance, segment_cylinder_clearance
+from .rgb_capture import RgbFrameRecorder
 from .score import ScoreSample
 from .sensors import FrameCache, PoseHistory, camera_pose_from_model
 from .ulog_capture import collect_ulogs
@@ -190,7 +191,8 @@ def swept_clearance(world: dict, start, finish, start_ns: int, finish_ns: int, r
 class NativeGazeboPx4Backend:
     """WSL-only fixed-step backend used by all three controllers."""
 
-    def __init__(self, root: Path, run_dir: Path, world: dict, *, instance: int = 8):
+    def __init__(self, root: Path, run_dir: Path, world: dict, *, instance: int = 8,
+                 record_rgb: bool = False):
         self.root = Path(root).resolve()
         self.run_dir = Path(run_dir).resolve()
         self.world = world
@@ -202,6 +204,9 @@ class NativeGazeboPx4Backend:
         self.runtime_path: Path | None = None
         self.ulog_evidence: list[dict] = []
         self.ulog_capture_error: str | None = None
+        self.rgb_recorder = RgbFrameRecorder(self.run_dir) if record_rgb else None
+        self.rgb_capture_summary: dict | None = None
+        self.rgb_capture_error: str | None = None
         self.node = None
         self.control_node = None
         self.drone = None
@@ -321,6 +326,11 @@ class NativeGazeboPx4Backend:
             frame_ns = int(message.header.stamp.sec) * 1_000_000_000 + int(message.header.stamp.nsec)
             if kind == 'rgb':
                 array = np.frombuffer(message.data, np.uint8).reshape(message.height, message.width, 3).copy()
+                if self.rgb_recorder is not None and self.rgb_capture_error is None:
+                    try:
+                        self.rgb_recorder.add(frame_ns, array)
+                    except Exception as exc:
+                        self.rgb_capture_error = repr(exc)
             else:
                 array = np.frombuffer(message.data, dtype='<f4').reshape(message.height, message.width).copy()
                 array[(array < .2) | (array > 19.1) | ~np.isfinite(array)] = np.nan
@@ -752,5 +762,10 @@ class NativeGazeboPx4Backend:
                 self.ulog_evidence = collect_ulogs(self.runtime_path, self.run_dir)
             except Exception as exc:
                 self.ulog_capture_error = repr(exc)
+        if self.rgb_recorder is not None:
+            try:
+                self.rgb_capture_summary = self.rgb_recorder.finish()
+            except Exception as exc:
+                self.rgb_capture_error = repr(exc)
         self.server = None
         self.fixture = None

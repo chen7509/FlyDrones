@@ -17,6 +17,7 @@ from flydrones.benchmark.ego import EgoController
 from flydrones.benchmark.fly import FullFlyController
 from flydrones.benchmark.gateway import Gateway, NativeGazeboPx4Backend
 from flydrones.benchmark.provenance import load_benchmark_config
+from flydrones.benchmark.rgb_capture import rgb_capture_failures
 from flydrones.benchmark.runner import snapshot_episode_inputs, verify_freeze_manifest
 from flydrones.benchmark.score import EpisodeScorer
 from flydrones.benchmark.ulog_capture import episode_exit_code, ulog_evidence_failures
@@ -32,6 +33,8 @@ def main() -> int:
     parser.add_argument('--config', type=Path, default=ROOT / 'configs/fly_ego_benchmark.yaml')
     parser.add_argument('--ego-endpoint', default='127.0.0.1:46200')
     parser.add_argument('--freeze-manifest', type=Path)
+    parser.add_argument('--record-rgb', action='store_true',
+                        help='development preflight: preserve raw RGB frames and timestamps')
     args = parser.parse_args()
 
     config = load_benchmark_config(args.config)
@@ -58,7 +61,7 @@ def main() -> int:
         controller = FullFlyController(
             fly_config, ROOT / config['fly']['model'], guided=args.controller == 'fly_guided',
         )
-    backend = NativeGazeboPx4Backend(ROOT, args.output, world)
+    backend = NativeGazeboPx4Backend(ROOT, args.output, world, record_rgb=args.record_rgb)
     gateway = Gateway(config, backend)
     scorer = EpisodeScorer(
         tuple(world['goal']), config['task']['goal_radius_m'],
@@ -103,7 +106,10 @@ def main() -> int:
         finally:
             gateway.close()
 
-    evidence_failures = ulog_evidence_failures(backend.ulog_evidence, backend.ulog_capture_error)
+    ulog_failures = ulog_evidence_failures(backend.ulog_evidence, backend.ulog_capture_error)
+    rgb_failures = rgb_capture_failures(backend.rgb_capture_summary, backend.rgb_capture_error,
+                                        required=args.record_rgb)
+    evidence_failures = ulog_failures + rgb_failures
     payload = scorer.summary()
     payload.update({
         'controller': args.controller,
@@ -125,7 +131,12 @@ def main() -> int:
         'px4_ulogs': backend.ulog_evidence,
         'px4_ulog_capture_error': backend.ulog_capture_error,
         'evidence_failures': evidence_failures,
-        'px4_ulog_capture_accepted': not evidence_failures,
+        'px4_ulog_capture_accepted': not ulog_failures,
+        'rgb_capture_requested': args.record_rgb,
+        'rgb_capture_frame_count': len(backend.rgb_capture_summary['frames']) if backend.rgb_capture_summary else 0,
+        'rgb_capture_out_of_order_drops': backend.rgb_capture_summary['out_of_order_drops'] if backend.rgb_capture_summary else None,
+        'rgb_capture_error': backend.rgb_capture_error,
+        'rgb_capture_accepted': not rgb_failures if args.record_rgb else None,
     })
     temporary = args.output / 'result.json.tmp'
     temporary.write_text(json.dumps(payload, indent=2, allow_nan=False), encoding='utf-8')
