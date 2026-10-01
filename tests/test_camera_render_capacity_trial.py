@@ -63,8 +63,7 @@ def test_scored_resource_summary_pins_gazebo_cpu_rss_and_gpu(tmp_path: Path):
         encoding="utf-8",
     )
     (tmp_path / "gpu-probe.csv").write_text(
-        "monotonic_s,gpu_utilization_percent,memory_used_mib\n"
-        "50.0,25,100\n65.0,75,150\n81.0,unavailable,unavailable\n",
+        "monotonic_s,gpu_utilization_percent,memory_used_mib\n50.0,25,100\n65.0,75,150\n81.0,unavailable,unavailable\n",
         encoding="utf-8",
     )
 
@@ -197,8 +196,7 @@ def _config() -> dict[str, object]:
 def _phase_events() -> list[dict[str, object]]:
     epoch = 1_000_000_000
     topics = [
-        f"/world/flydrones_forest/model/x500_depth_fly_{vehicle}"
-        "/link/camera_link/sensor/StereoOV7251/depth_image"
+        f"/world/flydrones_forest/model/x500_depth_fly_{vehicle}/link/camera_link/sensor/StereoOV7251/depth_image"
         for vehicle in range(5)
     ]
     events: list[dict[str, object]] = [
@@ -472,10 +470,7 @@ def test_capacity_selected_observer_warmup_precedes_scheduler():
     runner = (
         Path(__file__).parents[1] / "tools/run_camera_render_capacity_trial_wsl.py"
     ).read_text(encoding="utf-8")
-    backend_start = runner.split(
-        "    def start(self, *, commands, output, run_dir, environment, completion_marker, **_kwargs):",
-        1,
-    )[1].split("    @staticmethod", 1)[0]
+    backend_start = runner.split("    def start(", 1)[1].split("    @staticmethod", 1)[0]
 
     selected_observer = backend_start.index('role = "observer"')
     selected_barrier = backend_start.index('stage="native-warmup"')
@@ -787,7 +782,11 @@ def test_capacity_launcher_uses_temporary_attestation_and_stable_gazebo_identity
     assert 'GZ_SIM_SYSTEM_PLUGIN_PATH="$sensors_plugin_dir:${GZ_SIM_SYSTEM_PLUGIN_PATH:-}"' in launcher
     assert 'custom-server.config' in launcher
     assert 'GZ_SIM_SERVER_CONFIG_PATH="$custom_server_config"' in launcher
-    assert 'filename="gz-sim-sensors-system"' in launcher
+    assert 'plugin.get("name") == "gz::sim::systems::Sensors"' in launcher
+    assert 'disable_gst_camera_system="${FLYDRONES_DISABLE_GST_CAMERA_SYSTEM:-0}"' in launcher
+    assert 'remove_named_plugin("custom::GstCameraSystem")' in launcher
+    assert '--forbidden-server-plugin-name "custom::GstCameraSystem"' in launcher
+    assert '--forbidden-mapped-library "libGstCameraSystem.so"' in launcher
     assert '--expected-sensors-plugin "$sensors_plugin_path"' in launcher
     assert '--expected-server-config "$custom_server_config"' in launcher
     assert '--expected-server-config-sha256 "$custom_server_config_sha256"' in launcher
@@ -930,6 +929,62 @@ def test_capacity_trial_passes_an_audited_development_sensors_plugin(tmp_path: P
     ]
 
 
+def test_capacity_trial_passes_development_only_gstreamer_disable(
+    tmp_path: Path,
+    monkeypatch,
+):
+    monkeypatch.setenv("FLYDRONES_DISABLE_GST_CAMERA_SYSTEM", "0")
+    backend = FakeBackend()
+    config = _config()
+    config["disable_gst_camera_system"] = True
+    native_executable = tmp_path / "flydrones_camera_phase_native"
+    native_executable.write_bytes(b"native capacity test executable")
+
+    run_capacity_trial(
+        run=_run("idle-0"),
+        config=config,
+        output_root=tmp_path,
+        native_executable=native_executable,
+        _backend=backend,
+    )
+
+    assert backend.environment["FLYDRONES_DISABLE_GST_CAMERA_SYSTEM"] == "1"
+
+
+def test_capacity_trial_clears_inherited_gstreamer_disable(
+    tmp_path: Path,
+    monkeypatch,
+):
+    monkeypatch.setenv("FLYDRONES_DISABLE_GST_CAMERA_SYSTEM", "1")
+    backend = FakeBackend()
+    native_executable = tmp_path / "flydrones_camera_phase_native"
+    native_executable.write_bytes(b"native capacity test executable")
+
+    run_capacity_trial(
+        run=_run("idle-0"),
+        config=_config(),
+        output_root=tmp_path,
+        native_executable=native_executable,
+        _backend=backend,
+    )
+
+    assert backend.environment["FLYDRONES_DISABLE_GST_CAMERA_SYSTEM"] == "0"
+
+
+def test_capacity_trial_rejects_non_boolean_gstreamer_disable(tmp_path: Path):
+    config = _config()
+    config["disable_gst_camera_system"] = "yes"
+
+    with pytest.raises(ValueError, match="disable_gst_camera_system must be boolean"):
+        run_capacity_trial(
+            run=_run("idle-0"),
+            config=config,
+            output_root=tmp_path,
+            native_executable=tmp_path / "native",
+            _backend=FakeBackend(),
+        )
+
+
 def test_capacity_trial_rejects_unknown_render_engine(tmp_path: Path):
     config = _config()
     config["render_engine"] = "software-maybe"
@@ -1013,6 +1068,7 @@ def test_successful_trial_writes_manifest_summary_epoch_and_no_worker(tmp_path: 
     assert manifest["launcher_exit_code"] == 0
     assert manifest["frozen_hashes"]["native_executable"]
     assert manifest["frozen_hashes"]["runner"]
+    assert manifest["frozen_hashes"]["renderer_attestation"]
     assert manifest["source_hashes_match"] is True
     assert manifest["native_executable_hash_match"] is True
     assert manifest["px4_build_identity_match"] is True

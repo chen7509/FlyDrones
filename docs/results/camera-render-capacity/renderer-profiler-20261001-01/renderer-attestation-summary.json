@@ -1,0 +1,82 @@
+{
+  "schema": "flydrones-gazebo-renderer-attestation-v1",
+  "accepted": true,
+  "reasons": [],
+  "requested_profile": "d3d12-nvidia",
+  "requested_environment": {
+    "GALLIUM_DRIVER": "d3d12",
+    "MESA_D3D12_DEFAULT_ADAPTER_NAME": "NVIDIA"
+  },
+  "requested_render_engine": "ogre2",
+  "render_engine_library": "libgz-rendering8-ogre2.so.8.2.3",
+  "render_engine_accepted": true,
+  "egl_renderer": "D3D12 (NVIDIA GeForce RTX 3070 Ti Laptop GPU)",
+  "expected_depth_topics": 5,
+  "depth_observations": {
+    "/world/flydrones_forest/model/x500_depth_fly_0/link/camera_link/sensor/StereoOV7251/depth_image": {
+      "width": 160,
+      "height": 120,
+      "frequency_hz": 10.0,
+      "message_count": 11
+    },
+    "/world/flydrones_forest/model/x500_depth_fly_1/link/camera_link/sensor/StereoOV7251/depth_image": {
+      "width": 160,
+      "height": 120,
+      "frequency_hz": 10.044642857142858,
+      "message_count": 12
+    },
+    "/world/flydrones_forest/model/x500_depth_fly_2/link/camera_link/sensor/StereoOV7251/depth_image": {
+      "width": 160,
+      "height": 120,
+      "frequency_hz": 10.0,
+      "message_count": 11
+    },
+    "/world/flydrones_forest/model/x500_depth_fly_3/link/camera_link/sensor/StereoOV7251/depth_image": {
+      "width": 160,
+      "height": 120,
+      "frequency_hz": 10.0,
+      "message_count": 11
+    },
+    "/world/flydrones_forest/model/x500_depth_fly_4/link/camera_link/sensor/StereoOV7251/depth_image": {
+      "width": 160,
+      "height": 120,
+      "frequency_hz": 10.0,
+      "message_count": 11
+    }
+  },
+  "server_config": {
+    "accepted": true,
+    "reasons": [],
+    "expected_path": "/tmp/flydrones-capacity-capacity-01-idle-0-r1-c22e000d3613/custom-server.config",
+    "expected_sha256": "f4f91f27872009ca020869f605f9cd8def5a417547362cd3cce8084e97a2670c",
+    "sha256": "f4f91f27872009ca020869f605f9cd8def5a417547362cd3cce8084e97a2670c",
+    "process_server_config_path": "/tmp/flydrones-capacity-capacity-01-idle-0-r1-c22e000d3613/custom-server.config",
+    "expected_sensors_plugin": null,
+    "sensors_plugin_entry_count": 1,
+    "sensors_plugin_filename": "gz-sim-sensors-system",
+    "plugin_names": [
+      "gz::sim::systems::Physics",
+      "gz::sim::systems::UserCommands",
+      "gz::sim::systems::SceneBroadcaster",
+      "gz::sim::systems::Contact",
+      "gz::sim::systems::Imu",
+      "gz::sim::systems::AirPressure",
+      "gz::sim::systems::AirSpeed",
+      "gz::sim::systems::ApplyLinkWrench",
+      "gz::sim::systems::NavSat",
+      "gz::sim::systems::Magnetometer",
+      "gz::sim::systems::Sensors",
+      "custom::OpticalFlowSystem"
+    ],
+    "forbidden_plugin_counts": {
+      "custom::GstCameraSystem": 0
+    }
+  },
+  "forbidden_mapped_libraries": {
+    "accepted": true,
+    "reasons": [],
+    "matches": {
+      "libGstCameraSystem.so": []
+    }
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "schema": "flydrones-compact-evidence-index-v1",
+  "files": [
+    {
+      "path": "manifest-summary.json",
+      "bytes": 1618,
+      "sha256": "298cfcab475f3772921df3a08167a5d139357434fd73469c0831d0b738017c48"
+    },
+    {
+      "path": "profile-summary.json",
+      "bytes": 2723,
+      "sha256": "1d7018b93a118714e82970a26e26f1adab73c94cdfeb74cc722de53b9e4de4ca"
+    },
+    {
+      "path": "rejected-experiments.json",
+      "bytes": 926,
+      "sha256": "277f06ae5d0e392a552512059e4d5085376ac6ad752f5bf20739a6971acc443d"
+    },
+    {
+      "path": "renderer-attestation-summary.json",
+      "bytes": 2917,
+      "sha256": "e078f35fea1c716d3420d8e8ab8ca84e95a814415c26428e62f4e16c7b70a0c7"
+    },
+    {
+      "path": "score.json",
+      "bytes": 356,
+      "sha256": "3bf07e95b115d3985cab7b2b0032a37d8e156aae56b3bd193fb93ef857b66415"
+    }
+  ]
+}

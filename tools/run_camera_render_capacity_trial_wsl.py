@@ -70,6 +70,7 @@ def _trial_hashes(native_executable: Path) -> dict[str, str]:
     paths = {
         "runner": Path(__file__),
         "launcher": ROOT / "tools" / "launch_px4_depth_swarm_wsl.sh",
+        "renderer_attestation": ROOT / "tools" / "attest_gazebo_renderer_wsl.py",
         "runtime_probe": ROOT / "tools" / "probe_gazebo_runtime_wsl.py",
         "stopper": ROOT / "tools" / "stop_px4_swarm_wsl.sh",
         "camera_scheduler": ROOT / "tools" / "run_camera_phase_scheduler_wsl.py",
@@ -1152,7 +1153,10 @@ class SubprocessCapacityBackend:
         if custom_server_config.is_file():
             shutil.copy2(custom_server_config, self.output / custom_server_config.name)
             copied_evidence.append(custom_server_config.name)
-        elif self.environment.get("FLYDRONES_GZ_SENSORS_PLUGIN_DIR"):
+        elif (
+            self.environment.get("FLYDRONES_GZ_SENSORS_PLUGIN_DIR")
+            or self.environment.get("FLYDRONES_DISABLE_GST_CAMERA_SYSTEM") == "1"
+        ):
             artifact_errors.append("required run evidence is missing: custom-server.config")
         for vehicle_id in range(5):
             source = self.run_dir / f"instance_{vehicle_id}" / "startup-health.json"
@@ -1239,6 +1243,9 @@ def run_capacity_trial(
     render_engine = str(config.get("render_engine", "ogre2"))
     if render_engine not in {"ogre", "ogre2"}:
         raise ValueError(f"unsupported Gazebo render engine: {render_engine}")
+    disable_gst_camera_system = config.get("disable_gst_camera_system", False)
+    if not isinstance(disable_gst_camera_system, bool):
+        raise ValueError("disable_gst_camera_system must be boolean")
     sensors_plugin_directory = config.get("sensors_plugin_directory")
     sensors_plugin_sha256 = config.get("sensors_plugin_sha256")
     if (sensors_plugin_directory is None) != (sensors_plugin_sha256 is None):
@@ -1365,6 +1372,7 @@ def run_capacity_trial(
         "FLYDRONES_VEHICLE_COUNT": "5",
         "FLYDRONES_GZ_RENDER_PROFILE": str(config.get("renderer_profile")),
         "FLYDRONES_GZ_RENDER_ENGINE": render_engine,
+        "FLYDRONES_DISABLE_GST_CAMERA_SYSTEM": "1" if disable_gst_camera_system else "0",
         "FLYDRONES_CAMERA_SCHEDULE_MODE": "phased",
         "FLYDRONES_CAMERA_AUX_TIMEOUT_S": f"{max(readiness_timeout_s, 150.0):g}",
         "FLYDRONES_CAMERA_PHASE_READY_MARKER": str(

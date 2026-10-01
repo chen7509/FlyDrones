@@ -1,6 +1,19 @@
 # Five-Camera Render Capacity Report
 
-> Current update (2026-10-01): a follow-up audit found that the historical
+> Current update (2026-10-01): profiler-led work found that PX4's default
+> Gazebo server configuration loaded `custom::GstCameraSystem` even though the
+> test world contains depth cameras and no matching regular `/image` stream.
+> Its topic-list and regular-expression search repeated every simulation
+> update. Removing only that unused plugin through a private, attested
+> run-scoped server config removed the sampled GStreamer hot path. A valid
+> exploratory trial measured 0.8574 RTF, but the exact final-code run measured
+> 0.7895; their range exceeds the 0.03 repeatability limit, so no stable RTF
+> improvement is claimed. A profiled run measured 0.8507 RTF, with Gazebo
+> Transport discovery and DART physics becoming the leading sampled costs. The
+> 0.95 gate remains closed. See the
+> [compact profiler evidence](results/camera-render-capacity/renderer-profiler-20261001-01).
+>
+> The preceding audit found that the historical
 > `idle-0` cells had zero depth-image subscribers but still triggered all five
 > cameras at 10 Hz. They were not true zero-render baselines. The scheduler now
 > changes from the five-camera attestation phase to the selected scored trigger
@@ -12,6 +25,52 @@
 > rerun. See the [compact renderer diagnosis](results/camera-render-capacity/renderer-diagnosis-20260930-01).
 
 ## Renderer activation diagnosis
+
+### Profiler-led server-plugin result
+
+The first scored-window profile captured 13,683 `cpu-clock:u` samples. The
+unused `libGstCameraSystem.so` accounted for about 7.32% self samples;
+`custom::GstCameraSystem::findCameraTopic()` accounted for 5.53% cumulative
+samples. Local source inspection at the frozen PX4 revision showed that
+`PostUpdate` called `findCameraTopic()` until initialization, while
+`findCameraTopic()` listed every topic and applied a regular expression that
+matches a regular camera `/image` topic. This depth-only world never satisfies
+that match. PX4's upstream server configuration and GStreamer plugin are
+available in the official
+[server config](https://github.com/PX4/PX4-Autopilot/blob/main/src/modules/simulation/gz_bridge/server.config)
+and [GStreamer plugin documentation](https://github.com/PX4/PX4-Autopilot/blob/main/src/modules/simulation/gz_plugins/gstreamer/README.md).
+
+The corrected launcher can now create a private server config for a development
+trial, remove `custom::GstCameraSystem`, and pass its exact path and SHA-256 to
+the renderer attester. The attester reads the running Gazebo process
+environment, parses the bound config, rejects a remaining forbidden plugin
+entry, and rejects a mapped `libGstCameraSystem.so`. The shared PX4
+`server.config` is never edited.
+
+| Trial | Evidence | RTF | Result |
+|---|---|---:|---|
+| Ogre2, zero triggers, GStreamer disabled, exact final code | valid | 0.7895 | below 0.95 |
+| same retained behavior, earlier exploratory runner | valid | 0.8574 | below 0.95; not hash-identical |
+| same configuration under `perf` sampling | valid | 0.8507 | 10,906 samples, zero lost |
+| Bullet Featherstone, GStreamer disabled | valid | 0.8232 | rejected; slower and teardown segfault |
+| DART PGS, GStreamer disabled | valid | 0.7732 | rejected; slower |
+| SceneBroadcaster disabled | invalid/unscored | — | rejected; PX4 could not discover the Gazebo world |
+
+The two unprofiled no-GStreamer measurements span 0.0678 RTF, above the 0.03
+repeatability limit. The no-GStreamer profile no longer contains the former
+plugin hot path, but this host variance prevents a stable performance-gain
+claim. Its cumulative samples were led by Gazebo Transport publisher discovery (43.31%),
+Physics update (29.13%), DART forward step (23.10%), and subscriber-change
+handling (12.91%). SceneBroadcaster `PostUpdate` was 2.78%, Sensors
+`PostUpdate` 2.09%, and `RenderUtil::UpdateFromECM` 1.00%. These percentages
+span multiple Gazebo threads and do not add into a single critical-path
+percentage; they identify where further native-Linux tracing should focus.
+
+The Bullet and PGS branches were not kept in production code. Removing
+SceneBroadcaster was also not kept because it broke the PX4/Gazebo interface.
+The only retained behavior is the explicit depth-only option that removes the
+unused GStreamer plugin with runtime proof. It does not change vehicle
+dynamics, the camera model, rate, resolution, PX4, EKF2, or thresholds.
 
 The latest evidence separates three loads that the preceding campaign mixed
 together:

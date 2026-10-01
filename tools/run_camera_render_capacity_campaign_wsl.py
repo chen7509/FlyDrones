@@ -40,6 +40,7 @@ DEFAULT_NATIVE_EXECUTABLE = (
 _TRIAL_HASH_MAP = {
     "trial_runner": "runner",
     "launcher": "launcher",
+    "renderer_attestation": "renderer_attestation",
     "runtime_probe": "runtime_probe",
     "stopper": "stopper",
     "camera_scheduler": "camera_scheduler",

@@ -1,0 +1,36 @@
+{
+  "schema": "flydrones-renderer-rejected-experiments-v1",
+  "date": "2026-10-01",
+  "experiments": [
+    {
+      "name": "bullet-featherstone",
+      "evidence_valid": true,
+      "rtf": 0.8232013777590697,
+      "result": "rejected",
+      "reasons": [
+        "slower_than_DART_no-gst",
+        "Gazebo transport segmentation fault during commanded teardown"
+      ],
+      "health": "five PX4 healthy; five depth streams within 9.5-10.5 Hz"
+    },
+    {
+      "name": "DART-pgs",
+      "evidence_valid": true,
+      "rtf": 0.7732126461239981,
+      "result": "rejected",
+      "reasons": [
+        "slower_than_default_DART"
+      ],
+      "health": "five PX4 healthy and landed"
+    },
+    {
+      "name": "disable-scene-broadcaster",
+      "evidence_valid": false,
+      "rtf": null,
+      "result": "rejected",
+      "reasons": [
+        "PX4 remained at Waiting for Gazebo world; no scored epoch"
+      ]
+    }
+  ]
+}

@@ -13,10 +13,12 @@ from flydrones.gazebo_renderer import (
 from tools.attest_gazebo_renderer_wsl import (
     evaluate_expected_plugin,
     evaluate_expected_server_config,
+    evaluate_forbidden_mapped_libraries,
     finalize_renderer_attestation,
     load_phase_depth_observations,
     parse_depth_messages,
     parse_depth_sim_frequency,
+    parse_mapped_libraries,
     parse_topic_frequency,
     probe_egl_renderer,
 )
@@ -237,6 +239,75 @@ def test_expected_server_config_binds_hash_and_exact_sensors_plugin(tmp_path):
     assert "sensors_plugin_entry_mismatch" in wrong_plugin["reasons"]
     assert unused_config["accepted"] is False
     assert "process_server_config_mismatch" in unused_config["reasons"]
+
+
+def test_expected_server_config_proves_forbidden_plugin_is_absent(tmp_path):
+    config = tmp_path / "custom-server.config"
+    config.write_text(
+        '<server_config><plugins><plugin filename="gz-sim-physics-system" '
+        'name="gz::sim::systems::Physics"/></plugins></server_config>\n',
+        encoding="utf-8",
+    )
+    digest = hashlib.sha256(config.read_bytes()).hexdigest()
+
+    accepted = evaluate_expected_server_config(
+        config,
+        expected_sha256=digest,
+        expected_plugin_path=None,
+        forbidden_plugin_names=("custom::GstCameraSystem",),
+        process_environment={"GZ_SIM_SERVER_CONFIG_PATH": str(config)},
+    )
+    config.write_text(
+        '<server_config><plugins><plugin filename="libGstCameraSystem.so" '
+        'name="custom::GstCameraSystem"/></plugins></server_config>\n',
+        encoding="utf-8",
+    )
+    rejected_digest = hashlib.sha256(config.read_bytes()).hexdigest()
+    rejected = evaluate_expected_server_config(
+        config,
+        expected_sha256=rejected_digest,
+        expected_plugin_path=None,
+        forbidden_plugin_names=("custom::GstCameraSystem",),
+        process_environment={"GZ_SIM_SERVER_CONFIG_PATH": str(config)},
+    )
+
+    assert accepted["accepted"] is True
+    assert accepted["forbidden_plugin_counts"] == {"custom::GstCameraSystem": 0}
+    assert rejected["accepted"] is False
+    assert rejected["forbidden_plugin_counts"] == {"custom::GstCameraSystem": 1}
+    assert "forbidden_server_plugin_present" in rejected["reasons"]
+
+
+def test_forbidden_mapped_library_requires_runtime_absence():
+    accepted = evaluate_forbidden_mapped_libraries(
+        ("libGstCameraSystem.so",),
+        mapped_libraries={"/usr/lib/libgz-sim8.so.8"},
+    )
+    rejected = evaluate_forbidden_mapped_libraries(
+        ("libGstCameraSystem.so",),
+        mapped_libraries={"/opt/px4/libGstCameraSystem.so"},
+    )
+
+    assert accepted["accepted"] is True
+    assert accepted["matches"] == {"libGstCameraSystem.so": []}
+    assert rejected["accepted"] is False
+    assert rejected["matches"] == {
+        "libGstCameraSystem.so": ["/opt/px4/libGstCameraSystem.so"]
+    }
+    assert "forbidden_mapped_library_present" in rejected["reasons"]
+
+
+def test_process_maps_parser_preserves_spaces_and_deleted_library_identity():
+    maps = (
+        "7f00-7f10 r-xp 00000000 08:01 10 /opt/PX4 Plugins/libGstCameraSystem.so (deleted)\n"
+        "7f20-7f30 r-xp 00000000 08:01 11 /usr/lib/libgz-sim8.so.8\n"
+        "7f40-7f50 rw-p 00000000 00:00 0 [heap]\n"
+    )
+
+    assert parse_mapped_libraries(maps) == {
+        "/opt/PX4 Plugins/libGstCameraSystem.so",
+        "/usr/lib/libgz-sim8.so.8",
+    }
 
 
 def test_eglinfo_nonzero_exit_keeps_a_parseable_renderer():

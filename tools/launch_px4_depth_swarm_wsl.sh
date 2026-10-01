@@ -13,6 +13,7 @@ renderer_profile="${FLYDRONES_GZ_RENDER_PROFILE:-default}"
 render_engine="${FLYDRONES_GZ_RENDER_ENGINE:-ogre2}"
 sensors_plugin_dir="${FLYDRONES_GZ_SENSORS_PLUGIN_DIR:-}"
 expected_sensors_plugin_sha256="${FLYDRONES_EXPECTED_GZ_SENSORS_PLUGIN_SHA256:-}"
+disable_gst_camera_system="${FLYDRONES_DISABLE_GST_CAMERA_SYSTEM:-0}"
 camera_schedule_mode="${FLYDRONES_CAMERA_SCHEDULE_MODE:-simultaneous}"
 camera_aux_timeout_s="${FLYDRONES_CAMERA_AUX_TIMEOUT_S:-45}"
 camera_phase_ready_marker="${FLYDRONES_CAMERA_PHASE_READY_MARKER:-}"
@@ -46,6 +47,13 @@ case "$render_engine" in
   ogre|ogre2) ;;
   *)
     echo "unsupported Gazebo render engine: $render_engine" >&2
+    exit 2
+    ;;
+esac
+case "$disable_gst_camera_system" in
+  0|1) ;;
+  *)
+    echo "FLYDRONES_DISABLE_GST_CAMERA_SYSTEM must be 0 or 1" >&2
     exit 2
     ;;
 esac
@@ -252,18 +260,49 @@ source "$build/rootfs/gz_env.sh"
 set -u
 if [[ -n "$sensors_plugin_dir" ]]; then
   export GZ_SIM_SYSTEM_PLUGIN_PATH="$sensors_plugin_dir:${GZ_SIM_SYSTEM_PLUGIN_PATH:-}"
+fi
+custom_server_config=""
+custom_server_config_sha256=""
+if [[ -n "$sensors_plugin_dir" || "$disable_gst_camera_system" == 1 ]]; then
   custom_server_config="$run_dir/custom-server.config"
   python3 - "$PX4_GZ_SERVER_CONFIG" "$custom_server_config" \
-    "$sensors_plugin_path" <<'PY'
+    "$sensors_plugin_path" "$disable_gst_camera_system" <<'PY'
 import sys
+import xml.etree.ElementTree as ET
 from pathlib import Path
 
-source = Path(sys.argv[1]).read_text(encoding="utf-8")
-needle = 'filename="gz-sim-sensors-system"'
-if source.count(needle) != 1:
-    raise SystemExit("PX4 server config must contain exactly one Gazebo Sensors plugin")
-replacement = f'filename="{sys.argv[3]}"'
-Path(sys.argv[2]).write_text(source.replace(needle, replacement), encoding="utf-8")
+source, destination = map(Path, sys.argv[1:3])
+sensors_plugin_path = sys.argv[3]
+disable_gst = sys.argv[4] == "1"
+tree = ET.parse(source)
+root = tree.getroot()
+plugins = list(root.iter("plugin"))
+if sensors_plugin_path:
+    sensors = [
+        plugin for plugin in plugins
+        if plugin.get("name") == "gz::sim::systems::Sensors"
+    ]
+    if len(sensors) != 1:
+        raise SystemExit("PX4 server config must contain exactly one Gazebo Sensors plugin")
+    sensors[0].set("filename", sensors_plugin_path)
+def remove_named_plugin(name: str) -> None:
+    matches = [
+        plugin for plugin in plugins
+        if plugin.get("name") == name
+    ]
+    if len(matches) != 1:
+        raise SystemExit(f"PX4 server config must contain exactly one {name} plugin")
+    parent = next(
+        element for element in root.iter()
+        if matches[0] in list(element)
+    )
+    parent.remove(matches[0])
+
+if disable_gst:
+    remove_named_plugin("custom::GstCameraSystem")
+tree.write(destination, encoding="unicode")
+with destination.open("a", encoding="utf-8") as handle:
+    handle.write("\n")
 PY
   custom_server_config_sha256="$(sha256sum "$custom_server_config" | awk '{print $1}')"
   export GZ_SIM_SERVER_CONFIG_PATH="$custom_server_config"
@@ -805,12 +844,22 @@ for _ in $(seq 1 40); do
       exit 3
     fi
     renderer_attestation_args=()
-    if [[ -n "$sensors_plugin_path" ]]; then
-      renderer_attestation_args=(
-        --expected-sensors-plugin "$sensors_plugin_path"
-        --expected-sensors-plugin-sha256 "$expected_sensors_plugin_sha256"
+    if [[ -n "$custom_server_config" ]]; then
+      renderer_attestation_args+=(
         --expected-server-config "$custom_server_config"
         --expected-server-config-sha256 "$custom_server_config_sha256"
+      )
+    fi
+    if [[ -n "$sensors_plugin_path" ]]; then
+      renderer_attestation_args+=(
+        --expected-sensors-plugin "$sensors_plugin_path"
+        --expected-sensors-plugin-sha256 "$expected_sensors_plugin_sha256"
+      )
+    fi
+    if [[ "$disable_gst_camera_system" == 1 ]]; then
+      renderer_attestation_args+=(
+        --forbidden-server-plugin-name "custom::GstCameraSystem"
+        --forbidden-mapped-library "libGstCameraSystem.so"
       )
     fi
     if ! env -u GALLIUM_DRIVER -u MESA_D3D12_DEFAULT_ADAPTER_NAME "${renderer_env[@]}" \

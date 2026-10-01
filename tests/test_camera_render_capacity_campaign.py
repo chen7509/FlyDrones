@@ -8,6 +8,7 @@ import pytest
 
 from flydrones.camera_render_capacity import capacity_schedule
 from tools.run_camera_render_capacity_campaign_wsl import (
+    _trial_expected_hashes,
     build_capacity_campaign_manifest,
     calculate_capacity_frozen_hashes,
     execute_capacity_campaign,
@@ -28,6 +29,15 @@ THRESHOLDS = {
     "repeatability_rtf_range_max": 0.03,
     "native_improvement_min": 0.05,
 }
+
+
+def test_trial_expected_hashes_include_renderer_attestation():
+    assert _trial_expected_hashes(
+        {"renderer_attestation": "attester-sha", "trial_runner": "runner-sha"}
+    ) == {
+        "renderer_attestation": "attester-sha",
+        "runner": "runner-sha",
+    }
 
 
 def _config() -> dict[str, object]:
