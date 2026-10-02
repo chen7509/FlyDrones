@@ -153,5 +153,15 @@ geometry**. The PX4 bridge also rotates Gazebo FLU IMU vectors into FRD, but
 dynamic image/IMU time offset, frame consistency in motion, VIO initialization,
 and EKF2 visual fusion remain untested. The controllers still use truth
 odometry; this evidence does not resolve the five-camera 0.95 RTF gate.
-Next, validate motion timing and then run a pinned upstream VIO offline on
-recorded images/IMU before considering any PX4 visual-fusion claim.
+The [controlled dynamic preflight](https://github.com/chen7509/FlyDrones/pull/8)
+then used a separate **zero-gravity Gazebo-only** colored-target fixture with
+forced yaw. Two corrected repeats each recorded 31 RGB frames, 751 raw Gazebo
+IMU samples, and 27 fully tracked target frames. A common-window, symmetric
+±100 ms scan used 25 frames per repeat; its minimum was 0 ms on a 4 ms grid,
+and image-derived yaw matched runtime camera-link yaw to 0.208° RMSE. The first
+probe's asynchronous last-frame mismatch and an initially one-sided lag fit
+remain in the 107-file archived evidence; a clean-checkout replay reproduced
+the corrected analyses. This is simulated timestamp/axis evidence only:
+PX4 ULog motion timing, physical exposure offset, image-derived VIO,
+and EKF2 visual fusion remain unverified. Next, check PX4/Ulog motion data,
+then run a pinned upstream VIO offline before any PX4 visual-fusion claim.
