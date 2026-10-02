@@ -116,9 +116,9 @@ controllers still consume Gazebo-truth odometry. See the
 The preflight PX4 startup script already defaults `SDLOG_MODE=1`, and its
 logger starts before arming. The early gap is at least partly due to Gazebo
 advancing before PX4 joins the existing model; changing the log mode alone
-is not an evidence-backed fix. The WSL
-five-camera 0.95 RTF gate remains failed. Only after VIO, PX4 fusion/safety,
-and capacity gates can a new held-out comparison be frozen; no 20/100-vehicle or real-flight escalation
+is not an evidence-backed fix. The WSL five-camera 0.95 RTF gate remains
+failed. Only after VIO, PX4 fusion/safety, and capacity gates can a new
+held-out comparison be frozen; no 20/100-vehicle or real-flight escalation
 is supported by this evidence.
 
 The [decision-window audit](https://github.com/chen7509/FlyDrones/pull/5)
@@ -128,6 +128,18 @@ with 5,501 IMU samples and a maximum adjacent IMU gap of 4 ms. This passes
 a declared 20 ms **data-availability** check for the decision window only;
 the full raw-capture gap, `out_of_bounds` task result and truth odometry
 remain unchanged. Repeating the same development episode solely to repair
-the historical startup frames is unnecessary. Next, obtain and validate
-actual camera-info intrinsics, optical-to-IMU transform and time offset before
-an offline pinned upstream VIO trial.
+the historical startup frames is unnecessary.
+
+The [published camera-info preflight](https://github.com/chen7509/FlyDrones/pull/6)
+then ran one more `1701` development episode. It retained 417 RGB frames,
+417 stable Gazebo CameraInfo messages, a PX4 ULog and all failures in a
+434-file hash-verified archive. Its published pinhole intrinsics match the
+model's nominal horizontal FOV; all 126 decision-window frames overlap the
+IMU log with a maximum adjacent IMU gap of 4 ms. The task ended `collision`,
+25 early raw frames lack IMU coverage, and EKF2 external-vision fusion remains
+zero. This verifies camera-info acquisition, **not** optical-to-IMU rotation,
+time-offset calibration or image-derived VIO. The PX4 build has local changes;
+its binary hash is recorded in the
+[development report](https://github.com/chen7509/FlyDrones/blob/codex/benchmark-camera-info-preflight/docs/CAMERA_INFO_PREFLIGHT_REPORT.md).
+Next, validate the optical frame, full camera-to-IMU transform and timing in
+development before a pinned upstream offline VIO trial.
