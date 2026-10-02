@@ -166,7 +166,10 @@ PX4 ULog motion timing, physical exposure offset, image-derived VIO,
 and EKF2 visual fusion remain unverified. Inspection of pinned upstream
 OpenVINS `69488123ed9362dd44b6f28e7f4680abbff1442b` confirmed that
 `T_imu_cam` expects camera-to-IMU rotation and camera position in IMU; the
-candidate PX4 IMU-to-optical rotation must be inverted before use. Its
-ROS-free build needs Ceres development headers, absent from this WSL install;
-no OpenVINS binary or trajectory has been produced. Next, check PX4/Ulog motion data,
+candidate PX4 IMU-to-optical rotation must be inverted before use. The WSL
+environment initially lacked Ceres and some Boost development packages;
+after installing them, this pinned upstream revision configured and built
+successfully without ROS. The binary hash is in the dynamic preflight report.
+No FlyDrones image/ULog input has been fed to it, and no VIO trajectory has
+been produced. Next, check PX4/Ulog motion data,
 then run a pinned upstream VIO offline before any PX4 visual-fusion claim.
