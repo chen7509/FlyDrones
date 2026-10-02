@@ -65,8 +65,17 @@ p_CinI = [0.12, 0, -0.002] m
 
 这些只对应**当前仿真几何**，尚未生成可运行的 OpenVINS 配置。
 [OpenVINS 官方无 ROS 安装文档](https://docs.openvins.com/gs-installing-free.html)
-列明 OpenCV、Eigen3、Ceres 依赖；本机 WSL 已有 OpenCV/Eigen3 开发包，
-`libceres-dev` 尚未安装，因此没有构建或运行 OpenVINS。
+列明 OpenCV、Eigen3、Ceres 依赖；本机 WSL 原缺 Ceres 与部分 Boost
+开发包。补装 `libceres-dev`、`libboost-filesystem-dev`、
+`libboost-system-dev`、`libboost-thread-dev`、`libboost-date-time-dev`
+后，固定上游提交以 `ENABLE_ROS=OFF`、`ENABLE_ARUCO_TAGS=OFF`、
+`BUILD_OV_EVAL=OFF`、`Release` 配置及 `-j2` 编译通过。
+`libov_msckf_lib.so` SHA-256 为
+`ef649cc55d9d4471dbf9e549561a877752a48ae08d568a3433e157cb8e747b45`；
+`run_simulation` SHA-256 为
+`30ce920ea6faa25dba755cffde546ee1d57fd0ad97c23d377149a8934a3d125e`。
+上游 CTest 注册 0 项，本阶段**尚未用 FlyDrones 图像与 ULog 运行
+OpenVINS**，所以没有 VIO 位姿或失败率结果。
 上游 `timeshift_cam_imu` 所在配置项按 `t_imu = t_cam + t_off` 定义，
 受控 Gazebo 的 0 ms 网格结果不能作为 PX4 任务中的最终 `t_off`。
 OpenVINS 是 GPL-3.0，商业集成前仍需许可证审查；当前仅作为研究
