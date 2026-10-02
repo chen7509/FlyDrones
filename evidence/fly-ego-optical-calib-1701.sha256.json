@@ -62,5 +62,6 @@
       "bytes": 1294,
       "sha256": "1490070f101a6c41bfc7c52b617438582d5e403b55e8c845e6eea42eade1b681"
     }
-  ]
+  ],
+  "archive_root": "optical/"
 }
