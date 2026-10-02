@@ -1,0 +1,67 @@
+{
+  "schema": "flydrones-optical-calib-archive-v1",
+  "archive_sha256": "70c28b35e3f74135fef18fd4e001376e46aa01e6648b17fff2765b9fab9f8264",
+  "files": [
+    {
+      "path": "analysis-v2.json",
+      "bytes": 2400,
+      "sha256": "8debca41e9be189a9c9896402a36415aeab8a881be110646f958dd81cbf9e52a"
+    },
+    {
+      "path": "fixture-100ms.ppm",
+      "bytes": 57615,
+      "sha256": "6d16a80e1c557caeb01109c9e5e77b6048209135593fbd19274ca750593f4e10"
+    },
+    {
+      "path": "fixture-frames-100ms.json",
+      "bytes": 1467,
+      "sha256": "2454be7d746c276cba32832b7dada2501b4c7f98d8dca45a1b2fe8b1103415d7"
+    },
+    {
+      "path": "fixture-frames.json",
+      "bytes": 1465,
+      "sha256": "56e2e8a9ec3c9617d8926eeaceab9b96e50696c369026a9e1dbe505c0f0ca72c"
+    },
+    {
+      "path": "fixture-v2-frames.json",
+      "bytes": 1704,
+      "sha256": "026a09e2e1f16818037d9f04c5f05593f7d706575cf0807187b65a79726f89a5"
+    },
+    {
+      "path": "fixture-v2.json",
+      "bytes": 1129,
+      "sha256": "71d8151e6b8a7f8372cf0ec876ac60bb73b9e64209a89df08a55e443edce19c0"
+    },
+    {
+      "path": "fixture-v2.ppm",
+      "bytes": 57615,
+      "sha256": "b39eef7e7202f99c11db3716807e1350cef25b88ac2cb33944166df5d3508fbe"
+    },
+    {
+      "path": "fixture-v2.sdf",
+      "bytes": 4322,
+      "sha256": "cc434fa516285767c7208c52cd8b55422410ba19e0f5b5c09cb22d38ad92cf95"
+    },
+    {
+      "path": "fixture.json",
+      "bytes": 914,
+      "sha256": "33a65ae98b1ace6bb8af4387c5a7cc3a97b1afbf11e703235a316c52a5efe5b5"
+    },
+    {
+      "path": "fixture.ppm",
+      "bytes": 57615,
+      "sha256": "4a0cb1f633a15f292e09d38134c6d00fc7ff0ac47b2e9cf622982ec6c626d640"
+    },
+    {
+      "path": "fixture.sdf",
+      "bytes": 3849,
+      "sha256": "0f17e1d06bb446ce6723cbaac338b57a56bffb376323f2e7319fd5b0667b0a61"
+    },
+    {
+      "path": "frames.json",
+      "bytes": 1294,
+      "sha256": "1490070f101a6c41bfc7c52b617438582d5e403b55e8c845e6eea42eade1b681"
+    }
+  ],
+  "archive_root": "optical/"
+}

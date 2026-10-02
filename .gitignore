@@ -19,6 +19,7 @@ results/fly-ego-ulog-dev/
 results/fly-ego-vio-preflight/
 results/fly-ego-coverage-audit/
 results/fly-ego-camera-info-preflight/
+results/fly-ego-optical-calib/
 .DS_Store
 Thumbs.db
 .idea/
