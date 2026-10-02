@@ -1,0 +1,12 @@
+{
+  "schema": "flydrones-camera-rerun-gate-v1",
+  "readiness_campaign": "formal-20260930-01",
+  "required_passes": 10,
+  "observed_passes": 9,
+  "classification": "inconclusive_or_invalid",
+  "camera_rerun_eligible": false,
+  "action": "step_4_prohibited",
+  "reason": "formal PX4 sensor-readiness gate did not achieve 10/10",
+  "enforced_entry": "tools/run_gated_camera_render_capacity_campaign_wsl.py",
+  "executable_gate_verified": true
+}

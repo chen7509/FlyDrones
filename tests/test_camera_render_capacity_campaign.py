@@ -8,6 +8,7 @@ import pytest
 
 from flydrones.camera_render_capacity import capacity_schedule
 from tools.run_camera_render_capacity_campaign_wsl import (
+    _trial_expected_hashes,
     build_capacity_campaign_manifest,
     calculate_capacity_frozen_hashes,
     execute_capacity_campaign,
@@ -30,6 +31,15 @@ THRESHOLDS = {
 }
 
 
+def test_trial_expected_hashes_include_renderer_attestation():
+    assert _trial_expected_hashes(
+        {"renderer_attestation": "attester-sha", "trial_runner": "runner-sha"}
+    ) == {
+        "renderer_attestation": "attester-sha",
+        "runner": "runner-sha",
+    }
+
+
 def _config() -> dict[str, object]:
     return {
         "schema": "flydrones-camera-render-capacity-config-v1",
@@ -43,7 +53,25 @@ def _config() -> dict[str, object]:
         "readiness_timeout_s": 45.0,
         "scored_duration_s": 30.0,
         "wall_timeout_s": 120.0,
+        "px4_build_name": "px4_sitl_nolockstep",
         "px4_revision": "px4-revision",
+        "px4_build_identity": {
+            "schema": "flydrones-px4-build-evidence-v2",
+            "build_name": "px4_sitl_nolockstep",
+            "px4_revision": "px4-revision",
+            "binary_sha256": "a" * 64,
+            "boardconfig_sha256": "b" * 64,
+            "px4_patch": "patches/px4/vehicle-imu-first-sample-dt.patch",
+            "px4_patch_sha256": "cd36509e63b3709770366a17a07cca67591be409c02a4475ecd3508923d8fd94",
+            "vehicle_imu_sha256": "d" * 64,
+            "vehicle_imu_patch_applied": True,
+            "nolockstep": True,
+            "board_definition": "#define CONFIG_BOARD_NOLOCKSTEP 1",
+        },
+        "readiness_gate_inputs": {
+            "summary_sha256": "e" * 64,
+            "config_sha256": "f" * 64,
+        },
         "software_versions": {"gz_transport": "13.6.0", "gz_msgs": "10.4.0"},
         "thresholds": dict(THRESHOLDS),
         "schedule": [run.as_dict() for run in capacity_schedule()],
@@ -73,6 +101,7 @@ def _pair(run, *, rtf: float = 0.97) -> tuple[dict[str, object], dict[str, objec
         "trigger_stream_count": 5,
         "source_hashes_match": True,
         "native_executable_hash_match": True,
+        "px4_build_identity_match": True,
         "observer_closed_cleanly": True,
         "scheduler_closed_cleanly": True,
         "stop_exit_code": 0,
@@ -134,6 +163,8 @@ def test_campaign_manifest_freezes_identity_versions_paths_hashes_and_order():
     assert manifest["schema"] == "flydrones-camera-render-capacity-campaign-v1"
     assert manifest["campaign_id"] == "capacity-a"
     assert manifest["px4_revision"] == "px4-revision"
+    assert manifest["px4_build_identity"] == config["px4_build_identity"]
+    assert manifest["readiness_gate_inputs"] == config["readiness_gate_inputs"]
     assert manifest["renderer_profile"] == "d3d12-nvidia"
     assert manifest["profile"] == config["profile"]
     assert manifest["policy"] == config["policy"]

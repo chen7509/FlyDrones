@@ -1,0 +1,50 @@
+{
+  "errors": [],
+  "initial_all_healthy": true,
+  "launcher_exit_code": 0,
+  "name": "readiness-development-03-v5-r1",
+  "phase": "development",
+  "platform_ready": true,
+  "post_window_all_healthy": true,
+  "repetition": 1,
+  "schema": "flydrones-px4-sensor-readiness-manifest-v1",
+  "scored_duration_sim_s": 30.044,
+  "scored_wall_timeout_s": 120.0,
+  "sensor_timeout_count": 5,
+  "sequence": 3,
+  "shared_px4_files_restored": true,
+  "trial_cleanup_verified": true,
+  "ulog_artifacts": [
+    {
+      "bytes": 10802064,
+      "path": "px4-ulogs/agent-0.ulg",
+      "sha256": "6789d9216d329b56c1626681db5e84b1fc156d9626e729fa826908979b274984",
+      "vehicle_id": 0
+    },
+    {
+      "bytes": 10726584,
+      "path": "px4-ulogs/agent-1.ulg",
+      "sha256": "ba67868f1b30aa4acaf61aa1ae7564067f499957c97707014d78ce4dd9ad8c94",
+      "vehicle_id": 1
+    },
+    {
+      "bytes": 10674006,
+      "path": "px4-ulogs/agent-2.ulg",
+      "sha256": "e392b0f2168c32083a2c67fd9b984a601cf0490cdae9bdbc462f1e4c9d319925",
+      "vehicle_id": 2
+    },
+    {
+      "bytes": 10575077,
+      "path": "px4-ulogs/agent-3.ulg",
+      "sha256": "b3834f22e980cc165bc52bbebcdc7a972bd07764ecd996eabfc4d52f0af2d224",
+      "vehicle_id": 3
+    },
+    {
+      "bytes": 10470715,
+      "path": "px4-ulogs/agent-4.ulg",
+      "sha256": "365693185725a730c1c5351892229d69822e699e57b01f0ae22a4e4aa5a3bdd1",
+      "vehicle_id": 4
+    }
+  ],
+  "vehicle_count": 5
+}

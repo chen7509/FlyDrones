@@ -1,0 +1,34 @@
+{
+  "runtime": {
+    "resources": {
+      "accepted": true,
+      "gazebo_cpu_seconds_delta": 16.69,
+      "gazebo_rss_bytes_max": 482037760,
+      "gazebo_threads_max": 51,
+      "sample_count": 462
+    },
+    "rtf": 0.9996541266697512
+  },
+  "schema": "flydrones-px4-sensor-readiness-summary-v1",
+  "vehicles": {
+    "0": {
+      "initial": {
+        "armed": false,
+        "estimator_healthy": true,
+        "landed": true,
+        "schema": "flydrones-px4-capacity-startup-health-v1",
+        "timeout_s": 60.0,
+        "vehicle_id": 0
+      },
+      "initial_healthy": true,
+      "post_window": {
+        "armed": false,
+        "estimator_healthy": true,
+        "healthy": true,
+        "landed": true,
+        "vehicle_id": 0
+      },
+      "post_window_healthy": true
+    }
+  }
+}

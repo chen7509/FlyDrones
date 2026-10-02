@@ -1,0 +1,118 @@
+{
+  "camera_mode": "no-sustained-subscribers",
+  "px4_build_name": "px4_sitl_nolockstep",
+  "px4_patch": "patches/px4/vehicle-imu-first-sample-dt.patch",
+  "px4_patch_sha256": "cd36509e63b3709770366a17a07cca67591be409c02a4475ecd3508923d8fd94",
+  "px4_revision": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+  "px4_vehicle_imu_sha256": "a73997eaf14a5c1b224dcb4f13648874a02863d63608c60b73d8d3dc01a983a1",
+  "readiness_timeout_s": 180.0,
+  "renderer_profile": "d3d12-nvidia",
+  "schedules": {
+    "development": [
+      {
+        "name": "readiness-development-01-v1-r1",
+        "phase": "development",
+        "repetition": 1,
+        "sequence": 1,
+        "vehicle_count": 1
+      },
+      {
+        "name": "readiness-development-02-v2-r1",
+        "phase": "development",
+        "repetition": 1,
+        "sequence": 2,
+        "vehicle_count": 2
+      },
+      {
+        "name": "readiness-development-03-v5-r1",
+        "phase": "development",
+        "repetition": 1,
+        "sequence": 3,
+        "vehicle_count": 5
+      }
+    ],
+    "formal": [
+      {
+        "name": "readiness-formal-01-v5-r1",
+        "phase": "formal",
+        "repetition": 1,
+        "sequence": 1,
+        "vehicle_count": 5
+      },
+      {
+        "name": "readiness-formal-02-v5-r2",
+        "phase": "formal",
+        "repetition": 2,
+        "sequence": 2,
+        "vehicle_count": 5
+      },
+      {
+        "name": "readiness-formal-03-v5-r3",
+        "phase": "formal",
+        "repetition": 3,
+        "sequence": 3,
+        "vehicle_count": 5
+      },
+      {
+        "name": "readiness-formal-04-v5-r4",
+        "phase": "formal",
+        "repetition": 4,
+        "sequence": 4,
+        "vehicle_count": 5
+      },
+      {
+        "name": "readiness-formal-05-v5-r5",
+        "phase": "formal",
+        "repetition": 5,
+        "sequence": 5,
+        "vehicle_count": 5
+      },
+      {
+        "name": "readiness-formal-06-v5-r6",
+        "phase": "formal",
+        "repetition": 6,
+        "sequence": 6,
+        "vehicle_count": 5
+      },
+      {
+        "name": "readiness-formal-07-v5-r7",
+        "phase": "formal",
+        "repetition": 7,
+        "sequence": 7,
+        "vehicle_count": 5
+      },
+      {
+        "name": "readiness-formal-08-v5-r8",
+        "phase": "formal",
+        "repetition": 8,
+        "sequence": 8,
+        "vehicle_count": 5
+      },
+      {
+        "name": "readiness-formal-09-v5-r9",
+        "phase": "formal",
+        "repetition": 9,
+        "sequence": 9,
+        "vehicle_count": 5
+      },
+      {
+        "name": "readiness-formal-10-v5-r10",
+        "phase": "formal",
+        "repetition": 10,
+        "sequence": 10,
+        "vehicle_count": 5
+      }
+    ]
+  },
+  "schema": "flydrones-px4-sensor-readiness-config-v1",
+  "scored_duration_s": 30.0,
+  "thresholds": {
+    "formal_run_count": 10,
+    "min_rtf": 0.95,
+    "repeatability_rtf_range_max": 0.03,
+    "scored_duration_s": 30.0,
+    "wall_timeout_s": 120.0
+  },
+  "wall_timeout_s": 120.0,
+  "world": "flydrones_forest"
+}

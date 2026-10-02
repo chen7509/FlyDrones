@@ -1,0 +1,26 @@
+diff --git a/src/modules/sensors/vehicle_imu/VehicleIMU.cpp b/src/modules/sensors/vehicle_imu/VehicleIMU.cpp
+index 47e752bb97..de39b586f7 100644
+--- a/src/modules/sensors/vehicle_imu/VehicleIMU.cpp
++++ b/src/modules/sensors/vehicle_imu/VehicleIMU.cpp
+@@ -348,7 +348,9 @@ bool VehicleIMU::UpdateAccel()
+ 		}
+ 
+ 
+-		const float dt = (accel.timestamp_sample - _accel_timestamp_sample_last) * 1e-6f;
++		const float dt = (_accel_timestamp_sample_last == 0) ?
++				  0.f :
++				  (accel.timestamp_sample - _accel_timestamp_sample_last) * 1e-6f;
+ 		_accel_timestamp_sample_last = accel.timestamp_sample;
+ 
+ 		const Vector3f accel_raw{accel.x, accel.y, accel.z};
+@@ -456,7 +458,9 @@ bool VehicleIMU::UpdateGyro()
+ 
+ 		_gyro_last_generation = _sensor_gyro_sub.get_last_generation();
+ 
+-		const float dt = (gyro.timestamp_sample - _gyro_timestamp_sample_last) * 1e-6f;
++		const float dt = (_gyro_timestamp_sample_last == 0) ?
++				  0.f :
++				  (gyro.timestamp_sample - _gyro_timestamp_sample_last) * 1e-6f;
+ 
+ 		_gyro_timestamp_sample_last = gyro.timestamp_sample;
+ 		_gyro_timestamp_last = gyro.timestamp;

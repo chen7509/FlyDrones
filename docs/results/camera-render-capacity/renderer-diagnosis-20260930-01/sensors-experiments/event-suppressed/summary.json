@@ -1,0 +1,55 @@
+{
+  "camera_phase": {
+    "accepted": false,
+    "adjacent_spacing_median_error_ns": null,
+    "cross_model_error_count": 0,
+    "depth_subscription_absent": true,
+    "duplicate_image_count": 0,
+    "duplicate_trigger_count": 0,
+    "missed_trigger_count": 0,
+    "mode": "phased",
+    "queue_overflow_count": 0,
+    "reasons": [
+      "scored_window_invalid"
+    ],
+    "schema": "flydrones-camera-phase-summary-v1",
+    "trigger_stream_count": 5,
+    "unmatched_image_count": 0,
+    "unmatched_trigger_count": 0,
+    "vehicle_count": 5,
+    "vehicles": {}
+  },
+  "native_metrics": {
+    "callback_cpu_ns": 14013635,
+    "compiler": "13.3.0",
+    "dropped_count": 0,
+    "event": "stop",
+    "executable_sha256": "abf865fda64b7e6d2620716f190e9b56f3971a587a793384e67e44fa5f77faf2",
+    "gz_msgs_version": "10.4.0",
+    "gz_transport_version": "13.6.0",
+    "image_payload_bytes_seen": 0,
+    "implementation": "native-cpp",
+    "queue_high_watermark": 1,
+    "reason": "readiness_timeout",
+    "source_sha256": "8df88ce117866096c2c7505f39423a5d7d39e1b4fca3cbb1a1b608e19ec8da05",
+    "subscriber_count": 0,
+    "wall_monotonic_ns": 16037731649707,
+    "writer_cpu_ns": 150005810567
+  },
+  "runtime": {
+    "resources": {
+      "accepted": false,
+      "gazebo": {
+        "samples": 0
+      },
+      "gpu": {
+        "numeric_samples": 0,
+        "samples": 0
+      }
+    },
+    "rtf": {
+      "scored_window": null
+    }
+  },
+  "schema": "flydrones-camera-render-capacity-summary-v1"
+}

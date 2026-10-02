@@ -1,0 +1,2690 @@
+{
+  "schema": "flydrones-camera-renderer-diagnosis-artifacts-v1",
+  "files": [
+    {
+      "bytes": 5544,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/config.json",
+      "sha256": "2aad85a2fc48ad28838b693637dfeb19613cfa5ee26e2ee48b2f22e48ef498a2"
+    },
+    {
+      "bytes": 1502,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-01-idle-0-r1/camera-capacity-ready.json",
+      "sha256": "071e061bce32222ed675c13443dac97b291136df69eda5c23af899ce6d1ff36f"
+    },
+    {
+      "bytes": 1418,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-01-idle-0-r1/camera-model-configured.sdf",
+      "sha256": "9112dc3d3b331558c56d300bf4ba572f346e51e03989cd0d4273c82a74703e9e"
+    },
+    {
+      "bytes": 678,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-01-idle-0-r1/camera-model-evidence.json",
+      "sha256": "8c616df853a518cee129d0adb182932ea11941ce08ca50628ba2f269845264a6"
+    },
+    {
+      "bytes": 658,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-01-idle-0-r1/camera-phase-selected-ready.json",
+      "sha256": "e53ffa5cdb24b56738c5dae7fcac39cac23a5fd29c928505ecec4ef1b4242b8b"
+    },
+    {
+      "bytes": 77600,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-01-idle-0-r1/camera-phase.jsonl",
+      "sha256": "d0b5a5b7474644f2c1c0467b27fa9ce688fa3c2a3da7ed5e6d24b1c68f986449"
+    },
+    {
+      "bytes": 1286,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-01-idle-0-r1/camera-scheduler-ready.json",
+      "sha256": "80e5ea7bbfdcd8761165d91c3cc8c1a8c5937b2b0074b92288e4a580cc80cb71"
+    },
+    {
+      "bytes": 69585,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-01-idle-0-r1/camera-scheduler.jsonl",
+      "sha256": "705ab4845881229cb093b2c4afe510f6c5880ff92555a0d1d79c8de6766c1543"
+    },
+    {
+      "bytes": 12,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-01-idle-0-r1/capacity-world-resume.log",
+      "sha256": "46eeeedc969f106320d874ff0cb0c5c1ea169952665865f64b8f5318d626c8a3"
+    },
+    {
+      "bytes": 4637,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-01-idle-0-r1/cleanup-evidence.json",
+      "sha256": "51bc39a171e6bae0f3fa61d5bc7df83f664ed4e332c46d494ec8242c8a38b597"
+    },
+    {
+      "bytes": 1351925,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-01-idle-0-r1/clock-probe.csv",
+      "sha256": "a5297e6a717abdd9312a17c548def8778a6b473265e3c0484acc22e5f623ad4b"
+    },
+    {
+      "bytes": 275,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-01-idle-0-r1/depth-topic-connections-end.json",
+      "sha256": "cbf0dfc7a3ac8636830f70c6ab1a4042636dd137fcc53a53ce8c82da846573a6"
+    },
+    {
+      "bytes": 1447,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-01-idle-0-r1/depth-topic-connections-launcher.json",
+      "sha256": "23892bbd482b94b0771ab8af3e816558c395a65e8d0a7f2690f776818ea4edad"
+    },
+    {
+      "bytes": 1164,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-01-idle-0-r1/depth-topic-connections-native-warmup.json",
+      "sha256": "d1dd9998349cf06ed232934ce7e2eaf49b2463572f3076fea73f6da39298ddc4"
+    },
+    {
+      "bytes": 1368,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-01-idle-0-r1/depth-topic-connections-selected-released.json",
+      "sha256": "ab95957c8ee6addf8a5c2ad67871b8dc7e08c3dc2c21118c671003ce1c906f6b"
+    },
+    {
+      "bytes": 275,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-01-idle-0-r1/depth-topic-connections-start.json",
+      "sha256": "cbf0dfc7a3ac8636830f70c6ab1a4042636dd137fcc53a53ce8c82da846573a6"
+    },
+    {
+      "bytes": 727,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-01-idle-0-r1/depth-topic-connections.json",
+      "sha256": "efa34ba8c3d841e152d0e7bb05e22b9e49f32bd2117ec1fc29c6a68045ea7ec2"
+    },
+    {
+      "bytes": 109,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-01-idle-0-r1/gazebo-base-ready.json",
+      "sha256": "0564ef68699c07dec744c8ef22ca9bd6fe39bd6e9ddf6f981b7d7d01a567c3d0"
+    },
+    {
+      "bytes": 8435,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-01-idle-0-r1/gazebo.stderr.log",
+      "sha256": "fb1e4d47aabaf8e1f60fca27d87d801bb6e749fb126f8324ce1a8799262559bb"
+    },
+    {
+      "bytes": 0,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-01-idle-0-r1/gazebo.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 5748,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-01-idle-0-r1/gpu-probe.csv",
+      "sha256": "7f62cc2b2e3ceb80d3efc46369ea6c1fb39679865530f1b2a686647b56a129f8"
+    },
+    {
+      "bytes": 1186,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-01-idle-0-r1/launch.log",
+      "sha256": "deaf28f7110b38617b2ded20f7ebac0cdf9acf51db00b0da9f3effdac29e387f"
+    },
+    {
+      "bytes": 7086,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-01-idle-0-r1/manifest.json",
+      "sha256": "780304935bfb4edd2ec0659f92a7f8d3c695a1c93adc9dc2326273ec602629f8"
+    },
+    {
+      "bytes": 0,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-01-idle-0-r1/observer.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 7,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-01-idle-0-r1/observer.pid",
+      "sha256": "03f9f685a25371ff522b5f95ff06c533d13b7d71d00b89e68d58db1066184c87"
+    },
+    {
+      "bytes": 630,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-01-idle-0-r1/px4-build-evidence.json",
+      "sha256": "cc39dc8a3eb9c337a937504fe83423fc6e2d5cf2f5baa5f97153a3929b30d749"
+    },
+    {
+      "bytes": 236,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-01-idle-0-r1/px4-capacity-platform-ready.json",
+      "sha256": "5eb5c00341a742d48f3cec929ce79065de0a94fd4922f061d1c3c1afacf01f72"
+    },
+    {
+      "bytes": 0,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-01-idle-0-r1/px4-console/agent-0-err.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 4254,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-01-idle-0-r1/px4-console/agent-0-out.log",
+      "sha256": "d7b35c790fbfc10557ceeb0cebd229607527aaf86576f0da6fd948d61cc293d7"
+    },
+    {
+      "bytes": 164,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-01-idle-0-r1/px4-console/agent-0-startup-health.json",
+      "sha256": "47b3fbb630a9d45e323af3c33cabc5ea08737b7f0c403f1bff5eb3759f3119ef"
+    },
+    {
+      "bytes": 0,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-01-idle-0-r1/px4-console/agent-1-err.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 4321,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-01-idle-0-r1/px4-console/agent-1-out.log",
+      "sha256": "f02e16ded1dfbe2f743b169d7f355561a7bb3802c2392713a6d2304bd2929257"
+    },
+    {
+      "bytes": 164,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-01-idle-0-r1/px4-console/agent-1-startup-health.json",
+      "sha256": "0c534d7d3cf1e689f231f7dbd5659f7cedd7a704de4a6575d9ef78fdddc2af7a"
+    },
+    {
+      "bytes": 0,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-01-idle-0-r1/px4-console/agent-2-err.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 4254,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-01-idle-0-r1/px4-console/agent-2-out.log",
+      "sha256": "62b5849e3ee59e5f54af74584ede5b92dc994273e9141f322be97a59be6307e9"
+    },
+    {
+      "bytes": 164,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-01-idle-0-r1/px4-console/agent-2-startup-health.json",
+      "sha256": "0dffb8dc115810e121f2e5461d51e3637ca85b8dd6700ed5be463eadb64066f7"
+    },
+    {
+      "bytes": 0,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-01-idle-0-r1/px4-console/agent-3-err.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 3795,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-01-idle-0-r1/px4-console/agent-3-out.log",
+      "sha256": "512aa44a2521302fa5571e46a1f528e08d40c747b1d97888a216b7dbb8e3a94a"
+    },
+    {
+      "bytes": 164,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-01-idle-0-r1/px4-console/agent-3-startup-health.json",
+      "sha256": "23b6068ee4fcb86439bef178538b005ef3771b1ac6680f68ec1ed3ceece7c694"
+    },
+    {
+      "bytes": 0,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-01-idle-0-r1/px4-console/agent-4-err.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 3405,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-01-idle-0-r1/px4-console/agent-4-out.log",
+      "sha256": "2bf2305e913f95375f655b62082ecbfa3c347572c70fe8e5f528e63b3e31d5c0"
+    },
+    {
+      "bytes": 164,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-01-idle-0-r1/px4-console/agent-4-startup-health.json",
+      "sha256": "8189f2882417839624909f7ecabe7e94e447a8b93dca496a4e8c2c8500b3f71e"
+    },
+    {
+      "bytes": 12660,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-01-idle-0-r1/px4-sensor-source-warmup.json",
+      "sha256": "f0a6b4d96872593a5bd34cc3d03b1a1ded4ec5b5ce10988965cda4008c817f1b"
+    },
+    {
+      "bytes": 9324,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-01-idle-0-r1/px4-sensor-topic-connections.json",
+      "sha256": "323991b13687aef43dc734b3a429cfbda0b8eb5c2482ed64759c6d9c43a8765e"
+    },
+    {
+      "bytes": 28756336,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-01-idle-0-r1/px4-ulogs/agent-0.ulg",
+      "sha256": "613a757fe2ef73cfc807f351e3cfa16b72822865c2aa6544b2cc1a63ff1f7bf9"
+    },
+    {
+      "bytes": 28636992,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-01-idle-0-r1/px4-ulogs/agent-1.ulg",
+      "sha256": "705cfa524d5fb352f71c3499656e809fe26d8c18d7ced57943ecbe59edfd852c"
+    },
+    {
+      "bytes": 28654709,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-01-idle-0-r1/px4-ulogs/agent-2.ulg",
+      "sha256": "4e5880d9b0e3ef39a9b4448e5653881afe664729fb85da16ac83eaf1aef499a0"
+    },
+    {
+      "bytes": 28518868,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-01-idle-0-r1/px4-ulogs/agent-3.ulg",
+      "sha256": "cd44dcd908db938ddb234a6d89f7d3356b051e86629147c88bd7176ea2d21f8c"
+    },
+    {
+      "bytes": 29520530,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-01-idle-0-r1/px4-ulogs/agent-4.ulg",
+      "sha256": "bba40ac38b0ba4a9e5dca4a758af98ff2194e6d6798674e38895445837c915fe"
+    },
+    {
+      "bytes": 19085,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-01-idle-0-r1/renderer-attestation.json",
+      "sha256": "d32255b3da2d6fd92144180c7d024e01c54148e218b4f452335d79b8dcdb3145"
+    },
+    {
+      "bytes": 0,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-01-idle-0-r1/renderer-phase-complete.marker",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 1517,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-01-idle-0-r1/renderer-phase-ready.json",
+      "sha256": "4bde931df9b4d43146345ce78ae3cdc2fad5ab3e61d0c75a45fac4f2c63cec9f"
+    },
+    {
+      "bytes": 75427,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-01-idle-0-r1/resource-probe.csv",
+      "sha256": "d2fd8093dd72e8b6d62f01c4567d8a1b9141cf62c55e4650ad3726055ef0a313"
+    },
+    {
+      "bytes": 792,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-01-idle-0-r1/restoration-evidence.json",
+      "sha256": "49d2bd6eeaaa7f442aba0622a3eb5587d0ba67ab6eba6e4c48839c2ff889894c"
+    },
+    {
+      "bytes": 123,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-01-idle-0-r1/runtime-probe-ready.json",
+      "sha256": "e8c2d485cb8b7a8bb97b778ff9bd7ea8883330d23748a7d1fdeddc67c5e7c75e"
+    },
+    {
+      "bytes": 0,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-01-idle-0-r1/runtime-probe.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 0,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-01-idle-0-r1/scheduler.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 339,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-01-idle-0-r1/score.json",
+      "sha256": "20ba36a2435fcb8c98a613b8a410167232f28b9184bb5dfac20a3cd2236f2847"
+    },
+    {
+      "bytes": 191,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-01-idle-0-r1/scored-epoch.json",
+      "sha256": "afbcc239989769be09496febfdd9d19efc90175d02bee6929075a82cf52b4a71"
+    },
+    {
+      "bytes": 53,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-01-idle-0-r1/stop.log",
+      "sha256": "8ec3709179d04b20d8395f3dd486e08171c2d1a47c3c6be217276db81fef716b"
+    },
+    {
+      "bytes": 1639,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-01-idle-0-r1/summary.json",
+      "sha256": "af093d0614535b586b87880e7195ef2050f2efb7fe8c2a7eb8fb637b77500b83"
+    },
+    {
+      "bytes": 0,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-01-idle-0-r1/trial-complete.marker",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 5373,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-01-idle-0-r1/trial-config.json",
+      "sha256": "c45a3b3b89e87312c1ec0f02096060912c0ed8bee6aa3f2184806eac85fd6271"
+    },
+    {
+      "bytes": 4936,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-01-idle-0-r1/world-configured.sdf",
+      "sha256": "53af9b48122755d9deb4e250d6a9a58ee6e45cfe767cb5d9d7bea7ec69a71c50"
+    },
+    {
+      "bytes": 1502,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-02-native-1-r1/camera-capacity-ready.json",
+      "sha256": "d070b5463fcaec720ccdf8cf35af18b94bc3de8771be799d81d6ad01acf359f3"
+    },
+    {
+      "bytes": 1418,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-02-native-1-r1/camera-model-configured.sdf",
+      "sha256": "9112dc3d3b331558c56d300bf4ba572f346e51e03989cd0d4273c82a74703e9e"
+    },
+    {
+      "bytes": 678,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-02-native-1-r1/camera-model-evidence.json",
+      "sha256": "8c616df853a518cee129d0adb182932ea11941ce08ca50628ba2f269845264a6"
+    },
+    {
+      "bytes": 841,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-02-native-1-r1/camera-phase-selected-ready.json",
+      "sha256": "d77d86ca8ab3f7d76af1c6c5d8e2e4ab5536f3f7a6dbe2b0eee75cccaf879c53"
+    },
+    {
+      "bytes": 319947,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-02-native-1-r1/camera-phase.jsonl",
+      "sha256": "72c25309ff32a5f81cebebf177eaa1d2fe24cc836116fa70d460aa5c0b04feb8"
+    },
+    {
+      "bytes": 1286,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-02-native-1-r1/camera-scheduler-ready.json",
+      "sha256": "369ab87d1642525987ac7249a9c70b2d52791b6e61d0fafccb2c131210d59e25"
+    },
+    {
+      "bytes": 230280,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-02-native-1-r1/camera-scheduler.jsonl",
+      "sha256": "e9b13e64d4067cfc4e9973ec21c70a3702ab665c62b31a67fbeb299d1b5d4884"
+    },
+    {
+      "bytes": 12,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-02-native-1-r1/capacity-world-resume.log",
+      "sha256": "46eeeedc969f106320d874ff0cb0c5c1ea169952665865f64b8f5318d626c8a3"
+    },
+    {
+      "bytes": 4657,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-02-native-1-r1/cleanup-evidence.json",
+      "sha256": "0c124162f08ea435f1a410341ee523cf8a8c620fa21fd6bc20ca0b11e37d5913"
+    },
+    {
+      "bytes": 1277473,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-02-native-1-r1/clock-probe.csv",
+      "sha256": "e4dfe441bdb3f0253f0825b6d40db504de9d1981f9a640ed7718fe1f6835a27e"
+    },
+    {
+      "bytes": 275,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-02-native-1-r1/depth-topic-connections-end.json",
+      "sha256": "14abcebbbcdfaa3711d15cde20144cd51f37275f2b22dcfe90fc374d59391f37"
+    },
+    {
+      "bytes": 1407,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-02-native-1-r1/depth-topic-connections-launcher.json",
+      "sha256": "4aa095444ab240e7fae7acc32c59484aad1501cac8be9d9c6fd1e5196ddfe298"
+    },
+    {
+      "bytes": 1164,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-02-native-1-r1/depth-topic-connections-native-warmup.json",
+      "sha256": "ec6944af00775376443d86f25c3ad2301f327863bc6b105219bbdde17c5f952b"
+    },
+    {
+      "bytes": 1328,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-02-native-1-r1/depth-topic-connections-selected-released.json",
+      "sha256": "0323dc45976b57bd402fadda3550b861ac1cd3994136440ce161814e65555919"
+    },
+    {
+      "bytes": 275,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-02-native-1-r1/depth-topic-connections-start.json",
+      "sha256": "14abcebbbcdfaa3711d15cde20144cd51f37275f2b22dcfe90fc374d59391f37"
+    },
+    {
+      "bytes": 727,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-02-native-1-r1/depth-topic-connections.json",
+      "sha256": "b7f67d0532b54d14baea90399c74f978af6153eff5e24691a98762183b6fa637"
+    },
+    {
+      "bytes": 109,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-02-native-1-r1/gazebo-base-ready.json",
+      "sha256": "35172cf2ebf4c5c3adfa2b3e6a383dae69ff7c703fa15f2e8641c1364e69283f"
+    },
+    {
+      "bytes": 8435,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-02-native-1-r1/gazebo.stderr.log",
+      "sha256": "fb1e4d47aabaf8e1f60fca27d87d801bb6e749fb126f8324ce1a8799262559bb"
+    },
+    {
+      "bytes": 0,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-02-native-1-r1/gazebo.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 5924,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-02-native-1-r1/gpu-probe.csv",
+      "sha256": "9e1e83fa54d7e02a02a1c2cef7472a82e0683ce47754b5cddf6bc5f82088682a"
+    },
+    {
+      "bytes": 1188,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-02-native-1-r1/launch.log",
+      "sha256": "d95b51f966999b0bcd57234fd138f50715fc236761c035ca7988856993f41113"
+    },
+    {
+      "bytes": 7108,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-02-native-1-r1/manifest.json",
+      "sha256": "ef7985a1bbd3bf190abe5607c2bcfbdc37115c229a3e622fcad497db24fa6668"
+    },
+    {
+      "bytes": 0,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-02-native-1-r1/observer.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 7,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-02-native-1-r1/observer.pid",
+      "sha256": "13b488adc1b33c63676c709a9adc6d6b58a9879d593edabd0af22fdbafebc45a"
+    },
+    {
+      "bytes": 630,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-02-native-1-r1/px4-build-evidence.json",
+      "sha256": "cc39dc8a3eb9c337a937504fe83423fc6e2d5cf2f5baa5f97153a3929b30d749"
+    },
+    {
+      "bytes": 236,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-02-native-1-r1/px4-capacity-platform-ready.json",
+      "sha256": "5eb5c00341a742d48f3cec929ce79065de0a94fd4922f061d1c3c1afacf01f72"
+    },
+    {
+      "bytes": 0,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-02-native-1-r1/px4-console/agent-0-err.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 4404,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-02-native-1-r1/px4-console/agent-0-out.log",
+      "sha256": "889f579d825abdbf4b108d5ecadc9942046bd02726a3e6b8fa32b5fb5d11534d"
+    },
+    {
+      "bytes": 164,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-02-native-1-r1/px4-console/agent-0-startup-health.json",
+      "sha256": "47b3fbb630a9d45e323af3c33cabc5ea08737b7f0c403f1bff5eb3759f3119ef"
+    },
+    {
+      "bytes": 0,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-02-native-1-r1/px4-console/agent-1-err.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 4321,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-02-native-1-r1/px4-console/agent-1-out.log",
+      "sha256": "16173fc7574549ec01541f0b51670ac50267c0a94c3f96647de533d6078e774a"
+    },
+    {
+      "bytes": 164,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-02-native-1-r1/px4-console/agent-1-startup-health.json",
+      "sha256": "0c534d7d3cf1e689f231f7dbd5659f7cedd7a704de4a6575d9ef78fdddc2af7a"
+    },
+    {
+      "bytes": 0,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-02-native-1-r1/px4-console/agent-2-err.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 4254,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-02-native-1-r1/px4-console/agent-2-out.log",
+      "sha256": "e808d6fae253e250cee75ed97a69cab618bab8624898e5ac05c556cb059d7d5d"
+    },
+    {
+      "bytes": 164,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-02-native-1-r1/px4-console/agent-2-startup-health.json",
+      "sha256": "0dffb8dc115810e121f2e5461d51e3637ca85b8dd6700ed5be463eadb64066f7"
+    },
+    {
+      "bytes": 0,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-02-native-1-r1/px4-console/agent-3-err.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 3795,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-02-native-1-r1/px4-console/agent-3-out.log",
+      "sha256": "75ba1af79e5adf241d88fb7433f40c7b5ba7e7dd12d1083e92938c47ad663b91"
+    },
+    {
+      "bytes": 164,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-02-native-1-r1/px4-console/agent-3-startup-health.json",
+      "sha256": "23b6068ee4fcb86439bef178538b005ef3771b1ac6680f68ec1ed3ceece7c694"
+    },
+    {
+      "bytes": 0,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-02-native-1-r1/px4-console/agent-4-err.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 3405,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-02-native-1-r1/px4-console/agent-4-out.log",
+      "sha256": "d3a15068f9323c28d112a5e0373b63cfb66b474ea9659bef44056f2d4a2b18c9"
+    },
+    {
+      "bytes": 164,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-02-native-1-r1/px4-console/agent-4-startup-health.json",
+      "sha256": "8189f2882417839624909f7ecabe7e94e447a8b93dca496a4e8c2c8500b3f71e"
+    },
+    {
+      "bytes": 12677,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-02-native-1-r1/px4-sensor-source-warmup.json",
+      "sha256": "f87a6095ae1e623324e9d08685d2209a040d8fa7bf9b409d02df9bb89c9fce19"
+    },
+    {
+      "bytes": 9324,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-02-native-1-r1/px4-sensor-topic-connections.json",
+      "sha256": "29f136b77936a84707c0d5b91db966b36ae68b0f638912909efe6690dfadf09f"
+    },
+    {
+      "bytes": 28244735,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-02-native-1-r1/px4-ulogs/agent-0.ulg",
+      "sha256": "fa362fe6d3831700b1e9509b77ccaa42b763a8e2bf970a1785e052ad910adb07"
+    },
+    {
+      "bytes": 28126498,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-02-native-1-r1/px4-ulogs/agent-1.ulg",
+      "sha256": "907292d7f1886510e1ffa664d83d6742fb77547aabf21760625390bc6f4a52ca"
+    },
+    {
+      "bytes": 28199299,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-02-native-1-r1/px4-ulogs/agent-2.ulg",
+      "sha256": "314290579fa46e225c2f7c359d6a4c6ee1b4c28add059f9a0855463b57382530"
+    },
+    {
+      "bytes": 27984298,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-02-native-1-r1/px4-ulogs/agent-3.ulg",
+      "sha256": "71b50f372562472b500a463d5b8e14fa2ee5832b1462ab1329c37499e064a627"
+    },
+    {
+      "bytes": 28941864,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-02-native-1-r1/px4-ulogs/agent-4.ulg",
+      "sha256": "ab8111916af3cae903977625b4c4de2e460ba2dc3ad7bd3a392c55f71e6dbe40"
+    },
+    {
+      "bytes": 19141,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-02-native-1-r1/renderer-attestation.json",
+      "sha256": "38524c9865cb8f06dd687c5a9295b09872fefaafdec0b1261deb2d9d4161a64f"
+    },
+    {
+      "bytes": 0,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-02-native-1-r1/renderer-phase-complete.marker",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 1549,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-02-native-1-r1/renderer-phase-ready.json",
+      "sha256": "348be03deb9684ae7f5f436cf33d85211af3f4153d3219ee5cc8f476f7160898"
+    },
+    {
+      "bytes": 72927,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-02-native-1-r1/resource-probe.csv",
+      "sha256": "39f1650d4a98c7610cd79e5afa9a19b3b1a1f37efdb1fc3ef4b492f629d96e4a"
+    },
+    {
+      "bytes": 792,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-02-native-1-r1/restoration-evidence.json",
+      "sha256": "49d2bd6eeaaa7f442aba0622a3eb5587d0ba67ab6eba6e4c48839c2ff889894c"
+    },
+    {
+      "bytes": 123,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-02-native-1-r1/runtime-probe-ready.json",
+      "sha256": "6b59792b94ab2267d79e61ebe88b6200e0d284b3c44578acd8b10ebbf56b507c"
+    },
+    {
+      "bytes": 0,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-02-native-1-r1/runtime-probe.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 0,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-02-native-1-r1/scheduler.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 343,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-02-native-1-r1/score.json",
+      "sha256": "fefe523b0069644ad60842931d511a5a2316327d91cf28e2359c777617e0a242"
+    },
+    {
+      "bytes": 191,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-02-native-1-r1/scored-epoch.json",
+      "sha256": "e5bbc0a81c1aeb5d858e559389bede677598ac9f959af9a12316a04d25fdec89"
+    },
+    {
+      "bytes": 53,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-02-native-1-r1/stop.log",
+      "sha256": "8ec3709179d04b20d8395f3dd486e08171c2d1a47c3c6be217276db81fef716b"
+    },
+    {
+      "bytes": 2300,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-02-native-1-r1/summary.json",
+      "sha256": "08fd1ef152d93b1fe9d03fd716bebbcba156551b8f04a7315640029e315b6079"
+    },
+    {
+      "bytes": 0,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-02-native-1-r1/trial-complete.marker",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 5373,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-02-native-1-r1/trial-config.json",
+      "sha256": "c45a3b3b89e87312c1ec0f02096060912c0ed8bee6aa3f2184806eac85fd6271"
+    },
+    {
+      "bytes": 4936,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-02-native-1-r1/world-configured.sdf",
+      "sha256": "53af9b48122755d9deb4e250d6a9a58ee6e45cfe767cb5d9d7bea7ec69a71c50"
+    },
+    {
+      "bytes": 1502,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-04-native-5-r1/camera-capacity-ready.json",
+      "sha256": "ecefc1dfa4bd6e21c84ba82d456929657a1074ee4347cef427c68037757710f4"
+    },
+    {
+      "bytes": 1418,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-04-native-5-r1/camera-model-configured.sdf",
+      "sha256": "9112dc3d3b331558c56d300bf4ba572f346e51e03989cd0d4273c82a74703e9e"
+    },
+    {
+      "bytes": 678,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-04-native-5-r1/camera-model-evidence.json",
+      "sha256": "8c616df853a518cee129d0adb182932ea11941ce08ca50628ba2f269845264a6"
+    },
+    {
+      "bytes": 1533,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-04-native-5-r1/camera-phase-selected-ready.json",
+      "sha256": "3d73d700373757174ec7f3372e7ee3933dc8df783b4205861739aa2d56480b49"
+    },
+    {
+      "bytes": 1125289,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-04-native-5-r1/camera-phase.jsonl",
+      "sha256": "5208364dbd684f5bbf15a8c4f474682375765a50ab0f4502185c16fa01d6a623"
+    },
+    {
+      "bytes": 1286,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-04-native-5-r1/camera-scheduler-ready.json",
+      "sha256": "4d845246a48b83cc6188d0cdd979cfebe4997777645807e8b0eaabe474988d2c"
+    },
+    {
+      "bytes": 807550,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-04-native-5-r1/camera-scheduler.jsonl",
+      "sha256": "046f58e2db3c8f4d9f645bd7c10a9f5000ea406d08d1132dcf677ef44f68705b"
+    },
+    {
+      "bytes": 12,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-04-native-5-r1/capacity-world-resume.log",
+      "sha256": "46eeeedc969f106320d874ff0cb0c5c1ea169952665865f64b8f5318d626c8a3"
+    },
+    {
+      "bytes": 4657,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-04-native-5-r1/cleanup-evidence.json",
+      "sha256": "da2fcd2ff250f07be64d589a568e34015345bd8ca8b28b5612c9924dd94e81d1"
+    },
+    {
+      "bytes": 1174656,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-04-native-5-r1/clock-probe.csv",
+      "sha256": "76a56d1a8386b2378b95d3fa2a1c0941eb5f316e64c2ddc5a80074f6b4dc3a41"
+    },
+    {
+      "bytes": 275,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-04-native-5-r1/depth-topic-connections-end.json",
+      "sha256": "22f70bd9436eb76f8b32399d17714721a460e47066b35087f3398435b549788e"
+    },
+    {
+      "bytes": 1247,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-04-native-5-r1/depth-topic-connections-launcher.json",
+      "sha256": "bbfcd581dd3a2e091b1cc3951d3c25fd61f7b2cf70c0b36a1d299c6f41d4833d"
+    },
+    {
+      "bytes": 1164,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-04-native-5-r1/depth-topic-connections-native-warmup.json",
+      "sha256": "3ff0e0a9426a64cd64f4694eec8206d0c2c014f80ac15835d721e455f6300791"
+    },
+    {
+      "bytes": 1168,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-04-native-5-r1/depth-topic-connections-selected-released.json",
+      "sha256": "47dad85b308ba9bc51421f06f8d7ce102ea9f4d29d828ded714f4fc93bc1684c"
+    },
+    {
+      "bytes": 275,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-04-native-5-r1/depth-topic-connections-start.json",
+      "sha256": "22f70bd9436eb76f8b32399d17714721a460e47066b35087f3398435b549788e"
+    },
+    {
+      "bytes": 727,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-04-native-5-r1/depth-topic-connections.json",
+      "sha256": "1c75435e7f5140e4d0db78918dfdc1d8f1e0e754c7698c85b37340a95c50eacb"
+    },
+    {
+      "bytes": 109,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-04-native-5-r1/gazebo-base-ready.json",
+      "sha256": "755f1762de9609d4d3ce31c77feb0b5dd2185013d4b60e7b10c1da73c64b6a20"
+    },
+    {
+      "bytes": 8435,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-04-native-5-r1/gazebo.stderr.log",
+      "sha256": "fb1e4d47aabaf8e1f60fca27d87d801bb6e749fb126f8324ce1a8799262559bb"
+    },
+    {
+      "bytes": 0,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-04-native-5-r1/gazebo.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 6833,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-04-native-5-r1/gpu-probe.csv",
+      "sha256": "7d308e8c86005778d9a4e1a1c61afd2b2586ce4b5b63031b9a147e53014f9c72"
+    },
+    {
+      "bytes": 1188,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-04-native-5-r1/launch.log",
+      "sha256": "437cb043c0a56c60512aa002e0c89dc3d69d71a43fe8dfb86aafbb85a429cf74"
+    },
+    {
+      "bytes": 7106,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-04-native-5-r1/manifest.json",
+      "sha256": "814435a696795e2f2f3cfc1cee482f00bdd2b43c4748519031a74e50990c5b50"
+    },
+    {
+      "bytes": 0,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-04-native-5-r1/observer.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 7,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-04-native-5-r1/observer.pid",
+      "sha256": "329ead66b8f9bd0e63c39775d16dfed9d52564a9fba9d733e2fdbf1afee7c3f3"
+    },
+    {
+      "bytes": 630,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-04-native-5-r1/px4-build-evidence.json",
+      "sha256": "cc39dc8a3eb9c337a937504fe83423fc6e2d5cf2f5baa5f97153a3929b30d749"
+    },
+    {
+      "bytes": 236,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-04-native-5-r1/px4-capacity-platform-ready.json",
+      "sha256": "5eb5c00341a742d48f3cec929ce79065de0a94fd4922f061d1c3c1afacf01f72"
+    },
+    {
+      "bytes": 0,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-04-native-5-r1/px4-console/agent-0-err.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 4562,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-04-native-5-r1/px4-console/agent-0-out.log",
+      "sha256": "3fb3410364ad4a42b2a63296658adf396420821695ac1f796e1c66780e4e17a8"
+    },
+    {
+      "bytes": 164,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-04-native-5-r1/px4-console/agent-0-startup-health.json",
+      "sha256": "47b3fbb630a9d45e323af3c33cabc5ea08737b7f0c403f1bff5eb3759f3119ef"
+    },
+    {
+      "bytes": 0,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-04-native-5-r1/px4-console/agent-1-err.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 4821,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-04-native-5-r1/px4-console/agent-1-out.log",
+      "sha256": "a9681bf8f40e9f1d6e08165e56bb0478d599dc4d63f7e5cf732b9545e923203f"
+    },
+    {
+      "bytes": 164,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-04-native-5-r1/px4-console/agent-1-startup-health.json",
+      "sha256": "0c534d7d3cf1e689f231f7dbd5659f7cedd7a704de4a6575d9ef78fdddc2af7a"
+    },
+    {
+      "bytes": 0,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-04-native-5-r1/px4-console/agent-2-err.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 4754,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-04-native-5-r1/px4-console/agent-2-out.log",
+      "sha256": "f5b9a96b151bbe975d7c933c0548674c90fe9c24e1e0bc3b571a3ab093456cc7"
+    },
+    {
+      "bytes": 164,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-04-native-5-r1/px4-console/agent-2-startup-health.json",
+      "sha256": "0dffb8dc115810e121f2e5461d51e3637ca85b8dd6700ed5be463eadb64066f7"
+    },
+    {
+      "bytes": 0,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-04-native-5-r1/px4-console/agent-3-err.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 4211,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-04-native-5-r1/px4-console/agent-3-out.log",
+      "sha256": "636d00140c838ba11da9d2a0e9870639331643014f0127d902ab6b7873f19341"
+    },
+    {
+      "bytes": 164,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-04-native-5-r1/px4-console/agent-3-startup-health.json",
+      "sha256": "23b6068ee4fcb86439bef178538b005ef3771b1ac6680f68ec1ed3ceece7c694"
+    },
+    {
+      "bytes": 0,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-04-native-5-r1/px4-console/agent-4-err.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 3821,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-04-native-5-r1/px4-console/agent-4-out.log",
+      "sha256": "f1671dbff715fc7c060fc7f156fd3295e8537073f757ce757994084f6257156b"
+    },
+    {
+      "bytes": 164,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-04-native-5-r1/px4-console/agent-4-startup-health.json",
+      "sha256": "8189f2882417839624909f7ecabe7e94e447a8b93dca496a4e8c2c8500b3f71e"
+    },
+    {
+      "bytes": 12662,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-04-native-5-r1/px4-sensor-source-warmup.json",
+      "sha256": "3448b454b75c7404da34a4b29e5df1c960e571d5590724b98ad1c8556852b262"
+    },
+    {
+      "bytes": 9324,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-04-native-5-r1/px4-sensor-topic-connections.json",
+      "sha256": "9da08dcd41b9edab1d28b2d8a15b4dd35daa9503d43509b151bfd534d2447494"
+    },
+    {
+      "bytes": 29436922,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-04-native-5-r1/px4-ulogs/agent-0.ulg",
+      "sha256": "af3fdd7037dd020b7680dcdebf37c6873c740f5fdedce0b9051d7af47e82c265"
+    },
+    {
+      "bytes": 29243499,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-04-native-5-r1/px4-ulogs/agent-1.ulg",
+      "sha256": "d2e5617fc2cd9022d987c27154b1eceac45e2b46b146f9fede427167bad127dd"
+    },
+    {
+      "bytes": 29369080,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-04-native-5-r1/px4-ulogs/agent-2.ulg",
+      "sha256": "befebc44d11da87c1cfaaf029497445b675287505cc215796059feaae67295b1"
+    },
+    {
+      "bytes": 29294283,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-04-native-5-r1/px4-ulogs/agent-3.ulg",
+      "sha256": "3cb293c7f8bd825641a0b19f1cffc555f2a723fe38ccecb9711118bc9eb03aee"
+    },
+    {
+      "bytes": 30143058,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-04-native-5-r1/px4-ulogs/agent-4.ulg",
+      "sha256": "029c0ce0a90a10c51e0dc7cecbe792bbe3f9926f0365abf2e5dbfb1bc489854f"
+    },
+    {
+      "bytes": 19113,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-04-native-5-r1/renderer-attestation.json",
+      "sha256": "b3fe01f71ee12ffe2d51dbdde14e02f56a06a40ab3eea104250cd934048c2558"
+    },
+    {
+      "bytes": 0,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-04-native-5-r1/renderer-phase-complete.marker",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 1533,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-04-native-5-r1/renderer-phase-ready.json",
+      "sha256": "3d73d700373757174ec7f3372e7ee3933dc8df783b4205861739aa2d56480b49"
+    },
+    {
+      "bytes": 86354,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-04-native-5-r1/resource-probe.csv",
+      "sha256": "c889c8800799cf61c39e9bd02435f9d8470eb742f252ce8dccb9c208ee67db80"
+    },
+    {
+      "bytes": 792,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-04-native-5-r1/restoration-evidence.json",
+      "sha256": "49d2bd6eeaaa7f442aba0622a3eb5587d0ba67ab6eba6e4c48839c2ff889894c"
+    },
+    {
+      "bytes": 123,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-04-native-5-r1/runtime-probe-ready.json",
+      "sha256": "cb3d9c020973239dcf29c3f67098ef88689d2cd360abbd8e7bc97bbb632eff44"
+    },
+    {
+      "bytes": 0,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-04-native-5-r1/runtime-probe.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 0,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-04-native-5-r1/scheduler.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 407,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-04-native-5-r1/score.json",
+      "sha256": "8b8fa8d61258f9709881acc1bfca70b38f5d4fa72d374a30bb8008a004727718"
+    },
+    {
+      "bytes": 191,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-04-native-5-r1/scored-epoch.json",
+      "sha256": "aecb3c1d7fd4e9b6ad54abc45af991a20890e50a12920ce3cb3f4d2bc5c40ab8"
+    },
+    {
+      "bytes": 53,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-04-native-5-r1/stop.log",
+      "sha256": "8ec3709179d04b20d8395f3dd486e08171c2d1a47c3c6be217276db81fef716b"
+    },
+    {
+      "bytes": 4562,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-04-native-5-r1/summary.json",
+      "sha256": "4c2cf7d1b6d4e34716f08408f52797bad37032c171789c5af385dcd99e0af3b5"
+    },
+    {
+      "bytes": 0,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-04-native-5-r1/trial-complete.marker",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 5373,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-04-native-5-r1/trial-config.json",
+      "sha256": "c45a3b3b89e87312c1ec0f02096060912c0ed8bee6aa3f2184806eac85fd6271"
+    },
+    {
+      "bytes": 4936,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-04-native-5-r1/world-configured.sdf",
+      "sha256": "53af9b48122755d9deb4e250d6a9a58ee6e45cfe767cb5d9d7bea7ec69a71c50"
+    },
+    {
+      "bytes": 1502,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-08-idle-0-r2/camera-capacity-ready.json",
+      "sha256": "f0fdb6cf7e25733b93acd56e66c13894852b59eee693ceb75c0850f3e5fc4fbb"
+    },
+    {
+      "bytes": 1418,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-08-idle-0-r2/camera-model-configured.sdf",
+      "sha256": "9112dc3d3b331558c56d300bf4ba572f346e51e03989cd0d4273c82a74703e9e"
+    },
+    {
+      "bytes": 678,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-08-idle-0-r2/camera-model-evidence.json",
+      "sha256": "8c616df853a518cee129d0adb182932ea11941ce08ca50628ba2f269845264a6"
+    },
+    {
+      "bytes": 658,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-08-idle-0-r2/camera-phase-selected-ready.json",
+      "sha256": "d439c4f14fbd601325d9d76ada5599205820ab4b4878f8ddf11431bba1bc8bb4"
+    },
+    {
+      "bytes": 76445,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-08-idle-0-r2/camera-phase.jsonl",
+      "sha256": "820a7bf8a5f7c4ce73b1b4716645f656ab07204d4f2ec9b7a0381b720b46e1e8"
+    },
+    {
+      "bytes": 1286,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-08-idle-0-r2/camera-scheduler-ready.json",
+      "sha256": "f5f45a7b0922ff2bf4f0d1e19c4cd0ac36ef85418ea3141ee432185bcde0a910"
+    },
+    {
+      "bytes": 65230,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-08-idle-0-r2/camera-scheduler.jsonl",
+      "sha256": "609e9f7402aa622c2fc5f607b2e23f8f261058a8439b5a54bd9323854968f105"
+    },
+    {
+      "bytes": 12,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-08-idle-0-r2/capacity-world-resume.log",
+      "sha256": "46eeeedc969f106320d874ff0cb0c5c1ea169952665865f64b8f5318d626c8a3"
+    },
+    {
+      "bytes": 4637,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-08-idle-0-r2/cleanup-evidence.json",
+      "sha256": "a2932120219247acec130a0c9e71dacb7c0fc7b6308b2d3517fcaaff1d47ee94"
+    },
+    {
+      "bytes": 1311925,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-08-idle-0-r2/clock-probe.csv",
+      "sha256": "c4fba04f4aae05dbcc426357efc8bf1e3aa4a1d8b4b91848d913be4feebb3386"
+    },
+    {
+      "bytes": 275,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-08-idle-0-r2/depth-topic-connections-end.json",
+      "sha256": "cbf0dfc7a3ac8636830f70c6ab1a4042636dd137fcc53a53ce8c82da846573a6"
+    },
+    {
+      "bytes": 1447,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-08-idle-0-r2/depth-topic-connections-launcher.json",
+      "sha256": "cda2d2c5835833a4657e46562759bfbef47327a737768e8dab7068640b85471d"
+    },
+    {
+      "bytes": 1164,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-08-idle-0-r2/depth-topic-connections-native-warmup.json",
+      "sha256": "b103a36aed89b256c5001f5f8f7e48ee4d3eb881d4027492ef6d9c6ba89bd50e"
+    },
+    {
+      "bytes": 1368,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-08-idle-0-r2/depth-topic-connections-selected-released.json",
+      "sha256": "5412390583da525dd87ba4ecc1618ce74dfd0b2a3c498bb140df8a1d469ff9f3"
+    },
+    {
+      "bytes": 275,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-08-idle-0-r2/depth-topic-connections-start.json",
+      "sha256": "cbf0dfc7a3ac8636830f70c6ab1a4042636dd137fcc53a53ce8c82da846573a6"
+    },
+    {
+      "bytes": 727,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-08-idle-0-r2/depth-topic-connections.json",
+      "sha256": "efa34ba8c3d841e152d0e7bb05e22b9e49f32bd2117ec1fc29c6a68045ea7ec2"
+    },
+    {
+      "bytes": 109,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-08-idle-0-r2/gazebo-base-ready.json",
+      "sha256": "a0ac361e51e2a937de5a8d7113c85dfa06f1b3729155610af460e66afc802acf"
+    },
+    {
+      "bytes": 8435,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-08-idle-0-r2/gazebo.stderr.log",
+      "sha256": "fb1e4d47aabaf8e1f60fca27d87d801bb6e749fb126f8324ce1a8799262559bb"
+    },
+    {
+      "bytes": 0,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-08-idle-0-r2/gazebo.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 5898,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-08-idle-0-r2/gpu-probe.csv",
+      "sha256": "e4b4cec0b0e0a67dbc7e5049366e93153742ef17778e41135e91bd8dd38eac31"
+    },
+    {
+      "bytes": 1186,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-08-idle-0-r2/launch.log",
+      "sha256": "cf29532ad8012157a565f3c55c29e8aa201b3ae76e3e7e4bde1deffdd33b4f64"
+    },
+    {
+      "bytes": 7086,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-08-idle-0-r2/manifest.json",
+      "sha256": "f4f886b748383e691bba2ad068dba91c5acbad86c89bd1697a94dba84f7ad4a1"
+    },
+    {
+      "bytes": 0,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-08-idle-0-r2/observer.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 7,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-08-idle-0-r2/observer.pid",
+      "sha256": "b468607b2ee080a7715ef6fd0354425de4288f62f00ec9ba96230cb57e200697"
+    },
+    {
+      "bytes": 630,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-08-idle-0-r2/px4-build-evidence.json",
+      "sha256": "cc39dc8a3eb9c337a937504fe83423fc6e2d5cf2f5baa5f97153a3929b30d749"
+    },
+    {
+      "bytes": 236,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-08-idle-0-r2/px4-capacity-platform-ready.json",
+      "sha256": "5eb5c00341a742d48f3cec929ce79065de0a94fd4922f061d1c3c1afacf01f72"
+    },
+    {
+      "bytes": 0,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-08-idle-0-r2/px4-console/agent-0-err.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 4254,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-08-idle-0-r2/px4-console/agent-0-out.log",
+      "sha256": "29da51a4384ba8730899fb4f514e065e052e1ef0e8dfadab6dc46073c8a262e7"
+    },
+    {
+      "bytes": 164,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-08-idle-0-r2/px4-console/agent-0-startup-health.json",
+      "sha256": "47b3fbb630a9d45e323af3c33cabc5ea08737b7f0c403f1bff5eb3759f3119ef"
+    },
+    {
+      "bytes": 0,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-08-idle-0-r2/px4-console/agent-1-err.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 4321,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-08-idle-0-r2/px4-console/agent-1-out.log",
+      "sha256": "b6bf52f76a9e2ea656d75004d7760abfa56137c9a0be1b27ee183b3703705c14"
+    },
+    {
+      "bytes": 164,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-08-idle-0-r2/px4-console/agent-1-startup-health.json",
+      "sha256": "0c534d7d3cf1e689f231f7dbd5659f7cedd7a704de4a6575d9ef78fdddc2af7a"
+    },
+    {
+      "bytes": 0,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-08-idle-0-r2/px4-console/agent-2-err.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 4254,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-08-idle-0-r2/px4-console/agent-2-out.log",
+      "sha256": "3ffab62fc9281704c7514ddbb0c6a32eb071d48f43d5b3543f7648015cdc784f"
+    },
+    {
+      "bytes": 164,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-08-idle-0-r2/px4-console/agent-2-startup-health.json",
+      "sha256": "0dffb8dc115810e121f2e5461d51e3637ca85b8dd6700ed5be463eadb64066f7"
+    },
+    {
+      "bytes": 0,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-08-idle-0-r2/px4-console/agent-3-err.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 3728,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-08-idle-0-r2/px4-console/agent-3-out.log",
+      "sha256": "36341c63358c0cada3bd92cec62af8b4e5b1fde54292f11666e7329dc403c0ed"
+    },
+    {
+      "bytes": 164,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-08-idle-0-r2/px4-console/agent-3-startup-health.json",
+      "sha256": "23b6068ee4fcb86439bef178538b005ef3771b1ac6680f68ec1ed3ceece7c694"
+    },
+    {
+      "bytes": 0,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-08-idle-0-r2/px4-console/agent-4-err.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 3405,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-08-idle-0-r2/px4-console/agent-4-out.log",
+      "sha256": "483ef9a7c9789654f16de182d4948ef1e2eee8f2fd2bb980d44ade81f259b1f9"
+    },
+    {
+      "bytes": 164,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-08-idle-0-r2/px4-console/agent-4-startup-health.json",
+      "sha256": "8189f2882417839624909f7ecabe7e94e447a8b93dca496a4e8c2c8500b3f71e"
+    },
+    {
+      "bytes": 12666,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-08-idle-0-r2/px4-sensor-source-warmup.json",
+      "sha256": "0e7df617a6b6cf1568b80174e86c61dc6996a1def5ea80fff41b0e9e310776a1"
+    },
+    {
+      "bytes": 9324,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-08-idle-0-r2/px4-sensor-topic-connections.json",
+      "sha256": "057b0d556e1871443649f963d38afbf7ee620e2170c2c3f745783e947425b771"
+    },
+    {
+      "bytes": 28560546,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-08-idle-0-r2/px4-ulogs/agent-0.ulg",
+      "sha256": "eb8475df88abda9698ceb5cbafe179cffec8ac31cbfc1185a559ee0e623b3fa6"
+    },
+    {
+      "bytes": 28449890,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-08-idle-0-r2/px4-ulogs/agent-1.ulg",
+      "sha256": "6d510a57140fa9c6170f0362743ab722a3f74a3d9238aa32b2542af4222acde3"
+    },
+    {
+      "bytes": 28450816,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-08-idle-0-r2/px4-ulogs/agent-2.ulg",
+      "sha256": "db4ef4c939fe8d6196e222669651897134d5bb5cfa3b55bf18ddbecef768b268"
+    },
+    {
+      "bytes": 28310643,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-08-idle-0-r2/px4-ulogs/agent-3.ulg",
+      "sha256": "b03ce2f37012db5b81b1ea21d289e6e5e4b32fd066865b64a44067e3d3095653"
+    },
+    {
+      "bytes": 29279468,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-08-idle-0-r2/px4-ulogs/agent-4.ulg",
+      "sha256": "4a92fbd9dc2c2fe356e5cf0b824ff987c5039c7adbd347679d7bbeaaa5016edf"
+    },
+    {
+      "bytes": 19165,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-08-idle-0-r2/renderer-attestation.json",
+      "sha256": "bdda08d920e3b23567c56d5d346d38c12415433f88aeae5281be331284864539"
+    },
+    {
+      "bytes": 0,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-08-idle-0-r2/renderer-phase-complete.marker",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 1565,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-08-idle-0-r2/renderer-phase-ready.json",
+      "sha256": "c2ea72568b680465d29a1d76022bbcc131aeb1376260805574e20801827ba96d"
+    },
+    {
+      "bytes": 74013,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-08-idle-0-r2/resource-probe.csv",
+      "sha256": "623659ba2ae7b74d1f5e884de75cf8cec4245373b8227cb319b3ade02483d97f"
+    },
+    {
+      "bytes": 792,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-08-idle-0-r2/restoration-evidence.json",
+      "sha256": "49d2bd6eeaaa7f442aba0622a3eb5587d0ba67ab6eba6e4c48839c2ff889894c"
+    },
+    {
+      "bytes": 123,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-08-idle-0-r2/runtime-probe-ready.json",
+      "sha256": "f38f144bbefe71788aa8b329b8bdaac6f1103c8988040a63ab67ef09e2d4c1e4"
+    },
+    {
+      "bytes": 0,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-08-idle-0-r2/runtime-probe.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 0,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-08-idle-0-r2/scheduler.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 339,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-08-idle-0-r2/score.json",
+      "sha256": "fe56872ffebcc1694f7873d2cdb994181c29253af8a29f9889596a0ff3cea8d8"
+    },
+    {
+      "bytes": 191,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-08-idle-0-r2/scored-epoch.json",
+      "sha256": "5de83cd577be471addec00a9ad194bd027ad42659fd1917b77b1f2b6f3864f7f"
+    },
+    {
+      "bytes": 53,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-08-idle-0-r2/stop.log",
+      "sha256": "8ec3709179d04b20d8395f3dd486e08171c2d1a47c3c6be217276db81fef716b"
+    },
+    {
+      "bytes": 1638,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-08-idle-0-r2/summary.json",
+      "sha256": "6013a1743e083993b16f0516beb6809867f9e341cc61933fd8ee8167d5e37066"
+    },
+    {
+      "bytes": 0,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-08-idle-0-r2/trial-complete.marker",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 5373,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-08-idle-0-r2/trial-config.json",
+      "sha256": "c45a3b3b89e87312c1ec0f02096060912c0ed8bee6aa3f2184806eac85fd6271"
+    },
+    {
+      "bytes": 4936,
+      "path": "results/camera-render-capacity/trigger-profile-dev-20260930-01/trials/capacity-08-idle-0-r2/world-configured.sdf",
+      "sha256": "53af9b48122755d9deb4e250d6a9a58ee6e45cfe767cb5d9d7bea7ec69a71c50"
+    },
+    {
+      "bytes": 5572,
+      "path": "results/camera-render-capacity/trigger-profile-ogre1-dev-20260930-01/config.json",
+      "sha256": "2229f5a232f7f6e3d0931dc9704ee137bf983e1a83cdaafe87be533d3031e1c1"
+    },
+    {
+      "bytes": 1502,
+      "path": "results/camera-render-capacity/trigger-profile-ogre1-dev-20260930-01/trials/capacity-01-idle-0-r1/camera-capacity-ready.json",
+      "sha256": "052115668227810af3db4cdf744d0ee7dd888ed63a90c58f52b163e3af4c7060"
+    },
+    {
+      "bytes": 1418,
+      "path": "results/camera-render-capacity/trigger-profile-ogre1-dev-20260930-01/trials/capacity-01-idle-0-r1/camera-model-configured.sdf",
+      "sha256": "9112dc3d3b331558c56d300bf4ba572f346e51e03989cd0d4273c82a74703e9e"
+    },
+    {
+      "bytes": 678,
+      "path": "results/camera-render-capacity/trigger-profile-ogre1-dev-20260930-01/trials/capacity-01-idle-0-r1/camera-model-evidence.json",
+      "sha256": "8c616df853a518cee129d0adb182932ea11941ce08ca50628ba2f269845264a6"
+    },
+    {
+      "bytes": 658,
+      "path": "results/camera-render-capacity/trigger-profile-ogre1-dev-20260930-01/trials/capacity-01-idle-0-r1/camera-phase-selected-ready.json",
+      "sha256": "5a029d05db5608ca479f534002bbe0dccbe1d3031b3230157c9e42d612189020"
+    },
+    {
+      "bytes": 103010,
+      "path": "results/camera-render-capacity/trigger-profile-ogre1-dev-20260930-01/trials/capacity-01-idle-0-r1/camera-phase.jsonl",
+      "sha256": "5376b27b1b34b4aa0c17d809ab3934d6f1c64690fcc9a72853e0a34f9cadf284"
+    },
+    {
+      "bytes": 1286,
+      "path": "results/camera-render-capacity/trigger-profile-ogre1-dev-20260930-01/trials/capacity-01-idle-0-r1/camera-scheduler-ready.json",
+      "sha256": "d85c07d2c271f66cc8c504086ac0976ae5af45bd7c1172693c7e81651d01bd15"
+    },
+    {
+      "bytes": 74798,
+      "path": "results/camera-render-capacity/trigger-profile-ogre1-dev-20260930-01/trials/capacity-01-idle-0-r1/camera-scheduler.jsonl",
+      "sha256": "aaf934036f755544ebf6edd161e917b0a496cb271b7a47045529155ab02e4394"
+    },
+    {
+      "bytes": 12,
+      "path": "results/camera-render-capacity/trigger-profile-ogre1-dev-20260930-01/trials/capacity-01-idle-0-r1/capacity-world-resume.log",
+      "sha256": "46eeeedc969f106320d874ff0cb0c5c1ea169952665865f64b8f5318d626c8a3"
+    },
+    {
+      "bytes": 4712,
+      "path": "results/camera-render-capacity/trigger-profile-ogre1-dev-20260930-01/trials/capacity-01-idle-0-r1/cleanup-evidence.json",
+      "sha256": "3415fee0320a78bfb96093a2d0d4747d4acb7f8988dddfd8c06120574457927a"
+    },
+    {
+      "bytes": 1319831,
+      "path": "results/camera-render-capacity/trigger-profile-ogre1-dev-20260930-01/trials/capacity-01-idle-0-r1/clock-probe.csv",
+      "sha256": "072a2844c45358e248b459d8b186f9e8c21c270581684a9397a99f4615569d20"
+    },
+    {
+      "bytes": 275,
+      "path": "results/camera-render-capacity/trigger-profile-ogre1-dev-20260930-01/trials/capacity-01-idle-0-r1/depth-topic-connections-end.json",
+      "sha256": "cbf0dfc7a3ac8636830f70c6ab1a4042636dd137fcc53a53ce8c82da846573a6"
+    },
+    {
+      "bytes": 1447,
+      "path": "results/camera-render-capacity/trigger-profile-ogre1-dev-20260930-01/trials/capacity-01-idle-0-r1/depth-topic-connections-launcher.json",
+      "sha256": "acfe5c71e38a913d8d7db82786e65d004cf024ca90d38fd7c0ffe0bd366d2574"
+    },
+    {
+      "bytes": 1164,
+      "path": "results/camera-render-capacity/trigger-profile-ogre1-dev-20260930-01/trials/capacity-01-idle-0-r1/depth-topic-connections-native-warmup.json",
+      "sha256": "2e3a7619665418c862b9a9362ddfc1ee3ff1562bd6529f85f23e82ed274e0a61"
+    },
+    {
+      "bytes": 1368,
+      "path": "results/camera-render-capacity/trigger-profile-ogre1-dev-20260930-01/trials/capacity-01-idle-0-r1/depth-topic-connections-selected-released.json",
+      "sha256": "5949fe571c7ddee2986865a39085bbb61d1ffb5deb083895eb8e0009b41fbad2"
+    },
+    {
+      "bytes": 275,
+      "path": "results/camera-render-capacity/trigger-profile-ogre1-dev-20260930-01/trials/capacity-01-idle-0-r1/depth-topic-connections-start.json",
+      "sha256": "cbf0dfc7a3ac8636830f70c6ab1a4042636dd137fcc53a53ce8c82da846573a6"
+    },
+    {
+      "bytes": 727,
+      "path": "results/camera-render-capacity/trigger-profile-ogre1-dev-20260930-01/trials/capacity-01-idle-0-r1/depth-topic-connections.json",
+      "sha256": "efa34ba8c3d841e152d0e7bb05e22b9e49f32bd2117ec1fc29c6a68045ea7ec2"
+    },
+    {
+      "bytes": 109,
+      "path": "results/camera-render-capacity/trigger-profile-ogre1-dev-20260930-01/trials/capacity-01-idle-0-r1/gazebo-base-ready.json",
+      "sha256": "e2156e4bf968a5243869724efdc2fe52200673e696f47ada6afad581334f80b6"
+    },
+    {
+      "bytes": 9556,
+      "path": "results/camera-render-capacity/trigger-profile-ogre1-dev-20260930-01/trials/capacity-01-idle-0-r1/gazebo.stderr.log",
+      "sha256": "4cef4f7b74eee7ea17e62b0ecffaa93177388423f3da45e0f98b9b495b74456c"
+    },
+    {
+      "bytes": 0,
+      "path": "results/camera-render-capacity/trigger-profile-ogre1-dev-20260930-01/trials/capacity-01-idle-0-r1/gazebo.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 5774,
+      "path": "results/camera-render-capacity/trigger-profile-ogre1-dev-20260930-01/trials/capacity-01-idle-0-r1/gpu-probe.csv",
+      "sha256": "688f262478a82194cf4e26c5ea38ba2ca99b51ee7003896f915bc5e1ba243784"
+    },
+    {
+      "bytes": 1186,
+      "path": "results/camera-render-capacity/trigger-profile-ogre1-dev-20260930-01/trials/capacity-01-idle-0-r1/launch.log",
+      "sha256": "539cedea0b26ef126959789129dbef7fae7a1c145de9064853657b10419c6b28"
+    },
+    {
+      "bytes": 7167,
+      "path": "results/camera-render-capacity/trigger-profile-ogre1-dev-20260930-01/trials/capacity-01-idle-0-r1/manifest.json",
+      "sha256": "e0361bbdadd32a1c2cb1026be4e6b53d6666f7ba118044b51086badcb5b59108"
+    },
+    {
+      "bytes": 0,
+      "path": "results/camera-render-capacity/trigger-profile-ogre1-dev-20260930-01/trials/capacity-01-idle-0-r1/observer.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 7,
+      "path": "results/camera-render-capacity/trigger-profile-ogre1-dev-20260930-01/trials/capacity-01-idle-0-r1/observer.pid",
+      "sha256": "cda328bfa667abe9e693923deeb6295a45096a53d997dcdc306836928b2dbcca"
+    },
+    {
+      "bytes": 630,
+      "path": "results/camera-render-capacity/trigger-profile-ogre1-dev-20260930-01/trials/capacity-01-idle-0-r1/px4-build-evidence.json",
+      "sha256": "cc39dc8a3eb9c337a937504fe83423fc6e2d5cf2f5baa5f97153a3929b30d749"
+    },
+    {
+      "bytes": 236,
+      "path": "results/camera-render-capacity/trigger-profile-ogre1-dev-20260930-01/trials/capacity-01-idle-0-r1/px4-capacity-platform-ready.json",
+      "sha256": "5eb5c00341a742d48f3cec929ce79065de0a94fd4922f061d1c3c1afacf01f72"
+    },
+    {
+      "bytes": 0,
+      "path": "results/camera-render-capacity/trigger-profile-ogre1-dev-20260930-01/trials/capacity-01-idle-0-r1/px4-console/agent-0-err.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 3923,
+      "path": "results/camera-render-capacity/trigger-profile-ogre1-dev-20260930-01/trials/capacity-01-idle-0-r1/px4-console/agent-0-out.log",
+      "sha256": "ed2e789509fd9f2147da1bf8b04cd7a79ee3301b25447dbe897a4ea1ad9f32de"
+    },
+    {
+      "bytes": 164,
+      "path": "results/camera-render-capacity/trigger-profile-ogre1-dev-20260930-01/trials/capacity-01-idle-0-r1/px4-console/agent-0-startup-health.json",
+      "sha256": "47b3fbb630a9d45e323af3c33cabc5ea08737b7f0c403f1bff5eb3759f3119ef"
+    },
+    {
+      "bytes": 0,
+      "path": "results/camera-render-capacity/trigger-profile-ogre1-dev-20260930-01/trials/capacity-01-idle-0-r1/px4-console/agent-1-err.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 3990,
+      "path": "results/camera-render-capacity/trigger-profile-ogre1-dev-20260930-01/trials/capacity-01-idle-0-r1/px4-console/agent-1-out.log",
+      "sha256": "8f5987fdc6a928270321ae0127ad51eb3ce2cec866ffd922f59e747e1c27dc44"
+    },
+    {
+      "bytes": 164,
+      "path": "results/camera-render-capacity/trigger-profile-ogre1-dev-20260930-01/trials/capacity-01-idle-0-r1/px4-console/agent-1-startup-health.json",
+      "sha256": "0c534d7d3cf1e689f231f7dbd5659f7cedd7a704de4a6575d9ef78fdddc2af7a"
+    },
+    {
+      "bytes": 0,
+      "path": "results/camera-render-capacity/trigger-profile-ogre1-dev-20260930-01/trials/capacity-01-idle-0-r1/px4-console/agent-2-err.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 3990,
+      "path": "results/camera-render-capacity/trigger-profile-ogre1-dev-20260930-01/trials/capacity-01-idle-0-r1/px4-console/agent-2-out.log",
+      "sha256": "2f05a5a4e32961eb33423d6d75a3603ddbf11185f0dcb7b78f32385d2479c174"
+    },
+    {
+      "bytes": 164,
+      "path": "results/camera-render-capacity/trigger-profile-ogre1-dev-20260930-01/trials/capacity-01-idle-0-r1/px4-console/agent-2-startup-health.json",
+      "sha256": "0dffb8dc115810e121f2e5461d51e3637ca85b8dd6700ed5be463eadb64066f7"
+    },
+    {
+      "bytes": 0,
+      "path": "results/camera-render-capacity/trigger-profile-ogre1-dev-20260930-01/trials/capacity-01-idle-0-r1/px4-console/agent-3-err.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 3397,
+      "path": "results/camera-render-capacity/trigger-profile-ogre1-dev-20260930-01/trials/capacity-01-idle-0-r1/px4-console/agent-3-out.log",
+      "sha256": "93adee4e17bb24474e9eb39a06357a6649596e6f0a25ac6d2aead9c6755f5de9"
+    },
+    {
+      "bytes": 164,
+      "path": "results/camera-render-capacity/trigger-profile-ogre1-dev-20260930-01/trials/capacity-01-idle-0-r1/px4-console/agent-3-startup-health.json",
+      "sha256": "23b6068ee4fcb86439bef178538b005ef3771b1ac6680f68ec1ed3ceece7c694"
+    },
+    {
+      "bytes": 0,
+      "path": "results/camera-render-capacity/trigger-profile-ogre1-dev-20260930-01/trials/capacity-01-idle-0-r1/px4-console/agent-4-err.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 3074,
+      "path": "results/camera-render-capacity/trigger-profile-ogre1-dev-20260930-01/trials/capacity-01-idle-0-r1/px4-console/agent-4-out.log",
+      "sha256": "bfcf5206994bf964b3d51cfcca3f61bf1d080ff06c7d36528603ad037fd9223a"
+    },
+    {
+      "bytes": 164,
+      "path": "results/camera-render-capacity/trigger-profile-ogre1-dev-20260930-01/trials/capacity-01-idle-0-r1/px4-console/agent-4-startup-health.json",
+      "sha256": "8189f2882417839624909f7ecabe7e94e447a8b93dca496a4e8c2c8500b3f71e"
+    },
+    {
+      "bytes": 13452,
+      "path": "results/camera-render-capacity/trigger-profile-ogre1-dev-20260930-01/trials/capacity-01-idle-0-r1/px4-sensor-source-warmup.json",
+      "sha256": "98c7113ab26c02e4a3aa76b76790c5d04cda9a442ff7ff7ab580bc0909d02277"
+    },
+    {
+      "bytes": 9324,
+      "path": "results/camera-render-capacity/trigger-profile-ogre1-dev-20260930-01/trials/capacity-01-idle-0-r1/px4-sensor-topic-connections.json",
+      "sha256": "f6879d2341d616e00f4a8eeb0bba314a35d4da49fdeaba6a4e8c96be64b66d03"
+    },
+    {
+      "bytes": 29003087,
+      "path": "results/camera-render-capacity/trigger-profile-ogre1-dev-20260930-01/trials/capacity-01-idle-0-r1/px4-ulogs/agent-0.ulg",
+      "sha256": "3cff89e43b3f7c9ccfda20fce924743c7f58b48cfe35f1ffcd72d64ddd8fbec9"
+    },
+    {
+      "bytes": 28871498,
+      "path": "results/camera-render-capacity/trigger-profile-ogre1-dev-20260930-01/trials/capacity-01-idle-0-r1/px4-ulogs/agent-1.ulg",
+      "sha256": "f654cd873e7e2e59685bab2141a29de9421572b122b4cb60c0d53db26dfcd936"
+    },
+    {
+      "bytes": 28802067,
+      "path": "results/camera-render-capacity/trigger-profile-ogre1-dev-20260930-01/trials/capacity-01-idle-0-r1/px4-ulogs/agent-2.ulg",
+      "sha256": "9d7c5ca9ebe76b5784a3167fc461618b0e57d0a26c7bca39e5285981c404d652"
+    },
+    {
+      "bytes": 28805273,
+      "path": "results/camera-render-capacity/trigger-profile-ogre1-dev-20260930-01/trials/capacity-01-idle-0-r1/px4-ulogs/agent-3.ulg",
+      "sha256": "e658341c3920168aefc8c9cc1ca7d04892f4e684e1e728153928db4f81fde4dc"
+    },
+    {
+      "bytes": 29632952,
+      "path": "results/camera-render-capacity/trigger-profile-ogre1-dev-20260930-01/trials/capacity-01-idle-0-r1/px4-ulogs/agent-4.ulg",
+      "sha256": "1dd6c8fcea44cd5159bbf049b06370ac0fd30f8208fbe924dd357a20ac56c15e"
+    },
+    {
+      "bytes": 19158,
+      "path": "results/camera-render-capacity/trigger-profile-ogre1-dev-20260930-01/trials/capacity-01-idle-0-r1/renderer-attestation.json",
+      "sha256": "0b5d32995877382d839be322335383142e18964079fee7462e9cd16c51dbdedb"
+    },
+    {
+      "bytes": 0,
+      "path": "results/camera-render-capacity/trigger-profile-ogre1-dev-20260930-01/trials/capacity-01-idle-0-r1/renderer-phase-complete.marker",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 1501,
+      "path": "results/camera-render-capacity/trigger-profile-ogre1-dev-20260930-01/trials/capacity-01-idle-0-r1/renderer-phase-ready.json",
+      "sha256": "4dcf6b852cc2b6fe1fb2df45ba6694396532cc2e5b1812f3779b9e035ec7e816"
+    },
+    {
+      "bytes": 76511,
+      "path": "results/camera-render-capacity/trigger-profile-ogre1-dev-20260930-01/trials/capacity-01-idle-0-r1/resource-probe.csv",
+      "sha256": "e9419fa09a05af1bd24a20a586f406f9b34a2c1aa9011a9559f556b64fd235df"
+    },
+    {
+      "bytes": 792,
+      "path": "results/camera-render-capacity/trigger-profile-ogre1-dev-20260930-01/trials/capacity-01-idle-0-r1/restoration-evidence.json",
+      "sha256": "49d2bd6eeaaa7f442aba0622a3eb5587d0ba67ab6eba6e4c48839c2ff889894c"
+    },
+    {
+      "bytes": 123,
+      "path": "results/camera-render-capacity/trigger-profile-ogre1-dev-20260930-01/trials/capacity-01-idle-0-r1/runtime-probe-ready.json",
+      "sha256": "0f58e82c3196c8876e9bcde916de7f25cdd864c957a25c448cb6f908ae0b0415"
+    },
+    {
+      "bytes": 0,
+      "path": "results/camera-render-capacity/trigger-profile-ogre1-dev-20260930-01/trials/capacity-01-idle-0-r1/runtime-probe.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 0,
+      "path": "results/camera-render-capacity/trigger-profile-ogre1-dev-20260930-01/trials/capacity-01-idle-0-r1/scheduler.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 339,
+      "path": "results/camera-render-capacity/trigger-profile-ogre1-dev-20260930-01/trials/capacity-01-idle-0-r1/score.json",
+      "sha256": "1a7d7f52520c53a0bcb93fe2e4975c9cf45463664b52ca223b86ad4cc822c39d"
+    },
+    {
+      "bytes": 191,
+      "path": "results/camera-render-capacity/trigger-profile-ogre1-dev-20260930-01/trials/capacity-01-idle-0-r1/scored-epoch.json",
+      "sha256": "19322fccac7c7e8744c527419d543881454ce46a2d0439523c66b66643ec4a0c"
+    },
+    {
+      "bytes": 53,
+      "path": "results/camera-render-capacity/trigger-profile-ogre1-dev-20260930-01/trials/capacity-01-idle-0-r1/stop.log",
+      "sha256": "8ec3709179d04b20d8395f3dd486e08171c2d1a47c3c6be217276db81fef716b"
+    },
+    {
+      "bytes": 1638,
+      "path": "results/camera-render-capacity/trigger-profile-ogre1-dev-20260930-01/trials/capacity-01-idle-0-r1/summary.json",
+      "sha256": "4f3d17af4e3d72a9973d7b33e74878ae3489d48e5a589f24b99cfaec8cecfea6"
+    },
+    {
+      "bytes": 0,
+      "path": "results/camera-render-capacity/trigger-profile-ogre1-dev-20260930-01/trials/capacity-01-idle-0-r1/trial-complete.marker",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 5400,
+      "path": "results/camera-render-capacity/trigger-profile-ogre1-dev-20260930-01/trials/capacity-01-idle-0-r1/trial-config.json",
+      "sha256": "4cf443729c39e37a376a6618ac3009f8daaa88377f0f4fe7eeee3e7d169f4e45"
+    },
+    {
+      "bytes": 4936,
+      "path": "results/camera-render-capacity/trigger-profile-ogre1-dev-20260930-01/trials/capacity-01-idle-0-r1/world-configured.sdf",
+      "sha256": "53af9b48122755d9deb4e250d6a9a58ee6e45cfe767cb5d9d7bea7ec69a71c50"
+    },
+    {
+      "bytes": 6106,
+      "path": "results/camera-render-capacity/sensor-event-suppressed-dev-20260930-01/config.json",
+      "sha256": "06e35989cd43dd0d5ec48425e0e232619e099e3009dbcfea680df5632750e685"
+    },
+    {
+      "bytes": 1418,
+      "path": "results/camera-render-capacity/sensor-event-suppressed-dev-20260930-01/trials/capacity-01-idle-0-r1/camera-model-configured.sdf",
+      "sha256": "9112dc3d3b331558c56d300bf4ba572f346e51e03989cd0d4273c82a74703e9e"
+    },
+    {
+      "bytes": 678,
+      "path": "results/camera-render-capacity/sensor-event-suppressed-dev-20260930-01/trials/capacity-01-idle-0-r1/camera-model-evidence.json",
+      "sha256": "8c616df853a518cee129d0adb182932ea11941ce08ca50628ba2f269845264a6"
+    },
+    {
+      "bytes": 798,
+      "path": "results/camera-render-capacity/sensor-event-suppressed-dev-20260930-01/trials/capacity-01-idle-0-r1/camera-phase.jsonl",
+      "sha256": "2dcf33748dc66ffea72d86f9b4dbe8b0b0060e2e4a442e8b146f9c734acfcaa4"
+    },
+    {
+      "bytes": 1626,
+      "path": "results/camera-render-capacity/sensor-event-suppressed-dev-20260930-01/trials/capacity-01-idle-0-r1/camera-scheduler.jsonl",
+      "sha256": "f198795fc1325b705430b96d3eee66f32e969911a082382f47adc4c32892f789"
+    },
+    {
+      "bytes": 12,
+      "path": "results/camera-render-capacity/sensor-event-suppressed-dev-20260930-01/trials/capacity-01-idle-0-r1/capacity-world-resume.log",
+      "sha256": "46eeeedc969f106320d874ff0cb0c5c1ea169952665865f64b8f5318d626c8a3"
+    },
+    {
+      "bytes": 4729,
+      "path": "results/camera-render-capacity/sensor-event-suppressed-dev-20260930-01/trials/capacity-01-idle-0-r1/cleanup-evidence.json",
+      "sha256": "dbc58dbe074a312e6165b408764bff28fe92e688b4e48498ae267eefd20990f2"
+    },
+    {
+      "bytes": 2075662,
+      "path": "results/camera-render-capacity/sensor-event-suppressed-dev-20260930-01/trials/capacity-01-idle-0-r1/clock-probe.csv",
+      "sha256": "d1ea3d93f486f3bd5701dd92867ce31abe030546ac53205058805cc73003aae8"
+    },
+    {
+      "bytes": 1164,
+      "path": "results/camera-render-capacity/sensor-event-suppressed-dev-20260930-01/trials/capacity-01-idle-0-r1/depth-topic-connections-native-warmup.json",
+      "sha256": "69ad003f6a6f1819a20bbb9c080e284b77ea3930af2a489392115c0bc2ccf58b"
+    },
+    {
+      "bytes": 109,
+      "path": "results/camera-render-capacity/sensor-event-suppressed-dev-20260930-01/trials/capacity-01-idle-0-r1/gazebo-base-ready.json",
+      "sha256": "70526ea4aae15fd76b5af7d645e42c4ae21471e6b5fc881ae374ad6eef133160"
+    },
+    {
+      "bytes": 8488,
+      "path": "results/camera-render-capacity/sensor-event-suppressed-dev-20260930-01/trials/capacity-01-idle-0-r1/gazebo.stderr.log",
+      "sha256": "d6971486cbd40cda7a3d78a6df1d76914a4681cf6e9417a3bc083f2ac5359ee2"
+    },
+    {
+      "bytes": 0,
+      "path": "results/camera-render-capacity/sensor-event-suppressed-dev-20260930-01/trials/capacity-01-idle-0-r1/gazebo.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 9757,
+      "path": "results/camera-render-capacity/sensor-event-suppressed-dev-20260930-01/trials/capacity-01-idle-0-r1/gpu-probe.csv",
+      "sha256": "1e6d1a81c31059d2ef2bb2d495fde790a95131bfb340333d2477885853003ccc"
+    },
+    {
+      "bytes": 1227,
+      "path": "results/camera-render-capacity/sensor-event-suppressed-dev-20260930-01/trials/capacity-01-idle-0-r1/launch.log",
+      "sha256": "c8385c502b1885d6b6b686f90760069d3593813db7fcb9322e0e5395c104e11e"
+    },
+    {
+      "bytes": 7103,
+      "path": "results/camera-render-capacity/sensor-event-suppressed-dev-20260930-01/trials/capacity-01-idle-0-r1/manifest.json",
+      "sha256": "0a5836c33f49f84acc22fb77a06055369cc57ce2c3a15df76c70b9946c593b66"
+    },
+    {
+      "bytes": 0,
+      "path": "results/camera-render-capacity/sensor-event-suppressed-dev-20260930-01/trials/capacity-01-idle-0-r1/observer.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 630,
+      "path": "results/camera-render-capacity/sensor-event-suppressed-dev-20260930-01/trials/capacity-01-idle-0-r1/px4-build-evidence.json",
+      "sha256": "cc39dc8a3eb9c337a937504fe83423fc6e2d5cf2f5baa5f97153a3929b30d749"
+    },
+    {
+      "bytes": 236,
+      "path": "results/camera-render-capacity/sensor-event-suppressed-dev-20260930-01/trials/capacity-01-idle-0-r1/px4-capacity-platform-ready.json",
+      "sha256": "5eb5c00341a742d48f3cec929ce79065de0a94fd4922f061d1c3c1afacf01f72"
+    },
+    {
+      "bytes": 0,
+      "path": "results/camera-render-capacity/sensor-event-suppressed-dev-20260930-01/trials/capacity-01-idle-0-r1/px4-console/agent-0-err.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 3753,
+      "path": "results/camera-render-capacity/sensor-event-suppressed-dev-20260930-01/trials/capacity-01-idle-0-r1/px4-console/agent-0-out.log",
+      "sha256": "d277078a46eb72408b74c8031dcc146e7b626a6f8cc5c0ca0fdd4b8b6ec32b2b"
+    },
+    {
+      "bytes": 164,
+      "path": "results/camera-render-capacity/sensor-event-suppressed-dev-20260930-01/trials/capacity-01-idle-0-r1/px4-console/agent-0-startup-health.json",
+      "sha256": "47b3fbb630a9d45e323af3c33cabc5ea08737b7f0c403f1bff5eb3759f3119ef"
+    },
+    {
+      "bytes": 0,
+      "path": "results/camera-render-capacity/sensor-event-suppressed-dev-20260930-01/trials/capacity-01-idle-0-r1/px4-console/agent-1-err.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 3778,
+      "path": "results/camera-render-capacity/sensor-event-suppressed-dev-20260930-01/trials/capacity-01-idle-0-r1/px4-console/agent-1-out.log",
+      "sha256": "1a657b3aa93092ecc52aba02847e799d0f0b84601f88808313e781730abea4b9"
+    },
+    {
+      "bytes": 164,
+      "path": "results/camera-render-capacity/sensor-event-suppressed-dev-20260930-01/trials/capacity-01-idle-0-r1/px4-console/agent-1-startup-health.json",
+      "sha256": "0c534d7d3cf1e689f231f7dbd5659f7cedd7a704de4a6575d9ef78fdddc2af7a"
+    },
+    {
+      "bytes": 0,
+      "path": "results/camera-render-capacity/sensor-event-suppressed-dev-20260930-01/trials/capacity-01-idle-0-r1/px4-console/agent-2-err.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 3820,
+      "path": "results/camera-render-capacity/sensor-event-suppressed-dev-20260930-01/trials/capacity-01-idle-0-r1/px4-console/agent-2-out.log",
+      "sha256": "21212a38bf4571ce240db4ef8bf2a700e03d5ffc0efa28e008ab9e38e335d837"
+    },
+    {
+      "bytes": 164,
+      "path": "results/camera-render-capacity/sensor-event-suppressed-dev-20260930-01/trials/capacity-01-idle-0-r1/px4-console/agent-2-startup-health.json",
+      "sha256": "0dffb8dc115810e121f2e5461d51e3637ca85b8dd6700ed5be463eadb64066f7"
+    },
+    {
+      "bytes": 0,
+      "path": "results/camera-render-capacity/sensor-event-suppressed-dev-20260930-01/trials/capacity-01-idle-0-r1/px4-console/agent-3-err.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 3252,
+      "path": "results/camera-render-capacity/sensor-event-suppressed-dev-20260930-01/trials/capacity-01-idle-0-r1/px4-console/agent-3-out.log",
+      "sha256": "f4ba1acae4cb359125eac0e2b2278c2124b0bcad3f9075cf0a86c33bd63a8875"
+    },
+    {
+      "bytes": 164,
+      "path": "results/camera-render-capacity/sensor-event-suppressed-dev-20260930-01/trials/capacity-01-idle-0-r1/px4-console/agent-3-startup-health.json",
+      "sha256": "23b6068ee4fcb86439bef178538b005ef3771b1ac6680f68ec1ed3ceece7c694"
+    },
+    {
+      "bytes": 0,
+      "path": "results/camera-render-capacity/sensor-event-suppressed-dev-20260930-01/trials/capacity-01-idle-0-r1/px4-console/agent-4-err.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 2862,
+      "path": "results/camera-render-capacity/sensor-event-suppressed-dev-20260930-01/trials/capacity-01-idle-0-r1/px4-console/agent-4-out.log",
+      "sha256": "73aa65baa0d482c3b363fad7c035543a77acec69e56b151c357f933c7f609279"
+    },
+    {
+      "bytes": 164,
+      "path": "results/camera-render-capacity/sensor-event-suppressed-dev-20260930-01/trials/capacity-01-idle-0-r1/px4-console/agent-4-startup-health.json",
+      "sha256": "8189f2882417839624909f7ecabe7e94e447a8b93dca496a4e8c2c8500b3f71e"
+    },
+    {
+      "bytes": 12658,
+      "path": "results/camera-render-capacity/sensor-event-suppressed-dev-20260930-01/trials/capacity-01-idle-0-r1/px4-sensor-source-warmup.json",
+      "sha256": "7bb60199918d62e638b62b34eea3bc38bf561fc4d16d65ef80dee50d2522baea"
+    },
+    {
+      "bytes": 9324,
+      "path": "results/camera-render-capacity/sensor-event-suppressed-dev-20260930-01/trials/capacity-01-idle-0-r1/px4-sensor-topic-connections.json",
+      "sha256": "c52cf8bee71a5db00ae70a66c92fa6e0430819b993b5e2715ed3baf94117e369"
+    },
+    {
+      "bytes": 48023823,
+      "path": "results/camera-render-capacity/sensor-event-suppressed-dev-20260930-01/trials/capacity-01-idle-0-r1/px4-ulogs/agent-0.ulg",
+      "sha256": "8b10fdf24a172bfd23cc8dbee9220938813e32956b74156e40d41368066d094d"
+    },
+    {
+      "bytes": 47973911,
+      "path": "results/camera-render-capacity/sensor-event-suppressed-dev-20260930-01/trials/capacity-01-idle-0-r1/px4-ulogs/agent-1.ulg",
+      "sha256": "3b534f76663e3efb8d06f65f0baa3a8b878c070c78961f15aa501d5e354a4886"
+    },
+    {
+      "bytes": 47905941,
+      "path": "results/camera-render-capacity/sensor-event-suppressed-dev-20260930-01/trials/capacity-01-idle-0-r1/px4-ulogs/agent-2.ulg",
+      "sha256": "7003f96e223a1b63422eb738dab7d9e43d123863737f6272201bdd3f6b42d209"
+    },
+    {
+      "bytes": 47769779,
+      "path": "results/camera-render-capacity/sensor-event-suppressed-dev-20260930-01/trials/capacity-01-idle-0-r1/px4-ulogs/agent-3.ulg",
+      "sha256": "03972b556aa5898adcd3ded6b695ccf13233b921df7dd53a30c70c4888af897e"
+    },
+    {
+      "bytes": 49635474,
+      "path": "results/camera-render-capacity/sensor-event-suppressed-dev-20260930-01/trials/capacity-01-idle-0-r1/px4-ulogs/agent-4.ulg",
+      "sha256": "7c5000bb89dd6687f9e51f419c109fad7671a3661125c3c8a8db23ce27a4cfca"
+    },
+    {
+      "bytes": 130915,
+      "path": "results/camera-render-capacity/sensor-event-suppressed-dev-20260930-01/trials/capacity-01-idle-0-r1/resource-probe.csv",
+      "sha256": "9fe619bde1436b2c5f962930c168af78ecd5169e0e840c32ce2a1c1017927aa0"
+    },
+    {
+      "bytes": 792,
+      "path": "results/camera-render-capacity/sensor-event-suppressed-dev-20260930-01/trials/capacity-01-idle-0-r1/restoration-evidence.json",
+      "sha256": "49d2bd6eeaaa7f442aba0622a3eb5587d0ba67ab6eba6e4c48839c2ff889894c"
+    },
+    {
+      "bytes": 123,
+      "path": "results/camera-render-capacity/sensor-event-suppressed-dev-20260930-01/trials/capacity-01-idle-0-r1/runtime-probe-ready.json",
+      "sha256": "64679be3dd950dad97e1681e650a5d5b5deb2a834df3c07172cf9df9662ecca2"
+    },
+    {
+      "bytes": 0,
+      "path": "results/camera-render-capacity/sensor-event-suppressed-dev-20260930-01/trials/capacity-01-idle-0-r1/runtime-probe.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 0,
+      "path": "results/camera-render-capacity/sensor-event-suppressed-dev-20260930-01/trials/capacity-01-idle-0-r1/scheduler.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 53,
+      "path": "results/camera-render-capacity/sensor-event-suppressed-dev-20260930-01/trials/capacity-01-idle-0-r1/stop.log",
+      "sha256": "8ec3709179d04b20d8395f3dd486e08171c2d1a47c3c6be217276db81fef716b"
+    },
+    {
+      "bytes": 1487,
+      "path": "results/camera-render-capacity/sensor-event-suppressed-dev-20260930-01/trials/capacity-01-idle-0-r1/summary.json",
+      "sha256": "46c41851724c4251f90152bd04d7f12a0505994c227f92630cb8005615853e74"
+    },
+    {
+      "bytes": 0,
+      "path": "results/camera-render-capacity/sensor-event-suppressed-dev-20260930-01/trials/capacity-01-idle-0-r1/trial-complete.marker",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 5926,
+      "path": "results/camera-render-capacity/sensor-event-suppressed-dev-20260930-01/trials/capacity-01-idle-0-r1/trial-config.json",
+      "sha256": "956524feb347026a0c9ca880928bfe3c03bb7ae6426de2e47b6d12145346a268"
+    },
+    {
+      "bytes": 4936,
+      "path": "results/camera-render-capacity/sensor-event-suppressed-dev-20260930-01/trials/capacity-01-idle-0-r1/world-configured.sdf",
+      "sha256": "53af9b48122755d9deb4e250d6a9a58ee6e45cfe767cb5d9d7bea7ec69a71c50"
+    },
+    {
+      "bytes": 6115,
+      "path": "results/camera-render-capacity/sensor-event-throttled-dev-20260930-01/config.json",
+      "sha256": "18de2a1b779c83e8e3f11cb56a93f5306463d007e26dbf7ffc400de053320946"
+    },
+    {
+      "bytes": 1418,
+      "path": "results/camera-render-capacity/sensor-event-throttled-dev-20260930-01/trials/capacity-01-idle-0-r1/camera-model-configured.sdf",
+      "sha256": "9112dc3d3b331558c56d300bf4ba572f346e51e03989cd0d4273c82a74703e9e"
+    },
+    {
+      "bytes": 678,
+      "path": "results/camera-render-capacity/sensor-event-throttled-dev-20260930-01/trials/capacity-01-idle-0-r1/camera-model-evidence.json",
+      "sha256": "8c616df853a518cee129d0adb182932ea11941ce08ca50628ba2f269845264a6"
+    },
+    {
+      "bytes": 74706,
+      "path": "results/camera-render-capacity/sensor-event-throttled-dev-20260930-01/trials/capacity-01-idle-0-r1/camera-phase.jsonl",
+      "sha256": "17a969b20aa30558aa3bbaaa262311740167c55fcb0d73b6ab11231480c5e818"
+    },
+    {
+      "bytes": 1286,
+      "path": "results/camera-render-capacity/sensor-event-throttled-dev-20260930-01/trials/capacity-01-idle-0-r1/camera-scheduler-ready.json",
+      "sha256": "853ab02c893fa1f4d546bf6b4be5806687b0dcfe79c9e6a40eddc009dd1310ae"
+    },
+    {
+      "bytes": 55322,
+      "path": "results/camera-render-capacity/sensor-event-throttled-dev-20260930-01/trials/capacity-01-idle-0-r1/camera-scheduler.jsonl",
+      "sha256": "4c77e202e3aa03c664dff9614b0d4391c687a329c1f89dcd78022f9158dacb28"
+    },
+    {
+      "bytes": 12,
+      "path": "results/camera-render-capacity/sensor-event-throttled-dev-20260930-01/trials/capacity-01-idle-0-r1/capacity-world-resume.log",
+      "sha256": "46eeeedc969f106320d874ff0cb0c5c1ea169952665865f64b8f5318d626c8a3"
+    },
+    {
+      "bytes": 4722,
+      "path": "results/camera-render-capacity/sensor-event-throttled-dev-20260930-01/trials/capacity-01-idle-0-r1/cleanup-evidence.json",
+      "sha256": "76bf776a02b261ebbbed9546ba85092ecb8fc134f196d34ea5a8c27e25e5bf97"
+    },
+    {
+      "bytes": 501480,
+      "path": "results/camera-render-capacity/sensor-event-throttled-dev-20260930-01/trials/capacity-01-idle-0-r1/clock-probe.csv",
+      "sha256": "94c7bf81b2dbfd068927837d37218f1ed80fbc5c73a86d331bef876863186051"
+    },
+    {
+      "bytes": 1164,
+      "path": "results/camera-render-capacity/sensor-event-throttled-dev-20260930-01/trials/capacity-01-idle-0-r1/depth-topic-connections-native-warmup.json",
+      "sha256": "f901276c690a45a9b2b108f034b1ff2fa6346dab7fb24e13be62e016f670a4d4"
+    },
+    {
+      "bytes": 109,
+      "path": "results/camera-render-capacity/sensor-event-throttled-dev-20260930-01/trials/capacity-01-idle-0-r1/gazebo-base-ready.json",
+      "sha256": "edc910ca3cfa650263366d23d1a43e915712d9577551c78e0ed2ff9db1317f88"
+    },
+    {
+      "bytes": 8435,
+      "path": "results/camera-render-capacity/sensor-event-throttled-dev-20260930-01/trials/capacity-01-idle-0-r1/gazebo.stderr.log",
+      "sha256": "fb1e4d47aabaf8e1f60fca27d87d801bb6e749fb126f8324ce1a8799262559bb"
+    },
+    {
+      "bytes": 0,
+      "path": "results/camera-render-capacity/sensor-event-throttled-dev-20260930-01/trials/capacity-01-idle-0-r1/gazebo.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 2106,
+      "path": "results/camera-render-capacity/sensor-event-throttled-dev-20260930-01/trials/capacity-01-idle-0-r1/gpu-probe.csv",
+      "sha256": "9fd56230a030d20a56a9f23f4898399360a8f06f77b9c2ae18a60d9b2b0d68d1"
+    },
+    {
+      "bytes": 859,
+      "path": "results/camera-render-capacity/sensor-event-throttled-dev-20260930-01/trials/capacity-01-idle-0-r1/launch.log",
+      "sha256": "95c8fe0390697c0e1dbfce5032342f6dc8bc1b6450d6339b651e1142cda3a358"
+    },
+    {
+      "bytes": 6921,
+      "path": "results/camera-render-capacity/sensor-event-throttled-dev-20260930-01/trials/capacity-01-idle-0-r1/manifest.json",
+      "sha256": "b60b98af33140f3b87809dee5b027e6f53bef1cbf62f0cc724fe118a5fccc25d"
+    },
+    {
+      "bytes": 0,
+      "path": "results/camera-render-capacity/sensor-event-throttled-dev-20260930-01/trials/capacity-01-idle-0-r1/observer.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 630,
+      "path": "results/camera-render-capacity/sensor-event-throttled-dev-20260930-01/trials/capacity-01-idle-0-r1/px4-build-evidence.json",
+      "sha256": "cc39dc8a3eb9c337a937504fe83423fc6e2d5cf2f5baa5f97153a3929b30d749"
+    },
+    {
+      "bytes": 236,
+      "path": "results/camera-render-capacity/sensor-event-throttled-dev-20260930-01/trials/capacity-01-idle-0-r1/px4-capacity-platform-ready.json",
+      "sha256": "5eb5c00341a742d48f3cec929ce79065de0a94fd4922f061d1c3c1afacf01f72"
+    },
+    {
+      "bytes": 0,
+      "path": "results/camera-render-capacity/sensor-event-throttled-dev-20260930-01/trials/capacity-01-idle-0-r1/px4-console/agent-0-err.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 4084,
+      "path": "results/camera-render-capacity/sensor-event-throttled-dev-20260930-01/trials/capacity-01-idle-0-r1/px4-console/agent-0-out.log",
+      "sha256": "e739c2d9b8d90447ee5e4a903b4d44ca747e688f9dbf840f291803a9abd4a24e"
+    },
+    {
+      "bytes": 164,
+      "path": "results/camera-render-capacity/sensor-event-throttled-dev-20260930-01/trials/capacity-01-idle-0-r1/px4-console/agent-0-startup-health.json",
+      "sha256": "47b3fbb630a9d45e323af3c33cabc5ea08737b7f0c403f1bff5eb3759f3119ef"
+    },
+    {
+      "bytes": 0,
+      "path": "results/camera-render-capacity/sensor-event-throttled-dev-20260930-01/trials/capacity-01-idle-0-r1/px4-console/agent-1-err.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 4151,
+      "path": "results/camera-render-capacity/sensor-event-throttled-dev-20260930-01/trials/capacity-01-idle-0-r1/px4-console/agent-1-out.log",
+      "sha256": "81a1ea260103fb912375058410a7e9c185780e2864c054e0dedcdce772e6eade"
+    },
+    {
+      "bytes": 164,
+      "path": "results/camera-render-capacity/sensor-event-throttled-dev-20260930-01/trials/capacity-01-idle-0-r1/px4-console/agent-1-startup-health.json",
+      "sha256": "0c534d7d3cf1e689f231f7dbd5659f7cedd7a704de4a6575d9ef78fdddc2af7a"
+    },
+    {
+      "bytes": 0,
+      "path": "results/camera-render-capacity/sensor-event-throttled-dev-20260930-01/trials/capacity-01-idle-0-r1/px4-console/agent-2-err.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 4151,
+      "path": "results/camera-render-capacity/sensor-event-throttled-dev-20260930-01/trials/capacity-01-idle-0-r1/px4-console/agent-2-out.log",
+      "sha256": "8dff7469fa952b1f182c7e68e23a806d81dae0c59e0852e3a15e661a9f978080"
+    },
+    {
+      "bytes": 164,
+      "path": "results/camera-render-capacity/sensor-event-throttled-dev-20260930-01/trials/capacity-01-idle-0-r1/px4-console/agent-2-startup-health.json",
+      "sha256": "0dffb8dc115810e121f2e5461d51e3637ca85b8dd6700ed5be463eadb64066f7"
+    },
+    {
+      "bytes": 0,
+      "path": "results/camera-render-capacity/sensor-event-throttled-dev-20260930-01/trials/capacity-01-idle-0-r1/px4-console/agent-3-err.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 3558,
+      "path": "results/camera-render-capacity/sensor-event-throttled-dev-20260930-01/trials/capacity-01-idle-0-r1/px4-console/agent-3-out.log",
+      "sha256": "43c6371371109fadc203a538fcb0114c6962911618d108fa827bf01b57f6ebad"
+    },
+    {
+      "bytes": 164,
+      "path": "results/camera-render-capacity/sensor-event-throttled-dev-20260930-01/trials/capacity-01-idle-0-r1/px4-console/agent-3-startup-health.json",
+      "sha256": "23b6068ee4fcb86439bef178538b005ef3771b1ac6680f68ec1ed3ceece7c694"
+    },
+    {
+      "bytes": 0,
+      "path": "results/camera-render-capacity/sensor-event-throttled-dev-20260930-01/trials/capacity-01-idle-0-r1/px4-console/agent-4-err.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 3193,
+      "path": "results/camera-render-capacity/sensor-event-throttled-dev-20260930-01/trials/capacity-01-idle-0-r1/px4-console/agent-4-out.log",
+      "sha256": "048f215bda494b5a8929dbe9b0809542e8898721082268631e649e2b21fc8b1f"
+    },
+    {
+      "bytes": 164,
+      "path": "results/camera-render-capacity/sensor-event-throttled-dev-20260930-01/trials/capacity-01-idle-0-r1/px4-console/agent-4-startup-health.json",
+      "sha256": "8189f2882417839624909f7ecabe7e94e447a8b93dca496a4e8c2c8500b3f71e"
+    },
+    {
+      "bytes": 14255,
+      "path": "results/camera-render-capacity/sensor-event-throttled-dev-20260930-01/trials/capacity-01-idle-0-r1/px4-sensor-source-warmup.json",
+      "sha256": "beddfcfe1ae2e764f6016a60ed49a924a110335af059778c2408297e14e0bc0a"
+    },
+    {
+      "bytes": 9324,
+      "path": "results/camera-render-capacity/sensor-event-throttled-dev-20260930-01/trials/capacity-01-idle-0-r1/px4-sensor-topic-connections.json",
+      "sha256": "c728eb6bea84482614ea8e8b2d89e1dce53d40e94ca86a741689de31e6a70371"
+    },
+    {
+      "bytes": 8003925,
+      "path": "results/camera-render-capacity/sensor-event-throttled-dev-20260930-01/trials/capacity-01-idle-0-r1/px4-ulogs/agent-0.ulg",
+      "sha256": "2d9e4909dda1d82316dad10808ac20b258918bf6b24c87bd2028c868d7336717"
+    },
+    {
+      "bytes": 7887446,
+      "path": "results/camera-render-capacity/sensor-event-throttled-dev-20260930-01/trials/capacity-01-idle-0-r1/px4-ulogs/agent-1.ulg",
+      "sha256": "655c7dcdad748f22db4c131b88b89b5bf6d539f843e70160630087668e4d5e7d"
+    },
+    {
+      "bytes": 7834608,
+      "path": "results/camera-render-capacity/sensor-event-throttled-dev-20260930-01/trials/capacity-01-idle-0-r1/px4-ulogs/agent-2.ulg",
+      "sha256": "8e13e2014cd41a8b7a26b1138fa2ca38f923c40e1f689a4642c668394422bfb0"
+    },
+    {
+      "bytes": 7838820,
+      "path": "results/camera-render-capacity/sensor-event-throttled-dev-20260930-01/trials/capacity-01-idle-0-r1/px4-ulogs/agent-3.ulg",
+      "sha256": "1f7c1453273158649c9b28bc3e16b1d96dd6bb171ccd8e0ae243149656aa5dfd"
+    },
+    {
+      "bytes": 7764426,
+      "path": "results/camera-render-capacity/sensor-event-throttled-dev-20260930-01/trials/capacity-01-idle-0-r1/px4-ulogs/agent-4.ulg",
+      "sha256": "beae4c5e33af8951702b9f6f447283c2b203fc6cbd35fdc31f611bab6819f808"
+    },
+    {
+      "bytes": 19735,
+      "path": "results/camera-render-capacity/sensor-event-throttled-dev-20260930-01/trials/capacity-01-idle-0-r1/renderer-attestation.json",
+      "sha256": "815999f80670462c1acaa182faee14f3473bccabc1113341391210623b020deb"
+    },
+    {
+      "bytes": 1533,
+      "path": "results/camera-render-capacity/sensor-event-throttled-dev-20260930-01/trials/capacity-01-idle-0-r1/renderer-phase-ready.json",
+      "sha256": "3c18e90ea42a2444569bf5e927897f18420c4a36e044b4affe6de24fe80be5d0"
+    },
+    {
+      "bytes": 27161,
+      "path": "results/camera-render-capacity/sensor-event-throttled-dev-20260930-01/trials/capacity-01-idle-0-r1/resource-probe.csv",
+      "sha256": "546f37ec8795d38512c2d1b9f8f2089f2487d5d29c18815707093b84c2052d84"
+    },
+    {
+      "bytes": 792,
+      "path": "results/camera-render-capacity/sensor-event-throttled-dev-20260930-01/trials/capacity-01-idle-0-r1/restoration-evidence.json",
+      "sha256": "49d2bd6eeaaa7f442aba0622a3eb5587d0ba67ab6eba6e4c48839c2ff889894c"
+    },
+    {
+      "bytes": 123,
+      "path": "results/camera-render-capacity/sensor-event-throttled-dev-20260930-01/trials/capacity-01-idle-0-r1/runtime-probe-ready.json",
+      "sha256": "2a1c263f37c502f8972812f69313da92fd02e5fb063e187a35af1949c67c5aae"
+    },
+    {
+      "bytes": 0,
+      "path": "results/camera-render-capacity/sensor-event-throttled-dev-20260930-01/trials/capacity-01-idle-0-r1/runtime-probe.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 0,
+      "path": "results/camera-render-capacity/sensor-event-throttled-dev-20260930-01/trials/capacity-01-idle-0-r1/scheduler.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 53,
+      "path": "results/camera-render-capacity/sensor-event-throttled-dev-20260930-01/trials/capacity-01-idle-0-r1/stop.log",
+      "sha256": "8ec3709179d04b20d8395f3dd486e08171c2d1a47c3c6be217276db81fef716b"
+    },
+    {
+      "bytes": 1512,
+      "path": "results/camera-render-capacity/sensor-event-throttled-dev-20260930-01/trials/capacity-01-idle-0-r1/summary.json",
+      "sha256": "f4cddf162d576c01a6cae8fac12b2feac36f7c04ec22b06ce0b2d000137dbbf5"
+    },
+    {
+      "bytes": 0,
+      "path": "results/camera-render-capacity/sensor-event-throttled-dev-20260930-01/trials/capacity-01-idle-0-r1/trial-complete.marker",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 5935,
+      "path": "results/camera-render-capacity/sensor-event-throttled-dev-20260930-01/trials/capacity-01-idle-0-r1/trial-config.json",
+      "sha256": "c19da561c65dd82739290f40e98a4822a54be72654836273c1014801e0ef3cc1"
+    },
+    {
+      "bytes": 4936,
+      "path": "results/camera-render-capacity/sensor-event-throttled-dev-20260930-01/trials/capacity-01-idle-0-r1/world-configured.sdf",
+      "sha256": "53af9b48122755d9deb4e250d6a9a58ee6e45cfe767cb5d9d7bea7ec69a71c50"
+    },
+    {
+      "bytes": 6115,
+      "path": "results/camera-render-capacity/sensor-event-throttled-dev-20260930-02/config.json",
+      "sha256": "8c7e88de937005881c24da19c7916a1d4dc9090154c05a01da2baccf49d6f8d8"
+    },
+    {
+      "bytes": 1418,
+      "path": "results/camera-render-capacity/sensor-event-throttled-dev-20260930-02/trials/capacity-01-idle-0-r1/camera-model-configured.sdf",
+      "sha256": "9112dc3d3b331558c56d300bf4ba572f346e51e03989cd0d4273c82a74703e9e"
+    },
+    {
+      "bytes": 678,
+      "path": "results/camera-render-capacity/sensor-event-throttled-dev-20260930-02/trials/capacity-01-idle-0-r1/camera-model-evidence.json",
+      "sha256": "8c616df853a518cee129d0adb182932ea11941ce08ca50628ba2f269845264a6"
+    },
+    {
+      "bytes": 798,
+      "path": "results/camera-render-capacity/sensor-event-throttled-dev-20260930-02/trials/capacity-01-idle-0-r1/camera-phase.jsonl",
+      "sha256": "41ceae8852f96c1b0b7e437f2823ffd4b8d3b6fb56e1caaed93b33fe437997cb"
+    },
+    {
+      "bytes": 1626,
+      "path": "results/camera-render-capacity/sensor-event-throttled-dev-20260930-02/trials/capacity-01-idle-0-r1/camera-scheduler.jsonl",
+      "sha256": "85aaf63bf339e0bed8ecb17b85e2d9529f4e415cca82639854346df6e2ec002d"
+    },
+    {
+      "bytes": 12,
+      "path": "results/camera-render-capacity/sensor-event-throttled-dev-20260930-02/trials/capacity-01-idle-0-r1/capacity-world-resume.log",
+      "sha256": "46eeeedc969f106320d874ff0cb0c5c1ea169952665865f64b8f5318d626c8a3"
+    },
+    {
+      "bytes": 4720,
+      "path": "results/camera-render-capacity/sensor-event-throttled-dev-20260930-02/trials/capacity-01-idle-0-r1/cleanup-evidence.json",
+      "sha256": "ec62af342df24385639378a0cb9d9a0979d0bfc24ab01cedb555ad8d3b6d4546"
+    },
+    {
+      "bytes": 2090892,
+      "path": "results/camera-render-capacity/sensor-event-throttled-dev-20260930-02/trials/capacity-01-idle-0-r1/clock-probe.csv",
+      "sha256": "5653e2a6f3ac5503d922b0bfa4ccc729ada35df823e974b022a008bf3f797f21"
+    },
+    {
+      "bytes": 1164,
+      "path": "results/camera-render-capacity/sensor-event-throttled-dev-20260930-02/trials/capacity-01-idle-0-r1/depth-topic-connections-native-warmup.json",
+      "sha256": "de538379319f2cd312ebbd2ad5e8987f375af3dbb83c5e2cca0555014286a212"
+    },
+    {
+      "bytes": 109,
+      "path": "results/camera-render-capacity/sensor-event-throttled-dev-20260930-02/trials/capacity-01-idle-0-r1/gazebo-base-ready.json",
+      "sha256": "d27eae464b57c3d4c450b37f44fa3896b2285598133542768add37db7ec1a0ef"
+    },
+    {
+      "bytes": 8435,
+      "path": "results/camera-render-capacity/sensor-event-throttled-dev-20260930-02/trials/capacity-01-idle-0-r1/gazebo.stderr.log",
+      "sha256": "fb1e4d47aabaf8e1f60fca27d87d801bb6e749fb126f8324ce1a8799262559bb"
+    },
+    {
+      "bytes": 0,
+      "path": "results/camera-render-capacity/sensor-event-throttled-dev-20260930-02/trials/capacity-01-idle-0-r1/gazebo.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 9738,
+      "path": "results/camera-render-capacity/sensor-event-throttled-dev-20260930-02/trials/capacity-01-idle-0-r1/gpu-probe.csv",
+      "sha256": "b9401d7a8517604ca407d2215d22076dea78b93ebea5a8bdda5aa890c3041f39"
+    },
+    {
+      "bytes": 835,
+      "path": "results/camera-render-capacity/sensor-event-throttled-dev-20260930-02/trials/capacity-01-idle-0-r1/launch.log",
+      "sha256": "15a6e9bf160dff713f8683af661a77c0e60b4a60e76078a0a96e93e853c87977"
+    },
+    {
+      "bytes": 7094,
+      "path": "results/camera-render-capacity/sensor-event-throttled-dev-20260930-02/trials/capacity-01-idle-0-r1/manifest.json",
+      "sha256": "95e0ba7dc164972a2bd0b8ad5fb72e81b88615fb5a7c84d802bc4ecfd5c3236c"
+    },
+    {
+      "bytes": 0,
+      "path": "results/camera-render-capacity/sensor-event-throttled-dev-20260930-02/trials/capacity-01-idle-0-r1/observer.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 630,
+      "path": "results/camera-render-capacity/sensor-event-throttled-dev-20260930-02/trials/capacity-01-idle-0-r1/px4-build-evidence.json",
+      "sha256": "cc39dc8a3eb9c337a937504fe83423fc6e2d5cf2f5baa5f97153a3929b30d749"
+    },
+    {
+      "bytes": 236,
+      "path": "results/camera-render-capacity/sensor-event-throttled-dev-20260930-02/trials/capacity-01-idle-0-r1/px4-capacity-platform-ready.json",
+      "sha256": "5eb5c00341a742d48f3cec929ce79065de0a94fd4922f061d1c3c1afacf01f72"
+    },
+    {
+      "bytes": 0,
+      "path": "results/camera-render-capacity/sensor-event-throttled-dev-20260930-02/trials/capacity-01-idle-0-r1/px4-console/agent-0-err.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 3711,
+      "path": "results/camera-render-capacity/sensor-event-throttled-dev-20260930-02/trials/capacity-01-idle-0-r1/px4-console/agent-0-out.log",
+      "sha256": "5dd5b63e0588b1957ac498e86b11ef894ab0907246b79d61f822ea7485b23d74"
+    },
+    {
+      "bytes": 164,
+      "path": "results/camera-render-capacity/sensor-event-throttled-dev-20260930-02/trials/capacity-01-idle-0-r1/px4-console/agent-0-startup-health.json",
+      "sha256": "47b3fbb630a9d45e323af3c33cabc5ea08737b7f0c403f1bff5eb3759f3119ef"
+    },
+    {
+      "bytes": 0,
+      "path": "results/camera-render-capacity/sensor-event-throttled-dev-20260930-02/trials/capacity-01-idle-0-r1/px4-console/agent-1-err.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 3778,
+      "path": "results/camera-render-capacity/sensor-event-throttled-dev-20260930-02/trials/capacity-01-idle-0-r1/px4-console/agent-1-out.log",
+      "sha256": "1b58b1dd29382c81dedc96af7d2e8f116e88f4abf196d0b558eb2964f3e5d2c5"
+    },
+    {
+      "bytes": 164,
+      "path": "results/camera-render-capacity/sensor-event-throttled-dev-20260930-02/trials/capacity-01-idle-0-r1/px4-console/agent-1-startup-health.json",
+      "sha256": "0c534d7d3cf1e689f231f7dbd5659f7cedd7a704de4a6575d9ef78fdddc2af7a"
+    },
+    {
+      "bytes": 0,
+      "path": "results/camera-render-capacity/sensor-event-throttled-dev-20260930-02/trials/capacity-01-idle-0-r1/px4-console/agent-2-err.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 3711,
+      "path": "results/camera-render-capacity/sensor-event-throttled-dev-20260930-02/trials/capacity-01-idle-0-r1/px4-console/agent-2-out.log",
+      "sha256": "39a017b72ef60e42d38f8e08232b9604b30f3c8041959da351eef353d6998bad"
+    },
+    {
+      "bytes": 164,
+      "path": "results/camera-render-capacity/sensor-event-throttled-dev-20260930-02/trials/capacity-01-idle-0-r1/px4-console/agent-2-startup-health.json",
+      "sha256": "0dffb8dc115810e121f2e5461d51e3637ca85b8dd6700ed5be463eadb64066f7"
+    },
+    {
+      "bytes": 0,
+      "path": "results/camera-render-capacity/sensor-event-throttled-dev-20260930-02/trials/capacity-01-idle-0-r1/px4-console/agent-3-err.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 3252,
+      "path": "results/camera-render-capacity/sensor-event-throttled-dev-20260930-02/trials/capacity-01-idle-0-r1/px4-console/agent-3-out.log",
+      "sha256": "484c0bacabafd7b1d7925a488f96db3e6aed35cdb39c83ab57250d2aca6fa30b"
+    },
+    {
+      "bytes": 164,
+      "path": "results/camera-render-capacity/sensor-event-throttled-dev-20260930-02/trials/capacity-01-idle-0-r1/px4-console/agent-3-startup-health.json",
+      "sha256": "23b6068ee4fcb86439bef178538b005ef3771b1ac6680f68ec1ed3ceece7c694"
+    },
+    {
+      "bytes": 0,
+      "path": "results/camera-render-capacity/sensor-event-throttled-dev-20260930-02/trials/capacity-01-idle-0-r1/px4-console/agent-4-err.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 2862,
+      "path": "results/camera-render-capacity/sensor-event-throttled-dev-20260930-02/trials/capacity-01-idle-0-r1/px4-console/agent-4-out.log",
+      "sha256": "748cd8d102125ecdcdb72a5b881d7936e3153418da4e8b00c7d300b30e220a31"
+    },
+    {
+      "bytes": 164,
+      "path": "results/camera-render-capacity/sensor-event-throttled-dev-20260930-02/trials/capacity-01-idle-0-r1/px4-console/agent-4-startup-health.json",
+      "sha256": "8189f2882417839624909f7ecabe7e94e447a8b93dca496a4e8c2c8500b3f71e"
+    },
+    {
+      "bytes": 12665,
+      "path": "results/camera-render-capacity/sensor-event-throttled-dev-20260930-02/trials/capacity-01-idle-0-r1/px4-sensor-source-warmup.json",
+      "sha256": "f77d3e06a2124b2440a8200b9cc6c9ace72c264145b2a033f568dbd460d2a4e1"
+    },
+    {
+      "bytes": 9324,
+      "path": "results/camera-render-capacity/sensor-event-throttled-dev-20260930-02/trials/capacity-01-idle-0-r1/px4-sensor-topic-connections.json",
+      "sha256": "e4cf817bc37ff396517a67850ab38dfbcfe287c4b2e37c08dbb760cfe6751e1f"
+    },
+    {
+      "bytes": 48223047,
+      "path": "results/camera-render-capacity/sensor-event-throttled-dev-20260930-02/trials/capacity-01-idle-0-r1/px4-ulogs/agent-0.ulg",
+      "sha256": "0ac8cb2a45b29cd2158d2c77ab925e4d9a07f68510e8107a6245ac653126bf99"
+    },
+    {
+      "bytes": 48068052,
+      "path": "results/camera-render-capacity/sensor-event-throttled-dev-20260930-02/trials/capacity-01-idle-0-r1/px4-ulogs/agent-1.ulg",
+      "sha256": "e295f0117f69221757afbec98c751b1b58fdfbe25faec8d0dcaa8d58faeadace"
+    },
+    {
+      "bytes": 48029643,
+      "path": "results/camera-render-capacity/sensor-event-throttled-dev-20260930-02/trials/capacity-01-idle-0-r1/px4-ulogs/agent-2.ulg",
+      "sha256": "e2ee09ddd778afa3b4ce8e4707cbb21f9e5ddd6754eaecaf32c2b79c7030a6c6"
+    },
+    {
+      "bytes": 47928594,
+      "path": "results/camera-render-capacity/sensor-event-throttled-dev-20260930-02/trials/capacity-01-idle-0-r1/px4-ulogs/agent-3.ulg",
+      "sha256": "c20d7890f678d3c443e7970d4cc28bbedb12749e71a44fdec500851d34613046"
+    },
+    {
+      "bytes": 49774192,
+      "path": "results/camera-render-capacity/sensor-event-throttled-dev-20260930-02/trials/capacity-01-idle-0-r1/px4-ulogs/agent-4.ulg",
+      "sha256": "dcba93965b848543217f77d3641d569fa0f4e1f9ec373e2bfb68f2176496bfa1"
+    },
+    {
+      "bytes": 131496,
+      "path": "results/camera-render-capacity/sensor-event-throttled-dev-20260930-02/trials/capacity-01-idle-0-r1/resource-probe.csv",
+      "sha256": "03534ec0a2569e285b60176f9ecbb21e6d113e473fa53fa8b0284284307bde5a"
+    },
+    {
+      "bytes": 792,
+      "path": "results/camera-render-capacity/sensor-event-throttled-dev-20260930-02/trials/capacity-01-idle-0-r1/restoration-evidence.json",
+      "sha256": "49d2bd6eeaaa7f442aba0622a3eb5587d0ba67ab6eba6e4c48839c2ff889894c"
+    },
+    {
+      "bytes": 123,
+      "path": "results/camera-render-capacity/sensor-event-throttled-dev-20260930-02/trials/capacity-01-idle-0-r1/runtime-probe-ready.json",
+      "sha256": "0628b123cae84a30daf5cd82fd6fc205daa3c96bae7f69c6e3c45ee30eb90b81"
+    },
+    {
+      "bytes": 0,
+      "path": "results/camera-render-capacity/sensor-event-throttled-dev-20260930-02/trials/capacity-01-idle-0-r1/runtime-probe.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 0,
+      "path": "results/camera-render-capacity/sensor-event-throttled-dev-20260930-02/trials/capacity-01-idle-0-r1/scheduler.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 53,
+      "path": "results/camera-render-capacity/sensor-event-throttled-dev-20260930-02/trials/capacity-01-idle-0-r1/stop.log",
+      "sha256": "8ec3709179d04b20d8395f3dd486e08171c2d1a47c3c6be217276db81fef716b"
+    },
+    {
+      "bytes": 1487,
+      "path": "results/camera-render-capacity/sensor-event-throttled-dev-20260930-02/trials/capacity-01-idle-0-r1/summary.json",
+      "sha256": "f8ef8399cee288eb8e2aaff120eec64e0e51f3d5531018032e0467297de6502e"
+    },
+    {
+      "bytes": 0,
+      "path": "results/camera-render-capacity/sensor-event-throttled-dev-20260930-02/trials/capacity-01-idle-0-r1/trial-complete.marker",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 5935,
+      "path": "results/camera-render-capacity/sensor-event-throttled-dev-20260930-02/trials/capacity-01-idle-0-r1/trial-config.json",
+      "sha256": "931e7548442e826939d8f879e18fd0617f910f1c17bf9c72ceef77412d074d7d"
+    },
+    {
+      "bytes": 4936,
+      "path": "results/camera-render-capacity/sensor-event-throttled-dev-20260930-02/trials/capacity-01-idle-0-r1/world-configured.sdf",
+      "sha256": "53af9b48122755d9deb4e250d6a9a58ee6e45cfe767cb5d9d7bea7ec69a71c50"
+    },
+    {
+      "bytes": 6165,
+      "path": "results/camera-render-capacity/sensor-event-throttled-paused-dev-20260930-01/config.json",
+      "sha256": "fd088cc6e868f87cb725652044c8838d5760d381b39fbdda909566a673507268"
+    },
+    {
+      "bytes": 1502,
+      "path": "results/camera-render-capacity/sensor-event-throttled-paused-dev-20260930-01/trials/capacity-01-idle-0-r1/camera-capacity-ready.json",
+      "sha256": "47f719a4eefe462c357bf9c8c0baaa32449db74bd383bc7a6bf6a4462ff43524"
+    },
+    {
+      "bytes": 1418,
+      "path": "results/camera-render-capacity/sensor-event-throttled-paused-dev-20260930-01/trials/capacity-01-idle-0-r1/camera-model-configured.sdf",
+      "sha256": "9112dc3d3b331558c56d300bf4ba572f346e51e03989cd0d4273c82a74703e9e"
+    },
+    {
+      "bytes": 678,
+      "path": "results/camera-render-capacity/sensor-event-throttled-paused-dev-20260930-01/trials/capacity-01-idle-0-r1/camera-model-evidence.json",
+      "sha256": "8c616df853a518cee129d0adb182932ea11941ce08ca50628ba2f269845264a6"
+    },
+    {
+      "bytes": 658,
+      "path": "results/camera-render-capacity/sensor-event-throttled-paused-dev-20260930-01/trials/capacity-01-idle-0-r1/camera-phase-selected-ready.json",
+      "sha256": "d439c4f14fbd601325d9d76ada5599205820ab4b4878f8ddf11431bba1bc8bb4"
+    },
+    {
+      "bytes": 75290,
+      "path": "results/camera-render-capacity/sensor-event-throttled-paused-dev-20260930-01/trials/capacity-01-idle-0-r1/camera-phase.jsonl",
+      "sha256": "00af483f27edd2e53673ea279565e702759736eea6bd0e1a3d55ae3ca67e2ebf"
+    },
+    {
+      "bytes": 1286,
+      "path": "results/camera-render-capacity/sensor-event-throttled-paused-dev-20260930-01/trials/capacity-01-idle-0-r1/camera-scheduler-ready.json",
+      "sha256": "a0c493aa6cbf964061068a50b5a203282e3819f1a517a5370da7e23a4533689f"
+    },
+    {
+      "bytes": 55442,
+      "path": "results/camera-render-capacity/sensor-event-throttled-paused-dev-20260930-01/trials/capacity-01-idle-0-r1/camera-scheduler.jsonl",
+      "sha256": "11ccc7b52906664d11c308544d77a8c76c674f7a16faa21ccd2d32974f436023"
+    },
+    {
+      "bytes": 12,
+      "path": "results/camera-render-capacity/sensor-event-throttled-paused-dev-20260930-01/trials/capacity-01-idle-0-r1/capacity-world-resume.log",
+      "sha256": "46eeeedc969f106320d874ff0cb0c5c1ea169952665865f64b8f5318d626c8a3"
+    },
+    {
+      "bytes": 4785,
+      "path": "results/camera-render-capacity/sensor-event-throttled-paused-dev-20260930-01/trials/capacity-01-idle-0-r1/cleanup-evidence.json",
+      "sha256": "ca3e8b6d532b78269d5469eed4cc7068a516439a4bb4f29b1bbbedb52f9c82e3"
+    },
+    {
+      "bytes": 1283730,
+      "path": "results/camera-render-capacity/sensor-event-throttled-paused-dev-20260930-01/trials/capacity-01-idle-0-r1/clock-probe.csv",
+      "sha256": "5227ecca3c4fe1b84dcf7882e692cd6c5435080fb94b1a6507d2e18b5c19c4e2"
+    },
+    {
+      "bytes": 1921,
+      "path": "results/camera-render-capacity/sensor-event-throttled-paused-dev-20260930-01/trials/capacity-01-idle-0-r1/custom-server.config.recovered",
+      "sha256": "0273bceb1620aab5cc20a401e5b3fccac9e30ee087aa160d6780d74984529468"
+    },
+    {
+      "bytes": 275,
+      "path": "results/camera-render-capacity/sensor-event-throttled-paused-dev-20260930-01/trials/capacity-01-idle-0-r1/depth-topic-connections-end.json",
+      "sha256": "cbf0dfc7a3ac8636830f70c6ab1a4042636dd137fcc53a53ce8c82da846573a6"
+    },
+    {
+      "bytes": 1447,
+      "path": "results/camera-render-capacity/sensor-event-throttled-paused-dev-20260930-01/trials/capacity-01-idle-0-r1/depth-topic-connections-launcher.json",
+      "sha256": "89b557722424c6e595229906cacd1b578e1d34e569e9e458e3de9f29614409ac"
+    },
+    {
+      "bytes": 1164,
+      "path": "results/camera-render-capacity/sensor-event-throttled-paused-dev-20260930-01/trials/capacity-01-idle-0-r1/depth-topic-connections-native-warmup.json",
+      "sha256": "63e40d9dc6828a273e0e1c608f8b1871ed66f6e0c4cdbc62bed9056d1a1ebab2"
+    },
+    {
+      "bytes": 1368,
+      "path": "results/camera-render-capacity/sensor-event-throttled-paused-dev-20260930-01/trials/capacity-01-idle-0-r1/depth-topic-connections-selected-released.json",
+      "sha256": "6de01ab549d7231674cde95f3b8983a7f355048ff75f6d6ff4d404b3a66272bf"
+    },
+    {
+      "bytes": 275,
+      "path": "results/camera-render-capacity/sensor-event-throttled-paused-dev-20260930-01/trials/capacity-01-idle-0-r1/depth-topic-connections-start.json",
+      "sha256": "cbf0dfc7a3ac8636830f70c6ab1a4042636dd137fcc53a53ce8c82da846573a6"
+    },
+    {
+      "bytes": 727,
+      "path": "results/camera-render-capacity/sensor-event-throttled-paused-dev-20260930-01/trials/capacity-01-idle-0-r1/depth-topic-connections.json",
+      "sha256": "efa34ba8c3d841e152d0e7bb05e22b9e49f32bd2117ec1fc29c6a68045ea7ec2"
+    },
+    {
+      "bytes": 109,
+      "path": "results/camera-render-capacity/sensor-event-throttled-paused-dev-20260930-01/trials/capacity-01-idle-0-r1/gazebo-base-ready.json",
+      "sha256": "d2dedaae0a669e598adcde84fe565adf0b7de2d1eda54a9d251864911a152941"
+    },
+    {
+      "bytes": 8435,
+      "path": "results/camera-render-capacity/sensor-event-throttled-paused-dev-20260930-01/trials/capacity-01-idle-0-r1/gazebo.stderr.log",
+      "sha256": "fb1e4d47aabaf8e1f60fca27d87d801bb6e749fb126f8324ce1a8799262559bb"
+    },
+    {
+      "bytes": 0,
+      "path": "results/camera-render-capacity/sensor-event-throttled-paused-dev-20260930-01/trials/capacity-01-idle-0-r1/gazebo.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 6163,
+      "path": "results/camera-render-capacity/sensor-event-throttled-paused-dev-20260930-01/trials/capacity-01-idle-0-r1/gpu-probe.csv",
+      "sha256": "8e543125c2d3f30cb24f3387369f094bceea5b7a6bf9e2c610dc8cd7141e5616"
+    },
+    {
+      "bytes": 1186,
+      "path": "results/camera-render-capacity/sensor-event-throttled-paused-dev-20260930-01/trials/capacity-01-idle-0-r1/launch.log",
+      "sha256": "be321130bf93faef5e2a34cb21653564e06d9f13b04897bf5a7adf36c55035fd"
+    },
+    {
+      "bytes": 7241,
+      "path": "results/camera-render-capacity/sensor-event-throttled-paused-dev-20260930-01/trials/capacity-01-idle-0-r1/manifest.json",
+      "sha256": "be0569fa71392ee2e45229eef9fbe3271a6697e0441d0dadc66e3b4b192bdbf8"
+    },
+    {
+      "bytes": 0,
+      "path": "results/camera-render-capacity/sensor-event-throttled-paused-dev-20260930-01/trials/capacity-01-idle-0-r1/observer.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 7,
+      "path": "results/camera-render-capacity/sensor-event-throttled-paused-dev-20260930-01/trials/capacity-01-idle-0-r1/observer.pid",
+      "sha256": "d59ba91bc502273115f05642a50505f61c8f6b5ae1bf2e89df6d562ecdf22d46"
+    },
+    {
+      "bytes": 630,
+      "path": "results/camera-render-capacity/sensor-event-throttled-paused-dev-20260930-01/trials/capacity-01-idle-0-r1/px4-build-evidence.json",
+      "sha256": "cc39dc8a3eb9c337a937504fe83423fc6e2d5cf2f5baa5f97153a3929b30d749"
+    },
+    {
+      "bytes": 236,
+      "path": "results/camera-render-capacity/sensor-event-throttled-paused-dev-20260930-01/trials/capacity-01-idle-0-r1/px4-capacity-platform-ready.json",
+      "sha256": "5eb5c00341a742d48f3cec929ce79065de0a94fd4922f061d1c3c1afacf01f72"
+    },
+    {
+      "bytes": 0,
+      "path": "results/camera-render-capacity/sensor-event-throttled-paused-dev-20260930-01/trials/capacity-01-idle-0-r1/px4-console/agent-0-err.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 4254,
+      "path": "results/camera-render-capacity/sensor-event-throttled-paused-dev-20260930-01/trials/capacity-01-idle-0-r1/px4-console/agent-0-out.log",
+      "sha256": "992541f4f8f3c455044cff4c18bd60eed590d16680b23a5f7d5831796935db1b"
+    },
+    {
+      "bytes": 164,
+      "path": "results/camera-render-capacity/sensor-event-throttled-paused-dev-20260930-01/trials/capacity-01-idle-0-r1/px4-console/agent-0-startup-health.json",
+      "sha256": "47b3fbb630a9d45e323af3c33cabc5ea08737b7f0c403f1bff5eb3759f3119ef"
+    },
+    {
+      "bytes": 0,
+      "path": "results/camera-render-capacity/sensor-event-throttled-paused-dev-20260930-01/trials/capacity-01-idle-0-r1/px4-console/agent-1-err.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 4321,
+      "path": "results/camera-render-capacity/sensor-event-throttled-paused-dev-20260930-01/trials/capacity-01-idle-0-r1/px4-console/agent-1-out.log",
+      "sha256": "331733eedbbeb8f1d345360cf0e0a2022b1628f8e60bef5f666b1efed1a18d26"
+    },
+    {
+      "bytes": 164,
+      "path": "results/camera-render-capacity/sensor-event-throttled-paused-dev-20260930-01/trials/capacity-01-idle-0-r1/px4-console/agent-1-startup-health.json",
+      "sha256": "0c534d7d3cf1e689f231f7dbd5659f7cedd7a704de4a6575d9ef78fdddc2af7a"
+    },
+    {
+      "bytes": 0,
+      "path": "results/camera-render-capacity/sensor-event-throttled-paused-dev-20260930-01/trials/capacity-01-idle-0-r1/px4-console/agent-2-err.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 4254,
+      "path": "results/camera-render-capacity/sensor-event-throttled-paused-dev-20260930-01/trials/capacity-01-idle-0-r1/px4-console/agent-2-out.log",
+      "sha256": "b140b6cfc6b0ee5f7908d25facdee54a077470e520ca406bebee63cc36d940aa"
+    },
+    {
+      "bytes": 164,
+      "path": "results/camera-render-capacity/sensor-event-throttled-paused-dev-20260930-01/trials/capacity-01-idle-0-r1/px4-console/agent-2-startup-health.json",
+      "sha256": "0dffb8dc115810e121f2e5461d51e3637ca85b8dd6700ed5be463eadb64066f7"
+    },
+    {
+      "bytes": 0,
+      "path": "results/camera-render-capacity/sensor-event-throttled-paused-dev-20260930-01/trials/capacity-01-idle-0-r1/px4-console/agent-3-err.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 3795,
+      "path": "results/camera-render-capacity/sensor-event-throttled-paused-dev-20260930-01/trials/capacity-01-idle-0-r1/px4-console/agent-3-out.log",
+      "sha256": "7e535bb64d7b12964a30dd7409eca1ea43c82a09049650c49165ac2c6d25cf25"
+    },
+    {
+      "bytes": 164,
+      "path": "results/camera-render-capacity/sensor-event-throttled-paused-dev-20260930-01/trials/capacity-01-idle-0-r1/px4-console/agent-3-startup-health.json",
+      "sha256": "23b6068ee4fcb86439bef178538b005ef3771b1ac6680f68ec1ed3ceece7c694"
+    },
+    {
+      "bytes": 0,
+      "path": "results/camera-render-capacity/sensor-event-throttled-paused-dev-20260930-01/trials/capacity-01-idle-0-r1/px4-console/agent-4-err.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 3405,
+      "path": "results/camera-render-capacity/sensor-event-throttled-paused-dev-20260930-01/trials/capacity-01-idle-0-r1/px4-console/agent-4-out.log",
+      "sha256": "db045c6f5a4ac08df6af5565b7ca14dc9ee578c3737dd977bec7e59f7beac7cd"
+    },
+    {
+      "bytes": 164,
+      "path": "results/camera-render-capacity/sensor-event-throttled-paused-dev-20260930-01/trials/capacity-01-idle-0-r1/px4-console/agent-4-startup-health.json",
+      "sha256": "8189f2882417839624909f7ecabe7e94e447a8b93dca496a4e8c2c8500b3f71e"
+    },
+    {
+      "bytes": 12660,
+      "path": "results/camera-render-capacity/sensor-event-throttled-paused-dev-20260930-01/trials/capacity-01-idle-0-r1/px4-sensor-source-warmup.json",
+      "sha256": "3338aae78d5169ef14cf30a2ee1536d34c1cf88092bc83217cf86f20988ed597"
+    },
+    {
+      "bytes": 9324,
+      "path": "results/camera-render-capacity/sensor-event-throttled-paused-dev-20260930-01/trials/capacity-01-idle-0-r1/px4-sensor-topic-connections.json",
+      "sha256": "37fbcff22efeb5df2954fab39ce9baf44f724a8e0156fd96a1be0fca87cf65be"
+    },
+    {
+      "bytes": 28580856,
+      "path": "results/camera-render-capacity/sensor-event-throttled-paused-dev-20260930-01/trials/capacity-01-idle-0-r1/px4-ulogs/agent-0.ulg",
+      "sha256": "aac503d6fd3a93c57b48d154f8c351bef18edf2972ebc2a11f357d09e74a4a01"
+    },
+    {
+      "bytes": 28433259,
+      "path": "results/camera-render-capacity/sensor-event-throttled-paused-dev-20260930-01/trials/capacity-01-idle-0-r1/px4-ulogs/agent-1.ulg",
+      "sha256": "417c3e5814be8d39aaecb5ea85813b0d012e41959881b1925640472e400ca60d"
+    },
+    {
+      "bytes": 28463563,
+      "path": "results/camera-render-capacity/sensor-event-throttled-paused-dev-20260930-01/trials/capacity-01-idle-0-r1/px4-ulogs/agent-2.ulg",
+      "sha256": "0abf38f0fc56c27eb5e3dbb794b6514060d49bfcac6e86bf1b31290d79514c59"
+    },
+    {
+      "bytes": 28347477,
+      "path": "results/camera-render-capacity/sensor-event-throttled-paused-dev-20260930-01/trials/capacity-01-idle-0-r1/px4-ulogs/agent-3.ulg",
+      "sha256": "e796b8293a67205d64b7c9d6a6d76d997ceda38e6bb586a8da49724592a39838"
+    },
+    {
+      "bytes": 29222891,
+      "path": "results/camera-render-capacity/sensor-event-throttled-paused-dev-20260930-01/trials/capacity-01-idle-0-r1/px4-ulogs/agent-4.ulg",
+      "sha256": "5c573dcef1a904d685eaa3a601f8fb5b0cda09916eac17fd22d60aef6c669cbf"
+    },
+    {
+      "bytes": 19848,
+      "path": "results/camera-render-capacity/sensor-event-throttled-paused-dev-20260930-01/trials/capacity-01-idle-0-r1/renderer-attestation.json",
+      "sha256": "5ba77fe6b7e380befb6537aa5d4dc3b22fb382501c53b47ec52abc920214e1ac"
+    },
+    {
+      "bytes": 0,
+      "path": "results/camera-render-capacity/sensor-event-throttled-paused-dev-20260930-01/trials/capacity-01-idle-0-r1/renderer-phase-complete.marker",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 1517,
+      "path": "results/camera-render-capacity/sensor-event-throttled-paused-dev-20260930-01/trials/capacity-01-idle-0-r1/renderer-phase-ready.json",
+      "sha256": "da495e69aa20bd1ae0339cb6e834667def6c8f653660fe4b8ac425e1486bad4a"
+    },
+    {
+      "bytes": 75093,
+      "path": "results/camera-render-capacity/sensor-event-throttled-paused-dev-20260930-01/trials/capacity-01-idle-0-r1/resource-probe.csv",
+      "sha256": "df6d98a067df3d46f55eef3e607e7b34d5dfc4645b599483f2ced7f0312e8424"
+    },
+    {
+      "bytes": 792,
+      "path": "results/camera-render-capacity/sensor-event-throttled-paused-dev-20260930-01/trials/capacity-01-idle-0-r1/restoration-evidence.json",
+      "sha256": "49d2bd6eeaaa7f442aba0622a3eb5587d0ba67ab6eba6e4c48839c2ff889894c"
+    },
+    {
+      "bytes": 123,
+      "path": "results/camera-render-capacity/sensor-event-throttled-paused-dev-20260930-01/trials/capacity-01-idle-0-r1/runtime-probe-ready.json",
+      "sha256": "c0f47e5ae86be71c4f34e05e5bbf2c2652366f658551e8d7679e5bb65f9f3fb3"
+    },
+    {
+      "bytes": 747,
+      "path": "results/camera-render-capacity/sensor-event-throttled-paused-dev-20260930-01/trials/capacity-01-idle-0-r1/runtime-probe.log",
+      "sha256": "d30cfe76f67dceafe43cc882b4e21b46e180bf39b2ef2cc26b251a5312baf70c"
+    },
+    {
+      "bytes": 0,
+      "path": "results/camera-render-capacity/sensor-event-throttled-paused-dev-20260930-01/trials/capacity-01-idle-0-r1/scheduler.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 339,
+      "path": "results/camera-render-capacity/sensor-event-throttled-paused-dev-20260930-01/trials/capacity-01-idle-0-r1/score.json",
+      "sha256": "8cc3d9975e5ea042adcc69e9773bafaa4cfa023cc7d5d45962918a97fe52196c"
+    },
+    {
+      "bytes": 191,
+      "path": "results/camera-render-capacity/sensor-event-throttled-paused-dev-20260930-01/trials/capacity-01-idle-0-r1/scored-epoch.json",
+      "sha256": "2c7a99a61b12a628271594c067295d430a169a0112b9dac5e15d890e04809d8f"
+    },
+    {
+      "bytes": 53,
+      "path": "results/camera-render-capacity/sensor-event-throttled-paused-dev-20260930-01/trials/capacity-01-idle-0-r1/stop.log",
+      "sha256": "8ec3709179d04b20d8395f3dd486e08171c2d1a47c3c6be217276db81fef716b"
+    },
+    {
+      "bytes": 1639,
+      "path": "results/camera-render-capacity/sensor-event-throttled-paused-dev-20260930-01/trials/capacity-01-idle-0-r1/summary.json",
+      "sha256": "25b858a936d6828feee31d4937725e8edfba3960d78a18e4f123739b52977f98"
+    },
+    {
+      "bytes": 0,
+      "path": "results/camera-render-capacity/sensor-event-throttled-paused-dev-20260930-01/trials/capacity-01-idle-0-r1/trial-complete.marker",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 5985,
+      "path": "results/camera-render-capacity/sensor-event-throttled-paused-dev-20260930-01/trials/capacity-01-idle-0-r1/trial-config.json",
+      "sha256": "d469290d36c3a885671e93b4b4471341d6d61c40ee1bc2606ea36a6f4f7e90c7"
+    },
+    {
+      "bytes": 4936,
+      "path": "results/camera-render-capacity/sensor-event-throttled-paused-dev-20260930-01/trials/capacity-01-idle-0-r1/world-configured.sdf",
+      "sha256": "53af9b48122755d9deb4e250d6a9a58ee6e45cfe767cb5d9d7bea7ec69a71c50"
+    }
+  ],
+  "file_count": 535,
+  "roots": [
+    "results/camera-render-capacity/trigger-profile-dev-20260930-01",
+    "results/camera-render-capacity/trigger-profile-ogre1-dev-20260930-01",
+    "results/camera-render-capacity/sensor-event-suppressed-dev-20260930-01",
+    "results/camera-render-capacity/sensor-event-throttled-dev-20260930-01",
+    "results/camera-render-capacity/sensor-event-throttled-dev-20260930-02",
+    "results/camera-render-capacity/sensor-event-throttled-paused-dev-20260930-01"
+  ],
+  "total_bytes": 1404327864
+}

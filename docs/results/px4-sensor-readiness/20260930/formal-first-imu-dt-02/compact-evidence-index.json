@@ -1,0 +1,538 @@
+{
+  "campaign": "formal-first-imu-dt-02",
+  "files": {
+    "campaign-config.json": {
+      "bytes": 3023,
+      "sha256": "7b6d497d733041570fda249ae945138cae2155330fa572a3d99d16e812c2b326"
+    },
+    "campaign-summary.json": {
+      "bytes": 3604,
+      "sha256": "4f005bbb4e77c590a50c7229f63706a4ea21a74b4511da09554560149e810f3f"
+    },
+    "first-imu-dt-evidence.json": {
+      "bytes": 26788,
+      "sha256": "3ba14bcc068e3aeeded6c8ea75a0a94842dbf53416fe8c0479a8f2eb4b7b0a39"
+    },
+    "readiness-formal-01-v5-r1/agent-0-startup-health.json": {
+      "bytes": 164,
+      "sha256": "47b3fbb630a9d45e323af3c33cabc5ea08737b7f0c403f1bff5eb3759f3119ef"
+    },
+    "readiness-formal-01-v5-r1/agent-1-startup-health.json": {
+      "bytes": 164,
+      "sha256": "0c534d7d3cf1e689f231f7dbd5659f7cedd7a704de4a6575d9ef78fdddc2af7a"
+    },
+    "readiness-formal-01-v5-r1/agent-2-startup-health.json": {
+      "bytes": 164,
+      "sha256": "0dffb8dc115810e121f2e5461d51e3637ca85b8dd6700ed5be463eadb64066f7"
+    },
+    "readiness-formal-01-v5-r1/agent-3-startup-health.json": {
+      "bytes": 164,
+      "sha256": "23b6068ee4fcb86439bef178538b005ef3771b1ac6680f68ec1ed3ceece7c694"
+    },
+    "readiness-formal-01-v5-r1/agent-4-startup-health.json": {
+      "bytes": 164,
+      "sha256": "8189f2882417839624909f7ecabe7e94e447a8b93dca496a4e8c2c8500b3f71e"
+    },
+    "readiness-formal-01-v5-r1/cleanup-evidence.json": {
+      "bytes": 1997,
+      "sha256": "cbd4fec269721f8258a00db50c30402ba4223971118ec08891f4a77fd7b42d9b"
+    },
+    "readiness-formal-01-v5-r1/manifest.json": {
+      "bytes": 27847,
+      "sha256": "f9f886dcf922d36c146e56f2f74df14b564c9960c4181286c625a708b2fb1bac"
+    },
+    "readiness-formal-01-v5-r1/px4-build-evidence.json": {
+      "bytes": 630,
+      "sha256": "cc39dc8a3eb9c337a937504fe83423fc6e2d5cf2f5baa5f97153a3929b30d749"
+    },
+    "readiness-formal-01-v5-r1/px4-sensor-source-warmup.json": {
+      "bytes": 12659,
+      "sha256": "5e7be20ebdb68c182fa6c982a8c83168379a405d69eceea32e79a84059d8108a"
+    },
+    "readiness-formal-01-v5-r1/px4-sensor-topic-connections.json": {
+      "bytes": 9324,
+      "sha256": "5e915515761c3330955ce03cfc9b6e11ec7a16361f04b5a3976f6396430008b6"
+    },
+    "readiness-formal-01-v5-r1/restoration-evidence.json": {
+      "bytes": 792,
+      "sha256": "49d2bd6eeaaa7f442aba0622a3eb5587d0ba67ab6eba6e4c48839c2ff889894c"
+    },
+    "readiness-formal-01-v5-r1/score.json": {
+      "bytes": 278,
+      "sha256": "f7a530197a05b54e9b0cb32b89321f7ed49d5e37acb481fd3b8d9e9d699ae299"
+    },
+    "readiness-formal-01-v5-r1/summary.json": {
+      "bytes": 2687,
+      "sha256": "9e08331837137f0814c41975d010867c338f125ede418861ae71e31a828dda72"
+    },
+    "readiness-formal-02-v5-r2/agent-0-startup-health.json": {
+      "bytes": 164,
+      "sha256": "47b3fbb630a9d45e323af3c33cabc5ea08737b7f0c403f1bff5eb3759f3119ef"
+    },
+    "readiness-formal-02-v5-r2/agent-1-startup-health.json": {
+      "bytes": 164,
+      "sha256": "0c534d7d3cf1e689f231f7dbd5659f7cedd7a704de4a6575d9ef78fdddc2af7a"
+    },
+    "readiness-formal-02-v5-r2/agent-2-startup-health.json": {
+      "bytes": 164,
+      "sha256": "0dffb8dc115810e121f2e5461d51e3637ca85b8dd6700ed5be463eadb64066f7"
+    },
+    "readiness-formal-02-v5-r2/agent-3-startup-health.json": {
+      "bytes": 164,
+      "sha256": "23b6068ee4fcb86439bef178538b005ef3771b1ac6680f68ec1ed3ceece7c694"
+    },
+    "readiness-formal-02-v5-r2/agent-4-startup-health.json": {
+      "bytes": 164,
+      "sha256": "8189f2882417839624909f7ecabe7e94e447a8b93dca496a4e8c2c8500b3f71e"
+    },
+    "readiness-formal-02-v5-r2/cleanup-evidence.json": {
+      "bytes": 1997,
+      "sha256": "4fdb5677c8a99fc008a6ef5e40cb5cc6cfb98ad3f97555aa8f1e6834b3470db6"
+    },
+    "readiness-formal-02-v5-r2/manifest.json": {
+      "bytes": 27863,
+      "sha256": "b005558bf845dd094150353aa8bc2e4e03f7bdc3e64450442d215627b03c147a"
+    },
+    "readiness-formal-02-v5-r2/px4-build-evidence.json": {
+      "bytes": 630,
+      "sha256": "cc39dc8a3eb9c337a937504fe83423fc6e2d5cf2f5baa5f97153a3929b30d749"
+    },
+    "readiness-formal-02-v5-r2/px4-sensor-source-warmup.json": {
+      "bytes": 12675,
+      "sha256": "cbf946052f4b54c9c9dbc6c98b6eaae5d81b2318512e834011b5daf4874384e3"
+    },
+    "readiness-formal-02-v5-r2/px4-sensor-topic-connections.json": {
+      "bytes": 9324,
+      "sha256": "cf4468324d1083a657c4ade7e31bc8d0172a4cfa13da556d499889a93e3cf1fa"
+    },
+    "readiness-formal-02-v5-r2/restoration-evidence.json": {
+      "bytes": 792,
+      "sha256": "49d2bd6eeaaa7f442aba0622a3eb5587d0ba67ab6eba6e4c48839c2ff889894c"
+    },
+    "readiness-formal-02-v5-r2/score.json": {
+      "bytes": 279,
+      "sha256": "10acead35af70039bc6642c170e06ec23c69251bc1334b6c2f1ac04184236eec"
+    },
+    "readiness-formal-02-v5-r2/summary.json": {
+      "bytes": 2687,
+      "sha256": "6e5705a47d533fe16f7c0d73f3631f11e85c20e9a142e11eb3bce5e8af49cf2c"
+    },
+    "readiness-formal-03-v5-r3/agent-0-startup-health.json": {
+      "bytes": 164,
+      "sha256": "47b3fbb630a9d45e323af3c33cabc5ea08737b7f0c403f1bff5eb3759f3119ef"
+    },
+    "readiness-formal-03-v5-r3/agent-1-startup-health.json": {
+      "bytes": 164,
+      "sha256": "0c534d7d3cf1e689f231f7dbd5659f7cedd7a704de4a6575d9ef78fdddc2af7a"
+    },
+    "readiness-formal-03-v5-r3/agent-2-startup-health.json": {
+      "bytes": 164,
+      "sha256": "0dffb8dc115810e121f2e5461d51e3637ca85b8dd6700ed5be463eadb64066f7"
+    },
+    "readiness-formal-03-v5-r3/agent-3-startup-health.json": {
+      "bytes": 164,
+      "sha256": "23b6068ee4fcb86439bef178538b005ef3771b1ac6680f68ec1ed3ceece7c694"
+    },
+    "readiness-formal-03-v5-r3/agent-4-startup-health.json": {
+      "bytes": 164,
+      "sha256": "8189f2882417839624909f7ecabe7e94e447a8b93dca496a4e8c2c8500b3f71e"
+    },
+    "readiness-formal-03-v5-r3/cleanup-evidence.json": {
+      "bytes": 1997,
+      "sha256": "ab97494b79772a43a07a4a7c2073a906d7875f552be2bb10bd82ebc4665058b9"
+    },
+    "readiness-formal-03-v5-r3/manifest.json": {
+      "bytes": 28628,
+      "sha256": "5947b6977a76540bea2832a8513bd85258bbebb39602d37c32646f2a86ef2dd6"
+    },
+    "readiness-formal-03-v5-r3/px4-build-evidence.json": {
+      "bytes": 630,
+      "sha256": "cc39dc8a3eb9c337a937504fe83423fc6e2d5cf2f5baa5f97153a3929b30d749"
+    },
+    "readiness-formal-03-v5-r3/px4-sensor-source-warmup.json": {
+      "bytes": 13440,
+      "sha256": "db803301f006669cefa87bea2c8265fae660220920b91615cf5197ef5e9aa56b"
+    },
+    "readiness-formal-03-v5-r3/px4-sensor-topic-connections.json": {
+      "bytes": 9324,
+      "sha256": "3ff988056a381da98b210cf0dde8958930496c756bdbb158f2b7c1658f28dd09"
+    },
+    "readiness-formal-03-v5-r3/restoration-evidence.json": {
+      "bytes": 792,
+      "sha256": "49d2bd6eeaaa7f442aba0622a3eb5587d0ba67ab6eba6e4c48839c2ff889894c"
+    },
+    "readiness-formal-03-v5-r3/score.json": {
+      "bytes": 279,
+      "sha256": "17b398dee1e7ece782531cba600f444bca9937c3d88c5b11dc4f0d1544d66528"
+    },
+    "readiness-formal-03-v5-r3/summary.json": {
+      "bytes": 2688,
+      "sha256": "9a9ec2ff8a5f64bff2103c73801585974c32c140f5c0cdc556ac0852aa5e56e4"
+    },
+    "readiness-formal-04-v5-r4/agent-0-startup-health.json": {
+      "bytes": 164,
+      "sha256": "47b3fbb630a9d45e323af3c33cabc5ea08737b7f0c403f1bff5eb3759f3119ef"
+    },
+    "readiness-formal-04-v5-r4/agent-1-startup-health.json": {
+      "bytes": 164,
+      "sha256": "0c534d7d3cf1e689f231f7dbd5659f7cedd7a704de4a6575d9ef78fdddc2af7a"
+    },
+    "readiness-formal-04-v5-r4/agent-2-startup-health.json": {
+      "bytes": 164,
+      "sha256": "0dffb8dc115810e121f2e5461d51e3637ca85b8dd6700ed5be463eadb64066f7"
+    },
+    "readiness-formal-04-v5-r4/agent-3-startup-health.json": {
+      "bytes": 164,
+      "sha256": "23b6068ee4fcb86439bef178538b005ef3771b1ac6680f68ec1ed3ceece7c694"
+    },
+    "readiness-formal-04-v5-r4/agent-4-startup-health.json": {
+      "bytes": 164,
+      "sha256": "8189f2882417839624909f7ecabe7e94e447a8b93dca496a4e8c2c8500b3f71e"
+    },
+    "readiness-formal-04-v5-r4/cleanup-evidence.json": {
+      "bytes": 1997,
+      "sha256": "ce25d5e38038633b0f5efe206af6350c266a0af3b9452481b3a875be03c3b8be"
+    },
+    "readiness-formal-04-v5-r4/manifest.json": {
+      "bytes": 27853,
+      "sha256": "90c88d1e75c5abc8dc127b725e009f6091a3371009d6b370c70810a11b2539d6"
+    },
+    "readiness-formal-04-v5-r4/px4-build-evidence.json": {
+      "bytes": 630,
+      "sha256": "cc39dc8a3eb9c337a937504fe83423fc6e2d5cf2f5baa5f97153a3929b30d749"
+    },
+    "readiness-formal-04-v5-r4/px4-sensor-source-warmup.json": {
+      "bytes": 12665,
+      "sha256": "a91a242dade72fa8309f891e476835149d5af9dcb48d41ca4d8be9464435cf67"
+    },
+    "readiness-formal-04-v5-r4/px4-sensor-topic-connections.json": {
+      "bytes": 9324,
+      "sha256": "1952e792d9fcaaeabd0ddef1980ba957216941e5ee24d15920e50630c78189fa"
+    },
+    "readiness-formal-04-v5-r4/restoration-evidence.json": {
+      "bytes": 792,
+      "sha256": "49d2bd6eeaaa7f442aba0622a3eb5587d0ba67ab6eba6e4c48839c2ff889894c"
+    },
+    "readiness-formal-04-v5-r4/score.json": {
+      "bytes": 279,
+      "sha256": "2b21ccd34e86e90af13f349b29599faec0515bdc9f34b3585e2dec3260da0c5f"
+    },
+    "readiness-formal-04-v5-r4/summary.json": {
+      "bytes": 2687,
+      "sha256": "a9de48a858a54cef5211e8d64233d16789f3fa9adf5e1cf7e465399d7e68828b"
+    },
+    "readiness-formal-05-v5-r5/agent-0-startup-health.json": {
+      "bytes": 164,
+      "sha256": "47b3fbb630a9d45e323af3c33cabc5ea08737b7f0c403f1bff5eb3759f3119ef"
+    },
+    "readiness-formal-05-v5-r5/agent-1-startup-health.json": {
+      "bytes": 164,
+      "sha256": "0c534d7d3cf1e689f231f7dbd5659f7cedd7a704de4a6575d9ef78fdddc2af7a"
+    },
+    "readiness-formal-05-v5-r5/agent-2-startup-health.json": {
+      "bytes": 164,
+      "sha256": "0dffb8dc115810e121f2e5461d51e3637ca85b8dd6700ed5be463eadb64066f7"
+    },
+    "readiness-formal-05-v5-r5/agent-3-startup-health.json": {
+      "bytes": 164,
+      "sha256": "23b6068ee4fcb86439bef178538b005ef3771b1ac6680f68ec1ed3ceece7c694"
+    },
+    "readiness-formal-05-v5-r5/agent-4-startup-health.json": {
+      "bytes": 164,
+      "sha256": "8189f2882417839624909f7ecabe7e94e447a8b93dca496a4e8c2c8500b3f71e"
+    },
+    "readiness-formal-05-v5-r5/cleanup-evidence.json": {
+      "bytes": 1997,
+      "sha256": "3d740e63b6be7baba14efff819137126f296c5e05e00d1791308a2ad8c5ce6b1"
+    },
+    "readiness-formal-05-v5-r5/manifest.json": {
+      "bytes": 27851,
+      "sha256": "1678e289a4400100556215e18a742d67c4ea0acbeee0a0bff9c9e1256b525811"
+    },
+    "readiness-formal-05-v5-r5/px4-build-evidence.json": {
+      "bytes": 630,
+      "sha256": "cc39dc8a3eb9c337a937504fe83423fc6e2d5cf2f5baa5f97153a3929b30d749"
+    },
+    "readiness-formal-05-v5-r5/px4-sensor-source-warmup.json": {
+      "bytes": 12663,
+      "sha256": "f4f730264f76ed83aa7c91ceeaad0df2164904bb651e2937106d3f8bb2396c13"
+    },
+    "readiness-formal-05-v5-r5/px4-sensor-topic-connections.json": {
+      "bytes": 9324,
+      "sha256": "eade937f9caaa8bf3cf186c31b28aeaf4dd9e9a0b9b6a81a0729d24cb8ba814a"
+    },
+    "readiness-formal-05-v5-r5/restoration-evidence.json": {
+      "bytes": 792,
+      "sha256": "49d2bd6eeaaa7f442aba0622a3eb5587d0ba67ab6eba6e4c48839c2ff889894c"
+    },
+    "readiness-formal-05-v5-r5/score.json": {
+      "bytes": 279,
+      "sha256": "b71df3e03fb9201344cdab02a55631d1ca00e88f274682a2d3bd75140098a1f3"
+    },
+    "readiness-formal-05-v5-r5/summary.json": {
+      "bytes": 2687,
+      "sha256": "8579e408aae815ba59e697be8aef337f7b83715e7cfd5c936d611ecacdd5d21c"
+    },
+    "readiness-formal-06-v5-r6/agent-0-startup-health.json": {
+      "bytes": 164,
+      "sha256": "47b3fbb630a9d45e323af3c33cabc5ea08737b7f0c403f1bff5eb3759f3119ef"
+    },
+    "readiness-formal-06-v5-r6/agent-1-startup-health.json": {
+      "bytes": 164,
+      "sha256": "0c534d7d3cf1e689f231f7dbd5659f7cedd7a704de4a6575d9ef78fdddc2af7a"
+    },
+    "readiness-formal-06-v5-r6/agent-2-startup-health.json": {
+      "bytes": 164,
+      "sha256": "0dffb8dc115810e121f2e5461d51e3637ca85b8dd6700ed5be463eadb64066f7"
+    },
+    "readiness-formal-06-v5-r6/agent-3-startup-health.json": {
+      "bytes": 164,
+      "sha256": "23b6068ee4fcb86439bef178538b005ef3771b1ac6680f68ec1ed3ceece7c694"
+    },
+    "readiness-formal-06-v5-r6/agent-4-startup-health.json": {
+      "bytes": 164,
+      "sha256": "8189f2882417839624909f7ecabe7e94e447a8b93dca496a4e8c2c8500b3f71e"
+    },
+    "readiness-formal-06-v5-r6/cleanup-evidence.json": {
+      "bytes": 1997,
+      "sha256": "1082bc45d2a086891d46d7458b90ece7a432577586f52189bd7f30a25ce84ad6"
+    },
+    "readiness-formal-06-v5-r6/manifest.json": {
+      "bytes": 27850,
+      "sha256": "0fb7ed9b57d423b14ae2e90ea39581a5984489875d1c73859a99b8f372dd008d"
+    },
+    "readiness-formal-06-v5-r6/px4-build-evidence.json": {
+      "bytes": 630,
+      "sha256": "cc39dc8a3eb9c337a937504fe83423fc6e2d5cf2f5baa5f97153a3929b30d749"
+    },
+    "readiness-formal-06-v5-r6/px4-sensor-source-warmup.json": {
+      "bytes": 12662,
+      "sha256": "e110a511b6e46aceb5605fe964c8cff0f1729aff323917386f4e130772b443a4"
+    },
+    "readiness-formal-06-v5-r6/px4-sensor-topic-connections.json": {
+      "bytes": 9324,
+      "sha256": "47e6a7a92dc1aec586660c8ec0c68b68f655299ca297e39b838f3c53fafa6059"
+    },
+    "readiness-formal-06-v5-r6/restoration-evidence.json": {
+      "bytes": 792,
+      "sha256": "49d2bd6eeaaa7f442aba0622a3eb5587d0ba67ab6eba6e4c48839c2ff889894c"
+    },
+    "readiness-formal-06-v5-r6/score.json": {
+      "bytes": 278,
+      "sha256": "90bca72b7951836317b61cfc2ec199c088c2a1979908a09c1b32a7f3fa571a93"
+    },
+    "readiness-formal-06-v5-r6/summary.json": {
+      "bytes": 2687,
+      "sha256": "a4df76ec140f96999b901f4ad7bc85131a791a5871b9a33464bd8a288c48ab25"
+    },
+    "readiness-formal-07-v5-r7/agent-0-startup-health.json": {
+      "bytes": 164,
+      "sha256": "47b3fbb630a9d45e323af3c33cabc5ea08737b7f0c403f1bff5eb3759f3119ef"
+    },
+    "readiness-formal-07-v5-r7/agent-1-startup-health.json": {
+      "bytes": 164,
+      "sha256": "0c534d7d3cf1e689f231f7dbd5659f7cedd7a704de4a6575d9ef78fdddc2af7a"
+    },
+    "readiness-formal-07-v5-r7/agent-2-startup-health.json": {
+      "bytes": 164,
+      "sha256": "0dffb8dc115810e121f2e5461d51e3637ca85b8dd6700ed5be463eadb64066f7"
+    },
+    "readiness-formal-07-v5-r7/agent-3-startup-health.json": {
+      "bytes": 164,
+      "sha256": "23b6068ee4fcb86439bef178538b005ef3771b1ac6680f68ec1ed3ceece7c694"
+    },
+    "readiness-formal-07-v5-r7/agent-4-startup-health.json": {
+      "bytes": 164,
+      "sha256": "8189f2882417839624909f7ecabe7e94e447a8b93dca496a4e8c2c8500b3f71e"
+    },
+    "readiness-formal-07-v5-r7/cleanup-evidence.json": {
+      "bytes": 1997,
+      "sha256": "8090baa9f646ab4c1e635036241b80ff2e05f6a98cfdb6402335f8fada48a6ee"
+    },
+    "readiness-formal-07-v5-r7/manifest.json": {
+      "bytes": 27843,
+      "sha256": "736adcea69185773f47cb9ea6c96c23728abbc805dc1a6d6483b27f94b14d586"
+    },
+    "readiness-formal-07-v5-r7/px4-build-evidence.json": {
+      "bytes": 630,
+      "sha256": "cc39dc8a3eb9c337a937504fe83423fc6e2d5cf2f5baa5f97153a3929b30d749"
+    },
+    "readiness-formal-07-v5-r7/px4-sensor-source-warmup.json": {
+      "bytes": 12656,
+      "sha256": "af163b3cd0aa3fc6861414bdbd79e5342ab3c015faf5a35ea76d1b865fc552d2"
+    },
+    "readiness-formal-07-v5-r7/px4-sensor-topic-connections.json": {
+      "bytes": 9324,
+      "sha256": "41a58388d75a9b1053049746e2959c8dc201de281fb88b4f9996179c8ac707d7"
+    },
+    "readiness-formal-07-v5-r7/restoration-evidence.json": {
+      "bytes": 792,
+      "sha256": "49d2bd6eeaaa7f442aba0622a3eb5587d0ba67ab6eba6e4c48839c2ff889894c"
+    },
+    "readiness-formal-07-v5-r7/score.json": {
+      "bytes": 279,
+      "sha256": "eaf16d6052898f836df97aaef38f4211cd80e0254cc61a727f8534fc9338e09f"
+    },
+    "readiness-formal-07-v5-r7/summary.json": {
+      "bytes": 2687,
+      "sha256": "d6e202a4fc8c45321e0fb12f2892bcbd13b0702d2c08fc4749a3b43b9ef618f9"
+    },
+    "readiness-formal-08-v5-r8/agent-0-startup-health.json": {
+      "bytes": 164,
+      "sha256": "47b3fbb630a9d45e323af3c33cabc5ea08737b7f0c403f1bff5eb3759f3119ef"
+    },
+    "readiness-formal-08-v5-r8/agent-1-startup-health.json": {
+      "bytes": 164,
+      "sha256": "0c534d7d3cf1e689f231f7dbd5659f7cedd7a704de4a6575d9ef78fdddc2af7a"
+    },
+    "readiness-formal-08-v5-r8/agent-2-startup-health.json": {
+      "bytes": 164,
+      "sha256": "0dffb8dc115810e121f2e5461d51e3637ca85b8dd6700ed5be463eadb64066f7"
+    },
+    "readiness-formal-08-v5-r8/agent-3-startup-health.json": {
+      "bytes": 164,
+      "sha256": "23b6068ee4fcb86439bef178538b005ef3771b1ac6680f68ec1ed3ceece7c694"
+    },
+    "readiness-formal-08-v5-r8/agent-4-startup-health.json": {
+      "bytes": 164,
+      "sha256": "8189f2882417839624909f7ecabe7e94e447a8b93dca496a4e8c2c8500b3f71e"
+    },
+    "readiness-formal-08-v5-r8/cleanup-evidence.json": {
+      "bytes": 1997,
+      "sha256": "de00483b1820638c125984f288bb38ef9a9cef258328ac2367a4f646db41e5c7"
+    },
+    "readiness-formal-08-v5-r8/manifest.json": {
+      "bytes": 28547,
+      "sha256": "0529aa70dde02cb5b56c5ea9cb64f5a0ce580734c2ae9646658304cfa610b763"
+    },
+    "readiness-formal-08-v5-r8/px4-build-evidence.json": {
+      "bytes": 630,
+      "sha256": "cc39dc8a3eb9c337a937504fe83423fc6e2d5cf2f5baa5f97153a3929b30d749"
+    },
+    "readiness-formal-08-v5-r8/px4-sensor-source-warmup.json": {
+      "bytes": 13359,
+      "sha256": "e945f87bceef897f9b32c6a2c840665b25070ecbf65255ce69adcee40b50997b"
+    },
+    "readiness-formal-08-v5-r8/px4-sensor-topic-connections.json": {
+      "bytes": 9324,
+      "sha256": "60d6cf1b446480a1a391dae292f1b0e80755afb2721ab9407ecb67310e9ea2c8"
+    },
+    "readiness-formal-08-v5-r8/restoration-evidence.json": {
+      "bytes": 792,
+      "sha256": "49d2bd6eeaaa7f442aba0622a3eb5587d0ba67ab6eba6e4c48839c2ff889894c"
+    },
+    "readiness-formal-08-v5-r8/score.json": {
+      "bytes": 279,
+      "sha256": "0b9f7b6d8e4be6886c5cbb72538df854d4f9f9c66de0ade805b04f206444e273"
+    },
+    "readiness-formal-08-v5-r8/summary.json": {
+      "bytes": 2675,
+      "sha256": "e278b36b78078e099c242ebe8397efac5304174d3ed76bcb99221cd5c7bf020d"
+    },
+    "readiness-formal-09-v5-r9/agent-0-startup-health.json": {
+      "bytes": 164,
+      "sha256": "47b3fbb630a9d45e323af3c33cabc5ea08737b7f0c403f1bff5eb3759f3119ef"
+    },
+    "readiness-formal-09-v5-r9/agent-1-startup-health.json": {
+      "bytes": 164,
+      "sha256": "0c534d7d3cf1e689f231f7dbd5659f7cedd7a704de4a6575d9ef78fdddc2af7a"
+    },
+    "readiness-formal-09-v5-r9/agent-2-startup-health.json": {
+      "bytes": 164,
+      "sha256": "0dffb8dc115810e121f2e5461d51e3637ca85b8dd6700ed5be463eadb64066f7"
+    },
+    "readiness-formal-09-v5-r9/agent-3-startup-health.json": {
+      "bytes": 164,
+      "sha256": "23b6068ee4fcb86439bef178538b005ef3771b1ac6680f68ec1ed3ceece7c694"
+    },
+    "readiness-formal-09-v5-r9/agent-4-startup-health.json": {
+      "bytes": 164,
+      "sha256": "8189f2882417839624909f7ecabe7e94e447a8b93dca496a4e8c2c8500b3f71e"
+    },
+    "readiness-formal-09-v5-r9/cleanup-evidence.json": {
+      "bytes": 1997,
+      "sha256": "ebc13a4d50b2c926c1ea0201d7fcbf3f21ce4c50c2d19149d8a7c1eb1c3bf85c"
+    },
+    "readiness-formal-09-v5-r9/manifest.json": {
+      "bytes": 28627,
+      "sha256": "ec34052a9bf70b5b304e85d05a6a48b579b999f25e373a70e94f95c7b73c1938"
+    },
+    "readiness-formal-09-v5-r9/px4-build-evidence.json": {
+      "bytes": 630,
+      "sha256": "cc39dc8a3eb9c337a937504fe83423fc6e2d5cf2f5baa5f97153a3929b30d749"
+    },
+    "readiness-formal-09-v5-r9/px4-sensor-source-warmup.json": {
+      "bytes": 13439,
+      "sha256": "863d2864e20893481e7bc95121a78a93a9ea253c1512328f0b40faf2b36d1ed1"
+    },
+    "readiness-formal-09-v5-r9/px4-sensor-topic-connections.json": {
+      "bytes": 9324,
+      "sha256": "d859249a724c9b76554ed5cebb563002cce30422cbf1da6e49bbf8a5a8c79696"
+    },
+    "readiness-formal-09-v5-r9/restoration-evidence.json": {
+      "bytes": 792,
+      "sha256": "49d2bd6eeaaa7f442aba0622a3eb5587d0ba67ab6eba6e4c48839c2ff889894c"
+    },
+    "readiness-formal-09-v5-r9/score.json": {
+      "bytes": 279,
+      "sha256": "60ce0d2d517d5b3acdc2be6f3a596a06cd54ce2054fa193bcacd338305d3addb"
+    },
+    "readiness-formal-09-v5-r9/summary.json": {
+      "bytes": 2675,
+      "sha256": "f393468f97aa57fdbfc7bca4f0a28b5911e143234ba3de475719dfe97e3bedce"
+    },
+    "readiness-formal-10-v5-r10/agent-0-startup-health.json": {
+      "bytes": 164,
+      "sha256": "47b3fbb630a9d45e323af3c33cabc5ea08737b7f0c403f1bff5eb3759f3119ef"
+    },
+    "readiness-formal-10-v5-r10/agent-1-startup-health.json": {
+      "bytes": 164,
+      "sha256": "0c534d7d3cf1e689f231f7dbd5659f7cedd7a704de4a6575d9ef78fdddc2af7a"
+    },
+    "readiness-formal-10-v5-r10/agent-2-startup-health.json": {
+      "bytes": 164,
+      "sha256": "0dffb8dc115810e121f2e5461d51e3637ca85b8dd6700ed5be463eadb64066f7"
+    },
+    "readiness-formal-10-v5-r10/agent-3-startup-health.json": {
+      "bytes": 164,
+      "sha256": "23b6068ee4fcb86439bef178538b005ef3771b1ac6680f68ec1ed3ceece7c694"
+    },
+    "readiness-formal-10-v5-r10/agent-4-startup-health.json": {
+      "bytes": 164,
+      "sha256": "8189f2882417839624909f7ecabe7e94e447a8b93dca496a4e8c2c8500b3f71e"
+    },
+    "readiness-formal-10-v5-r10/cleanup-evidence.json": {
+      "bytes": 1998,
+      "sha256": "3fb5d0e5d235081a75751c396f290dec8f55acf80d9c148e2f32967299ee3fbe"
+    },
+    "readiness-formal-10-v5-r10/manifest.json": {
+      "bytes": 27846,
+      "sha256": "96dd16dd367f5db1107637254b1c965fdc399309e6b2808e0172d3b725d08cac"
+    },
+    "readiness-formal-10-v5-r10/px4-build-evidence.json": {
+      "bytes": 630,
+      "sha256": "cc39dc8a3eb9c337a937504fe83423fc6e2d5cf2f5baa5f97153a3929b30d749"
+    },
+    "readiness-formal-10-v5-r10/px4-sensor-source-warmup.json": {
+      "bytes": 12654,
+      "sha256": "0ae4929c7e9c41ed47b0d36392a40c9d1c75691019cee94ae941d4f6d15ba4c8"
+    },
+    "readiness-formal-10-v5-r10/px4-sensor-topic-connections.json": {
+      "bytes": 9324,
+      "sha256": "d348c013261243fa57ee9e2d9eb10698b7761f8eb5ba0c86248fe811a6cd6da1"
+    },
+    "readiness-formal-10-v5-r10/restoration-evidence.json": {
+      "bytes": 792,
+      "sha256": "49d2bd6eeaaa7f442aba0622a3eb5587d0ba67ab6eba6e4c48839c2ff889894c"
+    },
+    "readiness-formal-10-v5-r10/score.json": {
+      "bytes": 282,
+      "sha256": "b5bc6ee450e1b28ff57f7382878d1d754e333c1722311b0c01a909575f66cd86"
+    },
+    "readiness-formal-10-v5-r10/summary.json": {
+      "bytes": 2675,
+      "sha256": "25f00ef62528486482ef6afdc6ca67f12cfcc7756effc75a2c0ff4d43a5da464"
+    }
+  },
+  "schema": "flydrones-px4-sensor-readiness-compact-index-v1"
+}

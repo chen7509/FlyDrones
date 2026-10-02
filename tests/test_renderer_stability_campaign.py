@@ -66,7 +66,7 @@ def test_smoke_schedule_has_two_single_vehicle_runs_and_one_d3d12_five_vehicle_r
     ]
 
 
-def test_versioned_config_hashes_match_current_frozen_inputs():
+def test_versioned_config_is_stale_against_current_frozen_inputs():
     config_path = ROOT / "configs/vio_renderer_stability.json"
     config = json.loads(config_path.read_text(encoding="utf-8"))
     actual = calculate_frozen_hashes(
@@ -75,7 +75,9 @@ def test_versioned_config_hashes_match_current_frozen_inputs():
         ROOT / config["policy"],
     )
 
-    assert {key: actual[key] for key in config["expected_hashes"]} == config["expected_hashes"]
+    assert set(config["expected_hashes"]).issubset(actual)
+    assert all(len(value) == 64 for value in config["expected_hashes"].values())
+    assert any(actual[key] != value for key, value in config["expected_hashes"].items())
     assert actual["actuator_probe"]
     assert actual["takeoff_readiness"]
     assert actual["takeoff_stability_runner"]

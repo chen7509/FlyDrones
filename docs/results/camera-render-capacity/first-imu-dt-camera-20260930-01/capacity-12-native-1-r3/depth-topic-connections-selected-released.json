@@ -1,0 +1,26 @@
+{
+  "accepted": true,
+  "actual": {
+    "0": 1,
+    "1": 0,
+    "2": 0,
+    "3": 0,
+    "4": 0
+  },
+  "expected": {
+    "0": 1,
+    "1": 0,
+    "2": 0,
+    "3": 0,
+    "4": 0
+  },
+  "raw": {
+    "0": "Publishers [Address, Message Type]:\n  tcp://172.28.230.109:38341, gz.msgs.Image\nSubscribers [Address, Message Type]:\n  tcp://172.28.230.109:46369, gz.msgs.Image\n",
+    "1": "Publishers [Address, Message Type]:\n  tcp://172.28.230.109:38341, gz.msgs.Image\nNo subscribers on topic [/world/flydrones_forest/model/x500_depth_fly_1/link/camera_link/sensor/StereoOV7251/depth_image]\n",
+    "2": "Publishers [Address, Message Type]:\n  tcp://172.28.230.109:38341, gz.msgs.Image\nNo subscribers on topic [/world/flydrones_forest/model/x500_depth_fly_2/link/camera_link/sensor/StereoOV7251/depth_image]\n",
+    "3": "Publishers [Address, Message Type]:\n  tcp://172.28.230.109:38341, gz.msgs.Image\nNo subscribers on topic [/world/flydrones_forest/model/x500_depth_fly_3/link/camera_link/sensor/StereoOV7251/depth_image]\n",
+    "4": "Publishers [Address, Message Type]:\n  tcp://172.28.230.109:38341, gz.msgs.Image\nNo subscribers on topic [/world/flydrones_forest/model/x500_depth_fly_4/link/camera_link/sensor/StereoOV7251/depth_image]\n"
+  },
+  "schema": "flydrones-depth-topic-discovery-v1",
+  "stage": "selected-released"
+}

@@ -191,6 +191,8 @@ def score_capacity_run(
         evidence.append("source_hash_mismatch")
     if manifest.get("native_executable_hash_match") is not True:
         evidence.append("native_executable_hash_mismatch")
+    if manifest.get("px4_build_identity_match") is not True:
+        evidence.append("px4_build_identity_mismatch")
     if manifest.get("observer_closed_cleanly") is not True:
         evidence.append("observer_not_clean")
     if manifest.get("scheduler_closed_cleanly") is not True:
@@ -238,6 +240,8 @@ def score_capacity_run(
     if expected_subscribers == 0:
         if phase.get("depth_subscription_absent") is not True or vehicles:
             evidence.append("unexpected_depth_subscription")
+        if phase.get("accepted") is not True:
+            evidence.append("camera_phase_summary_rejected")
     elif expected_subscribers > 0:
         if len(vehicles) != expected_subscribers:
             evidence.append("camera_vehicle_count_mismatch")

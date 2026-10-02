@@ -1,0 +1,31 @@
+{
+  "schema": "flydrones-raw-clock-crosscheck-v1",
+  "method": "First raw clock row at the recorded start simulation timestamp, compared with first raw row at least 30 simulation seconds later; small differences from runner wall polling are expected.",
+  "runs": [
+    {
+      "name": "capacity-01-idle-0-r1",
+      "recorded_rtf": 0.8694998992003911,
+      "raw_clock_rtf": 0.8703120207844434,
+      "absolute_difference": 0.0008121215840523055,
+      "clock_csv_sha256": "3cb1754bc9c7e2cfae5fc792248ba60483f3f10b844d2fab367330a86f66b7b4",
+      "scored_epoch_sha256": "04ce9a350cf4d20be92bf59f140947a95da80daba7a8fb4ec6eb88feec2fc110"
+    },
+    {
+      "name": "capacity-08-idle-0-r2",
+      "recorded_rtf": 0.8772845673111477,
+      "raw_clock_rtf": 0.8776939866083794,
+      "absolute_difference": 0.00040941929723170567,
+      "clock_csv_sha256": "5537183921c1cc90569fe300715759945ca6dde1d346ab8c32d10d6623f990ba",
+      "scored_epoch_sha256": "fe586ac060bfafc84ea622b7ed4990d655ccf20f27b6c3a986069e3a48a8b038"
+    },
+    {
+      "name": "capacity-10-idle-0-r3",
+      "recorded_rtf": 0.8716535041503283,
+      "raw_clock_rtf": 0.8721479888616238,
+      "absolute_difference": 0.0004944847112955397,
+      "clock_csv_sha256": "cb19446aca40ed32eddd318d9e23c316fac2cc95cd46aceab91aaa3e228f752d",
+      "scored_epoch_sha256": "6b3ed6580d1af9f1af3e6c82345a741e6f55bf74cefba37d3d9055f2cb106bd9"
+    }
+  ],
+  "all_within_0_002_rtf": true
+}

@@ -1,0 +1,136 @@
+{
+  "schema": "flydrones-owned-process-cleanup-v1",
+  "registry": "/tmp/flydrones-capacity-capacity-03-python-5-r1-3ca646dae9e7/owned-processes.json",
+  "recorded_processes": 8,
+  "stopped": [
+    {
+      "pid": 79246,
+      "start_ticks": 392634,
+      "argv": [
+        "/home/yuchen7509/PX4-Autopilot/build/px4_sitl_nolockstep/bin/px4",
+        "-i",
+        "4",
+        "-d",
+        "/home/yuchen7509/PX4-Autopilot/build/px4_sitl_nolockstep/etc"
+      ],
+      "role": "px4-4"
+    },
+    {
+      "pid": 78868,
+      "start_ticks": 392405,
+      "argv": [
+        "/home/yuchen7509/PX4-Autopilot/build/px4_sitl_nolockstep/bin/px4",
+        "-i",
+        "3",
+        "-d",
+        "/home/yuchen7509/PX4-Autopilot/build/px4_sitl_nolockstep/etc"
+      ],
+      "role": "px4-3"
+    },
+    {
+      "pid": 78491,
+      "start_ticks": 392177,
+      "argv": [
+        "/home/yuchen7509/PX4-Autopilot/build/px4_sitl_nolockstep/bin/px4",
+        "-i",
+        "2",
+        "-d",
+        "/home/yuchen7509/PX4-Autopilot/build/px4_sitl_nolockstep/etc"
+      ],
+      "role": "px4-2"
+    },
+    {
+      "pid": 78114,
+      "start_ticks": 391949,
+      "argv": [
+        "/home/yuchen7509/PX4-Autopilot/build/px4_sitl_nolockstep/bin/px4",
+        "-i",
+        "1",
+        "-d",
+        "/home/yuchen7509/PX4-Autopilot/build/px4_sitl_nolockstep/etc"
+      ],
+      "role": "px4-1"
+    },
+    {
+      "pid": 77857,
+      "start_ticks": 391718,
+      "argv": [
+        "/home/yuchen7509/PX4-Autopilot/build/px4_sitl_nolockstep/bin/px4",
+        "-i",
+        "0",
+        "-d",
+        "/home/yuchen7509/PX4-Autopilot/build/px4_sitl_nolockstep/etc"
+      ],
+      "role": "px4-0"
+    },
+    {
+      "pid": 77798,
+      "start_ticks": 391474,
+      "argv": [
+        "gz sim --headless-rendering -s /home/yuchen7509/PX4-Autopilot/Tools/simulation/gz/worlds/flydrones_forest.sdf"
+      ],
+      "role": "gazebo-server"
+    }
+  ],
+  "already_gone": [
+    {
+      "pid": 80800,
+      "start_ticks": 395867,
+      "argv": [
+        "/usr/bin/python3",
+        "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/px4-sensor-readiness/tools/run_camera_phase_scheduler_wsl.py",
+        "--output",
+        "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/px4-sensor-readiness/results/camera-render-capacity/first-imu-dt-camera-20260930-01/capacity-03-python-5-r1/camera-scheduler.jsonl",
+        "--ready-marker",
+        "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/px4-sensor-readiness/results/camera-render-capacity/first-imu-dt-camera-20260930-01/capacity-03-python-5-r1/camera-scheduler-ready.json",
+        "--completion-marker",
+        "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/px4-sensor-readiness/results/camera-render-capacity/first-imu-dt-camera-20260930-01/capacity-03-python-5-r1/trial-complete.marker",
+        "--vehicle-count",
+        "5",
+        "--duration-s",
+        "300",
+        "--topology-timeout-s",
+        "150",
+        "--poll-interval-s",
+        "0.001",
+        "--flush-interval-s",
+        "0.25",
+        "--dispatch-delay-ns",
+        "4000000",
+        "--formal"
+      ],
+      "role": "scheduler"
+    },
+    {
+      "pid": 80258,
+      "start_ticks": 393721,
+      "argv": [
+        "/usr/bin/python3",
+        "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/px4-sensor-readiness/tools/probe_camera_phase_wsl.py",
+        "--output",
+        "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/px4-sensor-readiness/results/camera-render-capacity/first-imu-dt-camera-20260930-01/capacity-03-python-5-r1/camera-phase.jsonl",
+        "--ready-marker",
+        "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/px4-sensor-readiness/results/camera-render-capacity/first-imu-dt-camera-20260930-01/capacity-03-python-5-r1/camera-phase-ready.json",
+        "--summary",
+        "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/px4-sensor-readiness/results/camera-render-capacity/first-imu-dt-camera-20260930-01/capacity-03-python-5-r1/camera-phase-summary.json",
+        "--completion-marker",
+        "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/px4-sensor-readiness/results/camera-render-capacity/first-imu-dt-camera-20260930-01/capacity-03-python-5-r1/trial-complete.marker",
+        "--mode",
+        "phased",
+        "--vehicle-count",
+        "5",
+        "--duration-s",
+        "300",
+        "--warmup-image-count-min",
+        "11",
+        "--flush-interval-s",
+        "0.25",
+        "--scheduler-ready-marker",
+        "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/px4-sensor-readiness/results/camera-render-capacity/first-imu-dt-camera-20260930-01/capacity-03-python-5-r1/camera-scheduler-ready.json"
+      ],
+      "role": "observer"
+    }
+  ],
+  "ownership_mismatch": [],
+  "failed_to_stop": []
+}

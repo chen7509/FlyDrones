@@ -1,0 +1,18 @@
+{
+  "schema": "flydrones-recovered-server-config-v1",
+  "recovered_on": "2026-10-01",
+  "source_run_directory": "/tmp/flydrones-capacity-capacity-01-idle-0-r1-4d2e5b0fc1a3",
+  "raw_copy": "results/camera-render-capacity/sensor-event-throttled-paused-dev-20260930-01/trials/capacity-01-idle-0-r1/custom-server.config.recovered",
+  "evaluation": {
+    "accepted": true,
+    "reasons": [],
+    "expected_path": "/tmp/flydrones-capacity-capacity-01-idle-0-r1-4d2e5b0fc1a3/custom-server.config",
+    "expected_sha256": "0273bceb1620aab5cc20a401e5b3fccac9e30ee087aa160d6780d74984529468",
+    "sha256": "0273bceb1620aab5cc20a401e5b3fccac9e30ee087aa160d6780d74984529468",
+    "expected_sensors_plugin": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/px4-sensor-readiness/build/gazebo-sensors-event-throttled-paused/libgz-sim8-sensors-system.so",
+    "sensors_plugin_entry_count": 1,
+    "sensors_plugin_filename": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/px4-sensor-readiness/build/gazebo-sensors-event-throttled-paused/libgz-sim8-sensors-system.so"
+  },
+  "runtime_attestation_bound": false,
+  "limitation": "Recovered after the trial from its private run directory; the 2026-09-30 renderer attestation did not bind this config path or SHA-256."
+}

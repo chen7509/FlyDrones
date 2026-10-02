@@ -1,5 +1,262 @@
 # Five-Camera Render Capacity Report
 
+> Follow-up (2026-10-01): the user confirmed that native Linux is not installed
+> on this machine and elected to defer that comparison. It remains **untested**;
+> WSL2 measurements must not be presented as native Linux capacity. Read-only
+> reanalysis of the three committed scored windows found Gazebo process CPU
+> rates of 2.328, 2.335, and 2.347 core-equivalents. Their stability reinforces
+> that the observed sub-0.95 RTF is repeatable, but process CPU totals and
+> `cpu-clock:u` stacks do not identify wall-time blocking or GPU waits. WSL2
+> does not expose the `sched:sched_switch` tracepoint here, so that proposed
+> scheduler probe is unavailable. The next diagnostic must measure the
+> simulation thread's elapsed versus runnable time with an available counter
+> before changing physics, camera semantics, or acceptance thresholds.
+>
+> Current update (2026-10-01, Transport isolation): the runner now clears an
+> inherited `GZ_IP`, accepts only an explicit IPv4 loopback address, and the
+> renderer attester proves the value from the live Gazebo process environment.
+> Three repetitions using the committed runner bytes and `GZ_IP=127.0.0.1`
+> measured 0.8695, 0.8773, and 0.8717 RTF (mean 0.8728; range 0.0078). All
+> three had valid evidence, five healthy PX4 instances, five ULogs, and clean
+> restoration. The 0.03 scored-RTF repeatability gate passed; the 0.95
+> performance gate did not. One earlier attempt with the same committed inputs
+> never reached scoring because camera trigger connections timed out; it is
+> retained as a separate startup reliability failure.
+> The one-camera, five-camera, and 12-slot tests therefore remain blocked. See
+> the [compact loopback evidence](results/camera-render-capacity/renderer-loopback-20261001-01).
+>
+> Current update (2026-10-01): profiler-led work found that PX4's default
+> Gazebo server configuration loaded `custom::GstCameraSystem` even though the
+> test world contains depth cameras and no matching regular `/image` stream.
+> Its topic-list and regular-expression search repeated every simulation
+> update. Removing only that unused plugin through a private, attested
+> run-scoped server config removed the sampled GStreamer hot path. A valid
+> exploratory trial measured 0.8574 RTF, but the exact final-code run measured
+> 0.7895; their range exceeds the 0.03 repeatability limit, so no stable RTF
+> improvement is claimed. A profiled run measured 0.8507 RTF, with Gazebo
+> Transport discovery and DART physics becoming the leading sampled costs. The
+> 0.95 gate remains closed. See the
+> [compact profiler evidence](results/camera-render-capacity/renderer-profiler-20261001-01).
+>
+> The preceding audit found that the historical
+> `idle-0` cells had zero depth-image subscribers but still triggered all five
+> cameras at 10 Hz. They were not true zero-render baselines. The scheduler now
+> changes from the five-camera attestation phase to the selected scored trigger
+> count before the scored epoch. Corrected Ogre2 development trials measured
+> 0.7798–0.8349 RTF with zero steady triggers, 0.7024 with one camera, and
+> 0.5135 with five cameras. An independently attested Ogre1 zero-trigger trial
+> measured 0.7567 RTF, so Ogre1 was rejected before expanding to one and five
+> cameras. The formal 0.95 gate remains closed and the 12-slot campaign was not
+> rerun. See the [compact renderer diagnosis](results/camera-render-capacity/renderer-diagnosis-20260930-01).
+
+## Renderer activation diagnosis
+
+### Profiler-led server-plugin result
+
+#### Gazebo Transport loopback isolation
+
+The no-GStreamer profile left Gazebo Transport discovery as the largest sampled
+cumulative cost. Gazebo's official Transport documentation states that each
+discovery instance periodically re-advertises its local topics, once per second
+by default. The official environment-variable documentation defines `GZ_IP` as
+the IP address advertised for discovery. The WSL host exposed both loopback and
+an Ethernet interface, so a bounded experiment explicitly selected
+`127.0.0.1`; it did not change the discovery heartbeat, topic graph, camera
+contract, physics, or PX4 configuration. See the official
+[Transport discovery documentation](https://gazebosim.org/api/transport/13/development.html),
+[Discovery API source](https://gazebosim.org/api/transport/13/Discovery_8hh_source.html),
+and [environment-variable reference](https://gazebosim.org/api/transport/12/envvars.html).
+
+The first exploratory loopback run reached 0.9122 RTF, and a profiled run
+reached 0.8875 RTF with 11,227 samples and zero lost samples. Those runs
+motivated an audited implementation. A subsequent three-run set used identical
+working-tree bytes and proved live `GZ_IP=127.0.0.1`, but Git's line-ending
+normalization changed the runner hash when it was committed. Those values,
+0.8769, 0.8474, and 0.8226 RTF (mean 0.8490; range 0.0543), remain
+historical development evidence rather than a directly reproducible checkout
+baseline. The committed-byte set is:
+
+| Repetition | Evidence | RTF | Result |
+|---:|---|---:|---|
+| 1 | valid | 0.8695 | below 0.95 |
+| 2 | valid | 0.8773 | below 0.95 |
+| 3 | valid | 0.8717 | below 0.95 |
+
+The committed-byte mean was 0.8728 and the range was 0.0078, so scored RTF
+repeatability passed its 0.03 gate while every RTF failed 0.95. A preceding
+attempt with the same committed bytes reached all five healthy PX4 and depth
+topic discovery but failed while waiting for Gazebo trigger subscribers; it
+was never scored and is not included in the range. Loopback selection is
+retained as an explicit local-test isolation setting, but these runs alone do
+not prove that it improves RTF over the unbound network setting. The profile
+composition remained similar:
+Transport discovery 44.31%, subscriber-change handling 12.44%, Physics update
+29.07%, DART forward step 23.00%, SceneBroadcaster 2.68%, Sensors 2.09%, and
+`RenderUtil::UpdateFromECM` 1.09%. These cumulative percentages span multiple
+threads and are not additive on one critical path.
+
+An independent calculation from each committed run's raw `clock-probe.csv`
+differs from the recorded RTF by 0.00081, 0.00041, and 0.00049 respectively.
+All are below 0.002; the small differences reflect the runner's wall-clock
+polling around the 30 simulation-second boundary. The
+[raw-clock cross-check](results/camera-render-capacity/renderer-loopback-20261001-01/raw-clock-crosscheck.json)
+preserves the CSV and epoch hashes.
+
+Restricting the raw `cpu-clock:u` profile to the scored 33.80 wall-second
+window gives 8,792 samples. Gazebo Transport discovery appears in 3,889 of
+3,897 samples on thread 558. The simulation step appears in 2,932 of 2,976
+samples on a different thread, 514; 2,072 of that thread's samples contain
+DART calls (69.6%). The Sensors system has 181 samples on thread 604. This
+separation rules out treating the 44% cross-thread discovery sample share as
+a 44% potential RTF gain. The profiler samples running user-space CPU only;
+it does not measure time blocked on locks, GPU synchronization, or scheduling.
+The [scored-window thread analysis](results/camera-render-capacity/renderer-loopback-20261001-01/thread-profile-summary.json)
+includes the raw `perf script` and epoch hashes.
+
+A final bounded experiment removed the Contact and PX4 OpticalFlow systems as
+well as the already-unused GStreamer plugin. A repository model/world search
+found no contact or optical-flow sensors, and runtime attestation proved all
+three plugin entries and their mapped libraries absent. The five PX4 vehicles,
+five depth topics, ULogs, cleanup, and restoration remained healthy, but RTF
+was only 0.8315. This is below both 0.95 and the first loopback three-run
+mean of 0.8490, so the change was rejected after one screening run and its
+implementation was not retained.
+
+The first scored-window profile captured 13,683 `cpu-clock:u` samples. The
+unused `libGstCameraSystem.so` accounted for about 7.32% self samples;
+`custom::GstCameraSystem::findCameraTopic()` accounted for 5.53% cumulative
+samples. Local source inspection at the frozen PX4 revision showed that
+`PostUpdate` called `findCameraTopic()` until initialization, while
+`findCameraTopic()` listed every topic and applied a regular expression that
+matches a regular camera `/image` topic. This depth-only world never satisfies
+that match. PX4's upstream server configuration and GStreamer plugin are
+available in the official
+[server config](https://github.com/PX4/PX4-Autopilot/blob/main/src/modules/simulation/gz_bridge/server.config)
+and [GStreamer plugin documentation](https://github.com/PX4/PX4-Autopilot/blob/main/src/modules/simulation/gz_plugins/gstreamer/README.md).
+
+The corrected launcher can now create a private server config for a development
+trial, remove `custom::GstCameraSystem`, and pass its exact path and SHA-256 to
+the renderer attester. The attester reads the running Gazebo process
+environment, parses the bound config, rejects a remaining forbidden plugin
+entry, and rejects a mapped `libGstCameraSystem.so`. The shared PX4
+`server.config` is never edited.
+
+| Trial | Evidence | RTF | Result |
+|---|---|---:|---|
+| Ogre2, zero triggers, GStreamer disabled, exact final code | valid | 0.7895 | below 0.95 |
+| same retained behavior, earlier exploratory runner | valid | 0.8574 | below 0.95; not hash-identical |
+| same configuration under `perf` sampling | valid | 0.8507 | 10,906 samples, zero lost |
+| Bullet Featherstone, GStreamer disabled | valid | 0.8232 | rejected; slower and teardown segfault |
+| DART PGS, GStreamer disabled | valid | 0.7732 | rejected; slower |
+| SceneBroadcaster disabled | invalid/unscored | — | rejected; PX4 could not discover the Gazebo world |
+
+The two unprofiled no-GStreamer measurements span 0.0678 RTF, above the 0.03
+repeatability limit. The no-GStreamer profile no longer contains the former
+plugin hot path, but this host variance prevents a stable performance-gain
+claim. Its cumulative samples were led by Gazebo Transport publisher discovery (43.31%),
+Physics update (29.13%), DART forward step (23.10%), and subscriber-change
+handling (12.91%). SceneBroadcaster `PostUpdate` was 2.78%, Sensors
+`PostUpdate` 2.09%, and `RenderUtil::UpdateFromECM` 1.00%. These percentages
+span multiple Gazebo threads and do not add into a single critical-path
+percentage; they identify where further native-Linux tracing should focus.
+
+The Bullet and PGS branches were not kept in production code. Removing
+SceneBroadcaster was also not kept because it broke the PX4/Gazebo interface.
+The only retained behavior is the explicit depth-only option that removes the
+unused GStreamer plugin with runtime proof. It does not change vehicle
+dynamics, the camera model, rate, resolution, PX4, EKF2, or thresholds.
+
+The latest evidence separates three loads that the preceding campaign mixed
+together:
+
+| Rendering state | Engine | Steady camera triggers | RTF | Evidence |
+|---|---|---:|---:|---|
+| renderer not initialized; PX4 readiness campaign | Ogre2 default path | 0 | 0.9999 median | formal 10/10 readiness pass |
+| renderer initialized after five-stream attestation | Ogre2 | 0 | 0.8349 | valid development evidence |
+| renderer initialized after five-stream attestation | Ogre2 | 0 | 0.7798 | valid development repeat |
+| renderer initialized | Ogre2 | 1 at 10 Hz | 0.7024 | valid development evidence |
+| renderer initialized | Ogre2 | 5 at 10 Hz | 0.5135 | valid development evidence; phase p95 also exceeded 8 ms |
+| renderer initialized after five-stream attestation | Ogre1 | 0 | 0.7567 | valid development evidence |
+
+All five development trials used the same five PX4 vehicles, no-lockstep PX4
+binary, dynamics, world, depth resolution, camera rate, D3D12 NVIDIA adapter,
+30 simulation-second window, and 0.95 threshold. The two Ogre2 zero-trigger
+repetitions differ by 0.0551, above the 0.03 repeatability limit. Every run
+retained five ULogs and reports successful owned-process cleanup and shared-file
+restoration.
+
+This isolates a large fixed cost after the Gazebo rendering sensor system is
+activated, followed by additional cost for each sustained camera stream. It is
+not a learning-policy, weight, loss-function, PX4 flight-control, or EKF2
+training failure. Sampled NVIDIA utilization remained 0–3% while Gazebo used
+roughly two CPU cores, so the current WSL path is CPU/synchronization limited in
+this test; sampled utilization alone does not prove that the GPU is idle at
+every instant.
+
+The Ogre1 trial loaded `libgz-rendering8-ogre.so.8.2.3` and produced all five
+160 × 120 depth streams at 10 Hz during attestation. It therefore tests a real
+Ogre1 depth path rather than only a command-line flag. Gazebo emitted a
+segmentation-fault stack during commanded teardown, after the scored window;
+the trial still preserved a complete score and clean ownership/restoration
+evidence. This is an additional robustness concern and another reason not to
+adopt Ogre1.
+
+The result agrees with the upstream Gazebo Sensors implementation: its source
+contains a performance TODO explaining that the render-event connection forces
+scene-tree updates at the simulation update rate. Camera sensors suppress image
+generation without consumers, but that does not remove the initialized Sensors
+system's scene-update path. See the upstream
+[Gazebo Sensors system](https://github.com/gazebosim/gz-sim/blob/gz-sim8/src/systems/sensors/Sensors.cc),
+[CameraSensor](https://github.com/gazebosim/gz-sensors/blob/gz-sensors8/src/CameraSensor.cc),
+[DepthCameraSensor](https://github.com/gazebosim/gz-sensors/blob/gz-sensors8/src/DepthCameraSensor.cc),
+and [Gazebo rendering troubleshooting](https://github.com/gazebosim/docs/blob/master/harmonic/troubleshooting.md).
+
+An exact-source isolation experiment then tested that TODO against Gazebo Sim
+8.15.0 tag commit `446a44335a45b704b4d36dabcc5508ee34eeb3d8`.
+The final development plugin kept event updates unthrottled while the world was
+paused for camera startup, capped event-only scene refreshes at 10 Hz after
+resume, and left pending camera triggers unthrottled. Renderer attestation
+proved the exact custom library path and SHA-256 from the Gazebo process map.
+A post-run audit recovered the private server config from the owned run
+directory and confirmed its exact Sensors entry, but the original runtime
+attestation did not bind that config path and hash. The 0.7301 RTF and 98.85
+Gazebo CPU seconds are therefore retained as **diagnostic-only**, not
+evidence-valid under the amended gate. They provide no reason to adopt naive
+event throttling, while the incomplete binding prevents a formal root-cause
+claim. Future custom-plugin runs now require attestation to prove the live
+Gazebo process's `GZ_SIM_SERVER_CONFIG_PATH`, bind its config hash and exact
+Sensors entry, and preserve the config. The reproducible development diff is
+[`sensors-render-event-throttle-10hz.patch`](../patches/gz-sim8/sensors-render-event-throttle-10hz.patch).
+
+Three rejected precursors are also retained: fully suppressing event-only
+updates prevented triggered-camera service readiness; search-path-only plugin
+selection loaded the system library and was rejected by attestation; and
+simulation-time throttling during the paused startup phase prevented the
+trigger handshake. None produced a score. These failures constrain any future
+upstream patch: it must preserve paused-world initialization and triggered
+camera discovery as well as real-time performance.
+
+The next admissible work is a native-Linux runtime comparison or profiler-led
+work below the Sensors event gate. The
+[native Linux handoff](NATIVE_LINUX_CAMERA_CAPACITY_HANDOFF.md) records the
+required host checks, matched inputs, and platform-specific hashes. It must
+first reach at least 0.95 RTF with the renderer initialized, zero steady
+triggers, and a repeatability range no greater than 0.03. Only then should the
+one-camera, five-camera, and frozen 12-slot campaign be repeated. Resolution,
+rate, vehicle count, dynamics, and thresholds must remain unchanged while
+diagnosing the platform.
+
+The original `first-imu-dt-camera-20260930-01` campaign still completed all 12
+slots after the PX4 first-IMU-sample fix. Its historical 0.6032–0.6089
+`idle-0` values now mean **zero subscribers with five cameras still being
+triggered**, not zero rendering. Its native five-camera values remain
+0.5072–0.5087. The campaign remains `non_monotonic_or_inconclusive` and is not
+production-integration eligible. See [`PX4_SENSOR_READINESS_REPORT.md`](PX4_SENSOR_READINESS_REPORT.md)
+and the [formal compact evidence](results/camera-render-capacity/first-imu-dt-camera-20260930-01).
+
+The report below preserves the preceding `task7-frozen-20260929-234951`
+campaign for comparison.
+
 Date: 2026-09-30
 
 Campaign: `task7-frozen-20260929-234951`

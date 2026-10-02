@@ -6,6 +6,7 @@ from __future__ import annotations
 import argparse
 import csv
 import hashlib
+import ipaddress
 import json
 import os
 import re
@@ -70,6 +71,7 @@ def _trial_hashes(native_executable: Path) -> dict[str, str]:
     paths = {
         "runner": Path(__file__),
         "launcher": ROOT / "tools" / "launch_px4_depth_swarm_wsl.sh",
+        "renderer_attestation": ROOT / "tools" / "attest_gazebo_renderer_wsl.py",
         "runtime_probe": ROOT / "tools" / "probe_gazebo_runtime_wsl.py",
         "stopper": ROOT / "tools" / "stop_px4_swarm_wsl.sh",
         "camera_scheduler": ROOT / "tools" / "run_camera_phase_scheduler_wsl.py",
@@ -137,6 +139,8 @@ def capacity_auxiliary_commands(
         "--poll-interval-s", "0.001",
         "--flush-interval-s", "0.25",
         "--dispatch-delay-ns", "4000000",
+        "--selected-vehicle-count", str(run.cell.subscriber_count),
+        "--attestation-release-marker", str(output / "renderer-phase-complete.marker"),
         "--formal",
     ]
     if run.cell.implementation == "python":
@@ -546,6 +550,27 @@ def _capacity_phase_summary(
             return start_sim_ns <= target < end_sim_ns
         return True
 
+    transitions = [event for event in events if event.get("event") == "phase-transition"]
+    transition_valid = (
+        len(transitions) == 1
+        and isinstance(transitions[0].get("selected_vehicle_count"), int)
+        and not isinstance(transitions[0].get("selected_vehicle_count"), bool)
+        and transitions[0].get("selected_vehicle_count") == subscriber_count
+        and isinstance(transitions[0].get("sim_ns"), int)
+        and not isinstance(transitions[0].get("sim_ns"), bool)
+        and int(transitions[0]["sim_ns"]) < start_sim_ns
+    )
+    scored_triggers = [
+        event
+        for event in events
+        if event.get("event") == "trigger" and inside_scored_window(event)
+    ]
+    unselected_triggers = [
+        event
+        for event in scored_triggers
+        if event.get("vehicle_id") not in range(subscriber_count)
+    ]
+
     if subscriber_count == 0:
         scored_events = [event for event in events if inside_scored_window(event)]
         missed_count = sum(event.get("event") == "missed" for event in scored_events)
@@ -555,11 +580,21 @@ def _capacity_phase_summary(
             if event.get("event") == "queue-overflow"
         )
         reasons = [] if window_valid else ["scored_window_invalid"]
+        if not transition_valid:
+            reasons.append("selected_phase_transition_invalid")
+        if scored_triggers:
+            reasons.append("unexpected_scored_trigger")
         return {
             "schema": "flydrones-camera-phase-summary-v1",
             "mode": "phased",
             "vehicle_count": 5,
-            "accepted": window_valid and missed_count == 0 and overflow_count == 0,
+            "accepted": (
+                window_valid
+                and transition_valid
+                and not scored_triggers
+                and missed_count == 0
+                and overflow_count == 0
+            ),
             "reasons": reasons,
             "vehicles": {},
             "adjacent_spacing_median_error_ns": None,
@@ -628,6 +663,10 @@ def _capacity_phase_summary(
             metadata_reasons.append("image_metadata_invalid")
     if not window_valid:
         metadata_reasons.append("scored_window_invalid")
+    if not transition_valid:
+        metadata_reasons.append("selected_phase_transition_invalid")
+    if unselected_triggers:
+        metadata_reasons.append("unselected_vehicle_trigger")
     if metadata_reasons:
         phase["reasons"] = list(dict.fromkeys([*phase["reasons"], *metadata_reasons]))
         phase["accepted"] = False
@@ -825,8 +864,7 @@ class SubprocessCapacityBackend:
         )
         if attestation.get("accepted") is not True:
             raise RuntimeError("temporary renderer witness attestation rejected")
-        if native_observer:
-            (output / "renderer-phase-complete.marker").touch()
+        (output / "renderer-phase-complete.marker").touch()
         selected_ready = _capacity_selected_ready_marker(
             output=output,
             implementation=run.cell.implementation,
@@ -844,7 +882,6 @@ class SubprocessCapacityBackend:
                 stage="selected-released",
             )
         if has_witness:
-            (output / "renderer-phase-complete.marker").touch()
             witness_code = self.processes["renderer-witness"].wait(timeout=20)
             try:
                 witness_ready = json.loads(
@@ -1015,7 +1052,11 @@ class SubprocessCapacityBackend:
         events = [
             event for event in observer_events if event.get("event") != "trigger-received"
         ]
-        events.extend(event for event in scheduler_events if event.get("event") in {"trigger", "missed"})
+        events.extend(
+            event
+            for event in scheduler_events
+            if event.get("event") in {"trigger", "missed", "phase-transition"}
+        )
         stops = [event for event in observer_events if event.get("event") == "stop"]
         native_metrics = dict(stops[0]) if len(stops) == 1 else {}
         if native_metrics.get("implementation") == "native-cpp":
@@ -1109,6 +1150,15 @@ class SubprocessCapacityBackend:
                 continue
             shutil.copy2(source, self.output / name)
             copied_evidence.append(name)
+        custom_server_config = self.run_dir / "custom-server.config"
+        if custom_server_config.is_file():
+            shutil.copy2(custom_server_config, self.output / custom_server_config.name)
+            copied_evidence.append(custom_server_config.name)
+        elif (
+            self.environment.get("FLYDRONES_GZ_SENSORS_PLUGIN_DIR")
+            or self.environment.get("FLYDRONES_DISABLE_GST_CAMERA_SYSTEM") == "1"
+        ):
+            artifact_errors.append("required run evidence is missing: custom-server.config")
         for vehicle_id in range(5):
             source = self.run_dir / f"instance_{vehicle_id}" / "startup-health.json"
             name = f"px4-console/agent-{vehicle_id}-startup-health.json"
@@ -1191,12 +1241,71 @@ def run_capacity_trial(
         raise ValueError("capacity trial requires frozen 30/120 second durations")
     if config.get("vehicle_count") != 5:
         raise ValueError("capacity trial requires five vehicles")
+    render_engine = str(config.get("render_engine", "ogre2"))
+    if render_engine not in {"ogre", "ogre2"}:
+        raise ValueError(f"unsupported Gazebo render engine: {render_engine}")
+    disable_gst_camera_system = config.get("disable_gst_camera_system", False)
+    if not isinstance(disable_gst_camera_system, bool):
+        raise ValueError("disable_gst_camera_system must be boolean")
+    gazebo_transport_ip = config.get("gazebo_transport_ip")
+    if gazebo_transport_ip is not None:
+        if not isinstance(gazebo_transport_ip, str):
+            raise ValueError("gazebo_transport_ip must be an IPv4 loopback address")
+        try:
+            parsed_gazebo_transport_ip = ipaddress.ip_address(gazebo_transport_ip)
+        except ValueError as exc:
+            raise ValueError(
+                "gazebo_transport_ip must be an IPv4 loopback address"
+            ) from exc
+        if parsed_gazebo_transport_ip.version != 4 or not parsed_gazebo_transport_ip.is_loopback:
+            raise ValueError("gazebo_transport_ip must be an IPv4 loopback address")
+    sensors_plugin_directory = config.get("sensors_plugin_directory")
+    sensors_plugin_sha256 = config.get("sensors_plugin_sha256")
+    if (sensors_plugin_directory is None) != (sensors_plugin_sha256 is None):
+        raise ValueError("custom Gazebo Sensors plugin directory and SHA-256 must be paired")
+    resolved_sensors_plugin_directory: Path | None = None
+    if sensors_plugin_directory is not None:
+        resolved_sensors_plugin_directory = Path(str(sensors_plugin_directory)).resolve()
+        sensors_plugin = resolved_sensors_plugin_directory / "libgz-sim8-sensors-system.so"
+        if not sensors_plugin.is_file():
+            raise ValueError(f"custom Gazebo Sensors plugin is missing: {sensors_plugin}")
+        if _sha256(sensors_plugin) != str(sensors_plugin_sha256):
+            raise ValueError("custom Gazebo Sensors plugin SHA-256 mismatch")
     px4_build_name = str(config.get("px4_build_name", ""))
     if px4_build_name != "px4_sitl_nolockstep":
         raise ValueError("capacity trial requires px4_sitl_nolockstep")
     px4_revision = str(config.get("px4_revision", ""))
     if px4_revision != "d6f12ad1c4f70ad3230afd7d86e971421e02fef4":
         raise ValueError("capacity trial requires the frozen PX4 revision")
+    px4_build_identity = config.get("px4_build_identity")
+    if not isinstance(px4_build_identity, Mapping):
+        raise ValueError("capacity trial requires the readiness PX4 build identity")
+    required_build_fields = {
+        "schema": "flydrones-px4-build-evidence-v2",
+        "build_name": px4_build_name,
+        "px4_revision": px4_revision,
+        "vehicle_imu_patch_applied": True,
+        "nolockstep": True,
+        "board_definition": "#define CONFIG_BOARD_NOLOCKSTEP 1",
+    }
+    if any(px4_build_identity.get(key) != value for key, value in required_build_fields.items()):
+        raise ValueError("capacity trial PX4 build identity conflicts with the frozen contract")
+    for field in (
+        "binary_sha256",
+        "boardconfig_sha256",
+        "px4_patch_sha256",
+        "vehicle_imu_sha256",
+    ):
+        value = px4_build_identity.get(field)
+        if not isinstance(value, str) or re.fullmatch(r"[0-9a-f]{64}", value) is None:
+            raise ValueError(f"capacity trial PX4 build identity {field} is invalid")
+    patch = (ROOT / str(px4_build_identity.get("px4_patch", ""))).resolve()
+    try:
+        patch.relative_to(ROOT.resolve())
+    except ValueError as exc:
+        raise ValueError("capacity trial PX4 patch must remain inside the repository") from exc
+    if not patch.is_file() or _sha256(patch) != px4_build_identity.get("px4_patch_sha256"):
+        raise ValueError("capacity trial PX4 patch artifact does not match its frozen hash")
     backend = _backend or SubprocessCapacityBackend()
     occupied = backend.occupied_resources()
     if occupied:
@@ -1235,6 +1344,7 @@ def run_capacity_trial(
         "sequence": run.sequence,
         "subscriber_count": run.cell.subscriber_count,
         "observer_implementation": run.cell.implementation,
+        "render_engine": render_engine,
         "worker_command_constructed": False,
         "renderer_attestation_accepted": False,
         "px4_vehicle_count": 0,
@@ -1249,6 +1359,7 @@ def run_capacity_trial(
         "frozen_hashes": frozen_hashes,
         "source_hashes_match": source_hashes_match,
         "native_executable_hash_match": native_executable_hash_match,
+        "px4_build_identity_match": False,
         "observer_closed_cleanly": False,
         "scheduler_closed_cleanly": False,
         "stop_exit_code": None,
@@ -1269,10 +1380,13 @@ def run_capacity_trial(
         "native_metrics": {},
     }
     environment = os.environ.copy()
+    environment.pop("GZ_IP", None)
     environment.update({
         "FLYDRONES_PX4_RUN_DIR": str(run_dir),
         "FLYDRONES_VEHICLE_COUNT": "5",
         "FLYDRONES_GZ_RENDER_PROFILE": str(config.get("renderer_profile")),
+        "FLYDRONES_GZ_RENDER_ENGINE": render_engine,
+        "FLYDRONES_DISABLE_GST_CAMERA_SYSTEM": "1" if disable_gst_camera_system else "0",
         "FLYDRONES_CAMERA_SCHEDULE_MODE": "phased",
         "FLYDRONES_CAMERA_AUX_TIMEOUT_S": f"{max(readiness_timeout_s, 150.0):g}",
         "FLYDRONES_CAMERA_PHASE_READY_MARKER": str(
@@ -1288,11 +1402,33 @@ def run_capacity_trial(
         "FLYDRONES_CAPACITY_SUBSCRIBER_COUNT": str(run.cell.subscriber_count),
         "PX4_BUILD_NAME": px4_build_name,
         "FLYDRONES_EXPECTED_PX4_REVISION": px4_revision,
+        "FLYDRONES_PX4_PATCH": str(patch),
+        "FLYDRONES_EXPECTED_PX4_BINARY_SHA256": str(
+            px4_build_identity["binary_sha256"]
+        ),
+        "FLYDRONES_EXPECTED_PX4_BOARDCONFIG_SHA256": str(
+            px4_build_identity["boardconfig_sha256"]
+        ),
+        "FLYDRONES_EXPECTED_PX4_PATCH_SHA256": str(
+            px4_build_identity["px4_patch_sha256"]
+        ),
+        "FLYDRONES_EXPECTED_VEHICLE_IMU_SHA256": str(
+            px4_build_identity["vehicle_imu_sha256"]
+        ),
         "FLYDRONES_CAPACITY_SCHEDULER_READY_MARKER": str(
             output / "camera-scheduler-ready.json"
         ),
         "PYTHONPATH": str(ROOT / "src"),
     })
+    if gazebo_transport_ip is not None:
+        environment["GZ_IP"] = gazebo_transport_ip
+    if resolved_sensors_plugin_directory is not None:
+        environment.update({
+            "FLYDRONES_GZ_SENSORS_PLUGIN_DIR": str(resolved_sensors_plugin_directory),
+            "FLYDRONES_EXPECTED_GZ_SENSORS_PLUGIN_SHA256": str(
+                sensors_plugin_sha256
+            ),
+        })
     collected: Mapping[str, object] = {}
     readiness: Mapping[str, object] = {}
     window: Mapping[str, object] = {}
@@ -1332,14 +1468,16 @@ def run_capacity_trial(
         ):
             manifest["errors"].append("PX4 health/disarmed/landed gate failed")
         px4_build = readiness.get("px4_build")
-        if not isinstance(px4_build, Mapping) or not (
-            px4_build.get("build_name") == px4_build_name
-            and px4_build.get("px4_revision") == px4_revision
-            and px4_build.get("nolockstep") is True
-            and isinstance(px4_build.get("binary_sha256"), str)
-            and len(px4_build["binary_sha256"]) == 64
-        ):
-            manifest["errors"].append("PX4 no-lockstep build evidence rejected")
+        expected_px4_build = {
+            key: value
+            for key, value in px4_build_identity.items()
+            if key != "px4_patch"
+        }
+        manifest["px4_build_identity_match"] = (
+            isinstance(px4_build, Mapping) and dict(px4_build) == expected_px4_build
+        )
+        if manifest["px4_build_identity_match"] is not True:
+            manifest["errors"].append("PX4 readiness build identity mismatch")
         start_raw = backend.capture_connections(
             stage="start", subscriber_count=run.cell.subscriber_count
         )

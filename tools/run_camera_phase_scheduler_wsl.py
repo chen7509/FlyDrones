@@ -116,6 +116,18 @@ def run_scheduler(
     if vehicle_count not in (1, 5):
         raise ValueError("vehicle_count must be 1 or 5")
     vehicle_count = int(vehicle_count)
+    selected_vehicle_count = config.get("selected_vehicle_count", vehicle_count)
+    if (
+        isinstance(selected_vehicle_count, bool)
+        or not isinstance(selected_vehicle_count, int)
+        or selected_vehicle_count < 0
+        or selected_vehicle_count > vehicle_count
+    ):
+        raise ValueError("selected_vehicle_count must be an integer between 0 and vehicle_count")
+    release_value = config.get("attestation_release_marker")
+    if selected_vehicle_count != vehicle_count and not isinstance(release_value, (str, Path)):
+        raise ValueError("attestation_release_marker is required when selected_vehicle_count differs")
+    attestation_release_marker = Path(release_value) if isinstance(release_value, (str, Path)) else None
     world = config.get("world", "flydrones_forest")
     if not isinstance(world, str) or not world:
         raise ValueError("world must be a non-empty string")
@@ -173,6 +185,7 @@ def run_scheduler(
         "start",
         schema="flydrones-camera-scheduler-v1",
         vehicle_count=vehicle_count,
+        selected_vehicle_count=selected_vehicle_count,
         world=world,
         stop_after_trigger_count=stop_after,
         dispatch_delay_ns=dispatch_delay_ns,
@@ -195,16 +208,31 @@ def run_scheduler(
     expected_depth_topics: dict[int, str] = {}
     expected_trigger_topics: dict[int, str] = {}
     trigger_count = 0
+    selected_phase = False
     started = monotonic()
 
     def dispatch_clock(sim_ns: int) -> None:
-        nonlocal callback_failure, callback_status, dispatch_enabled, trigger_count
+        nonlocal callback_failure, callback_status, dispatch_enabled, selected_phase, trigger_count
         with dispatch_lock:
             if not dispatch_enabled or scheduler_state is None:
                 return
             try:
+                if (
+                    not selected_phase
+                    and attestation_release_marker is not None
+                    and attestation_release_marker.exists()
+                ):
+                    selected_phase = True
+                    writer.write(
+                        "phase-transition",
+                        selected_vehicle_count=selected_vehicle_count,
+                        trigger_count=trigger_count,
+                        sim_ns=sim_ns,
+                    )
                 due = scheduler_state.advance(sim_ns)
                 for slot in scheduler_state.last_missed_slots:
+                    if selected_phase and slot.vehicle_id >= selected_vehicle_count:
+                        continue
                     writer.write(
                         "missed",
                         vehicle_id=slot.vehicle_id,
@@ -213,6 +241,8 @@ def run_scheduler(
                         observed_sim_ns=sim_ns,
                     )
                 for slot in due:
+                    if selected_phase and slot.vehicle_id >= selected_vehicle_count:
+                        continue
                     message = boolean_factory()
                     message.data = True
                     publishers[slot.vehicle_id].publish(message)
@@ -335,6 +365,7 @@ def run_scheduler(
             "schema": "flydrones-camera-scheduler-ready-v1",
             "epoch_ns": epoch_ns,
             "vehicle_count": vehicle_count,
+            "selected_vehicle_count": selected_vehicle_count,
             "dispatch_delay_ns": dispatch_delay_ns,
             "depth_topics": [expected_depth_topics[key] for key in range(vehicle_count)],
             "trigger_topics": [expected_trigger_topics[key] for key in range(vehicle_count)],
@@ -408,6 +439,8 @@ def main() -> int:
     parser.add_argument("--ready-marker", type=Path, required=True)
     parser.add_argument("--completion-marker", type=Path, required=True)
     parser.add_argument("--vehicle-count", type=int, choices=(1, 5), required=True)
+    parser.add_argument("--selected-vehicle-count", type=int, choices=range(0, 6))
+    parser.add_argument("--attestation-release-marker", type=Path)
     parser.add_argument("--world", default="flydrones_forest")
     parser.add_argument("--topology-timeout-s", type=float, default=30.0)
     parser.add_argument("--duration-s", type=float, default=300.0)
@@ -423,6 +456,12 @@ def main() -> int:
             "ready_marker": args.ready_marker,
             "completion_marker": args.completion_marker,
             "vehicle_count": args.vehicle_count,
+            "selected_vehicle_count": (
+                args.vehicle_count
+                if args.selected_vehicle_count is None
+                else args.selected_vehicle_count
+            ),
+            "attestation_release_marker": args.attestation_release_marker,
             "world": args.world,
             "topology_timeout_s": args.topology_timeout_s,
             "duration_s": args.duration_s,

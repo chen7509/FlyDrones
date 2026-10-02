@@ -1,0 +1,54 @@
+{
+  "camera_rerun_eligible": false,
+  "classification": "inconclusive_or_invalid",
+  "readiness_rate": 0.6666666666666666,
+  "reasons": [
+    "invalid_run_evidence"
+  ],
+  "schema": "flydrones-px4-sensor-readiness-campaign-summary-v1",
+  "scores": [
+    {
+      "evidence_failures": [],
+      "evidence_valid": true,
+      "failures": [],
+      "name": "readiness-development-01-v1-r1",
+      "performance_failures": [],
+      "performance_pass": true,
+      "phase": "development",
+      "repetition": 1,
+      "rtf": 0.9997733821850939,
+      "sequence": 1,
+      "vehicle_count": 1
+    },
+    {
+      "evidence_failures": [],
+      "evidence_valid": true,
+      "failures": [],
+      "name": "readiness-development-02-v2-r1",
+      "performance_failures": [],
+      "performance_pass": true,
+      "phase": "development",
+      "repetition": 1,
+      "rtf": 0.9995240805520851,
+      "sequence": 2,
+      "vehicle_count": 2
+    },
+    {
+      "evidence_failures": [
+        "sensor_timeout_observed"
+      ],
+      "evidence_valid": false,
+      "failures": [
+        "sensor_timeout_observed"
+      ],
+      "name": "readiness-development-03-v5-r1",
+      "performance_failures": [],
+      "performance_pass": false,
+      "phase": "development",
+      "repetition": 1,
+      "rtf": 0.9967985270885065,
+      "sequence": 3,
+      "vehicle_count": 5
+    }
+  ]
+}

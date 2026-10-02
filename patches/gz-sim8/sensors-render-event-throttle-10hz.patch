@@ -1,0 +1,47 @@
+--- a/src/systems/sensors/Sensors.cc
++++ b/src/systems/sensors/Sensors.cc
+@@ -232,6 +232,9 @@
+ 
+   /// \brief Next sensors update time
+   public: std::chrono::steady_clock::duration nextUpdateTime;
++
++  /// Development experiment: next event-only scene refresh.
++  public: std::chrono::steady_clock::duration nextRenderEventTime{0};
+ 
+   /// \brief Sensors to include in the next rendering iteration
+   public: std::set<sensors::SensorId> activeSensors;
+@@ -985,6 +988,16 @@
+       (this->dataPtr->eventManager->ConnectionCount<events::PreRender>() > 0u ||
+       this->dataPtr->eventManager->ConnectionCount<events::Render>() > 0u ||
+       this->dataPtr->eventManager->ConnectionCount<events::PostRender>() > 0u);
++    // FlyDrones development isolation experiment: event-only scene updates
++    // are capped at 10 Hz. Pending triggered sensors remain unthrottled.
++    bool renderEventDue = hasRenderConnections &&
++        (_info.paused ||
++         _info.simTime >= this->dataPtr->nextRenderEventTime);
++    if (renderEventDue)
++    {
++      this->dataPtr->nextRenderEventTime = _info.simTime +
++          std::chrono::milliseconds(100);
++    }
+ 
+     // if nextUpdateTime is max, it probably means there are previously
+     // no active sensors or sensors with connections.
+@@ -1002,7 +1015,7 @@
+         this->dataPtr->SensorsWithPendingTrigger();
+ 
+     // notify the render thread if updates are available
+-    if (hasRenderConnections ||
++    if (renderEventDue ||
+         this->dataPtr->nextUpdateTime <= _info.simTime ||
+         this->dataPtr->renderUtil.PendingSensors() > 0 ||
+         this->dataPtr->forceUpdate ||
+@@ -1039,7 +1052,7 @@
+       // sensors to update. Only active sensors will be updated
+       this->dataPtr->forceUpdate =
+           (this->dataPtr->renderUtil.PendingSensors() > 0) ||
+-          hasRenderConnections;
++          renderEventDue;
+ 
+       {
+         std::unique_lock<std::mutex> timeLock(this->dataPtr->renderUtilMutex);

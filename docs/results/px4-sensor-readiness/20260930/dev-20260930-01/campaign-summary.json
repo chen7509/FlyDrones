@@ -1,0 +1,94 @@
+{
+  "camera_rerun_eligible": false,
+  "classification": "inconclusive_or_invalid",
+  "readiness_rate": 0.0,
+  "reasons": [
+    "invalid_run_evidence"
+  ],
+  "schema": "flydrones-px4-sensor-readiness-campaign-summary-v1",
+  "scores": [
+    {
+      "evidence_failures": [
+        "launcher_failed",
+        "platform_not_ready",
+        "initial_health_invalid",
+        "post_window_health_invalid",
+        "scored_duration_incomplete",
+        "cleanup_not_verified",
+        "px4_ulogs_incomplete",
+        "vehicle_health_evidence_incomplete",
+        "rtf_missing_or_invalid"
+      ],
+      "evidence_valid": false,
+      "failures": [
+        "launcher_failed",
+        "platform_not_ready",
+        "initial_health_invalid",
+        "post_window_health_invalid",
+        "scored_duration_incomplete",
+        "cleanup_not_verified",
+        "px4_ulogs_incomplete",
+        "vehicle_health_evidence_incomplete",
+        "rtf_missing_or_invalid"
+      ],
+      "name": "readiness-development-01-v1-r1",
+      "performance_failures": [],
+      "performance_pass": false,
+      "phase": "development",
+      "repetition": 1,
+      "rtf": null,
+      "sequence": 1,
+      "vehicle_count": 1
+    },
+    {
+      "evidence_failures": [
+        "launcher_failed",
+        "platform_not_ready",
+        "initial_health_invalid",
+        "post_window_health_invalid",
+        "scored_duration_incomplete",
+        "cleanup_not_verified",
+        "px4_ulogs_incomplete",
+        "vehicle_health_evidence_incomplete",
+        "rtf_missing_or_invalid"
+      ],
+      "evidence_valid": false,
+      "failures": [
+        "launcher_failed",
+        "platform_not_ready",
+        "initial_health_invalid",
+        "post_window_health_invalid",
+        "scored_duration_incomplete",
+        "cleanup_not_verified",
+        "px4_ulogs_incomplete",
+        "vehicle_health_evidence_incomplete",
+        "rtf_missing_or_invalid"
+      ],
+      "name": "readiness-development-02-v2-r1",
+      "performance_failures": [],
+      "performance_pass": false,
+      "phase": "development",
+      "repetition": 1,
+      "rtf": null,
+      "sequence": 2,
+      "vehicle_count": 2
+    },
+    {
+      "evidence_failures": [
+        "sensor_timeout_observed"
+      ],
+      "evidence_valid": false,
+      "failures": [
+        "sensor_timeout_observed"
+      ],
+      "name": "readiness-development-03-v5-r1",
+      "performance_failures": [],
+      "performance_pass": false,
+      "phase": "development",
+      "repetition": 1,
+      "rtf": 0.9911629362617989,
+      "sequence": 3,
+      "vehicle_count": 5
+    }
+  ]
+}

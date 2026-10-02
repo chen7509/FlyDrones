@@ -1,0 +1,26 @@
+{
+  "accepted": true,
+  "actual": {
+    "0": 1,
+    "1": 1,
+    "2": 1,
+    "3": 1,
+    "4": 1
+  },
+  "expected": {
+    "0": 1,
+    "1": 1,
+    "2": 1,
+    "3": 1,
+    "4": 1
+  },
+  "raw": {
+    "0": "Publishers [Address, Message Type]:\n  tcp://172.28.230.109:42947, gz.msgs.Image\nSubscribers [Address, Message Type]:\n  tcp://172.28.230.109:44537, gz.msgs.Image\n",
+    "1": "Publishers [Address, Message Type]:\n  tcp://172.28.230.109:42947, gz.msgs.Image\nSubscribers [Address, Message Type]:\n  tcp://172.28.230.109:44537, gz.msgs.Image\n",
+    "2": "Publishers [Address, Message Type]:\n  tcp://172.28.230.109:42947, gz.msgs.Image\nSubscribers [Address, Message Type]:\n  tcp://172.28.230.109:44537, gz.msgs.Image\n",
+    "3": "Publishers [Address, Message Type]:\n  tcp://172.28.230.109:42947, gz.msgs.Image\nSubscribers [Address, Message Type]:\n  tcp://172.28.230.109:44537, gz.msgs.Image\n",
+    "4": "Publishers [Address, Message Type]:\n  tcp://172.28.230.109:42947, gz.msgs.Image\nSubscribers [Address, Message Type]:\n  tcp://172.28.230.109:44537, gz.msgs.Image\n"
+  },
+  "schema": "flydrones-depth-topic-discovery-v1",
+  "stage": "selected-released"
+}

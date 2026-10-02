@@ -10,6 +10,11 @@ vehicle_count="${FLYDRONES_VEHICLE_COUNT:-5}"
 vio_fault_profile="${FLYDRONES_VIO_FAULT_PROFILE:-}"
 vio_health_base_port="${FLYDRONES_VIO_HEALTH_BASE_PORT:-}"
 renderer_profile="${FLYDRONES_GZ_RENDER_PROFILE:-default}"
+render_engine="${FLYDRONES_GZ_RENDER_ENGINE:-ogre2}"
+sensors_plugin_dir="${FLYDRONES_GZ_SENSORS_PLUGIN_DIR:-}"
+expected_sensors_plugin_sha256="${FLYDRONES_EXPECTED_GZ_SENSORS_PLUGIN_SHA256:-}"
+disable_gst_camera_system="${FLYDRONES_DISABLE_GST_CAMERA_SYSTEM:-0}"
+gz_ip="${GZ_IP:-}"
 camera_schedule_mode="${FLYDRONES_CAMERA_SCHEDULE_MODE:-simultaneous}"
 camera_aux_timeout_s="${FLYDRONES_CAMERA_AUX_TIMEOUT_S:-45}"
 camera_phase_ready_marker="${FLYDRONES_CAMERA_PHASE_READY_MARKER:-}"
@@ -18,6 +23,11 @@ capacity_ready_marker="${FLYDRONES_CAPACITY_READY_MARKER:-}"
 capacity_observer_pid_file="${FLYDRONES_CAPACITY_OBSERVER_PID_FILE:-}"
 capacity_subscriber_count="${FLYDRONES_CAPACITY_SUBSCRIBER_COUNT:-}"
 expected_px4_revision="${FLYDRONES_EXPECTED_PX4_REVISION:-}"
+px4_patch="${FLYDRONES_PX4_PATCH:-}"
+expected_px4_binary_sha256="${FLYDRONES_EXPECTED_PX4_BINARY_SHA256:-}"
+expected_px4_boardconfig_sha256="${FLYDRONES_EXPECTED_PX4_BOARDCONFIG_SHA256:-}"
+expected_px4_patch_sha256="${FLYDRONES_EXPECTED_PX4_PATCH_SHA256:-}"
+expected_vehicle_imu_sha256="${FLYDRONES_EXPECTED_VEHICLE_IMU_SHA256:-}"
 world_source="$repo_root/results/px4-sitl-five-depth/flydrones_forest.sdf"
 world_target="$px4_root/Tools/simulation/gz/worlds/flydrones_forest.sdf"
 model_root="$px4_root/Tools/simulation/gz/models"
@@ -34,6 +44,37 @@ case "$renderer_profile" in
     exit 2
     ;;
 esac
+case "$render_engine" in
+  ogre|ogre2) ;;
+  *)
+    echo "unsupported Gazebo render engine: $render_engine" >&2
+    exit 2
+    ;;
+esac
+case "$disable_gst_camera_system" in
+  0|1) ;;
+  *)
+    echo "FLYDRONES_DISABLE_GST_CAMERA_SYSTEM must be 0 or 1" >&2
+    exit 2
+    ;;
+esac
+sensors_plugin_path=""
+if [[ -n "$sensors_plugin_dir" || -n "$expected_sensors_plugin_sha256" ]]; then
+  if [[ -z "$sensors_plugin_dir" || -z "$expected_sensors_plugin_sha256" ]]; then
+    echo "custom Gazebo Sensors plugin directory and SHA-256 must be provided together" >&2
+    exit 2
+  fi
+  sensors_plugin_path="$sensors_plugin_dir/libgz-sim8-sensors-system.so"
+  if [[ ! -f "$sensors_plugin_path" ]]; then
+    echo "custom Gazebo Sensors plugin is missing: $sensors_plugin_path" >&2
+    exit 2
+  fi
+  actual_sensors_plugin_sha256="$(sha256sum "$sensors_plugin_path" | awk '{print $1}')"
+  if [[ "$actual_sensors_plugin_sha256" != "$expected_sensors_plugin_sha256" ]]; then
+    echo "custom Gazebo Sensors plugin SHA-256 mismatch" >&2
+    exit 2
+  fi
+fi
 case "$camera_schedule_mode" in
   simultaneous|phased) ;;
   *)
@@ -67,8 +108,10 @@ if [[ "$capacity_mode" == 1 ]]; then
     echo "PX4_BUILD_NAME must be px4_sitl_nolockstep in capacity mode" >&2
     exit 2
   fi
-  if [[ -z "$expected_px4_revision" ]]; then
-    echo "FLYDRONES_EXPECTED_PX4_REVISION is required in capacity mode" >&2
+  if [[ -z "$expected_px4_revision" || -z "$px4_patch" \
+      || -z "$expected_px4_binary_sha256" || -z "$expected_px4_boardconfig_sha256" \
+      || -z "$expected_px4_patch_sha256" || -z "$expected_vehicle_imu_sha256" ]]; then
+    echo "complete readiness PX4 build identity is required in capacity mode" >&2
     exit 2
   fi
   actual_px4_revision="$(git -C "$px4_root" rev-parse HEAD)"
@@ -78,6 +121,22 @@ if [[ "$capacity_mode" == 1 ]]; then
   fi
   if ! grep -Fxq '#define CONFIG_BOARD_NOLOCKSTEP 1' "$build/px4_boardconfig.h"; then
     echo "PX4 capacity build does not prove CONFIG_BOARD_NOLOCKSTEP" >&2
+    exit 2
+  fi
+  actual_px4_binary_sha256="$(sha256sum "$build/bin/px4" | awk '{print $1}')"
+  actual_px4_boardconfig_sha256="$(sha256sum "$build/px4_boardconfig.h" | awk '{print $1}')"
+  actual_px4_patch_sha256="$(sha256sum "$px4_patch" | awk '{print $1}')"
+  vehicle_imu="$px4_root/src/modules/sensors/vehicle_imu/VehicleIMU.cpp"
+  actual_vehicle_imu_sha256="$(sha256sum "$vehicle_imu" | awk '{print $1}')"
+  if [[ "$actual_px4_binary_sha256" != "$expected_px4_binary_sha256" \
+      || "$actual_px4_boardconfig_sha256" != "$expected_px4_boardconfig_sha256" \
+      || "$actual_px4_patch_sha256" != "$expected_px4_patch_sha256" \
+      || "$actual_vehicle_imu_sha256" != "$expected_vehicle_imu_sha256" ]]; then
+    echo "PX4 readiness build identity mismatch" >&2
+    exit 2
+  fi
+  if ! git -C "$px4_root" apply --reverse --check "$px4_patch"; then
+    echo "frozen PX4 sensor-readiness patch is not applied" >&2
     exit 2
   fi
   if [[ -z "$capacity_ready_marker" || -z "$capacity_observer_pid_file" ]]; then
@@ -110,21 +169,23 @@ fi
 mkdir -p "$run_dir/backups"
 touch "$run_dir/fault-mode"
 if [[ "$capacity_mode" == 1 ]]; then
-  px4_binary_sha256="$(sha256sum "$build/bin/px4" | awk '{print $1}')"
-  px4_boardconfig_sha256="$(sha256sum "$build/px4_boardconfig.h" | awk '{print $1}')"
   python3 - "$run_dir/px4-build-evidence.json" "$px4_build_name" \
-    "$actual_px4_revision" "$px4_binary_sha256" "$px4_boardconfig_sha256" <<'PY'
+    "$actual_px4_revision" "$actual_px4_binary_sha256" "$actual_px4_boardconfig_sha256" \
+    "$actual_px4_patch_sha256" "$actual_vehicle_imu_sha256" <<'PY'
 import json
 import sys
 from pathlib import Path
 
 output = Path(sys.argv[1])
 payload = {
-    "schema": "flydrones-px4-build-evidence-v1",
+    "schema": "flydrones-px4-build-evidence-v2",
     "build_name": sys.argv[2],
     "px4_revision": sys.argv[3],
     "binary_sha256": sys.argv[4],
     "boardconfig_sha256": sys.argv[5],
+    "px4_patch_sha256": sys.argv[6],
+    "vehicle_imu_sha256": sys.argv[7],
+    "vehicle_imu_patch_applied": True,
     "nolockstep": True,
     "board_definition": "#define CONFIG_BOARD_NOLOCKSTEP 1",
 }
@@ -198,11 +259,60 @@ export GZ_SIM_SYSTEM_PLUGIN_PATH="${GZ_SIM_SYSTEM_PLUGIN_PATH:-}"
 set +u
 source "$build/rootfs/gz_env.sh"
 set -u
+if [[ -n "$sensors_plugin_dir" ]]; then
+  export GZ_SIM_SYSTEM_PLUGIN_PATH="$sensors_plugin_dir:${GZ_SIM_SYSTEM_PLUGIN_PATH:-}"
+fi
+custom_server_config=""
+custom_server_config_sha256=""
+if [[ -n "$sensors_plugin_dir" || "$disable_gst_camera_system" == 1 ]]; then
+  custom_server_config="$run_dir/custom-server.config"
+  python3 - "$PX4_GZ_SERVER_CONFIG" "$custom_server_config" \
+    "$sensors_plugin_path" "$disable_gst_camera_system" <<'PY'
+import sys
+import xml.etree.ElementTree as ET
+from pathlib import Path
+
+source, destination = map(Path, sys.argv[1:3])
+sensors_plugin_path = sys.argv[3]
+disable_gst = sys.argv[4] == "1"
+tree = ET.parse(source)
+root = tree.getroot()
+plugins = list(root.iter("plugin"))
+if sensors_plugin_path:
+    sensors = [
+        plugin for plugin in plugins
+        if plugin.get("name") == "gz::sim::systems::Sensors"
+    ]
+    if len(sensors) != 1:
+        raise SystemExit("PX4 server config must contain exactly one Gazebo Sensors plugin")
+    sensors[0].set("filename", sensors_plugin_path)
+def remove_named_plugin(name: str) -> None:
+    matches = [
+        plugin for plugin in plugins
+        if plugin.get("name") == name
+    ]
+    if len(matches) != 1:
+        raise SystemExit(f"PX4 server config must contain exactly one {name} plugin")
+    parent = next(
+        element for element in root.iter()
+        if matches[0] in list(element)
+    )
+    parent.remove(matches[0])
+
+if disable_gst:
+    remove_named_plugin("custom::GstCameraSystem")
+tree.write(destination, encoding="unicode")
+with destination.open("a", encoding="utf-8") as handle:
+    handle.write("\n")
+PY
+  custom_server_config_sha256="$(sha256sum "$custom_server_config" | awk '{print $1}')"
+  export GZ_SIM_SERVER_CONFIG_PATH="$custom_server_config"
+fi
 gazebo_run_args=(-s "$world_target")
 if [[ "$capacity_mode" != 1 ]]; then gazebo_run_args=(-r "${gazebo_run_args[@]}"); fi
 (
   exec env -u GALLIUM_DRIVER -u MESA_D3D12_DEFAULT_ADAPTER_NAME "${renderer_env[@]}" \
-    gz sim --headless-rendering "${gazebo_run_args[@]}"
+    gz sim --headless-rendering --render-engine "$render_engine" "${gazebo_run_args[@]}"
 ) >"$run_dir/gazebo.stdout.log" 2>"$run_dir/gazebo.stderr.log" </dev/null &
 gazebo_pid=$!
 echo "$gazebo_pid" >"$run_dir/gazebo.pid"
@@ -734,11 +844,35 @@ for _ in $(seq 1 40); do
       echo "camera phase evidence readiness timed out" >&2
       exit 3
     fi
+    renderer_attestation_args=()
+    if [[ -n "$custom_server_config" ]]; then
+      renderer_attestation_args+=(
+        --expected-server-config "$custom_server_config"
+        --expected-server-config-sha256 "$custom_server_config_sha256"
+      )
+    fi
+    if [[ -n "$sensors_plugin_path" ]]; then
+      renderer_attestation_args+=(
+        --expected-sensors-plugin "$sensors_plugin_path"
+        --expected-sensors-plugin-sha256 "$expected_sensors_plugin_sha256"
+      )
+    fi
+    if [[ "$disable_gst_camera_system" == 1 ]]; then
+      renderer_attestation_args+=(
+        --forbidden-server-plugin-name "custom::GstCameraSystem"
+        --forbidden-mapped-library "libGstCameraSystem.so"
+      )
+    fi
+    if [[ -n "$gz_ip" ]]; then
+      renderer_attestation_args+=(--expected-gz-ip "$gz_ip")
+    fi
     if ! env -u GALLIUM_DRIVER -u MESA_D3D12_DEFAULT_ADAPTER_NAME "${renderer_env[@]}" \
       PYTHONPATH="$repo_root/src" python3 "$repo_root/tools/attest_gazebo_renderer_wsl.py" \
-      --profile "$renderer_profile" --gazebo-pid "$gazebo_pid" \
+      --profile "$renderer_profile" --render-engine "$render_engine" \
+      --gazebo-pid "$gazebo_pid" \
       --expected-depth-topics "$vehicle_count" \
       --phase-ready-marker "$camera_phase_ready_marker" \
+      "${renderer_attestation_args[@]}" \
       --output "$run_dir/renderer-attestation.json"; then
       echo "Gazebo renderer attestation failed" >&2
       exit 3

@@ -1,0 +1,18 @@
+{
+  "schema": "flydrones-loopback-profile-summary-v1",
+  "trial": "renderer-profiler-loopback-dev-20261001-01",
+  "evidence_valid": true,
+  "profiled_rtf": 0.8875003265099928,
+  "samples_approximate": 11000,
+  "lost_samples": 0,
+  "cumulative_hotspots_percent": {
+    "gazebo_transport_discovery": 44.31,
+    "subscriber_change_handling": 12.44,
+    "physics_update": 29.07,
+    "dart_forward_step": 23.0,
+    "scene_broadcaster_post_update": 2.68,
+    "sensors_post_update": 2.09,
+    "render_util_update_from_ecm": 1.09
+  },
+  "interpretation": "Percentages span multiple threads and are not additive on one critical path. Loopback improved some wall-clock trials without materially changing the sampled composition."
+}

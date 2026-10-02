@@ -63,8 +63,7 @@ def test_scored_resource_summary_pins_gazebo_cpu_rss_and_gpu(tmp_path: Path):
         encoding="utf-8",
     )
     (tmp_path / "gpu-probe.csv").write_text(
-        "monotonic_s,gpu_utilization_percent,memory_used_mib\n"
-        "50.0,25,100\n65.0,75,150\n81.0,unavailable,unavailable\n",
+        "monotonic_s,gpu_utilization_percent,memory_used_mib\n50.0,25,100\n65.0,75,150\n81.0,unavailable,unavailable\n",
         encoding="utf-8",
     )
 
@@ -162,10 +161,24 @@ def _config() -> dict[str, object]:
         "wall_timeout_s": 120.0,
         "readiness_timeout_s": 45.0,
         "renderer_profile": "d3d12-nvidia",
+        "render_engine": "ogre2",
         "world": "flydrones_forest",
         "vehicle_count": 5,
         "px4_build_name": "px4_sitl_nolockstep",
         "px4_revision": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+        "px4_build_identity": {
+            "schema": "flydrones-px4-build-evidence-v2",
+            "build_name": "px4_sitl_nolockstep",
+            "px4_revision": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+            "binary_sha256": "a" * 64,
+            "boardconfig_sha256": "b" * 64,
+            "px4_patch": "patches/px4/vehicle-imu-first-sample-dt.patch",
+            "px4_patch_sha256": "cd36509e63b3709770366a17a07cca67591be409c02a4475ecd3508923d8fd94",
+            "vehicle_imu_sha256": "d" * 64,
+            "vehicle_imu_patch_applied": True,
+            "nolockstep": True,
+            "board_definition": "#define CONFIG_BOARD_NOLOCKSTEP 1",
+        },
         "thresholds": {
             "min_rtf": 0.95,
             "min_image_hz": 9.5,
@@ -183,14 +196,19 @@ def _config() -> dict[str, object]:
 def _phase_events() -> list[dict[str, object]]:
     epoch = 1_000_000_000
     topics = [
-        f"/world/flydrones_forest/model/x500_depth_fly_{vehicle}"
-        "/link/camera_link/sensor/StereoOV7251/depth_image"
+        f"/world/flydrones_forest/model/x500_depth_fly_{vehicle}/link/camera_link/sensor/StereoOV7251/depth_image"
         for vehicle in range(5)
     ]
     events: list[dict[str, object]] = [
         {"event": "start", "epoch_ns": epoch},
         {"event": "topology", "depth_topics": topics},
         {"event": "ready", "epoch_ns": epoch},
+        {
+            "event": "phase-transition",
+            "selected_vehicle_count": 5,
+            "trigger_count": 25,
+            "sim_ns": epoch + 500_000_000,
+        },
     ]
     for cycle in range(320):
         for vehicle in range(5):
@@ -229,6 +247,12 @@ def test_capacity_phase_summary_uses_only_scored_window_scheduler_epoch_and_meta
         {"event": "start", "epoch_ns": 1_600_000_000},
         {"event": "topology", "depth_topics": [_depth_topic(i) for i in range(5)]},
         {"event": "ready", "epoch_ns": 1_600_000_000},
+        {
+            "event": "phase-transition",
+            "selected_vehicle_count": 1,
+            "trigger_count": 25,
+            "sim_ns": 1_900_000_000,
+        },
     ]
     for cycle in range(320):
         planned = scheduler_epoch + cycle * 100_000_000
@@ -274,6 +298,72 @@ def test_capacity_phase_summary_uses_only_scored_window_scheduler_epoch_and_meta
         "format": "R_FLOAT32",
     }
     assert summary["vehicles"]["0"]["image_count"] == 300
+
+
+@pytest.mark.parametrize(
+    ("subscriber_count", "bad_event", "reason"),
+    (
+        (
+            0,
+            {
+                "event": "trigger",
+                "vehicle_id": 0,
+                "planned_sim_ns": 2_100_000_000,
+            },
+            "unexpected_scored_trigger",
+        ),
+        (
+            1,
+            {
+                "event": "trigger",
+                "vehicle_id": 4,
+                "planned_sim_ns": 2_100_000_000,
+            },
+            "unselected_vehicle_trigger",
+        ),
+    ),
+)
+def test_capacity_phase_summary_rejects_scored_triggers_outside_selected_phase(
+    subscriber_count: int,
+    bad_event: dict[str, object],
+    reason: str,
+):
+    events = _phase_events()
+    transition = next(event for event in events if event["event"] == "phase-transition")
+    transition["selected_vehicle_count"] = subscriber_count
+    events.append(bad_event)
+
+    summary = _capacity_phase_summary(
+        events,
+        subscriber_count=subscriber_count,
+        scored_window={"start_sim_ns": 2_000_000_000, "end_sim_ns": 32_000_000_000},
+        scheduler_epoch_ns=1_000_000_000,
+    )
+
+    assert summary["accepted"] is False
+    assert reason in summary["reasons"]
+
+
+@pytest.mark.parametrize("transition_sim_ns", (None, 2_000_000_000, 2_000_000_001))
+def test_capacity_phase_summary_requires_transition_before_scored_window(
+    transition_sim_ns: int | None,
+):
+    events = _phase_events()
+    transitions = [event for event in events if event["event"] == "phase-transition"]
+    if transition_sim_ns is None:
+        events.remove(transitions[0])
+    else:
+        transitions[0]["sim_ns"] = transition_sim_ns
+
+    summary = _capacity_phase_summary(
+        events,
+        subscriber_count=5,
+        scored_window={"start_sim_ns": 2_000_000_000, "end_sim_ns": 32_000_000_000},
+        scheduler_epoch_ns=1_000_000_000,
+    )
+
+    assert summary["accepted"] is False
+    assert "selected_phase_transition_invalid" in summary["reasons"]
 
 
 def test_renderer_witness_accepts_setup_phase_jitter_but_rejects_integrity_errors():
@@ -380,10 +470,7 @@ def test_capacity_selected_observer_warmup_precedes_scheduler():
     runner = (
         Path(__file__).parents[1] / "tools/run_camera_render_capacity_trial_wsl.py"
     ).read_text(encoding="utf-8")
-    backend_start = runner.split(
-        "    def start(self, *, commands, output, run_dir, environment, completion_marker, **_kwargs):",
-        1,
-    )[1].split("    @staticmethod", 1)[0]
+    backend_start = runner.split("    def start(", 1)[1].split("    @staticmethod", 1)[0]
 
     selected_observer = backend_start.index('role = "observer"')
     selected_barrier = backend_start.index('stage="native-warmup"')
@@ -465,10 +552,16 @@ class FakeBackend:
             "px4_all_disarmed": self.failure != "px4_armed",
             "px4_all_landed": self.failure != "px4_armed",
             "px4_build": {
+                "schema": "flydrones-px4-build-evidence-v2",
                 "build_name": "px4_sitl_nolockstep",
                 "nolockstep": True,
                 "px4_revision": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
                 "binary_sha256": "a" * 64,
+                "boardconfig_sha256": "b" * 64,
+                "px4_patch_sha256": "cd36509e63b3709770366a17a07cca67591be409c02a4475ecd3508923d8fd94",
+                "vehicle_imu_sha256": "d" * 64,
+                "vehicle_imu_patch_applied": True,
+                "board_definition": "#define CONFIG_BOARD_NOLOCKSTEP 1",
             },
             "observer_pid": 4321,
         }
@@ -497,8 +590,26 @@ class FakeBackend:
 
     def collect(self, **_kwargs):
         self.calls.append("collect")
+        selected = _kwargs["run"].cell.subscriber_count
+        phase_events = _phase_events()
+        transition = next(
+            event for event in phase_events if event["event"] == "phase-transition"
+        )
+        transition["selected_vehicle_count"] = selected
+        phase_events = [
+            event
+            for event in phase_events
+            if not (
+                event.get("event") in {"trigger", "image"}
+                and event.get("vehicle_id") not in range(selected)
+                and (
+                    event.get("planned_sim_ns", event.get("sim_ns", 0))
+                    >= 2_000_000_000
+                )
+            )
+        ]
         return {
-            "phase_events": _phase_events(),
+            "phase_events": phase_events,
             "scheduler_epoch_ns": 1_000_000_000,
             "observer_exit_code": 0,
             "scheduler_exit_code": 0,
@@ -575,6 +686,10 @@ def test_auxiliary_commands_are_exact_and_never_construct_worker(
     assert scheduler[1].endswith("run_camera_phase_scheduler_wsl.py")
     assert "--formal" in scheduler
     assert "--dispatch-delay-ns" in scheduler and "4000000" in scheduler
+    assert scheduler[scheduler.index("--selected-vehicle-count") + 1] == subscriber_count
+    assert scheduler[scheduler.index("--attestation-release-marker") + 1].endswith(
+        "renderer-phase-complete.marker"
+    )
     if implementation == "native":
         assert observer[0].endswith("flydrones_camera_phase_native")
         assert observer[1] == "observe"
@@ -635,6 +750,21 @@ def test_capacity_launcher_uses_temporary_attestation_and_stable_gazebo_identity
     ).read_text(encoding="utf-8")
     assert "renderer-phase-ready.json" in runner
     assert "renderer-phase-complete.marker" in runner
+    attestation_accepted = runner.index(
+        'if attestation.get("accepted") is not True:'
+    )
+    unconditional_release = runner.index(
+        '(output / "renderer-phase-complete.marker").touch()',
+        attestation_accepted,
+    )
+    selected_phase_wait = runner.index(
+        "selected_ready = _capacity_selected_ready_marker",
+        attestation_accepted,
+    )
+    assert attestation_accepted < unconditional_release < selected_phase_wait
+    assert "if native_observer:" not in runner[
+        attestation_accepted:unconditional_release
+    ]
     assert "renderer-phase.jsonl" in runner
     assert "renderer-phase-summary.json" in runner
     assert '--phase-ready-marker "$camera_phase_ready_marker"' in launcher
@@ -644,12 +774,35 @@ def test_capacity_launcher_uses_temporary_attestation_and_stable_gazebo_identity
         'record_process "$gazebo_pid" "gazebo-server"'
     )
     assert 'gazebo_run_args=(-s "$world_target")' in launcher
+    assert 'render_engine="${FLYDRONES_GZ_RENDER_ENGINE:-ogre2}"' in launcher
+    assert 'gz sim --headless-rendering --render-engine "$render_engine"' in launcher
+    assert '--render-engine "$render_engine"' in launcher
+    assert 'FLYDRONES_GZ_SENSORS_PLUGIN_DIR' in launcher
+    assert 'FLYDRONES_EXPECTED_GZ_SENSORS_PLUGIN_SHA256' in launcher
+    assert 'GZ_SIM_SYSTEM_PLUGIN_PATH="$sensors_plugin_dir:${GZ_SIM_SYSTEM_PLUGIN_PATH:-}"' in launcher
+    assert 'custom-server.config' in launcher
+    assert 'GZ_SIM_SERVER_CONFIG_PATH="$custom_server_config"' in launcher
+    assert 'plugin.get("name") == "gz::sim::systems::Sensors"' in launcher
+    assert 'disable_gst_camera_system="${FLYDRONES_DISABLE_GST_CAMERA_SYSTEM:-0}"' in launcher
+    assert 'remove_named_plugin("custom::GstCameraSystem")' in launcher
+    assert '--forbidden-server-plugin-name "custom::GstCameraSystem"' in launcher
+    assert '--forbidden-mapped-library "libGstCameraSystem.so"' in launcher
+    assert '--expected-gz-ip "$gz_ip"' in launcher
+    assert '--expected-sensors-plugin "$sensors_plugin_path"' in launcher
+    assert '--expected-server-config "$custom_server_config"' in launcher
+    assert '--expected-server-config-sha256 "$custom_server_config_sha256"' in launcher
+    assert 'self.run_dir / "custom-server.config"' in runner
+    assert "required run evidence is missing: custom-server.config" in runner
     assert '--preload-vehicles "$vehicle_count"' in launcher
     assert 'PX4_GZ_MODEL_NAME="x500_depth_fly_$instance_id"' in launcher
     assert 'px4_build_name="${PX4_BUILD_NAME:-px4_sitl_default}"' in launcher
     assert 'build="$px4_root/build/$px4_build_name"' in launcher
     assert 'PX4_BUILD_NAME must be px4_sitl_nolockstep in capacity mode' in launcher
     assert '#define CONFIG_BOARD_NOLOCKSTEP 1' in launcher
+    assert "FLYDRONES_EXPECTED_PX4_BINARY_SHA256" in launcher
+    assert "FLYDRONES_EXPECTED_PX4_PATCH_SHA256" in launcher
+    assert "FLYDRONES_EXPECTED_VEHICLE_IMU_SHA256" in launcher
+    assert "PX4 readiness build identity mismatch" in launcher
     assert 'px4-build-evidence.json' in launcher
     assert 'px4-capacity-platform-ready.json' in launcher
     assert 'if [[ "$capacity_mode" != 1 ]]; then gazebo_run_args=(-r "${gazebo_run_args[@]}"); fi' in launcher
@@ -695,6 +848,7 @@ def test_capacity_launcher_uses_temporary_attestation_and_stable_gazebo_identity
     assert '"px4-console/agent-{vehicle_id}-{stream}.log"' in runner
     assert '"gazebo.stdout.log"' in runner
     assert '"gazebo.stderr.log"' in runner
+    assert '"trigger", "missed", "phase-transition"' in runner
     assert '"px4-sensor-source-warmup.json"' in runner
     assert '"px4-build-evidence.json"' in runner
     assert '"px4-capacity-platform-ready.json"' in runner
@@ -719,9 +873,213 @@ def test_capacity_trial_freezes_official_nolockstep_px4_build(tmp_path: Path):
 
     assert backend.environment["PX4_BUILD_NAME"] == "px4_sitl_nolockstep"
     assert backend.environment["FLYDRONES_CAMERA_AUX_TIMEOUT_S"] == "150"
+    assert backend.environment["FLYDRONES_GZ_RENDER_ENGINE"] == "ogre2"
     assert backend.environment["FLYDRONES_EXPECTED_PX4_REVISION"] == (
         "d6f12ad1c4f70ad3230afd7d86e971421e02fef4"
     )
+    assert backend.environment["FLYDRONES_EXPECTED_PX4_BINARY_SHA256"] == "a" * 64
+    assert backend.environment["FLYDRONES_EXPECTED_PX4_PATCH_SHA256"] == (
+        "cd36509e63b3709770366a17a07cca67591be409c02a4475ecd3508923d8fd94"
+    )
+    assert backend.environment["FLYDRONES_EXPECTED_VEHICLE_IMU_SHA256"] == "d" * 64
+
+
+def test_capacity_trial_allows_audited_ogre1_development_run(tmp_path: Path):
+    backend = FakeBackend()
+    config = _config()
+    config["render_engine"] = "ogre"
+    native_executable = tmp_path / "flydrones_camera_phase_native"
+    native_executable.write_bytes(b"native capacity test executable")
+
+    run_capacity_trial(
+        run=_run("idle-0"),
+        config=config,
+        output_root=tmp_path,
+        native_executable=native_executable,
+        _backend=backend,
+    )
+
+    assert backend.environment["FLYDRONES_GZ_RENDER_ENGINE"] == "ogre"
+
+
+def test_capacity_trial_passes_an_audited_development_sensors_plugin(tmp_path: Path):
+    backend = FakeBackend()
+    config = _config()
+    plugin_dir = tmp_path / "plugins"
+    plugin_dir.mkdir()
+    plugin = plugin_dir / "libgz-sim8-sensors-system.so"
+    plugin.write_bytes(b"development sensor plugin")
+    config["sensors_plugin_directory"] = str(plugin_dir)
+    config["sensors_plugin_sha256"] = (
+        "073a89a2367a7f57da57a8576ab96e0a5e75dafbc6aa5098db2e7fded9f2cbe7"
+    )
+    native_executable = tmp_path / "flydrones_camera_phase_native"
+    native_executable.write_bytes(b"native capacity test executable")
+
+    run_capacity_trial(
+        run=_run("idle-0"),
+        config=config,
+        output_root=tmp_path / "output",
+        native_executable=native_executable,
+        _backend=backend,
+    )
+
+    assert backend.environment["FLYDRONES_GZ_SENSORS_PLUGIN_DIR"] == str(plugin_dir.resolve())
+    assert backend.environment["FLYDRONES_EXPECTED_GZ_SENSORS_PLUGIN_SHA256"] == config[
+        "sensors_plugin_sha256"
+    ]
+
+
+def test_capacity_trial_passes_development_only_gstreamer_disable(
+    tmp_path: Path,
+    monkeypatch,
+):
+    monkeypatch.setenv("FLYDRONES_DISABLE_GST_CAMERA_SYSTEM", "0")
+    backend = FakeBackend()
+    config = _config()
+    config["disable_gst_camera_system"] = True
+    native_executable = tmp_path / "flydrones_camera_phase_native"
+    native_executable.write_bytes(b"native capacity test executable")
+
+    run_capacity_trial(
+        run=_run("idle-0"),
+        config=config,
+        output_root=tmp_path,
+        native_executable=native_executable,
+        _backend=backend,
+    )
+
+    assert backend.environment["FLYDRONES_DISABLE_GST_CAMERA_SYSTEM"] == "1"
+
+
+def test_capacity_trial_clears_inherited_gstreamer_disable(
+    tmp_path: Path,
+    monkeypatch,
+):
+    monkeypatch.setenv("FLYDRONES_DISABLE_GST_CAMERA_SYSTEM", "1")
+    backend = FakeBackend()
+    native_executable = tmp_path / "flydrones_camera_phase_native"
+    native_executable.write_bytes(b"native capacity test executable")
+
+    run_capacity_trial(
+        run=_run("idle-0"),
+        config=_config(),
+        output_root=tmp_path,
+        native_executable=native_executable,
+        _backend=backend,
+    )
+
+    assert backend.environment["FLYDRONES_DISABLE_GST_CAMERA_SYSTEM"] == "0"
+
+
+def test_capacity_trial_sets_audited_loopback_gazebo_transport_ip(
+    tmp_path: Path,
+    monkeypatch,
+):
+    monkeypatch.setenv("GZ_IP", "192.0.2.10")
+    backend = FakeBackend()
+    config = _config()
+    config["gazebo_transport_ip"] = "127.0.0.1"
+    native_executable = tmp_path / "flydrones_camera_phase_native"
+    native_executable.write_bytes(b"native capacity test executable")
+
+    run_capacity_trial(
+        run=_run("idle-0"),
+        config=config,
+        output_root=tmp_path,
+        native_executable=native_executable,
+        _backend=backend,
+    )
+
+    assert backend.environment["GZ_IP"] == "127.0.0.1"
+
+
+def test_capacity_trial_clears_inherited_gazebo_transport_ip(tmp_path: Path, monkeypatch):
+    monkeypatch.setenv("GZ_IP", "127.0.0.1")
+    backend = FakeBackend()
+    native_executable = tmp_path / "flydrones_camera_phase_native"
+    native_executable.write_bytes(b"native capacity test executable")
+
+    run_capacity_trial(
+        run=_run("idle-0"),
+        config=_config(),
+        output_root=tmp_path,
+        native_executable=native_executable,
+        _backend=backend,
+    )
+
+    assert "GZ_IP" not in backend.environment
+
+
+@pytest.mark.parametrize("value", ("172.28.0.10", "::1", 127001))
+def test_capacity_trial_rejects_non_ipv4_loopback_gazebo_transport_ip(
+    tmp_path: Path,
+    value,
+):
+    config = _config()
+    config["gazebo_transport_ip"] = value
+
+    with pytest.raises(ValueError, match="gazebo_transport_ip"):
+        run_capacity_trial(
+            run=_run("idle-0"),
+            config=config,
+            output_root=tmp_path,
+            native_executable=tmp_path / "native",
+            _backend=FakeBackend(),
+        )
+
+
+def test_capacity_trial_rejects_non_boolean_gstreamer_disable(tmp_path: Path):
+    config = _config()
+    config["disable_gst_camera_system"] = "yes"
+
+    with pytest.raises(ValueError, match="disable_gst_camera_system must be boolean"):
+        run_capacity_trial(
+            run=_run("idle-0"),
+            config=config,
+            output_root=tmp_path,
+            native_executable=tmp_path / "native",
+            _backend=FakeBackend(),
+        )
+
+
+def test_capacity_trial_rejects_unknown_render_engine(tmp_path: Path):
+    config = _config()
+    config["render_engine"] = "software-maybe"
+
+    with pytest.raises(ValueError, match="render engine"):
+        run_capacity_trial(
+            run=_run("idle-0"),
+            config=config,
+            output_root=tmp_path,
+            native_executable=tmp_path / "native",
+            _backend=FakeBackend(),
+        )
+
+
+def test_capacity_trial_rejects_px4_build_that_differs_from_readiness(tmp_path: Path):
+    backend = FakeBackend()
+    original_wait_ready = backend.wait_ready
+
+    def mismatched_wait_ready(**kwargs):
+        ready = original_wait_ready(**kwargs)
+        ready["px4_build"]["binary_sha256"] = "e" * 64
+        return ready
+
+    backend.wait_ready = mismatched_wait_ready
+    native_executable = tmp_path / "flydrones_camera_phase_native"
+    native_executable.write_bytes(b"native capacity test executable")
+
+    result = run_capacity_trial(
+        run=_run("native-1"),
+        config=_config(),
+        output_root=tmp_path,
+        native_executable=native_executable,
+        _backend=backend,
+    )
+
+    assert result["score"] is None
+    assert "PX4 readiness build identity mismatch" in result["manifest"]["errors"]
 
 
 def test_capacity_trial_rejects_lockstep_px4_build_before_start(tmp_path: Path):
@@ -768,8 +1126,10 @@ def test_successful_trial_writes_manifest_summary_epoch_and_no_worker(tmp_path: 
     assert manifest["launcher_exit_code"] == 0
     assert manifest["frozen_hashes"]["native_executable"]
     assert manifest["frozen_hashes"]["runner"]
+    assert manifest["frozen_hashes"]["renderer_attestation"]
     assert manifest["source_hashes_match"] is True
     assert manifest["native_executable_hash_match"] is True
+    assert manifest["px4_build_identity_match"] is True
     assert len(manifest["ulog_artifacts"]) == 5
     assert manifest["config_artifact"] == "trial-config.json"
     assert (output / "trial-config.json").is_file()

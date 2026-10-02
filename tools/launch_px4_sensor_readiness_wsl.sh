@@ -1,0 +1,958 @@
+#!/usr/bin/env bash
+set -Eeuo pipefail
+
+repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+px4_root="${PX4_ROOT:-$HOME/PX4-Autopilot}"
+px4_build_name="${PX4_BUILD_NAME:-px4_sitl_default}"
+build="$px4_root/build/$px4_build_name"
+run_dir="${FLYDRONES_PX4_RUN_DIR:-/tmp/flydrones-px4-five-depth}"
+vehicle_count="${FLYDRONES_VEHICLE_COUNT:-5}"
+vio_fault_profile="${FLYDRONES_VIO_FAULT_PROFILE:-}"
+vio_health_base_port="${FLYDRONES_VIO_HEALTH_BASE_PORT:-}"
+renderer_profile="${FLYDRONES_GZ_RENDER_PROFILE:-default}"
+camera_schedule_mode="${FLYDRONES_CAMERA_SCHEDULE_MODE:-simultaneous}"
+camera_aux_timeout_s="${FLYDRONES_CAMERA_AUX_TIMEOUT_S:-45}"
+camera_phase_ready_marker="${FLYDRONES_CAMERA_PHASE_READY_MARKER:-}"
+capacity_mode="${FLYDRONES_CAPACITY_MODE:-0}"
+capacity_ready_marker="${FLYDRONES_CAPACITY_READY_MARKER:-}"
+capacity_observer_pid_file="${FLYDRONES_CAPACITY_OBSERVER_PID_FILE:-}"
+capacity_subscriber_count="${FLYDRONES_CAPACITY_SUBSCRIBER_COUNT:-}"
+expected_px4_revision="${FLYDRONES_EXPECTED_PX4_REVISION:-}"
+px4_patch="${FLYDRONES_PX4_PATCH:-}"
+expected_px4_patch_sha256="${FLYDRONES_EXPECTED_PX4_PATCH_SHA256:-}"
+expected_vehicle_imu_sha256="${FLYDRONES_EXPECTED_VEHICLE_IMU_SHA256:-}"
+platform_readiness_only="${FLYDRONES_PLATFORM_READINESS_ONLY:-0}"
+world_source="$repo_root/results/px4-sitl-five-depth/flydrones_forest.sdf"
+world_target="$px4_root/Tools/simulation/gz/worlds/flydrones_forest.sdf"
+model_root="$px4_root/Tools/simulation/gz/models"
+registry="$run_dir/owned-processes.json"
+renderer_env=()
+
+case "$renderer_profile" in
+  default) ;;
+  d3d12-nvidia)
+    renderer_env=(GALLIUM_DRIVER=d3d12 MESA_D3D12_DEFAULT_ADAPTER_NAME=NVIDIA)
+    ;;
+  *)
+    echo "unsupported Gazebo renderer profile: $renderer_profile" >&2
+    exit 2
+    ;;
+esac
+case "$camera_schedule_mode" in
+  simultaneous|phased) ;;
+  *)
+    echo "unsupported camera schedule mode: $camera_schedule_mode" >&2
+    exit 2
+    ;;
+esac
+
+if [[ ! -x "$build/bin/px4" ]]; then
+  echo "PX4 SITL binary is missing: $build/bin/px4" >&2
+  exit 2
+fi
+case "$vehicle_count" in
+  1|2|5) ;;
+  *)
+    echo "FLYDRONES_VEHICLE_COUNT must be 1, 2, or 5" >&2
+    exit 2
+    ;;
+esac
+if [[ -n "$vio_fault_profile" && ! -f "$vio_fault_profile" ]]; then
+  echo "VIO fault profile is missing: $vio_fault_profile" >&2
+  exit 2
+fi
+if [[ "$platform_readiness_only" != 0 && "$platform_readiness_only" != 1 ]]; then
+  echo "FLYDRONES_PLATFORM_READINESS_ONLY must be 0 or 1" >&2
+  exit 2
+fi
+if [[ "$platform_readiness_only" != 1 && -z "$camera_phase_ready_marker" ]]; then
+  echo "FLYDRONES_CAMERA_PHASE_READY_MARKER is required" >&2
+  exit 2
+fi
+if [[ "$capacity_mode" != 0 && "$capacity_mode" != 1 ]]; then
+  echo "FLYDRONES_CAPACITY_MODE must be 0 or 1" >&2
+  exit 2
+fi
+if [[ "$capacity_mode" == 1 ]]; then
+  if [[ "$px4_build_name" != "px4_sitl_nolockstep" ]]; then
+    echo "PX4_BUILD_NAME must be px4_sitl_nolockstep in capacity mode" >&2
+    exit 2
+  fi
+  if [[ -z "$expected_px4_revision" || -z "$px4_patch" \
+      || -z "$expected_px4_patch_sha256" || -z "$expected_vehicle_imu_sha256" ]]; then
+    echo "PX4 revision, patch, patch hash, and VehicleIMU hash are required in capacity mode" >&2
+    exit 2
+  fi
+  actual_px4_revision="$(git -C "$px4_root" rev-parse HEAD)"
+  if [[ "$actual_px4_revision" != "$expected_px4_revision" ]]; then
+    echo "PX4 revision mismatch: expected $expected_px4_revision, got $actual_px4_revision" >&2
+    exit 2
+  fi
+  actual_px4_patch_sha256="$(sha256sum "$px4_patch" | awk '{print $1}')"
+  if [[ "$actual_px4_patch_sha256" != "$expected_px4_patch_sha256" ]]; then
+    echo "PX4 patch hash mismatch" >&2
+    exit 2
+  fi
+  if ! git -C "$px4_root" apply --reverse --check "$px4_patch"; then
+    echo "frozen PX4 sensor-readiness patch is not applied" >&2
+    exit 2
+  fi
+  vehicle_imu="$px4_root/src/modules/sensors/vehicle_imu/VehicleIMU.cpp"
+  actual_vehicle_imu_sha256="$(sha256sum "$vehicle_imu" | awk '{print $1}')"
+  if [[ "$actual_vehicle_imu_sha256" != "$expected_vehicle_imu_sha256" ]]; then
+    echo "VehicleIMU.cpp hash mismatch" >&2
+    exit 2
+  fi
+  if ! grep -Fxq '#define CONFIG_BOARD_NOLOCKSTEP 1' "$build/px4_boardconfig.h"; then
+    echo "PX4 capacity build does not prove CONFIG_BOARD_NOLOCKSTEP" >&2
+    exit 2
+  fi
+  build_attestation="$build/.flydrones-sensor-readiness-build.json"
+  if [[ ! -f "$build_attestation" ]]; then
+    echo "PX4 sensor-readiness build attestation is missing" >&2
+    exit 2
+  fi
+  if [[ "$platform_readiness_only" != 1 \
+      && ( -z "$capacity_ready_marker" || -z "$capacity_observer_pid_file" ) ]]; then
+    echo "capacity readiness marker and observer PID file are required" >&2
+    exit 2
+  fi
+  if [[ "$capacity_subscriber_count" != 0 && "$capacity_subscriber_count" != 1 \
+      && "$capacity_subscriber_count" != 5 ]]; then
+    echo "FLYDRONES_CAPACITY_SUBSCRIBER_COUNT must be 0, 1, or 5" >&2
+    exit 2
+  fi
+fi
+if [[ -e "$run_dir" ]]; then
+  echo "PX4 run directory already exists; refusing to overwrite: $run_dir" >&2
+  exit 2
+fi
+
+for port in 14580 14581 14582 14583 14584; do
+  if ss -H -lunp "sport = :$port" 2>/dev/null | grep -q .; then
+    echo "PX4/Gazebo resource is in use: UDP port $port" >&2
+    exit 4
+  fi
+done
+if pgrep -x px4 >/dev/null 2>&1 || pgrep -x px4-gz_bridge >/dev/null 2>&1 \
+    || pgrep -f '^gz sim .*flydrones_forest.sdf$' >/dev/null 2>&1; then
+  echo "PX4/Gazebo resources are already in use; refusing to terminate them" >&2
+  exit 4
+fi
+
+mkdir -p "$run_dir/backups"
+touch "$run_dir/fault-mode"
+if [[ "$capacity_mode" == 1 ]]; then
+  px4_binary_sha256="$(sha256sum "$build/bin/px4" | awk '{print $1}')"
+  px4_boardconfig_sha256="$(sha256sum "$build/px4_boardconfig.h" | awk '{print $1}')"
+  python3 - "$build_attestation" "$px4_build_name" "$actual_px4_revision" \
+    "$actual_px4_patch_sha256" "$actual_vehicle_imu_sha256" \
+    "$px4_binary_sha256" "$px4_boardconfig_sha256" <<'PY'
+import json
+import sys
+from pathlib import Path
+
+value = json.loads(Path(sys.argv[1]).read_text(encoding="utf-8"))
+expected = {
+    "schema": "flydrones-px4-build-attestation-v1",
+    "build_name": sys.argv[2],
+    "px4_revision": sys.argv[3],
+    "px4_patch_sha256": sys.argv[4],
+    "vehicle_imu_sha256": sys.argv[5],
+    "binary_sha256": sys.argv[6],
+    "boardconfig_sha256": sys.argv[7],
+    "nolockstep": True,
+}
+if value != expected:
+    raise SystemExit("PX4 build attestation does not match source and build artifacts")
+PY
+  python3 - "$run_dir/px4-build-evidence.json" "$px4_build_name" \
+    "$actual_px4_revision" "$px4_binary_sha256" "$px4_boardconfig_sha256" \
+    "$actual_px4_patch_sha256" "$actual_vehicle_imu_sha256" <<'PY'
+import json
+import sys
+from pathlib import Path
+
+output = Path(sys.argv[1])
+payload = {
+    "schema": "flydrones-px4-build-evidence-v2",
+    "build_name": sys.argv[2],
+    "px4_revision": sys.argv[3],
+    "binary_sha256": sys.argv[4],
+    "boardconfig_sha256": sys.argv[5],
+    "px4_patch_sha256": sys.argv[6],
+    "vehicle_imu_sha256": sys.argv[7],
+    "vehicle_imu_patch_applied": True,
+    "nolockstep": True,
+    "board_definition": "#define CONFIG_BOARD_NOLOCKSTEP 1",
+}
+output.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+PY
+fi
+cleanup_on_error() {
+  status=$?
+  trap - ERR INT TERM
+  FLYDRONES_PX4_RUN_DIR="$run_dir" bash "$repo_root/tools/stop_px4_swarm_wsl.sh" >/dev/null 2>&1 || true
+  exit "$status"
+}
+trap cleanup_on_error ERR INT TERM
+
+if [[ -e "$world_target" ]]; then
+  cp -a "$world_target" "$run_dir/backups/world.sdf"
+fi
+for model in OakD-Lite-Fly x500_depth_fly; do
+  if [[ -e "$model_root/$model" ]]; then
+    cp -a "$model_root/$model" "$run_dir/backups/$model"
+  fi
+done
+
+if [[ -n "$vio_fault_profile" ]]; then
+  world_source="$run_dir/flydrones_forest.sdf"
+fi
+world_generation_args=(--output "$world_source" --lane-spacing 2.0)
+if [[ "$capacity_mode" == 1 ]]; then world_generation_args+=(--preload-vehicles "$vehicle_count"); fi
+PYTHONPATH="$repo_root/src" python3 "$repo_root/tools/generate_px4_sensor_readiness_world.py" \
+  "${world_generation_args[@]}"
+cp "$world_source" "$world_target"
+rm -rf "$model_root/OakD-Lite-Fly" "$model_root/x500_depth_fly"
+cp -r "$repo_root/assets/gazebo/models/OakD-Lite-Fly" "$model_root/OakD-Lite-Fly"
+cp -r "$repo_root/assets/gazebo/models/x500_depth_fly" "$model_root/x500_depth_fly"
+PYTHONPATH="$repo_root/src" python3 "$repo_root/tools/configure_gazebo_camera_phase.py" \
+  "$repo_root/assets/gazebo/models/OakD-Lite-Fly/model.sdf" \
+  "$model_root/OakD-Lite-Fly/model.sdf" \
+  --mode "$camera_schedule_mode" --evidence "$run_dir/camera-model-evidence.json"
+cp "$model_root/OakD-Lite-Fly/model.sdf" "$run_dir/camera-model-configured.sdf"
+if [[ -n "$vio_fault_profile" ]]; then
+  python3 "$repo_root/tools/configure_gazebo_vio_model.py" "$model_root/x500_depth_fly/model.sdf"
+fi
+
+record_process() {
+  PYTHONPATH="$repo_root/src" python3 - "$registry" "$1" "$2" <<'PY'
+import sys
+from pathlib import Path
+
+from flydrones.process_ownership import append_process_identity
+
+append_process_identity(Path(sys.argv[1]), int(sys.argv[2]), sys.argv[3])
+PY
+}
+
+if [[ -n "$vio_fault_profile" ]]; then
+  relay_health_args=()
+  if [[ -n "$vio_health_base_port" ]]; then
+    relay_health_args=(--health-base-port "$vio_health_base_port")
+  fi
+  nohup env PYTHONPATH="$repo_root/src" python3 "$repo_root/tools/relay_gazebo_vio.py" \
+    --profile "$vio_fault_profile" --marker "$run_dir/fault-start.json" \
+    --output "$run_dir/vio-relay.jsonl" --vehicle-count "$vehicle_count" \
+    "${relay_health_args[@]}" \
+    >"$run_dir/vio-relay.stdout.log" 2>"$run_dir/vio-relay.stderr.log" </dev/null &
+  echo $! >"$run_dir/vio-relay.pid"
+  record_process "$(cat "$run_dir/vio-relay.pid")" "vio-relay"
+fi
+
+export GZ_SIM_RESOURCE_PATH="${GZ_SIM_RESOURCE_PATH:-}"
+export GZ_SIM_SYSTEM_PLUGIN_PATH="${GZ_SIM_SYSTEM_PLUGIN_PATH:-}"
+set +u
+source "$build/rootfs/gz_env.sh"
+set -u
+gazebo_run_args=(-s "$world_target")
+if [[ "$capacity_mode" != 1 ]]; then gazebo_run_args=(-r "${gazebo_run_args[@]}"); fi
+(
+  exec env -u GALLIUM_DRIVER -u MESA_D3D12_DEFAULT_ADAPTER_NAME "${renderer_env[@]}" \
+    gz sim --headless-rendering "${gazebo_run_args[@]}"
+) >"$run_dir/gazebo.stdout.log" 2>"$run_dir/gazebo.stderr.log" </dev/null &
+gazebo_pid=$!
+echo "$gazebo_pid" >"$run_dir/gazebo.pid"
+gazebo_argv_stable=0
+for _ in $(seq 1 100); do
+  if ! kill -0 "$gazebo_pid" 2>/dev/null; then
+    echo "Gazebo exited before process identity stabilized" >&2
+    exit 3
+  fi
+  gazebo_argv="$(tr '\0' ' ' <"/proc/$gazebo_pid/cmdline")"
+  if [[ "$gazebo_argv" == "gz sim "* ]]; then
+    gazebo_argv_stable=1
+    break
+  fi
+  sleep 0.02
+done
+if [[ "$gazebo_argv_stable" -ne 1 ]]; then
+  echo "Gazebo launcher did not reach stable gz sim argv" >&2
+  exit 3
+fi
+record_process "$gazebo_pid" "gazebo-server"
+
+base_ready="$run_dir/gazebo-base-ready.json"
+aux_started="$run_dir/camera-aux-started.marker"
+for _ in $(seq 1 40); do
+  if ! kill -0 "$gazebo_pid" 2>/dev/null; then
+    echo "Gazebo exited before base readiness" >&2
+    tail -50 "$run_dir/gazebo.stderr.log" >&2 || true
+    exit 3
+  fi
+  if [[ -n "$vio_fault_profile" ]] && ! kill -0 "$(cat "$run_dir/vio-relay.pid")" 2>/dev/null; then
+    echo "VIO relay exited before Gazebo base readiness" >&2
+    exit 3
+  fi
+  if gz topic -l 2>/dev/null | grep -Fxq '/clock'; then
+    python3 - "$base_ready" "$gazebo_pid" "$camera_schedule_mode" <<'PY'
+import json
+import os
+import sys
+import tempfile
+from pathlib import Path
+
+target = Path(sys.argv[1])
+payload = {
+    "schema": "flydrones-gazebo-base-ready-v1",
+    "gazebo_pid": int(sys.argv[2]),
+    "camera_schedule_mode": sys.argv[3],
+}
+with tempfile.NamedTemporaryFile("w", encoding="utf-8", dir=target.parent, delete=False) as handle:
+    json.dump(payload, handle, indent=2)
+    handle.write("\n")
+    temporary = Path(handle.name)
+temporary.replace(target)
+PY
+    break
+  fi
+  sleep 1
+done
+if [[ ! -f "$base_ready" ]]; then
+  echo "Gazebo /clock base readiness timed out" >&2
+  exit 3
+fi
+
+if [[ "$capacity_mode" != 1 ]]; then
+  aux_deadline=$((SECONDS + camera_aux_timeout_s))
+  while [[ ! -f "$aux_started" ]]; do
+    if ! kill -0 "$gazebo_pid" 2>/dev/null; then
+      echo "Gazebo exited while waiting for camera auxiliaries" >&2
+      exit 3
+    fi
+    if [[ -n "$vio_fault_profile" ]] && ! kill -0 "$(cat "$run_dir/vio-relay.pid")" 2>/dev/null; then
+      echo "VIO relay exited while waiting for camera auxiliaries" >&2
+      exit 3
+    fi
+    if (( SECONDS >= aux_deadline )); then
+      echo "camera auxiliary startup handshake timed out" >&2
+      exit 3
+    fi
+    sleep 0.05
+  done
+fi
+
+sensor_suffixes=(
+  "imu_sensor/imu"
+  "magnetometer_sensor/magnetometer"
+  "navsat_sensor/navsat"
+  "air_pressure_sensor/air_pressure"
+)
+wait_for_vehicle_sensor_subscribers() {
+  local instance_id="$1"
+  local pid_file="$run_dir/instance_$instance_id/pid"
+  local ready info subscriber_count topic suffix
+  for _ in $(seq 1 300); do
+    if [[ ! -f "$pid_file" ]] || ! kill -0 "$(cat "$pid_file")" 2>/dev/null; then
+      echo "PX4 instance $instance_id exited during Gazebo bridge attachment" >&2
+      return 3
+    fi
+    ready=0
+    for suffix in "${sensor_suffixes[@]}"; do
+      topic="/world/flydrones_forest/model/x500_depth_fly_$instance_id/link/base_link/sensor/$suffix"
+      info="$(gz topic -i -t "$topic" 2>/dev/null || true)"
+      subscriber_count="$(awk '
+        /^Subscribers \[Address, Message Type\]:/ { in_subscribers=1; next }
+        in_subscribers && /^  / && /, / { count++ }
+        END { print count + 0 }
+      ' <<<"$info")"
+      if [[ "$subscriber_count" -eq 1 ]]; then ready=$((ready + 1)); fi
+    done
+    if [[ "$ready" -eq "${#sensor_suffixes[@]}" ]]; then
+      return 0
+    fi
+    sleep 0.1
+  done
+  echo "PX4 instance $instance_id Gazebo sensor subscriber attachment timed out" >&2
+  return 3
+}
+if [[ "$capacity_mode" == 1 ]]; then
+  preloaded_publishers_ready=0
+  for _ in $(seq 1 300); do
+    topic_list="$(gz topic -l 2>/dev/null || true)"
+    advertised=0
+    for ((instance_id=0; instance_id<vehicle_count; instance_id++)); do
+      for suffix in "${sensor_suffixes[@]}"; do
+        topic="/world/flydrones_forest/model/x500_depth_fly_$instance_id/link/base_link/sensor/$suffix"
+        if grep -Fxq "$topic" <<<"$topic_list"; then advertised=$((advertised + 1)); fi
+      done
+    done
+    if [[ "$advertised" -eq $((vehicle_count * ${#sensor_suffixes[@]})) ]]; then
+      preloaded_publishers_ready=1
+      break
+    fi
+    sleep 0.1
+  done
+  if [[ "$preloaded_publishers_ready" != 1 ]]; then
+    echo "Gazebo preloaded sensor publishers timed out" >&2
+    exit 3
+  fi
+fi
+poses=(-4.0 -2.0 0.0 2.0 4.0)
+for ((instance_id=0; instance_id<vehicle_count; instance_id++)); do
+  instance_dir="$run_dir/instance_$instance_id"
+  mkdir -p "$instance_dir"
+  ln -sf "$build/rootfs/gz_env.sh" "$instance_dir/gz_env.sh"
+  extra_env=(PX4_GZ_STANDALONE=1)
+  # Register EKF external-vision aid topics before logger startup. A late
+  # MAVLink parameter change can enable fusion without logging those topics.
+  if [[ -n "$vio_fault_profile" ]]; then extra_env+=(PX4_PARAM_EKF2_EV_CTRL=5); fi
+  model_env=(
+    PX4_SIM_MODEL=gz_x500_depth_fly
+    PX4_GZ_MODEL_POSE="0,${poses[$instance_id]},0,0,0,0"
+  )
+  if [[ "$capacity_mode" == 1 ]]; then
+    model_env=(PX4_GZ_MODEL_NAME="x500_depth_fly_$instance_id")
+  fi
+  (
+    cd "$instance_dir"
+    nohup env HEADLESS=1 "${extra_env[@]}" PX4_SYS_AUTOSTART=4001 PX4_GZ_WORLD=flydrones_forest \
+      "${model_env[@]}" \
+      "$build/bin/px4" -i "$instance_id" -d "$build/etc" \
+      >"$instance_dir/out.log" 2>"$instance_dir/err.log" </dev/null &
+    echo $! >"$instance_dir/pid"
+  )
+  record_process "$(cat "$instance_dir/pid")" "px4-$instance_id"
+  if [[ "$capacity_mode" == 1 ]]; then
+    wait_for_vehicle_sensor_subscribers "$instance_id"
+  else
+    sleep 2
+  fi
+done
+
+if [[ "$capacity_mode" == 1 ]]; then
+  # Do not advance simulation time until every PX4 instance has attached its
+  # Gazebo bridge. Resuming earlier makes the last instance miss the initial
+  # IMU stream and emit an Accel TIMEOUT even though it later recovers.
+  pre_resume_ready=0
+  for _ in $(seq 1 600); do
+    running=0
+    bridge_ready=0
+    for ((instance_id=0; instance_id<vehicle_count; instance_id++)); do
+      pid_file="$run_dir/instance_$instance_id/pid"
+      if [[ -f "$pid_file" ]] && kill -0 "$(cat "$pid_file")" 2>/dev/null; then
+        running=$((running + 1))
+      fi
+      if grep -Fq "[gz_bridge] world: flydrones_forest, model: x500_depth_fly_$instance_id" \
+        "$run_dir/instance_$instance_id/out.log"; then
+        bridge_ready=$((bridge_ready + 1))
+      fi
+    done
+    if [[ "$running" -eq "$vehicle_count" && "$bridge_ready" -eq "$vehicle_count" ]]; then
+      pre_resume_ready=1
+      break
+    fi
+    sleep 0.1
+  done
+  if [[ "$pre_resume_ready" != 1 ]]; then
+    echo "PX4 pre-resume bridge barrier timed out" >&2
+    for ((instance_id=0; instance_id<vehicle_count; instance_id++)); do
+      tail -30 "$run_dir/instance_$instance_id/out.log" >&2 || true
+      tail -30 "$run_dir/instance_$instance_id/err.log" >&2 || true
+    done
+    exit 3
+  fi
+  if ! gz service -s "/world/flydrones_forest/control" \
+    --reqtype gz.msgs.WorldControl --reptype gz.msgs.Boolean \
+    --timeout 5000 --req "pause: false" \
+    >"$run_dir/capacity-world-resume.log" 2>&1; then
+    echo "Gazebo capacity world resume failed" >&2
+    cat "$run_dir/capacity-world-resume.log" >&2 || true
+    exit 3
+  fi
+  if ! PYTHONPATH="$repo_root/src:$repo_root" python3 - \
+    "$run_dir/px4-sensor-source-warmup.json" "$vehicle_count" <<'PY'
+import concurrent.futures
+import json
+import subprocess
+import sys
+import tempfile
+from pathlib import Path
+
+output = Path(sys.argv[1])
+vehicle_count = int(sys.argv[2])
+suffixes = {
+    "imu": "imu_sensor/imu",
+    "magnetometer": "magnetometer_sensor/magnetometer",
+    "gps": "navsat_sensor/navsat",
+    "barometer": "air_pressure_sensor/air_pressure",
+}
+topics = {
+    f"{vehicle_id}:{sensor}": (
+        f"/world/flydrones_forest/model/x500_depth_fly_{vehicle_id}"
+        f"/link/base_link/sensor/{suffix}"
+    )
+    for vehicle_id in range(vehicle_count)
+    for sensor, suffix in suffixes.items()
+}
+
+def witness(item: tuple[str, str]) -> tuple[str, dict[str, object]]:
+    key, topic = item
+    try:
+        result = subprocess.run(
+            ["gz", "topic", "-e", "--json-output", "-n", "1", "-t", topic],
+            text=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+            timeout=20,
+            check=False,
+        )
+        return key, {
+            "topic": topic,
+            "returncode": result.returncode,
+            "message_received": result.returncode == 0 and bool(result.stdout.strip()),
+            "bytes": len(result.stdout.encode("utf-8")),
+            "output": result.stdout,
+        }
+    except subprocess.TimeoutExpired as exc:
+        raw = (exc.stdout or "") if isinstance(exc.stdout, str) else ""
+        return key, {
+            "topic": topic,
+            "returncode": None,
+            "message_received": False,
+            "bytes": len(raw.encode("utf-8")),
+            "output": raw,
+            "error": "source_timeout",
+        }
+
+with concurrent.futures.ThreadPoolExecutor(max_workers=len(topics)) as executor:
+    observations = dict(executor.map(witness, topics.items()))
+payload = {
+    "schema": "flydrones-gazebo-sensor-source-warmup-v1",
+    "accepted": all(item["message_received"] for item in observations.values()),
+    "expected_topic_count": len(topics),
+    "message_topic_count": sum(bool(item["message_received"]) for item in observations.values()),
+    "topics": observations,
+}
+output.parent.mkdir(parents=True, exist_ok=True)
+with tempfile.NamedTemporaryFile("w", encoding="utf-8", dir=output.parent, delete=False) as handle:
+    json.dump(payload, handle, indent=2, sort_keys=True)
+    handle.write("\n")
+    temporary = Path(handle.name)
+temporary.replace(output)
+if not payload["accepted"]:
+    raise SystemExit(3)
+PY
+  then
+    echo "Gazebo sensor-source witness failed" >&2
+    exit 3
+  fi
+  sensor_publishers_ready=0
+  for _ in $(seq 1 300); do
+    topic_list="$(gz topic -l 2>/dev/null || true)"
+    advertised=0
+    for ((instance_id=0; instance_id<vehicle_count; instance_id++)); do
+      for suffix in "${sensor_suffixes[@]}"; do
+        topic="/world/flydrones_forest/model/x500_depth_fly_$instance_id/link/base_link/sensor/$suffix"
+        if grep -Fxq "$topic" <<<"$topic_list"; then advertised=$((advertised + 1)); fi
+      done
+    done
+    if [[ "$advertised" -eq $((vehicle_count * ${#sensor_suffixes[@]})) ]]; then
+      sensor_publishers_ready=1
+      break
+    fi
+    sleep 0.1
+  done
+  if [[ "$sensor_publishers_ready" != 1 ]]; then
+    echo "PX4 sensor publishers were incomplete after final resume" >&2
+    exit 3
+  fi
+
+  PYTHONPATH="$repo_root/src:$repo_root" python3 - \
+    "$run_dir/px4-sensor-topic-connections.json" "$vehicle_count" <<'PY'
+import concurrent.futures
+import json
+import subprocess
+import sys
+import tempfile
+import time
+from pathlib import Path
+
+output = Path(sys.argv[1])
+vehicle_count = int(sys.argv[2])
+suffixes = {
+    "imu": "imu_sensor/imu",
+    "magnetometer": "magnetometer_sensor/magnetometer",
+    "gps": "navsat_sensor/navsat",
+    "barometer": "air_pressure_sensor/air_pressure",
+}
+topics = {
+    f"{vehicle_id}:{sensor}": (
+        f"/world/flydrones_forest/model/x500_depth_fly_{vehicle_id}"
+        f"/link/base_link/sensor/{suffix}"
+    )
+    for vehicle_id in range(vehicle_count)
+    for sensor, suffix in suffixes.items()
+}
+
+def inspect(item: tuple[str, str]) -> tuple[str, dict[str, object]]:
+    key, topic = item
+    try:
+        result = subprocess.run(
+            ["gz", "topic", "-i", "-t", topic],
+            text=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+            timeout=3,
+            check=False,
+        )
+        raw = result.stdout
+        def connection_count(header: str, following: str | None = None) -> int:
+            if header not in raw:
+                return 0
+            section = raw.split(header, 1)[1]
+            if following and following in section:
+                section = section.split(following, 1)[0]
+            return sum(line.startswith("  ") and ", " in line for line in section.splitlines())
+
+        publisher_count = connection_count(
+            "Publishers [Address, Message Type]:",
+            "Subscribers [Address, Message Type]:",
+        )
+        subscriber_count = connection_count("Subscribers [Address, Message Type]:")
+        return key, {
+            "topic": topic,
+            "returncode": result.returncode,
+            "publisher_count": publisher_count,
+            "subscriber_count": subscriber_count,
+            "publisher": publisher_count == 1,
+            "subscriber": subscriber_count == 1,
+            "raw": raw,
+        }
+    except subprocess.TimeoutExpired as exc:
+        return key, {
+            "topic": topic,
+            "returncode": None,
+            "publisher_count": 0,
+            "subscriber_count": 0,
+            "publisher": False,
+            "subscriber": False,
+            "raw": (exc.stdout or "") if isinstance(exc.stdout, str) else "",
+            "error": "introspection_timeout",
+        }
+
+deadline = time.monotonic() + 30.0
+observations: dict[str, dict[str, object]] = {}
+while time.monotonic() < deadline:
+    with concurrent.futures.ThreadPoolExecutor(max_workers=len(topics)) as executor:
+        observations = dict(executor.map(inspect, topics.items()))
+    if all(
+        item["publisher_count"] == 1 and item["subscriber_count"] == 1
+        for item in observations.values()
+    ):
+        break
+    time.sleep(0.25)
+
+payload = {
+    "schema": "flydrones-px4-sensor-topic-connections-v1",
+    "accepted": bool(observations) and all(
+        item["publisher_count"] == 1 and item["subscriber_count"] == 1
+        for item in observations.values()
+    ),
+    "expected_topic_count": len(topics),
+    "publisher_count": sum(bool(item["publisher"]) for item in observations.values()),
+    "subscriber_count": sum(bool(item["subscriber"]) for item in observations.values()),
+    "topics": observations,
+}
+output.parent.mkdir(parents=True, exist_ok=True)
+with tempfile.NamedTemporaryFile("w", encoding="utf-8", dir=output.parent, delete=False) as handle:
+    json.dump(payload, handle, indent=2, sort_keys=True)
+    handle.write("\n")
+    temporary = Path(handle.name)
+temporary.replace(output)
+if not payload["accepted"]:
+    raise SystemExit("PX4 sensor topic publisher/subscriber topology rejected")
+PY
+  if ! PYTHONPATH="$repo_root/src:$repo_root" python3 - \
+    "$run_dir" "$vehicle_count" <<'PY'
+import concurrent.futures
+import json
+import sys
+from pathlib import Path
+
+from flydrones.drones.mavlink import MavlinkDrone
+from tools.run_camera_render_capacity_trial_wsl import (
+    capacity_telemetry_ready,
+    wait_for_capacity_telemetry,
+)
+
+run_dir = Path(sys.argv[1])
+vehicle_count = int(sys.argv[2])
+
+def sample(vehicle_id: int) -> dict:
+    drone = MavlinkDrone(
+        connection=f"udpin:0.0.0.0:{14540 + vehicle_id}",
+        autopilot="px4",
+    )
+    try:
+        drone.connect()
+        telemetry = wait_for_capacity_telemetry(drone, timeout_s=60.0)
+    finally:
+        if drone.m is not None:
+            drone.m.close()
+    payload = {
+        "schema": "flydrones-px4-capacity-startup-health-v1",
+        "vehicle_id": vehicle_id,
+        "timeout_s": 60.0,
+        "estimator_healthy": telemetry.estimator_healthy,
+        "armed": telemetry.armed,
+        "landed": telemetry.landed,
+    }
+    output = run_dir / f"instance_{vehicle_id}" / "startup-health.json"
+    output.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    return payload
+
+with concurrent.futures.ThreadPoolExecutor(max_workers=vehicle_count) as executor:
+    states = list(executor.map(sample, range(vehicle_count)))
+if not all(
+    item["estimator_healthy"] is True
+    and item["armed"] is False
+    and item["landed"] is True
+    for item in states
+):
+    raise SystemExit(3)
+PY
+  then
+    echo "PX4 concurrent sensor readiness failed" >&2
+    for ((instance_id=0; instance_id<vehicle_count; instance_id++)); do
+      tail -50 "$run_dir/instance_$instance_id/out.log" >&2 || true
+      tail -50 "$run_dir/instance_$instance_id/err.log" >&2 || true
+    done
+    exit 3
+  fi
+  python3 - "$run_dir/px4-capacity-platform-ready.json" "$vehicle_count" <<'PY'
+import json
+import sys
+import tempfile
+from pathlib import Path
+
+target = Path(sys.argv[1])
+payload = {
+    "schema": "flydrones-px4-capacity-platform-ready-v1",
+    "vehicle_count": int(sys.argv[2]),
+    "sensor_source_topic_count": int(sys.argv[2]) * 4,
+    "sensor_connection_topic_count": int(sys.argv[2]) * 4,
+    "px4_all_healthy": True,
+    "px4_all_disarmed": True,
+    "px4_all_landed": True,
+}
+with tempfile.NamedTemporaryFile("w", encoding="utf-8", dir=target.parent, delete=False) as handle:
+    json.dump(payload, handle, indent=2, sort_keys=True)
+    handle.write("\n")
+    temporary = Path(handle.name)
+temporary.replace(target)
+PY
+  if [[ "$platform_readiness_only" == 1 ]]; then
+    trap - ERR INT TERM
+    echo "$vehicle_count PX4 instances reached platform-only sensor readiness."
+    echo "Logs: $run_dir"
+    exit 0
+  fi
+  aux_deadline=$((SECONDS + camera_aux_timeout_s))
+  while [[ ! -f "$aux_started" ]]; do
+    if ! kill -0 "$gazebo_pid" 2>/dev/null; then
+      echo "Gazebo exited while waiting for capacity camera auxiliaries" >&2
+      exit 3
+    fi
+    if (( SECONDS >= aux_deadline )); then
+      echo "capacity camera auxiliaries did not start after platform readiness" >&2
+      exit 3
+    fi
+    sleep 0.05
+  done
+fi
+
+for _ in $(seq 1 40); do
+  running=0
+  bridge_ready=0
+  for ((instance_id=0; instance_id<vehicle_count; instance_id++)); do
+    pid_file="$run_dir/instance_$instance_id/pid"
+    pid="$(cat "$pid_file")"
+    if kill -0 "$pid" 2>/dev/null; then running=$((running + 1)); fi
+    if grep -Fq "[gz_bridge] world: flydrones_forest, model: x500_depth_fly_$instance_id" \
+        "$run_dir/instance_$instance_id/out.log" 2>/dev/null; then
+      bridge_ready=$((bridge_ready + 1))
+    fi
+  done
+  depth_topics="$(gz topic -l 2>/dev/null | grep -c '/sensor/StereoOV7251/depth_image$' || true)"
+  bridge_pids=()
+  while read -r bridge_pid; do
+    [[ -n "$bridge_pid" ]] || continue
+    bridge_args="$(tr '\0' ' ' <"/proc/$bridge_pid/cmdline" 2>/dev/null || true)"
+    if [[ "$bridge_args" == *"px4-gz_bridge --instance "*" start -w flydrones_forest"* ]]; then
+      bridge_pids+=("$bridge_pid")
+    fi
+  done < <(pgrep -x px4-gz_bridge 2>/dev/null || true)
+  if [[ "$running" -eq "$vehicle_count" ]] && [[ "$depth_topics" -eq "$vehicle_count" ]] \
+      && [[ "$bridge_ready" -eq "$vehicle_count" ]]; then
+    if [[ -n "$vio_fault_profile" ]] && ! kill -0 "$(cat "$run_dir/vio-relay.pid")" 2>/dev/null; then
+      echo "VIO relay exited before PX4 startup completed" >&2
+      cat "$run_dir/vio-relay.stderr.log" >&2
+      exit 3
+    fi
+    # Recent PX4 builds run gz_bridge inside each owned PX4 process. Older
+    # builds may still expose a separate process; record it when present, but
+    # prove per-instance bridge readiness from each PX4 console either way.
+    for bridge_pid in "${bridge_pids[@]}"; do
+      bridge_args="$(tr '\0' ' ' <"/proc/$bridge_pid/cmdline")"
+      bridge_instance="$(sed -n 's/.*--instance \([0-9][0-9]*\).*/\1/p' <<<"$bridge_args")"
+      record_process "$bridge_pid" "px4-gz-bridge-$bridge_instance"
+    done
+    phase_ready=0
+    for _ in $(seq 1 $((camera_aux_timeout_s * 10))); do
+      if [[ -f "$camera_phase_ready_marker" ]]; then
+        phase_ready=1
+        break
+      fi
+      if ! kill -0 "$gazebo_pid" 2>/dev/null; then
+        echo "Gazebo exited before camera phase evidence was ready" >&2
+        exit 3
+      fi
+      sleep 0.1
+    done
+    if [[ "$phase_ready" -ne 1 ]]; then
+      echo "camera phase evidence readiness timed out" >&2
+      exit 3
+    fi
+    if ! env -u GALLIUM_DRIVER -u MESA_D3D12_DEFAULT_ADAPTER_NAME "${renderer_env[@]}" \
+      PYTHONPATH="$repo_root/src" python3 "$repo_root/tools/attest_gazebo_renderer_wsl.py" \
+      --profile "$renderer_profile" --gazebo-pid "$gazebo_pid" \
+      --expected-depth-topics "$vehicle_count" \
+      --phase-ready-marker "$camera_phase_ready_marker" \
+      --output "$run_dir/renderer-attestation.json"; then
+      echo "Gazebo renderer attestation failed" >&2
+      exit 3
+    fi
+    if [[ "$capacity_mode" == 1 ]]; then
+      PYTHONPATH="$repo_root/src:$repo_root" python3 - \
+        "$capacity_ready_marker" "$run_dir" "$capacity_observer_pid_file" \
+        "$capacity_subscriber_count" "$vehicle_count" "$camera_aux_timeout_s" <<'PY'
+import concurrent.futures
+import json
+import os
+import subprocess
+import sys
+import tempfile
+import time
+from pathlib import Path
+
+from flydrones.drones.mavlink import MavlinkDrone
+from tools.run_camera_render_capacity_trial_wsl import (
+    _depth_topic,
+    validate_depth_topic_connections,
+    wait_for_capacity_telemetry,
+)
+
+ready_path = Path(sys.argv[1])
+run_dir = Path(sys.argv[2])
+observer_pid_file = Path(sys.argv[3])
+subscriber_count = int(sys.argv[4])
+vehicle_count = int(sys.argv[5])
+observer_timeout_s = float(sys.argv[6])
+px4_build = json.loads((run_dir / "px4-build-evidence.json").read_text(encoding="utf-8"))
+deadline = time.monotonic() + observer_timeout_s
+while not observer_pid_file.is_file() and time.monotonic() < deadline:
+    time.sleep(0.05)
+if not observer_pid_file.is_file():
+    raise SystemExit("capacity observer PID file is missing after handoff")
+observer_pid = int(observer_pid_file.read_text(encoding="utf-8").strip())
+try:
+    os.kill(observer_pid, 0)
+except OSError as exc:
+    raise SystemExit("capacity observer is not alive") from exc
+
+raw = {}
+for vehicle_id in range(vehicle_count):
+    result = subprocess.run(
+        ["gz", "topic", "-i", "-t", _depth_topic(vehicle_id)],
+        text=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.STDOUT,
+        timeout=10,
+        check=False,
+    )
+    if result.returncode != 0:
+        raise SystemExit(f"depth topic introspection failed for vehicle {vehicle_id}")
+    raw[vehicle_id] = result.stdout
+connections = validate_depth_topic_connections(raw, subscriber_count=subscriber_count)
+connections["stage"] = "launcher-after-attestation"
+connections["observer_pid"] = observer_pid
+connections["raw"] = {str(key): value for key, value in raw.items()}
+(run_dir / "depth-topic-connections-launcher.json").write_text(
+    json.dumps(connections, indent=2, sort_keys=True) + "\n", encoding="utf-8"
+)
+if not connections["accepted"]:
+    raise SystemExit("capacity depth subscriber topology rejected")
+
+def sample(vehicle_id: int) -> dict:
+    drone = MavlinkDrone(
+        connection=f"udpin:0.0.0.0:{14540 + vehicle_id}",
+        autopilot="px4",
+    )
+    drone.connect()
+    telemetry = wait_for_capacity_telemetry(drone)
+    if drone.m is not None:
+        drone.m.close()
+    return {
+        "vehicle_id": vehicle_id,
+        "estimator_healthy": telemetry.estimator_healthy,
+        "armed": telemetry.armed,
+        "landed": telemetry.landed,
+    }
+
+with concurrent.futures.ThreadPoolExecutor(max_workers=vehicle_count) as executor:
+    states = list(executor.map(sample, range(vehicle_count)))
+payload = {
+    "schema": "flydrones-camera-capacity-ready-v1",
+    "observer_pid": observer_pid,
+    "subscriber_count": subscriber_count,
+    "renderer_attestation_accepted": True,
+    "px4_vehicle_count": len(states),
+    "px4_all_healthy": all(item["estimator_healthy"] is True for item in states),
+    "px4_all_disarmed": all(item["armed"] is False for item in states),
+    "px4_all_landed": all(item["landed"] is True for item in states),
+    "px4_states": states,
+    "px4_build": px4_build,
+}
+ready_path.parent.mkdir(parents=True, exist_ok=True)
+with tempfile.NamedTemporaryFile("w", encoding="utf-8", dir=ready_path.parent, delete=False) as handle:
+    json.dump(payload, handle, indent=2, sort_keys=True)
+    handle.write("\n")
+    temporary = Path(handle.name)
+temporary.replace(ready_path)
+if not (
+    payload["px4_all_healthy"]
+    and payload["px4_all_disarmed"]
+    and payload["px4_all_landed"]
+):
+    raise SystemExit("PX4 capacity health/disarmed/landed gate failed")
+PY
+    fi
+    trap - ERR INT TERM
+    echo "$vehicle_count PX4 x500_depth_fly instances and $vehicle_count isolated depth topics are ready."
+    echo "Gazebo renderer profile: $renderer_profile"
+    echo "MAVLink ports start at 14540"
+    echo "Logs: $run_dir"
+    exit 0
+  fi
+  sleep 1
+done
+
+echo "PX4/Gazebo depth-camera startup timed out" >&2
+gz topic -l 2>/dev/null | grep -E 'depth|x500_depth_fly' >&2 || true
+for ((instance_id=0; instance_id<vehicle_count; instance_id++)); do
+  tail -30 "$run_dir/instance_$instance_id/out.log" >&2 || true
+  tail -30 "$run_dir/instance_$instance_id/err.log" >&2 || true
+done
+exit 3

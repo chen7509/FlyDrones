@@ -1,0 +1,92 @@
+{
+  "schema": "flydrones-camera-phase-summary-v1",
+  "mode": "phased",
+  "vehicle_count": 5,
+  "accepted": true,
+  "reasons": [],
+  "epoch_ns": 29900000000,
+  "target_offsets_ns": [
+    0,
+    20000000,
+    40000000,
+    60000000,
+    80000000
+  ],
+  "vehicles": {
+    "0": {
+      "image_count": 29,
+      "mean_frequency_hz": 10.0,
+      "interval_p50_ns": 100000000,
+      "interval_p95_ns": 100000000,
+      "interval_p99_ns": 100000000,
+      "interval_max_ns": 100000000,
+      "phase_median_ns": 4000000,
+      "phase_error_p50_ns": 4000000,
+      "phase_error_p95_ns": 4000000,
+      "phase_error_max_ns": 4000000
+    },
+    "1": {
+      "image_count": 29,
+      "mean_frequency_hz": 10.0,
+      "interval_p50_ns": 100000000,
+      "interval_p95_ns": 100000000,
+      "interval_p99_ns": 100000000,
+      "interval_max_ns": 100000000,
+      "phase_median_ns": 24000000,
+      "phase_error_p50_ns": 4000000,
+      "phase_error_p95_ns": 4000000,
+      "phase_error_max_ns": 4000000
+    },
+    "2": {
+      "image_count": 28,
+      "mean_frequency_hz": 10.0,
+      "interval_p50_ns": 100000000,
+      "interval_p95_ns": 100000000,
+      "interval_p99_ns": 100000000,
+      "interval_max_ns": 100000000,
+      "phase_median_ns": 44000000,
+      "phase_error_p50_ns": 4000000,
+      "phase_error_p95_ns": 4000000,
+      "phase_error_max_ns": 4000000
+    },
+    "3": {
+      "image_count": 28,
+      "mean_frequency_hz": 10.0,
+      "interval_p50_ns": 100000000,
+      "interval_p95_ns": 100000000,
+      "interval_p99_ns": 102960000,
+      "interval_max_ns": 104000000,
+      "phase_median_ns": 64000000,
+      "phase_error_p50_ns": 4000000,
+      "phase_error_p95_ns": 4000000,
+      "phase_error_max_ns": 8000000
+    },
+    "4": {
+      "image_count": 28,
+      "mean_frequency_hz": 10.0,
+      "interval_p50_ns": 100000000,
+      "interval_p95_ns": 100000000,
+      "interval_p99_ns": 100000000,
+      "interval_max_ns": 100000000,
+      "phase_median_ns": 84000000,
+      "phase_error_p50_ns": 4000000,
+      "phase_error_p95_ns": 4000000,
+      "phase_error_max_ns": 4000000
+    }
+  },
+  "adjacent_spacing_median_error_ns": {
+    "0-1": 0,
+    "1-2": 0,
+    "2-3": 0,
+    "3-4": 0,
+    "4-0": 0
+  },
+  "max_simultaneous_cameras_10ms": 1,
+  "missed_trigger_count": 0,
+  "queue_overflow_count": 0,
+  "duplicate_trigger_count": 0,
+  "duplicate_image_count": 0,
+  "unmatched_trigger_count": 0,
+  "unmatched_image_count": 0,
+  "cross_model_error_count": 0
+}

@@ -102,11 +102,17 @@ class FakeRuntime:
         completion_marker: Path,
         *,
         complete_after_publishes: int | None,
+        release_marker: Path | None = None,
+        release_after_publishes: int | None = None,
+        complete_after_s: float | None = None,
     ) -> None:
         self.node = node
         self.clocks = list(clocks)
         self.completion_marker = completion_marker
         self.complete_after_publishes = complete_after_publishes
+        self.release_marker = release_marker
+        self.release_after_publishes = release_after_publishes
+        self.complete_after_s = complete_after_s
         self.now = 0.0
 
     def monotonic(self) -> float:
@@ -117,7 +123,15 @@ class FakeRuntime:
         if self.clocks:
             self.node.emit_clock(self.clocks.pop(0))
         published = sum(len(publisher.messages) for publisher in self.node.publishers.values())
+        if (
+            self.release_marker is not None
+            and self.release_after_publishes is not None
+            and published >= self.release_after_publishes
+        ):
+            self.release_marker.touch()
         if self.complete_after_publishes is not None and published >= self.complete_after_publishes:
+            self.completion_marker.touch()
+        if self.complete_after_s is not None and self.now >= self.complete_after_s:
             self.completion_marker.touch()
 
 
@@ -150,6 +164,9 @@ def run_fake(
     clocks: list[int],
     complete_after_publishes: int | None,
     scheduler_config: dict[str, object] | None = None,
+    release_marker: Path | None = None,
+    release_after_publishes: int | None = None,
+    complete_after_s: float | None = None,
 ) -> tuple[int, list[dict[str, object]]]:
     selected = scheduler_config or config(tmp_path)
     runtime = FakeRuntime(
@@ -157,6 +174,9 @@ def run_fake(
         clocks,
         Path(selected["completion_marker"]),
         complete_after_publishes=complete_after_publishes,
+        release_marker=release_marker,
+        release_after_publishes=release_after_publishes,
+        complete_after_s=complete_after_s,
     )
     status = run_scheduler(
         selected,
@@ -165,6 +185,72 @@ def run_fake(
         sleep=runtime.sleep,
     )
     return status, read_events(Path(selected["output"]))
+
+
+def test_scheduler_stops_all_camera_triggers_after_attestation_release(tmp_path):
+    release = tmp_path / "renderer-phase-complete.marker"
+    selected = config(
+        tmp_path,
+        selected_vehicle_count=0,
+        attestation_release_marker=release,
+    )
+    node = FakeNode([depth_topic(vehicle_id) for vehicle_id in range(5)])
+
+    status, events = run_fake(
+        tmp_path,
+        node=node,
+        clocks=[EPOCH_NS + offset for offset in range(0, 304_000_001, 4_000_000)],
+        complete_after_publishes=None,
+        scheduler_config=selected,
+        release_marker=release,
+        release_after_publishes=5,
+        complete_after_s=0.25,
+    )
+
+    assert status == 0
+    transitions = [event for event in events if event["event"] == "phase-transition"]
+    assert len(transitions) == 1
+    assert transitions[0]["selected_vehicle_count"] == 0
+    triggers = [event for event in events if event["event"] == "trigger"]
+    assert [(event["vehicle_id"], event["cycle"]) for event in triggers] == [
+        (0, 0),
+        (1, 0),
+        (2, 0),
+        (3, 0),
+        (4, 0),
+    ]
+
+
+def test_scheduler_keeps_only_selected_camera_after_attestation_release(tmp_path):
+    release = tmp_path / "renderer-phase-complete.marker"
+    selected = config(
+        tmp_path,
+        selected_vehicle_count=1,
+        attestation_release_marker=release,
+    )
+    node = FakeNode([depth_topic(vehicle_id) for vehicle_id in range(5)])
+
+    status, events = run_fake(
+        tmp_path,
+        node=node,
+        clocks=[EPOCH_NS + offset for offset in range(0, 304_000_001, 4_000_000)],
+        complete_after_publishes=7,
+        scheduler_config=selected,
+        release_marker=release,
+        release_after_publishes=5,
+    )
+
+    assert status == 0
+    triggers = [event for event in events if event["event"] == "trigger"]
+    assert [(event["vehicle_id"], event["cycle"]) for event in triggers] == [
+        (0, 0),
+        (1, 0),
+        (2, 0),
+        (3, 0),
+        (4, 0),
+        (0, 1),
+        (0, 2),
+    ]
 
 
 def test_scheduler_requires_exact_topology_clock_and_trigger_connections(tmp_path):

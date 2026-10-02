@@ -1,0 +1,169 @@
+{
+  "camera_rerun_eligible": false,
+  "classification": "inconclusive_or_invalid",
+  "readiness_rate": 0.8,
+  "reasons": [
+    "invalid_run_evidence"
+  ],
+  "schema": "flydrones-px4-sensor-readiness-campaign-summary-v1",
+  "scores": [
+    {
+      "evidence_failures": [],
+      "evidence_valid": true,
+      "failures": [],
+      "name": "readiness-formal-01-v5-r1",
+      "performance_failures": [],
+      "performance_pass": true,
+      "phase": "formal",
+      "repetition": 1,
+      "rtf": 0.9997215828327646,
+      "sequence": 1,
+      "vehicle_count": 5
+    },
+    {
+      "evidence_failures": [],
+      "evidence_valid": true,
+      "failures": [],
+      "name": "readiness-formal-02-v5-r2",
+      "performance_failures": [],
+      "performance_pass": true,
+      "phase": "formal",
+      "repetition": 2,
+      "rtf": 0.9998201211815075,
+      "sequence": 2,
+      "vehicle_count": 5
+    },
+    {
+      "evidence_failures": [],
+      "evidence_valid": true,
+      "failures": [],
+      "name": "readiness-formal-03-v5-r3",
+      "performance_failures": [],
+      "performance_pass": true,
+      "phase": "formal",
+      "repetition": 3,
+      "rtf": 0.9994000333834302,
+      "sequence": 3,
+      "vehicle_count": 5
+    },
+    {
+      "evidence_failures": [],
+      "evidence_valid": true,
+      "failures": [],
+      "name": "readiness-formal-04-v5-r4",
+      "performance_failures": [],
+      "performance_pass": true,
+      "phase": "formal",
+      "repetition": 4,
+      "rtf": 0.9997764904676791,
+      "sequence": 4,
+      "vehicle_count": 5
+    },
+    {
+      "evidence_failures": [],
+      "evidence_valid": true,
+      "failures": [],
+      "name": "readiness-formal-05-v5-r5",
+      "performance_failures": [],
+      "performance_pass": true,
+      "phase": "formal",
+      "repetition": 5,
+      "rtf": 0.9995522019761163,
+      "sequence": 5,
+      "vehicle_count": 5
+    },
+    {
+      "evidence_failures": [],
+      "evidence_valid": true,
+      "failures": [],
+      "name": "readiness-formal-06-v5-r6",
+      "performance_failures": [],
+      "performance_pass": true,
+      "phase": "formal",
+      "repetition": 6,
+      "rtf": 0.9995497060525738,
+      "sequence": 6,
+      "vehicle_count": 5
+    },
+    {
+      "evidence_failures": [
+        "cleanup_evidence_invalid",
+        "cleanup_not_verified"
+      ],
+      "evidence_valid": false,
+      "failures": [
+        "cleanup_evidence_invalid",
+        "cleanup_not_verified"
+      ],
+      "name": "readiness-formal-07-v5-r7",
+      "performance_failures": [],
+      "performance_pass": false,
+      "phase": "formal",
+      "repetition": 7,
+      "rtf": 0.9998901945961226,
+      "sequence": 7,
+      "vehicle_count": 5
+    },
+    {
+      "evidence_failures": [],
+      "evidence_valid": true,
+      "failures": [],
+      "name": "readiness-formal-08-v5-r8",
+      "performance_failures": [],
+      "performance_pass": true,
+      "phase": "formal",
+      "repetition": 8,
+      "rtf": 0.9993774793236212,
+      "sequence": 8,
+      "vehicle_count": 5
+    },
+    {
+      "evidence_failures": [
+        "artifact_collection_failed",
+        "sensor_topology_evidence_invalid",
+        "launcher_failed",
+        "platform_not_ready",
+        "initial_health_invalid",
+        "post_window_health_invalid",
+        "scored_duration_incomplete",
+        "px4_ulogs_incomplete",
+        "vehicle_health_evidence_incomplete",
+        "rtf_missing_or_invalid"
+      ],
+      "evidence_valid": false,
+      "failures": [
+        "artifact_collection_failed",
+        "sensor_topology_evidence_invalid",
+        "launcher_failed",
+        "platform_not_ready",
+        "initial_health_invalid",
+        "post_window_health_invalid",
+        "scored_duration_incomplete",
+        "px4_ulogs_incomplete",
+        "vehicle_health_evidence_incomplete",
+        "rtf_missing_or_invalid"
+      ],
+      "name": "readiness-formal-09-v5-r9",
+      "performance_failures": [],
+      "performance_pass": false,
+      "phase": "formal",
+      "repetition": 9,
+      "rtf": null,
+      "sequence": 9,
+      "vehicle_count": 5
+    },
+    {
+      "evidence_failures": [],
+      "evidence_valid": true,
+      "failures": [],
+      "name": "readiness-formal-10-v5-r10",
+      "performance_failures": [],
+      "performance_pass": true,
+      "phase": "formal",
+      "repetition": 10,
+      "rtf": 0.9995021014517544,
+      "sequence": 10,
+      "vehicle_count": 5
+    }
+  ]
+}

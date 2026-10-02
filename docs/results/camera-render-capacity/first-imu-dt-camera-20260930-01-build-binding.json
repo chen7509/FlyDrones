@@ -1,0 +1,34 @@
+{
+  "camera_campaign": "first-imu-dt-camera-20260930-01",
+  "px4_build_identity": {
+    "binary_sha256": "acdde36ea88ac718fedc040d4ecf07beaf55c8f9552a98b2e502c3e1046c6651",
+    "board_definition": "#define CONFIG_BOARD_NOLOCKSTEP 1",
+    "boardconfig_sha256": "e3e8f70d0c9d0424e8b49768ed6eb6ac00cdffcab1444e15d0505c4aadba94e6",
+    "build_name": "px4_sitl_nolockstep",
+    "nolockstep": true,
+    "px4_patch": "patches/px4/vehicle-imu-first-sample-dt.patch",
+    "px4_patch_sha256": "cd36509e63b3709770366a17a07cca67591be409c02a4475ecd3508923d8fd94",
+    "px4_revision": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+    "schema": "flydrones-px4-build-evidence-v2",
+    "vehicle_imu_patch_applied": true,
+    "vehicle_imu_sha256": "a73997eaf14a5c1b224dcb4f13648874a02863d63608c60b73d8d3dc01a983a1"
+  },
+  "readiness_config": "configs/px4_sensor_readiness.json",
+  "readiness_config_sha256": "5205edc3ce1ced898abaf59aa0006408d9dd8fc6cdcc850ce9f99750e0ff2108",
+  "readiness_manifest_sha256": {
+    "readiness-formal-01-v5-r1": "f9f886dcf922d36c146e56f2f74df14b564c9960c4181286c625a708b2fb1bac",
+    "readiness-formal-02-v5-r2": "b005558bf845dd094150353aa8bc2e4e03f7bdc3e64450442d215627b03c147a",
+    "readiness-formal-03-v5-r3": "5947b6977a76540bea2832a8513bd85258bbebb39602d37c32646f2a86ef2dd6",
+    "readiness-formal-04-v5-r4": "90c88d1e75c5abc8dc127b725e009f6091a3371009d6b370c70810a11b2539d6",
+    "readiness-formal-05-v5-r5": "1678e289a4400100556215e18a742d67c4ea0acbeee0a0bff9c9e1256b525811",
+    "readiness-formal-06-v5-r6": "0fb7ed9b57d423b14ae2e90ea39581a5984489875d1c73859a99b8f372dd008d",
+    "readiness-formal-07-v5-r7": "736adcea69185773f47cb9ea6c96c23728abbc805dc1a6d6483b27f94b14d586",
+    "readiness-formal-08-v5-r8": "0529aa70dde02cb5b56c5ea9cb64f5a0ce580734c2ae9646658304cfa610b763",
+    "readiness-formal-09-v5-r9": "ec34052a9bf70b5b304e85d05a6a48b579b999f25e373a70e94f95c7b73c1938",
+    "readiness-formal-10-v5-r10": "96dd16dd367f5db1107637254b1c965fdc399309e6b2808e0172d3b725d08cac"
+  },
+  "readiness_summary": "results/px4-sensor-readiness/formal-first-imu-dt-02/campaign-summary.json",
+  "readiness_summary_sha256": "4f005bbb4e77c590a50c7229f63706a4ea21a74b4511da09554560149e810f3f",
+  "schema": "flydrones-camera-readiness-build-binding-v1",
+  "verification": "post-campaign-independent-binding"
+}

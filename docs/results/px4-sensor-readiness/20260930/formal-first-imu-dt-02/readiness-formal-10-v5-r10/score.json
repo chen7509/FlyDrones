@@ -1,0 +1,13 @@
+{
+  "evidence_failures": [],
+  "evidence_valid": true,
+  "failures": [],
+  "name": "readiness-formal-10-v5-r10",
+  "performance_failures": [],
+  "performance_pass": true,
+  "phase": "formal",
+  "repetition": 10,
+  "rtf": 0.9996098956600922,
+  "sequence": 10,
+  "vehicle_count": 5
+}

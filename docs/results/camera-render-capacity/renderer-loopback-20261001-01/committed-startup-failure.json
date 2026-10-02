@@ -1,0 +1,49 @@
+{
+  "schema": "flydrones-committed-loopback-startup-failure-v1",
+  "name": "capacity-01-idle-0-r1",
+  "evidence_accepted": false,
+  "scored": false,
+  "source_hashes_match": true,
+  "px4_platform_ready": {
+    "px4_all_disarmed": true,
+    "px4_all_healthy": true,
+    "px4_all_landed": true,
+    "schema": "flydrones-px4-capacity-platform-ready-v1",
+    "sensor_connection_topic_count": 20,
+    "sensor_source_topic_count": 20,
+    "vehicle_count": 5
+  },
+  "native_depth_warmup": true,
+  "scheduler_events": [
+    {
+      "event": "topology",
+      "reason": null,
+      "message": null,
+      "accepted": true
+    },
+    {
+      "event": "error",
+      "reason": "trigger_connections_incomplete",
+      "message": "trigger_connections_incomplete",
+      "accepted": null
+    },
+    {
+      "event": "stop",
+      "reason": null,
+      "message": null,
+      "accepted": null
+    }
+  ],
+  "manifest_errors": [
+    "execution: capacity readiness timed out after 180.0s",
+    "scored Gazebo resource evidence is incomplete",
+    "camera observer log lacks one complete successful stop record",
+    "camera scheduler log lacks one complete successful stop record",
+    "required run evidence is missing: renderer-attestation.json",
+    "required run evidence is missing: camera-capacity-ready.json",
+    "required run evidence is missing: depth-topic-connections-launcher.json"
+  ],
+  "cleanup_verified": true,
+  "shared_files_restored": true,
+  "interpretation": "Trigger subscriber connections did not complete before the 150 second scheduler topology timeout; this attempt is invalid and excluded from scored RTF repeatability."
+}

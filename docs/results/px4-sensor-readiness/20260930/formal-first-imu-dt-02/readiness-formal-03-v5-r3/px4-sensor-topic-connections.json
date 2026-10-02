@@ -1,0 +1,189 @@
+{
+  "accepted": true,
+  "expected_topic_count": 20,
+  "publisher_count": 20,
+  "schema": "flydrones-px4-sensor-topic-connections-v1",
+  "subscriber_count": 20,
+  "topics": {
+    "0:barometer": {
+      "publisher": true,
+      "publisher_count": 1,
+      "raw": "Publishers [Address, Message Type]:\n  tcp://172.28.230.109:34501, gz.msgs.FluidPressure\nSubscribers [Address, Message Type]:\n  tcp://172.28.230.109:41729, gz.msgs.FluidPressure\n",
+      "returncode": 0,
+      "subscriber": true,
+      "subscriber_count": 1,
+      "topic": "/world/flydrones_forest/model/x500_depth_fly_0/link/base_link/sensor/air_pressure_sensor/air_pressure"
+    },
+    "0:gps": {
+      "publisher": true,
+      "publisher_count": 1,
+      "raw": "Publishers [Address, Message Type]:\n  tcp://172.28.230.109:34501, gz.msgs.NavSat\nSubscribers [Address, Message Type]:\n  tcp://172.28.230.109:41729, gz.msgs.NavSat\n",
+      "returncode": 0,
+      "subscriber": true,
+      "subscriber_count": 1,
+      "topic": "/world/flydrones_forest/model/x500_depth_fly_0/link/base_link/sensor/navsat_sensor/navsat"
+    },
+    "0:imu": {
+      "publisher": true,
+      "publisher_count": 1,
+      "raw": "Publishers [Address, Message Type]:\n  tcp://172.28.230.109:34501, gz.msgs.IMU\nSubscribers [Address, Message Type]:\n  tcp://172.28.230.109:41729, gz.msgs.IMU\n",
+      "returncode": 0,
+      "subscriber": true,
+      "subscriber_count": 1,
+      "topic": "/world/flydrones_forest/model/x500_depth_fly_0/link/base_link/sensor/imu_sensor/imu"
+    },
+    "0:magnetometer": {
+      "publisher": true,
+      "publisher_count": 1,
+      "raw": "Publishers [Address, Message Type]:\n  tcp://172.28.230.109:34501, gz.msgs.Magnetometer\nSubscribers [Address, Message Type]:\n  tcp://172.28.230.109:41729, gz.msgs.Magnetometer\n",
+      "returncode": 0,
+      "subscriber": true,
+      "subscriber_count": 1,
+      "topic": "/world/flydrones_forest/model/x500_depth_fly_0/link/base_link/sensor/magnetometer_sensor/magnetometer"
+    },
+    "1:barometer": {
+      "publisher": true,
+      "publisher_count": 1,
+      "raw": "Publishers [Address, Message Type]:\n  tcp://172.28.230.109:34501, gz.msgs.FluidPressure\nSubscribers [Address, Message Type]:\n  tcp://172.28.230.109:46673, gz.msgs.FluidPressure\n",
+      "returncode": 0,
+      "subscriber": true,
+      "subscriber_count": 1,
+      "topic": "/world/flydrones_forest/model/x500_depth_fly_1/link/base_link/sensor/air_pressure_sensor/air_pressure"
+    },
+    "1:gps": {
+      "publisher": true,
+      "publisher_count": 1,
+      "raw": "Publishers [Address, Message Type]:\n  tcp://172.28.230.109:34501, gz.msgs.NavSat\nSubscribers [Address, Message Type]:\n  tcp://172.28.230.109:46673, gz.msgs.NavSat\n",
+      "returncode": 0,
+      "subscriber": true,
+      "subscriber_count": 1,
+      "topic": "/world/flydrones_forest/model/x500_depth_fly_1/link/base_link/sensor/navsat_sensor/navsat"
+    },
+    "1:imu": {
+      "publisher": true,
+      "publisher_count": 1,
+      "raw": "Publishers [Address, Message Type]:\n  tcp://172.28.230.109:34501, gz.msgs.IMU\nSubscribers [Address, Message Type]:\n  tcp://172.28.230.109:46673, gz.msgs.IMU\n",
+      "returncode": 0,
+      "subscriber": true,
+      "subscriber_count": 1,
+      "topic": "/world/flydrones_forest/model/x500_depth_fly_1/link/base_link/sensor/imu_sensor/imu"
+    },
+    "1:magnetometer": {
+      "publisher": true,
+      "publisher_count": 1,
+      "raw": "Publishers [Address, Message Type]:\n  tcp://172.28.230.109:34501, gz.msgs.Magnetometer\nSubscribers [Address, Message Type]:\n  tcp://172.28.230.109:46673, gz.msgs.Magnetometer\n",
+      "returncode": 0,
+      "subscriber": true,
+      "subscriber_count": 1,
+      "topic": "/world/flydrones_forest/model/x500_depth_fly_1/link/base_link/sensor/magnetometer_sensor/magnetometer"
+    },
+    "2:barometer": {
+      "publisher": true,
+      "publisher_count": 1,
+      "raw": "Publishers [Address, Message Type]:\n  tcp://172.28.230.109:34501, gz.msgs.FluidPressure\nSubscribers [Address, Message Type]:\n  tcp://172.28.230.109:44939, gz.msgs.FluidPressure\n",
+      "returncode": 0,
+      "subscriber": true,
+      "subscriber_count": 1,
+      "topic": "/world/flydrones_forest/model/x500_depth_fly_2/link/base_link/sensor/air_pressure_sensor/air_pressure"
+    },
+    "2:gps": {
+      "publisher": true,
+      "publisher_count": 1,
+      "raw": "Publishers [Address, Message Type]:\n  tcp://172.28.230.109:34501, gz.msgs.NavSat\nSubscribers [Address, Message Type]:\n  tcp://172.28.230.109:44939, gz.msgs.NavSat\n",
+      "returncode": 0,
+      "subscriber": true,
+      "subscriber_count": 1,
+      "topic": "/world/flydrones_forest/model/x500_depth_fly_2/link/base_link/sensor/navsat_sensor/navsat"
+    },
+    "2:imu": {
+      "publisher": true,
+      "publisher_count": 1,
+      "raw": "Publishers [Address, Message Type]:\n  tcp://172.28.230.109:34501, gz.msgs.IMU\nSubscribers [Address, Message Type]:\n  tcp://172.28.230.109:44939, gz.msgs.IMU\n",
+      "returncode": 0,
+      "subscriber": true,
+      "subscriber_count": 1,
+      "topic": "/world/flydrones_forest/model/x500_depth_fly_2/link/base_link/sensor/imu_sensor/imu"
+    },
+    "2:magnetometer": {
+      "publisher": true,
+      "publisher_count": 1,
+      "raw": "Publishers [Address, Message Type]:\n  tcp://172.28.230.109:34501, gz.msgs.Magnetometer\nSubscribers [Address, Message Type]:\n  tcp://172.28.230.109:44939, gz.msgs.Magnetometer\n",
+      "returncode": 0,
+      "subscriber": true,
+      "subscriber_count": 1,
+      "topic": "/world/flydrones_forest/model/x500_depth_fly_2/link/base_link/sensor/magnetometer_sensor/magnetometer"
+    },
+    "3:barometer": {
+      "publisher": true,
+      "publisher_count": 1,
+      "raw": "Publishers [Address, Message Type]:\n  tcp://172.28.230.109:34501, gz.msgs.FluidPressure\nSubscribers [Address, Message Type]:\n  tcp://172.28.230.109:39197, gz.msgs.FluidPressure\n",
+      "returncode": 0,
+      "subscriber": true,
+      "subscriber_count": 1,
+      "topic": "/world/flydrones_forest/model/x500_depth_fly_3/link/base_link/sensor/air_pressure_sensor/air_pressure"
+    },
+    "3:gps": {
+      "publisher": true,
+      "publisher_count": 1,
+      "raw": "Publishers [Address, Message Type]:\n  tcp://172.28.230.109:34501, gz.msgs.NavSat\nSubscribers [Address, Message Type]:\n  tcp://172.28.230.109:39197, gz.msgs.NavSat\n",
+      "returncode": 0,
+      "subscriber": true,
+      "subscriber_count": 1,
+      "topic": "/world/flydrones_forest/model/x500_depth_fly_3/link/base_link/sensor/navsat_sensor/navsat"
+    },
+    "3:imu": {
+      "publisher": true,
+      "publisher_count": 1,
+      "raw": "Publishers [Address, Message Type]:\n  tcp://172.28.230.109:34501, gz.msgs.IMU\nSubscribers [Address, Message Type]:\n  tcp://172.28.230.109:39197, gz.msgs.IMU\n",
+      "returncode": 0,
+      "subscriber": true,
+      "subscriber_count": 1,
+      "topic": "/world/flydrones_forest/model/x500_depth_fly_3/link/base_link/sensor/imu_sensor/imu"
+    },
+    "3:magnetometer": {
+      "publisher": true,
+      "publisher_count": 1,
+      "raw": "Publishers [Address, Message Type]:\n  tcp://172.28.230.109:34501, gz.msgs.Magnetometer\nSubscribers [Address, Message Type]:\n  tcp://172.28.230.109:39197, gz.msgs.Magnetometer\n",
+      "returncode": 0,
+      "subscriber": true,
+      "subscriber_count": 1,
+      "topic": "/world/flydrones_forest/model/x500_depth_fly_3/link/base_link/sensor/magnetometer_sensor/magnetometer"
+    },
+    "4:barometer": {
+      "publisher": true,
+      "publisher_count": 1,
+      "raw": "Publishers [Address, Message Type]:\n  tcp://172.28.230.109:34501, gz.msgs.FluidPressure\nSubscribers [Address, Message Type]:\n  tcp://172.28.230.109:39867, gz.msgs.FluidPressure\n",
+      "returncode": 0,
+      "subscriber": true,
+      "subscriber_count": 1,
+      "topic": "/world/flydrones_forest/model/x500_depth_fly_4/link/base_link/sensor/air_pressure_sensor/air_pressure"
+    },
+    "4:gps": {
+      "publisher": true,
+      "publisher_count": 1,
+      "raw": "Publishers [Address, Message Type]:\n  tcp://172.28.230.109:34501, gz.msgs.NavSat\nSubscribers [Address, Message Type]:\n  tcp://172.28.230.109:39867, gz.msgs.NavSat\n",
+      "returncode": 0,
+      "subscriber": true,
+      "subscriber_count": 1,
+      "topic": "/world/flydrones_forest/model/x500_depth_fly_4/link/base_link/sensor/navsat_sensor/navsat"
+    },
+    "4:imu": {
+      "publisher": true,
+      "publisher_count": 1,
+      "raw": "Publishers [Address, Message Type]:\n  tcp://172.28.230.109:34501, gz.msgs.IMU\nSubscribers [Address, Message Type]:\n  tcp://172.28.230.109:39867, gz.msgs.IMU\n",
+      "returncode": 0,
+      "subscriber": true,
+      "subscriber_count": 1,
+      "topic": "/world/flydrones_forest/model/x500_depth_fly_4/link/base_link/sensor/imu_sensor/imu"
+    },
+    "4:magnetometer": {
+      "publisher": true,
+      "publisher_count": 1,
+      "raw": "Publishers [Address, Message Type]:\n  tcp://172.28.230.109:34501, gz.msgs.Magnetometer\nSubscribers [Address, Message Type]:\n  tcp://172.28.230.109:39867, gz.msgs.Magnetometer\n",
+      "returncode": 0,
+      "subscriber": true,
+      "subscriber_count": 1,
+      "topic": "/world/flydrones_forest/model/x500_depth_fly_4/link/base_link/sensor/magnetometer_sensor/magnetometer"
+    }
+  }
+}

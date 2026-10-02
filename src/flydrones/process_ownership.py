@@ -188,12 +188,21 @@ def stop_owned_processes(
             break
         sleep(0.05)
 
+    force_killed: list[ProcessIdentity] = []
+    kill_signal = getattr(signal, "SIGKILL", 9)
     for record in pending:
         status = process_identity_status(record, proc_root=proc_root)
         if status == "matching":
-            send_signal(record.pid, signal.SIGKILL)
-            sleep(0.01)
-            status = process_identity_status(record, proc_root=proc_root)
+            send_signal(record.pid, kill_signal)
+            force_killed.append(record)
+
+    for _ in range(attempts):
+        if not any(identity_matches(record, proc_root=proc_root) for record in force_killed):
+            break
+        sleep(0.05)
+
+    for record in pending:
+        status = process_identity_status(record, proc_root=proc_root)
         if status == "already-gone":
             evidence["stopped"].append(record.to_dict())
         elif status == "ownership-mismatch":

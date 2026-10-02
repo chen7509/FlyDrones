@@ -1,0 +1,84 @@
+{
+  "schema": "flydrones-renderer-profiler-summary-v1",
+  "date": "2026-10-01",
+  "configuration": {
+    "vehicles": 5,
+    "render_engine": "ogre2",
+    "renderer_profile": "d3d12-nvidia",
+    "steady_camera_triggers": 0,
+    "disable_gst_camera_system": true,
+    "physics_engine": "DART (unchanged)",
+    "scored_duration_sim_s": 30.0,
+    "rtf_threshold": 0.95
+  },
+  "unprofiled_trial": {
+    "cell": "idle-0",
+    "evidence_failures": [],
+    "evidence_valid": true,
+    "failures": [
+      "rtf_below_threshold"
+    ],
+    "name": "capacity-01-idle-0-r1",
+    "performance_failures": [
+      "rtf_below_threshold"
+    ],
+    "performance_pass": false,
+    "repetition": 1,
+    "rtf": 0.7895341714207049,
+    "score_status": "scored",
+    "sequence": 1
+  },
+  "profiled_trial": {
+    "cell": "idle-0",
+    "evidence_failures": [],
+    "evidence_valid": true,
+    "failures": [
+      "rtf_below_threshold"
+    ],
+    "name": "capacity-01-idle-0-r1",
+    "performance_failures": [
+      "rtf_below_threshold"
+    ],
+    "performance_pass": false,
+    "repetition": 1,
+    "rtf": 0.8506595480859545,
+    "score_status": "scored",
+    "sequence": 1
+  },
+  "perf": {
+    "event": "cpu-clock:u",
+    "frequency_hz": 199,
+    "samples": 10906,
+    "lost_samples": 0
+  },
+  "cumulative_hotspots_percent": {
+    "gz_transport_message_discovery_recv": 43.31,
+    "gazebo_physics_update": 29.13,
+    "dart_world_forward_step": 23.1,
+    "gz_transport_on_subscribers": 12.91,
+    "scene_broadcaster_post_update": 2.78,
+    "sensors_post_update": 2.09,
+    "render_util_update_from_ecm": 1.0
+  },
+  "previous_profile_with_gst": {
+    "rtf": 0.7530348864047371,
+    "samples": 13683,
+    "gst_camera_system_self_percent": 7.32,
+    "gst_find_camera_topic_children_percent": 5.53
+  },
+  "interpretation": [
+    "The unused GstCameraSystem repeated topic-list and regex discovery because the depth-only world never exposed a matching regular /image topic.",
+    "Removing that plugin from a private run-scoped server config removed its sampled hot path.",
+    "The exact final-code run measured 0.7895341714207049 RTF; an earlier valid exploratory run measured 0.8573505871549825. The difference exceeds the 0.03 repeatability limit, so no stable RTF improvement is claimed.",
+    "The 0.95 gate remains closed; no one-camera, five-camera, or formal 12-slot expansion is admissible."
+  ],
+  "exploratory_unprofiled_trial": {
+    "rtf": 0.8573505871549825,
+    "evidence_valid": true,
+    "note": "same retained behavior, earlier exploratory runner hash"
+  },
+  "observed_unprofiled_rtf_range": [
+    0.7895341714207049,
+    0.8573505871549825
+  ]
+}

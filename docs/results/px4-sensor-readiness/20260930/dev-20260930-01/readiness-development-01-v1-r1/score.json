@@ -1,0 +1,33 @@
+{
+  "evidence_failures": [
+    "launcher_failed",
+    "platform_not_ready",
+    "initial_health_invalid",
+    "post_window_health_invalid",
+    "scored_duration_incomplete",
+    "cleanup_not_verified",
+    "px4_ulogs_incomplete",
+    "vehicle_health_evidence_incomplete",
+    "rtf_missing_or_invalid"
+  ],
+  "evidence_valid": false,
+  "failures": [
+    "launcher_failed",
+    "platform_not_ready",
+    "initial_health_invalid",
+    "post_window_health_invalid",
+    "scored_duration_incomplete",
+    "cleanup_not_verified",
+    "px4_ulogs_incomplete",
+    "vehicle_health_evidence_incomplete",
+    "rtf_missing_or_invalid"
+  ],
+  "name": "readiness-development-01-v1-r1",
+  "performance_failures": [],
+  "performance_pass": false,
+  "phase": "development",
+  "repetition": 1,
+  "rtf": null,
+  "sequence": 1,
+  "vehicle_count": 1
+}
