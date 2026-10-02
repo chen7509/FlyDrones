@@ -1,0 +1,82 @@
+# Gazebo 动态相机与 IMU 预检（2026-10-02）
+
+在已核验静态光学轴的彩色目标世界中，另建**零重力**开发副本，按
+0、+0.7、−0.7、+0.5、0 rad/s 的已知时间段强制 `base_link` 偏航角速度。
+Gazebo 渲染图像、原始 `imu_sensor` 消息及逐毫秒相机 link 姿态同步归档。
+没有启动 PX4、执行飞行任务、改变果蝇控制器或接触正式 20 个世界。
+零重力和外加角速度是诊断激励，**不是**真实飞行动力学测试。
+
+首次探针的 JSON 枚举 30 张图像、751 条 IMU，但结束时异步图像回调
+又到达一帧，导致实际 PPM 文件及 stdout 各有 31 帧；此不一致的
+原始输出仍保留。
+第一次分析还把末端图像纳入延迟扫描，排除了所有正向候选延迟，
+其“最佳 0 ms”结论有方向偏差。新增边界测试后，分析程序先截取
+±100 ms 所有候选延迟共同覆盖的图像窗口，再以 4 ms 步长作双向扫描；
+首次有偏分析也保留在档案中。采集程序修正异步收尾后独立复测两次。
+
+| 证据 | 修正后探针 2 | 独立探针 3 |
+|---|---:|---:|
+| 原始 RGB / 原始 IMU | 31 / 751 | 31 / 751 |
+| 未裁切、可完整跟踪绿色球的帧 | 27 | 27 |
+| 双向延迟扫描共同窗口图像 | 25 | 25 |
+| 跟踪图像不在 IMU 时间范围 | 0 | 0 |
+| 跟踪图像最近 IMU 时间戳间距最大值 | 0 ms | 0 ms |
+| 图像反求偏航 vs Gazebo link 姿态 RMSE | 0.208° | 0.208° |
+| 图像反求偏航 vs link 姿态最大误差 | 0.307° | 0.307° |
+| 双向扫描最小值所在 IMU 时间戳延迟 | 0 ms | 0 ms |
+| 此处图像角度与积分 IMU 拟合 RMSE | 0.001484 rad | 0.001473 rad |
+
+“0 ms”只表示在这个**受控仿真场景**、当前 4 ms 离散扫描网格和
+Gazebo 消息时间戳定义下，未观测到超过网格分辨率的相对偏移。
+这不是实际曝光中心的硬件时间偏移标定，也未证实 PX4 ULog 的
+`sensor_combined` 与图像在运动中完全同步。图像角度用了已知球体
+世界坐标和运行时相机位置，link 姿态用于交叉检验；这些 Gazebo 真值
+**不是 VIO 输出**。姿态轨迹以每 1 ms 记录，受控 IMU 约 250 Hz，RGB
+约 10 Hz。目标离开画面或被裁切的帧被剔除并逐帧记录；不得拿这批
+数据评价未知环境导航性能。
+
+原始世界、全部 PPM、原始 IMU 与姿态 JSON、三次探针（含失败/旧分析）、
+原始相机信息和目标清单在
+`evidence/fly-ego-dynamic-calib-1701.zip`，同名 `.sha256.json` 标识全部
+**107/107** 文件；ZIP SHA-256 为
+`464c2f7d90eab7beafe473953138083d963fe7ec23b5b51b8b0a045a7a1308cd`。
+后续需要在 PX4 SITL 的原始 ULog 与图像上做动态轴向/时间验证，明确
+OpenVINS 配置的变换方向和噪声，再运行固定上游版本的离线 VIO。
+目前没有图像生成的位置/协方差、EKF2 视觉融合、硬件在环或实飞证据；
+五机相机 WSL2 的 0.95 RTF 容量门槛仍未通过。
+
+## 上游 OpenVINS 接口审查
+
+检查了 [OpenVINS 上游源码](https://github.com/rpng/open_vins) 固定提交
+`69488123ed9362dd44b6f28e7f4680abbff1442b`（2025-11-30）；
+本机最小稀疏检出干净。`ov_msckf/src/core/VioManagerOptions.h` 的 SHA-256
+为 `68ceb7fbf67d52e24eab4552ac202ab0299e6dad9cfbcc497a5d4752e13e4aac`。
+其解析器把 `T_imu_cam` 作为 `T_CtoI` 读取，然后再求逆存入内部状态；
+上游 EuRoC 配置也明确标为“相机到 IMU 的旋转、相机位置在 IMU 中”。
+因而本阶段推得的 PX4 IMU FRD → 光学坐标旋转不能原样填入；候选
+`T_imu_cam` 应用其逆旋转，即
+
+```
+R_CtoI = [[0, 0, 1],
+          [1, 0, 0],
+          [0, 1, 0]]
+p_CinI = [0.12, 0, -0.002] m
+```
+
+这些只对应**当前仿真几何**，尚未生成可运行的 OpenVINS 配置。
+[OpenVINS 官方无 ROS 安装文档](https://docs.openvins.com/gs-installing-free.html)
+列明 OpenCV、Eigen3、Ceres 依赖；本机 WSL 原缺 Ceres 与部分 Boost
+开发包。补装 `libceres-dev`、`libboost-filesystem-dev`、
+`libboost-system-dev`、`libboost-thread-dev`、`libboost-date-time-dev`
+后，固定上游提交以 `ENABLE_ROS=OFF`、`ENABLE_ARUCO_TAGS=OFF`、
+`BUILD_OV_EVAL=OFF`、`Release` 配置及 `-j2` 编译通过。
+`libov_msckf_lib.so` SHA-256 为
+`ef649cc55d9d4471dbf9e549561a877752a48ae08d568a3433e157cb8e747b45`；
+`run_simulation` SHA-256 为
+`30ce920ea6faa25dba755cffde546ee1d57fd0ad97c23d377149a8934a3d125e`。
+上游 CTest 注册 0 项，本阶段**尚未用 FlyDrones 图像与 ULog 运行
+OpenVINS**，所以没有 VIO 位姿或失败率结果。
+上游 `timeshift_cam_imu` 所在配置项按 `t_imu = t_cam + t_off` 定义，
+受控 Gazebo 的 0 ms 网格结果不能作为 PX4 任务中的最终 `t_off`。
+OpenVINS 是 GPL-3.0，商业集成前仍需许可证审查；当前仅作为研究
+比较候选，不宣称已接入或优于现有方案。
