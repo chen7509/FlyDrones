@@ -141,5 +141,17 @@ zero. This verifies camera-info acquisition, **not** optical-to-IMU rotation,
 time-offset calibration or image-derived VIO. The PX4 build has local changes;
 its binary hash is recorded in the
 [development report](https://github.com/chen7509/FlyDrones/blob/codex/benchmark-camera-info-preflight/docs/CAMERA_INFO_PREFLIGHT_REPORT.md).
-Next, validate the optical frame, full camera-to-IMU transform and timing in
-development before a pinned upstream offline VIO trial.
+The subsequent [optical-frame preflight](https://github.com/chen7509/FlyDrones/pull/7)
+used Gazebo-only static probes, without another PX4 episode. At runtime,
+`camera_link` is `(0.12, 0, 0.002) m` from `base_link`; the SDF include pose
+`(0.12, 0, 0.242) m` is not the runtime camera-to-base translation. Four
+known colored targets independently check the candidate Gazebo-link-to-image
+rotation against the measured camera intrinsics, with a maximum 0.815 px
+projection residual. The 12-file raw archive and hash index were checked
+from a clean checkout. This validates only the **static simulated optical
+geometry**. The PX4 bridge also rotates Gazebo FLU IMU vectors into FRD, but
+dynamic image/IMU time offset, frame consistency in motion, VIO initialization,
+and EKF2 visual fusion remain untested. The controllers still use truth
+odometry; this evidence does not resolve the five-camera 0.95 RTF gate.
+Next, validate motion timing and then run a pinned upstream VIO offline on
+recorded images/IMU before considering any PX4 visual-fusion claim.
