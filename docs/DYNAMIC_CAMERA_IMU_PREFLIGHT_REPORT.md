@@ -44,3 +44,30 @@ Gazebo 消息时间戳定义下，未观测到超过网格分辨率的相对偏�
 OpenVINS 配置的变换方向和噪声，再运行固定上游版本的离线 VIO。
 目前没有图像生成的位置/协方差、EKF2 视觉融合、硬件在环或实飞证据；
 五机相机 WSL2 的 0.95 RTF 容量门槛仍未通过。
+
+## 上游 OpenVINS 接口审查
+
+检查了 [OpenVINS 上游源码](https://github.com/rpng/open_vins) 固定提交
+`69488123ed9362dd44b6f28e7f4680abbff1442b`（2025-11-30）；
+本机最小稀疏检出干净。`ov_msckf/src/core/VioManagerOptions.h` 的 SHA-256
+为 `68ceb7fbf67d52e24eab4552ac202ab0299e6dad9cfbcc497a5d4752e13e4aac`。
+其解析器把 `T_imu_cam` 作为 `T_CtoI` 读取，然后再求逆存入内部状态；
+上游 EuRoC 配置也明确标为“相机到 IMU 的旋转、相机位置在 IMU 中”。
+因而本阶段推得的 PX4 IMU FRD → 光学坐标旋转不能原样填入；候选
+`T_imu_cam` 应用其逆旋转，即
+
+```
+R_CtoI = [[0, 0, 1],
+          [1, 0, 0],
+          [0, 1, 0]]
+p_CinI = [0.12, 0, -0.002] m
+```
+
+这些只对应**当前仿真几何**，尚未生成可运行的 OpenVINS 配置。
+[OpenVINS 官方无 ROS 安装文档](https://docs.openvins.com/gs-installing-free.html)
+列明 OpenCV、Eigen3、Ceres 依赖；本机 WSL 已有 OpenCV/Eigen3 开发包，
+`libceres-dev` 尚未安装，因此没有构建或运行 OpenVINS。
+上游 `timeshift_cam_imu` 所在配置项按 `t_imu = t_cam + t_off` 定义，
+受控 Gazebo 的 0 ms 网格结果不能作为 PX4 任务中的最终 `t_off`。
+OpenVINS 是 GPL-3.0，商业集成前仍需许可证审查；当前仅作为研究
+比较候选，不宣称已接入或优于现有方案。
