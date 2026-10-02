@@ -15,7 +15,7 @@ ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "src"))
 
 from flydrones.benchmark.rgb_capture import verify_rgb_manifest
-from flydrones.benchmark.rgb_imu_timing import analyze_timing
+from flydrones.benchmark.rgb_imu_timing import analyze_decision_window, analyze_timing
 from flydrones.benchmark.ulog_capture import verify_episode_ulog_evidence
 
 
@@ -23,6 +23,8 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--episode", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--decision-window", action="store_true",
+                        help="also audit all recorded frames between first and last observed decision frame")
     args = parser.parse_args()
     from pyulog import ULog
 
@@ -52,6 +54,12 @@ def main() -> int:
         "pyulog_version": version("pyulog"),
         "vio_estimate_produced": False,
     })
+    if args.decision_window:
+        timing["decision_window"] = analyze_decision_window(
+            [item["frame_ns"] for item in rgb["frames"]],
+            imu["timestamp"].tolist(), result["decisions"],
+        )
+        timing["result_sha256"] = hashlib.sha256((episode / "result.json").read_bytes()).hexdigest()
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(timing, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     print(json.dumps(timing, indent=2, ensure_ascii=False))
