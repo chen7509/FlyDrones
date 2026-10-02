@@ -16,6 +16,7 @@ from pathlib import Path
 
 import numpy as np
 
+from .camera_info_capture import CameraInfoRecorder, camera_info_fields
 from .contract import Command, Observation
 from .geometry import segment_box_clearance, segment_cylinder_clearance
 from .rgb_capture import RgbFrameRecorder
@@ -192,7 +193,7 @@ class NativeGazeboPx4Backend:
     """WSL-only fixed-step backend used by all three controllers."""
 
     def __init__(self, root: Path, run_dir: Path, world: dict, *, instance: int = 8,
-                 record_rgb: bool = False):
+                 record_rgb: bool = False, record_camera_info: bool = False):
         self.root = Path(root).resolve()
         self.run_dir = Path(run_dir).resolve()
         self.world = world
@@ -207,6 +208,10 @@ class NativeGazeboPx4Backend:
         self.rgb_recorder = RgbFrameRecorder(self.run_dir) if record_rgb else None
         self.rgb_capture_summary: dict | None = None
         self.rgb_capture_error: str | None = None
+        self.camera_info_recorder = (CameraInfoRecorder(self.run_dir, topic='/benchmark/rgbd/camera_info')
+                                     if record_camera_info else None)
+        self.camera_info_summary: dict | None = None
+        self.camera_info_error: str | None = None
         self.node = None
         self.control_node = None
         self.drone = None
@@ -339,6 +344,13 @@ class NativeGazeboPx4Backend:
                 del self.frames[kind][old]
         return callback
 
+    def _on_camera_info(self, message):
+        if self.camera_info_recorder is not None and self.camera_info_error is None:
+            try:
+                self.camera_info_recorder.add(camera_info_fields(message), message.SerializeToString())
+            except Exception as exc:
+                self.camera_info_error = repr(exc)
+
     def _on_pose(self, message):
         frame_ns = int(message.header.stamp.sec) * 1_000_000_000 + int(message.header.stamp.nsec)
         for pose in message.pose:
@@ -438,6 +450,7 @@ class NativeGazeboPx4Backend:
             tree.write(world_path, encoding='utf-8', xml_declaration=True)
 
     def start(self, world_path: Path) -> None:
+        from gz.msgs10.camera_info_pb2 import CameraInfo
         from gz.msgs10.contacts_pb2 import Contacts
         from gz.msgs10.image_pb2 import Image
         from gz.msgs10.pose_v_pb2 import Pose_V
@@ -487,6 +500,8 @@ class NativeGazeboPx4Backend:
         self.node.subscribe(Pose_V, '/world/fly_ego_benchmark/dynamic_pose/info', self._on_pose)
         self.node.subscribe(Image, '/benchmark/rgbd/image', self._on_image('rgb'))
         self.node.subscribe(Image, '/benchmark/rgbd/depth_image', self._on_image('depth'))
+        if self.camera_info_recorder is not None:
+            self.node.subscribe(CameraInfo, '/benchmark/rgbd/camera_info', self._on_camera_info)
         self.node.subscribe(Contacts, '/benchmark/contacts', self._on_contacts)
 
         self.fixture = TestFixture(str(world_path))
@@ -767,5 +782,10 @@ class NativeGazeboPx4Backend:
                 self.rgb_capture_summary = self.rgb_recorder.finish()
             except Exception as exc:
                 self.rgb_capture_error = repr(exc)
+        if self.camera_info_recorder is not None:
+            try:
+                self.camera_info_summary = self.camera_info_recorder.finish()
+            except Exception as exc:
+                self.camera_info_error = repr(exc)
         self.server = None
         self.fixture = None

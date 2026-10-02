@@ -13,6 +13,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / 'src'))
 
+from flydrones.benchmark.camera_info_capture import camera_info_capture_failures
 from flydrones.benchmark.ego import EgoController
 from flydrones.benchmark.fly import FullFlyController
 from flydrones.benchmark.gateway import Gateway, NativeGazeboPx4Backend
@@ -35,6 +36,8 @@ def main() -> int:
     parser.add_argument('--freeze-manifest', type=Path)
     parser.add_argument('--record-rgb', action='store_true',
                         help='development preflight: preserve raw RGB frames and timestamps')
+    parser.add_argument('--record-camera-info', action='store_true',
+                        help='development preflight: preserve published Gazebo camera info')
     args = parser.parse_args()
 
     config = load_benchmark_config(args.config)
@@ -61,7 +64,8 @@ def main() -> int:
         controller = FullFlyController(
             fly_config, ROOT / config['fly']['model'], guided=args.controller == 'fly_guided',
         )
-    backend = NativeGazeboPx4Backend(ROOT, args.output, world, record_rgb=args.record_rgb)
+    backend = NativeGazeboPx4Backend(ROOT, args.output, world, record_rgb=args.record_rgb,
+                                    record_camera_info=args.record_camera_info)
     gateway = Gateway(config, backend)
     scorer = EpisodeScorer(
         tuple(world['goal']), config['task']['goal_radius_m'],
@@ -109,7 +113,10 @@ def main() -> int:
     ulog_failures = ulog_evidence_failures(backend.ulog_evidence, backend.ulog_capture_error)
     rgb_failures = rgb_capture_failures(backend.rgb_capture_summary, backend.rgb_capture_error,
                                         required=args.record_rgb)
-    evidence_failures = ulog_failures + rgb_failures
+    camera_info_failures = camera_info_capture_failures(
+        backend.camera_info_summary, backend.camera_info_error, required=args.record_camera_info,
+    )
+    evidence_failures = ulog_failures + rgb_failures + camera_info_failures
     payload = scorer.summary()
     payload.update({
         'controller': args.controller,
@@ -137,6 +144,13 @@ def main() -> int:
         'rgb_capture_out_of_order_drops': backend.rgb_capture_summary['out_of_order_drops'] if backend.rgb_capture_summary else None,
         'rgb_capture_error': backend.rgb_capture_error,
         'rgb_capture_accepted': not rgb_failures if args.record_rgb else None,
+        'camera_info_requested': args.record_camera_info,
+        'camera_info_message_count': (backend.camera_info_summary['message_count']
+                                      if backend.camera_info_summary else 0),
+        'camera_info_changed_stable_fields': (backend.camera_info_summary['changed_stable_fields']
+                                              if backend.camera_info_summary else None),
+        'camera_info_error': backend.camera_info_error,
+        'camera_info_capture_accepted': not camera_info_failures if args.record_camera_info else None,
     })
     temporary = args.output / 'result.json.tmp'
     temporary.write_text(json.dumps(payload, indent=2, allow_nan=False), encoding='utf-8')
