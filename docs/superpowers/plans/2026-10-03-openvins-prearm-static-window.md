@@ -44,8 +44,8 @@
 
 **Interfaces:** use the existing `run_episode.py` RGB/camera capture and existing OpenVINS offline preparation/replay/audit tools; no new PX4 fusion input.
 
-- [ ] Verify pinned archive fixture, PX4/OpenVINS versions, available disk and absence of competing simulation processes.
-- [ ] Run one development episode with `--development-prearm-stationary-s 4`, preserving output and any failure. Do not rerun into the same path.
-- [ ] Audit ULog/RGB prearm coverage and PX4 velocity validity/reset flags, then replay saved inputs through fixed OpenVINS configuration once.
-- [ ] Compare initialization time, true visual-update count, trajectory error and task terminal status; report all gaps and limitations.
-- [ ] Seal logs and outputs with SHA-256 index, verify archive readback; run focused tests/review and commit a draft stacked PR.
+- [x] Verify pinned archive fixture, PX4/OpenVINS versions, available disk and absence of competing simulation processes.
+- [x] Run one development episode with `--development-prearm-stationary-s 4`, preserving output and any failure. Do not rerun into the same path.
+- [x] Audit ULog/RGB prearm coverage and PX4 velocity validity/reset flags, then replay saved inputs through fixed OpenVINS configuration once.
+- [x] Compare initialization time, true visual-update count, trajectory error and task terminal status; report all gaps and limitations.
+- [ ] Seal logs and outputs with SHA-256 index, verify archive readback; run focused tests/review and commit a draft stacked PR. (Archive and tests complete; final review/PR pending.)

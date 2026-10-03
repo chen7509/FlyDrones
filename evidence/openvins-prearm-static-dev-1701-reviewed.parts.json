@@ -1,0 +1,41 @@
+{
+  "schema": "flydrones-evidence-parts-v1",
+  "archive": "openvins-prearm-static-dev-1701-reviewed.zip",
+  "archive_bytes": 11476672,
+  "archive_sha256": "8f6757908119f987dbc402d231885073783f55287f173a0a194b6fb786aac485",
+  "index": "openvins-prearm-static-dev-1701-reviewed.sha256.json",
+  "index_sha256": "bea1ffbaa7acd189325fcd76ba22e8d8ec06187dd06ec348b5183512df5c9323",
+  "chunk_bytes": 2000000,
+  "parts": [
+    {
+      "name": "openvins-prearm-static-dev-1701-reviewed.zip.part001",
+      "bytes": 2000000,
+      "sha256": "a15a9bec9c6759739634d0cb71e97c3cf95f33fdf7c9f301b98ad697cedbfe99"
+    },
+    {
+      "name": "openvins-prearm-static-dev-1701-reviewed.zip.part002",
+      "bytes": 2000000,
+      "sha256": "669211eeca3b4b3b9cc932dfbd686ad4b999df571f2db1b884fff3622d00b3f8"
+    },
+    {
+      "name": "openvins-prearm-static-dev-1701-reviewed.zip.part003",
+      "bytes": 2000000,
+      "sha256": "817b6e1d1960886f6183993740c26daaaebe0ab02f3e8666851bd6d37810525f"
+    },
+    {
+      "name": "openvins-prearm-static-dev-1701-reviewed.zip.part004",
+      "bytes": 2000000,
+      "sha256": "3d949c4da34517b65291e30c6ba5b17ce3295e848657a38c47c27d7dc6f3f47c"
+    },
+    {
+      "name": "openvins-prearm-static-dev-1701-reviewed.zip.part005",
+      "bytes": 2000000,
+      "sha256": "13ad96fafdc7306cf19bad4a2622343848ca50b1bbf5079c85af3729f494f8d6"
+    },
+    {
+      "name": "openvins-prearm-static-dev-1701-reviewed.zip.part006",
+      "bytes": 1476672,
+      "sha256": "5ea7af97a5da5d8a75b86492126ec8f48fadc4251487bb9ecf47f6eeeb264d15"
+    }
+  ]
+}
