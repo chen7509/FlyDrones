@@ -21,6 +21,7 @@ results/fly-ego-coverage-audit/
 results/fly-ego-camera-info-preflight/
 results/fly-ego-optical-calib/
 results/fly-ego-dynamic-calib/
+results/openvins-offline-1701/
 .DS_Store
 Thumbs.db
 .idea/
