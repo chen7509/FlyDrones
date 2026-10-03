@@ -1,13 +1,14 @@
 from __future__ import annotations
 
+import json
 from dataclasses import asdict, dataclass
 from hashlib import sha256
-import json
 from pathlib import Path
 
 import numpy as np
 
 SCHEMA = "flydrones-connectome-sequence-v1"
+SCHEMA_V2 = "flydrones-connectome-sequence-v2"
 INPUT_ARRAY_KEYS = (
     "sim_ns",
     "frame_ns",
@@ -51,6 +52,7 @@ class TeacherTarget:
     horizon_enu: np.ndarray
     minimum_clearance_m: float
     terminal: bool
+    horizon_valid: np.ndarray | None = None
 
 
 @dataclass
@@ -78,8 +80,21 @@ def _validate(sequence: TrainingSequence) -> None:
             _finite(name, np.asarray(getattr(frame, name)))
     for target in sequence.targets:
         _finite("teacher_velocity_enu", np.asarray(target.velocity_enu))
-        _finite("teacher_horizon_enu", np.asarray(target.horizon_enu))
+        horizon = np.asarray(target.horizon_enu)
+        _finite("teacher_horizon_enu", horizon)
+        if horizon.ndim != 2 or horizon.shape[1] != 3 or horizon.shape[0] < 1:
+            raise ValueError("teacher_horizon_enu shape invalid")
+        if target.horizon_valid is not None:
+            valid = np.asarray(target.horizon_valid)
+            if (valid.dtype != np.bool_ or valid.shape != (horizon.shape[0],)
+                    or not valid[0] or np.any(np.diff(valid.astype(np.int8)) > 0)):
+                raise ValueError("teacher_horizon_valid mask invalid")
+            if np.any(horizon[~valid] != 0):
+                raise ValueError("invalid teacher horizon padding")
         _finite("teacher_yaw_rate", np.asarray(target.yaw_rate))
+    if any(target.horizon_valid is not None for target in sequence.targets) and any(
+            target.horizon_valid is None for target in sequence.targets):
+        raise ValueError("mixed v1/v2 teacher horizons")
 
 
 def _digest(path: Path) -> str:
@@ -91,7 +106,7 @@ def _digest(path: Path) -> str:
 
 
 def _arrays(sequence: TrainingSequence) -> dict[str, np.ndarray]:
-    return {
+    arrays = {
         "sim_ns": np.asarray([frame.sim_ns for frame in sequence.frames], np.int64),
         "frame_ns": np.asarray(
             [frame.frame_ns for frame in sequence.frames], np.int64
@@ -131,6 +146,11 @@ def _arrays(sequence: TrainingSequence) -> dict[str, np.ndarray]:
             [target.terminal for target in sequence.targets], np.bool_
         ),
     }
+    if sequence.targets[0].horizon_valid is not None:
+        arrays["teacher_horizon_valid"] = np.stack(
+            [np.asarray(target.horizon_valid, np.bool_) for target in sequence.targets]
+        )
+    return arrays
 
 
 def write_sequence(path: str | Path, sequence: TrainingSequence) -> Path:
@@ -143,7 +163,7 @@ def write_sequence(path: str | Path, sequence: TrainingSequence) -> Path:
     samples = temporary / "samples.npz"
     np.savez_compressed(samples, **_arrays(sequence))
     manifest = {
-        "schema": SCHEMA,
+        "schema": SCHEMA_V2 if sequence.targets[0].horizon_valid is not None else SCHEMA,
         "provenance": asdict(sequence.provenance),
         "samples": len(sequence.frames),
         "samples_sha256": _digest(samples),
@@ -159,7 +179,8 @@ def load_sequence(path: str | Path) -> TrainingSequence:
     path = Path(path)
     manifest = json.loads((path / "manifest.json").read_text(encoding="utf-8"))
     samples = path / "samples.npz"
-    if manifest.get("schema") != SCHEMA:
+    if (set(manifest) != {"schema", "provenance", "samples", "samples_sha256"}
+            or manifest.get("schema") not in (SCHEMA, SCHEMA_V2)):
         raise ValueError("unsupported training sequence schema")
     if manifest.get("samples_sha256") != _digest(samples):
         raise ValueError("samples.npz hash mismatch")
@@ -170,10 +191,14 @@ def load_sequence(path: str | Path) -> TrainingSequence:
         "teacher_minimum_clearance_m",
         "teacher_terminal",
     }
+    if manifest["schema"] == SCHEMA_V2:
+        required.add("teacher_horizon_valid")
     with np.load(samples, allow_pickle=False) as arrays:
         if set(arrays.files) != required:
             raise ValueError("samples.npz keys do not match the student/teacher contract")
         sample_count = int(arrays["sim_ns"].shape[0])
+        if manifest["samples"] != sample_count:
+            raise ValueError("sequence sample count mismatch")
         frames = [
             SequenceFrame(
                 int(arrays["sim_ns"][i]),
@@ -195,6 +220,9 @@ def load_sequence(path: str | Path) -> TrainingSequence:
                 arrays["teacher_horizon_enu"][i].copy(),
                 float(arrays["teacher_minimum_clearance_m"][i]),
                 bool(arrays["teacher_terminal"][i]),
+                (arrays["teacher_horizon_valid"][i].copy()
+                 if manifest["schema"] == SCHEMA_V2 else
+                 np.ones(arrays["teacher_horizon_enu"][i].shape[0], np.bool_)),
             )
             for i in range(sample_count)
         ]

@@ -192,6 +192,9 @@ def swept_clearance(world: dict, start, finish, start_ns: int, finish_ns: int, r
 class NativeGazeboPx4Backend:
     """WSL-only fixed-step backend used by all three controllers."""
 
+    odometry_source = 'gazebo_model_truth'
+    camera_pose_source = 'gazebo_model_truth'
+
     def __init__(self, root: Path, run_dir: Path, world: dict, *, instance: int = 8,
                  record_rgb: bool = False, record_camera_info: bool = False):
         self.root = Path(root).resolve()

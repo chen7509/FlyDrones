@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from dataclasses import replace
 from pathlib import Path
 
 import numpy as np
@@ -29,6 +30,7 @@ class TeacherSequenceRecorder:
         self.provenance = provenance
         self.frames: list[SequenceFrame] = []
         self.targets: list[TeacherTarget] = []
+        self.references: list[np.ndarray | None] = []
 
     def append(
         self,
@@ -44,6 +46,17 @@ class TeacherSequenceRecorder:
         velocity = np.asarray(decision.command.velocity_enu, np.float32)
         if not np.isfinite(velocity).all():
             raise ValueError("teacher_velocity_enu contains non-finite values")
+        reference = decision.evidence.get("reference")
+        position_ref = None
+        if reference is not None:
+            if not isinstance(reference, dict) or "position_ref" not in reference:
+                raise ValueError("teacher reference position missing")
+            try:
+                position_ref = np.asarray(reference["position_ref"], np.float32)
+            except (TypeError, ValueError) as exc:
+                raise ValueError("teacher reference position invalid") from exc
+            if position_ref.shape != (3,) or not np.isfinite(position_ref).all():
+                raise ValueError("teacher reference position invalid")
         self.frames.append(
             SequenceFrame(
                 obs.sim_ns,
@@ -66,8 +79,25 @@ class TeacherSequenceRecorder:
                 bool(terminal),
             )
         )
+        self.references.append(None if position_ref is None else position_ref.copy())
 
     def finish(self, path: str | Path) -> Path:
         return write_sequence(
             path, TrainingSequence(self.provenance, self.frames, self.targets)
         )
+
+    def finish_with_reference_horizon(self, path: Path, *, points: int) -> Path:
+        """Save observed EGO reference positions without inventing future points."""
+        if type(points) is not int or points < 1:
+            raise ValueError("points must be a positive integer")
+        if not self.references or any(reference is None for reference in self.references):
+            raise ValueError("native teacher reference missing")
+        targets = []
+        for index, target in enumerate(self.targets):
+            available = min(points, len(self.references) - index)
+            horizon = np.zeros((points, 3), np.float32)
+            horizon[:available] = np.stack(self.references[index:index + available])
+            valid = np.zeros(points, np.bool_)
+            valid[:available] = True
+            targets.append(replace(target, horizon_enu=horizon, horizon_valid=valid))
+        return write_sequence(path, TrainingSequence(self.provenance, self.frames, targets))
