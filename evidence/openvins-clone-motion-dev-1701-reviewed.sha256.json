@@ -1,10 +1,10 @@
 {
-  "archive_bytes": 193237,
-  "archive_sha256": "4081ef0042f01f4355106d5883f7da63fa9257b32fe18774896132f1ef0beaba",
+  "archive_bytes": 194092,
+  "archive_sha256": "79ff7a39527c68a39f3c134a7e46ee9d0ab0d542dde7cbc44084bd413db3b19e",
   "files": {
     "docs/OPENVINS_CLONE_MOTION_REPORT.md": {
-      "bytes": 5052,
-      "sha256": "d330ff1fde136e2de3f095121db391b7796659e84148262f6fa22dc5630675ae"
+      "bytes": 5435,
+      "sha256": "0b08c7bd758c30d9065c09c3d79673423ae1b3958be7edbb7ed2f76c755ea6fe"
     },
     "docs/superpowers/plans/2026-10-03-openvins-clone-motion-audit.md": {
       "bytes": 1322,
@@ -15,18 +15,18 @@
       "sha256": "19884a19cfd19e1cc9dfd4fb6772fccf2625c193533a4b027d2629c16a3132f8"
     },
     "results/openvins-clone-motion/REPRODUCE.md": {
-      "bytes": 2376,
-      "sha256": "66dc0d7f040e178baa7d79d45f9833825653d046b4c2e492e83168d9be76bb78"
+      "bytes": 2466,
+      "sha256": "e6b52bb0a95846759916481790889ab424ec5e5f5823d50cff1e4ef926479016"
     },
     "results/openvins-clone-motion/archive_evidence.py": {
-      "bytes": 5225,
-      "sha256": "9c06966707aca5ebd5b28962d64a5bec49643372041a7625715af60eba5f87ba"
+      "bytes": 5234,
+      "sha256": "5c5e5c7134c898b3c6c7334ff18a30080befaf872a68abd55d1f61b5b0a83676"
     },
-    "results/openvins-clone-motion/audit-v2/attempts.csv": {
+    "results/openvins-clone-motion/audit-v3/attempts.csv": {
       "bytes": 62549,
       "sha256": "c142cc32a6d35a7b4f10292efff7af1391a1a50039142a4c6b2d35a450495cb1"
     },
-    "results/openvins-clone-motion/audit-v2/summary.json": {
+    "results/openvins-clone-motion/audit-v3/summary.json": {
       "bytes": 5273,
       "sha256": "cab1516b2d2710b326ac8d937cafde1e59d2373ae4dd1957b214d48a996ad443"
     },
@@ -43,8 +43,8 @@
       "sha256": "fb611772765939c903639671783c3340707870430976dd269d665a0a76c6f98b"
     },
     "results/openvins-clone-motion/replay-v1/exit-code.txt": {
-      "bytes": 1,
-      "sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b"
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
     },
     "results/openvins-clone-motion/replay-v1/resources.txt": {
       "bytes": 981,
@@ -91,12 +91,12 @@
       "sha256": "0b41d03bb64fbf2100aa31012ec42308fc452be746e26062412ed0782397d980"
     },
     "tests/benchmark/test_openvins_clone_motion.py": {
-      "bytes": 4692,
-      "sha256": "a4121f725087f06242e851cd6f309a0954dda635eb66076f3cd0ae2456eb78d9"
+      "bytes": 5994,
+      "sha256": "22b1ace715e05c9b018cc8319fb2e5fa2154e077239e4141e0e5218643a6e9c6"
     },
     "tools/benchmark/audit_openvins_clone_motion.py": {
-      "bytes": 13611,
-      "sha256": "9b7f4031d8bf4072f5f71c39ce13ec8ed3a6e681278769335e47157863ee43ca"
+      "bytes": 14570,
+      "sha256": "3a5a5f3d3503d81f35ed3acb74f49cab3816b894e46d47535aa4459068b1bb44"
     },
     "tools/benchmark/audit_openvins_track_geometry.py": {
       "bytes": 18951,

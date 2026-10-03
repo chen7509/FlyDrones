@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from pathlib import Path
+
 import numpy as np
 import pytest
 
@@ -8,7 +10,33 @@ from tools.benchmark.audit_openvins_clone_motion import (
     match_clone_poses,
     parse_clone_trace,
     score_attempt_geometry,
+    validate_frozen_trace_digest,
+    validate_prior_reference,
 )
+
+
+def test_frozen_trace_digest_rejects_changed_clone_values(tmp_path: Path) -> None:
+    trace = tmp_path / "trace.txt"
+    trace.write_text("FD_CLONE_POSE p0=1\n", encoding="utf-8")
+    with pytest.raises(SystemExit, match="trace differs"):
+        validate_frozen_trace_digest(trace)
+
+
+def test_prior_reference_checks_every_reported_geometry_metric() -> None:
+    old = {"status": "scored", "reason": "", "anchor_depth_m": "2.5",
+           "min_depth_m": "2.0", "condition": "100.0", "baseline_m": "0.2",
+           "reprojection_rmse_px": "0.15"}
+    scored = {"reference_status": "positive_depth", "reference_reason": "",
+              "reference_anchor_depth_m": 2.5, "reference_min_depth_m": 2.0,
+              "reference_condition": 100.0, "reference_baseline_m": .2,
+              "reference_reprojection_rmse_px": .15}
+    validate_prior_reference(scored, old)
+    changed = {**scored, "reference_reprojection_rmse_px": .16}
+    with pytest.raises(RuntimeError, match="no longer matches"):
+        validate_prior_reference(changed, old)
+    changed = {**scored, "reference_baseline_m": .3}
+    with pytest.raises(RuntimeError, match="no longer matches"):
+        validate_prior_reference(changed, old)
 
 
 def _line(window: float, feature_id: int, obs_time: float, rotation=None, position=None) -> str:

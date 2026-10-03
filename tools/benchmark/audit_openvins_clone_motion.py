@@ -184,6 +184,32 @@ def _distribution(rows: list[dict]) -> dict:
                                  if row.get(field) is not None]) for field in fields}
 
 
+def validate_frozen_trace_digest(path: Path) -> None:
+    """Reject a changed replay, including changed numeric clone poses."""
+    if _sha256(path) != "d330736bc6c4f9236edc33389584cea01452af3c524ac331aa144fae6699bf8f":
+        raise SystemExit("OpenVINS clone trace differs from frozen replay")
+
+
+def validate_prior_reference(scored: dict, old: dict) -> None:
+    """Require the independently recomputed reference geometry to match every prior metric."""
+    expected_status = ("positive_depth" if old["status"] == "scored" else
+                       "nonpositive_depth" if old["reason"] == "nonpositive_camera_depth"
+                       else "geometry_rejected")
+    if scored["reference_status"] != expected_status:
+        raise RuntimeError("EKF2 geometry no longer matches the frozen prior CSV")
+    if scored["reference_reason"] != old["reason"]:
+        raise RuntimeError("EKF2 geometry no longer matches the frozen prior CSV")
+    for key in ("baseline_m", "anchor_depth_m", "min_depth_m", "condition",
+                "reprojection_rmse_px"):
+        prior = old[key]
+        current = scored[f"reference_{key}"]
+        if not prior:
+            if current is not None:
+                raise RuntimeError("EKF2 geometry no longer matches the frozen prior CSV")
+        elif current is None or not np.isclose(current, float(prior), rtol=1e-9, atol=1e-9):
+            raise RuntimeError("EKF2 geometry no longer matches the frozen prior CSV")
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--trace", type=Path, required=True)
@@ -205,6 +231,7 @@ def main() -> int:
         raise SystemExit("PX4 ULog differs from frozen development capture")
     if _sha256(args.prior_attempts_csv) != "0b41d03bb64fbf2100aa31012ec42308fc452be746e26062412ed0782397d980":
         raise SystemExit("prior EKF2 geometry CSV differs from frozen audit")
+    validate_frozen_trace_digest(args.trace)
     trace = args.trace.read_text(encoding="utf-8")
     attempts = parse_trace(trace)
     clean = validate_trace_stages(trace, attempts)
@@ -235,14 +262,7 @@ def main() -> int:
         else:
             scored = score_attempt_geometry(
                 attempt, clones, reference, focal_px=108.12401050876075)
-            expected_status = ("positive_depth" if old["status"] == "scored" else
-                               "nonpositive_depth" if old["reason"] == "nonpositive_camera_depth"
-                               else "geometry_rejected")
-            if (scored["reference_status"] != expected_status
-                    or (old["anchor_depth_m"] and not np.isclose(
-                        scored["reference_anchor_depth_m"], float(old["anchor_depth_m"]),
-                        rtol=1e-9, atol=1e-9))):
-                raise RuntimeError("EKF2 geometry no longer matches the frozen prior CSV")
+            validate_prior_reference(scored, old)
             row.update(scored)
         rows.append(row)
     keys = list(dict.fromkeys(key for row in rows for key in row))
