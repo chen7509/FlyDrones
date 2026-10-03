@@ -2,6 +2,7 @@ import json
 
 import pytest
 
+from flydrones.benchmark.provenance import freeze_files, seal_manifest
 from flydrones.benchmark.runner import (
     build_jobs,
     pending_jobs,
@@ -9,7 +10,18 @@ from flydrones.benchmark.runner import (
     snapshot_episode_inputs,
     verify_freeze_manifest,
 )
-from flydrones.benchmark.provenance import freeze_files, seal_manifest
+from tools.benchmark.run_batch import prepare_job_directories
+
+
+def test_batch_runner_keeps_its_logs_outside_fresh_episode(tmp_path):
+    episode = tmp_path / 'formal' / 'episodes' / '1701' / 'fly_raw'
+    logs = tmp_path / 'formal' / 'runner_logs' / '1701' / 'fly_raw'
+    prepare_job_directories(episode, logs)
+    assert logs.is_dir() and not episode.exists()
+    episode.mkdir(parents=True)
+    (episode / 'started.json').write_text('{"partial": true}')
+    with pytest.raises(FileExistsError, match='partial episode'):
+        prepare_job_directories(episode, logs)
 
 
 CONTROLLERS = ['fly_raw', 'fly_guided', 'ego']

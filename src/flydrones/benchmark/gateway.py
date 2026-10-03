@@ -197,7 +197,8 @@ class NativeGazeboPx4Backend:
 
     def __init__(self, root: Path, run_dir: Path, world: dict, *, instance: int = 8,
                  record_rgb: bool = False, record_camera_info: bool = False,
-                 takeoff_alt_m: float = 1.26, takeoff_timeout_s: float = 35.):
+                 takeoff_alt_m: float = 1.26, takeoff_timeout_s: float = 35.,
+                 development_prearm_stationary_s: float = 0.):
         if (type(takeoff_alt_m) not in (int, float)
                 or not np.isfinite(takeoff_alt_m)
                 or not .5 <= takeoff_alt_m <= 3.5):
@@ -208,6 +209,12 @@ class NativeGazeboPx4Backend:
                 or not 1. <= takeoff_timeout_s <= 180.):
             raise ValueError('takeoff timeout invalid')
         self.takeoff_timeout_s = float(takeoff_timeout_s)
+        if (type(development_prearm_stationary_s) not in (int, float)
+                or not np.isfinite(development_prearm_stationary_s)
+                or not 0. <= development_prearm_stationary_s <= 8.):
+            raise ValueError('development prearm duration invalid')
+        self.development_prearm_stationary_s = float(development_prearm_stationary_s)
+        self.prearm_stationary_evidence: dict | None = None
         self.root = Path(root).resolve()
         self.run_dir = Path(run_dir).resolve()
         self.world = world
@@ -282,6 +289,43 @@ class NativeGazeboPx4Backend:
             for process in self.processes
         ]
         (self.run_dir / 'processes.json').write_text(json.dumps(manifest, indent=2), encoding='utf-8')
+
+    def _hold_prearm_stationary(self, hover_command, *, max_wall_s: float = 180.) -> dict | None:
+        """Extend the disarmed sensor window by simulated time for dev VIO data."""
+        if self.development_prearm_stationary_s == 0.:
+            return None
+        start_ns = int(self.stats['sim_ns'])
+        target_ns = start_ns + round(self.development_prearm_stationary_s * 1e9)
+        evidence = {
+            'requested_s': self.development_prearm_stationary_s,
+            'start_sim_ns': start_ns, 'end_sim_ns': start_ns,
+            'commands_sent': 0, 'status': 'incomplete',
+        }
+        self.prearm_stationary_evidence = evidence
+        deadline = time.monotonic() + max_wall_s
+        try:
+            while True:
+                current_ns = int(self.stats['sim_ns'])
+                if current_ns < evidence['end_sim_ns']:
+                    raise RuntimeError('prearm simulation time moved backwards')
+                evidence['end_sim_ns'] = current_ns
+                if current_ns >= target_ns:
+                    evidence['status'] = 'completed'
+                    return evidence
+                if self._server_error is not None:
+                    raise RuntimeError('prearm Gazebo server failed') from self._server_error
+                if any(process.poll() is not None for process in self.processes):
+                    raise RuntimeError('prearm PX4 process exited')
+                if time.monotonic() >= deadline:
+                    raise TimeoutError('prearm static window did not reach simulation duration')
+                self.drone.send(hover_command)
+                self.drone.telemetry()
+                evidence['commands_sent'] += 1
+                time.sleep(.05)
+        except BaseException as exc:
+            evidence['status'] = 'timeout' if isinstance(exc, TimeoutError) else 'failed'
+            evidence['error'] = repr(exc)
+            raise
 
     def _wait_for(self, predicate, timeout=30.):
         deadline = time.monotonic() + timeout
@@ -549,6 +593,7 @@ class NativeGazeboPx4Backend:
             self.drone.send(FlightCommand.hover('benchmark estimator settling'))
             self.drone.telemetry()
             time.sleep(.05)
+        self._hold_prearm_stationary(FlightCommand.hover('development prearm static window'))
         try:
             self.drone.takeoff()
         except TimeoutError as exc:

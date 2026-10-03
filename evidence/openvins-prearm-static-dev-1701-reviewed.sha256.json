@@ -1,0 +1,2961 @@
+{
+  "schema": "flydrones-sealed-development-evidence-v1",
+  "archive": "evidence/openvins-prearm-static-dev-1701-reviewed.zip",
+  "archive_bytes": 11476672,
+  "archive_sha256": "8f6757908119f987dbc402d231885073783f55287f173a0a194b6fb786aac485",
+  "member_count": 738,
+  "members": {
+    "results/openvins-prearm-static-dev-1701/archive_evidence.py": {
+      "bytes": 2805,
+      "sha256": "b213b4d7a399d1f01fe7c8b6d4ae9bfdbd33bb2fe41f056b541a9d7edfcdc628"
+    },
+    "results/openvins-prearm-static-dev-1701/archive_reviewed.py": {
+      "bytes": 3265,
+      "sha256": "e517a76088fd78fad6522e5d16462ec2e808cd155365572b7059e0914827b3a4"
+    },
+    "results/openvins-prearm-static-dev-1701/audit-attempt1.log": {
+      "bytes": 434,
+      "sha256": "72d4b78af257bbf76e9659b7772c5775a1a5a41562eb8d40e011132202b5d5ec"
+    },
+    "results/openvins-prearm-static-dev-1701/audit-attempt2.log": {
+      "bytes": 3229,
+      "sha256": "6e62b673e344de53bb75c6dec599142a022512fc745c79e427d8d70b5779e752"
+    },
+    "results/openvins-prearm-static-dev-1701/audit-v1/initialization-velocity.csv": {
+      "bytes": 23402,
+      "sha256": "ee7793a6123306ee1fb150dfaa3a21991108d6f2b187f49b7359630cd7f239a6"
+    },
+    "results/openvins-prearm-static-dev-1701/audit-v1/prearm-velocity.csv": {
+      "bytes": 24173,
+      "sha256": "39614801270fc616eaf96d137c6c264b894f2c74c091a476921c16401fe9516a"
+    },
+    "results/openvins-prearm-static-dev-1701/audit-v1/summary.json": {
+      "bytes": 2971,
+      "sha256": "1121a0c46745d45eb17f69dc4f225c8445663f003e949099d1645293fb70cf04"
+    },
+    "results/openvins-prearm-static-dev-1701/audit-v2.log": {
+      "bytes": 3628,
+      "sha256": "ea182b4688049d1cb99bf077ce4ff45b1015ac0d4c65d05a9c30e2278174bfc9"
+    },
+    "results/openvins-prearm-static-dev-1701/audit-v2/initialization-velocity.csv": {
+      "bytes": 23402,
+      "sha256": "ee7793a6123306ee1fb150dfaa3a21991108d6f2b187f49b7359630cd7f239a6"
+    },
+    "results/openvins-prearm-static-dev-1701/audit-v2/prearm-velocity.csv": {
+      "bytes": 24173,
+      "sha256": "39614801270fc616eaf96d137c6c264b894f2c74c091a476921c16401fe9516a"
+    },
+    "results/openvins-prearm-static-dev-1701/audit-v2/summary.json": {
+      "bytes": 3353,
+      "sha256": "62d17a712ff3783feccf32bff9cabd16dddc1164d92cd02ce66e8a2ec1178a5e"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/camera-info.json": {
+      "bytes": 785,
+      "sha256": "5de442aed4c19ca084ad0251f9568820881053c7dd8b475d0f67c6d119a56794"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/camera-info.pb": {
+      "bytes": 332,
+      "sha256": "6d2ed00a687f29103f8c48e5f49fedd4b0b903852682cc2c8b6592eb6e3b1437"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/embedded_server.json": {
+      "bytes": 312,
+      "sha256": "d94015bfe71af89472350f221c805f637c34e19b969a9b444765beb5a97b49e2"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/ground_albedo.png": {
+      "bytes": 154343,
+      "sha256": "5e62827968eeabb55285bba85276518b6d8fb1441f0bf9659caa52a48ed48593"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/gz_partition.txt": {
+      "bytes": 24,
+      "sha256": "b3d40d9cbf8fba906421e03b2a55efdc5d4c1a45449a6efdb8392ef2147986ea"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/input_manifest.json": {
+      "bytes": 183,
+      "sha256": "e0c547623a89e5edd760ce58aa4bf35e0198f39f92c9e37c7ac23b235228561e"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/obstacle_albedo.png": {
+      "bytes": 52690,
+      "sha256": "28f87e79cc5cd767b029a4c7b00b165e1aad9f2cbb998be1a161e3ff5d121c3f"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/processes.json": {
+      "bytes": 261,
+      "sha256": "fcb557bd8cacffba1b675c5c35d8877c4325d5d221479176c10a225b25bcfd18"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/px4-runtime.json": {
+      "bytes": 95,
+      "sha256": "e77015218b25c498332d9f0ddc37b5d7dd89f62e82adb65f89a2a72073ba0681"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/px4-ulog-manifest.json": {
+      "bytes": 267,
+      "sha256": "7459917e77ff9863384e4af52c87863fbc5945a5cac90be50d724f049a965602"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/px4-ulog/log/2026-10-03/11_59_33.ulg": {
+      "bytes": 19494446,
+      "sha256": "450e7b70bcb2c885229b80e4c988ded33195b8973a902554aafc286a858d729e"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/px4.log": {
+      "bytes": 2741,
+      "sha256": "0f99ba4f8dddff4b7c80477280fbf3b03b604a47deca2f3fb0b246968702ba1e"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/result.json": {
+      "bytes": 1316836,
+      "sha256": "bcf169a71f2f1eea21a95dd7cd3d3152e7de2b002c7fe5cd74c33f9fac252b77"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-capture-manifest.json": {
+      "bytes": 143176,
+      "sha256": "ba2d08445d9497e4ff018e7b186219d07544b6bcc4127c501083dee9d23b43e6"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "bddba3d29d6800f337f67a3ff739132d1fc02eeb7440ec64a551bc9c90e884ba"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/1000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "57f3e2e6de9fc02cbe12a8f19bd516eacad76a7fb282131f6be037bfa3ec599c"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/10000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/10100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/10200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/10300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/10400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/10500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/10600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/10700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/10800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/10900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/1100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "1d86e2af0056dad92c7dcfe06237eeabf9a69089ce590b09431d9cb46db508e1"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/11000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/11100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/11200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/11300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/11400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/11500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/11600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/11700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/11800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/11900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/1200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "d90bc95cb3900c80a26cc4c20db9c00858db91ef6c08bfa1f7cf6c73a2fc4d51"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/12000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/12100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/12200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/12300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/12400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/12500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/12600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/12700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/12800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/12900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/1300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "44a1b31d1b134a1ce2facd8f1d9d1ea33b33ef4c601398c9bc8f022d7c0e2d99"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/13000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/13100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/13200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/13300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/13400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/13500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/13600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/13700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/13800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/13900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/1400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "36208d8aa2f0ecfbe5f10f6601c296c923ad080b8f168df8dcdb9a8e822e719c"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/14000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/14100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/14200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/14300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/14400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/14500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/14600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/14700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/14800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/14900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/1500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c7025da48d7574b1e59518d69aa8e891a09c2ed05002a1e8b8910f838f50c4f2"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/15000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/15100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/15200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/15300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/15400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/15500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/15600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/15700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/15800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/15900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/1600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c7025da48d7574b1e59518d69aa8e891a09c2ed05002a1e8b8910f838f50c4f2"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/16000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/16100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/16200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/16300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/16400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/16500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/16600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/16700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/16800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/16900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/1700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/17000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/17100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/17200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/17300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/17400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/17500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/17600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/17700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/17800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/17900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/1800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/18000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/18100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/18200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/18300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/18400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/18500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/18600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/18700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/18800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/18900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/1900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/19000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/19100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/19200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/19300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/19400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/19500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/19600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/19700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/19800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/19900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/2000000.ppm": {
+      "bytes": 57615,
+      "sha256": "45a2819493c6b16c15de02b0f878a2bc6864146f9fc01ba8b125099a886c33ed"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "0752ec7c84031ddc35ea1bc60708bdd3e3d76be14e4938e6af5f755fbe877551"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/2000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/20000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/20100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/20200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/20300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/20400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/20500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/20600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/20700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/20800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/20900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/2100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/21000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/21100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/21200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/21300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/21400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/21500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/21600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/21700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/21800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/21900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/2200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/22000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/22100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/22200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/22300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/22400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/22500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/22600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/22700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/22800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/22900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/2300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/23000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/23100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/23200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/23300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/23400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/23500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/23600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/23700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/23800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/23900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/2400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/24000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/24100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/24200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/24300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/24400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/24500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/24600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/24700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/24800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/24900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/2500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/25000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/25100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/25200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/25300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/25400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/25500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/25600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/25700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/25800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/25900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/2600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/26000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/26100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/26200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/26300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/26400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/26500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/26600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/26700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "3003fab80ccb43834ce35253968ee1f120350375b73077e7d4cbd89889f4e62b"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/26800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "f2f2fbd4da606e4c47ffde38fb506c13577c40e3e4e63dd52b3eda6ce40d5b56"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/26900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "79c8e5ebcc1e129f643a8082b3bfccea706619e165a9aa8094c9177f7ed7bcb9"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/2700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/27000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "ab6a80b1abcdebb2328a94942df8a5fa88b73021993e49bdff749f0bc1ff152d"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/27100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "a839f1134fe7a45cdd3a90f4059173a41512809ca1f40c40a743acc7d015f048"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/27200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "e287a666e650c29fa4e415c8b95e89102c69d8cdcb7a557a6ade86ad9251b3da"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/27300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "553cd0e43cfd6965876be8a004eea406256e5357f8977cdaf6d439de644f8129"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/27400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "afdd42804d32c94df9094a76ec28e9a2a85437bf700687f76809764627b3ff62"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/27500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "60fa7b474cc0ab63de0aa9d3f24d2073ed384473374b8abcaf9ca770b264fcc7"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/27600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "30678bccde3ac1673da8d18b6ab8a182bd7070781b84c7189fbbd043fe03ad5d"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/27700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "388c45857f6af4b54e3adc095ba0cbbc4f96902bad664afdc4bc6eb81f8769f1"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/27800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "07c2e08b606769d62fd0d704db3664eee75a473fa886fbba5fcbe0e2d512901a"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/27900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "5a0c613d6645af8145b4daa859a420233a11c3a82135e35c534bbf41cd995008"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/2800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/28000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "de6f349037c6c94ba9bda531a720734b35d8d2625aa218708fdedc500749197e"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/28100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "087381fcdaeb92ffc10a71d5fbec8637c537c82178549023e23bf22f5f56f5a7"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/28200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "f9748d26aa662aee1e9f5ca93d94cfb15c8c8bd869a611820dc509ace3383b90"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/28300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "77eb854b8d11c1cf42139e962b0cd31af4cae4da985ba99f8744e749d9f7d919"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/28400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "f185db15914f6a2cd25f84f64ec83a6ac35768834cef9e96716b2afe82941daa"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/28500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c7ebb165ab9eb2477e393b7cfff4d8fe79249efcf5052c598421834bf0ef3e78"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/28600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "ae130984f7943f63b3abe10e5ace896dec7f3341d87549fbb2ca4bd5e5ca2ce1"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/28700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "e25635f1176efea9f0b045ac1ba01b089d64a1eb2a8c32ef9be7ac71d1f741cb"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/28800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "47bcbe4c8a1a7ff2adf7665ef63cf4e95d909394619c9b328743bfaa75c47ece"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/28900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "852f12eba57a156bbec766e15666c9173d65f82fc577a2254be8a095db9ce5a9"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/2900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/29000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "ee7e37aa62474e0c98b577037fd2d60784b044efca38134e4c9fe5efa09f4cbf"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/29100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "62aab3cd29ed0014c3a102eda2d5dcefc7aa5efc25e89934c67a433f99a42b33"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/29200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "ec9dcb93b29b36e8478d5a6fc4b875b8c04f589c6d6881f307cc71a33d719b4e"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/29300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "b7cceac8704cb1aaf6deb280f2c656729f00e92cee8332f0fee538c93ed66e9e"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/29400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "edca14dc059de8ff3201716418daaeb1987064b8120e32321e4c0ea5b7e9ae93"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/29500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c8698288669194b38e4974965726bf75becfbdad9a4cce16b64353d3eb18d3a6"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/29600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "0ee04bb752d61b7df1dd105c655385a0e60933a85799fd2371345327c11ac5b5"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/29700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "8166b63221da262db5a19e3e4505209fcdfa68b6ffac10c3fc00c22e7533b088"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/29800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "802ee3c498e8e51a3bcff074ea024f3cdb541244cdb4e067743efd18d31f1745"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/29900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "41fca12ce3a63563c886b50854c4ad842d10e1804acc6fed1a9dda48093e5fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "cee2a9e597e747cebfc72073bb093f6c75fba8653e62ae4874fc53b6c7982f43"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/3000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/30000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "88242018c50a0fadcc0f99d1f126ad10d1306bf27706c47a27d2f0ca29d259c7"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/30100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "9fa371a6f8bb4a9c5c2e9570ee252f9a2cd70d382abdb8fdabd308da3b6e5953"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/30200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "2cb3fd6b82afbbf4c431a990dbde807c23f03594ed462e1187fc927c498d600a"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/30300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "34748a3ebed1136e30dbdf18db742e9c58ab0239b3001ea5f9c267a7894af950"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/30400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "4211c7dd35c4103a47155462cbff0bab01642fa9f52d5c16dc414d50cea280f1"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/30500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "24fa1ba2c2680f3d7c23b94f19a72e63e3dbf671491572a031174cf2a5589613"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/30600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "f1b8e3fbf15227b84e0fcb80e23c0496efda3ac058e8846c0fce0ae6d2614fd7"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/30700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "50c4b5849f758fa49ea953d852fd4d52bb8d7cd6c4be4081755f48302a1ec123"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/30800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "ae4c433d38bc6c5a564dfa468dc5fe162dea3f9c0a812f2b965cdd371ab2e4b9"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/30900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "3a8be3e1aea1f5aca6905ee4b349dd0388c997951eb9ad1096bc9eb543791870"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/3100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/31000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "fc5bacae284a3d7b91b9587a7c4dd43cb13b9f2d09db07e57afdb76276bf0431"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/31100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "aa2905a3e6ddac774af5e47e49ccf0015106de0c5ea5236f0e53f5869465e0cd"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/31200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "54c6121154d683e659e2e117a26cbe74fbacc6ac64e17617ee021bb3fd626186"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/31300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "7e2f3e2f0ac5d0bb72e6abc24447ebc9ef1a12e4f899f2991c135e7c0c52c2c5"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/31400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "dbfbe383238f36d94e59f90c5eef3beb4e4e455f6f20b08f2e2240202f1ba0f2"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/31500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "a818e6afc3eb2d92ebea7a6cc4c71e4d6c19972d610f40996fe2667f823c5acc"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/31600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "5308418ea8686f7b52f0e35b35e9c1e2c8d6da24fc986250994c0c26a160ab9b"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/31700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "0685c3b7fb4c0249c012f4147d368557e91bbf98d71806577495f75823b991da"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/31800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "7423acb4457921f42b5445dbadc3f49b78f98c9dc3d3cf28b6cf216f8ece287e"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/31900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "8287aae1ddbd9952b38672cfc2218de5e3f6d252bd48305fd8b2f152b31955a6"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/3200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/32000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c60213b1126f98b31f6407cba88ccf462235490e9b35402e5c13f31e92507a1c"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/32100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "72f1fd3468d01df00e1c6b77fa15375fa1b33ba8dd9f78da64ab92d8513b41b4"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/32200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "0d840184352b966173fc1fab39b76aec3ea9064d5a495bf2b5c120ff530e3d71"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/32300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "4c5c9ac8e665977e37d0ec3ba1320da0bb7d64a1da2a9291011f26f44bac1844"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/32400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "bed8be6dbe1dfb72c6bf4456db16213d4874736da15daf39f7483430e7b47f8b"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/32500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "e130a7d190eaf3c79e1f0effd3dab0f42cabf59d8b8289285a536a6a1c3a5a8f"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/32600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "a020cc5f25c9f7b508e6b5ff70188a526c680c90dd886470ed2ddd59733f40a4"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/32700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "707f086ab697c7417e14e68474d8f9fdc4c2be2216f0d571eba0d5ccf6ac2662"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/32800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "859682db6e57826dbaae7e6c00559fd4197daf6c7d48bc33bdf647ab91b5a285"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/32900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "39483551c86cb9425f0de9a1aa15e30682906b9d37289117796034563b9c0331"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/3300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/33000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "47b500dcfe3f0459027c8b3941244251312c8145d96e921d2ac59fd1d75e2d24"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/33100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "bb16844179a9775cbf7af725dbdb01d9a1e26adb159147989cdc7d78bb8800e2"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/33200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c1e4d846d57fca239b0576d59cf75bde4b987be568959d09f57a21b25a89d8a9"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/33300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "38d7ed1486df0253bb5123cab04060ec9865f5fb8ed5abeeedd6c54751d57843"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/33400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "bc116998b15e7848476307796c8a8e59f10a73bc623e8722bc420cd4cf632bc5"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/33500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "b7fa6c11c1a8f371c84df205e56436fc8a1591a647a6aea8001ef781a097e602"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/33600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "f65b7cd937f0f04acc535486cf964f83b07daddb713ddbc3bc3bbf62b01f00f0"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/33700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "1d1b6f97fc41ae58740b30da97ddea95ddadec63e11ddfe3c8a19257f1b8ef64"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/33800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "23371927deea30bad40eb6a95af15a0af41b20f0ee36186ed1d60b993a9c2762"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/33900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "d2d6640cb1611047ecf2137ab630a8a0e4cd030b919fb43e78fdb254b7b43cea"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/3400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/34000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "5a7f813a9a3f19787c5b4adfca8fb65e5bae6d3d87ba58cde018ac0854187137"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/34100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "d796f5274915a1a4ed632d945cce0447a5c77bd16cd65eedd30a945168938e8c"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/34200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "8c58cd96095112ee851e94a3443edbfe4ba801fc65751baea3e96690365a60fb"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/34300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "aad4006cec3e202ad8f33af281737deae73451c2c2ad0a0793346a09ad00bca0"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/34400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "bc251a3f64c0a383da95efd49269e16c9ef4466810c8b0382f69dff55efe4e44"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/34500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "a6a639baf22331f899231e718dadb9de9326247dfe1008338aa84a12bcda27d0"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/34600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "ac5c6b80419fb51fffaa86e2247f82b5163b0253f55b3e93362aef174453e038"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/34700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "964e189a56cff4bd47fdb29114981fe8a252266f88e9ad51440355a7939ab73e"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/34800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "7578d3a2f4f59d1ea9abcffcbe2b070ffc09555f1510ff0ca4806311639cbe90"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/34900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "aa02fe87f0981a29bbb4ddb7c153e08a3c6bfb3a72cce0fbc1f1ac102ae6d0ad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/3500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/35000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "371ffc14ffe3f814d2ca36c8fc4f75920d2edd8e97ff7d4f2928dce0dc60426f"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/35100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "cd1a2ac05b9e82ad49748e46fe8077b1de1323589fcd75054eb1b70928b65b24"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/35200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "96f74fb368f163fc40db785d73f22c6d372996432ae41032df9ff525f4b6a9f0"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/35300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "3787ec2ba6de5088f63b6ea632a0ac33e1d1f82cf7e8cfb7c40623f676a93fb6"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/35400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "7438a54694622e2e7dbef368373296f4d1123eb7ec50cbdb65b08c3766cc731b"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/35500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "7ca292d32db98b008f846d7a3b74ab8189022bb3029b28371622e4f4ea248962"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/35600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c0bf64319bd563271d132b8c0c97ec10444eed6d71d8d4433d316948ad485b1c"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/35700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "ea48f48e3c294d79249e2346261c7255ec25106592f4b6c1ed8a8163cc227fdd"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/35800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "dcd73047ccbdad3176d48bb85e2e89c316a8a3ad02e7dc91ce5836be76cb3f86"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/35900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "e1bcd410a73300dd143382cb5a8eb899f9bf4801596f6e53390cef6fa3c38504"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/3600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/36000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "519688230403b641354edfee93c63a265fa12873b3e687938bd0cd88e7e6f5a8"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/36100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6a9ffc288d26afe368b253182e8f8af74a3681d7097882c4fa35f7acaaff7179"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/36200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "9a0e1095b76a62ef5fed86d107b8bcdee340c6ce0b081985765ad9bb07f7e8e7"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/36300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "cc3013b7dd3259cfe54263af7801dbf51c4959581e6f45d5876303a004d09200"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/36400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "aa2d2ae5197bdb4709cb7fd1e7b64bab6af27ba8e580439f568bc7fef11e8907"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/36500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "778405c33bb422688989be574000dd58dd484275f23879889e43e44d1c63d439"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/36600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "831871c970afa8f6e1d0963fca40839b60ffaccaa059c9a3277477004e2bbe48"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/36700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "0d500334085141e964584e41d1ddcc3e0b06f82fbf32d8268b45f24a6beb17b7"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/36800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "85279aa3a2a15c8d1fad1869002e0fe082912313cf9e23258b6e560aa5398516"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/36900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "440fad4e80e731286419237c81087d60cb373183241a87580c1157d1d514fb65"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/3700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/37000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "832e3f13937aa06427e507c5e86a03a7ec85b3d1138a55a9207d692ba4ed36af"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/37100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "bacba30eb0fe5272d4f475a29cce9fae6f7a88dc218796beeebee81ef12b3e73"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/37200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "b72f3dfa82393117db26a2b6e6f2b10a5b6de58e5296ce4b1284f1fc4132bd2b"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/37300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "0f2505fbe81cc0afd8287015d7bd48065a7241a8189bb25bb71fa158f3f63bb3"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/37400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "2bb5006cc0c531a7b1483dd9fb99573cc7b5c5b23fbd5aedbec9eb9703f9f314"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/37500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "8ed9d7bde02e444cca5d7c3cd6492cfa31e3cfa27147f5c23da5fdfcfcc4ffbd"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/37600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "4c446a2c0eca5d3731977877f3f23878bbaaa322cb218be56e7187934c64a443"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/37700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "759fd8934dd7cda70bde8e6a29e5ef1c8e71ae7fe0bd5bc9db043025482816a6"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/37800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c2b629431775a1a09f0962c704d8f4c5e9a93999da464a343db512a4753d51ea"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/37900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "d6b6b5cc57435841be6fc921dd96e49527aac170c6a38ef8d353382f9d7d4e50"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/3800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/38000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "30c3c7c86268634ea4d6c9555c18961502e24d7f801a33c452db359d723cc012"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/38100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "48ac2fd774757a8eec4359cda8aff41a22043385ebfdc20697a0c27c7d41b6f5"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/38200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "3b273fb773a3685db89588658e700c2205685f82432872003393f587514e7d44"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/38300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "bbfcbaa49c15520091386dac28b7470d68281d0e3a3f69d41441b101a592645c"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/38400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "a24738790d2f3c753ab85931dbada81c2392363fd96cac0ac2bfa80419ed0176"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/38500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "cbc239e2d7228e1b33288ff4d04b2353c101b481cc7ec94f42f7602f991d2750"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/38600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "65ecd6a1cdfb7cf34c054382464942954e13046b65ca934e6a109a0fb2a4427a"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/38700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "b2863d0cd29dc860aff641e55ef39d8de09f8f713892492dc5f78c1c719b2070"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/38800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "1bd3a6d6e21801d69cc59dba3aa0e1abd01cc23e63179e9399c4d93861ef445b"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/38900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "015b357f8541996f4defed8fc935ab90f8676e950dba9561ed0d99185988e662"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/3900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/39000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "27aa8782765af874b6e4d18412d1a5178cf5cf813795aa3e06d66af508b7dcb7"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/39100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "77bd99d6e75ff5e53898ac24d085b66587df8a4b7dd882a32ef16ec71cf8e5d5"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/39200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c2a00aa427287a549115a3627ada08e7ab3728c8af9275e865b70ae83cd8d497"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/39300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6dc81976e3495da36a40705abbe886e49028133e191e7e1e26f6cdc204afd8aa"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/39400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "1d2c05b55282e6642881c4f99671905eb570ecdcc1abcd2e468a412aaa4d8679"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/39500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6580bee8eb321d10a1cac42691bc88d208b98fe2e36a33f30127e1c5f29d7c45"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/39600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "dfe289afe6e714d013063fe2555a3030569251acc03077bdfc3a6dc6d77fbb75"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/39700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "10ee7487757c5b8937422720efc393f1bf721fc13cd14f67e7f9ae0f36b35f54"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/39800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "e48c0bbac4013e79811814777bcd8628987b44994fc30773db93e2a3e5f21084"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/39900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "30b86a446e31aa8587b900f37e4416d932d7fd25615dd2bbf4be4b05eae2a320"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6ef717d9c10e9e40d79260ac0ad9461f4f80776c4a2e11a970c8f46278258ebf"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/4000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/40000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "a09ae254ffb06e7ed07cbaa5365586c1a438a7b8fe5a7d09416c3acd53ec28a0"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/40100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "e6d7eae7610b59a7a192b0244e5e8d5ea2bf4fc51bd70a16ab409ee3803cf5d9"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/40200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "92646ebc3db9e74f0614e2f2f924cf314ec9fda820a7461e99260236e854cb00"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/40300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "7465a9ebd6c95aeb01fe9f5fe7710c47606bddf5c9cca4b287b8c4c920af3b2d"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/40400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "34c7e917d48a279ab5c3115d3a6ba36231933cb7256f9047a7cfae9ecf0caa09"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/40500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "f276c5d858a2db087b0c0df2eff5e8d30c46fffc09f72e686583cfd742a23023"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/40600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "d1088550f5173ae7e0eef83a82f15d4f92f5c5be8be99a07064c83c1d728e368"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/40700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "18657eef46f5f4e2172e2b97728d7b72092f2d774844c5b85ca19470c8156c35"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/40800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "a93536b94a1cd53ad1eb90bf1b93232752cd459b867ad59c802b16c7572e775b"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/40900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "882ec41ca91f6b14ff1c6e32654b2b42cd6d96b0241fdeea8c322c85e6fdd8fa"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/4100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/41000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "621bc3080643b8586f32ff46680ac3829196d4c1ea273472d695eecdad9aaeca"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/41100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "512e309ed83c3739225875f626e809110f5d557c5cfc96a5d58f394ccb30832d"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/41200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "723af00f5d81adf03559d9e576f635ac7da3d657bec2c313b501169345c90490"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/41300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "222b8f6a10171f9e78be75236371634af3e4e1eb5df6dab251a724fe23a6217c"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/41400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "3a95e0c8e740dbe9d9e3f961ca3e6eee9f31689b40cd990a96ae17c2795f5ab1"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/41500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "4a1a99646f5a47b9947e4c66f5ac8cc04d3a2bf9112b2618971bd836b07568ca"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/41600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "76e765e2e0074f1d80f7fbf50a96d1e6700b811cbe949ca6ac7cfcc99baf6d83"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/41700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "ae66bc3f852c24d9c0e970aea33feb6be0e13b0337f922fae5dd2878227c3798"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/41800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "d20bdffe550a41bd68ef47fc35f39e28f8b0ebfdd2a0060a5d8405b5d79fe5a0"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/41900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "cba4f8793e9474eca90fdf50312a9e35f855f5e47724a5f9fe2a6c5432f8141a"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/4200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/42000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6186f5d9668c9d3ef1c9d4d7b6ac807e6b9c8150ccc031a7eb4b26f962030230"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/42100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "58b5d98f3e38947c9c7e6a26e32517564cfc1cd246a9a8a1e345bb1002fa46b1"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/42200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "3caaa724a0197eea3e693bd48d1a07babdbeff688076ec54396a31bbc6c4d8df"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/42300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "336826bbac446bef1a8031919f4997ba0ba3b3a4176add9bcdf5f39157bf1a69"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/42400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "7a8d4376bff566ff4549b139ae09d5d82b230ad6c949743c5a286372e0a2c4a2"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/42500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "68981b5118a5e143c509b9f6ec7abdf279c1b8842c6a3f04681c411decec452f"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/42600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "518fa993386081fe9779cdd759ed5ccbbcd91d6686829933078e03b7e967c543"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/42700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c36b838f57c6a32d596a3e4f8e9a810451b7f2e31a3a4200e74830523a28c265"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/42800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "052ebe0f57d85cadf4f9721f08389fc6208f938dd339602a73f39e9e5b3a81d8"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/42900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "8a86fd1c52cb387084db1deef513b6ab0dbf1a27f7bc293ffd63c47988539949"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/4300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/43000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "ecb6be95564d525736b1cfeba1e43c3dbdac93c0c732bbbc06c2cebf0bb5e453"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/43100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "b6f5925c3265c52cbac1b2dab51fc63192bdc84b15d4a9aa18df91ad57ac7951"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/43200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "10b92461fa968d0a733b40083e4ceb6ebd9e59aa3280764b33f4ad80b330c154"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/43300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "183e0fd4de7c8c4014f5d2ae5c5289929ae598f31684115c08586b28f67c5c29"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/43400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "634a1d49900cc03bbe88ab5e8da0e1c28ade6597f38acdbd355308fba6fd6ca8"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/43500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "eb05a6787586831eec88e41c7f769c981b4ba39f075a3f5beebbbe9a4226774b"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/43600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "d680812e9e87015dbe708669a97e7d22a182cdc259232917251fba7786b0d37c"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/43700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "e3dee45a20600d20eedc94111b7446204968e81171656c1afc6f48ec2c9f91a5"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/43800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "674172824848a710324585b52dadd4056602a814e90b9da9552b0fb1835f3afd"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/43900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "f34f8ce80329cd7350023a25661a71c3fd166399922973ccfb89002bddf55c37"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/4400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/44000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "d1ef1a0df2283e273ad564e51710fa4afc855d6e3b0bfcecebc6cd5b14c4f9b5"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/44100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c64784a49379c2be4adcb0d05c109cf8b98da17b2e95fb4e32b8577a3dc0c0a4"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/44200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "b34689ab1d3cb9129960dc3e310391202480b22c7aebac7fa94a615415e4ccc0"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/44300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "586d385d5ed35bf6fdab1013ffb162eacca3bf2888a1e9533080ff007d26c107"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/44400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "e8e2b43695af6c9d7b337466b7d6edc20e00c714489c8510a2d8149e758200aa"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/44500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "59be18f957e7362d573dd83487b1c1869a01a0a63cf1421994116c149697dd6a"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/44600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "aa52af265227a1e5fc200f0f2c033682b474d7d088ae5b5e6f60e82022b60499"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/44700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "9251445d38bcbcc01e8cc18df86dea136165f3f904de3dc6fbb8db740a3d9ce3"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/44800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "9540ed1d2e218ebf56bcc9beec9941aab4a9d9e83b645fe04a0624150737b75e"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/44900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "8489caecdc0ef48c74eff20ad49b2497aa1b198d768365447da792eb83a485d0"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/4500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/45000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c27058e8caaf1e8f388b85bdf3c22cf986cc93f924d849556e8c878eb1995c9f"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/45100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "dcfc6d894bdcdb066a29dac855ad6aadcce6e63284cdd4c13259a3e08be4622a"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/45200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "30732e92a6b8896f37018156e06618819271df46a07bc6c7ba9f80cd39c6ca35"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/45300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "006ec80aef3ada5a6a1fba90b25bfa28835ede6ae83c2c146ceb7b0a1660b107"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/45400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "d201214267a71b89229d06cf8b9443d556b403067a91d7f951873421687dfeb2"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/45500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "587a5039cdc996b044cd0e20bafb2e0b5e7e0e35dde7a5ac6eec8df6e4b608e4"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/45600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "14679068583e077127e4616293149549ba7dab9c2a11607def812aa48bd61d1e"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/45700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "e5dac4617c304c83d3726e435d302102095e7913502b23e2f0d75fc8e3431ca3"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/45800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "9a34a192d8e9126c507d7f412b47306a0c223fd27a9cada9cbd3dc72b3d5c25d"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/45900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "254cdbe8eba4ad832e5228c073340c6cc8af29784f8cb0d1dfa1552586335479"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/4600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/46000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "a3e031b35d21d0327e4761adb2b38f4934fc5391a48f23cb48331e739de1b460"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/46100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "e8297de58fbb8cfc6e8ba03eaa4c4b10f574304fa1b90c93209a4879d95d576f"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/46200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "ec2b478f2572a8a5cf9a830e407bae023e961fcf67c030602799540850c79e02"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/46300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "b34b73831c06bf074126f6720caf07b0bc8147c578513e05b4b80c35174b74c0"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/46400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "ebc5362abbbffa982bc8454ef06cb191baac6a08b3f4349ef9b597b966f4a1bd"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/46500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "7c512d04ad20b27d01a9d8951254a5d1e3ca3cf49f494e09cb7a82a675c5f100"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/46600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "44f0d7a2e00baa897147ad18535b0b589a4665d0c20bb8ab764a83bcfa3adc15"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/46700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "09692392ad96487ec5491f7833df2a39bcbf1f6d09d034d27f45aaf9b0ad2d83"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/46800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "d47dc0d22eb3eab8cc0b45b93ada863f2e4f007952dbf3ae493bbe457cce7259"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/46900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "0c718f080406f98bc96e5252500ed89c41acd98a0f78c764a23610c4f0cb506c"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/4700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/47000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "b34acbda7da33e91a890b159e81122ea6a3ef13c5f04ebd5d314d7d737a3b17d"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/47100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "d294f367c48c5938bc56054b9d03980a2c03b5766c2f6db730a860854d1a8815"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/47200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "8ed15799be362d555bf431513f621c7389cefc4e97022ed49b385b35a4e5434b"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/47300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "65320107760f7c894a8fa1ab854e8ebcfa1849f37cbd59c2c6e69b9e250688f3"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/47400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "5be6e510d6cea99c6261efe3ce55c2ebbc835ad6b3b579d3635488afe98ee3cc"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/47500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "8a4ab791637df7bd2e6fedcb176e056b4812f27ef3d22afb81169cf736d16ab1"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/47600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "0e23048d5e4dc1a327c05f43bc5cdb927cd32138f8ccbced964aebfaa2f462ab"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/47700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "a7d1c79741594420555e2060a40fa4247938315ec80f9e840db4cd12c98ba0d5"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/47800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "abb8178255ed611937c427ca02d9b39f4c1ba178f4fe23342640480b9441ff3e"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/47900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "f3e66b9d251587a43c549b75dc2185bedbd9fa80edd4f47ee90b8c1057e0c5c3"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/4800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/48000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "42da0091043405d2cd8f57be5166ac161cce5116c7cd630ce264ff01b0798e86"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/48100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "d8e0a427b17ab54b58df622f43b8ab14a1cc808c1e8f251e58ec081397af981e"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/48200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "04d97e8dae3ffe70ce4e761c9486dfea66046fcea696b594ca6fbecccb6c4e60"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/48300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "503d556ab0305ce380315f805338e089c3ebe497419ec135733a54adaa19c790"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/48400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "31c33820670586bf56ac8d1cdddbe8691a7eca38b636bd381ade4c8487d04394"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/48500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "2dcf299e6a0f1d5227b55c0adc5cf55f8834b34ed31ebcf6b45d6bba34c237a8"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/48600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "0771279f0e5e5686e35e4b36b55a3c16795019b619ae6eb7fba26bc2344332e1"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/48700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "382e5fd7637f75b9b03296f34a04b819ddfe585b15bdbf2ddeceab9f392b35de"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/48800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "8161fdff8fe8c30626e4bc5dee639a11a8f9e291370877434ced776372478f5e"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/48900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "9b71ca2bb1322084dfa1ed5af0a7ff2aca057ca6a1d00176bbd6897f1672d1f6"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/4900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/49000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "ea3ac38910d6bee66a46dd06c6e574cec1dbc55c42beeab631baadba55e691b1"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/49100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "1d4bbc5ab6fbb7bfaa278ad9b0ec1b6da448c1997ca67a9092a3f78e83ac2910"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/49200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "4f5c5fbef8462064a0d75d66b329f538c83b8f867cf08d771b7192629e931ac9"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/49300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "25c38299622f7c919db662ab6c51a6b76b5bd493605a609a0753cfbd6fa93870"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/49400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "71125f1d7c5c4670d46ee61fcee77ca01dad58e7491bf4b362840d6602d951d0"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/49500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "34c52f0f93ce625375cacbe119be4566bbf6afecdab339f83d9ddd76524beeb1"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/49600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "039c43414555d692fd657b0bc9ae432721bf52a161ce0083a18531a9b8b38360"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/49700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "0225d27da024f7f979d5adecf9c09a8b0db6927baedf1c15a3c34a7238427e5b"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/49800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "66882e03e800edd0fa4b40a0011aa4f99e2d22063c2b3df231a7c9ac71d6fa58"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/49900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "b9d497c3543f20bef373890d0b2c796eb163e00a2f307a9421de12611ea9fb49"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "01d2f45e5f3d477a6dc859fbaaee053fdbd393d86c2cd098b5c286397f3fbdd2"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/5000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/50000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "77282ed6829f472a99346da27021403b7ec467cc00c65af3c8c346862ea7e4e7"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/50100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "851346c9cb63a3b8e57ce514a68b46dab04e066f5c7ec94b65271537d876a459"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/50200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "0d3bb2f25b7e161d4d5e7f8c3b53dc222383c69bf8cd84eefbb3433d83c41f04"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/50300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "e6fbe053e01edcb8216253ca91c8c40c39507ed4e3fd58b5f90ec1dd5828f451"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/50400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "3a9679e8151aa1d3c2fa602cb302b17a3b81c23a582bc017dd9f37c647848439"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/50500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "55321210513a509ebb27da7ab4b67e6e4f7e8743bbf04661fc5b3a108e9151e4"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/50600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "ad7f657dc25fcfe076d92c205f4dc2cdcf923cac3f592ae8995ea95ca141ab00"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/50700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "a7815ff139de28badb3ed0c6483c1059a722d4e288048dd19a412b525958c6ed"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/50800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "7a68824af324a58d8a7eb6d56463c2123904421d8d49f53fb48f0899a8d3041b"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/50900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "2e0951132eeb7335bf7c0b2c75ccfa80fbabfe5b21309d84e40f442b96ab3bb9"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/5100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/51000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "84d1d4838e06d3cb4e5a566a366f2fd30b44ccc5fd8cf9fb79cd0db7bf3114b2"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/51100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "acf52af9761ddc99b6e95ff14a29a6c24f0737cabf83c178d4168e06223ec4af"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/51200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "bc6d2d46ac7abf048521be0a6c0481fd24753ba39d0905d3f0e964f2527d57c6"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/51300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "7a6b6767518a89ec7c83aa0f7e849ceb426ba4e8c28b7e1fc4532b29082cceed"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/51400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "b58d8876b8e6ea81ef20d101d08f1a2b3a1bd591ee9bbbed8d345189c3b4a1f9"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/51500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "39ed01c49ba76c9c55c60a9743c4e84d60a8938fc78798b1ddc868dcc6dad7e1"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/51600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "27ff4059ad93eb020cd98929610bb58d87e10ebc80867bd4fa3ac5986083ba90"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/51700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "9bcac09b4511a678569dd1102969e63c17c7039f27c05ac98d63fbc72f7ca456"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/51800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "cf381b4600d17858353c7b5f41eb4f0c763e532f2395c583cd8f57caa84f8b68"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/51900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "00a69f9c04d22b5e5f013363e11274129f5f62b06b2bc04d0f519eb782e8cf00"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/5200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/52000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "b165a369717e9ba9fd262a48ff5e9a07a2b173772b0b72fe103409a63277125a"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/52100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "01dcdd9a5be9d27498f6e9d59bfd66a43c07d7fea4ccff0f97b49334337a69d3"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/52200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "29eac48b48c275fe731049e29adcf7681164f1219e3329b711ff4a06f7cdd2e9"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/52300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "8f6a4a50b36dbf69d2388c83732e55edb91cb259ac97012eb0051268147868a6"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/52400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "042d77ad823e2cc4e4ef61c1a04544c49835a9bf760cbdab4b7f7b79b9997a5d"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/52500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "e663fc3b2b1d9594af9f2e1cd7687f22ee8da636bc39c3b401789c75460a1302"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/52600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "0cb0deb01dad0373e0e4dd5d878886a02f9a4510feffe553fb9f12eef37cfdc1"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/52700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "dd5e1a6cddc208f98ef1b8596fb03a07d955036cf37a33b9b8c14467659dae76"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/52800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "197955ee9ce4c19b99476cc1d71d45297ab34827d5441d566beab78de886504b"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/52900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "d18edcf53b28d7460c2648b8d405639d47a6c190bbd1b0661026e90dd693bfb9"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/5300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/53000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "64244c032119d39abb7b174d2e70e9daab612f0be8a048f5b40bc997c49281fc"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/53100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "53a9218ea55a3c48f0bf19c3ee7b53f933b480ed4801c63333d7cb7368bb1296"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/53200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "e027951a7a96d031679da279d1a66f6cb23ad30b5e08ee85c1763dd178758cad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/53300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "e22ed417f54f5ac773cd072f7ba43624694ff1eb62c64cb793f98e6969194b90"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/53400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "b7003628b537283b6dee4e928a55e11b34573128737584de6800d7610d897429"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/53500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "82fa19076801eb013159e12522868210a1088a7bfea4b58c8daa3345b06488bc"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/53600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "2a5e043cc1133e489a42774fefdaa94a580f9610f0b8fc875550cd50aea61c7c"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/53700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "e2d0e31f4ad48e45471ce07c89aaca0ebc7827fad6c8531926fdc1b1d3e42665"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/53800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "60fa2a2404d7f10f9471598d98097b13c8a57c1b7b33fd7102e8a0c0cf21a7dc"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/53900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "f36cdc208dd50852aa40404b836dd877e9496c9a1d02414e5031cf19d9337c28"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/5400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/54000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "ebcdfab71fa89aef27315ec26ee868cb64cbd68dc6d48d4afca8dabbe4f57f63"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/54100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "e32e2be941b418cbe846156a3a96a04bcb38d4446660452cb575c846c370a821"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/54200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "1d2149ab24b90e37efb2726cb1987bb8fe031acb3f7ae75182876ffee4ce3adf"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/54300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "9629d7c92cff78caf4618b9edff204bbbdea9af78773d51a7d50c2137b594ca4"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/54400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "9fecfdcb4feb6b79c755298981985a8500bb227cf70cacf8b7fe6694280d0343"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/54500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "d56673f744de5c053387e7dbd127978662e3db2e10f239162044d1196270e7f3"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/54600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "314f84a228788fd202282da8ad8eca22fab017e6123407f852d47da5967fe89d"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/54700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "d7b604329c512a1c5f76829436c3ec10e90eeea90587ab1dbb6725df9a43d3e1"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/54800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c8689e4c21a3026822d9ea6903598fce022122c48537f95ffa670564c44bf336"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/54900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "06cabda16161ea63d946dfe8f2087ad53dafd9a5d1187f81bd40dc7be602eb53"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/5500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/55000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "a629ca78e53352015e627868808f0574b643340076b37868915f0f9b2456d506"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/55100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "40f64586b7cbd469e807aa75d4f006c2f433fe0984598316a53b45a794fb8fc4"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/55200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "d99c80c019d109bcfa7dee96baa14f51eaf066e7b696ae53c0b969fd2db2b6f8"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/55300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "a9f198809598d1cf42805258ac6fee566be7272ee0f840099f1c02d6e2295e18"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/55400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "10f088ddb3655ed3847f9996a409a5dfc1887f6e470aeac1a8a230e95e60fd4f"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/55500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "2a3a34826304b24772efadc3a18e29b4dd7a48c295dcfa25400738e087ffa803"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/55600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "a348ca1d70654ac9131d5bd47c05621e71c89cf3c373c7278c2cbe47f28acc9b"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/55700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "ffffa9a7a3b206819c9c20c43f63114cf1e5b9e146b36a470c3c6e46867a5bb5"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/55800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "731b43623c5a4b36c9e313c241aa3b02cf19d146e08efc1603b8e4027ce139ce"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/55900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "d444310f1ecc36615bf18719d907bc5d43aacdb2915a1f70cefa1b640fe97f77"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/5600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/56000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "b218d7a3615e5197876922d9a514c12a6c0b8779a80805343b7d7d33eeff39b3"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/56100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c5300d5f32d55aafd4dd37fa270b31d952572e85d9b7b93d11f2df2e2fa9311e"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/56200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "eeb4b30da1cd373ebc56310232c161d20abfed50c0282dd86d807097b6ee66f3"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/56300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "25d3417f288c1040efcf49c5bb1c6256afb3e88edbb70f05ab1cd907cfa7b923"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/56400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "13d90710902386afb5165b0f52c657d6a8cf50e7172d59fe54d515fcefeea09f"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/56500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "b138c8cf802ba9c257876a6eabb8e600a28ebcd018ec1655caa5a67f187727ed"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/56600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6d19ee885f1a87d4420ad52928b062339b3eefb08cfa85f0018e5532f3caad45"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/56700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "463ed5c9dabc3191aa3c6e925283df8598d4cb8d91e4b7a7c5fe075f83f90588"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/56800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "75776d8333d3bebfc15615c7e8717f67c8a05c351ed225effccbd850ea1b29c0"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/56900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "1867996d30156812a22450b8dce2144b9104034560408dadbcb6bdc1bba49b6f"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/5700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/57000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "1b84d3251dd619498137cfd76b356683ac6317a378e9b86739056fedec55787e"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/57100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "fa79fe6f32b66a10e080b10a13fea1b00584c88ce12ea0095532a44bb54bd016"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/57200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "2327862a03b616b490d3eb15e8d9aee5f672e4b894b6dc7a86625bcc102d2761"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/57300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "1f7cfbca3786297fc584e32fa6ef62f305b0a8994a2551d39cfec51e23a58508"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/57400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "8d1d8e77fd26d57dbec269a2bfd887716193af4dbb01a3364ca256e18c73959f"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/57500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "27f03c9aff88b4bc1f2069052583bc793e16fdbf4b5391937728fc7ad3fa1a65"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/57600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "b166cc201b0e8212e39576ae6616ad4dbe453d3a83e12ee3fc2a380d2a764198"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/57700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "daf3b402a6e19c2768305758542a625a592cb028235813701e3c20cc74976cbc"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/57800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "946e554606ffdf6b5c96d5d5a66641ad3a9eee3947b00bb3601498b9e3c52222"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/57900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "daa18c1ead80b5f768f85fb4a3ecab9bad5eb00a4c1bbabf8a233c343c7f2bba"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/5800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/58000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "0b4d7f434c79f515c3cf69458cb349ee29738c05faf7fbbbf14f60fcd89f1cf9"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/58100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "964850b2ee355ee117f35cc84c966528c74c4b01df2747f70e86ad8103b62709"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/58200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "afe50ab5cbc7bdfe916c4262361894260641b9bba7864061ce320b7018829d54"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/58300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "a150600cb2f4cc5a1e4e176c770e36da8805d33513717be2fba40f6276088e2a"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/58400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "54aec1fab6525324f1b77ccfa8dcaa8d1c01ccc699b5975ec459591e87d8f778"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/58500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "9aa6d9e542603c44c7e5030e953124a3904834fdef6a5655d43a3b43caada1f4"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/58600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "f3fccf33eb29ad9d0dcde0c55db29f0bd8aa13a9e2112ed4b279ee486fd849f9"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/58700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "cfa6316d1dfd8dea8d66afd565a401746e2cf511bf962d45c47213661e0d15c7"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/58800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "b5aebbe155bfc0a88586864bee0a763828e96db2d90a4b03136853a51ab3bb29"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/58900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "10fe4d661f486c1e375fac8d08ca76d5ac6d7c4d37677568c811d35ae67b5e92"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/5900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/59000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "cc364ced4a25907e7d340147b772058b922504ae9f5d79760580222f874aa2f5"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/59100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "547e08249d336b0501eff37f2e242ec6d2ed1e6288efa9c07d533b3aa286160e"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/59200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c8cd76c6d4f97f7ebf13e8ab9cbd64fcc294b45391b5e76e8924816c1dc93d76"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/59300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "42797ff0db5133fd6cb4fbd66a45daf8b52327ca0a3915508f412e90be80b173"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/59400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "f55f71a01261219790d82b2d1d35fa29ef8c102f36a6631a4cb1a70914045830"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/59500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "def0632552fe95ed21e0e34b6db455f882d3da369a4cb370bcdf1190017dbe54"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/59600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "ff8e09b04bee04d0ea2c53a8af446f90b61221fa21a001616aa9fd6c1077b1c9"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/59700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "f99680797133a75b705f75eaeff2ee369d7463976e0b56ab861834be0831ca29"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/59800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "45c3dab2e5c9f5146dc186b09c737aa446a2510dd3c13d18a44effa0a9bb9afa"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/59900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "1101341c2b58702ca9ee3beaa08f0a187721ddc52eea06774e6854d2159d239a"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "2241ef6a1de32d587ec8ccf6a9e3ee9d4ec408ebae42e91816eafc520b1e5306"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/6000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/60000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "17ce57835b422c7d5040742c86d6c148bbefff51cd257d05dea8f4455357bef5"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/60100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "51611fd24a2509e629c6de0a78fe2123b16a5486f02e67e33069b56aef1bed71"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/60200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "88a9c2535a7967d194b6ab8f1971faaaabec2c5910e89c6912d41c5298e56516"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/60300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6709c7ebc4200594c9416efce196351afef83465c348df927cf743b1f709c9b2"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/60400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "f5c4916997ec560541992b16fbd4fa241593fc006d1cd8a1314f8f456a982284"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/60500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "f1d8e80dc63cab9a23b1630a40a3f06df8d92e693d99bc2d4241b408eb4c5799"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/60600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "9724bc097b4df4217ea2f7df5ef15dd8e92c9686a9a74f09ed7a08186d14a6cc"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/60700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "20a0a2a90cb466423bc9555454d37b7d4194abecfbe733ce866caa401e0e57e2"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/60800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "3ecfacfeb3c4c4c3f656b347936947ba079edc57c63418d8a5ceec0a88bad49b"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/60900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "8710fea59850069aa06140179d65fc59674ffcb1f222ea041af90d1172923e38"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/6100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/61000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "a8d68f7d50e95cd77cab2514c4418d54474ba4690c7ea0b0fad9aa19cea37cd8"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/61100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "3dea7e61e7d2eeb72bb6794503bff9a53f7da99dfcbd226ed2ac84a6a6829135"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/61200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "82bc572b66fc00afbba5de03065d890f885c3fd3d6861202f02e6c98e9ee3c86"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/61300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "62c2536e8e12c73bf04151d7ba3ac3fb0fc321a8dd174bd85c7c38748bdfe85e"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/61400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "165099bbbd97fdd11d066035a81ba101aaff6d6e0063e71bb8b6e73e2392d9aa"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/61500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "54c40d1eb5dece1653ea9a483841d84596ee2610fe80c3a977b98b5e673214a6"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/61600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "eb7fcafc3adf27a233fcac7989323f7b58aeb619e4691cd69d8e2ff1f8f1c156"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/61700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "97ef39ac313905565f34e56ae306ad63bdb5090fac7414e2cce53ab2e14012d1"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/61800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "4bd5ab5a050026e2017d16125397f24fd10f6ffd05c49f5a621136b695f6141c"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/61900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "338d23da35a36e6fe527963b01079da0b105eef6d399dfac401417a6b668f49e"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/6200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/62000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "e51f72174792f1714a96c6ff722c18eeefa64bf3876ff3b16ac5a13d944fcbc0"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/62100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "9ed5166cafb2907ddb4ddf6b989dacb3159c0ba9bfde01f04cc9efc9aea83189"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/62200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "2bcb2d4800feae1c7b1374bff27a6c727a59e731ea52ec5d44a050ead74cadf3"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/62300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "95b09bf4c6529da513eaf2f5b815d3b9f0547adf6ae2bf2fe592eab9d47c4752"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/62400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "65a1706b4fa97ae13e500f5da5d36908363fbf3d331844f88ffb0c340535994c"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/62500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "cebefd800f28b1e565bc6b5679d33ba414f2382d2c377b8745678bb3ef329297"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/62600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "8b2faee0cc2a446388c15ead3ff71edb9e090cc43e5cd57bba4c422cbf2839c6"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/62700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "19a824626cdf931ae6e1cc9702bad43d74d339bc79de6cbe736370da4d580d49"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/62800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "4889fe26149f320f109f4036ab08833e12fd559efb50cd840983481ffc1a55c8"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/62900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "fec8a6864ba47d0c4893b8c9f9843d3c179d648da1121a1300a1d9c038edf35c"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/6300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/63000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "14e387ac21ebecdf599bc3d27c0a7421a1ed9f9693cb051c2857e078cf942cbb"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/63100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "af52c2bba03c94819915ab5fd06045bb5b1f505c9623561d4baa1d5d9ca2e532"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/63200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "88acae66480102dc3ec40bf44f4ed95fa237ecf30314dccdb839b7c640a11160"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/63300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "df11780c9d30c135dfaa811fb1bb3f0895129da6de8a6204764331a611e6fa9d"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/63400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "f0069167a5df790dd7a07c7e52cc340b7bd7fd008052b486a3e9a15bcafedef3"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/63500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "eaff743a122d0f3b55392e24f19ca89eae4b26210821622a3edc1a875b2143b8"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/63600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "a26c866ca4f0dfeda9813d899f0023e6d3f3bf58069163ce4f3f71e9a0526a94"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/63700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "73e6f6383acdd3632da585c66a665eff9cb063f816f371f595e56c6ddbb4218f"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/63800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "b52e0ec1204248b7912d85ea6b23159d1d4ded1e03c311f04bd3f160519e436f"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/63900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "d6c129d9205ff817223f8dd3047cdab4eda2f0c2df03275678b0f5381678b07c"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/6400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/64000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "183453c861078a8adfbbd14e06bf799faa3c5bd679600f65b2b50bf7501365a8"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/64100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "1295a66d156a166f3bb47cc789f432ad72a94de3b35abd7219f0494c8dcbc8f7"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/64200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "f4d778c7ce5a72d7753a61d8ed6c3efb5d14dee7325d6566a012b90dd47d7fdf"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/64300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "fcb296eee240cd03f3b0eae3c8333a17bf5263dd2398c3c3e78931fcd1fcd78b"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/64400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "dd1a2c753f07033adf8dbd040083523c30037abee557b4dc19a7ed3acec0eda6"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/64500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "0eb8dc45ea567d8b8a2043f3eeb3b1bddb43b456a976965669f611d506d7278c"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/64600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "bd7658273bb2ad3d63c5197dd960e28a4cf0be8ab8a2f0b040d44f0160304f85"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/64700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "69024c2a99e1f0c708230c6d2be90cf561b4ae46bb3a43b90167370633771aeb"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/64800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "f6d29e2bf7ee82113f9e9f5a54b46890e93ded45407f11f7ff7ed7656f2b4f45"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/64900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "38fc27786e1121fe47370751e6a68cb75a85ecbd87f5d8475165416978206cee"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/6500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/65000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "b07942912b41cb1ea920d3ff7e3548f70477c456edfd855e658ff50dd3c8d06d"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/65100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "49a861546cb836d3c7b737648fc09b6317609ce864c95ca4535c7d8f535b7b59"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/65200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "e6fd4089d3f91a046e681f4078f38cc8d6b0c6affd361cd249823b65c74d8fc0"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/65300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "124266f9587d4523eb3d6b7bcb33b2b63befd51cc8cf1d72576d4d8d288b7fe1"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/65400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "414d01dc25f5c3b03a41fb17e53b7d78584ad9aa570603dba8cc596c375b73a7"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/65500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "432d480efb64d3e640eb24ac589fe765c3aa118a61d821aa101c1323b8e2d871"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/65600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "a72faad5173ffc73e3222d6f4598c97a3754e8bc6d266451800c17162853031d"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/65700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "e9410b4344121abc9b4af7960f7e2effc47d72aee3429eef4fa0601c190d9716"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/65800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "414a66d4b54d667aa4dbd02d927a804d1b719a162798ab0fbec9d775c98575dd"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/65900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "cc1701e1387cf6ef5e2ee885d7fc1cfdf66c6218f48777514338f8df0ced56f9"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/6600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/66000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "e037c73d7a4425fea2f8a95a67e293e0be3e1d2ca3f3b9734fe43c7c2e45e3b5"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/66100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "42c5f21153475f89815a3b656fd00c1885e72a4dac69b839d19b6fd976fd0bb2"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/66200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "d4fe43879a0751ad0a6dcb97ad4621c2da641fb3198b63d7f32d38447b83b117"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/66300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "372107fd54e03fe761deb0248cd7e718336cab4e40d8e54b2944a0657097ed6e"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/66400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "8e1e05504db63355a3953b68dcd24087b91a1c097488ae1bbfdf1eaa5e70fb12"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/66500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "9cd645a0960d03c4e2819c006f0131d08eb1722e5d24f28f285b17d981fdd70d"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/66600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "43d24c313acf1f9394479716bac220313324ab5782284d6fe2d65dd3f6d996cc"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/66700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6e72325f3bd2489fe0e0860ee0a5c53a27c435e8947cbb9a05863c7fd33d34da"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/66800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "5c735eec82869e735bdc1f143e351f15fa9a4b8d74c49e828d691efd36c9600b"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/66900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "75233a66e336c9b5b65363590c493d1510ac97604333a4c664698a26e52860d7"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/6700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/67000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "f042470161fa97a74c47fdb7c29e9df9858615ae2bebb2f852e953f966c150ec"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/67100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "78334b3b8be5315ab5c2664a9627e7b4cf0b010a80845ad419dc96903165c5aa"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/67200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "f0cca2332d5dff019d72e1db6344a82640b51ca8a0b2a27b76bfb62b741fba2b"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/67300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "fb3e1c77a3db96849e8f94882d6eece8f0be827d5fccf1c7421362bbcbe79303"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/67400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "e701ff4d91492ffd5123796283d208e595c7818387c150886c46deefdb0f14fb"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/67500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "d49bef0c1798b13fcbe6d5cc7c62b755680ae07b7b5535b8628f7f78a9f63efa"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/6800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/6900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "331c04de8484b7e149574888be40118bca618dbd93a53721379248719ea7b162"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/7000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/7100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/7200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/7300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/7400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/7500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/7600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/7700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/7800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/7900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "7b1a5d9f6caa5ab95f68a73c4cc9656aa43b7aa5517343f18530cf6c60887c90"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/8000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/8100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/8200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/8300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/8400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/8500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/8600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/8700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/8800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/8900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "dca23e678fb2e0cdec060c470d93c8d3e22fa3c29034d84f624892f456aabc7e"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/9000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/9100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/9200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/9300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/9400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/9500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/9600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/9700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/9800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/rgb-frames/9900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/started.json": {
+      "bytes": 85,
+      "sha256": "0149c14c0c1fc3324a78f0b27cad745d8930a670d44a1495b6a5776f41a5c373"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/texture_input_manifest.json": {
+      "bytes": 434,
+      "sha256": "7b0b4af3857a3f3801af379eb7efd0654c451c8e9446788f1cefb2e639050ebf"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/world.json": {
+      "bytes": 599,
+      "sha256": "08e99e2e0b9874172e93d7392ddf67a8c23f3af57cdca4e4984ac22e52f58d8f"
+    },
+    "results/openvins-prearm-static-dev-1701/episode-run/world.sdf": {
+      "bytes": 3737,
+      "sha256": "edaf4833f38b6fd0fa4361ff14972e0cba651619e9ac08941e76cc5caa5dc605"
+    },
+    "results/openvins-prearm-static-dev-1701/episode/ground_albedo.png": {
+      "bytes": 154343,
+      "sha256": "5e62827968eeabb55285bba85276518b6d8fb1441f0bf9659caa52a48ed48593"
+    },
+    "results/openvins-prearm-static-dev-1701/episode/obstacle_albedo.png": {
+      "bytes": 52690,
+      "sha256": "28f87e79cc5cd767b029a4c7b00b165e1aad9f2cbb998be1a161e3ff5d121c3f"
+    },
+    "results/openvins-prearm-static-dev-1701/episode/source-fixture.json": {
+      "bytes": 659,
+      "sha256": "dcb1378c93233e2daaf468f43c9a2fe2898fd1f87d7501991deae8db5f4eaebf"
+    },
+    "results/openvins-prearm-static-dev-1701/export.log": {
+      "bytes": 1185,
+      "sha256": "4a369e7163f521139f637c17401205d3a9438f59ef088b67ef99f54e68b5d5f3"
+    },
+    "results/openvins-prearm-static-dev-1701/input-v1/frames.csv": {
+      "bytes": 25884,
+      "sha256": "8b03627f483fbe47f8c1bd6b59e8d2e365cab4f1cf57e55574f468b487fb7a15"
+    },
+    "results/openvins-prearm-static-dev-1701/input-v1/imu.csv": {
+      "bytes": 2245002,
+      "sha256": "42fffc4bb99fbd01beac7fdcc006e958cc46b38b690d61e89f80fe89877d100e"
+    },
+    "results/openvins-prearm-static-dev-1701/input-v1/manifest.json": {
+      "bytes": 1445,
+      "sha256": "657d60f1f233f119db902b41d6c742c89b844a0b196433d903a0dfaf77aac8b5"
+    },
+    "results/openvins-prearm-static-dev-1701/live-run.log": {
+      "bytes": 2229,
+      "sha256": "4d2a2323adec233b8768331820fe52bace695502eac1a9e76a127cf8bdc62640"
+    },
+    "results/openvins-prearm-static-dev-1701/replay-v1/exit-code.txt": {
+      "bytes": 3,
+      "sha256": "13bf7b3039c63bf5a50491fa3cfd8eb4e699d1ba1436315aef9cbe5711530354"
+    },
+    "results/openvins-prearm-static-dev-1701/replay-v1/replay-command.json": {
+      "bytes": 1452,
+      "sha256": "68d9535221ff17c5ba1553f1a6328f4eb0bbbb00f5045d9637eb535bb76be309"
+    },
+    "results/openvins-prearm-static-dev-1701/replay-v1/resources.txt": {
+      "bytes": 1357,
+      "sha256": "6d3c1f7def83b72cb93929d940fda86185d2ef5896276017ba58876b71e836f4"
+    },
+    "results/openvins-prearm-static-dev-1701/replay-v1/states.csv": {
+      "bytes": 71483,
+      "sha256": "e69af3be567e4f80345bf7e079130f55de5127246824bc46103658ea55fe1e9b"
+    },
+    "results/openvins-prearm-static-dev-1701/replay-v1/stderr.txt": {
+      "bytes": 573330,
+      "sha256": "de8cc5cca430c5ef7c7d6b0965d30791831f4a9f8d02818ea4da3c144f2550a4"
+    },
+    "results/openvins-prearm-static-dev-1701/replay-v1/stdout.txt": {
+      "bytes": 358428,
+      "sha256": "dd4043491dacaa023a52145491ca03d9bee5b4f08d5391c9a3dfaec4dcd35dbc"
+    },
+    "results/openvins-prearm-static-dev-1701/replay-v1/trajectory-audit.json": {
+      "bytes": 1800,
+      "sha256": "06a231dda711581d9a0b9c07e6d5a24378079e59c7995de5b8d45a83033d2671"
+    },
+    "docs/OPENVINS_PREARM_STATIC_REPORT.md": {
+      "bytes": 6566,
+      "sha256": "03e4fa091efeaf95008327d955b15741bf094d96378f934c2e44e8d064cb65ce"
+    },
+    "docs/superpowers/specs/2026-10-03-openvins-prearm-static-window-design.md": {
+      "bytes": 3760,
+      "sha256": "ac4f31ad9f671144de4b89474d23693a65a9bd0f7dc7a46aa7ce6fc6007dc0c3"
+    },
+    "docs/superpowers/plans/2026-10-03-openvins-prearm-static-window.md": {
+      "bytes": 4317,
+      "sha256": "594a1c77b2b2908527b4c500124e8b1eeeef8c9e68d7c775deec02ad7b5b87b4"
+    },
+    "tools/benchmark/run_episode.py": {
+      "bytes": 14204,
+      "sha256": "880c60962de77534dbec4f5ba272e1ab1f68ee918cb9df0b7708fb2371aec852"
+    },
+    "tools/benchmark/run_batch.py": {
+      "bytes": 6579,
+      "sha256": "b62f33ea3adff55a3fb7facb0d6f69667b88567b7d9de0ee65439e05d1fcf4c0"
+    },
+    "tools/benchmark/prepare_openvins_offline.py": {
+      "bytes": 5262,
+      "sha256": "00c240bf857e5fc83c803d735f4e5f9cf32b2856f260d370f7928577b9d019ad"
+    },
+    "tools/benchmark/audit_prearm_static.py": {
+      "bytes": 7130,
+      "sha256": "3b0e4c7010e5e913351babb1acc9bd42173f02f8cbb9e9d345a548162a6150fb"
+    },
+    "tools/benchmark/audit_openvins_imu_init.py": {
+      "bytes": 11468,
+      "sha256": "95642c07cfb96f812ecc7fa26e3325029a33b7cf3d0d94a53ab9177fa1d40924"
+    },
+    "tools/benchmark/analyze_openvins_trajectory.py": {
+      "bytes": 6694,
+      "sha256": "5e36fb13516ca5d551b12fe0b7be9e2637bba10fe36700b56fe39b91fcea5d18"
+    },
+    "tests/benchmark/test_stationary_prelude.py": {
+      "bytes": 9067,
+      "sha256": "c27ec3fb7988a7499c0f6e37c9ba9a7fb328d3ba6a18fdf0a6af2aec58dddd27"
+    },
+    "tests/benchmark/test_prearm_static_audit.py": {
+      "bytes": 2906,
+      "sha256": "4c548186485823886484802979bea40edfe1ffd763b161a8e5dcca84db554f77"
+    },
+    "tests/benchmark/test_runner.py": {
+      "bytes": 4150,
+      "sha256": "0dbd5d4a2bfbc3144e89f33da86f8a0fdfe6cabec666fd8b55fdab9fde8b607e"
+    },
+    "results/openvins-offline-1701/runner-v3/offline_probe.cpp": {
+      "bytes": 6034,
+      "sha256": "ed966a7d15a345f85e814e8a0bdbd3f2cfbf0a0f10bcbf789de9cbba2b06e70a"
+    },
+    "results/openvins-offline-1701/runner-v3/offline_probe": {
+      "bytes": 385248,
+      "sha256": "bf811d145e82a0b70b7eb242349d429e56261212dc5e6986491720b9fd460899"
+    },
+    "results/openvins-texture-dev/config-v2/estimator_config.yaml": {
+      "bytes": 6069,
+      "sha256": "eaa40224f0de2f4c5b0f1d33504d215670544b9cc000252a0e92f404478360e6"
+    },
+    "results/openvins-texture-dev/config-v2/kalibr_imu_chain.yaml": {
+      "bytes": 1364,
+      "sha256": "6accf2467907df4723419a8f82e772b537b699bbb67a9a9f69097286e1e8b114"
+    },
+    "results/openvins-texture-dev/config-v2/kalibr_imucam_chain.yaml": {
+      "bytes": 544,
+      "sha256": "120fb34ae45fec5d0c3cf838d053e7b0b79808c64b3fdb89923c4df09ec1a0cf"
+    },
+    "results/openvins-texture-dev/config-v2/generate-config.py": {
+      "bytes": 1583,
+      "sha256": "9ebbc2bca297605101b8affac6d10f3150bfbbb16c5ec10de5b8aa822699688f"
+    }
+  }
+}

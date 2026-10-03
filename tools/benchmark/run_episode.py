@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import math
 import sys
@@ -25,6 +26,17 @@ from flydrones.benchmark.runner import snapshot_episode_inputs, verify_freeze_ma
 from flydrones.benchmark.score import EpisodeScorer
 from flydrones.benchmark.ulog_capture import episode_exit_code, ulog_evidence_failures
 from flydrones.config import load_config
+
+
+def prearm_duration(
+    seconds: float, *, frozen: bool, record_rgb: bool, record_camera_info: bool,
+) -> float:
+    """Admit a simulated-time prearm dwell only for raw development capture."""
+    if type(seconds) not in (int, float) or not math.isfinite(seconds) or not 0. <= seconds <= 8.:
+        raise ValueError('invalid development prearm duration')
+    if seconds and (frozen or not record_rgb or not record_camera_info):
+        raise ValueError('development prearm requires RGB/camera info and no freeze manifest')
+    return float(seconds)
 
 
 def prelude_step_count(
@@ -78,6 +90,40 @@ def mark_prelude_failure(progress: dict, requested_steps: int, status: str) -> N
         progress['terminal_status'] = status
 
 
+def require_unused_episode_output(output: Path) -> None:
+    """Reserve a fresh episode directory without overwriting partial evidence."""
+    try:
+        output.mkdir(parents=True, exist_ok=False)
+    except FileExistsError:
+        raise SystemExit(f'refusing nonempty or preexisting episode output: {output}') from None
+
+
+def prepare_development_textures(source: Path, output: Path) -> dict:
+    """Copy fixed-world textures into a fresh development episode with hashes."""
+    names = ('ground_albedo.png', 'obstacle_albedo.png')
+    manifest_path = output / 'texture_input_manifest.json'
+    if manifest_path.exists() or any((output / name).exists() for name in names):
+        raise FileExistsError(f'development texture destination already used: {output}')
+    if not source.is_dir() or source.is_symlink():
+        raise ValueError(f'invalid development texture source: {source}')
+    contents: dict[str, bytes] = {}
+    for name in names:
+        path = source / name
+        if not path.is_file() or path.is_symlink():
+            raise ValueError(f'missing or unsafe development texture: {path}')
+        contents[name] = path.read_bytes()
+    manifest = {'source': str(source.resolve()), 'files': {}}
+    for name, data in contents.items():
+        with (output / name).open('xb') as target:
+            target.write(data)
+        manifest['files'][name] = {
+            'bytes': len(data), 'sha256': hashlib.sha256(data).hexdigest(),
+        }
+    with manifest_path.open('x', encoding='utf-8') as target:
+        json.dump(manifest, target, indent=2)
+    return manifest
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument('--controller', choices=('fly_raw', 'fly_guided', 'ego'), required=True)
@@ -93,6 +139,10 @@ def main() -> int:
                         help='development preflight: preserve published Gazebo camera info')
     parser.add_argument('--development-hover-prelude-s', type=float, default=0.,
                         help='development capture only: post-takeoff zero-command interval')
+    parser.add_argument('--development-prearm-stationary-s', type=float, default=0.,
+                        help='development capture only: additional disarmed simulated-time interval')
+    parser.add_argument('--development-texture-dir', type=Path,
+                        help='development prearm only: copy fixed-world textures into fresh episode')
     args = parser.parse_args()
 
     config = load_benchmark_config(args.config)
@@ -101,16 +151,23 @@ def main() -> int:
         args.development_hover_prelude_s, float(config['control']['dt_s']),
         frozen=args.freeze_manifest is not None,
         record_rgb=args.record_rgb, record_camera_info=args.record_camera_info)
+    prearm_s = prearm_duration(
+        args.development_prearm_stationary_s,
+        frozen=args.freeze_manifest is not None,
+        record_rgb=args.record_rgb, record_camera_info=args.record_camera_info)
+    if args.development_texture_dir is not None and not prearm_s:
+        raise ValueError('development texture source requires prearm stationary capture')
     world = json.loads(args.world_json.read_text(encoding='utf-8'))
-    args.output.mkdir(parents=True, exist_ok=True)
+    require_unused_episode_output(args.output)
     result_path = args.output / 'result.json'
-    if result_path.exists():
-        raise SystemExit(f'refusing to overwrite completed episode: {result_path}')
-    (args.output / 'started.json').write_text(json.dumps({
-        'controller': args.controller,
-        'seed': world['seed'],
-        'started_wall_s': time.time(),
-    }, indent=2), encoding='utf-8')
+    if args.development_texture_dir is not None:
+        prepare_development_textures(args.development_texture_dir, args.output)
+    with (args.output / 'started.json').open('x', encoding='utf-8') as target:
+        json.dump({
+            'controller': args.controller,
+            'seed': world['seed'],
+            'started_wall_s': time.time(),
+        }, target, indent=2)
     episode_world_json, episode_world_sdf = snapshot_episode_inputs(
         args.world_json, args.world_sdf, args.output,
     )
@@ -124,7 +181,8 @@ def main() -> int:
             fly_config, ROOT / config['fly']['model'], guided=args.controller == 'fly_guided',
         )
     backend = NativeGazeboPx4Backend(ROOT, args.output, world, record_rgb=args.record_rgb,
-                                    record_camera_info=args.record_camera_info)
+                                    record_camera_info=args.record_camera_info,
+                                    development_prearm_stationary_s=prearm_s)
     gateway = Gateway(config, backend)
     scorer = EpisodeScorer(
         tuple(world['goal']), config['task']['goal_radius_m'],
@@ -219,6 +277,8 @@ def main() -> int:
     })
     if prelude_steps:
         payload['development_hover_prelude'] = prelude
+    if prearm_s:
+        payload['development_prearm_stationary'] = backend.prearm_stationary_evidence
     temporary = args.output / 'result.json.tmp'
     temporary.write_text(json.dumps(payload, indent=2, allow_nan=False), encoding='utf-8')
     temporary.replace(result_path)

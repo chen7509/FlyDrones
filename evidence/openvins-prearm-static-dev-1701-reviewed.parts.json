@@ -1,0 +1,62 @@
+{
+  "schema": "flydrones-evidence-parts-v1",
+  "archive": "openvins-prearm-static-dev-1701-reviewed.zip",
+  "archive_bytes": 11476672,
+  "archive_sha256": "8f6757908119f987dbc402d231885073783f55287f173a0a194b6fb786aac485",
+  "index": "openvins-prearm-static-dev-1701-reviewed.sha256.json",
+  "index_sha256": "bea1ffbaa7acd189325fcd76ba22e8d8ec06187dd06ec348b5183512df5c9323",
+  "head_chunk_bytes": 2000000,
+  "tail_chunk_bytes": 1000000,
+  "parts": [
+    {
+      "name": "openvins-prearm-static-dev-1701-reviewed.zip.part001",
+      "bytes": 2000000,
+      "sha256": "a15a9bec9c6759739634d0cb71e97c3cf95f33fdf7c9f301b98ad697cedbfe99"
+    },
+    {
+      "name": "openvins-prearm-static-dev-1701-reviewed.zip.part002",
+      "bytes": 2000000,
+      "sha256": "669211eeca3b4b3b9cc932dfbd686ad4b999df571f2db1b884fff3622d00b3f8"
+    },
+    {
+      "name": "openvins-prearm-static-dev-1701-reviewed.zip.part003",
+      "bytes": 1000000,
+      "sha256": "f090e08bcbb4398633e075647ddc8348a2efc26405b33933ab798f1680912462"
+    },
+    {
+      "name": "openvins-prearm-static-dev-1701-reviewed.zip.part004",
+      "bytes": 1000000,
+      "sha256": "c5d4dac47ae1c4599f058489da27afbbcb7225c03d9ca812b5a1d484b0e3a832"
+    },
+    {
+      "name": "openvins-prearm-static-dev-1701-reviewed.zip.part005",
+      "bytes": 1000000,
+      "sha256": "e8b8d43d9f49ac53719330a84b94c048fa24f6f949e171eb4210a5cba5df824c"
+    },
+    {
+      "name": "openvins-prearm-static-dev-1701-reviewed.zip.part006",
+      "bytes": 1000000,
+      "sha256": "47f9465c29d6c0ede5228a62870cb9e5b58ff9568dfe0b53a8b753161d99b527"
+    },
+    {
+      "name": "openvins-prearm-static-dev-1701-reviewed.zip.part007",
+      "bytes": 1000000,
+      "sha256": "df54d04db25d3a191ca0d735b3c8dcb4683edac462ee9bbc769b33eafc5389be"
+    },
+    {
+      "name": "openvins-prearm-static-dev-1701-reviewed.zip.part008",
+      "bytes": 1000000,
+      "sha256": "aa50d5309f5cf39acf4162241b6fd9ddc0c1036e5d256c08484c09ad94b4fbc5"
+    },
+    {
+      "name": "openvins-prearm-static-dev-1701-reviewed.zip.part009",
+      "bytes": 1000000,
+      "sha256": "fe7dba62ca76f2a7f318aac86229a8c785d5c7eadd53fe7d06721f005dde74aa"
+    },
+    {
+      "name": "openvins-prearm-static-dev-1701-reviewed.zip.part010",
+      "bytes": 476672,
+      "sha256": "112f79be5c38886fa74d00cd3b2a823bb3b1fc71a37a86f70c0587bc428501f8"
+    }
+  ]
+}
