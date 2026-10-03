@@ -5,6 +5,7 @@ import zipfile
 import pytest
 
 from tools.benchmark.reconstruct_evidence_parts import reconstruct
+from tools.benchmark.split_evidence_for_upload import split
 
 
 def _sha(data: bytes) -> str:
@@ -53,3 +54,25 @@ def test_reconstruct_rejects_corrupted_part_without_publishing(tmp_path):
     with pytest.raises(ValueError, match='part'):
         reconstruct(manifest, output)
     assert not output.exists()
+
+
+def test_split_named_archive_and_reconstruct(tmp_path):
+    source = tmp_path / 'source'
+    target = tmp_path / 'target'
+    source.mkdir()
+    target.mkdir()
+    name = 'board-reviewed'
+    archive = source / f'{name}.zip'
+    with zipfile.ZipFile(archive, 'w') as stream:
+        stream.writestr('result.json', b'{"status":"failed"}')
+    payload = archive.read_bytes()
+    (target / f'{name}.sha256.json').write_text(json.dumps({
+        'archive_bytes': len(payload), 'archive_sha256': _sha(payload),
+        'members': {'result.json': {'bytes': 19,
+                                    'sha256': _sha(b'{"status":"failed"}')}},
+    }))
+    split(source, target, names=(name,))
+    manifest = target / f'{name}.parts.json'
+    rebuilt = tmp_path / 'rebuilt.zip'
+    reconstruct(manifest, rebuilt)
+    assert rebuilt.read_bytes() == payload

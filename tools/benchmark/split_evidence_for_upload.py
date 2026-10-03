@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Split two already sealed prearm ZIPs for a constrained Git upload."""
+"""Split already sealed evidence ZIPs for a constrained Git upload."""
 
 from __future__ import annotations
 
@@ -18,8 +18,11 @@ def sha(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest()
 
 
-def split(source_dir: Path, target_dir: Path) -> None:
-    for name in NAMES:
+def split(source_dir: Path, target_dir: Path, *, names: tuple[str, ...] = NAMES) -> None:
+    if not names or len(names) != len(set(names)) or any(
+            not name or name in ('.', '..') or '/' in name or '\\' in name for name in names):
+        raise ValueError('invalid evidence archive names')
+    for name in names:
         archive_path = source_dir / f'{name}.zip'
         index_path = target_dir / f'{name}.sha256.json'
         manifest_path = target_dir / f'{name}.parts.json'
@@ -64,8 +67,11 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--source-dir', type=Path, required=True)
     parser.add_argument('--target-dir', type=Path, required=True)
+    parser.add_argument('--name', action='append',
+                        help='archive stem to split; repeat for multiple archives (default: original prearm pair)')
     args = parser.parse_args()
-    split(args.source_dir, args.target_dir)
+    split(args.source_dir, args.target_dir,
+          names=tuple(args.name) if args.name else NAMES)
 
 
 if __name__ == '__main__':
