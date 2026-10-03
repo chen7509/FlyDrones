@@ -41,8 +41,8 @@
 
 **Files:** Fresh `results/openvins-prearm-board-dev-1701/` only; a report under `docs/`; a new sealed evidence ZIP/index under `evidence/`.
 
-- [ ] Verify no competing PX4/Gazebo/training process, free resources, fixed runner/config/library hashes and source world/fixture manifest.
-- [ ] Invoke `run_episode.py` once with `fly_raw`, fixed 4-second prearm, RGB and camera-info capture and fixture texture directory; preserve exit status, process log, ULog and all failures.
-- [ ] Audit camera-visible boards, prearm RGB/IMU intervals, EKF2 validity and policy/safety status; if acquisition fails, stop and report the actual stage.
-- [ ] Export the same IMU and frames into a new directory, replay once with pinned OpenVINS and logging-only feature patch, then run strict frame audit and trajectory analysis. A failed initialization is a valid result.
+- [x] Verify no competing PX4/Gazebo/training process, free resources, fixed runner/config/library hashes and source world/fixture manifest.
+- [x] Invoke `run_episode.py` once with `fly_raw`, fixed 4-second prearm, RGB and camera-info capture and fixture texture directory; preserve exit status, process log, ULog and all failures. Two earlier controller-load failures never started PX4/Gazebo and remain in evidence.
+- [x] Audit camera-visible boards, prearm RGB/IMU intervals, EKF2 validity and policy/safety status; if acquisition fails, stop and report the actual stage.
+- [x] Export the same IMU and frames into a new directory, replay once with pinned OpenVINS and logging-only feature patch, then run strict frame audit and trajectory analysis. A failed initialization is a valid result.
 - [ ] Seal raw evidence and hashes; report the actual capability boundary, run targeted/full tests and Ruff, request independent read-only review, commit and create a stacked draft PR only if the evidence is remotely verifiable.
