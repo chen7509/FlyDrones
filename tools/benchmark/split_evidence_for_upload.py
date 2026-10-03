@@ -10,7 +10,8 @@ from pathlib import Path
 
 NAMES = ('openvins-prearm-static-dev-1701',
          'openvins-prearm-static-dev-1701-reviewed')
-CHUNK_BYTES = 2_000_000
+HEAD_CHUNK_BYTES = 2_000_000
+TAIL_CHUNK_BYTES = 1_000_000
 
 
 def sha(data: bytes) -> str:
@@ -30,19 +31,28 @@ def split(source_dir: Path, target_dir: Path) -> None:
         if len(archive) != index['archive_bytes'] or sha(archive) != index['archive_sha256']:
             raise ValueError(f'original sealed archive changed: {archive_path}')
         parts = []
-        for offset in range(0, len(archive), CHUNK_BYTES):
+        offset = 0
+        while offset < len(archive):
             number = len(parts) + 1
             part_name = f'{name}.zip.part{number:03d}'
-            payload = archive[offset:offset + CHUNK_BYTES]
-            with (target_dir / part_name).open('xb') as stream:
-                stream.write(payload)
+            size = HEAD_CHUNK_BYTES if number <= 2 else TAIL_CHUNK_BYTES
+            payload = archive[offset:offset + size]
+            destination = target_dir / part_name
+            if destination.exists():
+                if destination.read_bytes() != payload:
+                    raise ValueError(f'existing uploaded part differs: {destination}')
+            else:
+                with destination.open('xb') as stream:
+                    stream.write(payload)
             parts.append({'name': part_name, 'bytes': len(payload), 'sha256': sha(payload)})
+            offset += len(payload)
         manifest = {
             'schema': 'flydrones-evidence-parts-v1',
             'archive': f'{name}.zip', 'archive_bytes': len(archive),
             'archive_sha256': sha(archive),
             'index': index_path.name, 'index_sha256': sha(index_bytes),
-            'chunk_bytes': CHUNK_BYTES, 'parts': parts,
+            'head_chunk_bytes': HEAD_CHUNK_BYTES,
+            'tail_chunk_bytes': TAIL_CHUNK_BYTES, 'parts': parts,
         }
         with manifest_path.open('x', encoding='utf-8') as stream:
             json.dump(manifest, stream, indent=2)
