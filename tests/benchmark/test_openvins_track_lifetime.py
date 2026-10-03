@@ -2,7 +2,7 @@
 
 import pytest
 
-from tools.benchmark.audit_openvins_track_lifetime import parse_track_log, summarize_frames
+from tools.benchmark.audit_openvins_track_lifetime import parse_track_log, summarize_frames, validate_source_timeline
 
 MATCH = "FD_KLT_MATCH cam0=0 cam1=0 input=12 klt=10 ransac=8 combined=2 status=normal"
 FRAME = (
@@ -70,3 +70,13 @@ def test_count_id_lifetime_from_actual_database_writes():
     assert report["unique_written_ids"] == 2
     assert report["ids_with_two_writes"] == 1
     assert report["accepted_total"] == 3
+
+
+def test_source_timeline_requires_exact_order_and_unique_initializer_attempts():
+    first = "FD_KLT_FRAME t=2.700000000 cam=0 previous=0 retained=0 added=9 input=9 accepted=0 branch=bootstrap"
+    frames = parse_track_log("\n".join((first, MATCH, FRAME, "FD_KLT_ID t=2.800000000 cam=0 id=7", "FD_KLT_ID t=2.800000000 cam=0 id=8")))
+    validate_source_timeline(frames, [2_700_000_000, 2_800_000_000], [2_800_000_000])
+    with pytest.raises(ValueError):
+        validate_source_timeline(frames, [2_800_000_000, 2_700_000_000], [2_800_000_000])
+    with pytest.raises(ValueError):
+        validate_source_timeline(frames, [2_700_000_000, 2_800_000_000], [2_800_000_000, 2_800_000_000])

@@ -148,3 +148,12 @@ def summarize_frames(frames: list[TrackFrame], start: float, end: float) -> dict
         "ransac_total": sum(frame.match.ransac for frame in selected if frame.match),
         "matched_total": sum(frame.match.combined for frame in selected if frame.match),
     }
+
+
+def validate_source_timeline(frames: list[TrackFrame], source_ns: list[int], initializer_ns: list[int]) -> None:
+    """Require exact source frame order and unique in-frame initializer attempts."""
+    frame_ns = [round(frame.time * 1e9) for frame in frames]
+    if frame_ns != source_ns or len(set(frame_ns)) != len(frame_ns):
+        raise ValueError("KLT frame timestamps differ from source frame sequence")
+    if len(set(initializer_ns)) != len(initializer_ns) or not set(initializer_ns).issubset(frame_ns):
+        raise ValueError("duplicate or unmatched initializer timestamp")
