@@ -1,0 +1,2883 @@
+{
+  "archive_bytes": 11365513,
+  "archive_sha256": "d382f637aea7197c5151243a61ef116df7c51d5d0cc1afc50e4b8eade76b004e",
+  "files": {
+    "docs/OPENVINS_STATIONARY_PRELUDE_REPORT.md": {
+      "bytes": 6179,
+      "sha256": "2001eb13809b130acceb170000186921f4b14ebd30aeb88b7f1f7186f932bc0e"
+    },
+    "docs/superpowers/plans/2026-10-03-vio-stationary-prelude.md": {
+      "bytes": 3783,
+      "sha256": "3103b861bec634e360d9bc36ec5f32d4b6318ace67cd3381fc79472788935893"
+    },
+    "docs/superpowers/specs/2026-10-03-vio-stationary-prelude.md": {
+      "bytes": 2809,
+      "sha256": "d6161e18ca0b68e64b99df4a349e08dfdd6d9d24976ff515d8220ab851982c5f"
+    },
+    "results/openvins-offline-1701/runner-v3/offline_probe": {
+      "bytes": 385248,
+      "sha256": "bf811d145e82a0b70b7eb242349d429e56261212dc5e6986491720b9fd460899"
+    },
+    "results/openvins-offline-1701/runner-v3/offline_probe.cpp": {
+      "bytes": 6034,
+      "sha256": "ed966a7d15a345f85e814e8a0bdbd3f2cfbf0a0f10bcbf789de9cbba2b06e70a"
+    },
+    "results/openvins-stationary-prelude/archive_evidence.py": {
+      "bytes": 2783,
+      "sha256": "bbd53abdb26b0eedaeaac70ca23149b6a7b587c1a85be53de265b4e8346e224b"
+    },
+    "results/openvins-stationary-prelude/episode-v1/camera-info.json": {
+      "bytes": 785,
+      "sha256": "746c9661940827f967b28bf05ad8d88001416ced34294a2530d048fb79a8116c"
+    },
+    "results/openvins-stationary-prelude/episode-v1/camera-info.pb": {
+      "bytes": 332,
+      "sha256": "6d2ed00a687f29103f8c48e5f49fedd4b0b903852682cc2c8b6592eb6e3b1437"
+    },
+    "results/openvins-stationary-prelude/episode-v1/capture-command.json": {
+      "bytes": 848,
+      "sha256": "19b2b55c2db28d983b9c3d213a9d97eb5b67b5c86abbb0a64b56f4484c0b5152"
+    },
+    "results/openvins-stationary-prelude/episode-v1/embedded_server.json": {
+      "bytes": 306,
+      "sha256": "d8f688158139ae384b6681045ba83dc636a3a80ec65671ade903d5c3ede4aa10"
+    },
+    "results/openvins-stationary-prelude/episode-v1/exit-code.txt": {
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    "results/openvins-stationary-prelude/episode-v1/ground_albedo.png": {
+      "bytes": 154343,
+      "sha256": "5e62827968eeabb55285bba85276518b6d8fb1441f0bf9659caa52a48ed48593"
+    },
+    "results/openvins-stationary-prelude/episode-v1/gz_partition.txt": {
+      "bytes": 23,
+      "sha256": "dfd1b5df7e73df13adb151af807c98d11d36783fb56d99b3a25a0fe880548681"
+    },
+    "results/openvins-stationary-prelude/episode-v1/input_manifest.json": {
+      "bytes": 183,
+      "sha256": "e0c547623a89e5edd760ce58aa4bf35e0198f39f92c9e37c7ac23b235228561e"
+    },
+    "results/openvins-stationary-prelude/episode-v1/obstacle_albedo.png": {
+      "bytes": 52690,
+      "sha256": "28f87e79cc5cd767b029a4c7b00b165e1aad9f2cbb998be1a161e3ff5d121c3f"
+    },
+    "results/openvins-stationary-prelude/episode-v1/processes.json": {
+      "bytes": 261,
+      "sha256": "99aaeedea32fd0d4a46cdabd5ed9ee179d09ff057ee410a14a8e3730b9adcf01"
+    },
+    "results/openvins-stationary-prelude/episode-v1/px4-runtime.json": {
+      "bytes": 95,
+      "sha256": "ea92fb7800d11ceeb239444a9e45587fa4cd7bcd6e644d3ae98b4a17b5455dca"
+    },
+    "results/openvins-stationary-prelude/episode-v1/px4-ulog-manifest.json": {
+      "bytes": 267,
+      "sha256": "bace201976e133002283e5763811dd1114f6d87e51353a59e347dd149e1dd714"
+    },
+    "results/openvins-stationary-prelude/episode-v1/px4-ulog/log/2026-10-03/05_24_47.ulg": {
+      "bytes": 19174432,
+      "sha256": "07b6c8da5fdbb436d9d1730063865ba51a5364d9d27f362381eb1b325e2bfb4e"
+    },
+    "results/openvins-stationary-prelude/episode-v1/px4.log": {
+      "bytes": 2741,
+      "sha256": "6fb3626cf8d47b17fd515e819e7f7991842d0b37303349ebe02ff6cb72ea763c"
+    },
+    "results/openvins-stationary-prelude/episode-v1/resources.txt": {
+      "bytes": 1346,
+      "sha256": "b686f69cc8244051110b3d21c7d98b0d18aa6a9c9df8b6f5f444d4334a471274"
+    },
+    "results/openvins-stationary-prelude/episode-v1/result.json": {
+      "bytes": 1300277,
+      "sha256": "4fe7bd9b62a5f021e0816d9fd22cfb4448562ec8483bd6b8602137c6ef42c380"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-capture-manifest.json": {
+      "bytes": 139996,
+      "sha256": "a1cb7a83a616f134b60cc53ba3cb7cd8e5476d5c229390221d2d92053815591f"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "bddba3d29d6800f337f67a3ff739132d1fc02eeb7440ec64a551bc9c90e884ba"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/1000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "57f3e2e6de9fc02cbe12a8f19bd516eacad76a7fb282131f6be037bfa3ec599c"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/10000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/10100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/10200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/10300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/10400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/10500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/10600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/10700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/10800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/10900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/1100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "1d86e2af0056dad92c7dcfe06237eeabf9a69089ce590b09431d9cb46db508e1"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/11000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/11100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/11200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/11300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/11400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/11500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/11600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/11700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/11800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/11900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/1200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "d90bc95cb3900c80a26cc4c20db9c00858db91ef6c08bfa1f7cf6c73a2fc4d51"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/12000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/12100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/12200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/12300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/12400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/12500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/12600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/12700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/12800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/12900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/1300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "44a1b31d1b134a1ce2facd8f1d9d1ea33b33ef4c601398c9bc8f022d7c0e2d99"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/13000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/13100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/13200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/13300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/13400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/13500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/13600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/13700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/13800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/13900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/1400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "36208d8aa2f0ecfbe5f10f6601c296c923ad080b8f168df8dcdb9a8e822e719c"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/14000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/14100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/14200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/14300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/14400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/14500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/14600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/14700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/14800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/14900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/1500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c7025da48d7574b1e59518d69aa8e891a09c2ed05002a1e8b8910f838f50c4f2"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/15000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/15100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/15200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/15300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/15400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/15500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/15600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/15700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/15800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/15900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/1600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c7025da48d7574b1e59518d69aa8e891a09c2ed05002a1e8b8910f838f50c4f2"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/16000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/16100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/16200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/16300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/16400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/16500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/16600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/16700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/16800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/16900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/1700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/17000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/17100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/17200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/17300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/17400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/17500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/17600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/17700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/17800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/17900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/1800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/18000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/18100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/18200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/18300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/18400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/18500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/18600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/18700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/18800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/18900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/1900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/19000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/19100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/19200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/19300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/19400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/19500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/19600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/19700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/19800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/19900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/2000000.ppm": {
+      "bytes": 57615,
+      "sha256": "45a2819493c6b16c15de02b0f878a2bc6864146f9fc01ba8b125099a886c33ed"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "0752ec7c84031ddc35ea1bc60708bdd3e3d76be14e4938e6af5f755fbe877551"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/2000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/20000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/20100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/20200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/20300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/20400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/20500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/20600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/20700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/20800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/20900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/2100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/21000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/21100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/21200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/21300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/21400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/21500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/21600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/21700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/21800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/21900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/2200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/22000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/22100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/22200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/22300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/22400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/22500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/22600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/22700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/22800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "1d7c7d4f72cfc2b52ecb84d024570cb5c278057cbc74d6c0e192639c1b4d3f26"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/22900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "fca228d257bd5ad653415d0d0ba3009eac383746b4450f8a13016facf1c7ef1b"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/2300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/23000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "e6e536c0773a5bac5eea88df3a0a9b97dd99a2548768c79e75d568e740fde256"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/23100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "d078f6d99435ed0996e13dc27f0df2fc266d067ffd1adb9854bced18cf8dc7fe"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/23200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "eb3899862c34633ebe2103217318941a117158e220d2a1c592305fdabaa4837b"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/23300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "d3d5a553b6f85c6b2ea36fd8b4ff7a5804ee4c91c68c8879fd4a0a6f16d7a84e"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/23400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "2551c51d34778717feba756e79258ffe8aba25fbbe203469f3f66c8017fcd9fb"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/23500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "e2a677d23a46074c658ad821337ed34a406e3087dcc7dfda59dc05b445720fd5"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/23600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "45e2f7bf42616fd02e42c6c4926788b4fda1ae9f291799a229f9a54047f1a34a"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/23700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "94949c57d79b7327b4fad3c37c3c3e59e64ab981b43ff959ff7c371cd6c9ca1e"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/23800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "cbeef63574ff36058641e8c08b8db0799ec4ce45df25e2961634c74b41af081e"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/23900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "1071bc49f710de396a6705ad0224a917298d01429a141508ec91079baaf25076"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/2400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/24000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "4902ff9c285d21b5943c47a9b838a0b1360e59c4e1de5411bb92cd08ba6b34ff"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/24100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "2d16aa4199565cd3b646f1f5e87ff5a64f8989d6c2f70180847afda2637362a1"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/24200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c67157fa1b4c4f61ee054a208af61cb67c8710433b3a07982d3a4c7d26392958"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/24300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "1807a56ed9c1547ee2b773f82fd6a46dab4d8ad5ff503ee44fd87190902ab6c1"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/24400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "22f7c22b1923cf9f9576411e659df365f1dc8bc9105a3b3f56a22ddde63395d4"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/24500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "1b159dcbba3618773f27dbc0b244ac07fdc499e22dbf105f76415311d54f0cc9"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/24600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c17f0cb4b164b60c840c0fbd669601b8d36c4bd92969059e4e82c98f6787cf80"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/24700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "fe7175d98a59563772444c7e46fe269f27514eda45e5225f8bd56fecea5694f3"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/24800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "d63f3f7e6b4df7876e9019561a7f4b534fa4bf7f112ec0cd8f8b6b078d6a527b"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/24900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "d7a404d81d090bcb74fe20479b51936c37ed4546aa9387fbabff4cbcce7cba42"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/2500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/25000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6a906a3535eaa80598ed105ea8f6ca13cb23815b92fe2027e40741e68f844d02"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/25100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "973d0eb7881bb5823970dea5324a9f58d09eda8edbdd4c2af3d3057511e56e51"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/25200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "3ac21971dd61d90e67462be87e17fb76ec478e98f1f04d49fd487a059340c81d"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/25300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "16331da93ccccaf85285920f5c8a1063080ddb622dca3bba9731d17f642eca19"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/25400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "0bcc8a13f5370b17c610d9216f8aa13753b595cbbe05e694589c846ea21372fd"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/25500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "1396d14fba5357732cf8b089f53f8b0931bf842bb1cc1a8b948c3e3764082c4f"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/25600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "b654b41315a7e8ef64f5196d95bce4dd092caffe21ea97d976c42d45ede1dbf4"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/25700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "4d98207e9a972294c0bfc9415a7f44d0f422047b3177499c4fb3a397c6d0bbf3"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/25800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "7997d5787f2d67a1d13e8bed07fc85f47fcba9511e2be78c4ba89f6a06013db6"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/25900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6bc264f5ab7a521a2b3cecf410b5eba86300d9c80a44ba77336c102b0a6b49b0"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/2600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/26000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "a8e4caba661302ce3aacd4cbb9b3e529d6ac72edb881cdba7a72cef58133c952"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/26100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "5d7c3f438ec98513db890d821c1023884ba5450e72d62e5810fa2bb669fe8256"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/26200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "fc096a370f738c739073a6752895d0b3bc7e395475f12c68b74c894e063d0e6b"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/26300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "feadd47ffa5d4296baba5434eaa40dcd15427b78fe0062fb597326229fb27251"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/26400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "7633cc461f69cda4a4abb565933e463066448f4896527f9a244c5b934fea2870"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/26500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "ab3c718c928b33c6a207435ab4536a56006ef3304901312f0d43235c01809072"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/26600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "eaa0853d934d85d819f94da45713e17f0e4c0efd2c4eee1f0706700ef69b9db0"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/26700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "9c949d36541298d88150bfa633b552b5dfb5cc01b8d291300f88e1c1e904c5bb"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/26800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c956b465569cabd2ddd76edeb4818099c8edc30d6df0d7983ddcdc94e270e788"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/26900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "0594edd67f2e66de7495e812cb57d57de2c4c63ba38ebe9984ae1bb06440c45a"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/2700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/27000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "1d5bf4c6b3d7db74ca379a974de3b2f9b44e7b0463bdc2ebb215b84848cc04a7"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/27100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "f5a1b76b4c98e9febc8a8eef65156f947f306efe73e78d6ae2a8a516aab1669a"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/27200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "49a17285d871868a55b6453cb18243f4173af1b2314b3f96f1eba780eb59444d"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/27300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "e6b0874965b2227e398767629c35573841e134174162616a15f1840a596b91a1"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/27400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "b92a26f0185c44e171e3f00852c678ffdace1a02d64f5c1706ac8c3f4af8f0dc"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/27500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "b6732e0de99ff1cd8b1bc4235bd4cb713d8f39811eafd471b1e953155c35b3bd"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/27600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "3df202d2f96c61be1d857f3d8c035c0e08172fbcaf2681d27e593325d7e544a0"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/27700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "223b2e4019f7bd02c6fbb34f7504dd6ea7f857c017cc0edc6c93bf8bd4e9b169"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/27800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "0cdd9989eefb0735bef381122d071373c1c1d6aa1e36d7c13b556ad69f046774"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/27900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "de76b371c23333d822af16bbb5623ad6c791d140cea6ce4f5e556b7a872d4234"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/2800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/28000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "f108e0c7f6d7b9e5beb3b8085c6fc411fd078f559c68d947150d45c5dc9b5a36"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/28100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "d272ca25ac6272484419abc07acd881e882594bb2f513655f49b0225145e79b2"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/28200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "a94d5310d697b2699b5054e7b17bfb9e16b5deda17cc8d85054c46c6f216430f"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/28300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "57cb700c3e4459ae9db611b4b704f3989e374b13473a593abfb9d8391560c0d2"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/28400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "04b02d7b47aa21242183da3af492e5bd8a9452a2d19cee0379b4f32e1f2bcedf"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/28500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "93f359e4520e9de95462c9fa34a411981e04876167832abab7bfcfc941d9a47b"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/28600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "f77b1ff2a14d21f3dc583d41491a9a818ed31fcaac93f9f7c81308f5b4a99292"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/28700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "445d3d7e786b8fb6b4d6da7cfe06ddb356e908d75864236f900d90eead2eb285"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/28800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "a93506bcd785d4c188ddb7a17d31a58d3227a316bf2b05df66f4ffd02796c3c6"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/28900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "f8fcb50750e8eab250b4a9b4855090a8342f99a9cd432d426a1b26868e0f11b0"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/2900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/29000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "e03a10d0ba3d37be93ba19c6591a11cb15943d2344a5b1b03f5fcb9a657c83a7"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/29100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "784d950013afe4809c117feb531c69d23e6f1a6af54450806f3c9104de137cbc"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/29200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "8d1e38496d7531fa05b0daafe05551653d76a878ff84ea6dd725809300661bcd"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/29300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "b4169ca911a266184b7756a668441e3ddc321f92e4335c633dca20626446bcf9"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/29400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "fa681d0ac0fc5ac254931169c82644c2d155612960ab9b0c6cbf286b18b40d3e"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/29500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "fe6e6abe103f685fec60f22cb23786dd6992d0646e8a4d493f0848570ec0cd31"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/29600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "164748c3160241e1cbc265004b775fe69cd8d610217c1dbcf5f206eb18c084ee"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/29700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c108ff167e6537c160987ef5ba090587f79f0c9cacf68c60a1b33e1410c7311c"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/29800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "4c11806542437da595c262d44f87f74e1e894953cf70b49277ad013d7c2d6a5e"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/29900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "e8e2f21eff09abc0174eaa22a420cf1c1a4e39de9fe404004e4d3b0672a058ca"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "cee2a9e597e747cebfc72073bb093f6c75fba8653e62ae4874fc53b6c7982f43"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/3000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/30000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "1a313e9d13077820987983cb299aa938ed97f87dbc622e76cca44bf6867eb2da"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/30100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "b189987ff303db23ba3d16857c3ce317d69e68b59e79b220c0414333e9d11d2a"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/30200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "87652c33e6c267a7332dc1b730447f21d011108486b1518afaf8719382491092"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/30300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "d42b766e912538622f8746aaae4b11d5da29b96d722442623f9d37c690eb07cd"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/30400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "5c279c149b8d0e2a83b3b09cc7fab69ae0739bfbe9c6db6b3f716421cf98cc77"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/30500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "e11e2d5ae6328552818c6ad04bc78f4dffae918ff1c51a4316d60c3a1be2991c"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/30600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "38ac5882ecaf785bfee79c68af4660450642c74493a1478b91e69215f96c9011"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/30700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "415fa0ea542243c80f62454e0815fab4a2cf15d2363ac27bbc210729e4d486cc"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/30800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "05ca37477288e495efe8e29ea691a9d27e6c3df9c42d8dbffa9e5cb9c045b701"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/30900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "b1f4135161c602a4f6c715f6cf9c910dbc8fb6bed905f35343f328eceaa1e72e"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/3100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/31000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "f2f25fdb37e393a17503c2be390af2cec1f8714b3c47b514062093c7bdb4dc60"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/31100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "22c6646a10ff5ea200f957da074fcdfa2186a47a44ebd82951d1c6abe23419f3"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/31200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "78262894f71bb7b2e11eb01107924a79de8c0e1c2637aa6e009140348184b585"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/31300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c2bd47e918e61d2f1e01d72913ff54dea15df97844ae6cf6cc4cc1090d592f63"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/31400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "5b881829ae0b100c5efe67b78932cea8ae578fe4578a141e08a91a510461c3e8"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/31500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "7e5dba2e169d44bf4357ddce9f40d85c1a783cef47491804e56b49f315e52e23"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/31600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "688208c047c53d9a9566163bf26c89c021798c46f2fbd3f4ac25a9549850f568"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/31700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "68e6e5f95e4d6a60ee3d197ac97684b3915993d1afd9087d82e2abb2518131c8"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/31800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "e295bf3615f297fb073e4c00feca0b1952e47ffbb70c410abf2adcd9f1476338"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/31900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "936ed7324330d88703ff4c4c4a6e713b1764b132d8f2f2771152fc4234d18b5a"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/3200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/32000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "e5fc80745b208a8c62f0ac4ba0389e9f3597436cd623df9ed32007d4c385d4ad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/32100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "581ec4193eb03e9950938b0b1f721a62e2081eea4874f99c2e69a8a5975ecdc7"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/32200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "3ff7b6eeb0b5d68bab9e4958f7bfba01fde427ae22ab6e4ca883679812abff61"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/32300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "5adade73ddcd9a8e62bc731cbff083d2a8ac0f2698d524f7ddefaa80f5f28acf"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/32400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "8cc2ce020b8bef78f4fdf98b0c22950b6a4f738d5d07e441a7010ca0fe80ae81"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/32500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "4dd19d7b65563afec07098f18574bbd4d5f517394a238ac94864724e6465a185"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/32600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "62b003199205a97580a22a12bc9008e86bf4914241ddeb794c47e117839c6eef"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/32700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "743851209b28600b911304832497b0d5053f81e732da712cd59c1addf18ee7bc"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/32800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "f245f019b0070421b970ddd3bcd6a04a91fe7874d1fe7684aa96efe2b0e8ac6b"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/32900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "070aea1c74ddd37d251dcc91e194da2e3f32400207bafa1677c6a44a9ba5288d"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/3300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/33000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "d53acca7fcb82c998025911b54206ff4a34db2a00646707143a6faadc6652184"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/33100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "99c930ab5c15fe68966dcf9281b87b66c49daf9cf336b7cbe4d5ae8cd9c5cb4b"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/33200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "8a33ff52f888fe7194cd1df356b085ffa3c9082a4170a7c9c2b8c51e37e243cc"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/33300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "9130f047f4681109d12dcc24c91daeafbf21ba9192f340a72364bc0c6671e208"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/33400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c355b06acba386bc41c6304303c158b8a976c3edb423ce8b4003bad55a0cfa29"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/33500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "59db0d3fa648ea393bf1cc8a9ae96ad3a8019bfa4e5548df6a0b53facba5f396"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/33600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "047874280e1c671d82503a3e48de3c31dabdb41eda3916e7cbd139b63a4277fd"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/33700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "a63a09e4748c3a8c6f3dd7fb921144f87c9ee5c672866e51384b21dd107f269f"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/33800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "f02044f016d5b63b13e86f603852f2c8acc5e157d28d8aab86d0b9ab4b6af30a"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/33900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "7edaaef59c7ddebb7d6a6748b9d357cafaa55e3d43132902ddf917b151313fcf"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/3400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/34000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "d23693a6670d52c6052e84dc314afd6623a186e897c6a9ae0783a768a5db0c1f"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/34100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "ea0f536572d3f9a81d2c780ba234367a6f626751046a61819740217cd2dfb7ee"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/34200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6888b4bed4026df7a44d7ae0f182fc7a99cf9734da67b46eb9a171ae344048f5"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/34300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "cc19d9ea178e6c5756e36ed47c26824db36f1c02b32e460bb5e91f22fb638cb3"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/34400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "2f27f3a00c7304896328f079017b8d8320de0511b28ecf02f452b535fb218f28"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/34500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "610ff1e8e97445e3e3c6439d7fdd07dd37d78d0eec4615c4059326942767bdd5"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/34600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "82efb2d30cd8b6594299877933f0f50d9403180c4cb9183eca8a6aa2e4cf21d6"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/34700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "36baeaf4ee1827027de7db3b4f09ae1aa353dd0509926e150020d713d7b81b0d"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/34800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "4cf76271479d2af474824bc7ac6c9e125d5926991877674223ea66792613832f"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/34900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "bebf9e0a265d070766c568d6070a31e5a6898b5c7f2772f021e4e629960d6b33"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/3500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/35000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "01da343de3302e2819031cf0d44e72a90e72d9cbaa9ddf7d8f6b89bca2268203"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/35100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "f59daff1d87c8f3e160eee881acfb0e3ffbf6a3c1f7e3404b13f5ee21cde69df"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/35200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "916241a6c22dd8a47030f8dfdd4408d21345467f94181c0ef2369a5d32b8e53e"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/35300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "d63eb60a0f54ed6462e0bfd64b447095271c93b51425fb309dd391d4f18629ef"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/35400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "3724357c69d82d8087af4a8ced8f5c952130d075fbae0b354fb6d4f421b2bad1"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/35500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "cdfeea60ce8b6ef98aef2aefc1e552a7b6de9205d3e23b38c8ff959ac0680186"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/35600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "32a4b256db7e58d56f23e51a2d640573efb47b55a5165221c4eecd7adcefa312"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/35700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "124d95be8757fc3a00127cc7e5bb3d907477c4679ae097dd2889c96b661bd45e"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/35800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "64dd3c587534c01b8f2cd8aebdedd1c1931fd0d1159668081fb23bbbe6bd123d"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/35900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "8ccb48f000da5a17e9f4ae8acf954f8df17567977b225161a6a2596983166462"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/3600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/36000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "420f1daa20d664806aad473fbd7b14b8ca2078add5f38b88ae6071616302a4a3"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/36100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "cee1586c3e0e080b5a6ed6f943180ef19dc941c06ba80e6a5aedfc515aed0c80"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/36200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "10942a34d711ab065a762e8169c683caaaf4fbe46c153a50588ea4562ad3181d"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/36300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "f6c3b6818b6f665118d95e989ce8973f922a522ad5082695ea6490a9a8525c3b"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/36400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "e57c7ded7eaf4efa9d2f442ffe9cce1156a859092aa4f0cd7420a56cd23978f0"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/36500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "b7d141d837911330fb16c84ecd32dd93b30c35b9abe733671681e1a7854b7c9e"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/36600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "b23911ed1640f695122d2147d39e457cd5c57c0a3823f39b9237eed67e2573a7"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/36700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "f0ef67fb055e5f0289f67eb93b275b6768b6338ffd4041f7b123e23e3bc1ef7f"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/36800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "b0fc3ba59641e36383e796e08758ad5cebd588aec5801c8277584a6b90ed6774"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/36900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "b68d1cc0b1f63424b2f3304ffc0e39e333da05c70b3e9b8f132d34fbd4daeed1"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/3700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/37000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "79455d80ee0a5774d4f232a85897e8e62c9940a255a5ea433256b97e27916be7"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/37100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "a8b5080a2c68f785075e87c6ebde93bae1cda74bc8835bc01ce075d2ecef85ba"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/37200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "da1094cd6777cb647bcd8a9f096c73dedee26189d5c0a319566ceb3617cf2078"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/37300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "44a51bdf87902604840e834625752dd85b59b39644f82d1325f9e582a2ef92b5"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/37400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "b2b5a27e8f610ce3531a55da17e50e913c9b730356a178801f05bc5d6743eec6"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/37500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b7f35f5d7e4c13891b039d344a5aae3db0076ac82c1c756630df94e1f80e6d3"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/37600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "a0699bbabfd114a7cee15cb62405b0aa273c47ee23bfa4cf0cedd2eace9c863e"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/37700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "4be1f99dd4220e5b35a8b39f2287bd40213e8288677fd1287a5bb0a6efb7a304"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/37800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "9301e8804188cd91b47eb1fa483d49c8866cb984986900529ad6e770f1d37c8b"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/37900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "2d1c85d00179ea4400bb84090bc8a3a01831a098e73dca0031502c4f8a458ece"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/3800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/38000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c95c00f97940aa29af7770ae25c50bf28ce0eeea87df262b7c0674dac53bddaf"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/38100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c2bccba4a43455062d2b777fa3b554d4cd7ff830613cbf00b7f5f2295d3aea68"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/38200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "2a96411bd56a429044234d075becd154264900540a4082adc6035741e6d30110"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/38300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "d3525f2df20b66b58dfafdfd9c1bbf6b7426109e18f19ae96ca5eed9aa3b6d8d"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/38400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "4401ed82729a7e5cc1e1af13e09d7bdfa34bcb0e81fb8a551facda37142349ea"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/38500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "cfb160b55debadf3bd6fdcddb0dc58c443d4ba5e07dc263a6946de722b1bb139"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/38600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "862d30cedd46f55fd0f1ab442c09f2cfa8b8b01e61cc23f697a624c035aa16e7"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/38700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c0e02c475db0e66d7574ad2ae22d5a9e5ca8e756015a69f8f952642859ecd84d"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/38800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "84e8e26984b4a963adcdbc4a020e99ef5c4ddaef51a412027de44b3c492a7b1b"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/38900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "25922e911c03835a06c51527e279776d8c4206f18fead6cadc0a5be50510cc6f"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/3900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/39000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "d7b4b7f1eec859cf38e00fec9231700a3619e730934ffc150ae986fa8a3e7624"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/39100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "97e27e5bb02a7a287909608ee5b8e7698a875d551ec84c0cb0d5b8210dd17a9e"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/39200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "757e316311018a0791cb45b3255acf5bf2e359498ca4e93ac1f93ef6202fb712"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/39300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "a104b820c665d04fef338cd5fc9b3c7d3bee0dd885b300f236a543e7aed37901"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/39400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "e8a5175d1488b01b3068d81ce160e8acb49ab181e42d01081243767312fffd47"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/39500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "5db80f5c56f9198ead280e175ed051221bb38772ba7113dbbd77b00e1d721343"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/39600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "a85146b6c04f36c7f3c6d78d41bdfb3fe7767b3334ad358b448814724ece1c75"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/39700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "09d43d7f423ec203bc2f0becfbd53120e42dcaa6d2ea2399be8af84f38ce3a5d"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/39800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "55bf00f35121a237e230093a827a6ec03ac7e0d543bcec14db238964c8dc540c"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/39900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "e7cefef58c19610f288a31dd83347ac3a516e50227e1195ed53c61c439b260a0"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6ef717d9c10e9e40d79260ac0ad9461f4f80776c4a2e11a970c8f46278258ebf"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/4000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/40000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c16e1f56691e947c8ec0af9f6c2437e46d9c7b6f897bc691a4d6fa1aec9296e3"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/40100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "a9b0e00d44d86616bf1c5a04cd5c370be52cb08134b22d6e5e5731de5c2bf533"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/40200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "1d51287fbe015d778be513eb3f4ef755203f9d9b566d0c70fca98eddc13ff91a"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/40300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "e079524ae8c1ce9abeab78703a86172fee2d6f6408d45409caabc77f16da3168"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/40400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "e645705aec94d4fb81b964432ca3038aab7a6d873c07f0f069393bb1f72f38cc"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/40500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "304e6925f086f2eb284939189771de075bb1a61103c2dfe47743bde5404161ca"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/40600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "653d24a8f2b0035f1a6403e5409b785120fb07bae0f85f7312689eab2f1b3cc5"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/40700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c378d23ebb50d4e8b1daa836f07f86d1db340dd654490bdae8438cf1f006adcd"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/40800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "e327196cc064d9d119fe05edf1278e3ab7dadc0d3a222bee6146fe3ba508f225"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/40900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "16cc616aea2efd9aff6864c624698308904794d5e93c584ddaa99bd0c4ec628c"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/4100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/41000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "46e649825dfb4c620ce748088df69c9ee673014903fae305e4a4c27d23cc4b45"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/41100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "eae2361a5836326a8616cb5a09760d6a6d09d7d78d776c2aed99c0ee2df701d2"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/41200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "39584cb1c9661754074782835b187cd281a227aa3d6760ea3821cdbd6cfe4ee0"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/41300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "9c881888aa13ab2116a62ae0fbf1f45bc21982dade01a57584e21ef370b7975b"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/41400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "ef00f2166b9a2c32a7b93708825228b894974b545f80b006d2ff7de379e2abf0"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/41500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "ca32b0e7375e47411643ae481bbe78c4185d6965d34e0c3bac7e6231223ed274"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/41600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "2497d376f6727d9d73a8574f7f0e3931a96588647062f0a6a000fb8248b67779"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/41700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "b3333ee6dd94e134c0e96c80909d42de89a849e11e9d03bf2db32d8b9299da6c"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/41800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "498eed12854cf9a95d6b524d705fbb0c5f9ddca5f51bc79446921f7d49b6f9fc"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/41900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "5c701465220f5214f47b063f9cff71cd818e9ab314b8bfd95b285fea4439dff0"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/4200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/42000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6929f0e277c089020b17f7699e367cf17c83a85e5572213bd7b72c33f3ff33a4"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/42100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "ff71da7fe835cb0f9bed0cd0bcd796c1aa7bdc52ddfe4fb8366588516bdfc2c7"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/42200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "d1b78273933e6e851dadf60646604c26e14e32d464c48d6808a4e63ed5a4d36f"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/42300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "309579bae380b98e27eb806d6ddcfe08a84f48965fbf8454d582cccda596e037"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/42400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6db533ead608c86fc72e7f9145d633f64dd1195ee741e5e7f544cf0d29b10016"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/42500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "f0c9c57f0fb282d95131db7e44649728481a59a419545d06d60e6baef3165214"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/42600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "5bfec46dab5c4135db67612f61371d484d39960ca9366978adea79d95d9acae0"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/42700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "2087e0c6d208cba2612cf6fa00722dd5eaab4d4dde6176be13f86c9c6cb3b9e6"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/42800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "167d250fd58927e81daa19333e4e36b731335ce6810b85632fd0afcc0b77f085"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/42900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "320c54abed8673bf4beac7ae77bfa94711287da5bd431758663a7b75b5ce7702"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/4300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/43000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "2e157c553dc88e39dff5d21735dd797d2c77e715849f3853a84ef276771bd1f4"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/43100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "7b3d85d67f67fe3643dc1696fa89090dc76cde71850bfd2aab066a56dda146e0"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/43200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6684b7a9bd46c49c602dbfd617d5bb083e28419247ac997c244c32889191fccd"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/43300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "34b2194664b319891ad1908e1cba724948b525aa96126ca5c2fa7b270255e70e"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/43400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "4f2d163b6b62dd4d6ae8073f52f067a3236bada2ef962a6d77047a4cfa54c0db"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/43500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "487ec648cf83018176b7954540a76486d2a4b2d41e587f3d93256636b852c4f2"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/43600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "24de143eac5d4591c572f03f9a2a31693ca1cffb499d342c50a99df8ce337420"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/43700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "7d7b14d68d18ad69e7779a8e920c5b745b82fd4d71687ed5535b3845b77e314a"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/43800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "dda0438f93a7a02a5075b1bf520d1b30aa439b92f801d82945562c14aa64b321"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/43900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "bd97e231572a189adfe235501c20ec73094424fde7ea605969487de0779e1617"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/4400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/44000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "9d0fa00466e1ba939de808a9a400ce76268b54364606a5b0730eee9e5ee40cbd"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/44100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6422b4fafa2f617ad327a783543375e18eb097bcb798abf8a581ba17d62bf3d0"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/44200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "0aece23b1db87e27b065f99f75c5ed32ac5e21d69f5fe457094e75f149649e59"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/44300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c9af993f0672135223d2f6c4098c9d8dda9c5c4d3d5a821326efa4c990d7c389"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/44400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "33e3ef3b3972d27678c37750a7d00f4bbd09ecbf8d90769673d9bf899bfcb3fe"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/44500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "fcd4ddf0e734060f38b76e9fceac87d61b97e3fa0bfd69c5c607797416e9e865"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/44600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "0e8d913ea34454543a30ea2a90b0332db15d0fd14db75ff347af97a21db8c42b"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/44700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "4f6e8a7b852083ae3102870904a8b8d03e32ce74ba99484e152debb9f0a3259e"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/44800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "91daf46ce9befee6580f0ac5ab28fe5a067915f35fb504dfb4c0d0d5b4708673"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/44900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "116f48d455abd95f5a5d12ce255bc7f0f243b6cf20c339f6a1e2a3d6d118cde4"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/4500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/45000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "4c44a05f457c668c3daf7baabea67d3d8756b3604b9baed84b3c0b878c727abe"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/45100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "607ba41cb02cfe2d237dd5376d5d7ae1c4f48c1486a33b26371b33111ffd6398"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/45200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "286ecc813d505b0ae8a26c9b7124a2d50c9d23d43168b2a6689bf3847816fa34"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/45300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "01a086b01a136210b64295810be7a4460d489244b50407b6294409a493b56e02"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/45400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "fcb8f5b9f85ed959a5c5330456569cfadf8bb55d5d6c245ceda9cbc5b2940897"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/45500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "a407951e4f88e7aa5635f8de2ad1260e36e8e12aec81801ba1eed3db7ef445a9"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/45600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "d8f7310cfec7a9b1530858df7f93478b8ff8b52a8b6113854b05657edb531a8f"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/45700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "5f5086f4325a24174da889c6a1757e316312035a60352f063876c9dd400a3b37"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/45800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "8eaeb38488cfa98653fe182786914e343a119b56711f7572d3a173809a05b6ba"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/45900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "ffb0bc31fa7922196d55d6c90a9923b72627189cc571d5b7943ac7b59053a35a"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/4600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/46000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "74602359662dd9ce8f60fd9219ca939e1667f9d974cd670d580be3258f3fa04d"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/46100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "b2e3e36988c32c40c18e07c386efab627e3b443004b0d91a017e9283f5f750e9"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/46200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "b00fba38d350d265d8ea6cd938aa96086d27228ea5a2214478d68a4949f4a2ba"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/46300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "d7532786ffa19b4a08b42b6746e876c7cdb5a58dc85ce96e6606b6b700982b01"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/46400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6ba65479e37650e325f9ef5e0e5ec42c9f8beab78303fdbe886b14314900f0d3"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/46500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "54998f3ec2437830b45891ebb99460381706d70f777efeb519128d55a8f70aa1"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/46600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "cc21ee75dd066acfa8e401d1775783e946db8f0c969275c4c7b6697c1a339129"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/46700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "f203670a41d9e3ce61ad9016110c4593dde9e14c28b85675d456b9bc99c89917"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/46800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "f8dfacb68bad2f1d9d87877f334437ab1dc8583b5623cc768340bc56631113a4"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/46900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "bcf2f9fcc1839058abc0205a20d14bcf0f2316d2ff19b87d9d615d5074289c1a"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/4700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/47000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "3f7218d31f418dc0db5ae58d3881cdab96ce12ef29486898ad298ec46baf0387"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/47100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "f0c8276434b73628ad1963c03bb65abfa12611aaaf696952a5c21bbffa3c0bc4"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/47200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "72745e5b2541af3ede931d04e7bf9d8fdcb3c794dcca533fed344f636b366d13"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/47300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "4e20877555b4178d2e45aaa58e3041775461647fc3a74e39f62b5278132b67c9"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/47400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "9eff9f72341e5fb980b126e689052ff6b40c8f65b568ca32614e38d216a0dcff"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/47500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "aa84a287d9233991db23248b222614bf55119fad5de2d1cd94e2e69b7ae7bf0c"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/47600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "7a969e0ea14c95e7b68de07ead33892d467965bacb920769178072b37a55b719"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/47700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "0803b3b9f857e9115f4e9a3d23a6627916637b84738bd0cc2aa58e6d7b95c551"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/47800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "f052e40c40f036b09a93892d9b2f90bf13c3924dfffc1329bb9d1c8defbdd770"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/47900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "f76f0b29f0f4ed4c2be27cf0524af8e3f59da2c3e9fc7aa01af6e3230e37b828"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/4800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/48000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "ff4bbc55cb4f7f3bf8da9f1682d74cb72779d3f995974074e010ee8519ab4955"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/48100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "912ef7a6858877d73d5069aa9296c49fbfdc4fc11f8b93fbe1782b24a72cd1ae"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/48200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "b39a33ff8c35d54805229b56d2286df2023c60ef16b42c94eb3dacc5dac36a6c"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/48300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "f04dcd66e2d757a979465df44583c05bcb3895b95d03319975735b0b743ef045"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/48400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "b8b86d383cdef014d174d958bb556c593f6fb2ddfb8785e67b8674d8f35b53ca"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/48500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "b15abc413ea584713311e7fac813d887e6a5a0052a1892035de0fbdb971efd19"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/48600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "cf0ca8fd5c0c3e93b48449590916c3a546ba9dfc0471574962f8d5627031e78a"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/48700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c1a6e292a818b14a70e1813d5150640f668ddd15a91361559c41438985ac9729"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/48800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c098018eca7775ef77f4dc10c7a6565eb9917ea24fd24b72e42c7f8957d13699"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/48900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "2cc1fbb1dfdbe6e810c4f27cbe9aedca1249c92efd39ef142a15758920137529"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/4900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/49000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "843949504cc694a03547bb73d68cbb26deeb3adc86ca04a03bbb7d27cfe99f25"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/49100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "b3202764046f79542d67f38cda85107c0d6aec221ec99dea0de5b36f69bcc31f"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/49200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "1ebd2c614418b17ed7df32e9ea04860a2e61a59713be6010af9c24285ed726f3"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/49300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "edc1a57914187b236d41e57d38745d704708745ed067f8bd30ff65a2c5966bf9"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/49400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "80e59a7d899f336cdfca8d255d77d35889027342d0e78736744ce16f7d3efaa7"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/49500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "f61af10357639128adbe631058ad8cf12b7a629a6eb86eb7ef55480c46fa1de2"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/49600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "e3535cb53363ad84de412b6154dbee048e24c825da3ec55c7e08562ce415129b"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/49700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "9826f7f695274b23edfbe3288b9b9a8351617b84efd9449c11ba1e80a30012e2"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/49800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "b817b1955cdc4a7efb90253c062282f25faa7e1b2bc6d4c4402827cc7e83e1fb"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/49900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "748ad4fa90c9a3bc99c8ace8e9c10ff16c696f1d7141bc0bc88ee878265cd6c8"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "01d2f45e5f3d477a6dc859fbaaee053fdbd393d86c2cd098b5c286397f3fbdd2"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/5000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/50000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "015b0b503a9db6d121e92ba742b4756355c316aae2a5e2205b45ee227265bc5b"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/50100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "d528974fe18d64a97f223521eab367fa8b4c05b43585216d7f0011c4e6f2b406"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/50200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "a57a4dd7d15427a19762016b22c3ae6ade3284c9fdcd4d5655a41ba396224ef9"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/50300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "d1dbbbcfed7675e275ed166231c53b74017e780eb73d7299a3c10fd5793b3a86"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/50400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "ab82c32054040851288ab94ce18649afd1113aecbb1c4cd2a3e15ae11bd63cb9"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/50500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "ca068bd81fde907e256296d605df589e86174e4218665044b8e811ff4ff65268"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/50600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "0ff042806a62bb30532f52b28e5e30015a3715f27d7eba51bda7762b07c7dbef"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/50700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "7148bf2cb95dfdc64d4c1232656960a481ad7b760c0061fe546f1662eee2c42c"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/50800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "cd8eb5d19160a418e8f411e4f71c53e10dc1ff91c209bcd7cf399ad941b32046"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/50900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "287f4b6f60c3b131b348617b02de96e1e86b0725acf49cda5e05e6bbf7bae48d"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/5100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/51000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "8d61b019eff238c61a6bd20288830a2e5b4852cdf3607b378d9804fdd8617ad5"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/51100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "b0482f9777f4a05cbd08b4a7dabe4241ea9e72413f973c84baa25eec86283fa6"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/51200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "2804df7d8c91fe1b3ca0032ad8f8a67110006fcecc8e3e6d57886b5a14922a5f"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/51300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "93d793ce4647a50f7b9b772e70335513f5f60926b82c0cb184b9a9c64e8c6878"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/51400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6d1449bb81fe9ef07cc28e7ba07372560dbc09eef9f33dabb554e05805730261"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/51500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "e902b4b2d97f0f1ade6488cce5ee8d1ddcee5441482ba0f1ce7ba33ce1dfb135"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/51600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "0b9e2a355e3d07f22633560b63adfe441c46c7e3faee79b2dbfa620090b93ff9"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/51700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "59f713ad94df874ec2e6ea13d59c527ea3a4b3296f3639d2cf850d77a1721e3c"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/51800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "ecc1a5a0d2074db55ba6e29c63c4471e3d3f711248c634ee9d9d8f55cce1140d"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/51900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "9b4268080ecec6dc426175beaf0127765e3cab4a25af26eb73127be6e28cee20"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/5200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/52000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "a76253ea42d43fb7be94ff6e06367ed9057ac4dd07ca7127ec474087f539d666"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/52100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "e4ce346dc7963dcb6d84c170b9fcdcb841fb5696898ae6c79c4e1beb43ef60c0"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/52200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "e8b82069d6a606128e5fc0d91d9477ff0bc2f9cf11418f00e7cd55c70fd0356f"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/52300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "2193343c11101053de2e0a83870b5ac8e7105cb3e41f2b862a8b8da33f858646"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/52400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "ec24baf9471a7a9056e776201123c6c87e0bf9e5f99b545b82598988ef909267"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/52500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "9caf2fd26027c2f936a01caa19c6f8b80386246eb187e1d58627e7e7f29deaee"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/52600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "699d61bbdbd0a230487188e592c726fdd3cee1b38e886bcae789255fb0ca270c"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/52700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "4452d6e41f0d501017274f5de5d7890f606ceecf7f27db88e3f23d55978e28c4"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/52800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "08ffc80b5962a76182e9aec0dd889fec4ff650bf2ffd398ae76c0f89a7ad4a2d"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/52900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "92bbfa324f10b5f6a8eca781746e93b0c7fd52ba2e1e22d9f1829d5ed915d07d"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/5300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/53000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6847d75f88269ca86f9e31978e0e926dc533f5ddbbd612c8c2b88055ad5f78b3"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/53100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "5e77fac5d8f1eaf7cc1415bcbf2bc079b69689a5dd48c14ee235a88bd1ac3cb3"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/53200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6240f24ff795a9ff0f4edee21a6c3dae40fd161f677d985b1077c9f14485fd76"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/53300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "3a23562ab955af1b2708f93922a000cefc97bc7f731027e641acda0d9ebbf491"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/53400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c1fab059c5bba14ad8265ee0fb5250c25fe1a712465dd9b690c9b9672a2a75ef"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/53500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "98ffd81099c718e26283afb0b8cf9262c339444eeaee309f5c112f56b7f79d7d"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/53600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6c3644ef8a0bb02e204d6ffe3e2fd2a8f6f0958934fae8d3bbf3fba6903d4a87"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/53700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "73f5048e998acea9fa6b1873716769ffd36564646d473ffb3097e177c91ea12e"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/53800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "3588f3cfbcaccaf1de717afc5ed5a26a53bd2a25cf82dc63bba7e9f8d4199f4b"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/53900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "0a67ca601f06ebf94b26892420873d75ab96ca2da987a72cfa3db371b8756ac2"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/5400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/54000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "b302d4da60a83aa3927002107d057894134d9ba659ad831dc5074e8058a1fd07"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/54100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "5c8fee2e7ca092d478a9073e7808f120d3267a3289a0378456231a905dbb924f"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/54200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "5189e7709b58c53f13d022c516e34f5be8215aaee007e5fcaa51aefb008f2df7"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/54300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c186e927436405a0bfd3a32ac1c9be4759a857d831e96bbe96b441a2d670acfc"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/54400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "e4a07fb6fd95a6b51f52fd1989893543bdc409ddfe1f7aa7b597f4d5069945c1"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/54500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "46f7c5dcae292f29544ef2a04c2e4ad0fdbe34ab8bd0d72736d198b965dc0d2f"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/54600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "9f715969c51cfc7eec9ab53940a15808c41910085a57f0c61f134660cf8c6d8e"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/54700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "eff066eef5eb0e9e043e9062bd5653544e60695e58d1a50120ab3403111edea0"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/54800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "e6a62025829acf7cce86f143c89308a9da4e05501e97b3e0fa18d7f02b2e8298"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/54900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "a5e9590d837006fbd0ed106cada793515ab4a52fdfb738f2518f600cc622954b"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/5500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/55000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "0b2b88488f9abc61a5adf9f9ea226928371f9369b971d1fd8114677a398047a5"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/55100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "29891cf8fa7238c6c26d6d2eaa67e49bc48112b47cd8f7bd462c377f832b7304"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/55200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "f60128b43f3c4d9b04c5c6cf34a7a58979435f799d84f36af70e7bc72b1f52db"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/55300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "98971672df05f610d711cd744849035ee31578c81c10e49476a743fb1c63517c"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/55400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "23d4b8b9293f8afb71ecacf6fa5d9b068f8e8081e0b15377ad8196252b1e953e"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/55500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "1ea0a51fec3a60fe7245e882b675e82e007215ca543a6a9e3948ce06f45c408e"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/55600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "a3d134045b1d2559b02eb710978a25589681680373895f0ee55bd909b1c07837"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/55700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "ef55edb3e7b99d482ff970d0bea814132027649883f342e05cc7b695f609a414"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/55800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "d6abff5e3e60c773e7c6c1a2701de068618f206e1d95b5842eb961bfd2c4cd9e"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/55900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "33de5bd1055ab8e99e25e4b98b93c86a85f73f36a09807564339f6bc5d4093d8"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/5600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/56000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "67d6ddd3bbad971022c519d43e4137cfdc6038d977d793b0bedec81ebde07571"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/56100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "acc9ff5cb03c0670bcc7c08cae1982629cbd51aa65123413ce5d78ed9a65eecc"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/56200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "0938fb9ddbc8dfd75b03e80fefd101876b8979587063cf0fdf499638d1d7bed5"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/56300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "fdc60190136b92ef03587977d9fffe8dd46887a5622850c2f45eb16984187c07"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/56400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "0cedacc93f4215f3e0d9117ea00a4b21119518032669dc1513291e3614f93f03"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/56500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "e1ec870b4b0ad124547b9d6de4a43af8b066b44f089e451b4129cbc5a57ec593"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/56600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "5d2b826da8710ec0714c222912ae4576ca65aa6214ac90c4d453fa6117f176d8"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/56700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "010f695fa5f0ac90aab2a9762ce62b799f24686c5afcc4a8ef4e69f5dfba1d45"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/56800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "63e2ca5ec8d2e25f3be90bc28a9ac75f9349105eb000b3b0ce6ee0ac744840ae"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/56900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "7ef813824026ee7409710395eebe012863b2f26400a7ab72e2fe883bc84ba7ca"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/5700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/57000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "f64cd2ca7925e2a49a14bfb66135532941acc8e180cb172a27da9157ecc63297"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/57100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "ac4afd4f6fab1bcdc0b05afd5c028658c2fccb2bc59d974de7fb09f0c7664c6b"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/57200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "187f369dcd5fcf58a4d03b348c1b85253073d20aa109fc788efd9b2c36542099"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/57300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "4ef3ae027b5022a8db26915f8c598066232d72da137bb86153e8f7851c81bc71"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/57400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "04326fc86ee70907be53a848e5f1ce3eef5c950741fc2fac4ea6d20ac965e507"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/57500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "485bba8f0b8796961baf177adf982536144ac176c37e2e45475d3037bc4579f8"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/57600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "5410b62e3d93cc57bbb8e10f3caaefc18650d3d87c4f3a95d382d672f1e14945"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/57700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "b1580d520723ab9b5c2bb3277d1118606120988a7bd5c1cc7cff23570d45b6f3"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/57800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "4bd992d5daf17e7bb88ad918737238c9fe23be76d6358d7307661ffaaecfcd9f"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/57900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "7d669bb5d56ce9f3779545feb684370226e9e74d8b50039895e46aee355a1ac9"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/5800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/58000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "fd26753d611b19254f6b6e61a8bfb2ddedfacf4eda4fcc1f2bbc56116a5ffee0"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/58100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "411457e81eff6046e348dbc6859796f822fb4ae86dc8622b146662cd1f51f95d"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/58200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "2a9bf8b97967c1861c53a84da36f25f7fe256c113591801e975439d66d193c56"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/58300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "1ab35fa915354cf5e7e5b83ff18d95beb5f51c30b35553ea10b2903f65774ad1"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/58400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "fc753a87ad9ba659b0b783aa3cb1ddcb7dff635f3a1bbd4e6010e44d79ec8df5"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/58500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "f292833e390c56e5d7a8cf3e12c3ae2011f108296d0f2516eb53902cbb8c55c9"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/58600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "42fc15e4e724b48db76e688ee83fece00a8e94a1e7e5c1d2dbb0ba78af285934"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/58700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "08f9a19b0fb17cae90155ad4d9291cd196d2c23c45b3fe07bc0f40bb7a612ea9"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/58800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "a4b4d1d2a66261e28e44aed65dfb905ff9135f77c76e10ae5fcb6b7c174f584f"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/58900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "79331927bd30dd60edea77dd9118a94620656283c4c9d59138820eb1221bdc67"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/5900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/59000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "9a352b211df6a1267970d3964a5716a408df20c79fea5d06b2dc631255e1e768"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/59100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "b0e141f50ec987aa23a6c9d09b0756d2ec3e4d3cfc2c79178627eb028d89959b"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/59200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "a073b6eb0b79e533957ee4c6cf75037c55ad3f0bd172295793ae87978c0f671d"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/59300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "8d3e1058d99a112b5a517de2e3480d91515135b28a46224b2f6528cb0cf29750"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/59400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "cbe37c99490aed6e041ef08692806c5392fe45935c375024917a3e38a9031e5d"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/59500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "03278fb578a32d7bc6e2cdc0d689ed1e034eb4ffec5a61936bfbb4f2a3c048a6"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/59600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "2bebc20be0460ff52bfd3f5e65fc0d8f27e1c8a2941b4183de4191bd1bbd9244"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/59700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "0cea3ec2defda757d6bb763e5b50b1989c4c7a8af26c46b269ed7a7bdf644dc2"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/59800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c72e17754ab7c05bdbac581b27c06f9554eca25eb561b88c0b684d12c59138c6"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/59900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "b971f63ad16a3ab284e2fd50e14e29af4c8109ff4f6d7de4d6278b27438d3ca5"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "2241ef6a1de32d587ec8ccf6a9e3ee9d4ec408ebae42e91816eafc520b1e5306"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/6000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/60000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "cfd2cdd36267bea14c1aac96876b7af141390701c1364480a564535a780675e5"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/60100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "1781a0df7a939ae1a320a020313c9ab4b6aa8b86030feca84bd8d44dbe4bab15"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/60200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "e2859e6628fe3029f692a28fd55750fef514c9e299dcf42572e4180341f22d17"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/60300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "53b53c307514a651c7c9ef6f2e1d5e3cdc0f2a3d550592c2deee6fef8ca9779c"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/60400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "d6fa91a2070a45a80e0ce8b335184b1a77f1fd0a9a99d046e58be9879bbee99e"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/60500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "946d7468830ab2f9714f81be4a12baccedfff3be713fb846ece44c098dda4af4"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/60600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "d856c440191d43f317ba86f470bc419ac493c428d3650b62fcbd99ceca426f6d"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/60700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "3bec371e63c0f28068e939df95128d9d446a8b8b85decfb4388e2535b865b1cf"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/60800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "3e7820f61b728dfc0097bb6d5a6fd888f675b09cfcb3d30e9ebfe75c6bbc1e8c"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/60900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "cc577bfdf82db540ff4eee168f208db894f7c00848f1e69622b0277a64c3cecf"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/6100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/61000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "0f9f6f2b7c167bb15c68a1e18a80c0611afc3e4ad74ec809955d12b803e1bf11"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/61100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "9de1d5096113d432a5e614a3459c812dc4077be6ff6e5bb4f30bc762a1a20ce6"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/61200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "1b0fa5ef65f8ab982b722936d4fd59fd69d09d0b518269e7d717811d6ea380f2"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/61300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "2eeb80978d6a12814fd49fc5d4dea8add8eb3103fd6c210743b5a03edeb7809b"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/61400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "3886159a3d6f9c89b098b3d6e24fc0653fa5286a2d024471d819362efa1f81a3"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/61500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6fe28b881d047c6d5b6f2bb7a7c918aa59f25a7cf6855688ebcf6560369150f2"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/61600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c6a6176794caf3f0d650e3d52279cdf66c4f31aa63e8e3a06d451af74c75642f"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/61700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "1cef250bddac14fa533d5aa167eb2f8b2a7824d752425d90cedcf12c2371c32d"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/61800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "0d75cf59ac9b6cfb8dfe433dad475cf81cb925fd3de79bcce8343889514b3a18"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/61900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c016b7b3643af5152549e9b5c383195453356e79654aa820e07220c2f53af030"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/6200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/62000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "1289c857003a10fc347162c29308acbe3ee375e3ae6e9ea1f37fa1f3ee6232b3"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/62100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "b073a68cd77629991cfe586f30450147868bd693f707f41adf6188136ed426a0"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/62200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "ce01e34036ce163676b6797bdec3a74e4836c662ec67a7d67d29dabb371ad929"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/62300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "11653f8a4a4bb371ddf90dacf503fb0e79c53cf5f686c9aed4805e35a9984629"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/62400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "d9acbc1934b828fab1831ca63518b0144e63a7606a811748a21e33ca55a88565"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/62500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "9a3ec439cfe1c9d8a660c88bbb96b1fe8c78767a0c0d85a1756f8502d7428afb"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/62600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "93085a5507a5f7026af2de9b04d31c5cdf8b0d5475ee567c87f1cdc967fb3b2d"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/62700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "ebd814d6ba9566fa5560398eaabf8b9b4a48600759bb6324876347ac4b326005"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/62800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "273a2317a7d2024895c08738b5e68f0743bc0b027558373a6a4d2af36239e5fd"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/62900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "48ccab4065ac077312942371a2dfefb519dd068bff74805d9c3336d6408d29c7"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/6300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/63000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "005d681b7d22d4031924cf8956beac9f332881feb16bb7fb85241dad301ecc47"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/63100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "aa380cf0592b7c2221d16d970a20cee63fdbca13c2e65ff47d43714c750ba68e"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/63200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "3b26ca95797468a6d79f7622d50ad03a3dd8187ca9d48c0d2f2157ea0cb13fb4"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/63300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "860a1b704718fabe22d7d044eedc4118321da7b3f1f14cc940f6eef73ca429e4"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/63400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6215f6dbefb86e8653df0b957fc58be4e46a7933dfd48bbdd4d2ad4303b2874a"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/63500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "71bb9a3c0390ab370e10911281130bcc60e17d34941f96d7babd9c3b5439dc92"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/63600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "eb5a82a7a49ead53aed1a95b3102b4e1a1b2b92fc2b410748f2205a6c0351fe3"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/63700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "4bd455d4f3ba50b6040024e8c426aa6be5ef0d81e449b7fc4604d74eb6f5ac67"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/63800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6d2ccacd6e831dba288cc61862985c7faf9751d20175ed41f92ee0e14215f5a8"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/63900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "d3ced897b17efb892e9edf0a8e57a9157b9a573a3c38b853be3f89a01f5a8872"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/6400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/64000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "da22d970d78084b2f79b11edcf852aabf7443c4b825f5041544587ecc6b6bc77"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/64100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "8703dd3f7317aa0c4ea6b45f9351970b672581e31805545afbb439608f3af174"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/64200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "1e3055dbdd3f064ea398ad7146598747f5feaca458ec1dd5d25906aa1601d40e"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/64300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "8281045002c56946c37527b99307374b211685a02248d322902141d3cfd6b9e1"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/64400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "a7c5e35e43e835123fc242a4e983756e2b53cdc3523b7b9555023d172c3a69a0"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/64500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "5ca0df730ce71c80857c0318397dd44e03ec93b6c6fd927619ba2ab38acb5ae9"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/64600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "5389affe2084f60a2fe29d597cf4e104b491726293c94bc52061c6aa849a3f5a"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/64700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "cedaa236745870ddb770e96f1054de1554e4eac891c039f56ced77304e488137"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/64800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "36138fecdd553645f0843792149d081c2a50cf7b608e4d57952c2c7ac347e9c5"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/64900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "8362fb98dc9e3824762c2eaf33e3e865e458204a8a604c6d8f5fb1a63251a0f4"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/6500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/65000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "f021f1143dcc8d72779b978555e11c208585b9bd71cefe48f84336c30eded777"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/65100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "43baa6a30daa65ef92ecc8fbb136a91bf5a17f2e122473d2934662a73280c0fb"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/65200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "e1f00fa7c38f30eb46c70057af8a62b3eae3019847e810f28366041d2f6cce61"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/65300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "a07734faac4072ecf915e9ab80e681915436ed3d5d1a5e2dcba08051168345c6"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/65400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "3426dfbe19b6004036cba637abf751ee16c03954c488eb2ede478f370d845b71"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/65500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "e5c7d4f604456e3adfa1b845710fb87dac92f980e2d8214952d56cc33720ce41"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/65600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "7e8d792914d401198f082fa8d95671dde4d36fe5af416fd84d1bb19b88d8c220"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/65700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "8ae7efcb5dea24d214b1f46715b7ee3e6043803774ba33f60362c70e0d8bf715"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/65800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "0abc0095686897588cb36faff485497c54f77636b5f9da2d8cd3a4cf0bccab52"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/65900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "703633f22c693c0abeed270cc9d84e67f8d954e22538e5a8fed8d69aa6bd8a6b"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/6600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/66000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "38f2ef8d52f4291d3b2fe6cd9f0e70ea2c24ae3cc049d83e30f9a512a8228557"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/6700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/6800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/6900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "331c04de8484b7e149574888be40118bca618dbd93a53721379248719ea7b162"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/7000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/7100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/7200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/7300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/7400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/7500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/7600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/7700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/7800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/7900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "7b1a5d9f6caa5ab95f68a73c4cc9656aa43b7aa5517343f18530cf6c60887c90"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/8000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/8100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/8200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/8300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/8400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/8500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/8600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/8700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/8800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/8900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "dca23e678fb2e0cdec060c470d93c8d3e22fa3c29034d84f624892f456aabc7e"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/9000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/9100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/9200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/9300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/9400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/9500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/9600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/9700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/9800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-frames/9900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c31cbd184d1f08588779573e301ded307cbefe27429bf2b16589367ac3c47fad"
+    },
+    "results/openvins-stationary-prelude/episode-v1/started.json": {
+      "bytes": 84,
+      "sha256": "e0430c3ce805c96a2070256e4b25c516e3d11a51fb1dc332a239d510401a64f9"
+    },
+    "results/openvins-stationary-prelude/episode-v1/stderr.txt": {
+      "bytes": 1958,
+      "sha256": "1b115b135baa4d792bf198e7064de0996032989cd42c52a4df0a8e6b6a750db9"
+    },
+    "results/openvins-stationary-prelude/episode-v1/stdout.txt": {
+      "bytes": 163,
+      "sha256": "6778671553696ad40dde6b3cc9a5189523ae9ff047f36b6f8ceffb28a813bcf6"
+    },
+    "results/openvins-stationary-prelude/episode-v1/world.json": {
+      "bytes": 599,
+      "sha256": "08e99e2e0b9874172e93d7392ddf67a8c23f3af57cdca4e4984ac22e52f58d8f"
+    },
+    "results/openvins-stationary-prelude/episode-v1/world.sdf": {
+      "bytes": 3737,
+      "sha256": "edaf4833f38b6fd0fa4361ff14972e0cba651619e9ac08941e76cc5caa5dc605"
+    },
+    "results/openvins-stationary-prelude/gate-v1/summary.json": {
+      "bytes": 1288,
+      "sha256": "551720f08eec36fba9a0469b797b571afe47f8e28b8bbfe0ad51f364e98d35df"
+    },
+    "results/openvins-stationary-prelude/gate-v1/velocity_window.csv": {
+      "bytes": 24021,
+      "sha256": "b604059f2375515c987ca679f7a481f22e09fb89841e69194878a2dd0214bcc7"
+    },
+    "results/openvins-stationary-prelude/input-v1/frames.csv": {
+      "bytes": 25282,
+      "sha256": "4fca99dceeee3ae4aa7bbaac4fc8d1bd5625a481001c3e57b44a084621731d3c"
+    },
+    "results/openvins-stationary-prelude/input-v1/imu.csv": {
+      "bytes": 2194051,
+      "sha256": "1caf8b50c6a7e7cd8b32805c05141055d5b46b90378432f87c96e84b2c529cba"
+    },
+    "results/openvins-stationary-prelude/input-v1/manifest.json": {
+      "bytes": 1446,
+      "sha256": "e5154775d583dadb4e2805b4829178eef4e17f967e93ace08d852c3e362ace37"
+    },
+    "results/openvins-stationary-prelude/replay-v1/exit-code.txt": {
+      "bytes": 3,
+      "sha256": "13bf7b3039c63bf5a50491fa3cfd8eb4e699d1ba1436315aef9cbe5711530354"
+    },
+    "results/openvins-stationary-prelude/replay-v1/init_velocity_summary.json": {
+      "bytes": 434,
+      "sha256": "f11fc89e385c78c4976bf7003740961f73ec76b2c08922adcbddd6307b2914c6"
+    },
+    "results/openvins-stationary-prelude/replay-v1/init_velocity_window.csv": {
+      "bytes": 23289,
+      "sha256": "423f03dc28eda1a3ae7a0b1031d0dbf30b32440dcd4fd8c0536e8c54ebc3ea3c"
+    },
+    "results/openvins-stationary-prelude/replay-v1/phase-summary.json": {
+      "bytes": 1474,
+      "sha256": "10eb56c3012b2b486ee507324ff365c6618ee409ef082fa894139d87f0ad8738"
+    },
+    "results/openvins-stationary-prelude/replay-v1/replay-command.json": {
+      "bytes": 880,
+      "sha256": "1531518980157c834882f443cdd9aa1a0059471f8b48b4df206084c5b0ca0b26"
+    },
+    "results/openvins-stationary-prelude/replay-v1/resources.txt": {
+      "bytes": 1344,
+      "sha256": "f6910a2b37124091bc641b9b0e60299cbfca313d45d33d76d22638c229a54cd3"
+    },
+    "results/openvins-stationary-prelude/replay-v1/states.csv": {
+      "bytes": 74696,
+      "sha256": "0c081d6009b4c13d6e0af0bd5724ca1a8a9d84fb894c9a8d1d44bbf1b6b111d6"
+    },
+    "results/openvins-stationary-prelude/replay-v1/stderr.txt": {
+      "bytes": 666520,
+      "sha256": "910e4b3cb0b057e89e5d27eabb3a2c86ba99b0618c59c6d445a8c46a40f42163"
+    },
+    "results/openvins-stationary-prelude/replay-v1/stdout.txt": {
+      "bytes": 373681,
+      "sha256": "6fc4cb6cf0c180a670f9738291182171e4b64857c98180d4096a557cc12970d0"
+    },
+    "results/openvins-stationary-prelude/replay-v1/trajectory-audit.json": {
+      "bytes": 1827,
+      "sha256": "4ae0df08bf661eb06bbb970484471607f3b780c0d512d1779b3d89f404930b0a"
+    },
+    "results/openvins-stationary-prelude/run_capture.py": {
+      "bytes": 1262,
+      "sha256": "5049297db5dc85391d1af367ded07f17a48684c226b4c688bb9880ce737df4c7"
+    },
+    "results/openvins-stationary-prelude/score_init_window.py": {
+      "bytes": 879,
+      "sha256": "cbddac2025490a81f55f6bb42e7478c39df0fbbc365d28fc6f5a3655bc04a0cd"
+    },
+    "results/openvins-stationary-prelude/summarize_replay.py": {
+      "bytes": 2572,
+      "sha256": "aa29809a77764ab385f057427ab4ea77309a360d39a18610f4b78c4361853bee"
+    },
+    "results/openvins-texture-dev/config-v2/estimator_config.yaml": {
+      "bytes": 6069,
+      "sha256": "eaa40224f0de2f4c5b0f1d33504d215670544b9cc000252a0e92f404478360e6"
+    },
+    "results/openvins-texture-dev/config-v2/kalibr_imu_chain.yaml": {
+      "bytes": 1364,
+      "sha256": "6accf2467907df4723419a8f82e772b537b699bbb67a9a9f69097286e1e8b114"
+    },
+    "results/openvins-texture-dev/config-v2/kalibr_imucam_chain.yaml": {
+      "bytes": 544,
+      "sha256": "120fb34ae45fec5d0c3cf838d053e7b0b79808c64b3fdb89923c4df09ec1a0cf"
+    },
+    "src/flydrones/distributed_stress.py": {
+      "bytes": 18064,
+      "sha256": "10093c070e47d87c4d30a9597f0c8df694bf27d8dff62a04a0d14611ff736504"
+    },
+    "tests/benchmark/test_stationary_prelude.py": {
+      "bytes": 2625,
+      "sha256": "282e00c5ab70ba5329931cff758794ddfadc6f4bf671e6953b492ac8cf03df8e"
+    },
+    "tests/benchmark/test_stationary_prelude_audit.py": {
+      "bytes": 3054,
+      "sha256": "706578f74796cd73cb6e6c0f34bb6eec81922aac78941f204689805de8591b4e"
+    },
+    "tests/test_distributed_stress.py": {
+      "bytes": 4656,
+      "sha256": "aac2d5247c2b166a7927b6644a3ce10d05ef2d5ac0ad012e395488bd7ac2a918"
+    },
+    "tools/benchmark/analyze_openvins_trajectory.py": {
+      "bytes": 6694,
+      "sha256": "5e36fb13516ca5d551b12fe0b7be9e2637bba10fe36700b56fe39b91fcea5d18"
+    },
+    "tools/benchmark/audit_openvins_imu_init.py": {
+      "bytes": 11468,
+      "sha256": "95642c07cfb96f812ecc7fa26e3325029a33b7cf3d0d94a53ab9177fa1d40924"
+    },
+    "tools/benchmark/audit_stationary_prelude.py": {
+      "bytes": 6014,
+      "sha256": "13282bbd92d2be3f8cd1daa7214ed45248ce39cb9bd0de73b4bc05d406a14c97"
+    },
+    "tools/benchmark/prepare_openvins_offline.py": {
+      "bytes": 5262,
+      "sha256": "00c240bf857e5fc83c803d735f4e5f9cf32b2856f260d370f7928577b9d019ad"
+    },
+    "tools/benchmark/run_episode.py": {
+      "bytes": 10567,
+      "sha256": "40759c03090fbf7dd7b68bbf21a765c854cb0d047df4355ec8deff776f5653c1"
+    }
+  },
+  "schema": "flydrones-archive-index-v1"
+}
