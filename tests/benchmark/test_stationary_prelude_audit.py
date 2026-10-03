@@ -3,7 +3,7 @@ from __future__ import annotations
 import numpy as np
 import pytest
 
-from tools.benchmark.audit_stationary_prelude import assess_prelude
+from tools.benchmark.audit_stationary_prelude import assess_prelude, verify_rgb_consistency
 
 
 def _result() -> dict:
@@ -15,6 +15,7 @@ def _result() -> dict:
         },
         "decisions": [{"sim_ns": 33_000_000_000}],
         "rgb_capture_accepted": True,
+        "rgb_capture_out_of_order_drops": 0,
         "camera_info_capture_accepted": True,
         "px4_ulog_capture_accepted": True,
     }
@@ -42,6 +43,8 @@ def test_quiet_prelude_passes_with_complete_sensor_window() -> None:
     assert summary["window_start_s"] == 31.0
     assert summary["window_end_s"] == 33.0
     assert summary["velocity"]["median_speed_m_s"] == pytest.approx(.05)
+    assert summary["velocity"]["speed_at_window_end_m_s"] == pytest.approx(.05)
+    assert "speed_at_first_initialized_sample_m_s" not in summary["velocity"]
 
 
 @pytest.mark.parametrize("speed", [.1, .4])
@@ -82,5 +85,26 @@ def test_invalid_velocity_flags_or_reset_fails_closed() -> None:
 def test_incomplete_evidence_fails_closed() -> None:
     result = _result()
     result["px4_ulog_capture_accepted"] = False
+    with pytest.raises(ValueError, match="capture evidence"):
+        assess_prelude(result, _velocity(), _frames())
+
+
+def test_rgb_drop_or_error_rejects_even_if_accepted_flag_is_stale() -> None:
+    result = _result()
+    result["rgb_capture_out_of_order_drops"] = 1
+    with pytest.raises(ValueError, match="capture evidence"):
+        assess_prelude(result, _velocity(), _frames())
+
+
+def test_rgb_manifest_drop_or_count_mismatch_rejected() -> None:
+    result = _result()
+    result["rgb_capture_frame_count"] = 2
+    verify_rgb_consistency(result, {"frames": [{}, {}], "out_of_order_drops": 0})
+    with pytest.raises(ValueError, match="out-of-order"):
+        verify_rgb_consistency(result, {"frames": [{}, {}], "out_of_order_drops": 1})
+    with pytest.raises(ValueError, match="count"):
+        verify_rgb_consistency(result, {"frames": [{}], "out_of_order_drops": 0})
+    result = _result()
+    result["rgb_capture_error"] = "camera subscriber failed"
     with pytest.raises(ValueError, match="capture evidence"):
         assess_prelude(result, _velocity(), _frames())

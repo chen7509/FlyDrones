@@ -19,7 +19,9 @@ def assess_prelude(result: dict, velocity_data: dict,
     """Score EKF2's final two hover seconds; EKF2 is a reference, not truth."""
     if any(result.get(key) is not True for key in (
             "rgb_capture_accepted", "camera_info_capture_accepted",
-            "px4_ulog_capture_accepted")):
+            "px4_ulog_capture_accepted")) or result.get(
+                "rgb_capture_out_of_order_drops") != 0 or any(result.get(key) is not None
+                for key in ("rgb_capture_error", "camera_info_error", "px4_ulog_capture_error")):
         raise ValueError("incomplete capture evidence")
     prelude = result.get("development_hover_prelude")
     if (not isinstance(prelude, dict) or prelude.get("requested_steps") != 80
@@ -38,6 +40,8 @@ def assess_prelude(result: dict, velocity_data: dict,
     window_start_ns = end_ns - 2_000_000_000
     rows, velocity = score_ekf_init_velocity(
         velocity_data, window_start_ns / 1_000_000_000, end_ns / 1_000_000_000)
+    velocity["speed_at_window_end_m_s"] = velocity.pop(
+        "speed_at_first_initialized_sample_m_s")
     if not frame_ns or any(type(t) is not int for t in frame_ns) or any(
             later <= earlier for earlier, later in zip(frame_ns, frame_ns[1:])):
         raise ValueError("RGB frame timestamps invalid")
@@ -66,6 +70,15 @@ def _sha256(path: Path) -> str:
         return hashlib.file_digest(stream, "sha256").hexdigest()
 
 
+def verify_rgb_consistency(result: dict, rgb: dict) -> None:
+    """Reconcile the retained frame manifest with the episode's capture status."""
+    if result.get("rgb_capture_frame_count") != len(rgb["frames"]):
+        raise ValueError("RGB frame count differs from result")
+    if (rgb.get("out_of_order_drops") != 0 or
+            result.get("rgb_capture_out_of_order_drops") != rgb["out_of_order_drops"]):
+        raise ValueError("RGB out-of-order drops present or mismatched")
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--episode", type=Path, required=True)
@@ -87,8 +100,7 @@ def main() -> int:
         verify_episode_ulog_evidence(episode, result)
         rgb = verify_rgb_manifest(episode)
         camera = verify_camera_info_capture(episode)
-        if result.get("rgb_capture_frame_count") != len(rgb["frames"]):
-            raise ValueError("RGB frame count differs from result")
+        verify_rgb_consistency(result, rgb)
         if result.get("camera_info_message_count") != camera["message_count"]:
             raise ValueError("camera-info count differs from result")
         if camera["changed_stable_fields"]:

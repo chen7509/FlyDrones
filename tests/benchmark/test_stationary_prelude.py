@@ -4,7 +4,11 @@ import pytest
 
 from flydrones.benchmark.gateway import Gateway
 from flydrones.benchmark.score import EpisodeScorer, ScoreSample
-from tools.benchmark.run_episode import prelude_step_count, run_hover_prelude
+from tools.benchmark.run_episode import (
+    mark_prelude_failure,
+    prelude_step_count,
+    run_hover_prelude,
+)
 
 
 def test_dev_prelude_counts_fixed_steps_without_changing_zero_default() -> None:
@@ -65,3 +69,56 @@ def test_hover_prelude_scores_each_step_and_stops_on_collision() -> None:
     assert len(scorer.samples) == 3
     assert all(command == (0., 0., 0., 0.) and dt == .05
                for command, dt in backend.commands)
+
+
+def test_hover_prelude_keeps_partial_progress_if_gateway_fails() -> None:
+    class FailingBackend(_Backend):
+        def advance(self, command, dt_s: float) -> None:
+            if len(self.commands) == 1:
+                raise RuntimeError("backend failed")
+            super().advance(command, dt_s)
+
+    backend = FailingBackend()
+    gateway = Gateway({"control": {"dt_s": .05, "speed_max_mps": .8,
+                                    "acceleration_max_mps2": 1.,
+                                    "yaw_rate_max_radps": 1.}}, backend)
+    gateway.start("unused")
+    scorer = EpisodeScorer((8., 0., 1.5), .5, 1., 20.)
+    progress = run_hover_prelude(gateway, scorer, 0)
+    with pytest.raises(RuntimeError, match="backend failed"):
+        run_hover_prelude(gateway, scorer, 80, progress=progress)
+    assert progress["requested_steps"] == 80
+    assert progress["actual_steps"] == 1
+    assert progress["scored_steps"] == 1
+    assert progress["start_sim_ns"] == 1_000_000_000
+    assert progress["end_sim_ns"] == 1_050_000_000
+
+
+def test_hover_prelude_counts_advance_even_if_sampling_fails() -> None:
+    class FailingSampleBackend(_Backend):
+        def score_sample(self) -> ScoreSample:
+            if len(self.commands) == 2:
+                raise RuntimeError("sample failed")
+            return super().score_sample()
+
+    backend = FailingSampleBackend()
+    gateway = Gateway({"control": {"dt_s": .05, "speed_max_mps": .8,
+                                    "acceleration_max_mps2": 1.,
+                                    "yaw_rate_max_radps": 1.}}, backend)
+    gateway.start("unused")
+    scorer = EpisodeScorer((8., 0., 1.5), .5, 1., 20.)
+    progress = run_hover_prelude(gateway, scorer, 0)
+    with pytest.raises(RuntimeError, match="sample failed"):
+        run_hover_prelude(gateway, scorer, 80, progress=progress)
+    assert progress["actual_steps"] == 2
+    assert progress["scored_steps"] == 1
+    assert progress["end_sim_ns"] == 1_050_000_000  # last sampled time
+
+
+def test_last_step_sampling_failure_is_labeled_prelude_failure() -> None:
+    partial = {"actual_steps": 80, "scored_steps": 79, "terminal_status": None}
+    mark_prelude_failure(partial, 80, "infrastructure_error")
+    assert partial["terminal_status"] == "infrastructure_error"
+    completed = {"actual_steps": 80, "scored_steps": 80, "terminal_status": None}
+    mark_prelude_failure(completed, 80, "controller_error")
+    assert completed["terminal_status"] is None

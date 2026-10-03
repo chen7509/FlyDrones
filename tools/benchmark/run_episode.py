@@ -44,12 +44,15 @@ def prelude_step_count(
     return steps
 
 
-def run_hover_prelude(gateway: Gateway, scorer: EpisodeScorer, steps: int) -> dict:
-    """Advance through the normal PX4 gateway and retain every safety score."""
+def run_hover_prelude(
+    gateway: Gateway, scorer: EpisodeScorer, steps: int, *, progress: dict | None = None,
+) -> dict:
+    """Advance through PX4; retain advanced/scored counts and last observed time."""
     if steps < 0:
         raise ValueError('development hover prelude steps must be nonnegative')
-    result = {'requested_steps': steps, 'actual_steps': 0,
-              'start_sim_ns': None, 'end_sim_ns': None, 'terminal_status': None}
+    result = progress if progress is not None else {}
+    result.update({'requested_steps': steps, 'actual_steps': 0, 'scored_steps': 0,
+                   'start_sim_ns': None, 'end_sim_ns': None, 'terminal_status': None})
     if steps == 0:
         return result
     initial = gateway.backend.score_sample()
@@ -60,12 +63,19 @@ def run_hover_prelude(gateway: Gateway, scorer: EpisodeScorer, steps: int) -> di
         if scorer.status is not None:
             break
         gateway.advance(Command((0., 0., 0.), 0.))
-        sample = gateway.backend.score_sample()
-        scorer.update(sample)
         result['actual_steps'] += 1
+        sample = gateway.backend.score_sample()
         result['end_sim_ns'] = sample.sim_ns
+        scorer.update(sample)
+        result['scored_steps'] += 1
     result['terminal_status'] = scorer.status
     return result
+
+
+def mark_prelude_failure(progress: dict, requested_steps: int, status: str) -> None:
+    """Retain an infrastructure failure only if prelude scoring was unfinished."""
+    if requested_steps and progress['scored_steps'] < requested_steps:
+        progress['terminal_status'] = status
 
 
 def main() -> int:
@@ -127,7 +137,7 @@ def main() -> int:
     prelude['requested_steps'] = prelude_steps
     try:
         gateway.start(episode_world_sdf)
-        prelude = run_hover_prelude(gateway, scorer, prelude_steps)
+        run_hover_prelude(gateway, scorer, prelude_steps, progress=prelude)
         if scorer.status is None:
             first_observation = gateway.observe()
             if args.controller.startswith('fly_'):
@@ -158,6 +168,7 @@ def main() -> int:
             })
     except Exception as exc:
         scorer.fail('controller_error' if stage == 'controller' else 'infrastructure_error', repr(exc))
+        mark_prelude_failure(prelude, prelude_steps, scorer.status)
     finally:
         try:
             controller.close()
