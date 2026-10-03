@@ -1,13 +1,55 @@
 from __future__ import annotations
 
+import json
 import math
+import threading
+from pathlib import Path
 
 from flydrones.distributed_stress import (
     StressTrialConfig,
+    _publish_start_signal,
     avoidance_velocity,
     run_udp_process_trial,
 )
 from flydrones.peer_udp import PeerTrack
+
+
+def test_start_signal_appears_only_after_complete_json_is_published(tmp_path, monkeypatch) -> None:
+    (tmp_path / "start.json.pending").write_text("stale", encoding="utf-8")
+    staged = threading.Event()
+    release = threading.Event()
+    errors = []
+    original_write_text = Path.write_text
+
+    def pause_after_staging(path, content, *args, **kwargs):
+        written = original_write_text(path, content, *args, **kwargs)
+        if path.name == "start.json.pending":
+            staged.set()
+            if not release.wait(5):
+                raise TimeoutError("test did not release staged signal")
+        return written
+
+    monkeypatch.setattr(Path, "write_text", pause_after_staging)
+
+    def publish():
+        try:
+            _publish_start_signal(tmp_path / "start.json", 123.25)
+        except Exception as exc:
+            errors.append(exc)
+
+    worker = threading.Thread(target=publish)
+    worker.start()
+    try:
+        assert staged.wait(5)
+        assert not (tmp_path / "start.json").exists()
+    finally:
+        release.set()
+        worker.join(5)
+    assert not worker.is_alive()
+    assert not errors
+    assert json.loads((tmp_path / "start.json").read_text(encoding="utf-8")) == {
+        "start_at": 123.25,
+    }
 
 
 def test_local_avoidance_deflects_a_head_on_peer() -> None:

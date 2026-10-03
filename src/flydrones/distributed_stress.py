@@ -342,6 +342,13 @@ def _aggregate_stress(config: StressTrialConfig, results: list[dict], output: Pa
     }
 
 
+def _publish_start_signal(path: Path, start_at: float) -> None:
+    """Make the complete JSON visible in one same-directory rename."""
+    pending = path.with_name(path.name + ".pending")
+    pending.write_text(json.dumps({"start_at": start_at}), encoding="utf-8")
+    os.replace(pending, path)
+
+
 def run_udp_process_trial(config: StressTrialConfig) -> dict:
     """Run one OS process per agent; the parent reads traces only after exit."""
     output = Path(config.output_dir).resolve()
@@ -374,7 +381,7 @@ def run_udp_process_trial(config: StressTrialConfig) -> dict:
                     process.terminate()
             raise RuntimeError("not all UDP stress workers became ready")
         time.sleep(0.02)
-    start_signal.write_text(json.dumps({"start_at": time.time() + 0.75}), encoding="utf-8")
+    _publish_start_signal(start_signal, time.time() + 0.75)
     join_deadline = time.monotonic() + config.duration_s + 20.0
     for process in processes:
         remaining = max(0.0, join_deadline - time.monotonic())
