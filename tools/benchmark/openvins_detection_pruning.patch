@@ -1,0 +1,85 @@
+--- a/ov_core/src/track/TrackKLT.cpp
++++ b/ov_core/src/track/TrackKLT.cpp
+@@ -412,6 +412,9 @@
+ void TrackKLT::perform_detection_monocular(const std::vector<cv::Mat> &img0pyr, const cv::Mat &mask0, std::vector<cv::KeyPoint> &pts0,
+                                            std::vector<size_t> &ids0) {
+ 
++  const size_t input_count = ids0.size();
++  size_t drop_edge = 0, drop_close_bounds = 0, drop_grid_bounds = 0, drop_close_collision = 0, drop_mask = 0;
++
+   // Create a 2D occupancy grid for this current image
+   // Note that we scale this down, so that each grid point is equal to a set of pixels
+   // This means that we will reject points that less than grid_px_size points away then existing features
+@@ -432,6 +435,8 @@
+     int y = (int)kpt.pt.y;
+     int edge = 10;
+     if (x < edge || x >= img0pyr.at(0).cols - edge || y < edge || y >= img0pyr.at(0).rows - edge) {
++      PRINT_INFO("FD_DETECT_DROP id=%zu reason=edge x=%.3f y=%.3f\n", *it1, kpt.pt.x, kpt.pt.y);
++      drop_edge++;
+       it0 = pts0.erase(it0);
+       it1 = ids0.erase(it1);
+       continue;
+@@ -440,6 +445,8 @@
+     int x_close = (int)(kpt.pt.x / (float)min_px_dist);
+     int y_close = (int)(kpt.pt.y / (float)min_px_dist);
+     if (x_close < 0 || x_close >= size_close.width || y_close < 0 || y_close >= size_close.height) {
++      PRINT_INFO("FD_DETECT_DROP id=%zu reason=close_bounds x=%.3f y=%.3f\n", *it1, kpt.pt.x, kpt.pt.y);
++      drop_close_bounds++;
+       it0 = pts0.erase(it0);
+       it1 = ids0.erase(it1);
+       continue;
+@@ -448,12 +455,16 @@
+     int x_grid = std::floor(kpt.pt.x / size_x);
+     int y_grid = std::floor(kpt.pt.y / size_y);
+     if (x_grid < 0 || x_grid >= size_grid.width || y_grid < 0 || y_grid >= size_grid.height) {
++      PRINT_INFO("FD_DETECT_DROP id=%zu reason=grid_bounds x=%.3f y=%.3f\n", *it1, kpt.pt.x, kpt.pt.y);
++      drop_grid_bounds++;
+       it0 = pts0.erase(it0);
+       it1 = ids0.erase(it1);
+       continue;
+     }
+     // Check if this keypoint is near another point
+     if (grid_2d_close.at<uint8_t>(y_close, x_close) > 127) {
++      PRINT_INFO("FD_DETECT_DROP id=%zu reason=close_collision x=%.3f y=%.3f\n", *it1, kpt.pt.x, kpt.pt.y);
++      drop_close_collision++;
+       it0 = pts0.erase(it0);
+       it1 = ids0.erase(it1);
+       continue;
+@@ -461,6 +472,8 @@
+     // Now check if it is in a mask area or not
+     // NOTE: mask has max value of 255 (white) if it should be
+     if (mask0.at<uint8_t>(y, x) > 127) {
++      PRINT_INFO("FD_DETECT_DROP id=%zu reason=mask x=%.3f y=%.3f\n", *it1, kpt.pt.x, kpt.pt.y);
++      drop_mask++;
+       it0 = pts0.erase(it0);
+       it1 = ids0.erase(it1);
+       continue;
+@@ -480,12 +493,17 @@
+     it1++;
+   }
+ 
++  const size_t retained = pts0.size();
++
+   // First compute how many more features we need to extract from this image
+   // If we don't need any features, just return
+   double min_feat_percent = 0.50;
+   int num_featsneeded = num_features - (int)pts0.size();
+-  if (num_featsneeded < std::min(20, (int)(min_feat_percent * num_features)))
++  if (num_featsneeded < std::min(20, (int)(min_feat_percent * num_features))) {
++    PRINT_INFO("FD_DETECT_SUMMARY input=%zu edge=%zu close_bounds=%zu grid_bounds=%zu close_collision=%zu mask=%zu retained=%zu candidates=0 added=0 branch=skip\n",
++               input_count, drop_edge, drop_close_bounds, drop_grid_bounds, drop_close_collision, drop_mask, retained);
+     return;
++  }
+ 
+   // This is old extraction code that would extract from the whole image
+   // This can be slow as this will recompute extractions for grid areas that we have max features already
+@@ -542,6 +560,9 @@
+     size_t temp = ++currid;
+     ids0.push_back(temp);
+   }
++  PRINT_INFO("FD_DETECT_SUMMARY input=%zu edge=%zu close_bounds=%zu grid_bounds=%zu close_collision=%zu mask=%zu retained=%zu candidates=%zu added=%zu branch=topoff\n",
++             input_count, drop_edge, drop_close_bounds, drop_grid_bounds, drop_close_collision, drop_mask, retained,
++             pts0_ext.size(), pts0_new.size());
+ }
+ 
+ void TrackKLT::perform_detection_stereo(const std::vector<cv::Mat> &img0pyr, const std::vector<cv::Mat> &img1pyr, const cv::Mat &mask0,
