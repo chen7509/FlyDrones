@@ -1,0 +1,93 @@
+diff --git a/ov_core/src/track/TrackKLT.cpp b/ov_core/src/track/TrackKLT.cpp
+index d2fe388..44371ae 100644
+--- a/ov_core/src/track/TrackKLT.cpp
++++ b/ov_core/src/track/TrackKLT.cpp
+@@ -21,6 +21,8 @@
+ 
+ #include "TrackKLT.h"
+ 
++#include <unordered_set>
++
+ #include "Grider_FAST.h"
+ #include "Grider_GRID.h"
+ #include "cam/CamBase.h"
+@@ -112,6 +114,8 @@ void TrackKLT::feed_monocular(const CameraData &message, size_t msg_id) {
+     std::vector<cv::KeyPoint> good_left;
+     std::vector<size_t> good_ids_left;
+     perform_detection_monocular(imgpyr, mask, good_left, good_ids_left);
++    PRINT_INFO("FD_KLT_FRAME t=%.9f cam=%zu previous=0 retained=0 added=%zu input=%zu accepted=0 branch=bootstrap\n",
++               message.timestamp, cam_id, good_ids_left.size(), good_ids_left.size());
+     // Save the current image and pyramid
+     std::lock_guard<std::mutex> lckv(mtx_last_vars);
+     img_last[cam_id] = img;
+@@ -127,7 +131,12 @@ void TrackKLT::feed_monocular(const CameraData &message, size_t msg_id) {
+   int pts_before_detect = (int)pts_last[cam_id].size();
+   auto pts_left_old = pts_last[cam_id];
+   auto ids_left_old = ids_last[cam_id];
++  const std::unordered_set<size_t> prior_ids(ids_left_old.begin(), ids_left_old.end());
+   perform_detection_monocular(img_pyramid_last[cam_id], img_mask_last[cam_id], pts_left_old, ids_left_old);
++  size_t retained = 0;
++  for (const auto id : ids_left_old)
++    retained += prior_ids.count(id);
++  const size_t added = ids_left_old.size() - retained;
+   rT3 = boost::posix_time::microsec_clock::local_time();
+ 
+   // Our return success masks, and predicted new features
+@@ -141,6 +150,8 @@ void TrackKLT::feed_monocular(const CameraData &message, size_t msg_id) {
+ 
+   // If any of our mask is empty, that means we didn't have enough to do ransac, so just return
+   if (mask_ll.empty()) {
++    PRINT_INFO("FD_KLT_FRAME t=%.9f cam=%zu previous=%d retained=%zu added=%zu input=%zu accepted=0 branch=reset\n",
++               message.timestamp, cam_id, pts_before_detect, retained, added, ids_left_old.size());
+     std::lock_guard<std::mutex> lckv(mtx_last_vars);
+     img_last[cam_id] = img;
+     img_pyramid_last[cam_id] = imgpyr;
+@@ -178,6 +189,12 @@ void TrackKLT::feed_monocular(const CameraData &message, size_t msg_id) {
+     database->update_feature(good_ids_left.at(i), message.timestamp, cam_id, good_left.at(i).pt.x, good_left.at(i).pt.y, npt_l.x, npt_l.y);
+   }
+ 
++  // Record exactly the observations written to FeatureDatabase.
++  PRINT_INFO("FD_KLT_FRAME t=%.9f cam=%zu previous=%d retained=%zu added=%zu input=%zu accepted=%zu branch=normal\n",
++             message.timestamp, cam_id, pts_before_detect, retained, added, ids_left_old.size(), good_ids_left.size());
++  for (const auto id : good_ids_left)
++    PRINT_INFO("FD_KLT_ID t=%.9f cam=%zu id=%zu\n", message.timestamp, cam_id, id);
++
+   // Move forward in time
+   {
+     std::lock_guard<std::mutex> lckv(mtx_last_vars);
+@@ -833,8 +850,10 @@ void TrackKLT::perform_matching(const std::vector<cv::Mat> &img0pyr, const std::
+   assert(kpts0.size() == kpts1.size());
+ 
+   // Return if we don't have any points
+-  if (kpts0.empty() || kpts1.empty())
++  if (kpts0.empty() || kpts1.empty()) {
++    PRINT_INFO("FD_KLT_MATCH cam0=%zu cam1=%zu input=0 klt=0 ransac=0 combined=0 status=empty\n", id0, id1);
+     return;
++  }
+ 
+   // Convert keypoints into points (stupid opencv stuff)
+   std::vector<cv::Point2f> pts0, pts1;
+@@ -848,6 +867,7 @@ void TrackKLT::perform_matching(const std::vector<cv::Mat> &img0pyr, const std::
+   if (pts0.size() < 10) {
+     for (size_t i = 0; i < pts0.size(); i++)
+       mask_out.push_back((uchar)0);
++    PRINT_INFO("FD_KLT_MATCH cam0=%zu cam1=%zu input=%zu klt=0 ransac=0 combined=0 status=few\n", id0, id1, pts0.size());
+     return;
+   }
+ 
+@@ -878,6 +898,15 @@ void TrackKLT::perform_matching(const std::vector<cv::Mat> &img0pyr, const std::
+     mask_out.push_back(mask);
+   }
+ 
++  size_t klt_pass = 0, ransac_pass = 0, combined_pass = 0;
++  for (size_t i = 0; i < pts0.size(); i++) {
++    klt_pass += i < mask_klt.size() && mask_klt[i];
++    ransac_pass += i < mask_rsc.size() && mask_rsc[i];
++    combined_pass += mask_out[i] != 0;
++  }
++  PRINT_INFO("FD_KLT_MATCH cam0=%zu cam1=%zu input=%zu klt=%zu ransac=%zu combined=%zu status=normal\n",
++             id0, id1, pts0.size(), klt_pass, ransac_pass, combined_pass);
++
+   // Copy back the updated positions
+   for (size_t i = 0; i < pts0.size(); i++) {
+     kpts0.at(i).pt = pts0.at(i);
