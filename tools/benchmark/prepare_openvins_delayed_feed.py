@@ -20,6 +20,11 @@ from flydrones.benchmark.rgb_capture import verify_rgb_manifest
 from flydrones.benchmark.ulog_capture import verify_episode_ulog_evidence
 
 START_NS = 29_000_000_000
+FROZEN_REFERENCE_SHA256 = (
+    "e5154775d583dadb4e2805b4829178eef4e17f967e93ace08d852c3e362ace37",
+    "4fe7bd9b62a5f021e0816d9fd22cfb4448562ec8483bd6b8602137c6ef42c380",
+    "20200cd589e4bf9c6b88cc1c9b9ba0a8673466405d0509a8ef305226b1a88d30",
+)
 IMU_FIELDS = ("timestamp_us", "gx", "gy", "gz", "ax", "ay", "az")
 FRAME_FIELDS = ("timestamp_ns", "relative_ppm_path")
 
@@ -32,6 +37,15 @@ def _sha(path: Path) -> str:
 def verify_source_hashes(manifest: dict, expected: dict[str, Path]) -> None:
     if any(manifest.get(key) != _sha(path) for key, path in expected.items()):
         raise ValueError("source manifest hash mismatch")
+
+
+def verify_frozen_reference(
+    source_manifest: Path, episode_result: Path, prior_archive: Path,
+    *, expected: tuple[str, str, str] = FROZEN_REFERENCE_SHA256,
+) -> None:
+    actual = tuple(_sha(path) for path in (source_manifest, episode_result, prior_archive))
+    if actual != expected:
+        raise ValueError("frozen reference SHA-256 mismatch")
 
 
 def trim_streams(imu_rows: list[dict], frame_rows: list[dict], start_ns: int,
@@ -106,6 +120,8 @@ def main() -> int:
                                (args.source_input, args.episode, args.output_dir))
     if output.exists():
         raise FileExistsError("refusing to overwrite delayed VIO input")
+    verify_frozen_reference(source / "manifest.json", episode / "result.json",
+                            ROOT / "evidence/openvins-stationary-prelude-dev-1701-reviewed.zip")
     manifest = json.loads((source / "manifest.json").read_text(encoding="utf-8"))
     result = json.loads((episode / "result.json").read_text(encoding="utf-8"))
     verify_episode_ulog_evidence(episode, result)

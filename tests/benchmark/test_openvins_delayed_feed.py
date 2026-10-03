@@ -2,7 +2,11 @@ from __future__ import annotations
 
 import pytest
 
-from tools.benchmark.prepare_openvins_delayed_feed import trim_streams, verify_source_hashes
+from tools.benchmark.prepare_openvins_delayed_feed import (
+    trim_streams,
+    verify_frozen_reference,
+    verify_source_hashes,
+)
 
 
 def _imu(stamps: list[int]) -> list[dict]:
@@ -69,3 +73,20 @@ def test_source_hash_check_rejects_changed_capture(tmp_path) -> None:
     source.write_bytes(b"changed")
     with pytest.raises(ValueError, match="hash mismatch"):
         verify_source_hashes(manifest, {"imu_csv_sha256": source})
+
+
+def test_frozen_parent_binding_rejects_coherent_replacement(tmp_path) -> None:
+    import hashlib
+
+    source = tmp_path / "manifest.json"
+    episode = tmp_path / "result.json"
+    archive = tmp_path / "prior.zip"
+    source.write_bytes(b"frozen manifest")
+    episode.write_bytes(b"frozen episode")
+    archive.write_bytes(b"frozen archive")
+    expected = tuple(hashlib.sha256(path.read_bytes()).hexdigest()
+                     for path in (source, episode, archive))
+    verify_frozen_reference(source, episode, archive, expected=expected)
+    source.write_bytes(b"coherent replacement manifest")
+    with pytest.raises(ValueError, match="frozen reference"):
+        verify_frozen_reference(source, episode, archive, expected=expected)
