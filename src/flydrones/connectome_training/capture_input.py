@@ -12,6 +12,7 @@ from dataclasses import dataclass
 import numpy as np
 
 from flydrones.benchmark.contract import Observation
+from flydrones.benchmark.gateway import NativeGazeboPx4Backend
 from flydrones.connectome_training.corpus_config import CorpusConfig
 
 _SHA256 = re.compile(r"[0-9a-f]{64}\Z")
@@ -40,7 +41,11 @@ class CaptureInputEvidence:
 
 def _finite_vector(value: object, size: int, label: str) -> np.ndarray:
     try:
-        array = np.asarray(value, dtype=float)
+        raw = np.asarray(value)
+        if not (np.issubdtype(raw.dtype, np.integer)
+                or np.issubdtype(raw.dtype, np.floating)):
+            raise ValueError(f"{label} invalid")
+        array = raw.astype(float, copy=False)
     except (TypeError, ValueError) as exc:
         raise ValueError(f"{label} invalid") from exc
     if array.shape != (size,) or not np.all(np.isfinite(array)):
@@ -67,8 +72,11 @@ def validate_capture_input(
     if (evidence.odometry_source != _ODOMETRY_SOURCE
             or evidence.camera_pose_source != _CAMERA_POSE_SOURCE):
         raise ValueError("capture requires deployment-visible PX4 estimator source")
+    if isinstance(backend, NativeGazeboPx4Backend):
+        raise ValueError("Gazebo truth backend cannot supply student capture")
     if (type(observation.sim_ns) is not int or observation.sim_ns <= 0
             or type(observation.frame_ns) is not int
+            or observation.frame_ns < 0
             or not 0 <= observation.sim_ns - observation.frame_ns <= _MAX_FRAME_AGE_NS):
         raise ValueError("camera frame is stale or out of order")
     if (type(evidence.estimator_sim_ns) is not int

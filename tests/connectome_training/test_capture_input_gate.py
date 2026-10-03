@@ -69,6 +69,11 @@ def test_rejects_stale_or_invalid_observation():
     backend, obs, evidence, config = _valid()
     with pytest.raises(ValueError, match="frame"):
         validate_capture_input(backend, replace(obs, frame_ns=0), evidence, config)
+    early_obs = replace(obs, sim_ns=20_000_000, frame_ns=-10_000_000)
+    early_evidence = replace(evidence, estimator_sim_ns=10_000_000,
+                             camera_pose_sim_ns=0)
+    with pytest.raises(ValueError, match="frame"):
+        validate_capture_input(backend, early_obs, early_evidence, config)
     with pytest.raises(ValueError, match="depth"):
         validate_capture_input(backend, replace(obs, depth_m=np.full((4, 6), np.nan)),
                                evidence, config)
@@ -82,6 +87,9 @@ def test_rejects_stale_or_invalid_observation():
     with pytest.raises(ValueError, match="observation"):
         validate_capture_input(backend, replace(obs, goal=(np.nan, 0., 1.)),
                                evidence, config)
+    with pytest.raises(ValueError, match="observation"):
+        validate_capture_input(backend, replace(obs, position=("1", 0., 1.)),
+                               evidence, config)
 
 
 def test_existing_native_backend_rejects_synthetic_valid_evidence(tmp_path: Path):
@@ -94,3 +102,7 @@ def test_existing_native_backend_rejects_synthetic_valid_evidence(tmp_path: Path
                              camera_pose_source="gazebo_model_truth")
     with pytest.raises(ValueError, match="deployment-visible"):
         validate_capture_input(backend, obs, matching_truth, config)
+    backend.odometry_source = "px4_ekf2"
+    backend.camera_pose_source = "px4_ekf2_calibrated_camera"
+    with pytest.raises(ValueError, match="truth backend"):
+        validate_capture_input(backend, obs, evidence, config)
