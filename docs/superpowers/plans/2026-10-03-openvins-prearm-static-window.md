@@ -36,6 +36,7 @@
 - [x] Implement the opt-in backend wait between `connect()`/settling and `takeoff()` with a bounded wall guard; record timestamps and progress without changing standard startup.
 - [x] Route the CLI option into the backend and persist `prearm_stationary_evidence` in all terminal result paths.
 - [x] Run focused regression/Ruff, then commit. (37 focused; 501 full; Ruff pass)
+- [x] Review fix: reject every preexisting episode directory, move formal-batch logs to a separate directory, and copy development textures with hashes from an explicit source. Focused tests, 504-test full regression, and Ruff pass.
 
 ## Task 2: One fixed-world development run and offline VIO audit
 

@@ -11,6 +11,8 @@ from tools.benchmark.run_episode import (
     mark_prelude_failure,
     prearm_duration,
     prelude_step_count,
+    prepare_development_textures,
+    require_unused_episode_output,
     run_hover_prelude,
 )
 
@@ -66,6 +68,32 @@ def test_prearm_timeout_keeps_partial_simulation_progress(tmp_path, monkeypatch)
         backend._hold_prearm_stationary("hover", max_wall_s=1.)
     assert backend.prearm_stationary_evidence["status"] == "timeout"
     assert backend.prearm_stationary_evidence["end_sim_ns"] == 1_000_000_000
+
+
+def test_episode_output_rejects_any_previous_partial_run(tmp_path):
+    output = tmp_path / "episode"
+    output.mkdir()
+    (output / "started.json").write_text("{\"interrupted\":true}")
+    with pytest.raises(SystemExit, match="nonempty"):
+        require_unused_episode_output(output)
+    assert (output / "started.json").read_text() == "{\"interrupted\":true}"
+    fresh = tmp_path / "fresh"
+    require_unused_episode_output(fresh)
+    assert fresh.is_dir() and not list(fresh.iterdir())
+
+
+def test_dev_texture_copy_requires_fresh_destination_and_records_hashes(tmp_path):
+    source = tmp_path / "texture-source"
+    source.mkdir()
+    (source / "ground_albedo.png").write_bytes(b"ground")
+    (source / "obstacle_albedo.png").write_bytes(b"obstacle")
+    output = tmp_path / "output"
+    require_unused_episode_output(output)
+    manifest = prepare_development_textures(source, output)
+    assert manifest["files"]["ground_albedo.png"]["bytes"] == 6
+    assert (output / "ground_albedo.png").read_bytes() == b"ground"
+    with pytest.raises(FileExistsError):
+        prepare_development_textures(source, output)
 
 
 def test_dev_prelude_counts_fixed_steps_without_changing_zero_default() -> None:

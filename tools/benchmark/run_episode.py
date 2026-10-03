@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import math
 import sys
@@ -89,6 +90,40 @@ def mark_prelude_failure(progress: dict, requested_steps: int, status: str) -> N
         progress['terminal_status'] = status
 
 
+def require_unused_episode_output(output: Path) -> None:
+    """Reserve a fresh episode directory without overwriting partial evidence."""
+    try:
+        output.mkdir(parents=True, exist_ok=False)
+    except FileExistsError:
+        raise SystemExit(f'refusing nonempty or preexisting episode output: {output}') from None
+
+
+def prepare_development_textures(source: Path, output: Path) -> dict:
+    """Copy fixed-world textures into a fresh development episode with hashes."""
+    names = ('ground_albedo.png', 'obstacle_albedo.png')
+    manifest_path = output / 'texture_input_manifest.json'
+    if manifest_path.exists() or any((output / name).exists() for name in names):
+        raise FileExistsError(f'development texture destination already used: {output}')
+    if not source.is_dir() or source.is_symlink():
+        raise ValueError(f'invalid development texture source: {source}')
+    contents: dict[str, bytes] = {}
+    for name in names:
+        path = source / name
+        if not path.is_file() or path.is_symlink():
+            raise ValueError(f'missing or unsafe development texture: {path}')
+        contents[name] = path.read_bytes()
+    manifest = {'source': str(source.resolve()), 'files': {}}
+    for name, data in contents.items():
+        with (output / name).open('xb') as target:
+            target.write(data)
+        manifest['files'][name] = {
+            'bytes': len(data), 'sha256': hashlib.sha256(data).hexdigest(),
+        }
+    with manifest_path.open('x', encoding='utf-8') as target:
+        json.dump(manifest, target, indent=2)
+    return manifest
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument('--controller', choices=('fly_raw', 'fly_guided', 'ego'), required=True)
@@ -106,6 +141,8 @@ def main() -> int:
                         help='development capture only: post-takeoff zero-command interval')
     parser.add_argument('--development-prearm-stationary-s', type=float, default=0.,
                         help='development capture only: additional disarmed simulated-time interval')
+    parser.add_argument('--development-texture-dir', type=Path,
+                        help='development prearm only: copy fixed-world textures into fresh episode')
     args = parser.parse_args()
 
     config = load_benchmark_config(args.config)
@@ -118,16 +155,19 @@ def main() -> int:
         args.development_prearm_stationary_s,
         frozen=args.freeze_manifest is not None,
         record_rgb=args.record_rgb, record_camera_info=args.record_camera_info)
+    if args.development_texture_dir is not None and not prearm_s:
+        raise ValueError('development texture source requires prearm stationary capture')
     world = json.loads(args.world_json.read_text(encoding='utf-8'))
-    args.output.mkdir(parents=True, exist_ok=True)
+    require_unused_episode_output(args.output)
     result_path = args.output / 'result.json'
-    if result_path.exists():
-        raise SystemExit(f'refusing to overwrite completed episode: {result_path}')
-    (args.output / 'started.json').write_text(json.dumps({
-        'controller': args.controller,
-        'seed': world['seed'],
-        'started_wall_s': time.time(),
-    }, indent=2), encoding='utf-8')
+    if args.development_texture_dir is not None:
+        prepare_development_textures(args.development_texture_dir, args.output)
+    with (args.output / 'started.json').open('x', encoding='utf-8') as target:
+        json.dump({
+            'controller': args.controller,
+            'seed': world['seed'],
+            'started_wall_s': time.time(),
+        }, target, indent=2)
     episode_world_json, episode_world_sdf = snapshot_episode_inputs(
         args.world_json, args.world_sdf, args.output,
     )

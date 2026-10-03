@@ -26,9 +26,16 @@ def atomic_json(path: Path, payload) -> None:
     temporary.replace(path)
 
 
-def start_ego(image: str, name: str, episode_dir: Path) -> None:
+def prepare_job_directories(episode_dir: Path, log_dir: Path) -> None:
+    """Keep subprocess logs separate so run_episode can reserve its own output."""
+    if episode_dir.exists():
+        raise FileExistsError(f'partial episode output already exists: {episode_dir}')
+    log_dir.mkdir(parents=True, exist_ok=False)
+
+
+def start_ego(image: str, name: str, log_dir: Path) -> None:
     mount = str((ROOT / 'tools/benchmark').resolve())
-    with (episode_dir / 'ego_container_id.txt').open('w', encoding='utf-8') as handle:
+    with (log_dir / 'ego_container_id.txt').open('x', encoding='utf-8') as handle:
         subprocess.check_call([
             'docker', 'run', '-d', '--rm', '-p', '46200:46200', '--name', name,
             '-v', f'{mount}:/benchmark:ro', image, 'bash', '-lc',
@@ -45,9 +52,9 @@ def start_ego(image: str, name: str, episode_dir: Path) -> None:
     raise TimeoutError('EGO container did not become ready')
 
 
-def stop_ego(name: str, episode_dir: Path) -> None:
+def stop_ego(name: str, log_dir: Path) -> None:
     logs = subprocess.run(['docker', 'logs', name], capture_output=True, text=True)
-    (episode_dir / 'ego_container.log').write_text(logs.stdout + logs.stderr, encoding='utf-8')
+    (log_dir / 'ego_container.log').write_text(logs.stdout + logs.stderr, encoding='utf-8')
     subprocess.run(['docker', 'stop', '-t', '3', name], capture_output=True, text=True)
 
 
@@ -77,7 +84,7 @@ def main() -> int:
         verify_freeze_manifest(args.freeze_manifest, ROOT)
         world = worlds[job['seed']]
         episode_dir = args.formal_dir / 'episodes' / str(job['seed']) / job['controller']
-        episode_dir.mkdir(parents=True, exist_ok=True)
+        log_dir = args.formal_dir / 'runner_logs' / str(job['seed']) / job['controller']
         result_path = episode_dir / 'result.json'
         if result_path.exists():
             result = json.loads(result_path.read_text(encoding='utf-8'))
@@ -85,10 +92,11 @@ def main() -> int:
                             'ulog_capture_accepted': result.get('px4_ulog_capture_accepted') is True,
                             'result': str(result_path.relative_to(ROOT)).replace('\\', '/')})
             continue
+        prepare_job_directories(episode_dir, log_dir)
         container_name = f'fly-ego-{job["seed"]}' if job['controller'] == 'ego' else None
         try:
             if container_name:
-                start_ego(freeze['dependencies']['ego_image_id'], container_name, episode_dir)
+                start_ego(freeze['dependencies']['ego_image_id'], container_name, log_dir)
             command = [
                 sys.executable, str(ROOT / 'tools/benchmark/run_episode.py'),
                 '--controller', job['controller'],
@@ -98,11 +106,11 @@ def main() -> int:
                 '--config', str(ROOT / 'configs/fly_ego_benchmark.yaml'),
                 '--freeze-manifest', str(args.freeze_manifest),
             ]
-            with (episode_dir / 'episode.log').open('w', encoding='utf-8') as log:
+            with (log_dir / 'episode.log').open('x', encoding='utf-8') as log:
                 completed = subprocess.run(command, stdout=log, stderr=subprocess.STDOUT)
         finally:
             if container_name:
-                stop_ego(container_name, episode_dir)
+                stop_ego(container_name, log_dir)
         if not result_path.exists():
             raise RuntimeError(f'episode produced no result: {job["job_id"]}')
         result = json.loads(result_path.read_text(encoding='utf-8'))
