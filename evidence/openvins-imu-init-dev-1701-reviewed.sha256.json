@@ -1,10 +1,10 @@
 {
-  "archive_bytes": 955918,
-  "archive_sha256": "b27064f17bc10f0181813f9ca505dcf7e4149af7631329cb798816db87124fd6",
+  "archive_bytes": 956763,
+  "archive_sha256": "78c396910df758163b698b83bfeb70144f94573d82fdf8cba0f3b15108d9b31e",
   "files": {
     "docs/OPENVINS_IMU_INIT_REPORT.md": {
-      "bytes": 4424,
-      "sha256": "2aa9d624a53b77c2dd4bd53d95953ccb9f751eb17fe119f8fe52b8fa29c0214e"
+      "bytes": 4987,
+      "sha256": "3594abccbd962782019bb7b016930c4b73ad2ba513b6280803f11e0ade1ceca9"
     },
     "docs/superpowers/plans/2026-10-03-openvins-imu-init-audit.md": {
       "bytes": 3740,
@@ -23,18 +23,18 @@
       "sha256": "13c4b3187d8ec32562e9a394f6db6328f8824d7243dbbfa250c9a12de6fdd6a9"
     },
     "results/openvins-imu-init/REPRODUCE.md": {
-      "bytes": 1011,
-      "sha256": "bad2dc4d6efcbd81eab3c753045345dea862a7b8889e9dc94a2eef4a906e4fe1"
+      "bytes": 1156,
+      "sha256": "d5aae660672de962d54d3ac7843ae0c187151e3c630481b2e82bf27647bf8759"
     },
     "results/openvins-imu-init/archive_evidence.py": {
-      "bytes": 3732,
-      "sha256": "8f9f0e029b57872079620632f0f5e418ab18556de4eda0e72a5b7e074c26f4f4"
+      "bytes": 3741,
+      "sha256": "b9fed3939c231667fad22ec084e072c1c809b7f0495cdb3c3ba06f9be8a2524e"
     },
-    "results/openvins-imu-init/audit-v2/summary.json": {
-      "bytes": 2269,
-      "sha256": "ab2c8d48b9b75c906220d7d88ee034302fa8c7d591e18033b8a38d18fbe0e8bc"
+    "results/openvins-imu-init/audit-v3/summary.json": {
+      "bytes": 2255,
+      "sha256": "ca9de3cd71100308aa74f66d66948577a4f5285994da97c044eeb1dccbb132c4"
     },
-    "results/openvins-imu-init/audit-v2/velocity_window.csv": {
+    "results/openvins-imu-init/audit-v3/velocity_window.csv": {
       "bytes": 23577,
       "sha256": "c1aedc8829ccb14e2ea7a36908871457dd6dae988416a02ecdd715e7b727e8cb"
     },
@@ -59,12 +59,12 @@
       "sha256": "108204af8f88e78ba6b7068f229a0d87bb1ec4039535742b5cd8c1c6ff1e9122"
     },
     "tests/benchmark/test_openvins_imu_init.py": {
-      "bytes": 4481,
-      "sha256": "754895e69dd5eaa9f93f590ddd2c5a2fa032919637fcab334927a2acf8736ca8"
+      "bytes": 6148,
+      "sha256": "af7e7dd2c9442596f935e04d72d12ecfa85f5bace81422d0cfc641be162d46a9"
     },
     "tools/benchmark/audit_openvins_imu_init.py": {
-      "bytes": 10466,
-      "sha256": "9ddb2bbf88146dfe8f0188de1ed8f2599670b9c8e62243d6a83332bfc353eebd"
+      "bytes": 11468,
+      "sha256": "95642c07cfb96f812ecc7fa26e3325029a33b7cf3d0d94a53ab9177fa1d40924"
     }
   },
   "schema": "flydrones-archive-index-v1"

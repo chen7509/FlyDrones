@@ -101,3 +101,44 @@ def test_ekf_window_rejects_invalid_reset_or_gap(change: dict, match: str) -> No
     data = {**_velocity(), **change}
     with pytest.raises(ValueError, match=match):
         score_ekf_init_velocity(data, 1., 1.04 if match == "gap" else 1.02)
+
+
+def test_ekf_init_endpoint_requires_valid_short_bracket() -> None:
+    data = {**_velocity(), "timestamp": np.array([1_000_000, 1_010_000, 1_050_000]),
+            "vxy_reset_counter": np.array([0, 0, 1])}
+    with pytest.raises(ValueError, match="gap"):
+        score_ekf_init_velocity(data, 1., 1.02)
+
+
+@pytest.mark.parametrize("change,match", [
+    ({"v_z_valid": np.array([1, 1, 0])}, "invalid"),
+    ({"vz_reset_counter": np.array([0, 0, 1])}, "reset"),
+])
+def test_ekf_init_endpoint_rejects_invalid_following_sample(
+    change: dict, match: str,
+) -> None:
+    data = {**_velocity(), "timestamp": np.array([1_000_000, 1_010_000, 1_030_000]),
+            **change}
+    with pytest.raises(ValueError, match=match):
+        score_ekf_init_velocity(data, 1., 1.02)
+
+
+def test_ekf_endpoint_interpolates_velocity_vector() -> None:
+    data = {**_velocity(), "timestamp": np.array([1_000_000, 1_010_000, 1_030_000]),
+            "vx": np.array([0., .2, .4])}
+    _, summary = score_ekf_init_velocity(data, 1., 1.02)
+    assert summary["speed_at_first_initialized_sample_m_s"] == pytest.approx(.3)
+
+
+def test_ekf_start_endpoint_requires_short_bracket() -> None:
+    data = {**_velocity(), "timestamp": np.array([980_000, 1_010_000, 1_020_000])}
+    with pytest.raises(ValueError, match="gap"):
+        score_ekf_init_velocity(data, 1., 1.02)
+
+
+def test_exact_20_ms_ekf_gap_is_accepted() -> None:
+    data = {key: value[:2] for key, value in _velocity().items()}
+    data["timestamp"] = np.array([1_000_000, 1_020_000])
+    rows, summary = score_ekf_init_velocity(data, 1., 1.02)
+    assert len(rows) == 2
+    assert summary["max_sample_gap_ms"] == pytest.approx(20)

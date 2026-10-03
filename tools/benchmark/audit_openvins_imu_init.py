@@ -115,30 +115,47 @@ def score_ekf_init_velocity(
     data: dict, start_s: float, init_s: float,
 ) -> tuple[list[dict], dict]:
     """Keep every valid EKF2 velocity sample in the pre-init interval."""
-    times = np.asarray(data["timestamp"], dtype=np.int64) * 1e-6
-    if len(times) < 2 or np.any(np.diff(times) <= 0):
+    stamps = np.asarray(data["timestamp"], dtype=np.int64)
+    if len(stamps) < 2 or np.any(np.diff(stamps) <= 0):
         raise ValueError("EKF2 velocity timestamps invalid")
-    mask = (times >= start_s - 1e-9) & (times <= init_s + 1e-9)
-    selected = np.flatnonzero(mask)
-    if (len(selected) < 2 or times[selected[0]] - start_s > .02
-            or init_s - times[selected[-1]] > .02
-            or np.max(np.diff(times[selected])) > .02):
+    start_us, init_us = round(start_s * 1e6), round(init_s * 1e6)
+    if start_us >= init_us:
+        raise ValueError("invalid EKF2 velocity window")
+
+    def boundary(target_us: int) -> tuple[int, int, float]:
+        right = int(np.searchsorted(stamps, target_us))
+        if right < len(stamps) and stamps[right] == target_us:
+            return right, right, 0.0
+        left = right - 1
+        if left < 0 or right >= len(stamps) or stamps[right] - stamps[left] > 20_000:
+            raise ValueError("EKF2 velocity window gap exceeds 20 ms")
+        return left, right, (target_us - stamps[left]) / (stamps[right] - stamps[left])
+
+    start_boundary = boundary(start_us)
+    init_boundary = boundary(init_us)
+    selected = np.flatnonzero((stamps >= start_us) & (stamps <= init_us))
+    if len(selected) < 2 or np.max(np.diff(stamps[selected])) > 20_000:
         raise ValueError("EKF2 velocity window gap exceeds 20 ms")
+    checked = np.unique(np.concatenate((selected, [start_boundary[0], start_boundary[1],
+                                               init_boundary[0], init_boundary[1]])))
     for key in ("v_xy_valid", "v_z_valid"):
-        values = np.asarray(data[key])[selected]
-        if len(values) != len(selected) or not np.all(values):
+        values = np.asarray(data[key])
+        if len(values) != len(stamps) or not np.all(values[checked]):
             raise ValueError("invalid EKF2 velocity in initialization window")
     for key in ("vxy_reset_counter", "vz_reset_counter"):
-        values = np.asarray(data[key])[selected]
-        if len(values) != len(selected) or np.any(values != values[0]):
+        values = np.asarray(data[key])
+        if len(values) != len(stamps) or np.any(values[checked] != values[checked[0]]):
             raise ValueError("EKF2 velocity reset in initialization window")
-    velocity = np.column_stack([np.asarray(data[key], dtype=float)[selected]
-                                for key in ("vx", "vy", "vz")])
-    if not np.all(np.isfinite(velocity)):
+    all_velocity = np.column_stack([np.asarray(data[key], dtype=float)
+                                    for key in ("vx", "vy", "vz")])
+    if len(all_velocity) != len(stamps) or not np.all(np.isfinite(all_velocity[checked])):
         raise ValueError("invalid EKF2 velocity in initialization window")
+    velocity = all_velocity[selected]
+    left, right, alpha = init_boundary
+    velocity_at_init = (1 - alpha) * all_velocity[left] + alpha * all_velocity[right]
     speeds = np.linalg.norm(velocity, axis=1)
     rows = [
-        {"timestamp_us": int(data["timestamp"][index]),
+        {"timestamp_us": int(stamps[index]),
          "vx_m_s": float(velocity[offset, 0]),
          "vy_m_s": float(velocity[offset, 1]),
          "vz_m_s": float(velocity[offset, 2]),
@@ -147,16 +164,16 @@ def score_ekf_init_velocity(
     ]
     return rows, {
         "sample_count": len(rows),
-        "first_sample_s": float(times[selected[0]]),
-        "last_sample_s": float(times[selected[-1]]),
-        "max_sample_gap_ms": float(np.max(np.diff(times[selected])) * 1e3),
+        "first_sample_s": float(stamps[selected[0]] * 1e-6),
+        "last_sample_s": float(stamps[selected[-1]] * 1e-6),
+        "max_sample_gap_ms": float(np.max(np.diff(stamps[checked])) / 1e3),
         "all_velocity_flags_valid": True,
-        "vxy_reset_counter": int(data["vxy_reset_counter"][selected[0]]),
-        "vz_reset_counter": int(data["vz_reset_counter"][selected[0]]),
+        "vxy_reset_counter": int(data["vxy_reset_counter"][checked[0]]),
+        "vz_reset_counter": int(data["vz_reset_counter"][checked[0]]),
         "median_speed_m_s": float(np.median(speeds)),
         "p90_speed_m_s": float(np.percentile(speeds, 90)),
         "max_speed_m_s": float(np.max(speeds)),
-        "speed_at_first_initialized_sample_m_s": float(speeds[-1]),
+        "speed_at_first_initialized_sample_m_s": float(np.linalg.norm(velocity_at_init)),
         "reference_moving_over_0_1_mps": bool(np.median(speeds) > .1),
     }
 

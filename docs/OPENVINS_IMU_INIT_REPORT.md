@@ -1,6 +1,6 @@
 # OpenVINS IMU 数据与静止初始化审计（开发世界 1701）
 
-**结论：现有失败不能归因于离线 IMU 导出时的轴交换、单位转换或丢样；更明确的冲突发生在初始化假设。** 逐条对照冻结的 PX4 `sensor_combined` ULog 与交给 OpenVINS 的 CSV，15,107 条记录的时间戳及六轴数值完全一致。OpenVINS 于 26.8 秒使用静止初始化，把初始速度设为零；同一飞行的 PX4 EKF2 在此前 2 秒内持续估计到约 0.4 m/s 的运动。这使“静止”初始状态缺乏这份开发数据的支持。EKF2 仍是融合估计，不能当独立真值，也不能据此断定初始化错误独自造成后续全部发散。
+**结论：现有失败不能归因于离线 IMU 导出时的轴交换、单位转换或丢样；更明确的冲突发生在初始化假设。** 逐条对照冻结的 PX4 `sensor_combined` ULog 与交给 OpenVINS 的 CSV，15,107 条记录的时间戳及六轴数值完全一致。OpenVINS 于 26.8 秒使用静止初始化，把初始速度设为零；同一飞行的 PX4 EKF2 在此前 2 秒内持续估计到约 0.4 m/s 的运动。这使“静止”初始状态缺乏这份开发数据的支持；[OpenVINS 静止初始化器文档](https://docs.openvins.com/classov__init_1_1StaticInitializer.html)也明确以设备起步静止为前提。EKF2 仍是融合估计，不能当独立真值，也不能据此断定初始化错误独自造成后续全部发散。
 
 审计只读取已经封存的单机纹理开发世界、PX4 ULog、离线 IMU CSV、[上游 OpenVINS](https://github.com/rpng/open_vins) 提交 `69488123ed9362dd44b6f28e7f4680abbff1442b`（GPL-3.0）构建时使用的运行器及配置、原重播日志和状态。没有重跑 PX4/Gazebo、OpenVINS 或训练，也没有调参数。输入 SHA-256 固定在 `tools/benchmark/audit_openvins_imu_init.py` 和结果 `summary.json`。按 [PX4 SensorCombined 定义](https://docs.px4.io/main/en/msg_docs/SensorCombined)，陀螺仪是机体 FRD 的 rad/s，加速度是机体 FRD 的 m/s²，消息时间戳属于陀螺仪，加速度时间要加相对偏移；[OpenVINS 传播模型](https://docs.openvins.com/propagation.html)接收本地角速度和比力。保存的运行器把 CSV 的 `gx,gy,gz` 与 `ax,ay,az` 原样填入 `ImuData.wm`、`ImuData.am`。IMU `T_i_b` 配置为单位变换，时间偏移仍是**未标定的临时零值**，这些代码和配置检查不能代替物理标定。
 
@@ -20,4 +20,6 @@ EKF2 `v_xy_valid`、`v_z_valid` 在全部 251 个样本中有效；水平/垂直
 
 下一项受控开发实验应保持估计器、相机、IMU 映射及验收阈值不变，只改变**初始化前是否提供真正静止且有足够特征的两秒区间**，保存两组 PX4 ULog、RGB、OpenVINS 状态与视觉更新日志；先核查初始化速度/偏置和短窗口克隆运动，再看视觉更新是否出现。该实验不能动 20 个冻结未见测试世界，也不能把 EKF2 或 Gazebo 位姿输入 OpenVINS。即使开发实验改善，动态相机–IMU 时间偏移和噪声/外参、PX4 EKF2 视觉融合、故障注入、五机容量、HITL、原生 Linux 与实飞仍各有独立门槛。
 
-`evidence/openvins-imu-init-dev-1701.zip` 与相邻 SHA-256 索引保存代码、测试、冻结配置/运行器源码、原重播日志/状态、IMU CSV、逐样本速度和审计结果。完整 ULog 与 RGB 已在前轮 `openvins-texture-dev-1701.zip` 中，本包以精确哈希引用，避免重复封装大文件。针对性测试 **7 passed**，Ruff 与 `git diff --check` 通过；完整项目回归 **350 passed、1 warning**（193.38 秒）。警告是既有 Malecns 神经元组无匹配项。证据 ZIP 的全体成员哈希、长度均记录在相邻索引，便于独立核验；这些检查仅证明此离线诊断可复算，不代表 VIO 或飞行安全门槛通过。
+`evidence/openvins-imu-init-dev-1701-reviewed.zip` 与相邻 SHA-256 索引保存代码、测试、冻结配置/运行器源码、原重播日志/状态、IMU CSV、逐样本速度和审计结果。完整 ULog 与 RGB 已在前轮 `openvins-texture-dev-1701.zip` 中，本包以精确哈希引用，避免重复封装大文件。针对性测试 **13 passed**，Ruff 与 `git diff --check` 通过；完整项目回归 **356 passed、1 warning**（195.70 秒）。警告是既有 Malecns 神经元组无匹配项。证据 ZIP 的全体成员哈希、长度均记录在相邻索引，便于独立核验；这些检查仅证明此离线诊断可复算，不代表 VIO 或飞行安全门槛通过。
+
+代码复核发现旧审计器在初始化时刻落于两条 EKF2 样本之间时，会漏查后一条样本及边界重置。修订版按整数微秒验证两端插值区间、有效位和重置计数，分量插值后再计算速度；六个针对性边界用例先失败后通过。冻结输入在 26.8 秒恰有样本，修订前后的 251 条速度 CSV、中位数和初始化瞬间速度均相同。
