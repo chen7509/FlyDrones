@@ -27,6 +27,17 @@ from flydrones.benchmark.ulog_capture import episode_exit_code, ulog_evidence_fa
 from flydrones.config import load_config
 
 
+def prearm_duration(
+    seconds: float, *, frozen: bool, record_rgb: bool, record_camera_info: bool,
+) -> float:
+    """Admit a simulated-time prearm dwell only for raw development capture."""
+    if type(seconds) not in (int, float) or not math.isfinite(seconds) or not 0. <= seconds <= 8.:
+        raise ValueError('invalid development prearm duration')
+    if seconds and (frozen or not record_rgb or not record_camera_info):
+        raise ValueError('development prearm requires RGB/camera info and no freeze manifest')
+    return float(seconds)
+
+
 def prelude_step_count(
     seconds: float, dt_s: float, *, frozen: bool,
     record_rgb: bool, record_camera_info: bool,
@@ -93,12 +104,18 @@ def main() -> int:
                         help='development preflight: preserve published Gazebo camera info')
     parser.add_argument('--development-hover-prelude-s', type=float, default=0.,
                         help='development capture only: post-takeoff zero-command interval')
+    parser.add_argument('--development-prearm-stationary-s', type=float, default=0.,
+                        help='development capture only: additional disarmed simulated-time interval')
     args = parser.parse_args()
 
     config = load_benchmark_config(args.config)
     frozen = verify_freeze_manifest(args.freeze_manifest, ROOT) if args.freeze_manifest else None
     prelude_steps = prelude_step_count(
         args.development_hover_prelude_s, float(config['control']['dt_s']),
+        frozen=args.freeze_manifest is not None,
+        record_rgb=args.record_rgb, record_camera_info=args.record_camera_info)
+    prearm_s = prearm_duration(
+        args.development_prearm_stationary_s,
         frozen=args.freeze_manifest is not None,
         record_rgb=args.record_rgb, record_camera_info=args.record_camera_info)
     world = json.loads(args.world_json.read_text(encoding='utf-8'))
@@ -124,7 +141,8 @@ def main() -> int:
             fly_config, ROOT / config['fly']['model'], guided=args.controller == 'fly_guided',
         )
     backend = NativeGazeboPx4Backend(ROOT, args.output, world, record_rgb=args.record_rgb,
-                                    record_camera_info=args.record_camera_info)
+                                    record_camera_info=args.record_camera_info,
+                                    development_prearm_stationary_s=prearm_s)
     gateway = Gateway(config, backend)
     scorer = EpisodeScorer(
         tuple(world['goal']), config['task']['goal_radius_m'],
@@ -219,6 +237,8 @@ def main() -> int:
     })
     if prelude_steps:
         payload['development_hover_prelude'] = prelude
+    if prearm_s:
+        payload['development_prearm_stationary'] = backend.prearm_stationary_evidence
     temporary = args.output / 'result.json.tmp'
     temporary.write_text(json.dumps(payload, indent=2, allow_nan=False), encoding='utf-8')
     temporary.replace(result_path)

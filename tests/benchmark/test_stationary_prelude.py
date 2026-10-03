@@ -1,14 +1,71 @@
 from __future__ import annotations
 
+from types import SimpleNamespace
+
 import pytest
 
-from flydrones.benchmark.gateway import Gateway
+from flydrones.benchmark import gateway as gateway_module
+from flydrones.benchmark.gateway import Gateway, NativeGazeboPx4Backend
 from flydrones.benchmark.score import EpisodeScorer, ScoreSample
 from tools.benchmark.run_episode import (
     mark_prelude_failure,
+    prearm_duration,
     prelude_step_count,
     run_hover_prelude,
 )
+
+
+def test_prearm_option_is_dev_only_and_defaults_off(tmp_path):
+    backend = NativeGazeboPx4Backend(tmp_path, tmp_path / "run", {"goal": [0, 0, 1]})
+    assert backend.development_prearm_stationary_s == 0.
+    assert backend.prearm_stationary_evidence is None
+    assert prearm_duration(0., frozen=True, record_rgb=False,
+                           record_camera_info=False) == 0.
+    assert prearm_duration(4., frozen=False, record_rgb=True,
+                           record_camera_info=True) == 4.
+    for seconds in (-1., 8.01, float("nan"), float("inf"), True):
+        with pytest.raises(ValueError, match="prearm"):
+            prearm_duration(seconds, frozen=False, record_rgb=True,
+                            record_camera_info=True)
+    for frozen, rgb, info in ((True, True, True), (False, False, True),
+                              (False, True, False)):
+        with pytest.raises(ValueError, match="prearm"):
+            prearm_duration(4., frozen=frozen, record_rgb=rgb,
+                            record_camera_info=info)
+
+
+def test_prearm_wait_uses_simulation_time_and_records_progress(tmp_path, monkeypatch):
+    backend = NativeGazeboPx4Backend(
+        tmp_path, tmp_path / "run", {"goal": [0, 0, 1]},
+        development_prearm_stationary_s=4.)
+    backend.stats["sim_ns"] = 1_000_000_000
+    sends = []
+    backend.drone = SimpleNamespace(send=sends.append, telemetry=lambda: None)
+
+    def advance_sim(_seconds):
+        backend.stats["sim_ns"] += 500_000_000
+
+    monkeypatch.setattr(gateway_module.time, "sleep", advance_sim)
+    result = backend._hold_prearm_stationary("hover")
+    assert result["status"] == "completed"
+    assert result["start_sim_ns"] == 1_000_000_000
+    assert result["end_sim_ns"] >= 5_000_000_000
+    assert result["commands_sent"] == len(sends) == 8
+
+
+def test_prearm_timeout_keeps_partial_simulation_progress(tmp_path, monkeypatch):
+    backend = NativeGazeboPx4Backend(
+        tmp_path, tmp_path / "run", {"goal": [0, 0, 1]},
+        development_prearm_stationary_s=4.)
+    backend.stats["sim_ns"] = 1_000_000_000
+    backend.drone = SimpleNamespace(send=lambda _: None, telemetry=lambda: None)
+    ticks = iter((0., 0., 0.1, 1.1))
+    monkeypatch.setattr(gateway_module.time, "monotonic", lambda: next(ticks))
+    monkeypatch.setattr(gateway_module.time, "sleep", lambda _: None)
+    with pytest.raises(TimeoutError, match="prearm"):
+        backend._hold_prearm_stationary("hover", max_wall_s=1.)
+    assert backend.prearm_stationary_evidence["status"] == "timeout"
+    assert backend.prearm_stationary_evidence["end_sim_ns"] == 1_000_000_000
 
 
 def test_dev_prelude_counts_fixed_steps_without_changing_zero_default() -> None:
