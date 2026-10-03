@@ -7,7 +7,9 @@ from pathlib import Path
 
 from flydrones.distributed_stress import (
     StressTrialConfig,
+    _aggregate_stress,
     _publish_start_signal,
+    _read_start_signal,
     avoidance_velocity,
     run_udp_process_trial,
 )
@@ -50,6 +52,47 @@ def test_start_signal_appears_only_after_complete_json_is_published(tmp_path, mo
     assert json.loads((tmp_path / "start.json").read_text(encoding="utf-8")) == {
         "start_at": 123.25,
     }
+
+
+def test_start_signal_read_retries_transient_windows_permission_error(tmp_path, monkeypatch) -> None:
+    signal = tmp_path / "start.json"
+    signal.write_text('{"start_at": 123.25}', encoding="utf-8")
+    original = Path.read_text
+    attempts = 0
+
+    def intermittently_locked(path, *args, **kwargs):
+        nonlocal attempts
+        if path == signal and attempts < 2:
+            attempts += 1
+            raise PermissionError(13, "sharing violation", str(path))
+        return original(path, *args, **kwargs)
+
+    monkeypatch.setattr(Path, "read_text", intermittently_locked)
+    assert _read_start_signal(signal, timeout_s=0.5) == 123.25
+    assert attempts == 2
+
+
+def test_start_signal_read_times_out_if_access_never_recovers(tmp_path, monkeypatch) -> None:
+    signal = tmp_path / "start.json"
+    signal.write_text('{"start_at": 123.25}', encoding="utf-8")
+
+    def locked(*_args, **_kwargs):
+        raise PermissionError(13, "sharing violation", str(signal))
+
+    monkeypatch.setattr(Path, "read_text", locked)
+    import pytest
+
+    with pytest.raises(TimeoutError, match="start signal"):
+        _read_start_signal(signal, timeout_s=0.03)
+
+
+def test_aggregate_reports_worker_error_before_missing_trace(tmp_path) -> None:
+    import pytest
+
+    config = StressTrialConfig(vehicle_count=2, output_dir=tmp_path)
+    with pytest.raises(RuntimeError, match="PermissionError.*start.json"):
+        _aggregate_stress(config, [{"vehicle_id": 0,
+                                    "error": "PermissionError: start.json"}], tmp_path)
 
 
 def test_local_avoidance_deflects_a_head_on_peer() -> None:

@@ -6,6 +6,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import math
 import sys
 import time
 from pathlib import Path
@@ -14,6 +15,7 @@ ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / 'src'))
 
 from flydrones.benchmark.camera_info_capture import camera_info_capture_failures
+from flydrones.benchmark.contract import Command
 from flydrones.benchmark.ego import EgoController
 from flydrones.benchmark.fly import FullFlyController
 from flydrones.benchmark.gateway import Gateway, NativeGazeboPx4Backend
@@ -23,6 +25,57 @@ from flydrones.benchmark.runner import snapshot_episode_inputs, verify_freeze_ma
 from flydrones.benchmark.score import EpisodeScorer
 from flydrones.benchmark.ulog_capture import episode_exit_code, ulog_evidence_failures
 from flydrones.config import load_config
+
+
+def prelude_step_count(
+    seconds: float, dt_s: float, *, frozen: bool,
+    record_rgb: bool, record_camera_info: bool,
+) -> int:
+    """Validate an explicitly requested development-only hover interval."""
+    if not math.isfinite(seconds) or seconds < 0 or not math.isfinite(dt_s) or dt_s <= 0:
+        raise ValueError('invalid development hover prelude duration or step')
+    if seconds == 0:
+        return 0
+    if frozen or not record_rgb or not record_camera_info:
+        raise ValueError('development hover prelude requires RGB/camera info and no freeze manifest')
+    steps = round(seconds / dt_s)
+    if seconds > 8 or steps < 1 or not math.isclose(steps * dt_s, seconds, abs_tol=1e-9):
+        raise ValueError('development hover prelude must be at most 8 s and a whole step')
+    return steps
+
+
+def run_hover_prelude(
+    gateway: Gateway, scorer: EpisodeScorer, steps: int, *, progress: dict | None = None,
+) -> dict:
+    """Advance through PX4; retain advanced/scored counts and last observed time."""
+    if steps < 0:
+        raise ValueError('development hover prelude steps must be nonnegative')
+    result = progress if progress is not None else {}
+    result.update({'requested_steps': steps, 'actual_steps': 0, 'scored_steps': 0,
+                   'start_sim_ns': None, 'end_sim_ns': None, 'terminal_status': None})
+    if steps == 0:
+        return result
+    initial = gateway.backend.score_sample()
+    result['start_sim_ns'] = initial.sim_ns
+    result['end_sim_ns'] = initial.sim_ns
+    scorer.update(initial)
+    for _ in range(steps):
+        if scorer.status is not None:
+            break
+        gateway.advance(Command((0., 0., 0.), 0.))
+        result['actual_steps'] += 1
+        sample = gateway.backend.score_sample()
+        result['end_sim_ns'] = sample.sim_ns
+        scorer.update(sample)
+        result['scored_steps'] += 1
+    result['terminal_status'] = scorer.status
+    return result
+
+
+def mark_prelude_failure(progress: dict, requested_steps: int, status: str) -> None:
+    """Retain an infrastructure failure only if prelude scoring was unfinished."""
+    if requested_steps and progress['scored_steps'] < requested_steps:
+        progress['terminal_status'] = status
 
 
 def main() -> int:
@@ -38,10 +91,16 @@ def main() -> int:
                         help='development preflight: preserve raw RGB frames and timestamps')
     parser.add_argument('--record-camera-info', action='store_true',
                         help='development preflight: preserve published Gazebo camera info')
+    parser.add_argument('--development-hover-prelude-s', type=float, default=0.,
+                        help='development capture only: post-takeoff zero-command interval')
     args = parser.parse_args()
 
     config = load_benchmark_config(args.config)
     frozen = verify_freeze_manifest(args.freeze_manifest, ROOT) if args.freeze_manifest else None
+    prelude_steps = prelude_step_count(
+        args.development_hover_prelude_s, float(config['control']['dt_s']),
+        frozen=args.freeze_manifest is not None,
+        record_rgb=args.record_rgb, record_camera_info=args.record_camera_info)
     world = json.loads(args.world_json.read_text(encoding='utf-8'))
     args.output.mkdir(parents=True, exist_ok=True)
     result_path = args.output / 'result.json'
@@ -74,15 +133,20 @@ def main() -> int:
     decisions = []
     stage = 'infrastructure'
     started = time.perf_counter()
+    prelude = run_hover_prelude(gateway, scorer, 0)
+    prelude['requested_steps'] = prelude_steps
     try:
         gateway.start(episode_world_sdf)
-        first_observation = gateway.observe()
-        if args.controller.startswith('fly_'):
-            controller.reset(int(world['seed']))
-            controller.warmup(first_observation, seconds=2.1)
-        else:
-            controller.reset(int(world['seed']))
-        scorer.update(backend.score_sample())
+        run_hover_prelude(gateway, scorer, prelude_steps, progress=prelude)
+        if scorer.status is None:
+            first_observation = gateway.observe()
+            if args.controller.startswith('fly_'):
+                controller.reset(int(world['seed']))
+                controller.warmup(first_observation, seconds=2.1)
+            else:
+                controller.reset(int(world['seed']))
+            if prelude_steps == 0:
+                scorer.update(backend.score_sample())
         while scorer.status is None:
             observation = gateway.observe()
             stage = 'controller'
@@ -104,6 +168,7 @@ def main() -> int:
             })
     except Exception as exc:
         scorer.fail('controller_error' if stage == 'controller' else 'infrastructure_error', repr(exc))
+        mark_prelude_failure(prelude, prelude_steps, scorer.status)
     finally:
         try:
             controller.close()
@@ -152,6 +217,8 @@ def main() -> int:
         'camera_info_error': backend.camera_info_error,
         'camera_info_capture_accepted': not camera_info_failures if args.record_camera_info else None,
     })
+    if prelude_steps:
+        payload['development_hover_prelude'] = prelude
     temporary = args.output / 'result.json.tmp'
     temporary.write_text(json.dumps(payload, indent=2, allow_nan=False), encoding='utf-8')
     temporary.replace(result_path)

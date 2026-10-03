@@ -27,6 +27,7 @@ results/openvins-vio-rejection/
 results/openvins-track-geometry/
 results/openvins-clone-motion/
 results/openvins-imu-init/
+results/openvins-stationary-prelude/
 .DS_Store
 Thumbs.db
 .idea/
