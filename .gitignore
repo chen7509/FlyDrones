@@ -23,6 +23,7 @@ results/fly-ego-optical-calib/
 results/fly-ego-dynamic-calib/
 results/openvins-offline-1701/
 results/openvins-texture-dev/
+results/openvins-vio-rejection/
 .DS_Store
 Thumbs.db
 .idea/
