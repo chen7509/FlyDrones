@@ -250,8 +250,36 @@ def test_supervisor_accepts_only_clean_worker_and_preserves_report(monkeypatch, 
             record = {"path": "px4-ulog/log/test.ulg", "bytes": len(raw),
                       "sha256": hashlib.sha256(raw).hexdigest(), "valid_header": True}
             (output / "px4-ulog-manifest.json").write_text(json.dumps({"logs": [record]}))
+            events = []
+            attempts = []
+            samples = []
+            controls = [{"phase": "startup"}]
+            for step in range(1, probe.HOVER_STEPS + 1):
+                before = (step - 1) * 50_000_000
+                after = step * 50_000_000
+                attempt = {"step": step, "local_ned": [0., 0., 0., 0.],
+                           "dt_s": .05, "completed": False}
+                sample = {"sim_ns": after,
+                          "position_gazebo_truth_for_scoring_only_m": [0., 0., 2.1],
+                          "clearance_m": 2., "contact": False, "in_bounds": True}
+                events.extend([{"kind": "command_attempt", **attempt},
+                               {"kind": "sample", "step": step, **sample}])
+                attempts.append({**attempt, "completed": True})
+                samples.append(sample)
+                controls.append({"method": "gz.sim8.Server.run", "return_value": True,
+                                 "sim_ns_before": before, "sim_ns_after_run": after,
+                                 "steps": 50})
+            progress = b"".join((json.dumps(event, sort_keys=True) + "\n").encode()
+                                for event in events)
+            (output / "probe-progress.ndjson").write_bytes(progress)
             (output / "probe-result.json").write_text(json.dumps({
-                "status": "diagnostic_complete", "ulog_evidence": [record]}))
+                "status": "diagnostic_complete", "ulog_evidence": [record],
+                "steps_completed": 80, "command_attempts": attempts, "samples": samples,
+                "control_records": controls,
+                "offboard_evidence": [{"sim_ns": 3_500_000_000, "custom_mode": 393216,
+                                       "base_mode": 145}],
+                "progress_sha256": hashlib.sha256(progress).hexdigest(),
+                "progress_line_count": 160}))
             return "complete", ""
 
     monkeypatch.setattr(probe.subprocess, "Popen", lambda *args, **kwargs: CompleteWorker())
@@ -260,8 +288,63 @@ def test_supervisor_accepts_only_clean_worker_and_preserves_report(monkeypatch, 
     monkeypatch.setattr(probe, "_recover_ulog", lambda path: {"status": "already_captured"})
     result = probe.supervise_probe(tmp_path / "source.zip", tmp_path / "index.json", output)
     assert result["status"] == "diagnostic_complete"
+    assert result["progress_validation"]["status"] == "verified"
     assert result["worker_stdout_tail"] == "complete"
     assert json.loads((output / "probe-result.json").read_text())["status"] == "diagnostic_complete"
+
+
+def test_supervisor_rejects_truncated_progress_despite_valid_ulog(monkeypatch, tmp_path):
+    output = tmp_path / "truncated-progress"
+
+    class CompleteWorker:
+        returncode = 0
+
+        def communicate(self, *, timeout):
+            output.mkdir()
+            log = output / "px4-ulog/log/test.ulg"
+            log.parent.mkdir(parents=True)
+            raw = b"ULog\x01\x12\x35" + b"0" * 9
+            log.write_bytes(raw)
+            record = {"path": "px4-ulog/log/test.ulg", "bytes": len(raw),
+                      "sha256": hashlib.sha256(raw).hexdigest(), "valid_header": True}
+            (output / "px4-ulog-manifest.json").write_text(json.dumps({"logs": [record]}))
+            (output / "probe-result.json").write_text(json.dumps({
+                "status": "diagnostic_complete", "ulog_evidence": [record],
+                "steps_completed": 80, "offboard_evidence": [{"sim_ns": 0,
+                "custom_mode": 393216, "base_mode": 145}]}))
+            return "complete", ""
+
+    monkeypatch.setattr(probe.subprocess, "Popen", lambda *args, **kwargs: CompleteWorker())
+    monkeypatch.setattr(probe, "_cleanup_owned_processes", lambda path: {
+        "terminated": [], "still_running": [], "unverified": []})
+    monkeypatch.setattr(probe, "_recover_ulog", lambda path: {"status": "already_captured"})
+    result = probe.supervise_probe(tmp_path / "source.zip", tmp_path / "index.json", output)
+    assert result["status"] == "evidence_invalid"
+    assert result["ulog_validation"]["status"] == "verified"
+    assert result["progress_validation"]["status"] == "invalid"
+
+
+def test_recover_ulog_retains_partial_copy_and_saves_complete_runtime_log(
+        monkeypatch, tmp_path):
+    monkeypatch.setattr(probe.Path, "home", classmethod(lambda cls: tmp_path))
+    runtime = tmp_path / "fly-ego-benchmark/runtime/probe-one"
+    source = runtime / "log/flight.ulg"
+    source.parent.mkdir(parents=True)
+    raw = b"ULog\x01\x12\x35" + b"0" * 9 + b"complete-flight"
+    source.write_bytes(raw)
+    output = tmp_path / "episode"
+    partial = output / "px4-ulog/log/flight.ulg"
+    partial.parent.mkdir(parents=True)
+    partial.write_bytes(raw[:18])
+    (output / "px4-runtime.json").write_text(json.dumps({"runtime": str(runtime)}))
+
+    recovered = probe._recover_ulog(output)
+
+    assert recovered["status"] == "recovered_separately"
+    assert partial.read_bytes() == raw[:18]
+    complete = output / "ulog-recovery/px4-ulog/log/flight.ulg"
+    assert complete.read_bytes() == raw
+    assert recovered["logs"][0]["sha256"] == hashlib.sha256(raw).hexdigest()
 
 
 def test_supervisor_rejects_worker_success_without_verifiable_ulog(monkeypatch, tmp_path):

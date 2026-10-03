@@ -16,6 +16,7 @@ ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / "src"))
 
+from flydrones.benchmark.clock import require_offboard  # noqa: E402
 from flydrones.benchmark.gateway import NativeGazeboPx4Backend  # noqa: E402
 from flydrones.benchmark.ulog_capture import (  # noqa: E402
     collect_ulogs,
@@ -204,12 +205,13 @@ def _recover_ulog(output: Path) -> dict:
     """After process release, retain a raw ULog left before normal close."""
     output = Path(output)
     manifest = output / "px4-ulog-manifest.json"
+    manifest_error = None
     if manifest.is_file():
         try:
             return {"status": "already_captured",
                     "logs": json.loads(manifest.read_text(encoding="utf-8"))["logs"]}
         except (OSError, json.JSONDecodeError, KeyError) as exc:
-            return {"status": "manifest_invalid", "error": repr(exc)}
+            manifest_error = repr(exc)
     runtime_manifest = output / "px4-runtime.json"
     if not runtime_manifest.is_file():
         return {"status": "runtime_missing"}
@@ -218,9 +220,23 @@ def _recover_ulog(output: Path) -> dict:
         allowed = (Path.home() / "fly-ego-benchmark/runtime").resolve()
         if not runtime.is_relative_to(allowed) or runtime == allowed:
             raise ValueError("PX4 runtime outside development root")
-        logs = collect_ulogs(runtime, output)
-        return {"status": "recovered" if logs else "raw_ulog_missing",
-                "runtime": str(runtime), "logs": logs}
+        if manifest_error is None:
+            try:
+                logs = collect_ulogs(runtime, output)
+                return {"status": "recovered" if logs else "raw_ulog_missing",
+                        "runtime": str(runtime), "logs": logs}
+            except FileExistsError as exc:
+                manifest_error = repr(exc)
+        # An interrupted copy or manifest write may already occupy the normal
+        # destination. Preserve those bytes and copy the flushed runtime log
+        # under a separate, non-overwriting failure-evidence directory.
+        recovery_output = output / "ulog-recovery"
+        if recovery_output.exists():
+            raise FileExistsError(recovery_output)
+        logs = collect_ulogs(runtime, recovery_output)
+        return {"status": "recovered_separately" if logs else "raw_ulog_missing",
+                "runtime": str(runtime), "recovery_output": str(recovery_output),
+                "original_error": manifest_error, "logs": logs}
     except (OSError, ValueError, KeyError, json.JSONDecodeError) as exc:
         return {"status": "recovery_error", "error": repr(exc),
                 "runtime_manifest": str(runtime_manifest)}
@@ -312,7 +328,7 @@ def run_probe(output: Path, *, backend_factory=NativeGazeboPx4Backend,
             if (not backend.ulog_evidence and not result["cleanup"]["still_running"]
                     and not result["cleanup"]["unverified"]):
                 result["ulog_recovery"] = _recover_ulog(output)
-                if result["ulog_recovery"].get("logs"):
+                if result["ulog_recovery"].get("status") == "recovered":
                     backend.ulog_evidence = result["ulog_recovery"]["logs"]
             result["ulog_evidence"] = backend.ulog_evidence
             result["ulog_capture_error"] = backend.ulog_capture_error
@@ -410,6 +426,75 @@ def _stop_worker(worker) -> list[str]:
     return errors
 
 
+def validate_probe_progress(output: Path, worker_result: dict | None) -> dict:
+    """Require a complete, durable OFFBOARD trajectory before declaring success."""
+    path = Path(output) / "probe-progress.ndjson"
+    try:
+        if not isinstance(worker_result, dict) or not path.is_file():
+            raise ValueError("worker result or durable progress missing")
+        raw = path.read_bytes()
+        events = [json.loads(line) for line in raw.splitlines()]
+        if (not raw.endswith(b"\n") or len(events) != 2 * HOVER_STEPS
+                or worker_result.get("progress_sha256") != _digest(raw)
+                or worker_result.get("progress_line_count") != len(events)
+                or worker_result.get("steps_completed") != HOVER_STEPS):
+            raise ValueError("durable progress count or hash differs from worker result")
+        attempts = worker_result.get("command_attempts")
+        samples = worker_result.get("samples")
+        controls = worker_result.get("control_records")
+        if (not isinstance(attempts, list) or len(attempts) != HOVER_STEPS
+                or not isinstance(samples, list) or len(samples) != HOVER_STEPS
+                or not isinstance(controls, list) or len(controls) != HOVER_STEPS + 1):
+            raise ValueError("incomplete command, sample or physics record")
+        previous_sim_ns = None
+        for index, (attempt, sample, control) in enumerate(
+                zip(attempts, samples, controls[1:], strict=True), 1):
+            if (not isinstance(attempt, dict) or attempt.get("step") != index
+                    or attempt.get("local_ned") != [0., 0., 0., 0.]
+                    or attempt.get("dt_s") != DT_S
+                    or attempt.get("completed") is not True
+                    or events[2 * index - 2] != {
+                        "kind": "command_attempt", **{**attempt, "completed": False}}):
+                raise ValueError(f"command {index} missing or changed")
+            if (not isinstance(sample, dict) or events[2 * index - 1] != {
+                    "kind": "sample", "step": index, **sample}
+                    or type(sample.get("sim_ns")) is not int
+                    or sample.get("contact") is not False
+                    or sample.get("in_bounds") is not True
+                    or type(sample.get("clearance_m")) not in (int, float)
+                    or not math.isfinite(sample["clearance_m"])
+                    or sample["clearance_m"] <= 0):
+                raise ValueError(f"sample {index} missing, unsafe or changed")
+            sim_ns = sample["sim_ns"]
+            if (not isinstance(control, dict)
+                    or control.get("method") != "gz.sim8.Server.run"
+                    or control.get("return_value") is not True
+                    or control.get("steps") != round(DT_S / .001)
+                    or control.get("sim_ns_after_run") != sim_ns
+                    or control.get("sim_ns_before") != sim_ns - round(DT_S * 1e9)
+                    or (previous_sim_ns is not None and
+                        sim_ns != previous_sim_ns + round(DT_S * 1e9))):
+                raise ValueError(f"physics step {index} missing or changed")
+            previous_sim_ns = sim_ns
+        offboard = worker_result.get("offboard_evidence")
+        if not isinstance(offboard, list) or not offboard:
+            raise ValueError("OFFBOARD evidence missing")
+        last_heartbeat_ns = -1
+        for record in offboard:
+            if (not isinstance(record, dict) or type(record.get("sim_ns")) is not int
+                    or type(record.get("custom_mode")) is not int
+                    or type(record.get("base_mode")) is not int):
+                raise ValueError("OFFBOARD heartbeat invalid")
+            require_offboard(record["custom_mode"], record["base_mode"])
+            last_heartbeat_ns = max(last_heartbeat_ns, record["sim_ns"])
+        if not previous_sim_ns - 1_000_000_000 <= last_heartbeat_ns <= previous_sim_ns:
+            raise ValueError("OFFBOARD heartbeat stale or in the future")
+        return {"status": "verified", "steps": HOVER_STEPS}
+    except (OSError, ValueError, TypeError, KeyError, RuntimeError,
+            json.JSONDecodeError) as exc:
+        return {"status": "invalid", "reason": repr(exc)}
+
+
 def supervise_probe(archive: Path, index_path: Path, output: Path,
                     *, timeout_s: int = MAX_WALL_S,
                     takeoff_alt_m: float = TAKEOFF_ALT_M) -> dict:
@@ -458,6 +543,7 @@ def supervise_probe(archive: Path, index_path: Path, output: Path,
         ulog_validation = {"status": "verified"}
     except (OSError, KeyError, ValueError, TypeError) as exc:
         ulog_validation = {"status": "invalid", "reason": repr(exc)}
+    progress_validation = validate_probe_progress(output, worker_result)
 
     if timed_out:
         status = "supervisor_timeout"
@@ -468,7 +554,9 @@ def supervise_probe(archive: Path, index_path: Path, output: Path,
     elif worker.returncode != 0 or not isinstance(worker_result, dict) or (
             worker_result.get("status") != "diagnostic_complete"):
         status = "worker_failed"
-    elif recovery["status"] != "already_captured" or ulog_validation["status"] != "verified":
+    elif (recovery["status"] != "already_captured"
+          or ulog_validation["status"] != "verified"
+          or progress_validation["status"] != "verified"):
         status = "evidence_invalid"
     else:
         status = "diagnostic_complete"
@@ -497,6 +585,7 @@ def supervise_probe(archive: Path, index_path: Path, output: Path,
         "cleanup": cleanup,
         "ulog_recovery": recovery,
         "ulog_validation": ulog_validation,
+        "progress_validation": progress_validation,
         "probe_result_status": worker_result.get("status") if isinstance(worker_result, dict) else None,
         "progress_sha256": _digest(progress_bytes) if progress_path.is_file() else None,
         "progress_line_count": progress_bytes.count(b"\n"),
