@@ -25,6 +25,7 @@ results/openvins-offline-1701/
 results/openvins-texture-dev/
 results/openvins-vio-rejection/
 results/openvins-track-geometry/
+results/openvins-clone-motion/
 .DS_Store
 Thumbs.db
 .idea/
