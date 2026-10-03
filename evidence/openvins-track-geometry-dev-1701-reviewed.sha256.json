@@ -1,0 +1,95 @@
+{
+  "archive_bytes": 145169,
+  "archive_sha256": "1be252939803721f64a5dcab1a03dc835def11169116923c1a2c9eb4f40cd8e7",
+  "files": {
+    "docs/OPENVINS_TRACK_GEOMETRY_REPORT.md": {
+      "bytes": 5577,
+      "sha256": "b165bc5939fa04c047c574ffc568d175fc820255b02e06359f11380755b337ff"
+    },
+    "docs/superpowers/plans/2026-10-03-openvins-track-geometry-audit.md": {
+      "bytes": 2792,
+      "sha256": "27c0b47456dd2cf08f3f625228dd07d7ef98be456af1d59320390f4ce5acd0c4"
+    },
+    "docs/superpowers/specs/2026-10-03-openvins-track-geometry-audit.md": {
+      "bytes": 3372,
+      "sha256": "067588a436b12eea911dab51ac08e20671078651ccb109c96621c1224175d4bd"
+    },
+    "results/openvins-offline-1701/runner-v3/offline_probe.cpp": {
+      "bytes": 6034,
+      "sha256": "ed966a7d15a345f85e814e8a0bdbd3f2cfbf0a0f10bcbf789de9cbba2b06e70a"
+    },
+    "results/openvins-texture-dev/config-v2/estimator_config.yaml": {
+      "bytes": 6069,
+      "sha256": "eaa40224f0de2f4c5b0f1d33504d215670544b9cc000252a0e92f404478360e6"
+    },
+    "results/openvins-texture-dev/config-v2/kalibr_imucam_chain.yaml": {
+      "bytes": 544,
+      "sha256": "120fb34ae45fec5d0c3cf838d053e7b0b79808c64b3fdb89923c4df09ec1a0cf"
+    },
+    "results/openvins-texture-dev/input-v1/manifest.json": {
+      "bytes": 1429,
+      "sha256": "43a89a14eed0afeb018e970ee1f37313c987f5c2ef74253d177850dcff9b469b"
+    },
+    "results/openvins-texture-dev/openvins-run-v2/states.csv": {
+      "bytes": 69218,
+      "sha256": "f0f1966527c80bc49a5d219053a3e9c282aeb04eab7439dccd0fe3d265f8740f"
+    },
+    "results/openvins-track-geometry/REPRODUCE.md": {
+      "bytes": 1901,
+      "sha256": "6ac3beaa53d958f8f8871534524bf81390e4b49d5708a75b587d3514371b7880"
+    },
+    "results/openvins-track-geometry/archive_evidence.py": {
+      "bytes": 4798,
+      "sha256": "19442c717d081e1c559f01f318e8eca5cbd40623ca4e56f99855d8882fbc684b"
+    },
+    "results/openvins-track-geometry/audit-v3/attempts.csv": {
+      "bytes": 34394,
+      "sha256": "0b41d03bb64fbf2100aa31012ec42308fc452be746e26062412ed0782397d980"
+    },
+    "results/openvins-track-geometry/audit-v3/summary.json": {
+      "bytes": 2009,
+      "sha256": "f4191755315f5b913b7f3438df2ddc4fad16d279539e41bce9598a59aa712dd0"
+    },
+    "results/openvins-track-geometry/instrument_tracks.py": {
+      "bytes": 1308,
+      "sha256": "e9d6829dcc9b5c61c4b142d9b34c419ad39ca026d73daf33942566ba359dbaa0"
+    },
+    "results/openvins-track-geometry/instrumentation.patch": {
+      "bytes": 6875,
+      "sha256": "f6ea84fa3e42293fe10b8620722e06f4dfa6bee4c8b39e7d6ebf674898334762"
+    },
+    "results/openvins-track-geometry/metadata.json": {
+      "bytes": 1156,
+      "sha256": "ce0baba4815ab662c4e5bddf034c5f307102887e7eb45f2f131bea3d063a1408"
+    },
+    "results/openvins-track-geometry/replay-v1/exit-code.txt": {
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    "results/openvins-track-geometry/replay-v1/resources.txt": {
+      "bytes": 983,
+      "sha256": "1fa718e594acd21b69adbfc657e7606f556a13d5ff2478a72bf899833c01b552"
+    },
+    "results/openvins-track-geometry/replay-v1/states.csv": {
+      "bytes": 69218,
+      "sha256": "f0f1966527c80bc49a5d219053a3e9c282aeb04eab7439dccd0fe3d265f8740f"
+    },
+    "results/openvins-track-geometry/replay-v1/stderr.txt": {
+      "bytes": 226318,
+      "sha256": "d39b46831abdb72e208f068dc9bfade362ba2c9952ac2429327a24599398fee6"
+    },
+    "results/openvins-track-geometry/replay-v1/stdout.txt": {
+      "bytes": 345435,
+      "sha256": "c8f6612fc872922f346b529f454508a6e037c02831b7b6ae7867ab5e1468edd4"
+    },
+    "tests/benchmark/test_openvins_track_geometry.py": {
+      "bytes": 6961,
+      "sha256": "1cbe0c4bda70bcddea60035988246a4ad44b1b31988ccbe88a5ef0c4f2cf34f8"
+    },
+    "tools/benchmark/audit_openvins_track_geometry.py": {
+      "bytes": 18951,
+      "sha256": "e185857b3dfc6c711c892e35d56a8ef365b3d8c515ac89aceb139712f52cf62b"
+    }
+  },
+  "schema": "flydrones-archive-index-v1"
+}

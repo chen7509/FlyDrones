@@ -24,6 +24,7 @@ results/fly-ego-dynamic-calib/
 results/openvins-offline-1701/
 results/openvins-texture-dev/
 results/openvins-vio-rejection/
+results/openvins-track-geometry/
 .DS_Store
 Thumbs.db
 .idea/
