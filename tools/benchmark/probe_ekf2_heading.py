@@ -57,8 +57,15 @@ MAX_WALL_S = 900
 INPUT_NAMES = ("world.json", "world.sdf", "ground_albedo.png", "obstacle_albedo.png")
 
 
-def prepare_probe_inputs(archive: Path, index_path: Path, output: Path) -> dict:
+def _validate_paired_altitude(takeoff_alt_m: float) -> None:
+    if type(takeoff_alt_m) is not float or takeoff_alt_m not in (1.26, 2.1):
+        raise ValueError("paired altitude must be 1.26 or 2.1 m")
+
+
+def prepare_probe_inputs(archive: Path, index_path: Path, output: Path,
+                         *, takeoff_alt_m: float = TAKEOFF_ALT_M) -> dict:
     """Copy only byte-verified historical development world inputs once."""
+    _validate_paired_altitude(takeoff_alt_m)
     archive, index_path, output = Path(archive), Path(index_path), Path(output)
     if output.exists():
         raise FileExistsError(output)
@@ -82,7 +89,7 @@ def prepare_probe_inputs(archive: Path, index_path: Path, output: Path) -> dict:
         "index_sha256": _digest_file(index_path),
         "inputs": {name: {"sha256": _digest(raw), "bytes": len(raw)}
                    for name, raw in inputs.items()},
-        "takeoff_alt_m": TAKEOFF_ALT_M,
+        "takeoff_alt_m": takeoff_alt_m,
         "takeoff_timeout_s": TAKEOFF_TIMEOUT_S,
         "hover_steps": HOVER_STEPS,
         "step_s": DT_S,
@@ -220,8 +227,10 @@ def _recover_ulog(output: Path) -> dict:
 
 
 def run_probe(output: Path, *, backend_factory=NativeGazeboPx4Backend,
-              px4_provenance: dict | None = None) -> dict:
+              px4_provenance: dict | None = None,
+              takeoff_alt_m: float = TAKEOFF_ALT_M) -> dict:
     """Run only neutral PX4 velocity targets, retaining failures and ULog."""
+    _validate_paired_altitude(takeoff_alt_m)
     output = Path(output)
     result_path = output / "probe-result.json"
     if result_path.exists():
@@ -238,7 +247,7 @@ def run_probe(output: Path, *, backend_factory=NativeGazeboPx4Backend,
         "failure": None,
         "steps_requested": HOVER_STEPS,
         "steps_completed": 0,
-        "takeoff_alt_m": TAKEOFF_ALT_M,
+        "takeoff_alt_m": takeoff_alt_m,
         "takeoff_timeout_s": TAKEOFF_TIMEOUT_S,
         "step_s": DT_S,
         "samples": [],
@@ -263,7 +272,7 @@ def run_probe(output: Path, *, backend_factory=NativeGazeboPx4Backend,
         if working_world.exists():
             raise FileExistsError(working_world)
         working_world.write_bytes((output / "world.sdf").read_bytes())
-        backend = backend_factory(ROOT, output, world, takeoff_alt_m=TAKEOFF_ALT_M,
+        backend = backend_factory(ROOT, output, world, takeoff_alt_m=takeoff_alt_m,
                                   takeoff_timeout_s=TAKEOFF_TIMEOUT_S)
         backend.start(working_world)
         for step in range(HOVER_STEPS):
@@ -402,14 +411,16 @@ def _stop_worker(worker) -> list[str]:
 
 
 def supervise_probe(archive: Path, index_path: Path, output: Path,
-                    *, timeout_s: int = MAX_WALL_S) -> dict:
+                    *, timeout_s: int = MAX_WALL_S,
+                    takeoff_alt_m: float = TAKEOFF_ALT_M) -> dict:
     """Bound blocking Gazebo calls; verify evidence and release owned processes."""
+    _validate_paired_altitude(takeoff_alt_m)
     archive, index_path, output = Path(archive), Path(index_path), Path(output)
     if output.exists():
         raise FileExistsError(output)
     command = [sys.executable, str(Path(__file__).resolve()), "--worker",
                "--archive", str(archive), "--index", str(index_path),
-               "--output", str(output)]
+               "--output", str(output), "--takeoff-alt-m", str(takeoff_alt_m)]
     worker = subprocess.Popen(
         command, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
         text=True, start_new_session=True,
@@ -503,6 +514,8 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--archive", type=Path, required=True)
     parser.add_argument("--index", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--takeoff-alt-m", type=float, choices=(1.26, 2.1),
+                        default=TAKEOFF_ALT_M)
     parser.add_argument("--worker", action="store_true", help=argparse.SUPPRESS)
     args = parser.parse_args(argv)
     if not args.worker:
@@ -513,15 +526,18 @@ def main(argv: list[str] | None = None) -> int:
 
         signal.signal(signal.SIGTERM, interrupt_on_sigterm)
         try:
-            result = supervise_probe(args.archive, args.index, args.output)
+            result = supervise_probe(args.archive, args.index, args.output,
+                                     takeoff_alt_m=args.takeoff_alt_m)
         finally:
             signal.signal(signal.SIGTERM, previous_sigterm)
         print(json.dumps({"status": result["status"],
                           "output": str(args.output)}, sort_keys=True))
         return 0 if result["status"] == "diagnostic_complete" else 1
     provenance = _px4_provenance()
-    prepare_probe_inputs(args.archive, args.index, args.output)
-    result = run_probe(args.output, px4_provenance=provenance)
+    prepare_probe_inputs(args.archive, args.index, args.output,
+                         takeoff_alt_m=args.takeoff_alt_m)
+    result = run_probe(args.output, px4_provenance=provenance,
+                       takeoff_alt_m=args.takeoff_alt_m)
     print(json.dumps({"status": result["status"],
                       "steps_completed": result["steps_completed"],
                       "output": str(args.output)}, sort_keys=True))

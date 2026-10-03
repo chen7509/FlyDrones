@@ -42,8 +42,9 @@ class FakeBackend:
     emit_offboard = True
 
     def __init__(self, root, output, world, *, takeoff_alt_m, takeoff_timeout_s):
-        assert takeoff_alt_m == 2.1
+        assert takeoff_alt_m in (1.26, 2.1)
         assert takeoff_timeout_s == 90.
+        self.takeoff_alt_m = takeoff_alt_m
         self.steps = 0
         self.closed = False
         self.started = False
@@ -113,6 +114,22 @@ def test_probe_only_hovers_for_four_seconds_and_closes(tmp_path):
     assert (output / "working-world.sdf").read_text() == "<sdf mutated/>"
     with pytest.raises(FileExistsError):
         run_probe(output, backend_factory=FakeBackend)
+
+
+def test_probe_paired_low_altitude_uses_same_backend_and_records_variant(tmp_path):
+    FakeBackend.instances.clear()
+    FakeBackend.fail_at = None
+    FakeBackend.emit_ulog = True
+    FakeBackend.emit_offboard = True
+    result = run_probe(_inputs(tmp_path), backend_factory=FakeBackend,
+                       takeoff_alt_m=1.26)
+    assert result["status"] == "diagnostic_complete"
+    assert result["takeoff_alt_m"] == 1.26
+    assert FakeBackend.instances[-1].takeoff_alt_m == 1.26
+    invalid = tmp_path / "invalid"
+    invalid.mkdir()
+    with pytest.raises(ValueError, match="paired altitude"):
+        run_probe(_inputs(invalid), backend_factory=FakeBackend, takeoff_alt_m=1.8)
 
 
 def test_probe_failure_keeps_partial_samples_and_closes(tmp_path):
