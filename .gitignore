@@ -28,6 +28,7 @@ results/openvins-track-geometry/
 results/openvins-clone-motion/
 results/openvins-imu-init/
 results/openvins-stationary-prelude/
+results/openvins-delayed-feed/
 .DS_Store
 Thumbs.db
 .idea/

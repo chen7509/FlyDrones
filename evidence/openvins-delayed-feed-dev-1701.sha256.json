@@ -1,0 +1,164 @@
+{
+  "archive_bytes": 1053008,
+  "archive_sha256": "51a96034f1ba75d1f29a682428274a1d3a5449cb22c0fa1d8ba0414ec51ff530",
+  "files": {
+    "docs/OPENVINS_DELAYED_FEED_REPORT.md": {
+      "bytes": 5516,
+      "sha256": "9a5058a43adf50a20a71d62d834ed31b897518406d43fc959e94a2c3b1afec0b"
+    },
+    "docs/superpowers/plans/2026-10-03-openvins-delayed-feed-diagnostic.md": {
+      "bytes": 1292,
+      "sha256": "df738f9545dec1bd3595f699d4bbe934b87c2c1b5527ed23345e97242a68482e"
+    },
+    "docs/superpowers/specs/2026-10-03-openvins-delayed-feed-diagnostic.md": {
+      "bytes": 2369,
+      "sha256": "c111b46899556d268d9c3d9fb3b6613d6bd3c6876eee4085e455ed214f3584a8"
+    },
+    "results/openvins-clone-motion/REPRODUCE.md": {
+      "bytes": 2466,
+      "sha256": "e6b52bb0a95846759916481790889ab424ec5e5f5823d50cff1e4ef926479016"
+    },
+    "results/openvins-clone-motion/instrumentation.patch": {
+      "bytes": 7898,
+      "sha256": "cd068993e1a47b806a4c303d83f17f341a14379de473bf4526230b07ccef7322"
+    },
+    "results/openvins-clone-motion/metadata.json": {
+      "bytes": 1412,
+      "sha256": "fb611772765939c903639671783c3340707870430976dd269d665a0a76c6f98b"
+    },
+    "results/openvins-delayed-feed/archive_evidence.py": {
+      "bytes": 3562,
+      "sha256": "333618718c253a6b87e46d9adfd77e598e640288bff4b75117e7948a0570ee98"
+    },
+    "results/openvins-delayed-feed/input-v1/frames.csv": {
+      "bytes": 14832,
+      "sha256": "84eb2e904f6ff60d050fc80c21f1f69ab242c9c9c25b870b62cc04a89b412b0d"
+    },
+    "results/openvins-delayed-feed/input-v1/imu.csv": {
+      "bytes": 1264139,
+      "sha256": "07ccc58bf2f13a592ca6910ca459af8f5a18089f74128e19947b71b2df5ebe32"
+    },
+    "results/openvins-delayed-feed/input-v1/manifest.json": {
+      "bytes": 979,
+      "sha256": "3fe501a4ab48a30e23d62d7ec7bb6ef020064a27c6dc8dea0aeaa3cc11b9ccb8"
+    },
+    "results/openvins-delayed-feed/replay-v1/baseline-common-window-audit.json": {
+      "bytes": 1535,
+      "sha256": "2a5632d99194dc0689ea48b869bea69560da0e1f6d1de7c072755568943970a4"
+    },
+    "results/openvins-delayed-feed/replay-v1/baseline-common-window.csv": {
+      "bytes": 56231,
+      "sha256": "5745f0e4b1f641d8087da155a68c802a07b12eb862d993fabb89494261aa75df"
+    },
+    "results/openvins-delayed-feed/replay-v1/exit-code.txt": {
+      "bytes": 3,
+      "sha256": "13bf7b3039c63bf5a50491fa3cfd8eb4e699d1ba1436315aef9cbe5711530354"
+    },
+    "results/openvins-delayed-feed/replay-v1/init_velocity_summary.json": {
+      "bytes": 549,
+      "sha256": "e15b3a65711ad5611ba24fd0e95ede0bbb24ad249014f67cab06338c2d5ae849"
+    },
+    "results/openvins-delayed-feed/replay-v1/init_velocity_window.csv": {
+      "bytes": 24112,
+      "sha256": "01076699fc43cd8d4fecaa77e594d896510f4c583d5232a17622446fe1432257"
+    },
+    "results/openvins-delayed-feed/replay-v1/replay-command.json": {
+      "bytes": 909,
+      "sha256": "81a12a53c9b863af25230a40446798316cfa4e1a347c8b8678a35833c4b2e8c3"
+    },
+    "results/openvins-delayed-feed/replay-v1/resources.txt": {
+      "bytes": 1332,
+      "sha256": "290879dce1df9df08635380b32ff26da51cf3e7cac4a4ddafc9cad65520c5efb"
+    },
+    "results/openvins-delayed-feed/replay-v1/states.csv": {
+      "bytes": 58308,
+      "sha256": "422a0e507aa6568d752942b1019732dfd00618224da66cc5c7506f536867e080"
+    },
+    "results/openvins-delayed-feed/replay-v1/stderr.txt": {
+      "bytes": 431880,
+      "sha256": "bfac82a66c288fc67c7451c7416675c02e2162112c50054975fbf392be646523"
+    },
+    "results/openvins-delayed-feed/replay-v1/stdout.txt": {
+      "bytes": 288459,
+      "sha256": "f61d80d910c31e8888ac2cb9ec583463f70799582b20578c65db621cf4eca772"
+    },
+    "results/openvins-delayed-feed/replay-v1/trajectory-audit.json": {
+      "bytes": 1809,
+      "sha256": "264b43b59ab7c805f5d888177a36b05ac13229b24f4b1767dcd07522ccb85827"
+    },
+    "results/openvins-delayed-feed/score_common_window.py": {
+      "bytes": 1223,
+      "sha256": "d6c4efaec9ef33bb399bf9e612a707f30439148389b375383687a7f0e7ef488b"
+    },
+    "results/openvins-delayed-feed/score_init_window.py": {
+      "bytes": 1152,
+      "sha256": "b32b5088305e8cec4e57439d804b203855d38da9a1c57a4953024f46cf13d361"
+    },
+    "results/openvins-offline-1701/runner-v3/offline_probe": {
+      "bytes": 385248,
+      "sha256": "bf811d145e82a0b70b7eb242349d429e56261212dc5e6986491720b9fd460899"
+    },
+    "results/openvins-offline-1701/runner-v3/offline_probe.cpp": {
+      "bytes": 6034,
+      "sha256": "ed966a7d15a345f85e814e8a0bdbd3f2cfbf0a0f10bcbf789de9cbba2b06e70a"
+    },
+    "results/openvins-stationary-prelude/episode-v1/camera-info.json": {
+      "bytes": 785,
+      "sha256": "746c9661940827f967b28bf05ad8d88001416ced34294a2530d048fb79a8116c"
+    },
+    "results/openvins-stationary-prelude/episode-v1/px4-ulog-manifest.json": {
+      "bytes": 267,
+      "sha256": "bace201976e133002283e5763811dd1114f6d87e51353a59e347dd149e1dd714"
+    },
+    "results/openvins-stationary-prelude/episode-v1/result.json": {
+      "bytes": 1300277,
+      "sha256": "4fe7bd9b62a5f021e0816d9fd22cfb4448562ec8483bd6b8602137c6ef42c380"
+    },
+    "results/openvins-stationary-prelude/episode-v1/rgb-capture-manifest.json": {
+      "bytes": 139996,
+      "sha256": "a1cb7a83a616f134b60cc53ba3cb7cd8e5476d5c229390221d2d92053815591f"
+    },
+    "results/openvins-stationary-prelude/input-v1/manifest.json": {
+      "bytes": 1446,
+      "sha256": "e5154775d583dadb4e2805b4829178eef4e17f967e93ace08d852c3e362ace37"
+    },
+    "results/openvins-stationary-prelude/replay-v1/states.csv": {
+      "bytes": 74696,
+      "sha256": "0c081d6009b4c13d6e0af0bd5724ca1a8a9d84fb894c9a8d1d44bbf1b6b111d6"
+    },
+    "results/openvins-stationary-prelude/replay-v1/trajectory-audit.json": {
+      "bytes": 1827,
+      "sha256": "4ae0df08bf661eb06bbb970484471607f3b780c0d512d1779b3d89f404930b0a"
+    },
+    "results/openvins-texture-dev/config-v2/estimator_config.yaml": {
+      "bytes": 6069,
+      "sha256": "eaa40224f0de2f4c5b0f1d33504d215670544b9cc000252a0e92f404478360e6"
+    },
+    "results/openvins-texture-dev/config-v2/kalibr_imu_chain.yaml": {
+      "bytes": 1364,
+      "sha256": "6accf2467907df4723419a8f82e772b537b699bbb67a9a9f69097286e1e8b114"
+    },
+    "results/openvins-texture-dev/config-v2/kalibr_imucam_chain.yaml": {
+      "bytes": 544,
+      "sha256": "120fb34ae45fec5d0c3cf838d053e7b0b79808c64b3fdb89923c4df09ec1a0cf"
+    },
+    "tests/benchmark/test_openvins_delayed_feed.py": {
+      "bytes": 2977,
+      "sha256": "c4349bb0b5d7fbe4ff7614feef7a5a446b652d10b984d980a1a622f6361b37d1"
+    },
+    "tools/benchmark/analyze_openvins_trajectory.py": {
+      "bytes": 6694,
+      "sha256": "5e36fb13516ca5d551b12fe0b7be9e2637bba10fe36700b56fe39b91fcea5d18"
+    },
+    "tools/benchmark/audit_openvins_imu_init.py": {
+      "bytes": 11468,
+      "sha256": "95642c07cfb96f812ecc7fa26e3325029a33b7cf3d0d94a53ab9177fa1d40924"
+    },
+    "tools/benchmark/prepare_openvins_delayed_feed.py": {
+      "bytes": 7440,
+      "sha256": "de3df9de29ec4877b9391a6e0e55b2ace33279797e1ff1d1b162147f1b148361"
+    }
+  },
+  "prior_episode_archive_sha256": "20200cd589e4bf9c6b88cc1c9b9ba0a8673466405d0509a8ef305226b1a88d30",
+  "schema": "flydrones-archive-index-v1"
+}
