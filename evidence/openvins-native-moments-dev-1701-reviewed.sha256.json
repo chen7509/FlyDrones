@@ -1,0 +1,30 @@
+{
+  "archive_sha256": "e3bf56b27f630e4c4f45b81132b078683cf59c4f718cc2d0c55c6d5f38e74f3d",
+  "members": {
+    "docs/OPENVINS_NATIVE_MOMENTS_REPORT.md": "d3a3d422eb123640e2882c12e2b5e644a4832688ee04e2ce8ec0bbe368b9340d",
+    "docs/superpowers/plans/2026-10-03-openvins-native-moments-replay.md": "8a3e35086dfc105c7cd970dac74c0f0f492942d3464974a3f65b92ad45b40fe7",
+    "docs/superpowers/specs/2026-10-03-openvins-native-moments-replay.md": "cd1c72e67dac5233f2b9eff3acf1de92edf1c713f3588bba08eece2ca9b55f68",
+    "evidence/openvins-native-moments-dev-1701-provenance.json": "cff2d07571ea8e5f038f13333ecc5f4db00abd68e88a3460a5cddc1eca8e135b",
+    "evidence/openvins-native-moments-dev-1701-reviewed-provenance.json": "f4718c95ef00f87de79576504c8c8be75ad62a873275d73d09ec645da5e1ec46",
+    "results/openvins-delayed-feed/input-v1/frames.csv": "84eb2e904f6ff60d050fc80c21f1f69ab242c9c9c25b870b62cc04a89b412b0d",
+    "results/openvins-delayed-feed/input-v1/imu.csv": "07ccc58bf2f13a592ca6910ca459af8f5a18089f74128e19947b71b2df5ebe32",
+    "results/openvins-delayed-feed/input-v1/manifest.json": "3fe501a4ab48a30e23d62d7ec7bb6ef020064a27c6dc8dea0aeaa3cc11b9ccb8",
+    "results/openvins-native-moments/package_evidence.py": "b8b939ad8fdeb1ffb9b46f478ac3aa288fe98b6ed369a00da910e0b2c2933cc9",
+    "results/openvins-native-moments/package_evidence_reviewed.py": "386ccc6ffd1df7d55af141d9af360a8bcdaac902575518a9ec6e4519666c06df",
+    "results/openvins-native-moments/replay-v1/audit-reviewed-v2.json": "172986740d7d11bcb2126db88d52d96d7d929867ac897ba8fea359b1868e185e",
+    "results/openvins-native-moments/replay-v1/audit-reviewed-v3.json": "ef0b334d94a287884c67366ca73c645fa92ba18b3f6699e05b465081c0c2d6fb",
+    "results/openvins-native-moments/replay-v1/audit.json": "172986740d7d11bcb2126db88d52d96d7d929867ac897ba8fea359b1868e185e",
+    "results/openvins-native-moments/replay-v1/moments.csv": "bbefe17c716c20d725ebd1e5c0b5bfee441f32988cdb3028ee8f55343bb52e77",
+    "results/openvins-native-moments/replay-v1/resources.txt": "33db6b76c65d6d32695c0a94a0827948a7c50f3c9c5f94209a8508ed35d8146d",
+    "results/openvins-native-moments/replay-v1/states.csv": "422a0e507aa6568d752942b1019732dfd00618224da66cc5c7506f536867e080",
+    "results/openvins-native-moments/replay-v1/stderr.txt": "4d122c8eda9f17570f4051e207c7222386737bafac404d3b6983806bb246109e",
+    "results/openvins-native-moments/replay-v1/stdout.txt": "3ab767f01e93db7c2c6dd116dfc973ef1a2eaefe1f265d5ce5ed06991ef88aac",
+    "results/openvins-native-moments/runner-v1/build-attempt-1.txt": "4a88266b6ef9de40f750fbe6216db5f91bf81e5ae9e0c203b7963758d43f9831",
+    "results/openvins-native-moments/runner-v1/openvins_native_moments_probe": "80526bd718aac0d5f25704ac60a28cd5ff0a196ed5f3bc67011d90dd517b652d",
+    "results/openvins-texture-dev/config-v2/estimator_config.yaml": "eaa40224f0de2f4c5b0f1d33504d215670544b9cc000252a0e92f404478360e6",
+    "tests/benchmark/test_openvins_native_moments.py": "59e5aad6942591f7abb975520fa03f7cd093ca89621445716f9b65efda958828",
+    "tools/benchmark/audit_openvins_native_moments.py": "85e4d5c713a760667e4652dc4b422e2bded0f406fa7e2bc1dec7afdc81c047e0",
+    "tools/benchmark/openvins_native_moments_probe.cpp": "d8ccc18d4fc7af8b7c90506e8a6ef7757dd9b2daa22de90c506ad4873d71f834"
+  },
+  "schema": "flydrones-native-moments-archive-index-v1"
+}

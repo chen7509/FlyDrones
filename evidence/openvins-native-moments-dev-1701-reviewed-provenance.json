@@ -1,0 +1,17 @@
+{
+  "schema": "flydrones-openvins-native-moments-reviewed-provenance-v1",
+  "scope": "post-review audit hardening; no second OpenVINS replay",
+  "parent_archive_sha256": "3980a9400850cf0f3452cfce9e6c0a1c3343bba180b0d5803d41dba5001396a5",
+  "replay_invocations_total": 1,
+  "frozen_states_sha256": "422a0e507aa6568d752942b1019732dfd00618224da66cc5c7506f536867e080",
+  "unchanged_moments_sha256": "bbefe17c716c20d725ebd1e5c0b5bfee441f32988cdb3028ee8f55343bb52e77",
+  "original_audit_sha256": "172986740d7d11bcb2126db88d52d96d7d929867ac897ba8fea359b1868e185e",
+  "reviewed_audit_sha256": "ef0b334d94a287884c67366ca73c645fa92ba18b3f6699e05b465081c0c2d6fb",
+  "reviewed_auditor_sha256": "85e4d5c713a760667e4652dc4b422e2bded0f406fa7e2bc1dec7afdc81c047e0",
+  "reviewed_tests_sha256": "59e5aad6942591f7abb975520fa03f7cd093ca89621445716f9b65efda958828",
+  "changes": [
+    "CLI pins states.csv to the frozen prior replay SHA rather than only recording its self-hash.",
+    "CLI requires the three 46.1, 46.2 and 46.3 second anomaly image timestamps.",
+    "The relative negative-eigenvalue tolerance is now 1e-12 rather than 1e-8 and is reported in the audit JSON."
+  ]
+}

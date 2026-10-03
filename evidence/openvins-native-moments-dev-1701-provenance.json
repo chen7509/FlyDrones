@@ -1,0 +1,42 @@
+{
+  "schema": "flydrones-openvins-native-moments-provenance-v1",
+  "scope": "offline development replay only; no MAVLink or PX4 fusion",
+  "upstream_repository": "https://github.com/rpng/open_vins",
+  "upstream_commit": "69488123ed9362dd44b6f28e7f4680abbff1442b",
+  "upstream_license": "GPL-3.0",
+  "runtime": "WSL2 Ubuntu 24.04.4 LTS; g++ 13.3.0",
+  "research_adapter": "tools/benchmark/openvins_native_moments_probe.cpp",
+  "research_adapter_sha256": "d8ccc18d4fc7af8b7c90506e8a6ef7757dd9b2daa22de90c506ad4873d71f834",
+  "compiled_runner_sha256": "80526bd718aac0d5f25704ac60a28cd5ff0a196ed5f3bc67011d90dd517b652d",
+  "diagnostic_library_sha256": "31e8a063018f256a32fe4027de37c146e49e2a3859a117e897f7eee6339921ae",
+  "config_sha256": "eaa40224f0de2f4c5b0f1d33504d215670544b9cc000252a0e92f404478360e6",
+  "delayed_input_manifest_sha256": "3fe501a4ab48a30e23d62d7ec7bb6ef020064a27c6dc8dea0aeaa3cc11b9ccb8",
+  "prior_reviewed_evidence_sha256": "bddd5f7999421b121c16ab1bc0bba655c75b077a2fe9b1275ddf488e80d0b3f6",
+  "compiler": "g++ -std=c++17 -O2 on WSL Ubuntu",
+  "successful_build_command": "g++ -std=c++17 -O2 -I/home/yuchen7509/flydrones-upstream/open_vins_vio_diag/ov_msckf/src -I/home/yuchen7509/flydrones-upstream/open_vins_vio_diag/ov_core/src -I/home/yuchen7509/flydrones-upstream/open_vins_vio_diag/ov_init/src -I/usr/include/eigen3 $(pkg-config --cflags opencv4) tools/benchmark/openvins_native_moments_probe.cpp -L/home/yuchen7509/flydrones-upstream/open_vins_vio_diag/ov_msckf/build -lov_msckf_lib $(pkg-config --libs opencv4) -lboost_filesystem -lceres -o results/openvins-native-moments/runner-v1/openvins_native_moments_probe",
+  "build_attempts": [
+    "First compile failed because ov_init/src include path was missing; excerpt saved at results/openvins-native-moments/runner-v1/build-attempt-1.txt; no replay was started.",
+    "Second compile added ov_init/src and exited 0."
+  ],
+  "replay_invocations": 1,
+  "replay_exit_code": 0,
+  "replay_timeout_s": 240,
+  "replay_command": [
+    "env LD_LIBRARY_PATH=/home/yuchen7509/flydrones-upstream/open_vins_vio_diag/ov_msckf/build",
+    "/usr/bin/time -v",
+    "timeout 240s",
+    "results/openvins-native-moments/runner-v1/openvins_native_moments_probe",
+    "results/openvins-texture-dev/config-v2/estimator_config.yaml",
+    "results/openvins-delayed-feed/input-v1",
+    "results/openvins-stationary-prelude/episode-v1",
+    "results/openvins-native-moments/replay-v1/states.csv",
+    "results/openvins-native-moments/replay-v1/moments.csv"
+  ],
+  "states_sha256": "422a0e507aa6568d752942b1019732dfd00618224da66cc5c7506f536867e080",
+  "moments_sha256": "bbefe17c716c20d725ebd1e5c0b5bfee441f32988cdb3028ee8f55343bb52e77",
+  "audit_sha256": "172986740d7d11bcb2126db88d52d96d7d929867ac897ba8fea359b1868e185e",
+  "stdout_sha256": "3ab767f01e93db7c2c6dd116dfc973ef1a2eaefe1f265d5ce5ed06991ef88aac",
+  "stderr_sha256": "4d122c8eda9f17570f4051e207c7222386737bafac404d3b6983806bb246109e",
+  "resources_sha256": "33db6b76c65d6d32695c0a94a0827948a7c50f3c9c5f94209a8508ed35d8146d",
+  "notes": "Full retained RGB and PX4 ULog remain in prior reviewed archive; diagnostic shared object is referenced by SHA but not copied into this small research package."
+}
