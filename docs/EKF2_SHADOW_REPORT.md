@@ -18,6 +18,12 @@
 
 判定阈值在实现前固定：高频样本 ≤100 ms，稀疏来源标志 ≤2 s；要求 `xy_valid`、`z_valid`、`v_xy_valid`、`v_z_valid`、`heading_good_for_control`，拒绝 dead reckoning、非零 `filter_fault_flags`、非有限状态和失范四元数。`estimate_timely` 与 `estimate_healthy` 独立统计，以免把稀疏来源标志缺失误写成高频估计器故障。对非二值或非有限来源标志显式标为无效。**`heading_good_for_control=false` 的直接物理原因尚未在本审计中确认**；在未核对 PX4 控制模式、偏航观测与重置日志前，不应归因给训练或 VIO。
 
+## 航向标志的后续只读核查
+
+ULog 元数据 `ver_sw=d6f12ad1c4f70ad3230afd7d86e971421e02fef4` 与本机核对的 PX4 源码版本一致。该版本的 `EKF2.cpp` 把 `vehicle_local_position.heading_good_for_control` 设为 `isYawFinalAlignComplete()`；`EKF/ekf.h` 中，使用磁航向时该条件还要求空中磁对齐完成并持续超过一秒。原始 ULog 中 `heading_good_for_control` 只在 7554 条局部位置样本里的 9 条为真，时间为 3.512–3.576 s，未落在本次 100 ms RGB 采样点；70 条稀疏状态中 `cs_yaw_align=1` 有 67 条、`cs_mag_hdg=1` 有 65 条，而 `cs_mag_aligned_in_flight=1` 为 **0 条**。这解释了为何短暂初始航向对齐之后，当前代码仍不把航向标为最终适合控制。
+
+同一 ULog 的局部 NED `-z` 最大为 1.463 m，`dist_bottom_valid` 全程为假；PX4 磁控制代码的一个空中航向重置请求条件使用 1.5 m 离地高度。低飞高度与未完成空中磁对齐相容，**但 `-z` 不能直接等同真实离地高度**，这里也没有验证地形估计、磁量测、重置请求和控制模式的完整因果链。因此不能宣称“只需飞高”就能修好，更不能绕过航向健康门。下一项受控开发检查应固定传感器/固件版本，保存高度、磁状态、航向复位、控制模式和安全动作的逐时日志，先解释为何对齐未完成，再重复单机闭环验收。
+
 此次没有相机与 IMU 时间基/外参在线标定，没有从 PX4 提供非真值的相机位姿，也没有把 OpenVINS 输出输入 EKF2；`eligible_for_live_capture=false`。下一步应在不改变原回合的条件下只读核查航向无效原因与 EKF2 源切换日志，随后才设计在线影子生产器、校准和故障注入。它不满足单机安全闭环门槛，不支持升级 5/20 机、HITL 或实飞。
 
 复现命令在 WSL Ubuntu 中使用 `python3 tools/benchmark/audit_ekf2_shadow.py --archive evidence/openvins-texture-dev-1701.zip --index evidence/openvins-texture-dev-1701.sha256.json --output <新的空路径>`；已有输出将被拒绝覆盖。EKF2 相关针对性测试 **21 passed**，全量 Python 回归 **484 passed、2 warnings**（205.88 秒）；两个警告分别来自故意构造重复 ZIP 成员的拒绝测试，以及既有 MaleCNS 神经元组无匹配项。Ruff 与 `git diff --check` 通过。独立代码复核确认归档/报告哈希、629 帧计数、逐帧状态和样本年龄，并指出“两个来源位均未置位”不能扩大为“无位置来源”；上表与解释已修正。
