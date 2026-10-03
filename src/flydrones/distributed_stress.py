@@ -145,6 +145,19 @@ def _write_rows(path: Path, rows: list[dict]) -> None:
         writer.writerows(rows)
 
 
+def _read_start_signal(path: Path, *, timeout_s: float = 5.0) -> float:
+    """Wait for the published signal through transient Windows sharing locks."""
+    deadline = time.monotonic() + timeout_s
+    while True:
+        try:
+            return float(json.loads(path.read_text(encoding="utf-8"))["start_at"])
+        except (FileNotFoundError, PermissionError) as error:
+            remaining = deadline - time.monotonic()
+            if remaining <= 0:
+                raise TimeoutError("start signal unavailable") from error
+            time.sleep(min(0.01, remaining))
+
+
 def _run_stress_agent(config: StressTrialConfig, vehicle_id: int, base_port: int, start_signal: str) -> None:
     output = Path(config.output_dir)
     result_path = output / f"agent-{vehicle_id}.json"
@@ -169,10 +182,7 @@ def _run_stress_agent(config: StressTrialConfig, vehicle_id: int, base_port: int
         )
         node = UdpPeerNode(vehicle_id, list(range(config.vehicle_count)), base_port=base_port, config=radio)
         (output / f"ready-{vehicle_id}").write_text(str(os.getpid()), encoding="ascii")
-        signal_path = Path(start_signal)
-        while not signal_path.is_file():
-            time.sleep(0.01)
-        start_at = float(json.loads(signal_path.read_text(encoding="utf-8"))["start_at"])
+        start_at = _read_start_signal(Path(start_signal))
         while time.time() < start_at:
             time.sleep(min(0.01, start_at - time.time()))
 
@@ -269,6 +279,10 @@ def _find_free_port_range(count: int) -> int:
 
 
 def _aggregate_stress(config: StressTrialConfig, results: list[dict], output: Path) -> dict:
+    failures = [f"agent-{result['vehicle_id']}: {result['error']}"
+                for result in results if result.get("error") is not None]
+    if failures:
+        raise RuntimeError("UDP stress worker errors: " + "; ".join(failures))
     traces: dict[int, list[dict]] = {}
     for vehicle_id in range(config.vehicle_count):
         with (output / f"agent-{vehicle_id}.csv").open(encoding="utf-8") as handle:
