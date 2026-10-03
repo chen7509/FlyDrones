@@ -1,0 +1,30 @@
+diff --git a/ov_msckf/src/core/VioManagerHelper.cpp b/ov_msckf/src/core/VioManagerHelper.cpp
+--- a/ov_msckf/src/core/VioManagerHelper.cpp
++++ b/ov_msckf/src/core/VioManagerHelper.cpp
+@@ -99,5 +99,7 @@ bool VioManager::try_to_initialize(const ov_core::CameraData &message) {
+     Eigen::MatrixXd covariance;
+     std::vector<std::shared_ptr<ov_type::Type>> order;
+     auto init_rT1 = boost::posix_time::microsec_clock::local_time();
++    PRINT_INFO("FD_INIT_FRAME t=%.9f db=%zu\n", message.timestamp,
++               trackFEATS->get_feature_database()->get_internal_data().size());
+ 
+     // Try to initialize the system
+diff --git a/ov_init/src/init/InertialInitializer.cpp b/ov_init/src/init/InertialInitializer.cpp
+--- a/ov_init/src/init/InertialInitializer.cpp
++++ b/ov_init/src/init/InertialInitializer.cpp
+@@ -90,5 +90,7 @@ bool InertialInitializer::initialize(double &timestamp, Eigen::MatrixXd &covar
+   }
+   double oldest_time = newest_cam_time - params.init_window_time - 0.10;
+   if (newest_cam_time < 0 || oldest_time < 0) {
++    PRINT_INFO("FD_INIT_DISP newest=%.9f old=0 new=0 stage=%s\n", newest_cam_time,
++               newest_cam_time < 0 ? "no_feature_time" : "insufficient_time");
+     return false;
+   }
+@@ -116,5 +118,7 @@ bool InertialInitializer::initialize(double &timestamp, Eigen::MatrixXd &covar
+     double var_disp0, var_disp1;
+     FeatureHelper::compute_disparity(_db, avg_disp0, var_disp0, num_features0, newest_time_allowed);
+     FeatureHelper::compute_disparity(_db, avg_disp1, var_disp1, num_features1, newest_cam_time, newest_time_allowed);
++    PRINT_INFO("FD_INIT_DISP newest=%.9f old=%d new=%d stage=%s\n", newest_cam_time, num_features0,
++               num_features1, num_features0 < 15 || num_features1 < 15 ? "insufficient_features" : "ready");
+ 
+     // Return if we can't compute the disparity
