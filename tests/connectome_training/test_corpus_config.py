@@ -13,17 +13,16 @@ from flydrones.connectome_training.corpus_config import load_corpus_config
 
 STAGES = ("stability", "looming", "corridor", "forest", "dynamic", "disturbance")
 FORMAL_FREEZE = "9d10bb72c1fda4048f0439c9dfb823583d8464a8491349f9e732e9cced87d937"
+FORMAL_SOURCE = (Path(__file__).resolve().parents[2] / "evidence" /
+                 "fly-ego-formal-seed-manifest-2026-09-22.json")
+EGO_IMAGE = "sha256:a4dae62b38bc01a01d084be7b68db83ec804fef7673604e1a9c986a4baa88a6a"
 
 
 def _fixture(tmp_path: Path) -> tuple[Path, Path, dict]:
     formal_dir = tmp_path / "formal"
     formal_dir.mkdir()
     formal = formal_dir / "seed_manifest.json"
-    formal.write_text(json.dumps(seal_manifest({
-        "phase": "formal_worlds",
-        "generated_after_freeze_sha256": FORMAL_FREEZE,
-        "worlds": [{"seed": 8001, "world_json_sha256": "a" * 64}],
-    })), encoding="utf-8")
+    formal.write_bytes(FORMAL_SOURCE.read_bytes())
     benchmark = tmp_path / "benchmark.yaml"
     model = tmp_path / "model.sdf"
     benchmark.write_text("control: {dt_s: 0.05}\n", encoding="utf-8")
@@ -40,7 +39,7 @@ def _fixture(tmp_path: Path) -> tuple[Path, Path, dict]:
         "teacher": {
             "repository": "https://github.com/ZJU-FAST-Lab/ego-planner-swarm.git",
             "commit": "23a8d5a191711dd65633df689bd00f55d4dea8f9",
-            "image_id": "sha256:" + "b" * 64,
+            "image_id": EGO_IMAGE,
         },
         "max_sim_time_s": 120,
         "allowed_terminals": ["success", "collision", "out_of_bounds", "timeout"],
@@ -103,18 +102,43 @@ def test_rejects_tampered_formal_seal(tmp_path):
     data = json.loads(formal.read_text(encoding="utf-8"))
     data["worlds"][0]["seed"] = 123
     formal.write_text(json.dumps(data), encoding="utf-8")
-    with pytest.raises(ValueError, match="seal"):
+    with pytest.raises(ValueError, match="formal seed manifest"):
         load_corpus_config(path, formal_manifest=formal)
 
 
-def test_rejects_formal_hash_collision_and_changes_digest_for_teacher(tmp_path):
+def test_rejects_self_sealed_substitute_formal_manifest(tmp_path):
+    path, formal, _ = _fixture(tmp_path)
+    original = json.loads(formal.read_text(encoding="utf-8"))
+    original.pop("manifest_sha256")
+    original["worlds"] = original["worlds"][:1]
+    formal.write_text(json.dumps(seal_manifest(original)), encoding="utf-8")
+    with pytest.raises(ValueError, match="formal seed manifest"):
+        load_corpus_config(path, formal_manifest=formal)
+
+
+def test_rejects_formal_hash_collision_and_changed_teacher(tmp_path):
     path, formal, config = _fixture(tmp_path)
-    original = load_corpus_config(path, formal_manifest=formal)
     changed = copy.deepcopy(config)
     changed["teacher"]["image_id"] = "sha256:" + "c" * 64
     path.write_text(yaml.safe_dump(changed), encoding="utf-8")
-    assert load_corpus_config(path, formal_manifest=formal).digest != original.digest
-    changed["stages"][0]["train_seeds"][0] = 8001
+    with pytest.raises(ValueError, match="teacher identity"):
+        load_corpus_config(path, formal_manifest=formal)
+    changed["teacher"]["image_id"] = EGO_IMAGE
+    formal_seed = json.loads(formal.read_text(encoding="utf-8"))["worlds"][0]["seed"]
+    changed["stages"][0]["train_seeds"][0] = formal_seed
     path.write_text(yaml.safe_dump(changed), encoding="utf-8")
     with pytest.raises(ValueError):
+        load_corpus_config(path, formal_manifest=formal)
+
+
+def test_rejects_seed_assignments_the_world_builder_cannot_use(tmp_path):
+    path, formal, config = _fixture(tmp_path)
+    config["rollout_seeds"] = [4, 5, 6]
+    path.write_text(yaml.safe_dump(config), encoding="utf-8")
+    with pytest.raises(ValueError, match="rollout seeds changed"):
+        load_corpus_config(path, formal_manifest=formal)
+    config["rollout_seeds"] = [1, 2, 3]
+    config["stages"][0]["train_seeds"] = [1111, 1112]
+    path.write_text(yaml.safe_dump(config), encoding="utf-8")
+    with pytest.raises(ValueError, match="stage seeds changed"):
         load_corpus_config(path, formal_manifest=formal)

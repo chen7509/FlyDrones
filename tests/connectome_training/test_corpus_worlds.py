@@ -59,7 +59,29 @@ def test_disturbance_records_physical_wind_and_nonzero_sensor_disturbance():
     assert any(abs(value) > 0 for value in world["wind"])
     assert world["sensor_perturbations"]["camera_delay_ms"] > 0
     assert world["sensor_perturbations"]["imu_bias_m_s2"] > 0
+    assert world["sensor_perturbations"]["depth_noise_std_m"] > 0
+    assert 0 < world["sensor_perturbations"]["max_consecutive_dropped_frames"] <= 3
     assert world["sensor_perturbations"]["truth_to_student"] is False
+
+
+def test_validation_worlds_are_physically_disjoint_from_training_worlds():
+    stages = {
+        "stability": ((1101, 1102), 9101),
+        "looming": ((1201, 1202), 9201),
+        "corridor": ((1301, 1302), 9301),
+        "forest": ((1401, 1402), 9401),
+        "dynamic": ((1501, 1502), 9501),
+        "disturbance": ((1601, 1602), 9601),
+    }
+    physical_keys = ("bounds", "start", "goal", "vehicle_envelope_radius_m",
+                     "boxes", "cylinders", "dynamic", "wind")
+    def physical(world):
+        return tuple(json.dumps(world[key], sort_keys=True) for key in physical_keys)
+    for stage, (train_seeds, val_seed) in stages.items():
+        train = {physical(build_corpus_world(CorpusJob(stage, "train", seed, 1, 0)))
+                 for seed in train_seeds}
+        val = physical(build_corpus_world(CorpusJob(stage, "val", val_seed, 1, 0)))
+        assert val not in train, stage
 
 
 def test_world_writer_preserves_hashes_and_refuses_overwrite(tmp_path):

@@ -72,6 +72,16 @@ def test_nonzero_fake_future_point_is_rejected(tmp_path):
         write_sequence(tmp_path / "invalid", sequence)
 
 
+def test_noncontiguous_future_mask_is_rejected(tmp_path):
+    recorder = _recorder()
+    _append(recorder, 0, [1., 0., 1.])
+    sequence = load_sequence(recorder.finish_with_reference_horizon(
+        tmp_path / "source", points=3))
+    sequence.targets[0].horizon_valid[:] = [True, False, True]
+    with pytest.raises(ValueError, match="mask"):
+        write_sequence(tmp_path / "invalid", sequence)
+
+
 def test_nonfinite_or_missing_native_reference_is_rejected_for_v2(tmp_path):
     recorder = _recorder()
     with pytest.raises(ValueError, match="reference"):

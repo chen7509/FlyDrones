@@ -1,0 +1,190 @@
+{
+  "phase": "formal_worlds",
+  "created_utc": "2026-09-22T08:34:05.905508+00:00",
+  "generated_after_freeze_sha256": "9d10bb72c1fda4048f0439c9dfb823583d8464a8491349f9e732e9cced87d937",
+  "seed_source": "Python secrets.SystemRandom backed by operating-system entropy",
+  "worlds": [
+    {
+      "seed": 629218985990374015,
+      "family": "forest",
+      "candidate": 0,
+      "world_json": "results/fly-ego-comparison/formal/worlds/629218985990374015/world.json",
+      "world_json_sha256": "ab0c0b7be82edb126a42b943d8dc1a465ac918591f045c2e1998e5b73a0afde7",
+      "world_sdf": "results/fly-ego-comparison/formal/worlds/629218985990374015/world.sdf",
+      "world_sdf_sha256": "e2a7c6059a5e9e32b4f92a17a6d2c454a6db626bcb08862fdf722b0d01afb38a"
+    },
+    {
+      "seed": 307557661932308473,
+      "family": "forest",
+      "candidate": 0,
+      "world_json": "results/fly-ego-comparison/formal/worlds/307557661932308473/world.json",
+      "world_json_sha256": "b1e11efd484091bd5a0c18e673da8ead794dbda659977c4940c25d9e3ead313f",
+      "world_sdf": "results/fly-ego-comparison/formal/worlds/307557661932308473/world.sdf",
+      "world_sdf_sha256": "11cb58a4676a69275f73da52992fb14f7c0eed0280f1826d7613cd2db0c1e68f"
+    },
+    {
+      "seed": 6250205282916228686,
+      "family": "forest",
+      "candidate": 0,
+      "world_json": "results/fly-ego-comparison/formal/worlds/6250205282916228686/world.json",
+      "world_json_sha256": "156e3e3b6189555562f5a1ad8dda8bc0b00374b28c76fe93be4b83ce0e1bada3",
+      "world_sdf": "results/fly-ego-comparison/formal/worlds/6250205282916228686/world.sdf",
+      "world_sdf_sha256": "8e8f6a6e63ed8a13e5710f28cd60fc7811a6da1f41c8e07b4890477637824b3f"
+    },
+    {
+      "seed": 3090104936196640772,
+      "family": "forest",
+      "candidate": 0,
+      "world_json": "results/fly-ego-comparison/formal/worlds/3090104936196640772/world.json",
+      "world_json_sha256": "19cd47c8553e9ce421b7cd71b836f366cb3dc85fda2847f60830fe895d33052f",
+      "world_sdf": "results/fly-ego-comparison/formal/worlds/3090104936196640772/world.sdf",
+      "world_sdf_sha256": "5564bd6315c7312a64f60edc4423723a0b193bd65f6160354b677f4cb43449f3"
+    },
+    {
+      "seed": 8578821254702788483,
+      "family": "forest",
+      "candidate": 0,
+      "world_json": "results/fly-ego-comparison/formal/worlds/8578821254702788483/world.json",
+      "world_json_sha256": "932b6316062cf89e65543dd6d2efedc8a1ba1664626e8ff4293aacb0b752f108",
+      "world_sdf": "results/fly-ego-comparison/formal/worlds/8578821254702788483/world.sdf",
+      "world_sdf_sha256": "6ff32d00c6bff362e771ca5c0204183b16224bc77f4f339f2bf453a4e0e07aee"
+    },
+    {
+      "seed": 8823612495212888245,
+      "family": "corridor",
+      "candidate": 0,
+      "world_json": "results/fly-ego-comparison/formal/worlds/8823612495212888245/world.json",
+      "world_json_sha256": "a5ddce7cd188951415f944674f7267785c19c5dee561f7dd871119d483ffbac9",
+      "world_sdf": "results/fly-ego-comparison/formal/worlds/8823612495212888245/world.sdf",
+      "world_sdf_sha256": "c518059e925d6c965f05ff4a66adf797a6b4da607c6c2922085e3685b0030d11"
+    },
+    {
+      "seed": 3128629286561761592,
+      "family": "corridor",
+      "candidate": 0,
+      "world_json": "results/fly-ego-comparison/formal/worlds/3128629286561761592/world.json",
+      "world_json_sha256": "d7475c6ac06deb335a24b14d581f70e660c7cb518e5feeba912a30b42cdbf6b2",
+      "world_sdf": "results/fly-ego-comparison/formal/worlds/3128629286561761592/world.sdf",
+      "world_sdf_sha256": "905af9624a4ca94fcc870a6fd36eaef337d975914814bda319439b71f6243cbb"
+    },
+    {
+      "seed": 1919158826727342957,
+      "family": "corridor",
+      "candidate": 0,
+      "world_json": "results/fly-ego-comparison/formal/worlds/1919158826727342957/world.json",
+      "world_json_sha256": "40268f5e9a72328b94bb4688647d3c33a80b6419099514fc49b91e4a8225f45d",
+      "world_sdf": "results/fly-ego-comparison/formal/worlds/1919158826727342957/world.sdf",
+      "world_sdf_sha256": "83ec37b8274f328b6afcb48d4f2f55a63d6e183e016015d3c364de82a5943493"
+    },
+    {
+      "seed": 6761511508788465203,
+      "family": "corridor",
+      "candidate": 0,
+      "world_json": "results/fly-ego-comparison/formal/worlds/6761511508788465203/world.json",
+      "world_json_sha256": "1170e853d89b34281d4fc9eb8bc2d0e4c044aaf28227c5544993b1bd5d37a3af",
+      "world_sdf": "results/fly-ego-comparison/formal/worlds/6761511508788465203/world.sdf",
+      "world_sdf_sha256": "499105708af43f8415da315e95842acbcd735ca8cda8be9d9d7e9d3258d4deaa"
+    },
+    {
+      "seed": 9151672008021286206,
+      "family": "corridor",
+      "candidate": 0,
+      "world_json": "results/fly-ego-comparison/formal/worlds/9151672008021286206/world.json",
+      "world_json_sha256": "e5f02e190f131ccf176657d734daeb9a463796be5e762283c92551ed145b2697",
+      "world_sdf": "results/fly-ego-comparison/formal/worlds/9151672008021286206/world.sdf",
+      "world_sdf_sha256": "a13d8730bc197794e295f1e81b0ef172c0a4c448049e450b16c1467770b2cd47"
+    },
+    {
+      "seed": 794067686548046469,
+      "family": "mixed",
+      "candidate": 0,
+      "world_json": "results/fly-ego-comparison/formal/worlds/794067686548046469/world.json",
+      "world_json_sha256": "34e2ba52958e84f153daab4682196c9073a8064889974475f3b3fef929cbecd3",
+      "world_sdf": "results/fly-ego-comparison/formal/worlds/794067686548046469/world.sdf",
+      "world_sdf_sha256": "37fa3a65146e8d571d5ddcad89c382586112d448aceb944198e3dc0e614d9dd3"
+    },
+    {
+      "seed": 7264115209444238766,
+      "family": "mixed",
+      "candidate": 0,
+      "world_json": "results/fly-ego-comparison/formal/worlds/7264115209444238766/world.json",
+      "world_json_sha256": "ea92af03e7cd9588817b757a75abbfb8c87db7677fd9cf706e930d98a0e1a933",
+      "world_sdf": "results/fly-ego-comparison/formal/worlds/7264115209444238766/world.sdf",
+      "world_sdf_sha256": "34bb517018ad87f241d399dd49920365a78b25d900ddb14c122f637dc051d08c"
+    },
+    {
+      "seed": 2363862760391317434,
+      "family": "mixed",
+      "candidate": 1,
+      "world_json": "results/fly-ego-comparison/formal/worlds/2363862760391317434/world.json",
+      "world_json_sha256": "25b706820aeba6f7cf3b3b32d0016dcfd6e3cfc8318ca6b54d52c48b7ccb5672",
+      "world_sdf": "results/fly-ego-comparison/formal/worlds/2363862760391317434/world.sdf",
+      "world_sdf_sha256": "415b8a586173d84106f4d121920f82100b04948255346771ff5334e565840883"
+    },
+    {
+      "seed": 3471626316798930825,
+      "family": "mixed",
+      "candidate": 1,
+      "world_json": "results/fly-ego-comparison/formal/worlds/3471626316798930825/world.json",
+      "world_json_sha256": "0adeaf4653361f194573b35377891e52390929bb0c5c527261891002d514d96e",
+      "world_sdf": "results/fly-ego-comparison/formal/worlds/3471626316798930825/world.sdf",
+      "world_sdf_sha256": "94c8a1b66597c99e42401f37577f59791991da96a6cd4fecbe7207a1c4947f44"
+    },
+    {
+      "seed": 306479371390942801,
+      "family": "mixed",
+      "candidate": 0,
+      "world_json": "results/fly-ego-comparison/formal/worlds/306479371390942801/world.json",
+      "world_json_sha256": "8f5cf2da0111af83a2dfe9bf4a03926d511a72b502668bf7b05d47749f0ef0e7",
+      "world_sdf": "results/fly-ego-comparison/formal/worlds/306479371390942801/world.sdf",
+      "world_sdf_sha256": "ce71ccad0e4dad0c83d6d8d01d9c7c1470c749745f0a5a50b6a2d0199489a979"
+    },
+    {
+      "seed": 784382043680610224,
+      "family": "disturbed",
+      "candidate": 1,
+      "world_json": "results/fly-ego-comparison/formal/worlds/784382043680610224/world.json",
+      "world_json_sha256": "a601155dd3cde9f570ae06bfafe6b1a7d1e8675d5f804da5e27ec2d39abd778b",
+      "world_sdf": "results/fly-ego-comparison/formal/worlds/784382043680610224/world.sdf",
+      "world_sdf_sha256": "a8da2ee8fb31376af2efc70ffbb99155e8b9691bf36e38a7f6dbbd0954163b88"
+    },
+    {
+      "seed": 6258013115436015348,
+      "family": "disturbed",
+      "candidate": 0,
+      "world_json": "results/fly-ego-comparison/formal/worlds/6258013115436015348/world.json",
+      "world_json_sha256": "5267f9a3a074b823cc9c7f2f2c39409a81aa6eec0e54216ed6f76a26befd0ca3",
+      "world_sdf": "results/fly-ego-comparison/formal/worlds/6258013115436015348/world.sdf",
+      "world_sdf_sha256": "42d05868f1bd1bc78ae98e1c851a33ba68aca4184e0fb88754506faeea085e59"
+    },
+    {
+      "seed": 173080142604331827,
+      "family": "disturbed",
+      "candidate": 2,
+      "world_json": "results/fly-ego-comparison/formal/worlds/173080142604331827/world.json",
+      "world_json_sha256": "41ebda6545e5677cae2df54ac83f9e405718cf8cd45d0f43ae4e72144eab29b8",
+      "world_sdf": "results/fly-ego-comparison/formal/worlds/173080142604331827/world.sdf",
+      "world_sdf_sha256": "7923a09f0d2c159d86687f7d1d843f754af0e149bf6a276e6a1b32e38bcc48d4"
+    },
+    {
+      "seed": 3128907721170614515,
+      "family": "disturbed",
+      "candidate": 0,
+      "world_json": "results/fly-ego-comparison/formal/worlds/3128907721170614515/world.json",
+      "world_json_sha256": "783d5deefb6a72a3daf2a3ca75fa889a6e87bfe4a38c5a1bba5139050820d4cf",
+      "world_sdf": "results/fly-ego-comparison/formal/worlds/3128907721170614515/world.sdf",
+      "world_sdf_sha256": "2d8573b0984c748bebca9df836088f69a84c34194aebfcbd1eb941d75946b209"
+    },
+    {
+      "seed": 2549483910598066928,
+      "family": "disturbed",
+      "candidate": 1,
+      "world_json": "results/fly-ego-comparison/formal/worlds/2549483910598066928/world.json",
+      "world_json_sha256": "cbd54d6533b9dc7d87d5344d717d4a22a76f5817e9dcc84f12c01a5547024b9e",
+      "world_sdf": "results/fly-ego-comparison/formal/worlds/2549483910598066928/world.sdf",
+      "world_sdf_sha256": "2beff197b15461781c475d7f95135484c085b2f23966f3a367965e33839da0b7"
+    }
+  ],
+  "jobs_sha256": "259cae4d54880166d9aa9cf2e38cce33e3be7f282bfc06f000adf0a0a62b0cd5",
+  "manifest_sha256": "99e65930374bb28a666481c0ad675901f10eb8399d911580a3b479e802e7086e"
+}

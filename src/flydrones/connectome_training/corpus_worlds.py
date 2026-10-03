@@ -16,16 +16,7 @@ from flydrones.benchmark.worlds import (
     has_route,
     write_sdf,
 )
-from flydrones.connectome_training.corpus_config import CorpusJob
-
-_STAGE_SEEDS = {
-    "stability": {"train": (1101, 1102), "val": (9101,)},
-    "looming": {"train": (1201, 1202), "val": (9201,)},
-    "corridor": {"train": (1301, 1302), "val": (9301,)},
-    "forest": {"train": (1401, 1402), "val": (9401,)},
-    "dynamic": {"train": (1501, 1502), "val": (9501,)},
-    "disturbance": {"train": (1601, 1602), "val": (9601,)},
-}
+from flydrones.connectome_training.corpus_config import STAGE_SEEDS, CorpusJob
 
 
 def _dynamic_window_passable(world: dict) -> bool:
@@ -70,6 +61,9 @@ def _simple_world(job: CorpusJob) -> dict:
     world["seed"] = job.world_seed
     world["source_generator_seed"] = 1701
     world["corpus_candidate"] = 0
+    lane_y = round((job.world_seed // 1000 - 1) * .2, 3)
+    world["start"][1] = lane_y
+    world["goal"][1] = lane_y
     if job.stage_id == "stability":
         world["cylinders"] = []
         if job.world_seed % 2 == 0:
@@ -77,17 +71,18 @@ def _simple_world(job: CorpusJob) -> dict:
     else:
         side = 1 if job.world_seed % 2 else -1
         world["cylinders"] = [
-            {"center": [-2., 0.], "radius": .6, "zlo": 0., "zhi": 4.5},
-            {"center": [1.5, side * 2.], "radius": .45, "zlo": 0., "zhi": 3.},
+            {"center": [-2., lane_y], "radius": .6, "zlo": 0., "zhi": 4.5},
+            {"center": [1.5, round(lane_y + side * 2., 3)],
+             "radius": .45, "zlo": 0., "zhi": 3.},
         ]
     return world
 
 
 def build_corpus_world(job: CorpusJob) -> dict:
     """Generate one world from fixed non-formal stage/split seed assignments."""
-    if (not isinstance(job, CorpusJob) or job.stage_id not in _STAGE_SEEDS
+    if (not isinstance(job, CorpusJob) or job.stage_id not in STAGE_SEEDS
             or job.split not in ("train", "val")
-            or job.world_seed not in _STAGE_SEEDS[job.stage_id][job.split]
+            or job.world_seed not in STAGE_SEEDS[job.stage_id][job.split]
             or job.rollout_seed not in (1, 2, 3) or job.ordinal < 0):
         raise ValueError("unknown curriculum world job")
     world = (_simple_world(job) if job.stage_id in ("stability", "looming")
@@ -102,6 +97,10 @@ def build_corpus_world(job: CorpusJob) -> dict:
                             if job.stage_id == "disturbance" else 0.),
         "imu_bias_m_s2": (round(float(rng.uniform(.01, .05)), 5)
                           if job.stage_id == "disturbance" else 0.),
+        "depth_noise_std_m": (round(float(rng.uniform(.01, .05)), 5)
+                              if job.stage_id == "disturbance" else 0.),
+        "max_consecutive_dropped_frames": (int(rng.integers(1, 4))
+                                           if job.stage_id == "disturbance" else 0),
         "truth_to_student": False,
     }
     if not has_route(world, world["vehicle_envelope_radius_m"]):

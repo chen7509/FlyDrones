@@ -15,7 +15,17 @@ from flydrones.benchmark.provenance import verify_sealed_manifest
 
 STAGE_IDS = ("stability", "looming", "corridor", "forest", "dynamic", "disturbance")
 EGO_COMMIT = "23a8d5a191711dd65633df689bd00f55d4dea8f9"
+EGO_IMAGE_ID = "sha256:a4dae62b38bc01a01d084be7b68db83ec804fef7673604e1a9c986a4baa88a6a"
 FORMAL_FREEZE = "9d10bb72c1fda4048f0439c9dfb823583d8464a8491349f9e732e9cced87d937"
+FORMAL_MANIFEST_BYTES_SHA256 = "08ecaa1b433c49630b9beb23c896f57e87fbed4ff1869f0f0b4b250f86a8bac0"
+STAGE_SEEDS = {
+    "stability": {"train": (1101, 1102), "val": (9101,)},
+    "looming": {"train": (1201, 1202), "val": (9201,)},
+    "corridor": {"train": (1301, 1302), "val": (9301,)},
+    "forest": {"train": (1401, 1402), "val": (9401,)},
+    "dynamic": {"train": (1501, 1502), "val": (9501,)},
+    "disturbance": {"train": (1601, 1602), "val": (9601,)},
+}
 _SHA = re.compile(r"[0-9a-f]{64}\Z")
 _TOP_KEYS = {
     "schema", "formal_freeze_sha256", "development_seeds", "output_root",
@@ -113,11 +123,13 @@ def load_corpus_config(path: Path, *, formal_manifest: Path) -> CorpusConfig:
     if _sha(raw["formal_freeze_sha256"], "formal freeze") != FORMAL_FREEZE:
         raise ValueError("wrong formal freeze")
     formal_bytes = formal_manifest.read_bytes()
+    if hashlib.sha256(formal_bytes).hexdigest() != FORMAL_MANIFEST_BYTES_SHA256:
+        raise ValueError("wrong formal seed manifest digest")
     formal = json.loads(formal_bytes)
     formal_digest = verify_sealed_manifest(formal)
     if (formal.get("phase") != "formal_worlds"
             or formal.get("generated_after_freeze_sha256") != FORMAL_FREEZE
-            or not isinstance(formal.get("worlds"), list) or not formal["worlds"]):
+            or not isinstance(formal.get("worlds"), list) or len(formal["worlds"]) != 20):
         raise ValueError("wrong formal seed manifest")
     formal_seeds: set[int] = set()
     formal_hashes: set[str] = set()
@@ -133,6 +145,8 @@ def load_corpus_config(path: Path, *, formal_manifest: Path) -> CorpusConfig:
     if development != (1701, 1702, 1703):
         raise ValueError("development seeds changed")
     rollouts = _seeds(raw["rollout_seeds"], "rollout", size=3)
+    if rollouts != (1, 2, 3):
+        raise ValueError("rollout seeds changed")
     if raw["student_truth_fields"] is not False:
         raise ValueError("student truth fields are forbidden")
     stages_raw = raw["stages"]
@@ -147,6 +161,8 @@ def load_corpus_config(path: Path, *, formal_manifest: Path) -> CorpusConfig:
             raise ValueError("stage order or world family invalid")
         train = _seeds(stage["train_seeds"], f"{expected_id} train", size=2)
         val = _seeds(stage["validation_seeds"], f"{expected_id} validation", size=1)
+        if train != STAGE_SEEDS[expected_id]["train"] or val != STAGE_SEEDS[expected_id]["val"]:
+            raise ValueError("stage seeds changed")
         for seed in (*train, *val):
             if seed in all_world_seeds:
                 raise ValueError("formal, development or split world seed overlap")
@@ -165,9 +181,7 @@ def load_corpus_config(path: Path, *, formal_manifest: Path) -> CorpusConfig:
     teacher = _keys(raw["teacher"], {"repository", "commit", "image_id"}, "teacher")
     if (teacher["repository"] != "https://github.com/ZJU-FAST-Lab/ego-planner-swarm.git"
             or teacher["commit"] != EGO_COMMIT
-            or not isinstance(teacher["image_id"], str)
-            or not teacher["image_id"].startswith("sha256:")
-            or _SHA.fullmatch(teacher["image_id"][7:]) is None):
+            or teacher["image_id"] != EGO_IMAGE_ID):
         raise ValueError("teacher identity invalid")
     timeout = raw["max_sim_time_s"]
     if (type(timeout) not in (int, float) or not math.isfinite(timeout)
