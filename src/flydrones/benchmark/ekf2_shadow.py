@@ -91,6 +91,9 @@ def audit_shadow_frames(frame_ns: list[int], topics: dict[str, dict[str, np.ndar
     counts: Counter[str] = Counter()
     reason_counts: Counter[str] = Counter()
     source_counts: Counter[str] = Counter()
+    healthy_source_counts: Counter[str] = Counter()
+    timely_estimate_count = 0
+    healthy_estimate_count = 0
     for frame in frame_ns:
         reasons: list[str] = []
         record: dict = {"frame_ns": frame, "source": "unknown"}
@@ -148,11 +151,31 @@ def audit_shadow_frames(frame_ns: list[int], topics: dict[str, dict[str, np.ndar
         flags_index = indices["estimator_status_flags"]
         if flags_index is not None and "source_flags_stale" not in reasons:
             flags = verified["estimator_status_flags"][0]
-            gnss = flags["cs_gnss_pos"][flags_index] == 1
-            vision = flags["cs_ev_pos"][flags_index] == 1
-            record["source"] = ("mixed" if gnss and vision else
-                                "gnss" if gnss else
-                                "external_vision" if vision else "none")
+            gnss_value = flags["cs_gnss_pos"][flags_index]
+            vision_value = flags["cs_ev_pos"][flags_index]
+            if gnss_value not in (0, 1) or vision_value not in (0, 1):
+                reasons.append("source_flag_invalid")
+            else:
+                gnss = gnss_value == 1
+                vision = vision_value == 1
+                record["source"] = ("mixed" if gnss and vision else
+                                    "gnss" if gnss else
+                                    "external_vision" if vision else "none")
+
+        record["estimate_timely"] = all(
+            indices[topic] is not None
+            and f"{_TIME_NAMES[topic]}_stale" not in reasons
+            for topic in ("vehicle_local_position", "vehicle_attitude", "estimator_status")
+        )
+        estimate_reasons = [
+            reason for reason in reasons
+            if not reason.startswith("source_flags_") and reason != "source_flag_invalid"
+        ]
+        record["estimate_healthy"] = record["estimate_timely"] and not estimate_reasons
+        timely_estimate_count += record["estimate_timely"]
+        healthy_estimate_count += record["estimate_healthy"]
+        if record["estimate_healthy"]:
+            healthy_source_counts[record["source"]] += 1
 
         record["reasons"] = sorted(set(reasons))
         record["status"] = ("missing" if any(reason.endswith("_missing") for reason in reasons)
@@ -174,6 +197,9 @@ def audit_shadow_frames(frame_ns: list[int], topics: dict[str, dict[str, np.ndar
         "counts": {name: counts[name] for name in ("valid", "invalid", "missing")},
         "reason_counts": dict(sorted(reason_counts.items())),
         "source_counts_all_frames": dict(sorted(source_counts.items())),
+        "source_counts_healthy_estimates": dict(sorted(healthy_source_counts.items())),
+        "timely_estimate_count": timely_estimate_count,
+        "healthy_estimate_count": healthy_estimate_count,
         "topic_coverage": coverage,
         "thresholds_ns": {"estimate": _FAST_MAX_AGE_NS, "source_flags": _SOURCE_MAX_AGE_NS},
         "time_epoch_assumption": "Gazebo frame_ns and PX4 ULog timestamp share simulated epoch; uncalibrated",
