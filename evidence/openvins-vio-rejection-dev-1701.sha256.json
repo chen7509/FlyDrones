@@ -1,0 +1,97 @@
+{
+  "schema": "flydrones-openvins-vio-rejection-evidence-v1",
+  "archive_sha256": "ef6485cc954a09f65fda1783d4745dfeafe7e1c282df0108490fed61ea130b95",
+  "file_count": 18,
+  "files": [
+    {
+      "path": "CMakeCache.txt",
+      "bytes": 33492,
+      "sha256": "fb4aa70c637008d663e2b590ee3fa3005dd27fb82ccb2e8a0c6e347b8379c808"
+    },
+    {
+      "path": "instrument_reasons.py",
+      "bytes": 1651,
+      "sha256": "2011d8f0ed4f25989ea98a71436812b1b0baa625b19efa1b152335b01f39eb75"
+    },
+    {
+      "path": "instrument.py",
+      "bytes": 3510,
+      "sha256": "6b9d51c7f9ca8fe89dbe57acf5a400bc331e78872ba2f3713214012e4e6e1a27"
+    },
+    {
+      "path": "instrumentation-v2.patch",
+      "bytes": 6030,
+      "sha256": "a491043bf27083dcd3a468fa52aa70890abb84bcca8c8e33af8bbf50f0b134f4"
+    },
+    {
+      "path": "instrumentation.patch",
+      "bytes": 4380,
+      "sha256": "774fd8cd2cef4dcf9649b25173ef5f7d291b64be3af6b38e9258a99665c3f75b"
+    },
+    {
+      "path": "metadata.json",
+      "bytes": 1291,
+      "sha256": "fd63ceeea0644a8e0889d6250fcabedbf149bf0dfdc61ac0e2c1863716deb997"
+    },
+    {
+      "path": "reproduce.md",
+      "bytes": 1322,
+      "sha256": "6e030fd943f6f572621b2a47546ca2a74882eb8e176985b253a6908b48b79907"
+    },
+    {
+      "path": "run-v1/exit-code.txt",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "run-v1/resources.txt",
+      "bytes": 980,
+      "sha256": "fc0dd1fea56ff7af439b446799b22d41f73e068f69c5c5c8fd0958ca20ffa629"
+    },
+    {
+      "path": "run-v1/states.csv",
+      "bytes": 69218,
+      "sha256": "f0f1966527c80bc49a5d219053a3e9c282aeb04eab7439dccd0fe3d265f8740f"
+    },
+    {
+      "path": "run-v1/stderr.txt",
+      "bytes": 58522,
+      "sha256": "26772985b0a92f2dd5529ab4ca853310d335041ba7410f2f37a0129eb1121b02"
+    },
+    {
+      "path": "run-v1/stdout.txt",
+      "bytes": 345456,
+      "sha256": "fb39a60dc9d41e4ecffa2c7b9daf43670517c82119efe91d458cc89fe732588f"
+    },
+    {
+      "path": "run-v2/exit-code.txt",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "run-v2/resources.txt",
+      "bytes": 980,
+      "sha256": "46a4d38e4e52fb4337acfc125b332a1fe9b199657a6c1a432e7121fc12cb0e54"
+    },
+    {
+      "path": "run-v2/states.csv",
+      "bytes": 69218,
+      "sha256": "f0f1966527c80bc49a5d219053a3e9c282aeb04eab7439dccd0fe3d265f8740f"
+    },
+    {
+      "path": "run-v2/stderr.txt",
+      "bytes": 129027,
+      "sha256": "18ce6e532ca5c8eb3615007d8e9a308ef0a34d3f2a9d541a4f0e1d4d916fef48"
+    },
+    {
+      "path": "run-v2/stdout.txt",
+      "bytes": 345446,
+      "sha256": "e956b1b1990db4c3a4c2d4d4597d56f0e5b02810bb78552da50f5c9a9d51a4d5"
+    },
+    {
+      "path": "stage-audit-v2.json",
+      "bytes": 1145,
+      "sha256": "936283eb9267dfbc20207b9224cacb71628d1e036eddf2eb9a0004a6348c2040"
+    }
+  ]
+}
