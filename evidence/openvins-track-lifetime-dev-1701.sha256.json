@@ -1,0 +1,145 @@
+{
+  "schema": "flydrones-sealed-development-evidence-v1",
+  "archive": "evidence/openvins-track-lifetime-dev-1701.zip",
+  "archive_bytes": 180065,
+  "archive_sha256": "cbe704f5340c2c7990de4da894bfe5c2df5980ac5b2dabb17e2b8b8fe30acc52",
+  "member_count": 34,
+  "members": {
+    "results/openvins-track-lifetime-dev-1701/audit-v1/frames.csv": {
+      "bytes": 29100,
+      "sha256": "8041b8352ea61510b0e45696e6f23d0b1e3d8fd1e59071c616769469655cfa06"
+    },
+    "results/openvins-track-lifetime-dev-1701/audit-v1/id_lifetimes.csv": {
+      "bytes": 119247,
+      "sha256": "5ae4aa28d617552e9094095a8315a2d3ec7d523eaa92710d3dc6d2b63d8c248f"
+    },
+    "results/openvins-track-lifetime-dev-1701/audit-v1/summary.json": {
+      "bytes": 1521,
+      "sha256": "712a9d44e26db05e0f55d75b02201784ab05175e08a75b540675ac4b5dc52dfe"
+    },
+    "results/openvins-track-lifetime-dev-1701/audit-v2/frames.csv": {
+      "bytes": 29100,
+      "sha256": "8041b8352ea61510b0e45696e6f23d0b1e3d8fd1e59071c616769469655cfa06"
+    },
+    "results/openvins-track-lifetime-dev-1701/audit-v2/id_lifetimes.csv": {
+      "bytes": 119247,
+      "sha256": "5ae4aa28d617552e9094095a8315a2d3ec7d523eaa92710d3dc6d2b63d8c248f"
+    },
+    "results/openvins-track-lifetime-dev-1701/audit-v2/summary.json": {
+      "bytes": 1521,
+      "sha256": "712a9d44e26db05e0f55d75b02201784ab05175e08a75b540675ac4b5dc52dfe"
+    },
+    "results/openvins-track-lifetime-dev-1701/build.exitcode": {
+      "bytes": 3,
+      "sha256": "13bf7b3039c63bf5a50491fa3cfd8eb4e699d1ba1436315aef9cbe5711530354"
+    },
+    "results/openvins-track-lifetime-dev-1701/build.log": {
+      "bytes": 4605,
+      "sha256": "8fce0b2c92bc100dc4a66d4683bcc89a74daece9f223227d8abd8f27c6d6d80c"
+    },
+    "results/openvins-track-lifetime-dev-1701/configure.exitcode": {
+      "bytes": 3,
+      "sha256": "13bf7b3039c63bf5a50491fa3cfd8eb4e699d1ba1436315aef9cbe5711530354"
+    },
+    "results/openvins-track-lifetime-dev-1701/configure.log": {
+      "bytes": 3685,
+      "sha256": "acae4b578d557a238eda922ce1b0c3bfc185d60e868774e7a0f49ab809707af8"
+    },
+    "results/openvins-track-lifetime-dev-1701/instrument_tracker.py": {
+      "bytes": 4775,
+      "sha256": "e157600c63aefee0a7a064ff74431342b5ae43f5a8f92844d1c120d072ed02ca"
+    },
+    "results/openvins-track-lifetime-dev-1701/provenance-v2.json": {
+      "bytes": 1758,
+      "sha256": "5c9afc10e4e0a5a2b742908871ce3771aa3c9c84de35262e0a0e094dc68a9581"
+    },
+    "results/openvins-track-lifetime-dev-1701/provenance.json": {
+      "bytes": 1758,
+      "sha256": "5c9afc10e4e0a5a2b742908871ce3771aa3c9c84de35262e0a0e094dc68a9581"
+    },
+    "results/openvins-track-lifetime-dev-1701/replay-v1/exit-code.txt": {
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    "results/openvins-track-lifetime-dev-1701/replay-v1/resources.txt": {
+      "bytes": 1349,
+      "sha256": "2bb26b5332fb3c07d701b81d8fbfeeaede48206bc019f49529f4bc347ff4690d"
+    },
+    "results/openvins-track-lifetime-dev-1701/replay-v1/states.csv": {
+      "bytes": 67207,
+      "sha256": "1ccb4cd2eb55294e5130f052800d0bf83a962538ecba68c00c97e28c22af8975"
+    },
+    "results/openvins-track-lifetime-dev-1701/replay-v1/stderr.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "results/openvins-track-lifetime-dev-1701/replay-v1/stdout.txt": {
+      "bytes": 1098233,
+      "sha256": "93cc7b69821c952e34f4a7973e5ba2bf845cee4a99dc6cd2cf7d9ed644412ef0"
+    },
+    "results/openvins-track-lifetime-dev-1701/run_audit.py": {
+      "bytes": 5203,
+      "sha256": "d2bde3df433ede16a0ebc2a276d59bc4688f6bbaff43e1298b73ade0b093e901"
+    },
+    "results/openvins-track-lifetime-dev-1701/run_replay_v1.sh": {
+      "bytes": 818,
+      "sha256": "0e702655dcd4323ea6b446340a0c16846e2b4417facacaf5acd4f2c820fb4be6"
+    },
+    "results/openvins-track-lifetime-dev-1701/seal_archive.py": {
+      "bytes": 3124,
+      "sha256": "2423a66db093bf492f5a236a44cc60c5fcab130265ea9babd27466150b8c5c37"
+    },
+    "results/openvins-track-lifetime-dev-1701/upstream-applied.patch": {
+      "bytes": 8065,
+      "sha256": "c5627a15ca422a90ef84df4a8fd6937920f86ee233cc517feb1250f61a86d54e"
+    },
+    "results/openvins-track-lifetime-dev-1701/write_provenance.py": {
+      "bytes": 2591,
+      "sha256": "84a4ec7302144fa1741bb26cc2632ea1e31e4f2b019535db882002fbdaa5740d"
+    },
+    "docs/OPENVINS_TRACK_LIFETIME_REPORT.md": {
+      "bytes": 5047,
+      "sha256": "7691aae59286a42fc915d6b01f75908cfd61941e8f045eb5ddcf02a4f4c68df3"
+    },
+    "docs/superpowers/specs/2026-10-04-openvins-track-lifetime-design.md": {
+      "bytes": 3061,
+      "sha256": "60d26b6c8aeccdafe443a2efff8f0adf2e1fdac5aeb7c9468f00fd3c9dda50b8"
+    },
+    "docs/superpowers/plans/2026-10-04-openvins-track-lifetime.md": {
+      "bytes": 2462,
+      "sha256": "24772cb1e1aedcc5ebacdbbe0872159a2ef727ff0c75fe7f2c0806b0cb0161d3"
+    },
+    "tools/benchmark/openvins_init_feature_trace.patch": {
+      "bytes": 1841,
+      "sha256": "0cc8a8df9da8ed64ac806240c6260c753aee89389f40b1cd3b014e74a3408bdc"
+    },
+    "tools/benchmark/openvins_track_eligibility.patch": {
+      "bytes": 2134,
+      "sha256": "805a906b876cf371d2dbd9c139eb3d6d6f77badd11ab85058f671f38db229336"
+    },
+    "tools/benchmark/openvins_track_lifetime.patch": {
+      "bytes": 4494,
+      "sha256": "d694165d7bca939803f2dfb5597bcc49bb12c4b7157c32448a0fc2af98fb1025"
+    },
+    "tools/benchmark/audit_openvins_track_eligibility.py": {
+      "bytes": 5717,
+      "sha256": "000551eff6a2c82b9a216bb2db2a71ed7ba342b455e45aa00a38f7cfbc69a43b"
+    },
+    "tools/benchmark/audit_openvins_track_lifetime.py": {
+      "bytes": 6946,
+      "sha256": "9c1f7a876acae95c6a4cfa9036722398e67dc5565c367d8b120518444a292f4c"
+    },
+    "tests/benchmark/test_openvins_track_lifetime.py": {
+      "bytes": 3907,
+      "sha256": "dfec99985ef268d86ef78d591328f3a83a36393f00eb38d63372b2d1bb3d8870"
+    },
+    "evidence/openvins-prearm-board-dev-1701-reviewed.sha256.json": {
+      "bytes": 147615,
+      "sha256": "9dc7dd919af820c9dc02f4d2a8858b5506573dfd95aea6eed39408f0ec4df1f7"
+    },
+    "evidence/openvins-track-eligibility-dev-1701.sha256.json": {
+      "bytes": 5144,
+      "sha256": "afcd90cef98a5b193e913cfdadb1301734feb09be4e0cfac9584a792c2e18a6e"
+    }
+  }
+}
