@@ -17,6 +17,8 @@ MOMENT_COLUMNS = (["image_ns", "state_timestamp_s", "vx", "vy", "vz"]
                   + [f"cov_{row}_{col}" for row in range(15) for col in range(15)])
 ERROR_ORDER = ["dtheta", "dposition", "dvelocity", "gyro_bias", "accel_bias"]
 EVENT_IMAGE_NS = (46_100_000_000, 46_200_000_000, 46_300_000_000)
+FROZEN_STATES_SHA256 = "422a0e507aa6568d752942b1019732dfd00618224da66cc5c7506f536867e080"
+PSD_RELATIVE_NEGATIVE_TOLERANCE = 1e-12
 
 
 def _sha(path: Path) -> str:
@@ -35,7 +37,11 @@ def _read(path: Path, columns: list[str]) -> list[dict]:
     return rows
 
 
-def audit(states_csv: Path, moments_csv: Path) -> dict:
+def audit(states_csv: Path, moments_csv: Path, *, expected_states_sha256: str,
+          required_event_image_ns: tuple[int, ...]) -> dict:
+    states_sha256 = _sha(states_csv)
+    if states_sha256 != expected_states_sha256:
+        raise ValueError("state CSV differs from frozen baseline")
     all_states = _read(states_csv, STATE_COLUMNS)
     if any(row["initialized"] not in {"0", "1"} for row in all_states):
         raise ValueError("invalid initialization flag")
@@ -71,7 +77,7 @@ def audit(states_csv: Path, moments_csv: Path) -> dict:
         if not np.all(np.isfinite(eigenvalues)):
             raise ValueError("non-finite covariance eigenvalues")
         minimum = float(eigenvalues[0])
-        if minimum < -1e-8 * scale:
+        if minimum < -PSD_RELATIVE_NEGATIVE_TOLERANCE * scale:
             raise ValueError("covariance must be positive semidefinite")
         position_diagonal = np.diag(covariance)[3:6]
         velocity_diagonal = np.diag(covariance)[6:9]
@@ -84,7 +90,7 @@ def audit(states_csv: Path, moments_csv: Path) -> dict:
         vel_variances.extend(float(value) for value in velocity_diagonal)
         velocity_norms.append(norm)
         min_eigenvalues.append(minimum)
-        if image_ns in EVENT_IMAGE_NS:
+        if image_ns in required_event_image_ns:
             event_rows.append({
                 "image_ns": image_ns,
                 "native_velocity_xyz_mps": velocity.tolist(),
@@ -93,20 +99,25 @@ def audit(states_csv: Path, moments_csv: Path) -> dict:
                 "native_velocity_variance_xyz_m2ps2": velocity_diagonal.tolist(),
                 "covariance_min_eigenvalue": minimum,
             })
+    if set(required_event_image_ns) - {row["image_ns"] for row in event_rows}:
+        raise ValueError("missing required anomaly frame")
     return {
         "schema": "flydrones-openvins-native-moments-audit-v1",
         "scope": "offline OpenVINS native frame; not MAVLink or PX4 covariance",
         "truth_used": False,
-        "states_sha256": _sha(states_csv),
+        "states_sha256": states_sha256,
+        "frozen_baseline_states_sha256": expected_states_sha256,
         "moments_sha256": _sha(moments_csv),
         "initialized_frames": len(states),
         "native_error_order": ERROR_ORDER,
         "covariance_structure_valid": True,
         "minimum_covariance_eigenvalue": min(min_eigenvalues),
+        "psd_relative_negative_tolerance": PSD_RELATIVE_NEGATIVE_TOLERANCE,
         "position_variance_m2_range": [min(pos_variances), max(pos_variances)],
         "velocity_variance_m2ps2_range": [min(vel_variances), max(vel_variances)],
         "native_speed_mps_range": [min(velocity_norms), max(velocity_norms)],
         "anomaly_window_rows": event_rows,
+        "required_anomaly_image_ns": list(required_event_image_ns),
         "px4_fusion_eligible": False,
         "reason": "native moments still lack verified frame transform, capture/arrival timing, resets, quality and camera-IMU calibration",
     }
@@ -120,7 +131,9 @@ def main() -> int:
     args = parser.parse_args()
     if args.output.exists():
         raise FileExistsError("refusing to overwrite OpenVINS moments audit")
-    report = audit(args.states, args.moments)
+    report = audit(args.states, args.moments,
+                   expected_states_sha256=FROZEN_STATES_SHA256,
+                   required_event_image_ns=EVENT_IMAGE_NS)
     args.output.parent.mkdir(parents=True, exist_ok=True)
     with args.output.open("x", encoding="utf-8") as stream:
         json.dump(report, stream, indent=2, allow_nan=False)

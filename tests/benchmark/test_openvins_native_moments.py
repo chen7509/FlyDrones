@@ -1,4 +1,5 @@
 import csv
+import hashlib
 
 import numpy as np
 import pytest
@@ -30,9 +31,15 @@ def fixture_files(tmp_path, *, matrices=None, times=(33.5, 33.6, 33.7),
     return states, moments
 
 
+def audit_fixture(states, moments):
+    frozen_sha = hashlib.sha256(states.read_bytes()).hexdigest()
+    return audit(states, moments, expected_states_sha256=frozen_sha,
+                 required_event_image_ns=())
+
+
 def test_audit_reads_native_order_and_matches_old_states(tmp_path):
     states, moments = fixture_files(tmp_path)
-    report = audit(states, moments)
+    report = audit_fixture(states, moments)
     assert report["initialized_frames"] == 3
     assert report["native_error_order"] == ["dtheta", "dposition", "dvelocity", "gyro_bias", "accel_bias"]
     assert report["position_variance_m2_range"] == [0.01, 0.01]
@@ -66,7 +73,7 @@ def test_audit_rejects_invalid_moments(tmp_path, mutation, reason):
     states, moments = fixture_files(tmp_path, matrices=matrices,
                                     state_times=state_times, velocity=velocity)
     with pytest.raises(ValueError, match=reason):
-        audit(states, moments)
+        audit_fixture(states, moments)
 
 
 def test_audit_rejects_missing_initialized_frame(tmp_path):
@@ -74,7 +81,7 @@ def test_audit_rejects_missing_initialized_frame(tmp_path):
     lines = moments.read_text(encoding="utf-8").splitlines()
     moments.write_text("\n".join([lines[0], lines[1], lines[3]]) + "\n", encoding="utf-8")
     with pytest.raises(ValueError, match="frame count"):
-        audit(states, moments)
+        audit_fixture(states, moments)
 
 
 def test_audit_rejects_invalid_state_flag_even_when_moments_match(tmp_path):
@@ -83,7 +90,7 @@ def test_audit_rejects_invalid_state_flag_even_when_moments_match(tmp_path):
     lines.insert(1, "33400000000,2,-1,,,,,,,")
     states.write_text("\n".join(lines) + "\n", encoding="utf-8")
     with pytest.raises(ValueError, match="initialization flag"):
-        audit(states, moments)
+        audit_fixture(states, moments)
 
 
 @pytest.mark.parametrize("corruption", ["duplicate_header", "extra_cell"])
@@ -97,4 +104,33 @@ def test_audit_rejects_broken_moments_csv_width(tmp_path, corruption):
         lines[2] += ",0"
     moments.write_text("\n".join(lines) + "\n", encoding="utf-8")
     with pytest.raises(ValueError, match="columns|malformed"):
-        audit(states, moments)
+        audit_fixture(states, moments)
+
+
+def test_audit_rejects_changed_pose_with_same_timestamps(tmp_path):
+    states, moments = fixture_files(tmp_path)
+    frozen_sha = hashlib.sha256(states.read_bytes()).hexdigest()
+    lines = states.read_text(encoding="utf-8").splitlines()
+    cells = lines[2].split(",")
+    cells[7] = "9"
+    lines[2] = ",".join(cells)
+    states.write_text("\n".join(lines) + "\n", encoding="utf-8")
+    with pytest.raises(ValueError, match="frozen baseline"):
+        audit(states, moments, expected_states_sha256=frozen_sha,
+              required_event_image_ns=())
+
+
+def test_audit_requires_all_declared_anomaly_frames(tmp_path):
+    states, moments = fixture_files(tmp_path)
+    frozen_sha = hashlib.sha256(states.read_bytes()).hexdigest()
+    with pytest.raises(ValueError, match="required anomaly"):
+        audit(states, moments, expected_states_sha256=frozen_sha,
+              required_event_image_ns=(46_100_000_000,))
+
+
+def test_audit_rejects_small_negative_covariance_eigenvalue(tmp_path):
+    matrices = [np.eye(15) * .01 for _ in range(3)]
+    matrices[1][0, 0] = -1e-9
+    states, moments = fixture_files(tmp_path, matrices=matrices)
+    with pytest.raises(ValueError, match="positive semidefinite"):
+        audit_fixture(states, moments)
