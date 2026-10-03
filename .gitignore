@@ -22,6 +22,7 @@ results/fly-ego-camera-info-preflight/
 results/fly-ego-optical-calib/
 results/fly-ego-dynamic-calib/
 results/openvins-offline-1701/
+results/openvins-texture-dev/
 .DS_Store
 Thumbs.db
 .idea/
