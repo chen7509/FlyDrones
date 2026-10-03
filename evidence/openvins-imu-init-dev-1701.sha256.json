@@ -1,0 +1,71 @@
+{
+  "archive_bytes": 955918,
+  "archive_sha256": "b27064f17bc10f0181813f9ca505dcf7e4149af7631329cb798816db87124fd6",
+  "files": {
+    "docs/OPENVINS_IMU_INIT_REPORT.md": {
+      "bytes": 4424,
+      "sha256": "2aa9d624a53b77c2dd4bd53d95953ccb9f751eb17fe119f8fe52b8fa29c0214e"
+    },
+    "docs/superpowers/plans/2026-10-03-openvins-imu-init-audit.md": {
+      "bytes": 3740,
+      "sha256": "d83711c884f3c2911086f8222c51504b2dceef6dd6220f82c35e1e82a737294a"
+    },
+    "docs/superpowers/specs/2026-10-03-openvins-imu-init-audit.md": {
+      "bytes": 2530,
+      "sha256": "b9e4d1bc5611c964445782843bb9db9db615e0cc39360b51b2978c7b4fe8cbbd"
+    },
+    "results/openvins-clone-motion/replay-v1/states.csv": {
+      "bytes": 69218,
+      "sha256": "f0f1966527c80bc49a5d219053a3e9c282aeb04eab7439dccd0fe3d265f8740f"
+    },
+    "results/openvins-clone-motion/replay-v1/stdout.txt": {
+      "bytes": 345395,
+      "sha256": "13c4b3187d8ec32562e9a394f6db6328f8824d7243dbbfa250c9a12de6fdd6a9"
+    },
+    "results/openvins-imu-init/REPRODUCE.md": {
+      "bytes": 1011,
+      "sha256": "bad2dc4d6efcbd81eab3c753045345dea862a7b8889e9dc94a2eef4a906e4fe1"
+    },
+    "results/openvins-imu-init/archive_evidence.py": {
+      "bytes": 3732,
+      "sha256": "8f9f0e029b57872079620632f0f5e418ab18556de4eda0e72a5b7e074c26f4f4"
+    },
+    "results/openvins-imu-init/audit-v2/summary.json": {
+      "bytes": 2269,
+      "sha256": "ab2c8d48b9b75c906220d7d88ee034302fa8c7d591e18033b8a38d18fbe0e8bc"
+    },
+    "results/openvins-imu-init/audit-v2/velocity_window.csv": {
+      "bytes": 23577,
+      "sha256": "c1aedc8829ccb14e2ea7a36908871457dd6dae988416a02ecdd715e7b727e8cb"
+    },
+    "results/openvins-imu-init/metadata.json": {
+      "bytes": 663,
+      "sha256": "d230febb0f273717e1d742dd39c1305f39bcad236d51999ff88412a2af8de591"
+    },
+    "results/openvins-offline-1701/runner-v3/offline_probe.cpp": {
+      "bytes": 6034,
+      "sha256": "ed966a7d15a345f85e814e8a0bdbd3f2cfbf0a0f10bcbf789de9cbba2b06e70a"
+    },
+    "results/openvins-texture-dev/config-v2/estimator_config.yaml": {
+      "bytes": 6069,
+      "sha256": "eaa40224f0de2f4c5b0f1d33504d215670544b9cc000252a0e92f404478360e6"
+    },
+    "results/openvins-texture-dev/config-v2/kalibr_imu_chain.yaml": {
+      "bytes": 1364,
+      "sha256": "6accf2467907df4723419a8f82e772b537b699bbb67a9a9f69097286e1e8b114"
+    },
+    "results/openvins-texture-dev/input-v1/imu.csv": {
+      "bytes": 2083536,
+      "sha256": "108204af8f88e78ba6b7068f229a0d87bb1ec4039535742b5cd8c1c6ff1e9122"
+    },
+    "tests/benchmark/test_openvins_imu_init.py": {
+      "bytes": 4481,
+      "sha256": "754895e69dd5eaa9f93f590ddd2c5a2fa032919637fcab334927a2acf8736ca8"
+    },
+    "tools/benchmark/audit_openvins_imu_init.py": {
+      "bytes": 10466,
+      "sha256": "9ddb2bbf88146dfe8f0188de1ed8f2599670b9c8e62243d6a83332bfc353eebd"
+    }
+  },
+  "schema": "flydrones-archive-index-v1"
+}

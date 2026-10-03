@@ -86,6 +86,10 @@ def test_low_excitation_can_coexist_with_nonzero_ekf_velocity() -> None:
     assert len(rows) == 3
     assert summary["median_speed_m_s"] == pytest.approx(.2)
     assert summary["reference_moving_over_0_1_mps"] is True
+    assert summary["max_sample_gap_ms"] == pytest.approx(10)
+    assert summary["all_velocity_flags_valid"] is True
+    assert summary["vxy_reset_counter"] == 0
+    assert summary["vz_reset_counter"] == 0
 
 
 @pytest.mark.parametrize("change,match", [
