@@ -1,0 +1,43 @@
+schema: flydrones-connectome-corpus-v2
+formal_freeze_sha256: 9d10bb72c1fda4048f0439c9dfb823583d8464a8491349f9e732e9cced87d937
+development_seeds: [1701, 1702, 1703]
+output_root: ../results/connectome-training/sequences/v2
+benchmark_config:
+  path: fly_ego_benchmark.yaml
+  sha256: 316db1b30fc2aaaebdebb5c4d6446a42eb9a0a6af571f53579627ae89298474f
+vehicle_model:
+  path: ../assets/gazebo/models/x500_benchmark/model.sdf
+  sha256: ff8eaa1dbb73b77d693e1d29908bc0ebee6ffa64311951e133db38fda82e7ee9
+teacher:
+  repository: https://github.com/ZJU-FAST-Lab/ego-planner-swarm.git
+  commit: 23a8d5a191711dd65633df689bd00f55d4dea8f9
+  image_id: sha256:a4dae62b38bc01a01d084be7b68db83ec804fef7673604e1a9c986a4baa88a6a
+max_sim_time_s: 120
+allowed_terminals: [success, collision, out_of_bounds, timeout]
+rollout_seeds: [1, 2, 3]
+student_truth_fields: false
+stages:
+  - id: stability
+    world_family: stability
+    train_seeds: [1101, 1102]
+    validation_seeds: [9101]
+  - id: looming
+    world_family: looming
+    train_seeds: [1201, 1202]
+    validation_seeds: [9201]
+  - id: corridor
+    world_family: corridor
+    train_seeds: [1301, 1302]
+    validation_seeds: [9301]
+  - id: forest
+    world_family: forest
+    train_seeds: [1401, 1402]
+    validation_seeds: [9401]
+  - id: dynamic
+    world_family: dynamic
+    train_seeds: [1501, 1502]
+    validation_seeds: [9501]
+  - id: disturbance
+    world_family: disturbance
+    train_seeds: [1601, 1602]
+    validation_seeds: [9601]
