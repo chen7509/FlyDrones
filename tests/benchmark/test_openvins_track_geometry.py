@@ -4,12 +4,14 @@ import numpy as np
 import pytest
 
 from tools.benchmark.audit_openvins_track_geometry import (
+    assert_config_digest,
     audit_attempts,
     camera_pose_ned,
     parse_trace,
     sample_attitude,
     sample_position,
     triangulate_bearings,
+    validate_trace_stages,
 )
 
 
@@ -121,3 +123,27 @@ def test_audit_preserves_unscored_and_degenerate_attempts() -> None:
     assert len(rows) == 2
     assert all(row["status"] == "unscored" for row in rows)
     assert all("invalid" in row["reason"] for row in rows)
+
+
+def test_calibration_digest_rejects_changed_yaml_even_if_expected_lines_remain() -> None:
+    import hashlib
+
+    original = b"T_imu_cam: fixed\nintrinsics: fixed\n"
+    expected = hashlib.sha256(original).hexdigest()
+    assert_config_digest(original, expected)
+    with pytest.raises(ValueError, match="config SHA-256"):
+        assert_config_digest(original + b"extra_override: changed\n", expected)
+
+
+def test_each_trace_window_must_match_one_stage_count() -> None:
+    attempts = [{"window_s": 1.0, "feature_id": 7, "observations": []},
+                {"window_s": 2.0, "feature_id": 8, "observations": []}]
+    matching = "\n".join(["FD_MSCKF_STAGE t=1.000000000 input=2 clean=1 tri=0",
+                          "FD_MSCKF_STAGE t=2.000000000 input=2 clean=1 tri=0"])
+    assert validate_trace_stages(matching, attempts) == 2
+    compensated = "\n".join(["FD_MSCKF_STAGE t=1.000000000 input=2 clean=0 tri=0",
+                             "FD_MSCKF_STAGE t=2.000000000 input=2 clean=2 tri=0"])
+    with pytest.raises(ValueError, match="window"):
+        validate_trace_stages(compensated, attempts)
+    with pytest.raises(ValueError, match="duplicate"):
+        validate_trace_stages(matching + "\n" + matching.splitlines()[0], attempts)

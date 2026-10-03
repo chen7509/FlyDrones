@@ -289,6 +289,37 @@ def _sha256(path: Path) -> str:
         return hashlib.file_digest(stream, "sha256").hexdigest()
 
 
+def assert_config_digest(data: bytes, expected_sha256: str) -> None:
+    """Refuse to score tracks with any change to the frozen calibration YAML."""
+    if hashlib.sha256(data).hexdigest() != expected_sha256:
+        raise ValueError("camera config SHA-256 differs from frozen input")
+
+
+def validate_trace_stages(trace: str, attempts: list[dict]) -> int:
+    """Require every update window's exported attempts to match its clean count."""
+    expected: dict[float, int] = {}
+    last_window = -math.inf
+    for line in trace.splitlines():
+        if not line.startswith("FD_MSCKF_STAGE "):
+            continue
+        values = _fields(line)
+        if "t" not in values or "clean" not in values:
+            raise ValueError("malformed stage record")
+        window, count = float(values["t"]), int(values["clean"])
+        if window in expected:
+            raise ValueError("duplicate stage window")
+        if not math.isfinite(window) or window <= last_window or count < 0:
+            raise ValueError("invalid stage window or count")
+        expected[window] = count
+        last_window = window
+    observed = Counter(attempt["window_s"] for attempt in attempts)
+    if (not expected or any(observed.get(window, 0) != count
+                            for window, count in expected.items())
+            or any(window not in expected for window in observed)):
+        raise ValueError("track count differs from clean count in a stage window")
+    return sum(expected.values())
+
+
 def _percentiles(rows: list[dict], key: str) -> dict[str, float] | None:
     values = np.array([float(row[key]) for row in rows if row[key] != ""], dtype=float)
     if len(values) == 0:
@@ -312,19 +343,11 @@ def main() -> int:
     state_hash = _sha256(args.state_csv)
     if state_hash != _sha256(args.original_state_csv):
         raise SystemExit("diagnostic replay changed estimator state CSV")
-    config = args.config.read_text(encoding="utf-8")
-    if not all(token in config for token in (
-        "- [0.0, 0.0, 1.0, 0.12]", "- [1.0, 0.0, 0.0, 0.0]",
-        "- [0.0, 1.0, 0.0, -0.002]", "intrinsics: [108.12401050876075",
-        "timeshift_cam_imu: 0.0",
-    )):
-        raise SystemExit("unexpected camera extrinsic/intrinsic/time-offset config")
+    assert_config_digest(args.config.read_bytes(),
+                         "120fb34ae45fec5d0c3cf838d053e7b0b79808c64b3fdb89923c4df09ec1a0cf")
     trace = args.trace.read_text(encoding="utf-8")
     attempts = parse_trace(trace)
-    stage_clean = sum(int(v) for v in re.findall(r"^FD_MSCKF_STAGE .*?\bclean=(\d+)",
-                                                       trace, re.MULTILINE))
-    if stage_clean != len(attempts) or not attempts:
-        raise SystemExit(f"trace count {len(attempts)} != post-clean count {stage_clean}")
+    stage_clean = validate_trace_stages(trace, attempts)
     attitude, position = _reference_arrays(args.ulog)
     rotation = np.array([[0., 0., 1.], [1., 0., 0.], [0., 1., 0.]])
     translation = np.array([.12, 0., -.002])

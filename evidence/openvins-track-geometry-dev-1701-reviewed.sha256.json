@@ -1,10 +1,10 @@
 {
-  "archive_bytes": 144212,
-  "archive_sha256": "f3e25893bd415dcc0723ee06029046e148eb6f578ac0fbd4c92454f250579cd7",
+  "archive_bytes": 145169,
+  "archive_sha256": "1be252939803721f64a5dcab1a03dc835def11169116923c1a2c9eb4f40cd8e7",
   "files": {
     "docs/OPENVINS_TRACK_GEOMETRY_REPORT.md": {
-      "bytes": 5142,
-      "sha256": "e96e2a2a4f440e0292eeb4b4c116441cb61f719424b2e750946425f4cdbf9a49"
+      "bytes": 5577,
+      "sha256": "b165bc5939fa04c047c574ffc568d175fc820255b02e06359f11380755b337ff"
     },
     "docs/superpowers/plans/2026-10-03-openvins-track-geometry-audit.md": {
       "bytes": 2792,
@@ -39,14 +39,14 @@
       "sha256": "6ac3beaa53d958f8f8871534524bf81390e4b49d5708a75b587d3514371b7880"
     },
     "results/openvins-track-geometry/archive_evidence.py": {
-      "bytes": 4692,
-      "sha256": "0ea00a6fe0f794ed41ec8f023e43f4e338e812479fedfc25965f3ef171fa6544"
+      "bytes": 4798,
+      "sha256": "19442c717d081e1c559f01f318e8eca5cbd40623ca4e56f99855d8882fbc684b"
     },
-    "results/openvins-track-geometry/audit-v2/attempts.csv": {
+    "results/openvins-track-geometry/audit-v3/attempts.csv": {
       "bytes": 34394,
       "sha256": "0b41d03bb64fbf2100aa31012ec42308fc452be746e26062412ed0782397d980"
     },
-    "results/openvins-track-geometry/audit-v2/summary.json": {
+    "results/openvins-track-geometry/audit-v3/summary.json": {
       "bytes": 2009,
       "sha256": "f4191755315f5b913b7f3438df2ddc4fad16d279539e41bce9598a59aa712dd0"
     },
@@ -59,8 +59,8 @@
       "sha256": "f6ea84fa3e42293fe10b8620722e06f4dfa6bee4c8b39e7d6ebf674898334762"
     },
     "results/openvins-track-geometry/metadata.json": {
-      "bytes": 1060,
-      "sha256": "09189b6d26b1d89ab2fd9d042eecda8f90c498dc64a75c7028b88ecf762265da"
+      "bytes": 1156,
+      "sha256": "ce0baba4815ab662c4e5bddf034c5f307102887e7eb45f2f131bea3d063a1408"
     },
     "results/openvins-track-geometry/replay-v1/exit-code.txt": {
       "bytes": 2,
@@ -83,12 +83,12 @@
       "sha256": "c8f6612fc872922f346b529f454508a6e037c02831b7b6ae7867ab5e1468edd4"
     },
     "tests/benchmark/test_openvins_track_geometry.py": {
-      "bytes": 5662,
-      "sha256": "b4c3b677c749e4f26d542a973ace760f458ee1aebf3b19b6d0768f8056a7f448"
+      "bytes": 6961,
+      "sha256": "1cbe0c4bda70bcddea60035988246a4ad44b1b31988ccbe88a5ef0c4f2cf34f8"
     },
     "tools/benchmark/audit_openvins_track_geometry.py": {
-      "bytes": 17929,
-      "sha256": "c79af4d17e6529675e05363be0a0460cad9977fcd814855fba6cf9c545c59c1b"
+      "bytes": 18951,
+      "sha256": "e185857b3dfc6c711c892e35d56a8ef365b3d8c515ac89aceb139712f52cf62b"
     }
   },
   "schema": "flydrones-archive-index-v1"
