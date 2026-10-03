@@ -58,6 +58,48 @@ def test_audit_rejects_nonfinite_and_missing_state(tmp_path):
         audit(states, speed_limit_mps=0.8)
 
 
+@pytest.mark.parametrize("corruption", [
+    "duplicate_header", "extra_cell", "uninitialized_nan", "uninitialized_pose",
+])
+def test_audit_rejects_malformed_csv_records(tmp_path, corruption):
+    states = tmp_path / "states.csv"
+    write_states(states)
+    lines = states.read_text(encoding="utf-8").splitlines()
+    if corruption == "duplicate_header":
+        lines[0] += ",px"
+        lines[1:] = [line + ",999" for line in lines[1:]]
+    elif corruption == "extra_cell":
+        lines[2] += ",999"
+    elif corruption == "uninitialized_nan":
+        lines[1] = "33500000000,0,nan,,,,,,,"
+    else:
+        lines[1] = "33500000000,0,-1,0,0,0,1,0,0,0"
+    states.write_text("\n".join(lines) + "\n", encoding="utf-8")
+    with pytest.raises(ValueError, match="columns|unexpected|uninitialized"):
+        audit(states, speed_limit_mps=0.8)
+
+
+def test_audit_rejects_arithmetic_overflow(tmp_path):
+    states = tmp_path / "states.csv"
+    write_states(states, positions=(0.0, 1e308, -1e308, 0.0, 0.1))
+    with pytest.raises(ValueError, match="non-finite|overflow"):
+        audit(states, speed_limit_mps=0.8)
+    write_states(states)
+    with pytest.raises(ValueError, match="non-finite|overflow"):
+        audit(states, speed_limit_mps=1e308)
+
+
+def test_audit_accepts_uninitialized_older_finite_timestamp(tmp_path):
+    states = tmp_path / "states.csv"
+    write_states(states, positions=(0, .01, .02, .03, .04))
+    lines = states.read_text(encoding="utf-8").splitlines()
+    lines.insert(1, "33400000000,0,30.004,,,,,,,")
+    states.write_text("\n".join(lines) + "\n", encoding="utf-8")
+    result = audit(states, speed_limit_mps=0.8)
+    assert result["total_image_frames"] == 6
+    assert result["initialized_frames"] == 5
+
+
 def test_audit_rejects_bad_limit_and_cli_refuses_overwrite(tmp_path, monkeypatch):
     states = tmp_path / "states.csv"
     output = tmp_path / "audit.json"

@@ -15,8 +15,8 @@ from pathlib import Path
 
 import numpy as np
 
-STATE_COLUMNS = {"image_ns", "initialized", "state_timestamp_s", "qx", "qy",
-                 "qz", "qw", "px", "py", "pz"}
+STATE_COLUMNS = ["image_ns", "initialized", "state_timestamp_s", "qx", "qy",
+                 "qz", "qw", "px", "py", "pz"]
 FUSION_FIELDS_ABSENT_FROM_SOURCE = [
     "linear_velocity", "pose_covariance", "velocity_covariance",
     "reset_counter", "quality", "reference_frame", "body_frame",
@@ -33,9 +33,12 @@ def audit(states_csv: Path, *, speed_limit_mps: float) -> dict:
     """Screen state discontinuities; never equate a clean screen with fusion readiness."""
     if not math.isfinite(speed_limit_mps) or speed_limit_mps <= 0:
         raise ValueError("speed limit must be positive and finite")
+    threshold = 2.0 * speed_limit_mps
+    if not math.isfinite(threshold):
+        raise ValueError("speed screen threshold overflow")
     with states_csv.open(newline="", encoding="utf-8") as stream:
         reader = csv.DictReader(stream)
-        if set(reader.fieldnames or ()) != STATE_COLUMNS:
+        if reader.fieldnames != STATE_COLUMNS:
             raise ValueError("unexpected OpenVINS state columns")
         rows = list(reader)
     if not rows:
@@ -47,6 +50,8 @@ def audit(states_csv: Path, *, speed_limit_mps: float) -> dict:
     initialized_image_times: list[int] = []
     seen_initialized = False
     for row in rows:
+        if None in row or any(value is None for value in row.values()):
+            raise ValueError("unexpected CSV row width")
         image_ns = int(row["image_ns"])
         if image_ns < 0 or (image_times and image_ns <= image_times[-1]):
             raise ValueError("nonmonotonic image timestamp")
@@ -57,6 +62,12 @@ def audit(states_csv: Path, *, speed_limit_mps: float) -> dict:
         if flag == "0":
             if seen_initialized:
                 raise ValueError("lost initialization without reset metadata")
+            uninitialized_time = float(row["state_timestamp_s"])
+            if (not math.isfinite(uninitialized_time)
+                    or (uninitialized_time != -1.0
+                        and not 0 <= uninitialized_time <= image_ns * 1e-9 + 1e-5)
+                    or any(row[key] != "" for key in STATE_COLUMNS[3:])):
+                raise ValueError("invalid uninitialized state sentinel")
             continue
         seen_initialized = True
         state_time = float(row["state_timestamp_s"])
@@ -78,10 +89,15 @@ def audit(states_csv: Path, *, speed_limit_mps: float) -> dict:
     max_apparent_speed = None
     max_state_gap = None
     if len(state_times) > 1:
-        dt = np.diff(np.asarray(state_times, dtype=float))
-        displacement = np.linalg.norm(np.diff(np.asarray(positions, dtype=float), axis=0), axis=1)
-        speeds = displacement / dt
-        threshold = 2.0 * speed_limit_mps
+        try:
+            with np.errstate(over="raise", invalid="raise", divide="raise"):
+                dt = np.diff(np.asarray(state_times, dtype=float))
+                displacement = np.linalg.norm(np.diff(np.asarray(positions, dtype=float), axis=0), axis=1)
+                speeds = displacement / dt
+        except FloatingPointError as error:
+            raise ValueError("non-finite state displacement or speed overflow") from error
+        if not np.all(np.isfinite(displacement)) or not np.all(np.isfinite(speeds)):
+            raise ValueError("non-finite state displacement or speed")
         max_apparent_speed = float(np.max(speeds))
         max_state_gap = float(np.max(dt))
         for index in np.flatnonzero(speeds > threshold):
@@ -105,7 +121,7 @@ def audit(states_csv: Path, *, speed_limit_mps: float) -> dict:
         "last_initialized_image_ns": initialized_image_times[-1] if state_times else None,
         "max_state_gap_s": max_state_gap,
         "commanded_speed_limit_mps": speed_limit_mps,
-        "speed_screen_threshold_mps": 2.0 * speed_limit_mps,
+        "speed_screen_threshold_mps": threshold,
         "speed_screen_is_flight_limit": False,
         "max_apparent_speed_mps": max_apparent_speed,
         "speed_screen_events": events,
@@ -126,9 +142,9 @@ def main() -> int:
     result = audit(args.states, speed_limit_mps=args.speed_limit_mps)
     args.output.parent.mkdir(parents=True, exist_ok=True)
     with args.output.open("x", encoding="utf-8") as stream:
-        json.dump(result, stream, indent=2)
+        json.dump(result, stream, indent=2, allow_nan=False)
         stream.write("\n")
-    print(json.dumps(result, indent=2))
+    print(json.dumps(result, indent=2, allow_nan=False))
     return 0
 
 

@@ -6,7 +6,7 @@
 
 - 源重放仍是 [延迟输入诊断](OPENVINS_DELAYED_FEED_REPORT.md)的一次 OpenVINS 离线回放，上游提交 `69488123ed9362dd44b6f28e7f4680abbff1442b`。`states.csv` SHA-256 为 `422a0e507aa6568d752942b1019732dfd00618224da66cc5c7506f536867e080`；回放命令 JSON SHA-256 为 `81a12a53c9b863af25230a40446798316cfa4e1a347c8b8678a35833c4b2e8c3`。
 - 审计脚本仅读原始 `states.csv`；不导入真值，也没有 PX4、Gazebo 或 OpenVINS 新回放。原指令速度上限 0.8 m/s，配置 SHA-256 为 `316db1b30fc2aaaebdebb5c4d6446a42eb9a0a6af571f53579627ae89298474f`。把其两倍 1.6 m/s 预先选为**明显异常筛查阈值**，不把它解释成飞行许可门槛或机体物理速度上限。
-- [审计原始 JSON](../evidence/openvins-vio-fusion-readiness-dev-1701.json) SHA-256 为 `807a5702247d5f27d7aeb481dcda82f0a30c7a238031691ba4e94cab738fd99`，包含源文件哈希、阈值、全部异常帧和缺项。输出目录已存在时 CLI 拒绝覆盖；原始重放和上一阶段 reviewed 归档保持不变。
+- [审计原始 JSON](../evidence/openvins-vio-fusion-readiness-dev-1701.json) SHA-256 为 `807a5702247d5f27d7aeb481dcda82f0a30c7a238031691ba4e94cab738fd99`，包含源文件哈希、阈值、全部异常帧和缺项。输出文件已存在时 CLI 拒绝覆盖；原始重放和上一阶段 reviewed 归档保持不变。独立审查后增强了 CSV 宽度/未初始化行与算术溢出的拒绝检查，用同一源数据重新执行的审计 JSON 与此文件逐字节相同。
 
 | 帧区间 | VIO 位移 / 表观速度 | 同期 Gazebo 评分真值位移 / 速度 |
 |---|---:|---:|
@@ -21,4 +21,4 @@
 
 目前原飞行结果仍为 `out_of_bounds`，控制策略用的是 Gazebo 真值里程计，VIO 从未反馈给 PX4。此次只是离线开发审计，既不证明自主安全，也不能作为 5/20 机扩展门槛。
 
-实现验证：针对性测试 `5 passed`，全量回归 `392 passed、1 warning`（197.37 秒），Ruff 和 `git diff --check` 通过。warning 是既有 MaleCNS 神经元组无匹配项，与本次审计无关。测试覆盖帧定位、输入损坏和拒绝覆盖；它们不代替在线融合与故障注入试验。
+初版实现验证：针对性测试 `5 passed`，全量回归 `392 passed、1 warning`（197.37 秒）。审查修正后，针对性测试扩至 `11 passed`，覆盖重复列、额外单元格、无效未初始化行和数值溢出；最终全量回归 `398 passed、1 warning`（200.21 秒），Ruff 与 `git diff --check` 通过。warning 是既有 MaleCNS 神经元组无匹配项，与本次审计无关。测试不代替在线融合与故障注入试验。
