@@ -24,4 +24,4 @@
 - [x] Quantify before/prearm/after-prearm-to-initialization feature counts and rejection stages; inspect representative raw frames only as supporting context.
 - [x] Report what this proves and does not prove; propose the next independent development fixture only if the gate is actually supported.
 - [x] Run focused/full regression and Ruff; request independent read-only review; seal logs with SHA-256, preserving the first seal and reviewed v2.
-- [ ] Commit and push a draft stacked PR after the prerequisite evidence can be uploaded reliably; PR23 still lacks archived input parts because GitHub uploads returned HTTP 408.
+- [x] Commit and push draft stacked PR #24 after PR #23's 20 evidence parts were uploaded and both ZIPs reconstructed from a fresh remote checkout with member-hash verification.
