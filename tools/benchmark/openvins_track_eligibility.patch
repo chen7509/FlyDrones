@@ -1,0 +1,48 @@
+diff --git a/ov_init/src/init/InertialInitializer.cpp b/ov_init/src/init/InertialInitializer.cpp
+--- a/ov_init/src/init/InertialInitializer.cpp
++++ b/ov_init/src/init/InertialInitializer.cpp
+@@ -120,5 +120,44 @@ bool InertialInitializer::initialize(double &timestamp, Eigen::MatrixXd &covari
+     PRINT_INFO("FD_INIT_DISP newest=%.9f old=%d new=%d stage=%s\n", newest_cam_time, num_features0,
+                num_features1, num_features0 < 15 || num_features1 < 15 ? "insufficient_features" : "ready");
+ 
++    // Diagnostic only: count observations per feature/camera track in the
++    // strict half-window intervals used by FeatureHelper::compute_disparity.
++    // Do not alter the database, feature thresholds or initialization path.
++    size_t tracks = 0, old0 = 0, old1 = 0, old2 = 0;
++    size_t new0 = 0, new1 = 0, new2 = 0, both2 = 0;
++    size_t old_max = 0, new_max = 0;
++    for (const auto &feature : _db->get_internal_data()) {
++      for (const auto &camera : feature.second->timestamps) {
++        tracks++;
++        size_t old_obs = 0, new_obs = 0;
++        for (const double seen_s : camera.second) {
++          if (seen_s < newest_time_allowed)
++            old_obs++;
++          if (seen_s > newest_time_allowed && seen_s < newest_cam_time)
++            new_obs++;
++        }
++        old_max = std::max(old_max, old_obs);
++        new_max = std::max(new_max, new_obs);
++        if (old_obs == 0)
++          old0++;
++        else if (old_obs == 1)
++          old1++;
++        else
++          old2++;
++        if (new_obs == 0)
++          new0++;
++        else if (new_obs == 1)
++          new1++;
++        else
++          new2++;
++        if (old_obs >= 2 && new_obs >= 2)
++          both2++;
++      }
++    }
++    PRINT_INFO("FD_TRACK_COUNTS newest=%.9f db=%zu tracks=%zu old0=%zu old1=%zu old2=%zu "
++               "new0=%zu new1=%zu new2=%zu both2=%zu old_max=%zu new_max=%zu\n",
++               newest_cam_time, _db->get_internal_data().size(), tracks,
++               old0, old1, old2, new0, new1, new2, both2, old_max, new_max);
++
+     // Return if we can't compute the disparity
+     int feat_thresh = 15;

@@ -31,6 +31,7 @@ results/openvins-stationary-prelude/
 results/openvins-delayed-feed/
 results/openvins-native-moments/
 results/openvins-prearm-board-dev-1701/
+results/openvins-track-eligibility-dev-1701/
 evidence/openvins-prearm-board-dev-1701.zip
 evidence/openvins-prearm-board-dev-1701-reviewed.zip
 .DS_Store
