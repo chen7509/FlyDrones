@@ -1,0 +1,44 @@
+{
+  "schema": "flydrones-vio-fusion-readiness-audit-v1",
+  "scope": "offline state-only screening, never PX4 fusion acceptance",
+  "states_sha256": "422a0e507aa6568d752942b1019732dfd00618224da66cc5c7506f536867e080",
+  "truth_used": false,
+  "total_image_frames": 370,
+  "initialized_frames": 325,
+  "first_initialized_image_ns": 33500000000,
+  "last_initialized_image_ns": 65900000000,
+  "max_state_gap_s": 0.10000000000000853,
+  "commanded_speed_limit_mps": 0.8,
+  "speed_screen_threshold_mps": 1.6,
+  "speed_screen_is_flight_limit": false,
+  "max_apparent_speed_mps": 5.631973873487617,
+  "speed_screen_events": [
+    {
+      "from_image_ns": 46100000000,
+      "to_image_ns": 46200000000,
+      "dt_s": 0.10000000000000142,
+      "displacement_m": 0.4679673921184364,
+      "apparent_speed_mps": 4.679673921184298
+    },
+    {
+      "from_image_ns": 46200000000,
+      "to_image_ns": 46300000000,
+      "dt_s": 0.10000000000000142,
+      "displacement_m": 0.5631973873487697,
+      "apparent_speed_mps": 5.631973873487617
+    }
+  ],
+  "missing_fusion_fields": [
+    "linear_velocity",
+    "pose_covariance",
+    "velocity_covariance",
+    "reset_counter",
+    "quality",
+    "reference_frame",
+    "body_frame",
+    "arrival_time_ns",
+    "camera_imu_calibration_validation"
+  ],
+  "eligible_for_px4_fusion": false,
+  "reason": "current state-only offline CSV lacks measured covariance, reset, quality, frame, and arrival-time evidence"
+}
