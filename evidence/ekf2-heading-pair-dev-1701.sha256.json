@@ -1,0 +1,167 @@
+{
+  "schema": "flydrones-ekf2-heading-pair-evidence-v1",
+  "archive_sha256": "84b70d55c621874e4f737f0521c8d3bc58c2b599138006b7f26e940e59a74879",
+  "file_count": 32,
+  "files": [
+    {
+      "path": "ekf2-heading-probe-alt1p26-dev1701/embedded_server.json",
+      "bytes": 334,
+      "sha256": "3f37c6ad241268fd1c0a4a8ed41ae6412af016ccea847cf03e16956588a9d8a3"
+    },
+    {
+      "path": "ekf2-heading-probe-alt1p26-dev1701/ground_albedo.png",
+      "bytes": 154343,
+      "sha256": "5e62827968eeabb55285bba85276518b6d8fb1441f0bf9659caa52a48ed48593"
+    },
+    {
+      "path": "ekf2-heading-probe-alt1p26-dev1701/gz_partition.txt",
+      "bytes": 47,
+      "sha256": "2cdd9e921c79626f5e8f5f9b7cda1d744873ec0e787569fe525ace52d37d4b94"
+    },
+    {
+      "path": "ekf2-heading-probe-alt1p26-dev1701/obstacle_albedo.png",
+      "bytes": 52690,
+      "sha256": "28f87e79cc5cd767b029a4c7b00b165e1aad9f2cbb998be1a161e3ff5d121c3f"
+    },
+    {
+      "path": "ekf2-heading-probe-alt1p26-dev1701/probe-input-manifest.json",
+      "bytes": 911,
+      "sha256": "16b063f56d4dd895d522292c1ee4107afa62bd0f3d1235679cd5c05e6ae77dd7"
+    },
+    {
+      "path": "ekf2-heading-probe-alt1p26-dev1701/probe-progress.ndjson",
+      "bytes": 27301,
+      "sha256": "996c566d82cead0b739eead7f7cf66d557f945f6a26acb2560f774f3a441e1b4"
+    },
+    {
+      "path": "ekf2-heading-probe-alt1p26-dev1701/probe-result.json",
+      "bytes": 55033,
+      "sha256": "689155e619bf218489c05e3927451c7dd83f22bb41bff3e56aec8c7a4f8fc0e8"
+    },
+    {
+      "path": "ekf2-heading-probe-alt1p26-dev1701/processes.json",
+      "bytes": 261,
+      "sha256": "da38c493303fef83c3af9bc6d642425ef4bea17dfaddd63766d50461f15335a9"
+    },
+    {
+      "path": "ekf2-heading-probe-alt1p26-dev1701/px4-runtime.json",
+      "bytes": 95,
+      "sha256": "a278206f62d0b016edc2c3e8c84c07277d0cb3c88a3cfe8da95dfaee9db32a23"
+    },
+    {
+      "path": "ekf2-heading-probe-alt1p26-dev1701/px4-ulog/log/2026-10-03/10_45_27.ulg",
+      "bytes": 9124089,
+      "sha256": "5919697e8a6de0ae809b38f1cd87fc04f15da5bcded0de6fdcb3b28c7c20aad3"
+    },
+    {
+      "path": "ekf2-heading-probe-alt1p26-dev1701/px4-ulog-manifest.json",
+      "bytes": 266,
+      "sha256": "27dbb8c8f9341c216ea642840a239108085fb91361d375422809614539ece65c"
+    },
+    {
+      "path": "ekf2-heading-probe-alt1p26-dev1701/px4.log",
+      "bytes": 2741,
+      "sha256": "71436f17771146c7257e23fe8b1a549e20a73a0cd946aedc99ad510087480ec9"
+    },
+    {
+      "path": "ekf2-heading-probe-alt1p26-dev1701/supervisor-result.json",
+      "bytes": 2997,
+      "sha256": "9ffe28ccf1e051fbd9503519fac0f8745b238f8ad40f0322c96860cc58e67d9b"
+    },
+    {
+      "path": "ekf2-heading-probe-alt1p26-dev1701/working-world.sdf",
+      "bytes": 3737,
+      "sha256": "edaf4833f38b6fd0fa4361ff14972e0cba651619e9ac08941e76cc5caa5dc605"
+    },
+    {
+      "path": "ekf2-heading-probe-alt1p26-dev1701/world.json",
+      "bytes": 599,
+      "sha256": "08e99e2e0b9874172e93d7392ddf67a8c23f3af57cdca4e4984ac22e52f58d8f"
+    },
+    {
+      "path": "ekf2-heading-probe-alt1p26-dev1701/world.sdf",
+      "bytes": 3737,
+      "sha256": "edaf4833f38b6fd0fa4361ff14972e0cba651619e9ac08941e76cc5caa5dc605"
+    },
+    {
+      "path": "ekf2-heading-probe-alt2p1-dev1701/embedded_server.json",
+      "bytes": 332,
+      "sha256": "8e49c94fcd2842bd02dde18258d00908e43c22cbe1e30e78ded2e7d762ba7cd8"
+    },
+    {
+      "path": "ekf2-heading-probe-alt2p1-dev1701/ground_albedo.png",
+      "bytes": 154343,
+      "sha256": "5e62827968eeabb55285bba85276518b6d8fb1441f0bf9659caa52a48ed48593"
+    },
+    {
+      "path": "ekf2-heading-probe-alt2p1-dev1701/gz_partition.txt",
+      "bytes": 46,
+      "sha256": "978353e8ec65b4d93c203500e535714d907cd51aa08a24e5fe99dc2696b9046c"
+    },
+    {
+      "path": "ekf2-heading-probe-alt2p1-dev1701/obstacle_albedo.png",
+      "bytes": 52690,
+      "sha256": "28f87e79cc5cd767b029a4c7b00b165e1aad9f2cbb998be1a161e3ff5d121c3f"
+    },
+    {
+      "path": "ekf2-heading-probe-alt2p1-dev1701/probe-input-manifest.json",
+      "bytes": 910,
+      "sha256": "3de2b1de288f50d39e8abe9e65b373a50ba259d26118b27b0b603fe44117f3f5"
+    },
+    {
+      "path": "ekf2-heading-probe-alt2p1-dev1701/probe-progress.ndjson",
+      "bytes": 27251,
+      "sha256": "06e01a2ca1b60adb5cf13c8e42d8d6ff326f9688caccf9e11442d86f1dce7163"
+    },
+    {
+      "path": "ekf2-heading-probe-alt2p1-dev1701/probe-result.json",
+      "bytes": 54970,
+      "sha256": "173847852c4a59a56c8057a907ca05acbfbff6a5a1915e632d2df99f5b70aeb7"
+    },
+    {
+      "path": "ekf2-heading-probe-alt2p1-dev1701/processes.json",
+      "bytes": 260,
+      "sha256": "d85ea8d9941e9f1c5fdf91586dcf4d3588c4de9d674cfc07d48f22cf37b80e9c"
+    },
+    {
+      "path": "ekf2-heading-probe-alt2p1-dev1701/px4-runtime.json",
+      "bytes": 95,
+      "sha256": "b61ed82fb5025d4afe66e1076d6c90c35b7602b60c87222a2a4c9aa154d751cc"
+    },
+    {
+      "path": "ekf2-heading-probe-alt2p1-dev1701/px4-ulog/log/2026-10-03/10_36_31.ulg",
+      "bytes": 9735221,
+      "sha256": "80fb05023eb9dbfdf602e13c56ee1ed0e2619371fcfbca97f2c99c7be99af668"
+    },
+    {
+      "path": "ekf2-heading-probe-alt2p1-dev1701/px4-ulog-manifest.json",
+      "bytes": 266,
+      "sha256": "20804ff63c79533d2f178f97276c3c7a53e9a5438582baac0f493bef1a93951f"
+    },
+    {
+      "path": "ekf2-heading-probe-alt2p1-dev1701/px4.log",
+      "bytes": 2741,
+      "sha256": "6ffd7e642e6fd58dbc5a3801be91d0b8b9be1dcf240b7daa4cbb3890266d4df5"
+    },
+    {
+      "path": "ekf2-heading-probe-alt2p1-dev1701/supervisor-result.json",
+      "bytes": 2996,
+      "sha256": "f5f4717fdd2301b1e8f56e274cdfac7551940c862bbc53b94f44dd6f1dcb1ac1"
+    },
+    {
+      "path": "ekf2-heading-probe-alt2p1-dev1701/working-world.sdf",
+      "bytes": 3737,
+      "sha256": "edaf4833f38b6fd0fa4361ff14972e0cba651619e9ac08941e76cc5caa5dc605"
+    },
+    {
+      "path": "ekf2-heading-probe-alt2p1-dev1701/world.json",
+      "bytes": 599,
+      "sha256": "08e99e2e0b9874172e93d7392ddf67a8c23f3af57cdca4e4984ac22e52f58d8f"
+    },
+    {
+      "path": "ekf2-heading-probe-alt2p1-dev1701/world.sdf",
+      "bytes": 3737,
+      "sha256": "edaf4833f38b6fd0fa4361ff14972e0cba651619e9ac08941e76cc5caa5dc605"
+    }
+  ]
+}

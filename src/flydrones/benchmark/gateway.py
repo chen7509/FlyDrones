@@ -196,7 +196,18 @@ class NativeGazeboPx4Backend:
     camera_pose_source = 'gazebo_model_truth'
 
     def __init__(self, root: Path, run_dir: Path, world: dict, *, instance: int = 8,
-                 record_rgb: bool = False, record_camera_info: bool = False):
+                 record_rgb: bool = False, record_camera_info: bool = False,
+                 takeoff_alt_m: float = 1.26, takeoff_timeout_s: float = 35.):
+        if (type(takeoff_alt_m) not in (int, float)
+                or not np.isfinite(takeoff_alt_m)
+                or not .5 <= takeoff_alt_m <= 3.5):
+            raise ValueError('takeoff altitude invalid')
+        self.takeoff_alt_m = float(takeoff_alt_m)
+        if (type(takeoff_timeout_s) not in (int, float)
+                or not np.isfinite(takeoff_timeout_s)
+                or not 1. <= takeoff_timeout_s <= 180.):
+            raise ValueError('takeoff timeout invalid')
+        self.takeoff_timeout_s = float(takeoff_timeout_s)
         self.root = Path(root).resolve()
         self.run_dir = Path(run_dir).resolve()
         self.world = world
@@ -530,7 +541,8 @@ class NativeGazeboPx4Backend:
 
         self.drone = MavlinkDrone(
             connection=f'udpin:0.0.0.0:{14540 + self.instance}',
-            autopilot='px4', takeoff_alt=1.26, takeoff_timeout=35,
+            autopilot='px4', takeoff_alt=self.takeoff_alt_m,
+            takeoff_timeout=self.takeoff_timeout_s,
         )
         self.drone.connect()
         for _ in range(240):
