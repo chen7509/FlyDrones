@@ -1,0 +1,13 @@
+{
+  "schema": "flydrones-udp-start-race-incident-v1",
+  "source": "Observed pytest traceback and agent JSON read from the temporary directory before pytest cleaned it; reconstructed incident summary, not a raw log archive",
+  "pre_fix_full_suite": "334 passed, 1 failed, 1 warning in 156.91s",
+  "failed_test": "tests/test_distributed_stress.py::test_four_independent_udp_processes_converge",
+  "parent_failure": "FileNotFoundError: agent-0.csv during _aggregate_stress",
+  "worker_0_error": "JSONDecodeError: Expecting value: line 1 column 1 (char 0)",
+  "worker_3_error": "JSONDecodeError: Expecting value: line 1 column 1 (char 0)",
+  "worker_0_packets_attempted": 0,
+  "worker_3_packets_attempted": 0,
+  "isolated_retry": "1 passed in 5.23s",
+  "cause": "start.json was visible before its JSON content was completely written"
+}
