@@ -34,6 +34,7 @@ results/openvins-prearm-board-dev-1701/
 results/openvins-track-eligibility-dev-1701/
 results/openvins-track-lifetime-dev-1701/
 results/openvins-detection-pruning-dev-1701/
+results/openvins-interior-candidates-dev-1701/
 evidence/openvins-prearm-board-dev-1701.zip
 evidence/openvins-prearm-board-dev-1701-reviewed.zip
 .DS_Store
