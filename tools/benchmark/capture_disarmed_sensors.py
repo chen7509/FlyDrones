@@ -49,14 +49,19 @@ def main():
     parser.add_argument("--worker", action="store_true", help=argparse.SUPPRESS)
     parser.add_argument("--shadow-binary", type=Path)
     parser.add_argument("--shadow-config", type=Path)
+    parser.add_argument("--motion-profile", choices=["lateral-wrench-v1"])
     args = parser.parse_args()
     if bool(args.shadow_binary) != bool(args.shadow_config):
         parser.error("shadow binary and frozen config must be specified together")
+    if args.motion_profile and not args.shadow_binary:
+        parser.error("motion fixture requires the native shadow recorder")
     shadow_args = (
         ["--shadow-binary", str(args.shadow_binary.resolve()), "--shadow-config", str(args.shadow_config.resolve())]
         if args.shadow_binary
         else []
     )
+    if args.motion_profile:
+        shadow_args += ["--motion-profile", args.motion_profile]
     if not args.worker:
         summary = supervise_worker(
             [sys.executable, str(Path(__file__).resolve()), "--worker", "--output", str(args.output.resolve())] + shadow_args,
@@ -150,6 +155,7 @@ def main():
         "capture_schema": "disarmed-sensors-v2",
     }
     clock = {"sim_ns": 0}
+    arming = {"unarmed_wall_ns": None}
     started = time.monotonic()
     with CaptureJournal(output, result) as journal:
         journal.cleanup("ULog collection", lambda: result.update(px4_ulogs=collect_ulogs(runtime, output)), priority=100)
@@ -241,6 +247,7 @@ def main():
                 try:
                     heartbeat = receiver.recv_match(type="HEARTBEAT", blocking=True, timeout=0.1)
                     if heartbeat is not None and heartbeat.get_srcSystem() == 9 and heartbeat.autopilot == 12:
+                        arming["unarmed_wall_ns"] = None if heartbeat.base_mode & 128 else time.monotonic_ns()
                         writer.submit(
                             {
                                 "kind": "heartbeat",
@@ -272,9 +279,18 @@ def main():
                 raise RuntimeError("subscription failed: " + topic)
             journal.cleanup("unsubscribe " + topic, lambda topic=topic: node.unsubscribe(topic), priority=60)
         fixture = TestFixture(str(output / "world.sdf"))
+        motion = None
+        if args.motion_profile:
+            from tools.benchmark.disarmed_motion_probe import GazeboMotionProbe
+
+            motion = GazeboMotionProbe(output, errors, lambda: arming["unarmed_wall_ns"])
+            journal.cleanup("motion fixture", lambda: result.update(motion=motion.finish()), priority=75)
+            fixture.on_pre_update(motion.pre_update)
 
         def post_update(info, _ecm):
             clock["sim_ns"] = sim_duration_ns(info.sim_time)
+            if motion:
+                motion.post_update(info, _ecm)
 
         fixture.on_post_update(post_update)
         fixture.finalize()
@@ -335,7 +351,7 @@ def main():
                 raise RuntimeError("PX4 exited during capture")
             if time.monotonic() - started > 300:
                 raise TimeoutError("capture exceeded300s wall budget")
-            if not server.run(True, 1000, False):
+            if not server.run(True, 10 if motion else 1000, False):
                 raise RuntimeError("Gazebo rejected simulation run")
         result["status"] = "capture_completed"
     print(json.dumps({k: v for k, v in result.items() if k != "writer"}, indent=2))
