@@ -65,7 +65,8 @@ def make_prearm_pattern_fixture(source: Path, output: Path) -> dict:
     source, output = Path(source), Path(output)
     if output.exists() or output.is_symlink():
         raise FileExistsError("pattern fixture output already exists")
-    if not source.is_dir() or source.is_symlink() or (source / "INCOMPLETE.json").exists():
+    if (not source.is_dir() or source.is_symlink() or (source / "INCOMPLETE.json").exists()
+            or (source / "INCOMPLETE.json").is_symlink()):
         raise ValueError("unsafe or incomplete source fixture")
     for name in ("manifest.json", *SOURCE_HASHES):
         if not (source / name).is_file() or (source / name).is_symlink():
