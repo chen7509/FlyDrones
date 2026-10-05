@@ -6,10 +6,12 @@ import hashlib
 import json
 import math
 import os
+import re
 import select
 import subprocess
 import threading
 import time
+from contextlib import ExitStack
 
 from tools.benchmark.openvins_causal_input import CausalInput, InputRefusal
 
@@ -53,6 +55,44 @@ def validate_ack(ack, *, sequence, kind, dispatch_ns, acknowledged_ns):
     if not dispatch_ns <= clocks[0] <= clocks[1] <= clocks[2] <= acknowledged_ns:
         raise ValueError("cross-process monotonic clock ordering invalid")
     return ack
+
+
+def validate_frozen_config(config):
+    """This experiment supports exactly one frozen top-level configuration and two calibrations."""
+    expected = {"estimator_config.yaml", "kalibr_imu_chain.yaml", "kalibr_imucam_chain.yaml"}
+    parent = config.parent.resolve()
+    if config.name != "estimator_config.yaml" or config.is_symlink() or config.resolve().parent != parent:
+        raise ValueError("selected estimator config is not the frozen entry")
+    manifest = json.loads((parent / "freeze.json").read_text())
+    hashes = manifest.get("sha256")
+    if not isinstance(hashes, dict) or set(hashes) != expected:
+        raise ValueError("frozen config requires exact nonempty estimator/calibration set")
+    for name, digest in hashes.items():
+        file = parent / name
+        if file.is_symlink() or file.resolve().parent != parent or hashlib.sha256(file.read_bytes()).hexdigest() != digest:
+            raise ValueError("frozen configuration/calibration changed")
+    text = config.read_text()
+    for key, expected_file in [
+        ("relative_config_imu", "kalibr_imu_chain.yaml"),
+        ("relative_config_imucam", "kalibr_imucam_chain.yaml"),
+    ]:
+        lines = re.findall(r"^" + key + r":\s*([^\n]+)$", text, re.M)
+        if len(lines) != 1 or lines[0].strip().strip("\"'") != expected_file:
+            raise ValueError("estimator references unverified calibration")
+    return manifest
+
+
+def _abort_owned_child(process):
+    """Constructor rollback owns this child even before the caller can register cleanup."""
+    if process.stdin:
+        process.stdin.close()
+    if process.poll() is None:
+        process.terminate()
+    try:
+        process.wait(timeout=3)
+    except subprocess.TimeoutExpired:
+        process.kill()
+        process.wait(timeout=3)
 
 
 class SourceWatchdog:
@@ -116,11 +156,13 @@ class NativeClient:
             raise ValueError("POSIX bounded transport required")
         self.timeout_s, self.sequence, self.failed = timeout_s, 0, None
         self.output, self.buffer, self.closed = output, b"", False
-        self.log = (output / "native.log").open("xb")
-        self.requests = (output / "native-requests.jsonl").open("x")
-        self.acks = (output / "native-acks.jsonl").open("x")
-        self.ack_fd, child_ack = os.pipe()
-        try:
+        with ExitStack() as pending:
+            self.log = pending.enter_context((output / "native.log").open("xb"))
+            self.requests = pending.enter_context((output / "native-requests.jsonl").open("x"))
+            self.acks = pending.enter_context((output / "native-acks.jsonl").open("x"))
+            self.ack_fd, child_ack = os.pipe()
+            pending.callback(os.close, self.ack_fd)
+            pending.callback(os.close, child_ack)
             self.process = subprocess.Popen(
                 command + [str(child_ack)],
                 stdin=subprocess.PIPE,
@@ -129,29 +171,24 @@ class NativeClient:
                 pass_fds=(child_ack,),
                 bufsize=0,
             )
-        except BaseException:
-            os.close(self.ack_fd)
-            self.log.close()
-            self.requests.close()
-            self.acks.close()
-            raise
-        finally:
-            os.close(child_ack)
-        os.set_blocking(self.process.stdin.fileno(), False)
-        os.set_blocking(self.ack_fd, False)
-        with (output / "native-session.json").open("x") as stream:
-            json.dump(
-                dict(
-                    pid=self.process.pid,
-                    command=command,
-                    started_monotonic_ns=time.monotonic_ns(),
-                    reset_counter=None,
-                    quality=None,
-                    fusion_eligible=False,
-                ),
-                stream,
-                indent=2,
-            )
+            pending.callback(_abort_owned_child, self.process)
+            os.set_blocking(self.process.stdin.fileno(), False)
+            os.set_blocking(self.ack_fd, False)
+            with (output / "native-session.json").open("x") as stream:
+                json.dump(
+                    dict(
+                        pid=self.process.pid,
+                        command=command,
+                        started_monotonic_ns=time.monotonic_ns(),
+                        reset_counter=None,
+                        quality=None,
+                        fusion_eligible=False,
+                    ),
+                    stream,
+                    indent=2,
+                )
+            pending.pop_all()  # fully constructed: finish() now owns all remaining resources
+        os.close(child_ack)
 
     def send(self, action, pixels=None):
         if self.closed or self.failed:
@@ -247,6 +284,7 @@ class ShadowInput:
         self.causal = CausalInput(session_id=session_id, clock_id="gazebo-sim+linux-monotonic")
         self.sequence, self.skipped, self.delivered = 0, 0, 0
         self.pixels, self.failure = {}, None
+        self.released_unacknowledged = []
         self.failures = (output / "shadow-failures.jsonl").open("x")
 
     def on_record(self, row, payload):
@@ -259,6 +297,9 @@ class ShadowInput:
         keys = {"kind", "sample_ns", "arrival_monotonic_ns", "observed_sim_ns"}
         keys |= {"imu": {"gyro_flu", "accel_flu"}, "rgb": {"width", "height"}, "info": {"camera_info"}}[kind]
         base = {key: row[key] for key in keys}
+        input_sequence = self.sequence
+        undelivered = []
+        attempted = False
         try:
             if kind == "rgb":
                 if type(payload) is not bytes or len(payload) != 57600:
@@ -270,18 +311,37 @@ class ShadowInput:
                 base, sequence=self.sequence, session_id=self.causal.session_id, clock_id=self.causal.clock_id
             )
             self.sequence += 1
-            for action in actions:
-                pixels = self.pixels.pop(action["sample_ns"]) if action["kind"] == "camera" else None
+            undelivered = list(actions)
+            while undelivered:
+                action = undelivered[0]
+                attempted = True
+                pixels = self.pixels[action["sample_ns"]] if action["kind"] == "camera" else None
                 self.client.send(action, pixels)
                 self.delivered += 1
+                if action["kind"] == "camera":
+                    self.pixels.pop(action["sample_ns"])
+                undelivered.pop(0)
+                attempted = False
             self.causal.tick(self.now())
         except Exception as exc:
             self.failure = repr(exc)
+            for index, action in enumerate(undelivered):
+                pixels = self.pixels.get(action["sample_ns"]) if action["kind"] == "camera" else None
+                self.released_unacknowledged.append(
+                    dict(
+                        action=action,
+                        status="delivery_failed" if index == 0 and attempted else "never_attempted",
+                        rgb_sha256=hashlib.sha256(pixels).hexdigest() if pixels is not None else None,
+                        reason=self.failure,
+                        fusion_eligible=False,
+                    )
+                )
             self.failures.write(
                 json.dumps(
                     dict(
                         event=base,
-                        input_sequence=self.sequence,
+                        input_sequence=input_sequence,
+                        released_unacknowledged=self.released_unacknowledged,
                         failure=self.failure,
                         wall_ns=self.now(),
                         input_refusal=exc.disposition if isinstance(exc, InputRefusal) else None,
@@ -300,6 +360,7 @@ class ShadowInput:
             skipped_after_failure=self.skipped,
             pending=self.causal.finish(),
             retained_pixel_stamps=list(self.pixels),
+            released_unacknowledged=self.released_unacknowledged,
             fusion_eligible=False,
             quality=None,
             reset_counter=None,

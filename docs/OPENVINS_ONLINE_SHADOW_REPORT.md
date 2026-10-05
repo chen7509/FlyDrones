@@ -2,7 +2,7 @@
 
 This stage delivers actual raw Gazebo IMU and owned RGB bytes to the pinned native OpenVINS library during a new, disarmed PX4/Gazebo run. **The25s online shadow completed; public initialized stayed false throughout, so fusion remains false.** This is neither flight validation nor evidence that the full fruit-fly decision latency is solved.
 
-Spec/plan: docs/superpowers/{specs,plans}/2026-10-06-openvins-online-shadow.md. Working evidence: results/openvins-online-shadow-dev-1701. Stack base: PR35 ce61a0e. Independent review and sealing are pending at this report revision.
+Spec/plan: docs/superpowers/{specs,plans}/2026-10-06-openvins-online-shadow.md. Working evidence: results/openvins-online-shadow-dev-1701. Stack base: PR35 ce61a0e. Independent review is closed below; archive/publication metadata is appended after sealing.
 
 ## What changed and why
 
@@ -60,3 +60,13 @@ Before integration,13 unit cases passed after missing-interface RED; synthetic P
 |Failed / gate closed|capture-v1 startup failure retained; public initialized0/250 in v2, all fusion false; previous physical collision and full-fly latency remain unresolved; five-camera0.873RTF<0.95 remains failed. No20/100/HITL/real-flight qualification.|
 
 Next dependency: resolve the stationary ZUPT/public readiness lifecycle through pinned upstream research and a separately designed development experiment, preserving the gate. Verify actual public-ready output and loss/reset handling before VIO→EKF2 injection. Do not jump from internally available propagation to fusion or arming. Other broad algorithm/swarm work remains under the existing roadmap; this stage does not complete the drone goal.
+
+## Review closure
+
+Pre-review full regression: **724 passed in211.40s**,2 existing warnings. One fresh-context independent review identified3Important and0Critical/Minor: constructor cleanup before caller ownership, missing dispositions after a partially delivered release batch, and a freeze manifest that did not constrain the selected config. All were addressed in one pass. Eight new unit cases failed before the fixes and passed afterward; five real POSIX setup injections went from live child/descriptor leakage to no leaks.65focused tests pass. A fresh synthetic native protocol check validates the hardened client's normal/invalid paths and blocked-write refusal0.2519s. No second review was used.
+
+The successful physical capture-v2 was **not rerun after failure-path hardening**. Its exact pre-review source is retained in producer-v2-before/after; final code is separately snapshotted. The native binary/library/noise configuration are unchanged. Final code evidence for the review fixes is synthetic failure injection plus regression, not a claimed new live estimator run.
+
+Reviewer-declined independent numerical/hash/ULog reruns, binary rebuild, visual inspection, dynamic calibration, capacity, fusion and flight remain explicit limits. Rulings: standing authorization covers implementation and draft publication; preserve ledgers/failed attempts at disk cost; bytes-only image transfer excludes path ambiguity; zero bias diffusion is model-only and may be optimistic; the startup/operational split fixes a measured harness lifecycle defect without changing flight/VIO/RTF gates. Preparatory next-readiness-research.md records why merely disabling ZUPT also changes initialization and is not a proven fix.
+
+Final full regression: **732 passed in201.03s**,2 existing warnings. Final focused regression65passed; fivePOSIX setup failure cases and15native synthetic protocol checks passed. Ruff and diff checks passed. No deferred Minor remains. Current stage has reviewable results; public readiness and subsequent fusion/flight stages remain incomplete.

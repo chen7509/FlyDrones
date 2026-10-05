@@ -169,12 +169,9 @@ def main():
         shadow = None
         source_guard = None
         if args.shadow_binary:
-            from tools.benchmark.openvins_online_shadow import NativeClient, ShadowInput, SourceWatchdog
+            from tools.benchmark.openvins_online_shadow import NativeClient, ShadowInput, SourceWatchdog, validate_frozen_config
 
-            frozen = json.loads((args.shadow_config.parent / "freeze.json").read_text())
-            for name, digest in frozen["sha256"].items():
-                if hashlib.sha256((args.shadow_config.parent / name).read_bytes()).hexdigest() != digest:
-                    raise ValueError("frozen shadow configuration changed")
+            validate_frozen_config(args.shadow_config)
             shadow_dir = output / "shadow"
             shadow_dir.mkdir()
             client = NativeClient(

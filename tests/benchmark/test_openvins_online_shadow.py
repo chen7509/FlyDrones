@@ -1,3 +1,4 @@
+import hashlib
 import json
 import math
 
@@ -164,3 +165,82 @@ def test_pixels_rejected_and_failure_evidence_retained(tmp_path):
     result = shadow.finish()
     assert "RGB" in result["failure"]
     assert json.loads((tmp_path / "shadow-failures.jsonl").read_text())["event"]["kind"] == "rgb"
+
+
+@pytest.mark.parametrize("fail_on", [2, 3])
+def test_released_actions_retain_failure_and_not_attempted_dispositions(tmp_path, fail_on):
+    from tools.benchmark.openvins_online_shadow import ShadowInput
+
+    class FailNth(FakeNative):
+        calls = 0
+
+        def send(self, action, pixels=None):
+            self.calls += 1
+            if self.calls == fail_on:
+                raise TimeoutError("delivery interrupted")
+            super().send(action, pixels)
+
+    shadow = ShadowInput(FailNth(), tmp_path, session_id="batch", now=lambda: 2000)
+    pixels = b"\xff" * 57600
+    shadow.on_record(event("imu", 1_000_000, 1000), None)
+    shadow.on_record(event("rgb", 1_000_000, 1010), pixels)
+    shadow.on_record(event("info", 1_000_000, 1020), b"PB")
+    shadow.on_record(event("imu", 4_000_000, 1030), None)
+    result = shadow.finish()
+    camera = result["released_unacknowledged"][-1]
+    assert camera["action"]["kind"] == "camera"
+    assert camera["action"]["rgb_sequence"] == 1
+    assert camera["action"]["info_sequence"] == 2
+    assert camera["action"]["imu_boundary_sequence"] == 3
+    assert camera["status"] == ("never_attempted" if fail_on == 2 else "delivery_failed")
+    assert camera["rgb_sha256"] == hashlib.sha256(pixels).hexdigest()
+    assert result["retained_pixel_stamps"] == [1_000_000]
+    if fail_on == 2:
+        assert result["released_unacknowledged"][0]["action"]["kind"] == "imu"
+        assert result["released_unacknowledged"][0]["status"] == "delivery_failed"
+    failure = json.loads((tmp_path / "shadow-failures.jsonl").read_text())
+    assert failure["input_sequence"] == 3
+
+
+def frozen_fixture(directory):
+    files = {
+        "estimator_config.yaml": b'relative_config_imu: "kalibr_imu_chain.yaml"\nrelative_config_imucam: "kalibr_imucam_chain.yaml"\n',
+        "kalibr_imu_chain.yaml": b"imu0: {}\n",
+        "kalibr_imucam_chain.yaml": b"cam0: {}\n",
+    }
+    for name, data in files.items():
+        (directory / name).write_bytes(data)
+    manifest = dict(
+        name="raw-model-zero-bias-diffusion-v1", sha256={name: hashlib.sha256(data).hexdigest() for name, data in files.items()}
+    )
+    (directory / "freeze.json").write_text(json.dumps(manifest))
+    return directory / "estimator_config.yaml", manifest
+
+
+@pytest.mark.parametrize("mutation", ["unlisted_selected", "empty", "missing_calibration", "changed_reference", "path_escape"])
+def test_frozen_config_rejects_unverified_selected_or_references(tmp_path, mutation):
+    from tools.benchmark.openvins_online_shadow import validate_frozen_config
+
+    config, manifest = frozen_fixture(tmp_path)
+    if mutation == "unlisted_selected":
+        config = tmp_path / "other.yaml"
+        config.write_text("unverified: true\n")
+    elif mutation == "empty":
+        manifest["sha256"] = {}
+    elif mutation == "missing_calibration":
+        del manifest["sha256"]["kalibr_imu_chain.yaml"]
+    elif mutation == "path_escape":
+        manifest["sha256"]["../elsewhere.yaml"] = "0" * 64
+    else:
+        config.write_text(config.read_text().replace('"kalibr_imu_chain.yaml"', '"other.yaml"'))
+        manifest["sha256"][config.name] = hashlib.sha256(config.read_bytes()).hexdigest()
+    (tmp_path / "freeze.json").write_text(json.dumps(manifest))
+    with pytest.raises(ValueError):
+        validate_frozen_config(config)
+
+
+def test_frozen_config_accepts_exact_selected_and_calibration_set(tmp_path):
+    from tools.benchmark.openvins_online_shadow import validate_frozen_config
+
+    config, manifest = frozen_fixture(tmp_path)
+    assert validate_frozen_config(config) == manifest
