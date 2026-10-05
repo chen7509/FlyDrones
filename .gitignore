@@ -45,3 +45,4 @@ Thumbs.db
 .idea/
 .vscode/
 results/openvins-fast-propagation-dev-1701/
+results/openvins-odometry-contract-dev-1701/
