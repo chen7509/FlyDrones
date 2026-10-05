@@ -30,6 +30,7 @@ class ReadyShadowFanout:
         self.last_disposition = None
         self.closed = False
         self.close_errors = []
+        self.refusals = []
 
     def _now(self):
         now = self.clock()
@@ -96,20 +97,40 @@ class ReadyShadowFanout:
             raise ValueError("unexpected fan-out payload")
         return base
 
+    def _source_identity(self, row, payload):
+        record = dict(
+            event="source_delivery",
+            sequence_repr=repr(row.get("source_sequence")) if isinstance(row, dict) else None,
+            dispositions=dict(shadow="not_attempted", readiness="not_attempted"),
+        )
+        try:
+            record["source_sha256"] = digest(row)
+        except Exception as exc:
+            record["source_sha256"] = None
+            record["identity_error"] = repr(exc)
+        record["payload_sha256"] = hashlib.sha256(payload).hexdigest() if type(payload) is bytes else None
+        return record
+
+    def _retain_refusal(self, record):
+        record.update(event="source_refusal", failure=self.failure, failure_latched_ns=self.failure_ns)
+        self.refusals.append(copy.deepcopy(record))
+        try:
+            self._emit(record)
+        except Exception as exc:
+            self.close_errors.append(dict(operation="refusal_journal", reason=repr(exc)))
+
     def on_record(self, row, payload):
+        record = self._source_identity(row, payload)
         if not self.delivery.acquire(blocking=False):
             with self.lock:
                 self._fail(ValueError("concurrent/reentrant fan-out writer"))
+                self._retain_refusal(record)
             return
-        record = dict(
-            event="source_delivery",
-            sequence_repr=repr(row.get("source_sequence")),
-            dispositions=dict(shadow="not_attempted", readiness="not_attempted"),
-        )
         try:
             with self.lock:
                 if self.failure or self.closed:
                     self.skipped += 1
+                    self._retain_refusal(record)
                     return
                 now = self._available()
                 ident = threading.get_ident()
@@ -132,33 +153,37 @@ class ReadyShadowFanout:
             record["dispositions"]["shadow"] = "attempted"
             self.shadow.on_record(independent, payload)
             with self.lock:
-                self._available()
-                if self.shadow.failure or digest(independent) != record["source_sha256"]:
-                    raise ValueError("shadow failed or mutated source: " + str(self.shadow.failure))
-                record["dispositions"]["shadow"] = "returned"
-                record["consumers"]["shadow"] = dict(start_ns=now, returned_ns=self._now())
-                # The readiness callback, checks, receipt and commit are one gate transaction.
-                # A native consumption cannot be rolled back if this second route fails.
-                independent = copy.deepcopy(row)
-                start = self._now()
-                record["dispositions"]["readiness"] = "attempted"
-                self.readiness.on_record(independent, payload)
-                if self.readiness.failure or digest(independent) != record["source_sha256"]:
-                    raise ValueError("readiness failed or mutated source: " + str(self.readiness.failure))
-                self._available()
-                record["dispositions"]["readiness"] = "returned"
-                record["consumers"]["readiness"] = dict(start_ns=start, returned_ns=self._now())
-                record["end_ns"] = self._now()
-                self._emit(record)
-                self.last_disposition = copy.deepcopy(record)
-                self.sequence += 1
-                self.committed += 1
-                kind = row["kind"]
-                self.last_arrival[kind] = row["arrival_monotonic_ns"]
-                self.last_recorded = row["recorded_monotonic_ns"]
-                if "sample_ns" in row:
-                    self.last_sample[kind] = row["sample_ns"]
-                self.pending = None
+                try:
+                    self._available()
+                    if self.shadow.failure or digest(independent) != record["source_sha256"]:
+                        raise ValueError("shadow failed or mutated source: " + str(self.shadow.failure))
+                    record["dispositions"]["shadow"] = "returned"
+                    record["consumers"]["shadow"] = dict(start_ns=now, returned_ns=self._now())
+                    # The readiness callback, checks, receipt and commit are one gate transaction.
+                    # A native consumption cannot be rolled back if this second route fails.
+                    independent = copy.deepcopy(row)
+                    start = self._now()
+                    record["dispositions"]["readiness"] = "attempted"
+                    self.readiness.on_record(independent, payload)
+                    if self.readiness.failure or digest(independent) != record["source_sha256"]:
+                        raise ValueError("readiness failed or mutated source: " + str(self.readiness.failure))
+                    self._available()
+                    record["dispositions"]["readiness"] = "returned"
+                    record["consumers"]["readiness"] = dict(start_ns=start, returned_ns=self._now())
+                    record["end_ns"] = self._now()
+                    self._emit(record)
+                    self.last_disposition = copy.deepcopy(record)
+                    self.sequence += 1
+                    self.committed += 1
+                    kind = row["kind"]
+                    self.last_arrival[kind] = row["arrival_monotonic_ns"]
+                    self.last_recorded = row["recorded_monotonic_ns"]
+                    if "sample_ns" in row:
+                        self.last_sample[kind] = row["sample_ns"]
+                    self.pending = None
+                except BaseException as exc:
+                    self._fail(exc)
+                    raise
         except BaseException as exc:
             with self.lock:
                 self._fail(exc)
@@ -214,6 +239,7 @@ class ReadyShadowFanout:
                 failure_latched_ns=self.failure_ns,
                 last_disposition=self.last_disposition,
                 close_errors=self.close_errors,
+                refusals=self.refusals,
                 fusion_eligible=False,
                 quality=None,
                 reset_counter=None,

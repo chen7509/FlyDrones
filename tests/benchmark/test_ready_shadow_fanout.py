@@ -264,3 +264,111 @@ def test_explicit_online_profile_requires_complete_configuration():
             parse_capture_args(reduced)
     with pytest.raises(SystemExit):
         parse_capture_args(args + ["--reference-fault-profile", "native-pre-epoch-v1"])
+
+
+def test_terminal_journal_failure_is_latched_before_lock_handoff(tmp_path):
+    class FailTerminal(io.StringIO):
+        def write(self, value):
+            if json.loads(value)["event"] == "source_delivery":
+                raise OSError("terminal receipt failed")
+            return super().write(value)
+
+    f, _, _, _ = setup(tmp_path, stream=FailTerminal())
+    interleaving = []
+
+    class HandoffLock:
+        def __init__(self):
+            self.inner = threading.RLock()
+            self.once = False
+
+        def __enter__(self):
+            self.inner.acquire()
+            return self
+
+        def __exit__(self, exc_type, exc, tb):
+            self.inner.release()
+            if exc_type is not None and not self.once:
+                self.once = True
+                # Deterministically schedule a queued gate user at the first exception release.
+                interleaving.append(f.pre_step(lambda: interleaving.append(f.proof()), lambda: None))
+
+    f.lock = HandoffLock()
+    f.on_record(row(), None)
+    assert f.failure and not any(isinstance(x, dict) for x in interleaving)
+    assert True not in interleaving
+    f.finish()
+
+
+@pytest.mark.parametrize("fault", ["future", "changed_rgb"])
+def test_rejected_source_keeps_original_hash(tmp_path, fault):
+    from tools.benchmark.ready_shadow_fanout import digest
+
+    f, _, _, _ = setup(tmp_path)
+    rejected, payload = row(), None
+    if fault == "future":
+        rejected["recorded_monotonic_ns"] = 1001
+    else:
+        rejected, payload = row(kind="rgb"), b"x" * 57600
+        (tmp_path / "rgb-frames").mkdir()
+        (tmp_path / "rgb-frames/1000.ppm").write_bytes(b"changed")
+    expected = digest(rejected)
+    f.on_record(rejected, payload)
+    result = f.finish()
+    assert result["failure"] and result["last_disposition"]["source_sha256"] == expected
+    assert result["last_disposition"]["dispositions"] == {"shadow": "not_attempted", "readiness": "not_attempted"}
+
+
+def test_concurrent_refusal_has_separate_identity(tmp_path):
+    from tools.benchmark.ready_shadow_fanout import digest
+
+    entered, release = threading.Event(), threading.Event()
+
+    class Blocking(Consumer):
+        def on_record(self, record, payload):
+            entered.set()
+            assert release.wait(2)
+
+    f, _, _, _ = setup(tmp_path, shadow=Blocking())
+    original, concurrent = row(), row(1)
+    t = threading.Thread(target=lambda: f.on_record(original, None))
+    t.start()
+    assert entered.wait(1)
+    f.on_record(concurrent, None)
+    release.set()
+    t.join(1)
+    result = f.finish()
+    assert result["last_disposition"]["source_sha256"] == digest(original)
+    assert result["refusals"][0]["source_sha256"] == digest(concurrent)
+    assert result["refusals"][0]["dispositions"] == {"shadow": "not_attempted", "readiness": "not_attempted"}
+
+
+@pytest.mark.parametrize("fault", [None, "path_escape", "hash", "file_bytes"])
+def test_camera_info_file_and_path_guard(tmp_path, fault):
+    import hashlib
+
+    from tools.benchmark.openvins_causal_input import raw_profile
+
+    f, _, shadow, _ = setup(tmp_path)
+    payload = b"fixed protobuf bytes"
+    event = dict(
+        kind="info", sample_ns=1000, arrival_monotonic_ns=100, observed_sim_ns=1000, camera_info=raw_profile()["camera_info"]
+    )
+    prepared = dict(
+        validate_event(event),
+        source_sequence=0,
+        writer_begin_monotonic_ns=101,
+        recorded_monotonic_ns=102,
+        payload_path="camera-info-messages/1000.pb",
+        payload_sha256=hashlib.sha256(payload).hexdigest(),
+    )
+    folder = tmp_path / "camera-info-messages"
+    folder.mkdir()
+    (folder / "1000.pb").write_bytes(payload if fault != "file_bytes" else b"changed")
+    if fault == "path_escape":
+        prepared["payload_path"] = "../outside.pb"
+    if fault == "hash":
+        prepared["payload_sha256"] = "0" * 64
+    f.on_record(prepared, payload)
+    assert bool(f.failure) == (fault is not None)
+    assert len(shadow.rows) == int(fault is None)
+    f.finish()
