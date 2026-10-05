@@ -49,9 +49,21 @@ def parse_capture_args(argv=None):
     parser.add_argument("--worker", action="store_true", help=argparse.SUPPRESS)
     parser.add_argument("--shadow-binary", type=Path)
     parser.add_argument("--shadow-config", type=Path)
+    parser.add_argument("--reference-module", type=Path)
+    parser.add_argument("--reference-sha256")
     parser.add_argument("--motion-profile", choices=["lateral-wrench-v1", "supported-lateral-v1", "supported-ready-v1"])
     parser.add_argument("--physics-trace-profile", choices=["substep-lateral-v1", "substep-supported-v1", "substep-ready-v1"])
     args = parser.parse_args(argv)
+    if bool(args.reference_module) != bool(args.reference_sha256):
+        parser.error("native reference module and hash required together")
+    if args.reference_module and (
+        args.motion_profile != "supported-ready-v1"
+        or args.physics_trace_profile != "substep-ready-v1"
+        or args.shadow_binary
+        or len(args.reference_sha256) != 64
+        or any(c not in "0123456789abcdef" for c in args.reference_sha256)
+    ):
+        parser.error("native reference requires ready sensor-only profile and SHA256")
     if bool(args.shadow_binary) != bool(args.shadow_config):
         parser.error("shadow binary and frozen config must be specified together")
     if args.physics_trace_profile and (not args.motion_profile or args.shadow_binary):
@@ -84,6 +96,8 @@ def main():
         shadow_args += ["--motion-profile", args.motion_profile]
     if args.physics_trace_profile:
         shadow_args += ["--physics-trace-profile", args.physics_trace_profile]
+    if args.reference_module:
+        shadow_args += ["--reference-module", str(args.reference_module.resolve()), "--reference-sha256", args.reference_sha256]
     if not args.worker:
         summary = supervise_worker(
             [sys.executable, str(Path(__file__).resolve()), "--worker", "--output", str(args.output.resolve())] + shadow_args,
@@ -176,6 +190,7 @@ def main():
         "estimator_run": bool(args.shadow_binary),
         "capture_schema": "disarmed-sensors-v2",
         "physics_trace_profile": args.physics_trace_profile,
+        "reference_profile": "supported-ready-native-reference-v1" if args.reference_module else None,
     }
     clock = {"sim_ns": 0}
     arming = {"unarmed_wall_ns": None}
@@ -312,6 +327,25 @@ def main():
             journal.cleanup("unsubscribe " + topic, lambda topic=topic: node.unsubscribe(topic), priority=60)
         fixture = TestFixture(str(output / "world.sdf"))
         motion = None
+        reference = None
+        if args.reference_module:
+            from tools.benchmark.native_reference_probe import ReferenceRecorder, load_module, post_motion, pre_motion
+
+            module = load_module(args.reference_module, args.reference_sha256)
+            reference = ReferenceRecorder(output, errors, module.Probe())
+            journal.cleanup("native reference", lambda: result.update(native_reference=reference.finish()), priority=74)
+            metadata = json.dumps(
+                dict(
+                    path=str(args.reference_module.resolve()),
+                    sha256=args.reference_sha256,
+                    api=module.API_VERSION,
+                    testing=module.TESTING,
+                )
+            )
+            with (output / "native-reference-binary.json").open("x") as f:
+                if f.write(metadata) != len(metadata):
+                    raise OSError("short native reference metadata write")
+                f.flush()
         if args.motion_profile:
             from tools.benchmark.disarmed_motion_probe import GazeboMotionProbe
 
@@ -340,11 +374,16 @@ def main():
                 )
             motion = motion_type(output, errors, lambda: arming["unarmed_wall_ns"], trace=trace, **extra)
             journal.cleanup("motion fixture", lambda: result.update(motion=motion.finish()), priority=75)
-            fixture.on_pre_update(motion.pre_update)
+            if reference:
+                fixture.on_pre_update(lambda info, ecm: pre_motion(reference, motion, info, ecm))
+            else:
+                fixture.on_pre_update(motion.pre_update)
 
         def post_update(info, _ecm):
             clock["sim_ns"] = sim_duration_ns(info.sim_time)
-            if motion:
+            if reference:
+                post_motion(reference, motion, info, _ecm)
+            elif motion:
                 motion.post_update(info, _ecm)
 
         fixture.on_post_update(post_update)
