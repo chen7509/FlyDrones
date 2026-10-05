@@ -1,0 +1,7 @@
+# Native runtime refusal stage
+
+- Base7a2271d; branchcodex/native-runtime-refusal; standing authorization, inline implementation. Pinned upstream research/spec/plan precede implementation. No new task or competing simulator.
+- Initial missing-module RED;13 initialGREEN plus lifecycle test yields125 targeted passes. Production binary unchanged. Frozenproducer dc23e19.
+- One short capture1.580s, trigger1.579 vs submitted1.580/last1.578, anchor1.769 chosen1.569. Native error and one subsequent blocked callback,zero force,1578 successful nativecycles,396IMU/16RGB-info-depth/1unarmedHB/4ULogarming1. OwnedPX4exit0; source hashesunchanged;filteredresources[].
+- Independent reviewer /root/review_native_runtime_refusal found2Important/noCritical: native status transition too loosely checked (actualcapturecorrect), and all-descendant no-SIGKILL claim unsupported by supervisor logs. Originalcapture/audit preserved; audit-v2 explicitly keeps all-descendant qualificationfalse. No recapture.
+- Strict status correction:6new failures RED then131targetedGREEN; beforefailed/pending/epoch and afterpending/epoch/booltype cannot qualify. Producerphysical remainsdc23e19, no recapture. Initial regression909pass; final regression915pass,2existingwarnings; changedRuffpass,wholeRuff50errors32unchangedfiles. Next independent supervisor signal-outcome evidence before broad cleanup qualification and supported-motion online VIO.

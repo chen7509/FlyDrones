@@ -158,3 +158,35 @@ def test_real_journal_preserves_capture_failure_and_continues_cleanup(tmp_path):
     saved = json.loads((tmp_path / "result.json").read_text())
     assert calls == ["stop", "ulog"] and saved["status"] == "capture_failed"
     assert len(saved["errors"]) == 2
+
+
+@pytest.mark.parametrize(
+    "phase,key,value",
+    [
+        ("before", "pending", True),
+        ("before", "failed", True),
+        ("before", "last_ns", 1),
+        ("after", "pending", True),
+        ("after", "last_ns", 1),
+        ("after", "failed", 1),
+    ],
+)
+def test_complete_native_transition_required(tmp_path, phase, key, value):
+    p, r, m, f = setup(tmp_path)
+    m.policy.anchor_ns = 200_000_000
+    for i in range(1, 9):
+        step(r, m, f, i)
+    original = p.status
+
+    def status():
+        s = original()
+        if (phase == "before" and not p.failed) or (phase == "after" and p.failed):
+            s[key] = value
+        return s
+
+    p.status = status
+    for i in range(9, 11):
+        step(r, m, f, i)
+    assert f.finish()["failure"]
+    assert 9 not in m.calls and 10 not in m.calls
+    r.finish()
