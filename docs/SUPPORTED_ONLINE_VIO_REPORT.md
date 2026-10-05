@@ -38,3 +38,6 @@ Next: fixed-evidence source-health/clock and queue design, not blind physical re
 
 ## Final verification
 Post-review full regression1021passed,2existing loaderwarnings(240.72s); targeted105passed. Changed-fileRuff and gitdiffcheck pass. Whole-treeRuff52errors/33files identical tobase50a710a; not a full lint pass. Independent review complete; code-schema defect fixed, historic freeze gap explicitly unresolved/false. No physical or native replay after review fixes. Final resource scan empty.
+
+## Publication
+Draft PR48 https://github.com/chen7509/FlyDrones/pull/48, stacked onPR47. EvidenceZIP evidence/supported-online-vio-dev-1701.zip:423members,6082887bytes,SHA25607a2a247b87ff43304ec4c0fe787640264772ad12c272b354d5a5116cdecaeb2; allmemberhashes/CRCverified, sibling supervisorjournalincluded. Sealed producer/report snapshot80d5d82; physicalproducer262bd44. Later publication text does not alter sealed inputs.
