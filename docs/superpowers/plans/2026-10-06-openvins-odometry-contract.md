@@ -11,6 +11,6 @@ Interfaces: native state13/covariance12 and explicit synthetic session metadata 
 - [x] Write failing analytic, finite-difference, covariance, clock/reset/quality and pymavlink roundtrip tests in tests/benchmark/test_openvins_odometry_contract.py; implement tools/benchmark/openvins_odometry_contract.py.40 focused Python cases plus9 WSL roundtrips/9 corruption rejections verified.
 - [x] Verify sealed PR32 input SHA and convert every entry once without replaying estimator;2136 entries,2030 geometry candidates,106 unavailable,zero fusion eligible. Compatibility-fix conversion-only parity identical; no estimator rerun.
 - [x] Run focused and full regression tests, Ruff and diff checks. Independent final code/evidence/report review. One Important SciPy1.10 API issue fixed RED→GREEN; final667 tests passed with2 existing warnings. No Critical/Minor.
-- [ ] Seal evidence, report and create stacked draft PR; attach and update continuation automation.
+- [x] Seal evidence and report; stacked draft PR33 https://github.com/chen7509/FlyDrones/pull/33 attached. ZIP68members, SHA1bd076e12f4171306af197c72086ab821e18316ef07ccfd215a61258a62c5dde. Publication closure is subsequent to the immutable evidence snapshot; continuation moves to disarmed online input/time provenance.
 
 Review Focus: JPL sign/direction, body-tangent versus Euler covariance; discarded cross terms visible; temporal metadata never invented from IMU lookahead; public initialized never bypassed; uint/float overflow, aliases and overwrite; no network or flight path; failed rows not silently dropped.
