@@ -5,7 +5,8 @@ import numpy as np
 import pytest
 
 from tools.benchmark.capture_disarmed_sensors import parse_capture_args
-from tools.benchmark.physics_substep_trace import SubstepTrace, phase_closures
+from tools.benchmark.disarmed_sensor_provenance import CaptureJournal
+from tools.benchmark.physics_substep_trace import SubstepTrace, finish_capture_trace, phase_closures
 
 
 def state(acc=0.0, vel=0.0):
@@ -176,3 +177,54 @@ def test_explicit_sensor_only_and_old_native_modes_are_distinct():
                 "y",
             ]
         )
+
+
+def test_terminal_missing_post_fails(tmp_path):
+    trace = SubstepTrace(tmp_path)
+    trace.record("pre", 1_000_000, 1_000_000, state(), 100)
+    summary = trace.finish()
+    assert summary["failure"] and "incomplete" in summary["failure"]
+    assert not summary["complete"]
+
+
+def test_unavailable_deadline_after_valid_sequence(tmp_path):
+    trace = SubstepTrace(tmp_path)
+    for i in range(1, 100):
+        trace.record("pre", i * 1_000_000, 1_000_000, None, i * 2)
+        trace.record("post", i * 1_000_000, 1_000_000, None, i * 2 + 1)
+    with pytest.raises(ValueError, match="unavailable after startup"):
+        trace.record("pre", 100_000_000, 1_000_000, None, 200)
+    trace.finish()
+
+
+@pytest.mark.parametrize("backend", [True, False])
+def test_complete_boundary_and_backend_required(tmp_path, backend):
+    trace = SubstepTrace(tmp_path)
+    for i in range(1, 25001):
+        trace.record("pre", i * 1_000_000, 1_000_000, state(), i * 2)
+        trace.record("post", i * 1_000_000, 1_000_000, state(), i * 2 + 1)
+    trace.backend_recorded = backend
+    summary = trace.finish()
+    assert summary["complete"] is backend
+    assert bool(summary["failure"]) is (not backend)
+
+
+def test_row_limit_after_valid_complete_sequence(tmp_path):
+    trace = SubstepTrace(tmp_path)
+    for i in range(1, 25001):
+        trace.record("pre", i * 1_000_000, 1_000_000, state(), i * 2)
+        trace.record("post", i * 1_000_000, 1_000_000, state(), i * 2 + 1)
+    with pytest.raises(ValueError, match="record limit"):
+        trace.record("pre", 25_001_000_000, 1_000_000, state(), 50002)
+    assert trace.finish()["records"] == 50000
+
+
+def test_terminal_failure_marks_capture_journal_failed(tmp_path):
+    result = {"status": "capture_completed", "errors": []}
+    trace = SubstepTrace(tmp_path)
+    trace.record("pre", 1_000_000, 1_000_000, state(), 100)
+    with CaptureJournal(tmp_path, result) as journal:
+        journal.cleanup("trace", lambda: finish_capture_trace(trace, result, result["errors"]), priority=76)
+    saved = json.loads((tmp_path / "result.json").read_text())
+    assert saved["status"] == "capture_failed"
+    assert "incomplete" in saved["errors"][0]

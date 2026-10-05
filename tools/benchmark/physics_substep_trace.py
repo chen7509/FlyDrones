@@ -142,6 +142,10 @@ class SubstepTrace:
             except Exception as exc:
                 self.failure = self.failure or repr(exc)
                 close_errors.append(dict(operation=name, reason=repr(exc)))
+        if self.records != 50000 or self.phase != "pre":
+            self.failure = self.failure or "incomplete terminal physics trace"
+        if not self.backend_recorded:
+            self.failure = self.failure or "missing runtime backend provenance"
         return dict(
             records=self.records,
             bytes_written=self.bytes_written,
@@ -153,6 +157,12 @@ class SubstepTrace:
             backend_recorded=self.backend_recorded,
             eligible_for_px4_fusion=False,
         )
+
+
+def finish_capture_trace(trace, result, errors):
+    result["physics_trace"] = trace.finish()
+    if result["physics_trace"]["failure"]:
+        errors.append("physics trace: " + result["physics_trace"]["failure"])
 
 
 def phase_closures(rows, start_ns, end_ns):

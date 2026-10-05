@@ -299,14 +299,12 @@ def main():
 
             trace = None
             if args.physics_trace_profile:
-                from tools.benchmark.physics_substep_trace import SubstepTrace
+                from tools.benchmark.physics_substep_trace import SubstepTrace, finish_capture_trace
 
                 trace = SubstepTrace(output)
 
                 def finish_trace():
-                    result["physics_trace"] = trace.finish()
-                    if result["physics_trace"]["failure"]:
-                        errors.append("physics trace: " + result["physics_trace"]["failure"])
+                    finish_capture_trace(trace, result, errors)
 
                 journal.cleanup("physics trace", finish_trace, priority=76)
             motion = GazeboMotionProbe(output, errors, lambda: arming["unarmed_wall_ns"], trace=trace)
