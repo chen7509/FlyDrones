@@ -88,6 +88,14 @@ def parse_capture_args(argv=None):
     return args
 
 
+def needs_supervisor_retention(summary):
+    return (
+        summary["status"] != "worker_exited"
+        or bool(summary.get("errors"))
+        or not summary.get("cleanup", {}).get("graceful_group_cleanup_verified", False)
+    )
+
+
 def main():
     args = parse_capture_args()
     shadow_args = (
@@ -109,7 +117,7 @@ def main():
             args.output.resolve(),
             timeout_s=90 if args.reference_fault_profile else 300,
         )
-        if summary["status"] == "supervisor_timeout" and (args.output / "launch.json").is_file():
+        if needs_supervisor_retention(summary) and (args.output / "launch.json").is_file():
             launch = json.loads((args.output / "launch.json").read_text())
             try:
                 retained = {"px4_ulogs": collect_ulogs(Path(launch["runtime"]), args.output)}
@@ -122,6 +130,8 @@ def main():
             if summary["status"] == "worker_exited"
             and summary["worker_exit"] == 0
             and summary["capture_status"] == "capture_completed"
+            and summary["cleanup"]["graceful_group_cleanup_verified"]
+            and not summary["errors"]
             else 2
         )
     resources = active_resources()

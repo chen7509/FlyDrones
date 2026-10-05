@@ -7,7 +7,6 @@ import json
 import math
 import os
 import queue
-import signal
 import subprocess
 import threading
 import time
@@ -291,25 +290,19 @@ class CaptureJournal:
 
 
 def terminate_owned_group(worker):
-    """POSIX only: worker was created as a fresh session/process-group leader."""
-    try:
-        os.killpg(worker.pid, signal.SIGTERM)
-    except ProcessLookupError:
-        return
-    try:
-        worker.wait(timeout=3)
-    except subprocess.TimeoutExpired:
-        pass
-    # A child may remain even if the group leader exited on SIGTERM.
-    try:
-        os.killpg(worker.pid, signal.SIGKILL)
-    except ProcessLookupError:
-        pass
+    """Only the supervisor's registered, unreaped leader authorizes group cleanup."""
+    evidence = getattr(worker, "_owned_group_evidence", None)
+    if evidence is None:
+        raise ValueError("unregistered owned process group")
+    return evidence.terminate()
 
 
 def supervise_worker(command, output, *, timeout_s=300, spawn=None, terminate=None):
     if output.exists():
         raise FileExistsError(output)
+    real = spawn is None and terminate is None
+    if (spawn is None) != (terminate is None):
+        raise ValueError("synthetic spawn and terminate must be paired")
     if spawn is None:
         if os.name != "posix":
             raise RuntimeError("physical capture supervisor requires POSIX process groups")
@@ -318,19 +311,49 @@ def supervise_worker(command, output, *, timeout_s=300, spawn=None, terminate=No
             return subprocess.Popen(command, start_new_session=True)
 
     terminate = terminate or terminate_owned_group
-    worker = spawn(command)
-    status = "worker_exited"
+    evidence, stream = None, None
+    if real:
+        from tools.benchmark.owned_group_evidence import GroupEvidence
+
+        output.parent.mkdir(parents=True, exist_ok=True)
+        stream = output.with_name(output.name + ".supervisor-events.jsonl").open("x")
     try:
-        code = worker.wait(timeout=timeout_s)
-    except subprocess.TimeoutExpired:
-        status = "supervisor_timeout"
-        terminate(worker)
-        code = worker.wait(timeout=5)
+        worker = spawn(command)
+    except Exception:
+        if stream:
+            stream.close()
+        raise
+    if real:
+        evidence = GroupEvidence(worker, stream)
+        worker._owned_group_evidence = evidence
+    status = "worker_exited"
+    supervisor_errors = []
+    if evidence:
+        from tools.benchmark.owned_group_evidence import finish_owned_worker
+
+        observed = finish_owned_worker(worker, evidence, timeout_s)
+        status, code = observed["status"], observed["worker_exit"]
+        supervisor_errors, cleanup = observed["errors"], observed["cleanup"]
     else:
-        # Reap only surviving descendants in this dedicated worker group.
-        terminate(worker)
+        try:
+            code = worker.wait(timeout=timeout_s)
+        except subprocess.TimeoutExpired:
+            status = "supervisor_timeout"
+            terminate(worker)
+            code = worker.wait(timeout=5)
+        else:
+            terminate(worker)
+        cleanup = dict(scope="synthetic injected lifecycle", graceful_group_cleanup_verified=False)
     output.mkdir(parents=True, exist_ok=True)
-    summary = {"status": status, "worker_pid": worker.pid, "worker_exit": code, "timeout_s": timeout_s}
+    summary = {
+        "status": status,
+        "worker_pid": worker.pid,
+        "worker_exit": code,
+        "timeout_s": timeout_s,
+        "cleanup": cleanup,
+        "errors": supervisor_errors,
+        "event_journal": "../" + output.name + ".supervisor-events.jsonl" if real else None,
+    }
     if not (output / "result.json").exists():
         with (output / "result.json").open("x") as stream:
             json.dump(
@@ -343,7 +366,14 @@ def supervise_worker(command, output, *, timeout_s=300, spawn=None, terminate=No
                 stream,
                 indent=2,
             )
-    summary["capture_status"] = json.loads((output / "result.json").read_text())["status"]
+    try:
+        summary["capture_status"] = json.loads((output / "result.json").read_text())["status"]
+    except Exception as exc:
+        summary["capture_status"] = "invalid_result"
+        summary["errors"].append(repr(exc))
     with (output / "supervisor.json").open("x") as stream:
-        json.dump(summary, stream, indent=2)
+        encoded = json.dumps(summary, indent=2, allow_nan=False)
+        if stream.write(encoded) != len(encoded):
+            raise OSError("short supervisor summary write")
+        stream.flush()
     return summary
