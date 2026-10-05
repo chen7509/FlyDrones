@@ -51,9 +51,12 @@ def parse_capture_args(argv=None):
     parser.add_argument("--shadow-config", type=Path)
     parser.add_argument("--reference-module", type=Path)
     parser.add_argument("--reference-sha256")
+    parser.add_argument("--reference-fault-profile", choices=["native-pre-epoch-v1"])
     parser.add_argument("--motion-profile", choices=["lateral-wrench-v1", "supported-lateral-v1", "supported-ready-v1"])
     parser.add_argument("--physics-trace-profile", choices=["substep-lateral-v1", "substep-supported-v1", "substep-ready-v1"])
     args = parser.parse_args(argv)
+    if args.reference_fault_profile and not args.reference_module:
+        parser.error("runtime refusal requires native reference configuration")
     if bool(args.reference_module) != bool(args.reference_sha256):
         parser.error("native reference module and hash required together")
     if args.reference_module and (
@@ -98,10 +101,13 @@ def main():
         shadow_args += ["--physics-trace-profile", args.physics_trace_profile]
     if args.reference_module:
         shadow_args += ["--reference-module", str(args.reference_module.resolve()), "--reference-sha256", args.reference_sha256]
+    if args.reference_fault_profile:
+        shadow_args += ["--reference-fault-profile", args.reference_fault_profile]
     if not args.worker:
         summary = supervise_worker(
             [sys.executable, str(Path(__file__).resolve()), "--worker", "--output", str(args.output.resolve())] + shadow_args,
             args.output.resolve(),
+            timeout_s=90 if args.reference_fault_profile else 300,
         )
         if summary["status"] == "supervisor_timeout" and (args.output / "launch.json").is_file():
             launch = json.loads((args.output / "launch.json").read_text())
@@ -191,6 +197,7 @@ def main():
         "capture_schema": "disarmed-sensors-v2",
         "physics_trace_profile": args.physics_trace_profile,
         "reference_profile": "supported-ready-native-reference-v1" if args.reference_module else None,
+        "reference_fault_profile": args.reference_fault_profile,
     }
     clock = {"sim_ns": 0}
     arming = {"unarmed_wall_ns": None}
@@ -375,7 +382,14 @@ def main():
             motion = motion_type(output, errors, lambda: arming["unarmed_wall_ns"], trace=trace, **extra)
             journal.cleanup("motion fixture", lambda: result.update(motion=motion.finish()), priority=75)
             if reference:
-                fixture.on_pre_update(lambda info, ecm: pre_motion(reference, motion, info, ecm))
+                if args.reference_fault_profile:
+                    from tools.benchmark.native_runtime_refusal import RuntimeRefusal
+
+                    refusal = RuntimeRefusal(output, reference, motion, readiness.proof)
+                    journal.cleanup("runtime refusal", lambda: result.update(runtime_refusal=refusal.finish()), priority=73)
+                    fixture.on_pre_update(refusal.pre_motion)
+                else:
+                    fixture.on_pre_update(lambda info, ecm: pre_motion(reference, motion, info, ecm))
             else:
                 fixture.on_pre_update(motion.pre_update)
 
@@ -443,8 +457,9 @@ def main():
                 raise RuntimeError("shadow failure: " + shadow.failure)
             if process.poll() is not None:
                 raise RuntimeError("PX4 exited during capture")
-            if time.monotonic() - started > 300:
-                raise TimeoutError("capture exceeded300s wall budget")
+            wall_budget = 60 if args.reference_fault_profile else 300
+            if time.monotonic() - started > wall_budget:
+                raise TimeoutError(f"capture exceeded{wall_budget}s wall budget")
             if not server.run(True, 10 if motion else 1000, False):
                 raise RuntimeError("Gazebo rejected simulation run")
         result["status"] = "capture_completed"
