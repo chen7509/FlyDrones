@@ -9,6 +9,24 @@ import numpy as np
 from tools.benchmark.physics_substep_trace import _state
 
 
+def _norm(value):
+    result = math.hypot(*value)
+    if not math.isfinite(result):
+        raise ValueError("nonfinite reference norm")
+    return result
+
+
+def _sum(value):
+    try:
+        with np.errstate(over="raise", invalid="raise"):
+            result = np.sum(value, axis=0)
+        if not np.isfinite(result).all():
+            raise ValueError("nonfinite reference aggregate")
+        return result.tolist()
+    except FloatingPointError as exc:
+        raise ValueError("nonfinite reference aggregate") from exc
+
+
 def analyze_reference(rows):
     """Validate a paired 1 ms prefix and retain every stopped-pose contradiction.
 
@@ -50,8 +68,8 @@ def analyze_reference(rows):
         duration = post[end]["sim_ns"] - post[start]["sim_ns"]
         if duration < 100_000_000:
             return
-        speed = max(math.hypot(*r["velocity_world"]) for r in post[start : end + 1])
-        accel = max(math.hypot(*r["accel_world"]) for r in post[start : end + 1])
+        speed = max(_norm(r["velocity_world"]) for r in post[start : end + 1])
+        accel = max(_norm(r["accel_world"]) for r in post[start : end + 1])
         if speed <= 0.001 and accel <= 0.01:
             return
         runs.append(
@@ -64,8 +82,8 @@ def analyze_reference(rows):
                 reported_accel_max_m_s2=accel,
                 first_sample=post[start],
                 last_sample=post[end],
-                right_accel_velocity_residual_m_s=np.sum(dv_error[start:end], axis=0).tolist(),
-                right_velocity_position_residual_m=np.sum(dp_error[start:end], axis=0).tolist(),
+                right_accel_velocity_residual_m_s=_sum(dv_error[start:end]),
+                right_velocity_position_residual_m=_sum(dp_error[start:end]),
             )
         )
 
@@ -82,8 +100,8 @@ def analyze_reference(rows):
         end_ns=post[-1]["sim_ns"],
         classification="internally_inconsistent_reference" if runs else "indeterminate",
         contradictory_pose_runs=runs,
-        max_acceleration_velocity_residual_m_s=max(math.hypot(*v) for v in dv_error),
-        max_velocity_position_residual_m=max(math.hypot(*v) for v in dp_error),
+        max_acceleration_velocity_residual_m_s=max(_norm(v) for v in dv_error),
+        max_velocity_position_residual_m=max(_norm(v) for v in dp_error),
         state_time_basis="callback_phase_only",
         component_refresh_verified=False,
         installed_runtime_cause_proven=False,

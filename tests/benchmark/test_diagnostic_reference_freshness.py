@@ -109,3 +109,15 @@ def test_new_trace_explicitly_disclaims_backend_timestamp(tmp_path):
     logged = json.loads((tmp_path / "physics-substeps.jsonl").read_text())
     assert logged["state_time_basis"] == "callback_phase_only"
     assert logged["component_refresh_verified"] is False
+
+
+@pytest.mark.parametrize("kind", ["sum", "norm"])
+def test_finite_inputs_with_overflowing_aggregates_refused(kind):
+    rows = traces(count=2001)
+    for row in rows:
+        if kind == "sum":
+            row["accel_world"] = [1e308, 0.0, 0.0]
+        else:
+            row["velocity_world"] = [1.1e308] * 3
+    with pytest.raises(ValueError, match="nonfinite"):
+        analyze_reference(rows)
