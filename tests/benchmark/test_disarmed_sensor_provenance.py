@@ -139,3 +139,77 @@ def test_record_audit_rejects_changed_transform_timing_and_missing_stream(tmp_pa
         api().audit_event_records(rows, required_kinds={"imu", "rgb"})
     with pytest.raises(ValueError):
         api().audit_event_records(rows + rows, required_kinds={"imu"})
+
+
+def test_camera_info_keeps_all_sample_stamps_and_payloads(tmp_path):
+    fields = dict(
+        width=160,
+        height=120,
+        frame_id="camera",
+        intrinsics_k=[1, 0, 0, 0, 1, 0, 0, 0, 1],
+        projection_p=[1.0] * 12,
+        distortion_model=0,
+        distortion_k=[],
+    )
+    writer = api().CaptureWriter(tmp_path)
+    row = dict(
+        kind="info", sample_ns=2_000_000, arrival_monotonic_ns=time.monotonic_ns(), observed_sim_ns=2_000_000, camera_info=fields
+    )
+    try:
+        writer.submit(row, b"first protobuf")
+        with pytest.raises(ValueError, match="duplicate"):
+            writer.submit(row, b"duplicate")
+        writer.submit(dict(row, sample_ns=100_000_000), b"second protobuf")
+    finally:
+        writer.finish()
+    records = [json.loads(line) for line in (tmp_path / "events.jsonl").read_text().splitlines()]
+    assert [r["sample_ns"] for r in records] == [2_000_000, 100_000_000]
+    assert [(tmp_path / r["payload_path"]).read_bytes() for r in records] == [b"first protobuf", b"second protobuf"]
+
+
+@pytest.mark.parametrize("phase", ["subscription", "fixture", "ulog"])
+def test_failure_journal_preserves_setup_and_cleanup_errors(tmp_path, phase):
+    called = []
+    result = {"status": "incomplete", "errors": []}
+    with api().CaptureJournal(tmp_path, result) as journal:
+        journal.cleanup("writer", lambda: called.append("writer"), priority=80)
+
+        def fail():
+            raise OSError("injected " + phase)
+
+        journal.cleanup("ulog", fail if phase == "ulog" else lambda: called.append("ulog"), priority=100)
+        if phase != "ulog":
+            fail()
+        result["status"] = "capture_completed"
+    saved = json.loads((tmp_path / "result.json").read_text())
+    assert saved["status"] == "capture_failed"
+    assert phase in str(saved["errors"])
+    assert "writer" in called
+
+
+def test_supervisor_terminates_own_blocked_worker(tmp_path):
+    import subprocess
+
+    killed = []
+
+    class Blocked:
+        pid = 54321
+        returncode = None
+
+        def wait(self, timeout):
+            if not killed:
+                raise subprocess.TimeoutExpired("blocked server", timeout)
+            self.returncode = -9
+            return -9
+
+    result = api().supervise_worker(
+        ["synthetic"],
+        tmp_path / "capture",
+        timeout_s=0.01,
+        spawn=lambda command: Blocked(),
+        terminate=lambda worker: killed.append(worker.pid),
+    )
+    assert killed == [54321]
+    assert result["status"] == "supervisor_timeout"
+    saved = json.loads((tmp_path / "capture/result.json").read_text())
+    assert saved["status"] == "capture_failed"

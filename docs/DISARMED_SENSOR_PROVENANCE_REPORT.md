@@ -1,6 +1,6 @@
 # Disarmed sensor provenance — development evidence, 2026-10-06
 
-This stage captured a single disarmed PX4/Gazebo sensor stream and audited its source, clocks, recording delay and ULog correspondence. It did **not** run online OpenVINS, send ODOMETRY, grant fusion eligibility or fly. Base PR33/1276201 remains sealed. It is a necessary source-validation prerequisite to the online estimator shadow, not completion of that shadow.
+This stage captured two separately retained disarmed PX4/Gazebo sensor streams: initialv1 and onev2 validation after review fixes. It audited source, clocks, recording delay and ULog correspondence. It did **not** run online OpenVINS, send ODOMETRY, grant fusion eligibility or fly. Base PR33/1276201 remains sealed. It is a necessary source-validation prerequisite to the online estimator shadow, not completion of that shadow.
 
 ## Research and source choice
 
@@ -44,4 +44,24 @@ Next: design a distinct raw-Gazebo-IMU input profile with explicit units/extrins
 
 Rulings: this bounded source stage precedes estimator shadow because silently switching source would invalidate the prior contract (cost: an extra stage); preserve working evidence and failures as authorized (cost: disk usage). Existing physical failures remain intact.
 
-Full Windows regression: **682 passed in214.32s**,2 existing warnings; Ruff and diff checks passed. Independent review pending. No claim of online VIO follows from these tests.
+Before review, Windows regression passed682 tests in214.32s with2 existing warnings. After the fixes below, **687 tests passed in207.92s**, with the same2 warnings; Ruff and diff checks passed. No claim of online VIO follows from these tests.
+
+Independent review found0 Critical,3 Important and0 Minor: v1 omitted each CameraInfo sample timestamp and retained only the first protobuf; its in-loop wall deadline could not interrupt a stalled server call; subscription/fixture/ULog failures could bypass terminal evidence. All three entered one fix pass. Five new tests failed before correction and passed afterward (20 focused total). The v2 producer retains every CameraInfo timestamp/payload/hash, applies per-stream ordering, runs inside an independently supervised POSIX process group, and journals setup and each cleanup error before attempting a terminal result. The watchdog retains only its owned resources and reports timeout separately. Absolute storage failure can still prevent result writing; outer stderr/private runtime remain available.
+
+WSL synthetic blocked-server test stopped the worker and its child in1.0869s using a1s test deadline;2 distinct real Gazebo CameraInfo protobufs roundtripped with sample stamps. Setup/fixture/ULog faults were injected against the journal abstraction. No second reviewer was used. One separate post-fix physical capture then validated the revised producer as described below.
+
+**Existing v1 capture limitation:** its251 camera-info events retain stable calibration and wall arrival, but only the first native protobuf/sample stamp is recoverable. Subsequent250 native stamps/payloads are missing and cannot be reconstructed from adjacent RGB frames. Auditv3 requires explicit legacy mode and records this limitation; original events, ULog and prior audits are unchanged. Thus v1 supports raw-IMU/RGB and stationary integration findings, but does not pass the new all-message camera-info provenance gate.
+
+Reviewer-declined areas remain open: online estimator/reset/fusion behavior; dynamic calibration/noise; capacity/real flight; contemporaneous producer source reproducibility. The reviewer inspected existing regression/physical artifacts rather than rerunning them. The author verified all important fixes through the recorded RED→GREEN checks; no minors were deferred.
+
+## Post-fix physical validation and closure
+
+Capturev2 preserves the same sealed world/texture hashes,1ms physics,250Hz IMU and10Hz160×120 RGBD. Producer code, direct helper/model files and working diff were snapshotted before it, with file hashes checked again afterward. A first wrapper attempt stopped before launching anything because Linux Git could not resolve the Windows worktree pointer; its partial snapshot is retained and the retry used Windows Git for the diff.
+
+V2 completed25s simulation with6251 IMU,251 RGB/depth/info each and23 unarmed heartbeats;49 ULog arming records are all false. All251 CameraInfo protobuf hashes, native stamps and stable fields were decoded and checked against corresponding RGB stamps. Supervisor reports worker exit0; ULog6,899,124bytes SHA256 **3e06f0458a336f520f5ca834f527c3f62a4fee77eaff6d62b9b9e58f2cacb8ff**.5897 ULog IMU samples pair without reuse/unpaired rows; direct raw-vs-integrated differences remain visible. No forced equivalence or new estimator replay was performed.
+
+V2 capture/cleanup wall29.655s; callback-to-writer P95 is6.555ms IMU and5.400ms RGB, with preparation maxima35.568ms and36.109ms. These differ fromv1, so no repeatable latency improvement is claimed. They are still not estimator latency. This additional run closes the revised camera-info producer's physical coverage gap; it does not repair missingv1 provenance, validate dynamic calibration, or establish VIO readiness.
+
+Additional ruling: verify changed producer with one separately recorded post-fix run (cost: one extra bounded25s simulation). Evidence/workspace retained as authorized. Final archive and draft PR details follow in the publication closure.
+
+Final process checks found no related WSL simulation/replay/training or Windows Python/PX4/Gazebo process at the recorded check time. The working evidence directory is retained. Source and failure artifacts are in the sealed archive with per-member SHA256 hashes.

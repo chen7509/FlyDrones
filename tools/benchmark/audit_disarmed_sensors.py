@@ -21,6 +21,9 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--capture", required=True, type=Path)
     parser.add_argument("--output", required=True, type=Path)
+    parser.add_argument(
+        "--legacy-first-info", action="store_true", help="Audit v1 evidence without reconstructing missing CameraInfo stamps"
+    )
     args = parser.parse_args()
     if args.output.exists():
         raise FileExistsError(args.output)
@@ -28,7 +31,7 @@ def main():
     result = json.loads((capture / "result.json").read_text())
     rows = [json.loads(line) for line in (capture / "events.jsonl").read_text().splitlines()]
     groups = {kind: [r for r in rows if r["kind"] == kind] for kind in ["imu", "rgb", "depth", "info", "heartbeat"]}
-    counts = audit_event_records(rows, required_kinds=set(groups))
+    counts = audit_event_records(rows, required_kinds=set(groups), allow_legacy_info=args.legacy_first_info)
     if counts != result["writer"]["written"]:
         raise ValueError("record counts differ from producer summary")
     if result["status"] != "capture_completed" or result["errors"] or result["estimator_run"]:
@@ -38,6 +41,25 @@ def main():
     stamps = [r["sample_ns"] for r in groups["rgb"]]
     if stamps != [r["sample_ns"] for r in groups["depth"]] or stamps != [r["frame_ns"] for r in rgb["frames"]]:
         raise ValueError("RGB/depth/file timestamps disagree")
+    complete_info = all("sample_ns" in r for r in groups["info"])
+    if complete_info:
+        from gz.msgs10.camera_info_pb2 import CameraInfo
+
+        from flydrones.benchmark.camera_info_capture import camera_info_fields
+
+        for row in groups["info"]:
+            payload = (capture / row["payload_path"]).read_bytes()
+            message = CameraInfo()
+            message.ParseFromString(payload)
+            stamp = int(message.header.stamp.sec) * 1_000_000_000 + int(message.header.stamp.nsec)
+            if (
+                hashlib.sha256(payload).hexdigest() != row["payload_sha256"]
+                or stamp != row["sample_ns"]
+                or camera_info_fields(message) != row["camera_info"]
+            ):
+                raise ValueError("camera-info payload changed or disagrees with event")
+        if stamps != [r["sample_ns"] for r in groups["info"]]:
+            raise ValueError("camera-info/RGB timestamps disagree")
     from pyulog import ULog
 
     if len(result["px4_ulogs"]) != 1:
@@ -109,6 +131,8 @@ def main():
         "sensor_combined_fields": flags,
         "ulog_imu_count": len(imu["timestamp"]),
         "camera_info_messages": camera["message_count"],
+        "camera_info_all_sample_payloads_retained": complete_info,
+        "legacy_camera_info_limitation": not complete_info,
         "rgb_verified_frames": len(rgb["frames"]),
         "timings": times,
         "timing_scope": "callback arrival to writer/preparation; not generation-to-estimate latency",

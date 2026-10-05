@@ -2,9 +2,13 @@
 
 from __future__ import annotations
 
+import hashlib
 import json
 import math
+import os
 import queue
+import signal
+import subprocess
 import threading
 import time
 from collections import Counter
@@ -15,16 +19,18 @@ from flydrones.benchmark.camera_info_capture import CameraInfoRecorder
 from flydrones.benchmark.rgb_capture import RgbFrameRecorder
 
 
-def validate_event(event):
+def validate_event(event, *, allow_legacy_info=False):
     common = {"kind", "arrival_monotonic_ns", "observed_sim_ns"}
     fields = {
         "imu": {"sample_ns", "gyro_flu", "accel_flu"},
         "rgb": {"sample_ns", "width", "height"},
         "depth": {"sample_ns", "width", "height"},
-        "info": {"camera_info"},
+        "info": {"camera_info", "sample_ns"},
         "heartbeat": {"system_id", "base_mode", "custom_mode"},
     }
     kind = event.get("kind")
+    if allow_legacy_info and kind == "info" and "sample_ns" not in event:
+        fields["info"] = {"camera_info"}
     if kind not in fields or set(event) != common | fields[kind]:
         raise ValueError("unexpected sensor event fields")
     for key in ["arrival_monotonic_ns", "observed_sim_ns"] + (["sample_ns"] if "sample_ns" in event else []):
@@ -107,6 +113,13 @@ class CaptureWriter:
                 raise ValueError("RGB recorder rejected frame")
         if row["kind"] == "info":
             self.info.add(row["camera_info"], payload)
+            directory = self.output / "camera-info-messages"
+            directory.mkdir(exist_ok=True)
+            relative = "camera-info-messages/" + str(row["sample_ns"]) + ".pb"
+            with (self.output / relative).open("xb") as stream:
+                stream.write(payload)
+            row["payload_path"] = relative
+            row["payload_sha256"] = hashlib.sha256(payload).hexdigest()
         # This is record preparation time, not filesystem durability or sensor-generation wall time.
         row["recorded_monotonic_ns"] = time.monotonic_ns()
         self.stream.write(json.dumps(row, allow_nan=False) + "\n")
@@ -197,15 +210,28 @@ def compare_imu(imu_rows, px4_us, px4_gyro, px4_accel):
     }
 
 
-def audit_event_records(rows, *, required_kinds):
+def audit_event_records(rows, *, required_kinds, allow_legacy_info=False):
     """Recheck recorded clocks, transforms and completeness before using diagnostics."""
-    generated = {"gyro_frd", "accel_frd", "sim_age_at_callback_ns", "writer_begin_monotonic_ns", "recorded_monotonic_ns"}
+    generated = {
+        "gyro_frd",
+        "accel_frd",
+        "sim_age_at_callback_ns",
+        "writer_begin_monotonic_ns",
+        "recorded_monotonic_ns",
+        "payload_path",
+        "payload_sha256",
+    }
     counts = Counter()
     last_sample = {}
     last_recorded = 0
     for row in rows:
         base = {k: v for k, v in row.items() if k not in generated}
-        expected = validate_event(base)
+        expected = validate_event(base, allow_legacy_info=allow_legacy_info)
+        if row["kind"] == "info" and "sample_ns" in row:
+            digest = row.get("payload_sha256", "")
+            if not isinstance(digest, str) or len(digest) != 64 or any(c not in "0123456789abcdef" for c in digest):
+                raise ValueError("invalid camera info payload digest")
+            expected.update(payload_path="camera-info-messages/" + str(row["sample_ns"]) + ".pb", payload_sha256=digest)
         begin, end = row.get("writer_begin_monotonic_ns"), row.get("recorded_monotonic_ns")
         if (
             type(begin) is not int
@@ -228,3 +254,90 @@ def audit_event_records(rows, *, required_kinds):
     if not set(required_kinds) <= set(counts):
         raise ValueError("required sensor stream missing")
     return dict(counts)
+
+
+class CaptureJournal:
+    """Run all registered owned-resource cleanups and attempt a terminal result."""
+
+    def __init__(self, output, result):
+        self.output, self.result = output, result
+        self.callbacks = []
+
+    def __enter__(self):
+        return self
+
+    def cleanup(self, label, callback, *, priority):
+        self.callbacks.append((priority, label, callback))
+
+    def __exit__(self, kind, value, traceback):
+        if value is not None:
+            self.result["errors"].append(repr(value))
+        for _, label, callback in sorted(self.callbacks, key=lambda item: item[0]):
+            try:
+                callback()
+            except Exception as exc:
+                self.result["errors"].append(label + ": " + repr(exc))
+        if self.result["errors"] or self.result["status"] != "capture_completed":
+            self.result["status"] = "capture_failed"
+        with (self.output / "result.json").open("x") as stream:
+            json.dump(self.result, stream, indent=2)
+        return value is not None
+
+
+def terminate_owned_group(worker):
+    """POSIX only: worker was created as a fresh session/process-group leader."""
+    try:
+        os.killpg(worker.pid, signal.SIGTERM)
+    except ProcessLookupError:
+        return
+    try:
+        worker.wait(timeout=3)
+    except subprocess.TimeoutExpired:
+        pass
+    # A child may remain even if the group leader exited on SIGTERM.
+    try:
+        os.killpg(worker.pid, signal.SIGKILL)
+    except ProcessLookupError:
+        pass
+
+
+def supervise_worker(command, output, *, timeout_s=300, spawn=None, terminate=None):
+    if output.exists():
+        raise FileExistsError(output)
+    if spawn is None:
+        if os.name != "posix":
+            raise RuntimeError("physical capture supervisor requires POSIX process groups")
+
+        def spawn(command):
+            return subprocess.Popen(command, start_new_session=True)
+
+    terminate = terminate or terminate_owned_group
+    worker = spawn(command)
+    status = "worker_exited"
+    try:
+        code = worker.wait(timeout=timeout_s)
+    except subprocess.TimeoutExpired:
+        status = "supervisor_timeout"
+        terminate(worker)
+        code = worker.wait(timeout=5)
+    else:
+        # Reap only surviving descendants in this dedicated worker group.
+        terminate(worker)
+    output.mkdir(parents=True, exist_ok=True)
+    summary = {"status": status, "worker_pid": worker.pid, "worker_exit": code, "timeout_s": timeout_s}
+    if not (output / "result.json").exists():
+        with (output / "result.json").open("x") as stream:
+            json.dump(
+                {
+                    "status": "capture_failed",
+                    "errors": [status + ": worker left no terminal result"],
+                    "estimator_run": False,
+                    "eligible_for_px4_fusion": False,
+                },
+                stream,
+                indent=2,
+            )
+    summary["capture_status"] = json.loads((output / "result.json").read_text())["status"]
+    with (output / "supervisor.json").open("x") as stream:
+        json.dump(summary, stream, indent=2)
+    return summary
