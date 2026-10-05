@@ -1,0 +1,35 @@
+# Journaled readiness / OpenVINS shadow fan-out
+
+## Status
+
+Implemented opt-in `ready-shadow-v1` source composition and pre-step failure gate. Verified35new synthetic tests (133related tests total) and one fixed sealed-source adapter exercise. No new physical simulation, native estimator, training, ODOMETRY or fusion occurred. Online supported-motion VIO remains untested in this stage.
+
+Base d880a11; fixed adapter producer1fd1970. Previously CaptureWriter.on_record selected readiness OR shadow, so simply allowing a combined CLI would omit one route. New mode sequences raw source rows before write+flush, validates exact derived fields/paths/payloads, sends independent copies to shadow then readiness, explicitly checks latched shadow.failure, and retains per-route timestamps/dispositions. A returned depth/heartbeat callback can intentionally ignore that kind; it is not an estimator update. Native input still consists only of IMU vectors and image bytes through the existing causal adapter.
+
+## Failure and force semantics
+
+The writer remains single-owner; duplicate/gap/type/clock/unknown-field inputs and consumer mutation fail. Native transport operates outside the short gate lock. Readiness update, its acknowledgement journal and commit share the gate lock with complete physical pre-step callbacks. A processing source may be in flight while a step uses previously committed readiness. New explicit per-source deadline2s bounds eligibility; unchanged NativeClient has2s per-packet I/O timeout. They are different limits, neither proves real-time scheduling. No rollback of already consumed native inputs is asserted. Partial delivery and skipped-after-failure remain visible.
+
+Once fan-out failure is latched, later gated pre-step actions are refused. A pre-step already running can complete before failure acquires the lock; the failure timestamp records this order. We do not claim retroactive cancellation or a measured zero-delay stop. The wrapper also checks actual writer/source errors and SourceWatchdog before each pre-step. Blocking filesystem/OS scheduling and physical online behavior remain to be measured. Truth reference data is excluded from source schema and only enters isolated abort/offline audit.
+
+CLI requires source-fanout-profile plus complete shadow/config, reference/hash, supported-ready motion and substep-ready trace; old combined arguments still refuse. Reference-fault and fan-out cannot combine. Construction retains one existing NativeClient; native reference is an in-process diagnostic module, not a second estimator. These are implemented/code-tested paths; actual combined native-process startup is not yet measured.
+
+## Fixed input evidence
+
+PR43 archive SHA17923eceadcd5aa47af882380388b8fede38f74a2992fca00a5e97a85b12aa46 consumed by reference, not re-estimated. 7028records:6251IMU/251RGB/251CameraInfo/251depth/24heartbeat. All7028 fan-out deliveries committed, no skipped or failure;6573 virtual-time readiness proofs available. Actual ShadowInput+CausalInput with recording-only packet sink produced6501packets:6251IMU+250camera. Final camera remains later_imu_missing. Sink validates native packet encoding but is not an estimator and does not create native processing timing or acknowledgement claims.
+
+Consumed source-member hashes and per-row source-sequence mapping are retained. Pixels/protobufs come from sealed closed files; replay's added source_sequence does not rewrite the original journal. Virtual clock is original recorded_monotonic_ns+1; it is explicitly not online latency or throughput. No Gazebo truth data is consumed by the adapter exercise. Independent fixed-audit crosschecked all14056receipt rows against7028source identities and consumed-member hashes. Historical Git sources are exported with hashes after the run; these are not falsely labeled measured runtime pre/post hashes. Final failure-path hardening uses synthetic/regression tests only; the fixed adapter was not repeated after review.
+
+## Research / validation
+
+Fixed [OpenVINS ROS1Visualizer6948812](https://github.com/rpng/open_vins/blob/69488123ed9362dd44b6f28e7f4680abbff1442b/ov_msckf/src/ros/ROS1Visualizer.cpp), [ZUPT documentation](https://docs.openvins.com/update-zerovelocity.html), [ICRA2020 paper](https://pgeneva.com/downloads/papers/Geneva2020ICRA.pdf), fixed CPython3.12.3 threading source and official docs reviewed. OpenVINS GPL3, nonarchived, latest observed upstream push2025-11-30: maturity/reuse, not a claim of recent2026 maintenance. Python PSF. No dependency installed. Reusing existing callbacks/causal channel avoids new ROS clock/install costs; adds receipt hashing/journaling and lock work, whose online resource cost remains unmeasured. Source/metadata hashes retained.
+
+Initial missing-module RED; newCLI rejectedRED; then125targetedGREEN. Covers hidden/raised consumer errors, partial delivery, mutations, source sequence, clocks, closed RGB bytes, deadline/wrong-thread, log I/O, pre-step loss/race and explicit CLI. Existing causal, watchdog, native transport and cleanup tests remain in regression. Independent review found2Important, both fixed in one pass: terminal journal failure now latches inside the readiness transaction lock; rejected/concurrent inputs retain safely representable source identity and separate dispositions. Four new fault cases observedREDâ†’GREEN; four additional CameraInfo boundary cases passed existing guards (not labeledRED). No Critical/Minor left. Pre-review1001regression tests passed with2existingwarnings; final regression1009passed/2existingwarnings in211.52s. Changed-file Ruff passes; whole-tree52errors in33files byte-identical tobase remain failing.
+
+## Remaining gates
+
+Need separate frozen supported-motion online study25s/1msphysics/250HzrawIMU/10Hz160x120RGBD with original body/gravity/ready anchor/force/safety and raw-model-zero-bias-diffusion-v1 (uncalibrated). Test actual one-native-worker delivery/processing, reference overwrite count, physical raw integration, VIO error/public initialized and source/reset refusal; no public flag alone grants accuracy. No ODOMETRY/arming/EKF2 until reliable output/health/quality/covariance evidence. PR37 drift29.5355m/PR39 ground aliasing/PR40 startup failures stay retained;5machineRTF0.873<0.95 remains failed. Complete fly learning/decision/division/latency and fair baseline work remain open.
+
+## Publication
+
+DraftPR47 https://github.com/chen7509/FlyDrones/pull/47 stacked onPR46. Evidence `evidence/ready-shadow-fanout-dev-1701.zip`:50members/2422789bytes, SHA3584396a5c7cd8da49ee56a9badf1ec7daf4dcefe362c25999bd95ce139cc22c. All member hashes/CRC verified, fixed fan-out journal included. Final source/report sealed at9343921, evidencecommit b1573f2; publication paragraph added afterward. Fixed adapter producer1fd1970 predates review hardening; final guarded failure paths validated by tests, not a repeated estimator/physics run.
