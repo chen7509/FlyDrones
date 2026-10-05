@@ -20,7 +20,9 @@ Pinned source provides a concrete next hypothesis: gz-physics `SimulationFeature
 
 ## Validation and scope
 
-Initial missing-module RED and 142 targeted tests are retained. Full regression: **858 passed, 2 existing warnings, 215.96 s**. Changed-file Ruff passed. Independent review and any corrections are recorded below when complete. Whole-repository lint is assessed separately from the changed files.
+Initial missing-module RED and 142 targeted tests are retained. Initial regression: 858 passed, 2 existing warnings, 215.96 s. Independent review found one Important overbroad audit field and one Minor clock high-water gap; both were addressed in one correction pass. The original audit is retained with its explicit superseding diagnostic. Three new clock-fault cases failed before the shared high-water latch and passed afterward. Final targeted suite: **145 passed**; final full regression: **861 passed, 2 existing warnings, 219.74 s**. Changed-file Ruff passed. Whole-repository Ruff still fails with 50 errors in 32 files unchanged from base; no whole-repository lint success is claimed.
+
+The physical capture remains producer `dbdb662`; final clock hardening `d0741e9` is supported by synthetic tests and regression only. It was not physically rerun. All review findings are closed; the diagnostic freshness issue remains a deliberately disclosed next-stage blocker rather than a claimed fix.
 
 | Status | Evidence boundary |
 |---|---|
@@ -32,5 +34,7 @@ Initial missing-module RED and 142 targeted tests are retained. Full regression:
 ## Research and next dependency
 
 Reused fixed PX4 `d6f12ad` HEARTBEAT (BSD-3-Clause), pymavlink 2.4.49 and existing recorder; maintenance metadata and exact sources are retained. [Official heartbeat service](https://mavlink.io/en/services/heartbeat.html) defines liveness/armed-state information, not VIO health or guaranteed first-message latency. No new runtime dependency; adaptation is the small synchronized readiness journal and relative schedule. Arbitrary sleeps, paused lockstep, ULog backfill and bypassed gates were rejected.
+
+Recorded repository metadata: PX4 last push 2026-10-05T20:23:20Z and pymavlink 2026-10-02T09:32:21Z, both non-archived. This indicates activity, not a support guarantee. Pymavlink's [v2.4.49 COPYING](https://raw.githubusercontent.com/ArduPilot/pymavlink/v2.4.49/COPYING) describes (L)GPL v3 for the generator and a distinct MIT exception for generated output; do not label the entire dependency MIT. Existing message decoding is reused without generation or dependency replacement.
 
 Next inspect the pinned gz-sim `446a443` / gz-physics `189471c` Apache-2.0 update paths and actual Python component access before designing a fresh diagnostic readback. Preserve all old evidence. Prefer a fixed-input/source diagnosis first, then a separately named and frozen probe if runtime proof is required. Do not silently alter IMU values or derive estimator input from truth. Existing diagnostic safety bounds must remain, and a fresh-state gap must be addressed before claiming sensor consistency or starting the separate online OpenVINS validation.
