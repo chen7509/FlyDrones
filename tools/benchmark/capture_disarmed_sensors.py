@@ -52,7 +52,7 @@ def parse_capture_args(argv=None):
     parser.add_argument("--reference-module", type=Path)
     parser.add_argument("--reference-sha256")
     parser.add_argument("--reference-fault-profile", choices=["native-pre-epoch-v1"])
-    parser.add_argument("--source-fanout-profile", choices=["ready-shadow-v1"])
+    parser.add_argument("--source-fanout-profile", choices=["ready-shadow-v1", "ready-shadow-heartbeat-v1"])
     parser.add_argument("--motion-profile", choices=["lateral-wrench-v1", "supported-lateral-v1", "supported-ready-v1"])
     parser.add_argument("--physics-trace-profile", choices=["substep-lateral-v1", "substep-supported-v1", "substep-ready-v1"])
     args = parser.parse_args(argv)
@@ -93,6 +93,16 @@ def parse_capture_args(argv=None):
     if args.motion_profile and not (args.shadow_binary or args.physics_trace_profile):
         parser.error("motion fixture requires the native shadow recorder")
     return args
+
+
+def dispatch_heartbeat(event, writer, fanout):
+    """Opt-in independent journal; old profiles retain the original queued route."""
+    from tools.benchmark.journaled_heartbeat_lane import JournaledHeartbeatFanout
+
+    if isinstance(fanout, JournaledHeartbeatFanout):
+        fanout.submit_heartbeat(event, writer)
+    else:
+        writer.submit(event)
 
 
 def needs_supervisor_retention(summary):
@@ -298,7 +308,12 @@ def main():
         if args.source_fanout_profile:
             from tools.benchmark.ready_shadow_fanout import ReadyShadowFanout
 
-            fanout = ReadyShadowFanout(output, readiness, shadow)
+            if args.source_fanout_profile == "ready-shadow-heartbeat-v1":
+                from tools.benchmark.journaled_heartbeat_lane import JournaledHeartbeatFanout
+
+                fanout = JournaledHeartbeatFanout(output, readiness, shadow)
+            else:
+                fanout = ReadyShadowFanout(output, readiness, shadow)
 
             def finish_fanout():
                 result["source_fanout"] = fanout.finish()
@@ -350,7 +365,7 @@ def main():
                     heartbeat = receiver.recv_match(type="HEARTBEAT", blocking=True, timeout=0.1)
                     if heartbeat is not None and heartbeat.get_srcSystem() == 9 and heartbeat.autopilot == 12:
                         arming["unarmed_wall_ns"] = None if heartbeat.base_mode & 128 else time.monotonic_ns()
-                        writer.submit(
+                        dispatch_heartbeat(
                             {
                                 "kind": "heartbeat",
                                 "arrival_monotonic_ns": time.monotonic_ns(),
@@ -358,7 +373,7 @@ def main():
                                 "system_id": 9,
                                 "base_mode": int(heartbeat.base_mode),
                                 "custom_mode": int(heartbeat.custom_mode),
-                            }
+                            }, writer, fanout
                         )
                 except Exception as exc:
                     errors.append(repr(exc))
