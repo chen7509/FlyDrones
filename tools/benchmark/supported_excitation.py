@@ -2,15 +2,38 @@
 
 from __future__ import annotations
 
+import hashlib
 import json
 import math
 import time
+import xml.etree.ElementTree as ET
 from contextlib import ExitStack
+from pathlib import Path
 
 from flydrones.benchmark.gateway import sim_duration_ns
 from tools.benchmark.disarmed_motion_probe import GazeboMotionProbe, MotionPolicy, profile
 
 MASSES = {"base_link": 2.0, **{f"rotor_{i}": 0.016076923076923075 for i in range(4)}, "camera_link": 0.061}
+
+
+def validate_gravity_configuration(world, models):
+    gravity = [float(v) for v in ET.parse(world).getroot().findtext("world/gravity", "").split()]
+    if gravity != [0.0, 0.0, -9.81]:
+        raise ValueError("unexpected world gravity configuration")
+    names = []
+    for path in models:
+        root = ET.parse(path).getroot()
+        for value in root.findall(".//gravity"):
+            if (value.text or "").strip().lower() not in ("1", "true"):
+                raise ValueError("disabled/unsupported link gravity")
+        names.extend(link.attrib["name"] for link in root.findall(".//link"))
+    if sorted(names) != sorted(MASSES):
+        raise ValueError("gravity configuration link set mismatch")
+    return dict(
+        world_gravity=gravity,
+        per_link_scope="SDF configuration, not runtime GravityEnabled readback",
+        source_hashes={str(p): hashlib.sha256(p.read_bytes()).hexdigest() for p in [world, *models]},
+    )
 
 
 def validate_links(masses):
@@ -118,6 +141,20 @@ class SupportedProbe(GazeboMotionProbe):
                 entity = world.model_by_name(ecm, "x500_benchmark_8")
                 if entity == K_NULL_ENTITY:
                     self.policy.refuse("required model missing")
+                gravity = world.gravity(ecm)
+                if gravity is None or [gravity.x(), gravity.y(), gravity.z()] != [0.0, 0.0, -9.81]:
+                    self.policy.refuse("unexpected runtime world gravity")
+                px4 = Path.home() / "PX4-Autopilot/Tools/simulation/gz/models"
+                assets = Path(__file__).resolve().parents[2] / "assets/gazebo/models"
+                gravity_evidence = validate_gravity_configuration(
+                    self.output / "world.sdf",
+                    [
+                        px4 / "x500_base/model.sdf",
+                        px4 / "x500/model.sdf",
+                        assets / "x500_benchmark/model.sdf",
+                        assets / "OakD-Benchmark/model.sdf",
+                    ],
+                )
                 self.links = {}
                 masses = {}
                 for ident in Model(entity).links(ecm):
@@ -126,8 +163,8 @@ class SupportedProbe(GazeboMotionProbe):
                     if name in self.links:
                         self.policy.refuse("duplicate physical link")
                     inertial = link.world_inertial(ecm)
-                    if inertial is None or link.gravity_enabled(ecm) is not True:
-                        self.policy.refuse("missing mass/gravity")
+                    if inertial is None:
+                        self.policy.refuse("missing mass")
                     masses[name] = inertial.mass_matrix().mass()
                     self.links[name] = link
                     link.enable_bounding_box_checks(ecm)
@@ -136,7 +173,13 @@ class SupportedProbe(GazeboMotionProbe):
                 self.link.enable_velocity_checks(ecm)
                 self.link.enable_acceleration_checks(ecm)
                 with (self.output / "support-links.json").open("x") as f:
-                    json.dump(dict(masses=masses, gravity_enabled=True), f, indent=2)
+                    json.dump(
+                        dict(
+                            masses=masses, gravity=gravity_evidence, runtime_world_gravity=[gravity.x(), gravity.y(), gravity.z()]
+                        ),
+                        f,
+                        indent=2,
+                    )
             self.trace.observe("pre", info, self.link, ecm)
             force = self.policy.step(
                 ns, sim_duration_ns(info.dt), unarmed_wall_ns=self.unarmed_stamp(), wall_ns=time.monotonic_ns()

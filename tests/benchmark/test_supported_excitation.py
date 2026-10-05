@@ -13,6 +13,35 @@ def test_fixed_masses_and_link_set():
             validate_links(wrong)
 
 
+@pytest.mark.parametrize("fault", [None, "disabled", "wrong_world", "missing", "duplicate"])
+def test_sdf_gravity_configuration(tmp_path, fault):
+    from tools.benchmark.supported_excitation import validate_gravity_configuration
+
+    world = tmp_path / "world.sdf"
+    model = tmp_path / "model.sdf"
+    world.write_text("<sdf><world><gravity>0 0 " + ("-9.8" if fault == "wrong_world" else "-9.81") + "</gravity></world></sdf>")
+    names = list(MASSES)
+    if fault == "missing":
+        names.pop()
+    if fault == "duplicate":
+        names.append(names[0])
+    model.write_text(
+        "<sdf><model>"
+        + "".join(
+            '<link name="' + n + '">' + ("<gravity>false</gravity>" if fault == "disabled" else "") + "</link>" for n in names
+        )
+        + "</model></sdf>"
+    )
+    if fault:
+        with pytest.raises(ValueError):
+            validate_gravity_configuration(world, [model])
+    else:
+        assert (
+            validate_gravity_configuration(world, [model])["per_link_scope"]
+            == "SDF configuration, not runtime GravityEnabled readback"
+        )
+
+
 def test_force_mechanics_and_no_feedback():
     p = SupportedPolicy()
     mass = sum(MASSES.values())
