@@ -32,4 +32,6 @@ Interfaces: existing capture supervisor and sensor/native pipeline remain; optio
 ### Task 3: Review and publication
 - [x] Run applicable regression and update verified/implemented/untested/failed report.
 - [x] One independent whole-branch review, one RED→GREEN correction pass with full regression if needed.
-- [ ] Seal all evidence, commit and publish stacked draft PR against PR36, attach and update existing heartbeat to the actual next dependency.
+- [x] Seal all evidence, commit and publish stacked draft PR against PR36, attach and update existing heartbeat to the actual next dependency.
+
+Outcome: PR37, publicready flag observed but reliable dynamic VIO failed.758 regression and71 focused tests pass; full Ruff50 diagnostics in32 unchanged files remains a separately documented baseline limitation. No EKF2 or flight qualification. See report and sealed next-diagnosis-research.md.
