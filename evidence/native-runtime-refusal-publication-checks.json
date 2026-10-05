@@ -1,0 +1,1486 @@
+{
+  "whole_ruff_exit": 1,
+  "errors": 50,
+  "files": 32,
+  "files_changed_since_base": [],
+  "diagnostics": [
+    {
+      "cell": null,
+      "code": "I001",
+      "end_location": {
+        "column": 40,
+        "row": 13
+      },
+      "filename": "C:\\Users\\yuche\\.codex\\worktrees\\FlyDrones\\track-eligibility\\src\\flydrones\\benchmark\\ego.py",
+      "fix": {
+        "applicability": "safe",
+        "edits": [
+          {
+            "content": "from __future__ import annotations\n\nimport json\nimport socket\nimport struct\nimport time\n\nimport numpy as np\n\nfrom .contract import Command, Decision, Observation\nfrom .sensors import encode_observation\n\n",
+            "end_location": {
+              "column": 1,
+              "row": 16
+            },
+            "location": {
+              "column": 1,
+              "row": 3
+            }
+          }
+        ],
+        "message": "Organize imports"
+      },
+      "location": {
+        "column": 1,
+        "row": 3
+      },
+      "message": "Import block is un-sorted or un-formatted",
+      "name": "unsorted-imports",
+      "noqa_row": 3,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/unsorted-imports"
+    },
+    {
+      "cell": null,
+      "code": "I001",
+      "end_location": {
+        "column": 61,
+        "row": 10
+      },
+      "filename": "C:\\Users\\yuche\\.codex\\worktrees\\FlyDrones\\track-eligibility\\src\\flydrones\\benchmark\\runner.py",
+      "fix": {
+        "applicability": "safe",
+        "edits": [
+          {
+            "content": "from __future__ import annotations\n\nimport hashlib\nimport json\nimport shutil\nfrom pathlib import Path\n\nfrom .provenance import verify_files, verify_sealed_manifest\n\n\n",
+            "end_location": {
+              "column": 1,
+              "row": 13
+            },
+            "location": {
+              "column": 1,
+              "row": 3
+            }
+          }
+        ],
+        "message": "Organize imports"
+      },
+      "location": {
+        "column": 1,
+        "row": 3
+      },
+      "message": "Import block is un-sorted or un-formatted",
+      "name": "unsorted-imports",
+      "noqa_row": 3,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/unsorted-imports"
+    },
+    {
+      "cell": null,
+      "code": "I001",
+      "end_location": {
+        "column": 19,
+        "row": 8
+      },
+      "filename": "C:\\Users\\yuche\\.codex\\worktrees\\FlyDrones\\track-eligibility\\src\\flydrones\\benchmark\\score.py",
+      "fix": {
+        "applicability": "safe",
+        "edits": [
+          {
+            "content": "from __future__ import annotations\n\nimport math\nfrom dataclasses import asdict, dataclass\n\nimport numpy as np\n\n\n",
+            "end_location": {
+              "column": 1,
+              "row": 11
+            },
+            "location": {
+              "column": 1,
+              "row": 3
+            }
+          }
+        ],
+        "message": "Organize imports"
+      },
+      "location": {
+        "column": 1,
+        "row": 3
+      },
+      "message": "Import block is un-sorted or un-formatted",
+      "name": "unsorted-imports",
+      "noqa_row": 3,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/unsorted-imports"
+    },
+    {
+      "cell": null,
+      "code": "I001",
+      "end_location": {
+        "column": 39,
+        "row": 12
+      },
+      "filename": "C:\\Users\\yuche\\.codex\\worktrees\\FlyDrones\\track-eligibility\\src\\flydrones\\benchmark\\worlds.py",
+      "fix": {
+        "applicability": "safe",
+        "edits": [
+          {
+            "content": "import math\nimport xml.etree.ElementTree as ET\nfrom collections import deque\nfrom itertools import product\nfrom pathlib import Path\n\nimport numpy as np\nfrom scipy.spatial.transform import Rotation\n\nfrom .geometry import point_clearances\n\n",
+            "end_location": {
+              "column": 1,
+              "row": 15
+            },
+            "location": {
+              "column": 1,
+              "row": 3
+            }
+          }
+        ],
+        "message": "Organize imports"
+      },
+      "location": {
+        "column": 1,
+        "row": 3
+      },
+      "message": "Import block is un-sorted or un-formatted",
+      "name": "unsorted-imports",
+      "noqa_row": 3,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/unsorted-imports"
+    },
+    {
+      "cell": null,
+      "code": "E741",
+      "end_location": {
+        "column": 65,
+        "row": 96
+      },
+      "filename": "C:\\Users\\yuche\\.codex\\worktrees\\FlyDrones\\track-eligibility\\src\\flydrones\\benchmark\\worlds.py",
+      "fix": null,
+      "location": {
+        "column": 64,
+        "row": 96
+      },
+      "message": "Ambiguous variable name: `l`",
+      "name": "ambiguous-variable-name",
+      "noqa_row": 96,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/ambiguous-variable-name"
+    },
+    {
+      "cell": null,
+      "code": "F841",
+      "end_location": {
+        "column": 13,
+        "row": 254
+      },
+      "filename": "C:\\Users\\yuche\\.codex\\worktrees\\FlyDrones\\track-eligibility\\src\\flydrones\\brain\\connectome.py",
+      "fix": {
+        "applicability": "unsafe",
+        "edits": [
+          {
+            "content": "",
+            "end_location": {
+              "column": 16,
+              "row": 254
+            },
+            "location": {
+              "column": 5,
+              "row": 254
+            }
+          }
+        ],
+        "message": "Remove assignment to unused variable `side_col`"
+      },
+      "location": {
+        "column": 5,
+        "row": 254
+      },
+      "message": "Local variable `side_col` is assigned to but never used",
+      "name": "unused-variable",
+      "noqa_row": 254,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/unused-variable"
+    },
+    {
+      "cell": null,
+      "code": "I001",
+      "end_location": {
+        "column": 76,
+        "row": 34
+      },
+      "filename": "C:\\Users\\yuche\\.codex\\worktrees\\FlyDrones\\track-eligibility\\src\\flydrones\\connectome_training\\__init__.py",
+      "fix": {
+        "applicability": "safe",
+        "edits": [
+          {
+            "content": "from .checkpoint import load_checkpoint, save_checkpoint\nfrom .curriculum import TrainingSession, run_curriculum\nfrom .curriculum_config import (\n    CurriculumConfig,\n    CurriculumProfile,\n    CurriculumStage,\n    load_curriculum_config,\n)\nfrom .curriculum_session import ConnectomeCurriculumSession, resolve_device\nfrom .curriculum_state import CurriculumState, RunLock, StateStore\nfrom .dataset import (\n    INPUT_ARRAY_KEYS,\n    SequenceFrame,\n    SequenceProvenance,\n    TeacherTarget,\n    TrainingSequence,\n    load_sequence,\n    write_sequence,\n)\nfrom .features import FEATURE_NAMES, sequence_tensors\nfrom .governance import CurriculumGate, evaluate_gate, validate_dataset_partitions\nfrom .losses import LossWeights, sequence_loss\nfrom .model import ConnectomeConstrainedCore, RecurrentState\nfrom .parameters import (\n    ParameterSet,\n    StructureIdentity,\n    build_structure_identity,\n    initial_parameter_set,\n    load_parameter_set,\n    save_parameter_set,\n)\nfrom .profiling import profile_controller, summarize_latency\nfrom .recorder import TeacherSequenceRecorder, reject_formal_evidence\nfrom .trainer import evaluate_sequences, train_epoch\n\n",
+            "end_location": {
+              "column": 1,
+              "row": 36
+            },
+            "location": {
+              "column": 1,
+              "row": 1
+            }
+          }
+        ],
+        "message": "Organize imports"
+      },
+      "location": {
+        "column": 1,
+        "row": 1
+      },
+      "message": "Import block is un-sorted or un-formatted",
+      "name": "unsorted-imports",
+      "noqa_row": 1,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/unsorted-imports"
+    },
+    {
+      "cell": null,
+      "code": "I001",
+      "end_location": {
+        "column": 13,
+        "row": 11
+      },
+      "filename": "C:\\Users\\yuche\\.codex\\worktrees\\FlyDrones\\track-eligibility\\src\\flydrones\\connectome_training\\checkpoint.py",
+      "fix": {
+        "applicability": "safe",
+        "edits": [
+          {
+            "content": "from __future__ import annotations\n\nimport json\nimport random\nfrom collections.abc import Mapping\nfrom hashlib import sha256\nfrom pathlib import Path\nfrom typing import Any\n\nimport numpy as np\nimport torch\n\n",
+            "end_location": {
+              "column": 1,
+              "row": 13
+            },
+            "location": {
+              "column": 1,
+              "row": 1
+            }
+          }
+        ],
+        "message": "Organize imports"
+      },
+      "location": {
+        "column": 1,
+        "row": 1
+      },
+      "message": "Import block is un-sorted or un-formatted",
+      "name": "unsorted-imports",
+      "noqa_row": 1,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/unsorted-imports"
+    },
+    {
+      "cell": null,
+      "code": "I001",
+      "end_location": {
+        "column": 67,
+        "row": 11
+      },
+      "filename": "C:\\Users\\yuche\\.codex\\worktrees\\FlyDrones\\track-eligibility\\src\\flydrones\\connectome_training\\curriculum.py",
+      "fix": {
+        "applicability": "safe",
+        "edits": [
+          {
+            "content": "from __future__ import annotations\n\nimport json\nimport math\nfrom collections.abc import Mapping\nfrom pathlib import Path\nfrom typing import Protocol\nfrom uuid import uuid4\n\nfrom .curriculum_config import CurriculumConfig, CurriculumStage\nfrom .curriculum_state import CurriculumState, RunLock, StateStore\n\n\n",
+            "end_location": {
+              "column": 1,
+              "row": 14
+            },
+            "location": {
+              "column": 1,
+              "row": 1
+            }
+          }
+        ],
+        "message": "Organize imports"
+      },
+      "location": {
+        "column": 1,
+        "row": 1
+      },
+      "message": "Import block is un-sorted or un-formatted",
+      "name": "unsorted-imports",
+      "noqa_row": 1,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/unsorted-imports"
+    },
+    {
+      "cell": null,
+      "code": "I001",
+      "end_location": {
+        "column": 12,
+        "row": 9
+      },
+      "filename": "C:\\Users\\yuche\\.codex\\worktrees\\FlyDrones\\track-eligibility\\src\\flydrones\\connectome_training\\curriculum_config.py",
+      "fix": {
+        "applicability": "safe",
+        "edits": [
+          {
+            "content": "from __future__ import annotations\n\nimport json\nfrom dataclasses import asdict, dataclass\nfrom hashlib import sha256\nfrom pathlib import Path\nfrom typing import Any\n\nimport yaml\n\n",
+            "end_location": {
+              "column": 1,
+              "row": 11
+            },
+            "location": {
+              "column": 1,
+              "row": 1
+            }
+          }
+        ],
+        "message": "Organize imports"
+      },
+      "location": {
+        "column": 1,
+        "row": 1
+      },
+      "message": "Import block is un-sorted or un-formatted",
+      "name": "unsorted-imports",
+      "noqa_row": 1,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/unsorted-imports"
+    },
+    {
+      "cell": null,
+      "code": "I001",
+      "end_location": {
+        "column": 53,
+        "row": 30
+      },
+      "filename": "C:\\Users\\yuche\\.codex\\worktrees\\FlyDrones\\track-eligibility\\src\\flydrones\\connectome_training\\curriculum_session.py",
+      "fix": {
+        "applicability": "safe",
+        "edits": [
+          {
+            "content": "from __future__ import annotations\n\nimport json\nimport os\nimport random\nimport time\nfrom hashlib import sha256\nfrom pathlib import Path\n\nimport numpy as np\nimport torch\nfrom scipy import sparse\n\nfrom flydrones.brain.connectome import Connectome\n\nfrom .checkpoint import load_checkpoint, restore_rng_state, save_checkpoint\nfrom .curriculum_config import CurriculumConfig, CurriculumStage\nfrom .dataset import (\n    SequenceFrame,\n    SequenceProvenance,\n    TeacherTarget,\n    TrainingSequence,\n    load_sequence,\n)\nfrom .features import FEATURE_NAMES, sequence_tensors\nfrom .governance import validate_dataset_partitions\nfrom .losses import LossWeights\nfrom .model import ConnectomeConstrainedCore\nfrom .parameters import ParameterSet, build_structure_identity, initial_parameter_set, load_parameter_set\nfrom .trainer import evaluate_sequences, train_epoch\n\n",
+            "end_location": {
+              "column": 1,
+              "row": 32
+            },
+            "location": {
+              "column": 1,
+              "row": 1
+            }
+          }
+        ],
+        "message": "Organize imports"
+      },
+      "location": {
+        "column": 1,
+        "row": 1
+      },
+      "message": "Import block is un-sorted or un-formatted",
+      "name": "unsorted-imports",
+      "noqa_row": 1,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/unsorted-imports"
+    },
+    {
+      "cell": null,
+      "code": "I001",
+      "end_location": {
+        "column": 23,
+        "row": 9
+      },
+      "filename": "C:\\Users\\yuche\\.codex\\worktrees\\FlyDrones\\track-eligibility\\src\\flydrones\\connectome_training\\curriculum_state.py",
+      "fix": {
+        "applicability": "safe",
+        "edits": [
+          {
+            "content": "from __future__ import annotations\n\nimport json\nimport math\nimport os\nfrom dataclasses import asdict, dataclass\nfrom pathlib import Path\nfrom typing import IO\nfrom uuid import uuid4\n\n",
+            "end_location": {
+              "column": 1,
+              "row": 11
+            },
+            "location": {
+              "column": 1,
+              "row": 1
+            }
+          }
+        ],
+        "message": "Organize imports"
+      },
+      "location": {
+        "column": 1,
+        "row": 1
+      },
+      "message": "Import block is un-sorted or un-formatted",
+      "name": "unsorted-imports",
+      "noqa_row": 1,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/unsorted-imports"
+    },
+    {
+      "cell": null,
+      "code": "I001",
+      "end_location": {
+        "column": 45,
+        "row": 8
+      },
+      "filename": "C:\\Users\\yuche\\.codex\\worktrees\\FlyDrones\\track-eligibility\\src\\flydrones\\connectome_training\\governance.py",
+      "fix": {
+        "applicability": "safe",
+        "edits": [
+          {
+            "content": "from __future__ import annotations\n\nimport math\nfrom collections.abc import Iterable, Mapping\nfrom dataclasses import dataclass\n\nfrom .dataset import SequenceProvenance\nfrom .recorder import reject_formal_evidence\n\n\n",
+            "end_location": {
+              "column": 1,
+              "row": 11
+            },
+            "location": {
+              "column": 1,
+              "row": 1
+            }
+          }
+        ],
+        "message": "Organize imports"
+      },
+      "location": {
+        "column": 1,
+        "row": 1
+      },
+      "message": "Import block is un-sorted or un-formatted",
+      "name": "unsorted-imports",
+      "noqa_row": 1,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/unsorted-imports"
+    },
+    {
+      "cell": null,
+      "code": "I001",
+      "end_location": {
+        "column": 50,
+        "row": 11
+      },
+      "filename": "C:\\Users\\yuche\\.codex\\worktrees\\FlyDrones\\track-eligibility\\src\\flydrones\\connectome_training\\parameters.py",
+      "fix": {
+        "applicability": "safe",
+        "edits": [
+          {
+            "content": "from __future__ import annotations\n\nimport json\nimport struct\nfrom dataclasses import asdict, dataclass, replace\nfrom hashlib import sha256\nfrom pathlib import Path\n\nimport numpy as np\n\nfrom flydrones.brain.connectome import Connectome\n\n",
+            "end_location": {
+              "column": 1,
+              "row": 13
+            },
+            "location": {
+              "column": 1,
+              "row": 1
+            }
+          }
+        ],
+        "message": "Organize imports"
+      },
+      "location": {
+        "column": 1,
+        "row": 1
+      },
+      "message": "Import block is un-sorted or un-formatted",
+      "name": "unsorted-imports",
+      "noqa_row": 1,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/unsorted-imports"
+    },
+    {
+      "cell": null,
+      "code": "UP035",
+      "end_location": {
+        "column": 28,
+        "row": 4
+      },
+      "filename": "C:\\Users\\yuche\\.codex\\worktrees\\FlyDrones\\track-eligibility\\src\\flydrones\\connectome_training\\profiling.py",
+      "fix": {
+        "applicability": "safe",
+        "edits": [
+          {
+            "content": "from collections.abc import Iterable",
+            "end_location": {
+              "column": 28,
+              "row": 4
+            },
+            "location": {
+              "column": 1,
+              "row": 4
+            }
+          }
+        ],
+        "message": "Import from `collections.abc`"
+      },
+      "location": {
+        "column": 1,
+        "row": 4
+      },
+      "message": "Import from `collections.abc` instead: `Iterable`",
+      "name": "deprecated-import",
+      "noqa_row": 4,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/deprecated-import"
+    },
+    {
+      "cell": null,
+      "code": "I001",
+      "end_location": {
+        "column": 61,
+        "row": 9
+      },
+      "filename": "C:\\Users\\yuche\\.codex\\worktrees\\FlyDrones\\track-eligibility\\src\\flydrones\\distill.py",
+      "fix": {
+        "applicability": "safe",
+        "edits": [
+          {
+            "content": "from __future__ import annotations\n\nimport math\n\nimport numpy as np\n\nfrom .reflex_training import FlyObservation, FlyReflexPolicy\n\n",
+            "end_location": {
+              "column": 1,
+              "row": 12
+            },
+            "location": {
+              "column": 1,
+              "row": 3
+            }
+          }
+        ],
+        "message": "Organize imports"
+      },
+      "location": {
+        "column": 1,
+        "row": 3
+      },
+      "message": "Import block is un-sorted or un-formatted",
+      "name": "unsorted-imports",
+      "noqa_row": 3,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/unsorted-imports"
+    },
+    {
+      "cell": null,
+      "code": "B023",
+      "end_location": {
+        "column": 34,
+        "row": 279
+      },
+      "filename": "C:\\Users\\yuche\\.codex\\worktrees\\FlyDrones\\track-eligibility\\src\\flydrones\\reflex_training.py",
+      "fix": null,
+      "location": {
+        "column": 24,
+        "row": 279
+      },
+      "message": "Function definition does not bind loop variable `gap_center`",
+      "name": "function-uses-loop-variable",
+      "noqa_row": 279,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/function-uses-loop-variable"
+    },
+    {
+      "cell": null,
+      "code": "B023",
+      "end_location": {
+        "column": 44,
+        "row": 281
+      },
+      "filename": "C:\\Users\\yuche\\.codex\\worktrees\\FlyDrones\\track-eligibility\\src\\flydrones\\reflex_training.py",
+      "fix": null,
+      "location": {
+        "column": 34,
+        "row": 281
+      },
+      "message": "Function definition does not bind loop variable `gap_center`",
+      "name": "function-uses-loop-variable",
+      "noqa_row": 281,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/function-uses-loop-variable"
+    },
+    {
+      "cell": null,
+      "code": "B023",
+      "end_location": {
+        "column": 62,
+        "row": 281
+      },
+      "filename": "C:\\Users\\yuche\\.codex\\worktrees\\FlyDrones\\track-eligibility\\src\\flydrones\\reflex_training.py",
+      "fix": null,
+      "location": {
+        "column": 47,
+        "row": 281
+      },
+      "message": "Function definition does not bind loop variable `curve_amplitude`",
+      "name": "function-uses-loop-variable",
+      "noqa_row": 281,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/function-uses-loop-variable"
+    },
+    {
+      "cell": null,
+      "code": "I001",
+      "end_location": {
+        "column": 2,
+        "row": 20
+      },
+      "filename": "C:\\Users\\yuche\\.codex\\worktrees\\FlyDrones\\track-eligibility\\tests\\benchmark\\test_clock.py",
+      "fix": {
+        "applicability": "safe",
+        "edits": [
+          {
+            "content": "from datetime import timedelta\nfrom types import SimpleNamespace\n\nimport numpy as np\nimport pytest\n\nfrom flydrones.benchmark.clock import StepClock, require_offboard\nfrom flydrones.benchmark.contract import Command\nfrom flydrones.benchmark.gateway import (\n    WORLD_CONTROL_TIMEOUT_MS,\n    contact_message_involves,\n    control_retry_allowed,\n    direct_step_complete,\n    enu_to_ned,\n    offboard_evidence_fresh,\n    shape_command,\n    sim_duration_ns,\n    step_complete,\n    transport_partition,\n    world_control_request_text,\n)\n\n\n",
+            "end_location": {
+              "column": 1,
+              "row": 23
+            },
+            "location": {
+              "column": 1,
+              "row": 1
+            }
+          }
+        ],
+        "message": "Organize imports"
+      },
+      "location": {
+        "column": 1,
+        "row": 1
+      },
+      "message": "Import block is un-sorted or un-formatted",
+      "name": "unsorted-imports",
+      "noqa_row": 1,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/unsorted-imports"
+    },
+    {
+      "cell": null,
+      "code": "I001",
+      "end_location": {
+        "column": 72,
+        "row": 8
+      },
+      "filename": "C:\\Users\\yuche\\.codex\\worktrees\\FlyDrones\\track-eligibility\\tests\\benchmark\\test_ego_adapter.py",
+      "fix": {
+        "applicability": "safe",
+        "edits": [
+          {
+            "content": "import json\nfrom pathlib import Path\n\nimport numpy as np\nimport pytest\n\nfrom flydrones.benchmark.contract import Observation\nfrom flydrones.benchmark.ego import track_reference, validate_reference\n\n",
+            "end_location": {
+              "column": 1,
+              "row": 11
+            },
+            "location": {
+              "column": 1,
+              "row": 1
+            }
+          }
+        ],
+        "message": "Organize imports"
+      },
+      "location": {
+        "column": 1,
+        "row": 1
+      },
+      "message": "Import block is un-sorted or un-formatted",
+      "name": "unsorted-imports",
+      "noqa_row": 1,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/unsorted-imports"
+    },
+    {
+      "cell": null,
+      "code": "F401",
+      "end_location": {
+        "column": 12,
+        "row": 1
+      },
+      "filename": "C:\\Users\\yuche\\.codex\\worktrees\\FlyDrones\\track-eligibility\\tests\\benchmark\\test_ego_adapter.py",
+      "fix": {
+        "applicability": "safe",
+        "edits": [
+          {
+            "content": "",
+            "end_location": {
+              "column": 1,
+              "row": 2
+            },
+            "location": {
+              "column": 1,
+              "row": 1
+            }
+          }
+        ],
+        "message": "Remove unused import: `json`"
+      },
+      "location": {
+        "column": 8,
+        "row": 1
+      },
+      "message": "`json` imported but unused",
+      "name": "unused-import",
+      "noqa_row": 1,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/unused-import"
+    },
+    {
+      "cell": null,
+      "code": "F401",
+      "end_location": {
+        "column": 53,
+        "row": 7
+      },
+      "filename": "C:\\Users\\yuche\\.codex\\worktrees\\FlyDrones\\track-eligibility\\tests\\benchmark\\test_ego_adapter.py",
+      "fix": {
+        "applicability": "safe",
+        "edits": [
+          {
+            "content": "",
+            "end_location": {
+              "column": 1,
+              "row": 8
+            },
+            "location": {
+              "column": 1,
+              "row": 7
+            }
+          }
+        ],
+        "message": "Remove unused import: `flydrones.benchmark.contract.Observation`"
+      },
+      "location": {
+        "column": 42,
+        "row": 7
+      },
+      "message": "`flydrones.benchmark.contract.Observation` imported but unused",
+      "name": "unused-import",
+      "noqa_row": 7,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/unused-import"
+    },
+    {
+      "cell": null,
+      "code": "I001",
+      "end_location": {
+        "column": 2,
+        "row": 13
+      },
+      "filename": "C:\\Users\\yuche\\.codex\\worktrees\\FlyDrones\\track-eligibility\\tests\\benchmark\\test_provenance.py",
+      "fix": {
+        "applicability": "safe",
+        "edits": [
+          {
+            "content": "import hashlib\nfrom pathlib import Path\n\nimport pytest\n\nfrom flydrones.benchmark.provenance import (\n    freeze_files,\n    load_benchmark_config,\n    seal_manifest,\n    sha256_file,\n    verify_files,\n    verify_sealed_manifest,\n)\n\n",
+            "end_location": {
+              "column": 1,
+              "row": 16
+            },
+            "location": {
+              "column": 1,
+              "row": 1
+            }
+          }
+        ],
+        "message": "Organize imports"
+      },
+      "location": {
+        "column": 1,
+        "row": 1
+      },
+      "message": "Import block is un-sorted or un-formatted",
+      "name": "unsorted-imports",
+      "noqa_row": 1,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/unsorted-imports"
+    },
+    {
+      "cell": null,
+      "code": "I001",
+      "end_location": {
+        "column": 2,
+        "row": 13
+      },
+      "filename": "C:\\Users\\yuche\\.codex\\worktrees\\FlyDrones\\track-eligibility\\tests\\benchmark\\test_sensors.py",
+      "fix": {
+        "applicability": "safe",
+        "edits": [
+          {
+            "content": "import numpy as np\nimport pytest\n\nfrom flydrones.benchmark.contract import Observation\nfrom flydrones.benchmark.sensors import (\n    FrameCache,\n    PoseHistory,\n    camera_matrix,\n    camera_pose_from_model,\n    decode_observation,\n    encode_observation,\n    optical_to_body,\n)\n\n\n",
+            "end_location": {
+              "column": 1,
+              "row": 16
+            },
+            "location": {
+              "column": 1,
+              "row": 1
+            }
+          }
+        ],
+        "message": "Organize imports"
+      },
+      "location": {
+        "column": 1,
+        "row": 1
+      },
+      "message": "Import block is un-sorted or un-formatted",
+      "name": "unsorted-imports",
+      "noqa_row": 1,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/unsorted-imports"
+    },
+    {
+      "cell": null,
+      "code": "I001",
+      "end_location": {
+        "column": 62,
+        "row": 10
+      },
+      "filename": "C:\\Users\\yuche\\.codex\\worktrees\\FlyDrones\\track-eligibility\\tests\\connectome_training\\test_curriculum_cli.py",
+      "fix": {
+        "applicability": "safe",
+        "edits": [
+          {
+            "content": "import json\nimport subprocess\nimport sys\nfrom pathlib import Path\n\nimport pytest\nimport yaml\n\nfrom flydrones.connectome_training.curriculum_session import verify_source_digest\nfrom tools.connectome_training.run_curriculum import _restart\n\n\n",
+            "end_location": {
+              "column": 1,
+              "row": 13
+            },
+            "location": {
+              "column": 1,
+              "row": 1
+            }
+          }
+        ],
+        "message": "Organize imports"
+      },
+      "location": {
+        "column": 1,
+        "row": 1
+      },
+      "message": "Import block is un-sorted or un-formatted",
+      "name": "unsorted-imports",
+      "noqa_row": 1,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/unsorted-imports"
+    },
+    {
+      "cell": null,
+      "code": "I001",
+      "end_location": {
+        "column": 2,
+        "row": 11
+      },
+      "filename": "C:\\Users\\yuche\\.codex\\worktrees\\FlyDrones\\track-eligibility\\tests\\connectome_training\\test_model.py",
+      "fix": {
+        "applicability": "safe",
+        "edits": [
+          {
+            "content": "import numpy as np\nimport pytest\nimport torch\nfrom scipy import sparse\n\nfrom flydrones.brain.connectome import Connectome\nfrom flydrones.connectome_training.model import ConnectomeConstrainedCore\nfrom flydrones.connectome_training.parameters import (\n    build_structure_identity,\n    initial_parameter_set,\n)\n\n\n",
+            "end_location": {
+              "column": 1,
+              "row": 14
+            },
+            "location": {
+              "column": 1,
+              "row": 1
+            }
+          }
+        ],
+        "message": "Organize imports"
+      },
+      "location": {
+        "column": 1,
+        "row": 1
+      },
+      "message": "Import block is un-sorted or un-formatted",
+      "name": "unsorted-imports",
+      "noqa_row": 1,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/unsorted-imports"
+    },
+    {
+      "cell": null,
+      "code": "I001",
+      "end_location": {
+        "column": 11,
+        "row": 4
+      },
+      "filename": "C:\\Users\\yuche\\.codex\\worktrees\\FlyDrones\\track-eligibility\\tests\\connectome_training\\test_profile_baseline.py",
+      "fix": {
+        "applicability": "safe",
+        "edits": [
+          {
+            "content": "import json\nimport subprocess\nimport sys\nfrom pathlib import Path\n\n\n",
+            "end_location": {
+              "column": 1,
+              "row": 7
+            },
+            "location": {
+              "column": 1,
+              "row": 1
+            }
+          }
+        ],
+        "message": "Organize imports"
+      },
+      "location": {
+        "column": 1,
+        "row": 1
+      },
+      "message": "Import block is un-sorted or un-formatted",
+      "name": "unsorted-imports",
+      "noqa_row": 1,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/unsorted-imports"
+    },
+    {
+      "cell": null,
+      "code": "I001",
+      "end_location": {
+        "column": 12,
+        "row": 7
+      },
+      "filename": "C:\\Users\\yuche\\.codex\\worktrees\\FlyDrones\\track-eligibility\\tests\\connectome_training\\test_train_stage_b.py",
+      "fix": {
+        "applicability": "safe",
+        "edits": [
+          {
+            "content": "import json\nimport subprocess\nimport sys\nfrom pathlib import Path\n\nimport pytest\nimport yaml\n\n\n",
+            "end_location": {
+              "column": 1,
+              "row": 10
+            },
+            "location": {
+              "column": 1,
+              "row": 1
+            }
+          }
+        ],
+        "message": "Organize imports"
+      },
+      "location": {
+        "column": 1,
+        "row": 1
+      },
+      "message": "Import block is un-sorted or un-formatted",
+      "name": "unsorted-imports",
+      "noqa_row": 1,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/unsorted-imports"
+    },
+    {
+      "cell": null,
+      "code": "I001",
+      "end_location": {
+        "column": 82,
+        "row": 21
+      },
+      "filename": "C:\\Users\\yuche\\.codex\\worktrees\\FlyDrones\\track-eligibility\\tests\\connectome_training\\test_trainer.py",
+      "fix": {
+        "applicability": "safe",
+        "edits": [
+          {
+            "content": "from dataclasses import replace\n\nimport numpy as np\nimport torch\nfrom scipy import sparse\n\nfrom flydrones.brain.connectome import Connectome\nfrom flydrones.connectome_training.dataset import (\n    SequenceFrame,\n    SequenceProvenance,\n    TeacherTarget,\n    TrainingSequence,\n)\nfrom flydrones.connectome_training.features import FEATURE_NAMES, sequence_tensors\nfrom flydrones.connectome_training.losses import LossWeights, sequence_loss\nfrom flydrones.connectome_training.model import ConnectomeConstrainedCore\nfrom flydrones.connectome_training.parameters import (\n    build_structure_identity,\n    initial_parameter_set,\n)\nfrom flydrones.connectome_training.trainer import evaluate_sequences, train_epoch\n\n\n",
+            "end_location": {
+              "column": 1,
+              "row": 24
+            },
+            "location": {
+              "column": 1,
+              "row": 1
+            }
+          }
+        ],
+        "message": "Organize imports"
+      },
+      "location": {
+        "column": 1,
+        "row": 1
+      },
+      "message": "Import block is un-sorted or un-formatted",
+      "name": "unsorted-imports",
+      "noqa_row": 1,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/unsorted-imports"
+    },
+    {
+      "cell": null,
+      "code": "I001",
+      "end_location": {
+        "column": 34,
+        "row": 22
+      },
+      "filename": "C:\\Users\\yuche\\.codex\\worktrees\\FlyDrones\\track-eligibility\\tools\\benchmark\\ego_node.py",
+      "fix": {
+        "applicability": "safe",
+        "edits": [
+          {
+            "content": "from __future__ import annotations\n\nimport argparse\nimport base64\nimport json\nimport socket\nimport struct\nimport threading\nimport time\n\nimport numpy as np\nimport rclpy\nfrom builtin_interfaces.msg import Time\nfrom geometry_msgs.msg import PoseStamped\nfrom nav_msgs.msg import Odometry\nfrom quadrotor_msgs.msg import PositionCommand\nfrom rclpy.node import Node\nfrom rosgraph_msgs.msg import Clock\nfrom sensor_msgs.msg import Image\n\n",
+            "end_location": {
+              "column": 1,
+              "row": 25
+            },
+            "location": {
+              "column": 1,
+              "row": 4
+            }
+          }
+        ],
+        "message": "Organize imports"
+      },
+      "location": {
+        "column": 1,
+        "row": 4
+      },
+      "message": "Import block is un-sorted or un-formatted",
+      "name": "unsorted-imports",
+      "noqa_row": 4,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/unsorted-imports"
+    },
+    {
+      "cell": null,
+      "code": "I001",
+      "end_location": {
+        "column": 11,
+        "row": 12
+      },
+      "filename": "C:\\Users\\yuche\\.codex\\worktrees\\FlyDrones\\track-eligibility\\tools\\benchmark\\freeze_benchmark.py",
+      "fix": {
+        "applicability": "safe",
+        "edits": [
+          {
+            "content": "from __future__ import annotations\n\nimport argparse\nimport json\nimport platform\nimport subprocess\nimport sys\nfrom datetime import datetime, timezone\nfrom pathlib import Path\n\n",
+            "end_location": {
+              "column": 1,
+              "row": 14
+            },
+            "location": {
+              "column": 1,
+              "row": 4
+            }
+          }
+        ],
+        "message": "Organize imports"
+      },
+      "location": {
+        "column": 1,
+        "row": 4
+      },
+      "message": "Import block is un-sorted or un-formatted",
+      "name": "unsorted-imports",
+      "noqa_row": 4,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/unsorted-imports"
+    },
+    {
+      "cell": null,
+      "code": "E402",
+      "end_location": {
+        "column": 84,
+        "row": 17
+      },
+      "filename": "C:\\Users\\yuche\\.codex\\worktrees\\FlyDrones\\track-eligibility\\tools\\benchmark\\freeze_benchmark.py",
+      "fix": null,
+      "location": {
+        "column": 1,
+        "row": 17
+      },
+      "message": "Module level import not at top of file",
+      "name": "module-import-not-at-top-of-file",
+      "noqa_row": 17,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/module-import-not-at-top-of-file"
+    },
+    {
+      "cell": null,
+      "code": "I001",
+      "end_location": {
+        "column": 84,
+        "row": 17
+      },
+      "filename": "C:\\Users\\yuche\\.codex\\worktrees\\FlyDrones\\track-eligibility\\tools\\benchmark\\freeze_benchmark.py",
+      "fix": {
+        "applicability": "safe",
+        "edits": [
+          {
+            "content": "from flydrones.benchmark.provenance import freeze_files, seal_manifest, sha256_file\n\n",
+            "end_location": {
+              "column": 1,
+              "row": 20
+            },
+            "location": {
+              "column": 1,
+              "row": 17
+            }
+          }
+        ],
+        "message": "Organize imports"
+      },
+      "location": {
+        "column": 1,
+        "row": 17
+      },
+      "message": "Import block is un-sorted or un-formatted",
+      "name": "unsorted-imports",
+      "noqa_row": 17,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/unsorted-imports"
+    },
+    {
+      "cell": null,
+      "code": "I001",
+      "end_location": {
+        "column": 11,
+        "row": 11
+      },
+      "filename": "C:\\Users\\yuche\\.codex\\worktrees\\FlyDrones\\track-eligibility\\tools\\benchmark\\generate_formal.py",
+      "fix": {
+        "applicability": "safe",
+        "edits": [
+          {
+            "content": "from __future__ import annotations\n\nimport argparse\nimport json\nimport secrets\nimport sys\nfrom datetime import datetime, timezone\nfrom pathlib import Path\n\n",
+            "end_location": {
+              "column": 1,
+              "row": 13
+            },
+            "location": {
+              "column": 1,
+              "row": 4
+            }
+          }
+        ],
+        "message": "Organize imports"
+      },
+      "location": {
+        "column": 1,
+        "row": 4
+      },
+      "message": "Import block is un-sorted or un-formatted",
+      "name": "unsorted-imports",
+      "noqa_row": 4,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/unsorted-imports"
+    },
+    {
+      "cell": null,
+      "code": "E402",
+      "end_location": {
+        "column": 70,
+        "row": 16
+      },
+      "filename": "C:\\Users\\yuche\\.codex\\worktrees\\FlyDrones\\track-eligibility\\tools\\benchmark\\generate_formal.py",
+      "fix": null,
+      "location": {
+        "column": 1,
+        "row": 16
+      },
+      "message": "Module level import not at top of file",
+      "name": "module-import-not-at-top-of-file",
+      "noqa_row": 16,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/module-import-not-at-top-of-file"
+    },
+    {
+      "cell": null,
+      "code": "E402",
+      "end_location": {
+        "column": 74,
+        "row": 17
+      },
+      "filename": "C:\\Users\\yuche\\.codex\\worktrees\\FlyDrones\\track-eligibility\\tools\\benchmark\\generate_formal.py",
+      "fix": null,
+      "location": {
+        "column": 1,
+        "row": 17
+      },
+      "message": "Module level import not at top of file",
+      "name": "module-import-not-at-top-of-file",
+      "noqa_row": 17,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/module-import-not-at-top-of-file"
+    },
+    {
+      "cell": null,
+      "code": "E402",
+      "end_location": {
+        "column": 65,
+        "row": 18
+      },
+      "filename": "C:\\Users\\yuche\\.codex\\worktrees\\FlyDrones\\track-eligibility\\tools\\benchmark\\generate_formal.py",
+      "fix": null,
+      "location": {
+        "column": 1,
+        "row": 18
+      },
+      "message": "Module level import not at top of file",
+      "name": "module-import-not-at-top-of-file",
+      "noqa_row": 18,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/module-import-not-at-top-of-file"
+    },
+    {
+      "cell": null,
+      "code": "E402",
+      "end_location": {
+        "column": 42,
+        "row": 15
+      },
+      "filename": "C:\\Users\\yuche\\.codex\\worktrees\\FlyDrones\\track-eligibility\\tools\\benchmark\\probe_clock.py",
+      "fix": null,
+      "location": {
+        "column": 1,
+        "row": 15
+      },
+      "message": "Module level import not at top of file",
+      "name": "module-import-not-at-top-of-file",
+      "noqa_row": 15,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/module-import-not-at-top-of-file"
+    },
+    {
+      "cell": null,
+      "code": "E402",
+      "end_location": {
+        "column": 38,
+        "row": 16
+      },
+      "filename": "C:\\Users\\yuche\\.codex\\worktrees\\FlyDrones\\track-eligibility\\tools\\benchmark\\probe_clock.py",
+      "fix": null,
+      "location": {
+        "column": 1,
+        "row": 16
+      },
+      "message": "Module level import not at top of file",
+      "name": "module-import-not-at-top-of-file",
+      "noqa_row": 16,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/module-import-not-at-top-of-file"
+    },
+    {
+      "cell": null,
+      "code": "E402",
+      "end_location": {
+        "column": 53,
+        "row": 17
+      },
+      "filename": "C:\\Users\\yuche\\.codex\\worktrees\\FlyDrones\\track-eligibility\\tools\\benchmark\\probe_clock.py",
+      "fix": null,
+      "location": {
+        "column": 1,
+        "row": 17
+      },
+      "message": "Module level import not at top of file",
+      "name": "module-import-not-at-top-of-file",
+      "noqa_row": 17,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/module-import-not-at-top-of-file"
+    },
+    {
+      "cell": null,
+      "code": "E402",
+      "end_location": {
+        "column": 54,
+        "row": 18
+      },
+      "filename": "C:\\Users\\yuche\\.codex\\worktrees\\FlyDrones\\track-eligibility\\tools\\benchmark\\probe_clock.py",
+      "fix": null,
+      "location": {
+        "column": 1,
+        "row": 18
+      },
+      "message": "Module level import not at top of file",
+      "name": "module-import-not-at-top-of-file",
+      "noqa_row": 18,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/module-import-not-at-top-of-file"
+    },
+    {
+      "cell": null,
+      "code": "E402",
+      "end_location": {
+        "column": 32,
+        "row": 19
+      },
+      "filename": "C:\\Users\\yuche\\.codex\\worktrees\\FlyDrones\\track-eligibility\\tools\\benchmark\\probe_clock.py",
+      "fix": null,
+      "location": {
+        "column": 1,
+        "row": 19
+      },
+      "message": "Module level import not at top of file",
+      "name": "module-import-not-at-top-of-file",
+      "noqa_row": 19,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/module-import-not-at-top-of-file"
+    },
+    {
+      "cell": null,
+      "code": "E402",
+      "end_location": {
+        "column": 66,
+        "row": 21
+      },
+      "filename": "C:\\Users\\yuche\\.codex\\worktrees\\FlyDrones\\track-eligibility\\tools\\benchmark\\probe_clock.py",
+      "fix": null,
+      "location": {
+        "column": 1,
+        "row": 21
+      },
+      "message": "Module level import not at top of file",
+      "name": "module-import-not-at-top-of-file",
+      "noqa_row": 21,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/module-import-not-at-top-of-file"
+    },
+    {
+      "cell": null,
+      "code": "E402",
+      "end_location": {
+        "column": 50,
+        "row": 22
+      },
+      "filename": "C:\\Users\\yuche\\.codex\\worktrees\\FlyDrones\\track-eligibility\\tools\\benchmark\\probe_clock.py",
+      "fix": null,
+      "location": {
+        "column": 1,
+        "row": 22
+      },
+      "message": "Module level import not at top of file",
+      "name": "module-import-not-at-top-of-file",
+      "noqa_row": 22,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/module-import-not-at-top-of-file"
+    },
+    {
+      "cell": null,
+      "code": "E402",
+      "end_location": {
+        "column": 50,
+        "row": 23
+      },
+      "filename": "C:\\Users\\yuche\\.codex\\worktrees\\FlyDrones\\track-eligibility\\tools\\benchmark\\probe_clock.py",
+      "fix": null,
+      "location": {
+        "column": 1,
+        "row": 23
+      },
+      "message": "Module level import not at top of file",
+      "name": "module-import-not-at-top-of-file",
+      "noqa_row": 23,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/module-import-not-at-top-of-file"
+    },
+    {
+      "cell": null,
+      "code": "B023",
+      "end_location": {
+        "column": 53,
+        "row": 143
+      },
+      "filename": "C:\\Users\\yuche\\.codex\\worktrees\\FlyDrones\\track-eligibility\\tools\\benchmark\\probe_clock.py",
+      "fix": null,
+      "location": {
+        "column": 49,
+        "row": 143
+      },
+      "message": "Function definition does not bind loop variable `base`",
+      "name": "function-uses-loop-variable",
+      "noqa_row": 143,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/function-uses-loop-variable"
+    },
+    {
+      "cell": null,
+      "code": "I001",
+      "end_location": {
+        "column": 71,
+        "row": 16
+      },
+      "filename": "C:\\Users\\yuche\\.codex\\worktrees\\FlyDrones\\track-eligibility\\tools\\connectome_training\\profile_baseline.py",
+      "fix": {
+        "applicability": "safe",
+        "edits": [
+          {
+            "content": "from __future__ import annotations\n\nimport argparse\nimport json\nimport platform\nimport sys\nfrom datetime import datetime, timezone\nfrom pathlib import Path\n\nimport numpy as np\nimport yaml\n\nfrom flydrones.benchmark.contract import Command, Decision, Observation\nfrom flydrones.benchmark.fly import FullFlyController\nfrom flydrones.config import load_config\nfrom flydrones.connectome_training.profiling import profile_controller\n\n\n",
+            "end_location": {
+              "column": 1,
+              "row": 19
+            },
+            "location": {
+              "column": 1,
+              "row": 1
+            }
+          }
+        ],
+        "message": "Organize imports"
+      },
+      "location": {
+        "column": 1,
+        "row": 1
+      },
+      "message": "Import block is un-sorted or un-formatted",
+      "name": "unsorted-imports",
+      "noqa_row": 1,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/unsorted-imports"
+    },
+    {
+      "cell": null,
+      "code": "I001",
+      "end_location": {
+        "column": 2,
+        "row": 13
+      },
+      "filename": "C:\\Users\\yuche\\.codex\\worktrees\\FlyDrones\\track-eligibility\\tools\\connectome_training\\run_curriculum.py",
+      "fix": {
+        "applicability": "safe",
+        "edits": [
+          {
+            "content": "from __future__ import annotations\n\nimport argparse\nimport json\nimport shutil\nfrom dataclasses import asdict\nfrom pathlib import Path\n\nfrom flydrones.connectome_training.curriculum import run_curriculum\nfrom flydrones.connectome_training.curriculum_config import load_curriculum_config\nfrom flydrones.connectome_training.curriculum_session import (\n    ConnectomeCurriculumSession,\n)\n\n\n",
+            "end_location": {
+              "column": 1,
+              "row": 16
+            },
+            "location": {
+              "column": 1,
+              "row": 1
+            }
+          }
+        ],
+        "message": "Organize imports"
+      },
+      "location": {
+        "column": 1,
+        "row": 1
+      },
+      "message": "Import block is un-sorted or un-formatted",
+      "name": "unsorted-imports",
+      "noqa_row": 1,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/unsorted-imports"
+    },
+    {
+      "cell": null,
+      "code": "I001",
+      "end_location": {
+        "column": 82,
+        "row": 33
+      },
+      "filename": "C:\\Users\\yuche\\.codex\\worktrees\\FlyDrones\\track-eligibility\\tools\\connectome_training\\train_stage_b.py",
+      "fix": {
+        "applicability": "safe",
+        "edits": [
+          {
+            "content": "from __future__ import annotations\n\nimport argparse\nimport json\nimport time\nfrom datetime import datetime, timezone\nfrom hashlib import sha256\nfrom pathlib import Path\n\nimport numpy as np\nimport torch\nimport yaml\nfrom scipy import sparse\n\nfrom flydrones.brain.connectome import Connectome, GroupSpec\nfrom flydrones.config import load_config\nfrom flydrones.connectome_training.checkpoint import save_checkpoint\nfrom flydrones.connectome_training.dataset import (\n    SequenceFrame,\n    SequenceProvenance,\n    TeacherTarget,\n    TrainingSequence,\n)\nfrom flydrones.connectome_training.features import FEATURE_NAMES, sequence_tensors\nfrom flydrones.connectome_training.governance import validate_dataset_partitions\nfrom flydrones.connectome_training.losses import LossWeights\nfrom flydrones.connectome_training.model import ConnectomeConstrainedCore\nfrom flydrones.connectome_training.parameters import (\n    build_structure_identity,\n    initial_parameter_set,\n    save_parameter_set,\n)\nfrom flydrones.connectome_training.trainer import evaluate_sequences, train_epoch\n\n",
+            "end_location": {
+              "column": 1,
+              "row": 35
+            },
+            "location": {
+              "column": 1,
+              "row": 1
+            }
+          }
+        ],
+        "message": "Organize imports"
+      },
+      "location": {
+        "column": 1,
+        "row": 1
+      },
+      "message": "Import block is un-sorted or un-formatted",
+      "name": "unsorted-imports",
+      "noqa_row": 1,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/unsorted-imports"
+    }
+  ]
+}
