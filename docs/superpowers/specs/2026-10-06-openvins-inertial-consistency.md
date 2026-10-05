@@ -1,0 +1,13 @@
+# Fixed-input inertial consistency diagnosis
+
+Question: Does the first dynamic position error begin in raw-to-native transport, or is the sampled acceleration already inconsistent with physical endpoint velocity? PR37 first ordinary visual update is5.4s; error appears earlier. This stage is read-only offline diagnosis, not a VIO fix, calibration or rerun.
+
+Use immutable PR37 ZIP SHA87a1eb39053ba72b84136908ae800799db7dc54b7fe81a64b20f5f4bd8e617b6. Verify member digests for consumed inputs. Reconstruct every recorded IMU packet with the actual encoder and compare hash/sequence/sample/value and acknowledgement. Do not infer raw sensor correctness merely because the physics acceleration field matches it at sampled instants.
+
+For exact paired4ms samples, compute world acceleration from rawFLU specific force using the recorded physical rotation and actual world gravity, then trapezoid-integrate over prospectively chosen windows[4.9,5.0],[5.0,5.1],[5.1,5.2],[5.2,5.3],[5.0,6.6],[8.0,9.0]s. Compare integral with physical endpoint velocity change and with integrated recorded physical acceleration. This truth use is exclusively offline diagnostic and never enters an estimator. No gauge fit, parameter fitting, or pass threshold chosen after measurement. Report residual vectors/norms and sampling limits rather than assert a calibrated pass.
+
+Validate exact endpoints, timestamps/order/gaps, finite vectors, quaternion normalization, units/gravity convention and data identity. Synthetic cases include stationary gravity, constant acceleration, rotated frame, invalid/missing timing, tampered packets and a deliberately aliased acceleration sequence. The latter proves the audit can detect sampled-acceleration/endpoint inconsistency, not that aliasing is the actual cause.
+
+Read fixed upstream native propagation and simulator acceleration source. Record versions/licenses/maintenance/cost/adoption rationale. Native fast cache inspection is source-only this stage; no causality claim from a main-state unchanged flag. A new1ms physical probe, if necessary to distinguish sampling from engine contact acceleration semantics, requires a separately named design and retained failure evidence. No estimator run, sim launch, noise tuning, changed gate, EKF2/ODOMETRY/arming or training.
+
+Output: tested reusable offline auditor, machine-readable audit, source research, report with verified/implemented/untested/failed, one independent branch review, immutable evidence and stacked draft PR. All user standing authorization applies; no repeated approval. Existing worktree retained and branch stacked on92e50d4.
