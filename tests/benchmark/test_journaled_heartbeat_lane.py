@@ -344,3 +344,18 @@ def test_capture_receiver_dispatch_keeps_original_event(tmp_path):
     f.finish()
     dispatch_heartbeat(original, writer, None)
     assert writer.rows == [original, original]
+
+
+def test_reconciliation_flush_retains_expired_observation(tmp_path):
+    stream = BadStream()
+    f, r, s, now = setup(tmp_path, stream)
+    original = event()
+    f.observe_heartbeat(original)
+    now[0] += 1_900_000_000
+    stream.flush = lambda: now.__setitem__(0, now[0] + 200_000_000)
+    f.on_record(queued(original), None)
+    assert f.failure
+    assert f.reconciled == 0 and len(f.observations) == 1
+    assert not f.pre_step(lambda: pytest.fail("force after expired reconciliation"), lambda: None)
+    out = f.finish()
+    assert out["heartbeat"]["pending"][0]["original"] == original

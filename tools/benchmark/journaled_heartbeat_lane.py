@@ -37,6 +37,9 @@ class _ReceiptReadiness:
                 reconciled_ns=self.lane._now(),
             )
         )
+        # Keep the observation visible through flush and its final deadline check.
+        # The matching journal row is not a successful source_delivery commit.
+        self.lane._available()
         pending.popleft()
         self.lane.reconciled += 1
 
