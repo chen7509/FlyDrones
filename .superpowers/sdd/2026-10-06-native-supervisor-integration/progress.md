@@ -14,3 +14,5 @@ Base85b7000. Existing isolated worktree; standing user approval.
 - Ruling: archive/CRC and full regression deferred by reviewer are parent verification responsibilities, not waived. Source/copy equality now rederived offline; in-situ binary hashes are not misrepresented as retained binary copies.
 
 - Final regression974passed/2existingwarnings221s; final79targeted. Changed-file Ruff clean; full-tree52errors33unchangedfiles retained. No deferred review findings.
+
+- Seal286members/1555046bytes/a8aaa4549d4a2650360d2d3501c93eaf2023fce0bdf3db9c4767114cf1d4ea54; all CRC/hash checks and sibling journal inclusion verified. DraftPR46 created/attached, stacked onPR45. Preserve worktree and evidence per user authorization. Next: source fan-out and independently frozen supported online VIO.

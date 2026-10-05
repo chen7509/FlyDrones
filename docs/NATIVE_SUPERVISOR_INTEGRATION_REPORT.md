@@ -27,3 +27,7 @@ Initial24new validator cases plus existing tests gave70targeted; final33new case
 Only this native refusal and original owned-group cleanup integration is verified. No OpenVINS execution, training, policy inference, ODOMETRY transmission or EKF2 injection occurred. No sensor calibration or covariance/quality/reset qualification. PR37 drift lower bound29.5355m remains failed; PR39 ground-motion aliasing, PR40 startup failures and PR43 initial contact transient remain separate. Five-machine RTF0.873 remains below0.95. Complete fly learning/decision/division, latency and fair baseline comparison remain open dependencies.
 
 Next: compose actual journaled source delivery to readiness AND one OpenVINS shadow worker; retain causal buffering/failure gates and real arrival/processing timings, then independently freeze supported-motion online VIO. Current readiness OR shadow selection cannot feed both. Truth stays exclusively in isolated abort/offline audit. No repeat physical lifecycle run is needed.
+
+## Publication
+
+DraftPR46 https://github.com/chen7509/FlyDrones/pull/46 stacked on PR45. Evidence `evidence/native-supervisor-integration-dev-1701.zip`:286members/1555046bytes, SHA256 a8aaa4549d4a2650360d2d3501c93eaf2023fce0bdf3db9c4767114cf1d4ea54. All member hashes and CRC verified; sibling supervisor journal explicitly required in archive. Source/report snapshot sealed at80bfeae, evidencecommit eb6e3ef; this publication paragraph was added afterward. No physical replay after2737a48.
