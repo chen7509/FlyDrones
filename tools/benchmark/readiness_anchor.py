@@ -23,6 +23,21 @@ class JournaledReadiness:
         self.lock = threading.Lock()
         self.records = {}
         self.failure = None
+        self.clock_high_water_ns = None
+
+    def _clock_checked(self):
+        """Caller holds lock; all observations share one failure-latched clock."""
+        try:
+            if self.failure:
+                raise ValueError(self.failure)
+            now = integer(self.clock())
+            if self.clock_high_water_ns is not None and now < self.clock_high_water_ns:
+                raise ValueError("regressed readiness clock")
+            self.clock_high_water_ns = now
+            return now
+        except Exception as exc:
+            self.failure = self.failure or repr(exc)
+            raise ValueError(self.failure) from exc
 
     def on_record(self, row, payload):
         if row["kind"] not in ("imu", "rgb", "info", "heartbeat"):
@@ -31,7 +46,7 @@ class JournaledReadiness:
             try:
                 if self.failure:
                     raise ValueError(self.failure)
-                now = integer(self.clock())
+                now = self._clock_checked()
                 arrival = integer(row["arrival_monotonic_ns"])
                 prepared = integer(row["recorded_monotonic_ns"])
                 if not arrival <= prepared <= now:
@@ -55,7 +70,7 @@ class JournaledReadiness:
         with self.lock:
             if self.failure:
                 raise ValueError(self.failure)
-            now = integer(self.clock())
+            now = self._clock_checked()
             if any(now < r["journal_ack_monotonic_ns"] for r in self.records.values()):
                 self.failure = "regressed readiness clock"
                 raise ValueError(self.failure)
@@ -67,7 +82,7 @@ class JournaledReadiness:
 
     def snapshot(self):
         with self.lock:
-            return dict(records=copy.deepcopy(self.records), failure=self.failure)
+            return dict(records=copy.deepcopy(self.records), failure=self.failure, clock_high_water_ns=self.clock_high_water_ns)
 
 
 def anchored_profile():

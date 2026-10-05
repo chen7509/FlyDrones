@@ -133,3 +133,21 @@ def test_ready_cli_only_explicit_sensor_mode():
         parse_capture_args(args[:-1] + ["substep-supported-v1"])
     with pytest.raises(SystemExit):
         parse_capture_args(args + ["--shadow-binary", "x", "--shadow-config", "y"])
+
+
+@pytest.mark.parametrize("entry", ["proof", "receipt", "invalid"])
+def test_clock_high_water_refusal_is_latched(entry):
+    now = [102]
+    gate = ready(now)
+    now[0] = 2_000_000_101
+    assert gate.proof() is None
+    now[0] = True if entry == "invalid" else 103
+    with pytest.raises(ValueError):
+        if entry == "receipt":
+            gate.on_record(row("imu", 101), None)
+        else:
+            gate.proof()
+    now[0] = 2_000_000_102
+    with pytest.raises(ValueError):
+        gate.proof()
+    assert gate.snapshot()["failure"]
