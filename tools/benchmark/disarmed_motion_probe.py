@@ -172,8 +172,10 @@ class GazeboMotionProbe:
                 if sim_duration_ns(info.sim_time) >= 100_000_000:
                     self.policy.refuse("missing fixture physics fields")
                 return
+
             def xyz(v):
                 return [v.x(), v.y(), v.z()]
+
             rotation = pose.rot()
             position = xyz(pose.pos())
             vel = xyz(velocity)
@@ -190,6 +192,10 @@ class GazeboMotionProbe:
                 rpy=rpy,
                 truth_for_fixture_audit_only=True,
             )
+            # Health checks run at physics frequency, independently of log decimation.
+            for field in ("position", "velocity_world", "accel_world", "angular_world", "quaternion_xyzw", "rpy"):
+                if not all(type(v) in (int, float) and math.isfinite(v) for v in record[field]):
+                    self.policy.refuse("invalid fixture physics field: " + field)
             if ns % 4_000_000 == 0:
                 self.truth.write(json.dumps(record, allow_nan=False) + "\n")
                 self.truth_records += 1
@@ -205,12 +211,16 @@ class GazeboMotionProbe:
             self._failed(exc)
 
     def finish(self):
-        try:
-            self.commands.close()
-        finally:
-            self.truth.close()
+        close_errors = []
+        for name, stream in (("commands", self.commands), ("truth", self.truth)):
+            try:
+                stream.close()
+            except Exception as exc:
+                close_errors.append(dict(stream=name, reason=repr(exc)))
+                self._failed(exc)
         return dict(
             self.policy.finish(),
+            close_errors=close_errors,
             recorded_commands=self.recorded_commands,
             truth_records=self.truth_records,
             last_attempt=self.last_attempt,

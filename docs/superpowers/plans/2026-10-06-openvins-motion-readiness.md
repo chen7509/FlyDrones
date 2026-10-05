@@ -18,18 +18,18 @@ Paused/gapped update clocks; partial fixture construction cleanup; stale/armed h
 ### Task 1: Fixed force and containment contract
 
 Interfaces: tools/benchmark/disarmed_motion_probe.py exposes a deterministic policy and Gazebo callbacks; capture_disarmed_sensors adds an optional fixed profile.
-- [ ] Record version/license/maintenance/API source research, source hashes and prospective force profile before running.
-- [ ] Write and observe failing tests for impulse/timing, heartbeat, clock, finite-state and spatial/speed/attitude rejection.
-- [ ] Implement policy and isolated monitor, retaining latching failures and owned output closure; run focused GREEN.
+- [x] Record version/license/maintenance/API source research, source hashes and prospective force profile before running.
+- [x] Write and observe failing tests for impulse/timing, heartbeat, clock, finite-state and spatial/speed/attitude rejection.
+- [x] Implement policy and isolated monitor, retaining latching failures and owned output closure; run focused GREEN.
 
 ### Task 2: Online measurement and audit
 
 Interfaces: existing capture supervisor and sensor/native pipeline remain; optional motion callback uses the same scene and fresh per-step API.
-- [ ] Integrate optional profile and10ms supervisory stepping; validate setup/termination paths.
-- [ ] Freeze versions/config/code, preflight processes, run one25s requested physical attempt; retain any failure.
-- [ ] Audit force timing/impulse, actual motion and sensor response, native/public states, actual latency, disarmed ULog and resource release. Do not infer health from public flag alone.
+- [x] Integrate optional profile and10ms supervisory stepping; validate setup/termination paths.
+- [x] Freeze versions/config/code, preflight processes, run one25s requested physical attempt; retain any failure.
+- [x] Audit force timing/impulse, actual motion and sensor response, native/public states, actual latency, disarmed ULog and resource release. Do not infer health from public flag alone.
 
 ### Task 3: Review and publication
-- [ ] Run applicable regression and update verified/implemented/untested/failed report.
-- [ ] One independent whole-branch review, one RED→GREEN correction pass with full regression if needed.
+- [x] Run applicable regression and update verified/implemented/untested/failed report.
+- [x] One independent whole-branch review, one RED→GREEN correction pass with full regression if needed.
 - [ ] Seal all evidence, commit and publish stacked draft PR against PR36, attach and update existing heartbeat to the actual next dependency.

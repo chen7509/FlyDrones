@@ -284,8 +284,8 @@ def main():
             from tools.benchmark.disarmed_motion_probe import GazeboMotionProbe
 
             motion = GazeboMotionProbe(output, errors, lambda: arming["unarmed_wall_ns"])
-            fixture.on_pre_update(motion.pre_update)
             journal.cleanup("motion fixture", lambda: result.update(motion=motion.finish()), priority=75)
+            fixture.on_pre_update(motion.pre_update)
 
         def post_update(info, _ecm):
             clock["sim_ns"] = sim_duration_ns(info.sim_time)

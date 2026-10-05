@@ -44,8 +44,14 @@ Next diagnosis must use this sealed failed dynamic input: examine real camera/IM
 |Status|Scope|
 |---|---|
 |Verified locally|Bounded physical force schedule, genuine raw sensor response, actual native online transport and public lifecycle transition, preserved disarmed/ULog/process evidence.|
-|Only implemented|Optional external simulator excitation and truth-isolated fixture abort monitor; not onboard safety or calibrated VIO health.|
+|Only synthetic verification|Final close-failure retention and every-step nonfinite refusal; successful physical capture used the pre-review producer. Neither the fixture nor its tests qualify onboard safety or calibrated VIO health.|
 |Untested|Root cause of dynamic drift, camera timing/extrinsic/visual-update validity, calibrated covariance, reset/quality/fault recovery and VIO→EKF2.|
 |Failed / blocked gate|Reliable dynamic VIO:≥29.5355m terminal displacement error lower bound. Fusionfalse. Existing fruit-fly latency/collision and five-camera0.873RTF<0.95 remain unresolved; no20/100/HITL/real-flight pass.|
 
-Tests before the physical run:17 new policy cases went from missing-interface RED to GREEN;62focused tests passed with existing native/capture cases. Independent review, full regression and evidence publication are recorded below after completion. All failure evidence and the unchanged trial condition will be retained.
+Tests before the physical run:17 new policy cases went from missing-interface RED to GREEN;62focused tests passed with existing native/capture cases. Before review,749 regression tests passed.
+
+Independent fresh-context review found two Important issues and one Minor. The final fixture always retains its motion snapshot when individual stream closes fail, checks all required physics fields at every1ms step rather than only serialized samples, and registers cleanup before callback setup. Nine new cases reproduced the two faults before correction and then passed;71 focused cases passed. No findings were deferred. These fault-path corrections were tested synthetically, without repeating the physical run or estimator. Its producer9c6873f and unchanged pre/post manifests remain preserved.
+
+The next diagnosis is scoped in the evidence's next-diagnosis-research.md. Existing states show displacement mismatch already at5.1–5.3s, before the first regular visual update at5.4s. This narrows where to inspect raw-to-native delivery, normal propagation and fast-cache interactions; it does not yet identify the cause. Camera/extrinsic/feature checks remain necessary. No correction or tuning was attempted in this stage.
+
+Final regression: **758 passed**, two existing warnings,210.62s; focused71 passed. Ruff and diff whitespace checks passed. A separate final resource check found no active PX4/Gazebo/native replay or training process. Evidence includes all original failures, both analysis versions, source snapshots, configs, raw sensors/pixels, force/physics streams, ULog, review findings and RED/GREEN logs. Publication metadata follows in the closure commit.
