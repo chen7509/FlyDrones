@@ -1,0 +1,285 @@
+{
+  "schema": "flydrones-sealed-development-evidence-v1",
+  "archive": "evidence/openvins-odometry-contract-dev-1701.zip",
+  "archive_bytes": 2238411,
+  "archive_sha256": "1bd076e12f4171306af197c72086ab821e18316ef07ccfd215a61258a62c5dde",
+  "member_count": 68,
+  "members": {
+    "results/openvins-odometry-contract-dev-1701/capture-next-sources.py": {
+      "bytes": 619,
+      "sha256": "426ca6625fde1f6cb47b68329c4a25a8cee15d095d00f104fec52213112a2198"
+    },
+    "results/openvins-odometry-contract-dev-1701/check-packet.sh": {
+      "bytes": 175,
+      "sha256": "eb53d57a9bb56640e48e39e70cca9b0c25077077c0c0e3d99dd3d28f39ee2d96"
+    },
+    "results/openvins-odometry-contract-dev-1701/check-processes-final.py": {
+      "bytes": 1008,
+      "sha256": "c70595a39c5a0c56b1d7b7a7617c9e5dd32d8d6c54100d0ab507f249dcc5fb21"
+    },
+    "results/openvins-odometry-contract-dev-1701/check-processes.py": {
+      "bytes": 1006,
+      "sha256": "908800380d092e862307ba91e4b1764a34359dfccaab83bdc06327a7b7181f8d"
+    },
+    "results/openvins-odometry-contract-dev-1701/conversion-summary-v1.json": {
+      "bytes": 495,
+      "sha256": "70bbc02dd38a7afaad63757ab64be053672717eb0ce005f9398ec2811bbffbc5"
+    },
+    "results/openvins-odometry-contract-dev-1701/convert-frozen.py": {
+      "bytes": 2019,
+      "sha256": "6be8d28873537a21801c24499ec08727de38f435087c68dbee83a2b0b3d4e5bd"
+    },
+    "results/openvins-odometry-contract-dev-1701/converted-v1.jsonl": {
+      "bytes": 7766753,
+      "sha256": "916e4ee16d123af6eb8adb782f90fe16d119661e5dd9394e7583fe019457f674"
+    },
+    "results/openvins-odometry-contract-dev-1701/final-conversion-parity.json": {
+      "bytes": 330,
+      "sha256": "55aaead0e15f40af7021ed060c343e36df03cd67701ce6d78c1037d8cb84eae0"
+    },
+    "results/openvins-odometry-contract-dev-1701/frozen-red.txt": {
+      "bytes": 962,
+      "sha256": "ab28836d371727d3543b88de3c12dc5ce435f1d6234a78247312f7a09554ffb0"
+    },
+    "results/openvins-odometry-contract-dev-1701/full-pytest-v1.txt": {
+      "bytes": 1696,
+      "sha256": "7abd450e533678c29cd89c4b768b66e5868445cac4089974d1488e9b3ee87dc7"
+    },
+    "results/openvins-odometry-contract-dev-1701/full-pytest-v2.txt": {
+      "bytes": 1696,
+      "sha256": "d27670fa100dcf4d088f0110e8cba47ac4439c182008cb4f4450c701149d0301"
+    },
+    "results/openvins-odometry-contract-dev-1701/green-v1.txt": {
+      "bytes": 101,
+      "sha256": "21a4dbeedbe1b0c90242551e9604b11c2ba78c9b7118ee7d0a86bc80638e2706"
+    },
+    "results/openvins-odometry-contract-dev-1701/independent-review.md": {
+      "bytes": 1560,
+      "sha256": "583db1f348980c00fd22d0d0335754fb454be840f904ed65a746d3c40ffef27a"
+    },
+    "results/openvins-odometry-contract-dev-1701/ledger.md": {
+      "bytes": 2819,
+      "sha256": "fc8b1b750ac064158d25913942ae2a1874ed9ce941a3097c6889e7afbcdf2bcb"
+    },
+    "results/openvins-odometry-contract-dev-1701/licenses/installed-metadata.json": {
+      "bytes": 48862,
+      "sha256": "f6beb5ac902eefd42d9b5a07a7791c02e683ecc4365fb41cf0ec262e0f4de191"
+    },
+    "results/openvins-odometry-contract-dev-1701/licenses/mavros-LICENSE.md": {
+      "bytes": 506,
+      "sha256": "89a9a4fc3cf00cf4364ee1ab726325f8d2573327fa44ecc9ed1590232e939b2c"
+    },
+    "results/openvins-odometry-contract-dev-1701/licenses/OpenVINS-GPL-3.0.txt": {
+      "bytes": 35149,
+      "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986"
+    },
+    "results/openvins-odometry-contract-dev-1701/licenses/pymavlink-COPYING": {
+      "bytes": 9496,
+      "sha256": "ea36a5809e925bfeeeced776bea9cfb615d43f9971cbedcd9c92ad5fe714e55c"
+    },
+    "results/openvins-odometry-contract-dev-1701/licenses.py": {
+      "bytes": 1044,
+      "sha256": "c4ffc0d18158a845178c84750a91054becebc11350f696d68d5888d1418b7948"
+    },
+    "results/openvins-odometry-contract-dev-1701/next-online-research.md": {
+      "bytes": 2501,
+      "sha256": "5004b03f60d39722042c382cbfa1003ad27a58b4396ad889d6b762d607280f9f"
+    },
+    "results/openvins-odometry-contract-dev-1701/next-source-snapshots/dds_topics.yaml": {
+      "bytes": 6249,
+      "sha256": "7e9c730d45b22af92acfebbb81cb5de4e4a69ac0ca46b012b71ed8fa5c89cbc0"
+    },
+    "results/openvins-odometry-contract-dev-1701/next-source-snapshots/hashes.json": {
+      "bytes": 353,
+      "sha256": "84b3cc0c6cac9fbe8664b11d68159e5c8c6ccc5f2d13481d9feaff514a2e3d8f"
+    },
+    "results/openvins-odometry-contract-dev-1701/next-source-snapshots/HIGHRES_IMU.hpp": {
+      "bytes": 7124,
+      "sha256": "43ab7eb355b812b6a35c0537e9e170b414378c8a7bec84e754fe8238d7085336"
+    },
+    "results/openvins-odometry-contract-dev-1701/next-source-snapshots/SCALED_IMU.hpp": {
+      "bytes": 5037,
+      "sha256": "0ba74226b0fa16cf118b404cbbf3435a4ed066063af364c30b272b8739704d4c"
+    },
+    "results/openvins-odometry-contract-dev-1701/packet-check.py": {
+      "bytes": 1782,
+      "sha256": "2f37871e5d23f1f4b76a1a3ef24ff25e3c9b1eac9ea2803d3aefc455b891851f"
+    },
+    "results/openvins-odometry-contract-dev-1701/packet-roundtrip-v1.json": {
+      "bytes": 5887,
+      "sha256": "4aeca1c9b4ac8aae3d4dd6f3efc760442f21fc84dde8cdc254f6ed521c960d34"
+    },
+    "results/openvins-odometry-contract-dev-1701/packet-roundtrip-v2.json": {
+      "bytes": 24921,
+      "sha256": "c534c53cdb612e30524b9a6c458fc815370ac21eea8b8ac2b9eea4462d90df18"
+    },
+    "results/openvins-odometry-contract-dev-1701/packet-roundtrip-v2.stderr": {
+      "bytes": 153,
+      "sha256": "e816706cd44ce0c6c65a7a7938be8103514f7c899694c8240d844f74319b7f98"
+    },
+    "results/openvins-odometry-contract-dev-1701/packet-roundtrip-v3.json": {
+      "bytes": 24921,
+      "sha256": "c534c53cdb612e30524b9a6c458fc815370ac21eea8b8ac2b9eea4462d90df18"
+    },
+    "results/openvins-odometry-contract-dev-1701/packet-roundtrip-v3.stderr": {
+      "bytes": 153,
+      "sha256": "e816706cd44ce0c6c65a7a7938be8103514f7c899694c8240d844f74319b7f98"
+    },
+    "results/openvins-odometry-contract-dev-1701/processes-after.json": {
+      "bytes": 143,
+      "sha256": "6d3c50c5a181329044ae65591bfee9c8c8e5692425bfc9875e9f590b4e26fd01"
+    },
+    "results/openvins-odometry-contract-dev-1701/processes-final.json": {
+      "bytes": 143,
+      "sha256": "455fd3f82c402aee27708f0402eeb6383ab118a64d98970e7fc51c8dbf6f7f73"
+    },
+    "results/openvins-odometry-contract-dev-1701/red-v1.txt": {
+      "bytes": 58889,
+      "sha256": "27f2d122ebd2b919510892eb6e18698feadc81673b070aba5be7d9bcc78ad6ff"
+    },
+    "results/openvins-odometry-contract-dev-1701/research-provenance.json": {
+      "bytes": 4856,
+      "sha256": "51b4081f74c75698596f5e9bd2685184e48b67653724eccacff5ae4b59ffe6a0"
+    },
+    "results/openvins-odometry-contract-dev-1701/research.py": {
+      "bytes": 2154,
+      "sha256": "bbc93c8f6239e4e773480db8b0e749dc527a24d76fa099d72e040155ddb768b5"
+    },
+    "results/openvins-odometry-contract-dev-1701/review-fix-red.txt": {
+      "bytes": 3655,
+      "sha256": "c7f61845114c186a0370b31fcd74592c65bfcf5f62bd9eba5de1eac501bebee3"
+    },
+    "results/openvins-odometry-contract-dev-1701/ruff-final.txt": {
+      "bytes": 19,
+      "sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18"
+    },
+    "results/openvins-odometry-contract-dev-1701/seal-evidence.py": {
+      "bytes": 2215,
+      "sha256": "461be09f5424b62e2c9843c02d9f664152f8f8b3c55dd9320eb9495ee446c610"
+    },
+    "results/openvins-odometry-contract-dev-1701/source-snapshots/0-VehicleOdometry.msg": {
+      "bytes": 2143,
+      "sha256": "a528b3d0b4c1a9083a71b32c367bad71a900e959efd82b9d03a9eb0e99fe6017"
+    },
+    "results/openvins-odometry-contract-dev-1701/source-snapshots/1-mavlink_receiver.cpp": {
+      "bytes": 121004,
+      "sha256": "2743c0bd177dde97c78a1c23362a5a93d48d228e5d362e64f0eb7b575568a26b"
+    },
+    "results/openvins-odometry-contract-dev-1701/source-snapshots/2-EKF2.cpp": {
+      "bytes": 111824,
+      "sha256": "1984b373bb7712dcdf1dba6bc8efb1511e3aeebcf7da3a08bd2738fac790df06"
+    },
+    "results/openvins-odometry-contract-dev-1701/source-snapshots/3-ev_yaw_control.cpp": {
+      "bytes": 7394,
+      "sha256": "edf1437bfb80a48efc9a6c0eba223057ff74277cdcb9b9b1cfc5dd0e9e7704a6"
+    },
+    "results/openvins-odometry-contract-dev-1701/source-snapshots/4-LICENSE": {
+      "bytes": 1527,
+      "sha256": "4f486239f62804b2190ff52b3005f087cf1033342012152e6383bdad6b891cc4"
+    },
+    "results/openvins-odometry-contract-dev-1701/source-snapshots/5-JPLQuat.h": {
+      "bytes": 6609,
+      "sha256": "2b6fd48feae5d0b1443b16b79ea95aced479e88c02242af5bfecf70cdf153c92"
+    },
+    "results/openvins-odometry-contract-dev-1701/source-snapshots/6-quat_ops.h": {
+      "bytes": 21520,
+      "sha256": "2e01cbd84740d6ba4f446ec12d4e2927d367fc07fcc4ec6ada85f4b0d81d3e9a"
+    },
+    "results/openvins-odometry-contract-dev-1701/source-snapshots/7-Propagator.cpp": {
+      "bytes": 48587,
+      "sha256": "3ab1402699142475fa588bdb2a1c4c55ee7f66a1b86b8ee703c66bce76d46210"
+    },
+    "results/openvins-odometry-contract-dev-1701/source-snapshots-v2/0-VehicleOdometry.msg": {
+      "bytes": 2143,
+      "sha256": "a528b3d0b4c1a9083a71b32c367bad71a900e959efd82b9d03a9eb0e99fe6017"
+    },
+    "results/openvins-odometry-contract-dev-1701/source-snapshots-v2/1-mavlink_receiver.cpp": {
+      "bytes": 121004,
+      "sha256": "2743c0bd177dde97c78a1c23362a5a93d48d228e5d362e64f0eb7b575568a26b"
+    },
+    "results/openvins-odometry-contract-dev-1701/source-snapshots-v2/2-EKF2.cpp": {
+      "bytes": 111824,
+      "sha256": "1984b373bb7712dcdf1dba6bc8efb1511e3aeebcf7da3a08bd2738fac790df06"
+    },
+    "results/openvins-odometry-contract-dev-1701/source-snapshots-v2/3-ev_yaw_control.cpp": {
+      "bytes": 7394,
+      "sha256": "edf1437bfb80a48efc9a6c0eba223057ff74277cdcb9b9b1cfc5dd0e9e7704a6"
+    },
+    "results/openvins-odometry-contract-dev-1701/source-snapshots-v2/4-LICENSE": {
+      "bytes": 1527,
+      "sha256": "4f486239f62804b2190ff52b3005f087cf1033342012152e6383bdad6b891cc4"
+    },
+    "results/openvins-odometry-contract-dev-1701/source-snapshots-v2/5-JPLQuat.h": {
+      "bytes": 6609,
+      "sha256": "2b6fd48feae5d0b1443b16b79ea95aced479e88c02242af5bfecf70cdf153c92"
+    },
+    "results/openvins-odometry-contract-dev-1701/source-snapshots-v2/6-quat_ops.h": {
+      "bytes": 21520,
+      "sha256": "2e01cbd84740d6ba4f446ec12d4e2927d367fc07fcc4ec6ada85f4b0d81d3e9a"
+    },
+    "results/openvins-odometry-contract-dev-1701/source-snapshots-v2/7-Propagator.cpp": {
+      "bytes": 48587,
+      "sha256": "3ab1402699142475fa588bdb2a1c4c55ee7f66a1b86b8ee703c66bce76d46210"
+    },
+    "results/openvins-odometry-contract-dev-1701/source-snapshots-v2/8-common.py": {
+      "bytes": 1616463,
+      "sha256": "a7c6b23d908322134d19cb94b937c1ea6b1f5d5ffa9d1b0ad139174bf8d75809"
+    },
+    "results/openvins-odometry-contract-dev-1701/source-snapshots-v2/9-common.xml": {
+      "bytes": 545929,
+      "sha256": "9af62c02a93c3eac4e068761f9ddf409b5d2aa65cd475f6bd522ca22dc6b2afd"
+    },
+    "results/openvins-odometry-contract-dev-1701/verify-final.py": {
+      "bytes": 1318,
+      "sha256": "2a49c3fcafe813e6a123a10b1a8259033cdd119175cc95287963e2ff00e29294"
+    },
+    "results/openvins-odometry-contract-dev-1701/windows-processes-after-v2.json": {
+      "bytes": 129,
+      "sha256": "839ce13f4b5d48ff2c0a76a23df40e555b64a6a2469980fd6460976540108b31"
+    },
+    "results/openvins-odometry-contract-dev-1701/windows-processes-after.json": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "results/openvins-odometry-contract-dev-1701/windows-processes-final.json": {
+      "bytes": 129,
+      "sha256": "ac02c1d486f4480c08b2517ec749d8c6d9789c9b8e3fc8465f9eb107a6d27258"
+    },
+    "results/openvins-odometry-contract-dev-1701/wire-guard-red.txt": {
+      "bytes": 715,
+      "sha256": "ab0420c7c35422a0066666a795ab63fe53e6f91e296841ffc2f816b32c8e24ca"
+    },
+    "docs/OPENVINS_ODOMETRY_CONTRACT_REPORT.md": {
+      "bytes": 8632,
+      "sha256": "dc601c8f8c2324cac814a2c5911ebd36f00acd5a4be736b3892f96e16ef40821"
+    },
+    "docs/superpowers/specs/2026-10-06-openvins-odometry-contract-design.md": {
+      "bytes": 3987,
+      "sha256": "972cd64c7ee718a355831356b092b1da4f75e658f3be32aac97c0874f411d2a7"
+    },
+    "docs/superpowers/plans/2026-10-06-openvins-odometry-contract.md": {
+      "bytes": 1857,
+      "sha256": "25c6b4088ccbef9eeec237be2e84ff72b92c1a5c9c3229e1ba5aeab88ef7f649"
+    },
+    "tools/benchmark/openvins_odometry_contract.py": {
+      "bytes": 9528,
+      "sha256": "912acd47b2d5d8618d977ce9b26604c4e047bb4ad4ed36fd7c98d3eeb8ae319f"
+    },
+    "tests/benchmark/test_openvins_odometry_contract.py": {
+      "bytes": 8402,
+      "sha256": "66f0927f21f977c86bc7b1675f259fdfa58527db2947adf0868679ed961a8e58"
+    },
+    "tests/benchmark/check_openvins_odometry_packet.py": {
+      "bytes": 3083,
+      "sha256": "089675bf96cfd1fe11e7be3bc2c0f2ae76e0eef50ef7afef11c3c4311344c2b7"
+    },
+    "evidence/openvins-fast-propagation-dev-1701.sha256.json": {
+      "bytes": 8684,
+      "sha256": "203648db044e23292fe7c83f2bc9184312648767246558131f31a66f8ce52bed"
+    }
+  },
+  "dependencies": {
+    "fast_propagation_archive_sha256": "25c50d945156e6a05e14e52afa73b9acffd048a1bb3dbdfb6d484e7685015d29"
+  },
+  "scope": "Offline conversion and synthetic file-only message tests. No online or flight qualification."
+}
