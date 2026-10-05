@@ -38,3 +38,7 @@ Next research/design must address a physically consistent excitation and IMU obs
 **Not tested:** corrected observation/excitation design, new online VIO accuracy, EKF2 injection, complete fly decision performance under this setup.
 
 **Still failed:** PR37 VIO terminal error lower bound29.5355m; five-camera WSL capacity0.873RTF below0.95. No20/100-drone, HITL or real-flight approval.
+
+## Publication
+
+Draft PR39: https://github.com/chen7509/FlyDrones/pull/39 . Evidence vidence/physics-substep-trace-dev-1701.zip:729members,6343465bytes,SHA256 c6bd528d100b7997c28a1054f28f6cd03c13f572d5cb17f7bf301dd98e1590c; every member hash and ZIP CRC verified. Source/report snapshot predates this publication paragraph. Producer5b907bb, correctionf509783, validationb1fbb53, seal8d3524c.

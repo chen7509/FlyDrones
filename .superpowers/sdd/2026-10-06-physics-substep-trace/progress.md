@@ -11,3 +11,5 @@ Task2 initial launcher failed before sim on WSL Git Windows pointer; retain empt
 Task3 full regression running; review_physics_substep dispatched once read-only on1a52320..9a69a06. Next dependency/source snapshots outline observation/fixture correction; not implemented or validated yet.
 
 Review closure:1Important terminal trace/backend completeness and1Minor missing boundary coverage fixed in onepass f509783;2newchecksRED,100targetedGREEN. Final816regressionpassed2existingwarnings212.84s. ChangedRuffpasses;full50errors32files hash-identicalbase. Finalphysicalproducer5b907bb, no rerun. Sealing and stacked draft PR publication follow; no whole-goal completion.
+
+Publication: PR39draft created/attached,729members6343465bytes SHAac6bd528d100b7997c28a1054f28f6cd03c13f572d5cb17f7bf301dd98e1590c; final resources empty. Continue named observation/excitation correction research; do not repeat sealed physical/estimator audits.
