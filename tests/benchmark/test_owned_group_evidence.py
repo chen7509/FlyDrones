@@ -212,3 +212,55 @@ def test_wait_reap_errors_still_close_terminal_evidence(tmp_path, fault):
     g.worker.wait = reap
     out = finish_owned_worker(g.worker, g, 1)
     assert closed and out["errors"] and not out["cleanup"]["graceful_group_cleanup_verified"]
+
+
+def test_abrupt_worker_exit_needs_retention_even_if_group_is_clean():
+    from tools.benchmark.capture_disarmed_sensors import needs_supervisor_retention
+
+    assert needs_supervisor_retention(
+        dict(
+            status="worker_exited",
+            worker_exit=-11,
+            capture_status="capture_failed",
+            errors=[],
+            cleanup={"graceful_group_cleanup_verified": True},
+        )
+    )
+
+
+def test_unknown_exit_keeps_runtime_without_copying_unflushed_ulog(tmp_path):
+    from tools.benchmark.capture_disarmed_sensors import retain_supervisor_ulogs
+
+    called = []
+    out = retain_supervisor_ulogs(
+        {"cleanup": {"no_executing_members": False}}, tmp_path, tmp_path, collector=lambda *a: called.append(True)
+    )
+    assert out["errors"] and not called and out["runtime_retained"] == str(tmp_path)
+
+
+def test_existing_ulog_verified_without_overwrite(tmp_path):
+    import hashlib, json
+    from tools.benchmark.capture_disarmed_sensors import retain_supervisor_ulogs
+
+    d = tmp_path / "px4-ulog"
+    d.mkdir()
+    p = d / "log.ulg"
+    p.write_bytes(b"ULog\x01\x12\x35" + b"\0" * 9)
+    record = dict(path="px4-ulog/log.ulg", bytes=16, sha256=hashlib.sha256(p.read_bytes()).hexdigest(), valid_header=True)
+    (tmp_path / "px4-ulog-manifest.json").write_text(json.dumps({"logs": [record]}))
+
+    def no_copy(*a):
+        raise AssertionError("must not overwrite")
+
+    out = retain_supervisor_ulogs({"cleanup": {"no_executing_members": True}}, tmp_path, tmp_path, collector=no_copy)
+    assert out["existing_manifest_verified"] and out["px4_ulogs"] == [record]
+
+
+def test_retention_collector_failure_keeps_directory(tmp_path):
+    from tools.benchmark.capture_disarmed_sensors import retain_supervisor_ulogs
+
+    def fail(*a):
+        raise OSError("copy failure")
+
+    out = retain_supervisor_ulogs({"cleanup": {"no_executing_members": True}}, tmp_path, tmp_path, collector=fail)
+    assert "copy failure" in str(out["errors"]) and out["runtime_retained"] == str(tmp_path)

@@ -21,7 +21,7 @@ sys.path[:0] = [str(ROOT), str(ROOT / "src")]
 
 from flydrones.benchmark.camera_info_capture import camera_info_fields  # noqa: E402
 from flydrones.benchmark.gateway import sim_duration_ns  # noqa: E402
-from flydrones.benchmark.ulog_capture import collect_ulogs  # noqa: E402
+from flydrones.benchmark.ulog_capture import collect_ulogs, verify_episode_ulog_evidence  # noqa: E402
 from tools.benchmark.disarmed_sensor_provenance import CaptureJournal, CaptureWriter, supervise_worker  # noqa: E402
 
 
@@ -91,9 +91,25 @@ def parse_capture_args(argv=None):
 def needs_supervisor_retention(summary):
     return (
         summary["status"] != "worker_exited"
+        or summary.get("worker_exit", 0) != 0
+        or summary.get("capture_status", "capture_completed") != "capture_completed"
         or bool(summary.get("errors"))
         or not summary.get("cleanup", {}).get("graceful_group_cleanup_verified", False)
     )
+
+
+def retain_supervisor_ulogs(summary, runtime, output, *, collector=collect_ulogs):
+    try:
+        if summary.get("cleanup", {}).get("no_executing_members") is not True:
+            raise ValueError("owned group exit unknown; do not copy possibly unflushed ULog")
+        manifest = output / "px4-ulog-manifest.json"
+        if manifest.exists():
+            records = json.loads(manifest.read_text(encoding="utf-8"))["logs"]
+            verify_episode_ulog_evidence(output, dict(px4_ulogs=records, px4_ulog_capture_accepted=True))
+            return dict(px4_ulogs=records, existing_manifest_verified=True)
+        return dict(px4_ulogs=collector(runtime, output), existing_manifest_verified=False)
+    except Exception as exc:
+        return dict(errors=[repr(exc)], runtime_retained=str(runtime))
 
 
 def main():
@@ -119,10 +135,7 @@ def main():
         )
         if needs_supervisor_retention(summary) and (args.output / "launch.json").is_file():
             launch = json.loads((args.output / "launch.json").read_text())
-            try:
-                retained = {"px4_ulogs": collect_ulogs(Path(launch["runtime"]), args.output)}
-            except Exception as exc:
-                retained = {"errors": [repr(exc)], "runtime_retained": launch["runtime"]}
+            retained = retain_supervisor_ulogs(summary, Path(launch["runtime"]), args.output)
             with (args.output / "watchdog-retained-ulogs.json").open("x") as stream:
                 json.dump(retained, stream, indent=2)
         return (
