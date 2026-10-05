@@ -25,7 +25,8 @@ def orientation(value):
 
 
 def native(value):
-    s = vector(value, 10)
+    # Pinned camera producer emits q,p,v,b_g,b_a, not fast-state13.
+    s = vector(value, 16)
     return orientation(s[:4]), s[4:7], s[7:10]
 
 

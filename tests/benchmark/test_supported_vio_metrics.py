@@ -5,8 +5,41 @@ from scipy.spatial.transform import Rotation
 from tools.benchmark.supported_vio_metrics import FixedGauge
 
 
+def test_real_producer_state16_schema():
+    # Pinned producer appends three gyro and three acceleration biases.
+    actual = state()
+    assert len(actual) == 16
+    gauge = FixedGauge(actual, truth())
+    assert gauge.compare(actual, truth())["position_error_m"] == 0
+
+
+def test_nonfinite_bias_is_not_silently_discarded():
+    actual = state()
+    actual[-1] = float("nan")
+    with pytest.raises(ValueError):
+        FixedGauge(actual, truth())
+
+
+def test_noncommuting_nonidentity_origin_direction():
+    rn = Rotation.from_euler("xyz", [20, 30, 40], degrees=True)
+    a = Rotation.from_euler("xyz", [-10, 15, 75], degrees=True)
+    rt = a * rn
+    flu_frd = Rotation.from_euler("x", 180, degrees=True)
+    origin = truth(q=(rt * flu_frd).as_quat(), p=[5, 6, 7])
+    gauge = FixedGauge(state(q=rn.as_quat(), p=[1, 2, 3]), origin)
+    next_r = rn * Rotation.from_euler("y", 23, degrees=True)
+    delta, velocity = np.array([0.2, -0.1, 0.4]), np.array([0.3, 0.4, -0.2])
+    row = gauge.compare(
+        state(q=next_r.as_quat(), p=np.array([1, 2, 3]) + delta, v=velocity),
+        truth(q=(a * next_r * flu_frd).as_quat(), p=np.array([5, 6, 7]) + a.apply(delta), v=a.apply(velocity)),
+    )
+    assert max(row[k] for k in ["position_error_m", "velocity_error_m_s", "attitude_error_deg"]) < 1e-10
+
+
 def state(q=None, p=None, v=None):
-    return np.r_[q if q is not None else [0, 0, 0, 1], p if p is not None else [0, 0, 0], v if v is not None else [0, 0, 0]]
+    return np.r_[
+        q if q is not None else [0, 0, 0, 1], p if p is not None else [0, 0, 0], v if v is not None else [0, 0, 0], np.zeros(6)
+    ]
 
 
 def truth(q=None, p=None, v=None):

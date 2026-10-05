@@ -14,8 +14,10 @@ All spec load, safety, source, truth isolation, one-run and hash invariants appl
 Quaternion direction and FRD/FLU; exact time association vs stale state; failure/partial capture vs accuracy success; full source/config/binary immutability; journal and ULog retention.
 
 ## Tasks
-- [ ] Research official evaluation/source/paper and record choices; check installed binding and immutable artifacts without launching physics.
-- [ ] Add analytic fixed-gauge tests and observe RED; implement tools/benchmark/supported_vio_metrics.py, observe GREEN. Include finite/shape/norm/overflow refusals.
-- [ ] Freeze launcher/profile/source commit; run existing fan-out/native targeted tests. Run at most one new physical capture with all required original arguments plus source fan-out and shadow config. Do not edit consumed files while running.
-- [ ] Audit exact timestamps, all counts/identities, pre/post hashes, fresh truth/raw closures, accuracy/availability/timing, ULog and supervisor. Preserve partial failures without manufacturing pass flags.
-- [ ] Full regression, independent branch review, report/ledger, immutable evidence ZIP, draft PR, update heartbeat with verified result and next dependency.
+- [x] Research official evaluation/source/paper and record choices; check installed binding and immutable artifacts without launching physics.
+- [x] Add analytic fixed-gauge tests and observe RED; implement tools/benchmark/supported_vio_metrics.py, observe GREEN. Include finite/shape/norm/overflow refusals.
+- [x] Freeze launcher/profile/source commit; run existing fan-out/native targeted tests. Run at most one new physical capture with all required original arguments plus source fan-out and shadow config. Do not edit consumed files while running.
+- [x] Audit exact timestamps, all counts/identities, pre/post hashes, fresh truth/raw closures, accuracy/availability/timing, ULog and supervisor. Preserve partial failures without manufacturing pass flags.
+- [x] Full regression, independent branch review, report/ledger, immutable evidence ZIP, draft PR, update heartbeat with verified result and next dependency.
+
+Execution note: study performed once and failed; full runtime freeze was not achieved and origin absent. Review/publication preserve these limitations, not certify a successful25s capture.
