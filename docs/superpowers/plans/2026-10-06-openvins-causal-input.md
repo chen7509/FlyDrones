@@ -10,6 +10,6 @@ Interfaces: PR34 v2 recorded imu/rgb/info plus explicit stream session → immut
 - [x] Add tests in tests/benchmark/test_openvins_causal_input.py before tools/benchmark/openvins_causal_input.py. Expected RED missing API; implement raw_profile and CausalInput.accept/tick/finish for GREEN.
 - [x] Add tools/benchmark/check_openvins_causal_input.py for hash-verified fixed capture and synthetic refusal matrix, preserving all deliverable and unavailable inputs. Expected no estimator/physical replay, last unmatched image retained.
 - [x] Run focused/full tests, commit implementation, task-done; independent review of the whole range. Fix Important/Critical once with RED→GREEN and regression.
-- [ ] Write docs/OPENVINS_CAUSAL_INPUT_REPORT.md, seal code/config/source/logs/results, create stacked draft PR and update continuation.
+- [x] Write docs/OPENVINS_CAUSAL_INPUT_REPORT.md, seal code/config/source/logs/results, create stacked draft PR and update continuation.
 
 Review Focus: hidden lookahead; clock-domain mixing; dispatch using unavailable metadata; lost/orphan/duplicate frames; unbounded buffer or silent source; false reset/health; profile mutability and data aliasing; noise density versus per-sample stddev/calibration; treating offline schedule as online VIO.
