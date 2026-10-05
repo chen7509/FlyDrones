@@ -20,11 +20,13 @@
 #include "utils/print.h"
 #include "utils/sensor_data.h"
 #include "exclusive_probe_output.h"
+#include "openvins_fast_probe.h"
 
 
 class DiagnosticManager : public ov_msckf::VioManager {
 public:
   using ov_msckf::VioManager::VioManager;
+  bool native_ready() const { return is_initialized_vio; }
   void write_diagnostics(std::ostream &out, long long image_ns, double wall_s) {
     out << std::setprecision(17) << std::boolalpha
         << "{\"image_ns\":" << image_ns
@@ -121,13 +123,17 @@ std::vector<Imu> read_imu(const std::string &path) {
 }
 
 int main(int argc, char **argv) {
-  if (argc != 6) {
-    std::cerr << "usage: offline_probe config.yaml input_dir episode_dir state.csv diagnostics.jsonl\n";
+  if (argc != 6 && argc != 7) {
+    std::cerr << "usage: offline_probe config.yaml input_dir episode_dir state.csv diagnostics.jsonl [fast.jsonl]\n";
     return 2;
   }
   try {
     const std::string config = argv[1], input_dir = argv[2], episode = argv[3], output = argv[4];
     flydrones_probe::validate_output_pair(output, argv[5]);
+    if (argc == 7) {
+      flydrones_probe::validate_output_pair(output, argv[6]);
+      flydrones_probe::validate_output_pair(argv[5], argv[6]);
+    }
     auto frames = read_frames(input_dir + "/frames.csv");
     auto imu = read_imu(input_dir + "/imu.csv");
     if (frames.size() < 20 || imu.size() < 100) throw std::runtime_error("input streams too short");
@@ -143,14 +149,20 @@ int main(int argc, char **argv) {
     flydrones_probe::ExclusiveOutput diagnostics_file(argv[5]), states_file(output);
     auto &diagnostics = diagnostics_file.stream();
     auto &states = states_file.stream();
+    std::unique_ptr<flydrones_probe::ExclusiveOutput> fast_file;
+    if (argc == 7) fast_file = std::make_unique<flydrones_probe::ExclusiveOutput>(argv[6]);
     states << "image_ns,initialized,state_timestamp_s,qx,qy,qz,qw,px,py,pz\n";
     size_t next_imu = 0, initialized_frames = 0;
-    for (const auto &frame : frames) {
-      const double frame_s = frame.ns * 1e-9;
+    long long next_target_ns = frames.front().ns, last_camera_ns = -1;
+    auto feed_imu_until = [&](long long target_ns) {
+      const double frame_s = target_ns * 1e-9;
       // Feed the first IMU sample *after* each camera timestamp as a buffer
       // boundary, matching the upstream camera/IMU subscriber's intent.
-      while (next_imu < imu.size() && (imu[next_imu].us * 1e-6 <= frame_s ||
-             (next_imu > 0 && imu[next_imu - 1].us * 1e-6 <= frame_s))) {
+      auto at_or_before = [&](size_t i) {
+        return fast_file ? imu[i].us * 1000 <= target_ns : imu[i].us * 1e-6 <= frame_s;
+      };
+      while (next_imu < imu.size() && (at_or_before(next_imu) ||
+             (next_imu > 0 && at_or_before(next_imu - 1)))) {
         const auto &sample = imu[next_imu++];
         ov_core::ImuData message;
         message.timestamp = sample.us * 1e-6;
@@ -158,6 +170,19 @@ int main(int argc, char **argv) {
         message.am = Eigen::Vector3d(sample.ax, sample.ay, sample.az);
         manager.feed_measurement_imu(message);
       }
+    };
+    for (const auto &frame : frames) {
+      const double frame_s = frame.ns * 1e-9;
+      if (fast_file) {
+        while (next_target_ns <= frame.ns) {
+          feed_imu_until(next_target_ns);
+          if (!next_imu) throw std::runtime_error("no source IMU for target");
+          write_fast_prediction(manager, manager.native_ready(), fast_file->stream(), next_target_ns,
+                                last_camera_ns, imu[next_imu - 1].us * 1000);
+          next_target_ns += 20000000;
+        }
+      }
+      feed_imu_until(frame.ns);
       cv::Mat image = cv::imread(episode + "/" + frame.relative_path, cv::IMREAD_GRAYSCALE);
       if (image.empty() || image.cols != 160 || image.rows != 120 || image.type() != CV_8UC1)
         throw std::runtime_error("missing or malformed image at " + std::to_string(frame.ns));
@@ -168,6 +193,7 @@ int main(int argc, char **argv) {
       camera.masks = {cv::Mat::zeros(image.rows, image.cols, CV_8UC1)};
       const auto feed_start = std::chrono::steady_clock::now();
       manager.feed_measurement_camera(camera);
+      last_camera_ns = frame.ns;
       const double feed_wall = std::chrono::duration<double>(std::chrono::steady_clock::now()-feed_start).count();
       manager.write_diagnostics(diagnostics, frame.ns, feed_wall);
       auto state = manager.get_state();
@@ -185,6 +211,7 @@ int main(int argc, char **argv) {
     }
     diagnostics_file.finish();
     states_file.finish();
+    if (fast_file) fast_file->finish();
     std::cout << "frames=" << frames.size() << " imu_fed=" << next_imu
               << " initialized_frames=" << initialized_frames << "\n";
     return 0;

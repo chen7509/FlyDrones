@@ -1,0 +1,188 @@
+{
+  "schema": "flydrones-sealed-development-evidence-v1",
+  "archive": "evidence/openvins-fast-propagation-dev-1701.zip",
+  "archive_bytes": 2439961,
+  "archive_sha256": "25c50d945156e6a05e14e52afa73b9acffd048a1bb3dbdfb6d484e7685015d29",
+  "member_count": 43,
+  "members": {
+    "results/openvins-fast-propagation-dev-1701/audit-v1.json": {
+      "bytes": 342977,
+      "sha256": "7335576825e98867da340ea591485a779eeb779c879949dbd2bf895cd0728648"
+    },
+    "results/openvins-fast-propagation-dev-1701/auditor-green-v1.txt": {
+      "bytes": 101,
+      "sha256": "8836f1848c1a71363a3f357cb9adbdbb00cde2f4c275f2760df459fff3974630"
+    },
+    "results/openvins-fast-propagation-dev-1701/auditor-red.txt": {
+      "bytes": 1103,
+      "sha256": "312778365046d8a87018122c967af34d6f60bd4cb6a7333fad548bf4f25ccf61"
+    },
+    "results/openvins-fast-propagation-dev-1701/build-provenance.txt": {
+      "bytes": 13157,
+      "sha256": "9c3b478c32885aed546fe7f1a8c2d0e309c5dc2583f9290bf146b9397a45261b"
+    },
+    "results/openvins-fast-propagation-dev-1701/build.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "results/openvins-fast-propagation-dev-1701/build.sh": {
+      "bytes": 1108,
+      "sha256": "714baa4a5d6319a7c14a61ed0338170f741ed53fe8da9c45c356eb234a8aba0b"
+    },
+    "results/openvins-fast-propagation-dev-1701/camera-state-audit-v1.json": {
+      "bytes": 104176,
+      "sha256": "8605cd89e7ca04077ce6cacfe74bfdc5039c7ff46b29b7797aaf66f121d498cb"
+    },
+    "results/openvins-fast-propagation-dev-1701/check-processes-v2.py": {
+      "bytes": 1033,
+      "sha256": "90067f6a4ee829f23a5c2b45b5d7f57b4f0f673d3f58d4e353d144cd38f999e3"
+    },
+    "results/openvins-fast-propagation-dev-1701/check-processes-v3.py": {
+      "bytes": 1076,
+      "sha256": "1589406b8eb845673a1e3c2b4d3b7b7e1c5ac7d6645a6d6aa65d43f7b0f1871f"
+    },
+    "results/openvins-fast-propagation-dev-1701/check-processes.py": {
+      "bytes": 1016,
+      "sha256": "19ad1dccf2aa9f11dd379996d05d4dc5491eeecab640a2d8fac99ce7db82dbd6"
+    },
+    "results/openvins-fast-propagation-dev-1701/fault-audit-v1.json": {
+      "bytes": 1563,
+      "sha256": "dd2fda97984a996530c249191e96b052124e0cb30609ebdc8d6c5b20c7aa3f23"
+    },
+    "results/openvins-fast-propagation-dev-1701/fault-audit.py": {
+      "bytes": 2400,
+      "sha256": "57baaac9f585c981229dbe1cbcec8bf0a9990a3bb601e482f959f0ac6339a0bc"
+    },
+    "results/openvins-fast-propagation-dev-1701/full-pytest-v1.txt": {
+      "bytes": 1615,
+      "sha256": "bf5b3100ad1f260a841482486492dbe9eadbf41ebcdb0fa3530009363604c845"
+    },
+    "results/openvins-fast-propagation-dev-1701/ledger.md": {
+      "bytes": 2186,
+      "sha256": "b74ad351a1a2b6bb12b02086c18c6d0df1f0fd20b980ef045702c467747053ce"
+    },
+    "results/openvins-fast-propagation-dev-1701/optional-interface-red.txt": {
+      "bytes": 83,
+      "sha256": "645ee3f5c089ad8aca6142e471a041c0bb5d7c76a93c41794a2133794e0778ac"
+    },
+    "results/openvins-fast-propagation-dev-1701/processes-after-v2.json": {
+      "bytes": 358,
+      "sha256": "55aa1fcb763db894f9654fb5d4c2f1e2c2187c6cb39eaf6f9ff88ba108ad8c25"
+    },
+    "results/openvins-fast-propagation-dev-1701/processes-after-v3.json": {
+      "bytes": 143,
+      "sha256": "a11a312c44afd7bc36972d8eef9589a58cda4fe27e8e032d4387c56d25190ad4"
+    },
+    "results/openvins-fast-propagation-dev-1701/processes-after.json": {
+      "bytes": 143,
+      "sha256": "c2d3f7669635967c0e14c07db84cc2e99b51a168326ef8a7d5d28a02395d6fb6"
+    },
+    "results/openvins-fast-propagation-dev-1701/replay-v1/diagnostics.jsonl": {
+      "bytes": 2385630,
+      "sha256": "b73669bb12ae53f023aaa8940b8a29f036f45e320d062f378b032af6dd25fe1a"
+    },
+    "results/openvins-fast-propagation-dev-1701/replay-v1/exit-code.txt": {
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    "results/openvins-fast-propagation-dev-1701/replay-v1/fast.jsonl": {
+      "bytes": 5505340,
+      "sha256": "19d468a25a2417bab08ebe19f3b00606c8b5b13f788206a0663aacdc752882d4"
+    },
+    "results/openvins-fast-propagation-dev-1701/replay-v1/resources.txt": {
+      "bytes": 1166,
+      "sha256": "5c606282ba8f800ad050a49645d0f7a26dd7adedc3621624b0e04d3f6db53445"
+    },
+    "results/openvins-fast-propagation-dev-1701/replay-v1/states.csv": {
+      "bytes": 48750,
+      "sha256": "2b5ce9c343e63f3178a74e8a02c889beba3bfbc02ddf9eaf4e1c526f94a6f550"
+    },
+    "results/openvins-fast-propagation-dev-1701/replay-v1/stderr.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "results/openvins-fast-propagation-dev-1701/replay-v1/stdout.txt": {
+      "bytes": 256395,
+      "sha256": "9eb24afe32029490ec43956720a939a7c3c9c27bb0fe3e4e62e1310961e1f208"
+    },
+    "results/openvins-fast-propagation-dev-1701/replay.sh": {
+      "bytes": 707,
+      "sha256": "81931726fdf9cb9f76be4b01889168deff8dc3c49fed9ccf811a7ea557ca1dff"
+    },
+    "results/openvins-fast-propagation-dev-1701/ruff-v1.txt": {
+      "bytes": 20,
+      "sha256": "a4443afdcfb6d7363adb285762515ccf7cf50473b1a05c20c1a50f6bed4d26b0"
+    },
+    "results/openvins-fast-propagation-dev-1701/seal-evidence.py": {
+      "bytes": 2751,
+      "sha256": "0a1a5909084c10d48e6446429655b20723f3fef80834af63da73350283e669ee"
+    },
+    "results/openvins-fast-propagation-dev-1701/summarize.py": {
+      "bytes": 1812,
+      "sha256": "fd103a2dcb206d3f71ade96f6552e328f8bd64883db008a94381cb54a06ad179"
+    },
+    "results/openvins-fast-propagation-dev-1701/summary-v1.json": {
+      "bytes": 2838,
+      "sha256": "89528fedd306064e6ee9871cc0ca735749c8c119c1d89a913b716c23ba08fb1e"
+    },
+    "results/openvins-fast-propagation-dev-1701/verified-inputs.json": {
+      "bytes": 97654,
+      "sha256": "1103da66b89784a71ee0b907834027dd795450d211aa6591956a2ae3ae154c11"
+    },
+    "results/openvins-fast-propagation-dev-1701/verify-inputs.py": {
+      "bytes": 890,
+      "sha256": "ed15502f6ab1445aafb748d559bd1f5080cdcef5400524215fdce525d0eb54cb"
+    },
+    "docs/OPENVINS_FAST_PROPAGATION_REPORT.md": {
+      "bytes": 6194,
+      "sha256": "9017f8fa6f1aaaf21b239e4616858105b2f7108f7f8f0bf7e559cadbb9388ec5"
+    },
+    "docs/superpowers/specs/2026-10-05-openvins-fast-propagation-design.md": {
+      "bytes": 5196,
+      "sha256": "9142264611c5ca0132aa6724e402a23e71fc426068c1886f940533b07f18c804"
+    },
+    "docs/superpowers/plans/2026-10-05-openvins-fast-propagation.md": {
+      "bytes": 2423,
+      "sha256": "965308dfa16259a133231a9b5ab7d7270353234d7ac6632c3f6060a4470dfd92"
+    },
+    "tools/benchmark/openvins_state_probe.cpp": {
+      "bytes": 9465,
+      "sha256": "bc04857089274cac2500d135c6ea1a2debc22e055589d4b6f1425f7dea9cbe77"
+    },
+    "tools/benchmark/openvins_fast_probe.h": {
+      "bytes": 2663,
+      "sha256": "3795243174eec9a28842cffecdd3939507e198dcad2308a57b4aa309f268857e"
+    },
+    "tools/benchmark/exclusive_probe_output.h": {
+      "bytes": 1608,
+      "sha256": "6c5a622a66af56e6086a48091cd2c2da1feb7dc03bdd7f8bd37a173c0a0d3091"
+    },
+    "tools/benchmark/audit_openvins_fast_propagation.py": {
+      "bytes": 6821,
+      "sha256": "d4fe9f942bb94b6e3ed919a795a321b22af2282d9ecc04d85cb3176943edf1e3"
+    },
+    "tools/benchmark/audit_openvins_state_diagnostics.py": {
+      "bytes": 8451,
+      "sha256": "1a9d7b5cc43feee95954620f91ebb8c5b135fb3fa45003937a4f63d9848084ed"
+    },
+    "tests/benchmark/test_openvins_fast_propagation.py": {
+      "bytes": 3718,
+      "sha256": "3a6f14dc9ce265c01d08d145c5bddf35e67d77222efec7b03c2a180f939d1eb5"
+    },
+    "evidence/openvins-board-pattern-dev-1701-reviewed.sha256.json": {
+      "bytes": 121715,
+      "sha256": "98a717d1dc8f7fbaaa38656e8bff37229066a680a974c4447d29ef6de1413521"
+    },
+    "evidence/openvins-state-diagnostics-dev-1701.sha256.json": {
+      "bytes": 11709,
+      "sha256": "ee8f047c86f9b7f2d6b8bf828d9cf12ce936fdb2751da2108c1bc6a7ad6cad1b"
+    }
+  },
+  "dependencies": {
+    "board_archive_sha256": "669f3646e74c4e95826f12e79b456aba861a5b4003087541ce7dc1dc8cd1f4f3",
+    "state_archive_sha256": "c8a80daca3c92bbfcad52ab8a62fd3a780a242f12129e210ba05975548a2aaa5",
+    "upstream_library_sha256": "532ae57a6a952a0137cc1de291bc47ad556d419c7524fbb23b7a90c00addab5b"
+  },
+  "local_executable_sha256": "b9d8b016f17d65f7ae9c93066c53b121772ab4e91ed38cc3f0ee28b94cee3a32",
+  "executable_distribution": "not included; source, build recipe and dependency hashes provided"
+}
