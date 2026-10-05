@@ -1,0 +1,2435 @@
+{
+  "schema": "flydrones-sealed-development-evidence-v1",
+  "archive": "evidence/openvins-board-pattern-dev-1701.zip",
+  "archive_bytes": 11830245,
+  "archive_sha256": "698eda01ffee7650b3dbcdecde1dbc73da738097986e5aac414c6769c03a292a",
+  "member_count": 604,
+  "members": {
+    "results/openvins-board-pattern-dev-1701/analyze_feature_trace_v1.py": {
+      "bytes": 2134,
+      "sha256": "a4a000bc3d1be8542d8026404d7492f63732531f63f8ac87690f9342ca1788d1"
+    },
+    "results/openvins-board-pattern-dev-1701/assess-probes.py": {
+      "bytes": 1450,
+      "sha256": "31b7b31745dc97f08248a3811ec2ee71c9b328550d2bdb295ba8cd355f55e87f"
+    },
+    "results/openvins-board-pattern-dev-1701/audit-completion.py": {
+      "bytes": 4376,
+      "sha256": "c7bf20761de6974303f8f7016422cc8abbc6a8b5807acb72173777ef7feb1bbe"
+    },
+    "results/openvins-board-pattern-dev-1701/audit_internal_init_velocity.py": {
+      "bytes": 2649,
+      "sha256": "57472d82cb9b6390b1575b5978327f2317c1d28cfd2eed074829ea8702f7d098"
+    },
+    "results/openvins-board-pattern-dev-1701/camera-replay.html": {
+      "bytes": 4806342,
+      "sha256": "6b30edd09c5ced11c083734b19ff1b457ce92d131af3598ef2130ae7a8655900"
+    },
+    "results/openvins-board-pattern-dev-1701/capture-exit.txt": {
+      "bytes": 2,
+      "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+    },
+    "results/openvins-board-pattern-dev-1701/capture-resources.txt": {
+      "bytes": 1211,
+      "sha256": "259976d63cf78a11a5ef0fd1693dacd41b1290a4abbd4ebfeb2cb6db6faa8235"
+    },
+    "results/openvins-board-pattern-dev-1701/capture-v2-exit.txt": {
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    "results/openvins-board-pattern-dev-1701/capture-v2-resources.txt": {
+      "bytes": 1157,
+      "sha256": "0d03b11418bf7d1487d29b1e50d7e862b38a780a88f92c1c698b22f3ac90e4c0"
+    },
+    "results/openvins-board-pattern-dev-1701/capture-v2.log": {
+      "bytes": 2104,
+      "sha256": "f0c0f549d89b70b87643781e4efec7fef2daba12cb0714d2d1487f323cf5d715"
+    },
+    "results/openvins-board-pattern-dev-1701/capture.log": {
+      "bytes": 413,
+      "sha256": "fa3343a74a62d43d03fb4dfb4ed5bbe578b4a20197079173bb34d0e98cf3a0f2"
+    },
+    "results/openvins-board-pattern-dev-1701/completion-audit-v1/initialization-velocity.csv": {
+      "bytes": 23726,
+      "sha256": "e227a5c0f853166cc388f8149caca2da1606a17d56cbad9146b40a4822f59414"
+    },
+    "results/openvins-board-pattern-dev-1701/completion-audit-v1/prearm-velocity.csv": {
+      "bytes": 23897,
+      "sha256": "2b523f7f355625a2be850197dfe49fe3c639477f91d60f407ff2ba65d6616f37"
+    },
+    "results/openvins-board-pattern-dev-1701/completion-audit-v1/summary.json": {
+      "bytes": 4940,
+      "sha256": "834c8b1958e6603aaf80ebc48df6cb7bc6ad516e579b5e69e11260ed4bb9a94b"
+    },
+    "results/openvins-board-pattern-dev-1701/completion-audit-v2/initialization-velocity.csv": {
+      "bytes": 23726,
+      "sha256": "e227a5c0f853166cc388f8149caca2da1606a17d56cbad9146b40a4822f59414"
+    },
+    "results/openvins-board-pattern-dev-1701/completion-audit-v2/prearm-velocity.csv": {
+      "bytes": 23897,
+      "sha256": "2b523f7f355625a2be850197dfe49fe3c639477f91d60f407ff2ba65d6616f37"
+    },
+    "results/openvins-board-pattern-dev-1701/completion-audit-v2/summary.json": {
+      "bytes": 4940,
+      "sha256": "e36971f70b28738c61e38f16adc5957e1bc37a19611e5335dc8b6d4c7a011e3f"
+    },
+    "results/openvins-board-pattern-dev-1701/completion-audit-v2.log": {
+      "bytes": 4941,
+      "sha256": "6eb9bf300f9be5412f7a23ea2264b21611942628299d281bc56017555bb555bd"
+    },
+    "results/openvins-board-pattern-dev-1701/dependencies-v1/config-v2/estimator_config.yaml": {
+      "bytes": 6069,
+      "sha256": "eaa40224f0de2f4c5b0f1d33504d215670544b9cc000252a0e92f404478360e6"
+    },
+    "results/openvins-board-pattern-dev-1701/dependencies-v1/config-v2/generate-config.py": {
+      "bytes": 1583,
+      "sha256": "9ebbc2bca297605101b8affac6d10f3150bfbbb16c5ec10de5b8aa822699688f"
+    },
+    "results/openvins-board-pattern-dev-1701/dependencies-v1/config-v2/kalibr_imu_chain.yaml": {
+      "bytes": 1364,
+      "sha256": "6accf2467907df4723419a8f82e772b537b699bbb67a9a9f69097286e1e8b114"
+    },
+    "results/openvins-board-pattern-dev-1701/dependencies-v1/config-v2/kalibr_imucam_chain.yaml": {
+      "bytes": 544,
+      "sha256": "120fb34ae45fec5d0c3cf838d053e7b0b79808c64b3fdb89923c4df09ec1a0cf"
+    },
+    "results/openvins-board-pattern-dev-1701/dependencies-v1/offline_probe": {
+      "bytes": 385248,
+      "sha256": "bf811d145e82a0b70b7eb242349d429e56261212dc5e6986491720b9fd460899"
+    },
+    "results/openvins-board-pattern-dev-1701/dependencies-v1/offline_probe.cpp": {
+      "bytes": 6034,
+      "sha256": "ed966a7d15a345f85e814e8a0bdbd3f2cfbf0a0f10bcbf789de9cbba2b06e70a"
+    },
+    "results/openvins-board-pattern-dev-1701/dependencies-v1/source-manifest.json": {
+      "bytes": 1463,
+      "sha256": "952a152ccb394f42f6d47f88ba96f70db44d0d8afaa7ddb482e5a8b9609da365"
+    },
+    "results/openvins-board-pattern-dev-1701/dependencies.json": {
+      "bytes": 694,
+      "sha256": "bbb8d531081e9c640578fece2432b199c1a37f3fa63e11ca1caa26b3cea52a85"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/board_albedo.png": {
+      "bytes": 1970,
+      "sha256": "5d24a1d96cccf2f81046dbfa6afe57b4760038a8714da5059d6258fc34166945"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/camera-info.json": {
+      "bytes": 785,
+      "sha256": "3f8ea9ad5e9a4d9f36e02f7148d8c71857ebdb8b648e0ad9ca0740e9edbb687f"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/camera-info.pb": {
+      "bytes": 332,
+      "sha256": "6d2ed00a687f29103f8c48e5f49fedd4b0b903852682cc2c8b6592eb6e3b1437"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/embedded_server.json": {
+      "bytes": 303,
+      "sha256": "70e181a58aa60ec62fdea4d7513f13e4feae9c7cc1dd1920db1af9a251575c61"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/ground_albedo.png": {
+      "bytes": 154343,
+      "sha256": "5e62827968eeabb55285bba85276518b6d8fb1441f0bf9659caa52a48ed48593"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/gz_partition.txt": {
+      "bytes": 23,
+      "sha256": "469ab28f43bcf24d7aa7b0e1192a5599296f569270d1f709d88d96cf097b2893"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/input_manifest.json": {
+      "bytes": 183,
+      "sha256": "e569d34a1d07081df7832cb197dfb368541e9e94cb0088f75514cb70bb4d1828"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/obstacle_albedo.png": {
+      "bytes": 52690,
+      "sha256": "28f87e79cc5cd767b029a4c7b00b165e1aad9f2cbb998be1a161e3ff5d121c3f"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/processes.json": {
+      "bytes": 260,
+      "sha256": "d2bf7f6c94dcf35548c5a1e36282c6d94499b00545a42c2d920d2ca4f379d385"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/px4-runtime.json": {
+      "bytes": 95,
+      "sha256": "4f2e5aee7d1918d25a3fa2c20db67a5574ce9f84001edd1862c21008baebfc03"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/px4-ulog/log/2026-10-05/14_14_56.ulg": {
+      "bytes": 12820937,
+      "sha256": "b2d61f0f51ef1dfa016e006f181f64627de1baa1d6925df36a7aa753a55d60be"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/px4-ulog-manifest.json": {
+      "bytes": 267,
+      "sha256": "16705b83c4a81f6104b9cce546021855f26a5bf974290668e87e86774bf89e31"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/px4.log": {
+      "bytes": 2741,
+      "sha256": "2e2e31b7db7da78e2119e6785112c9a9dfcac711b568e5c377bd00e7c3d07a85"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/result.json": {
+      "bytes": 476631,
+      "sha256": "568443fec84f02aec9214b41e824fe99c999353a198855ace478cc5d6cbe67e1"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-capture-manifest.json": {
+      "bytes": 96324,
+      "sha256": "d64bb366a8b49997f48cca7c57ea69eea79866abcee72bc1c4b7f1806c851d04"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "324301c782007d8a094ad5e478ba7462382fbc32a00e3dd3b6d9085afa04f943"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/1000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "8187e13078faf60155dcebec200e6f014c97dcd63a689f2bd98d58a0b2dad0d3"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/10000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/10100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/10200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/10300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/10400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/10500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/10600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/10700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/10800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/10900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/1100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "76fbacee656667cc6b7ac4762979582a14589f68292493137c8758e0788d960c"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/11000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/11100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/11200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/11300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/11400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/11500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/11600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/11700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/11800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/11900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/1200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "d682202369f063df52a526aa905e64d2f8f4a26c2fd5476802c98e2f6943872e"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/12000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/12100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/12200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/12300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/12400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/12500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/12600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/12700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/12800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/12900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/1300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "048a8daf46e9a4f3a726bb981a2ed01c96706766fa4ed19d0fb6560c0c52a650"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/13000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/13100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/13200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/13300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/13400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/13500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/13600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/13700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/13800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/13900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/1400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "e0d522089225ab1afc85273706e2281214fa0b42e6cd10ebbfbd9ef478620cdc"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/14000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/14100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/14200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/14300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/14400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/14500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/14600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/14700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/14800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/14900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/1500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "89ae16fc2035d5e57b08e8ac3cc2007404210847838bd7300eccc51d8c49c189"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/15000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/15100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/15200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/15300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/15400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/15500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/15600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/15700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/15800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/15900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/1600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "89ae16fc2035d5e57b08e8ac3cc2007404210847838bd7300eccc51d8c49c189"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/16000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/16100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/16200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/16300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/16400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/16500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/16600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/16700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/16800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/16900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/1700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/17000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/17100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/17200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/17300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/17400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/17500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/17600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/17700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/17800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/17900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/1800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/18000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/18100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/18200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/18300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/18400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/18500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/18600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/18700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/18800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/18900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/1900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/19000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/19100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/19200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/19300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/19400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/19500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/19600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/19700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/19800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/19900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/2000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c4b606ca3921dc574cdd9673fcb3434a461539292584639ab72f581f8b6b7132"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "559cb49ab6b8dd21defb3014665d4e0a6b674601ad228f88b47dc6388b26ec2d"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/2000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/20000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/20100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/20200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/20300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/20400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/20500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/20600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/20700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/20800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/20900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/2100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/21000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/21100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/21200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/21300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/21400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/21500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/21600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "a333c1eb650a8689979895da49c609b040d96c7d6cc206ee4234e1a66cf29f90"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/21700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/21800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "9dae701423dfcddf28ed7cf6cc8c03b27b83d503e1623bbc9dc3f1b4fced3224"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/21900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/2200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/22000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "705634a09eaff5210433eab5d422c44397c7210a4d667868274694af37123aa5"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/22100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/22200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/22300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/22400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/22500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/22600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/22700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/22800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/22900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/2300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/23000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "0b098b0c14b859b600489d1ee2612ae81943e08bc867f28213472a54e0dd4775"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/23100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/23200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/23300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/23400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/23500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/23600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/23700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "2cdee33a54b11e01efc0db8e23073ca8e2dc6da74382f06e60dac0f35ea7f838"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/23800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "0d5e53f142c1e9ea85f5c9af628442ab7193e655f244fb6f91e9fe8256877806"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/23900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "1fc368e81630e96b612f819471f91be711366fc63282046163de2c1f5d5942a2"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/2400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/24000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "3a032e2884687fb048d461cfa2c6d98ff6db3db430337c6bd88d524bf5f3d054"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/24100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "350e0216b6491eee83c924e1029565a8d5ed3a74f790cda728f6647b57afc719"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/24200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "48582e7706188a53f07344356b84098616dd14d9129e1b65afacd6d1b0f49505"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/24300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/24400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "46305436f5118cb7567bec26d7e71ed02f26cbbcae17d0143440f69df2d11f49"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/24500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "4b5a1e916a89eb4447adc567ab5182b020305007a3ec1266c2972b7b99b3736f"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/24600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/24700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/24800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/24900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/2500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/25000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/25100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/25200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/25300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "3e8311d31adc406217111fdcbeb21882cf17ff9693c7f3bc64597341ca6d200c"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/25400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/25500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/25600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/25700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/25800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/25900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/2600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/26000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "0226ee23884786498685b59cd78739ca29bfa6e9f5d360d2801cd8d6eca6f381"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/26100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/26200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/26300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6f036c66845ad9fbc9e91148731bc843dcc2f5d245410efde9bd4baccce7bb15"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/26400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/26500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/26600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/26700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "e37bc10b2983e11631f8e74e401f40f0293778e246f4e3caf8f70e6930bf0a8f"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/26800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "320f502a95d027019f08c24a71da3eb2379338073b5d53b5986cf5fc6537c023"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/26900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "8e8ab595f5a16d31fef7d17ed9b16390a114919fe6a53975c71e248e14343830"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/2700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/27000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c6f52ce3fac4b15237503afd3704bca6b4c2436a9d779c196177439e65863cd5"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/27100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "4fa395a0ea4619eb03d28e896f1630dec676022a67b8ad0ce7b2bd5c53d4d015"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/27200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c490d2ba37e3723336d3790cc550508c4a4290d12e9db3876c207b7a9d873330"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/27300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "eedc0770612e8438fa6b4b4d9e46ebacd7a032910fc9984ee596e456ef5627a4"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/27400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "11a114252206a52fd0af4d1e128064b89b6bcdfffad5bcc5ad628ab798d0a843"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/27500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "5ae1f078689e4c4c43dd18d311b4bd2474542108428eef1f6283e7b28361103e"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/27600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "2d4107d889e6798ba814785e190bd7dfffec0a8b47bfc22bf1f0083e016f914f"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/27700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "24b2bdab93a89be09b242bd6cbeb335919ccbefd979fc25b0a2df5d74585b457"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/27800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "83468c1cee82ead76faf3acab5487ceb02481ba0c26c24f2bca46a0fc92c1a10"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/27900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "a7530ec7be66c5c0ab2b4532aaee711b3f99c91b66bdeab26ebaf228f7664c2d"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/2800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/28000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "cda1eab67e0ae1436a0705f5ed648bf51342b0303431952f3f7dfee5026ef591"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/28100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "d257f7880b128657e271cef2777a9891750a1e7f40a564805fdad6aaacaf69a9"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/28200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "89b03f879694504688fb368a5e215dd7edd4a18eb88842f1daee9dcaaa1cccd1"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/28300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6a8cb0f3b5655a83da5bbe3e19b8d666a117e598683f71bca01c3c45d410b61b"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/28400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "cd99231e15abd0c14341804cd09d56aa40c9bd76eece09099e17a6dc3d6adf88"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/28500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "fb87a1b55d1e93a9686cf5e81e3354ab725f551988a2a67717187aa446593c52"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/28600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "dfe26d92fd2c9e79501bd5ed5030c4336b593ed14bacc03d8762201026fc594f"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/28700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "3c94017f38297f63d4cd6e9552320088844cf330a044c0726a6feefcd5c36cbb"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/28800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "88a334c43abc53dc77d4aef420a0d06ea5519d85e2312c66c427edde59d3753e"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/28900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "762be643a5fc3acc19d6b5c94ed9c654c0150c3df47eb3d96a5ea6896dbb6ef2"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/2900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/29000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "f02acca5fd839fae5e1e030aa7be8e5a7675263ff293002907c33c77d150b963"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/29100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "8c79b5a89d9b93d29c192195b2f9801732512399ee28d5b7cd4b501886863a55"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/29200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "29d57c23b516012266e9bdc90b23aa1c010c98d1c8905f3867b160120565e626"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/29300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "f9da0d21256e2541a57dbfc48d81ae0bebaf65814f681bf2d88ad1d8bb61077e"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/29400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "70c629c40f6ac16510693e475b5fd3c871256697dc6f665308754114d3e9d57e"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/29500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "acd56da04db796c8e4239cf4eaa66cdee64e5409ef19b62229309f15b8975ff8"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/29600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "57d9ebce358391618aa97f0bf1c10422318eb3755c7402c75b79fce3e090d9a4"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/29700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "cd0c4f793c0432153450329cd61fa4e7786fc6b0c2e2c033ce0cc8460dce33e0"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/29800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "9840716a6cf78102d3e7f80e27d632fb05283ed762177a3cd5fcd09fb51da3ee"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/29900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c2076eb8dd4e81d7a9c0ccae34ed005ebe5722b831aadc2bb161ace5260a13ab"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "8824f886ef0155fd698d0e57b5091bb954caebef19e523adc6ddec79d056c9a6"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/3000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/30000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "ab1749d55ae7c5ccaf74eaf547899dff927e1faba1db8885f17b116e8b7b107f"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/30100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "140a58f9356beec29865d20b7b07d4ce4813a9ba3a5fcb8b6e7f3c807496afb7"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/30200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "1f4977aaed9c1048cd051eb0f5f90163d2627fb026ddd745ac78a245ca1acda4"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/30300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "875cf1566fcdac5b657bc5ac5a9762117ea362dee54508aaa86f8c38f9ef8fa2"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/30400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "322932b39b4545307e06fdb827b05b5a6b69a1cd2351566610382eac4d514a24"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/30500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "e0d541fa997f9d9538e9c76bdf2ddbfc3ffd9b3457a5122fedfe20f1761b55e3"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/30600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "b59126ea57183bd6bf31ab0a884122d21c1719b69616024f52e322f4262eb9c2"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/30700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "1ead5001aacf7e384b36c0d1791c8093c5b2c05bc9b0c8c38d7b27f42c7b27bf"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/30800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c8d17cc6e8e5312c256da55b45cafb3e27ad9fac8d531ec926c111323ed6c95a"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/30900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "f310a406014ac0c6e8dd30beadbb574fce99c82bf282739432356564fa3602a7"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/3100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/31000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "e7ecea11b66cd54e3ae052c9e4531348e278877251b6b519bbd2b0bf8416fe09"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/31100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6d2a176e06608e92e13126b5f48a99641ef992ebe96c7c37896f6282b5238dbf"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/31200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "63fe5a75a3390046d94b7d1f317774a0676205937683163b759e54385f79243e"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/31300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6a2c85595a54049bb40c13a664e25b3de63c37085ac8400cd2cf71dd5b950a24"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/31400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "8420b8827e286197bc3c89de8ec3f3145ac5bb2b0dd0c22fd35b80a1d1da4948"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/31500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "2caaf4abc3904766198e2a754edd8c09a803f98851cc8b6f81eac36c18b85bd5"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/31600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "16dea1a64fd2876569884a93ca9b53622dd2b952acbb01202d20494b0b1b9216"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/31700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "897d88e2e971498212f0952172080ca44b6463ade7d264b6c30d874a5385828c"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/31800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "568445afb886749d881767c0ca4b48a35b5e4ac74aa8200e2701f894aaa7da64"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/31900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "0a95ea5e10053cb20fee1b1e10e8508eb930b2cea317f69408fec7845ca7b13d"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/3200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/32000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "f8d09bee216698a7be6bed54bbfcc46ab20471462b7682335ebfada748baefc6"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/32100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "d1d141cb105b48fa48f21270bdbbb822777da32fcba48d3cc9ca9c49607498f8"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/32200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "5aac1189c25fbf12c425d5cae4f827ca7eacf1938bb3c94b70e3e94e1971facc"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/32300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "e76b0fb7752b8919f0683e3cb817e9495624427c9dd310d4128d88d74c2291d5"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/32400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "90f075ed01d0279ba6f1290e2bb35d9f7f149eac5529861862f9f5c07ee52223"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/32500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "69a06e6e96587ada8653352d4ec0978041eb79fbe16b2c76d6218b462bfc1678"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/32600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "30285abb036a9dad51e254cbced87ada63c4c01171f13ea86c58c3f1614b029f"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/32700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "f7ec1e1a1f1bc41ca6922d165db5b0c49fbf32350113057b5b9d6028afad8ba8"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/32800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "e58baee20a7b84e1bc082fbf827bccec17efcd2249211613db675bdac7ab8e0a"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/32900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "7b0ddbb0fff20fa41516dc1f694bd0844a66e16f5eb042dfc21a061bfa5a6fdd"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/3300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/33000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "46e602fa2e71848e02683222062f3c2badd68b2e4f176e8abab132ecbd798c04"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/33100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "f15788cbd2d064213a05cdb8e281734e83eacb72d3190fc419a0bb371fd05be6"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/33200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "ad5a425b91da2d10c1a601ba11f8c792fcb69ca1585df6f8112461a51d6f3891"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/33300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "a69ab697049f9e0dfacd3da79ee28caf0854bb4448108cd7d59fa3984d9799c9"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/33400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c462200789dd232548161c05e416566c0bd6cc2c54b138f7d25973aa1b586d3a"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/33500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "0cdc63be41481332049f10d624ad3f55f7abb2cfe970c98e48386d45f0cbbe15"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/33600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "d280d88c372b1151ff4b7412c4a5bed74c12fb8e76c65273e0b71e098536ef54"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/33700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "12102536fdbbd1d462a173bd9fa77f374010751b655ad62b458333bcdb5db052"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/33800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "e2d1990fc75b14540d3bf6d2a5c00ff90561973dd82e6e4b2d8ab404f8f90a13"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/33900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "eadb234190d5c299b6893eb01726277096a2e4325af327cd182d94ea2e0912cd"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/3400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/34000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "11f79948f8505914160b7217027191cc64d239d27bdfa26d923a754fc1fcddc3"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/34100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "b331c2ac10ecdd250d0b6b0567297e8464a667bf37ed4bdf08566f454bd29dd8"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/34200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "773628e54bbe482f1ff4ef3b7b70823b4d6063116774a351aa821de8f9e233d8"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/34300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "fd0a6eacfa321a3bce0a30faa992499393c38f4ed898062047a49926a2155a56"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/34400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "507d333c9da12575a7409c89eeacc1174bdac70613833df7ca276e1770c61718"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/34500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "eb65521c6774d1951b6010ac494d44ea5112b09ea16a47c30c9fed065e25b961"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/34600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "303bc16e1fe7f155a164dfaaa3361748da22db8e814aa17ce3f90726f72ba19d"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/34700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "30ebde27f7679196c858ff6901fb70924472817d2f0ad29c5fd421a523c9809c"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/34800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "d2e1720a1141e141ec2b46533d7b82372d40f46ac0210b6894e487b46b17d278"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/34900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "1c5ccecff96ee62741e3008ddcc1e4bca177ed62efbd73c7c75a4060111539dd"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/3500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/35000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "9737cffc5f5620a5930235e8fe867e655f94d568f2f346c8d757d6c859d05494"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/35100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "b6ee779d4a07a41a8e3d207c28e0b33c723773c4b33ed643c3f7783a9432850f"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/35200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "3cf74632b9b9cb4248c37164c8285be99e5e61c0be20faf11cbb08ae1d780ccd"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/35300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "514843c7a9801d277a4b9e2eeeaaf2ef24abdc003c522cc7d4a38f985e435de3"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/35400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "7ca4108b233167eeb283f7ff367d5336e67cca6b0a3a210f533f7103aeab315d"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/35500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "f8ddfbc1aeb060ced1f42cecdf5cf759d4ddca616622441d0621f071b566642e"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/35600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "f8a60dc5fc4ec8eceb16e83bd77de3a91eb42eadaf5b589d14fd753ca9f9cfb3"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/35700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "f29acef180ca687b9772f5b970aac7c1c0d1bb2aeab728d538c823d83a855116"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/35800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "cf0499bf16c19daea6d1ae4a47e27ff9f035436d227cf189d9774b83c73fb844"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/35900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "fb2e5b5fe8c69bea65dfa4af5c4a557732294ca4cfcdfd59bed51f605f5872b0"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/3600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/36000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "d661223bc8a8fda540b0cc940eabc26818d532370e1f51e9332dd02035a65645"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/36100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "b7c659b7bd35c92cf1930715657247bdf6f31e15187acfde65c5a45d3e2e4b45"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/36200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "2bd5d222a20517c9ec8fc3515f92f4cf054033041a097ff9b854bf01c580c287"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/36300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "901fba540179bd917227d7482e8320935797daa0c7d315004ae43e6f5f7fc012"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/36400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "4d78756d0e2535c376c2d2f83b0d75a973f6f474aee3d7677b7bdbdf06c28697"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/36500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c656511d65d8be17e759ada8665928b975ca928a1f32cf1dc0234a6eeed8ad76"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/36600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "dc0553c47035a249aa5fe48e79d55c43f087a1605dbc41258ed9e1a894565d5c"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/36700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "87683d7cc13462fca782ed6dece4e1fb2a475ce7f4e09f92d4e32531a73a572b"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/36800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "4b2a719e08ebaef63af88e3a7cfa5e8c04d05705855d53d4d50ab32e9e4f1155"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/36900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "a5b8084e77cae9e017b815ea9a1ed1220de7cbcc47c45f579e734655454a1d64"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/3700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/37000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "628ca069febae53ec063c0008092dbc51c66e636e6c93562ad9cadfbbde79483"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/37100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "025fd37fe997927e0cca16a8ac0877e8d8b3fffbded47f21abf3fa0fb3d9a8db"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/37200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "3d6c57a411ccb93a7cce5cc807f4ac557b7f3cba5aa3483a1a26175f38a23ec8"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/37300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "11459fd2e6fe2438cba6cbb08c5e66efe3d37835d6e2edbf3e100392076eed46"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/37400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "67812fe821ed27dd22f28c180d7cd946d95ce9233bd1d3164e6c0143f51041c7"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/37500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "0cf5afe049b0bd40b993ebcdfab2184566254aa5245a8b2c2b823b2bd7fec335"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/37600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "447fcda2dc0322af79e87d96b675fa07a63c5be481a0ef34f41923e7b4d8cfcb"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/37700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "01b32a01a960a73dee8f1315478345840b556ccd1e68e19357a45c0f85412c10"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/37800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "698d1fd46e5919ef34a6935a095e910f2527564dfa25dfe3e05b78a969b980cf"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/37900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "a2c292f1e3094e8a772403aa5baf5ffba2caa5e15602eaa189730263a3e4b510"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/3800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/38000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "62eb5d587fbdc32d91403c5453aeb241206eb369c85cd850c158b814ab888b1b"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/38100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "3b2a0251b293bea42aa7dcb759cea5d880b6eddfc731f36df539817e3d277e14"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/38200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "78e1c26f94b0bf46b2d0f89debf1c1146d8177c982d07c66ee4e461fa0b2d9a0"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/38300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "af58433ed3974fb6daaec9d0b676b04550211080ba2fdca954bf3fd4bf2c7bab"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/38400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "7d6a74f0e3874e75a54bc10b9ca5712281226152af03de93d1ff6530ef6d3282"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/38500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "4240cf4cd95a5caaeb83a92636ca473b949bdc3b0626d2a6c9bcbb4232333bd0"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/38600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "35e18fcec7105242e0e3734b4022700754ef507196d697f2cd07ccbe55bcef35"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/38700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "e458ba49d593bc240b5ff72b47c054a654ff820fac3d5379b68f1af5f927f73f"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/38800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "8906bcb092500e395828dcf2af5792da5c4d46ee905477ada1032e152df28747"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/38900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "b978e758392a4401e845fdb94bc37a47f111f34a478efe2b4ec8a94a81f8047b"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/3900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/39000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "b5459c6b439a764b80296102d94046e222268867147d06abbbc1dc1a9fa98d9a"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/39100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "17a86b370cd7bcf324427cb0805213c212837fa22bd9d1bb93725a074b47a3a0"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/39200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "7f3f8cba11c1de4b9e190362a10b141c08575c8f3af0cecedbddd9ce3aadfb66"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/39300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "5fbd0d8d44c957f59a32e618f9426376bea347386215f260e289ce1b9676ad18"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/39400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "17746566f54b1417006dd6f1924c95e7423289b56d26a8f6dd8d638c677b4a61"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/39500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "0bb5ce57829e0b2ff39ade9414c1ba18e259b969d193a625f6e08374bf6c9b00"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/39600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "80a09b562b077091a4df50d28b48d252c90c23ef81462fbc72ef91b67d642dc6"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/39700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "ce06f53c99fa9c176e265a68239c1fc976275fa02e57e589dbbce254857c8397"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/39800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "106fb28ddfbd49b26b880daab7387b15162b8c00b88a8239e3dafa89ea122e65"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/39900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "561f599106031675c0ee48e3b237e5f68ed58ca01fc19bf12d97be4896a0449a"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "261ae6c75f9427a36b37a0589c084e6ad1d9078241de82ef51e6bc8bd21e6d67"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/4000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/40000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "a31aca53e40bdf5d02d72fee0198de423ddb4fc83efcd6e9009c3f6d04d0e2a8"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/40100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "3a013f9d98940391436fc79e1ca9df673dba0592bd7f4f34a85f6ca5f31781d1"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/40200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c46c4fb1c6ef6a96b157daaa45d5650654ad6c2bc19d382777d66b9f33b4e078"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/40300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "1b7ec2a3cc4c1a1805078c960ad79808b97b9c0f6cf69368b2962a52095a900e"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/40400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "3c5c19ac2ae7b4ec380fa70926a96ea2e9bee29d3db4e1ee8f18ef60e4e9c112"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/40500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "cf1d40d2eb7d6ca16054f7019753d8a338a2dd9303eacdfd8be0e0e96dd20843"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/40600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "eadcc19616257c5924c043798a14a8d91f434c079af112bc6fa0c5c88ef99576"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/40700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "eafcc78e44d39d250f453edc7ce2d3c9864394f1cde244e6804453e8d32a4bc0"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/40800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "04ae9350e772118e2f617f0859f85fcd5893b8b40b9bf5785606710fde0778a6"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/40900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "560d7f03c940ea36649661227394b5e824ac8f35d2b8c532bf6cd5cb842dd1da"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/4100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/41000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "98a73fdb5749981473f8311de2d4e8ff14d5d032cbf1125607dafd10fc5cae12"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/41100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "21536f6de906bde12224e87c2807b6b2b82112aaf9e78d211df35494b77c9830"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/41200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "797f434dc0043749a8ce46319911eb68ed3d3c21692027ae7f083d2d70cdf3b5"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/41300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "3bb3b80484b8f876fe6fbf0d52b5e4ea6981ba854b1789906c2f50e91cb9cdb8"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/41400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "8dca4dd87ad5b62c64c6260caeaa80216c535709718500df0a6fa34b864f71b8"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/41500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "bfa1ef0e8cec07ec88266b0e0a73dc56941a99168365561d116cb836aa5438db"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/41600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "9cbfba47f31693bf41aa6fed61a4482e67fab17764a4e3c08f649ad2954463e2"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/41700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "b97ff58df8e383d99cdfae348735069c849386099835aa8d574c4a70f908beba"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/41800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "e99cbb8d827b59a4b0d810acce3b03a8372444397cbccde169f802a193e9b512"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/41900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "b00bee078d538af74e563b1e9f46bee0840528676d3d51dc848e8dbccd67753a"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/4200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/42000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "93fd8f3faad1d583722d8f4f2a3e40e83871436ddd86b1d0a5eaaf70fe292323"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/42100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "7f54d19be4944593f54038fc8d08ab47c2c0992ed47f86b6e0ec7f069ac8d0dd"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/42200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "2de62f162ec5285a8cff41aafe62511b20cf8c2bfdb4d8a932de16ba6daf2488"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/42300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "472107f40a71bbfa48319f3e9ecd5b8aaa3397f51597999cfd9e83406882775c"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/42400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c24393057e289a9b2c0da244a282124813b875a24de2bf76cdc217d4681187b0"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/42500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "77b9d7af7700495bbdb22c3564e8a85e559e34056b31e3a0b4b0e4ce44038c2b"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/42600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "b15e6c2a87cf2c312521ef216befe718baecd2f1d991a01c1b3fc4f0b0fc902b"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/42700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6106f77d7b34728bdb8a2b22f4a5c0b130193ce3ff5b7c6e8116324f17663691"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/42800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b0c564128ec8fa2ca20527034b838526cecb1bf42f675ce4962169f67e011f2"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/42900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "fb29eb525d1c495dd10338b38da26356137dcc1aa20af9a3590b855e2dba47ad"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/4300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/43000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "9284029bad82417900d2ee45ea842925d5ef60e143009763194379957767b3a5"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/43100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "bdb242f7a48355583f9ef48c3d6886f14178cf984db49cbbf35ff0e1c42655bb"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/43200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "592f5bf2fdaf1141b9eb060f96f80fdc8c5f30e02b82b5221bdb5dea52d5f4d9"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/43300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "2ac37d9d6cbd3f26ae2f6c2af81ad9e34318087bab1416713d957ac7fe9f80b7"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/43400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b24f54115c686e23c19c01fc2a5d3cee62c910fe171d1a85aa52a85302c958b"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/43500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "4cf033f9b20bc61c325a566730d30988d98fc76f3b630f693eb948cd22682040"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/43600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6f848cda81c1dbb3a0a81a1ee051913019ec943b09987a5193fed7e50f01ea1b"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/43700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "af5ae9285247c002b74e423add8efc8ee0b8811a7557b18d8b70d2079e4be75e"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/43800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "4db87b3e72cfcbc5a97d800f3127bef42f3d57ff6bdafb1807e7696646deedee"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/43900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "486e432447bc68194dee644c6a769d1406e6cfb87de875baa6c8491ac0475dd3"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/4400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/44000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "97cbdc3dacfbe9191232b64ff91eb35a58738e0e5c1c988814c6f3c7d5d4e1e8"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/44100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "830f652724ca1d311f0023b0a30825f8dd05c2a4d5952b65386741492c07fad9"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/44200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6c4d1ba9216951a4ada58773df17994f3404ebf8e6a4a45181e8c7f752a99c05"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/44300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "f4324fde8d2e4977704038958f23076a9374d995cc7396e73b93bb8d99a51967"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/44400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "a18be2a522552193b10cd12d59d98e56e869bd993b7a8cff5d9df7edad729d98"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/44500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "42e5aa033a28b80fd102aa9e0ebece39cae25a807de07457180a74b21a3e499e"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/44600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "5b252c1a5088f905f5a1b91a2816123a157491fc10f5d684f078babd5b6d88eb"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/44700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "cbdb4dde310a6cc04f4541e984a250af999a3fcf1057f5971ee526f105b535ed"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/44800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "f9f29d8e4f348a4f12a880122bfef24b834b26ef895a9d8806f5244b4cfee592"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/44900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "d574a13681f97dd4b05e9680f4509ff6a9293c7a3e899e0f3e260e32f4b24e2f"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/4500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/45000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "69a98ed844df98c938dbc96a3bec2dc2575c858cc1e74acce09996d42eb8c252"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/45100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "781f878fe0e1b24f05341b9a7978664365f6aa0c552a155f1d40dc506cf1a9a4"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/45200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "5e3e7e49b2de44042968bab06500690527f6519741db3ef26db291d9795291e8"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/45300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "f25004daf564eac451388593b70257ad6b09ec0829aaa5d371b4be9d69bca04f"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/45400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "2f6dde27d1763b3aa9d61b0a33880414efdc6a95f575f5ea90f34cf790ad0cf0"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/4600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/4700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/4800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/4900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "edcf8641c42d48ce7ffff3f0a64c11cab2276e5ebf0b1a014252e50a4a29c95a"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/5000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/5100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/5200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/5300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/5400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/5500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/5600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/5700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/5800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/5900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "0c38f71e096d5d56b6f4a95365095130b4d1b063ce149f757678b12ba9a36aae"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/6000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/6100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/6200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/6300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/6400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/6500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/6600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/6700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/6800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/6900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "c53c358349d8084757dbe04da752c6d9d84cd19221b6f7be4e3310edff0ebe5f"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/7000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/7100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/7200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/7300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/7400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/7500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/7600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/7700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/7800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/7900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "909f452e47ca62211c3b4d4e1ded3a5f5b80adb6a2befa4cb2c97f592147ed47"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/8000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/8100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/8200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/8300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/8400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/8500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/8600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/8700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/8800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/8900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "09468f1c77b052e41fff07f28eab501642491d0a346338d40027d565608177e2"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/9000000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/9100000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/9200000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/9300000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/9400000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/9500000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/9600000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/9700000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/9800000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/rgb-frames/9900000000.ppm": {
+      "bytes": 57615,
+      "sha256": "6b5148e492314541f33d90b4621008cdc986dd3326e59e507c74c6fdc250f5ec"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/started.json": {
+      "bytes": 85,
+      "sha256": "18998d843763964128435a02ca8952dc8fa23132423d0fdbfda9af886f12beb9"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/texture_input_manifest.json": {
+      "bytes": 567,
+      "sha256": "b4ffb6ccee048f46b10ff1c26c7128cec67ff02e8bdc8885b6781cb4735f89db"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/world.json": {
+      "bytes": 910,
+      "sha256": "e783db3dbbebf1142ba4bae7f09f5133d474f21415bd3843427598c6c3f58f51"
+    },
+    "results/openvins-board-pattern-dev-1701/episode-v2/world.sdf": {
+      "bytes": 5844,
+      "sha256": "b42bd639080c967ceb84edc7bbf023b064dbd4fc610ccb81a1eaceb5fb373c1e"
+    },
+    "results/openvins-board-pattern-dev-1701/fast-screen": {
+      "bytes": 31352,
+      "sha256": "2c23b4f519ec395c8af3fd3d86c95d25fec9347e84b667d1d10225a7ede0f72b"
+    },
+    "results/openvins-board-pattern-dev-1701/fast-screen.cpp": {
+      "bytes": 670,
+      "sha256": "d6c6f549a626aeb8b6fd1c8fe4e438de7a9a846f76dbf999a5ac7039ee29b2e6"
+    },
+    "results/openvins-board-pattern-dev-1701/feature-audit-v1/frame-trace.csv": {
+      "bytes": 8356,
+      "sha256": "6dc6a2797a17bf685d81ca08d5ff1b86fc13406d65eedf5578c254eedf844108"
+    },
+    "results/openvins-board-pattern-dev-1701/feature-audit-v1/summary.json": {
+      "bytes": 1384,
+      "sha256": "e6e978767519dbfd673ae9bbd7a959e14a9f183e4703dce75148c7276bdafa33"
+    },
+    "results/openvins-board-pattern-dev-1701/finish-upstream-source.sh": {
+      "bytes": 773,
+      "sha256": "438e1ce4090ceae6714dad1f539ef1296cf649c23cb9cd8153ff9e646b896fde"
+    },
+    "results/openvins-board-pattern-dev-1701/fixture-v1/board_albedo.png": {
+      "bytes": 1970,
+      "sha256": "5d24a1d96cccf2f81046dbfa6afe57b4760038a8714da5059d6258fc34166945"
+    },
+    "results/openvins-board-pattern-dev-1701/fixture-v1/ground_albedo.png": {
+      "bytes": 154343,
+      "sha256": "5e62827968eeabb55285bba85276518b6d8fb1441f0bf9659caa52a48ed48593"
+    },
+    "results/openvins-board-pattern-dev-1701/fixture-v1/manifest.json": {
+      "bytes": 1681,
+      "sha256": "5952e78b09a28377f485639094762529fb6d16411097ae2020e4b328bf3c11ae"
+    },
+    "results/openvins-board-pattern-dev-1701/fixture-v1/obstacle_albedo.png": {
+      "bytes": 52690,
+      "sha256": "28f87e79cc5cd767b029a4c7b00b165e1aad9f2cbb998be1a161e3ff5d121c3f"
+    },
+    "results/openvins-board-pattern-dev-1701/fixture-v1/source-manifest.json": {
+      "bytes": 1451,
+      "sha256": "31de445096b2e926694c61a8f8813d6c3c57cd3e3281ad453f84a674d5b50d9d"
+    },
+    "results/openvins-board-pattern-dev-1701/fixture-v1/world.json": {
+      "bytes": 910,
+      "sha256": "e783db3dbbebf1142ba4bae7f09f5133d474f21415bd3843427598c6c3f58f51"
+    },
+    "results/openvins-board-pattern-dev-1701/fixture-v1/world.sdf": {
+      "bytes": 5876,
+      "sha256": "90c4dbc0493b86ed8e9a147c37b5b0d7f01d88a604b97dbe850857e5d2d92ec3"
+    },
+    "results/openvins-board-pattern-dev-1701/independent-review.md": {
+      "bytes": 1411,
+      "sha256": "f469398cbbe8200bab8c510e79c8ee6d2072d7eff0dcf2f3673c93bb860e7d04"
+    },
+    "results/openvins-board-pattern-dev-1701/input-v1/frames.csv": {
+      "bytes": 17004,
+      "sha256": "ccdcb6df31c342f751ab1d3d8bcb068c436940223eaf43a05a95deb63c343e49"
+    },
+    "results/openvins-board-pattern-dev-1701/input-v1/imu.csv": {
+      "bytes": 1487054,
+      "sha256": "9cce5d02293de608ca03790a9e242d0e7d9961a49d6b824b108f2e9ef6637cf7"
+    },
+    "results/openvins-board-pattern-dev-1701/input-v1/manifest.json": {
+      "bytes": 1462,
+      "sha256": "5ea87ffba46662609e1fba911b5ee4f564832b9c416a090f2e2e42cabbcf9a5b"
+    },
+    "results/openvins-board-pattern-dev-1701/ledger.md": {
+      "bytes": 3965,
+      "sha256": "83376817ca0ef314c6282d24784dd3dc7422ae546e3dbc8e6a5c2d262280a901"
+    },
+    "results/openvins-board-pattern-dev-1701/make-replay.py": {
+      "bytes": 2484,
+      "sha256": "280c0e229a941ce1d04d03d4152f40458075ad55a039a9a09148d5441c383e86"
+    },
+    "results/openvins-board-pattern-dev-1701/plot-trajectory.py": {
+      "bytes": 1610,
+      "sha256": "dbc36e26ad067b574e9d9cf9aeac1815180e2425f4177ad24ba8018d9992de67"
+    },
+    "results/openvins-board-pattern-dev-1701/prepare-dependencies.py": {
+      "bytes": 1244,
+      "sha256": "178383e976b26d6a29dcd2bad3a30a815c832983637be1f1199c5c4319ac226c"
+    },
+    "results/openvins-board-pattern-dev-1701/prepare-probes.py": {
+      "bytes": 1124,
+      "sha256": "8a74d6720bf32758a3ca5eda25dfc475d545dc32adf873fe3b5c7401e74c2a50"
+    },
+    "results/openvins-board-pattern-dev-1701/prepare-replay.py": {
+      "bytes": 991,
+      "sha256": "a07ded03eb9dd7a258e38da17fd143636b444a6ff7ed8ee54c9ce9f89f675680"
+    },
+    "results/openvins-board-pattern-dev-1701/probe-baseline-v1/fast-version.txt": {
+      "bytes": 13,
+      "sha256": "a8579c7a15e7c3320591007e30188bec5ae99f66fc746461b76d9eaca7d9c838"
+    },
+    "results/openvins-board-pattern-dev-1701/probe-baseline-v1/fast20.csv": {
+      "bytes": 44,
+      "sha256": "14da006db5d538d04b6d5a2057e336feb5f163ef947a4770d4f031989a9f9f01"
+    },
+    "results/openvins-board-pattern-dev-1701/probe-baseline-v1/frame.json": {
+      "bytes": 1691,
+      "sha256": "139399013aa4495a2326f62a74b2d103f954feb417d60a9d57b33c3f90bb184f"
+    },
+    "results/openvins-board-pattern-dev-1701/probe-baseline-v1/frame.ppm": {
+      "bytes": 57615,
+      "sha256": "c4b606ca3921dc574cdd9673fcb3434a461539292584639ab72f581f8b6b7132"
+    },
+    "results/openvins-board-pattern-dev-1701/probe-baseline-v1/ground_albedo.png": {
+      "bytes": 154343,
+      "sha256": "5e62827968eeabb55285bba85276518b6d8fb1441f0bf9659caa52a48ed48593"
+    },
+    "results/openvins-board-pattern-dev-1701/probe-baseline-v1/obstacle_albedo.png": {
+      "bytes": 52690,
+      "sha256": "28f87e79cc5cd767b029a4c7b00b165e1aad9f2cbb998be1a161e3ff5d121c3f"
+    },
+    "results/openvins-board-pattern-dev-1701/probe-baseline-v1/run.log": {
+      "bytes": 3399,
+      "sha256": "b9cb4ee15ba1f0beb3d2c4bc645f085b0bb00bf2e765fbdff8daa4bcda2a603a"
+    },
+    "results/openvins-board-pattern-dev-1701/probe-baseline-v1/world.sdf": {
+      "bytes": 6030,
+      "sha256": "79d13d8ef4a564c5ab99df8be4b58d691ca3f8e243fa8cc6142737480d9da73f"
+    },
+    "results/openvins-board-pattern-dev-1701/probe-baseline-v2/fast-version.txt": {
+      "bytes": 13,
+      "sha256": "a8579c7a15e7c3320591007e30188bec5ae99f66fc746461b76d9eaca7d9c838"
+    },
+    "results/openvins-board-pattern-dev-1701/probe-baseline-v2/fast20.csv": {
+      "bytes": 211,
+      "sha256": "50409dccbb46875c85fcf844a5f4f898f378dbfe6e4462a2441078a26d72cc2b"
+    },
+    "results/openvins-board-pattern-dev-1701/probe-baseline-v2/frame.json": {
+      "bytes": 1705,
+      "sha256": "023da54eb6d39089a166aa85c3250d08cdfca7ed5fdbb76883d6b8bdc7c0c178"
+    },
+    "results/openvins-board-pattern-dev-1701/probe-baseline-v2/frame.ppm": {
+      "bytes": 57615,
+      "sha256": "6408c92f3759156965eefa7913a6a4fc619f06203d26b500f7ffd178774567d7"
+    },
+    "results/openvins-board-pattern-dev-1701/probe-baseline-v2/ground_albedo.png": {
+      "bytes": 154343,
+      "sha256": "5e62827968eeabb55285bba85276518b6d8fb1441f0bf9659caa52a48ed48593"
+    },
+    "results/openvins-board-pattern-dev-1701/probe-baseline-v2/obstacle_albedo.png": {
+      "bytes": 52690,
+      "sha256": "28f87e79cc5cd767b029a4c7b00b165e1aad9f2cbb998be1a161e3ff5d121c3f"
+    },
+    "results/openvins-board-pattern-dev-1701/probe-baseline-v2/run.log": {
+      "bytes": 3413,
+      "sha256": "d7f881d19b48dbe4932a55ac31510c8c2c0fabb124152091a5d5848fb0b9bade"
+    },
+    "results/openvins-board-pattern-dev-1701/probe-baseline-v2/world.sdf": {
+      "bytes": 6030,
+      "sha256": "79d13d8ef4a564c5ab99df8be4b58d691ca3f8e243fa8cc6142737480d9da73f"
+    },
+    "results/openvins-board-pattern-dev-1701/probe-variant-v1/board_albedo.png": {
+      "bytes": 1970,
+      "sha256": "5d24a1d96cccf2f81046dbfa6afe57b4760038a8714da5059d6258fc34166945"
+    },
+    "results/openvins-board-pattern-dev-1701/probe-variant-v1/fast-version.txt": {
+      "bytes": 13,
+      "sha256": "a8579c7a15e7c3320591007e30188bec5ae99f66fc746461b76d9eaca7d9c838"
+    },
+    "results/openvins-board-pattern-dev-1701/probe-variant-v1/fast20.csv": {
+      "bytes": 44,
+      "sha256": "14da006db5d538d04b6d5a2057e336feb5f163ef947a4770d4f031989a9f9f01"
+    },
+    "results/openvins-board-pattern-dev-1701/probe-variant-v1/frame.json": {
+      "bytes": 1691,
+      "sha256": "d5206c3f1814cd9fd3bc596d08f1037b77c75254e2a38999b2733e56c6585122"
+    },
+    "results/openvins-board-pattern-dev-1701/probe-variant-v1/frame.png": {
+      "bytes": 298,
+      "sha256": "a857d129096a46fd8c27d340a32121c1463ac874d694f3191d685cd72de1ba50"
+    },
+    "results/openvins-board-pattern-dev-1701/probe-variant-v1/frame.ppm": {
+      "bytes": 57615,
+      "sha256": "c4b606ca3921dc574cdd9673fcb3434a461539292584639ab72f581f8b6b7132"
+    },
+    "results/openvins-board-pattern-dev-1701/probe-variant-v1/ground_albedo.png": {
+      "bytes": 154343,
+      "sha256": "5e62827968eeabb55285bba85276518b6d8fb1441f0bf9659caa52a48ed48593"
+    },
+    "results/openvins-board-pattern-dev-1701/probe-variant-v1/obstacle_albedo.png": {
+      "bytes": 52690,
+      "sha256": "28f87e79cc5cd767b029a4c7b00b165e1aad9f2cbb998be1a161e3ff5d121c3f"
+    },
+    "results/openvins-board-pattern-dev-1701/probe-variant-v1/run.log": {
+      "bytes": 3399,
+      "sha256": "3baa02c8dde1fe07d84ef7dc0b91deb922ba845b08282434280e03e28d88865f"
+    },
+    "results/openvins-board-pattern-dev-1701/probe-variant-v1/world.sdf": {
+      "bytes": 6024,
+      "sha256": "6fe5501bd96b3f1efe1d441cd6cc2a99492cc4d298b82e56f36cf6c1a116ba11"
+    },
+    "results/openvins-board-pattern-dev-1701/probe-variant-v2/board_albedo.png": {
+      "bytes": 1970,
+      "sha256": "5d24a1d96cccf2f81046dbfa6afe57b4760038a8714da5059d6258fc34166945"
+    },
+    "results/openvins-board-pattern-dev-1701/probe-variant-v2/fast-version.txt": {
+      "bytes": 13,
+      "sha256": "a8579c7a15e7c3320591007e30188bec5ae99f66fc746461b76d9eaca7d9c838"
+    },
+    "results/openvins-board-pattern-dev-1701/probe-variant-v2/fast20.csv": {
+      "bytes": 659,
+      "sha256": "f68d56e8d60fc5b508fe8a8702207c308006ed27662bb8b8df27bfa46bdc1f41"
+    },
+    "results/openvins-board-pattern-dev-1701/probe-variant-v2/frame.json": {
+      "bytes": 1705,
+      "sha256": "c48058935f190d9803128dab5d4205c9bcc362133696e9654d8bf7a3e13a579f"
+    },
+    "results/openvins-board-pattern-dev-1701/probe-variant-v2/frame.png": {
+      "bytes": 298,
+      "sha256": "a857d129096a46fd8c27d340a32121c1463ac874d694f3191d685cd72de1ba50"
+    },
+    "results/openvins-board-pattern-dev-1701/probe-variant-v2/frame.ppm": {
+      "bytes": 57615,
+      "sha256": "559cb49ab6b8dd21defb3014665d4e0a6b674601ad228f88b47dc6388b26ec2d"
+    },
+    "results/openvins-board-pattern-dev-1701/probe-variant-v2/ground_albedo.png": {
+      "bytes": 154343,
+      "sha256": "5e62827968eeabb55285bba85276518b6d8fb1441f0bf9659caa52a48ed48593"
+    },
+    "results/openvins-board-pattern-dev-1701/probe-variant-v2/obstacle_albedo.png": {
+      "bytes": 52690,
+      "sha256": "28f87e79cc5cd767b029a4c7b00b165e1aad9f2cbb998be1a161e3ff5d121c3f"
+    },
+    "results/openvins-board-pattern-dev-1701/probe-variant-v2/run.log": {
+      "bytes": 3413,
+      "sha256": "cbef061dba63fbe6780bf5660908a01bbfb8297a1559c5d93f949cdf505d2e00"
+    },
+    "results/openvins-board-pattern-dev-1701/probe-variant-v2/world.sdf": {
+      "bytes": 6024,
+      "sha256": "6fe5501bd96b3f1efe1d441cd6cc2a99492cc4d298b82e56f36cf6c1a116ba11"
+    },
+    "results/openvins-board-pattern-dev-1701/pytest-all-reviewed.txt": {
+      "bytes": 1534,
+      "sha256": "6d4fcee5b4b6529da4ad82fcb9fc82463a0539a2a2d25779e55c0a4eda86db3a"
+    },
+    "results/openvins-board-pattern-dev-1701/pytest-all.txt": {
+      "bytes": 1534,
+      "sha256": "711fa35b2afaada4f6ca7d3490e0d1a125019ad90ac60a1190022f361e5fc725"
+    },
+    "results/openvins-board-pattern-dev-1701/pytest-benchmark.txt": {
+      "bytes": 912,
+      "sha256": "8fc1681c833c4f961276c9f5d3aa522b4ea3cd79b1eec393ffc5d23bdb1b0786"
+    },
+    "results/openvins-board-pattern-dev-1701/replay-v1/exit-code.txt": {
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    "results/openvins-board-pattern-dev-1701/replay-v1/resources.txt": {
+      "bytes": 1045,
+      "sha256": "6906c026d6df53e9f8acea1196c52f6b9a5333682ff9742778a713f5956e93db"
+    },
+    "results/openvins-board-pattern-dev-1701/replay-v1/states.csv": {
+      "bytes": 48750,
+      "sha256": "2b5ce9c343e63f3178a74e8a02c889beba3bfbc02ddf9eaf4e1c526f94a6f550"
+    },
+    "results/openvins-board-pattern-dev-1701/replay-v1/stderr.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "results/openvins-board-pattern-dev-1701/replay-v1/stdout.txt": {
+      "bytes": 256384,
+      "sha256": "c061a42a45652d9b038e65ab3b15eba7cc70a155e0012fc27092d837a3f638b3"
+    },
+    "results/openvins-board-pattern-dev-1701/reviewed-parser-validation.json": {
+      "bytes": 567,
+      "sha256": "2477c9d5f959aca7bbf45c46f6378424b994038db33eea7cb676c0074ce5d896"
+    },
+    "results/openvins-board-pattern-dev-1701/ruff-reviewed.txt": {
+      "bytes": 19,
+      "sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18"
+    },
+    "results/openvins-board-pattern-dev-1701/ruff.txt": {
+      "bytes": 19,
+      "sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18"
+    },
+    "results/openvins-board-pattern-dev-1701/run-capture-v2.sh": {
+      "bytes": 809,
+      "sha256": "29970886e7e1220a5eb9a202941996b85dfe0f0ad324086d8e50175e6e9fb847"
+    },
+    "results/openvins-board-pattern-dev-1701/run-capture.sh": {
+      "bytes": 672,
+      "sha256": "a6d0e25670cccf01038a8e3240784e45c84a83fecd561a7c10ab42bc4c95dd78"
+    },
+    "results/openvins-board-pattern-dev-1701/run-fast.sh": {
+      "bytes": 425,
+      "sha256": "4877606ed699fe452ba5ea249b5bf5096ddedb984eb6e2b586aa85fc024ff14c"
+    },
+    "results/openvins-board-pattern-dev-1701/run-probes.sh": {
+      "bytes": 413,
+      "sha256": "7d41ab45f84efe467b823827a28e9f3c5e27fd3b528802d5133126c78283c9d6"
+    },
+    "results/openvins-board-pattern-dev-1701/run-replay.sh": {
+      "bytes": 681,
+      "sha256": "726d40c640331dd2992a94d7bbe69835e52114d6951a8659db677f460fbf46ca"
+    },
+    "results/openvins-board-pattern-dev-1701/run-settled-probes.sh": {
+      "bytes": 629,
+      "sha256": "719d49cdd8016513ab686cda57e998327411ac35701c358825dc979e06565eea"
+    },
+    "results/openvins-board-pattern-dev-1701/runtime-provenance.sh": {
+      "bytes": 651,
+      "sha256": "b3401f2eddc82180caa838cf86f78c44176d14f9b12a22ceff4c7fc807787511"
+    },
+    "results/openvins-board-pattern-dev-1701/runtime-provenance.txt": {
+      "bytes": 553,
+      "sha256": "3be33df3a22caf4360f676085b5f78f895f16036d0526177a48b60325bee4cbd"
+    },
+    "results/openvins-board-pattern-dev-1701/save-upstream-source.sh": {
+      "bytes": 563,
+      "sha256": "7110b92ae5ba2048dcf96e707575742db2d907e86650cd601b8612fef38150ae"
+    },
+    "results/openvins-board-pattern-dev-1701/scope-process-evidence.py": {
+      "bytes": 725,
+      "sha256": "145dcc33a16ef23a7c5b0ecf4be865604bc232dfd0d69b020f920ac77c18d7ef"
+    },
+    "results/openvins-board-pattern-dev-1701/scoped-process-evidence.json": {
+      "bytes": 850,
+      "sha256": "2482ba75b58306869f9b16ce67b70826aa55491aa55e12074aab72c7e6f4823b"
+    },
+    "results/openvins-board-pattern-dev-1701/seal-evidence.py": {
+      "bytes": 2416,
+      "sha256": "9fe6384db2322f5f3247b8fbcca051df994f795c46eea66ef7ec5705184509a2"
+    },
+    "results/openvins-board-pattern-dev-1701/static-screen-v1.json": {
+      "bytes": 4904,
+      "sha256": "00efff0147b0067a24c5c3dbdad8cdd06a1c8453db7f86d38bdf85d336d29238"
+    },
+    "results/openvins-board-pattern-dev-1701/static-screen-v2.json": {
+      "bytes": 4934,
+      "sha256": "fab00b1aeec35f2b943b6dd2af311f3ca3bb47b65b59644713235f47abec8304"
+    },
+    "results/openvins-board-pattern-dev-1701/trajectory-v1.json": {
+      "bytes": 1842,
+      "sha256": "f2f3baa93c90a77e6b77b7c8be5f88e794ed7656db2920d584c27598acbf9000"
+    },
+    "results/openvins-board-pattern-dev-1701/trajectory.png": {
+      "bytes": 68911,
+      "sha256": "c2ba238e701b2793217acf214af762080e3e3d286877a05a63be8ea05744e400"
+    },
+    "results/openvins-board-pattern-dev-1701/upstream-license-note.txt": {
+      "bytes": 197,
+      "sha256": "5b224fa1b429d0104e686f994417796041ad8e2dc291ea0ce5bf94dce9f297d2"
+    },
+    "results/openvins-board-pattern-dev-1701/upstream-local.patch": {
+      "bytes": 2017,
+      "sha256": "58b0424e47f26c3876468449922201cbf814039562e035ffddfda13bcd1fa473"
+    },
+    "results/openvins-board-pattern-dev-1701/upstream-source/GPL-3.txt": {
+      "bytes": 35149,
+      "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986"
+    },
+    "results/openvins-board-pattern-dev-1701/upstream-source/VioManager.cpp": {
+      "bytes": 35880,
+      "sha256": "13d0c40710f2d267e8b5967c9a91d026c12a79fec174b63154942ae97b896182"
+    },
+    "results/openvins-board-pattern-dev-1701/upstream-source/VioManager.h": {
+      "bytes": 8661,
+      "sha256": "7afa93033a85656f16a32bba9324887bfdc4a1272c3fe53567d16bd28da4c1e2"
+    },
+    "results/openvins-board-pattern-dev-1701/upstream-source/VioManagerHelper.cpp": {
+      "bytes": 21471,
+      "sha256": "e5f643cf8fb9fe0aff00a6b4da2fb3e62179fe9f5d2f97e41e37b50df9261f17"
+    },
+    "results/openvins-board-pattern-dev-1701/upstream-source-hashes.txt": {
+      "bytes": 607,
+      "sha256": "17dee70b6800d28bc75e0443b302dbc900e66c31db0ee733955eea4538f1b726"
+    },
+    "results/openvins-board-pattern-dev-1701/validate-replay.py": {
+      "bytes": 1152,
+      "sha256": "c6631888d4ae90e5bea5a1062a5480abbddd8718b306730b0e16f819790a1c7f"
+    },
+    "results/openvins-board-pattern-dev-1701/validate-reviewed-parser.py": {
+      "bytes": 635,
+      "sha256": "d64bcc0d9b8948869680e8e0178c6db4e2a34e2a4e04b9bc06cd7f9d32eb9422"
+    },
+    "results/openvins-board-pattern-dev-1701/variant-settled.png": {
+      "bytes": 6615,
+      "sha256": "e2dcc9f0965298e79e050925321b31acbf9d8babf4b54feb0c9879a40549fd29"
+    },
+    "docs/OPENVINS_BOARD_PATTERN_REPORT.md": {
+      "bytes": 7134,
+      "sha256": "8b5b8db1bba9fb91542613edd74b476af1f303f152321ceb7d9c2095d8bf27aa"
+    },
+    "docs/superpowers/specs/2026-10-05-openvins-board-pattern-design.md": {
+      "bytes": 3734,
+      "sha256": "c38484806476ca906927017e3172a8fdc180c2b91008a62910a7d5424f690b5e"
+    },
+    "docs/superpowers/plans/2026-10-05-openvins-board-pattern.md": {
+      "bytes": 1108,
+      "sha256": "dc28cbbea543a376bec8d0b2b54c761804252189968bea6bc18997263420c458"
+    },
+    "tools/benchmark/make_prearm_pattern_fixture.py": {
+      "bytes": 6104,
+      "sha256": "107c085a147c15d3dfef33f6b54a3fb30052231e96b9c7b9f152a6b920058104"
+    },
+    "tools/benchmark/run_episode.py": {
+      "bytes": 15223,
+      "sha256": "bc765ed828cb5aa5d715369fcf8238fbab451f3e761a078d5464a59af3fa6d13"
+    },
+    "tools/benchmark/audit_openvins_init_feature_trace.py": {
+      "bytes": 9820,
+      "sha256": "fe09e9db1903149af94beb75856b9164a40f90c2748768eb994a5388cf30ed4c"
+    },
+    "tools/benchmark/openvins_init_feature_trace.patch": {
+      "bytes": 1841,
+      "sha256": "0cc8a8df9da8ed64ac806240c6260c753aee89389f40b1cd3b014e74a3408bdc"
+    },
+    "tests/benchmark/test_prearm_pattern_fixture.py": {
+      "bytes": 4767,
+      "sha256": "13fd877550e21d4c9596408f851f445132ba06df202d53613b7cb060db20a32a"
+    },
+    "tests/benchmark/test_static_init_outcomes.py": {
+      "bytes": 1271,
+      "sha256": "d18cda97ce70ff9c45621a984ad7593d1a1a60e6d666a44be30bcb5c8381274c"
+    }
+  },
+  "local_only": {
+    "processes-before-capture-v2.txt": {
+      "sha256": "4b0cb71c93b7727118cf732349dcad51e7374c0f498fa910ea86738a40366e7b",
+      "reason": "Full host process inventory; relevant scoped evidence included, unrelated process details retained locally."
+    },
+    "processes-after-capture-v2.txt": {
+      "sha256": "70964903fe9b4fd62e8bca27e7c1ac239733df40dfe7dea39e0f5646809d3f7a",
+      "reason": "Full host process inventory; relevant scoped evidence included, unrelated process details retained locally."
+    }
+  }
+}
