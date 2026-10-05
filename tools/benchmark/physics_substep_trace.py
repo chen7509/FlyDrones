@@ -67,6 +67,8 @@ class SubstepTrace:
                 sim_ns=ns,
                 dt_ns=dt,
                 state_time_ns=ns - dt if phase == "pre" else ns,
+                state_time_basis="callback_phase_only",
+                component_refresh_verified=False,
                 wall_ns=wall,
                 available=state is not None,
                 truth_for_diagnostics_only=True,
