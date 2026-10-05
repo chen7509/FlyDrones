@@ -32,3 +32,7 @@ Initial missing-module RED then13 implementation tests passed; an additional Cap
 | Retained failed records | This deliberately incomplete capture; PR37 drift, PR39 ground-contact aliasing, PR40 startup failures, five-camera0.873RTF<0.95. |
 
 Next instrument the existing supervisor's per-signal outcomes and distinguish process-group disappearance from the filtered resource inventory, with synthetic/real bounded subprocess tests before another prospective runtime study. Do not overwrite or rerun this frozen capture. Then address composite readiness/shadow source delivery for an independently frozen supported-motion OpenVINS study. No public initialized, quality/reset/covariance or EKF2 gate is relaxed.
+
+## Publication
+
+Draft [PR44](https://github.com/chen7509/FlyDrones/pull/44), stacked on PR43. Evidence `evidence/native-runtime-refusal-dev-1701.zip`:299 members,2,164,632 bytes,SHA256 `36272ef35da60ec7473afedd3f113595df8378832cab62d536b68d4163c1d31f`; member hashes and CRC verified. Frozen physical producer `dc23e19`; final code/report snapshot `212f979`, evidence commit `2bb436b`. Final status hardening has synthetic/regression evidence only. Publication text is appended after sealing without modifying the archive. Two TLS push failures were followed by a successful verified-TLS HTTP/1.1 push; no TLS verification was disabled. Next-stage documentation fetch also retained its TLS failure and pinned GitHub fallback, without changing capture inputs.
