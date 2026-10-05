@@ -3,8 +3,10 @@
 This does not control processes or certify descendants outside the owned group.
 """
 
+import hashlib
 import json
 import math
+from pathlib import PurePosixPath
 
 
 def require(condition, reason):
@@ -87,6 +89,21 @@ def _audit(s, journal):
             require(obs["executing"] == [m for m in members if m["state"] not in {"Z", "X", "x"}], "scan execution mismatch")
             label = e["label"]
             require(label in {"before_signals", "confirm_drained", "drain", "before_escalation", "after_signals", "after_leader_reap"}, "scan label")
+            previous = events[i - 1]
+            following = events[i + 1] if i + 1 < len(events) else {}
+            if label in ("before_signals", "confirm_drained") and obs["executing"]:
+                expected = "signal_intent" if not signals else "snapshot"
+                require(following.get("event") == expected, "omitted mandatory signal")
+                if signals:
+                    require(following.get("label") == "before_escalation", "missing escalation check")
+            if label == "before_escalation":
+                require(signals and not obs["executing"], "unrecorded/required KILL disqualifies no-KILL study")
+            if label == "drain":
+                require(previous["event"] == "signal_result" or previous.get("label") == "drain", "unjustified drain")
+            if label == "confirm_drained":
+                require(previous.get("label") in ("drain", "before_signals"), "confirm ordering")
+            if label == "after_signals":
+                require(previous.get("label") in ("confirm_drained", "before_escalation"), "after-signals ordering")
             if reap_index is None:
                 require(label != "after_leader_reap" and any(m["pid"] == pid and m["state"] == "Z" for m in members), "leader not pinned")
             else:
@@ -100,9 +117,13 @@ def _audit(s, journal):
                     "after_signals" not in labels, "signal ordering")
             require(integer(e["pgid"], pid) and integer(e["signal"], 15), "foreign/escalated signal")
             if kind == "signal_intent":
+                previous = events[i - 1]
+                require(not signals and previous.get("label") in ("before_signals", "confirm_drained") and
+                        previous["observation"]["executing"], "signal without triggering scan")
                 pending = e
             else:
                 require(pending is not None and e["outcome"] in ("dispatched", "absent"), "signal outcome")
+                require(i + 1 < len(events) and events[i + 1].get("label") == "drain", "missing post-signal drain")
                 signals.append(dict(signal=15, outcome=e["outcome"], pgid=pid))
                 pending = None
         elif kind == "leader_reaped":
@@ -120,3 +141,43 @@ def _audit(s, journal):
                 owner=c["owner"], signals=signals, journal_events=len(events),
                 supervisor_sigkill_dispatched=False, no_executing_members=True, group_absent=True,
                 all_descendant_cleanup_qualified=False, capture_status_retained="capture_failed")
+
+
+def audit_snapshots(before, after):
+    """Rederive manifest equality and validate retained source copies, not exit flags.
+
+    Native/library binaries were hashed in situ by the frozen launcher; only source
+    suffixes were copied. This function does not invent retained binary copies.
+    """
+    try:
+        manifests = []
+        count = 0
+        for directory in (before, after):
+            manifest = json.loads((directory / "manifest.json").read_text())
+            require(isinstance(manifest, list) and len(manifest) > 0, "missing manifest")
+            paths = set()
+            copies = 0
+            for index, row in enumerate(manifest):
+                require(set(row) == {"path", "bytes", "sha256"}, "manifest fields")
+                require(isinstance(row["path"], str), "manifest path type")
+                path = PurePosixPath(row["path"])
+                require(path.is_absolute() and ".." not in path.parts and row["path"] not in paths, "manifest path")
+                paths.add(row["path"])
+                require(integer(row["bytes"]) and row["bytes"] >= 0 and isinstance(row["sha256"], str) and
+                        len(row["sha256"]) == 64 and all(c in "0123456789abcdef" for c in row["sha256"]), "manifest hash/size")
+                if path.suffix in (".py", ".sdf", ".cc"):
+                    copy_path = directory / (str(index) + "-" + path.name)
+                    require(not copy_path.is_symlink(), "snapshot symlink")
+                    data = copy_path.read_bytes()
+                    require(len(data) == row["bytes"] and hashlib.sha256(data).hexdigest() == row["sha256"], "snapshot bytes changed")
+                    copies += 1
+            manifests.append(manifest)
+            if len(manifests) == 1:
+                count = copies
+            else:
+                require(copies == count, "copied source count changed")
+        require(manifests[0] == manifests[1], "runtime manifest changed")
+        return dict(manifests_equal=True, manifest_entries=len(manifests[0]), copied_files_per_snapshot=count,
+                    binary_evidence="in-situ pre/post hashes; not retained binary copies")
+    except (OSError, KeyError, TypeError, json.JSONDecodeError) as exc:
+        raise ValueError("invalid retained producer snapshots") from exc

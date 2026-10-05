@@ -14,8 +14,11 @@ def fixture(term=False):
               dict(event="leader_exit_unreaped", pid=123, code=1, status=2),
               dict(event="snapshot", label="before_signals", observation=pinned)]
     if term:
+        live = dict(owner, pid=124, state="S")
+        events[-1]["observation"] = dict(empty, members=[zombie, live], executing=[live])
         events += [dict(event="signal_intent", pgid=123, signal=15),
-                   dict(event="signal_result", pgid=123, signal=15, outcome="dispatched")]
+                   dict(event="signal_result", pgid=123, signal=15, outcome="dispatched"),
+                   dict(event="snapshot", label="drain", observation=pinned)]
     events += [dict(event="snapshot", label="confirm_drained", observation=pinned),
                dict(event="snapshot", label="after_signals", observation=pinned),
                dict(event="leader_reaped", returncode=2),
@@ -98,3 +101,50 @@ def test_reject_incomplete_or_inconsistent_evidence(case):
         j = copy.deepcopy(e)
     with pytest.raises(ValueError):
         audit_supervisor(s, j)
+
+
+@pytest.mark.parametrize("label", ["before_signals", "confirm_drained", "before_escalation"])
+def test_reject_whole_signal_pair_omission(label):
+    s, _ = fixture()
+    e = s["cleanup"]["events"]
+    live = dict(s["cleanup"]["owner"], pid=124, state="S")
+    obs = dict(members=[dict(s["cleanup"]["owner"], state="Z"), live], executing=[live], errors=[], vanished=[])
+    if label == "before_escalation":
+        e.insert(4, dict(event="snapshot", label=label, observation=obs))
+    else:
+        next(row for row in e if row.get("label") == label)["observation"] = obs
+    for i, row in enumerate(e):
+        row["monotonic_s"] = 1 + i / 10
+    with pytest.raises(ValueError):
+        audit_supervisor(s, copy.deepcopy(e))
+
+
+@pytest.mark.parametrize("mutation", [None, "after_manifest", "before_copy", "after_copy", "missing_copy", "bool_size"])
+def test_retained_snapshot_hashes(tmp_path, mutation):
+    import hashlib
+    import json
+
+    from tools.benchmark.native_supervisor_integration import audit_snapshots
+
+    for side in ("before", "after"):
+        d = tmp_path / side
+        d.mkdir()
+        (d / "0-source.py").write_bytes(b"source\n")
+        meta = [dict(path="/frozen/source.py", bytes=7, sha256=hashlib.sha256(b"source\n").hexdigest())]
+        (d / "manifest.json").write_text(json.dumps(meta))
+    if mutation == "after_manifest":
+        meta[0]["sha256"] = "0" * 64
+        (tmp_path / "after/manifest.json").write_text(json.dumps(meta))
+    elif mutation in ("before_copy", "after_copy"):
+        (tmp_path / mutation.split("_")[0] / "0-source.py").write_bytes(b"changed")
+    elif mutation == "missing_copy":
+        (tmp_path / "after/0-source.py").unlink()
+    elif mutation == "bool_size":
+        meta[0]["bytes"] = True
+        for side in ("before", "after"):
+            (tmp_path / side / "manifest.json").write_text(json.dumps(meta))
+    if mutation is None:
+        assert audit_snapshots(tmp_path / "before", tmp_path / "after")["copied_files_per_snapshot"] == 1
+    else:
+        with pytest.raises(ValueError):
+            audit_snapshots(tmp_path / "before", tmp_path / "after")
