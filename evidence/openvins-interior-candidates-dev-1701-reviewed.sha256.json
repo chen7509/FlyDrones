@@ -1,0 +1,225 @@
+{
+  "schema": "flydrones-sealed-development-evidence-v1",
+  "archive": "evidence/openvins-interior-candidates-dev-1701-reviewed.zip",
+  "archive_bytes": 649326,
+  "archive_sha256": "049c0a80e09b5a2ca4b6b1103be52ace97dab6018ff8280ce8c295221b7804d2",
+  "member_count": 54,
+  "members": {
+    "results/openvins-interior-candidates-dev-1701/audit-v1/failure.txt": {
+      "bytes": 324,
+      "sha256": "dc957ae631aa5e48c8ed0fcfb7d07e324b9cdfe634ad5f8103cdcfeaa532d66e"
+    },
+    "results/openvins-interior-candidates-dev-1701/audit-v1/frames.csv": {
+      "bytes": 6936,
+      "sha256": "bd19aea9921f79e45e753d8f9e2e98c3885e2ec3a4c1f1888603e3b6069c94ec"
+    },
+    "results/openvins-interior-candidates-dev-1701/audit-v2/candidates.csv": {
+      "bytes": 139105,
+      "sha256": "55a9a3a600199ff5bea89fea811e6a99d42fc8c27fa9bfe5a4e2f229056a464d"
+    },
+    "results/openvins-interior-candidates-dev-1701/audit-v2/frames.csv": {
+      "bytes": 15834,
+      "sha256": "3953b4327e62533483e300385429a4799bbb39458cdce2ce283ef24c32bbfd29"
+    },
+    "results/openvins-interior-candidates-dev-1701/audit-v2/new.csv": {
+      "bytes": 138959,
+      "sha256": "55d840ea749f761ca8f2d9bef9d3add0fda5706aab23d52497b5d521bfe254e4"
+    },
+    "results/openvins-interior-candidates-dev-1701/audit-v2/summary.json": {
+      "bytes": 776,
+      "sha256": "465baa01948db5b54a28a583559ec663f60bc6a803aab3a95043a04b03a28922"
+    },
+    "results/openvins-interior-candidates-dev-1701/audit-v3/candidates.csv": {
+      "bytes": 139105,
+      "sha256": "55a9a3a600199ff5bea89fea811e6a99d42fc8c27fa9bfe5a4e2f229056a464d"
+    },
+    "results/openvins-interior-candidates-dev-1701/audit-v3/frames.csv": {
+      "bytes": 17158,
+      "sha256": "b18ddab7a2b36b1063f6015d2b8ebe0075ee2d5672463fda637eb6f223160213"
+    },
+    "results/openvins-interior-candidates-dev-1701/audit-v3/new.csv": {
+      "bytes": 138959,
+      "sha256": "55d840ea749f761ca8f2d9bef9d3add0fda5706aab23d52497b5d521bfe254e4"
+    },
+    "results/openvins-interior-candidates-dev-1701/audit-v3/summary.json": {
+      "bytes": 921,
+      "sha256": "5ab4bdc61f829429fb6ad71bb9be3f45e2c19b51d264561173b67faeb6efafe0"
+    },
+    "results/openvins-interior-candidates-dev-1701/audit-v4/candidates.csv": {
+      "bytes": 139105,
+      "sha256": "55a9a3a600199ff5bea89fea811e6a99d42fc8c27fa9bfe5a4e2f229056a464d"
+    },
+    "results/openvins-interior-candidates-dev-1701/audit-v4/frames.csv": {
+      "bytes": 17158,
+      "sha256": "b18ddab7a2b36b1063f6015d2b8ebe0075ee2d5672463fda637eb6f223160213"
+    },
+    "results/openvins-interior-candidates-dev-1701/audit-v4/new.csv": {
+      "bytes": 138959,
+      "sha256": "55d840ea749f761ca8f2d9bef9d3add0fda5706aab23d52497b5d521bfe254e4"
+    },
+    "results/openvins-interior-candidates-dev-1701/audit-v4/summary.json": {
+      "bytes": 1021,
+      "sha256": "3a5660dee23755d590e8829d88943d01477bbab9d1000fbf5343b58987c491c3"
+    },
+    "results/openvins-interior-candidates-dev-1701/build.exitcode": {
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    "results/openvins-interior-candidates-dev-1701/build.log": {
+      "bytes": 4720,
+      "sha256": "b1a87b2a9a7784905de0426f3ae6d17bebb4134d7976d1832a803538c5d214bd"
+    },
+    "results/openvins-interior-candidates-dev-1701/build.sh": {
+      "bytes": 1514,
+      "sha256": "b848ccc94520976bd18d130d9782a7591075583531099761319268e129616852"
+    },
+    "results/openvins-interior-candidates-dev-1701/configure.exitcode": {
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    "results/openvins-interior-candidates-dev-1701/configure.log": {
+      "bytes": 3690,
+      "sha256": "01a3f67d4a226749c401ce396f185c1d367e8ab645859bdfb3357efafa3da03b"
+    },
+    "results/openvins-interior-candidates-dev-1701/instrument_candidates.py": {
+      "bytes": 1601,
+      "sha256": "42d03e86cc28eafc9e23e440832b50d40d2105ad1937211831e9bb3606bf8bee"
+    },
+    "results/openvins-interior-candidates-dev-1701/library-bytes.txt": {
+      "bytes": 10,
+      "sha256": "fd3450623be0f764972f9aa2702555441d6f1a5751f7deb77b0596195bf1c22b"
+    },
+    "results/openvins-interior-candidates-dev-1701/library-sha256.txt": {
+      "bytes": 172,
+      "sha256": "61bd2d24862a9e623ed1ea29a147e8a57ee3ec17b4feeae2eaedffe34abdb34b"
+    },
+    "results/openvins-interior-candidates-dev-1701/provenance-v2.json": {
+      "bytes": 2020,
+      "sha256": "1b553c3c55231300eee0655d73ad8ac31d75be8e523588c30440396c0d83faed"
+    },
+    "results/openvins-interior-candidates-dev-1701/provenance.json": {
+      "bytes": 2020,
+      "sha256": "30cdad0854e32bbf0370007d41c37a2beb52376ddf6f5f8154e5416874468ba3"
+    },
+    "results/openvins-interior-candidates-dev-1701/replay-v1/exit-code.txt": {
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    "results/openvins-interior-candidates-dev-1701/replay-v1/resources.txt": {
+      "bytes": 1354,
+      "sha256": "7eb55e42ac6490481b613c80233a0a55921ff2856a16be4129fd74d730bd7f90"
+    },
+    "results/openvins-interior-candidates-dev-1701/replay-v1/states.csv": {
+      "bytes": 67207,
+      "sha256": "1ccb4cd2eb55294e5130f052800d0bf83a962538ecba68c00c97e28c22af8975"
+    },
+    "results/openvins-interior-candidates-dev-1701/replay-v1/stderr.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "results/openvins-interior-candidates-dev-1701/replay-v1/stdout.txt": {
+      "bytes": 1813252,
+      "sha256": "2b3cfcc9ae3ef0dea57dacce7afc4c26fb96ae1ce34e8d408a2d14a0014cc450"
+    },
+    "results/openvins-interior-candidates-dev-1701/run_audit.py": {
+      "bytes": 7854,
+      "sha256": "1c88e06e14650d754293ba8aa79e2ca43a0c7052fa24ce5e0e9970d788fe3104"
+    },
+    "results/openvins-interior-candidates-dev-1701/run_replay_v1.sh": {
+      "bytes": 828,
+      "sha256": "8b75ab7185efaa6d7102f164375c9dd9645baf4ea2a6f9496a9f456518ee6d75"
+    },
+    "results/openvins-interior-candidates-dev-1701/runner-ldd.txt": {
+      "bytes": 12282,
+      "sha256": "7c8892b30281ccdaae6adf657b535a7e9af613eaf747ba8a5d77d4ebf66d7e93"
+    },
+    "results/openvins-interior-candidates-dev-1701/seal_archive.py": {
+      "bytes": 3486,
+      "sha256": "60df17490974b42a5d7d1a71f6df9fa1895e185f9a064987498a49227b13570f"
+    },
+    "results/openvins-interior-candidates-dev-1701/upstream-applied.patch": {
+      "bytes": 13363,
+      "sha256": "4a53b3bc992fec3a1096746927c592aeecdc7b186483fe54261e062789391c23"
+    },
+    "results/openvins-interior-candidates-dev-1701/upstream-diff-check.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "results/openvins-interior-candidates-dev-1701/upstream-head.txt": {
+      "bytes": 41,
+      "sha256": "ad95168c17811186a23279adcce911c29c32e048b8725a28c44f33634d45e841"
+    },
+    "results/openvins-interior-candidates-dev-1701/upstream-status.txt": {
+      "bytes": 120,
+      "sha256": "e7fe6c2fa53014bbc651e5bf45c31f4422e9711edb038a0aad92180f678b25fc"
+    },
+    "results/openvins-interior-candidates-dev-1701/write_provenance.py": {
+      "bytes": 4170,
+      "sha256": "61202c99c2379a0abff3c0eedd93a5fdd548ec981981582081f6335f6086a89a"
+    },
+    "docs/OPENVINS_INTERIOR_CANDIDATES_REPORT.md": {
+      "bytes": 5777,
+      "sha256": "ca439494438f3ac4e015307c5eca3d55f2b31f909221dbbc8e5cd88c8a197f49"
+    },
+    "docs/superpowers/specs/2026-10-04-openvins-interior-candidates-design.md": {
+      "bytes": 2784,
+      "sha256": "c77744ccea5ac82e6c31f4b44422179fb36940d2c1b7cc9fee791e18b2dcc3cd"
+    },
+    "docs/superpowers/plans/2026-10-04-openvins-interior-candidates.md": {
+      "bytes": 1448,
+      "sha256": "7278925d58170baceb1b41b5e2334c48513d39ed86879870bdc9941637c3b509"
+    },
+    "tools/benchmark/openvins_init_feature_trace.patch": {
+      "bytes": 1841,
+      "sha256": "0cc8a8df9da8ed64ac806240c6260c753aee89389f40b1cd3b014e74a3408bdc"
+    },
+    "tools/benchmark/openvins_track_eligibility.patch": {
+      "bytes": 2134,
+      "sha256": "805a906b876cf371d2dbd9c139eb3d6d6f77badd11ab85058f671f38db229336"
+    },
+    "tools/benchmark/openvins_track_lifetime.patch": {
+      "bytes": 4494,
+      "sha256": "d694165d7bca939803f2dfb5597bcc49bb12c4b7157c32448a0fc2af98fb1025"
+    },
+    "tools/benchmark/openvins_detection_pruning.patch": {
+      "bytes": 4168,
+      "sha256": "f2c286478378a2ade502beabcf7c3304ab10c2da595da378306e468e0acb5297"
+    },
+    "tools/benchmark/openvins_interior_candidates.patch": {
+      "bytes": 1005,
+      "sha256": "f105c8962e79dec22ec566ce992ba9a256428668cddb90e485518818d5befa7d"
+    },
+    "tools/benchmark/audit_openvins_interior_candidates.py": {
+      "bytes": 4193,
+      "sha256": "3218aed11c8d1c2416a80c7c3fa91c8c20cc047e6d847299c8956f0a1da9bf30"
+    },
+    "tests/benchmark/test_openvins_interior_candidates.py": {
+      "bytes": 2864,
+      "sha256": "37670cd79b028acaf2755eedb80663d0b90769ee9c3488cf58964e7e5735b252"
+    },
+    "evidence/openvins-prearm-board-dev-1701-reviewed.sha256.json": {
+      "bytes": 147615,
+      "sha256": "9dc7dd919af820c9dc02f4d2a8858b5506573dfd95aea6eed39408f0ec4df1f7"
+    },
+    "evidence/openvins-track-eligibility-dev-1701.sha256.json": {
+      "bytes": 5144,
+      "sha256": "afcd90cef98a5b193e913cfdadb1301734feb09be4e0cfac9584a792c2e18a6e"
+    },
+    "evidence/openvins-track-lifetime-dev-1701.sha256.json": {
+      "bytes": 6330,
+      "sha256": "0613321110b93b9a590a5cee8023fef36d527dc791b508b246d014b599595ac5"
+    },
+    "evidence/openvins-detection-pruning-dev-1701.sha256.json": {
+      "bytes": 7268,
+      "sha256": "af1b1974d6ef71da9429a964e59935bcff08c6fde250e2a65c97d321a065eaec"
+    },
+    "evidence/openvins-interior-candidates-dev-1701.zip": {
+      "bytes": 316463,
+      "sha256": "0c5dc876e8311fd9dab33ebdeb291932b4fddadb0816261bd5c159a64d795edf"
+    },
+    "evidence/openvins-interior-candidates-dev-1701.sha256.json": {
+      "bytes": 8826,
+      "sha256": "c79ccd5d8fc057cf15e98f29909f23b52f2fb22cb27aacad6f396a6bf5a33d6d"
+    }
+  }
+}
