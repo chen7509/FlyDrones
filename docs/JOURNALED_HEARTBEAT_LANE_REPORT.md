@@ -29,3 +29,6 @@ Current compile_commands entries for drv_hrt.cpp, mavlink_main.cpp and GZBridge.
 Final regression: 1051 passed, 2 existing loader warnings, 289.00 seconds. Changed-file Ruff and git diff whitespace checks pass. Whole-repository Ruff remains failed: 52 findings across 33 files unchanged from base49cf775; this stage does not claim a clean repository-wide lint result.
 
 Verified: synthetic failure/concurrency gates and fixed virtual-time identity projection. Implemented but not physically validated: receiver journal integration. Not tested here: online native estimator, supported-motion repeat, VIO accuracy, EKF2 fusion, training or flight. Historical physical failures remain unchanged.
+
+## Publication
+Draft PR49: https://github.com/chen7509/FlyDrones/pull/49. Exclusive evidence archive evidence/journaled-heartbeat-lane-dev-1701.zip: 46 members, 657389 bytes, SHA256 0f5887c7a835c96a6045bc5b7be851f978f523f11323f0eccfd8074fd24c158c. Every member hash and CRC verified. Sealed source14e8f21; archive commitc7496ff. Later publication metadata does not rewrite the archive.
