@@ -41,7 +41,8 @@ def run(archive, output):
     assert len(heartbeats) == 6
     output.mkdir(exist_ok=False)
     now = [heartbeats[0]["arrival_monotonic_ns"]]
-    clock = lambda: now[0]
+    def clock():
+        return now[0]
     readiness, baseline, sink = JournaledReadiness(clock=clock), JournaledReadiness(clock=clock), Sink()
     f = JournaledHeartbeatFanout(output, readiness, sink, clock=clock)
     mapping = []
