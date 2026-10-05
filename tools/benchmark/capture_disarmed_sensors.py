@@ -49,13 +49,21 @@ def parse_capture_args(argv=None):
     parser.add_argument("--worker", action="store_true", help=argparse.SUPPRESS)
     parser.add_argument("--shadow-binary", type=Path)
     parser.add_argument("--shadow-config", type=Path)
-    parser.add_argument("--motion-profile", choices=["lateral-wrench-v1"])
-    parser.add_argument("--physics-trace-profile", choices=["substep-lateral-v1"])
+    parser.add_argument("--motion-profile", choices=["lateral-wrench-v1", "supported-lateral-v1"])
+    parser.add_argument("--physics-trace-profile", choices=["substep-lateral-v1", "substep-supported-v1"])
     args = parser.parse_args(argv)
     if bool(args.shadow_binary) != bool(args.shadow_config):
         parser.error("shadow binary and frozen config must be specified together")
     if args.physics_trace_profile and (not args.motion_profile or args.shadow_binary):
         parser.error("substep trace requires explicit sensor-only motion, without native shadow")
+    if (
+        args.physics_trace_profile
+        and args.physics_trace_profile
+        != {"lateral-wrench-v1": "substep-lateral-v1", "supported-lateral-v1": "substep-supported-v1"}[args.motion_profile]
+    ):
+        parser.error("motion and trace profile mismatch")
+    if args.motion_profile == "supported-lateral-v1" and not args.physics_trace_profile:
+        parser.error("supported excitation is sensor-only diagnosis")
     if args.motion_profile and not (args.shadow_binary or args.physics_trace_profile):
         parser.error("motion fixture requires the native shadow recorder")
     return args
@@ -307,7 +315,12 @@ def main():
                     finish_capture_trace(trace, result, errors)
 
                 journal.cleanup("physics trace", finish_trace, priority=76)
-            motion = GazeboMotionProbe(output, errors, lambda: arming["unarmed_wall_ns"], trace=trace)
+            motion_type = GazeboMotionProbe
+            if args.motion_profile == "supported-lateral-v1":
+                from tools.benchmark.supported_excitation import SupportedProbe
+
+                motion_type = SupportedProbe
+            motion = motion_type(output, errors, lambda: arming["unarmed_wall_ns"], trace=trace)
             journal.cleanup("motion fixture", lambda: result.update(motion=motion.finish()), priority=75)
             fixture.on_pre_update(motion.pre_update)
 
