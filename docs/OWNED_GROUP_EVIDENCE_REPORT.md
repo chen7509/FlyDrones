@@ -35,3 +35,7 @@ The initial module-missing test failed before implementation. First unit run exp
 | Retained failures | PR44 all-descendant historical cleanup unknown; prior VIO drift, contact aliasing, startup failures and five-camera0.873RTF<0.95. |
 
 Next design one independently named, prospectively frozen short native-fault capture using this supervisor; verify the owned group's signal outcomes, ULog, zero-force refusal and post-reap absence without backfilling PR44. After that, integrate composite readiness and shadow input delivery for the supported-motion online VIO study. Do not relax public initialized, quality/reset/covariance or fusion gates.
+
+## Publication
+
+Draft [PR45](https://github.com/chen7509/FlyDrones/pull/45), stacked on PR44. Evidence `evidence/owned-group-evidence-dev-1701.zip`:66 members,189555 bytes,SHA256 `7ab0c9f5cbc70e3a168c5ffb3c973099a0f51bd3e5135247428a37f8eaca00dd`; all member hashes and ZIP CRC verified. Runtime producer95dc10a, final source/report snapshot6fbf664, evidence commit7ad1bb5. This paragraph is added after sealing. Two GitHub GraphQL EOF errors were followed by empty matching-PR listings before a successful HTTP/1.1 attempt, avoiding duplicate publication and preserving TLS verification. Changed-file lint is clean; the separate publication-checks JSON retains the unchanged whole-repository lint failure.
