@@ -58,6 +58,18 @@ def raw_profile():
     }
 
 
+class InputRefusal(ValueError):
+    """A refused input remains identifiable even when no delivery actions are returned."""
+
+    def __init__(self, disposition):
+        super().__init__(disposition["reason"])
+        self._disposition = copy.deepcopy(disposition)
+
+    @property
+    def disposition(self):
+        return copy.deepcopy(self._disposition)
+
+
 class CausalInput:
     """Single-owner bounded input scheduler; a refusal permanently latches failure."""
 
@@ -76,6 +88,7 @@ class CausalInput:
         self._imu_latest = None
         self._imu_sequence = None
         self.failure = None
+        self._refused = None
         self._closed = False
 
     @property
@@ -100,6 +113,17 @@ class CausalInput:
 
     def accept(self, event, *, sequence, session_id, clock_id):
         self._open()
+        transaction_fields = (
+            "_last_sequence",
+            "_watermark",
+            "_last",
+            "_last_arrival",
+            "_pending",
+            "_imu_first",
+            "_imu_latest",
+            "_imu_sequence",
+        )
+        before = {key: copy.deepcopy(getattr(self, key)) for key in transaction_fields}
         try:
             if session_id != self.session_id or clock_id != self.clock_id:
                 raise ValueError("session/clock changed; explicit estimator reset required")
@@ -116,10 +140,14 @@ class CausalInput:
                 raise ValueError("IMU sample gap")
             if kind == "info":
                 calibration = row["camera_info"]
-                if calibration != self.profile["camera_info"] or any(
-                    type(value) not in (int, float) or not math.isfinite(value)
-                    for key in ("intrinsics_k", "projection_p", "distortion_k")
-                    for value in calibration[key]
+                if (
+                    calibration != self.profile["camera_info"]
+                    or any(type(calibration[key]) is not int for key in ("width", "height", "distortion_model"))
+                    or any(
+                        type(value) not in (int, float) or not math.isfinite(value)
+                        for key in ("intrinsics_k", "projection_p", "distortion_k")
+                        for value in calibration[key]
+                    )
                 ):
                     raise ValueError("camera calibration differs from pinned profile")
             self._watermark = max(self._watermark, arrival)
@@ -152,8 +180,18 @@ class CausalInput:
                 self._pending[kind][stamp] = (row, sequence)
             actions.extend(self._release())
             return actions
-        except (ValueError, TypeError, KeyError, AttributeError) as exc:
-            self._reject(str(exc))
+        except (ValueError, TypeError, KeyError, AttributeError, OverflowError) as exc:
+            for key, value in before.items():
+                setattr(self, key, value)
+            self.failure = str(exc)
+            self._refused = dict(
+                kind="refused_input",
+                source_sequence=sequence,
+                input=copy.deepcopy(event),
+                reason=self.failure,
+                eligible_for_px4_fusion=False,
+            )
+            raise InputRefusal(self._refused) from exc
 
     def _release(self):
         actions = []
@@ -213,4 +251,6 @@ class CausalInput:
                     eligible_for_px4_fusion=False,
                 )
             )
+        if self._refused is not None:
+            pending.append(copy.deepcopy(self._refused))
         return pending

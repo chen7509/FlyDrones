@@ -158,3 +158,39 @@ def test_info_boolean_cannot_masquerade_as_numeric_calibration():
     row["camera_info"]["intrinsics_k"][-1] = True
     with pytest.raises(ValueError, match="calibration"):
         send(s, 0, row)
+
+
+def test_release_refusal_retains_triggering_imu_and_does_not_commit_it():
+    s = stream()
+    send(s, 0, sample("rgb", 1_000_000))
+    send(s, 1, sample("info", 1_000_000))
+    with pytest.raises(ValueError) as caught:
+        send(s, 2, sample("imu", 4_000_000))
+    disposition = caught.value.disposition
+    assert disposition["source_sequence"] == 2 and disposition["input"]["kind"] == "imu"
+    assert s._last_sequence == 1 and s._imu_latest is None
+    records = s.finish()
+    assert len(records) == 2
+    assert records[0]["rgb_sequence"] == 0 and records[0]["info_sequence"] == 1
+    assert records[1]["source_sequence"] == 2 and records[1]["kind"] == "refused_input"
+    disposition["input"]["gyro_flu"][0] = 999
+    assert records[1]["input"]["gyro_flu"][0] == 1
+
+
+def test_integer_vector_overflow_latches_and_retains_refusal():
+    s = stream()
+    row = sample("imu", 1_000_000)
+    row["gyro_flu"][0] = 10**400
+    with pytest.raises(ValueError):
+        send(s, 0, row)
+    with pytest.raises(ValueError, match="latched"):
+        send(s, 0, sample("imu", 1_000_000))
+    assert s.finish()[0]["source_sequence"] == 0
+
+
+def test_boolean_distortion_scalar_is_not_a_valid_integer_enum():
+    s = stream()
+    row = sample("info", 1_000_000)
+    row["camera_info"]["distortion_model"] = False
+    with pytest.raises(ValueError, match="calibration"):
+        send(s, 0, row)

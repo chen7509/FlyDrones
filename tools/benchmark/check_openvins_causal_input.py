@@ -4,6 +4,7 @@ import argparse
 import copy
 import hashlib
 import json
+import math
 import sys
 import time
 import xml.etree.ElementTree as ET
@@ -15,7 +16,7 @@ import numpy as np
 ROOT = Path(__file__).resolve().parents[2]
 sys.path[:0] = [str(ROOT), str(ROOT / "src")]
 from tools.benchmark.disarmed_sensor_provenance import audit_event_records  # noqa: E402
-from tools.benchmark.openvins_causal_input import CausalInput, raw_profile  # noqa: E402
+from tools.benchmark.openvins_causal_input import CausalInput, InputRefusal, raw_profile  # noqa: E402
 
 ARCHIVE_SHA = "7d747d0c841ce6e13bc9614cc9b23381c45b260170f98ac2fdad7ce8bc78313d"
 PREFIX = "results/disarmed-sensor-provenance-dev-1701/"
@@ -60,6 +61,16 @@ def schedule(rows):
     return actions, consumer.finish()
 
 
+def safe_fault_value(value):
+    if isinstance(value, float) and not math.isfinite(value):
+        return {"invalid_float_literal": repr(value)}
+    if isinstance(value, dict):
+        return {key: safe_fault_value(item) for key, item in value.items()}
+    if isinstance(value, list):
+        return [safe_fault_value(item) for item in value]
+    return value
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", required=True, type=Path)
@@ -97,8 +108,16 @@ def main():
             changed[imu_index][1]["pose_truth"] = [0, 0, 0]
         try:
             schedule(changed)
-        except ValueError as exc:
-            fault_results.append({"case": name, "rejected": True, "reason": str(exc), "synthetic_fault": True})
+        except InputRefusal as exc:
+            fault_results.append(
+                {
+                    "case": name,
+                    "rejected": True,
+                    "reason": str(exc),
+                    "synthetic_fault": True,
+                    "disposition": safe_fault_value(exc.disposition),
+                }
+            )
         else:
             raise AssertionError("fault not rejected: " + name)
     waits = [(a["release_wall_ns"] - a["source_arrival_ns"]) / 1e6 for a in cameras]
