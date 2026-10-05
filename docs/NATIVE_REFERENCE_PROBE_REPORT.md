@@ -43,3 +43,7 @@ Independent review found no Critical/Important issues and two Minor issues: nati
 | Retained failures | PR37 VIO drift; PR39 initial ground-contact aliasing; PR40 fixed-start failures; original stale Link diagnostics; five-camera0.873RTF<0.95. |
 
 Next complete the bounded real runtime refusal/cleanup check without another25s normal trial, then design native-reference plus online OpenVINS recording with a composite source callback. The current writer chooses readiness **or** shadow handling; simply allowing both CLI options would starve the shadow input. Preserve actual causal source delivery, both failure paths, timing evidence and single native estimator ownership. Do not loosen public initialized, fabricate quality/reset, or start ODOMETRY/arming/EKF2 before reliable public VIO evidence.
+
+## Publication
+
+Draft [PR43](https://github.com/chen7509/FlyDrones/pull/43), stacked on PR42. Evidence ZIP `evidence/native-reference-probe-dev-1701.zip`: 764 members, 12,843,981 bytes, SHA256 `17923eceadcd5aa47af882380388b8fede38f74a2992fca00a5e97a85b12aa46`; every member hash and CRC verified. Its source snapshot is report commit `ad55397`, with unchanged physical producer `e28fcc3`. This publication paragraph and PR body were added after sealing and do not alter the archive. Whole-lint diagnostics are also preserved in `evidence/native-reference-probe-publication-checks.json`. The sealed next-fault-online-research.md identifies the next real runtime fault check and composite source-delivery gap.

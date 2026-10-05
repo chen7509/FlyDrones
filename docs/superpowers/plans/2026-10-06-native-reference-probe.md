@@ -10,4 +10,4 @@
 - [x] Tests first for adapter refusal/order/logging and native synthetic overwrite behavior.
 - [x] Implement native module, build script and capture adapter/CLI; targeted tests and real production import checks.
 - [x] Freeze binary/source/config; at most one named sensor-only capture and unchanged-input raw/child/parent audit. Preserve all failures.
-- [ ] Full regression, one independent code/evidence review, corrections tested, report/ZIP/draftPR and next-step automation.
+- [x] Full regression (895 passed), one independent code/evidence review (two Minor resolved), report/ZIP/draft PR43. Continue automation with real runtime refusal/cleanup as the next dependency; the entire VIO/swarm objective is not complete.
