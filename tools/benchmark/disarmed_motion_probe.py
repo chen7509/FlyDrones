@@ -97,10 +97,10 @@ class MotionPolicy:
 class GazeboMotionProbe:
     """Single simulation-thread owner; no reference to the sensor/native writer."""
 
-    def __init__(self, output, errors, unarmed_stamp, *, trace=None):
+    def __init__(self, output, errors, unarmed_stamp, *, trace=None, policy=None, profile_data=None):
         self.errors, self.unarmed_stamp = errors, unarmed_stamp
         self.trace = trace
-        self.policy = MotionPolicy()
+        self.policy = policy if policy is not None else MotionPolicy()
         self.link = None
         self.last_force = 0.0
         self.last_attempt = None
@@ -110,7 +110,7 @@ class GazeboMotionProbe:
             self.commands = owned.enter_context((output / "motion-force.jsonl").open("x"))
             self.truth = owned.enter_context((output / "motion-ground-truth.jsonl").open("x"))
             with (output / "motion-profile.json").open("x") as stream:
-                json.dump(profile(), stream, indent=2)
+                json.dump(profile_data if profile_data is not None else profile(), stream, indent=2)
             owned.pop_all()
 
     def _failed(self, exc):
