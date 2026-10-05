@@ -17,4 +17,4 @@
 - [x] Freeze implementation; run one fixed-input audit from sealed PR41 members, archive manifests and read-only upstream/binding evidence.
 - [x] Report contradictory intervals, force-boundary examples and source hypothesis limitations; no physical or estimator replay.
 - [x] Run full regression, obtain one independent review, correct findings with targeted failure tests.
-- [ ] Seal results, create stacked draft PR, update automation to the concrete next dependency (publication recorded in report and ledger).
+- [x] Seal results and create stacked draft PR42; automation handoff uses sealed next-native-reference-research.md (publication recorded in report and ledger).
