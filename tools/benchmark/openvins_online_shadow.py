@@ -1,4 +1,5 @@
 """Research-only bounded native transport; no network, commands or fusion grant."""
+
 from __future__ import annotations
 
 import hashlib
@@ -9,6 +10,8 @@ import select
 import subprocess
 import threading
 import time
+
+from tools.benchmark.openvins_causal_input import CausalInput, InputRefusal
 
 
 def _integer(value, *, minimum=1):
@@ -27,7 +30,9 @@ def encode_packet(action, *, sequence, dispatch_ns, pixels=None):
     if action["kind"] == "imu":
         values = list(action["wm"]) + list(action["am"])
         try:
-            valid = len(action["wm"]) == len(action["am"]) == 3 and all(type(v) in (int, float) and math.isfinite(v) for v in values)
+            valid = len(action["wm"]) == len(action["am"]) == 3 and all(
+                type(v) in (int, float) and math.isfinite(v) for v in values
+            )
         except OverflowError:
             valid = False
         if not valid or pixels is not None:
@@ -52,9 +57,12 @@ def validate_ack(ack, *, sequence, kind, dispatch_ns, acknowledged_ns):
 
 class SourceWatchdog:
     """Independent of pending images: missing whole sources are failures."""
-    def __init__(self, *, timeout_ns=2_000_000_000):
+
+    def __init__(self, *, timeout_ns=2_000_000_000, startup_timeout_ns=None):
         self.timeout_ns = _integer(timeout_ns)
+        self.startup_timeout_ns = _integer(startup_timeout_ns if startup_timeout_ns is not None else timeout_ns)
         self.started = None
+        self.ready_ns = None
         self.last = {}
         self.lock = threading.Lock()
 
@@ -72,6 +80,18 @@ class SourceWatchdog:
             if now <= self.last.get(kind, 0):
                 raise ValueError("source arrival clock regressed")
             self.last[kind] = now
+            if self.ready_ns is None and set(self.last) == {"imu", "rgb", "info"}:
+                self.ready_ns = max(self.last.values())
+
+    def snapshot(self):
+        with self.lock:
+            return dict(
+                started_ns=self.started,
+                ready_ns=self.ready_ns,
+                last_arrivals=dict(self.last),
+                startup_timeout_ns=self.startup_timeout_ns,
+                operational_timeout_ns=self.timeout_ns,
+            )
 
     def check(self, now):
         with self.lock:
@@ -79,25 +99,36 @@ class SourceWatchdog:
                 return
             if _integer(now) < self.started:
                 raise ValueError("watchdog clock regressed")
-            missing = [k for k in ["imu", "rgb", "info"] if now-self.last.get(k, self.started) > self.timeout_ns]
+            if self.ready_ns is None:
+                if now - self.started > self.startup_timeout_ns:
+                    raise TimeoutError("source startup: " + ",".join(k for k in ["imu", "rgb", "info"] if k not in self.last))
+                return
+            missing = [k for k in ["imu", "rgb", "info"] if now - self.last.get(k, self.started) > self.timeout_ns]
             if missing:
                 raise TimeoutError("source silence: " + ",".join(missing))
 
 
 class NativeClient:
     """POSIX one-in-flight byte channel with a single wall deadline for write+ack."""
-    def __init__(self, command, output, *, timeout_s=2.):
+
+    def __init__(self, command, output, *, timeout_s=2.0):
         if os.name != "posix" or not math.isfinite(timeout_s) or timeout_s <= 0:
             raise ValueError("POSIX bounded transport required")
         self.timeout_s, self.sequence, self.failed = timeout_s, 0, None
         self.output, self.buffer, self.closed = output, b"", False
-        self.log = (output/"native.log").open("xb")
-        self.requests = (output/"native-requests.jsonl").open("x")
-        self.acks = (output/"native-acks.jsonl").open("x")
+        self.log = (output / "native.log").open("xb")
+        self.requests = (output / "native-requests.jsonl").open("x")
+        self.acks = (output / "native-acks.jsonl").open("x")
         self.ack_fd, child_ack = os.pipe()
         try:
-            self.process = subprocess.Popen(command + [str(child_ack)], stdin=subprocess.PIPE, stdout=self.log,
-                                            stderr=subprocess.STDOUT, pass_fds=(child_ack,), bufsize=0)
+            self.process = subprocess.Popen(
+                command + [str(child_ack)],
+                stdin=subprocess.PIPE,
+                stdout=self.log,
+                stderr=subprocess.STDOUT,
+                pass_fds=(child_ack,),
+                bufsize=0,
+            )
         except BaseException:
             os.close(self.ack_fd)
             self.log.close()
@@ -108,27 +139,44 @@ class NativeClient:
             os.close(child_ack)
         os.set_blocking(self.process.stdin.fileno(), False)
         os.set_blocking(self.ack_fd, False)
-        with (output/"native-session.json").open("x") as stream:
-            json.dump(dict(pid=self.process.pid, command=command, started_monotonic_ns=time.monotonic_ns(),
-                           reset_counter=None, quality=None, fusion_eligible=False), stream, indent=2)
+        with (output / "native-session.json").open("x") as stream:
+            json.dump(
+                dict(
+                    pid=self.process.pid,
+                    command=command,
+                    started_monotonic_ns=time.monotonic_ns(),
+                    reset_counter=None,
+                    quality=None,
+                    fusion_eligible=False,
+                ),
+                stream,
+                indent=2,
+            )
 
     def send(self, action, pixels=None):
         if self.closed or self.failed:
             raise RuntimeError("native client unavailable")
         dispatch = time.monotonic_ns()
         packet = encode_packet(action, sequence=self.sequence, dispatch_ns=dispatch, pixels=pixels)
-        request = dict(sequence=self.sequence, action=action, dispatch_ns=dispatch, bytes=len(packet),
-                       packet_sha256=hashlib.sha256(packet).hexdigest(),
-                       rgb_sha256=hashlib.sha256(pixels).hexdigest() if pixels is not None else None)
-        self.requests.write(json.dumps(request, allow_nan=False)+"\n")
+        request = dict(
+            sequence=self.sequence,
+            action=action,
+            dispatch_ns=dispatch,
+            bytes=len(packet),
+            packet_sha256=hashlib.sha256(packet).hexdigest(),
+            rgb_sha256=hashlib.sha256(pixels).hexdigest() if pixels is not None else None,
+        )
+        self.requests.write(json.dumps(request, allow_nan=False) + "\n")
         self.requests.flush()
-        deadline, written = time.monotonic()+self.timeout_s, 0
+        deadline, written = time.monotonic() + self.timeout_s, 0
         try:
             while written < len(packet) or b"\n" not in self.buffer:
-                remaining = deadline-time.monotonic()
+                remaining = deadline - time.monotonic()
                 if remaining <= 0:
                     raise TimeoutError("native write/processing acknowledgement deadline")
-                reads, writes, _ = select.select([self.ack_fd], [self.process.stdin] if written < len(packet) else [], [], remaining)
+                reads, writes, _ = select.select(
+                    [self.ack_fd], [self.process.stdin] if written < len(packet) else [], [], remaining
+                )
                 if writes:
                     written += os.write(self.process.stdin.fileno(), packet[written:])
                 if reads:
@@ -143,14 +191,23 @@ class NativeClient:
             ack = json.loads(line)
             validate_ack(ack, sequence=self.sequence, kind=chr(packet[0]), dispatch_ns=dispatch, acknowledged_ns=acknowledged)
             row = dict(ack, acknowledged_ns=acknowledged, source_arrival_ns=action["source_arrival_ns"], dispatch_ns=dispatch)
-            self.acks.write(json.dumps(row, allow_nan=False)+"\n")
+            self.acks.write(json.dumps(row, allow_nan=False) + "\n")
             self.acks.flush()
             self.sequence += 1
             return row
         except BaseException as exc:
             self.failed = repr(exc)
-            self.acks.write(json.dumps(dict(sequence=self.sequence, refusal=self.failed,
-                                           refused_monotonic_ns=time.monotonic_ns(), bytes_written=written))+"\n")
+            self.acks.write(
+                json.dumps(
+                    dict(
+                        sequence=self.sequence,
+                        refusal=self.failed,
+                        refused_monotonic_ns=time.monotonic_ns(),
+                        bytes_written=written,
+                    )
+                )
+                + "\n"
+            )
             self.acks.flush()
             raise
 
@@ -172,5 +229,82 @@ class NativeClient:
             self.log.close()
             self.requests.close()
             self.acks.close()
-        return dict(exit=self.process.returncode, accepted=self.sequence, failure=self.failed,
-                    fusion_eligible=False, quality=None, reset_counter=None)
+        return dict(
+            exit=self.process.returncode,
+            accepted=self.sequence,
+            failure=self.failed,
+            fusion_eligible=False,
+            quality=None,
+            reset_counter=None,
+        )
+
+
+class ShadowInput:
+    """Recorder-thread-only adapter. On failure, stop native delivery but retain raw recording."""
+
+    def __init__(self, client, output, *, session_id, now=time.monotonic_ns):
+        self.client, self.output, self.now = client, output, now
+        self.causal = CausalInput(session_id=session_id, clock_id="gazebo-sim+linux-monotonic")
+        self.sequence, self.skipped, self.delivered = 0, 0, 0
+        self.pixels, self.failure = {}, None
+        self.failures = (output / "shadow-failures.jsonl").open("x")
+
+    def on_record(self, row, payload):
+        kind = row["kind"]
+        if kind not in {"imu", "rgb", "info"}:
+            return
+        if self.failure:
+            self.skipped += 1
+            return
+        keys = {"kind", "sample_ns", "arrival_monotonic_ns", "observed_sim_ns"}
+        keys |= {"imu": {"gyro_flu", "accel_flu"}, "rgb": {"width", "height"}, "info": {"camera_info"}}[kind]
+        base = {key: row[key] for key in keys}
+        try:
+            if kind == "rgb":
+                if type(payload) is not bytes or len(payload) != 57600:
+                    raise ValueError("invalid RGB bytes")
+                if len(self.pixels) >= 8 or row["sample_ns"] in self.pixels:
+                    raise ValueError("RGB buffer capacity/duplicate")
+                self.pixels[row["sample_ns"]] = payload
+            actions = self.causal.accept(
+                base, sequence=self.sequence, session_id=self.causal.session_id, clock_id=self.causal.clock_id
+            )
+            self.sequence += 1
+            for action in actions:
+                pixels = self.pixels.pop(action["sample_ns"]) if action["kind"] == "camera" else None
+                self.client.send(action, pixels)
+                self.delivered += 1
+            self.causal.tick(self.now())
+        except Exception as exc:
+            self.failure = repr(exc)
+            self.failures.write(
+                json.dumps(
+                    dict(
+                        event=base,
+                        input_sequence=self.sequence,
+                        failure=self.failure,
+                        wall_ns=self.now(),
+                        input_refusal=exc.disposition if isinstance(exc, InputRefusal) else None,
+                    ),
+                    allow_nan=False,
+                )
+                + "\n"
+            )
+            self.failures.flush()
+
+    def finish(self):
+        result = dict(
+            failure=self.failure,
+            inputs_accepted=self.sequence,
+            delivered=self.delivered,
+            skipped_after_failure=self.skipped,
+            pending=self.causal.finish(),
+            retained_pixel_stamps=list(self.pixels),
+            fusion_eligible=False,
+            quality=None,
+            reset_counter=None,
+        )
+        self.failures.close()
+        with (self.output / "shadow-input-result.json").open("x") as stream:
+            json.dump(result, stream, indent=2)
+        return result

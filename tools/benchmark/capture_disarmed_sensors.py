@@ -35,7 +35,7 @@ def active_resources():
             argv = (path / "cmdline").read_bytes().replace(b"\0", b" ").decode(errors="replace")
         except OSError:
             continue
-        if name in {"px4", "gz", "gzserver", "gzclient", "state_probe", "fast_probe"} or (
+        if name in {"px4", "gz", "gzserver", "gzclient", "state_probe", "fast_probe", "online_probe"} or (
             name.startswith("python")
             and any(s in argv for s in ["pytest", "run_episode.py", "train_", "capture_disarmed_sensors.py"])
         ):
@@ -47,10 +47,19 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--worker", action="store_true", help=argparse.SUPPRESS)
+    parser.add_argument("--shadow-binary", type=Path)
+    parser.add_argument("--shadow-config", type=Path)
     args = parser.parse_args()
+    if bool(args.shadow_binary) != bool(args.shadow_config):
+        parser.error("shadow binary and frozen config must be specified together")
+    shadow_args = (
+        ["--shadow-binary", str(args.shadow_binary.resolve()), "--shadow-config", str(args.shadow_config.resolve())]
+        if args.shadow_binary
+        else []
+    )
     if not args.worker:
         summary = supervise_worker(
-            [sys.executable, str(Path(__file__).resolve()), "--worker", "--output", str(args.output.resolve())],
+            [sys.executable, str(Path(__file__).resolve()), "--worker", "--output", str(args.output.resolve())] + shadow_args,
             args.output.resolve(),
         )
         if summary["status"] == "supervisor_timeout" and (args.output / "launch.json").is_file():
@@ -137,7 +146,7 @@ def main():
         "errors": errors,
         "eligible_for_vio_input": False,
         "eligible_for_px4_fusion": False,
-        "estimator_run": False,
+        "estimator_run": bool(args.shadow_binary),
         "capture_schema": "disarmed-sensors-v2",
     }
     clock = {"sim_ns": 0}
@@ -157,7 +166,45 @@ def main():
         from gz.transport13 import Node
         from pymavlink import mavutil
 
-        writer = CaptureWriter(output)
+        shadow = None
+        source_guard = None
+        if args.shadow_binary:
+            from tools.benchmark.openvins_online_shadow import NativeClient, ShadowInput, SourceWatchdog
+
+            frozen = json.loads((args.shadow_config.parent / "freeze.json").read_text())
+            for name, digest in frozen["sha256"].items():
+                if hashlib.sha256((args.shadow_config.parent / name).read_bytes()).hexdigest() != digest:
+                    raise ValueError("frozen shadow configuration changed")
+            shadow_dir = output / "shadow"
+            shadow_dir.mkdir()
+            client = NativeClient(
+                [
+                    str(args.shadow_binary.resolve()),
+                    str(args.shadow_config.resolve()),
+                    str(shadow_dir / "states.jsonl"),
+                    str(shadow_dir / "fast.jsonl"),
+                ],
+                shadow_dir,
+            )
+
+            def finish_native():
+                result["native"] = client.finish()
+                if result["native"]["failure"] or result["native"]["exit"] != 0:
+                    errors.append("native consumer failed: " + str(result["native"]))
+
+            journal.cleanup("native consumer", finish_native, priority=95)
+            shadow = ShadowInput(client, shadow_dir, session_id="online-native-" + str(client.process.pid))
+
+            def finish_shadow():
+                result["shadow"] = shadow.finish()
+                if result["shadow"]["failure"]:
+                    errors.append("shadow input failed: " + result["shadow"]["failure"])
+
+            journal.cleanup("shadow input", finish_shadow, priority=90)
+            # Cold renderer setup is a separate bounded phase; operational silence remains2s.
+            source_guard = SourceWatchdog(startup_timeout_ns=10_000_000_000)
+            journal.cleanup("source health", lambda: result.update(source_health=source_guard.snapshot()), priority=85)
+        writer = CaptureWriter(output, on_record=shadow.on_record if shadow else None)
         journal.cleanup("writer", lambda: result.update(writer=writer.finish()), priority=80)
         stop = threading.Event()
         node = Node()
@@ -167,6 +214,8 @@ def main():
         def submit(kind, message):
             arrival = time.monotonic_ns()
             try:
+                if source_guard:
+                    source_guard.observe(kind, arrival)
                 event = {"kind": kind, "arrival_monotonic_ns": arrival, "observed_sim_ns": clock["sim_ns"]}
                 payload = None
                 if kind == "info":
@@ -233,6 +282,23 @@ def main():
         fixture.on_post_update(post_update)
         fixture.finalize()
         server = fixture.server()
+        if source_guard:
+            watchdog_stop = threading.Event()
+
+            def watch_sources():
+                while not watchdog_stop.wait(0.05):
+                    try:
+                        source_guard.check(time.monotonic_ns())
+                    except Exception as exc:
+                        result["source_watchdog_failure"] = dict(
+                            source_guard.snapshot(), checked_ns=time.monotonic_ns(), reason=repr(exc)
+                        )
+                        errors.append("source watchdog: " + repr(exc))
+                        return
+
+            watchdog_thread = threading.Thread(target=watch_sources, daemon=True)
+            watchdog_thread.start()
+            journal.cleanup("source watchdog", lambda: (watchdog_stop.set(), watchdog_thread.join(timeout=1)), priority=10)
         heartbeat_thread = threading.Thread(target=read_heartbeats, daemon=True)
         heartbeat_thread.start()
         journal.cleanup("heartbeat", lambda: (stop.set(), heartbeat_thread.join(timeout=3)), priority=40)
@@ -261,9 +327,13 @@ def main():
         journal.cleanup("owned PX4", stop_px4, priority=20)
         with (output / "process.json").open("x") as f:
             json.dump({"pid": process.pid, "args": process.args, "started_wall_ns": time.time_ns()}, f, indent=2)
+        if source_guard:
+            source_guard.start(time.monotonic_ns())
         while clock["sim_ns"] < 25_000_000_000:
             if errors or writer.error:
                 raise RuntimeError("capture callback/writer failure: " + str(errors or writer.error))
+            if shadow and shadow.failure:
+                raise RuntimeError("shadow failure: " + shadow.failure)
             if process.poll() is not None:
                 raise RuntimeError("PX4 exited during capture")
             if time.monotonic() - started > 300:

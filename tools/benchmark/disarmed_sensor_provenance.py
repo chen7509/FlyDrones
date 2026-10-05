@@ -61,7 +61,7 @@ def validate_event(event, *, allow_legacy_info=False):
 
 
 class CaptureWriter:
-    def __init__(self, output, *, capacity=4096, start_worker=True):
+    def __init__(self, output, *, capacity=4096, start_worker=True, on_record=None):
         if type(capacity) is not int or capacity < 1:
             raise ValueError("invalid queue capacity")
         self.output = output
@@ -76,6 +76,7 @@ class CaptureWriter:
         self.closed = False
         self.thread = None
         self.max_queue = 0
+        self.on_record = on_record
         if start_worker:
             self.start()
 
@@ -124,6 +125,9 @@ class CaptureWriter:
         row["recorded_monotonic_ns"] = time.monotonic_ns()
         self.stream.write(json.dumps(row, allow_nan=False) + "\n")
         self.written[row["kind"]] += 1
+        if self.on_record is not None:
+            self.stream.flush()
+            self.on_record(dict(row), payload)
 
     def _worker(self):
         try:

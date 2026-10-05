@@ -15,3 +15,7 @@ Record every camera's internal/public initialization, initializer reference, sta
 ## Acceptance and limits
 
 First test synthetic parser/analytic RGB, clock ordering, invalid packets, output overwrite/path protection and stalled children; then run one new online disarmed shadow. Online completion, estimator initialization, state numerical validity and fusion qualification are separate conclusions. Failed initialization or insufficient throughput is a valid retained result. Five-machine 0.873 RTF remains below 0.95; no broader swarm gate is changed. No old estimator replay or finished audit is repeated.
+
+## Development correction after retained capture-v1
+
+The first physical run stopped at1s simulation because the first RGB arrived4.040s after native process startup; a source2s guard conflated cold renderer startup with operational source loss. This is a harness startup failure, not an estimator failure or a passed run. Preserve v1 unchanged. Before capture-v2, separate a10s startup deadline (all three sources must appear) from the unchanged2s operational silence deadline. Record ready/start/last-source clocks and test both phases. No change to native2s processing limit, scene, physics, sensor rates, noise configuration, estimator gates or the five-machine RTF criterion. A newly named run is justified by this material lifecycle fix, not by tuning the VIO result.
