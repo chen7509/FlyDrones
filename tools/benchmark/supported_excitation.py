@@ -234,10 +234,14 @@ class SupportedProbe(GazeboMotionProbe):
             self._failed(exc)
 
     def finish(self):
+        clearance_errors = []
         try:
             self.clearance.close()
         except Exception as exc:
+            clearance_errors.append(dict(stream="clearance", reason=repr(exc)))
             self._failed(exc)
         if self.clearance_records != 25000 or not self.policy.finish()["full_profile_requested"]:
             self._failed(ValueError("incomplete supported fixture"))
-        return dict(super().finish(), clearance_records=self.clearance_records)
+        result = super().finish()
+        result["close_errors"].extend(clearance_errors)
+        return dict(result, clearance_records=self.clearance_records)

@@ -10,6 +10,12 @@ from contextlib import ExitStack
 from flydrones.benchmark.gateway import sim_duration_ns
 
 
+def write_record(stream, record):
+    encoded = json.dumps(record, allow_nan=False) + "\n"
+    if stream.write(encoded) != len(encoded):
+        raise OSError("short motion journal write")
+
+
 def profile():
     return dict(
         name="lateral-wrench-v1",
@@ -155,7 +161,7 @@ class GazeboMotionProbe:
                 if force:
                     self.link.add_world_force(ecm, Vector3d(0.0, force, 0.0))
                 self.last_attempt["call_returned"] = True
-                self.commands.write(json.dumps(self.last_attempt, allow_nan=False) + "\n")
+                write_record(self.commands, self.last_attempt)
                 self.recorded_commands += 1
                 if force == 0 or self.recorded_commands % 100 == 0:
                     self.commands.flush()
@@ -202,13 +208,13 @@ class GazeboMotionProbe:
                 if not all(type(v) in (int, float) and math.isfinite(v) for v in record[field]):
                     self.policy.refuse("invalid fixture physics field: " + field)
             if ns % 4_000_000 == 0:
-                self.truth.write(json.dumps(record, allow_nan=False) + "\n")
+                write_record(self.truth, record)
                 self.truth_records += 1
             try:
                 self.policy.observe(position, vel, rpy)
             except ValueError:
                 if ns % 4_000_000:
-                    self.truth.write(json.dumps(record, allow_nan=False) + "\n")
+                    write_record(self.truth, record)
                     self.truth_records += 1
                 self.truth.flush()
                 raise

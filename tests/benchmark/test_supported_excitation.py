@@ -181,3 +181,60 @@ def test_probe_failure_retains_attempt_and_stops(tmp_path, monkeypatch, fault):
     before = len(calls)
     probe.pre_update(info, None)
     assert len(calls) == before
+
+
+def test_supported_truth_short_write_stops_force(tmp_path, monkeypatch):
+    from datetime import timedelta
+    from types import SimpleNamespace as NS
+
+    from test_disarmed_motion_probe import fixture_probe
+
+    from tools.benchmark.supported_excitation import SupportedPolicy, SupportedProbe
+
+    probe, link, rotation, vector, forces = fixture_probe(tmp_path, monkeypatch)
+    probe.__class__ = SupportedProbe
+    probe.policy = SupportedPolicy()
+    probe.policy.origin = [0.0, 0.0, 0.0]
+    probe.links = {"base_link": link}
+    probe.clearance_records = 0
+    probe.clearance = (tmp_path / "extra-clearance").open("x")
+    original = probe.truth
+
+    class Short:
+        def write(self, s):
+            return len(s) - 1
+
+        def flush(self):
+            original.flush()
+
+        def close(self):
+            original.close()
+
+    probe.truth = Short()
+    probe.post_update(NS(sim_time=timedelta(seconds=5)), None)
+    # Must fail at the truth write, before missing fake bounding-box API.
+    assert "short" in probe.policy.failure
+    assert probe.truth_records == 0
+    probe.pre_update(NS(sim_time=timedelta(seconds=5.001), dt=timedelta(milliseconds=1), paused=False), None)
+    assert not forces
+    probe.finish()
+
+
+def test_clearance_close_error_survives_prior_failure(tmp_path):
+    from types import SimpleNamespace as NS
+
+    from tools.benchmark.supported_excitation import SupportedProbe
+
+    probe = SupportedProbe(tmp_path, [], lambda: None, trace=NS())
+    original = probe.clearance
+
+    class BadClose:
+        def close(self):
+            original.close()
+            raise OSError("clearance close failure")
+
+    probe.clearance = BadClose()
+    probe._failed(ValueError("earlier safety refusal"))
+    summary = probe.finish()
+    assert "earlier safety refusal" in summary["failure"]
+    assert any(e["stream"] == "clearance" and "clearance close failure" in e["reason"] for e in summary["close_errors"])
