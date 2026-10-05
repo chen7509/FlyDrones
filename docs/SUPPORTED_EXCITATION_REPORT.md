@@ -13,9 +13,16 @@ Per-link gravity is **validated SDF configuration**, not observed runtime Gravit
 
 ## Validation and limits
 
-127targeted tests pass, including mechanical integration, exact mass/link-set validation, stale/future/missing heartbeat refusal, ground-clearance/motion limits, invalid mode combinations, partial six-link force failure, short writes and close failure retention. Full regression and independent review are recorded in the sealed evidence. Partial trace cannot be marked complete. No full25s supported capture, ground-separation success, raw-integral criterion, online OpenVINS accuracy, quality/reset/covariance or EKF2 result is claimed.
+129targeted tests pass, including mechanical integration, exact mass/link-set validation, stale/future/missing heartbeat refusal, ground-clearance/motion limits, invalid mode combinations, partial six-link force failure, short writes and close failure retention. Final full regression:845passed,2existing warnings,214.73s. Independent review found1Important unchecked truth write and2Minor cleanup-loss/causal-wording issues, all fixed in one pass;2new fault cases RED→GREEN. Final failure-path hardening is synthetic/regression tested, not a physical rerun. Partial trace cannot be marked complete. No full25s supported capture, ground-separation success, raw-integral criterion, online OpenVINS accuracy, quality/reset/covariance or EKF2 result is claimed.
 
 Changed-file lint and whole-repository baseline checks are recorded separately. Existing PR37 VIO terminal error lower bound29.5355m and five-camera0.873RTF<0.95 remain failures.
+
+|Status|Scope|
+|---|---|
+|Verified|Synthetic mechanics/refusal/IO tests; actual runtime mass/world gravity/configuration readback in v2; both attempts issued zero forces and released resources.|
+|Implemented|Time-only distributed support, full-rate clearance logging, sensor-only CLI and failure retention.|
+|Untested|Full supported motion, post-lift ground separation, raw-IMU consistency criteria and native VIO under this condition.|
+|Failed|v1 unavailable binding; v2 missing accepted heartbeat at fixed start; existing VIO/RTF failures unchanged.|
 
 ## Upstream choice and next dependency
 
