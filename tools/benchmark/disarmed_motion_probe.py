@@ -97,8 +97,9 @@ class MotionPolicy:
 class GazeboMotionProbe:
     """Single simulation-thread owner; no reference to the sensor/native writer."""
 
-    def __init__(self, output, errors, unarmed_stamp):
+    def __init__(self, output, errors, unarmed_stamp, *, trace=None):
         self.errors, self.unarmed_stamp = errors, unarmed_stamp
+        self.trace = trace
         self.policy = MotionPolicy()
         self.link = None
         self.last_force = 0.0
@@ -136,6 +137,8 @@ class GazeboMotionProbe:
                 self.link = Link(link)
                 self.link.enable_velocity_checks(ecm)
                 self.link.enable_acceleration_checks(ecm)
+            if self.trace:
+                self.trace.observe("pre", info, self.link, ecm)
             if ns >= 1_000_000_000 and self.policy.origin is None:
                 self.policy.refuse("fixture physics state unavailable")
             force = self.policy.step(
@@ -164,6 +167,8 @@ class GazeboMotionProbe:
         if self.errors or self.policy.failure or self.link is None:
             return
         try:
+            if self.trace:
+                self.trace.observe("post", info, self.link, ecm)
             pose = self.link.world_pose(ecm)
             velocity = self.link.world_linear_velocity(ecm)
             angular = self.link.world_angular_velocity(ecm)

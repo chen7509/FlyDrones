@@ -43,18 +43,26 @@ def active_resources():
     return matches
 
 
-def main():
+def parse_capture_args(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--worker", action="store_true", help=argparse.SUPPRESS)
     parser.add_argument("--shadow-binary", type=Path)
     parser.add_argument("--shadow-config", type=Path)
     parser.add_argument("--motion-profile", choices=["lateral-wrench-v1"])
-    args = parser.parse_args()
+    parser.add_argument("--physics-trace-profile", choices=["substep-lateral-v1"])
+    args = parser.parse_args(argv)
     if bool(args.shadow_binary) != bool(args.shadow_config):
         parser.error("shadow binary and frozen config must be specified together")
-    if args.motion_profile and not args.shadow_binary:
+    if args.physics_trace_profile and (not args.motion_profile or args.shadow_binary):
+        parser.error("substep trace requires explicit sensor-only motion, without native shadow")
+    if args.motion_profile and not (args.shadow_binary or args.physics_trace_profile):
         parser.error("motion fixture requires the native shadow recorder")
+    return args
+
+
+def main():
+    args = parse_capture_args()
     shadow_args = (
         ["--shadow-binary", str(args.shadow_binary.resolve()), "--shadow-config", str(args.shadow_config.resolve())]
         if args.shadow_binary
@@ -62,6 +70,8 @@ def main():
     )
     if args.motion_profile:
         shadow_args += ["--motion-profile", args.motion_profile]
+    if args.physics_trace_profile:
+        shadow_args += ["--physics-trace-profile", args.physics_trace_profile]
     if not args.worker:
         summary = supervise_worker(
             [sys.executable, str(Path(__file__).resolve()), "--worker", "--output", str(args.output.resolve())] + shadow_args,
@@ -153,6 +163,7 @@ def main():
         "eligible_for_px4_fusion": False,
         "estimator_run": bool(args.shadow_binary),
         "capture_schema": "disarmed-sensors-v2",
+        "physics_trace_profile": args.physics_trace_profile,
     }
     clock = {"sim_ns": 0}
     arming = {"unarmed_wall_ns": None}
@@ -204,6 +215,9 @@ def main():
                     errors.append("shadow input failed: " + result["shadow"]["failure"])
 
             journal.cleanup("shadow input", finish_shadow, priority=90)
+        if args.shadow_binary or args.physics_trace_profile:
+            from tools.benchmark.openvins_online_shadow import SourceWatchdog
+
             # Cold renderer setup is a separate bounded phase; operational silence remains2s.
             source_guard = SourceWatchdog(startup_timeout_ns=10_000_000_000)
             journal.cleanup("source health", lambda: result.update(source_health=source_guard.snapshot()), priority=85)
@@ -283,7 +297,19 @@ def main():
         if args.motion_profile:
             from tools.benchmark.disarmed_motion_probe import GazeboMotionProbe
 
-            motion = GazeboMotionProbe(output, errors, lambda: arming["unarmed_wall_ns"])
+            trace = None
+            if args.physics_trace_profile:
+                from tools.benchmark.physics_substep_trace import SubstepTrace
+
+                trace = SubstepTrace(output)
+
+                def finish_trace():
+                    result["physics_trace"] = trace.finish()
+                    if result["physics_trace"]["failure"]:
+                        errors.append("physics trace: " + result["physics_trace"]["failure"])
+
+                journal.cleanup("physics trace", finish_trace, priority=76)
+            motion = GazeboMotionProbe(output, errors, lambda: arming["unarmed_wall_ns"], trace=trace)
             journal.cleanup("motion fixture", lambda: result.update(motion=motion.finish()), priority=75)
             fixture.on_pre_update(motion.pre_update)
 

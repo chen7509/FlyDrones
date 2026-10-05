@@ -1,0 +1,15 @@
+# Full-rate physical source diagnosis
+
+Question: does recorded1kHz acceleration integrate consistently with physical velocity while quarter-rate phases fail, or does inconsistency persist at full rate? This is a prospective diagnostic, not VIO qualification or a sensor fix.
+
+Condition substep-lateral-v1: same PR37 scene/PX4/model,25s/1ms physics/250Hz raw IMU/10Hz160x120RGBD, same lateral-wrench-v1 force and disarmed/bounded fixture. New explicit sensor-only mode omits the native estimator and adds1kHz pre/post readback. This changes CPU/IO workload and cannot imply capacity improvement or VIO success. Existing motion mode without this explicit flag still requires its shadow binary/config. SourceWatchdog remains10s startup/2s operational; outer300s timeout, 10ms supervisory chunks and fresh disarmed force gate unchanged.
+
+Trace isolated from sensor stream: phase, sim_ns,dt_ns,wall_ns,available flag and world pose/velocity/acceleration/angular velocity. Gazebo8.15 docs define simTime as end-of-step; pre is therefore labeled prior-state time simTime-dt, post simTime. Verify pre-next/post-previous numeric continuity rather than silently assuming alignment. Initial unavailable fields are explicit and allowed only before100ms. Exact pre/post alternating pairs and1ms increments required; finite fields and unit quaternion required. Maximum50000 rows/128MiB, exclusive output, periodic flush, latched refusal, terminal snapshot survives close failure. Log failure stops subsequent force through shared errors.
+
+Read actual /proc/self/maps during first valid post callback and record selected physics/DART libraries with SHA; retain package metadata and before/after hashes. Upstream version/source licenses remain pinned from PR38; installed distro patch equivalence unproven. No new dependency.
+
+Before physical run, synthetic tests cover constant acceleration, alternating acceleration/four phases, missing/duplicate/wrong-phase clocks, finite fields, unavailable expiry, row/byte limits, write/close failures, explicit CLI mode combinations and existing unarmed bounds. Run one new physical attempt after prospective profile/source/config freeze and resource check; preserve failures and ULog. No OpenVINS run, truth-fed derivative, teleport, arm, ODOMETRY or motor commands.
+
+Offline analysis: check completeness/pre-post alignment; integrate full-rate post acceleration using right-endpoint and trapezoid over[5,5.1]s and[5,6.6]s, and all four quarter-rate phases using each phase's actual endpoints. Match raw samples to actual post timestamps/rotations; retain any mismatch. No tuning, resampling into VIO or post-hoc acceptance threshold. Interpretation conditional on evidence; final rootcause/correctedVIO remains outside this diagnostic.
+
+Deliver code/tests, raw record/ULog/hash evidence and report distinguishing completed/implemented/untested/failed, one independent branch review, immutable archive and stacked draft PR39 candidate. Standing authorization covers execution and publication without repeated approval.
