@@ -52,9 +52,16 @@ def parse_capture_args(argv=None):
     parser.add_argument("--reference-module", type=Path)
     parser.add_argument("--reference-sha256")
     parser.add_argument("--reference-fault-profile", choices=["native-pre-epoch-v1"])
+    parser.add_argument("--source-fanout-profile", choices=["ready-shadow-v1"])
     parser.add_argument("--motion-profile", choices=["lateral-wrench-v1", "supported-lateral-v1", "supported-ready-v1"])
     parser.add_argument("--physics-trace-profile", choices=["substep-lateral-v1", "substep-supported-v1", "substep-ready-v1"])
     args = parser.parse_args(argv)
+    if args.source_fanout_profile and (
+        not args.shadow_binary or not args.shadow_config or not args.reference_module or not args.reference_sha256
+        or args.motion_profile != "supported-ready-v1" or args.physics_trace_profile != "substep-ready-v1"
+        or args.reference_fault_profile
+    ):
+        parser.error("ready-shadow-v1 requires complete supported native/reference configuration without fault injection")
     if args.reference_fault_profile and not args.reference_module:
         parser.error("runtime refusal requires native reference configuration")
     if bool(args.reference_module) != bool(args.reference_sha256):
@@ -62,14 +69,14 @@ def parse_capture_args(argv=None):
     if args.reference_module and (
         args.motion_profile != "supported-ready-v1"
         or args.physics_trace_profile != "substep-ready-v1"
-        or args.shadow_binary
+        or (args.shadow_binary and not args.source_fanout_profile)
         or len(args.reference_sha256) != 64
         or any(c not in "0123456789abcdef" for c in args.reference_sha256)
     ):
         parser.error("native reference requires ready sensor-only profile and SHA256")
     if bool(args.shadow_binary) != bool(args.shadow_config):
         parser.error("shadow binary and frozen config must be specified together")
-    if args.physics_trace_profile and (not args.motion_profile or args.shadow_binary):
+    if args.physics_trace_profile and (not args.motion_profile or (args.shadow_binary and not args.source_fanout_profile)):
         parser.error("substep trace requires explicit sensor-only motion, without native shadow")
     if (
         args.physics_trace_profile
@@ -127,6 +134,8 @@ def main():
         shadow_args += ["--reference-module", str(args.reference_module.resolve()), "--reference-sha256", args.reference_sha256]
     if args.reference_fault_profile:
         shadow_args += ["--reference-fault-profile", args.reference_fault_profile]
+    if args.source_fanout_profile:
+        shadow_args += ["--source-fanout-profile", args.source_fanout_profile]
     if not args.worker:
         summary = supervise_worker(
             [sys.executable, str(Path(__file__).resolve()), "--worker", "--output", str(args.output.resolve())] + shadow_args,
@@ -221,6 +230,7 @@ def main():
         "physics_trace_profile": args.physics_trace_profile,
         "reference_profile": "supported-ready-native-reference-v1" if args.reference_module else None,
         "reference_fault_profile": args.reference_fault_profile,
+        "source_fanout_profile": args.source_fanout_profile,
     }
     clock = {"sim_ns": 0}
     arming = {"unarmed_wall_ns": None}
@@ -284,7 +294,22 @@ def main():
 
             readiness = JournaledReadiness()
             journal.cleanup("readiness evidence", lambda: result.update(readiness=readiness.snapshot()), priority=86)
-        writer = CaptureWriter(output, on_record=readiness.on_record if readiness else shadow.on_record if shadow else None)
+        fanout = None
+        if args.source_fanout_profile:
+            from tools.benchmark.ready_shadow_fanout import ReadyShadowFanout
+
+            fanout = ReadyShadowFanout(output, readiness, shadow)
+
+            def finish_fanout():
+                result["source_fanout"] = fanout.finish()
+                if result["source_fanout"]["failure"]:
+                    errors.append("source fan-out: " + result["source_fanout"]["failure"])
+
+            journal.cleanup("source fan-out", finish_fanout, priority=84)
+        writer = CaptureWriter(
+            output, sequence_records=fanout is not None,
+            on_record=fanout.on_record if fanout else readiness.on_record if readiness else shadow.on_record if shadow else None,
+        )
         journal.cleanup("writer", lambda: result.update(writer=writer.finish()), priority=80)
         stop = threading.Event()
         node = Node()
@@ -399,7 +424,7 @@ def main():
                 from tools.benchmark.readiness_anchor import AnchoredPolicy, anchored_profile, persist_anchor
 
                 extra = dict(
-                    policy=AnchoredPolicy(readiness.proof, lambda row: persist_anchor(output, row)),
+                    policy=AnchoredPolicy(fanout.proof if fanout else readiness.proof, lambda row: persist_anchor(output, row)),
                     profile_data=anchored_profile(),
                 )
             motion = motion_type(output, errors, lambda: arming["unarmed_wall_ns"], trace=trace, **extra)
@@ -412,7 +437,20 @@ def main():
                     journal.cleanup("runtime refusal", lambda: result.update(runtime_refusal=refusal.finish()), priority=73)
                     fixture.on_pre_update(refusal.pre_motion)
                 else:
-                    fixture.on_pre_update(lambda info, ecm: pre_motion(reference, motion, info, ecm))
+                    if fanout:
+                        def pre_online(info, ecm):
+                            def health():
+                                if errors or writer.error or shadow.failure:
+                                    raise RuntimeError("pre-step source failure: " + str(errors or writer.error or shadow.failure))
+                                source_guard.check(time.monotonic_ns())
+
+                            if not fanout.pre_step(lambda: pre_motion(reference, motion, info, ecm), health):
+                                if not any(e.startswith("source fan-out:") for e in errors):
+                                    errors.append("source fan-out: " + str(fanout.failure))
+
+                        fixture.on_pre_update(pre_online)
+                    else:
+                        fixture.on_pre_update(lambda info, ecm: pre_motion(reference, motion, info, ecm))
             else:
                 fixture.on_pre_update(motion.pre_update)
 

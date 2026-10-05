@@ -60,7 +60,7 @@ def validate_event(event, *, allow_legacy_info=False):
 
 
 class CaptureWriter:
-    def __init__(self, output, *, capacity=4096, start_worker=True, on_record=None):
+    def __init__(self, output, *, capacity=4096, start_worker=True, on_record=None, sequence_records=False):
         if type(capacity) is not int or capacity < 1:
             raise ValueError("invalid queue capacity")
         self.output = output
@@ -76,6 +76,8 @@ class CaptureWriter:
         self.thread = None
         self.max_queue = 0
         self.on_record = on_record
+        self.sequence_records = sequence_records
+        self.source_sequence = 0
         if start_worker:
             self.start()
 
@@ -106,6 +108,9 @@ class CaptureWriter:
             self.max_queue = max(self.max_queue, self.queue.qsize())
 
     def _write_event(self, row, payload):
+        if self.sequence_records:
+            row["source_sequence"] = self.source_sequence
+            self.source_sequence += 1
         row["writer_begin_monotonic_ns"] = time.monotonic_ns()
         if row["kind"] == "rgb":
             accepted = self.rgb.add(row["sample_ns"], np.frombuffer(payload, dtype=np.uint8).reshape(120, 160, 3))
