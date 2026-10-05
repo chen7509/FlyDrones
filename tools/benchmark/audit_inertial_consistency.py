@@ -95,6 +95,10 @@ def audit_imu_delivery(raw, requests, acks):
     for sequence, (request, ack) in enumerate(zip(requests, acks)):
         if type(request["sequence"]) is not int or request["sequence"] != sequence:
             raise ValueError("request sequence mismatch")
+        if type(ack["sequence"]) is not int or ack["sequence"] != sequence:
+            raise ValueError("acknowledgement sequence mismatch")
+        for field in ("receive_ns", "start_ns", "end_ns", "acknowledged_ns", "source_arrival_ns", "dispatch_ns", "sample_ns"):
+            _stamp(ack[field])
         action = request["action"]
         if action["kind"] not in ("camera", "imu"):
             raise ValueError("unexpected request kind")
@@ -104,7 +108,7 @@ def audit_imu_delivery(raw, requests, acks):
         )
         if _stamp(ack["sample_ns"]) != _stamp(action["sample_ns"]) or ack["source_arrival_ns"] != action["source_arrival_ns"]:
             raise ValueError("acknowledged sample/arrival mismatch")
-        if ack["dispatch_ns"] != request["dispatch_ns"]:
+        if ack["dispatch_ns"] != _stamp(request["dispatch_ns"]):
             raise ValueError("acknowledged dispatch mismatch")
         if kind == "C":
             continue  # Image bytes are outside this IMU-specific audit.
@@ -112,7 +116,7 @@ def audit_imu_delivery(raw, requests, acks):
         if stamp not in source:
             raise ValueError("IMU request without raw sample")
         row = source[stamp]
-        if action["source_arrival_ns"] != row["arrival_monotonic_ns"]:
+        if _stamp(action["source_arrival_ns"]) != _stamp(row["arrival_monotonic_ns"]):
             raise ValueError("raw arrival differs from request")
         for original, packed in [("gyro_flu", "wm"), ("accel_flu", "am")]:
             if not np.array_equal(_vector(row[original]) * [1, -1, -1], _vector(action[packed])):

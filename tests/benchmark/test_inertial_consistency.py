@@ -100,6 +100,17 @@ def test_delivery_preserves_vectors_and_hash():
     assert audit_imu_delivery(*delivery())["matched_imu_packets"] == 1
 
 
+@pytest.mark.parametrize(
+    "field,value",
+    [("acknowledged_ns", float("inf")), ("acknowledged_ns", 105.0), ("source_arrival_ns", 100.0), ("sequence", False)],
+)
+def test_malformed_ack_integer_fields_rejected(field, value):
+    raw, requests, acks = delivery()
+    acks[0][field] = value
+    with pytest.raises(ValueError):
+        audit_imu_delivery(raw, requests, acks)
+
+
 @pytest.mark.parametrize("fault", ["flip", "swap", "hash", "size", "sample", "sequence", "arrival", "missing", "duplicate"])
 def test_corrupt_delivery_rejected(fault):
     raw, requests, acks = delivery()

@@ -14,11 +14,11 @@ PR37 immutable input, no physical/native rerun or tuning; reject invalid data; p
 Endpoint interpolation masquerading as exact data; quaternion/frame/gravity sign; packet order/hash ambiguity; nonfinite/duplicate/gapped samples; inference from sampled acceleration versus unobserved1ms dynamics.
 
 ### Task1: Audit implementation and fixed input
-- [ ] Research native/simulator boundary and record pinned sources, license/cost/reasons.
-- [ ] Write failing synthetic tests for audit_inertial_window and audit_imu_delivery in tools/benchmark/audit_inertial_consistency.py.
-- [ ] Implement minimal pure audit, run GREEN and then one sealed-input audit with all prospectively selected windows.
-- [ ] Report actual mismatches and limits; do not claim aliasing/engine root cause without missing-rate evidence.
+- [x] Research native/simulator boundary and record pinned sources, license/cost/reasons.
+- [x] Write failing synthetic tests for audit_inertial_window and audit_imu_delivery in tools/benchmark/audit_inertial_consistency.py.
+- [x] Implement minimal pure audit, run GREEN and then one sealed-input audit with all prospectively selected windows.
+- [x] Report actual mismatches and limits; do not claim aliasing/engine root cause without missing-rate evidence.
 
 ### Task2: Review and publication
-- [ ] Run applicable regression, one independent whole-branch review and one correction pass if needed.
+- [x] Run applicable regression, one independent whole-branch review and one correction pass if needed.
 - [ ] Seal evidence, publish stacked draft PR, attach, update ongoing heartbeat to actual next dependency.
