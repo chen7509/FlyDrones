@@ -4,7 +4,7 @@
 
 One new **substep-lateral-v1 sensor-only diagnostic** completed25s, with the existing1ms physics,250Hz raw IMU,10Hz160×120RGBD and unchanged lateral-wrench-v1 force. No estimator, training, ODOMETRY or arming ran. Omitting the native worker changes CPU load; this is **not a capacity or VIO benchmark**.
 
-The captured dynamics close at full rate under the discrete right-endpoint rule, but all four250Hz sampling phases give substantial integral errors during excitation. This supports temporal undersampling/aliasing of these contact-driven dynamics as the cause of this particular acceleration-versus-velocity discrepancy. It does not prove the source of all PR37 VIO drift, qualify calibration, or establish reliable VIO.
+The captured dynamics close at full rate under the discrete right-endpoint rule, but all four250Hz sampling phases give substantial integral errors during excitation. This supports temporal undersampling/aliasing of these dynamics as the cause of this particular acceleration-versus-velocity discrepancy. The fixture acts laterally near the ground, but contact impulses were not separately logged; this does not identify a particular contact solver defect. It does not prove the source of all PR37 VIO drift, qualify calibration, or establish reliable VIO.
 
 |Window(s)|1kHz right error(m/s)|1kHz trapezoid error|250Hz right errors, phases0/1/2/3ms|Raw250Hz trapezoid error|
 |---|---:|---:|---|---:|
@@ -21,7 +21,7 @@ Quarter-phase windows use their own actual first/last velocity endpoints; phases
 -6251IMU,251RGB/info/depth each,24unarmed heartbeats.1600nonzero force steps, zero net impulse and41.6N·s absolute impulse. Original fixture bounds and source watchdog retained.
 -ULog49vehicle_status records, all arming_state1; SHA256 `0270a57577e347c1406f2e621efa8ac69a5778532cb072669f3c917aad4b7f33`.
 -Runtime `/proc/self/maps` identifies gz-physics7.8.0 dartsim plugin and DART6.13 libraries with exact hashes. Package versions and loaded binaries recorded; all frozen producer/model/binary hashes unchanged after capture. Relevant processes released.
--Changed files Ruff/94targeted tests passed before capture; full regression and independent review are recorded in the final evidence seal. Whole-repository Ruff's prior50errors in32unchanged files remain unresolved; no whole-repository lint success claim.
+-Changed files Ruff/94targeted tests passed before capture; after independent review,100targeted tests pass. Reviewer found oneImportant terminal completeness/backend-provenance acceptance gap and oneMinor boundary-test gap; both fixed in one pass. Capture producer remains5b907bb; final failure-path changes tested synthetically, without claiming a physical rerun. Final full regression:816passed,2existing warnings,212.84s. Whole-repository Ruff's50errors in32files were freshly checked, all byte-identical to base; no whole-repository lint success claim.
 
 ## Research and next dependency
 

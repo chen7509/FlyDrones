@@ -14,15 +14,15 @@ Keep physical and sensor rates/force unchanged; native worker omitted explicitly
 Missing post callback at shutdown; pre/post state-time convention; short/failed writes and cleanup failures; sensor-only flag accidentally bypassing source/unarmed guards; attribution from phase-biased integrals.
 
 ### Task1: Trace and capture contract
-- [ ] Record official callback semantics and actual installed backend provenance research.
-- [ ] Add failing tests for SubstepTrace, phase_closures and parse_capture_args mode combinations.
-- [ ] Implement bounded trace, optional fixture hook and explicit sensor-only diagnostic with source watchdog retained; targeted GREEN.
+- [x] Record official callback semantics and actual installed backend provenance research.
+- [x] Add failing tests for SubstepTrace, phase_closures and parse_capture_args mode combinations.
+- [x] Implement bounded trace, optional fixture hook and explicit sensor-only diagnostic with source watchdog retained; targeted GREEN.
 
 ### Task2: Frozen physical evidence
-- [ ] Freeze prospective condition/code/model/binary/package metadata and check no competitors.
-- [ ] One25s attempt; audit timestamps/continuity/full-rate and phase closure, source rates, force, noarmULog, runtime backend map and cleanup.
-- [ ] Report actual outcome and remaining uncertainty, no VIO/RTF success claim.
+- [x] Freeze prospective condition/code/model/binary/package metadata and check no competitors.
+- [x] One25s attempt; audit timestamps/continuity/full-rate and phase closure, source rates, force, noarmULog, runtime backend map and cleanup.
+- [x] Report actual outcome and remaining uncertainty, no VIO/RTF success claim.
 
 ### Task3: Review and seal
-- [ ] Regression, one independent review and one correction pass as needed.
-- [ ] Seal evidence, stacked draft PR, attach, update existing continuation to next supported dependency.
+- [x] Regression, one independent review and one correction pass as needed.
+- [x] Seal evidence, stacked draft PR, attach, update existing continuation to next supported dependency.
