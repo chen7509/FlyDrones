@@ -9,3 +9,5 @@ Binding-red.txt misleading filename retained unchanged: execution completed afte
 Fullregression running, reviewer review_supported_excitation read-onlyc991425..62a8d0a; publication pending. ExistingVIO29.5355m and5camera0.873RTF failures persist.
 
 Review closure:1Important uncheckedtruthwrite and2Minor clearancecloseerror/causalitywording fixedonepass1758d39.2newRED→129targetedGREEN; final845regressionpassed2existingwarnings214.73s. ChangedRuffpasses/full50errors32unchangedbase. Failedphysicalproducerd01d55d/2996b84unchanged; no physical rerun. Finalrelatedresourcesempty. Seal/draftPRpublication follows, nextreadinessanchor design.
+
+Publication: draftPR40created/attached; seal473members1922179bytes SHA39dc9a12b971c74552a0977c15b068d529f8f7462e742ab48e8a47d1d14e8941. Preservebothfailedphysicalruns; continue next-startup-research readinesscontract, no fullgoalcompletion.
