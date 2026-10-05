@@ -34,6 +34,10 @@ Serialization uses real pymavlink2.4.49 bytes and a real decoder. Synthetic test
 - Focused tests initially failed38/38 due to missing implementation; first geometry/session pass38/38. Failure-preservation adds one test (39 total). Mutable-wire-field rejection failed on changed frame_id before guard implementation. Real WSL wire checks then passed9 roundtrips across level/tilted attitudes and quality-1/0/80, plus9 corrupted-field rejections.
 - Windows full regression passed666 tests in223.04s with2 existing warnings. The later serializer guard is exercised by the WSL wire checks, not by the Windows suite. Independent review remains pending until recorded below.
 
+Final review found no Critical/Minor and one Important dependency compatibility issue: SciPy1.10 lacks as_quat(canonical=). Added a legacy-signature regression that failed before the fix, and used explicit quaternion sign selection without raising the dependency minimum. This is a signature-emulation regression, not an installation test of actual SciPy1.10. Final full regression passed **667 tests in205.26s**, with the same2 existing warnings; Ruff/diff checks passed. The final WSL serializer rerun passed9 roundtrips and9 corruption rejections. A conversion-only parity check confirmed all2136 exported records exactly unchanged after the compatibility fix; no estimator replay was repeated.
+
+Reviewer-declined areas remain explicit limitations: online/fusion/flight, nonidentity mounting/other consumers, and covariance calibration. No second review was requested after the targeted fix. Full evidence, failure logs, reviewer findings and final test results are preserved rather than deleting the working evidence directory. Process checks found no related WSL simulation/replay or Windows Python/PX4/Gazebo process at their recorded check times.
+
 |Status|Evidence boundary|
 |---|---|
 |Verified locally|Analytic pose/body vectors, finite-difference body-tangent Jacobian, full covariance cross terms; frozen-input geometry and unavailable-row retention; explicit clock/reset rejection; synthetic real MAVLink2 serialization.|
@@ -42,3 +46,7 @@ Serialization uses real pymavlink2.4.49 bytes and a real decoder. Synthetic test
 |Still failed|Earlier single physical collision/fullfly latency; five-camera WSL0.873RTF below0.95. This stage changes none of them.|
 
 Next dependency is a disarmed online shadow producer using actual timestamp/arrival/reset evidence, after a separate researched design. It must demonstrate fresh output without repeated image frames and keep VIO→EKF2 disabled while public initialization and health gates remain unmet. No20/100-aircraft expansion, HITL or real flight qualification follows from this report.
+
+Preparatory source inspection found HIGHRES_IMU subtracts EKF-estimated biases, while SCALED_IMU quantizes integrated data and uses a different timestamp field. Neither is automatically equivalent to the validated ULog sensor_combined input. The fixed PX4 dds_topics.yaml exposes sensor_combined; runtime support/dependency cost and timestamp correspondence must be researched next. Details and source hashes are retained in next-online-research.md and next-source-snapshots/. No online estimator or new simulator was launched for this work.
+
+Evidence archive: evidence/openvins-odometry-contract-dev-1701.zip and its per-member SHA256 index. The archive depends on the unchanged PR32 sealed source and its prior physical evidence chain; this archive is not a standalone simulator installation. Draft PR and archive hash are recorded in the final closure commit.

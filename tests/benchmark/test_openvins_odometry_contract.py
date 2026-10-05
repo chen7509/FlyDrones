@@ -209,3 +209,29 @@ def test_frozen_records_keep_unavailable_and_all_health_gaps():
         assert not r["eligible_for_px4_fusion"] and r["wire_packet"] is None
         assert "live_clock_and_arrival_missing" in r["reasons"]
         assert "reset_evidence_missing" in r["reasons"] and "quality_evidence_missing" in r["reasons"]
+
+
+def test_scipy_110_as_quat_signature_compatibility(monkeypatch):
+    class LegacyRotation:
+        def __init__(self, rotation):
+            self.rotation = rotation
+
+        @classmethod
+        def from_matrix(cls, matrix):
+            return cls(Rotation.from_matrix(matrix))
+
+        @classmethod
+        def from_quat(cls, quaternion):
+            return cls(Rotation.from_quat(quaternion))
+
+        def as_matrix(self):
+            return self.rotation.as_matrix()
+
+        def as_quat(self):  # SciPy1.10 has no canonical keyword
+            return -self.rotation.as_quat()
+
+    module = api()
+    x, p = native(Rotation.from_euler("xyz", [20, -40, 70], degrees=True).as_matrix())
+    expected = module.convert_native(x, p)
+    monkeypatch.setattr(module, "Rotation", LegacyRotation)
+    np.testing.assert_allclose(module.convert_native(x, p)["q_wxyz"], expected["q_wxyz"])

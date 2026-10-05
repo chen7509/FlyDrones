@@ -40,7 +40,12 @@ def convert_native(state13, covariance12, *, profile=PROFILE):
         raise ValueError("covariance must be symmetric PSD")
     # Hamilton(q_xyzw) = JPL(q_xyzw).T; hence S * R_GI.T.
     r_bl = S @ Rotation.from_quat(state[:4] / norm).as_matrix()
-    q = Rotation.from_matrix(r_bl).as_quat(canonical=True)
+    q = Rotation.from_matrix(r_bl).as_quat()
+    # SciPy1.10 supports as_quat() but not canonical=. Choose sign explicitly:
+    # positive w, breaking the exact w=0 tie by the first nonzero x/y/z.
+    first = next(value for value in q[[3, 0, 1, 2]] if value != 0)
+    if first < 0:
+        q = -q
     jac = np.zeros((12, 12))
     jac[:3, 3:6] = S
     jac[3:6, :3] = np.eye(3)
