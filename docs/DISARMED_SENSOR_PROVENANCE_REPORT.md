@@ -65,3 +65,5 @@ V2 capture/cleanup wall29.655s; callback-to-writer P95 is6.555ms IMU and5.400ms 
 Additional ruling: verify changed producer with one separately recorded post-fix run (cost: one extra bounded25s simulation). Evidence/workspace retained as authorized. Final archive and draft PR details follow in the publication closure.
 
 Final process checks found no related WSL simulation/replay/training or Windows Python/PX4/Gazebo process at the recorded check time. The working evidence directory is retained. Source and failure artifacts are in the sealed archive with per-member SHA256 hashes.
+
+Publication closure: draft PR34 https://github.com/chen7509/FlyDrones/pull/34, implementation ae0e468, review fixes d10546a, evidence947c463. Archive900members/9,506,762bytes, SHA256 **7d747d0c841ce6e13bc9614cc9b23381c45b260170f98ac2fdad7ce8bc78313d**. This closure paragraph and publication checkbox postdate the sealed snapshot; the archive is unchanged.
