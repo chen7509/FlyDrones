@@ -13,7 +13,7 @@
 - [x] Add tools/benchmark/openvins_fast_probe.h using actual pinned propagator, no substitute integrator. Extend optional side-stream scheduling in openvins_state_probe.cpp and protect three outputs against aliases/overwrite. Compile and record all source/binary/library hashes.
 - [x] Verify source hashes, execute one fixed replay in fresh directory, compare original CSV SHA, audit every target including failed rows and prearm202 targets; save wall/RSS/API latency and source-input boundary limitations.
 - [x] Run regressions and independent code/evidence/report review;627 Python tests passed, no review findings. Preserve all unsuccessful initialization targets and ten offline fault corruptions. Native propagation evidence reviewed; frame/message implementation is the next dependency.
-- [ ] Seal report/evidence and open stacked draft PR; record closure after publication without changing sealed archive.
+- [x] Seal report/evidence and open stacked draft PR: https://github.com/chen7509/FlyDrones/pull/32 . Evidence43members, ZIP SHA25c50d945156e6a05e14e52afa73b9acffd048a1bb3dbdfb6d484e7685015d29. Checklist closure recorded after publication; sealed archive retains the pre-publication checklist unchanged.
 
 ## Review Focus
 
