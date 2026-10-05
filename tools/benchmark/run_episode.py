@@ -101,17 +101,34 @@ def require_unused_episode_output(output: Path) -> None:
 def prepare_development_textures(source: Path, output: Path) -> dict:
     """Copy fixed-world textures into a fresh development episode with hashes."""
     names = ('ground_albedo.png', 'obstacle_albedo.png')
+    if (not source.is_dir() or source.is_symlink()
+            or (source / 'INCOMPLETE.json').exists()
+            or (source / 'INCOMPLETE.json').is_symlink()):
+        raise ValueError(f'invalid or incomplete development texture source: {source}')
+    source_manifest = source / 'manifest.json'
+    if source_manifest.is_symlink():
+        raise ValueError('unsafe development texture manifest')
+    board_hash = None
+    if source_manifest.is_file() and not source_manifest.is_symlink():
+        metadata = json.loads(source_manifest.read_text(encoding='utf-8'))
+        if metadata.get('schema') == 'flydrones-openvins-board-pattern-dev-v1':
+            names += ('board_albedo.png',)
+            board_hash = metadata.get('board_albedo_sha256')
+    if 'board_albedo.png' not in names and (
+            (source / 'board_albedo.png').exists()
+            or (source / 'board_albedo.png').is_symlink()):
+        raise ValueError('undeclared development board texture')
     manifest_path = output / 'texture_input_manifest.json'
     if manifest_path.exists() or any((output / name).exists() for name in names):
         raise FileExistsError(f'development texture destination already used: {output}')
-    if not source.is_dir() or source.is_symlink():
-        raise ValueError(f'invalid development texture source: {source}')
     contents: dict[str, bytes] = {}
     for name in names:
         path = source / name
         if not path.is_file() or path.is_symlink():
             raise ValueError(f'missing or unsafe development texture: {path}')
         contents[name] = path.read_bytes()
+        if name == 'board_albedo.png' and hashlib.sha256(contents[name]).hexdigest() != board_hash:
+            raise ValueError('development board texture hash mismatch')
     manifest = {'source': str(source.resolve()), 'files': {}}
     for name, data in contents.items():
         with (output / name).open('xb') as target:

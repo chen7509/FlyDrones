@@ -22,6 +22,46 @@ def _sha(path: Path) -> str:
         return hashlib.file_digest(stream, 'sha256').hexdigest()
 
 
+def parse_static_attempt_outcomes(log_text: str) -> list[dict]:
+    """Associate static success with its attempt, not the public initialized flag.
+
+    For the fixed single-threaded diagnostic runner; callers additionally run
+    parse_init_feature_trace to validate all structured frame/disparity records.
+    Ready-but-nonstatic branches are unsupported and rejected, never dropped.
+    """
+    rows = []
+    current = None
+    ready = static = False
+    previous = -1.
+    for line in log_text.splitlines():
+        frame, disparity = FRAME.search(line), DISP.search(line)
+        if frame:
+            if static:
+                raise ValueError('static attempt missing outcome')
+            current = float(frame.group(1))
+            if current <= previous:
+                raise ValueError('unordered initialization attempt')
+            previous = current
+            ready = False
+        elif disparity:
+            ready = (current is not None and disparity.group(4) == 'ready'
+                     and int(disparity.group(2)) >= 15 and int(disparity.group(3)) >= 15)
+        elif 'USING STATIC INITIALIZER METHOD!' in line:
+            if not ready or static:
+                raise ValueError('static method without feature-ready attempt')
+            static = True
+        elif 'successful initialization in' in line or 'failed initialization in' in line:
+            success = 'successful initialization in' in line
+            if (success or ready) and not static:
+                raise ValueError('feature-ready outcome without static method')
+            if static:
+                rows.append({'image_s': current, 'success': success})
+            static = ready = False
+    if static or sum(row['success'] for row in rows) != 1 or not rows[-1]['success']:
+        raise ValueError('missing or ambiguous static initialization success')
+    return rows
+
+
 def parse_init_feature_trace(log_text: str, states: list[dict]) -> list[dict]:
     """Require one disparity decision per attempted frame; retain absent attempts."""
     if not states or any(row.get('initialized') not in ('0', '1') for row in states):
