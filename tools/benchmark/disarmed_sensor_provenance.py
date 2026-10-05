@@ -123,7 +123,9 @@ class CaptureWriter:
             row["payload_sha256"] = hashlib.sha256(payload).hexdigest()
         # This is record preparation time, not filesystem durability or sensor-generation wall time.
         row["recorded_monotonic_ns"] = time.monotonic_ns()
-        self.stream.write(json.dumps(row, allow_nan=False) + "\n")
+        encoded = json.dumps(row, allow_nan=False) + "\n"
+        if self.stream.write(encoded) != len(encoded):
+            raise OSError("short sensor event write")
         self.written[row["kind"]] += 1
         if self.on_record is not None:
             self.stream.flush()

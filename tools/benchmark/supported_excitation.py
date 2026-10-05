@@ -115,11 +115,16 @@ def write_row(stream, row):
 
 
 class SupportedProbe(GazeboMotionProbe):
-    def __init__(self, output, errors, unarmed_stamp, *, trace):
+    def __init__(self, output, errors, unarmed_stamp, *, trace, policy=None, profile_data=None):
         with ExitStack() as owned:
             self.clearance = owned.enter_context((output / "support-clearance.jsonl").open("x"))
             super().__init__(
-                output, errors, unarmed_stamp, trace=trace, policy=SupportedPolicy(), profile_data=supported_profile()
+                output,
+                errors,
+                unarmed_stamp,
+                trace=trace,
+                policy=policy if policy is not None else SupportedPolicy(),
+                profile_data=profile_data if profile_data is not None else supported_profile(),
             )
             owned.pop_all()
         self.output = output
