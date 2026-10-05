@@ -10,6 +10,6 @@
 - [x] Adapt the sealed runner into tools/benchmark/openvins_state_probe.cpp, export actual internal fields/covariance via read-only subclass, compile against pinned unchanged library, log provenance.
 - [x] Replay fixed input once into new results/openvins-state-diagnostics-dev-1701; compare old CSV byte-for-byte; audit all rows and prearm window. Preserve every failure, never regenerate inputs or weaken thresholds.
 - [x] Run appropriate regression and independent final review; 607 Python tests plus standalone C++ output protection passed. Original replay producer v1 preserved; revised I/O producer compiled/tested separately, not re-replayed.
-- [ ] Seal evidence and submit stacked draft PR (record completion in Git/PR metadata; do not rewrite sealed archives).
+- [x] Seal evidence and submit stacked draft PR: https://github.com/chen7509/FlyDrones/pull/31 . ZIP SHA c8a80daca3c92bbfcad52ab8a62fd3a780a242f12129e210ba05975548a2aaa5, 55 members. This checklist closure was recorded after sealing; the archive retains the pre-publication checklist unchanged.
 
 Review focus: stale latched ZUPT vs per-frame event; covariance native ordering vs PX4 ordering; absent reset/quality/arrival metadata; invalid values masked by pre-init sentinel; read-only probe changes original CSV. No real-time or online fusion claims.
