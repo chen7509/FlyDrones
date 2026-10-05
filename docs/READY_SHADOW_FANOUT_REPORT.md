@@ -29,3 +29,7 @@ Initial missing-module RED; newCLI rejectedRED; then125targetedGREEN. Covers hid
 ## Remaining gates
 
 Need separate frozen supported-motion online study25s/1msphysics/250HzrawIMU/10Hz160x120RGBD with original body/gravity/ready anchor/force/safety and raw-model-zero-bias-diffusion-v1 (uncalibrated). Test actual one-native-worker delivery/processing, reference overwrite count, physical raw integration, VIO error/public initialized and source/reset refusal; no public flag alone grants accuracy. No ODOMETRY/arming/EKF2 until reliable output/health/quality/covariance evidence. PR37 drift29.5355m/PR39 ground aliasing/PR40 startup failures stay retained;5machineRTF0.873<0.95 remains failed. Complete fly learning/decision/division/latency and fair baseline work remain open.
+
+## Publication
+
+DraftPR47 https://github.com/chen7509/FlyDrones/pull/47 stacked onPR46. Evidence `evidence/ready-shadow-fanout-dev-1701.zip`:50members/2422789bytes, SHA3584396a5c7cd8da49ee56a9badf1ec7daf4dcefe362c25999bd95ce139cc22c. All member hashes/CRC verified, fixed fan-out journal included. Final source/report sealed at9343921, evidencecommit b1573f2; publication paragraph added afterward. Fixed adapter producer1fd1970 predates review hardening; final guarded failure paths validated by tests, not a repeated estimator/physics run.
