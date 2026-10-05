@@ -75,6 +75,16 @@ def test_pattern_marks_partial_output_after_failure(tmp_path, monkeypatch):
     assert not (out / "manifest.json").exists()
 
 
+def test_pattern_rejects_dangling_incomplete_marker(tmp_path, monkeypatch):
+    from pathlib import Path
+    source = _source(tmp_path)
+    original = Path.is_symlink
+    monkeypatch.setattr(Path, 'is_symlink', lambda path:
+                        path == source / 'INCOMPLETE.json' or original(path))
+    with pytest.raises(ValueError, match='incomplete'):
+        make_prearm_pattern_fixture(source, tmp_path / 'output')
+
+
 def test_episode_copies_required_board_asset_and_rejects_missing_pattern(tmp_path):
     source = _source(tmp_path)
     fixture = tmp_path / "fixture"

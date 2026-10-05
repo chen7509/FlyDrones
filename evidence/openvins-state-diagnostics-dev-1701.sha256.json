@@ -1,0 +1,252 @@
+{
+  "schema": "flydrones-sealed-development-evidence-v1",
+  "archive": "evidence/openvins-state-diagnostics-dev-1701.zip",
+  "archive_bytes": 798892,
+  "archive_sha256": "c8a80daca3c92bbfcad52ab8a62fd3a780a242f12129e210ba05975548a2aaa5",
+  "member_count": 55,
+  "members": {
+    "results/openvins-state-diagnostics-dev-1701/audit-v2.json": {
+      "bytes": 104176,
+      "sha256": "c5c7d03c0ff7f1df689615b02bae58ee6d90d22304e6e503065fe2704af6ef57"
+    },
+    "results/openvins-state-diagnostics-dev-1701/audit-v3.json": {
+      "bytes": 104176,
+      "sha256": "c5c7d03c0ff7f1df689615b02bae58ee6d90d22304e6e503065fe2704af6ef57"
+    },
+    "results/openvins-state-diagnostics-dev-1701/audit-v4.json": {
+      "bytes": 104176,
+      "sha256": "c5c7d03c0ff7f1df689615b02bae58ee6d90d22304e6e503065fe2704af6ef57"
+    },
+    "results/openvins-state-diagnostics-dev-1701/build-provenance-v3.txt": {
+      "bytes": 12951,
+      "sha256": "00ab50890a7e4373d51f88db35090e003aba5069007b8476bea1a2b52d0eb382"
+    },
+    "results/openvins-state-diagnostics-dev-1701/build-provenance.txt": {
+      "bytes": 12948,
+      "sha256": "b911500b844f9e6c8a3ba754e105287855c313f0d0ffee302d92780045f65c5b"
+    },
+    "results/openvins-state-diagnostics-dev-1701/build-v2.log": {
+      "bytes": 117,
+      "sha256": "5d063cca41bd15cb674503b077b4db942eceb3bb09c5132cfb5fa97d58895fc5"
+    },
+    "results/openvins-state-diagnostics-dev-1701/build-v2.sh": {
+      "bytes": 1058,
+      "sha256": "5e5f58d73cfe026d002ce9126e9e612544767c0982bf304d0779abdfd66500d0"
+    },
+    "results/openvins-state-diagnostics-dev-1701/build-v3.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "results/openvins-state-diagnostics-dev-1701/build-v3.sh": {
+      "bytes": 1052,
+      "sha256": "298e087694cdbd324a4d96c0ec2234cf514ca9b885e3d93db14ef6106b2b6324"
+    },
+    "results/openvins-state-diagnostics-dev-1701/build.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "results/openvins-state-diagnostics-dev-1701/build.sh": {
+      "bytes": 1034,
+      "sha256": "e1486184311a126b83151fa083f1f84ae1da8fdf7c8ca8a4f55ade97b9b6b168"
+    },
+    "results/openvins-state-diagnostics-dev-1701/check-processes.py": {
+      "bytes": 1016,
+      "sha256": "19ad1dccf2aa9f11dd379996d05d4dc5491eeecab640a2d8fac99ce7db82dbd6"
+    },
+    "results/openvins-state-diagnostics-dev-1701/failures.json": {
+      "bytes": 2216,
+      "sha256": "fba7bfa80eb765562868144565aecb30b6f1d1e07cb8eb64eecb138684c8bd42"
+    },
+    "results/openvins-state-diagnostics-dev-1701/focused-auditor-v3.txt": {
+      "bytes": 101,
+      "sha256": "ece081f06d0fa5524f29e4cb10ab0b0a18fb1040a44d2e0a8641557dad69b0da"
+    },
+    "results/openvins-state-diagnostics-dev-1701/focused-pytest-v2.txt": {
+      "bytes": 102,
+      "sha256": "f94f3cfd9c11f18c6e09dc52fd54e033c78ad8a2bcdfe0342270696ae83925b4"
+    },
+    "results/openvins-state-diagnostics-dev-1701/full-pytest-v1.txt": {
+      "bytes": 1615,
+      "sha256": "601bb614c9d70e5a9dfe6f00bd4d13dfd2de4a38ee8abf985717d3a5adacfaf8"
+    },
+    "results/openvins-state-diagnostics-dev-1701/full-pytest-v2.txt": {
+      "bytes": 1615,
+      "sha256": "5fb9c49a6990ee9613367469c126e3f5e59a79d35c65cddcf74f097b4c7f7010"
+    },
+    "results/openvins-state-diagnostics-dev-1701/independent-review.md": {
+      "bytes": 1577,
+      "sha256": "82ded197ca624d7462331161fcaae879083aadf6fcca817e079d4251c7cc87e5"
+    },
+    "results/openvins-state-diagnostics-dev-1701/latch-red.txt": {
+      "bytes": 806,
+      "sha256": "7d75228c324102b476ad7668f8a2bf74613736d914205aab53e2a3295115fea3"
+    },
+    "results/openvins-state-diagnostics-dev-1701/next-integration-research.md": {
+      "bytes": 3305,
+      "sha256": "48a48adf1e250e6ea0e965e297e23d7b5d051edeb1fcc3906c7f1218d9e794d5"
+    },
+    "results/openvins-state-diagnostics-dev-1701/output-guard-green-v2.txt": {
+      "bytes": 91,
+      "sha256": "ec26a9e85cd286aee83b4bdbf5fe3c624c5f77bf6a5e3a2ee088ba7367c7e9aa"
+    },
+    "results/openvins-state-diagnostics-dev-1701/output-guard-green.txt": {
+      "bytes": 76,
+      "sha256": "6b5a0c7f1f2f967555f3e0ad30d0c2a3b84cdd04972d6fc814f231d0b80995ed"
+    },
+    "results/openvins-state-diagnostics-dev-1701/output-guard-red.txt": {
+      "bytes": 231,
+      "sha256": "74be2f41bf88a0fff8258ff3bf0a6bc568a0721df3f5b67b91ba22a5970ce495"
+    },
+    "results/openvins-state-diagnostics-dev-1701/processes-after.json": {
+      "bytes": 143,
+      "sha256": "c2be98d7ba1e22ec092b5c4961c388e309f73d04446a09fe05455de43825d6bb"
+    },
+    "results/openvins-state-diagnostics-dev-1701/producer-source-v1.cpp": {
+      "bytes": 8273,
+      "sha256": "b8f52d6d5dc9c99c6977529f1929085fbf085cb964cc3fd4218e6fb531d6324f"
+    },
+    "results/openvins-state-diagnostics-dev-1701/regular-clock-red.txt": {
+      "bytes": 2647,
+      "sha256": "ee5eaf8795e73bc31c1221c890053fc18e45c28b0e9766b8ecfe251261b38eb2"
+    },
+    "results/openvins-state-diagnostics-dev-1701/replay-v1/diagnostics.jsonl": {
+      "bytes": 2385690,
+      "sha256": "4c5a1dd09fae80e38c8b2cbc6aa22f85ebae3a7642bb63f4cfec9192bcb87b1c"
+    },
+    "results/openvins-state-diagnostics-dev-1701/replay-v1/exit-code.txt": {
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    "results/openvins-state-diagnostics-dev-1701/replay-v1/resources.txt": {
+      "bytes": 1106,
+      "sha256": "eefa833dfe04242dddd51c34980c36cdea55efe9337dcdd16692db5a438f5b1e"
+    },
+    "results/openvins-state-diagnostics-dev-1701/replay-v1/states.csv": {
+      "bytes": 48750,
+      "sha256": "2b5ce9c343e63f3178a74e8a02c889beba3bfbc02ddf9eaf4e1c526f94a6f550"
+    },
+    "results/openvins-state-diagnostics-dev-1701/replay-v1/stderr.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "results/openvins-state-diagnostics-dev-1701/replay-v1/stdout.txt": {
+      "bytes": 256389,
+      "sha256": "52fc4f67f3f9ce5b49cb10c44c037671a53677e5c063e9bcc9912af5d5cad344"
+    },
+    "results/openvins-state-diagnostics-dev-1701/replay.sh": {
+      "bytes": 681,
+      "sha256": "e251e3d606e38201a6c8cc3b617839fecfe78024b0c88d243c0b29422a85fe71"
+    },
+    "results/openvins-state-diagnostics-dev-1701/revised-probe-io-check.json": {
+      "bytes": 472,
+      "sha256": "4e2c0d5345f54b763a74a9d62b59f1fdf9af50fbb40f266c86f140dda979a6a4"
+    },
+    "results/openvins-state-diagnostics-dev-1701/ruff-final.txt": {
+      "bytes": 20,
+      "sha256": "a4443afdcfb6d7363adb285762515ccf7cf50473b1a05c20c1a50f6bed4d26b0"
+    },
+    "results/openvins-state-diagnostics-dev-1701/ruff-v1.txt": {
+      "bytes": 20,
+      "sha256": "a4443afdcfb6d7363adb285762515ccf7cf50473b1a05c20c1a50f6bed4d26b0"
+    },
+    "results/openvins-state-diagnostics-dev-1701/ruff-v2.txt": {
+      "bytes": 20,
+      "sha256": "a4443afdcfb6d7363adb285762515ccf7cf50473b1a05c20c1a50f6bed4d26b0"
+    },
+    "results/openvins-state-diagnostics-dev-1701/seal-evidence.py": {
+      "bytes": 2922,
+      "sha256": "0d8c66a758bd2c5cddd3a4858dec1da8c4603ecf5f379fa63e8fe1ff8f1b88ee"
+    },
+    "results/openvins-state-diagnostics-dev-1701/summarize.py": {
+      "bytes": 1765,
+      "sha256": "c13ce85adbd863db63cb58784974d29f3cffa093017b853af425462d2095fbef"
+    },
+    "results/openvins-state-diagnostics-dev-1701/summary-v1.json": {
+      "bytes": 1802,
+      "sha256": "c0cae61cc269395401b33acf95d0d2200ac55264f886d3c30ee9eeb5450ee462"
+    },
+    "results/openvins-state-diagnostics-dev-1701/verified-inputs.json": {
+      "bytes": 97654,
+      "sha256": "1103da66b89784a71ee0b907834027dd795450d211aa6591956a2ae3ae154c11"
+    },
+    "results/openvins-state-diagnostics-dev-1701/verify-inputs.py": {
+      "bytes": 890,
+      "sha256": "ed15502f6ab1445aafb748d559bd1f5080cdcef5400524215fdce525d0eb54cb"
+    },
+    "results/openvins-state-diagnostics-dev-1701/verify-revised-io.py": {
+      "bytes": 1087,
+      "sha256": "7e7729f4f78ad88ad8fa8b2fff9fbf329ca87fda212dcd3fe062efb2a61e9961"
+    },
+    "results/openvins-state-diagnostics-dev-1701/window-red.txt": {
+      "bytes": 1131,
+      "sha256": "96e61eec19bcb3ec232c2be34a4016a9081ca1ab505ca91e214897a4d938d343"
+    },
+    "docs/OPENVINS_STATE_DIAGNOSTICS_REPORT.md": {
+      "bytes": 6992,
+      "sha256": "f2c84ee503c83de99d23485df65b52332de20a55454c7520f794a571bb9baedf"
+    },
+    "docs/superpowers/specs/2026-10-05-openvins-state-diagnostics-design.md": {
+      "bytes": 4716,
+      "sha256": "cd4a6107ef8b27b1bb9769c80f0af97c1c46d009989ffa4f02e099b604c8d8ac"
+    },
+    "docs/superpowers/plans/2026-10-05-openvins-state-diagnostics.md": {
+      "bytes": 1743,
+      "sha256": "477d62fea021cc4e8c39bf58ec2d534602944ec246b6bf8f08a1f3bbd4af5ca5"
+    },
+    "tools/benchmark/openvins_state_probe.cpp": {
+      "bytes": 8215,
+      "sha256": "7b1ba4691befc13989d6a05db12bbb850a4f87aee849abc17f8ee8131f76da95"
+    },
+    "tools/benchmark/exclusive_probe_output.h": {
+      "bytes": 1608,
+      "sha256": "6c5a622a66af56e6086a48091cd2c2da1feb7dc03bdd7f8bd37a173c0a0d3091"
+    },
+    "tests/benchmark/exclusive_probe_output_test.cpp": {
+      "bytes": 2118,
+      "sha256": "9787764b0ddc597c9a18ad52fbc81d280940709722fc01c4ba6519a4c63f4237"
+    },
+    "tools/benchmark/audit_openvins_state_diagnostics.py": {
+      "bytes": 8451,
+      "sha256": "1a9d7b5cc43feee95954620f91ebb8c5b135fb3fa45003937a4f63d9848084ed"
+    },
+    "tools/benchmark/make_prearm_pattern_fixture.py": {
+      "bytes": 6163,
+      "sha256": "430fd322f6ca762fe3b101c84040c3eae3b3f4c1ad589f3506f4aafa5e0f4bfb"
+    },
+    "tests/benchmark/test_openvins_state_diagnostics.py": {
+      "bytes": 6243,
+      "sha256": "b188982881cad2530583f659a8bb1546f02e791f7e4d468fc44b35073cbb8917"
+    },
+    "tests/benchmark/test_prearm_pattern_fixture.py": {
+      "bytes": 5192,
+      "sha256": "cf51bf215106de50247db7df8c5b60c19c4b13e17ad0da1618fe7f402adebc6d"
+    },
+    "evidence/openvins-board-pattern-dev-1701-reviewed.sha256.json": {
+      "bytes": 121715,
+      "sha256": "98a717d1dc8f7fbaaa38656e8bff37229066a680a974c4447d29ef6de1413521"
+    }
+  },
+  "dependencies": {
+    "prior_evidence": "openvins-board-pattern-dev-1701-reviewed.zip",
+    "prior_evidence_sha256": "669f3646e74c4e95826f12e79b456aba861a5b4003087541ce7dc1dc8cd1f4f3",
+    "upstream_library_sha256": "532ae57a6a952a0137cc1de291bc47ad556d419c7524fbb23b7a90c00addab5b"
+  },
+  "local_only": {
+    "state_probe": {
+      "sha256": "eb7744952f6656e25e9083be4b9596109b2967351e3fa1175ac88b7d0c1dc29d",
+      "reason": "Generated local executable; source/build evidence and dependency hashes included, binary not redistributed."
+    },
+    "state_probe_v2": {
+      "sha256": "a4d311743c713005d0e117e924e5145e0b66a07bca92c3e4345870d4da2e23a9",
+      "reason": "Generated local executable; source/build evidence and dependency hashes included, binary not redistributed."
+    },
+    "output_guard_test": {
+      "sha256": "f598f90701af05b6fddc6e56a917b585b30c7f346fcca97573d2db0a3848c14b",
+      "reason": "Generated local executable; source/build evidence and dependency hashes included, binary not redistributed."
+    },
+    "output_guard_test_v2": {
+      "sha256": "d1c4b346d2f64486222878ff53a57c3327626bead893a5d375001ffb779d872a",
+      "reason": "Generated local executable; source/build evidence and dependency hashes included, binary not redistributed."
+    }
+  }
+}
