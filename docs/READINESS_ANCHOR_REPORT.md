@@ -38,3 +38,7 @@ Reused fixed PX4 `d6f12ad` HEARTBEAT (BSD-3-Clause), pymavlink 2.4.49 and existi
 Recorded repository metadata: PX4 last push 2026-10-05T20:23:20Z and pymavlink 2026-10-02T09:32:21Z, both non-archived. This indicates activity, not a support guarantee. Pymavlink's [v2.4.49 COPYING](https://raw.githubusercontent.com/ArduPilot/pymavlink/v2.4.49/COPYING) describes (L)GPL v3 for the generator and a distinct MIT exception for generated output; do not label the entire dependency MIT. Existing message decoding is reused without generation or dependency replacement.
 
 Next inspect the pinned gz-sim `446a443` / gz-physics `189471c` Apache-2.0 update paths and actual Python component access before designing a fresh diagnostic readback. Preserve all old evidence. Prefer a fixed-input/source diagnosis first, then a separately named and frozen probe if runtime proof is required. Do not silently alter IMU values or derive estimator input from truth. Existing diagnostic safety bounds must remain, and a fresh-state gap must be addressed before claiming sensor consistency or starting the separate online OpenVINS validation.
+
+## Publication
+
+Draft [PR41](https://github.com/chen7509/FlyDrones/pull/41), stacked on PR40. Archive `evidence/readiness-anchor-dev-1701.zip`: 745 members, 8,162,430 bytes, SHA256 `acd5da7efa70312dbf5b75f6e1a2cbfe25ff286e1ee70e86dc9a3dba101458ba`; all member hashes and CRC verified. Snapshot at `88a38ad` precedes this publication paragraph; evidence commit `ceabfea`. No physical rerun followed review corrections.
