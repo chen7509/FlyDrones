@@ -1,11 +1,14 @@
 """Prospective metadata derived from the same limits used by capture."""
 from __future__ import annotations
 
+import hashlib
 import json
+import stat
 from pathlib import Path
 
 PROFILE_FIELDS = ('motion_profile', 'physics_trace_profile', 'reference_fault_profile', 'source_fanout_profile')
 PATH_FIELDS = ('shadow_binary', 'shadow_config', 'reference_module')
+POLICY_FIELD = 'trajectory_gauge_policy'
 
 
 def validate_launch_environment(value):
@@ -47,12 +50,47 @@ def materialize_launch_environment(value):
     return {key: item for key, item in validate_launch_environment(value).items() if item is not None}
 
 
+def _file_identity(path):
+    requested = Path(path).absolute()
+    resolved = requested.resolve(strict=True)
+    before = resolved.stat()
+    if not stat.S_ISREG(before.st_mode):
+        raise ValueError('trajectory gauge policy must be a regular file')
+    payload = resolved.read_bytes()
+    after = resolved.stat()
+    def stable(value):
+        return (value.st_dev, value.st_ino, value.st_mode, value.st_size,
+                value.st_mtime_ns, value.st_ctime_ns)
+    if stable(before) != stable(after):
+        raise ValueError('trajectory gauge policy changed while read')
+    return {
+        'path': str(requested), 'resolved': str(resolved), 'bytes': len(payload),
+        'sha256': hashlib.sha256(payload).hexdigest(),
+    }
+
+
+def trajectory_gauge_policy_record(path):
+    from tools.benchmark.trajectory_gauge_contract import validate_trajectory_gauge_policy
+
+    before = _file_identity(path)
+    document = read_declaration(path)
+    validate_trajectory_gauge_policy(document)
+    after = _file_identity(path)
+    if before != after:
+        raise ValueError('trajectory gauge policy changed during validation')
+    return {**before, 'schema': document['schema']}
+
+
 def execution_contract(args, launch_environment=None):
     fault = args.reference_fault_profile
     if fault not in (None, 'native-pre-epoch-v1'):
         raise ValueError('unknown reference fault profile')
+    policy_path = getattr(args, POLICY_FIELD, None)
+    if policy_path is not None and launch_environment is None:
+        raise ValueError('trajectory gauge policy requires explicit launch environment')
     result = dict(
-        schema='capture-execution-v1' if launch_environment is None else 'capture-execution-v2',
+        schema=('capture-execution-v3' if policy_path is not None else
+                ('capture-execution-v1' if launch_environment is None else 'capture-execution-v2')),
         wall_budget_s=60 if fault else 300,
         supervisor_s=90 if fault else 300,
         simulation_duration_ns=25_000_000_000,
@@ -64,6 +102,8 @@ def execution_contract(args, launch_environment=None):
     )
     if launch_environment is not None:
         result['launch_environment'] = validate_launch_environment(launch_environment)
+    if policy_path is not None:
+        result['trajectory_gauge_policy'] = trajectory_gauge_policy_record(policy_path)
     return result
 
 
@@ -102,10 +142,12 @@ def validate_declaration(args, launch_environment=None):
 
 def worker_options(args):
     result = []
-    for field in PATH_FIELDS + PROFILE_FIELDS + ('reference_sha256', 'execution_contract', 'runtime_binding'):
+    for field in PATH_FIELDS + PROFILE_FIELDS + (
+        'reference_sha256', 'execution_contract', 'runtime_binding', POLICY_FIELD,
+    ):
         value = getattr(args, field, None)
         if value is not None:
-            if field in PATH_FIELDS + ('execution_contract', 'runtime_binding'):
+            if field in PATH_FIELDS + ('execution_contract', 'runtime_binding', POLICY_FIELD):
                 value = str(Path(value).resolve())
             result += ['--' + field.replace('_', '-'), str(value)]
     return result

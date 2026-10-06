@@ -82,6 +82,38 @@ def test_contract_forbids_fit_scale_timeshift_and_truth_origin_selection():
     assert contract["expected_end_ns"] == 25_000_000_000
 
 
+def test_prospective_policy_has_dynamic_anchor_and_fixed_scoring():
+    policy = gauge.trajectory_gauge_policy()
+    assert policy["schema"] == "trajectory-gauge-policy-v1"
+    assert policy["anchor_source"] == "immutable_readiness_anchor"
+    assert "anchor_ns" not in policy
+    assert policy["origin_rule"] == "first_internal_initialized_state_in_session"
+    assert policy["alignment"] == "yaw_translation_4dof"
+    assert policy["scale"] == 1.0
+    assert policy["time_shift_ns"] == 0
+    assert policy["lateral_start_offset_ns"] == 3_000_000_000
+    assert policy["expected_duration_ns"] == 25_000_000_000
+    assert policy["truth_used_for_origin_selection"] is False
+    assert policy["eligible_for_px4_fusion"] is False
+    assert policy["flight_ready"] is False
+    assert gauge.validate_trajectory_gauge_policy(policy) == policy
+
+
+@pytest.mark.parametrize("mutation", [
+    lambda row: row.update(anchor_ns=1),
+    lambda row: row["screens"].update(max_position_error_m=0.5),
+    lambda row: row.update(scale=1),
+    lambda row: row.update(time_shift_ns=False),
+    lambda row: row.update(anchor_source="truth_selected_anchor"),
+    lambda row: row.update(extra="ignored"),
+])
+def test_prospective_policy_refuses_dynamic_anchor_or_semantic_change(mutation):
+    policy = gauge.trajectory_gauge_policy()
+    mutation(policy)
+    with pytest.raises(ValueError, match="trajectory gauge policy"):
+        gauge.validate_trajectory_gauge_policy(policy)
+
+
 def test_origin_selection_is_first_internal_and_independent_of_truth():
     states, truth, profile, session, capture = small_input()
     selected = gauge.select_origin(states, profile)

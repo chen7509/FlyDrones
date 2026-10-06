@@ -74,8 +74,10 @@ def parse_initial_environment(raw):
 
 
 def record_worker_environment(output, contract, contract_path, *, reader=None):
-    if type(contract) is not dict or contract.get("schema") != "capture-execution-v2":
-        raise ValueError("worker environment evidence requires execution contract v2")
+    if type(contract) is not dict or contract.get("schema") not in {
+        "capture-execution-v2", "capture-execution-v3",
+    }:
+        raise ValueError("worker environment evidence requires execution contract v2 or v3")
     declared = validate_launch_environment(contract.get("launch_environment"))
     expected = materialize_launch_environment(declared)
     contract_path = Path(contract_path).resolve(strict=True)
@@ -108,12 +110,36 @@ def record_worker_environment(output, contract, contract_path, *, reader=None):
     return record
 
 
+def record_worker_trajectory_policy(output, contract, policy_path):
+    from tools.benchmark.capture_contract import trajectory_gauge_policy_record
+
+    if type(contract) is not dict or contract.get("schema") != "capture-execution-v3":
+        raise ValueError("worker trajectory policy evidence requires execution contract v3")
+    actual = trajectory_gauge_policy_record(policy_path)
+    declared = contract.get("trajectory_gauge_policy")
+    matches = _typed_equal(actual, declared)
+    record = {
+        "schema": "worker-trajectory-gauge-policy-v1",
+        **actual,
+        "matches_declaration": matches,
+        "physics_qualified": False,
+        "fusion_eligible": False,
+        "flight_ready": False,
+    }
+    write_manifest(Path(output) / "trajectory-gauge-policy-worker.json", record)
+    if not matches:
+        raise ValueError("worker trajectory gauge policy differs from declaration")
+    return record
+
+
 def parse_capture_args(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--worker", action="store_true", help=argparse.SUPPRESS)
     parser.add_argument("--execution-contract", type=Path, help="Exact prospective execution declaration")
     parser.add_argument("--runtime-binding", type=Path, help="Declared baseline, generated hashes and lookup environment")
+    parser.add_argument("--trajectory-gauge-policy", type=Path,
+                        help="Prospective truth-independent trajectory scoring policy")
     parser.add_argument("--shadow-binary", type=Path)
     parser.add_argument("--shadow-config", type=Path)
     parser.add_argument("--reference-module", type=Path)
@@ -125,6 +151,8 @@ def parse_capture_args(argv=None):
     args = parser.parse_args(argv)
     if args.runtime_binding and not args.execution_contract:
         parser.error("runtime binding requires an execution declaration")
+    if args.trajectory_gauge_policy and (not args.runtime_binding or not args.execution_contract):
+        parser.error("trajectory gauge policy requires runtime binding and execution declaration")
     if args.source_fanout_profile and (
         not args.shadow_binary or not args.shadow_config or not args.reference_module or not args.reference_sha256
         or args.motion_profile != "supported-ready-v1" or args.physics_trace_profile != "substep-ready-v1"
@@ -232,8 +260,10 @@ def main():
             else 2
         )
     output = args.output.resolve()
-    if contract["schema"] == "capture-execution-v2":
+    if contract["schema"] in {"capture-execution-v2", "capture-execution-v3"}:
         record_worker_environment(output, contract, args.execution_contract)
+    if contract["schema"] == "capture-execution-v3":
+        record_worker_trajectory_policy(output, contract, args.trajectory_gauge_policy)
     resources = active_resources()
     if resources:
         raise RuntimeError("existing competing resources: " + json.dumps(resources))

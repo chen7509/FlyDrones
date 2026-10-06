@@ -7,6 +7,7 @@ transport publisher, and it never makes truth available to an online consumer.
 from __future__ import annotations
 
 import argparse
+import copy
 import hashlib
 import json
 import math
@@ -31,6 +32,55 @@ PR48_MEMBERS = {
 FLU_FRD = np.diag([1.0, -1.0, -1.0])
 MAX_MAGNITUDE = 1e10
 MAX_NS = 2**63 - 1
+
+
+def trajectory_gauge_policy():
+    """Return the immutable, truth-independent policy used before an anchor exists."""
+    return {
+        "schema": "trajectory-gauge-policy-v1",
+        "anchor_source": "immutable_readiness_anchor",
+        "origin_rule": "first_internal_initialized_state_in_session",
+        "alignment": "yaw_translation_4dof",
+        "scale": 1.0,
+        "time_shift_ns": 0,
+        "truth_used_for_origin_selection": False,
+        "native_orientation": "JPL_q_GtoI_xyzw_numeric_Hamilton_I_to_G",
+        "native_position": "p_IinG",
+        "native_velocity": "v_IinG_global",
+        "reference_orientation": "world_from_FLU_then_FLU_to_FRD",
+        "wire_frames_not_emitted": ["LOCAL_FRD", "BODY_FRD"],
+        "lateral_start_offset_ns": 3_000_000_000,
+        "expected_duration_ns": 25_000_000_000,
+        "required_public_end_offset_ns": 24_900_000_000,
+        "max_public_gap_ns": 200_000_000,
+        "exact_time_tolerance_ns": 1,
+        "screens": {
+            "max_position_error_m": 0.25,
+            "max_velocity_error_m_s": 0.25,
+            "max_attitude_error_deg": 10.0,
+            "max_initial_gravity_axis_error_deg": 5.0,
+        },
+        "truth_scope": "offline_scoring_and_isolated_abort_only",
+        "eligible_for_px4_fusion": False,
+        "flight_ready": False,
+    }
+
+
+def _typed_equal(left, right):
+    if type(left) is not type(right):
+        return False
+    if isinstance(left, dict):
+        return left.keys() == right.keys() and all(_typed_equal(left[key], right[key]) for key in left)
+    if isinstance(left, list):
+        return len(left) == len(right) and all(_typed_equal(a, b) for a, b in zip(left, right))
+    return left == right
+
+
+def validate_trajectory_gauge_policy(value):
+    expected = trajectory_gauge_policy()
+    if not _typed_equal(value, expected):
+        raise ValueError("invalid trajectory gauge policy")
+    return copy.deepcopy(expected)
 
 
 def _strict_int(value, name, *, minimum=0):
