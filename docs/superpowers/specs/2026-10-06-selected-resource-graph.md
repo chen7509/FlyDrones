@@ -10,4 +10,8 @@ Native tool modes: installation directories; plugin lookup with exact installed 
 
 This stage must run against original selected models and frozen PR48 world input, recording unresolved edges and scope gaps. Model roots and URI-to-local selection must be separately evidenced before complete graph qualification; a list of parsed references or installed candidates is not a selected full graph. Runtime closure, VIO fusion and physical verification remain false. Existing failures are not overwritten.
 
+Reference `text` means the XML-parsed value (entity expansion of built-in entities and newline normalization), not an exact lexical substring. The original bytes and hashes remain the lexical evidence. External COLLADA url/source/href and instance_material target attributes produce unsupported markers; local fragment-only references are internal.
+
+Native candidate ambiguity is checked across per-root native winners. Different filename aliases within a single root retain upstream priority and are not exhaustively enumerated. This limitation must travel with the result and cannot establish full alias uniqueness.
+
 Remaining integration: authoritative URI/source-context resolution for meshes/textures/includes, actual graph-to-binding linkage, lazy render/sensor and owned child mapping lifecycle, then prospective trajectory/gauge contract. No new physical run until these are designed. No load or safety threshold changes.

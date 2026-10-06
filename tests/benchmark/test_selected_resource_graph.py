@@ -53,3 +53,20 @@ def test_collada_non_image_init_from_is_not_silently_assumed_internal():
 def test_format_is_explicit():
     with pytest.raises(ValueError):
         references(b'<sdf/>', 'xml')
+
+
+@pytest.mark.parametrize('element,attribute', [('instance_node', 'url'), ('input', 'source'),
+    ('instance_material', 'target'), ('extension', 'href')])
+def test_collada_external_document_attributes_are_retained_as_unsupported(element, attribute):
+    data = f'<COLLADA><{element} {attribute}="other.dae#node"/></COLLADA>'.encode()
+    assert references(data, 'dae') == [dict(kind='unsupported', text='other.dae#node',
+        position=f'/COLLADA[1]/{element}[1]/@{attribute}')]
+
+
+def test_collada_local_fragment_attributes_are_internal():
+    assert references(b'<COLLADA><instance_node url="#node"/></COLLADA>', 'dae') == []
+
+
+def test_text_is_xml_value_with_original_bytes_kept_by_caller():
+    rows = references(b'<sdf><mesh><uri>a&amp;b\r\nc</uri></mesh></sdf>', 'sdf')
+    assert rows[0]['text'] == 'a&b\nc'

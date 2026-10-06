@@ -5,6 +5,7 @@ import xml.etree.ElementTree as ET
 
 
 def references(data: bytes, format: str) -> list[dict]:
+    """Return parsed XML values; callers retain original bytes for lexical spelling."""
     if type(data) is not bytes or format not in ('sdf', 'dae'):
         raise ValueError('explicit bytes and sdf/dae format required')
     # Decode before checking declarations, including UTF-16/32 input refusal.
@@ -38,6 +39,13 @@ def references(data: bytes, format: str) -> list[dict]:
     def visit(node, parents, position):
         name = tag(node)
         parent = parents[-1] if parents else ''
+        if format == 'dae':
+            for attribute, value in node.attrib.items():
+                local = attribute.rsplit('}', 1)[-1]
+                if (local in ('url', 'source', 'href')
+                        or (local == 'target' and name == 'instance_material')):
+                    if not value.strip().startswith('#'):
+                        emit(node, 'unsupported', position + '/@' + attribute, value)
         if format == 'sdf':
             if name == 'plugin':
                 if 'filename' not in node.attrib:
