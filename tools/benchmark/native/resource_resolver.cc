@@ -142,8 +142,12 @@ void searchContext()
       << ",\"search_context_qualified\":false,\"runtime_closure_qualified\":false}\n";
 }
 
+#include "local_candidates.hh"
+
 int uriLookup(int argc, char **argv)
 {
+  const bool bounded = std::string(argv[1]) == "bound-uri";
+  LocalCandidates local;
   const auto before = lookupEnvironment();
   const auto cwd = fs::current_path().string();
   std::string source, kind, uri, transformed, lookupSelected, selected, configFile, error;
@@ -168,6 +172,13 @@ int uriLookup(int argc, char **argv)
       throw std::runtime_error("remote or unsupported URI scheme");
     if (kind != "include" && kind != "texture" && kind != "mesh-path" && kind != "collada-image")
       throw std::runtime_error("unsupported URI kind");
+    if (bounded)
+    {
+      localLexicalProfile(kind, uri);
+      // This is an explicit private helper policy, not a Server observation.
+      gz::common::systemPaths()->ClearFindFileCallbacks();
+      gz::common::systemPaths()->ClearFindFileURICallbacks();
+    }
     gz::sim::addResourcePaths();
     if (kind == "include")
     {
@@ -200,6 +211,7 @@ int uriLookup(int argc, char **argv)
       lookupSelected = gz::common::findFile(transformed);
     }
     selected = regular(lookupSelected);
+    if (bounded) localCandidateCheck(local, kind, source, uri, transformed, selected);
   }
   catch (const std::exception &e) { error = e.what(); }
   std::cout << "{\"ok\":" << (error.empty() ? "true" : "false")
@@ -210,6 +222,11 @@ int uriLookup(int argc, char **argv)
             << ",\"cwd\":" << json(cwd) << ",\"before_environment\":" << before
             << ",\"after_environment\":" << lookupEnvironment()
             << ",\"error\":" << json(error)
+            << ",\"local_profile\":" << json(bounded ? "fixed-local-files-v1" : "")
+            << ",\"local_candidates_qualified\":" << (local.qualified ? "true" : "false")
+            << ",\"local_candidates\":" << strings(local.choices)
+            << ",\"examined_paths\":" << strings(local.examined)
+            << ",\"candidate_dependencies\":" << strings(local.dependencies)
             << ",\"ambiguity_qualified\":false,\"runtime_closure_qualified\":false}\n";
   if (!error.empty()) std::cerr << error << '\n';
   return error.empty() ? 0 : 2;
@@ -220,7 +237,7 @@ int main(int argc, char **argv)
   try
   {
     if (argc < 2) throw std::runtime_error("operation required");
-    if (std::string(argv[1]) == "uri") return uriLookup(argc, argv);
+    if (std::string(argv[1]) == "uri" || std::string(argv[1]) == "bound-uri") return uriLookup(argc, argv);
     for (int i = 1; i < argc; ++i)
       for (unsigned char c : std::string(argv[i]))
         if (c < 32 || c == 127) throw std::runtime_error("control character in argument");

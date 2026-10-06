@@ -10,8 +10,10 @@ import os
 import re
 from pathlib import Path
 
+from tools.benchmark.bound_resource_graph import build_graph
 from tools.benchmark.capture_contract import _typed_equal
 from tools.benchmark.declared_runtime_snapshot import snapshot, write_manifest
+from tools.benchmark.native_resource_client import QUERY_ENV_KEYS, QueryClient, environment, validate_response
 
 GENERATED_NAMES = ('world.sdf', 'world.json', 'ground_albedo.png', 'obstacle_albedo.png', 'board_albedo.png', 'gz_env.sh')
 ENV_KEYS = ('GZ_SIM_RESOURCE_PATH', 'GZ_SIM_SYSTEM_PLUGIN_PATH', 'GZ_SIM_SERVER_CONFIG_PATH',
@@ -19,9 +21,15 @@ ENV_KEYS = ('GZ_SIM_RESOURCE_PATH', 'GZ_SIM_SYSTEM_PLUGIN_PATH', 'GZ_SIM_SERVER_
 
 
 def validate_binding(doc):
-    if type(doc) is not dict or set(doc) != {'schema', 'inventory', 'baseline', 'environment', 'generated'}:
+    if type(doc) is not dict:
         raise ValueError('binding declaration schema keys')
-    if doc['schema'] != 'capture-resource-binding-v1':
+    version = doc.get('schema')
+    keys = {'schema', 'inventory', 'baseline', 'environment', 'generated'}
+    if version == 'capture-resource-binding-v2':
+        keys.add('graph')
+    if set(doc) != keys:
+        raise ValueError('binding declaration schema keys')
+    if version not in ('capture-resource-binding-v1', 'capture-resource-binding-v2'):
         raise ValueError('binding schema version')
     inventory = doc['inventory']
     if type(inventory) is not dict or not inventory:
@@ -50,6 +58,18 @@ def validate_binding(doc):
     if (type(generated) is not dict or set(generated) != set(GENERATED_NAMES)
             or any(type(v) is not str or re.fullmatch('[0-9a-f]{64}', v) is None for v in generated.values())):
         raise ValueError('binding generated hashes required')
+    if version == 'capture-resource-binding-v2':
+        graph = doc['graph']
+        if (type(graph) is not dict or set(graph) != {'schema', 'cwd', 'environment', 'expected_context'}
+                or graph['schema'] != 'generated-resource-graph-v1'
+                or type(graph['cwd']) is not str or not Path(graph['cwd']).is_absolute()
+                or '..' in Path(graph['cwd']).parts):
+            raise ValueError('resource graph declaration schema')
+        query_env = environment(graph['environment'])
+        validate_response(graph['expected_context'], ('context',), Path(graph['cwd']), query_env)
+        for role, count in (('graph:resolver', 1), ('graph:source', 1), ('graph:dependencies', None)):
+            if role not in inventory or (count is not None and len(inventory[role]) != count):
+                raise ValueError('graph resolver source/binary/dependencies must be declared')
     return copy.deepcopy(doc)
 
 
@@ -102,6 +122,7 @@ class RuntimeBinding:
         self.errors = []
         self.phases = []
         self.closed = False
+        self.graph_result = None
 
     def start(self, generated, environment, required_paths):
         if self.before is not None or self.pre_recorded or self.errors or self.closed:
@@ -151,6 +172,25 @@ class RuntimeBinding:
                                launch_environment={key: environment.get(key) for key in (
                                    'HEADLESS', 'PX4_GZ_STANDALONE', 'PX4_SYS_AUTOSTART', 'PX4_GZ_WORLD',
                                    'PX4_SIM_MODEL', 'PX4_GZ_MODEL_NAME', 'PX4_UXRCE_DDS_PORT')})
+            if self.doc['schema'] == 'capture-resource-binding-v2':
+                graph = self.doc['graph']
+                if (str(Path.cwd()) != graph['cwd']
+                        or not _typed_equal({k: environment.get(k) for k in QUERY_ENV_KEYS}, graph['environment'])
+                        or any(environment.get(k) for k in ('LD_PRELOAD', 'LD_AUDIT'))):
+                    raise ValueError('actual graph search context or loader environment differs')
+                client = QueryClient(self.doc['inventory']['graph:resolver'][0], Path(graph['cwd']),
+                                     graph['environment'], self.output)
+                observed = client.query('context')
+                write_manifest(self.output / 'resource-search-context.json', observed)
+                if not _typed_equal(observed, graph['expected_context']):
+                    raise ValueError('SDK search context differs from prospective declaration')
+                self.graph_result = build_graph(generated['world.sdf'], client, self.before['files'], self.output)
+                after_query = snapshot(self.inventory)
+                write_manifest(self.output / 'runtime-binding-after-queries.json', after_query)
+                if not _typed_equal(after_query['files'], self.before['files']):
+                    raise ValueError('declared files changed during graph queries')
+                self.before['resource_graph'] = self.graph_result
+                self._observe('postgraph', self.map_reader())
             self._observe('bootstrap', raw)
             write_manifest(self.output / 'runtime-binding-pre.json', self.before)
             self.pre_recorded = True
@@ -210,6 +250,8 @@ class RuntimeBinding:
             except Exception as exc:
                 self.errors.append(repr(exc))
         return dict(pre_recorded=self.pre_recorded, declared_files_stable=stable,
+                    local_file_graph_verified=bool(self.graph_result and self.pre_recorded and stable
+                                                  and not self.errors and self.graph_result['local_file_graph_verified']),
                     phases=self.phases, errors=list(self.errors), runtime_closure_qualified=False,
                     scope='self-process phases only; lazy plugins and other processes not qualified')
 
