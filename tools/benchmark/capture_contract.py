@@ -150,6 +150,8 @@ def worker_options(args):
             if field in PATH_FIELDS + ('execution_contract', 'runtime_binding', POLICY_FIELD):
                 value = str(Path(value).resolve())
             result += ['--' + field.replace('_', '-'), str(value)]
+    if getattr(args, 'startup_preflight', False):
+        result.append('--startup-preflight')
     return result
 
 

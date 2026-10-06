@@ -112,6 +112,18 @@ def test_launch_environment_union_preserves_absent_and_present_empty():
     }
 
 
+def test_worker_options_propagates_startup_preflight(tmp_path):
+    selected = args(tmp_path)
+    selected.startup_preflight = True
+    options = contract.worker_options(selected)
+    assert options.count('--startup-preflight') == 1
+
+
+def test_startup_preflight_requires_complete_declared_inputs(tmp_path):
+    with pytest.raises(SystemExit):
+        args(tmp_path, '--startup-preflight')
+
+
 def test_launch_environment_refuses_overlap_conflict():
     binding = {
         'schema': 'capture-resource-binding-v3',

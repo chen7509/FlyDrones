@@ -136,6 +136,7 @@ def parse_capture_args(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--worker", action="store_true", help=argparse.SUPPRESS)
+    parser.add_argument("--startup-preflight", action="store_true", help=argparse.SUPPRESS)
     parser.add_argument("--execution-contract", type=Path, help="Exact prospective execution declaration")
     parser.add_argument("--runtime-binding", type=Path, help="Declared baseline, generated hashes and lookup environment")
     parser.add_argument("--trajectory-gauge-policy", type=Path,
@@ -160,6 +161,10 @@ def parse_capture_args(argv=None):
         parser.error("runtime binding requires an execution declaration")
     if args.trajectory_gauge_policy and (not args.runtime_binding or not args.execution_contract):
         parser.error("trajectory gauge policy requires runtime binding and execution declaration")
+    if args.startup_preflight and (
+        not args.runtime_binding or not args.execution_contract or not args.trajectory_gauge_policy
+    ):
+        parser.error("startup preflight requires runtime binding, execution declaration and trajectory policy")
     if args.source_fanout_profile and (
         not args.shadow_binary or not args.shadow_config or not args.reference_module or not args.reference_sha256
         or args.motion_profile != "supported-ready-v1" or args.physics_trace_profile != "substep-ready-v1"
@@ -390,7 +395,12 @@ def main():
         if binding_doc is not None:
             from tools.benchmark.runtime_resource_binding import GENERATED_NAMES, attach_binding, estimator_inputs
 
-            binding = attach_binding(journal, result, binding_doc, output)
+            if args.startup_preflight:
+                from tools.benchmark.runtime_resource_binding import RuntimeBinding
+
+                binding = RuntimeBinding(binding_doc, output)
+            else:
+                binding = attach_binding(journal, result, binding_doc, output)
             required = [binary, build / "rootfs/gz_env.sh", build / "etc/init.d-posix/rcS",
                         px4 / "src/modules/simulation/gz_bridge/server.config",
                         ROOT / "assets/gazebo/models/x500_benchmark/model.sdf",
@@ -402,6 +412,24 @@ def main():
                          if getattr(module, "__file__", None) and Path(module.__file__).resolve().is_relative_to(ROOT)]
             binding.start({name: runtime / name if name == "gz_env.sh" else output / name for name in GENERATED_NAMES},
                           env, required)
+            if args.startup_preflight:
+                startup_binding = binding.finish()
+                if (startup_binding["errors"] or not startup_binding["pre_recorded"]
+                        or not startup_binding["declared_files_stable"]
+                        or not startup_binding["local_file_graph_verified"]):
+                    raise ValueError("startup runtime binding preflight failed")
+                result.update(
+                    status="capture_completed",
+                    startup_preflight_only=True,
+                    startup_preflight_completed=True,
+                    runtime_binding=startup_binding,
+                    physical_execution_qualified=False,
+                    vio_accuracy_qualified=False,
+                    estimator_health_qualified=False,
+                    fusion_eligible=False,
+                    flight_ready=False,
+                )
+                return 0
         journal.cleanup("ULog collection", lambda: result.update(px4_ulogs=collect_ulogs(runtime, output)), priority=100)
         journal.cleanup(
             "end clocks",
