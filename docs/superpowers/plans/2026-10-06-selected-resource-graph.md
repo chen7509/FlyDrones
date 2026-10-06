@@ -8,12 +8,12 @@ Tech stack: Python standard library, installed C++17 Gazebo/SDFormat.
 Review focus: unknown URI locations cannot disappear; COLLADA internal symbols must not be paths; native ambiguity cannot masquerade as one choice; nonzero/malformed native result cannot qualify; original files remain unmodified.
 
 ### Task 1: original reference extraction
-- [ ] Write tests for exact original positions/repeated edges, includes/meshes/PBR/scripts/plugins, namespaced COLLADA image vs internal effect, unknown URI, empty fields and DTD refusal. Observe missing-feature failure.
-- [ ] Implement tools/benchmark/selected_resource_graph.py: references(data: bytes, format: str) -> list[dict], no filesystem/network lookup. Unknown URI produces kind unsupported, not success.
-- [ ] Run tests/benchmark/test_selected_resource_graph.py and commit.
+- [x] Write tests for exact original positions/repeated edges, includes/meshes/PBR/scripts/plugins, namespaced COLLADA image vs internal effect, unknown URI, empty fields and DTD refusal. Observe missing-feature failure.
+- [x] Implement tools/benchmark/selected_resource_graph.py: references(data: bytes, format: str) -> list[dict], no filesystem/network lookup. Unknown URI produces kind unsupported, not success.
+- [x] Run tests/benchmark/test_selected_resource_graph.py and commit.
 
 ### Task 2: installed native resolver
-- [ ] Add tests/native/run_resource_resolver_checks.py exercising executable modes and real temporary plugin/model files, including ambiguity and missing inputs. Run before source exists; retain failure.
-- [ ] Implement tools/benchmark/native/resource_resolver.cc and compile with pkg-config gz-sim8 gz-common5 sdformat14, recording args/hash/ldd. Run normal/fault checks without loading plugin instances or Server.
-- [ ] Record original fixed-world/model references, selected plugin/model results, classic media path/package provenance and explicit remaining URI/loaded graph gaps.
-- [ ] Run targeted/full regression, one independent review, report, seal evidence, draft PR and update heartbeat. Preserve all failed attempts.
+- [x] Add tests/native/run_resource_resolver_checks.py exercising executable modes and real temporary plugin/model files, including ambiguity and missing inputs. Run before source exists; retain failure.
+- [x] Implement tools/benchmark/native/resource_resolver.cc and compile with pkg-config gz-sim8 gz-common5 sdformat14, recording args/hash/ldd. Run normal/fault checks without loading plugin instances or Server.
+- [x] Record original fixed-world/model references, selected plugin/model results, classic media path/package provenance and explicit remaining URI/loaded graph gaps.
+- [x] Run targeted/full regression, one independent review, report, seal evidence, draft PR and update heartbeat. Preserve all failed attempts.
