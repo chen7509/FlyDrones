@@ -56,9 +56,9 @@
 - Create: `docs/OPENVINS_LAZY_RUNTIME_CLOSURE_REPORT.md`
 - Create: `evidence/openvins-lazy-runtime-closure-dev-1701.zip`
 
-- [ ] Freeze the exact local package, upstream source, executable, config, historical failure record, and command outputs before the real probe.
-- [ ] Confirm no competing PX4/Gazebo/OpenVINS/training/test process.
-- [ ] Run one isolated single-IMU mapping probe and retain every output.
-- [ ] Run the independent auditor, focused tests, full regression, changed-file Ruff, whole-tree Ruff comparison, and `git diff --check`.
+- [x] Freeze the exact local package, upstream source, executable, config, historical failure record, and command outputs before the real probe.
+- [x] Confirm no competing PX4/Gazebo/OpenVINS/training/test process.
+- [x] Run one isolated single-IMU mapping probe and retain every output.
+- [x] Run the independent auditor, focused tests, full regression, changed-file Ruff, whole-tree Ruff comparison, and `git diff --check`.
 - [ ] Seal evidence with a member manifest, verify ZIP hashes/CRC, write the report, commit, and open a stacked draft PR.
 - [ ] Do not launch a physical study in this plan.
