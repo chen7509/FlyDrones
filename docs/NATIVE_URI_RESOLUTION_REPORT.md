@@ -31,3 +31,7 @@ The [Gazebo utility API](https://gazebosim.org/api/sim/8/namespacegz_1_1sim.html
 Path selection alone does not establish absence of alternative candidates. `ambiguity_qualified=false` remains explicit; these successful results cannot authorize capture. Next, define a declared candidate/search-context contract and bind graph results to the actual generated world and runtime declaration, retaining unsupported/missing/ambiguous cases. Preserve lexical source context and model.config dependencies; do not replace them with canonical paths before the SDK call.
 
 Lazy rendering/sensor loading, owned PX4/native mappings and a prospective trajectory/gauge rule still require bounded designs before a new 25-second physical trial. PR48's 6.417-second rejection and indeterminate accuracy, PR37's 29.5355-meter drift lower bound and the five-camera 0.873 RTF below 0.95 remain unchanged. No ODOMETRY, arming or EKF2 injection occurred here.
+
+## Publication
+
+Draft PR https://github.com/chen7509/FlyDrones/pull/53 is stacked on PR52. Evidence `evidence/native-uri-resolution-dev-1701.zip`:61members,308531bytes,SHA256`71b0838a312a8666972c187e8157844c35edaa95a392f92e8eeddda492174a46`; all member hashes and CRC verified. Archive producer1374538, seal commitcdc74ea. Final process scan was empty.
