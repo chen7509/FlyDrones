@@ -394,6 +394,88 @@ def test_estimator_heartbeat_fanout_commits_ack_before_source_readiness(tmp_path
     assert readiness.finish()["failure"] is None
 
 
+def queued_heartbeat(sequence=0, now=10_000_000_000):
+    return {
+        "kind": "heartbeat",
+        "arrival_monotonic_ns": now - 100,
+        "observed_sim_ns": 1_507_000_000,
+        "system_id": 9,
+        "base_mode": 29,
+        "custom_mode": 50_593_792,
+        "source_sequence": sequence,
+        "writer_begin_monotonic_ns": now - 90,
+        "recorded_monotonic_ns": now - 80,
+    }
+
+
+def test_estimator_heartbeat_reconciles_without_estimator_sample(tmp_path):
+    """Regression for immutable study-v11 source sequence 426."""
+    from tools.benchmark.estimator_aware_readiness import (
+        EstimatorAwareReadiness,
+        EstimatorJournaledHeartbeatFanout,
+    )
+
+    now = [10_000_000_000]
+    base = JournaledReadiness(clock=lambda: now[0])
+    readiness = EstimatorAwareReadiness(tmp_path, base, clock=lambda: now[0])
+    shadow = AckShadow([])
+    heartbeat_stream = io.StringIO()
+    fanout = EstimatorJournaledHeartbeatFanout(
+        tmp_path,
+        readiness,
+        shadow,
+        clock=lambda: now[0],
+        heartbeat_stream=heartbeat_stream,
+    )
+    queued = queued_heartbeat(now=now[0])
+    raw = {
+        key: value
+        for key, value in queued.items()
+        if key not in {"source_sequence", "writer_begin_monotonic_ns", "recorded_monotonic_ns"}
+    }
+    fanout.observe_heartbeat(raw)
+    fanout.on_record(queued, None)
+
+    result = fanout.finish()
+    assert result["failure"] is None
+    assert result["heartbeat"]["observed"] == result["heartbeat"]["reconciled"] == 1
+    assert result["committed"] == 1
+    assert readiness.snapshot()["latest_internal"] is None
+    assert readiness.finish()["failure"] is None
+
+
+def test_estimator_heartbeat_refuses_native_ack_without_sample_attribution(tmp_path):
+    from tools.benchmark.estimator_aware_readiness import (
+        EstimatorAwareReadiness,
+        EstimatorJournaledHeartbeatFanout,
+    )
+
+    now = [10_000_000_000]
+    base = JournaledReadiness(clock=lambda: now[0])
+    readiness = EstimatorAwareReadiness(tmp_path, base, clock=lambda: now[0])
+    fanout = EstimatorJournaledHeartbeatFanout(
+        tmp_path,
+        readiness,
+        AckShadow([ack()]),
+        clock=lambda: now[0],
+        heartbeat_stream=io.StringIO(),
+    )
+    queued = queued_heartbeat(now=now[0])
+    raw = {
+        key: value
+        for key, value in queued.items()
+        if key not in {"source_sequence", "writer_begin_monotonic_ns", "recorded_monotonic_ns"}
+    }
+    fanout.observe_heartbeat(raw)
+    fanout.on_record(queued, None)
+
+    assert fanout.failure and "heartbeat" in fanout.failure
+    assert fanout.committed == 0
+    assert base.records["heartbeat"]["arrival_monotonic_ns"] == raw["arrival_monotonic_ns"]
+    fanout.finish()
+    readiness.finish()
+
+
 def test_invalid_ack_batch_fails_fanout_before_readiness_commit(tmp_path):
     from tools.benchmark.estimator_aware_readiness import (
         EstimatorAwareReadiness,

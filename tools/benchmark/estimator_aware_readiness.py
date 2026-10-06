@@ -289,6 +289,10 @@ class EstimatorJournaledHeartbeatFanout(JournaledHeartbeatFanout):
 
     def _after_shadow(self, row, payload):
         del payload
+        if row.get("kind") == "heartbeat":
+            if self.shadow.delivery_acks:
+                raise ValueError("heartbeat cannot attribute native acknowledgements")
+            return
         self.observation_readiness.observe_ack_batch(self.shadow.delivery_acks, row)
 
     def finish(self):
