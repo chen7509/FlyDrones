@@ -1,0 +1,153 @@
+{
+  "estimator_health_qualified": false,
+  "fixed_study": "study-v2",
+  "flight_ready": false,
+  "fusion_eligible": false,
+  "members": [
+    {
+      "bytes": 8187,
+      "path": "docs/ESTIMATOR_AWARE_READINESS_PREFLIGHT_REPORT.md",
+      "sha256": "7a488132c5494e74f1fbbe6fdd796cf2c480bd24cfc9176fc9522926f5b28205"
+    },
+    {
+      "bytes": 6549,
+      "path": "docs/superpowers/specs/2026-10-06-estimator-aware-readiness-preflight-design.md",
+      "sha256": "093049c443e669cacd96dd965bd8042cd74cc3641acf5b0c49c10c175014d4bd"
+    },
+    {
+      "bytes": 4674,
+      "path": "docs/superpowers/plans/2026-10-06-estimator-aware-readiness-preflight.md",
+      "sha256": "fb18a9a966c0a76ce26e78904e69d82dd4fb393f07bfb5c0cbe063da6a6bf827"
+    },
+    {
+      "bytes": 16137,
+      "path": "tools/benchmark/openvins_online_shadow.py",
+      "sha256": "cb5587ba1456cc32647b4c019ecd4a895d927b64d12e432a878010c5014fe7ab"
+    },
+    {
+      "bytes": 11555,
+      "path": "tools/benchmark/ready_shadow_fanout.py",
+      "sha256": "5966dfa5bc5d6b1606823c34a04d781e204dd5e25abfa12dcbf14eccaaeac55a"
+    },
+    {
+      "bytes": 8305,
+      "path": "tools/benchmark/journaled_heartbeat_lane.py",
+      "sha256": "af0cfa376e0093049a2ddbee8b93728d04c3793a4dc7d30091d5fd89fd2a6202"
+    },
+    {
+      "bytes": 7538,
+      "path": "tools/benchmark/readiness_anchor.py",
+      "sha256": "67345da1059a4f41b2c9f27fdb60939b83d8aedd853459a742a41519b3142d85"
+    },
+    {
+      "bytes": 36873,
+      "path": "tools/benchmark/capture_disarmed_sensors.py",
+      "sha256": "43d28cd7c44ca236487264f0e3e97f6c919b39463d5334bfa8003f79cbccb87e"
+    },
+    {
+      "bytes": 12653,
+      "path": "tools/benchmark/estimator_aware_readiness.py",
+      "sha256": "9c8182c9f8c3126273826886ab30f801176b3c1fa45e082e134fe4aa72d6a578"
+    },
+    {
+      "bytes": 11679,
+      "path": "tools/benchmark/estimator_aware_readiness_preflight.py",
+      "sha256": "d4fee0ed12a9c223bea29a19c06e9d49785f095c6aa7e802589318bf4837c887"
+    },
+    {
+      "bytes": 7843,
+      "path": "tools/benchmark/audit_estimator_aware_readiness_preflight.py",
+      "sha256": "137a106a8d02be55a8e7b7dcd9877e84fe03a17df7fd3640425197c55b812ff6"
+    },
+    {
+      "bytes": 15518,
+      "path": "tests/benchmark/test_estimator_aware_readiness.py",
+      "sha256": "9601c6e3533b3b723758e76cbb67c9e1b56f06a9d4b99f930aa6dbd913f04015"
+    },
+    {
+      "bytes": 7616,
+      "path": "tests/benchmark/test_estimator_aware_readiness_preflight.py",
+      "sha256": "04d31096c4f784fa7da6844db12097817cf3f5cf8e2a3f6351e7cdd976f79247"
+    },
+    {
+      "bytes": 1908,
+      "path": "tests/benchmark/test_audit_estimator_aware_readiness_preflight.py",
+      "sha256": "e479d7dc6cc8a4e688fe5d2a5a05cab722b935255cb3efb5fe6e99a7cd2b5f78"
+    },
+    {
+      "bytes": 245723,
+      "path": "evidence/openvins-lazy-runtime-prepare-dev-1701.zip",
+      "sha256": "21f8f908549d6dc52c8717e9f6266fd43eca62787a90d2614986f6e5a34392bb"
+    },
+    {
+      "bytes": 7705,
+      "path": "results/estimator-aware-readiness-preflight-dev-1701/study-v2/estimator-readiness-contract.json",
+      "sha256": "7fc0d8de6860f3b179c0e929568eed96be5db8c6c6bb17bfae89e0d3b30a8448"
+    },
+    {
+      "bytes": 4445,
+      "path": "results/estimator-aware-readiness-preflight-dev-1701/study-v2/execution-contract.json",
+      "sha256": "df4f193a6e079995836ceb6e8130bda5a8380e2a2ab6e06f212a7e24c6fcd80f"
+    },
+    {
+      "bytes": 21086,
+      "path": "results/estimator-aware-readiness-preflight-dev-1701/study-v2/lazy-runtime-contract.json",
+      "sha256": "caa64813b32cc19967e9c12365bcccbe4c62edbe065ae2a2538db4909a79b233"
+    },
+    {
+      "bytes": 472784,
+      "path": "results/estimator-aware-readiness-preflight-dev-1701/study-v2/runtime-binding-v3.json",
+      "sha256": "c3f3cbdb3644c80aa834493dfb9dc8119f5e27f1f2617f3cf0862ab7bca17505"
+    },
+    {
+      "bytes": 14423,
+      "path": "results/estimator-aware-readiness-preflight-dev-1701/study-v2/study-manifest.json",
+      "sha256": "34a8e7b92b3706bf4dc4ade4e3dbada0e50a62569b9f173ea8abecf840591801"
+    },
+    {
+      "bytes": 1031,
+      "path": "results/estimator-aware-readiness-preflight-dev-1701/study-v2/trajectory-gauge-policy.json",
+      "sha256": "a97bc126e90e0bfb88cc995f782904a7a842e460854dbd71cec977cd98800463"
+    },
+    {
+      "bytes": 362,
+      "path": "results/estimator-aware-readiness-preflight-dev-1701/audit-v2.json",
+      "sha256": "67a4193b321c54753b0fc1ae80892227fe8431a11755e8e5086b927ecd01b04b"
+    },
+    {
+      "bytes": 264,
+      "path": "results/estimator-aware-readiness-preflight-dev-1701/focused-tests.txt",
+      "sha256": "107ba72d0c828f94b7c2edcdd59b9b99786946467201c14f11970cc1a8424e1d"
+    },
+    {
+      "bytes": 2518,
+      "path": "results/estimator-aware-readiness-preflight-dev-1701/full-tests.txt",
+      "sha256": "6391e899105038d415b6902e4f3d784f535a49a69c2422db335984cb896b6417"
+    },
+    {
+      "bytes": 20,
+      "path": "results/estimator-aware-readiness-preflight-dev-1701/changed-ruff.txt",
+      "sha256": "a4443afdcfb6d7363adb285762515ccf7cf50473b1a05c20c1a50f6bed4d26b0"
+    },
+    {
+      "bytes": 49109,
+      "path": "results/estimator-aware-readiness-preflight-dev-1701/source-tree-ruff.json",
+      "sha256": "1c04cd5e235d27caec1122d80ea0f5c5caf9d0b36f46be4a76d6289436260ca2"
+    },
+    {
+      "bytes": 269,
+      "path": "results/estimator-aware-readiness-preflight-dev-1701/diff-check.txt",
+      "sha256": "8aa23766d487953ca21a53a14106eee6d1a5f8f51dba8a89451859b30b0767ff"
+    },
+    {
+      "bytes": 247,
+      "path": "results/estimator-aware-readiness-preflight-dev-1701/final-process-scan.txt",
+      "sha256": "ad461d7c0ee08b1abe169eba91341653909e372aa82dec2bf17f0a68d8283739"
+    }
+  ],
+  "physical_execution_qualified": false,
+  "runtime_closure_qualified": false,
+  "schema": "estimator-aware-readiness-preflight-evidence-v1",
+  "superseded_study": "study-v1",
+  "vio_accuracy_qualified": false
+}
