@@ -8,13 +8,13 @@
 
 - [x] Add RED tests for source/audit/archive drift, destination reuse, execution drift, runtime-baseline drift and overclaims.
 - [x] Implement the minimal prepare-only generator and independent auditor.
-- [ ] Generate `study-v16`, audit it, commit the boundary and rerun the audit from the committed head.
+- [x] Generate `study-v16`, audit it, commit the boundary and rerun the audit from the committed head.
 
 ### Task 2: Run the startup-only preflight
 
-- [ ] Execute exactly one startup preflight at `study-v16/startup-preflight-v1`.
-- [ ] Audit phase exclusion, runtime files, supervisor cleanup, resources and package membership.
-- [ ] Seal and commit the startup-qualified physical boundary.
+- [x] Execute exactly one startup preflight at `study-v16/startup-preflight-v1`.
+- [x] Audit phase exclusion, runtime files, supervisor cleanup, resources and package membership.
+- [x] Seal and commit the startup-qualified physical boundary.
 
 ### Task 3: Execute one immutable physical attempt
 

@@ -1,0 +1,8 @@
+{
+  "destination": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/startup-preflight-v1",
+  "ended_wall_ns": 1791323624968890828,
+  "physical_run": false,
+  "resources_after": [],
+  "returncode": 0,
+  "schema": "capture-startup-preflight-completion-v1"
+}

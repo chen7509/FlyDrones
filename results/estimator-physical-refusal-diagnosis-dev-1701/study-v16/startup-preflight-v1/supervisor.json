@@ -1,0 +1,125 @@
+{
+  "status": "worker_exited",
+  "worker_pid": 490,
+  "worker_exit": 0,
+  "timeout_s": 300,
+  "cleanup": {
+    "scope": "owned original process group only; escaped descendants not tracked",
+    "owner": {
+      "pid": 490,
+      "state": "R",
+      "pgrp": 490,
+      "session": 490,
+      "start_ticks": 7840
+    },
+    "events": [
+      {
+        "event": "ownership",
+        "owner": {
+          "pid": 490,
+          "state": "R",
+          "pgrp": 490,
+          "session": 490,
+          "start_ticks": 7840
+        },
+        "unreaped_until_cleanup": true,
+        "monotonic_s": 78.40731805
+      },
+      {
+        "event": "leader_exit_unreaped",
+        "pid": 490,
+        "code": 1,
+        "status": 0,
+        "monotonic_s": 97.118758735
+      },
+      {
+        "event": "snapshot",
+        "label": "before_signals",
+        "observation": {
+          "members": [
+            {
+              "pid": 490,
+              "state": "Z",
+              "pgrp": 490,
+              "session": 490,
+              "start_ticks": 7840
+            }
+          ],
+          "executing": [],
+          "errors": [],
+          "vanished": []
+        },
+        "monotonic_s": 97.120727907
+      },
+      {
+        "event": "snapshot",
+        "label": "confirm_drained",
+        "observation": {
+          "members": [
+            {
+              "pid": 490,
+              "state": "Z",
+              "pgrp": 490,
+              "session": 490,
+              "start_ticks": 7840
+            }
+          ],
+          "executing": [],
+          "errors": [],
+          "vanished": []
+        },
+        "monotonic_s": 97.121963556
+      },
+      {
+        "event": "snapshot",
+        "label": "after_signals",
+        "observation": {
+          "members": [
+            {
+              "pid": 490,
+              "state": "Z",
+              "pgrp": 490,
+              "session": 490,
+              "start_ticks": 7840
+            }
+          ],
+          "executing": [],
+          "errors": [],
+          "vanished": []
+        },
+        "monotonic_s": 97.126211113
+      },
+      {
+        "event": "leader_reaped",
+        "returncode": 0,
+        "monotonic_s": 97.129692011
+      },
+      {
+        "event": "snapshot",
+        "label": "after_leader_reap",
+        "observation": {
+          "members": [],
+          "executing": [],
+          "errors": [],
+          "vanished": []
+        },
+        "monotonic_s": 97.135489124
+      }
+    ],
+    "errors": [],
+    "final_snapshot": {
+      "members": [],
+      "executing": [],
+      "errors": [],
+      "vanished": []
+    },
+    "no_executing_members": true,
+    "group_absent": true,
+    "sigkill_dispatched": false,
+    "graceful_group_cleanup_verified": true,
+    "all_descendant_cleanup_qualified": false
+  },
+  "errors": [],
+  "event_journal": "../startup-preflight-v1.supervisor-events.jsonl",
+  "capture_status": "capture_completed"
+}

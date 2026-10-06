@@ -1,0 +1,26 @@
+{
+  "schema": "capture-startup-preflight-audit-v3",
+  "destination": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/startup-preflight-v1",
+  "head": "6ff824199685e57f1be374d62eb846369256ee57",
+  "checks": {
+    "committed_head": true,
+    "preflight_only": true,
+    "startup_phases_only": true,
+    "events_match": true,
+    "clean_group": true,
+    "no_physical_artifacts": true,
+    "resources_empty": true,
+    "downstream_false": true
+  },
+  "cleanup_scope": "owned original process group only; escaped descendants not tracked",
+  "all_descendant_cleanup_qualified": false,
+  "failures": [],
+  "startup_preflight_qualified": true,
+  "physical_execution_qualified": false,
+  "runtime_mapping_coverage_verified": false,
+  "runtime_closure_qualified": false,
+  "vio_accuracy_qualified": false,
+  "estimator_health_qualified": false,
+  "fusion_eligible": false,
+  "flight_ready": false
+}
