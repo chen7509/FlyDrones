@@ -66,6 +66,8 @@ Verification results:
 - whole-repository Ruff: 53 findings in 34 files, equal to the PR58 base count; whole-repository lint is not claimed as passing;
 - `git diff --check`: passed.
 
+The sealed evidence archive is `evidence/declared-launch-environment-dev-1701.zip`: 38 members, 240,142 bytes, SHA-256 `58413476f5669e55c68b3da82dda70016b08513336a7ae274fd2ff6eacef6ceb`. Its embedded manifest records every payload member's byte length and SHA-256; ZIP CRC and manifest verification passed. The archive producer commit is `8289d5abf4f3eff5c1b926072d48dafa372cd195`. This publication paragraph postdates the immutable payload.
+
 Self-review covered ambient leakage, absent-versus-empty semantics, overlapping declarations, worker-observation timing, partial evidence writes, spawn failure, timeout and cleanup preservation, v1 compatibility, PR58 historical projection, and overclaiming. No independent reviewer was used under the active single-agent constraint.
 
 ## Evidence boundaries
