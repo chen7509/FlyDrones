@@ -22,6 +22,7 @@ sys.path[:0] = [str(ROOT), str(ROOT / "src")]
 from flydrones.benchmark.camera_info_capture import camera_info_fields  # noqa: E402
 from flydrones.benchmark.gateway import sim_duration_ns  # noqa: E402
 from flydrones.benchmark.ulog_capture import collect_ulogs, verify_episode_ulog_evidence  # noqa: E402
+from tools.benchmark.capture_contract import validate_declaration, worker_options  # noqa: E402
 from tools.benchmark.disarmed_sensor_provenance import CaptureJournal, CaptureWriter, supervise_worker  # noqa: E402
 
 
@@ -47,6 +48,7 @@ def parse_capture_args(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--worker", action="store_true", help=argparse.SUPPRESS)
+    parser.add_argument("--execution-contract", type=Path, help="Exact prospective execution declaration")
     parser.add_argument("--shadow-binary", type=Path)
     parser.add_argument("--shadow-config", type=Path)
     parser.add_argument("--reference-module", type=Path)
@@ -131,26 +133,13 @@ def retain_supervisor_ulogs(summary, runtime, output, *, collector=collect_ulogs
 
 def main():
     args = parse_capture_args()
-    shadow_args = (
-        ["--shadow-binary", str(args.shadow_binary.resolve()), "--shadow-config", str(args.shadow_config.resolve())]
-        if args.shadow_binary
-        else []
-    )
-    if args.motion_profile:
-        shadow_args += ["--motion-profile", args.motion_profile]
-    if args.physics_trace_profile:
-        shadow_args += ["--physics-trace-profile", args.physics_trace_profile]
-    if args.reference_module:
-        shadow_args += ["--reference-module", str(args.reference_module.resolve()), "--reference-sha256", args.reference_sha256]
-    if args.reference_fault_profile:
-        shadow_args += ["--reference-fault-profile", args.reference_fault_profile]
-    if args.source_fanout_profile:
-        shadow_args += ["--source-fanout-profile", args.source_fanout_profile]
+    contract = validate_declaration(args)
+    shadow_args = worker_options(args)
     if not args.worker:
         summary = supervise_worker(
             [sys.executable, str(Path(__file__).resolve()), "--worker", "--output", str(args.output.resolve())] + shadow_args,
             args.output.resolve(),
-            timeout_s=90 if args.reference_fault_profile else 300,
+            timeout_s=contract["supervisor_s"],
         )
         if needs_supervisor_retention(summary) and (args.output / "launch.json").is_file():
             launch = json.loads((args.output / "launch.json").read_text())
@@ -217,10 +206,9 @@ def main():
                 "binary_sha256": binary_sha,
                 "source_archive_sha256": archive_sha,
                 "scene_hashes": input_hashes,
-                "simulation_duration_ns": 25_000_000_000,
-                "physics_step_ns": 1_000_000,
-                "imu_hz": 250,
-                "rgbd_hz": 10,
+                **{key: contract[key] for key in ("simulation_duration_ns", "physics_step_ns", "imu_hz", "rgbd_hz")},
+                "execution_contract": contract,
+                "prospective_declaration_verified": args.execution_contract is not None,
                 "command_policy": "read-only heartbeat; no arm/offboard/setpoint/ODOMETRY",
                 "uxrce_port": 18888,
                 "uxrce_agent_launched": False,
@@ -526,14 +514,14 @@ def main():
             json.dump({"pid": process.pid, "args": process.args, "started_wall_ns": time.time_ns()}, f, indent=2)
         if source_guard:
             source_guard.start(time.monotonic_ns())
-        while clock["sim_ns"] < 25_000_000_000:
+        while clock["sim_ns"] < contract["simulation_duration_ns"]:
             if errors or writer.error:
                 raise RuntimeError("capture callback/writer failure: " + str(errors or writer.error))
             if shadow and shadow.failure:
                 raise RuntimeError("shadow failure: " + shadow.failure)
             if process.poll() is not None:
                 raise RuntimeError("PX4 exited during capture")
-            wall_budget = 60 if args.reference_fault_profile else 300
+            wall_budget = contract["wall_budget_s"]
             if time.monotonic() - started > wall_budget:
                 raise TimeoutError(f"capture exceeded{wall_budget}s wall budget")
             if not server.run(True, 10 if motion else 1000, False):
