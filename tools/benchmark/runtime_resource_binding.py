@@ -189,8 +189,10 @@ class RuntimeBinding:
                 write_manifest(self.output / 'runtime-binding-after-queries.json', after_query)
                 if not _typed_equal(after_query['files'], self.before['files']):
                     raise ValueError('declared files changed during graph queries')
+                client.check_budget()
                 self.before['resource_graph'] = self.graph_result
                 self._observe('postgraph', self.map_reader())
+                client.check_budget()
             self._observe('bootstrap', raw)
             write_manifest(self.output / 'runtime-binding-pre.json', self.before)
             self.pre_recorded = True

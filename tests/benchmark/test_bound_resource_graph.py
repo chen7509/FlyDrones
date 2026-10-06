@@ -280,6 +280,7 @@ def test_early_pre_failure_has_post_attempt(tmp_path):
 def test_real_byte_runner_limits_and_preserves_output(tmp_path):
     import os
     import sys
+
     from tools.benchmark.native_query_process import LIMIT, bounded_run
     for code, overflow in [("import os; os.write(1,b'\\xff')", False),
                            ("import os; os.write(1,b'x'*(2*1024*1024))", True)]:
