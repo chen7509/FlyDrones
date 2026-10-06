@@ -40,3 +40,7 @@ Fresh subagent review was not used because current coordination instructions pro
 Next, bind lazy Gazebo rendering/sensor mappings and owned PX4/OpenVINS process mappings with bounded lifecycle evidence. Then freeze a prospective trajectory/gauge contract. PR48's first internal state at 2.4 seconds occurred after its 1.622-second lift anchor, so no favorable origin may be selected retrospectively and simulator truth may not initialize or correct VIO. Only after those two gates should another online supported-motion VIO run occur.
 
 Historical PR48 rejection at 6.417 seconds and indeterminate accuracy, PR37 drift lower bound 29.5355 m, ground aliasing/startup failures, and the five-camera 0.873 RTF failure remain. None is reclassified as a fruit-fly learning failure.
+
+## Publication
+
+Draft PR56: https://github.com/chen7509/FlyDrones/pull/56, stacked on PR55. Evidence archive `collada-ordered-candidates-dev-1701.zip`: 92 members, 673549 bytes, SHA256 `00a8669e2fb5b4937cac155aa6173486ad96eddc89003cced04f00731d2378e4`. Implementation `fd447bc`, report `03528c5`, seal `0786ee5`. The sealed report predates this publication note; publication-source copies are post-study copies, not runtime snapshots.
