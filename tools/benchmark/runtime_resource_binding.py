@@ -240,6 +240,17 @@ class RuntimeBinding:
             raise ValueError('binding already closed')
         self.closed = True
         stable = False
+        if self.before is None:
+            attempt = dict(scope='declared inventory only; generated inputs unverified', error=None)
+            try:
+                attempt['snapshot'] = snapshot(self.doc['inventory'])
+            except Exception as exc:
+                attempt['error'] = repr(exc)
+                self.errors.append(repr(exc))
+            try:
+                write_manifest(self.output / 'runtime-binding-post-attempt.json', attempt)
+            except Exception as exc:
+                self.errors.append(repr(exc))
         if self.before is not None:
             try:
                 after = snapshot(self.inventory)

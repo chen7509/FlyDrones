@@ -9,6 +9,7 @@ from pathlib import Path
 
 from tools.benchmark.capture_contract import _typed_equal, _unique_pairs
 from tools.benchmark.declared_runtime_snapshot import write_manifest
+from tools.benchmark.native_query_process import bounded_run
 
 LOOKUP_KEYS = ('GZ_SIM_RESOURCE_PATH', 'SDF_PATH', 'GZ_FILE_PATH', 'GZ_PLUGIN_PATH',
                'GZ_SIM_SYSTEM_PLUGIN_PATH', 'HOME', 'GZ_HOMEDIR', 'GZ_MESH_FORCE_ASSIMP',
@@ -87,7 +88,7 @@ def validate_response(doc, args, cwd, env):
 
 
 class QueryClient:
-    def __init__(self, binary, cwd, env, output, *, runner=subprocess.run, clock=time.monotonic):
+    def __init__(self, binary, cwd, env, output, *, runner=bounded_run, clock=time.monotonic):
         self.binary, self.cwd, self.output = Path(binary), Path(cwd), Path(output)
         if not self.binary.is_absolute() or not self.cwd.is_absolute():
             raise ValueError('absolute query executable and cwd required')
@@ -95,16 +96,24 @@ class QueryClient:
         self.started = self.last = clock()
         self.count, self.failed = 0, False
 
+    def check_budget(self):
+        now = self.clock()
+        if (self.failed or not math.isfinite(now) or not math.isfinite(self.started)
+                or now < self.last or now - self.started >= 60):
+            self.failed = True
+            raise ValueError('native graph query budget/clock exceeded')
+        self.last = now
+        return now
+
     def query(self, *args):
         if self.failed:
             raise ValueError('native query client failed')
         record = None
         number = self.count
         try:
-            now = self.clock()
-            if (not math.isfinite(now) or not math.isfinite(self.started) or now < self.last
-                    or now - self.started >= 60 or self.count >= 512):
-                raise ValueError('native graph query budget/clock exceeded')
+            now = self.check_budget()
+            if self.count >= 512:
+                raise ValueError('native graph query budget exceeded')
             if not args or args[0] not in ('installation', 'context', 'plugin', 'bound-uri'):
                 raise ValueError('unsupported native operation')
             if any(type(arg) is not str or len(arg) > 16384 or '\x00' in arg for arg in args):
@@ -116,13 +125,24 @@ class QueryClient:
                           started_monotonic=now, stdout='', stderr='', returncode=None, error=None)
             try:
                 p = self.runner(command, cwd=self.cwd, env={k: v for k, v in self.env.items() if v is not None},
-                                capture_output=True, text=True, timeout=min(10, 60 - (now - self.started)))
-                record.update(stdout=p.stdout, stderr=p.stderr, returncode=p.returncode)
+                                capture_output=True, text=False, timeout=min(10, 60 - (now - self.started)))
+                for key, data in (('stdout', p.stdout), ('stderr', p.stderr)):
+                    raw = data.encode('utf-8') if isinstance(data, str) else data
+                    if not isinstance(raw, bytes):
+                        raise ValueError('native output must be bytes')
+                    record[key + '_hex'] = raw[:1024 * 1024].hex()
+                    record[key] = raw[:1024 * 1024].decode('utf-8', errors='replace')
+                record.update(returncode=p.returncode,
+                              output_limit_exceeded=getattr(p, 'output_limit_exceeded', False),
+                              collection_errors=getattr(p, 'collection_errors', []))
             except subprocess.TimeoutExpired as exc:
                 for key, data in (('stdout', exc.stdout), ('stderr', exc.stderr)):
                     record[key] = data.decode('utf-8', errors='replace') if isinstance(data, bytes) else data or ''
                     if isinstance(data, bytes):
                         record[key + '_hex'] = data.hex()
+                record['error'] = repr(exc)
+                raise
+            except Exception as exc:
                 record['error'] = repr(exc)
                 raise
             finally:
@@ -133,10 +153,16 @@ class QueryClient:
                 raise ValueError('native graph query budget/clock exceeded')
             self.last = end
             if (type(p.returncode) is not int or p.returncode != 0
-                    or type(p.stdout) is not str or type(p.stderr) is not str
+                    or record['output_limit_exceeded'] or record['collection_errors']
                     or len(p.stdout) + len(p.stderr) > 1024 * 1024):
                 raise ValueError('native query failed or oversized output')
-            doc = json.loads(p.stdout, object_pairs_hook=_unique_pairs, parse_constant=_reject_constant)
+            try:
+                stdout = p.stdout.decode('utf-8') if isinstance(p.stdout, bytes) else p.stdout
+                if isinstance(p.stderr, bytes):
+                    p.stderr.decode('utf-8')
+            except UnicodeError as exc:
+                raise ValueError('invalid native UTF-8') from exc
+            doc = json.loads(stdout, object_pairs_hook=_unique_pairs, parse_constant=_reject_constant)
             return validate_response(doc, args, self.cwd, self.env)
         except Exception as exc:
             self.failed = True

@@ -66,6 +66,8 @@ class GraphClient:
         target = self.files[uri]
         return dict(selected=str(target), lookup_selected=str(target), model_config='',
                     candidate_dependencies=[], local_candidates_qualified=True)
+    def check_budget(self):
+        return 0.0
 
 
 def test_recursive_graph_preserves_duplicate_edges(tmp_path):
@@ -152,6 +154,8 @@ def test_runtime_v2_graph_gate_and_post(tmp_path, monkeypatch, failure):
             if failure == 'context':
                 context['file_paths'] = ['different']
             return context
+        def check_budget(self):
+            return 0.0
     monkeypatch.setattr(binding, 'QueryClient', Client, raising=False)
     obj = binding.RuntimeBinding(doc, output, map_reader=lambda: '')
     env = doc['environment'] | doc['graph']['environment']
@@ -210,3 +214,90 @@ def test_native_uri_protocol_rejects_mismatched_evidence(tmp_path, failure):
         doc['local_candidates_qualified'] = False
     with pytest.raises(ValueError):
         validate_response(doc, args, tmp_path, env)
+
+
+def test_bootstrap_mapping_cannot_authorize_graph_target(tmp_path):
+    build, _, _ = api()
+    world, mapped = tmp_path / 'world.sdf', tmp_path / 'mapped.so'
+    world.write_text('<sdf><plugin name="x" filename="mapped"/></sdf>')
+    mapped.write_bytes(b'mapped but not declared')
+    before = snapshot({'declared': [str(world)], 'bootstrap:selfmaps': [str(mapped)]})
+    class Client(GraphClient):
+        def query(self, *args):
+            return dict(selected=str(mapped))
+    with pytest.raises(ValueError, match='declared'):
+        build(world, Client({}), before['files'], tmp_path)
+
+
+def test_projector_texture_cannot_be_silently_omitted(tmp_path):
+    build, _, _ = api()
+    world = tmp_path / 'world.sdf'
+    world.write_text('<sdf><model><link><projector><texture>missing.png</texture></projector></link></model></sdf>')
+    before = snapshot({'declared': [str(world)]})
+    with pytest.raises(ValueError, match='unsupported'):
+        build(world, GraphClient({}), before['files'], tmp_path)
+    assert json.loads((tmp_path / 'resource-graph.json').read_text())['edges'][0]['text'] == 'missing.png'
+
+
+def test_graph_deadline_covers_source_processing_without_queries(tmp_path):
+    build, client_type, keys = api()
+    world = tmp_path / 'world.sdf'
+    world.write_text('<sdf/>')
+    ticks = iter([0.0, 0.0, 61.0])
+    client = client_type(tmp_path / 'binary', tmp_path, {k: None for k in keys}, tmp_path,
+                         clock=lambda: next(ticks))
+    with pytest.raises(ValueError, match='budget'):
+        build(world, client, snapshot({'declared': [str(world)]})['files'], tmp_path)
+
+
+def test_invalid_bytes_keep_raw_query_evidence(tmp_path):
+    _, client_type, keys = api()
+    def runner(*args, **kwargs):
+        return subprocess.CompletedProcess(args[0], 0, b'\xff', b'\xfe')
+    client = client_type(tmp_path / 'binary', tmp_path, {k: None for k in keys}, tmp_path, runner=runner)
+    with pytest.raises(ValueError):
+        client.query('installation')
+    record = json.loads((tmp_path / 'resource-query-0000.json').read_text())
+    assert record['stdout_hex'] == 'ff' and record['stderr_hex'] == 'fe'
+
+
+def test_bounded_native_byte_runner_exists():
+    assert Path('tools/benchmark/native_query_process.py').is_file()
+
+
+def test_early_pre_failure_has_post_attempt(tmp_path):
+    from tests.benchmark.test_runtime_resource_binding import fixture
+    doc, generated, source, output = fixture(tmp_path)
+    source.write_bytes(b'drift')
+    obj = binding.RuntimeBinding(doc, output, map_reader=lambda: '')
+    with pytest.raises(ValueError):
+        obj.start(generated, doc['environment'], [source])
+    result = obj.finish()
+    assert (output / 'runtime-binding-post-attempt.json').is_file()
+    assert result['declared_files_stable'] is False
+
+
+def test_real_byte_runner_limits_and_preserves_output(tmp_path):
+    import os
+    import sys
+    from tools.benchmark.native_query_process import LIMIT, bounded_run
+    for code, overflow in [("import os; os.write(1,b'\\xff')", False),
+                           ("import os; os.write(1,b'x'*(2*1024*1024))", True)]:
+        result = bounded_run([sys.executable, '-c', code], cwd=tmp_path, env=dict(os.environ), timeout=5)
+        assert result.output_limit_exceeded is overflow
+        assert len(result.stdout) + len(result.stderr) <= LIMIT
+        if not overflow:
+            assert result.stdout == b'\xff'
+    with pytest.raises(subprocess.TimeoutExpired):
+        bounded_run([sys.executable, '-c', 'import time; time.sleep(10)'],
+                    cwd=tmp_path, env=dict(os.environ), timeout=.1)
+
+
+def test_declared_oversize_source_refuses_before_read(tmp_path):
+    build, _, _ = api()
+    world = tmp_path / 'world.sdf'
+    world.write_text('<sdf/>')
+    rows = snapshot({'declared': [str(world)]})['files']
+    rows[0]['bytes'] = 32 * 1024 * 1024 + 1
+    with pytest.raises(ValueError, match='32MiB'):
+        build(world, GraphClient({}), rows, tmp_path)

@@ -11,7 +11,7 @@ CLASSIC = 'file://media/materials/scripts/gazebo.material'
 
 
 def build_graph(world, client, known_rows, output):
-    known = {p: row for row in known_rows for p in (row['requested'], row['resolved'])}
+    known = {p: row for row in known_rows if not row['role'].startswith('bootstrap:') for p in (row['requested'], row['resolved'])}
     result = dict(schema='bound-local-resource-graph-v1', documents=[], edges=[], errors=[],
                   local_file_graph_verified=False, runtime_closure_qualified=False,
                   scope='fixed local file dependencies; no decoding, rendering or runtime callback proof')
@@ -24,13 +24,15 @@ def build_graph(world, client, known_rows, output):
         return known[path]
 
     def source_bytes(path):
+        client.check_budget()
         row = declared(path)
-        if row['bytes'] > 8 * 1024 * 1024:
-            raise ValueError('source exceeds 8MiB graph limit')
+        if row['bytes'] > 32 * 1024 * 1024:
+            raise ValueError('source exceeds 32MiB graph limit')
         with Path(path).open('rb') as stream:
-            data = stream.read(8 * 1024 * 1024 + 1)
+            data = stream.read(32 * 1024 * 1024 + 1)
         if len(data) != row['bytes'] or hashlib.sha256(data).hexdigest() != row['sha256']:
             raise ValueError('original source drift after baseline')
+        client.check_budget()
         return row, data
 
     def visit(path, format, ancestors):
@@ -46,7 +48,9 @@ def build_graph(world, client, known_rows, output):
         visited.add((path, format))
         result['documents'].append(dict(source=path, canonical=identity, sha256=row['sha256'], format=format))
         refs = references(data, format)
+        client.check_budget()
         for ref in refs:
+            client.check_budget()
             if len(result['edges']) >= 4096:
                 raise ValueError('resource graph edge limit')
             edge = dict(source=path, **ref, status='unresolved')
@@ -90,6 +94,7 @@ def build_graph(world, client, known_rows, output):
 
     try:
         visit(str(world), 'sdf', ())
+        client.check_budget()
         result['local_file_graph_verified'] = True
         return result
     except Exception as exc:
