@@ -77,9 +77,12 @@ def build_graph(world, client, known_rows, output):
                 reply = client.query('bound-uri', 'mesh-path' if kind == 'mesh' else kind, path, uri)
                 target = reply['selected']
                 declared(target)
-                for dependency in reply['candidate_dependencies'] + ([reply['model_config']] if reply['model_config'] else []):
+                shadowed = reply.get('shadowed_candidates', [])
+                for dependency in (reply['candidate_dependencies'] + shadowed
+                                   + ([reply['model_config']] if reply['model_config'] else [])):
                     declared(dependency)
-                edge.update(selected=target, query=reply, status='selected')
+                edge.update(selected=target, shadowed_candidates=shadowed,
+                            query=reply, status='selected')
                 if kind == 'include':
                     visit(reply['lookup_selected'], 'sdf', ancestors + (identity,))
                 elif kind == 'mesh':

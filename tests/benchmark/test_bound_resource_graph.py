@@ -196,6 +196,7 @@ def test_native_uri_protocol_rejects_mismatched_evidence(tmp_path, failure):
     doc = dict(ok=True, kind='texture', source=source, uri='image.png', transformed=target,
                lookup_selected=target, selected=target, model_config='', cwd=str(tmp_path), error='',
                local_profile='fixed-local-files-v1', local_candidates=[target], examined_paths=[target],
+               shadowed_candidates=[], selection_profile='unique-canonical-v1',
                candidate_dependencies=[], local_candidates_qualified=True, ambiguity_qualified=False,
                runtime_closure_qualified=False, before_environment=dict(env), after_environment=dict(env))
     args = ('bound-uri', 'texture', source, 'image.png')
@@ -214,6 +215,37 @@ def test_native_uri_protocol_rejects_mismatched_evidence(tmp_path, failure):
         doc['local_candidates_qualified'] = False
     with pytest.raises(ValueError):
         validate_response(doc, args, tmp_path, env)
+
+
+def test_shadowed_collada_candidate_must_be_declared(tmp_path):
+    build, _, _ = api()
+    world = tmp_path / 'world.sdf'
+    dae = tmp_path / 'model.dae'
+    selected = tmp_path / 'meshes.png'
+    shadowed = tmp_path / 'materials.png'
+    world.write_text('<sdf><model><link><visual><geometry><mesh><uri>model.dae</uri></mesh></geometry></visual></link></model></sdf>')
+    dae.write_text('<COLLADA><library_images><image><init_from>image.png</init_from></image></library_images></COLLADA>')
+    selected.write_bytes(b'a')
+    shadowed.write_bytes(b'b')
+
+    class Client(GraphClient):
+        def query(self, *args):
+            if args[1] == 'mesh-path':
+                return dict(selected=str(dae), lookup_selected=str(dae),
+                            candidate_dependencies=[], model_config='', shadowed_candidates=[])
+            return dict(selected=str(selected), lookup_selected=str(selected),
+                        candidate_dependencies=[], model_config='',
+                        shadowed_candidates=[str(shadowed)])
+
+    rows = snapshot({'declared': [str(world), str(dae), str(selected)]})['files']
+    (tmp_path / 'refused').mkdir()
+    with pytest.raises(ValueError, match='declared'):
+        build(world, Client({}), rows, tmp_path / 'refused')
+    rows = snapshot({'declared': [str(world), str(dae), str(selected), str(shadowed)]})['files']
+    (tmp_path / 'accepted').mkdir()
+    result = build(world, Client({}), rows, tmp_path / 'accepted')
+    image_edge = next(edge for edge in result['edges'] if edge['kind'] == 'collada-image')
+    assert image_edge['shadowed_candidates'] == [str(shadowed)]
 
 
 def test_bootstrap_mapping_cannot_authorize_graph_target(tmp_path):

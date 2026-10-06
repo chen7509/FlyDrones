@@ -225,6 +225,8 @@ int uriLookup(int argc, char **argv)
             << ",\"local_profile\":" << json(bounded ? "fixed-local-files-v1" : "")
             << ",\"local_candidates_qualified\":" << (local.qualified ? "true" : "false")
             << ",\"local_candidates\":" << strings(local.choices)
+            << ",\"shadowed_candidates\":" << strings(local.shadowed)
+            << ",\"selection_profile\":" << json(local.selectionProfile)
             << ",\"examined_paths\":" << strings(local.examined)
             << ",\"candidate_dependencies\":" << strings(local.dependencies)
             << ",\"ambiguity_qualified\":false,\"runtime_closure_qualified\":false}\n";
