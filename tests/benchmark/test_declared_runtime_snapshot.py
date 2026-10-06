@@ -84,6 +84,18 @@ def test_flush_failure_propagates():
         snap.write_stream(Broken(), {'value': 1})
 
 
+def test_close_failure_cannot_return_manifest_success(tmp_path, monkeypatch):
+    class CloseFailure(io.StringIO):
+        def close(self):
+            super().close()
+            raise OSError('close failed')
+    stream = CloseFailure()
+    monkeypatch.setattr(type(tmp_path), 'open', lambda *a, **k: stream)
+    with pytest.raises(OSError, match='close failed'):
+        snap.write_manifest(tmp_path / 'manifest.json', {'value': 1})
+    assert stream.closed
+
+
 def test_ldd_requires_success_and_resolved_files():
     output = 'linux-vdso.so.1 (0x0001)\n libx.so => /usr/lib/libx.so (0x0002)\n /lib/ld-linux.so (0x0003)\n'
     assert snap.parse_ldd(output, 0) == ['/usr/lib/libx.so', '/lib/ld-linux.so']

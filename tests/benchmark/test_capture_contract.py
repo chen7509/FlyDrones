@@ -78,3 +78,15 @@ def test_declared_launcher_refuses_legacy_missing_contract(tmp_path):
 def test_unknown_fault_profile_is_not_normal_timeout():
     with pytest.raises(ValueError):
         contract.execution_contract(SimpleNamespace(reference_fault_profile='typo'))
+
+
+def test_direct_worker_refuses_before_resource_inspection(tmp_path, monkeypatch):
+    path = tmp_path / 'wrong.json'
+    path.write_text('{}')
+    monkeypatch.setattr('sys.argv', ['capture', '--worker', '--output', str(tmp_path / 'capture'),
+                                   '--execution-contract', str(path)])
+    calls = []
+    monkeypatch.setattr(capture, 'active_resources', lambda: calls.append('inspected'))
+    with pytest.raises(ValueError, match='declaration'):
+        capture.main()
+    assert calls == []
