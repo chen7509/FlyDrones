@@ -1,0 +1,31 @@
+{
+  "schema": "trajectory-gauge-policy-v1",
+  "anchor_source": "immutable_readiness_anchor",
+  "origin_rule": "first_internal_initialized_state_in_session",
+  "alignment": "yaw_translation_4dof",
+  "scale": 1.0,
+  "time_shift_ns": 0,
+  "truth_used_for_origin_selection": false,
+  "native_orientation": "JPL_q_GtoI_xyzw_numeric_Hamilton_I_to_G",
+  "native_position": "p_IinG",
+  "native_velocity": "v_IinG_global",
+  "reference_orientation": "world_from_FLU_then_FLU_to_FRD",
+  "wire_frames_not_emitted": [
+    "LOCAL_FRD",
+    "BODY_FRD"
+  ],
+  "lateral_start_offset_ns": 3000000000,
+  "expected_duration_ns": 25000000000,
+  "required_public_end_offset_ns": 24900000000,
+  "max_public_gap_ns": 200000000,
+  "exact_time_tolerance_ns": 1,
+  "screens": {
+    "max_position_error_m": 0.25,
+    "max_velocity_error_m_s": 0.25,
+    "max_attitude_error_deg": 10.0,
+    "max_initial_gravity_axis_error_deg": 5.0
+  },
+  "truth_scope": "offline_scoring_and_isolated_abort_only",
+  "eligible_for_px4_fusion": false,
+  "flight_ready": false
+}

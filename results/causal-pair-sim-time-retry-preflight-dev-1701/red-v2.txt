@@ -1,0 +1,17 @@
+ERROR: found no collectors for C:\Users\yuche\.codex\worktrees\FlyDrones\track-eligibility\tests\benchmark\test_causal_pair_sim_time_retry_preflight.py::test_overclaim_and_existing_destination_are_explicitly_rejected
+
+=================================== ERRORS ====================================
+_ ERROR collecting tests/benchmark/test_causal_pair_sim_time_retry_preflight.py _
+ImportError while importing test module 'C:\Users\yuche\.codex\worktrees\FlyDrones\track-eligibility\tests\benchmark\test_causal_pair_sim_time_retry_preflight.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+..\..\..\..\AppData\Local\Programs\Python\Python312\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\benchmark\test_causal_pair_sim_time_retry_preflight.py:12: in <module>
+    from tools.benchmark.audit_causal_pair_sim_time_retry_preflight import (
+
+E   ImportError: cannot import name 'claims_closed' from 'tools.benchmark.audit_causal_pair_sim_time_retry_preflight' (C:\Users\yuche\.codex\worktrees\FlyDrones\track-eligibility\tools\benchmark\audit_causal_pair_sim_time_retry_preflight.py)
+=========================== short test summary info ===========================
+ERROR tests/benchmark/test_causal_pair_sim_time_retry_preflight.py
+1 error in 1.60s
