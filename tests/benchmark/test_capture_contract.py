@@ -1,3 +1,4 @@
+import hashlib
 import json
 from types import SimpleNamespace
 
@@ -5,6 +6,7 @@ import pytest
 
 from tools.benchmark import capture_contract as contract
 from tools.benchmark import capture_disarmed_sensors as capture
+from tools.benchmark.trajectory_gauge_contract import trajectory_gauge_policy
 
 
 def args(tmp_path, *extra):
@@ -141,6 +143,78 @@ def test_execution_v2_binds_exact_launch_environment(tmp_path):
     assert contract.validate_declaration(selected, environment) == declaration
     with pytest.raises(ValueError, match='declaration'):
         contract.validate_declaration(selected, dict(environment, PYTHONPATH='hostile'))
+
+
+def test_execution_v3_binds_exact_prospective_gauge_policy(tmp_path):
+    policy_path = tmp_path / 'trajectory-gauge-policy.json'
+    policy_path.write_text(json.dumps(trajectory_gauge_policy(), sort_keys=True) + '\n')
+    selected = args(tmp_path, '--trajectory-gauge-policy', str(policy_path),
+                    '--runtime-binding', str(tmp_path / 'binding.json'),
+                    '--execution-contract', str(tmp_path / 'execution.json'))
+    environment = {'HOME': '/home/test', 'SDF_PATH': ''}
+    declaration = contract.execution_contract(selected, environment)
+    assert declaration['schema'] == 'capture-execution-v3'
+    assert declaration['trajectory_gauge_policy'] == {
+        'path': str(policy_path.absolute()),
+        'resolved': str(policy_path.resolve()),
+        'bytes': len(policy_path.read_bytes()),
+        'sha256': hashlib.sha256(policy_path.read_bytes()).hexdigest(),
+        'schema': 'trajectory-gauge-policy-v1',
+    }
+    contract_path = tmp_path / 'execution-v3.json'
+    contract_path.write_text(json.dumps(declaration))
+    selected.execution_contract = contract_path
+    assert contract.validate_declaration(selected, environment) == declaration
+    assert contract.worker_options(selected)[-2:] == [
+        '--trajectory-gauge-policy', str(policy_path.resolve())]
+
+
+@pytest.mark.parametrize('mutation', ['semantic', 'duplicate', 'changed_during_read'])
+def test_execution_v3_refuses_invalid_or_changed_policy(tmp_path, monkeypatch, mutation):
+    policy = trajectory_gauge_policy()
+    policy_path = tmp_path / 'trajectory-gauge-policy.json'
+    if mutation == 'semantic':
+        policy['screens']['max_position_error_m'] = 0.5
+        policy_path.write_text(json.dumps(policy))
+    elif mutation == 'duplicate':
+        policy_path.write_text('{"schema":"trajectory-gauge-policy-v1","schema":"changed"}')
+    else:
+        policy_path.write_text(json.dumps(policy))
+        original = contract._file_identity
+        calls = {'count': 0}
+
+        def changed(path):
+            row = original(path)
+            calls['count'] += 1
+            if calls['count'] == 2:
+                row = dict(row, sha256='0' * 64)
+            return row
+
+        monkeypatch.setattr(contract, '_file_identity', changed)
+    selected = args(tmp_path, '--trajectory-gauge-policy', str(policy_path),
+                    '--runtime-binding', str(tmp_path / 'binding.json'),
+                    '--execution-contract', str(tmp_path / 'execution.json'))
+    with pytest.raises(ValueError):
+        contract.execution_contract(selected, {'HOME': '/home/test'})
+
+
+def test_worker_records_v3_policy_identity(tmp_path):
+    environment = {'HOME': '/home/test'}
+    policy_path = tmp_path / 'trajectory-gauge-policy.json'
+    policy_path.write_text(json.dumps(trajectory_gauge_policy()))
+    output = tmp_path / 'capture'
+    binding_path = tmp_path / 'binding.json'
+    contract_path = tmp_path / 'execution-v3.json'
+    argv = ['--worker', '--output', str(output), '--trajectory-gauge-policy', str(policy_path),
+            '--runtime-binding', str(binding_path), '--execution-contract', str(contract_path)]
+    parsed = capture.parse_capture_args(argv)
+    declaration = contract.execution_contract(parsed, environment)
+    contract_path.write_text(json.dumps(declaration))
+    output.mkdir()
+    capture.record_worker_trajectory_policy(output, declaration, policy_path)
+    record = json.loads((output / 'trajectory-gauge-policy-worker.json').read_text())
+    assert record['matches_declaration'] is True
+    assert record['sha256'] == hashlib.sha256(policy_path.read_bytes()).hexdigest()
 
 
 def test_initial_environment_parser_preserves_empty_and_absent():
