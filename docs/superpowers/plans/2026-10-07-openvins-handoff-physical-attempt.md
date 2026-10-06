@@ -91,4 +91,4 @@
 - [x] Run focused tests, changed-file Ruff, `git diff --check`, and the full suite with this worktree's `src` first on `PYTHONPATH`.
 - [x] Update the report with what ran, first refusal or passed gates, timing scope, all false qualifications and remaining risk.
 - [x] Seal the prior archive, complete immutable attempt evidence, source/tests/spec/plan/report and verification logs with ZIP CRC and per-member hashes.
-- [ ] Commit, push and update draft PR65; update the monitoring automation to the next verified dependency without authorizing a blind retry.
+- [x] Commit, push and update draft PR65; update the monitoring automation to the next verified dependency without authorizing a blind retry.
