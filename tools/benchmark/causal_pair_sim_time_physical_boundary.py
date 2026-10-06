@@ -5,6 +5,7 @@ from __future__ import annotations
 import hashlib
 import json
 import string
+import subprocess
 import zipfile
 from pathlib import Path
 
@@ -51,6 +52,27 @@ def _head(path):
     if len(value) != 40 or any(char not in string.hexdigits for char in value):
         raise ValueError("committed head format")
     return value.lower()
+
+
+def current_git_head(root):
+    root = Path(root).resolve(strict=True)
+    commands = [["git", "rev-parse", "HEAD"]]
+    if str(root).startswith("/mnt/"):
+        drive = str(root)[5].upper()
+        windows_root = drive + ":\\" + str(root)[7:].replace("/", "\\")
+        commands.append(["/mnt/c/Program Files/Git/cmd/git.exe", "-C", windows_root, "rev-parse", "HEAD"])
+    errors = []
+    for command in commands:
+        try:
+            result = subprocess.run(command, cwd=root, capture_output=True, text=True, timeout=10, check=False)
+        except (OSError, subprocess.SubprocessError) as exc:
+            errors.append(repr(exc))
+            continue
+        value = result.stdout.strip().lower()
+        if result.returncode == 0 and len(value) == 40 and all(char in string.hexdigits for char in value):
+            return value
+        errors.append(result.stderr.strip() or f"returncode={result.returncode}")
+    raise ValueError("git head unavailable: " + "; ".join(errors))
 
 
 def _verify_archive(path):
@@ -120,6 +142,7 @@ def build_boundary(
     evidence_archive,
     expected_head,
     head_file,
+    observed_git_head,
     dispatch,
     completion,
     output,
@@ -128,7 +151,7 @@ def build_boundary(
     if resources:
         raise ValueError("competing resources")
     actual_head = _head(head_file)
-    if actual_head != str(expected_head).lower():
+    if actual_head != str(expected_head).lower() or actual_head != str(observed_git_head).lower():
         raise ValueError("committed head")
     study = Path(study).resolve(strict=True)
     destination = study / "capture-v1"
@@ -169,6 +192,7 @@ def build_boundary(
         "destination": destination.as_posix(),
         "command": command,
         "head": actual_head,
+        "git_head_observed": str(observed_git_head).lower(),
         "head_file": _record(head_file),
         "package_audit": _record(package_audit),
         "startup_audit": _record(startup_audit),
@@ -213,7 +237,11 @@ def main(argv=None):
     parser.add_argument("--expected-head", required=True)
     args = vars(parser.parse_args(argv))
     boundary_path = args.pop("boundary")
-    value = build_boundary(**args, resources=active_resources())
+    value = build_boundary(
+        **args,
+        observed_git_head=current_git_head(Path(__file__).resolve().parents[2]),
+        resources=active_resources(),
+    )
     if boundary_path.exists():
         raise FileExistsError(boundary_path)
     write_manifest(boundary_path, value)

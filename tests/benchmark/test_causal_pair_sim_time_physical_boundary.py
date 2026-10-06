@@ -3,12 +3,15 @@ import json
 import os
 import shutil
 from pathlib import Path
+from types import SimpleNamespace
 
 import pytest
 
 import tools.benchmark.causal_pair_sim_time_physical_boundary as boundary_module
+import tools.benchmark.execute_causal_pair_sim_time_physical_boundary as executor_module
 from tools.benchmark.audit_causal_pair_sim_time_physical_boundary import audit_boundary
 from tools.benchmark.causal_pair_sim_time_physical_boundary import _require_audits, _verify_archive, build_boundary
+from tools.benchmark.execute_causal_pair_sim_time_physical_boundary import execute
 
 ROOT = Path(__file__).resolve().parents[2]
 STUDY = ROOT / "results/estimator-physical-refusal-diagnosis-dev-1701/study-v18"
@@ -31,6 +34,7 @@ def make_boundary(tmp_path):
         evidence_archive=ARCHIVE,
         expected_head="a" * 40,
         head_file=head_file,
+        observed_git_head="a" * 40,
         dispatch=tmp_path / "dispatch.json",
         completion=tmp_path / "completion.json",
         output=tmp_path / "output.txt",
@@ -71,6 +75,7 @@ def test_builder_rejects_head_resources_and_reuse(tmp_path, mutation, match):
         evidence_archive=ARCHIVE,
         expected_head="a" * 40,
         head_file=head_file,
+        observed_git_head="a" * 40,
         dispatch=tmp_path / "dispatch.json",
         completion=tmp_path / "completion.json",
         output=tmp_path / "output.txt",
@@ -86,18 +91,18 @@ def test_independent_audit_rejects_command_and_claim_drift(tmp_path):
     value = make_boundary(tmp_path)
     boundary = tmp_path / "boundary.json"
     boundary.write_text(json.dumps(value), encoding="utf-8")
-    good = audit_boundary(boundary, resources=[])
+    good = audit_boundary(boundary, resources=[], observed_git_head="a" * 40)
     assert good["boundary_qualified"] is True
 
     changed = copy.deepcopy(value)
     changed["command"].append("--startup-preflight")
     boundary.write_text(json.dumps(changed), encoding="utf-8")
-    assert audit_boundary(boundary, resources=[])["boundary_qualified"] is False
+    assert audit_boundary(boundary, resources=[], observed_git_head="a" * 40)["boundary_qualified"] is False
 
     changed = copy.deepcopy(value)
     changed["fusion_eligible"] = True
     boundary.write_text(json.dumps(changed), encoding="utf-8")
-    assert audit_boundary(boundary, resources=[])["boundary_qualified"] is False
+    assert audit_boundary(boundary, resources=[], observed_git_head="a" * 40)["boundary_qualified"] is False
 
 
 @pytest.mark.skipif(os.name == "nt", reason="the declared physical package uses WSL absolute paths")
@@ -105,7 +110,7 @@ def test_independent_audit_rejects_live_resources(tmp_path):
     value = make_boundary(tmp_path)
     boundary = tmp_path / "boundary.json"
     boundary.write_text(json.dumps(value), encoding="utf-8")
-    result = audit_boundary(boundary, resources=["gazebo"])
+    result = audit_boundary(boundary, resources=["gazebo"], observed_git_head="a" * 40)
     assert result["boundary_qualified"] is False
     assert "resources" in result["failures"]
 
@@ -138,3 +143,56 @@ def test_saved_audit_drift_is_rejected_before_dispatch(tmp_path, monkeypatch, ki
         startup.write_text(json.dumps(value), encoding="utf-8")
     with pytest.raises(ValueError, match=f"live {kind} audit"):
         _require_audits(STUDY, package, startup, STARTUP_DISPATCH, STARTUP_COMPLETION)
+
+
+def test_executor_refuses_unqualified_boundary_without_running(tmp_path, monkeypatch):
+    boundary = tmp_path / "boundary.json"
+    boundary.write_text("{}", encoding="utf-8")
+    called = False
+
+    def runner(*args, **kwargs):
+        nonlocal called
+        called = True
+        return SimpleNamespace(returncode=0)
+
+    monkeypatch.setattr(
+        executor_module,
+        "audit_boundary",
+        lambda *args, **kwargs: {"boundary_qualified": False, "failures": ["head"]},
+    )
+    with pytest.raises(ValueError, match="not qualified"):
+        execute(boundary, resources_fn=lambda: [], runner=runner)
+    assert called is False
+
+
+def test_executor_writes_once_and_preserves_command_returncode(tmp_path, monkeypatch):
+    destination = tmp_path / "capture-v1"
+    boundary = tmp_path / "boundary.json"
+    dispatch = tmp_path / "dispatch.json"
+    completion = tmp_path / "completion.json"
+    output = tmp_path / "output.txt"
+    boundary.write_text(
+        json.dumps(
+            {
+                "study": tmp_path.as_posix(),
+                "destination": destination.as_posix(),
+                "command": ["declared", "command"],
+                "head": "a" * 40,
+                "dispatch": dispatch.as_posix(),
+                "completion": completion.as_posix(),
+                "output": output.as_posix(),
+            }
+        ),
+        encoding="utf-8",
+    )
+    monkeypatch.setattr(
+        executor_module,
+        "audit_boundary",
+        lambda *args, **kwargs: {"boundary_qualified": True, "failures": []},
+    )
+    result = execute(boundary, resources_fn=lambda: [], runner=lambda *args, **kwargs: SimpleNamespace(returncode=7))
+    assert result == 7
+    assert json.loads(dispatch.read_text())["single_actual_attempt"] is True
+    assert json.loads(completion.read_text())["command_returncode"] == 7
+    with pytest.raises(FileExistsError):
+        execute(boundary, resources_fn=lambda: [], runner=lambda *args, **kwargs: SimpleNamespace(returncode=0))

@@ -8,7 +8,7 @@ Authorize at most one physical `study-v18/capture-v1` attempt after the camera-p
 
 The boundary consumes the authoritative `study-v18` package, its committed-tree and after-startup audits, the startup dispatch/completion/audit, and `evidence/causal-pair-sim-time-retry-preflight-dev-1701.zip` with SHA-256 `c82a50d272acc80230e52763c53c3143dc71c093bb75281cd0d64fbd7d196e6b`. It recomputes the package audit from current files instead of trusting a saved boolean. It also re-audits the startup preflight and verifies the exact 25 s / 1 ms / 250 Hz / 10 Hz 160x120 execution contract, estimator inputs, profiles and unchanged 2 s wall watchdogs.
 
-The physical command is exactly the manifest command for the absent `study-v18/capture-v1` destination. It may not contain `--startup-preflight`. The boundary, dispatch, completion and output records use exclusive creation and are immutable after first use. The boundary records the exact committed head and must be generated only after its implementation and tests are committed.
+The physical command is exactly the manifest command for the absent `study-v18/capture-v1` destination. It may not contain `--startup-preflight`. The boundary, dispatch, completion and output records use exclusive creation and are immutable after first use. The boundary records both the committed-head file and a live Git HEAD observation; both must equal the expected commit. It must be generated only after its implementation, executor and tests are committed.
 
 ## Runtime behavior
 

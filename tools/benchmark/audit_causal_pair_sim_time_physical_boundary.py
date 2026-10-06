@@ -6,12 +6,12 @@ import json
 from pathlib import Path
 
 from tools.benchmark.capture_contract import _typed_equal, read_declaration
-from tools.benchmark.causal_pair_sim_time_physical_boundary import build_boundary
+from tools.benchmark.causal_pair_sim_time_physical_boundary import build_boundary, current_git_head
 from tools.benchmark.declared_runtime_snapshot import write_manifest
 from tools.benchmark.estimator_aware_readiness_preflight import FALSE_CLAIMS
 
 
-def audit_boundary(boundary, *, resources):
+def audit_boundary(boundary, *, resources, observed_git_head=None):
     failures = []
     value = None
     try:
@@ -27,6 +27,7 @@ def audit_boundary(boundary, *, resources):
             evidence_archive=value["evidence_archive"]["requested"],
             expected_head=value["head"],
             head_file=value["head_file"]["requested"],
+            observed_git_head=observed_git_head or current_git_head(Path(__file__).resolve().parents[2]),
             dispatch=value["dispatch"],
             completion=value["completion"],
             output=value["output"],
