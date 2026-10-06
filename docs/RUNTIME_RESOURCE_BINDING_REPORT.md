@@ -23,3 +23,6 @@ Verified: synthetic drift/schema/IO/cleanup gates, explicitselectedcalibration c
 ## Final verification
 1101full tests passed,2existingWindows symlinkpermission skips,2existing loader warnings,279.87s.50targetedpassed2skipped. Changed-fileRuff and gitdiffchecks pass. WholeRuff52findings/33files unchanged frombaseee42323 remainsfailed. NoCritical/Important/Minor outstanding after the single review fix pass. No physicalcapture/estimator/training run in this stage.
 Ruling: selfprocess mapping and declared resource binding do not qualify complete runtimeclosure. Exactresourcegraph/lazyplugins/otherprocesscoverage remain next dependencies; overlooking them would invalidate any claim that a future physicaltrial has complete runtime provenance.
+
+## Publication
+Draft PR51: https://github.com/chen7509/FlyDrones/pull/51. Evidence evidence/runtime-resource-binding-dev-1701.zip:91members/641117bytes, SHA256ab16ff50362e80d1b5aeaac6311b64be93a7e9716c8c6e33b55a7e1613eca22d. All member hashes/CRC verified. Sealed sourcee2ef035, archivecommit7e9ef67; publication metadata does not alter archived evidence.

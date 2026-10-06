@@ -5,4 +5,4 @@ Goal: persist declared baseline/generated/env evidence at actual capture setup a
 Review focus: no nativeclient before preclose; cleanup captures startup failure; arbitrary schema/env omissions cannot pass; actual selected paths must be covered; mapping false positives/unknowns retain evidence.
 - [x] RED tests for RuntimeBinding schema/copies/env/baseline and mapping refusal, then minimal GREEN implementation.
 - [x] RED capture flag/integration lifecycle tests, wire before imports and cleanup after shutdown, preserve existing modes.
-- [ ] Fixed offline binding of prior captured files plus real selfmaps without initializing simulation; regression/review/report/evidence/draft PR, retain remaining closure and gauge gates.
+- [x] Fixed offline binding of prior captured files plus real selfmaps without initializing simulation; regression/review/report/evidence/draft PR, retain remaining closure and gauge gates.
