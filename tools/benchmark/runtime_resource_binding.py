@@ -140,7 +140,7 @@ class RuntimeBinding:
         if self.before is not None or self.pre_recorded or self.errors or self.closed:
             raise ValueError('binding already started or failed')
         try:
-            actual_env = {key: environment.get(key) for key in ENV_KEYS}
+            actual_env = {key: environment.get(key) for key in self.doc['environment']}
             if not _typed_equal(actual_env, self.doc['environment']):
                 raise ValueError('resource lookup environment mismatch')
             baseline = snapshot(self.doc['inventory'])

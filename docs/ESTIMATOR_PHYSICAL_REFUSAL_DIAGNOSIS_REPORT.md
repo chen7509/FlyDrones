@@ -40,4 +40,16 @@ Verification completed with 87 focused tests passing and the full repository sui
 - Physical execution, runtime closure, VIO accuracy/health, quality/reset/covariance, fusion, EKF2 injection, flight, and fruit-fly learning: not qualified by this run.
 - The failed `study-v2/capture-v1` remains immutable. A future attempt must use a new audited package and destination.
 
-The next bounded task is at most one physical run at the new destination `study-v4/capture-v1`, followed by a complete independent audit of runtime maps, readiness, safety, estimator health, timing, ULog, and cleanup. The old failed capture and rejected prepare packages remain immutable.
+## Execution-entry refusal and single capture attempt
+
+The first dispatch wrapper stopped before writing a dispatch record because WSL could not resolve the Windows worktree Git pointer. A second `study-v4` dispatch reached the capture CLI but was rejected before creating its destination: adding `MESA_SHADER_CACHE_DISABLE` to the binding made the old exact environment-schema validator reject the package. Neither event started PX4, Gazebo, OpenVINS, or a physical capture.
+
+The binding validator was changed to accept only the optional value `MESA_SHADER_CACHE_DISABLE=true`, while retaining compatibility with old declarations and rejecting arbitrary renderer variables. The prepare builder and its independent auditor now invoke the real `validate_binding` execution entry. `study-v5` passed two audits, including one after committing the fix.
+
+The single allowed actual attempt then created `study-v5/capture-v1` and failed closed during `RuntimeBinding.start`: the runtime comparison projected only the legacy environment keys and omitted the now-declared Mesa key. The capture audit has no failures. No TestFixture, PX4 process, OpenVINS worker, force, motion, ULog, VIO input, or fusion was produced. The worker exited 2; the original owned process group was reaped without SIGKILL, with no executing members and no remaining resources. This is another startup harness-contract failure and says nothing about VIO accuracy or fruit-fly learning.
+
+A RED test reproduced the optional-key mismatch. `RuntimeBinding.start` now compares exactly the keys in the validated binding declaration; 26 binding tests pass. The failed capture is immutable and will not be rerun under this stage. A future physical attempt requires a separately named, newly frozen package and plan; the current verified fix alone is not evidence of physical execution.
+
+Post-attempt verification has 113 focused tests passing and changed-file Ruff passing. The second immutable evidence archive contains 43 members, is 778,777 bytes, and has SHA-256 `93e4bfd4c4d87bfdfa74b9453d749c7cd49c65595b90b494352bee65ebe159f7`. It includes the first evidence ZIP, both pre-dispatch refusals, the full `study-v5` package and failed capture, supervisor journal, cleanup and ULog evidence, independent capture audit, the RED/GREEN fix, and post-attempt tests.
+
+The final full repository regression after the runtime comparison fix reports 1,428 passed, 3 skipped, and the same 2 existing warnings. A five-member verification archive containing the attempt archive, full test output, final fix and test has SHA-256 `cfbede041e5bcc75aac68e1e6f1dd9ab77d5a0f26da43ce3135f1a4fd3eff02a` and size 778,538 bytes.

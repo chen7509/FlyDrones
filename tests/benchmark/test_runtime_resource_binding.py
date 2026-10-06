@@ -52,6 +52,16 @@ def test_binding_accepts_only_declared_mesa_cache_control(tmp_path):
     doc['environment']['MESA_SHADER_CACHE_DISABLE'] = 'false'
     with pytest.raises(ValueError, match='lookup keys'):
         binding.validate_binding(doc)
+
+
+def test_start_compares_declared_optional_mesa_cache_control(tmp_path):
+    doc, generated, source, output = fixture(tmp_path)
+    doc['environment']['MESA_SHADER_CACHE_DISABLE'] = 'true'
+    environment = {key: None for key in binding.ENV_KEYS}
+    environment['MESA_SHADER_CACHE_DISABLE'] = 'true'
+    obj = binding.RuntimeBinding(doc, output, map_reader=lambda: '')
+    obj.start(generated, environment, [source])
+    assert obj.pre_recorded is True
     doc['environment'].pop('MESA_SHADER_CACHE_DISABLE')
     doc['environment']['UNDECLARED_RENDERER_SETTING'] = 'true'
     with pytest.raises(ValueError, match='lookup keys'):

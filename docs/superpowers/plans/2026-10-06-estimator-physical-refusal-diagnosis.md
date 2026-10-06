@@ -10,5 +10,5 @@
 - [x] Identify every first-step mapping and its installed package owner; record the mutable Mesa cache separately.
 - [x] Implement a no-PX4/no-OpenVINS isolated first-render-step probe with prospectively declared `MESA_SHADER_CACHE_DISABLE=true`.
 - [x] Freeze package versions, copyright/license evidence, paths, hashes, compiler/runtime inputs, and exact added mappings; independently audit the probe.
-- [x] Build and independently audit a corrected prepare-only package with the fixed timestamp contract and qualified isolated renderer closure. `study-v3` remains an audit failure; immutable `study-v4` passes the independent audit. Neither command was executed.
-- [ ] Only after the new package passes, perform at most one capture at `study-v4/capture-v1`; preserve every failure and never overwrite `study-v2/capture-v1` or the rejected `study-v3` package.
+- [x] Build and independently audit corrected prepare-only packages with the fixed timestamp contract and qualified isolated renderer closure. `study-v3` remains an audit failure; `study-v4` exposed an execution-entry schema gap without creating a capture; immutable `study-v5` passed two independent audits.
+- [x] Perform at most one actual capture at `study-v5/capture-v1`; preserve the startup runtime-binding refusal, do not rerun it, and keep `study-v2/capture-v1`, rejected packages, and launcher failures immutable.
