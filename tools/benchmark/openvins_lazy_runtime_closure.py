@@ -328,6 +328,10 @@ def run_probe(output, declaration, *, client_factory=NativeClient, maps_reader=_
         after = stable_mapping_snapshot(client.process.pid, maps_reader,
                                         max_attempts=max_map_attempts, sleeper=sleeper)
         after_identity = identity_reader(client.process.pid)
+        # Retain both raw observations before applying identity or delta gates.  A
+        # failed prospective probe must remain independently diagnosable.
+        write_manifest(output / "maps-before.json", {"identity": before_identity, "maps": before})
+        write_manifest(output / "maps-after.json", {"identity": after_identity, "maps": after})
         if not _same_process(before_identity, after_identity):
             raise ValueError("probe process identity changed")
         before_keys = {(row["path"], row["device"], row["inode"]) for row in before}
@@ -338,8 +342,6 @@ def run_probe(output, declaration, *, client_factory=NativeClient, maps_reader=_
                    for path, device, inode in sorted(before_keys - after_keys)]
         if added != [predicted]:
             raise ValueError("first-IMU lazy mapping delta is not exact")
-        write_manifest(output / "maps-before.json", {"identity": before_identity, "maps": before})
-        write_manifest(output / "maps-after.json", {"identity": after_identity, "maps": after})
         result.update(before_identity=before_identity, after_identity=after_identity,
                       added=added, removed=removed, acknowledgement=ack)
     except BaseException as exc:

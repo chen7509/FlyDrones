@@ -1,4 +1,5 @@
 import copy
+import hashlib
 import json
 from pathlib import Path
 from types import SimpleNamespace
@@ -8,6 +9,7 @@ import pytest
 from tools.benchmark import openvins_lazy_runtime_closure as lazy
 from tools.benchmark.audit_openvins_lazy_runtime_closure import audit
 from tools.benchmark.declared_runtime_snapshot import write_manifest
+from tools.benchmark.openvins_online_shadow import encode_packet
 
 
 def write(path, text="x"):
@@ -40,16 +42,27 @@ def identity(binary):
 class FakeClient:
     def __init__(self, command, output):
         self.process = SimpleNamespace(pid=77)
-        for name in ("states.jsonl", "fast.jsonl", "native.log", "native-requests.jsonl",
-                     "native-acks.jsonl", "native-session.json"):
-            (Path(output) / name).write_text("", encoding="utf-8")
+        self.output, self.command = Path(output), command
+        for name in ("states.jsonl", "fast.jsonl", "native-requests.jsonl", "native-acks.jsonl"):
+            (self.output / name).write_text("", encoding="utf-8")
+        (self.output / "native.log").write_text("fixture\n", encoding="utf-8")
+        (self.output / "native-session.json").write_text(json.dumps({
+            "pid": 77, "command": command, "started_monotonic_ns": 7,
+            "reset_counter": None, "quality": None, "fusion_eligible": False,
+        }), encoding="utf-8")
 
     def send(self, action):
-        return {"sequence": 0, "kind": "I", "sample_ns": 1_000_000,
-                "receive_ns": 10, "start_ns": 11, "end_ns": 12,
-                "acknowledged_ns": 13, "source_arrival_ns": action["source_arrival_ns"],
-                "dispatch_ns": 9, "fusion_eligible": False, "quality": None,
-                "reset_counter": None}
+        packet = encode_packet(action, sequence=0, dispatch_ns=9)
+        request = {"sequence": 0, "action": action, "dispatch_ns": 9, "bytes": len(packet),
+                   "packet_sha256": hashlib.sha256(packet).hexdigest(), "rgb_sha256": None}
+        ack = {"sequence": 0, "kind": "I", "sample_ns": 1_000_000,
+               "receive_ns": 10, "start_ns": 11, "end_ns": 12,
+               "acknowledged_ns": 13, "source_arrival_ns": action["source_arrival_ns"],
+               "dispatch_ns": 9, "fusion_eligible": False, "quality": None,
+               "reset_counter": None}
+        (self.output / "native-requests.jsonl").write_text(json.dumps(request) + "\n", encoding="utf-8")
+        (self.output / "native-acks.jsonl").write_text(json.dumps(ack) + "\n", encoding="utf-8")
+        return ack
 
     def finish(self):
         return {"exit": 0, "accepted": 1, "failure": None,
@@ -96,11 +109,12 @@ def package(tmp_path):
     before = [map_row(args["binary"]), map_row(args["tbb"])]
     after = before + [map_row(args["allocator"])]
     reads = iter([before, before, after, after])
+    identities = iter([identity(args["binary"]), dict(identity(args["binary"]), state="R")])
     probe = lazy.run_probe(
         output / "probe", declaration,
         client_factory=lambda command, target: FakeClient(command, target),
         maps_reader=lambda _pid: next(reads),
-        identity_reader=lambda _pid: identity(args["binary"]),
+        identity_reader=lambda _pid: next(identities),
         sleeper=lambda _seconds: None,
         now=iter([8, 9]).__next__,
     )
@@ -116,7 +130,10 @@ def test_audit_accepts_exact_prospective_closure_without_overclaim(tmp_path):
     assert result["fusion_eligible"] is False
 
 
-@pytest.mark.parametrize("mutation", ["provenance", "probe", "extra", "overclaim", "drift"])
+@pytest.mark.parametrize("mutation", [
+    "provenance", "probe", "extra", "probe-extra", "overclaim", "drift",
+    "ack", "request", "session",
+])
 def test_audit_rejects_tampering_missing_scope_and_file_drift(tmp_path, mutation):
     output, declaration, probe = package(tmp_path)
     if mutation == "provenance":
@@ -129,10 +146,22 @@ def test_audit_rejects_tampering_missing_scope_and_file_drift(tmp_path, mutation
         (output / "probe" / "probe-result.json").write_text(json.dumps(doc))
     elif mutation == "extra":
         (output / "unexpected.txt").write_text("x")
+    elif mutation == "probe-extra":
+        (output / "probe" / "unexpected.txt").write_text("x")
     elif mutation == "overclaim":
         doc = copy.deepcopy(probe)
         doc["runtime_closure_qualified"] = True
         (output / "probe" / "probe-result.json").write_text(json.dumps(doc))
+    elif mutation == "ack":
+        (output / "probe" / "native-acks.jsonl").write_text(json.dumps({"sequence": 9}) + "\n")
+    elif mutation == "request":
+        row = json.loads((output / "probe" / "native-requests.jsonl").read_text())
+        row["packet_sha256"] = "0" * 64
+        (output / "probe" / "native-requests.jsonl").write_text(json.dumps(row) + "\n")
+    elif mutation == "session":
+        row = json.loads((output / "probe" / "native-session.json").read_text())
+        row["command"][0] = "wrong"
+        (output / "probe" / "native-session.json").write_text(json.dumps(row))
     else:
         predicted = declaration["predicted_mapping"]["resolved"]
         with open(predicted, "a", encoding="utf-8") as stream:

@@ -223,4 +223,7 @@ def test_probe_fails_closed_and_retains_result(tmp_path, failure):
     retained = json.loads((tmp_path / "probe" / "probe-result.json").read_text())
     assert retained["probe_qualified"] is False
     assert retained["fusion_eligible"] is False
+    if failure in {"extra", "missing", "identity"}:
+        assert (tmp_path / "probe" / "maps-before.json").exists()
+        assert (tmp_path / "probe" / "maps-after.json").exists()
 

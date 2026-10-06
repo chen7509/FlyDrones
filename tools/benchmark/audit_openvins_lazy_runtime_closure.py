@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import hashlib
 import json
 import os
 from pathlib import Path
@@ -20,6 +21,7 @@ from tools.benchmark.openvins_lazy_runtime_closure import (
     validate_packages,
     validate_upstream_source,
 )
+from tools.benchmark.openvins_online_shadow import encode_packet
 
 
 def _read(path):
@@ -31,12 +33,35 @@ def _require(condition, failures, label):
         failures.append(label)
 
 
+def _single_json_line(path):
+    text = Path(path).read_text(encoding="utf-8")
+    if not text.endswith("\n") or len(text.splitlines()) != 1:
+        raise ValueError("expected exactly one newline-terminated JSON record")
+
+    def pairs(values):
+        result = {}
+        for key, value in values:
+            if key in result:
+                raise ValueError("duplicate JSON key")
+            result[key] = value
+        return result
+
+    return json.loads(text, object_pairs_hook=pairs)
+
+
 def audit(output):
     output = Path(output)
     failures = []
     try:
         _require({path.name for path in output.iterdir()} == {"provenance.json", "probe"}, failures,
                  "unexpected or missing study member")
+        probe_members = {
+            "states.jsonl", "fast.jsonl", "native.log", "native-requests.jsonl",
+            "native-acks.jsonl", "native-session.json", "maps-before.json",
+            "maps-after.json", "probe-result.json",
+        }
+        _require({path.name for path in (output / "probe").iterdir()} == probe_members, failures,
+                 "unexpected or missing probe member")
         provenance = _read(output / "provenance.json")
         probe = _read(output / "probe" / "probe-result.json")
         before = _read(output / "probe" / "maps-before.json")
@@ -105,11 +130,69 @@ def audit(output):
         _require(probe.get("client", {}).get("exit") == 0
                  and probe.get("client", {}).get("accepted") == 1
                  and probe.get("client", {}).get("failure") is None, failures, "clean native exit")
+        try:
+            request = _single_json_line(output / "probe" / "native-requests.jsonl")
+            acknowledgement = _single_json_line(output / "probe" / "native-acks.jsonl")
+            session = _read(output / "probe" / "native-session.json")
+            action = request.get("action")
+            _require(type(request) is dict and set(request) == {
+                "sequence", "action", "dispatch_ns", "bytes", "packet_sha256", "rgb_sha256"
+            }, failures, "request schema")
+            _require(type(action) is dict and set(action) == {
+                "kind", "sample_ns", "source_arrival_ns", "wm", "am"
+            } and action.get("kind") == "imu" and action.get("sample_ns") == 1_000_000
+                     and action.get("wm") == [0.0, 0.0, 0.0]
+                     and action.get("am") == [0.0, 0.0, 9.81], failures, "request action")
+            packet = encode_packet(action, sequence=request.get("sequence"),
+                                   dispatch_ns=request.get("dispatch_ns"))
+            _require(request.get("sequence") == 0 and request.get("bytes") == len(packet)
+                     and request.get("packet_sha256") == hashlib.sha256(packet).hexdigest()
+                     and request.get("rgb_sha256") is None, failures, "request packet evidence")
+            _require(acknowledgement == probe.get("acknowledgement"), failures,
+                     "acknowledgement evidence")
+            _require(acknowledgement.get("sequence") == 0
+                     and acknowledgement.get("kind") == "I"
+                     and acknowledgement.get("sample_ns") == 1_000_000
+                     and acknowledgement.get("source_arrival_ns") == action.get("source_arrival_ns")
+                     and acknowledgement.get("dispatch_ns") == request.get("dispatch_ns")
+                     and acknowledgement.get("fusion_eligible") is False
+                     and acknowledgement.get("quality") is None
+                     and acknowledgement.get("reset_counter") is None, failures,
+                     "acknowledgement scope")
+            clocks = [request.get("dispatch_ns"), acknowledgement.get("receive_ns"),
+                      acknowledgement.get("start_ns"), acknowledgement.get("end_ns"),
+                      acknowledgement.get("acknowledged_ns")]
+            _require(all(type(value) is int and 0 < value < 2**63 for value in clocks)
+                     and clocks == sorted(clocks), failures, "acknowledgement clocks")
+            expected_command = [
+                files["binary"]["resolved"], files["config"]["resolved"],
+                str(output / "probe" / "states.jsonl"),
+                str(output / "probe" / "fast.jsonl"),
+            ]
+            _require(type(session) is dict and set(session) == {
+                "pid", "command", "started_monotonic_ns", "reset_counter", "quality",
+                "fusion_eligible"
+            } and session.get("pid") == probe.get("before_identity", {}).get("pid")
+                     and session.get("command") == expected_command
+                     and type(session.get("started_monotonic_ns")) is int
+                     and 0 < session.get("started_monotonic_ns") < 2**63
+                     and session.get("reset_counter") is None
+                     and session.get("quality") is None
+                     and session.get("fusion_eligible") is False, failures, "native session evidence")
+            _require((output / "probe" / "states.jsonl").read_bytes() == b""
+                     and (output / "probe" / "fast.jsonl").read_bytes() == b"", failures,
+                     "one-IMU output scope")
+            _require(b"native_refusal:" not in (output / "probe" / "native.log").read_bytes(),
+                     failures, "native refusal log")
+        except Exception as exc:
+            failures.append("native protocol evidence: " + repr(exc))
         _require(probe.get("before_identity") == before.get("identity"), failures, "before identity evidence")
         _require(probe.get("after_identity") == after.get("identity"), failures, "after identity evidence")
-        _require(probe.get("before_identity") is not None
-                 and probe.get("before_identity") == probe.get("after_identity"), failures,
-                 "stable probe identity")
+        immutable = ("pid", "pgrp", "session", "start_ticks", "executable")
+        before_identity, after_identity = probe.get("before_identity"), probe.get("after_identity")
+        _require(type(before_identity) is dict and type(after_identity) is dict
+                 and all(before_identity.get(key) == after_identity.get(key) for key in immutable),
+                 failures, "stable probe identity")
         before_keys = {(r["path"], r["device"], r["inode"]) for r in before.get("maps", [])}
         after_keys = {(r["path"], r["device"], r["inode"]) for r in after.get("maps", [])}
         added = [{"path": path, "device": device, "inode": inode}
