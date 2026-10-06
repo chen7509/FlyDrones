@@ -80,6 +80,8 @@ Self-review covers JPL/Hamilton direction, global versus body velocity, FLU/FRD 
 
 The sealed evidence archive is `evidence/trajectory-gauge-contract-dev-1701.zip`: 32 members, 62,089 bytes, SHA-256 `a4d02e4c8a96fb272d463bcbb5d8b773b2836a3f7266f56c67c80a68a5918ecc`. Its embedded manifest records every payload member's byte length and SHA-256; ZIP CRC and manifest verification passed. The PR48 source archive is referenced by hash and is not duplicated. The producer commit is `0842750f39819a9a4ab218ef891f0967ebbe3644`; this publication paragraph postdates the immutable payload.
 
+Review is published as draft [PR 60](https://github.com/chen7509/FlyDrones/pull/60), stacked on the declared launch-environment work in PR 59. The PR-link commit postdates the immutable evidence payload.
+
 ## Evidence boundary and next gate
 
 Verified here: the contract logic, exact sealed-input provenance, and the PR48 partial diagnostic under a truth-independent first-internal-state gauge.
