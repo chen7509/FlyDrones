@@ -178,6 +178,94 @@ def test_v2_missing_resolver_source_role_refuses(tmp_path):
         binding.validate_binding(doc)
 
 
+@pytest.mark.parametrize('failure', ['extra', 'role', 'duplicate', 'bytes', 'count'])
+def test_v3_runtime_map_schema_is_strict(tmp_path, failure):
+    doc, _, _, _, _ = graph_fixture(tmp_path)
+    doc['schema'] = 'capture-resource-binding-v3'
+    runtime = dict(self_phases=['postimports', 'postfinalize', 'postfirststep'],
+                   owned_roles={'px4': ['ready', 'prestop']},
+                   max_maps_bytes=1024, max_observations=8)
+    doc['runtime_maps'] = runtime
+    if failure == 'extra':
+        runtime['ignored'] = True
+    elif failure == 'role':
+        runtime['owned_roles'] = {'unknown': ['ready']}
+    elif failure == 'duplicate':
+        runtime['self_phases'] = ['postimports', 'postimports']
+    elif failure == 'bytes':
+        runtime['max_maps_bytes'] = 8 * 1024 * 1024 + 1
+    else:
+        runtime['max_observations'] = True
+    with pytest.raises(ValueError, match='runtime map'):
+        binding.validate_binding(doc)
+
+
+def test_v3_requires_all_self_and_owned_phases_for_mapping_qualification(tmp_path, monkeypatch):
+    doc, generated, binary, _, output = graph_fixture(tmp_path)
+    doc['schema'] = 'capture-resource-binding-v3'
+    doc['runtime_maps'] = dict(self_phases=['postimports'], owned_roles={'px4': ['ready']},
+                               max_maps_bytes=1024, max_observations=2)
+    class Client:
+        def __init__(self, *_args):
+            pass
+        def query(self, *_args):
+            return dict(doc['graph']['expected_context'])
+        def check_budget(self):
+            return 0.0
+    class Owned:
+        def __init__(self, *_args, **_kwargs):
+            self.calls = []
+        def register(self, role, _process, executable):
+            self.calls.append(('register', role, str(executable)))
+            return {'role': role}
+        def observe(self, role, phase):
+            self.calls.append(('observe', role, phase))
+            return {'observed_files_covered': True}
+    monkeypatch.setattr(binding, 'QueryClient', Client)
+    obj = binding.RuntimeBinding(doc, output, map_reader=lambda: '', owned_factory=Owned)
+    obj.start(generated, doc['environment'] | doc['graph']['environment'], [binary])
+    assert obj.finish()['runtime_mapping_coverage_verified'] is False
+
+    output2 = tmp_path / 'capture2'
+    output2.mkdir()
+    obj = binding.RuntimeBinding(doc, output2, map_reader=lambda: '', owned_factory=Owned)
+    obj.start(generated, doc['environment'] | doc['graph']['environment'], [binary])
+    obj.observe('postimports')
+    obj.register_owned('px4', type('P', (), {'pid': 123})(), binary)
+    obj.observe_owned('px4', 'ready')
+    result = obj.finish()
+    assert result['runtime_mapping_coverage_verified'] is True
+    assert result['runtime_closure_qualified'] is False
+
+
+def test_v3_missing_required_phase_is_a_terminal_journal_error(tmp_path, monkeypatch):
+    from tools.benchmark.disarmed_sensor_provenance import CaptureJournal
+
+    doc, generated, binary, _, output = graph_fixture(tmp_path)
+    doc['schema'] = 'capture-resource-binding-v3'
+    doc['runtime_maps'] = dict(self_phases=['postimports'], owned_roles={'px4': ['ready']},
+                               max_maps_bytes=1024, max_observations=2)
+    class Client:
+        def __init__(self, *_args):
+            pass
+        def query(self, *_args):
+            return dict(doc['graph']['expected_context'])
+        def check_budget(self):
+            return 0.0
+    class Owned:
+        def __init__(self, *_args, **_kwargs):
+            pass
+    monkeypatch.setattr(binding, 'QueryClient', Client)
+    monkeypatch.setattr(binding, 'OwnedRuntimeMaps', Owned)
+    result = {'status': 'incomplete', 'errors': []}
+    with CaptureJournal(output, result) as journal:
+        obj = binding.attach_binding(journal, result, doc, output, map_reader=lambda: '')
+        obj.owned_factory = Owned
+        obj.start(generated, doc['environment'] | doc['graph']['environment'], [binary])
+    assert any(error.startswith('runtime binding:') for error in result['errors'])
+    assert result['runtime_binding']['runtime_mapping_coverage_verified'] is False
+
+
 def test_plugin_response_echo_must_match_requested_name(tmp_path):
     from tools.benchmark.native_resource_client import validate_response
     response = dict(ok=True, error='', selected=str(tmp_path / 'x.so'), normalized='wrong-name',

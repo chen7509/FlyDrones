@@ -151,10 +151,11 @@ class SourceWatchdog:
 class NativeClient:
     """POSIX one-in-flight byte channel with a single wall deadline for write+ack."""
 
-    def __init__(self, command, output, *, timeout_s=2.0):
+    def __init__(self, command, output, *, timeout_s=2.0, on_first_ack=None):
         if os.name != "posix" or not math.isfinite(timeout_s) or timeout_s <= 0:
             raise ValueError("POSIX bounded transport required")
         self.timeout_s, self.sequence, self.failed = timeout_s, 0, None
+        self.on_first_ack = on_first_ack
         self.output, self.buffer, self.closed = output, b"", False
         with ExitStack() as pending:
             self.log = pending.enter_context((output / "native.log").open("xb"))
@@ -230,6 +231,8 @@ class NativeClient:
             row = dict(ack, acknowledged_ns=acknowledged, source_arrival_ns=action["source_arrival_ns"], dispatch_ns=dispatch)
             self.acks.write(json.dumps(row, allow_nan=False) + "\n")
             self.acks.flush()
+            if self.sequence == 0 and self.on_first_ack is not None:
+                self.on_first_ack()
             self.sequence += 1
             return row
         except BaseException as exc:
