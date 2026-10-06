@@ -46,6 +46,8 @@ Mapping failures enter the existing error path. Native and PX4 cleanup still exe
 
 The implementation commit is `d1c3313`.
 
+The sealed evidence archive is `evidence/owned-runtime-maps-dev-1701.zip`: 37 members, 56,915 bytes, SHA-256 `52dfe8219ac7412ddc9d0c9a98249a4e5eee11d320bd8d5baee3b697faaab5a3`. Its internal manifest hashes every member, and ZIP CRC verification passed.
+
 - Focused owned-map, audit, binding, and resource-graph checks: 77 passed.
 - Capture/shadow/fan-out/readiness focused checks: 123 passed.
 - Full Python regression: 1,173 passed, 2 skipped, 2 existing warnings.
