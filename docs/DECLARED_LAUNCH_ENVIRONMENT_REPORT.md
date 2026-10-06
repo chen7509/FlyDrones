@@ -70,6 +70,8 @@ The sealed evidence archive is `evidence/declared-launch-environment-dev-1701.zi
 
 Self-review covered ambient leakage, absent-versus-empty semantics, overlapping declarations, worker-observation timing, partial evidence writes, spawn failure, timeout and cleanup preservation, v1 compatibility, PR58 historical projection, and overclaiming. No independent reviewer was used under the active single-agent constraint.
 
+Review is published as draft [PR 59](https://github.com/chen7509/FlyDrones/pull/59), stacked on the full-load runtime mapping work in PR 58. The PR-link commit postdates the immutable evidence payload.
+
 ## Evidence boundaries
 
 Verified:
