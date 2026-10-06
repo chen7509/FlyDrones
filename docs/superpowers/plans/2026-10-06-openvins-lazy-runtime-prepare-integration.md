@@ -55,8 +55,8 @@
 - Create: `docs/OPENVINS_LAZY_RUNTIME_PREPARE_REPORT.md`
 - Create: `evidence/openvins-lazy-runtime-prepare-dev-1701.zip`
 
-- [ ] Confirm no competing runtime or test process.
-- [ ] Run one fixed prepare-only build and its independent audit; do not invoke the generated command.
-- [ ] Run focused tests, full regression, changed-file Ruff, source-tree Ruff comparison, and `git diff --check`.
-- [ ] Seal every source, output, test, report, and failure with a member manifest and verified ZIP hash/CRC.
+- [x] Confirm no competing runtime or test process.
+- [x] Run one fixed prepare-only build and its independent audit; do not invoke the generated command.
+- [x] Run focused tests, full regression, changed-file Ruff, source-tree Ruff comparison, and `git diff --check`.
+- [x] Seal every source, output, test, report, and failure with a member manifest and verified ZIP hash/CRC.
 - [ ] Commit, push, and open a stacked draft PR.
