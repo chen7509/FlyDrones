@@ -8,6 +8,7 @@ import json
 from pathlib import Path
 from types import SimpleNamespace
 
+from tools.benchmark import trajectory_gauge_contract as trajectory_gauge_module
 from tools.benchmark.capture_contract import (
     _typed_equal,
     declared_command,
@@ -119,6 +120,9 @@ def prepare_study(output, *, source_study, capture_script, python, resources):
     if type(inventory) is not dict or "runtime:trajectory-gauge-policy" in inventory:
         raise ValueError("trajectory policy inventory role collision")
     inventory["runtime:trajectory-gauge-policy"] = [str(policy_path.resolve())]
+    if "runtime:trajectory-gauge-code" in inventory:
+        raise ValueError("trajectory gauge code inventory role collision")
+    inventory["runtime:trajectory-gauge-code"] = [str(Path(trajectory_gauge_module.__file__).resolve(strict=True))]
     bound["baseline"] = snapshot(inventory)
     binding_path = output / "runtime-binding-v3.json"
     contract_path = output / "execution-contract.json"

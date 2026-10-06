@@ -35,7 +35,8 @@ def test_dry_audit_qualifies_only_preflight(tmp_path):
 
 
 @pytest.mark.parametrize("tamper", [
-    "policy", "command", "profile", "workload", "inventory", "baseline", "source", "claim", "capture",
+    "policy", "command", "profile", "workload", "inventory", "code_inventory", "baseline",
+    "source", "claim", "capture",
 ])
 def test_dry_audit_refuses_tampering_or_existing_capture(tmp_path, tamper):
     from tools.benchmark.audit_supported_heartbeat_gauge_preflight import audit
@@ -59,11 +60,13 @@ def test_dry_audit_refuses_tampering_or_existing_capture(tmp_path, tamper):
         else:
             row["imu_hz"] = 249
         path.write_text(json.dumps(row))
-    elif tamper in {"inventory", "baseline"}:
+    elif tamper in {"inventory", "code_inventory", "baseline"}:
         path = output / "runtime-binding-v3.json"
         row = json.loads(path.read_text())
         if tamper == "inventory":
             del row["inventory"]["runtime:trajectory-gauge-policy"]
+        elif tamper == "code_inventory":
+            del row["inventory"]["runtime:trajectory-gauge-code"]
         else:
             row["baseline"]["files"][0]["sha256"] = "0" * 64
         path.write_text(json.dumps(row))
