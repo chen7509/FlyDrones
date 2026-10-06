@@ -14,12 +14,12 @@ No simulator/estimator/physics. No parent environment mutation. Query 10s bound.
 Same-directory aliases, deprecated roots, relative escape, nonregular candidate, same-target symlink identity. Each covered by native synthetic runner.
 
 ## Task 1: native search diagnostics
-- [ ] Write tests/native/run_search_context_checks.py exercising those cases and context fields; run on old binary and preserve assertion failures.
-- [ ] Modify tools/benchmark/native/resource_resolver.cc: expose context and enumerate all plugin spellings with source attribution; retain actual SDK winner and reject distinct identities.
-- [ ] Compile with installed pkg-config flags, save compiler/source/binary/dependency identities; run new checks plus both existing native runners.
-- [ ] Commit implementation and test evidence references.
+- [x] Write tests/native/run_search_context_checks.py exercising those cases and context fields; run on old binary and preserve assertion failures.
+- [x] Modify tools/benchmark/native/resource_resolver.cc: expose context and enumerate all plugin spellings with source attribution; retain actual SDK winner and reject distinct identities.
+- [x] Compile with installed pkg-config flags, save compiler/source/binary/dependency identities; run new checks plus both existing native runners.
+- [x] Commit implementation and test evidence references.
 
 ## Task 2: review and publication
-- [ ] Independent whole-branch code/evidence review; necessary fixes RED→GREEN.
-- [ ] Changed-file lint, relevant Python regression (native-only changes do not justify pretending Python verifies C++).
+- [x] Independent whole-branch code/evidence review; necessary fixes RED→GREEN.
+- [x] Changed-file lint, relevant Python regression (native-only changes do not justify pretending Python verifies C++).
 - [ ] Report remaining graph/VIO gaps, seal unique ZIP with member hashes/CRC, create stacked draft PR and update heartbeat.
