@@ -66,7 +66,6 @@ def source_package(tmp_path):
         "schema": "supported-heartbeat-gauge-preflight-v1", "prepare_only": True,
         "execution_contract": contract, "runtime_binding": str((source / "runtime-binding-v3.json").resolve()),
         "trajectory_gauge_policy": str(policy.resolve()), "physical_run_completed": False,
-        "runtime_mapping_coverage_verified": False,
         "vio_accuracy_qualified": False, "estimator_health_qualified": False,
         "runtime_closure_qualified": False, "fusion_eligible": False, "flight_ready": False,
     })

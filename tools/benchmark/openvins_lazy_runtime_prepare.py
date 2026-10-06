@@ -189,7 +189,11 @@ def _load_preflight(source_study, policy_validator=validate_trajectory_gauge_pol
         raise ValueError("source manifest execution contract mismatch")
     if contract.get("launch_environment") != derive_launch_environment(binding):
         raise ValueError("source launch environment mismatch")
-    if any(manifest.get(key) is not False for key in (*FALSE_SOURCE_CLAIMS, "physical_run_completed")):
+    source_false_claims = (
+        "runtime_closure_qualified", "vio_accuracy_qualified", "estimator_health_qualified",
+        "fusion_eligible", "flight_ready", "physical_run_completed",
+    )
+    if any(manifest.get(key) is not False for key in source_false_claims):
         raise ValueError("source downstream claim must remain false")
     baseline = snapshot(binding["inventory"])
     if not _typed_equal(binding.get("baseline", {}).get("files"), baseline["files"]):
