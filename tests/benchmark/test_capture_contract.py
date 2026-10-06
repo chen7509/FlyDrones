@@ -90,3 +90,54 @@ def test_direct_worker_refuses_before_resource_inspection(tmp_path, monkeypatch)
     with pytest.raises(ValueError, match='declaration'):
         capture.main()
     assert calls == []
+
+
+def test_launch_environment_union_preserves_absent_and_present_empty():
+    binding = {
+        'schema': 'capture-resource-binding-v3',
+        'environment': {'HOME': '/home/test', 'PYTHONPATH': None, 'SDF_PATH': ''},
+        'graph': {'environment': {'HOME': '/home/test', 'PATH': '/usr/bin', 'LANG': 'C.UTF-8',
+                                  'GZ_FILE_PATH': ''}},
+    }
+    selected = contract.derive_launch_environment(binding)
+    assert selected == {
+        'GZ_FILE_PATH': '', 'HOME': '/home/test', 'LANG': 'C.UTF-8', 'PATH': '/usr/bin',
+        'PYTHONPATH': None, 'SDF_PATH': '',
+    }
+    assert contract.materialize_launch_environment(selected) == {
+        'GZ_FILE_PATH': '', 'HOME': '/home/test', 'LANG': 'C.UTF-8', 'PATH': '/usr/bin',
+        'SDF_PATH': '',
+    }
+
+
+def test_launch_environment_refuses_overlap_conflict():
+    binding = {
+        'schema': 'capture-resource-binding-v3',
+        'environment': {'HOME': '/declared'},
+        'graph': {'environment': {'HOME': '/different'}},
+    }
+    with pytest.raises(ValueError, match='conflict'):
+        contract.derive_launch_environment(binding)
+
+
+@pytest.mark.parametrize('environment', [
+    {'': 'value'}, {'BAD=NAME': 'value'}, {'BAD\0NAME': 'value'}, {'NAME': 'bad\0value'},
+    {'NAME': 1}, {1: 'value'}, {1: 'value', 'A': 'other'}, {'A': 'x' * 65537},
+])
+def test_launch_environment_refuses_malformed_or_oversized(environment):
+    with pytest.raises(ValueError, match='environment'):
+        contract.validate_launch_environment(environment)
+
+
+def test_execution_v2_binds_exact_launch_environment(tmp_path):
+    selected = args(tmp_path)
+    environment = {'HOME': '/home/test', 'PYTHONPATH': None, 'SDF_PATH': ''}
+    declaration = contract.execution_contract(selected, environment)
+    assert declaration['schema'] == 'capture-execution-v2'
+    assert declaration['launch_environment'] == environment
+    path = tmp_path / 'execution-v2.json'
+    path.write_text(json.dumps(declaration))
+    selected.execution_contract = path
+    assert contract.validate_declaration(selected, environment) == declaration
+    with pytest.raises(ValueError, match='declaration'):
+        contract.validate_declaration(selected, dict(environment, PYTHONPATH='hostile'))

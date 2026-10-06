@@ -8,12 +8,51 @@ PROFILE_FIELDS = ('motion_profile', 'physics_trace_profile', 'reference_fault_pr
 PATH_FIELDS = ('shadow_binary', 'shadow_config', 'reference_module')
 
 
-def execution_contract(args):
+def validate_launch_environment(value):
+    if type(value) is not dict or not value:
+        raise ValueError('explicit launch environment required')
+    if any(type(key) is not str for key in value):
+        raise ValueError('invalid launch environment name or value')
+    total = 0
+    result = {}
+    for key in sorted(value):
+        item = value[key]
+        if (type(key) is not str or not key or '=' in key or '\0' in key
+                or (item is not None and type(item) is not str)
+                or (isinstance(item, str) and '\0' in item)):
+            raise ValueError('invalid launch environment name or value')
+        total += len(key.encode('utf-8')) + (len(item.encode('utf-8')) if item is not None else 0) + 2
+        result[key] = item
+    if total > 65536:
+        raise ValueError('launch environment exceeds bounded size')
+    return result
+
+
+def derive_launch_environment(binding):
+    if type(binding) is not dict or binding.get('schema') != 'capture-resource-binding-v3':
+        raise ValueError('v3 binding required for launch environment')
+    declared = binding.get('environment')
+    graph = binding.get('graph')
+    if type(declared) is not dict or type(graph) is not dict or type(graph.get('environment')) is not dict:
+        raise ValueError('binding and graph launch environment required')
+    result = dict(graph['environment'])
+    for key, value in declared.items():
+        if key in result and not _typed_equal(result[key], value):
+            raise ValueError('binding and graph launch environment conflict: ' + key)
+        result[key] = value
+    return validate_launch_environment(result)
+
+
+def materialize_launch_environment(value):
+    return {key: item for key, item in validate_launch_environment(value).items() if item is not None}
+
+
+def execution_contract(args, launch_environment=None):
     fault = args.reference_fault_profile
     if fault not in (None, 'native-pre-epoch-v1'):
         raise ValueError('unknown reference fault profile')
-    return dict(
-        schema='capture-execution-v1',
+    result = dict(
+        schema='capture-execution-v1' if launch_environment is None else 'capture-execution-v2',
         wall_budget_s=60 if fault else 300,
         supervisor_s=90 if fault else 300,
         simulation_duration_ns=25_000_000_000,
@@ -23,6 +62,9 @@ def execution_contract(args):
         inputs={name: str(getattr(args, name).resolve()) if getattr(args, name) else None for name in PATH_FIELDS},
         reference_sha256=args.reference_sha256,
     )
+    if launch_environment is not None:
+        result['launch_environment'] = validate_launch_environment(launch_environment)
+    return result
 
 
 def _unique_pairs(pairs):
@@ -51,8 +93,8 @@ def _typed_equal(left, right):
     return left == right
 
 
-def validate_declaration(args):
-    actual = execution_contract(args)
+def validate_declaration(args, launch_environment=None):
+    actual = execution_contract(args, launch_environment)
     if args.execution_contract and not _typed_equal(read_declaration(args.execution_contract), actual):
         raise ValueError('prospective execution declaration differs from enforced contract')
     return actual
@@ -69,9 +111,9 @@ def worker_options(args):
     return result
 
 
-def declared_command(args, python, capture_script):
+def declared_command(args, python, capture_script, launch_environment=None):
     """For future study launchers: refuse an undeclared or mismatched run."""
     if not args.execution_contract:
         raise ValueError('study launcher requires an execution declaration')
-    validate_declaration(args)
+    validate_declaration(args, launch_environment)
     return [str(python), str(capture_script), '--output', str(args.output.resolve()), *worker_options(args)]
