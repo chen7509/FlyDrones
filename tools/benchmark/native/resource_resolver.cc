@@ -1,4 +1,5 @@
-// Read-only installed SDK selection. Never construct a Server or load a plugin.
+// Installed SDK lookup only: never construct a Server or load a plugin.
+// SystemPaths construction may create its configured/default log directory.
 #include <filesystem>
 #include <algorithm>
 #include <cctype>
@@ -136,6 +137,8 @@ void searchContext()
       << ",\"sdf_version\":" << json(sdf::SDF::Version())
       << ",\"sdf_uri_paths\":" << mappings.str()
       << ",\"sdf_callback_present\":" << (config.FindFileCallback() ? "true" : "false")
+      << ",\"common_file_callbacks_present\":null,\"common_uri_callbacks_present\":null"
+      << ",\"common_callback_observation\":\"unavailable: SDK has no callback inspection API\""
       << ",\"search_context_qualified\":false,\"runtime_closure_qualified\":false}\n";
 }
 
@@ -263,6 +266,7 @@ int main(int argc, char **argv)
       // Include default SystemPaths paths as well, matching the real resolver.
       auto allPaths = resolver.PluginPaths();
       std::set<std::string> candidates;
+      std::string candidateError;
       std::vector<std::string> examined;
       if (fs::path(name).is_absolute()) examined.push_back(name);
       else
@@ -272,12 +276,19 @@ int main(int argc, char **argv)
       for (const auto &path : examined)
       {
         // A dangling symlink is an unresolved candidate, not silently missing.
-        if (fs::is_symlink(fs::symlink_status(path)) || fs::exists(path))
-          candidates.insert(regular(path));
+        try
+        {
+          if (fs::is_symlink(fs::symlink_status(path)) || fs::exists(path))
+            candidates.insert(regular(path));
+        }
+        catch (const std::exception &e)
+        { candidateError += path + ": " + e.what() + "; "; }
       }
       if (candidates.size() != 1 || *candidates.begin() != selected)
-        throw std::runtime_error("ambiguous or uncovered plugin candidates");
-      std::cout << "{\"selected\":" << json(selected) << ",\"normalized\":" << json(name)
+        candidateError += "ambiguous or uncovered plugin candidates";
+      std::cout << "{\"ok\":" << (candidateError.empty() ? "true" : "false")
+                << ",\"error\":" << json(candidateError)
+                << ",\"selected\":" << json(selected) << ",\"normalized\":" << json(name)
                 << ",\"paths\":[";
       bool first = true;
       for (const auto &p : allPaths) { if (!first) std::cout << ','; first = false; std::cout << json(p); }
@@ -287,6 +298,7 @@ int main(int argc, char **argv)
       std::cout << "],\"examined_paths\":" << strings(examined)
                 << ",\"candidate_profile\":\"common-442a7ab-spellings\""
                 << ",\"runtime_closure_qualified\":false}\n";
+      if (!candidateError.empty()) throw std::runtime_error(candidateError);
     }
     else throw std::runtime_error("unknown operation or wrong argument count");
     return 0;

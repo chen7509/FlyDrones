@@ -15,13 +15,13 @@ def run(binary):
                    GZ_PLUGIN_PATH='', IGN_PLUGIN_PATH='', GZ_SIM_RESOURCE_PATH=str(root),
                    SDF_PATH='', GZ_FILE_PATH='')
 
-        def check(label, args, success, verify=lambda _: None):
+        def check(label, args, success, verify=lambda _: None, parse_failure=False):
             result = subprocess.run([str(binary), *args], env=env, cwd=root,
                                     capture_output=True, text=True, timeout=10)
             error = None
             try:
                 assert (result.returncode == 0) is success, result.stderr
-                if success:
+                if success or parse_failure:
                     verify(json.loads(result.stdout))
             except (AssertionError, KeyError, ValueError) as exc:
                 error = repr(exc)
@@ -37,14 +37,23 @@ def run(binary):
             alternate = root / name
             alternate.parent.mkdir(exist_ok=True)
             alternate.write_bytes(b'different file')
-            check('ambiguous-' + name, ['plugin', 'fly-context'], False)
+            def refusal(doc):
+                assert doc['ok'] is False and doc['error']
+                assert str(alternate) in doc['examined_paths']
+                assert len(doc['candidates']) == 2
+            check('ambiguous-' + name, ['plugin', 'fly-context'], False,
+                  refusal, parse_failure=True)
             alternate.unlink()
         alias = root / 'fly-context.so'
         alias.symlink_to(winner)
         check('same-identity-symlink', ['plugin', 'fly-context'], True)
         alias.unlink()
         alias.mkdir()
-        check('nonregular-alias', ['plugin', 'fly-context'], False)
+        def nonregular(doc):
+            assert doc['ok'] is False and str(alias) in doc['error']
+            assert str(alias) in doc['examined_paths']
+        check('nonregular-alias', ['plugin', 'fly-context'], False,
+              nonregular, parse_failure=True)
         alias.rmdir()
         check('relative-path-refusal', ['plugin', '../fly-context'], False)
         check('absolute-short-circuit', ['plugin', str(winner)], True)
@@ -64,6 +73,9 @@ def run(binary):
             assert doc['search_context_qualified'] is False
             assert isinstance(doc['sdf_uri_paths'], dict)
             assert type(doc['sdf_callback_present']) is bool
+            assert doc['common_file_callbacks_present'] is None
+            assert doc['common_uri_callbacks_present'] is None
+            assert doc['common_callback_observation'] == 'unavailable: SDK has no callback inspection API'
             assert doc['before_environment']['SDF_PATH'] == ''
             assert str(root) in doc['after_environment']['SDF_PATH']
 
