@@ -68,8 +68,8 @@ Implementation commits before final publication are:
 Verification results:
 
 - trajectory/gauge analytic and fixed-archive tests: 21 passed;
-- focused trajectory, prior gauge, odometry-frame, state-diagnostic, and execution-contract tests: pending final publication update;
-- full Python regression with this worktree's `src` explicitly selected: pending final publication update;
+- focused trajectory, prior gauge, odometry-frame, state-diagnostic, and execution-contract tests: 138 passed;
+- full Python regression with this worktree's `src` explicitly selected: 1,262 passed, 3 skipped, 2 existing warnings;
 - changed-file Ruff: passed;
 - whole-repository Ruff: 53 findings in 34 files, equal to base `5b442aa`; whole-repository lint is not claimed as passing;
 - `git diff --check`: passed.

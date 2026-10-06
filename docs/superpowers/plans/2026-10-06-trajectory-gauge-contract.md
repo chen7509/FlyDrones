@@ -10,23 +10,23 @@
 
 ### Task 1: Contract and analytic gauge
 
-- [ ] Write failing tests for immutable contract fields, first-internal selection independent of truth, noncommuting yaw/tilt, fixed scale/time, degenerate headings, and invalid numeric/quaternion inputs.
-- [ ] Implement strict 4DoF yaw/translation origin gauge with explicit JPL/Hamilton and FRD/FLU semantics.
+- [x] Write failing tests for immutable contract fields, first-internal selection independent of truth, noncommuting yaw/tilt, fixed scale/time, degenerate headings, and invalid numeric/quaternion inputs.
+- [x] Implement strict 4DoF yaw/translation origin gauge with explicit JPL/Hamilton and FRD/FLU semantics.
 
 ### Task 2: State, time, session, and coverage audit
 
-- [ ] Write failing tests for exact integer-ns conversion, missing exact truth, duplicate/regressed samples, clock order, internal/public transitions, regular-update time, ZUPT labeling, reset/session changes, unknown quality, and incomplete duration.
-- [ ] Implement a conservative audit that separates diagnostic availability, accuracy screens, lifecycle/health qualification, and fusion/flight qualification.
+- [x] Write failing tests for exact integer-ns conversion, missing exact truth, duplicate/regressed samples, clock order, internal/public transitions, regular-update time, ZUPT labeling, reset/session changes, unknown quality, and incomplete duration.
+- [x] Implement a conservative audit that separates diagnostic availability, accuracy screens, lifecycle/health qualification, and fusion/flight qualification.
 
 ### Task 3: Sealed PR48 projection
 
-- [ ] Verify archive SHA and all consumed member hashes before parsing.
-- [ ] Assert that origin selection remains 2.4 s when truth positions/errors are changed and that `[1.622,2.4)` remains startup unavailable.
-- [ ] Preserve incomplete capture, readiness failure, unknown reset/quality, uncalibrated covariance, and false qualification.
+- [x] Verify archive SHA and all consumed member hashes before parsing.
+- [x] Assert that origin selection remains 2.4 s when truth positions/errors are changed and that `[1.622,2.4)` remains startup unavailable.
+- [x] Preserve incomplete capture, readiness failure, unknown reset/quality, uncalibrated covariance, and false qualification.
 
 ### Task 4: Verification and publication
 
-- [ ] Run focused tests, full regression, changed-file Ruff, whole-tree Ruff comparison, and diff check.
-- [ ] Record upstream versions/licenses/maintenance/resource/adaptation decisions and the single-agent review limit.
+- [x] Run focused tests, full regression, changed-file Ruff, whole-tree Ruff comparison, and diff check.
+- [x] Record upstream versions/licenses/maintenance/resource/adaptation decisions and the single-agent review limit.
 - [ ] Seal code, tests, fixed-input audit, hashes, failures, and report in an indexed evidence ZIP.
 - [ ] Create and attach a stacked draft PR, then update the automation to the next physical preflight without rerunning PR48.
