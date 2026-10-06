@@ -237,6 +237,52 @@ def test_estimator_readiness_requires_causal_internal_camera_ack(tmp_path):
     assert out["failure"] is None
 
 
+def test_initializer_handoff_is_valid_but_never_grants_readiness(tmp_path):
+    gate, _, _ = setup_readiness(tmp_path)
+    pending = ack(sequence=600, sample_ns=2_300_000_000, internal=False)
+    pending.update(initializer_time_s=1.304, state_time_s=1.304)
+
+    gate.observe_ack_batch(
+        [pending],
+        source_row(sequence=649, observed_sim=2_304_000_000),
+    )
+
+    assert gate.proof() is None
+    snapshot = gate.snapshot()
+    assert snapshot["first_internal"] is None
+    assert snapshot["latest_internal"] is None
+    assert snapshot["failure"] is None
+    assert gate.finish()["failure"] is None
+
+
+@pytest.mark.parametrize(
+    "mutation",
+    [
+        {"initializer_time_s": -1.0, "state_time_s": 1.304},
+        {"initializer_time_s": 1.304, "state_time_s": 1.305},
+        {"initializer_time_s": 2.301, "state_time_s": 2.301},
+        {"last_regular_update_s": 1.304},
+        {"imu_state": [0.0] * 16},
+        {"public_initialized": True},
+        {"zupt_flag_latched": True},
+        {"has_moved_since_zupt": True},
+    ],
+)
+def test_malformed_initializer_handoff_latches_failure(tmp_path, mutation):
+    gate, _, _ = setup_readiness(tmp_path)
+    pending = ack(sequence=600, sample_ns=2_300_000_000, internal=False)
+    pending.update(initializer_time_s=1.304, state_time_s=1.304)
+    pending.update(mutation)
+
+    with pytest.raises(ValueError):
+        gate.observe_ack_batch(
+            [pending],
+            source_row(sequence=649, observed_sim=2_304_000_000),
+        )
+    assert gate.failure
+    gate.finish()
+
+
 def test_first_internal_is_immutable_and_latest_refreshes(tmp_path):
     gate, base, now = setup_readiness(tmp_path)
     first = ack(sequence=4, sample_ns=2_400_000_000)

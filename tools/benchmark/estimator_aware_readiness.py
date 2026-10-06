@@ -112,8 +112,20 @@ def _validate_camera_ack(value, now):
         quaternion_norm = math.sqrt(sum(item * item for item in numbers[:4]))
         if abs(quaternion_norm - 1.0) > 1e-5:
             raise ValueError("invalid native quaternion")
-    elif state is not None or state_time != -1 or initializer != -1 or regular != -1:
-        raise ValueError("uninitialized acknowledgement has state")
+    else:
+        untouched = initializer == state_time == -1
+        handoff_pending = (
+            0 <= initializer == state_time
+            and _seconds_to_ns(initializer, "initializer handoff time") <= sample
+        )
+        if (
+            state is not None
+            or regular != -1
+            or value["zupt_flag_latched"]
+            or value["has_moved_since_zupt"]
+            or not (untouched or handoff_pending)
+        ):
+            raise ValueError("invalid uninitialized acknowledgement")
     return sequence, sample, acknowledged
 
 
