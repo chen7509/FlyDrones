@@ -5,4 +5,4 @@
 - [x] Run focused tests, build one fixed `study-v10` package, and independently audit it without invoking its command.
 - [x] Commit the code/package evidence and re-audit from the committed tree.
 - [x] Run exactly one production `--startup-preflight` at a separate destination; retain supervisor and resource evidence and keep physical execution unauthorized.
-- [ ] Seal the stage evidence, update the report and draft PR, and record the next gate without starting a physical capture.
+- [x] Seal the stage evidence, update the report and draft PR, and record the next gate without starting a physical capture.
