@@ -39,9 +39,9 @@
 - Consumes: `study-v15/study-manifest.json`, passing post-startup package audit, passing startup audit, sealed stage ZIP.
 - Produces: a committed head and a precondition record for the one-shot wrapper.
 
-- [ ] Commit this specification and plan without modifying the frozen package or any runtime input.
-- [ ] Re-run `audit_openvins_handoff_retry_preflight --after-startup-preflight` from the committed head and require no failures.
-- [ ] Verify the archive name/SHA, startup audit, exact future destination, absent target/evidence paths and empty Windows/WSL resource scans; write the immutable precondition record.
+- [x] Commit this specification and plan without modifying the frozen package or any runtime input.
+- [x] Re-run `audit_openvins_handoff_retry_preflight --after-startup-preflight` from the committed head and require no failures.
+- [x] Verify the archive name/SHA, startup audit, exact future destination, absent target/evidence paths and empty Windows/WSL resource scans; write the immutable precondition record.
 
 ### Task 2: Execute exactly one declared physical attempt
 
@@ -56,10 +56,10 @@
 - Consumes: Task 1 committed head and preconditions plus the exact manifest command.
 - Produces: one immutable physical target and dispatch/completion evidence.
 
-- [ ] Write the one-shot wrapper with exact head/audit/archive/destination/resource assertions and exclusive evidence paths.
-- [ ] Dry-check only the wrapper's static inputs; do not call the target command during the check.
-- [ ] Execute the wrapper once under WSL Ubuntu and wait for its terminal result without restarting on timeout or nonzero exit.
-- [ ] Confirm completion/resource evidence and preserve the target exactly as produced.
+- [x] Write the one-shot wrapper with exact head/audit/archive/destination/resource assertions and exclusive evidence paths.
+- [x] Dry-check only the wrapper's static inputs; do not call the target command during the check.
+- [x] Execute the wrapper once under WSL Ubuntu and wait for its terminal result without restarting on timeout or nonzero exit.
+- [x] Confirm completion/resource evidence and preserve the target exactly as produced.
 
 ### Task 3: Classify and independently audit the immutable result
 
@@ -72,10 +72,10 @@
 - Consumes: Task 2 immutable target, dispatch, completion and supervisor/resource evidence.
 - Produces: a result-specific, fail-closed independent audit with explicit false downstream claims.
 
-- [ ] Identify the earliest evidence-supported terminal cause without changing or rerunning the target.
-- [ ] Write RED tests for the exact normal result and inverse drift in cause, timing/state transition, motion/fusion, ULog, cleanup and resources.
-- [ ] Implement the minimal independent auditor and run the RED tests to GREEN.
-- [ ] Run the auditor on the immutable target and retain all failures or qualifications exactly.
+- [x] Identify the earliest evidence-supported terminal cause without changing or rerunning the target.
+- [x] Write RED tests for the exact normal result and inverse drift in cause, timing/state transition, motion/fusion, ULog, cleanup and resources.
+- [x] Implement the minimal independent auditor and run the RED tests to GREEN.
+- [x] Run the auditor on the immutable target and retain all failures or qualifications exactly.
 
 ### Task 4: Verify, report and seal
 
@@ -88,7 +88,7 @@
 - Consumes: Tasks 1–3 evidence and tests.
 - Produces: reviewable report, archive, commit and PR update; a precise next dependency.
 
-- [ ] Run focused tests, changed-file Ruff, `git diff --check`, and the full suite with this worktree's `src` first on `PYTHONPATH`.
-- [ ] Update the report with what ran, first refusal or passed gates, timing scope, all false qualifications and remaining risk.
-- [ ] Seal the prior archive, complete immutable attempt evidence, source/tests/spec/plan/report and verification logs with ZIP CRC and per-member hashes.
+- [x] Run focused tests, changed-file Ruff, `git diff --check`, and the full suite with this worktree's `src` first on `PYTHONPATH`.
+- [x] Update the report with what ran, first refusal or passed gates, timing scope, all false qualifications and remaining risk.
+- [x] Seal the prior archive, complete immutable attempt evidence, source/tests/spec/plan/report and verification logs with ZIP CRC and per-member hashes.
 - [ ] Commit, push and update draft PR65; update the monitoring automation to the next verified dependency without authorizing a blind retry.
