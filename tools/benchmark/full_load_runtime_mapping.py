@@ -5,6 +5,7 @@ from __future__ import annotations
 import copy
 import glob
 import hashlib
+import importlib.metadata
 import json
 import re
 import subprocess
@@ -239,10 +240,31 @@ def select_runtime_roots(base, *, python, px4, openvins, reference, extensions=N
     return [unique[path] for path in sorted(unique)], aliases
 
 
+def python_distribution_owner(path, *, distributions=None, version=None):
+    path = Path(path)
+    parts = path.parts
+    markers = [index for index, part in enumerate(parts) if part in {"site-packages", "dist-packages"}]
+    if len(markers) != 1 or markers[0] + 1 >= len(parts):
+        raise ValueError("Python extension is not below one site/dist-packages directory")
+    package = parts[markers[0] + 1].split(".", 1)[0]
+    mapping = importlib.metadata.packages_distributions() if distributions is None else distributions
+    owners = mapping.get(package)
+    if not isinstance(owners, list) or len(owners) != 1 or not owners[0]:
+        raise ValueError("Python extension distribution ownership is missing or ambiguous")
+    get_version = importlib.metadata.version if version is None else version
+    installed_version = get_version(owners[0])
+    if not isinstance(installed_version, str) or not installed_version:
+        raise ValueError("Python extension distribution version unavailable")
+    return dict(owner=owners[0], version=installed_version, source="python-distribution-metadata")
+
+
 def package_owners(roots, *, runner=subprocess.run):
     rows = []
     for row in roots:
         path = row["selected"]
+        if path.startswith("/usr/local/"):
+            rows.append(dict(path=path, **python_distribution_owner(path)))
+            continue
         if not path.startswith("/usr/"):
             rows.append(dict(path=path, owner=None, version=None, source="local-explicit"))
             continue

@@ -132,6 +132,24 @@ def test_inventory_roles_are_deterministic_and_duplicate_canonical_paths_refuse(
         study.runtime_inventory(roots + [dict(roots[0], selection_reason="duplicate")], result)
 
 
+def test_python_distribution_owner_is_narrow_and_requires_unambiguous_metadata(tmp_path):
+    extension = tmp_path / "lib/python3.12/site-packages/demo/native.so"
+    extension.parent.mkdir(parents=True)
+    extension.write_bytes(b"extension")
+    distributions = {"demo": ["demo-runtime"]}
+    assert study.python_distribution_owner(
+        extension, distributions=distributions, version=lambda name: "1.2.3" if name == "demo-runtime" else None,
+    ) == dict(owner="demo-runtime", version="1.2.3", source="python-distribution-metadata")
+    with pytest.raises(ValueError, match="distribution"):
+        study.python_distribution_owner(extension, distributions={"demo": ["one", "two"]},
+                                        version=lambda _name: "1")
+    outside = tmp_path / "lib/demo/native.so"
+    outside.parent.mkdir(parents=True)
+    outside.write_bytes(b"extension")
+    with pytest.raises(ValueError, match="site/dist-packages"):
+        study.python_distribution_owner(outside, distributions=distributions, version=lambda _name: "1")
+
+
 def test_generated_hashes_come_from_exact_archive_members_and_gz_env(tmp_path):
     archive = tmp_path / "scene.zip"
     prefix = "sealed/episode/"
