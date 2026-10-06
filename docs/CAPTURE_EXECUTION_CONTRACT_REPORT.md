@@ -18,3 +18,6 @@ Verified: contract mismatches refuse before supervisor invocation, declared-file
 ## Final verification and review
 Final full regression1077passed,2Windows symlink permission skips,2existing loader warnings,275.47s. Targeted56passed2skipped. WSL parent-symlink retarget refusal ran separately without skips. Changed-file Ruff passes; whole Ruff52findings/33files remain unchanged frombase93ba513. No claim of repository-wide lint success.
 Independent review: noCritical/Important;1Minor missingclosefailuretest. Since written spec required it, added closefailure and directworkerdeclaration refusal coverage; both passed against unchanged production implementation. These are addedGREEN tests, not RED-to-GREEN bug fixes; no deferred Minor. Final production still5cab8eb, same as inventory. Ruling: declared inventory and shared limits complete this package, full actual runtime closure remains next integration gate; if omitted, no new physical study may be qualified.
+
+## Publication
+Draft PR50: https://github.com/chen7509/FlyDrones/pull/50. Evidence evidence/capture-execution-contract-dev-1701.zip has43members/901188bytes; SHA25629541fcecc11db3b1d3d2442122abc70bff9d3b9e3ff8360e909499ccfb3a03a. Every member hash and CRC verified. Sealed sourced90b375, archivecommit5746320; publication metadata does not rewrite archive.

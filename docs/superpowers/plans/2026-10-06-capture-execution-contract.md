@@ -8,4 +8,4 @@ Strict type/duplicate JSON handling; validation before any subprocess; descripto
 ## Tasks
 - [x] TDD contract mismatch/refusal/actual supervisor limits. Add capture_contract.py and wire capture parser/main/worker. Expected initial missing module RED, then targeted GREEN.
 - [x] TDD declared file and ldd refusal, IO and drift. Add declared_runtime_snapshot.py. Expected missing module RED then targeted GREEN. Do not launch simulations.
-- [ ] Read-only WSL inventory, upstream/license record; full regression, independent review, resolve Important with RED/GREEN, report/seal/draft PR. Expected no competing resources, truthful incomplete closure report.
+- [x] Read-only WSL inventory, upstream/license record; full regression, independent review, resolve Important with RED/GREEN, report/seal/draft PR. Expected no competing resources, truthful incomplete closure report.
