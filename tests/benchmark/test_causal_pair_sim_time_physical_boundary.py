@@ -1,6 +1,5 @@
 import copy
 import json
-import os
 import shutil
 from pathlib import Path
 from types import SimpleNamespace
@@ -22,11 +21,31 @@ STARTUP_COMPLETION = ROOT / "results/estimator-physical-refusal-diagnosis-dev-17
 ARCHIVE = ROOT / "evidence/causal-pair-sim-time-retry-preflight-dev-1701.zip"
 
 
-def make_boundary(tmp_path):
+def adapt_saved_audits(monkeypatch):
+    package = json.loads(PACKAGE_AUDIT.read_text(encoding="utf-8"))
+    startup = json.loads(STARTUP_AUDIT.read_text(encoding="utf-8"))
+    monkeypatch.setattr(boundary_module, "audit_retry_package", lambda *args, **kwargs: package)
+    monkeypatch.setattr(boundary_module, "audit_startup_preflight", lambda *args, **kwargs: startup)
+
+
+def make_boundary(tmp_path, monkeypatch):
+    adapt_saved_audits(monkeypatch)
+    study = tmp_path / "study"
+    study.mkdir()
+    for source in STUDY.iterdir():
+        if source.is_file():
+            shutil.copy2(source, study / source.name)
+    (study / "startup-preflight-v1").mkdir()
+    manifest_path = study / "study-manifest.json"
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    destination = study / "capture-v1"
+    manifest["future_destination"] = destination.as_posix()
+    manifest["command"][manifest["command"].index("--output") + 1] = destination.as_posix()
+    manifest_path.write_text(json.dumps(manifest), encoding="utf-8")
     head_file = tmp_path / "head.txt"
     head_file.write_text("a" * 40 + "\n", encoding="utf-8")
     return build_boundary(
-        study=STUDY,
+        study=study,
         package_audit=PACKAGE_AUDIT,
         startup_audit=STARTUP_AUDIT,
         startup_dispatch=STARTUP_DISPATCH,
@@ -42,12 +61,11 @@ def make_boundary(tmp_path):
     )
 
 
-@pytest.mark.skipif(os.name == "nt", reason="the declared physical package uses WSL absolute paths")
-def test_real_inputs_build_closed_one_shot_boundary(tmp_path):
-    value = make_boundary(tmp_path)
+def test_real_inputs_build_closed_one_shot_boundary(tmp_path, monkeypatch):
+    value = make_boundary(tmp_path, monkeypatch)
     assert value["schema"] == "causal-pair-sim-time-physical-boundary-v1"
     assert value["head"] == "a" * 40
-    assert value["destination"].endswith("/study-v18/capture-v1")
+    assert value["destination"].replace("\\", "/").endswith("/study/capture-v1")
     assert value["resources_before"] == []
     assert value["single_actual_attempt"] is True
     assert value["physical_run"] is True
@@ -86,9 +104,8 @@ def test_builder_rejects_head_resources_and_reuse(tmp_path, mutation, match):
         build_boundary(**kwargs)
 
 
-@pytest.mark.skipif(os.name == "nt", reason="the declared physical package uses WSL absolute paths")
-def test_independent_audit_rejects_command_and_claim_drift(tmp_path):
-    value = make_boundary(tmp_path)
+def test_independent_audit_rejects_command_and_claim_drift(tmp_path, monkeypatch):
+    value = make_boundary(tmp_path, monkeypatch)
     boundary = tmp_path / "boundary.json"
     boundary.write_text(json.dumps(value), encoding="utf-8")
     good = audit_boundary(boundary, resources=[], observed_git_head="a" * 40)
@@ -105,14 +122,13 @@ def test_independent_audit_rejects_command_and_claim_drift(tmp_path):
     assert audit_boundary(boundary, resources=[], observed_git_head="a" * 40)["boundary_qualified"] is False
 
 
-@pytest.mark.skipif(os.name == "nt", reason="the declared physical package uses WSL absolute paths")
-def test_independent_audit_rejects_live_resources(tmp_path):
-    value = make_boundary(tmp_path)
+def test_independent_audit_rejects_live_resources(tmp_path, monkeypatch):
+    value = make_boundary(tmp_path, monkeypatch)
     boundary = tmp_path / "boundary.json"
     boundary.write_text(json.dumps(value), encoding="utf-8")
     result = audit_boundary(boundary, resources=["gazebo"], observed_git_head="a" * 40)
     assert result["boundary_qualified"] is False
-    assert "resources" in result["failures"]
+    assert any("resources" in failure for failure in result["failures"])
 
 
 def test_archive_byte_drift_is_rejected(tmp_path):

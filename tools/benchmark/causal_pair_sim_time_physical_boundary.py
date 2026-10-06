@@ -175,7 +175,7 @@ def build_boundary(
         or not command
         or not all(type(item) is str and item for item in command)
         or "--output" not in command
-        or command[command.index("--output") + 1] != destination.as_posix()
+        or _path_key(command[command.index("--output") + 1]) != _path_key(destination)
         or "--startup-preflight" in command
         or _path_key(manifest.get("future_destination", "")) != _path_key(destination)
         or not _typed_equal(manifest.get("execution_contract"), execution)

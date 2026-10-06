@@ -122,7 +122,9 @@ class SourceWatchdog:
                 raise ValueError("source arrival clock regressed")
             self.last[kind] = now
             if self.ready_ns is None and set(self.last) == {"imu", "rgb", "info"}:
-                self.ready_ns = max(self.last.values())
+                newest = max(self.last.values())
+                if newest - min(self.last.values()) <= self.timeout_ns:
+                    self.ready_ns = newest
 
     def snapshot(self):
         with self.lock:
@@ -142,7 +144,13 @@ class SourceWatchdog:
                 raise ValueError("watchdog clock regressed")
             if self.ready_ns is None:
                 if now - self.started > self.startup_timeout_ns:
-                    raise TimeoutError("source startup: " + ",".join(k for k in ["imu", "rgb", "info"] if k not in self.last))
+                    missing = [kind for kind in ["imu", "rgb", "info"] if kind not in self.last]
+                    stale = [
+                        kind
+                        for kind in ["imu", "rgb", "info"]
+                        if kind in self.last and now - self.last[kind] > self.timeout_ns
+                    ]
+                    raise TimeoutError("source startup: " + ",".join(missing + stale))
                 return
             missing = [k for k in ["imu", "rgb", "info"] if now - self.last.get(k, self.started) > self.timeout_ns]
             if missing:
