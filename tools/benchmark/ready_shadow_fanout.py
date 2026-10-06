@@ -222,6 +222,26 @@ class ReadyShadowFanout:
                 self._fail(exc)
                 return False
 
+    def on_idle(self, wall_monotonic_ns):
+        """Forward a writer-proven empty-FIFO tick and retain any shadow refusal."""
+        with self.lock:
+            if self.failure or self.closed:
+                return False
+            if self.shadow.tick_idle(wall_monotonic_ns):
+                return True
+            self._fail(ValueError("shadow failed during source idle: " + str(self.shadow.failure)))
+            event = {
+                "event": "source_idle_refusal",
+                "wall_monotonic_ns": wall_monotonic_ns,
+                "failure": self.failure,
+                "failure_latched_ns": self.failure_ns,
+            }
+            try:
+                self._emit(event)
+            except Exception as exc:
+                self.close_errors.append(dict(operation="idle_refusal_journal", reason=repr(exc)))
+            return False
+
     def finish(self):
         with self.lock:
             if self.closed:

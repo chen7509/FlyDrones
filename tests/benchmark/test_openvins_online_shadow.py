@@ -140,6 +140,53 @@ def test_causal_handoff_real_pixels_and_final_unreleased_frame(tmp_path):
     assert result["fusion_eligible"] is False
 
 
+def test_study_v8_queued_later_imu_is_not_expired_by_local_service_time(tmp_path):
+    """Exact retained clocks: source arrival passes 250 ms, post-service wall time does not."""
+    from tools.benchmark.openvins_online_shadow import ShadowInput
+
+    client = FakeNative()
+    after_record = iter([65_524_453_701, 66_698_382_096, 66_947_892_850, 66_949_524_266])
+    shadow = ShadowInput(client, tmp_path, session_id="study-v8-fixed", now=lambda: next(after_record))
+    pixels = b"\xff" * 57600
+    shadow.on_record(event("imu", 1_000_000, 65_491_832_354), None)
+    shadow.on_record(event("info", 2_000_000, 66_678_238_723), b"PB")
+    shadow.on_record(event("rgb", 2_000_000, 66_905_573_764), pixels)
+    shadow.on_record(event("imu", 4_000_000, 66_906_522_485), None)
+    result = shadow.finish()
+    assert result["failure"] is None
+    assert [action[0]["kind"] for action in client.sent] == ["imu", "imu", "camera"]
+    assert client.sent[-1][0]["sample_ns"] == 2_000_000
+    assert client.sent[-1][0]["imu_boundary_ns"] == 4_000_000
+
+
+def test_online_adapter_still_rejects_source_arrival_past_250_ms(tmp_path):
+    from tools.benchmark.openvins_online_shadow import ShadowInput
+
+    after_record = iter([1_000_000_000, 1_001_000_000, 1_002_000_000, 1_251_000_001])
+    shadow = ShadowInput(FakeNative(), tmp_path, session_id="stale-source", now=lambda: next(after_record))
+    pixels = b"\xff" * 57600
+    shadow.on_record(event("imu", 1_000_000, 1_000_000_000), None)
+    shadow.on_record(event("info", 2_000_000, 1_001_000_000), b"PB")
+    shadow.on_record(event("rgb", 2_000_000, 1_002_000_000), pixels)
+    shadow.on_record(event("imu", 4_000_000, 1_251_000_001), None)
+    result = shadow.finish()
+    assert result["failure"] == "InputRefusal('pending input exceeded wall wait')"
+    assert result["fusion_eligible"] is False
+
+
+def test_online_adapter_explicit_idle_tick_keeps_exact_silence_boundary(tmp_path):
+    from tools.benchmark.openvins_online_shadow import ShadowInput
+
+    shadow = ShadowInput(FakeNative(), tmp_path, session_id="silent-source", now=lambda: 9_000_000_000)
+    shadow.on_record(event("info", 2_000_000, 1_000_000_000), b"PB")
+    shadow.tick_idle(1_250_000_000)
+    assert shadow.failure is None
+    shadow.tick_idle(1_250_000_001)
+    result = shadow.finish()
+    assert result["failure"] == "ValueError('pending input exceeded wall wait')"
+    assert result["pending"][0]["reason"] == "pending input exceeded wall wait"
+
+
 def test_consumer_failure_latches_but_raw_writer_still_retains_inputs(tmp_path):
     from tools.benchmark.disarmed_sensor_provenance import CaptureWriter
     from tools.benchmark.openvins_online_shadow import ShadowInput

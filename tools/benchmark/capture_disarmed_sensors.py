@@ -522,6 +522,7 @@ def main():
         writer = CaptureWriter(
             output, sequence_records=fanout is not None,
             on_record=fanout.on_record if fanout else readiness.on_record if readiness else shadow.on_record if shadow else None,
+            on_idle=fanout.on_idle if fanout else shadow.tick_idle if shadow else None,
         )
         journal.cleanup("writer", lambda: result.update(writer=writer.finish()), priority=80)
         stop = threading.Event()

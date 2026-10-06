@@ -329,7 +329,8 @@ class ShadowInput:
                     self.pixels.pop(action["sample_ns"])
                 undelivered.pop(0)
                 attempted = False
-            self.causal.tick(self.now())
+            # accept() advances the causal watermark from captured source-arrival clocks.
+            # Local recording/native service time is bounded elsewhere and is not source silence.
         except Exception as exc:
             self.failure = repr(exc)
             for index, action in enumerate(undelivered):
@@ -358,6 +359,32 @@ class ShadowInput:
                 + "\n"
             )
             self.failures.flush()
+
+    def tick_idle(self, wall_monotonic_ns):
+        """Advance pending age only at an externally proven empty source FIFO boundary."""
+        if self.failure:
+            return False
+        try:
+            self.causal.tick(wall_monotonic_ns)
+        except Exception as exc:
+            self.failure = repr(exc)
+            self.failures.write(
+                json.dumps(
+                    dict(
+                        event={"kind": "source_idle_tick", "wall_monotonic_ns": wall_monotonic_ns},
+                        input_sequence=self.sequence,
+                        released_unacknowledged=self.released_unacknowledged,
+                        failure=self.failure,
+                        wall_ns=wall_monotonic_ns,
+                        input_refusal=None,
+                    ),
+                    allow_nan=False,
+                )
+                + "\n"
+            )
+            self.failures.flush()
+            return False
+        return True
 
     def finish(self):
         result = dict(

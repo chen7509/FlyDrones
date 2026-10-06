@@ -63,9 +63,26 @@ def validate_event(event, *, allow_legacy_info=False):
 
 
 class CaptureWriter:
-    def __init__(self, output, *, capacity=4096, start_worker=True, on_record=None, sequence_records=False):
+    def __init__(
+        self,
+        output,
+        *,
+        capacity=4096,
+        start_worker=True,
+        on_record=None,
+        on_idle=None,
+        idle_period_s=0.05,
+        sequence_records=False,
+    ):
         if type(capacity) is not int or capacity < 1:
             raise ValueError("invalid queue capacity")
+        if on_idle is not None and (
+            not callable(on_idle)
+            or type(idle_period_s) not in (int, float)
+            or not math.isfinite(idle_period_s)
+            or idle_period_s <= 0
+        ):
+            raise ValueError("invalid idle callback configuration")
         self.output = output
         self.stream = (output / "events.jsonl").open("x", encoding="utf8")
         self.rgb = RgbFrameRecorder(output)
@@ -79,6 +96,8 @@ class CaptureWriter:
         self.thread = None
         self.max_queue = 0
         self.on_record = on_record
+        self.on_idle = on_idle
+        self.idle_period_s = idle_period_s
         self.sequence_records = sequence_records
         self.source_sequence = 0
         if start_worker:
@@ -141,7 +160,15 @@ class CaptureWriter:
     def _worker(self):
         try:
             while True:
-                item = self.queue.get()
+                try:
+                    item = self.queue.get(timeout=self.idle_period_s if self.on_idle is not None else None)
+                except queue.Empty:
+                    # Holding the submit lock makes this an observed empty FIFO boundary.
+                    # The callback runs on the same single-owner thread as on_record.
+                    with self.lock:
+                        if not self.closed and not self.error and self.queue.empty():
+                            self.on_idle(time.monotonic_ns())
+                    continue
                 if item is None:
                     break
                 self._write_event(*item)

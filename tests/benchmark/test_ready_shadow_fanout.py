@@ -28,6 +28,12 @@ class Consumer:
         return {"rows": len(self.rows)}
 
 
+class IdleRefusalConsumer(Consumer):
+    def tick_idle(self, _wall_monotonic_ns):
+        self.failure = "ValueError('pending input exceeded wall wait')"
+        return False
+
+
 def row(seq=0, kind="imu"):
     event = dict(kind=kind, arrival_monotonic_ns=100 + seq * 10, observed_sim_ns=1000)
     if kind == "heartbeat":
@@ -62,6 +68,18 @@ def test_both_receive_exact_independent_rows(tmp_path):
     assert out["committed"] == 1 and out["failure"] is None
     events = [json.loads(x) for x in (tmp_path / "source-fanout.jsonl").read_text().splitlines()]
     assert events[-1]["dispositions"] == {"shadow": "returned", "readiness": "returned"}
+
+
+def test_shadow_idle_refusal_latches_fanout_and_blocks_force(tmp_path):
+    f, _, _, _ = setup(tmp_path, shadow=IdleRefusalConsumer())
+    assert f.on_idle(1_250_000_001) is False
+    force = []
+    assert not f.pre_step(lambda: force.append(1), lambda: None)
+    assert force == []
+    result = f.finish()
+    assert "source idle" in result["failure"]
+    event = json.loads((tmp_path / "source-fanout.jsonl").read_text().splitlines()[-1])
+    assert event["event"] == "source_idle_refusal"
 
 
 @pytest.mark.parametrize(

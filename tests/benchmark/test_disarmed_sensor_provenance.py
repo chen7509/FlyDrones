@@ -1,6 +1,7 @@
 import hashlib
 import importlib.util
 import json
+import threading
 import time
 
 import numpy as np
@@ -25,6 +26,31 @@ def event(**changes):
     )
     value.update(changes)
     return value
+
+
+def test_idle_callback_runs_on_writer_thread_only_after_queued_records_finish(tmp_path):
+    entered = threading.Event()
+    release = threading.Event()
+    idle = threading.Event()
+    seen = []
+
+    def on_record(row, _payload):
+        seen.append(row["sample_ns"])
+        if len(seen) == 1:
+            entered.set()
+            assert release.wait(1)
+
+    writer = api().CaptureWriter(
+        tmp_path, on_record=on_record, on_idle=lambda _now: idle.set(), idle_period_s=0.01
+    )
+    writer.submit(event(sample_ns=4_000_000))
+    assert entered.wait(1)
+    writer.submit(event(sample_ns=8_000_000))
+    assert not idle.wait(0.05)
+    release.set()
+    assert idle.wait(1)
+    assert writer.finish()["written"]["imu"] == 2
+    assert seen == [4_000_000, 8_000_000]
 
 
 def test_flu_frd_axes_and_separate_clocks():
