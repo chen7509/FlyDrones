@@ -28,5 +28,5 @@
 
 - [x] Run focused tests, full regression, changed-file Ruff, whole-tree Ruff comparison, and diff check.
 - [x] Record upstream versions/licenses/maintenance/resource/adaptation decisions and the single-agent review limit.
-- [ ] Seal code, tests, fixed-input audit, hashes, failures, and report in an indexed evidence ZIP.
+- [x] Seal code, tests, fixed-input audit, hashes, failures, and report in an indexed evidence ZIP.
 - [ ] Create and attach a stacked draft PR, then update the automation to the next physical preflight without rerunning PR48.

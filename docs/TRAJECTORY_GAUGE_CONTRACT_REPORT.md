@@ -78,6 +78,8 @@ The initial TDD run failed at import because the new module did not exist. The f
 
 Self-review covers JPL/Hamilton direction, global versus body velocity, FLU/FRD conversion, yaw-only alignment, truth-independent origin selection, unavailable startup, exact time association, cross-row receive/start/end ordering, initializer and regular-update monotonicity, per-row reset/quality changes, archive provenance, incomplete-run handling, output overwrite, and broad-claim defaults. No independent reviewer is available under the active single-agent constraint.
 
+The sealed evidence archive is `evidence/trajectory-gauge-contract-dev-1701.zip`: 32 members, 62,089 bytes, SHA-256 `a4d02e4c8a96fb272d463bcbb5d8b773b2836a3f7266f56c67c80a68a5918ecc`. Its embedded manifest records every payload member's byte length and SHA-256; ZIP CRC and manifest verification passed. The PR48 source archive is referenced by hash and is not duplicated. The producer commit is `0842750f39819a9a4ab218ef891f0967ebbe3644`; this publication paragraph postdates the immutable payload.
+
 ## Evidence boundary and next gate
 
 Verified here: the contract logic, exact sealed-input provenance, and the PR48 partial diagnostic under a truth-independent first-internal-state gauge.
