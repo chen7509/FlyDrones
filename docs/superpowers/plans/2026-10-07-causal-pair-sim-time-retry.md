@@ -43,7 +43,7 @@
 - [x] Run the focused tests and record the expected RED failures caused by the missing module.
 - [x] Implement the minimal builder and auditor with strict archive/member byte verification and unchanged execution recomputation.
 - [x] Run the focused tests and changed-file Ruff to GREEN.
-- [ ] Retain the baseline-drift rejection for `study-v17`; generate and audit authoritative `study-v18`, commit the boundary and rerun the audit from committed code.
+- [x] Retain the baseline-drift rejection for `study-v17`; generate and audit authoritative `study-v18`, commit the boundary and rerun the audit from committed code.
 
 ### Task 2: Startup-only production preflight
 
