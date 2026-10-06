@@ -1,5 +1,7 @@
 // Read-only installed SDK selection. Never construct a Server or load a plugin.
 #include <filesystem>
+#include <cctype>
+#include <cstdlib>
 #include <iostream>
 #include <set>
 #include <sstream>
@@ -7,8 +9,13 @@
 #include <string>
 #include <vector>
 #include <gz/common/SystemPaths.hh>
+#include <gz/common/Material.hh>
+#include <gz/common/Util.hh>
 #include <gz/sim/InstallationDirectories.hh>
 #include <gz/sim/SystemLoader.hh>
+#include <gz/sim/Util.hh>
+#include <sdf/ParserConfig.hh>
+#include <sdf/SDFImpl.hh>
 #include <sdf/parser.hh>
 
 namespace fs = std::filesystem;
@@ -35,11 +42,99 @@ std::string regular(const std::string &s)
   return fs::canonical(s).string();
 }
 
+std::string lookupEnvironment()
+{
+  std::ostringstream o;
+  o << '{';
+  bool first = true;
+  for (const char *key : {"GZ_SIM_RESOURCE_PATH", "SDF_PATH", "GZ_FILE_PATH",
+       "GZ_PLUGIN_PATH", "GZ_SIM_SYSTEM_PLUGIN_PATH", "HOME", "GZ_HOMEDIR",
+       "GZ_MESH_FORCE_ASSIMP"})
+  {
+    if (!first) o << ',';
+    first = false;
+    const char *value = std::getenv(key);
+    o << json(key) << ':' << (value ? json(value) : "null");
+  }
+  o << '}';
+  return o.str();
+}
+
+int uriLookup(int argc, char **argv)
+{
+  const auto before = lookupEnvironment();
+  const auto cwd = fs::current_path().string();
+  std::string source, kind, uri, transformed, lookupSelected, selected, configFile, error;
+  try
+  {
+    if (argc != 5) throw std::runtime_error("uri KIND SOURCE URI required");
+    kind = argv[2]; source = argv[3]; uri = argv[4];
+    for (int i = 2; i < argc; ++i)
+      for (unsigned char c : std::string(argv[i]))
+        if (c < 32 || c == 127) throw std::runtime_error("control character in URI arguments");
+    if (!fs::path(source).is_absolute()) throw std::runtime_error("absolute source required");
+    regular(source);  // Preserve lexical source for asFullPath, do not replace with canonical.
+    if (uri.empty() || std::isspace(static_cast<unsigned char>(uri.front())) ||
+        std::isspace(static_cast<unsigned char>(uri.back())))
+      throw std::runtime_error("empty or surrounding whitespace URI");
+    auto separator = uri.find("://");
+    if (separator != std::string::npos && uri.substr(0, separator) != "file" &&
+        uri.substr(0, separator) != "model")
+      throw std::runtime_error("remote or unsupported URI scheme");
+    if (kind != "include" && kind != "texture" && kind != "mesh-path" && kind != "collada-image")
+      throw std::runtime_error("unsupported URI kind");
+    gz::sim::addResourcePaths();
+    if (kind == "include")
+    {
+      sdf::ParserConfig config;
+      config.SetFindCallback([](const std::string &) { return std::string(); });
+      sdf::Errors errors;
+      transformed = uri;
+      lookupSelected = sdf::findFile(errors, uri, true, true, config);
+      if (!errors.empty()) throw std::runtime_error("SDFormat include lookup error");
+      if (!lookupSelected.empty() && fs::is_directory(lookupSelected))
+      {
+        configFile = regular((fs::path(lookupSelected) / "model.config").string());
+        lookupSelected = sdf::getModelFilePath(errors, lookupSelected);
+        if (!errors.empty()) throw std::runtime_error("SDFormat model selection error");
+      }
+    }
+    else if (kind == "collada-image")
+    {
+      const char *force = std::getenv("GZ_MESH_FORCE_ASSIMP");
+      if (force && *force) throw std::runtime_error("forced Assimp outside COLLADA lookup profile");
+      transformed = fs::path(source).parent_path().string();
+      gz::common::Material material;
+      material.SetTextureImage(uri, transformed);
+      lookupSelected = material.TextureImage();
+    }
+    else
+    {
+      transformed = gz::sim::asFullPath(uri, source);
+      lookupSelected = gz::common::findFile(transformed);
+    }
+    selected = regular(lookupSelected);
+  }
+  catch (const std::exception &e) { error = e.what(); }
+  std::cout << "{\"ok\":" << (error.empty() ? "true" : "false")
+            << ",\"kind\":" << json(kind) << ",\"source\":" << json(source)
+            << ",\"uri\":" << json(uri) << ",\"transformed\":" << json(transformed)
+            << ",\"lookup_selected\":" << json(lookupSelected)
+            << ",\"selected\":" << json(selected) << ",\"model_config\":" << json(configFile)
+            << ",\"cwd\":" << json(cwd) << ",\"before_environment\":" << before
+            << ",\"after_environment\":" << lookupEnvironment()
+            << ",\"error\":" << json(error)
+            << ",\"ambiguity_qualified\":false,\"runtime_closure_qualified\":false}\n";
+  if (!error.empty()) std::cerr << error << '\n';
+  return error.empty() ? 0 : 2;
+}
+
 int main(int argc, char **argv)
 {
   try
   {
     if (argc < 2) throw std::runtime_error("operation required");
+    if (std::string(argv[1]) == "uri") return uriLookup(argc, argv);
     for (int i = 1; i < argc; ++i)
       for (unsigned char c : std::string(argv[i]))
         if (c < 32 || c == 127) throw std::runtime_error("control character in argument");
