@@ -83,6 +83,8 @@ Verification results:
 
 The sealed evidence archive is `evidence/full-load-runtime-mapping-dev-1701.zip`: 37 members, 433,859 bytes, SHA-256 `e3217d0acc1dc649d06665c87fa74da78c8d8ef7b37d2017eee9ceb92ba68395`. The internal manifest records every payload member's byte length and SHA-256; ZIP CRC verification passed. Its producer commit is `34f66184ef85af40c9728f5e749ee9ff96c82e2c`. This publication paragraph postdates the archive and does not alter the sealed payload.
 
+Review is published as draft [PR 58](https://github.com/chen7509/FlyDrones/pull/58), stacked on the owned-runtime-maps work in PR 57. The final report-link commit also postdates the immutable evidence payload.
+
 No independent reviewer was available under the current single-agent constraint. Self-review covered source-derived selection, duplicate and ambiguous roots, loader failures, canonical dependency identity, package ownership, declaration overlap, exact load and lifecycle contracts, terminal phase ordering, incomplete/unsafe evidence, cleanup uncertainty, retry bias, and overclaiming.
 
 ## Evidence boundaries
