@@ -59,4 +59,4 @@
 - [x] Run one fixed prepare-only build and its independent audit; do not invoke the generated command.
 - [x] Run focused tests, full regression, changed-file Ruff, source-tree Ruff comparison, and `git diff --check`.
 - [x] Seal every source, output, test, report, and failure with a member manifest and verified ZIP hash/CRC.
-- [ ] Commit, push, and open a stacked draft PR.
+- [x] Commit, push, and open stacked draft PR #63.
