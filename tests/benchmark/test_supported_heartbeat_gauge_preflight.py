@@ -93,10 +93,10 @@ def test_prepare_builds_v3_policy_bound_command_without_launch(tmp_path):
         (output / "trajectory-gauge-policy.json").read_bytes()).hexdigest()
     assert binding["inventory"]["runtime:trajectory-gauge-policy"] == [
         str((output / "trajectory-gauge-policy.json").resolve())]
-    from tools.benchmark import trajectory_gauge_contract
-
-    assert binding["inventory"]["runtime:trajectory-gauge-code"] == [
-        str(Path(trajectory_gauge_contract.__file__).resolve())]
+    code_paths = binding["inventory"]["runtime:prospective-worker-policy-code"]
+    assert code_paths == preflight.prospective_worker_code_paths()
+    assert {Path(path).name for path in code_paths} == {
+        "openvins_causal_input.py", "openvins_online_shadow.py", "trajectory_gauge_contract.py"}
     assert policy["anchor_source"] == "immutable_readiness_anchor"
     assert "anchor_ns" not in policy
     assert "--trajectory-gauge-policy" in manifest["command"]

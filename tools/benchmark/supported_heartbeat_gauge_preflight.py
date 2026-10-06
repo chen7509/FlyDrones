@@ -8,7 +8,6 @@ import json
 from pathlib import Path
 from types import SimpleNamespace
 
-from tools.benchmark import trajectory_gauge_contract as trajectory_gauge_module
 from tools.benchmark.capture_contract import (
     _typed_equal,
     declared_command,
@@ -44,10 +43,28 @@ FALSE_SOURCE_CLAIMS = (
     "fusion_eligible",
     "flight_ready",
 )
+WORKER_POLICY_PATHS = (
+    "tools/benchmark/openvins_causal_input.py",
+    "tools/benchmark/openvins_online_shadow.py",
+    "tools/benchmark/trajectory_gauge_contract.py",
+)
 
 
 def _sha(path):
     return hashlib.sha256(Path(path).read_bytes()).hexdigest()
+
+
+def prospective_worker_code_paths():
+    root = Path(__file__).resolve().parents[2]
+    paths = []
+    for relative in WORKER_POLICY_PATHS:
+        path = (root / relative).resolve(strict=True)
+        if not path.is_file():
+            raise ValueError("prospective worker policy module is not a regular file")
+        paths.append(str(path))
+    if len(paths) != len(set(paths)):
+        raise ValueError("duplicate prospective worker policy module")
+    return sorted(paths)
 
 
 def _load_source(source_study):
@@ -120,9 +137,10 @@ def prepare_study(output, *, source_study, capture_script, python, resources):
     if type(inventory) is not dict or "runtime:trajectory-gauge-policy" in inventory:
         raise ValueError("trajectory policy inventory role collision")
     inventory["runtime:trajectory-gauge-policy"] = [str(policy_path.resolve())]
-    if "runtime:trajectory-gauge-code" in inventory:
-        raise ValueError("trajectory gauge code inventory role collision")
-    inventory["runtime:trajectory-gauge-code"] = [str(Path(trajectory_gauge_module.__file__).resolve(strict=True))]
+    code_role = "runtime:prospective-worker-policy-code"
+    if code_role in inventory:
+        raise ValueError("prospective worker policy code inventory role collision")
+    inventory[code_role] = prospective_worker_code_paths()
     bound["baseline"] = snapshot(inventory)
     binding_path = output / "runtime-binding-v3.json"
     contract_path = output / "execution-contract.json"

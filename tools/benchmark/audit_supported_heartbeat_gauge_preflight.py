@@ -6,7 +6,6 @@ import hashlib
 import json
 from pathlib import Path
 
-from tools.benchmark import trajectory_gauge_contract as trajectory_gauge_module
 from tools.benchmark.capture_contract import (
     _typed_equal,
     declared_command,
@@ -20,6 +19,7 @@ from tools.benchmark.supported_heartbeat_gauge_preflight import (
     EXPECTED_WORKLOAD,
     FALSE_SOURCE_CLAIMS,
     _study_args,
+    prospective_worker_code_paths,
 )
 from tools.benchmark.trajectory_gauge_contract import validate_trajectory_gauge_policy
 
@@ -76,9 +76,8 @@ def audit(directory):
     if type(inventory) is dict:
         _require(inventory.get("runtime:trajectory-gauge-policy") == expected_policy_inventory,
                  failures, "binding:policy_inventory")
-        _require(inventory.get("runtime:trajectory-gauge-code") == [
-            str(Path(trajectory_gauge_module.__file__).resolve(strict=True))
-        ], failures, "binding:policy_code_inventory")
+        _require(inventory.get("runtime:prospective-worker-policy-code") == prospective_worker_code_paths(),
+                 failures, "binding:policy_code_inventory")
         try:
             fresh = snapshot(inventory)
             baseline = binding.get("baseline")

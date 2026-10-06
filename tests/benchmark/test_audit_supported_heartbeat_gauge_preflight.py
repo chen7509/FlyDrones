@@ -66,7 +66,7 @@ def test_dry_audit_refuses_tampering_or_existing_capture(tmp_path, tamper):
         if tamper == "inventory":
             del row["inventory"]["runtime:trajectory-gauge-policy"]
         elif tamper == "code_inventory":
-            del row["inventory"]["runtime:trajectory-gauge-code"]
+            del row["inventory"]["runtime:prospective-worker-policy-code"]
         else:
             row["baseline"]["files"][0]["sha256"] = "0" * 64
         path.write_text(json.dumps(row))
