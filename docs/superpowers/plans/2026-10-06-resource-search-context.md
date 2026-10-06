@@ -22,4 +22,4 @@ Same-directory aliases, deprecated roots, relative escape, nonregular candidate,
 ## Task 2: review and publication
 - [x] Independent whole-branch code/evidence review; necessary fixes RED→GREEN.
 - [x] Changed-file lint, relevant Python regression (native-only changes do not justify pretending Python verifies C++).
-- [ ] Report remaining graph/VIO gaps, seal unique ZIP with member hashes/CRC, create stacked draft PR and update heartbeat.
+- [x] Report remaining graph/VIO gaps, seal unique ZIP with member hashes/CRC, create stacked draft PR and update heartbeat.

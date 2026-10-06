@@ -36,3 +36,6 @@ The adapter does not construct Server/TestFixture, load a plugin instance or dec
 | Historical failures retained | PR48 rejected6.417s/accuracy indeterminate, PR37 drift lower bound29.5355m, old ground aliasing/startup failures;5-camera0.873RTF below0.95 |
 
 Next: use the installed context plus strict bounded resolver client to bind original generated source references and all selected files into RuntimeBinding preflight. Account explicitly for `/`, `/usr/share` and versioned SDF roots, named legacy env and unavailable callbacks; unknown coverage must not authorize capture. Reuse existing resolver and snapshots; do not repeat old25URI/46edge studies. Then close bounded runtime mapping and prospective trajectory gauge before any new online physical study. All original load, safety and 2s watchdog limits remain.
+
+## Publication
+Draft PR54: https://github.com/chen7509/FlyDrones/pull/54 (stacked on PR53). Evidence ZIP resource-search-context-dev-1701:59members/248558bytes, SHA688e43a3f24fc5aff38416e3442ab524b9cdc8ad8f35964c420079d03917645c. Archive producer85d23ef, initial003ac2d, final native fix4b70981, sealdd033a3. Archived report predates this publication note. First publication-note update failed before writing due to Windows default cp1252; retried with explicit UTF-8.
