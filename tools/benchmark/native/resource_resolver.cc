@@ -1,5 +1,7 @@
-// Read-only installed SDK selection. Never construct a Server or load a plugin.
+// Installed SDK lookup only: never construct a Server or load a plugin.
+// SystemPaths construction may create its configured/default log directory.
 #include <filesystem>
+#include <algorithm>
 #include <cctype>
 #include <cstdlib>
 #include <iostream>
@@ -15,6 +17,7 @@
 #include <gz/sim/SystemLoader.hh>
 #include <gz/sim/Util.hh>
 #include <sdf/ParserConfig.hh>
+#include <sdf/InstallationDirectories.hh>
 #include <sdf/SDFImpl.hh>
 #include <sdf/parser.hh>
 
@@ -49,7 +52,9 @@ std::string lookupEnvironment()
   bool first = true;
   for (const char *key : {"GZ_SIM_RESOURCE_PATH", "SDF_PATH", "GZ_FILE_PATH",
        "GZ_PLUGIN_PATH", "GZ_SIM_SYSTEM_PLUGIN_PATH", "HOME", "GZ_HOMEDIR",
-       "GZ_MESH_FORCE_ASSIMP"})
+       "GZ_MESH_FORCE_ASSIMP", "IGN_PLUGIN_PATH", "IGN_FILE_PATH",
+       "IGN_GAZEBO_RESOURCE_PATH", "IGN_GAZEBO_SYSTEM_PLUGIN_PATH",
+       "GZ_LOG_PATH", "IGN_LOG_PATH"})
   {
     if (!first) o << ',';
     first = false;
@@ -58,6 +63,83 @@ std::string lookupEnvironment()
   }
   o << '}';
   return o.str();
+}
+
+template <class Container>
+std::string strings(const Container &values)
+{
+  std::ostringstream out;
+  out << '[';
+  bool first = true;
+  for (const auto &value : values)
+  {
+    if (!first) out << ',';
+    first = false;
+    out << json(value);
+  }
+  out << ']';
+  return out.str();
+}
+
+// Spelling expansion adapted from Gazebo Common SystemPaths.cc at
+// 442a7ab4f213e435c3ca93947004216f26ec728d, Copyright 2016 OSRF,
+// Apache License 2.0 (https://www.apache.org/licenses/LICENSE-2.0).
+// The installed SDK still selects the winner. This diagnostic mirrors the
+// fixed source's alternatives; it does not establish installed patch parity.
+std::vector<std::string> librarySpellings(const std::string &name)
+{
+  auto lower = name;
+  std::transform(lower.begin(), lower.end(), lower.begin(),
+      [](unsigned char c) { return std::tolower(c); });
+  auto ends = [&](const std::string &suffix)
+  { return lower.size() >= suffix.size() &&
+      lower.compare(lower.size() - suffix.size(), suffix.size(), suffix) == 0; };
+  std::vector<std::string> initial{name};
+  const bool hasLib = name.rfind("lib", 0) == 0;
+  if (hasLib && ends(".so")) initial.push_back(name.substr(3, name.size() - 6));
+  if (ends(".dll")) initial.push_back(name.substr(0, name.size() - 4));
+  if (hasLib && ends(".dylib")) initial.push_back(name.substr(3, name.size() - 9));
+  std::vector<std::string> result;
+  for (const auto &n : initial)
+    for (const auto &spelling : {n, "lib" + n + ".so", n + ".so", n + ".dll",
+        "Release/" + n + ".dll", "Debug/" + n + ".dll", n + ".dll",
+        "lib" + n + ".dylib", n + ".dylib", "lib" + n + ".SO", n + ".SO",
+        n + ".DLL", "Release/" + n + ".DLL", "Debug/" + n + ".DLL",
+        "lib" + n + ".DYLIB", n + ".DYLIB"})
+      result.push_back(spelling);
+  return result;
+}
+
+void searchContext()
+{
+  const auto before = lookupEnvironment();
+  gz::sim::addResourcePaths();
+  gz::sim::SystemLoader loader;
+  gz::common::SystemPaths plugins;
+  for (const auto &path : loader.PluginPaths()) plugins.AddPluginPaths(path);
+  const auto &config = sdf::ParserConfig::GlobalConfig();
+  std::ostringstream mappings;
+  mappings << '{';
+  bool first = true;
+  for (const auto &[scheme, paths] : config.URIPathMap())
+  {
+    if (!first) mappings << ',';
+    first = false;
+    mappings << json(scheme) << ':' << strings(paths);
+  }
+  mappings << '}';
+  std::cout << "{\"before_environment\":" << before
+      << ",\"after_environment\":" << lookupEnvironment()
+      << ",\"cwd\":" << json(fs::current_path().string())
+      << ",\"file_paths\":" << strings(gz::common::systemPaths()->FilePaths())
+      << ",\"plugin_paths\":" << strings(plugins.PluginPaths())
+      << ",\"sdf_share_path\":" << json(sdf::getSharePath())
+      << ",\"sdf_version\":" << json(sdf::SDF::Version())
+      << ",\"sdf_uri_paths\":" << mappings.str()
+      << ",\"sdf_callback_present\":" << (config.FindFileCallback() ? "true" : "false")
+      << ",\"common_file_callbacks_present\":null,\"common_uri_callbacks_present\":null"
+      << ",\"common_callback_observation\":\"unavailable: SDK has no callback inspection API\""
+      << ",\"search_context_qualified\":false,\"runtime_closure_qualified\":false}\n";
 }
 
 int uriLookup(int argc, char **argv)
@@ -143,7 +225,9 @@ int main(int argc, char **argv)
       for (unsigned char c : std::string(argv[i]))
         if (c < 32 || c == 127) throw std::runtime_error("control character in argument");
     const std::string op = argv[1];
-    if (op == "installation" && argc == 2)
+    if (op == "context" && argc == 2)
+      searchContext();
+    else if (op == "installation" && argc == 2)
     {
       const auto media = gz::sim::getMediaInstallDir();
       std::cout << "{\"media\":" << json(media)
@@ -168,6 +252,10 @@ int main(int argc, char **argv)
     {
       std::string name(argv[2]);
       if (name.empty()) throw std::runtime_error("empty plugin filename");
+      if (!fs::path(name).is_absolute() &&
+          (name.find('/') != std::string::npos || name.find('\\') != std::string::npos ||
+           name.find(':') != std::string::npos || name == "." || name == ".."))
+        throw std::runtime_error("relative plugin path outside declared profile");
       auto pos = name.find("ignition-gazebo");
       if (pos != std::string::npos) name.replace(pos, 15, "gz-sim");
       gz::sim::SystemLoader loader;
@@ -178,24 +266,39 @@ int main(int argc, char **argv)
       // Include default SystemPaths paths as well, matching the real resolver.
       auto allPaths = resolver.PluginPaths();
       std::set<std::string> candidates;
-      for (const auto &p : allPaths)
+      std::string candidateError;
+      std::vector<std::string> examined;
+      if (fs::path(name).is_absolute()) examined.push_back(name);
+      else
+        for (const auto &p : allPaths)
+          for (const auto &spelling : librarySpellings(name))
+            examined.push_back(p + spelling);
+      for (const auto &path : examined)
       {
-        gz::common::SystemPaths isolated;
-        isolated.ClearPluginPaths();
-        isolated.AddPluginPaths(p);
-        auto found = isolated.FindSharedLibrary(name);
-        if (!found.empty()) candidates.insert(regular(found));
+        // A dangling symlink is an unresolved candidate, not silently missing.
+        try
+        {
+          if (fs::is_symlink(fs::symlink_status(path)) || fs::exists(path))
+            candidates.insert(regular(path));
+        }
+        catch (const std::exception &e)
+        { candidateError += path + ": " + e.what() + "; "; }
       }
       if (candidates.size() != 1 || *candidates.begin() != selected)
-        throw std::runtime_error("ambiguous or uncovered plugin candidates");
-      std::cout << "{\"selected\":" << json(selected) << ",\"normalized\":" << json(name)
+        candidateError += "ambiguous or uncovered plugin candidates";
+      std::cout << "{\"ok\":" << (candidateError.empty() ? "true" : "false")
+                << ",\"error\":" << json(candidateError)
+                << ",\"selected\":" << json(selected) << ",\"normalized\":" << json(name)
                 << ",\"paths\":[";
       bool first = true;
       for (const auto &p : allPaths) { if (!first) std::cout << ','; first = false; std::cout << json(p); }
       std::cout << "],\"candidates\":[";
       first = true;
       for (const auto &p : candidates) { if (!first) std::cout << ','; first = false; std::cout << json(p); }
-      std::cout << "]}\n";
+      std::cout << "],\"examined_paths\":" << strings(examined)
+                << ",\"candidate_profile\":\"common-442a7ab-spellings\""
+                << ",\"runtime_closure_qualified\":false}\n";
+      if (!candidateError.empty()) throw std::runtime_error(candidateError);
     }
     else throw std::runtime_error("unknown operation or wrong argument count");
     return 0;
