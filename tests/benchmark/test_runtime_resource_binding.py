@@ -1,5 +1,6 @@
 import hashlib
 import json
+from pathlib import Path
 
 import pytest
 
@@ -25,6 +26,17 @@ def fixture(tmp_path):
     output = tmp_path / 'capture'
     output.mkdir()
     return doc, generated, source, output
+
+
+def v3(doc):
+    doc['schema'] = 'capture-resource-binding-v3'
+    doc['graph'] = dict(schema='generated-resource-graph-v1', cwd=str(Path.cwd()),
+                        environment={key: None for key in binding.QUERY_ENV_KEYS},
+                        expected_context={})
+    doc['runtime_maps'] = dict(self_phases=['postimports', 'postfinalize', 'postfirststep'],
+                               owned_roles={'px4': ['ready', 'prestop']},
+                               max_maps_bytes=8 * 1024 * 1024, max_observations=8)
+    return doc
 
 
 def start(doc, generated, source, output, **kwargs):

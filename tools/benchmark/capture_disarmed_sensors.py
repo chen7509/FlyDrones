@@ -240,6 +240,8 @@ def main():
     }
     clock = {"sim_ns": 0}
     arming = {"unarmed_wall_ns": None}
+    owned_ready = {"px4": False, "openvins": False}
+    owned_processes = {}
     started = time.monotonic()
     with CaptureJournal(output, result) as journal:
         binding = None
@@ -283,6 +285,11 @@ def main():
             validate_frozen_config(args.shadow_config)
             shadow_dir = output / "shadow"
             shadow_dir.mkdir()
+            def openvins_ready():
+                if binding and "openvins" in binding.required_owned and not owned_ready["openvins"]:
+                    binding.observe_owned("openvins", "ready")
+                    owned_ready["openvins"] = True
+
             client = NativeClient(
                 [
                     str(args.shadow_binary.resolve()),
@@ -291,9 +298,18 @@ def main():
                     str(shadow_dir / "fast.jsonl"),
                 ],
                 shadow_dir,
+                on_first_ack=openvins_ready,
             )
+            if binding and "openvins" in binding.required_owned:
+                binding.register_owned("openvins", client.process, args.shadow_binary)
+                owned_processes["openvins"] = client.process
 
             def finish_native():
+                if binding and "openvins" in binding.required_owned and owned_ready["openvins"]:
+                    try:
+                        binding.observe_owned("openvins", "prestop")
+                    except Exception as exc:
+                        errors.append("OpenVINS runtime mapping: " + repr(exc))
                 result["native"] = client.finish()
                 if result["native"]["failure"] or result["native"]["exit"] != 0:
                     errors.append("native consumer failed: " + str(result["native"]))
@@ -380,6 +396,13 @@ def main():
                     heartbeat = receiver.recv_match(type="HEARTBEAT", blocking=True, timeout=0.1)
                     if heartbeat is not None and heartbeat.get_srcSystem() == 9 and heartbeat.autopilot == 12:
                         arming["unarmed_wall_ns"] = None if heartbeat.base_mode & 128 else time.monotonic_ns()
+                        if (binding and "px4" in binding.required_owned and not owned_ready["px4"]
+                                and "px4" in owned_processes and arming["unarmed_wall_ns"] is not None):
+                            try:
+                                binding.observe_owned("px4", "ready")
+                                owned_ready["px4"] = True
+                            except Exception as exc:
+                                errors.append("PX4 runtime mapping: " + repr(exc))
                         dispatch_heartbeat(
                             {
                                 "kind": "heartbeat",
@@ -526,8 +549,16 @@ def main():
             stderr=subprocess.STDOUT,
             start_new_session=False,
         )
+        if binding and "px4" in binding.required_owned:
+            binding.register_owned("px4", process, binary)
+            owned_processes["px4"] = process
 
         def stop_px4():
+            if binding and "px4" in binding.required_owned and owned_ready["px4"]:
+                try:
+                    binding.observe_owned("px4", "prestop")
+                except Exception as exc:
+                    errors.append("PX4 runtime mapping: " + repr(exc))
             if process.poll() is None:
                 process.terminate()
                 try:
@@ -543,6 +574,7 @@ def main():
             json.dump({"pid": process.pid, "args": process.args, "started_wall_ns": time.time_ns()}, f, indent=2)
         if source_guard:
             source_guard.start(time.monotonic_ns())
+        first_step_observed = False
         while clock["sim_ns"] < contract["simulation_duration_ns"]:
             if errors or writer.error:
                 raise RuntimeError("capture callback/writer failure: " + str(errors or writer.error))
@@ -555,6 +587,9 @@ def main():
                 raise TimeoutError(f"capture exceeded{wall_budget}s wall budget")
             if not server.run(True, 10 if motion else 1000, False):
                 raise RuntimeError("Gazebo rejected simulation run")
+            if binding and binding.required_self and not first_step_observed:
+                binding.observe("postfirststep")
+                first_step_observed = True
         result["status"] = "capture_completed"
     print(json.dumps({k: v for k, v in result.items() if k != "writer"}, indent=2))
     return 0 if result["status"] == "capture_completed" else 2
