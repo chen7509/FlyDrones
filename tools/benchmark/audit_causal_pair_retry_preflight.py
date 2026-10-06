@@ -24,12 +24,28 @@ from tools.benchmark.estimator_aware_readiness_preflight import FALSE_CLAIMS
 from tools.benchmark.runtime_resource_binding import validate_binding
 from tools.benchmark.supported_heartbeat_gauge_preflight import _study_args
 
+STARTUP_MEMBERS = {
+    "startup-preflight-v1",
+    "startup-preflight-v1.supervisor-environment.json",
+    "startup-preflight-v1.supervisor-events.jsonl",
+}
 
-def audit(root):
+
+def member_set_accepted(names, *, after_startup_preflight):
+    expected = set(OUTPUT_NAMES)
+    if after_startup_preflight:
+        expected |= STARTUP_MEMBERS
+    return set(names) == expected
+
+
+def audit(root, *, after_startup_preflight=False):
     root = Path(root).resolve(strict=True)
     failures = []
     try:
-        if {path.name for path in root.iterdir()} != OUTPUT_NAMES:
+        if not member_set_accepted(
+            {path.name for path in root.iterdir()},
+            after_startup_preflight=after_startup_preflight,
+        ):
             failures.append("output members")
         manifest = read_declaration(root / "study-manifest.json")
         contract = read_declaration(root / "pair-correction-authorization.json")
@@ -106,8 +122,9 @@ def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--input", required=True, type=Path)
     parser.add_argument("--output", type=Path)
+    parser.add_argument("--after-startup-preflight", action="store_true")
     args = parser.parse_args(argv)
-    result = audit(args.input)
+    result = audit(args.input, after_startup_preflight=args.after_startup_preflight)
     if args.output:
         write_manifest(args.output, result)
     print(json.dumps(result, indent=2))

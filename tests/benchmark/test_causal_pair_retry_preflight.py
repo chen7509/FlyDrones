@@ -228,3 +228,20 @@ def test_prepare_refuses_competing_resources_before_reading_inputs(tmp_path):
             python=tmp_path / "missing-python",
             resources=[{"pid": 7, "kind": "px4"}],
         )
+
+
+def test_package_member_gate_allows_only_known_startup_preflight_artifacts():
+    from tools.benchmark.audit_causal_pair_retry_preflight import member_set_accepted
+    from tools.benchmark.causal_pair_retry_preflight import OUTPUT_NAMES
+
+    base = set(OUTPUT_NAMES)
+    startup = {
+        "startup-preflight-v1",
+        "startup-preflight-v1.supervisor-environment.json",
+        "startup-preflight-v1.supervisor-events.jsonl",
+    }
+    assert member_set_accepted(base, after_startup_preflight=False)
+    assert not member_set_accepted(base | startup, after_startup_preflight=False)
+    assert member_set_accepted(base | startup, after_startup_preflight=True)
+    assert not member_set_accepted(base | startup | {"capture-v1"}, after_startup_preflight=True)
+    assert not member_set_accepted(base | {"startup-preflight-v1"}, after_startup_preflight=True)
