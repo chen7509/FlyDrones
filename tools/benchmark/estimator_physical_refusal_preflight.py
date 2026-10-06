@@ -23,6 +23,7 @@ from tools.benchmark.estimator_aware_readiness_preflight import (
 from tools.benchmark.estimator_aware_readiness_preflight import (
     OUTPUT_NAMES as SOURCE_NAMES,
 )
+from tools.benchmark.runtime_resource_binding import validate_binding
 from tools.benchmark.supported_heartbeat_gauge_preflight import _study_args
 
 OUTPUT_NAMES = set(SOURCE_NAMES) | {"physical-refusal-contract.json"}
@@ -202,6 +203,7 @@ def prepare_study(output, *, source_study, source_audit, source_archive, failed_
         source_binding, renderer_libraries=probe_result["mapping"]["historical_additions"],
         evidence_paths=evidence_paths, contract_path=contract_path,
     )
+    binding = validate_binding(binding)
     binding_path = output / "runtime-binding-v3.json"
     execution_path = output / "execution-contract.json"
     policy_path = output / "trajectory-gauge-policy.json"

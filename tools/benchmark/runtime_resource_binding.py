@@ -19,6 +19,7 @@ from tools.benchmark.owned_runtime_maps import OwnedRuntimeMaps, parse_maps
 GENERATED_NAMES = ('world.sdf', 'world.json', 'ground_albedo.png', 'obstacle_albedo.png', 'board_albedo.png', 'gz_env.sh')
 ENV_KEYS = ('GZ_SIM_RESOURCE_PATH', 'GZ_SIM_SYSTEM_PLUGIN_PATH', 'GZ_SIM_SERVER_CONFIG_PATH',
             'LD_LIBRARY_PATH', 'PYTHONPATH', 'SDF_PATH', 'GZ_FILE_PATH', 'GZ_HOMEDIR', 'HOME')
+OPTIONAL_ENV_KEYS = ('MESA_SHADER_CACHE_DISABLE',)
 
 
 def validate_binding(doc):
@@ -54,8 +55,10 @@ def validate_binding(doc):
     if type(baseline) is not dict or baseline.get('schema') != 'declared-files-v1' or not baseline.get('files'):
         raise ValueError('binding baseline missing')
     env = doc['environment']
-    if (type(env) is not dict or set(env) != set(ENV_KEYS)
-            or any(v is not None and type(v) is not str for v in env.values())):
+    valid_env_sets = (set(ENV_KEYS), set(ENV_KEYS) | set(OPTIONAL_ENV_KEYS))
+    if (type(env) is not dict or set(env) not in valid_env_sets
+            or any(v is not None and type(v) is not str for v in env.values())
+            or ('MESA_SHADER_CACHE_DISABLE' in env and env['MESA_SHADER_CACHE_DISABLE'] != 'true')):
         raise ValueError('binding environment must explicitly include lookup keys')
     generated = doc['generated']
     if (type(generated) is not dict or set(generated) != set(GENERATED_NAMES)

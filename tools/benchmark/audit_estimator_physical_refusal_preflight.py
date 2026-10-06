@@ -24,6 +24,7 @@ from tools.benchmark.estimator_physical_refusal_preflight import (
     validate_probe,
     validate_source_package,
 )
+from tools.benchmark.runtime_resource_binding import validate_binding
 from tools.benchmark.supported_heartbeat_gauge_preflight import _study_args
 
 
@@ -79,6 +80,8 @@ def audit(root):
             source_binding, renderer_libraries=probe_result["mapping"]["historical_additions"],
             evidence_paths=evidence_paths, contract_path=root / "physical-refusal-contract.json",
         )
+        _require(_typed_equal(binding, validate_binding(binding)), failures,
+                 "binding execution entry validation")
         started = binding.get("baseline", {}).get("started_monotonic_ns")
         ended = binding.get("baseline", {}).get("ended_monotonic_ns")
         _require(type(started) is int and type(ended) is int and ended >= started,

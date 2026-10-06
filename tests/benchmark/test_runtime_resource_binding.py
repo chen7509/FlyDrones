@@ -45,6 +45,19 @@ def start(doc, generated, source, output, **kwargs):
     return obj
 
 
+def test_binding_accepts_only_declared_mesa_cache_control(tmp_path):
+    doc, _, _, _ = fixture(tmp_path)
+    doc['environment']['MESA_SHADER_CACHE_DISABLE'] = 'true'
+    assert binding.validate_binding(doc)['environment']['MESA_SHADER_CACHE_DISABLE'] == 'true'
+    doc['environment']['MESA_SHADER_CACHE_DISABLE'] = 'false'
+    with pytest.raises(ValueError, match='lookup keys'):
+        binding.validate_binding(doc)
+    doc['environment'].pop('MESA_SHADER_CACHE_DISABLE')
+    doc['environment']['UNDECLARED_RENDERER_SETTING'] = 'true'
+    with pytest.raises(ValueError, match='lookup keys'):
+        binding.validate_binding(doc)
+
+
 def test_pre_and_post_records_without_claiming_full_closure(tmp_path):
     doc, generated, source, output = fixture(tmp_path)
     obj = start(doc, generated, source, output)
