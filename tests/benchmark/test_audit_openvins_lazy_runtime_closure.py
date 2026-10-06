@@ -130,6 +130,13 @@ def test_audit_accepts_exact_prospective_closure_without_overclaim(tmp_path):
     assert result["fusion_eligible"] is False
 
 
+def test_audit_accepts_relative_study_path_without_changing_session_identity(tmp_path, monkeypatch):
+    output, _, _ = package(tmp_path)
+    monkeypatch.chdir(tmp_path.parent)
+    result = audit(output.relative_to(tmp_path.parent))
+    assert result["lazy_mapping_qualified"] is True
+
+
 @pytest.mark.parametrize("mutation", [
     "provenance", "probe", "extra", "probe-extra", "overclaim", "drift",
     "ack", "request", "session",

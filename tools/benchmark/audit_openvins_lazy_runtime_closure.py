@@ -50,7 +50,7 @@ def _single_json_line(path):
 
 
 def audit(output):
-    output = Path(output)
+    output = Path(output).resolve(strict=True)
     failures = []
     try:
         _require({path.name for path in output.iterdir()} == {"provenance.json", "probe"}, failures,
