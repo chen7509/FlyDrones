@@ -54,6 +54,37 @@ def test_ldd_closure_is_strict_bounded_and_stable(tmp_path):
     assert calls[0][1]["timeout"] == 10
 
 
+def test_ldd_closure_accepts_exact_static_output(tmp_path):
+    static = tmp_path / "static.so"
+    static.write_bytes(b"static")
+
+    def runner(command, **_kwargs):
+        return subprocess.CompletedProcess(command, 0, "\tstatically linked\n", "")
+
+    result = study.ldd_closure([
+        dict(selection_reason="static", selected=str(static.resolve())),
+    ], runner=runner)
+    assert result["dependencies"] == []
+
+
+def test_ldd_closure_canonicalizes_dependency_before_file_record(tmp_path):
+    dynamic = tmp_path / "dynamic.so"
+    library_dir = tmp_path / "libraries"
+    library_dir.mkdir()
+    dependency = tmp_path / "libdep.so"
+    for path in (dynamic, dependency):
+        path.write_bytes(path.name.encode())
+    lexical = library_dir / ".." / dependency.name
+
+    def runner(command, **_kwargs):
+        return subprocess.CompletedProcess(command, 0, f"libdep.so => {lexical} (0x1)\n", "")
+
+    result = study.ldd_closure([
+        dict(selection_reason="dynamic", selected=str(dynamic.resolve())),
+    ], runner=runner, parser=lambda _output, _returncode: [str(lexical)])
+    assert result["dependencies"] == [str(dependency.resolve())]
+
+
 @pytest.mark.parametrize("failure", ["nonzero", "timeout", "missing", "unsupported", "drift"])
 def test_ldd_closure_refuses_failures_and_input_drift(tmp_path, failure):
     root = tmp_path / "program"

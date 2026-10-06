@@ -70,12 +70,16 @@ def ldd_closure(roots, *, runner=subprocess.run, parser=parse_ldd):
         record = dict(command=command, returncode=completed.returncode,
                       stdout=completed.stdout, stderr=completed.stderr)
         commands.append(record)
-        resolved = parser(completed.stdout, completed.returncode)
+        if (parser is parse_ldd and completed.returncode == 0
+                and completed.stdout.strip() == "statically linked"):
+            resolved = []
+        else:
+            resolved = parser(completed.stdout, completed.returncode)
         after = file_record(root)
         if before != after:
             raise ValueError("runtime root changed during ldd")
         for path in resolved:
-            row = file_record(path)
+            row = file_record(Path(path).resolve(strict=True))
             dependencies[row["resolved"]] = row
     return dict(roots=root_paths, dependencies=sorted(dependencies),
                 dependency_records=[dependencies[path] for path in sorted(dependencies)], commands=commands)
