@@ -141,3 +141,93 @@ def test_execution_v2_binds_exact_launch_environment(tmp_path):
     assert contract.validate_declaration(selected, environment) == declaration
     with pytest.raises(ValueError, match='declaration'):
         contract.validate_declaration(selected, dict(environment, PYTHONPATH='hostile'))
+
+
+def test_initial_environment_parser_preserves_empty_and_absent():
+    assert capture.parse_initial_environment(b'HOME=/home/test\0SDF_PATH=\0') == {
+        'HOME': '/home/test', 'SDF_PATH': '',
+    }
+
+
+@pytest.mark.parametrize('raw', [
+    b'', b'HOME=/home/test', b'=value\0', b'NO_EQUALS\0', b'A=1\0A=2\0', b'BAD=\xff\0',
+])
+def test_initial_environment_parser_refuses_malformed_or_duplicate(raw):
+    with pytest.raises(ValueError, match='environment'):
+        capture.parse_initial_environment(raw)
+
+
+def test_worker_records_exact_environment_before_other_work(tmp_path):
+    environment = {'HOME': '/home/test', 'PYTHONPATH': None, 'SDF_PATH': ''}
+    declaration = {'schema': 'capture-execution-v2', 'launch_environment': environment}
+    contract_path = tmp_path / 'execution-contract.json'
+    contract_path.write_text(json.dumps(declaration))
+    output = tmp_path / 'capture'
+    record = capture.record_worker_environment(
+        output, declaration, contract_path,
+        reader=lambda: b'HOME=/home/test\0SDF_PATH=\0',
+    )
+    assert record['matches'] is True
+    assert record['observed'] == {'HOME': '/home/test', 'SDF_PATH': ''}
+    assert (output / 'execution-environment-worker.json').is_file()
+
+
+def test_worker_environment_mismatch_is_recorded_then_refused(tmp_path):
+    environment = {'HOME': '/home/test', 'PYTHONPATH': None, 'SDF_PATH': ''}
+    declaration = {'schema': 'capture-execution-v2', 'launch_environment': environment}
+    contract_path = tmp_path / 'execution-contract.json'
+    contract_path.write_text(json.dumps(declaration))
+    output = tmp_path / 'capture'
+    with pytest.raises(ValueError, match='environment mismatch'):
+        capture.record_worker_environment(
+            output, declaration, contract_path,
+            reader=lambda: b'HOME=/home/test\0PYTHONPATH=hostile\0SDF_PATH=\0',
+        )
+    record = json.loads((output / 'execution-environment-worker.json').read_text())
+    assert record['matches'] is False
+    assert record['runtime_environment_qualified'] is False
+
+
+def test_worker_environment_evidence_write_failure_refuses(tmp_path, monkeypatch):
+    environment = {'HOME': '/home/test'}
+    declaration = {'schema': 'capture-execution-v2', 'launch_environment': environment}
+    contract_path = tmp_path / 'execution-contract.json'
+    contract_path.write_text(json.dumps(declaration))
+    monkeypatch.setattr(capture, 'write_manifest',
+                        lambda *_args: (_ for _ in ()).throw(OSError('injected close failure')))
+    with pytest.raises(OSError, match='close failure'):
+        capture.record_worker_environment(
+            tmp_path / 'capture', declaration, contract_path, reader=lambda: b'HOME=/home/test\0',
+        )
+
+
+def test_parent_derives_v2_environment_and_passes_it_to_supervisor(tmp_path, monkeypatch):
+    environment = {'HOME': '/home/test', 'PYTHONPATH': None, 'SDF_PATH': ''}
+    graph_environment = {'HOME': '/home/test', 'PATH': '/usr/bin', 'LANG': 'C.UTF-8'}
+    binding = {
+        'schema': 'capture-resource-binding-v3', 'environment': environment,
+        'graph': {'environment': graph_environment},
+    }
+    binding_path = tmp_path / 'binding.json'
+    binding_path.write_text(json.dumps(binding))
+    output = tmp_path / 'capture'
+    declaration_path = tmp_path / 'execution.json'
+    argv = ['--output', str(output), '--runtime-binding', str(binding_path),
+            '--execution-contract', str(declaration_path)]
+    parsed = capture.parse_capture_args(argv)
+    launch_environment = contract.derive_launch_environment(binding)
+    declaration_path.write_text(json.dumps(contract.execution_contract(parsed, launch_environment)))
+    monkeypatch.setattr('tools.benchmark.runtime_resource_binding.validate_binding', lambda doc: doc)
+    monkeypatch.setattr('sys.argv', ['capture', *argv])
+    calls = []
+
+    def supervise(command, selected_output, **kwargs):
+        calls.append((command, selected_output, kwargs))
+        return dict(status='worker_exited', worker_exit=0, capture_status='capture_completed',
+                    cleanup={'graceful_group_cleanup_verified': True}, errors=[])
+
+    monkeypatch.setattr(capture, 'supervise_worker', supervise)
+    assert capture.main() == 0
+    assert calls[0][2]['launch_environment'] == launch_environment
+    assert calls[0][2]['execution_contract'] == declaration_path
+    assert calls[0][2]['timeout_s'] == 300

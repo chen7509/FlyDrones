@@ -22,7 +22,16 @@ sys.path[:0] = [str(ROOT), str(ROOT / "src")]
 from flydrones.benchmark.camera_info_capture import camera_info_fields  # noqa: E402
 from flydrones.benchmark.gateway import sim_duration_ns  # noqa: E402
 from flydrones.benchmark.ulog_capture import collect_ulogs, verify_episode_ulog_evidence  # noqa: E402
-from tools.benchmark.capture_contract import read_declaration, validate_declaration, worker_options  # noqa: E402
+from tools.benchmark.capture_contract import (  # noqa: E402
+    _typed_equal,
+    derive_launch_environment,
+    materialize_launch_environment,
+    read_declaration,
+    validate_declaration,
+    validate_launch_environment,
+    worker_options,
+)
+from tools.benchmark.declared_runtime_snapshot import write_manifest  # noqa: E402
 from tools.benchmark.disarmed_sensor_provenance import CaptureJournal, CaptureWriter, supervise_worker  # noqa: E402
 
 
@@ -42,6 +51,61 @@ def active_resources():
         ):
             matches.append({"pid": int(path.name), "name": name, "command": argv})
     return matches
+
+
+def parse_initial_environment(raw):
+    if type(raw) is not bytes or not raw or not raw.endswith(b"\0"):
+        raise ValueError("initial environment must be a terminated byte sequence")
+    result = {}
+    for item in raw[:-1].split(b"\0"):
+        if not item or b"=" not in item:
+            raise ValueError("malformed initial environment entry")
+        name, value = item.split(b"=", 1)
+        try:
+            name = name.decode("utf-8")
+            value = value.decode("utf-8")
+        except UnicodeDecodeError as exc:
+            raise ValueError("initial environment must be UTF-8") from exc
+        if not name or name in result:
+            raise ValueError("duplicate or empty initial environment name")
+        result[name] = value
+    validate_launch_environment({key: value for key, value in result.items()})
+    return result
+
+
+def record_worker_environment(output, contract, contract_path, *, reader=None):
+    if type(contract) is not dict or contract.get("schema") != "capture-execution-v2":
+        raise ValueError("worker environment evidence requires execution contract v2")
+    declared = validate_launch_environment(contract.get("launch_environment"))
+    expected = materialize_launch_environment(declared)
+    contract_path = Path(contract_path).resolve(strict=True)
+    before = contract_path.stat()
+    payload = contract_path.read_bytes()
+    after = contract_path.stat()
+    if before != after:
+        raise ValueError("execution contract changed while worker read it")
+    read = reader or (lambda: Path("/proc/self/environ").read_bytes())
+    observed = parse_initial_environment(read())
+    matches = _typed_equal(observed, expected)
+    record = {
+        "schema": "worker-launch-environment-v1",
+        "declared": declared,
+        "materialized": expected,
+        "observed": observed,
+        "matches": matches,
+        "execution_contract": {
+            "path": str(contract_path), "bytes": len(payload), "sha256": hashlib.sha256(payload).hexdigest(),
+        },
+        "runtime_environment_qualified": False,
+        "physics_qualified": False,
+        "fusion_eligible": False,
+    }
+    output = Path(output)
+    output.mkdir(parents=True, exist_ok=False)
+    write_manifest(output / "execution-environment-worker.json", record)
+    if not matches:
+        raise ValueError("initial worker environment mismatch")
+    return record
 
 
 def parse_capture_args(argv=None):
@@ -136,18 +200,22 @@ def retain_supervisor_ulogs(summary, runtime, output, *, collector=collect_ulogs
 
 def main():
     args = parse_capture_args()
-    contract = validate_declaration(args)
     binding_doc = None
     if args.runtime_binding:
         from tools.benchmark.runtime_resource_binding import validate_binding
 
         binding_doc = validate_binding(read_declaration(args.runtime_binding))
+    launch_environment = derive_launch_environment(binding_doc) if binding_doc and binding_doc["schema"] == "capture-resource-binding-v3" else None
+    contract = validate_declaration(args, launch_environment)
     shadow_args = worker_options(args)
     if not args.worker:
+        supervisor_options = {}
+        if launch_environment is not None:
+            supervisor_options.update(launch_environment=launch_environment,
+                                      execution_contract=args.execution_contract)
         summary = supervise_worker(
             [sys.executable, str(Path(__file__).resolve()), "--worker", "--output", str(args.output.resolve())] + shadow_args,
-            args.output.resolve(),
-            timeout_s=contract["supervisor_s"],
+            args.output.resolve(), timeout_s=contract["supervisor_s"], **supervisor_options,
         )
         if needs_supervisor_retention(summary) and (args.output / "launch.json").is_file():
             launch = json.loads((args.output / "launch.json").read_text())
@@ -163,6 +231,9 @@ def main():
             and not summary["errors"]
             else 2
         )
+    output = args.output.resolve()
+    if contract["schema"] == "capture-execution-v2":
+        record_worker_environment(output, contract, args.execution_contract)
     resources = active_resources()
     if resources:
         raise RuntimeError("existing competing resources: " + json.dumps(resources))
@@ -179,8 +250,8 @@ def main():
     # Reserve the intended local receiver before simulation; no remote endpoint is used.
     with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as probe:
         probe.bind(("127.0.0.1", 14548))
-    output = args.output.resolve()
-    output.mkdir(parents=True, exist_ok=False)
+    if contract["schema"] == "capture-execution-v1":
+        output.mkdir(parents=True, exist_ok=False)
     input_hashes = {}
     with zipfile.ZipFile(archive) as z:
         for name in ["world.sdf", "world.json", "ground_albedo.png", "obstacle_albedo.png", "board_albedo.png"]:
@@ -190,9 +261,11 @@ def main():
             input_hashes[name] = hashlib.sha256(data).hexdigest()
     partition = "fly_disarmed_" + str(os.getpid())
     os.environ["GZ_PARTITION"] = partition
-    os.environ["GZ_SIM_RESOURCE_PATH"] = ":".join(
-        [str(ROOT / "assets/gazebo/models"), str(px4 / "Tools/simulation/gz/models"), os.environ.get("GZ_SIM_RESOURCE_PATH", "")]
-    )
+    if contract["schema"] == "capture-execution-v1":
+        os.environ["GZ_SIM_RESOURCE_PATH"] = ":".join(
+            [str(ROOT / "assets/gazebo/models"), str(px4 / "Tools/simulation/gz/models"),
+             os.environ.get("GZ_SIM_RESOURCE_PATH", "")]
+        )
     runtime = Path(tempfile.mkdtemp(prefix="fly-disarmed-", dir=str(Path.home() / "fly-ego-benchmark/runtime")))
     (runtime / "gz_env.sh").write_bytes((build / "rootfs/gz_env.sh").read_bytes())
     env = os.environ.copy()
