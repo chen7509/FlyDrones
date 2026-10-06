@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import copy
 import hashlib
 import json
 import math
@@ -287,10 +288,12 @@ class ShadowInput:
         self.causal = CausalInput(session_id=session_id, clock_id="gazebo-sim+linux-monotonic")
         self.sequence, self.skipped, self.delivered = 0, 0, 0
         self.pixels, self.failure = {}, None
+        self.delivery_acks = []
         self.released_unacknowledged = []
         self.failures = (output / "shadow-failures.jsonl").open("x")
 
     def on_record(self, row, payload):
+        self.delivery_acks = []
         kind = row["kind"]
         if kind not in {"imu", "rgb", "info"}:
             return
@@ -319,7 +322,8 @@ class ShadowInput:
                 action = undelivered[0]
                 attempted = True
                 pixels = self.pixels[action["sample_ns"]] if action["kind"] == "camera" else None
-                self.client.send(action, pixels)
+                acknowledgement = self.client.send(action, pixels)
+                self.delivery_acks.append(copy.deepcopy(acknowledgement))
                 self.delivered += 1
                 if action["kind"] == "camera":
                     self.pixels.pop(action["sample_ns"])
@@ -367,6 +371,7 @@ class ShadowInput:
             fusion_eligible=False,
             quality=None,
             reset_counter=None,
+            last_delivery_acks=copy.deepcopy(self.delivery_acks),
         )
         self.failures.close()
         with (self.output / "shadow-input-result.json").open("x") as stream:

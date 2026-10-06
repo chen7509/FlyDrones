@@ -145,7 +145,14 @@ def parse_capture_args(argv=None):
     parser.add_argument("--reference-module", type=Path)
     parser.add_argument("--reference-sha256")
     parser.add_argument("--reference-fault-profile", choices=["native-pre-epoch-v1"])
-    parser.add_argument("--source-fanout-profile", choices=["ready-shadow-v1", "ready-shadow-heartbeat-v1"])
+    parser.add_argument(
+        "--source-fanout-profile",
+        choices=[
+            "ready-shadow-v1",
+            "ready-shadow-heartbeat-v1",
+            "ready-shadow-heartbeat-estimator-v1",
+        ],
+    )
     parser.add_argument("--motion-profile", choices=["lateral-wrench-v1", "supported-lateral-v1", "supported-ready-v1"])
     parser.add_argument("--physics-trace-profile", choices=["substep-lateral-v1", "substep-supported-v1", "substep-ready-v1"])
     args = parser.parse_args(argv)
@@ -158,7 +165,7 @@ def parse_capture_args(argv=None):
         or args.motion_profile != "supported-ready-v1" or args.physics_trace_profile != "substep-ready-v1"
         or args.reference_fault_profile
     ):
-        parser.error("ready-shadow-v1 requires complete supported native/reference configuration without fault injection")
+        parser.error("source fan-out requires complete supported native/reference configuration without fault injection")
     if args.reference_fault_profile and not args.reference_module:
         parser.error("runtime refusal requires native reference configuration")
     if bool(args.reference_module) != bool(args.reference_sha256):
@@ -190,6 +197,38 @@ def parse_capture_args(argv=None):
     if args.motion_profile and not (args.shadow_binary or args.physics_trace_profile):
         parser.error("motion fixture requires the native shadow recorder")
     return args
+
+
+def build_readiness(output, source_fanout_profile, *, clock=time.monotonic_ns):
+    """Build the legacy source gate plus the opt-in estimator-aware wrapper."""
+    from tools.benchmark.readiness_anchor import JournaledReadiness
+
+    source_readiness = JournaledReadiness(clock=clock)
+    if source_fanout_profile == "ready-shadow-heartbeat-estimator-v1":
+        from tools.benchmark.estimator_aware_readiness import EstimatorAwareReadiness
+
+        return source_readiness, EstimatorAwareReadiness(output, source_readiness, clock=clock)
+    return source_readiness, source_readiness
+
+
+def build_source_fanout(output, profile, readiness, shadow):
+    if profile == "ready-shadow-heartbeat-estimator-v1":
+        from tools.benchmark.estimator_aware_readiness import EstimatorJournaledHeartbeatFanout
+
+        return EstimatorJournaledHeartbeatFanout(output, readiness, shadow)
+    if profile == "ready-shadow-heartbeat-v1":
+        from tools.benchmark.journaled_heartbeat_lane import JournaledHeartbeatFanout
+
+        return JournaledHeartbeatFanout(output, readiness, shadow)
+    from tools.benchmark.ready_shadow_fanout import ReadyShadowFanout
+
+    return ReadyShadowFanout(output, readiness, shadow)
+
+
+def finish_readiness(readiness, source_fanout_profile):
+    if source_fanout_profile == "ready-shadow-heartbeat-estimator-v1":
+        return readiness.finish()
+    return readiness.snapshot()
 
 
 def dispatch_heartbeat(event, writer, fanout):
@@ -434,20 +473,17 @@ def main():
             journal.cleanup("source health", lambda: result.update(source_health=source_guard.snapshot()), priority=85)
         readiness = None
         if args.motion_profile == "supported-ready-v1":
-            from tools.benchmark.readiness_anchor import JournaledReadiness
-
-            readiness = JournaledReadiness()
-            journal.cleanup("readiness evidence", lambda: result.update(readiness=readiness.snapshot()), priority=86)
+            _source_readiness, readiness = build_readiness(output, args.source_fanout_profile)
+            journal.cleanup(
+                "readiness evidence",
+                lambda: result.update(
+                    readiness=finish_readiness(readiness, args.source_fanout_profile)
+                ),
+                priority=86,
+            )
         fanout = None
         if args.source_fanout_profile:
-            from tools.benchmark.ready_shadow_fanout import ReadyShadowFanout
-
-            if args.source_fanout_profile == "ready-shadow-heartbeat-v1":
-                from tools.benchmark.journaled_heartbeat_lane import JournaledHeartbeatFanout
-
-                fanout = JournaledHeartbeatFanout(output, readiness, shadow)
-            else:
-                fanout = ReadyShadowFanout(output, readiness, shadow)
+            fanout = build_source_fanout(output, args.source_fanout_profile, readiness, shadow)
 
             def finish_fanout():
                 result["source_fanout"] = fanout.finish()

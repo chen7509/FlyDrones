@@ -119,6 +119,9 @@ class ReadyShadowFanout:
         except Exception as exc:
             self.close_errors.append(dict(operation="refusal_journal", reason=repr(exc)))
 
+    def _after_shadow(self, row, payload):
+        """Opt-in subclasses may commit causal evidence before readiness."""
+
     def on_record(self, row, payload):
         record = self._source_identity(row, payload)
         if not self.delivery.acquire(blocking=False):
@@ -157,6 +160,7 @@ class ReadyShadowFanout:
                     self._available()
                     if self.shadow.failure or digest(independent) != record["source_sha256"]:
                         raise ValueError("shadow failed or mutated source: " + str(self.shadow.failure))
+                    self._after_shadow(independent, payload)
                     record["dispositions"]["shadow"] = "returned"
                     record["consumers"]["shadow"] = dict(start_ns=now, returned_ns=self._now())
                     # The readiness callback, checks, receipt and commit are one gate transaction.

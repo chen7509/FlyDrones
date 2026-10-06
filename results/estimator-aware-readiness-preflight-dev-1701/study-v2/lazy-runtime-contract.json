@@ -1,0 +1,566 @@
+{
+  "schema": "openvins-lazy-runtime-prepare-contract-v1",
+  "source_study": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/openvins-lazy-runtime-closure-dev-1701/study-v1",
+  "source_audit": {
+    "requested": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/openvins-lazy-runtime-closure-dev-1701/audit-v3.json",
+    "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/openvins-lazy-runtime-closure-dev-1701/audit-v3.json",
+    "links": [],
+    "identity": {
+      "device": 68,
+      "inode": 16044073674002224,
+      "mode": 33279,
+      "size": 336,
+      "mtime_ns": 1791286075824193700,
+      "ctime_ns": 1791286075824193700
+    },
+    "path_identity": {
+      "device": 68,
+      "inode": 16044073674002224,
+      "mode": 33279,
+      "size": 336,
+      "mtime_ns": 1791286075824193700,
+      "ctime_ns": 1791286075824193700
+    },
+    "bytes": 336,
+    "sha256": "e9eb6768730e1a7f753dfb09437df3f3c922d995e113426df792672d119e57ef"
+  },
+  "source_records": [
+    {
+      "requested": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/openvins-lazy-runtime-closure-dev-1701/audit-v3.json",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/openvins-lazy-runtime-closure-dev-1701/audit-v3.json",
+      "links": [],
+      "identity": {
+        "device": 68,
+        "inode": 16044073674002224,
+        "mode": 33279,
+        "size": 336,
+        "mtime_ns": 1791286075824193700,
+        "ctime_ns": 1791286075824193700
+      },
+      "path_identity": {
+        "device": 68,
+        "inode": 16044073674002224,
+        "mode": 33279,
+        "size": 336,
+        "mtime_ns": 1791286075824193700,
+        "ctime_ns": 1791286075824193700
+      },
+      "bytes": 336,
+      "sha256": "e9eb6768730e1a7f753dfb09437df3f3c922d995e113426df792672d119e57ef"
+    },
+    {
+      "requested": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/openvins-lazy-runtime-closure-dev-1701/study-v1/probe/fast.jsonl",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/openvins-lazy-runtime-closure-dev-1701/study-v1/probe/fast.jsonl",
+      "links": [],
+      "identity": {
+        "device": 68,
+        "inode": 25332747905458745,
+        "mode": 33279,
+        "size": 0,
+        "mtime_ns": 1791285030312460000,
+        "ctime_ns": 1791285030312460000
+      },
+      "path_identity": {
+        "device": 68,
+        "inode": 25332747905458745,
+        "mode": 33279,
+        "size": 0,
+        "mtime_ns": 1791285030312460000,
+        "ctime_ns": 1791285030312460000
+      },
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "requested": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/openvins-lazy-runtime-closure-dev-1701/study-v1/probe/maps-after.json",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/openvins-lazy-runtime-closure-dev-1701/study-v1/probe/maps-after.json",
+      "links": [],
+      "identity": {
+        "device": 68,
+        "inode": 28147497672565310,
+        "mode": 33279,
+        "size": 19505,
+        "mtime_ns": 1791285030457746700,
+        "ctime_ns": 1791285030457746700
+      },
+      "path_identity": {
+        "device": 68,
+        "inode": 28147497672565310,
+        "mode": 33279,
+        "size": 19505,
+        "mtime_ns": 1791285030457746700,
+        "ctime_ns": 1791285030457746700
+      },
+      "bytes": 19505,
+      "sha256": "b77fe4afcf48a0cf4a8fb207dc162b260c2922e3e06a82f55636d948c8a85c74"
+    },
+    {
+      "requested": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/openvins-lazy-runtime-closure-dev-1701/study-v1/probe/maps-before.json",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/openvins-lazy-runtime-closure-dev-1701/study-v1/probe/maps-before.json",
+      "links": [],
+      "identity": {
+        "device": 68,
+        "inode": 25614222882169402,
+        "mode": 33279,
+        "size": 19473,
+        "mtime_ns": 1791285030454218500,
+        "ctime_ns": 1791285030454218500
+      },
+      "path_identity": {
+        "device": 68,
+        "inode": 25614222882169402,
+        "mode": 33279,
+        "size": 19473,
+        "mtime_ns": 1791285030454218500,
+        "ctime_ns": 1791285030454218500
+      },
+      "bytes": 19473,
+      "sha256": "6e30d74d0abe2ad2cb6fbce1a953ea89b0a9248b3367d382c363346cd9372dd1"
+    },
+    {
+      "requested": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/openvins-lazy-runtime-closure-dev-1701/study-v1/probe/native-acks.jsonl",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/openvins-lazy-runtime-closure-dev-1701/study-v1/probe/native-acks.jsonl",
+      "links": [],
+      "identity": {
+        "device": 68,
+        "inode": 28147497672565300,
+        "mode": 33279,
+        "size": 304,
+        "mtime_ns": 1791285030393451200,
+        "ctime_ns": 1791285030393451200
+      },
+      "path_identity": {
+        "device": 68,
+        "inode": 28147497672565300,
+        "mode": 33279,
+        "size": 304,
+        "mtime_ns": 1791285030393451200,
+        "ctime_ns": 1791285030393451200
+      },
+      "bytes": 304,
+      "sha256": "da24c08502988f8e3b10c3ee4e18adcb4df2c19eb7b372142d74ca50fb97cef6"
+    },
+    {
+      "requested": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/openvins-lazy-runtime-closure-dev-1701/study-v1/probe/native-requests.jsonl",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/openvins-lazy-runtime-closure-dev-1701/study-v1/probe/native-requests.jsonl",
+      "links": [],
+      "identity": {
+        "device": 68,
+        "inode": 28991922602697267,
+        "mode": 33279,
+        "size": 292,
+        "mtime_ns": 1791285030217346300,
+        "ctime_ns": 1791285030217346300
+      },
+      "path_identity": {
+        "device": 68,
+        "inode": 28991922602697267,
+        "mode": 33279,
+        "size": 292,
+        "mtime_ns": 1791285030217346300,
+        "ctime_ns": 1791285030217346300
+      },
+      "bytes": 292,
+      "sha256": "5d89e4751a7aa4b5df5dd81e7b720dfc4f088a8c9034a5eed59e9463ac1db009"
+    },
+    {
+      "requested": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/openvins-lazy-runtime-closure-dev-1701/study-v1/probe/native-session.json",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/openvins-lazy-runtime-closure-dev-1701/study-v1/probe/native-session.json",
+      "links": [],
+      "identity": {
+        "device": 68,
+        "inode": 28428972649275958,
+        "mode": 33279,
+        "size": 726,
+        "mtime_ns": 1791285030155194000,
+        "ctime_ns": 1791285030155194000
+      },
+      "path_identity": {
+        "device": 68,
+        "inode": 28428972649275958,
+        "mode": 33279,
+        "size": 726,
+        "mtime_ns": 1791285030155194000,
+        "ctime_ns": 1791285030155194000
+      },
+      "bytes": 726,
+      "sha256": "998ab8e0724365081f6433d751a6d2955ed0592db3821e8d8c999ebf76b95a4f"
+    },
+    {
+      "requested": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/openvins-lazy-runtime-closure-dev-1701/study-v1/probe/native.log",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/openvins-lazy-runtime-closure-dev-1701/study-v1/probe/native.log",
+      "links": [],
+      "identity": {
+        "device": 68,
+        "inode": 28710447625986610,
+        "mode": 33279,
+        "size": 14782,
+        "mtime_ns": 1791285030392436700,
+        "ctime_ns": 1791285030392436700
+      },
+      "path_identity": {
+        "device": 68,
+        "inode": 28710447625986610,
+        "mode": 33279,
+        "size": 14782,
+        "mtime_ns": 1791285030392436700,
+        "ctime_ns": 1791285030392436700
+      },
+      "bytes": 14782,
+      "sha256": "8b1013103dd1d27c38181e2394528ee017452b76be56e7a51fa2255a1f9b65f0"
+    },
+    {
+      "requested": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/openvins-lazy-runtime-closure-dev-1701/study-v1/probe/probe-result.json",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/openvins-lazy-runtime-closure-dev-1701/study-v1/probe/probe-result.json",
+      "links": [],
+      "identity": {
+        "device": 68,
+        "inode": 29836347532829247,
+        "mode": 33279,
+        "size": 1726,
+        "mtime_ns": 1791285030607376800,
+        "ctime_ns": 1791285030607376800
+      },
+      "path_identity": {
+        "device": 68,
+        "inode": 29836347532829247,
+        "mode": 33279,
+        "size": 1726,
+        "mtime_ns": 1791285030607376800,
+        "ctime_ns": 1791285030607376800
+      },
+      "bytes": 1726,
+      "sha256": "58db0bf79f4fc81cc72d70c1c574a137c54e10454e70b29c90a4438ca8322200"
+    },
+    {
+      "requested": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/openvins-lazy-runtime-closure-dev-1701/study-v1/probe/states.jsonl",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/openvins-lazy-runtime-closure-dev-1701/study-v1/probe/states.jsonl",
+      "links": [],
+      "identity": {
+        "device": 68,
+        "inode": 27584547719143991,
+        "mode": 33279,
+        "size": 0,
+        "mtime_ns": 1791285030310403500,
+        "ctime_ns": 1791285030310403500
+      },
+      "path_identity": {
+        "device": 68,
+        "inode": 27584547719143991,
+        "mode": 33279,
+        "size": 0,
+        "mtime_ns": 1791285030310403500,
+        "ctime_ns": 1791285030310403500
+      },
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "requested": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/openvins-lazy-runtime-closure-dev-1701/study-v1/provenance.json",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/openvins-lazy-runtime-closure-dev-1701/study-v1/provenance.json",
+      "links": [],
+      "identity": {
+        "device": 68,
+        "inode": 26740122789012015,
+        "mode": 33279,
+        "size": 342887,
+        "mtime_ns": 1791285030025550500,
+        "ctime_ns": 1791285030025550500
+      },
+      "path_identity": {
+        "device": 68,
+        "inode": 26740122789012015,
+        "mode": 33279,
+        "size": 342887,
+        "mtime_ns": 1791285030025550500,
+        "ctime_ns": 1791285030025550500
+      },
+      "bytes": 342887,
+      "sha256": "5679ba49bd67f0a898f79b735bfc0eae0c556319c238ef778458127a789cfcf8"
+    },
+    {
+      "requested": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/openvins-lazy-runtime-closure-dev-1701/upstream/libtbbmalloc2_2021.11.0-2ubuntu2_amd64.deb",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/openvins-lazy-runtime-closure-dev-1701/upstream/libtbbmalloc2_2021.11.0-2ubuntu2_amd64.deb",
+      "links": [],
+      "identity": {
+        "device": 68,
+        "inode": 26458647812340777,
+        "mode": 33279,
+        "size": 60542,
+        "mtime_ns": 1703689000000000000,
+        "ctime_ns": 1791283476736329000
+      },
+      "path_identity": {
+        "device": 68,
+        "inode": 26458647812340777,
+        "mode": 33279,
+        "size": 60542,
+        "mtime_ns": 1703689000000000000,
+        "ctime_ns": 1791283476736329000
+      },
+      "bytes": 60542,
+      "sha256": "3de9b639d4abe5d8f0e0adbb7e26e32bf9de9473b19155d76a3a24c88b62cfea"
+    },
+    {
+      "requested": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/openvins-lazy-runtime-closure-dev-1701/upstream/oneTBB-v2021.11.0/LICENSE.txt",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/openvins-lazy-runtime-closure-dev-1701/upstream/oneTBB-v2021.11.0/LICENSE.txt",
+      "links": [],
+      "identity": {
+        "device": 68,
+        "inode": 23925373021944911,
+        "mode": 33279,
+        "size": 11357,
+        "mtime_ns": 1791283406596312000,
+        "ctime_ns": 1791283406596312000
+      },
+      "path_identity": {
+        "device": 68,
+        "inode": 23925373021944911,
+        "mode": 33279,
+        "size": 11357,
+        "mtime_ns": 1791283406596312000,
+        "ctime_ns": 1791283406596312000
+      },
+      "bytes": 11357,
+      "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+    },
+    {
+      "requested": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/openvins-lazy-runtime-closure-dev-1701/upstream/oneTBB-v2021.11.0/src/tbb/allocator.cpp",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/openvins-lazy-runtime-closure-dev-1701/upstream/oneTBB-v2021.11.0/src/tbb/allocator.cpp",
+      "links": [],
+      "identity": {
+        "device": 68,
+        "inode": 27866022695896591,
+        "mode": 33279,
+        "size": 11407,
+        "mtime_ns": 1791283417461210400,
+        "ctime_ns": 1791283417461210400
+      },
+      "path_identity": {
+        "device": 68,
+        "inode": 27866022695896591,
+        "mode": 33279,
+        "size": 11407,
+        "mtime_ns": 1791283417461210400,
+        "ctime_ns": 1791283417461210400
+      },
+      "bytes": 11407,
+      "sha256": "8d2ac541949fc723459c0b6a2c60287a11f17b752e70d4ad714d3431dc8bced2"
+    },
+    {
+      "requested": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/openvins-online-shadow-dev-1701/online_probe",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/openvins-online-shadow-dev-1701/online_probe",
+      "links": [],
+      "identity": {
+        "device": 68,
+        "inode": 6473924465834876,
+        "mode": 33279,
+        "size": 401632,
+        "mtime_ns": 1791224322647817000,
+        "ctime_ns": 1791224322651298400
+      },
+      "path_identity": {
+        "device": 68,
+        "inode": 6473924465834876,
+        "mode": 33279,
+        "size": 401632,
+        "mtime_ns": 1791224322647817000,
+        "ctime_ns": 1791224322651298400
+      },
+      "bytes": 401632,
+      "sha256": "9ae05353945b56877f2a6f48c0201a3caec5a18faf3f480d79a1eda99676465b"
+    },
+    {
+      "requested": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/openvins-online-shadow-dev-1701/raw-model-zero-bias-diffusion-v1/estimator_config.yaml",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/openvins-online-shadow-dev-1701/raw-model-zero-bias-diffusion-v1/estimator_config.yaml",
+      "links": [],
+      "identity": {
+        "device": 68,
+        "inode": 6192449489124368,
+        "mode": 33279,
+        "size": 6069,
+        "mtime_ns": 1791224358588343900,
+        "ctime_ns": 1791224358588343900
+      },
+      "path_identity": {
+        "device": 68,
+        "inode": 6192449489124368,
+        "mode": 33279,
+        "size": 6069,
+        "mtime_ns": 1791224358588343900,
+        "ctime_ns": 1791224358588343900
+      },
+      "bytes": 6069,
+      "sha256": "eaa40224f0de2f4c5b0f1d33504d215670544b9cc000252a0e92f404478360e6"
+    },
+    {
+      "requested": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/audit_openvins_lazy_runtime_closure.py",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/audit_openvins_lazy_runtime_closure.py",
+      "links": [],
+      "identity": {
+        "device": 68,
+        "inode": 22236523161684300,
+        "mode": 33279,
+        "size": 12682,
+        "mtime_ns": 1791286040151508600,
+        "ctime_ns": 1791286040151508600
+      },
+      "path_identity": {
+        "device": 68,
+        "inode": 22236523161684300,
+        "mode": 33279,
+        "size": 12682,
+        "mtime_ns": 1791286040151508600,
+        "ctime_ns": 1791286040151508600
+      },
+      "bytes": 12682,
+      "sha256": "b18b489e4c0a96c6d275d3629f1a240f60762c4215dfce5e0774daf5da84bbfc"
+    },
+    {
+      "requested": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/openvins_lazy_runtime_closure.py",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/openvins_lazy_runtime_closure.py",
+      "links": [],
+      "identity": {
+        "device": 68,
+        "inode": 20266198324662027,
+        "mode": 33279,
+        "size": 22807,
+        "mtime_ns": 1791285852252966500,
+        "ctime_ns": 1791285852252966500
+      },
+      "path_identity": {
+        "device": 68,
+        "inode": 20266198324662027,
+        "mode": 33279,
+        "size": 22807,
+        "mtime_ns": 1791285852252966500,
+        "ctime_ns": 1791285852252966500
+      },
+      "bytes": 22807,
+      "sha256": "4542821e2c724f10001474bcfcc622af9826f4783bdbbc678fd35abe32185fba"
+    },
+    {
+      "requested": "/usr/lib/x86_64-linux-gnu/libtbb.so.12.11",
+      "resolved": "/usr/lib/x86_64-linux-gnu/libtbb.so.12.11",
+      "links": [],
+      "identity": {
+        "device": 2096,
+        "inode": 238782,
+        "mode": 33188,
+        "size": 252632,
+        "mtime_ns": 1703687155000000000,
+        "ctime_ns": 1789904130792273901
+      },
+      "path_identity": {
+        "device": 2096,
+        "inode": 238782,
+        "mode": 33188,
+        "size": 252632,
+        "mtime_ns": 1703687155000000000,
+        "ctime_ns": 1789904130792273901
+      },
+      "bytes": 252632,
+      "sha256": "1e2a936d4519f2a4f2e62411a9f680f967a4742525ecf5c2dcac57f1b82501e7"
+    },
+    {
+      "requested": "/usr/lib/x86_64-linux-gnu/libtbbmalloc.so.2.11",
+      "resolved": "/usr/lib/x86_64-linux-gnu/libtbbmalloc.so.2.11",
+      "links": [],
+      "identity": {
+        "device": 2096,
+        "inode": 238769,
+        "mode": 33188,
+        "size": 128928,
+        "mtime_ns": 1703687155000000000,
+        "ctime_ns": 1789904130674460820
+      },
+      "path_identity": {
+        "device": 2096,
+        "inode": 238769,
+        "mode": 33188,
+        "size": 128928,
+        "mtime_ns": 1703687155000000000,
+        "ctime_ns": 1789904130674460820
+      },
+      "bytes": 128928,
+      "sha256": "5af2073ee206b88a82360bb692413cd24d9ab22107b4110442c560d4a2ac4b7c"
+    }
+  ],
+  "expected_mapping": {
+    "path": "/usr/lib/x86_64-linux-gnu/libtbbmalloc.so.2.11",
+    "device": "08:30",
+    "inode": 238769
+  },
+  "allocator": {
+    "requested": "/usr/lib/x86_64-linux-gnu/libtbbmalloc.so.2.11",
+    "resolved": "/usr/lib/x86_64-linux-gnu/libtbbmalloc.so.2.11",
+    "links": [],
+    "identity": {
+      "device": 2096,
+      "inode": 238769,
+      "mode": 33188,
+      "size": 128928,
+      "mtime_ns": 1703687155000000000,
+      "ctime_ns": 1789904130674460820
+    },
+    "path_identity": {
+      "device": 2096,
+      "inode": 238769,
+      "mode": 33188,
+      "size": 128928,
+      "mtime_ns": 1703687155000000000,
+      "ctime_ns": 1789904130674460820
+    },
+    "bytes": 128928,
+    "sha256": "5af2073ee206b88a82360bb692413cd24d9ab22107b4110442c560d4a2ac4b7c"
+  },
+  "package_archive": {
+    "requested": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/openvins-lazy-runtime-closure-dev-1701/upstream/libtbbmalloc2_2021.11.0-2ubuntu2_amd64.deb",
+    "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/openvins-lazy-runtime-closure-dev-1701/upstream/libtbbmalloc2_2021.11.0-2ubuntu2_amd64.deb",
+    "links": [],
+    "identity": {
+      "device": 68,
+      "inode": 26458647812340777,
+      "mode": 33279,
+      "size": 60542,
+      "mtime_ns": 1703689000000000000,
+      "ctime_ns": 1791283476736329000
+    },
+    "path_identity": {
+      "device": 68,
+      "inode": 26458647812340777,
+      "mode": 33279,
+      "size": 60542,
+      "mtime_ns": 1703689000000000000,
+      "ctime_ns": 1791283476736329000
+    },
+    "bytes": 60542,
+    "sha256": "3de9b639d4abe5d8f0e0adbb7e26e32bf9de9473b19155d76a3a24c88b62cfea"
+  },
+  "package_relation": {
+    "source": "onetbb",
+    "version": "2021.11.0-2ubuntu2",
+    "tbb_package": "libtbb12",
+    "allocator_package": "libtbbmalloc2",
+    "exact_allocator_dependency": true,
+    "tbb_owner": "libtbb12:amd64",
+    "allocator_owner": "libtbbmalloc2:amd64"
+  },
+  "upstream": {
+    "repository": "https://github.com/uxlfoundation/oneTBB",
+    "tag": "v2021.11.0",
+    "commit": "8b829acc65569019edb896c5150d427f288e8aba",
+    "license": "Apache-2.0",
+    "dynamic_load_name": "libtbbmalloc.so.2",
+    "mechanism": "first-use dynamic_link of scalable allocator handlers"
+  },
+  "trigger": "first_acknowledged_imu",
+  "ordinary_elf_closure_contains_allocator": false,
+  "lazy_mapping_qualified": true,
+  "runtime_closure_qualified": false,
+  "estimator_health_qualified": false,
+  "physical_execution_qualified": false,
+  "vio_accuracy_qualified": false,
+  "fusion_eligible": false,
+  "flight_ready": false
+}
