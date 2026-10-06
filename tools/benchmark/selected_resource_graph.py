@@ -57,6 +57,8 @@ def references(data: bytes, format: str) -> list[dict]:
                 emit(node, kind, position)
             elif name == 'name' and parent == 'script':
                 emit(node, 'material-name', position)
+            elif name == 'texture' and parent == 'projector':
+                emit(node, 'unsupported', position)
             elif name.endswith('_map'):
                 emit(node, 'texture' if 'pbr' in parents else 'unsupported', position)
         elif name == 'init_from':
