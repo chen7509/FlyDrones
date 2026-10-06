@@ -37,3 +37,6 @@ Offline-generated-world-v2 producer06c0772 passed the22.4MB source cap but refus
 | Untested |Successful actual-scene binding, real runtime lazy/owned maps, online heartbeat, prospective gauge, online VIO repeat |
 
 Next: inspect the retained query18 and fixed Material/ColladaLoader precedence. Design a narrowly explicit deterministic-alternative policy only if supported by upstream behavior: record/freeze every candidate, winner and source context, reject changing candidates, and never relabel multiple paths as unique. Identical bytes are diagnostic evidence, not permission to silently weaken the current profile. Do not repeat inventory/normal physics or rewrite historical evidence. Once actual resource binding is qualified, bounded runtime mapping and prospective gauge remain before online VIO.
+
+## Publication
+Draft PR55: https://github.com/chen7509/FlyDrones/pull/55 stacked on PR54. ZIP135members/1085001bytes, SHA256 bbf2a2b19a035f4bb49e3c448579b88343c5b833befc054a13849d1675e8dfa6. Report/archive producer c45e59c, seal709878e; archived report predates this publication note. Source copies in archive are publication-time copies, not claimed runtime snapshots.
