@@ -187,6 +187,11 @@ def test_exact_truth_match_is_required_without_interpolation():
     (lambda rows: rows[3].__setitem__("public_initialized", False), "public"),
     (lambda rows: rows[2].__setitem__("state_time_s", 2.800000002), "state time"),
     (lambda rows: rows[2].__setitem__("start_ns", rows[2]["receive_ns"] - 1), "clock"),
+    (lambda rows: rows[2].update(receive_ns=1, start_ns=2, end_ns=3), "clock"),
+    (lambda rows: rows[3].__setitem__("initializer_time_s", 1.2), "initializer"),
+    (lambda rows: rows[2].__setitem__("last_regular_update_s", -1), "regular update"),
+    (lambda rows: rows[2].__setitem__("reset_counter", True), "reset counter"),
+    (lambda rows: rows[2].__setitem__("quality", 101), "quality"),
 ])
 def test_invalid_state_lifecycle_is_refused(mutation, pattern):
     states, truth, profile, session, capture = small_input()
@@ -221,6 +226,13 @@ def test_known_reset_or_unknown_health_never_becomes_fusion_qualified():
     assert "reset_observed" in reset["reasons"]
     assert reset["estimator_health_qualified"] is False
     assert reset["fusion_eligible"] is False
+
+    session.update(reset_observed=False)
+    states[2]["reset_counter"] = 0
+    states[3]["reset_counter"] = 1
+    changed = gauge.audit_trajectory(states, truth, session, capture, profile)
+    assert "reset_observed" in changed["reasons"]
+    assert changed["post_origin_trajectory_qualified"] is False
 
 
 def test_fixed_pr48_projection_preserves_first_origin_and_failure(tmp_path):

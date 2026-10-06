@@ -40,7 +40,7 @@ The module rejects malformed or duplicate JSON, unsafe or duplicate ZIP members,
 
 The input is `evidence/supported-online-vio-dev-1701.zip`, SHA-256 `07a2a247b87ff43304ec4c0fe787640264772ad12c272b354d5a5116cdecaeb2`. The adapter verifies ZIP CRC plus the byte length and SHA-256 of all six consumed members against the embedded manifest before parsing.
 
-The authoritative projection is `results/trajectory-gauge-contract-dev-1701/pr48-audit-v2.json`. The earlier v1 is retained because review renamed the overly broad `accuracy_screens_pass` field to `diagnostic_screens_pass`; no input or metric changed.
+The authoritative projection is `results/trajectory-gauge-contract-dev-1701/pr48-audit-v4.json`. Earlier projections are retained: review first renamed the overly broad `accuracy_screens_pass` field, then separated post-origin from full-motion qualification, and finally added per-row reset/quality plus cross-row clock/initializer checks. No input or metric changed.
 
 - 65 camera state rows; 41 internally initialized; 37 public;
 - origin 2.4 s, selected as the first internal state without truth;
@@ -67,16 +67,16 @@ Implementation commits before final publication are:
 
 Verification results:
 
-- trajectory/gauge analytic and fixed-archive tests: 16 passed;
-- focused trajectory, prior gauge, odometry-frame, state-diagnostic, and execution-contract tests: 133 passed;
-- full Python regression with this worktree's `src` explicitly selected: 1,257 passed, 3 skipped, 2 existing warnings;
+- trajectory/gauge analytic and fixed-archive tests: 21 passed;
+- focused trajectory, prior gauge, odometry-frame, state-diagnostic, and execution-contract tests: pending final publication update;
+- full Python regression with this worktree's `src` explicitly selected: pending final publication update;
 - changed-file Ruff: passed;
 - whole-repository Ruff: 53 findings in 34 files, equal to base `5b442aa`; whole-repository lint is not claimed as passing;
 - `git diff --check`: passed.
 
 The initial TDD run failed at import because the new module did not exist. The first implementation then exposed an internal validation defect: the strict vector helper rejected its own NumPy slices. That failure was retained in the stage ledger and the helper was fixed without weakening scalar type, finite, magnitude, shape, or quaternion checks.
 
-Self-review covers JPL/Hamilton direction, global versus body velocity, FLU/FRD conversion, yaw-only alignment, truth-independent origin selection, unavailable startup, exact time association, state lifecycle, reset/quality uncertainty, archive provenance, incomplete-run handling, output overwrite, and broad-claim defaults. No independent reviewer is available under the active single-agent constraint.
+Self-review covers JPL/Hamilton direction, global versus body velocity, FLU/FRD conversion, yaw-only alignment, truth-independent origin selection, unavailable startup, exact time association, cross-row receive/start/end ordering, initializer and regular-update monotonicity, per-row reset/quality changes, archive provenance, incomplete-run handling, output overwrite, and broad-claim defaults. No independent reviewer is available under the active single-agent constraint.
 
 ## Evidence boundary and next gate
 

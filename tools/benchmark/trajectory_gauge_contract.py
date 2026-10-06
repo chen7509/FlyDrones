@@ -176,7 +176,9 @@ def _validate_states(rows):
     if not isinstance(rows, list) or not rows:
         raise ValueError("missing state rows")
     seen_internal = seen_public = False
-    last_sample = last_sequence = last_regular = None
+    last_sample = last_sequence = last_regular = last_initializer = None
+    last_receive = last_start = last_end = None
+    reset_values, quality_values = [], []
     for row in rows:
         if not isinstance(row, dict) or row.get("kind") != "C":
             raise ValueError("invalid state row")
@@ -192,6 +194,13 @@ def _validate_states(rows):
         end = _strict_int(row.get("end_ns"), "end_ns")
         if not receive <= start <= end:
             raise ValueError("invalid processing clock order")
+        if (
+            (last_receive is not None and receive < last_receive)
+            or (last_start is not None and start < last_start)
+            or (last_end is not None and end < last_end)
+        ):
+            raise ValueError("processing clock regressed")
+        last_receive, last_start, last_end = receive, start, end
         internal, public = row.get("internal_initialized"), row.get("public_initialized")
         if type(internal) is not bool or type(public) is not bool:
             raise ValueError("invalid internal/public flag")
@@ -215,9 +224,14 @@ def _validate_states(rows):
             if value != -1 and _seconds_to_ns(value, "state time") > sample:
                 raise ValueError("uninitialized future state time")
         initializer = _number(row.get("initializer_time_s"), "initializer time")
-        if initializer != -1 and _seconds_to_ns(initializer, "initializer time") > sample:
-            raise ValueError("initializer time after sample")
+        if initializer != -1:
+            initializer_ns = _seconds_to_ns(initializer, "initializer time")
+            if initializer_ns > sample or (last_initializer is not None and initializer_ns < last_initializer):
+                raise ValueError("initializer time regressed or after sample")
+            last_initializer = initializer_ns
         regular = _number(row.get("last_regular_update_s"), "regular update time")
+        if public and regular == -1:
+            raise ValueError("public state missing regular update time")
         if regular != -1:
             regular_ns = _seconds_to_ns(regular, "regular update time")
             if regular_ns > sample or (last_regular is not None and regular_ns < last_regular):
@@ -228,6 +242,16 @@ def _validate_states(rows):
                 raise ValueError(f"invalid {name}")
         if row.get("fusion_eligible") is not False:
             raise ValueError("state unexpectedly fusion eligible")
+        reset, quality = row.get("reset_counter"), row.get("quality")
+        if reset is not None and (type(reset) is not int or not 0 <= reset <= 255):
+            raise ValueError("invalid row reset counter")
+        if quality is not None and (type(quality) is not int or not -1 <= quality <= 100):
+            raise ValueError("invalid row quality")
+        if reset is not None:
+            reset_values.append(reset)
+        if quality is not None:
+            quality_values.append(quality)
+    return {"reset_values": reset_values, "quality_values": quality_values}
 
 
 def _truth_index(rows):
@@ -265,7 +289,7 @@ def _validate_session(session):
 def audit_trajectory(states, truth_rows, session, capture, contract):
     if not isinstance(contract, dict) or contract.get("schema") != "trajectory-gauge-contract-v1":
         raise ValueError("invalid trajectory contract")
-    _validate_states(states)
+    state_evidence = _validate_states(states)
     truth = _truth_index(truth_rows)
     _validate_session(session)
     if not isinstance(capture, dict) or not isinstance(capture.get("status"), str):
@@ -332,7 +356,17 @@ def audit_trajectory(states, truth_rows, session, capture, contract):
 
     reset = session.get("reset_counter")
     quality = session.get("quality")
-    reset_observed = session.get("reset_observed", False)
+    row_resets = state_evidence["reset_values"]
+    row_qualities = state_evidence["quality_values"]
+    reset_observed = bool(
+        session.get("reset_observed", False)
+        or len(set(row_resets)) > 1
+        or (reset is not None and any(value != reset for value in row_resets))
+    )
+    quality_changed = bool(
+        len(set(row_qualities)) > 1
+        or (quality is not None and any(value != quality for value in row_qualities))
+    )
     if reset is None:
         reasons.append("reset_unknown")
     if reset_observed:
@@ -341,6 +375,8 @@ def audit_trajectory(states, truth_rows, session, capture, contract):
         reasons.append("quality_unknown")
     elif quality < 0:
         reasons.append("quality_failed")
+    if quality_changed:
+        reasons.append("quality_changed")
     if not session["covariance_calibrated"]:
         reasons.append("covariance_uncalibrated")
     health = bool(
@@ -348,6 +384,7 @@ def audit_trajectory(states, truth_rows, session, capture, contract):
         and not reset_observed
         and quality is not None
         and quality > 0
+        and not quality_changed
         and session["covariance_calibrated"]
     )
 
