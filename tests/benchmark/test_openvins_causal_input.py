@@ -119,6 +119,54 @@ def test_silent_source_and_queue_overflow_are_explicit():
         send(s, 8, sample("rgb", 802_000_000))
 
 
+def test_study_v9_exact_stamp_complement_transitions_before_old_stage_expires():
+    """The exact complementary RGB changes dependency stage before expiry."""
+    s = stream()
+    assert send(s, 0, sample("imu", 1_000_000, wall=26_727_469_680))[0]["kind"] == "imu"
+    assert send(s, 1, sample("info", 2_000_000, wall=28_173_399_627)) == []
+    assert send(s, 2, sample("rgb", 2_000_000, wall=28_432_165_379)) == []
+    actions = send(s, 3, sample("imu", 4_000_000, wall=28_432_743_501))
+    assert [action["kind"] for action in actions] == ["imu", "camera"]
+    assert actions[1]["sample_ns"] == 2_000_000
+    assert actions[1]["rgb_sequence"] == 2 and actions[1]["info_sequence"] == 1
+
+
+def test_reverse_exact_stamp_complement_uses_the_same_stage_transition():
+    s = stream()
+    send(s, 0, sample("imu", 1_000_000, wall=900_000_000))
+    send(s, 1, sample("rgb", 2_000_000, wall=1_000_000_000))
+    send(s, 2, sample("info", 2_000_000, wall=1_258_765_752))
+    actions = send(s, 3, sample("imu", 4_000_000, wall=1_259_000_000))
+    assert [action["kind"] for action in actions] == ["imu", "camera"]
+    assert actions[1]["rgb_sequence"] == 1 and actions[1]["info_sequence"] == 2
+
+
+def test_paired_stage_waiting_for_imu_uses_later_pair_arrival_for_same_limit():
+    s = stream()
+    send(s, 0, sample("imu", 1_000_000, wall=900_000_000))
+    send(s, 1, sample("info", 2_000_000, wall=1_000_000_000))
+    send(s, 2, sample("rgb", 2_000_000, wall=1_200_000_000))
+    assert s.tick(1_450_000_000) == []
+    with pytest.raises(ValueError, match="wait"):
+        s.tick(1_450_000_001)
+
+
+def test_exact_complement_does_not_rescue_another_expired_stamp():
+    s = stream()
+    send(s, 0, sample("info", 2_000_000, wall=1_000_000_000))
+    with pytest.raises(ValueError, match="wait"):
+        send(s, 1, sample("rgb", 3_000_000, wall=1_250_000_001))
+
+
+def test_paired_stage_rejects_imu_after_its_unchanged_wall_limit():
+    s = stream()
+    send(s, 0, sample("imu", 1_000_000, wall=900_000_000))
+    send(s, 1, sample("info", 2_000_000, wall=1_000_000_000))
+    send(s, 2, sample("rgb", 2_000_000, wall=1_258_765_752))
+    with pytest.raises(ValueError, match="wait"):
+        send(s, 3, sample("imu", 4_000_000, wall=1_508_765_753))
+
+
 def test_end_of_capture_preserves_missing_boundary_and_metadata():
     s = stream()
     send(s, 0, sample("imu", 1_000_000))

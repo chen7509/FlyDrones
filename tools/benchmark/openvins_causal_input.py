@@ -105,11 +105,19 @@ class CausalInput:
         if self._closed:
             raise ValueError("input session closed")
 
-    def _expire(self):
-        for pending in self._pending.values():
-            for row, _ in pending.values():
-                if self._watermark - row["arrival_monotonic_ns"] > 250_000_000:
-                    self._reject("pending input exceeded wall wait")
+    def _expire(self, *, completing_stamp=None):
+        """Expire the current dependency stage for each camera stamp."""
+        for stamp in sorted(set(self._pending["rgb"]) | set(self._pending["info"])):
+            if stamp == completing_stamp:
+                continue
+            rows = [
+                pending[stamp][0]
+                for pending in self._pending.values()
+                if stamp in pending
+            ]
+            stage_start = max(row["arrival_monotonic_ns"] for row in rows)
+            if self._watermark - stage_start > 250_000_000:
+                self._reject("pending input exceeded wall wait")
 
     def accept(self, event, *, sequence, session_id, clock_id):
         self._open()
@@ -153,7 +161,9 @@ class CausalInput:
             self._watermark = max(self._watermark, arrival)
             if self._watermark - arrival > 250_000_000:
                 raise ValueError("input already exceeded wall wait")
-            self._expire()
+            complement = {"rgb": "info", "info": "rgb"}.get(kind)
+            completing_stamp = stamp if complement is not None and stamp in self._pending[complement] else None
+            self._expire(completing_stamp=completing_stamp)
             if kind != "imu" and len(self._pending[kind]) >= 8:
                 raise ValueError("pending input capacity exceeded")
             self._last[kind], self._last_arrival[kind] = stamp, arrival
@@ -179,6 +189,7 @@ class CausalInput:
             else:
                 self._pending[kind][stamp] = (row, sequence)
             actions.extend(self._release())
+            self._expire()
             return actions
         except (ValueError, TypeError, KeyError, AttributeError, OverflowError) as exc:
             for key, value in before.items():
