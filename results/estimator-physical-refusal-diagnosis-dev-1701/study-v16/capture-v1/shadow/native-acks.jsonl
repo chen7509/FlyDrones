@@ -1,0 +1,1 @@
+{"sequence": 0, "kind": "I", "sample_ns": 1000000, "receive_ns": 75115276915, "start_ns": 75115294582, "end_ns": 75115304827, "gray_first": -1, "fusion_eligible": false, "quality": null, "reset_counter": null, "acknowledged_ns": 75116031062, "source_arrival_ns": 75113106330, "dispatch_ns": 75114433839}

@@ -52,6 +52,8 @@ def raw_profile():
         "limits": {
             "pending_per_kind": 8,
             "wall_wait_ns": 250_000_000,
+            "wall_wait_scope": "legacy evidence only; current camera dependency age uses simulation time",
+            "pair_sim_wait_ns": 250_000_000,
             "image_imu_lag_ns": 200_000_000,
             "max_imu_gap_ns": 4_000_000,
         },
@@ -81,6 +83,7 @@ class CausalInput:
         self.profile_sha256 = hashlib.sha256(self._profile_json.encode()).hexdigest()
         self._last_sequence = -1
         self._watermark = 0
+        self._sim_watermark = 0
         self._last = {}
         self._last_arrival = {}
         self._pending = {"rgb": {}, "info": {}}
@@ -115,15 +118,16 @@ class CausalInput:
                 for pending in self._pending.values()
                 if stamp in pending
             ]
-            stage_start = max(row["arrival_monotonic_ns"] for row in rows)
-            if self._watermark - stage_start > 250_000_000:
-                self._reject("pending input exceeded wall wait")
+            stage_start = max(row["observed_sim_ns"] for row in rows)
+            if self._sim_watermark - stage_start > 250_000_000:
+                self._reject("pending input exceeded simulation wait")
 
     def accept(self, event, *, sequence, session_id, clock_id):
         self._open()
         transaction_fields = (
             "_last_sequence",
             "_watermark",
+            "_sim_watermark",
             "_last",
             "_last_arrival",
             "_pending",
@@ -142,6 +146,7 @@ class CausalInput:
             if kind not in {"imu", "rgb", "info"}:
                 raise ValueError("unsupported estimator input kind")
             stamp, arrival = row["sample_ns"], row["arrival_monotonic_ns"]
+            observed_sim = row["observed_sim_ns"]
             if stamp <= self._last.get(kind, 0) or arrival < self._last_arrival.get(kind, 0):
                 raise ValueError("duplicate/regressed sample or arrival")
             if kind == "imu" and kind in self._last and stamp - self._last[kind] > 4_000_000:
@@ -159,8 +164,9 @@ class CausalInput:
                 ):
                     raise ValueError("camera calibration differs from pinned profile")
             self._watermark = max(self._watermark, arrival)
-            if self._watermark - arrival > 250_000_000:
-                raise ValueError("input already exceeded wall wait")
+            self._sim_watermark = max(self._sim_watermark, observed_sim)
+            if self._sim_watermark - observed_sim > 250_000_000:
+                raise ValueError("input already exceeded simulation wait")
             complement = {"rgb": "info", "info": "rgb"}.get(kind)
             completing_stamp = stamp if complement is not None and stamp in self._pending[complement] else None
             self._expire(completing_stamp=completing_stamp)
@@ -182,6 +188,7 @@ class CausalInput:
                         source_arrival_ns=arrival,
                         release_sequence=sequence,
                         release_wall_ns=self._watermark,
+                        release_sim_ns=self._sim_watermark,
                         profile_sha256=self.profile_sha256,
                         eligible_for_px4_fusion=False,
                     )
@@ -229,6 +236,7 @@ class CausalInput:
                     imu_boundary_sequence=self._imu_sequence,
                     release_sequence=self._last_sequence,
                     release_wall_ns=self._watermark,
+                    release_sim_ns=self._sim_watermark,
                     profile_sha256=self.profile_sha256,
                     eligible_for_px4_fusion=False,
                 )
@@ -236,11 +244,11 @@ class CausalInput:
         return actions
 
     def tick(self, wall_monotonic_ns):
+        """Advance only the host-service clock; source events own simulation time."""
         self._open()
         if type(wall_monotonic_ns) is not int or wall_monotonic_ns < self._watermark:
             self._reject("consumer wall clock regressed")
         self._watermark = wall_monotonic_ns
-        self._expire()
         return []
 
     def finish(self):

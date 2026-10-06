@@ -159,7 +159,7 @@ def test_study_v8_queued_later_imu_is_not_expired_by_local_service_time(tmp_path
     assert client.sent[-1][0]["imu_boundary_ns"] == 4_000_000
 
 
-def test_online_adapter_rejects_imu_arrival_past_paired_stage_250_ms(tmp_path):
+def test_online_adapter_accepts_slow_wall_pair_with_fresh_simulation_time(tmp_path):
     from tools.benchmark.openvins_online_shadow import ShadowInput
 
     after_record = iter([1_000_000_000, 1_001_000_000, 1_002_000_000, 1_251_000_001])
@@ -170,21 +170,33 @@ def test_online_adapter_rejects_imu_arrival_past_paired_stage_250_ms(tmp_path):
     shadow.on_record(event("rgb", 2_000_000, 1_002_000_000), pixels)
     shadow.on_record(event("imu", 4_000_000, 1_252_000_001), None)
     result = shadow.finish()
-    assert result["failure"] == "InputRefusal('pending input exceeded wall wait')"
+    assert result["failure"] is None
+    assert [item[0]["kind"] for item in shadow.client.sent] == ["imu", "imu", "camera"]
     assert result["fusion_eligible"] is False
 
 
-def test_online_adapter_explicit_idle_tick_keeps_exact_silence_boundary(tmp_path):
+def test_online_adapter_wall_idle_does_not_advance_simulation_dependency_age(tmp_path):
     from tools.benchmark.openvins_online_shadow import ShadowInput
 
     shadow = ShadowInput(FakeNative(), tmp_path, session_id="silent-source", now=lambda: 9_000_000_000)
     shadow.on_record(event("info", 2_000_000, 1_000_000_000), b"PB")
     shadow.tick_idle(1_250_000_000)
     assert shadow.failure is None
-    shadow.tick_idle(1_250_000_001)
+    shadow.tick_idle(9_000_000_000)
     result = shadow.finish()
-    assert result["failure"] == "ValueError('pending input exceeded wall wait')"
-    assert result["pending"][0]["reason"] == "pending input exceeded wall wait"
+    assert result["failure"] is None
+    assert result["pending"][0]["reason"] == "rgb_missing"
+
+
+def test_online_adapter_rejects_missing_pair_after_simulation_advance(tmp_path):
+    from tools.benchmark.openvins_online_shadow import ShadowInput
+
+    shadow = ShadowInput(FakeNative(), tmp_path, session_id="sim-stale", now=lambda: 2_000_000_000)
+    shadow.on_record(event("info", 2_000_000, 1_000_000_000), b"PB")
+    shadow.on_record(event("rgb", 253_000_001, 1_000_000_001), b"\xff" * 57600)
+    result = shadow.finish()
+    assert result["failure"] == "InputRefusal('pending input exceeded simulation wait')"
+    assert result["pending"][0]["reason"] == "pending input exceeded simulation wait"
 
 
 def test_consumer_failure_latches_but_raw_writer_still_retains_inputs(tmp_path):

@@ -1,0 +1,13 @@
+{
+  "pid": 667,
+  "command": [
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/openvins-online-shadow-dev-1701/online_probe",
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/openvins-online-shadow-dev-1701/raw-model-zero-bias-diffusion-v1/estimator_config.yaml",
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/capture-v1/shadow/states.jsonl",
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/capture-v1/shadow/fast.jsonl"
+  ],
+  "started_monotonic_ns": 72918242355,
+  "reset_counter": null,
+  "quality": null,
+  "fusion_eligible": false
+}

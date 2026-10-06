@@ -1,0 +1,43 @@
+..........................................FF............................ [ 80%]
+..................                                                       [100%]
+================================== FAILURES ===================================
+______ test_online_adapter_rejects_imu_arrival_past_paired_stage_250_ms _______
+
+tmp_path = WindowsPath('C:/Users/yuche/AppData/Local/Temp/pytest-of-yuche/pytest-9466/test_online_adapter_rejects_im0')
+
+    def test_online_adapter_rejects_imu_arrival_past_paired_stage_250_ms(tmp_path):
+        from tools.benchmark.openvins_online_shadow import ShadowInput
+    
+        after_record = iter([1_000_000_000, 1_001_000_000, 1_002_000_000, 1_251_000_001])
+        shadow = ShadowInput(FakeNative(), tmp_path, session_id="stale-source", now=lambda: next(after_record))
+        pixels = b"\xff" * 57600
+        shadow.on_record(event("imu", 1_000_000, 1_000_000_000), None)
+        shadow.on_record(event("info", 2_000_000, 1_001_000_000), b"PB")
+        shadow.on_record(event("rgb", 2_000_000, 1_002_000_000), pixels)
+        shadow.on_record(event("imu", 4_000_000, 1_252_000_001), None)
+        result = shadow.finish()
+>       assert result["failure"] == "InputRefusal('pending input exceeded wall wait')"
+E       assert None == "InputRefusal('pending input exceeded wall wait')"
+
+tests\benchmark\test_openvins_online_shadow.py:173: AssertionError
+_____ test_online_adapter_explicit_idle_tick_keeps_exact_silence_boundary _____
+
+tmp_path = WindowsPath('C:/Users/yuche/AppData/Local/Temp/pytest-of-yuche/pytest-9466/test_online_adapter_explicit_i0')
+
+    def test_online_adapter_explicit_idle_tick_keeps_exact_silence_boundary(tmp_path):
+        from tools.benchmark.openvins_online_shadow import ShadowInput
+    
+        shadow = ShadowInput(FakeNative(), tmp_path, session_id="silent-source", now=lambda: 9_000_000_000)
+        shadow.on_record(event("info", 2_000_000, 1_000_000_000), b"PB")
+        shadow.tick_idle(1_250_000_000)
+        assert shadow.failure is None
+        shadow.tick_idle(1_250_000_001)
+        result = shadow.finish()
+>       assert result["failure"] == "ValueError('pending input exceeded wall wait')"
+E       assert None == "ValueError('pending input exceeded wall wait')"
+
+tests\benchmark\test_openvins_online_shadow.py:186: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/benchmark/test_openvins_online_shadow.py::test_online_adapter_rejects_imu_arrival_past_paired_stage_250_ms
+FAILED tests/benchmark/test_openvins_online_shadow.py::test_online_adapter_explicit_idle_tick_keeps_exact_silence_boundary
+2 failed, 88 passed in 2.44s

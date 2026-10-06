@@ -18,11 +18,11 @@
 
 ### Task 3: Execute one immutable physical attempt
 
-- [ ] Verify exact head/archive/audits/destination and empty resources in a one-shot wrapper.
-- [ ] Run `study-v16/capture-v1` once and retain success or failure without retry.
-- [ ] Independently classify the earliest terminal cause and all downstream false claims.
+- [x] Verify exact head/archive/audits/destination and empty resources in a one-shot wrapper.
+- [x] Run `study-v16/capture-v1` once and retain success or failure without retry.
+- [x] Independently classify the earliest terminal cause and all downstream false claims.
 
 ### Task 4: Verify and report
 
-- [ ] Run focused and full regressions, Ruff and diff checks.
-- [ ] Update the diagnosis report, seal evidence, push PR65 and advance the automation only to the next proven dependency.
+- [x] Run focused and full regressions, Ruff and diff checks.
+- [x] Update the diagnosis report, seal evidence, push PR65 and advance the automation only to the next proven dependency.

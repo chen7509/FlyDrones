@@ -1,0 +1,21 @@
+{
+  "failure": "ValueError('pending input exceeded wall wait')",
+  "inputs_accepted": 2,
+  "delivered": 1,
+  "skipped_after_failure": 0,
+  "pending": [
+    {
+      "sample_ns": 2000000,
+      "rgb_sequence": null,
+      "info_sequence": 1,
+      "reason": "pending input exceeded wall wait",
+      "eligible_for_px4_fusion": false
+    }
+  ],
+  "retained_pixel_stamps": [],
+  "released_unacknowledged": [],
+  "fusion_eligible": false,
+  "quality": null,
+  "reset_counter": null,
+  "last_delivery_acks": []
+}
