@@ -126,16 +126,49 @@ def ack(*, sequence=4, sample_ns=2_400_000_000, acknowledged_ns=10_000_000_000,
     }
 
 
-def source_row(sequence=8, arrival=9_999_999_900, observed_sim=2_404_000_000):
+def source_row(sequence=8, arrival=9_999_999_900, observed_sim=2_404_000_000,
+               sample_ns=None, sim_age_at_callback_ns=None):
+    sample_ns = observed_sim if sample_ns is None else sample_ns
+    derived_age = observed_sim - sample_ns
     return {
         "kind": "imu",
         "source_sequence": sequence,
-        "sample_ns": observed_sim,
+        "sample_ns": sample_ns,
         "arrival_monotonic_ns": arrival,
         "observed_sim_ns": observed_sim,
+        "sim_age_at_callback_ns": (
+            derived_age if sim_age_at_callback_ns is None else sim_age_at_callback_ns
+        ),
         "gyro_flu": [0.1, 0.2, 0.3],
         "accel_flu": [0.0, 0.0, 9.81],
     }
+
+
+def test_one_physics_step_sensor_lead_is_causal(tmp_path):
+    gate, _, _ = setup_readiness(tmp_path)
+    row = source_row(observed_sim=3_000_000, sample_ns=4_000_000)
+    gate.observe_ack_batch([ack(sample_ns=4_000_000)], row)
+    assert gate.proof()["estimator_internal"]["sample_ns"] == 4_000_000
+    assert gate.finish()["failure"] is None
+
+
+@pytest.mark.parametrize(
+    "row",
+    [
+        source_row(observed_sim=3_000_000, sample_ns=4_000_001),
+        source_row(
+            observed_sim=3_000_000,
+            sample_ns=4_000_000,
+            sim_age_at_callback_ns=0,
+        ),
+    ],
+)
+def test_invalid_sensor_lead_or_derived_age_refuses(tmp_path, row):
+    gate, _, _ = setup_readiness(tmp_path)
+    with pytest.raises(ValueError, match="simulation clock"):
+        gate.observe_ack_batch([ack(sample_ns=4_000_000)], row)
+    assert gate.failure
+    gate.finish()
 
 
 def source_ready(base, now):

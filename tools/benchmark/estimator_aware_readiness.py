@@ -37,6 +37,7 @@ CAMERA_ACK_KEYS = COMMON_ACK_KEYS | {
 }
 MAX_NS = 2**63 - 1
 MAX_MAGNITUDE = 1e10
+MAX_SOURCE_SIM_LEAD_NS = 1_000_000
 
 
 def _integer(value, name, *, minimum=0):
@@ -174,7 +175,14 @@ class EstimatorAwareReadiness:
                 source_sample = _integer(source_row.get("sample_ns"), "source sample", minimum=1)
                 source_arrival = _integer(source_row.get("arrival_monotonic_ns"), "source arrival", minimum=1)
                 observed_sim = _integer(source_row.get("observed_sim_ns"), "observed simulation time", minimum=1)
-                if source_arrival > now or source_sample > observed_sim:
+                source_age = source_row.get("sim_age_at_callback_ns")
+                if type(source_age) is not int or not -MAX_NS <= source_age <= MAX_NS:
+                    raise ValueError("invalid source simulation clock")
+                if source_age != observed_sim - source_sample:
+                    raise ValueError("inconsistent source simulation clock")
+                if source_age < -MAX_SOURCE_SIM_LEAD_NS:
+                    raise ValueError("source simulation clock lead exceeded")
+                if source_arrival > now:
                     raise ValueError("future acknowledgement source")
                 for value in acknowledgements:
                     sequence, sample, acknowledged = _validate_common_ack(value, now)
