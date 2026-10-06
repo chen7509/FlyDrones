@@ -73,4 +73,4 @@
 - [x] Run full regression, changed-file Ruff, source-tree Ruff comparison, and `git diff --check`.
 - [x] Confirm no competing or leftover runtime/test process.
 - [x] Seal sources, retained failures, outputs, tests, report, manifest, ZIP hash, and CRC.
-- [ ] Commit, push, and open a stacked draft PR.
+- [x] Commit, push, and open stacked draft PR 64.
