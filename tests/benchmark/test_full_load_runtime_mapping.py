@@ -214,6 +214,26 @@ def test_exact_execution_contract_and_declared_command(tmp_path):
                             "--runtime-binding", str(args.runtime_binding.resolve())]
 
 
+def test_declared_v3_study_command_requires_same_launch_environment(tmp_path):
+    for name in ("online_probe", "config.yaml", "reference.so"):
+        (tmp_path / name).write_bytes(name.encode())
+    args = study.study_args(
+        tmp_path / "capture", tmp_path / "online_probe", tmp_path / "config.yaml",
+        tmp_path / "reference.so", "a" * 64,
+    )
+    environment = {"HOME": "/home/test", "PYTHONPATH": None, "SDF_PATH": ""}
+    contract_path = tmp_path / "execution-contract.json"
+    contract_path.write_text(json.dumps(study.execution_contract(args, environment)))
+    args.execution_contract = contract_path
+    command = study.declared_study_command(
+        args, "/usr/bin/python3", "/study/capture.py", environment,
+    )
+    assert command[0:2] == ["/usr/bin/python3", "/study/capture.py"]
+    changed = dict(environment, PYTHONPATH="hostile")
+    with pytest.raises(ValueError, match="declaration"):
+        study.declared_study_command(args, "/usr/bin/python3", "/study/capture.py", changed)
+
+
 def test_prepare_refuses_active_resources_and_reused_destination(tmp_path):
     with pytest.raises(ValueError, match="competing"):
         study.ensure_prepare_allowed(tmp_path / "new", [{"pid": 1}])

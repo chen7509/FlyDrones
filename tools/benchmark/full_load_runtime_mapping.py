@@ -14,7 +14,12 @@ import zipfile
 from pathlib import Path
 from types import SimpleNamespace
 
-from tools.benchmark.capture_contract import declared_command, execution_contract, read_declaration
+from tools.benchmark.capture_contract import (
+    declared_command,
+    derive_launch_environment,
+    execution_contract,
+    read_declaration,
+)
 from tools.benchmark.declared_runtime_snapshot import file_record, parse_ldd, snapshot, write_manifest
 from tools.benchmark.native_resource_client import QUERY_ENV_KEYS
 from tools.benchmark.runtime_resource_binding import ENV_KEYS, GENERATED_NAMES
@@ -166,8 +171,8 @@ def study_args(output, shadow_binary, shadow_config, reference_module, reference
     )
 
 
-def declared_study_command(args, python, capture_script):
-    return declared_command(args, python, capture_script)
+def declared_study_command(args, python, capture_script, launch_environment=None):
+    return declared_command(args, python, capture_script, launch_environment)
 
 
 def ensure_prepare_allowed(output, resources):
@@ -310,13 +315,14 @@ def prepare_study(output, *, base_binding, base_binding_sha256, scene_archive, s
     hashes = generated_hashes(scene_archive, scene_archive_sha256, scene_prefix, gz_env)
     binding, merge = merge_binding(base, additions, hashes)
     args = study_args(output / "capture-v1", shadow_binary, shadow_config, reference_module, reference_sha256)
-    contract = execution_contract(args)
+    launch_environment = derive_launch_environment(binding)
+    contract = execution_contract(args, launch_environment)
     contract_path = output / "execution-contract.json"
     binding_path = output / "runtime-binding-v3.json"
     args.execution_contract, args.runtime_binding = contract_path, binding_path
     write_manifest(contract_path, contract)
     write_manifest(binding_path, binding)
-    command = declared_study_command(args, python, capture_script)
+    command = declared_study_command(args, python, capture_script, launch_environment)
     manifest = dict(
         schema="full-load-runtime-mapping-study-v1", prepare_only=True,
         command=command, base_binding=str(base_path.resolve()), base_binding_sha256=base_binding_sha256,

@@ -11,11 +11,14 @@ import subprocess
 import threading
 import time
 from collections import Counter
+from pathlib import Path
 
 import numpy as np
 
 from flydrones.benchmark.camera_info_capture import CameraInfoRecorder
 from flydrones.benchmark.rgb_capture import RgbFrameRecorder
+from tools.benchmark.capture_contract import materialize_launch_environment, validate_launch_environment
+from tools.benchmark.declared_runtime_snapshot import write_manifest
 
 
 def validate_event(event, *, allow_legacy_info=False):
@@ -302,7 +305,34 @@ def terminate_owned_group(worker):
     return evidence.terminate()
 
 
-def supervise_worker(command, output, *, timeout_s=300, spawn=None, terminate=None):
+def record_supervisor_environment(output, launch_environment, execution_contract):
+    declared = validate_launch_environment(launch_environment)
+    materialized = materialize_launch_environment(declared)
+    contract = Path(execution_contract).resolve(strict=True)
+    before = contract.stat()
+    payload = contract.read_bytes()
+    after = contract.stat()
+    if before != after:
+        raise ValueError("execution contract changed while recording launch environment")
+    record = {
+        "schema": "supervisor-launch-environment-v1",
+        "declared": declared,
+        "materialized": materialized,
+        "execution_contract": {
+            "path": str(contract), "bytes": len(payload), "sha256": hashlib.sha256(payload).hexdigest(),
+        },
+        "ambient_inherited": False,
+        "runtime_environment_qualified": False,
+        "physics_qualified": False,
+        "fusion_eligible": False,
+    }
+    output = Path(output)
+    write_manifest(output.with_name(output.name + ".supervisor-environment.json"), record)
+    return materialized
+
+
+def supervise_worker(command, output, *, timeout_s=300, spawn=None, terminate=None,
+                     launch_environment=None, execution_contract=None):
     if output.exists():
         raise FileExistsError(output)
     real = spawn is None and terminate is None
@@ -312,8 +342,8 @@ def supervise_worker(command, output, *, timeout_s=300, spawn=None, terminate=No
         if os.name != "posix":
             raise RuntimeError("physical capture supervisor requires POSIX process groups")
 
-        def spawn(command):
-            return subprocess.Popen(command, start_new_session=True)
+        def spawn(command, **kwargs):
+            return subprocess.Popen(command, start_new_session=True, **kwargs)
 
     terminate = terminate or terminate_owned_group
     evidence, stream = None, None
@@ -322,8 +352,20 @@ def supervise_worker(command, output, *, timeout_s=300, spawn=None, terminate=No
 
         output.parent.mkdir(parents=True, exist_ok=True)
         stream = output.with_name(output.name + ".supervisor-events.jsonl").open("x")
+    if (launch_environment is None) != (execution_contract is None):
+        if stream:
+            stream.close()
+        raise ValueError("launch environment and execution contract required together")
+    child_environment = None
+    if launch_environment is not None:
+        try:
+            child_environment = record_supervisor_environment(output, launch_environment, execution_contract)
+        except Exception:
+            if stream:
+                stream.close()
+            raise
     try:
-        worker = spawn(command)
+        worker = spawn(command, **({"env": child_environment} if child_environment is not None else {}))
     except Exception:
         if stream:
             stream.close()

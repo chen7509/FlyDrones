@@ -1,3 +1,4 @@
+import hashlib
 import importlib.util
 import json
 import time
@@ -213,3 +214,82 @@ def test_supervisor_terminates_own_blocked_worker(tmp_path):
     assert result["status"] == "supervisor_timeout"
     saved = json.loads((tmp_path / "capture/result.json").read_text())
     assert saved["status"] == "capture_failed"
+
+
+def test_supervisor_passes_only_materialized_declared_environment(tmp_path, monkeypatch):
+    monkeypatch.setenv('PYTHONPATH', 'hostile-parent')
+    monkeypatch.setenv('HTTP_PROXY', 'hostile-proxy')
+    contract_path = tmp_path / 'execution-contract.json'
+    contract_path.write_text('{"schema":"capture-execution-v2"}\n')
+    declared = {'HOME': '/home/test', 'PYTHONPATH': None, 'SDF_PATH': ''}
+    calls = []
+
+    class Done:
+        pid = 54321
+        returncode = 0
+
+        def wait(self, timeout):
+            return 0
+
+    def spawn(command, **kwargs):
+        calls.append((command, kwargs))
+        return Done()
+
+    result = api().supervise_worker(
+        ['synthetic'], tmp_path / 'capture', spawn=spawn, terminate=lambda _worker: None,
+        launch_environment=declared, execution_contract=contract_path,
+    )
+    assert result['status'] == 'worker_exited'
+    assert calls == [(['synthetic'], {'env': {'HOME': '/home/test', 'SDF_PATH': ''}})]
+    record_path = tmp_path / 'capture.supervisor-environment.json'
+    record = json.loads(record_path.read_text())
+    assert record['declared'] == declared
+    assert record['materialized'] == {'HOME': '/home/test', 'SDF_PATH': ''}
+    assert record['execution_contract']['sha256'] == hashlib.sha256(contract_path.read_bytes()).hexdigest()
+    assert record['ambient_inherited'] is False
+    assert record['runtime_environment_qualified'] is False
+
+
+def test_supervisor_environment_record_survives_spawn_failure(tmp_path):
+    contract_path = tmp_path / 'execution-contract.json'
+    contract_path.write_text('{}\n')
+
+    def fail(_command, **_kwargs):
+        raise OSError('injected spawn failure')
+
+    with pytest.raises(OSError, match='spawn failure'):
+        api().supervise_worker(
+            ['synthetic'], tmp_path / 'capture', spawn=fail, terminate=lambda _worker: None,
+            launch_environment={'HOME': '/home/test'}, execution_contract=contract_path,
+        )
+    assert (tmp_path / 'capture.supervisor-environment.json').is_file()
+    assert not (tmp_path / 'capture').exists()
+
+
+def test_supervisor_refuses_environment_record_failure_before_spawn(tmp_path, monkeypatch):
+    contract_path = tmp_path / 'execution-contract.json'
+    contract_path.write_text('{}\n')
+    calls = []
+    monkeypatch.setattr(api(), 'write_manifest', lambda *_args: (_ for _ in ()).throw(OSError('short write')))
+    with pytest.raises(OSError, match='short write'):
+        api().supervise_worker(
+            ['synthetic'], tmp_path / 'capture', spawn=lambda *a, **k: calls.append((a, k)),
+            terminate=lambda _worker: None, launch_environment={'HOME': '/home/test'},
+            execution_contract=contract_path,
+        )
+    assert calls == []
+
+
+@pytest.mark.parametrize('environment,contract', [
+    ({'HOME': 1}, 'valid'), ({'HOME': '/home/test'}, 'missing'),
+])
+def test_supervisor_refuses_invalid_environment_inputs(tmp_path, environment, contract):
+    contract_path = tmp_path / 'execution-contract.json'
+    if contract == 'valid':
+        contract_path.write_text('{}\n')
+    with pytest.raises((ValueError, FileNotFoundError)):
+        api().supervise_worker(
+            ['synthetic'], tmp_path / 'capture', spawn=lambda *_a, **_k: None,
+            terminate=lambda _worker: None, launch_environment=environment,
+            execution_contract=contract_path,
+        )
