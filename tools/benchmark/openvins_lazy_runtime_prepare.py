@@ -20,7 +20,6 @@ from tools.benchmark.declared_runtime_snapshot import file_record, snapshot, wri
 from tools.benchmark.supported_heartbeat_gauge_preflight import (
     EXPECTED_PROFILES,
     EXPECTED_WORKLOAD,
-    FALSE_SOURCE_CLAIMS,
     _study_args,
 )
 from tools.benchmark.trajectory_gauge_contract import validate_trajectory_gauge_policy
