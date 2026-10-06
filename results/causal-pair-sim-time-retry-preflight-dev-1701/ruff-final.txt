@@ -1,0 +1,12 @@
+E402 Module level import not at top of file
+  --> results\estimator-physical-refusal-diagnosis-dev-1701\startup-preflight-v10-launcher.py:10:1
+   |
+ 8 | sys.path[:0] = [str(ROOT), str(ROOT / "src")]
+ 9 |
+10 | from tools.benchmark.capture_disarmed_sensors import active_resources
+   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+11 |
+12 | EXPECTED_HEAD = "bddefaf505edff403fae8c12fa99a034e36b4f40"
+   |
+
+Found 1 error.

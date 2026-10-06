@@ -48,7 +48,7 @@
 ### Task 2: Startup-only production preflight
 
 **Files:**
-- Create: `results/estimator-physical-refusal-diagnosis-dev-1701/study-v17/startup-preflight-v1/`
+- Create: `results/estimator-physical-refusal-diagnosis-dev-1701/study-v18/startup-preflight-v1/`
 - Create: dispatch, completion, supervisor and independent startup-audit evidence.
 - Modify: `docs/ESTIMATOR_PHYSICAL_REFUSAL_DIAGNOSIS_REPORT.md`
 
@@ -56,8 +56,8 @@
 - Consumes: committed authoritative `study-v18` manifest, execution contract and runtime binding.
 - Produces: startup-preflight result with phase exclusion, cleanup and empty-resource evidence.
 
-- [ ] Build a one-shot wrapper that checks the exact head, committed package audit, absent destination and empty resources.
-- [ ] Execute exactly one startup-preflight and retain success or failure without retry.
-- [ ] Audit allowed phases, absence of PX4/OpenVINS/physics/sensors/motion/ULog, runtime files, supervisor cleanup and resources.
-- [ ] Run focused and full regression tests, changed-file Ruff and source diff checks.
-- [ ] Update the report, seal evidence, commit and push PR65; advance automation only to the next proven dependency.
+- [x] Build a one-shot wrapper that checks the exact head, committed package audit, absent destination and empty resources.
+- [x] Execute exactly one startup-preflight and retain success or failure without retry.
+- [x] Audit allowed phases, absence of PX4/OpenVINS/physics/sensors/motion/ULog, runtime files, supervisor cleanup and resources.
+- [x] Run focused and full regression tests, changed-file Ruff and source diff checks.
+- [x] Update the report, seal evidence, commit and push PR65; advance automation only to the next proven dependency.
