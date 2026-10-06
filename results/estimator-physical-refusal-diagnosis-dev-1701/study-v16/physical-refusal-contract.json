@@ -1,0 +1,381 @@
+{
+  "schema": "estimator-physical-refusal-contract-v1",
+  "source_study": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/estimator-aware-readiness-preflight-dev-1701/study-v2",
+  "source_audit": {
+    "requested": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/estimator-aware-readiness-preflight-dev-1701/audit-v2.json",
+    "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/estimator-aware-readiness-preflight-dev-1701/audit-v2.json",
+    "links": [],
+    "identity": {
+      "device": 68,
+      "inode": 30962247438745120,
+      "mode": 33279,
+      "size": 362,
+      "mtime_ns": 1791298509026102200,
+      "ctime_ns": 1791298509026102200
+    },
+    "path_identity": {
+      "device": 68,
+      "inode": 30962247438745120,
+      "mode": 33279,
+      "size": 362,
+      "mtime_ns": 1791298509026102200,
+      "ctime_ns": 1791298509026102200
+    },
+    "bytes": 362,
+    "sha256": "67a4193b321c54753b0fc1ae80892227fe8431a11755e8e5086b927ecd01b04b"
+  },
+  "source_archive": {
+    "requested": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/evidence/estimator-aware-readiness-preflight-dev-1701.zip",
+    "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/evidence/estimator-aware-readiness-preflight-dev-1701.zip",
+    "links": [],
+    "identity": {
+      "device": 68,
+      "inode": 59109745109319293,
+      "mode": 33279,
+      "size": 355437,
+      "mtime_ns": 1791298828368717900,
+      "ctime_ns": 1791298828368717900
+    },
+    "path_identity": {
+      "device": 68,
+      "inode": 59109745109319293,
+      "mode": 33279,
+      "size": 355437,
+      "mtime_ns": 1791298828368717900,
+      "ctime_ns": 1791298828368717900
+    },
+    "bytes": 355437,
+    "sha256": "3fcd571eec22f8ef4f668b3d30071adc06e509215a1d4ff8c591a6f37df137ff"
+  },
+  "failed_capture": {
+    "requested": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/estimator-aware-readiness-preflight-dev-1701/study-v2/capture-v1/result.json",
+    "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/estimator-aware-readiness-preflight-dev-1701/study-v2/capture-v1/result.json",
+    "links": [],
+    "identity": {
+      "device": 68,
+      "inode": 10696049116568720,
+      "mode": 33279,
+      "size": 11356,
+      "mtime_ns": 1791299250709761600,
+      "ctime_ns": 1791299250709761600
+    },
+    "path_identity": {
+      "device": 68,
+      "inode": 10696049116568720,
+      "mode": 33279,
+      "size": 11356,
+      "mtime_ns": 1791299250709761600,
+      "ctime_ns": 1791299250709761600
+    },
+    "bytes": 11356,
+    "sha256": "05825aec7650bb3cfd744f39c093d1ba7656c5c47b60097497af71d9243b3637"
+  },
+  "failed_end_sim_ns": 10000000,
+  "failed_force_steps": 0,
+  "timestamp_contract": {
+    "sim_age_field_required": true,
+    "max_source_sim_lead_ns": 1000000,
+    "derived_age_must_match": true,
+    "future_wall_arrival_rejected": true,
+    "camera_ack_after_source_sample_rejected": true
+  },
+  "renderer_probe": {
+    "requested": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/estimator-physical-refusal-diagnosis-dev-1701/renderer-probe-v7/result.json",
+    "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/estimator-physical-refusal-diagnosis-dev-1701/renderer-probe-v7/result.json",
+    "links": [],
+    "identity": {
+      "device": 68,
+      "inode": 12103423999990549,
+      "mode": 33279,
+      "size": 111954,
+      "mtime_ns": 1791301567555427200,
+      "ctime_ns": 1791301567555427200
+    },
+    "path_identity": {
+      "device": 68,
+      "inode": 12103423999990549,
+      "mode": 33279,
+      "size": 111954,
+      "mtime_ns": 1791301567555427200,
+      "ctime_ns": 1791301567555427200
+    },
+    "bytes": 111954,
+    "sha256": "20124e7ae97bb43c382826c92f05930f17fe88801432cdc9759abf27f3d774c4"
+  },
+  "renderer_probe_audit": {
+    "requested": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/estimator-physical-refusal-diagnosis-dev-1701/renderer-probe-v7-audit.json",
+    "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/estimator-physical-refusal-diagnosis-dev-1701/renderer-probe-v7-audit.json",
+    "links": [],
+    "identity": {
+      "device": 68,
+      "inode": 17732923533005445,
+      "mode": 33279,
+      "size": 463,
+      "mtime_ns": 1791301672928371700,
+      "ctime_ns": 1791301672928371700
+    },
+    "path_identity": {
+      "device": 68,
+      "inode": 17732923533005445,
+      "mode": 33279,
+      "size": 463,
+      "mtime_ns": 1791301672928371700,
+      "ctime_ns": 1791301672928371700
+    },
+    "bytes": 463,
+    "sha256": "82cc6313164d1a7dbba7ed0f13038601529c25dc8399a96e9135263461d81e24"
+  },
+  "renderer_historical_additions": [
+    {
+      "device": "08:30",
+      "inode": 232020,
+      "path": "/usr/lib/x86_64-linux-gnu/OGRE-2.3/OGRE/Plugin_ParticleFX.so.2.3.1"
+    },
+    {
+      "device": "08:30",
+      "inode": 232021,
+      "path": "/usr/lib/x86_64-linux-gnu/OGRE-2.3/OGRE/RenderSystem_GL3Plus.so.2.3.1"
+    },
+    {
+      "device": "08:30",
+      "inode": 11568,
+      "path": "/usr/lib/x86_64-linux-gnu/libEGL_mesa.so.0.0.0"
+    },
+    {
+      "device": "08:30",
+      "inode": 12709,
+      "path": "/usr/lib/x86_64-linux-gnu/libGL.so.1.7.0"
+    },
+    {
+      "device": "08:30",
+      "inode": 1795,
+      "path": "/usr/lib/x86_64-linux-gnu/libLLVM.so.20.1"
+    },
+    {
+      "device": "08:30",
+      "inode": 12724,
+      "path": "/usr/lib/x86_64-linux-gnu/libX11-xcb.so.1.0.0"
+    },
+    {
+      "device": "08:30",
+      "inode": 11419,
+      "path": "/usr/lib/x86_64-linux-gnu/libdrm.so.2.125.0"
+    },
+    {
+      "device": "08:30",
+      "inode": 12236,
+      "path": "/usr/lib/x86_64-linux-gnu/libdrm_amdgpu.so.1.125.0"
+    },
+    {
+      "device": "08:30",
+      "inode": 12239,
+      "path": "/usr/lib/x86_64-linux-gnu/libdrm_intel.so.1.125.0"
+    },
+    {
+      "device": "08:30",
+      "inode": 12863,
+      "path": "/usr/lib/x86_64-linux-gnu/libedit.so.2.0.72"
+    },
+    {
+      "device": "08:30",
+      "inode": 12864,
+      "path": "/usr/lib/x86_64-linux-gnu/libelf-0.190.so"
+    },
+    {
+      "device": "08:30",
+      "inode": 12199,
+      "path": "/usr/lib/x86_64-linux-gnu/libgallium-25.2.8-0ubuntu0.24.04.2.so"
+    },
+    {
+      "device": "08:30",
+      "inode": 12007,
+      "path": "/usr/lib/x86_64-linux-gnu/libgbm.so.1.0.0"
+    },
+    {
+      "device": "08:30",
+      "inode": 13053,
+      "path": "/usr/lib/x86_64-linux-gnu/libpciaccess.so.0.11.1"
+    },
+    {
+      "device": "08:30",
+      "inode": 13094,
+      "path": "/usr/lib/x86_64-linux-gnu/libsensors.so.5.0.0"
+    },
+    {
+      "device": "08:30",
+      "inode": 13164,
+      "path": "/usr/lib/x86_64-linux-gnu/libwayland-client.so.0.22.0"
+    },
+    {
+      "device": "08:30",
+      "inode": 13172,
+      "path": "/usr/lib/x86_64-linux-gnu/libxcb-dri3.so.0.1.0"
+    },
+    {
+      "device": "08:30",
+      "inode": 13176,
+      "path": "/usr/lib/x86_64-linux-gnu/libxcb-present.so.0.0.0"
+    },
+    {
+      "device": "08:30",
+      "inode": 13178,
+      "path": "/usr/lib/x86_64-linux-gnu/libxcb-randr.so.0.1.0"
+    },
+    {
+      "device": "08:30",
+      "inode": 13182,
+      "path": "/usr/lib/x86_64-linux-gnu/libxcb-shm.so.0.0.0"
+    },
+    {
+      "device": "08:30",
+      "inode": 13184,
+      "path": "/usr/lib/x86_64-linux-gnu/libxcb-sync.so.1.0.0"
+    },
+    {
+      "device": "08:30",
+      "inode": 13186,
+      "path": "/usr/lib/x86_64-linux-gnu/libxcb-xfixes.so.0.0.0"
+    },
+    {
+      "device": "08:30",
+      "inode": 13196,
+      "path": "/usr/lib/x86_64-linux-gnu/libxshmfence.so.1.0.0"
+    }
+  ],
+  "renderer_baseline_additions": [
+    {
+      "device": "08:30",
+      "inode": 232023,
+      "path": "/usr/lib/x86_64-linux-gnu/OGRE-2.3/libOgreNextHlmsPbs.so.2.3.1"
+    },
+    {
+      "device": "08:30",
+      "inode": 232024,
+      "path": "/usr/lib/x86_64-linux-gnu/OGRE-2.3/libOgreNextHlmsUnlit.so.2.3.1"
+    },
+    {
+      "device": "08:30",
+      "inode": 232025,
+      "path": "/usr/lib/x86_64-linux-gnu/OGRE-2.3/libOgreNextMain.so.2.3.1"
+    },
+    {
+      "device": "08:30",
+      "inode": 232027,
+      "path": "/usr/lib/x86_64-linux-gnu/OGRE-2.3/libOgreNextOverlay.so.2.3.1"
+    },
+    {
+      "device": "08:30",
+      "inode": 232028,
+      "path": "/usr/lib/x86_64-linux-gnu/OGRE-2.3/libOgreNextPlanarReflections.so.2.3.1"
+    },
+    {
+      "device": "08:30",
+      "inode": 232879,
+      "path": "/usr/lib/x86_64-linux-gnu/gz-rendering-8/engine-plugins/libgz-rendering8-ogre2.so.8.2.3"
+    },
+    {
+      "device": "08:30",
+      "inode": 12705,
+      "path": "/usr/lib/x86_64-linux-gnu/libEGL.so.1.1.0"
+    },
+    {
+      "device": "08:30",
+      "inode": 12711,
+      "path": "/usr/lib/x86_64-linux-gnu/libGLX.so.0.0.0"
+    },
+    {
+      "device": "08:30",
+      "inode": 12716,
+      "path": "/usr/lib/x86_64-linux-gnu/libGLdispatch.so.0.0.0"
+    },
+    {
+      "device": "08:30",
+      "inode": 193615,
+      "path": "/usr/lib/x86_64-linux-gnu/libICE.so.6.3.0"
+    },
+    {
+      "device": "08:30",
+      "inode": 224819,
+      "path": "/usr/lib/x86_64-linux-gnu/libOpenGL.so.0.0.0"
+    },
+    {
+      "device": "08:30",
+      "inode": 194214,
+      "path": "/usr/lib/x86_64-linux-gnu/libSM.so.6.0.1"
+    },
+    {
+      "device": "08:30",
+      "inode": 12726,
+      "path": "/usr/lib/x86_64-linux-gnu/libX11.so.6.4.0"
+    },
+    {
+      "device": "08:30",
+      "inode": 12728,
+      "path": "/usr/lib/x86_64-linux-gnu/libXau.so.6.0.0"
+    },
+    {
+      "device": "08:30",
+      "inode": 224843,
+      "path": "/usr/lib/x86_64-linux-gnu/libXaw7.so.7.0.0"
+    },
+    {
+      "device": "08:30",
+      "inode": 12736,
+      "path": "/usr/lib/x86_64-linux-gnu/libXdmcp.so.6.0.0"
+    },
+    {
+      "device": "08:30",
+      "inode": 12738,
+      "path": "/usr/lib/x86_64-linux-gnu/libXext.so.6.4.0"
+    },
+    {
+      "device": "08:30",
+      "inode": 224838,
+      "path": "/usr/lib/x86_64-linux-gnu/libXmu.so.6.2.0"
+    },
+    {
+      "device": "08:30",
+      "inode": 54240,
+      "path": "/usr/lib/x86_64-linux-gnu/libXpm.so.4.11.0"
+    },
+    {
+      "device": "08:30",
+      "inode": 12748,
+      "path": "/usr/lib/x86_64-linux-gnu/libXrandr.so.2.2.0"
+    },
+    {
+      "device": "08:30",
+      "inode": 12750,
+      "path": "/usr/lib/x86_64-linux-gnu/libXrender.so.1.3.0"
+    },
+    {
+      "device": "08:30",
+      "inode": 224832,
+      "path": "/usr/lib/x86_64-linux-gnu/libXt.so.6.0.0"
+    },
+    {
+      "device": "08:30",
+      "inode": 2095,
+      "path": "/usr/lib/x86_64-linux-gnu/libtinfo.so.6.4"
+    },
+    {
+      "device": "08:30",
+      "inode": 13188,
+      "path": "/usr/lib/x86_64-linux-gnu/libxcb.so.1.1.0"
+    },
+    {
+      "device": "08:30",
+      "inode": 224849,
+      "path": "/usr/lib/x86_64-linux-gnu/libzzip-0.so.13.0.72"
+    }
+  ],
+  "mesa_shader_cache_disabled": true,
+  "truth_used": false,
+  "physical_execution_qualified": false,
+  "runtime_mapping_coverage_verified": false,
+  "runtime_closure_qualified": false,
+  "vio_accuracy_qualified": false,
+  "estimator_health_qualified": false,
+  "fusion_eligible": false,
+  "flight_ready": false
+}
