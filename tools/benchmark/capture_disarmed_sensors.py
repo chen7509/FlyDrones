@@ -244,7 +244,7 @@ def main():
     with CaptureJournal(output, result) as journal:
         binding = None
         if binding_doc is not None:
-            from tools.benchmark.runtime_resource_binding import GENERATED_NAMES, attach_binding
+            from tools.benchmark.runtime_resource_binding import GENERATED_NAMES, attach_binding, estimator_inputs
 
             binding = attach_binding(journal, result, binding_doc, output)
             required = [binary, build / "rootfs/gz_env.sh", build / "etc/init.d-posix/rcS",
@@ -253,7 +253,7 @@ def main():
                         ROOT / "assets/gazebo/models/OakD-Benchmark/model.sdf",
                         px4 / "Tools/simulation/gz/models/x500/model.sdf",
                         px4 / "Tools/simulation/gz/models/x500_base/model.sdf"]
-            required += [p for p in (args.shadow_binary, args.shadow_config, args.reference_module) if p]
+            required += estimator_inputs(args.shadow_binary, args.shadow_config, args.reference_module)
             required += [Path(module.__file__).resolve() for module in tuple(sys.modules.values())
                          if getattr(module, "__file__", None) and Path(module.__file__).resolve().is_relative_to(ROOT)]
             binding.start({name: runtime / name if name == "gz_env.sh" else output / name for name in GENERATED_NAMES},

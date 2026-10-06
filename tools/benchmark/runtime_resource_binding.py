@@ -79,6 +79,19 @@ def read_self_maps():
     return Path('/proc/self/maps').read_text(encoding='utf-8')
 
 
+def estimator_inputs(binary, config, reference):
+    """Include every file consumed by the existing fixed configuration contract."""
+    result = [p for p in (binary, reference) if p is not None]
+    if config is not None:
+        from tools.benchmark.openvins_online_shadow import validate_frozen_config
+
+        config = Path(config)
+        frozen = validate_frozen_config(config)
+        result += [config.parent / name for name in frozen['sha256']]
+        result.append(config.parent / 'freeze.json')
+    return result
+
+
 class RuntimeBinding:
     def __init__(self, doc, output, *, map_reader=read_self_maps):
         self.doc = validate_binding(doc)
@@ -126,6 +139,12 @@ class RuntimeBinding:
             if bootstrap:
                 self.inventory['bootstrap:selfmaps'] = bootstrap
             self.before = snapshot(self.inventory)
+            checked_baseline = [row for row in self.before['files'] if row['role'] in self.doc['inventory']]
+            checked_copies = [dict(row, role=row['role'].removeprefix('generated:'))
+                              for row in self.before['files'] if row['role'].startswith('generated:')]
+            if (not _typed_equal(checked_baseline, baseline['files'])
+                    or not _typed_equal(checked_copies, copies['files'])):
+                raise ValueError('declared inputs changed between validation and merged snapshot')
             self.before.update(environment=actual_env, partition=environment.get('GZ_PARTITION'),
                                declaration=self.doc, generated=copies,
                                required_paths=[str(Path(p).absolute()) for p in required_paths],

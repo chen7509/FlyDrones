@@ -170,3 +170,37 @@ def test_parent_validates_binding_and_forwards_it(tmp_path, monkeypatch):
     with pytest.raises(ValueError):
         capture.main()
     assert len(calls) == 1
+
+
+@pytest.mark.parametrize('which', ['baseline', 'generated'])
+def test_change_between_validation_and_combined_snapshot_is_not_adopted(tmp_path, which):
+    doc, generated, source, output = fixture(tmp_path)
+    def maps():
+        target = source if which == 'baseline' else generated['world.sdf']
+        target.write_bytes(b'changed between reads')
+        return ''
+    obj = binding.RuntimeBinding(doc, output, map_reader=maps)
+    with pytest.raises(ValueError, match='between'):
+        obj.start(generated, {key: None for key in binding.ENV_KEYS}, [source])
+    assert not obj.pre_recorded
+    assert obj.finish()['declared_files_stable'] is False
+
+
+@pytest.mark.parametrize('omitted', ['kalibr_imu_chain.yaml', 'kalibr_imucam_chain.yaml', 'freeze.json'])
+def test_actual_estimator_calibration_omission_is_refused(tmp_path, omitted):
+    doc, generated, source, output = fixture(tmp_path)
+    directory = tmp_path / 'config'
+    directory.mkdir()
+    contents = {'estimator_config.yaml': 'relative_config_imu: kalibr_imu_chain.yaml\nrelative_config_imucam: kalibr_imucam_chain.yaml\n',
+                'kalibr_imu_chain.yaml': 'imu config', 'kalibr_imucam_chain.yaml': 'camera config'}
+    for name, text in contents.items():
+        (directory / name).write_text(text)
+    (directory / 'freeze.json').write_text(json.dumps({'sha256': {
+        name: hashlib.sha256((directory / name).read_bytes()).hexdigest() for name in contents}}))
+    paths = [source] + [directory / name for name in [*contents, 'freeze.json'] if name != omitted]
+    doc['inventory'] = {'selected': [str(p) for p in paths]}
+    doc['baseline'] = snapshot(doc['inventory'])
+    selected = binding.estimator_inputs(source, directory / 'estimator_config.yaml', None)
+    obj = binding.RuntimeBinding(doc, output, map_reader=lambda: '')
+    with pytest.raises(ValueError, match='absent'):
+        obj.start(generated, {key: None for key in binding.ENV_KEYS}, selected)
