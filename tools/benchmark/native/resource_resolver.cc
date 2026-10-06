@@ -77,9 +77,12 @@ int uriLookup(int argc, char **argv)
     if (uri.empty() || std::isspace(static_cast<unsigned char>(uri.front())) ||
         std::isspace(static_cast<unsigned char>(uri.back())))
       throw std::runtime_error("empty or surrounding whitespace URI");
-    auto separator = uri.find("://");
-    if (separator != std::string::npos && uri.substr(0, separator) != "file" &&
-        uri.substr(0, separator) != "model")
+    // A URI scheme does not require '//'. Never let a same-named local file
+    // turn an unknown scheme (e.g. http:example) into an accepted query.
+    auto colon = uri.find(':');
+    auto slash = uri.find('/');
+    if (colon != std::string::npos && (slash == std::string::npos || colon < slash) &&
+        uri.rfind("file://", 0) != 0 && uri.rfind("model://", 0) != 0)
       throw std::runtime_error("remote or unsupported URI scheme");
     if (kind != "include" && kind != "texture" && kind != "mesh-path" && kind != "collada-image")
       throw std::runtime_error("unsupported URI kind");
@@ -102,7 +105,8 @@ int uriLookup(int argc, char **argv)
     else if (kind == "collada-image")
     {
       const char *force = std::getenv("GZ_MESH_FORCE_ASSIMP");
-      if (force && *force) throw std::runtime_error("forced Assimp outside COLLADA lookup profile");
+      if (force && std::string(force) == "true")
+        throw std::runtime_error("forced Assimp outside COLLADA lookup profile");
       transformed = fs::path(source).parent_path().string();
       gz::common::Material material;
       material.SetTextureImage(uri, transformed);

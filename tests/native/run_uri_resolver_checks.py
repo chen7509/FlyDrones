@@ -63,7 +63,12 @@ def run(binary):
         call('texture', 'model://x\ny', ok=False)
         call('texture', ' texture.png', ok=False)
         call('texture', 'texture.png', src=Path('relative.sdf'), ok=False)
-        call('collada-image', 'fallback.png', environment=dict(env, GZ_MESH_FORCE_ASSIMP='1'), ok=False)
+        call('collada-image', 'fallback.png', environment=dict(env, GZ_MESH_FORCE_ASSIMP='true'), ok=False)
+        assert call('collada-image', 'fallback.png', environment=dict(env, GZ_MESH_FORCE_ASSIMP='false'))['selected'] == str(texture_dir / 'fallback.png')
+        for directory in (source_dir, cwd):
+            (directory / 'http:example.invalid').write_bytes(b'a real local filename must not bypass scheme refusal')
+        for kind in ('include', 'texture', 'collada-image'):
+            call(kind, 'http:example.invalid', ok=False)
         call('unsupported', 'texture.png', ok=False)
     print(json.dumps(dict(passed=True, cases=cases, count=len(cases), physical_run=False)))
 
