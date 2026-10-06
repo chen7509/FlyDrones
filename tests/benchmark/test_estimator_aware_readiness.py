@@ -174,7 +174,12 @@ def test_invalid_sensor_lead_or_derived_age_refuses(tmp_path, row):
 def source_ready(base, now):
     for kind in ["imu", "rgb", "info"]:
         base.on_record(
-            {"kind": kind, "arrival_monotonic_ns": now, "recorded_monotonic_ns": now},
+            {
+                "kind": kind,
+                "arrival_monotonic_ns": now,
+                "recorded_monotonic_ns": now,
+                **({"observed_sim_ns": 1_000_000_000} if kind == "imu" else {}),
+            },
             None,
         )
     base.on_record(
@@ -184,6 +189,7 @@ def source_ready(base, now):
             "recorded_monotonic_ns": now,
             "system_id": 9,
             "base_mode": 29,
+            "observed_sim_ns": 1_000_000_000,
         },
         None,
     )
@@ -420,6 +426,7 @@ def test_estimator_heartbeat_fanout_commits_ack_before_source_readiness(tmp_path
             "recorded_monotonic_ns": now[0],
             "system_id": 9,
             "base_mode": 29,
+                "observed_sim_ns": 1_000_000_000,
         },
         None,
     )

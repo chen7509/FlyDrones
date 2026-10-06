@@ -18,6 +18,9 @@ def integer(value):
 
 
 class JournaledReadiness:
+    WALL_FRESHNESS_NS = 2_000_000_000
+    HEARTBEAT_SIM_FRESHNESS_NS = 2_000_000_000
+
     def __init__(self, *, clock=time.monotonic_ns):
         self.clock = clock
         self.lock = threading.Lock()
@@ -51,6 +54,12 @@ class JournaledReadiness:
                 prepared = integer(row["recorded_monotonic_ns"])
                 if not arrival <= prepared <= now:
                     raise ValueError("future/reversed readiness receipt")
+                observed_sim = None
+                if row["kind"] in ("imu", "heartbeat"):
+                    try:
+                        observed_sim = integer(row["observed_sim_ns"])
+                    except Exception as exc:
+                        raise ValueError(f"invalid {row['kind']} simulation clock") from exc
                 if row["kind"] == "heartbeat" and (
                     type(row["system_id"]) is not int
                     or row["system_id"] != 9
@@ -61,6 +70,12 @@ class JournaledReadiness:
                 old = self.records.get(row["kind"])
                 if old and arrival <= old["arrival_monotonic_ns"]:
                     raise ValueError("repeated/regressed readiness receipt")
+                if (
+                    row["kind"] == "heartbeat"
+                    and old
+                    and observed_sim < old["observed_sim_ns"]
+                ):
+                    raise ValueError("repeated/regressed heartbeat simulation clock")
                 self.records[row["kind"]] = dict(copy.deepcopy(row), journal_ack_monotonic_ns=now)
             except Exception as exc:
                 self.failure = self.failure or repr(exc)
@@ -74,10 +89,32 @@ class JournaledReadiness:
             if any(now < r["journal_ack_monotonic_ns"] for r in self.records.values()):
                 self.failure = "regressed readiness clock"
                 raise ValueError(self.failure)
-            if len(self.records) != 4 or any(now - r["arrival_monotonic_ns"] > 2_000_000_000 for r in self.records.values()):
+            if len(self.records) != 4:
+                return None
+            if any(
+                now - self.records[kind]["arrival_monotonic_ns"] > self.WALL_FRESHNESS_NS
+                for kind in ("imu", "rgb", "info")
+            ):
+                return None
+            current_sim = self.records["imu"]["observed_sim_ns"]
+            heartbeat_sim = self.records["heartbeat"]["observed_sim_ns"]
+            if heartbeat_sim > current_sim:
+                self.failure = "future heartbeat simulation clock"
+                raise ValueError(self.failure)
+            heartbeat_sim_age = current_sim - heartbeat_sim
+            if heartbeat_sim_age > self.HEARTBEAT_SIM_FRESHNESS_NS:
                 return None
             return dict(
-                checked_wall_ns=now, records=copy.deepcopy(self.records), scope="successful write and flush; not fsync durability"
+                checked_wall_ns=now,
+                records=copy.deepcopy(self.records),
+                freshness=dict(
+                    high_rate_wall_limit_ns=self.WALL_FRESHNESS_NS,
+                    heartbeat_sim_limit_ns=self.HEARTBEAT_SIM_FRESHNESS_NS,
+                    heartbeat_wall_age_ns=now - self.records["heartbeat"]["arrival_monotonic_ns"],
+                    heartbeat_sim_age_ns=heartbeat_sim_age,
+                    simulation_reference="latest wall-fresh journaled IMU observed_sim_ns",
+                ),
+                scope="successful write and flush; not fsync durability",
             )
 
     def snapshot(self):
