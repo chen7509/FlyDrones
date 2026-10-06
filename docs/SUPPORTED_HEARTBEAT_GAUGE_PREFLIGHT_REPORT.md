@@ -46,6 +46,8 @@ TDD retained the missing-module/API failures and then passed:
 
 Self-review added two material guards: prospective policy and concrete run anchor are separate, so a numeric truth-influenced anchor cannot be frozen prematurely; and executable/script paths must be absolute, so a later working-directory change cannot silently alter the declared launch.
 
+The sealed evidence archive is `evidence/supported-heartbeat-gauge-preflight-dev-1701.zip`: 45 members including its manifest, 328,258 bytes, SHA-256 `a15246397ff5ed59bbe21a85a784acc7e93a1f4646d749cdfd4050e074b26061`. The embedded manifest records 44 payload members with byte lengths and SHA-256 values; ZIP CRC and manifest verification passed. Its producer commit is `2cf40dd14fca57bea3b3ba963267979cc5149777`. This publication paragraph postdates the sealed payload and does not alter it.
+
 ## Evidence boundaries and next gate
 
 The package does not repair PR48's incomplete 6.417 s run, its unknown reset/quality, or its uncalibrated covariance. It does not alter the retained PR37 drift failure, PR39 contact/undersampling diagnosis, PR40 startup failure, or the five-aircraft 0.873 RTF capacity failure. `raw-model-zero-bias-diffusion-v1` remains an uncalibrated development assumption.

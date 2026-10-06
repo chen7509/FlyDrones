@@ -89,4 +89,4 @@
 - [x] Run the focused tests and confirm RED for the missing auditor.
 - [x] Implement the auditor and create one fixed prepare-only package from frozen inputs without launching it.
 - [x] Run focused tests, full regression, changed-file Ruff, whole-tree Ruff comparison, and diff check.
-- [ ] Seal inputs, outputs, tests, hashes, failures, report, and review notes in a new evidence ZIP; commit and create a stacked draft PR.
+- [x] Seal inputs, outputs, tests, hashes, failures, report, and review notes in a new evidence ZIP; commit and create a stacked draft PR.
