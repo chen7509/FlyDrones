@@ -22,7 +22,7 @@ sys.path[:0] = [str(ROOT), str(ROOT / "src")]
 from flydrones.benchmark.camera_info_capture import camera_info_fields  # noqa: E402
 from flydrones.benchmark.gateway import sim_duration_ns  # noqa: E402
 from flydrones.benchmark.ulog_capture import collect_ulogs, verify_episode_ulog_evidence  # noqa: E402
-from tools.benchmark.capture_contract import validate_declaration, worker_options  # noqa: E402
+from tools.benchmark.capture_contract import read_declaration, validate_declaration, worker_options  # noqa: E402
 from tools.benchmark.disarmed_sensor_provenance import CaptureJournal, CaptureWriter, supervise_worker  # noqa: E402
 
 
@@ -49,6 +49,7 @@ def parse_capture_args(argv=None):
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--worker", action="store_true", help=argparse.SUPPRESS)
     parser.add_argument("--execution-contract", type=Path, help="Exact prospective execution declaration")
+    parser.add_argument("--runtime-binding", type=Path, help="Declared baseline, generated hashes and lookup environment")
     parser.add_argument("--shadow-binary", type=Path)
     parser.add_argument("--shadow-config", type=Path)
     parser.add_argument("--reference-module", type=Path)
@@ -58,6 +59,8 @@ def parse_capture_args(argv=None):
     parser.add_argument("--motion-profile", choices=["lateral-wrench-v1", "supported-lateral-v1", "supported-ready-v1"])
     parser.add_argument("--physics-trace-profile", choices=["substep-lateral-v1", "substep-supported-v1", "substep-ready-v1"])
     args = parser.parse_args(argv)
+    if args.runtime_binding and not args.execution_contract:
+        parser.error("runtime binding requires an execution declaration")
     if args.source_fanout_profile and (
         not args.shadow_binary or not args.shadow_config or not args.reference_module or not args.reference_sha256
         or args.motion_profile != "supported-ready-v1" or args.physics_trace_profile != "substep-ready-v1"
@@ -134,6 +137,11 @@ def retain_supervisor_ulogs(summary, runtime, output, *, collector=collect_ulogs
 def main():
     args = parse_capture_args()
     contract = validate_declaration(args)
+    binding_doc = None
+    if args.runtime_binding:
+        from tools.benchmark.runtime_resource_binding import validate_binding
+
+        binding_doc = validate_binding(read_declaration(args.runtime_binding))
     shadow_args = worker_options(args)
     if not args.worker:
         summary = supervise_worker(
@@ -234,6 +242,22 @@ def main():
     arming = {"unarmed_wall_ns": None}
     started = time.monotonic()
     with CaptureJournal(output, result) as journal:
+        binding = None
+        if binding_doc is not None:
+            from tools.benchmark.runtime_resource_binding import GENERATED_NAMES, attach_binding
+
+            binding = attach_binding(journal, result, binding_doc, output)
+            required = [binary, build / "rootfs/gz_env.sh", build / "etc/init.d-posix/rcS",
+                        px4 / "src/modules/simulation/gz_bridge/server.config",
+                        ROOT / "assets/gazebo/models/x500_benchmark/model.sdf",
+                        ROOT / "assets/gazebo/models/OakD-Benchmark/model.sdf",
+                        px4 / "Tools/simulation/gz/models/x500/model.sdf",
+                        px4 / "Tools/simulation/gz/models/x500_base/model.sdf"]
+            required += [p for p in (args.shadow_binary, args.shadow_config, args.reference_module) if p]
+            required += [Path(module.__file__).resolve() for module in tuple(sys.modules.values())
+                         if getattr(module, "__file__", None) and Path(module.__file__).resolve().is_relative_to(ROOT)]
+            binding.start({name: runtime / name if name == "gz_env.sh" else output / name for name in GENERATED_NAMES},
+                          env, required)
         journal.cleanup("ULog collection", lambda: result.update(px4_ulogs=collect_ulogs(runtime, output)), priority=100)
         journal.cleanup(
             "end clocks",
@@ -247,6 +271,9 @@ def main():
         from gz.sim8 import TestFixture
         from gz.transport13 import Node
         from pymavlink import mavutil
+
+        if binding:
+            binding.observe("postimports")
 
         shadow = None
         source_guard = None
@@ -467,6 +494,8 @@ def main():
         fixture.on_post_update(post_update)
         fixture.finalize()
         server = fixture.server()
+        if binding:
+            binding.observe("postfinalize")
         if source_guard:
             watchdog_stop = threading.Event()
 

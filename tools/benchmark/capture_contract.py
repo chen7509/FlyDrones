@@ -60,10 +60,10 @@ def validate_declaration(args):
 
 def worker_options(args):
     result = []
-    for field in PATH_FIELDS + PROFILE_FIELDS + ('reference_sha256', 'execution_contract'):
-        value = getattr(args, field)
+    for field in PATH_FIELDS + PROFILE_FIELDS + ('reference_sha256', 'execution_contract', 'runtime_binding'):
+        value = getattr(args, field, None)
         if value is not None:
-            if field in PATH_FIELDS + ('execution_contract',):
+            if field in PATH_FIELDS + ('execution_contract', 'runtime_binding'):
                 value = str(Path(value).resolve())
             result += ['--' + field.replace('_', '-'), str(value)]
     return result
