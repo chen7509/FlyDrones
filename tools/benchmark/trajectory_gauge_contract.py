@@ -368,7 +368,10 @@ def audit_trajectory(states, truth_rows, session, capture, contract):
             "end_ns": origin["sample_ns"],
             "duration_ns": origin["sample_ns"] - contract["anchor_ns"],
         }
-    qualified = bool(diagnostic_available and accuracy_screens and public_coverage and capture_complete and health)
+    post_origin_qualified = bool(
+        diagnostic_available and accuracy_screens and public_coverage and capture_complete and health
+    )
+    full_motion_qualified = bool(post_origin_qualified and startup is None)
     return {
         "schema": "trajectory-gauge-audit-v1",
         "contract": contract,
@@ -393,7 +396,9 @@ def audit_trajectory(states, truth_rows, session, capture, contract):
         "public_coverage_qualified": public_coverage,
         "capture_complete": capture_complete,
         "estimator_health_qualified": health,
-        "trajectory_qualified": qualified,
+        "post_origin_trajectory_qualified": post_origin_qualified,
+        "full_motion_trajectory_qualified": full_motion_qualified,
+        "trajectory_qualified": full_motion_qualified,
         "reasons": list(dict.fromkeys(reasons)),
         "truth_used_online": False,
         "eligible_for_px4_fusion": False,

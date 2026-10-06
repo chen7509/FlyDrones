@@ -42,7 +42,7 @@ The estimator process/session identity is immutable. A known reset counter must 
 
 Development screens remain position `<=0.25 m`, global velocity `<=0.25 m/s`, relative attitude `<=10 deg`, and initial gravity-axis error `<=5 deg`. The first public state must occur by lateral start and public state must remain available with gaps `<=200 ms` through `24.9 s`. A complete run requires the original 25 s capture and all expected source/reference evidence.
 
-Report diagnostic metrics even for a partial capture when the gauge and exact matches are valid, but set trajectory qualification false when duration, coverage, reset/quality, covariance, or capture health is missing. The diagnostic is not an ATE/RPE benchmark, a fusion gate, or flight evidence.
+Report diagnostic metrics even for a partial capture when the gauge and exact matches are valid. Separate `post_origin_trajectory_qualified` from `full_motion_trajectory_qualified`: a startup-unavailable interval always keeps the latter false, even when every post-origin gate later passes. Duration, coverage, reset/quality, covariance, or capture-health gaps keep both false. The diagnostic is not an ATE/RPE benchmark, a fusion gate, or flight evidence.
 
 Gazebo truth is consumed only by this offline audit and the already isolated abort monitor. It must never initialize, correct, or enter the VIO input or online policy.
 

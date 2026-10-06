@@ -144,6 +144,8 @@ def test_partial_capture_scores_diagnostic_but_never_qualifies():
     assert result["diagnostic_screens_pass"] is True
     assert result["capture_complete"] is False
     assert result["estimator_health_qualified"] is False
+    assert result["post_origin_trajectory_qualified"] is False
+    assert result["full_motion_trajectory_qualified"] is False
     assert result["trajectory_qualified"] is False
     assert result["fusion_eligible"] is False
     assert result["flight_ready"] is False
@@ -164,7 +166,9 @@ def test_complete_healthy_synthetic_trajectory_can_qualify_only_offline_trajecto
         {"status": "capture_completed", "end_sim_ns": 5_000_000_000},
         profile,
     )
-    assert result["trajectory_qualified"] is True
+    assert result["post_origin_trajectory_qualified"] is True
+    assert result["full_motion_trajectory_qualified"] is False
+    assert result["trajectory_qualified"] is False
     assert result["estimator_health_qualified"] is True
     assert result["fusion_eligible"] is False
     assert result["flight_ready"] is False
@@ -234,6 +238,8 @@ def test_fixed_pr48_projection_preserves_first_origin_and_failure(tmp_path):
     assert result["metrics"]["max_attitude_error_deg"] == pytest.approx(0.9675004506458674)
     assert result["metrics"]["initial_gravity_axis_error_deg"] == pytest.approx(0.006404594036385702)
     assert result["capture_complete"] is False
+    assert result["post_origin_trajectory_qualified"] is False
+    assert result["full_motion_trajectory_qualified"] is False
     assert result["trajectory_qualified"] is False
     assert result["estimator_health_qualified"] is False
     assert result["fusion_eligible"] is False
