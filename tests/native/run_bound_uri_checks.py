@@ -18,8 +18,8 @@ def run(binary):
         source.write_text('<sdf version="1.6"/>')
         env = dict(os.environ, GZ_SIM_RESOURCE_PATH=f'{a}:{b}', SDF_PATH='', GZ_FILE_PATH='')
 
-        def check(label, kind, uri, success, verify=lambda _: None):
-            proc = subprocess.run([str(binary), 'bound-uri', kind, str(source), uri],
+        def check(label, kind, uri, success, verify=lambda _: None, source_path=None):
+            proc = subprocess.run([str(binary), 'bound-uri', kind, str(source_path or source), uri],
                                   env=env, cwd=root, text=True, capture_output=True, timeout=10)
             failure = None
             try:
@@ -57,7 +57,25 @@ def run(binary):
         check('source-relative-absolute-selection', 'texture', 'image.png', True)
         for value in ['https://example.invalid/a', 'model://x?y', '../image.png']:
             check('unsupported-' + value, 'texture', value, False)
-        check('collada-direct', 'collada-image', 'image.png', False)  # a second root has a distinct image
+        model_root = root / 'collada-model'
+        meshes = model_root / 'meshes'
+        fallback = model_root / 'materials' / 'textures'
+        meshes.mkdir(parents=True)
+        fallback.mkdir(parents=True)
+        dae = meshes / 'body.dae'
+        dae.write_text('<COLLADA/>')
+        direct = meshes / 'ordered.png'
+        shadowed = fallback / 'ordered.png'
+        direct.write_bytes(b'direct')
+        shadowed.write_bytes(b'different shadowed bytes')
+
+        def ordered_check(doc):
+            assert doc['selection_profile'] == 'material-ordered-fallback-v1'
+            assert doc['local_candidates'] == [str(direct)]
+            assert doc['shadowed_candidates'] == [str(shadowed)]
+
+        check('collada-ordered-direct-wins', 'collada-image', 'ordered.png', True,
+              ordered_check, dae)
     print(json.dumps(dict(cases=rows, failures=sum(x['failure'] is not None for x in rows),
                           checks=len(rows), physics_started=False), indent=2))
     return not any(row['failure'] for row in rows)

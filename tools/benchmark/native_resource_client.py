@@ -55,8 +55,9 @@ def validate_response(doc, args, cwd, env):
             raise ValueError('unqualified plugin candidates')
     elif op == 'bound-uri':
         _shape(doc, strings=('kind', 'source', 'uri', 'transformed', 'lookup_selected', 'selected',
-                            'model_config', 'cwd', 'error', 'local_profile'),
-               arrays=('local_candidates', 'examined_paths', 'candidate_dependencies'),
+                            'model_config', 'cwd', 'error', 'local_profile', 'selection_profile'),
+               arrays=('local_candidates', 'shadowed_candidates', 'examined_paths',
+                       'candidate_dependencies'),
                flags=('ok', 'local_candidates_qualified', 'ambiguity_qualified', 'runtime_closure_qualified'),
                extra=('before_environment', 'after_environment'))
         if ([doc['kind'], doc['source'], doc['uri']] != list(args[1:]) or doc['cwd'] != str(cwd)
@@ -65,6 +66,13 @@ def validate_response(doc, args, cwd, env):
                 or doc['local_candidates'] != [doc['selected']] or not doc['examined_paths']
                 or doc['ambiguity_qualified'] is not False):
             raise ValueError('unqualified or mismatched native URI response')
+        if (doc['kind'] == 'collada-image'):
+            if (doc['selection_profile'] != 'material-ordered-fallback-v1'
+                    or doc['selected'] in doc['shadowed_candidates']
+                    or len(set(doc['shadowed_candidates'])) != len(doc['shadowed_candidates'])):
+                raise ValueError('invalid COLLADA ordered fallback evidence')
+        elif doc['selection_profile'] != 'unique-canonical-v1' or doc['shadowed_candidates']:
+            raise ValueError('unexpected shadowed candidates')
     elif op == 'context':
         _shape(doc, strings=('cwd', 'sdf_share_path', 'sdf_version', 'common_callback_observation'),
                arrays=('file_paths', 'plugin_paths'),

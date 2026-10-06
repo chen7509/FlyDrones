@@ -12,7 +12,9 @@ struct LocalCandidates
 {
   std::vector<std::string> examined;
   std::set<std::string> choices;
+  std::vector<std::string> shadowed;
   std::set<std::string> dependencies;
+  std::string selectionProfile = "unique-canonical-v1";
   bool qualified = false;
 };
 
@@ -85,6 +87,7 @@ void localCandidateCheck(LocalCandidates &out, const std::string &kind,
     add(gz::common::joinPaths(parent, "..", "materials", "textures", uri));
   }
   else commonLocations(transformed);
+  std::vector<std::string> orderedChoices;
   for (const auto &path : out.examined)
   {
     if (!fs::exists(path) && !fs::is_symlink(fs::symlink_status(path))) continue;
@@ -96,9 +99,30 @@ void localCandidateCheck(LocalCandidates &out, const std::string &kind,
       if (!errors.empty()) throw std::runtime_error("candidate model.config selection failed");
       out.choices.insert(regular(file));
     }
-    else out.choices.insert(regular(path));
+    else
+    {
+      const auto candidate = regular(path);
+      if (std::find(orderedChoices.begin(), orderedChoices.end(), candidate) == orderedChoices.end())
+        orderedChoices.push_back(candidate);
+    }
   }
-  if (out.choices.size() != 1 || *out.choices.begin() != selected)
-    throw std::runtime_error("ambiguous or uncovered local URI candidates");
+  if (kind == "collada-image")
+  {
+    // Material::SetTextureImage is an explicit short-circuit chain: source
+    // directory, Common lookup, then ../materials/textures. Preserve later
+    // existing paths as shadowed evidence; they are not alternative winners
+    // while the first path remains available.
+    out.selectionProfile = "material-ordered-fallback-v1";
+    if (orderedChoices.empty() || orderedChoices.front() != selected)
+      throw std::runtime_error("COLLADA ordered candidate does not match SDK winner");
+    out.choices.insert(orderedChoices.front());
+    out.shadowed.assign(orderedChoices.begin() + 1, orderedChoices.end());
+  }
+  else
+  {
+    out.choices.insert(orderedChoices.begin(), orderedChoices.end());
+    if (out.choices.size() != 1 || *out.choices.begin() != selected)
+      throw std::runtime_error("ambiguous or uncovered local URI candidates");
+  }
   out.qualified = true;
 }
