@@ -1,7 +1,9 @@
 # OpenVINS Health Contract Report
 
-Date: 2026-10-07  
-Branch: `codex/estimator-aware-physical-diagnosis`  
+Date: 2026-10-07
+
+Branch: `codex/estimator-aware-physical-diagnosis`
+
 Review: draft PR 65
 
 ## Decision
