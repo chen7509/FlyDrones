@@ -102,10 +102,10 @@
 - Consumes: Tasks 1-4 and the existing passing physical harness.
 - Produces: frozen development profile, separately generated held-out cohort, health/fault results, and an explicit decision on simulation-domain covariance qualification.
 
-- [ ] Predeclare development/held-out seeds and motion profiles without viewing held-out results.
-- [ ] Run the development cohort, freeze the profile, then run every held-out case once; preserve all failures.
-- [ ] Run explicit source-loss and native-restart shadow-only physical cases while unarmed.
-- [ ] Audit accuracy, 3-sigma coverage, quality transitions, reset totals, ULog, process cleanup, and unchanged load.
-- [ ] Run full pytest, changed-file Ruff, `git diff --check`, archive CRC/hash verification, update PR65, and commit/push.
-- [ ] Keep fusion false unless every spec gate passes; even a pass authorizes only the subsequent VIO-to-EKF2 design stage.
+- [x] Predeclare development/held-out seeds and motion profiles without viewing held-out results.
+- [x] Run the development cohort, freeze the profile, then run every held-out case once; preserve all failures.
+- [x] Run explicit source-loss and native-restart shadow-only physical cases while unarmed.
+- [x] Audit accuracy, 3-sigma coverage, quality transitions, reset totals, ULog, process cleanup, and unchanged load.
+- [x] Run full pytest, changed-file Ruff, `git diff --check`, archive CRC/hash verification, update PR65, and commit/push.
+- [x] Keep fusion false unless every spec gate passes; even a pass authorizes only the subsequent VIO-to-EKF2 design stage.
 
