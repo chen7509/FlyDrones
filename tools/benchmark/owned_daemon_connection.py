@@ -81,6 +81,12 @@ def observe_owner(process):
     return first
 
 
+class _ConnectCleanupFailure(Exception):
+    def __init__(self, primary, cleanup):
+        self.primary, self.cleanup = primary, cleanup
+        super().__init__('connect failed and socket cleanup also failed')
+
+
 class LinuxBackend:
     clock = staticmethod(time.monotonic_ns)
     observe = staticmethod(observe_owner)
@@ -92,8 +98,11 @@ class LinuxBackend:
             connection.settimeout(timeout)
             connection.connect(path)
             return connection
-        except BaseException:
-            connection.close()
+        except BaseException as primary:
+            try:
+                connection.close()
+            except BaseException as cleanup:
+                raise _ConnectCleanupFailure(primary, cleanup) from primary
             raise
 
     @staticmethod
@@ -128,7 +137,7 @@ def connect_owned_daemon(process, expected, path, *, deadline_ns, journal, backe
     connection = None
     result = dict(connection_peer_matched=False, network_authorized=False, fusion_qualified=False,
                   runtime_closure_qualified=False, events=[], error=None, close_error=None,
-                  refusal_journal_error=None)
+                  refusal_journal_error=None, peer_observations=[])
     last_clock = None
 
     def clock():
@@ -150,6 +159,7 @@ def connect_owned_daemon(process, expected, path, *, deadline_ns, journal, backe
 
     def peer():
         value = backend.peer(connection)
+        result['peer_observations'].append(copy.deepcopy(value))
         if (type(value) is not dict or value.keys() != {'pid', 'uid', 'gid'}
                 or any(type(value[k]) is not int or value[k] != expected[k] for k in ('pid', 'uid', 'gid'))):
             raise ValueError('connected peer does not match owned process')
@@ -187,6 +197,9 @@ def connect_owned_daemon(process, expected, path, *, deadline_ns, journal, backe
         result['connection_peer_matched'] = True
         return connection, result
     except BaseException as exc:
+        if isinstance(exc, _ConnectCleanupFailure):
+            result['close_error'] = _error(exc.cleanup)
+            exc = exc.primary
         result['error'] = _error(exc)
         if connection is not None:
             try:
@@ -198,5 +211,5 @@ def connect_owned_daemon(process, expected, path, *, deadline_ns, journal, backe
         except BaseException as journal_exc:
             result['refusal_journal_error'] = _error(journal_exc)
         if not isinstance(exc, Exception):
-            raise
+            raise exc
         raise ConnectionRefusal(result) from exc

@@ -70,6 +70,7 @@ def test_peer_mismatch_closes_same_descriptor(field, value):
     with pytest.raises(ConnectionRefusal, match='peer') as caught:
         run(backend)
     assert backend.closed == 1 and not caught.value.evidence['connection_peer_matched']
+    assert caught.value.evidence['peer_observations']==[backend.peer_value]
 
 
 @pytest.mark.parametrize('field,value', [('start_ticks',78),('exe','/usr/bin/other'),
@@ -157,3 +158,32 @@ def test_interruption_closes_then_propagates():
     with pytest.raises(KeyboardInterrupt):
         run(backend,journal)
     assert backend.closed==1
+
+
+@pytest.mark.parametrize('primary', [TimeoutError('primary connect timeout'),KeyboardInterrupt('primary interrupt')])
+def test_real_backend_connect_and_close_errors_remain_separate(monkeypatch,primary):
+    from tools.benchmark import owned_daemon_connection as module
+
+    class Socket:
+        def settimeout(self,value):
+            pass
+
+        def connect(self,path):
+            raise primary
+
+        def close(self):
+            raise OSError('secondary close failure')
+
+    monkeypatch.setattr(module.socket,'socket',lambda *args:Socket())
+    monkeypatch.setattr(module.socket,'AF_UNIX',1,raising=False)
+    backend=module.LinuxBackend()
+    backend.observe=lambda process:copy.deepcopy(OWNER)
+    backend.clock=lambda:10
+    if isinstance(primary,Exception):
+        with pytest.raises(ConnectionRefusal) as caught:
+            run(backend)
+        assert 'primary connect timeout' in caught.value.evidence['error']
+        assert 'secondary close failure' in caught.value.evidence['close_error']
+    else:
+        with pytest.raises(KeyboardInterrupt,match='primary interrupt'):
+            run(backend)

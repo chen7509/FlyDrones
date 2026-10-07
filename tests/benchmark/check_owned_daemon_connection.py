@@ -50,7 +50,8 @@ def main(args):
     out.mkdir(parents=True,exist_ok=False)
     files=[Path(__file__),ROOT/'tools/benchmark/owned_daemon_connection.py',
            ROOT/'tools/benchmark/owned_group_evidence.py',Path(sys.executable).resolve()]
-    hashes=lambda:{str(p):hashlib.sha256(p.read_bytes()).hexdigest() for p in files}
+    def hashes():
+        return {str(p):hashlib.sha256(p.read_bytes()).hexdigest() for p in files}
     baseline=hashes()
     cases=['matching','wrong-owner','inherited-listener','owner-exited','journal-refusal']
     save(out/'prospective.json',dict(producer=args.producer,cases=cases,files=baseline,
@@ -105,7 +106,7 @@ def main(args):
                         server.terminate()
                         server.wait(timeout=3)
 
-                    def journal(event):
+                    def journal(event,events=events,folder=folder,case=case):
                         events.append(event)
                         save(folder/f'event-{len(events):02}.json',event)
                         if case=='journal-refusal' and event['kind']=='peer_observed':
