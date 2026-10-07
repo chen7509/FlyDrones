@@ -77,3 +77,9 @@ After both camera and propagated covariance gates passed, `results/openvins-ekf2
 |Still failed or blocked|Five-camera WSL2 capacity remains 0.873 RTF below 0.95. Hardware covariance and raw IMU calibration remain unavailable. Historical PR37/PR39/PR40 failures remain retained.|
 
 The next permitted stage is Task 4: prepare a reversible, disarmed PX4 receiver-only study. That stage may research and implement preflight, TIMESYNC, parameter snapshot/rollback and ULog acceptance rules, but it still may not transmit ODOMETRY or change PX4 parameters. Task 5 remains a separately authorized network/PX4 mutation stage.
+
+## Sealed evidence and verification
+
+The curated evidence archive is `evidence/openvins-ekf2-file-shadow-dev-1701.zip` (23,589,918 bytes, 248 members including its internal manifest), SHA-256 `d834874a46f8eedb6c2a0518036aa08dbe26a92ceeeacc8c1a8a9730bb77bdae`. The companion summary is `evidence/openvins-ekf2-file-shadow-dev-1701-manifest.json`. The archive contains the accepted physical and file-only evidence, retained development failures, ULogs, source and test inputs, terminal audit and verification output; it does not replace the full untracked raw result directories.
+
+The final repository test run completed with `1,946 passed, 3 skipped` and two previously known warnings. Changed-file Ruff checks and `git diff --check` passed. `results/openvins-ekf2-task3-terminal-audit.json` records an empty failure list and `task3_qualified=true`, while separately retaining `network_odometry=false`, `px4_parameter_access=false`, `hardware_covariance_calibrated=false`, `fusion_eligible=false` and `flight_ready=false`.
