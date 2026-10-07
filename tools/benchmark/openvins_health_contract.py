@@ -200,11 +200,10 @@ class OpenVinsHealthContract:
             if self._seen_public and not public:
                 return self.fail("public_state_reverted")
             if not internal:
-                if (
-                    row["state_time_s"] != -1
-                    or row["last_regular_update_s"] != -1
-                    or row["imu_covariance15"] is not None
-                ):
+                state_time = row["state_time_s"]
+                if state_time != -1 and _seconds_to_ns(state_time, "initializer reference time") > sample_ns:
+                    raise ValueError
+                if row["last_regular_update_s"] != -1 or row["imu_covariance15"] is not None:
                     raise ValueError
                 self._last_sample_ns = sample_ns
                 reasons = ["internal_unavailable"]
@@ -213,8 +212,12 @@ class OpenVinsHealthContract:
                 return self._result(quality=0, reasons=reasons)
             if _seconds_to_ns(row["state_time_s"], "state time") != sample_ns:
                 return self.fail("state_time_mismatch")
-            regular_ns = _seconds_to_ns(row["last_regular_update_s"], "regular update")
-            if regular_ns > sample_ns:
+            regular_ns = (
+                None
+                if row["last_regular_update_s"] == -1
+                else _seconds_to_ns(row["last_regular_update_s"], "regular update")
+            )
+            if regular_ns is not None and regular_ns > sample_ns:
                 return self.fail("regular_update_in_future")
         except (KeyError, TypeError, ValueError, OverflowError):
             return self.fail("camera_state_invalid")
@@ -227,6 +230,8 @@ class OpenVinsHealthContract:
         reasons: list[str] = []
         if not public:
             reasons.append("public_unavailable")
+        elif regular_ns is None:
+            return self.fail("regular_update_missing")
         elif sample_ns - regular_ns > 200_000_000:
             reasons.append("regular_update_stale")
         if not self.profile.sim_domain_qualified:

@@ -1,6 +1,6 @@
 # OpenVINS Health Contract Implementation Plan
 
-> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
+> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [x]`) syntax for tracking.
 
 **Goal:** Produce fail-closed quality/reset/covariance evidence for the passing OpenVINS physical workload before any ODOMETRY or EKF2 integration.
 
@@ -38,10 +38,10 @@
 **Interfaces:**
 - Produces: `CovarianceProfile`, `OpenVinsHealthContract.accept_camera(row, source_health)`, `OpenVinsHealthContract.fail(reason)`, and `OpenVinsHealthContract.replace_session(new_session_id)`.
 
-- [ ] Write failing tests for unknown/valid/failed quality, visual-update age, covariance structure, latched failure, session replacement, duplicate identity, rollback, and reset wrap.
-- [ ] Run `python -m pytest tests/benchmark/test_openvins_health_contract.py -q` and confirm failure because the module is absent.
-- [ ] Implement the smallest state machine and fixed covariance profile that satisfies the spec.
-- [ ] Re-run the focused tests and commit.
+- [x] Write failing tests for unknown/valid/failed quality, visual-update age, covariance structure, latched failure, session replacement, duplicate identity, rollback, and reset wrap.
+- [x] Run `python -m pytest tests/benchmark/test_openvins_health_contract.py -q` and confirm failure because the module is absent.
+- [x] Implement the smallest state machine and fixed covariance profile that satisfies the spec.
+- [x] Re-run the focused tests and commit.
 
 ### Task 2: Native covariance and health input exposure
 
@@ -55,11 +55,11 @@
 - Consumes: the Task 1 camera-row schema.
 - Produces: camera acknowledgements containing the 15x15 native IMU covariance and session-local public/update flags; Python retains and validates these fields.
 
-- [ ] Add failing protocol/schema tests for covariance length, finite values, malformed covariance, and unchanged motion-intent acknowledgements.
-- [ ] Run the focused tests and preserve RED output.
-- [ ] Add read-only covariance output using `StateHelper::get_marginal_covariance(state, {state->_imu})`; do not alter OpenVINS state or thresholds.
-- [ ] Update the Python acknowledgement validator and fixed replay checks.
-- [ ] Rebuild against the pinned OpenVINS library, run parse/fault/fixed-input tests, and commit.
+- [x] Add failing protocol/schema tests for covariance length, finite values, malformed covariance, and unchanged motion-intent acknowledgements.
+- [x] Run the focused tests and preserve RED output.
+- [x] Add read-only covariance output using `StateHelper::get_marginal_covariance(state, {state->_imu})`; do not alter OpenVINS state or thresholds.
+- [x] Update the Python acknowledgement validator and fixed replay checks.
+- [x] Rebuild against the pinned OpenVINS library, run parse/fault/fixed-input tests, and commit.
 
 ### Task 3: Covariance cohort audit
 
@@ -71,10 +71,10 @@
 - Consumes: predeclared cohort manifest, per-run camera health rows, isolated offline truth, and existing trajectory audits.
 - Produces: immutable per-component 3-sigma coverage, consecutive-violation counts, run failures, and `covariance_sim_domain_qualified`.
 
-- [ ] Write failing tests for 99% coverage, five consecutive violations, missing failed runs, truth/session mismatch, and manifest mutation.
-- [ ] Run the focused tests and preserve RED output.
-- [ ] Implement deterministic cohort auditing without modifying the profile from observed validation data.
-- [ ] Run focused tests, Ruff, and commit.
+- [x] Write failing tests for 99% coverage, five consecutive violations, missing failed runs, truth/session mismatch, and manifest mutation.
+- [x] Run the focused tests and preserve RED output.
+- [x] Implement deterministic cohort auditing without modifying the profile from observed validation data.
+- [x] Run focused tests, Ruff, and commit.
 
 ### Task 4: Fixed replay and fault rejection
 
@@ -86,10 +86,10 @@
 - Consumes: Tasks 1-2 native binary and the sealed study-v23 source stream.
 - Produces: normal replay plus IMU silence, camera silence, truncated image, time regression, timeout, and process-restart evidence.
 
-- [ ] Freeze source/binary/config hashes and the exact fault matrix before execution.
-- [ ] Run normal fixed replay and every fault once; retain all failures and process cleanup evidence.
-- [ ] Audit exact counts, quality/reset transitions, covariance profile, and absence of network/ODOMETRY output.
-- [ ] Commit the implementation and fixed-input evidence boundary.
+- [x] Freeze source/binary/config hashes and the exact fault matrix before execution.
+- [x] Run normal fixed replay and every fault once; retain all failures and process cleanup evidence.
+- [x] Audit exact counts, quality/reset transitions, covariance profile, and absence of network/ODOMETRY output.
+- [x] Commit the implementation and fixed-input evidence boundary.
 
 ### Task 5: Physical development and held-out validation cohort
 

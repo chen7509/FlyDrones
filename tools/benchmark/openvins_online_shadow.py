@@ -17,6 +17,7 @@ from contextlib import ExitStack
 import numpy as np
 
 from tools.benchmark.openvins_causal_input import CausalInput, InputRefusal
+from tools.benchmark.openvins_health_contract import CovarianceProfile, OpenVinsHealthContract
 
 MOTION_INTENT_ACTION_FIELDS = {
     "kind",
@@ -471,11 +472,123 @@ class NativeClient:
         )
 
 
+class OnlineHealthEvidence:
+    """Journal derived health without altering native acknowledgements."""
+
+    def __init__(self, output, *, session_id, profile=None):
+        self.output = output
+        self.contract = OpenVinsHealthContract(
+            session_id,
+            profile=profile if profile is not None else CovarianceProfile(),
+        )
+        self.records = (output / "health-evidence.jsonl").open("x", encoding="utf8")
+        self.closed = False
+        self.last = None
+        self.session_count = 1
+
+    @staticmethod
+    def _healthy_source():
+        return {
+            "source_healthy": True,
+            "native_healthy": True,
+            "source_failure": None,
+            "native_failure": None,
+        }
+
+    def _write(self, record):
+        self.records.write(json.dumps(record, allow_nan=False, sort_keys=True) + "\n")
+        self.records.flush()
+
+    def observe_camera(self, native_row, source_health=None):
+        if self.closed:
+            raise RuntimeError("health evidence already closed")
+        projected = project_camera_health_row(native_row, session_id=self.contract.session_id)
+        health = self.contract.accept_camera(
+            projected,
+            self._healthy_source() if source_health is None else source_health,
+        )
+        self.last = copy.deepcopy(health)
+        self._write(
+            {
+                "event": "camera_health",
+                "native_sequence": native_row["sequence"],
+                "sample_ns": native_row["sample_ns"],
+                "projected": projected,
+                "health": health,
+                "fusion_eligible": False,
+            }
+        )
+        return copy.deepcopy(health)
+
+    def fail(self, reason):
+        if self.closed:
+            raise RuntimeError("health evidence already closed")
+        health = self.contract.fail(reason)
+        self.last = copy.deepcopy(health)
+        self._write(
+            {
+                "event": "health_failure",
+                "reason": reason,
+                "health": health,
+                "fusion_eligible": False,
+            }
+        )
+        return copy.deepcopy(health)
+
+    def replace_session(self, new_session_id):
+        if self.closed:
+            raise RuntimeError("health evidence already closed")
+        previous = self.contract.session_id
+        self.contract = self.contract.replace_session(new_session_id)
+        self.session_count += 1
+        transition = {
+            "schema": "openvins-health-session-transition-v1",
+            "previous_session_id": previous,
+            "session_id": self.contract.session_id,
+            "quality": 0,
+            "reset_total": self.contract.reset_total,
+            "reset_counter": self.contract.reset_total % 256,
+            "covariance_profile": self.contract.profile.name,
+            "covariance_sim_domain_qualified": self.contract.profile.sim_domain_qualified,
+            "fusion_eligible": False,
+        }
+        self.last = copy.deepcopy(transition)
+        self._write({"event": "session_replacement", "transition": transition, "fusion_eligible": False})
+        return copy.deepcopy(transition)
+
+    def finish(self):
+        if self.closed:
+            raise RuntimeError("health evidence already closed")
+        self.closed = True
+        self.records.close()
+        result = {
+            "schema": "openvins-online-health-result-v1",
+            "session_id": self.contract.session_id,
+            "session_count": self.session_count,
+            "reset_total": self.contract.reset_total,
+            "reset_counter": self.contract.reset_total % 256,
+            "last_quality": self.last["quality"] if self.last is not None else 0,
+            "last_health": self.last,
+            "covariance_profile": self.contract.profile.name,
+            "covariance_sim_domain_qualified": self.contract.profile.sim_domain_qualified,
+            "fusion_eligible": False,
+        }
+        with (self.output / "health-result.json").open("x", encoding="utf8") as stream:
+            json.dump(result, stream, indent=2, sort_keys=True, allow_nan=False)
+            stream.write("\n")
+        return result
+
+
 class ShadowInput:
     """Recorder-thread-only adapter. On failure, stop native delivery but retain raw recording."""
 
-    def __init__(self, client, output, *, session_id, now=time.monotonic_ns):
+    def __init__(self, client, output, *, session_id, now=time.monotonic_ns, health=None):
         self.client, self.output, self.now = client, output, now
+        if health is not None and not isinstance(health, OnlineHealthEvidence):
+            raise ValueError("invalid online health evidence")
+        if health is not None and health.contract.session_id != session_id:
+            raise ValueError("health and shadow session mismatch")
+        self.health = health
         self.causal = CausalInput(session_id=session_id, clock_id="gazebo-sim+linux-monotonic")
         self.sequence, self.skipped, self.delivered = 0, 0, 0
         self.pixels, self.failure = {}, None
@@ -515,6 +628,8 @@ class ShadowInput:
                 pixels = self.pixels[action["sample_ns"]] if action["kind"] == "camera" else None
                 acknowledgement = self.client.send(action, pixels)
                 self.delivery_acks.append(copy.deepcopy(acknowledgement))
+                if action["kind"] == "camera" and self.health is not None:
+                    self.health.observe_camera(acknowledgement)
                 self.delivered += 1
                 if action["kind"] == "camera":
                     self.pixels.pop(action["sample_ns"])
@@ -524,6 +639,7 @@ class ShadowInput:
             # Local recording/native service time is bounded elsewhere and is not source silence.
         except Exception as exc:
             self.failure = repr(exc)
+            health_last = self.health.fail("shadow_failure") if self.health is not None else None
             for index, action in enumerate(undelivered):
                 pixels = self.pixels.get(action["sample_ns"]) if action["kind"] == "camera" else None
                 self.released_unacknowledged.append(
@@ -544,6 +660,7 @@ class ShadowInput:
                         failure=self.failure,
                         wall_ns=self.now(),
                         input_refusal=exc.disposition if isinstance(exc, InputRefusal) else None,
+                        health=health_last,
                     ),
                     allow_nan=False,
                 )
@@ -590,6 +707,7 @@ class ShadowInput:
             quality=None,
             reset_counter=None,
             last_delivery_acks=copy.deepcopy(self.delivery_acks),
+            health_last=copy.deepcopy(self.health.last) if self.health is not None else None,
         )
         self.failures.close()
         with (self.output / "shadow-input-result.json").open("x") as stream:
