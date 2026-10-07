@@ -134,6 +134,11 @@ physical study in the same change.
   `docs/OWNED_ISOLATED_LAUNCH_REPORT.md`; real capture working-directory/resource
   binding, cold first-status bootstrap and actual PX4/Gazebo compatibility remain
   open. No live gate is checked by the probe or wrapper harness.
+  `docs/OPENVINS_LISTENER_WIRE_FORMAT_REPORT.md` corrects another source-derived
+  gap: pinned multi-record listener prefixes were absent from the old handwritten
+  fixture. The opt-in exact native prefix profile now has captured-stub output
+  and fault tests. It still does not qualify actual uORB delivery, cold first
+  association or accepted throughput; no live checkbox is advanced by this fix.
 - [x] Snapshot `EKF2_EV_CTRL`, `EKF2_EV_NOISE_MD`, `EKF2_EV_QMIN`,
   `EKF2_EV_DELAY`, `EKF2_EV_POS_X/Y/Z`, `EKF2_IMU_POS_X/Y/Z`, height reference
   and other active aiding source parameters. Refuse a missing/ambiguous value.

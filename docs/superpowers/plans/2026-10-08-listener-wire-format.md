@@ -20,18 +20,18 @@ tests/benchmark/test_openvins_listener_wire_format.py; tests/fixtures/timesync/.
 Interface: TimesyncListenerDecoder(instance, expected_records, start_ns,
 *, output_profile='plain-v1'); feed/check/finish remain compatible.
 
-- [ ] Retain recorded native bytes and provenance; tests for native two-record
+- [x] Retain recorded native bytes and provenance; tests for native two-record
       acceptance and split/byte fragments must fail before implementation.
-- [ ] Add exact-prefix profile and refuse missing/unknown/inside-field prefixes,
+- [x] Add exact-prefix profile and refuse missing/unknown/inside-field prefixes,
       partial timeout/EOF, trailing bytes, mismatched count and invalid profile.
-- [ ] Verify raw counts, default rejection, unchanged field/ordinal validation,
+- [x] Verify raw counts, default rejection, unchanged field/ordinal validation,
       observer handoff and synthetic 500-record chain; commit targeted changes.
 
 ## Task2: review and evidence
 
-- [ ] Independent code/evidence review; material findings need RED/GREEN repair.
-- [ ] Run full pytest with current-tree PYTHONPATH and changed Ruff/diff checks.
-- [ ] Report native probe scope, metadata/reused source hashes and old test gap;
+- [x] Independent code/evidence review; material findings need RED/GREEN repair.
+- [x] Run full pytest with current-tree PYTHONPATH and changed Ruff/diff checks.
+- [x] Report native probe scope, metadata/reused source hashes and old test gap;
       seal new ZIP/CRC/hash without replacing prior evidence.
-- [ ] Update parent plan, commit/push personal and existing PR65; overall goal
+- [x] Update parent plan, commit/push personal and existing PR65; overall goal
       and actual bootstrap/live gates stay open.
