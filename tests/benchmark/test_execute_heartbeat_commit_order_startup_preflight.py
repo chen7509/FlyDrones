@@ -62,6 +62,7 @@ def test_executes_only_startup_preflight_and_records_completion(tmp_path, monkey
     assert dispatch["command"][dispatch["command"].index("--output") + 1].endswith("startup-preflight-v1")
     assert completion["physical_run"] is False and completion["returncode"] == 0
     assert seen and "--startup-preflight" in seen[0][0]
+    assert seen[0][1]["cwd"] == values["study"].parents[2]
 
 
 @pytest.mark.parametrize("fault", ["head", "resources", "existing", "audit"])

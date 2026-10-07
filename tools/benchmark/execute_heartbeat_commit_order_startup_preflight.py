@@ -101,7 +101,7 @@ def execute(
     launcher_error = None
     try:
         with output.open("xb") as stream:
-            finished = runner(startup_command, cwd=study.parents[3], stdout=stream, stderr=subprocess.STDOUT, check=False)
+            finished = runner(startup_command, cwd=study.parents[2], stdout=stream, stderr=subprocess.STDOUT, check=False)
         returncode = finished.returncode
     except Exception as exc:
         launcher_error = repr(exc)
