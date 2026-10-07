@@ -54,6 +54,24 @@ def test_binding_accepts_only_declared_mesa_cache_control(tmp_path):
         binding.validate_binding(doc)
 
 
+def test_v3_accepts_a_predeclared_restarted_openvins_owned_role(tmp_path, monkeypatch):
+    doc, _, _, _ = fixture(tmp_path)
+    doc = v3(doc)
+    monkeypatch.setattr(binding, 'validate_response', lambda *_args, **_kwargs: None)
+    for role in ('graph:resolver', 'graph:source', 'graph:dependencies'):
+        selected = tmp_path / role.replace(':', '-')
+        selected.write_text(role)
+        doc['inventory'][role] = [str(selected)]
+    doc['baseline'] = snapshot(doc['inventory'])
+    doc['runtime_maps']['owned_roles']['openvins'] = ['ready', 'prestop']
+    doc['runtime_maps']['owned_roles']['openvins-restart'] = ['ready', 'prestop']
+    assert binding.validate_binding(doc)['runtime_maps']['owned_roles'] == {
+        'px4': ['ready', 'prestop'],
+        'openvins': ['ready', 'prestop'],
+        'openvins-restart': ['ready', 'prestop'],
+    }
+
+
 def test_start_compares_declared_optional_mesa_cache_control(tmp_path):
     doc, generated, source, output = fixture(tmp_path)
     doc['environment']['MESA_SHADER_CACHE_DISABLE'] = 'true'

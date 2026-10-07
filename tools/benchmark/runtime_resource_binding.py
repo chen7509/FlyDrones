@@ -20,6 +20,7 @@ GENERATED_NAMES = ('world.sdf', 'world.json', 'ground_albedo.png', 'obstacle_alb
 ENV_KEYS = ('GZ_SIM_RESOURCE_PATH', 'GZ_SIM_SYSTEM_PLUGIN_PATH', 'GZ_SIM_SERVER_CONFIG_PATH',
             'LD_LIBRARY_PATH', 'PYTHONPATH', 'SDF_PATH', 'GZ_FILE_PATH', 'GZ_HOMEDIR', 'HOME')
 OPTIONAL_ENV_KEYS = ('MESA_SHADER_CACHE_DISABLE',)
+OWNED_RUNTIME_ROLES = {'px4', 'openvins', 'openvins-restart'}
 
 
 def validate_binding(doc):
@@ -84,7 +85,7 @@ def validate_binding(doc):
         self_phases = runtime['self_phases']
         roles = runtime['owned_roles']
         if (type(self_phases) is not list or not self_phases
-                or type(roles) is not dict or not roles or not set(roles) <= {'px4', 'openvins'}):
+                or type(roles) is not dict or not roles or not set(roles) <= OWNED_RUNTIME_ROLES):
             raise ValueError('runtime maps phases and roles required')
         lists = [self_phases, *roles.values()]
         if any(type(items) is not list or not items for items in lists):
