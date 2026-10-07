@@ -103,6 +103,8 @@ class ColdTimesyncBootstrap:
             if now_ns - self._last_progress >= self.PROGRESS_NS:
                 self._fail('bootstrap progress timeout')
             self._observer.check(now_ns)
+            if self._decoder is not None:
+                self._decoder.check(now_ns)
             yield
         except BaseException as exc:
             if self._fault is None:

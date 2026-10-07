@@ -173,6 +173,13 @@ def test_global_eight_second_window_is_not_reset_by_regular_progress():
         obj.check(**kwargs(8_000_000_000))
 
 
+def test_new_reply_does_not_refresh_silent_listener_complete_frame_deadline():
+    obj=ready()
+    obj.reserve_reply(*body(1)[:2],**kwargs(1_900_000_000))
+    with pytest.raises(ValueError,match='complete-frame timeout'):
+        obj.check(**kwargs(2_000_000_005))
+
+
 @pytest.mark.parametrize('change', ['epoch','listener','clock','bool-clock','restart','early-exit','bad-exit'])
 def test_session_clock_and_exit_failures(change):
     obj=ready()
