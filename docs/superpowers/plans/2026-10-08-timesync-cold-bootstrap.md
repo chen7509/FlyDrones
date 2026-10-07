@@ -22,20 +22,20 @@ tests/benchmark/test_openvins_timesync_bootstrap.py; tests/fixtures/timesync/.
 Interfaces: parse_snapshot(raw, exit_code); ColdTimesyncBootstrap as specified,
 including check(now_ns=..., epoch_token=...) and read-only events/progress copies.
 
-- [ ] Write failing snapshot and transition tests, including exact native implicit
+- [x] Write failing snapshot and transition tests, including exact native implicit
       fixture, before implementing the module. Preserve the initial error type.
-- [ ] Implement strict parsing via the existing decoder and locked, journal-first
+- [x] Implement strict parsing via the existing decoder and locked, journal-first
       transitions, serial observer and explicit multi framing.
-- [ ] Cover500-sample chain, counted-once replay,501 with rejected sample, clock,
+- [x] Cover500-sample chain, counted-once replay,501 with rejected sample, clock,
       wrong identity/phase/field, extra bytes/count, clean exit, journal failure,
       callback mutation/reentry and partial deadline tests; run focused regressions.
-- [ ] Commit implementation and tests with evidence-linked fixture provenance.
+- [x] Commit implementation and tests with evidence-linked fixture provenance.
 
 ## Task2: file-only audit and closeout
 
-- [ ] Run a named fixed-input normal/failure matrix using this state machine and
+- [x] Run a named fixed-input normal/failure matrix using this state machine and
       a real exclusive JSONL journal; no socket/process/native replays.
-- [ ] Independent read-only review, material repairs RED/GREEN; full pytest with
+- [x] Independent read-only review, material repairs RED/GREEN; full pytest with
       current-tree PYTHONPATH, changed Ruff and diff-check.
 - [ ] Report implementation versus live proof, frozen source/fixture identities,
       failures and next actual process/transport binding; seal ZIP/hash/CRC.

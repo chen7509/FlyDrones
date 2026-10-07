@@ -35,3 +35,7 @@ Interface: TimesyncListenerDecoder(instance, expected_records, start_ns,
       seal new ZIP/CRC/hash without replacing prior evidence.
 - [x] Update parent plan, commit/push personal and existing PR65; overall goal
       and actual bootstrap/live gates stay open.
+
+Offline cold snapshot/replay composition is now implemented and reviewed under
+`2026-10-08-timesync-cold-bootstrap.md`; actual process/source/transport binding
+and live convergence remain unverified. See OPENVINS_TIMESYNC_BOOTSTRAP_REPORT.
