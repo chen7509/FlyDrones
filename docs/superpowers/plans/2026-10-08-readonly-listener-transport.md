@@ -23,6 +23,6 @@ File: tests/benchmark/check_openvins_listener_transport.py.
 - [x] Freeze then run one private-server normal/fault matrix, exact commands and
       native fixture membership/hashes, no real PX4 or MAVLink.
 - [x] Independent review and RED/GREEN repairs; full regression.
-- [ ] Update report with actual versus synthetic/final-hardening boundaries;
+- [x] Update report with actual versus synthetic/final-hardening boundaries;
       seal new ZIP/hash/CRC without overwriting old evidence.
 - [ ] Commit/push personal, update draft PR65; retain full goal and live gates.
