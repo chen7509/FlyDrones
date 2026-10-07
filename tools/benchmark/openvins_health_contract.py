@@ -199,6 +199,18 @@ class OpenVinsHealthContract:
                 raise ValueError
             if self._seen_public and not public:
                 return self.fail("public_state_reverted")
+            if not internal:
+                if (
+                    row["state_time_s"] != -1
+                    or row["last_regular_update_s"] != -1
+                    or row["imu_covariance15"] is not None
+                ):
+                    raise ValueError
+                self._last_sample_ns = sample_ns
+                reasons = ["internal_unavailable"]
+                if not self.profile.sim_domain_qualified:
+                    reasons.append("covariance_profile_unqualified")
+                return self._result(quality=0, reasons=reasons)
             if _seconds_to_ns(row["state_time_s"], "state time") != sample_ns:
                 return self.fail("state_time_mismatch")
             regular_ns = _seconds_to_ns(row["last_regular_update_s"], "regular update")

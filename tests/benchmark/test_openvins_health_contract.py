@@ -55,6 +55,16 @@ def test_quality_is_unknown_until_public_and_profile_are_qualified():
     assert result["fusion_eligible"] is False
 
 
+def test_uninitialized_camera_has_unknown_quality_without_covariance():
+    contract = OpenVinsHealthContract("session-a", profile=qualified_profile())
+    sample = row(internal=False, public=False, state_time_s=-1, last_regular_update_s=-1, covariance=None)
+    sample["imu_covariance15"] = None
+    result = contract.accept_camera(sample, source_health())
+    assert result["quality"] == 0
+    assert result["reasons"] == ["internal_unavailable"]
+    assert result["bounded_covariance15"] is None
+
+
 def test_quality_one_is_minimum_positive_only_for_current_healthy_public_state():
     contract = OpenVinsHealthContract("session-a", profile=qualified_profile())
     result = contract.accept_camera(row(), source_health())
