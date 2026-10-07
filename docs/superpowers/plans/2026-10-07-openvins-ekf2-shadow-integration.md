@@ -75,17 +75,17 @@ opening a transport. `fusion_eligible` remains false.
 **Files:** Extend the existing single-worker fan-out with a file-only packet
 candidate sink and immutable audit.
 
-- [ ] Predeclare source, binary/config, health profile, thresholds, rate and
+- [x] Predeclare source, binary/config, health profile, thresholds, rate and
   output identities; bind them into the runtime snapshot.
-- [ ] Feed actual journaled IMU/camera/native acknowledgements through the
+- [x] Feed actual journaled IMU/camera/native acknowledgements through the
   integration contract once. Keep the sink incapable of constructing a socket.
-- [ ] Record capture, arrival, dispatch, native start/end, health, candidate and
+- [x] Record capture, arrival, dispatch, native start/end, health, candidate and
   refusal times separately.
-- [ ] Run normal, source-loss, native-timeout and explicit session-replacement
+- [x] Run normal, source-loss, native-timeout and explicit session-replacement
   fixed-input cases. Preserve all failures.
-- [ ] Audit unique sample rate. If only 10 Hz camera candidates exist, mark
+- [x] Audit unique sample rate. If only 10 Hz camera candidates exist, mark
   receiver-shadow rate only and keep fusion-rate qualification false.
-- [ ] Add and validate a unique 30-50 Hz native propagation/covariance producer,
+- [x] Add and validate a unique 30-50 Hz native propagation/covariance producer,
   then qualify its covariance on prospectively frozen held-out simulation runs;
   do not inherit camera-cohort qualification automatically.
 
