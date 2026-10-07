@@ -223,3 +223,38 @@ def test_clock_high_water_refusal_is_latched(entry):
     with pytest.raises(ValueError):
         gate.proof()
     assert gate.snapshot()["failure"]
+
+
+def test_anchored_policy_applies_motion_intent_before_first_force():
+    from tools.benchmark.motion_intent_physical import MotionIntentAnchoredPolicy
+
+    events = []
+
+    def prepare(anchor_ns, proof):
+        events.append(("intent", anchor_ns, proof))
+
+    policy = MotionIntentAnchoredPolicy(
+        lambda: {"ready": True},
+        lambda row: events.append(("anchor", row)),
+        prepare_motion=prepare,
+    )
+    for ns in range(1_000_000, 202_000_000, 1_000_000):
+        force = policy.step(ns, 1_000_000, unarmed_wall_ns=1, wall_ns=2)
+
+    assert events[0][0] == "anchor"
+    assert events[1] == ("intent", 201_000_000, {"ready": True})
+    assert force != [0.0, 0.0, 0.0]
+
+
+def test_anchored_policy_refuses_failed_motion_intent():
+    from tools.benchmark.motion_intent_physical import MotionIntentAnchoredPolicy
+
+    def prepare(_anchor_ns, _proof):
+        raise RuntimeError("native intent refusal")
+
+    policy = MotionIntentAnchoredPolicy(
+        lambda: {"ready": True}, lambda _row: None, prepare_motion=prepare
+    )
+    with pytest.raises(ValueError, match="intent refusal"):
+        policy.step(1_000_000, 1_000_000, unarmed_wall_ns=1, wall_ns=2)
+    assert policy.anchor_ns == 201_000_000 and policy.support_steps == 0

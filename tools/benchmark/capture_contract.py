@@ -7,6 +7,7 @@ import stat
 from pathlib import Path
 
 PROFILE_FIELDS = ('motion_profile', 'physics_trace_profile', 'reference_fault_profile', 'source_fanout_profile')
+MOTION_INTENT_FIELD = 'motion_intent_profile'
 PATH_FIELDS = ('shadow_binary', 'shadow_config', 'reference_module')
 POLICY_FIELD = 'trajectory_gauge_policy'
 
@@ -102,6 +103,9 @@ def execution_contract(args, launch_environment=None):
     )
     if launch_environment is not None:
         result['launch_environment'] = validate_launch_environment(launch_environment)
+    motion_intent = getattr(args, MOTION_INTENT_FIELD, None)
+    if motion_intent is not None:
+        result['profiles'][MOTION_INTENT_FIELD] = motion_intent
     if policy_path is not None:
         result['trajectory_gauge_policy'] = trajectory_gauge_policy_record(policy_path)
     return result
@@ -142,7 +146,7 @@ def validate_declaration(args, launch_environment=None):
 
 def worker_options(args):
     result = []
-    for field in PATH_FIELDS + PROFILE_FIELDS + (
+    for field in PATH_FIELDS + PROFILE_FIELDS + (MOTION_INTENT_FIELD,
         'reference_sha256', 'execution_contract', 'runtime_binding', POLICY_FIELD,
     ):
         value = getattr(args, field, None)

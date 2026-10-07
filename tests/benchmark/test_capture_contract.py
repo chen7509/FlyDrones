@@ -317,3 +317,72 @@ def test_parent_derives_v2_environment_and_passes_it_to_supervisor(tmp_path, mon
     assert calls[0][2]['launch_environment'] == launch_environment
     assert calls[0][2]['execution_contract'] == declaration_path
     assert calls[0][2]['timeout_s'] == 300
+
+
+def test_motion_intent_profile_is_declared_and_forwarded_only_when_enabled(tmp_path):
+    legacy = args(tmp_path)
+    enabled = args(
+        tmp_path,
+        '--motion-intent-profile', 'native-beginning-zupt-v1',
+        '--source-fanout-profile', 'ready-shadow-heartbeat-estimator-v1',
+        '--shadow-binary', str(tmp_path / 'native'),
+        '--shadow-config', str(tmp_path / 'config'),
+        '--reference-module', str(tmp_path / 'reference'),
+        '--reference-sha256', 'a' * 64,
+        '--motion-profile', 'supported-ready-v1',
+        '--physics-trace-profile', 'substep-ready-v1',
+    )
+
+    assert 'motion_intent_profile' not in contract.execution_contract(legacy)['profiles']
+    assert contract.execution_contract(enabled)['profiles']['motion_intent_profile'] == 'native-beginning-zupt-v1'
+    options = contract.worker_options(enabled)
+    index = options.index('--motion-intent-profile')
+    assert options[index + 1] == 'native-beginning-zupt-v1'
+
+
+def test_native_motion_intent_bridge_requires_unarmed_proof_and_applies_before_anchor():
+    from tools.benchmark.capture_disarmed_sensors import apply_native_motion_intent
+
+    now = iter(range(1_000, 1_020))
+
+    class Readiness:
+        def motion_intent_state(self):
+            return {"state": "internal"}
+
+    class Gate:
+        session_id = "session"
+        clock_id = "clock"
+        failure = None
+
+        def __init__(self):
+            self.calls = []
+
+        def observe_estimator(self, value):
+            self.calls.append(("state", value))
+
+        def request(self, command):
+            self.calls.append(("request", command))
+            return {"action": command["effective_sim_ns"]}
+
+        def acknowledge(self, ack):
+            self.calls.append(("ack", ack))
+
+        def authorize_step(self, ns):
+            self.calls.append(("authorize", ns))
+            return True
+
+    class Client:
+        def send_motion_intent(self, action):
+            return {"native": action}
+
+    gate = Gate()
+    proof = {"records": {"heartbeat": {"base_mode": 0}}}
+    apply_native_motion_intent(gate, Readiness(), Client(), 2_600_000_000, proof, clock=lambda: next(now))
+
+    assert [call[0] for call in gate.calls] == ["state", "request", "ack", "authorize"]
+    assert gate.calls[1][1]["effective_sim_ns"] == 2_600_000_000
+    assert gate.calls[1][1]["velocity_setpoint_frd_m_s"] == [0.0, 0.0, -0.2]
+    with pytest.raises(ValueError, match="unarmed"):
+        apply_native_motion_intent(gate, Readiness(), Client(), 3_000_000_000,
+                                   {"records": {"heartbeat": {"base_mode": 128}}},
+                                   clock=lambda: next(now))

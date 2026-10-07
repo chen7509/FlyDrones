@@ -604,3 +604,27 @@ def test_capture_profile_rejects_incomplete_or_fault_configuration(tmp_path):
         parse_capture_args(complete + ["--reference-fault-profile", "native-pre-epoch-v1"])
     with pytest.raises(SystemExit):
         parse_capture_args(complete[:4])
+
+
+def test_motion_intent_state_projects_latest_internal_ack(tmp_path):
+    from tools.benchmark.estimator_aware_readiness import EstimatorAwareReadiness
+
+    now = [10_000_000_000]
+    readiness = EstimatorAwareReadiness(
+        tmp_path, JournaledReadiness(clock=lambda: now[0]), clock=lambda: now[0]
+    )
+    value = ack(sequence=7, sample_ns=2_400_000_000, internal=True)
+    readiness.observe_ack_batch(
+        [value], source_row(sequence=11, sample_ns=2_400_000_000)
+    )
+
+    assert readiness.motion_intent_state() == {
+        "kind": "C",
+        "native_sequence": 7,
+        "sample_ns": 2_400_000_000,
+        "acknowledged_ns": value["acknowledged_ns"],
+        "internal_initialized": True,
+        "has_moved_since_zupt": value["has_moved_since_zupt"],
+        "reset_counter": None,
+    }
+    readiness.finish()

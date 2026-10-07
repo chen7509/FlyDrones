@@ -141,6 +141,7 @@ class EstimatorAwareReadiness:
         self._failure = None
         self.first_internal = None
         self.latest_internal = None
+        self.latest_motion_intent_state = None
         self.last_sequence = None
         self.last_sample = None
         self.clock_high_water_ns = None
@@ -232,9 +233,25 @@ class EstimatorAwareReadiness:
                     if self.first_internal is None:
                         self.first_internal = copy.deepcopy(record)
                     self.latest_internal = copy.deepcopy(record)
+                    self.latest_motion_intent_state = {
+                        "kind": "C",
+                        "native_sequence": sequence,
+                        "sample_ns": sample,
+                        "acknowledged_ns": acknowledged,
+                        "internal_initialized": True,
+                        "has_moved_since_zupt": value["has_moved_since_zupt"],
+                        "reset_counter": value["reset_counter"],
+                    }
             except BaseException as exc:
                 self._fail(exc)
                 raise ValueError(self.failure) from exc
+
+    def motion_intent_state(self):
+        with self.lock:
+            self._available()
+            if self.latest_motion_intent_state is None:
+                raise ValueError("motion intent requires internal estimator state")
+            return copy.deepcopy(self.latest_motion_intent_state)
 
     def proof(self):
         with self.lock:

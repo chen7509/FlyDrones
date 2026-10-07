@@ -154,6 +154,7 @@ def parse_capture_args(argv=None):
             "ready-shadow-heartbeat-estimator-v1",
         ],
     )
+    parser.add_argument("--motion-intent-profile", choices=["native-beginning-zupt-v1"])
     parser.add_argument("--motion-profile", choices=["lateral-wrench-v1", "supported-lateral-v1", "supported-ready-v1"])
     parser.add_argument("--physics-trace-profile", choices=["substep-lateral-v1", "substep-supported-v1", "substep-ready-v1"])
     args = parser.parse_args(argv)
@@ -171,6 +172,8 @@ def parse_capture_args(argv=None):
         or args.reference_fault_profile
     ):
         parser.error("source fan-out requires complete supported native/reference configuration without fault injection")
+    if args.motion_intent_profile and args.source_fanout_profile != "ready-shadow-heartbeat-estimator-v1":
+        parser.error("native motion intent requires estimator-aware source fan-out")
     if args.reference_fault_profile and not args.reference_module:
         parser.error("runtime refusal requires native reference configuration")
     if bool(args.reference_module) != bool(args.reference_sha256):
@@ -234,6 +237,36 @@ def finish_readiness(readiness, source_fanout_profile):
     if source_fanout_profile == "ready-shadow-heartbeat-estimator-v1":
         return readiness.finish()
     return readiness.snapshot()
+
+
+def apply_native_motion_intent(gate, readiness, client, anchor_ns, proof, *, clock=time.monotonic_ns):
+    """Latch beginning-only ZUPT off before the first prospectively commanded step."""
+    heartbeat = proof.get("records", {}).get("heartbeat") if isinstance(proof, dict) else None
+    if (
+        not isinstance(heartbeat, dict)
+        or type(heartbeat.get("base_mode")) is not int
+        or heartbeat["base_mode"] & 128
+    ):
+        raise ValueError("motion intent requires causal unarmed heartbeat proof")
+    issued = clock()
+    gate.observe_estimator(readiness.motion_intent_state())
+    action = gate.request(
+        {
+            "session_id": gate.session_id,
+            "clock_id": gate.clock_id,
+            "command_sequence": 0,
+            "effective_sim_ns": anchor_ns,
+            "issued_monotonic_ns": issued,
+            "unarmed": True,
+            "safety_authorized": True,
+            "velocity_setpoint_frd_m_s": [0.0, 0.0, -0.2],
+            "yaw_rate_setpoint_rad_s": 0.0,
+            "source": "px4-safe-setpoint-supervisor",
+        }
+    )
+    gate.acknowledge(client.send_motion_intent(action))
+    if not gate.authorize_step(anchor_ns):
+        raise ValueError(gate.failure or "native motion intent did not authorize effective step")
 
 
 def dispatch_heartbeat(event, writer, fanout):
@@ -485,7 +518,8 @@ def main():
                     errors.append("native consumer failed: " + str(result["native"]))
 
             journal.cleanup("native consumer", finish_native, priority=95)
-            shadow = ShadowInput(client, shadow_dir, session_id="online-native-" + str(client.process.pid))
+            native_session_id = "online-native-" + str(client.process.pid)
+            shadow = ShadowInput(client, shadow_dir, session_id=native_session_id)
 
             def finish_shadow():
                 result["shadow"] = shadow.finish()
@@ -509,6 +543,23 @@ def main():
                 ),
                 priority=86,
             )
+        motion_intent = None
+        if args.motion_intent_profile:
+            from tools.benchmark.motion_intent_gate import MotionIntentGate
+
+            motion_intent = MotionIntentGate(
+                session_id=native_session_id,
+                clock_id="gazebo-sim+linux-monotonic",
+                output=output,
+                native_adapter_integrated=True,
+            )
+
+            def finish_motion_intent():
+                result["motion_intent"] = motion_intent.finish()
+                if not result["motion_intent"]["qualified"]:
+                    errors.append("motion intent: " + str(result["motion_intent"]["failure"]))
+
+            journal.cleanup("motion intent", finish_motion_intent, priority=83)
         fanout = None
         if args.source_fanout_profile:
             fanout = build_source_fanout(output, args.source_fanout_profile, readiness, shadow)
@@ -644,8 +695,26 @@ def main():
             if readiness:
                 from tools.benchmark.readiness_anchor import AnchoredPolicy, anchored_profile, persist_anchor
 
+                if motion_intent:
+                    from tools.benchmark.motion_intent_physical import MotionIntentAnchoredPolicy
+
+                    AnchoredPolicy = MotionIntentAnchoredPolicy
+
                 extra = dict(
-                    policy=AnchoredPolicy(fanout.proof if fanout else readiness.proof, lambda row: persist_anchor(output, row)),
+                    policy=(
+                        AnchoredPolicy(
+                            fanout.proof if fanout else readiness.proof,
+                            lambda row: persist_anchor(output, row),
+                            prepare_motion=lambda anchor, proof: apply_native_motion_intent(
+                                motion_intent, readiness, client, anchor, proof
+                            ),
+                        )
+                        if motion_intent
+                        else AnchoredPolicy(
+                            fanout.proof if fanout else readiness.proof,
+                            lambda row: persist_anchor(output, row),
+                        )
+                    ),
                     profile_data=anchored_profile(),
                 )
             motion = motion_type(output, errors, lambda: arming["unarmed_wall_ns"], trace=trace, **extra)
