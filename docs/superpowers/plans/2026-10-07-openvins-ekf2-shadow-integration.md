@@ -116,6 +116,9 @@ physical study in the same change.
   warmup requirement conflicts with the unchanged total duration/readiness
   condition; resolve it explicitly in the replacement design rather than
   resetting the timer or silently adding warmup. It remains unqualified.
+  Offline serial status matching is now implemented under
+  `docs/OPENVINS_TIMESYNC_OBSERVER_REPORT.md`; its synthetic/native-filter
+  checks do not qualify actual listener delivery or cold/channel identity.
 - [x] Snapshot `EKF2_EV_CTRL`, `EKF2_EV_NOISE_MD`, `EKF2_EV_QMIN`,
   `EKF2_EV_DELAY`, `EKF2_EV_POS_X/Y/Z`, `EKF2_IMU_POS_X/Y/Z`, height reference
   and other active aiding source parameters. Refuse a missing/ambiguous value.

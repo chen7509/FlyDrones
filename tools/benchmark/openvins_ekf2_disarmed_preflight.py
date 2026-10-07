@@ -140,6 +140,11 @@ class BoundedTimesyncVerifier:
     def offset_ns(self) -> int:
         return int(self._offset_us * 1_000.0)
 
+    @property
+    def estimated_offset_us(self) -> int:
+        """Pinned status casts the stored microsecond estimate before scaling."""
+        return int(self._offset_us)
+
     def _reset_filter(self) -> None:
         self._sequence = 0
         self._offset_us = 0.0
@@ -181,7 +186,9 @@ class BoundedTimesyncVerifier:
             + exchange.px4_receive_ns // 1_000
             - 2 * (exchange.remote_response_ns // 1_000)
         )
-        observed_offset_us = int(numerator_us / 2)
+        # Pinned C++ divides signed integers, truncating toward zero. A float
+        # intermediate rounds large odd numerators and can accept a wrong offset.
+        observed_offset_us = numerator_us // 2 if numerator_us >= 0 else -((-numerator_us) // 2)
         deviation_ns = abs(int(self._offset_us) - observed_offset_us) * 1_000
         reset = False
         accepted = False
