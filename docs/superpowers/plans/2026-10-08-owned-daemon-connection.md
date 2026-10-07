@@ -25,7 +25,7 @@ File: tests/benchmark/check_owned_daemon_connection.py (explicit manual harness)
 
 - [x] Freeze ordinary AF_UNIX fixture cases/source/runtime hash before execution;
       execute once, record peer credentials, zero application bytes and owned exit.
-- [ ] Independently review; fix material findings with RED/GREEN; full pytest.
-- [ ] Report verified/implemented/unverified/failures and remaining actual command
+- [x] Independently review; fix material findings with RED/GREEN; full pytest.
+- [x] Report verified/implemented/unverified/failures and remaining actual command
       transport binding. Seal new evidence with SHA/member hashes/CRC.
-- [ ] Commit/push only personal and update draft PR65. Overall goal remains active.
+- [x] Commit/push only personal and update draft PR65. Overall goal remains active.

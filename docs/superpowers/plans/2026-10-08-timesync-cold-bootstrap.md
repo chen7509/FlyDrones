@@ -40,3 +40,8 @@ including check(now_ns=..., epoch_token=...) and read-only events/progress copie
 - [x] Report implementation versus live proof, frozen source/fixture identities,
       failures and next actual process/transport binding; seal ZIP/hash/CRC.
 - [x] Update parent plan/PR65, commit/push only personal. Keep overall goal active.
+
+The same-connected-socket ownership prerequisite is now implemented and checked
+with ordinary Linux processes under2026-10-08-owned-daemon-connection.md.
+No command bytes or PX4 were used; command framing and live bootstrap integration
+remain unverified. See OWNED_DAEMON_CONNECTION_REPORT.md for exact scope.
