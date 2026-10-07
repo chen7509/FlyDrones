@@ -101,11 +101,21 @@ physical study in the same change.
 - [x] Research and freeze the actual MAVLink endpoint, system/component IDs,
   TIMESYNC behavior, PX4 binary/rootfs, model, parameter baseline and ULog topic
   set.
-- [x] Implement a bounded TIMESYNC client using the same explicit remote
+- [x] Implement the pure TIMESYNC responder/filter using the same explicit remote
+  monotonic clock as ODOMETRY; verify it with synthetic exchanges only.
+- [ ] **Reopened after source/budget audit:** implement and verify a feasible live
+  TIMESYNC startup and pre-publication convergence observer. See
+  `docs/OPENVINS_TIMESYNC_STARTUP_REPORT.md`: default 10 Hz cannot satisfy the
+  modeled 25-second run or 8-second readiness window, and companion replies do
+  not prove PX4 acceptance. Any temporary stream-rate change requires a new
+  declared transaction and rollback, not the old EV_CTRL-only preflight.
+  Use the same explicit remote
   monotonic clock as ODOMETRY. Freeze the sim-to-remote transform, reset the
-  clock session on pause/jump/restart, budget the pinned 500-sample convergence
-  window before the study timer, and require convergence before any ODOMETRY
-  candidate can leave the sender.
+  clock session on pause/jump/restart, and require observed convergence before
+  any ODOMETRY candidate can leave the sender. The old "before the study timer"
+  warmup requirement conflicts with the unchanged total duration/readiness
+  condition; resolve it explicitly in the replacement design rather than
+  resetting the timer or silently adding warmup. It remains unqualified.
 - [x] Snapshot `EKF2_EV_CTRL`, `EKF2_EV_NOISE_MD`, `EKF2_EV_QMIN`,
   `EKF2_EV_DELAY`, `EKF2_EV_POS_X/Y/Z`, `EKF2_IMU_POS_X/Y/Z`, height reference
   and other active aiding source parameters. Refuse a missing/ambiguous value.
@@ -123,8 +133,10 @@ physical study in the same change.
 - [x] Predeclare ULog topics and acceptance rules for visual odometry, timesync,
   estimator status/flags and EV aid sources.
 
-**Exit:** Preflight and synthetic rollback tests pass; physical destination is
-still absent. Obtain separate authorization for Task 5.
+**Exit:** Pure preflight and synthetic rollback checks have passed. Full launch
+readiness is reopened pending the live timing/observation requirements above;
+physical destination is still absent. Obtain separate authorization for Task 5
+after the corrected preflight is concrete and reviewed.
 
 ## Task 5: Disarmed receiver-only SITL injection
 

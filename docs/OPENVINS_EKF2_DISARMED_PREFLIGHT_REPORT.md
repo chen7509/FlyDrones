@@ -8,6 +8,13 @@ Review: draft PR 65
 
 ## Decision
 
+**Startup correction (2026-10-08):** full launch readiness is reopened by
+`docs/OPENVINS_TIMESYNC_STARTUP_REPORT.md`. The pure filter/rollback tests below
+do not prove a feasible live 500-exchange startup or a pre-publication PX4
+convergence observation. Default 10 Hz is incompatible with the modeled study
+budget; a temporary-rate candidate has not been applied or qualified. Historical
+archives and their completion flags remain unchanged and cannot authorize launch.
+
 **Correction after sealing (2026-10-08):** the original archive remains intact,
 but its rollback qualification was too broad. New tests reproduced remotely
 committed writes being omitted from restoration after an acknowledgement loss,
@@ -17,7 +24,7 @@ implementation and replacement preflight are tracked in
 `ebf2680` implementation-bound preflight; its evidence does not cover these
 failure paths. No live PX4 parameter mutation occurred in either stage.
 
-Task 4 prepare-only work passes. The future receiver-only study now has a
+Task 4's original prepare-only component checks passed. The future receiver-only study has a
 frozen endpoint, a clock/TIMESYNC contract matching the pinned PX4 filter, an
 actual retained parameter baseline, a reversible transaction model, runtime
 resource identities and ULog acceptance rules. This stage did not create a
