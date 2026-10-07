@@ -1,0 +1,17 @@
+{
+  "archive": "openvins-ekf2-disarmed-preflight-dev-1701.zip",
+  "arming": false,
+  "bytes": 2298769,
+  "crc_check": null,
+  "ekf2_fusion": false,
+  "embedded_manifest_sha256": "dd3b149b91715f03c219de66bacd8e479fdfdf26b724be5f3f33a7b063f1e254",
+  "head": "e2c38d366c266204566e029f3c4d59d6b888d927",
+  "member_count": 45,
+  "network_odometry": false,
+  "physical_destination_present": false,
+  "px4_parameter_access": false,
+  "schema": "openvins-ekf2-disarmed-preflight-publication-v1",
+  "sha256": "e226c8ec4239804c31c9bdde62c8ee86103994fe097c166641178728a530e8b5",
+  "task4_qualified": true,
+  "task5_authorized": false
+}

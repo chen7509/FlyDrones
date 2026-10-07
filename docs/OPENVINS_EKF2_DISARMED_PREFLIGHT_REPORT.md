@@ -104,3 +104,19 @@ parameter and logging provenance.
 |Implemented only|Remote clock/TIMESYNC responder and abstract parameter transaction. They have no live transport in Task 4.|
 |Not tested|UDP connection, actual 500-sample PX4 convergence, live parameter snapshot/write/rollback, `vehicle_visual_odometry`, receiver parity and EKF2 fusion.|
 |External/downstream|Hardware covariance, HITL, real flight, single-aircraft closed loop, 5/20-aircraft scaling and the full fruit-fly learning comparison.|
+
+## Sealed evidence
+
+The curated archive is
+`evidence/openvins-ekf2-disarmed-preflight-dev-1701.zip` (2,298,769 bytes,
+45 members including its embedded manifest), SHA-256
+`e226c8ec4239804c31c9bdde62c8ee86103994fe097c166641178728a530e8b5`.
+CRC verification passed. The companion publication record is
+`evidence/openvins-ekf2-disarmed-preflight-dev-1701-manifest.json`.
+
+The archive includes the retained parameter-source ULog, runtime binding,
+fixed upstream source snapshots, repository metadata, targeted and full test
+logs, terminal audit, implementation/spec/plan/report files, the preliminary
+pre-commit preflight and the accepted implementation-bound preflight. Its
+embedded manifest records `task4_qualified=true` and
+`task5_authorized=false`.
