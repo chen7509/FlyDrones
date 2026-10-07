@@ -90,3 +90,11 @@ physically consistent motion profile while preserving the estimator and
 thresholds, plus an image/tracker diagnosis for the single-frame lost tracks.
 It must not tune against a frozen evaluation set or be presented as physical
 VIO qualification.
+
+The sealed evidence archive is
+`evidence/openvins-feature-history-geometry-dev-1701.zip`. It contains 76
+members, is 39,974,828 bytes, and has SHA-256
+`6d2ba2cc104ffe6e9ead72437ca2fab44a4ded6707ae85ed671c50e405df3f31`.
+ZIP CRC, unique member names, manifest count, and all 75 manifest-listed
+member sizes and hashes verify. The archive contains this report as it stood
+before this paragraph; the archive itself is unchanged by this statement.

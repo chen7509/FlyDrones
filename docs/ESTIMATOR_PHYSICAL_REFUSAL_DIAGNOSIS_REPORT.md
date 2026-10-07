@@ -576,3 +576,10 @@ rejected set showing a median 0.00165 m pair baseline and 0.000400 rad
 parallax, versus 0.340 m and 0.118 rad for accepted candidates. The diagnostic
 replay exactly matches 250 uninstrumented camera states within `1e-12` and did
 not run PX4/Gazebo, train weights, publish ODOMETRY, inject EKF2, or arm.
+
+The authoritative evidence for this added stage is
+`evidence/openvins-feature-history-geometry-dev-1701.zip`, SHA-256
+`6d2ba2cc104ffe6e9ead72437ca2fab44a4ded6707ae85ed671c50e405df3f31`.
+The next stage is constrained to a minimal VIO/motion correction followed by a
+complete 25-second physical drift rerun; it must not expand generic evidence
+infrastructure or proceed to EKF2, training, or multi-aircraft work first.
