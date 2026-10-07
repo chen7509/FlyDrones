@@ -563,3 +563,16 @@ patch and build identities, audits, regressions, research,
 `.gitattributes`, source/tests/specification/plan and this report as it stood
 before this archive statement. The archive itself is unchanged by this final
 paragraph.
+
+## Fixed-input feature history and triangulation geometry diagnosis
+
+The next isolated diagnosis is documented in
+`docs/OPENVINS_FEATURE_HISTORY_GEOMETRY_REPORT.md`. A strict, state-neutral
+OpenVINS trace proves that all 1,202 dominant MSCKF insufficient-history
+rejections were already single-observation candidates; none was caused by the
+11-clone cleanup window. It also proves that all 114 delayed-SLAM linear
+triangulation failures exceeded the fixed condition-number limit, with the
+rejected set showing a median 0.00165 m pair baseline and 0.000400 rad
+parallax, versus 0.340 m and 0.118 rad for accepted candidates. The diagnostic
+replay exactly matches 250 uninstrumented camera states within `1e-12` and did
+not run PX4/Gazebo, train weights, publish ODOMETRY, inject EKF2, or arm.

@@ -217,8 +217,9 @@ def _validate_detail(timestamp, slot, *, required):
         "msckf": 0 if msckf is None else msckf["input"],
         "slam_delay": 0 if slam_delay is None else slam_delay["input"],
     }
-    if not required and not (selects or histories or triangulations):
-        return
+    if not (selects or histories or triangulations):
+        if not required or sum(expected.values()) == 0:
+            return
     def bind(rows, label):
         result = {}
         for row in rows:
@@ -346,6 +347,8 @@ def _validate_detail(timestamp, slot, *, required):
         stage_histories = [history_map[identity] for identity in stage_select]
         insufficient = sum(row["after"] < 2 for row in stage_histories)
         updater = msckf if stage == "msckf" else slam_delay
+        if input_count == 0 and updater is None:
+            continue
         if updater is None or insufficient != updater["insufficient"]:
             raise ValueError("history/updater insufficient mismatch")
         expected_tri = {identity for identity in stage_select if history_map[identity]["after"] >= 2}
@@ -535,6 +538,46 @@ def summarize_trace(parsed):
     return totals
 
 
+def summarize_feature_mechanisms(parsed):
+    stages = ("msckf", "slam_delay")
+    classifications = {stage: {} for stage in stages}
+    origins = {stage: {} for stage in stages}
+    rejection_flags = {
+        stage: {
+            "reject_cond": 0,
+            "reject_min_depth": 0,
+            "reject_max_depth": 0,
+            "reject_nonfinite": 0,
+        }
+        for stage in stages
+    }
+    rejection_combinations = {stage: {} for stage in stages}
+    for record in parsed["records"]:
+        for row in record.get("history", []):
+            stage = row["stage"]
+            label = row["classification"]
+            classifications[stage][label] = classifications[stage].get(label, 0) + 1
+        for row in record.get("select", []):
+            stage = row["stage"]
+            label = row["origin"]
+            origins[stage][label] = origins[stage].get(label, 0) + 1
+        for row in record.get("triangulation", []):
+            stage = row["stage"]
+            active = [key for key in rejection_flags[stage] if row[key]]
+            for key in active:
+                rejection_flags[stage][key] += 1
+            label = "+".join(active) if active else "accepted"
+            rejection_combinations[stage][label] = (
+                rejection_combinations[stage].get(label, 0) + 1
+            )
+    return {
+        "history_classifications": classifications,
+        "selection_origins": origins,
+        "triangulation_rejections": rejection_flags,
+        "triangulation_combinations": rejection_combinations,
+    }
+
+
 def audit_fixed_replay(
     control_dir,
     diagnostic_dir,
@@ -543,6 +586,7 @@ def audit_fixed_replay(
     diagnostic_patch,
     diagnostic_library_sha256,
     tolerance=1e-12,
+    require_detail=False,
 ):
     control_dir = Path(control_dir)
     diagnostic_dir = Path(diagnostic_dir)
@@ -555,6 +599,9 @@ def audit_fixed_replay(
             raise ValueError(f"{name} replay scope mismatch")
         if summary.get("fusion_eligible") is not False:
             raise ValueError(f"{name} replay made a fusion claim")
+        for field in ("odometry_eligible", "arming_eligible", "ekf2_eligible"):
+            if field in summary and summary[field] is not False:
+                raise ValueError(f"{name} replay made an eligibility claim")
     stable_summary_fields = (
         "source_capture",
         "source_requests_sha256",
@@ -572,18 +619,28 @@ def audit_fixed_replay(
         raise ValueError("diagnostic binary hash mismatch")
     if not isinstance(diagnostic_library_sha256, str) or len(diagnostic_library_sha256) != 64:
         raise ValueError("invalid diagnostic library hash")
-    trace = parse_trace((diagnostic_dir / "native.log").read_text(encoding="utf-8"))
+    trace = parse_trace(
+        (diagnostic_dir / "native.log").read_text(encoding="utf-8"),
+        require_detail=require_detail,
+    )
     state_comparison = compare_state_rows(
         _json_lines(control_dir / "states.jsonl"),
         _json_lines(diagnostic_dir / "states.jsonl"),
         tolerance=tolerance,
     )
     totals = summarize_trace(trace)
-    return {
-        "schema": "openvins-feature-rejection-trace-audit-v1",
+    result = {
+        "schema": (
+            "openvins-feature-history-geometry-audit-v1"
+            if require_detail
+            else "openvins-feature-rejection-trace-audit-v1"
+        ),
         "qualified": True,
         "physical_replay": False,
         "fusion_eligible": False,
+        "odometry_eligible": False,
+        "arming_eligible": False,
+        "ekf2_eligible": False,
         "truth_used": False,
         "control_binary_sha256": control_summary["binary_sha256"],
         "diagnostic_binary_sha256": binary_sha,
@@ -603,3 +660,6 @@ def audit_fixed_replay(
         "root_cause_qualified": False,
         "online_latency_qualified": False,
     }
+    if require_detail:
+        result["mechanisms"] = summarize_feature_mechanisms(trace)
+    return result

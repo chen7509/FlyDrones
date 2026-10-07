@@ -12,6 +12,7 @@ def main():
     parser.add_argument("--binary", required=True)
     parser.add_argument("--patch", required=True)
     parser.add_argument("--library-sha256", required=True)
+    parser.add_argument("--require-detail", action="store_true")
     parser.add_argument("--output", required=True)
     args = parser.parse_args()
     result = audit_fixed_replay(
@@ -20,6 +21,7 @@ def main():
         diagnostic_binary=args.binary,
         diagnostic_patch=args.patch,
         diagnostic_library_sha256=args.library_sha256,
+        require_detail=args.require_detail,
     )
     output = Path(args.output)
     output.parent.mkdir(parents=True, exist_ok=True)

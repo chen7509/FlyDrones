@@ -167,6 +167,15 @@ def test_parse_trace_scopes_same_feature_to_stage_and_timestamp():
     assert parsed["records"][1]["select"][0]["feat"] == 10
 
 
+def test_parse_trace_allows_preinitialization_tracker_only_frames():
+    from tools.benchmark.openvins_feature_trace import parse_trace
+
+    tracker_only = TRACK.replace("t=3.100000000", "t=0.002000000")
+    parsed = parse_trace(tracker_only + "\n" + _detail_log(), require_detail=True)
+    assert parsed["frames"] == 1
+    assert parsed["records"][0]["track"]["t"] == "3.100000000"
+
+
 def test_feature_history_geometry_patch_is_trace_only_and_preserves_rejections():
     patch = Path(
         "tools/benchmark/gpl/openvins_feature_history_geometry.patch"
@@ -368,4 +377,78 @@ def test_audit_fixed_replay_rejects_binary_or_state_drift(tmp_path):
             diagnostic_binary=binary,
             diagnostic_patch=patch,
             diagnostic_library_sha256="c" * 64,
+        )
+
+
+def test_audit_fixed_replay_requires_and_summarizes_geometry_detail(tmp_path):
+    from tools.benchmark.openvins_feature_trace import audit_fixed_replay
+
+    control = tmp_path / "control"
+    diagnostic = tmp_path / "diagnostic"
+    control.mkdir()
+    diagnostic.mkdir()
+    binary = tmp_path / "probe"
+    patch = tmp_path / "geometry.patch"
+    binary.write_bytes(b"geometry-probe-v1")
+    patch.write_bytes(b"geometry-patch-v1")
+    binary_sha = hashlib.sha256(binary.read_bytes()).hexdigest()
+    common = {
+        "qualified": True,
+        "failure": None,
+        "physical_replay": False,
+        "truth_used": False,
+        "fusion_eligible": False,
+        "source_capture": "sealed/capture-v1",
+        "source_requests_sha256": "a" * 64,
+        "replayed_source_records": 3,
+        "transport_accepted": 4,
+        "initialized_sample_ns": 2,
+        "effective_sim_ns": 3,
+        "stop_sim_ns": 4,
+    }
+    (control / "summary.json").write_text(
+        json.dumps({**common, "binary_sha256": "b" * 64}), encoding="utf-8"
+    )
+    (diagnostic / "summary.json").write_text(
+        json.dumps({**common, "binary_sha256": binary_sha}), encoding="utf-8"
+    )
+    row = {"sequence": 1, "sample_ns": 2, "imu_state": [0.0] * 16}
+    for directory in (control, diagnostic):
+        (directory / "states.jsonl").write_text(
+            json.dumps(row) + "\n", encoding="utf-8"
+        )
+    (diagnostic / "native.log").write_text(_detail_log(), encoding="utf-8")
+
+    result = audit_fixed_replay(
+        control,
+        diagnostic,
+        diagnostic_binary=binary,
+        diagnostic_patch=patch,
+        diagnostic_library_sha256="c" * 64,
+        require_detail=True,
+    )
+    assert result["schema"] == "openvins-feature-history-geometry-audit-v1"
+    assert result["mechanisms"]["history_classifications"]["msckf"] == {
+        "clone_pruned": 1,
+        "raw_short": 1,
+        "sufficient": 1,
+    }
+    assert result["mechanisms"]["triangulation_rejections"]["slam_delay"][
+        "reject_cond"
+    ] == 1
+    assert result["odometry_eligible"] is False
+    assert result["arming_eligible"] is False
+    assert result["ekf2_eligible"] is False
+
+    summary = json.loads((diagnostic / "summary.json").read_text(encoding="utf-8"))
+    summary["odometry_eligible"] = True
+    (diagnostic / "summary.json").write_text(json.dumps(summary), encoding="utf-8")
+    with pytest.raises(ValueError, match="eligibility claim"):
+        audit_fixed_replay(
+            control,
+            diagnostic,
+            diagnostic_binary=binary,
+            diagnostic_patch=patch,
+            diagnostic_library_sha256="c" * 64,
+            require_detail=True,
         )
