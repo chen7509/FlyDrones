@@ -1,0 +1,2433 @@
+Setting printing level to: DEBUG
+VioManagerOptions.h:110 ESTIMATOR PARAMETERS:
+StateOptions.h:158   - use_fej: 1
+StateOptions.h:159   - integration: 1
+StateOptions.h:160   - calib_cam_extrinsics: 0
+StateOptions.h:161   - calib_cam_intrinsics: 0
+StateOptions.h:162   - calib_cam_timeoffset: 0
+StateOptions.h:163   - calib_imu_intrinsics: 0
+StateOptions.h:164   - calib_imu_g_sensitivity: 0
+StateOptions.h:165   - imu_model: 0
+StateOptions.h:166   - max_clones: 11
+StateOptions.h:167   - max_slam: 50
+StateOptions.h:168   - max_slam_in_update: 25
+StateOptions.h:169   - max_msckf_in_update: 40
+StateOptions.h:170   - max_aruco: 1024
+StateOptions.h:171   - max_cameras: 1
+StateOptions.h:172   - feat_rep_msckf: GLOBAL_3D
+StateOptions.h:173   - feat_rep_slam: ANCHORED_MSCKF_INVERSE_DEPTH
+StateOptions.h:174   - feat_rep_aruco: ANCHORED_MSCKF_INVERSE_DEPTH
+InertialInitializerOptions.h:125 INITIALIZATION SETTINGS:
+InertialInitializerOptions.h:150   - init_window_time: 2.00
+InertialInitializerOptions.h:151   - init_imu_thresh: 1.50
+InertialInitializerOptions.h:152   - init_max_disparity: 10.00
+InertialInitializerOptions.h:153   - init_max_features: 10.00
+InertialInitializerOptions.h:171   - init_dyn_use: 0
+InertialInitializerOptions.h:172   - init_dyn_mle_opt_calib: 0
+InertialInitializerOptions.h:173   - init_dyn_mle_max_iter: 50
+InertialInitializerOptions.h:174   - init_dyn_mle_max_threads: 6
+InertialInitializerOptions.h:175   - init_dyn_mle_max_time: 0.05
+InertialInitializerOptions.h:176   - init_dyn_num_pose: 6
+InertialInitializerOptions.h:177   - init_dyn_min_deg: 10.00
+InertialInitializerOptions.h:178   - init_dyn_inflation_ori: 1.00e+01
+InertialInitializerOptions.h:179   - init_dyn_inflation_vel: 1.00e+02
+InertialInitializerOptions.h:180   - init_dyn_inflation_bg: 1.00e+01
+InertialInitializerOptions.h:181   - init_dyn_inflation_ba: 1.00e+02
+InertialInitializerOptions.h:182   - init_dyn_min_rec_cond: 1.00e-12
+InertialInitializerOptions.h:188   - init_dyn_bias_g: 0.00, 0.00, 0.00
+InertialInitializerOptions.h:189   - init_dyn_bias_a: 0.00, 0.00, 0.00
+InertialInitializerOptions.h:216 NOISE PARAMETERS:
+InertialInitializerOptions.h:224   - gyroscope_noise_density: 0.000055
+InertialInitializerOptions.h:225   - accelerometer_noise_density: 0.00043
+InertialInitializerOptions.h:226   - gyroscope_random_walk: 0.0000000
+InertialInitializerOptions.h:227   - accelerometer_random_walk: 0.000000
+InertialInitializerOptions.h:228   - sigma_pix: 1.00
+InertialInitializerOptions.h:317 STATE PARAMETERS:
+InertialInitializerOptions.h:318   - gravity_mag: 9.8100
+InertialInitializerOptions.h:319   - gravity: 0.000, 0.000, 9.810
+InertialInitializerOptions.h:320   - num_cameras: 1
+InertialInitializerOptions.h:321   - use_stereo: 0
+InertialInitializerOptions.h:322   - downsize cameras: 0
+InertialInitializerOptions.h:329   - calib_camimu_dt: 0.0000
+InertialInitializerOptions.h:344 cam_0_fisheye:0
+cam_0_wh:
+160 x 120
+cam_0_intrinsic(0:3):
+108.124 108.124      80      60
+cam_0_intrinsic(4:7):
+0 0 0 0
+cam_0_extrinsic(0:3):
+0.5 0.5 0.5 0.5
+cam_0_extrinsic(4:6):
+    0 0.002 -0.12
+T_C0toI:
+     0      0      1   0.12
+     1      0      0      0
+     0      1      0 -0.002
+     0      0      0      1
+
+VioManagerOptions.h:123   - dt_slam_delay: 1.0
+VioManagerOptions.h:124   - zero_velocity_update: 1
+VioManagerOptions.h:125   - zupt_max_velocity: 0.10
+VioManagerOptions.h:126   - zupt_noise_multiplier: 10.00
+VioManagerOptions.h:127   - zupt_max_disparity: 0.5000
+VioManagerOptions.h:128   - zupt_only_at_beginning?: 1
+VioManagerOptions.h:129   - record timing?: 0
+VioManagerOptions.h:130   - record timing filepath: /tmp/traj_timing.txt
+opencv_yaml_parse.h:400 the node multi_threading_pubs of type [b] was not found (not required)...
+opencv_yaml_parse.h:400 the node multi_threading_subs of type [b] was not found (not required)...
+VioManagerOptions.h:486 FEATURE TRACKING PARAMETERS:
+VioManagerOptions.h:487   - use_stereo: 0
+VioManagerOptions.h:488   - use_klt: 1
+VioManagerOptions.h:489   - use_aruco: 0
+VioManagerOptions.h:490   - downsize aruco: 1
+VioManagerOptions.h:491   - downsize cameras: 0
+VioManagerOptions.h:492   - num opencv threads: 4
+VioManagerOptions.h:493   - use multi-threading pubs: 1
+VioManagerOptions.h:494   - use multi-threading subs: 0
+VioManagerOptions.h:495   - num_pts: 200
+VioManagerOptions.h:496   - fast threshold: 20
+VioManagerOptions.h:497   - grid X by Y: 5 by 5
+VioManagerOptions.h:498   - min px dist: 10
+VioManagerOptions.h:499   - hist method: 1
+VioManagerOptions.h:500   - knn ratio: 0.700
+VioManagerOptions.h:501   - track frequency: 21.0
+opencv_yaml_parse.h:400 the node fi_triangulate_1d of type [b] was not found (not required)...
+opencv_yaml_parse.h:400 the node fi_refine_features of type [b] was not found (not required)...
+opencv_yaml_parse.h:365 the node fi_max_runs of type [i] was not found (not required)...
+opencv_yaml_parse.h:365 the node fi_init_lamda of type [d] was not found (not required)...
+opencv_yaml_parse.h:365 the node fi_max_lamda of type [d] was not found (not required)...
+opencv_yaml_parse.h:365 the node fi_min_dx of type [d] was not found (not required)...
+opencv_yaml_parse.h:365 the node fi_min_dcost of type [d] was not found (not required)...
+opencv_yaml_parse.h:365 the node fi_lam_mult of type [d] was not found (not required)...
+opencv_yaml_parse.h:365 the node fi_min_dist of type [d] was not found (not required)...
+opencv_yaml_parse.h:365 the node fi_max_dist of type [d] was not found (not required)...
+opencv_yaml_parse.h:365 the node fi_max_baseline of type [d] was not found (not required)...
+opencv_yaml_parse.h:365 the node fi_max_cond_number of type [d] was not found (not required)...
+FeatureInitializerOptions.h:87 	- triangulate_1d: 0
+FeatureInitializerOptions.h:88 	- refine_features: 1
+FeatureInitializerOptions.h:89 	- max_runs: 5
+FeatureInitializerOptions.h:90 	- init_lamda: 0.001
+FeatureInitializerOptions.h:91 	- max_lamda: 10000000000.000
+FeatureInitializerOptions.h:92 	- min_dx: 0.0000010
+FeatureInitializerOptions.h:93 	- min_dcost: 0.0000010
+FeatureInitializerOptions.h:94 	- lam_mult: 10.000
+FeatureInitializerOptions.h:95 	- min_dist: 0.100
+FeatureInitializerOptions.h:96 	- max_dist: 60.000
+FeatureInitializerOptions.h:97 	- max_baseline: 40.000
+FeatureInitializerOptions.h:98 	- max_cond_number: 10000.000
+VioManagerOptions.h:157 NOISE PARAMETERS:
+NoiseManager.h:62   - gyroscope_noise_density: 0.000055
+NoiseManager.h:63   - accelerometer_noise_density: 0.00043
+NoiseManager.h:64   - gyroscope_random_walk: 0.0000000
+NoiseManager.h:65   - accelerometer_random_walk: 0.000000
+VioManagerOptions.h:177   Updater MSCKF Feats:
+UpdaterOptions.h:45     - chi2_multipler: 1.0
+UpdaterOptions.h:46     - sigma_pix: 1.00
+VioManagerOptions.h:179   Updater SLAM Feats:
+UpdaterOptions.h:45     - chi2_multipler: 1.0
+UpdaterOptions.h:46     - sigma_pix: 1.00
+VioManagerOptions.h:181   Updater ARUCO Tags:
+UpdaterOptions.h:45     - chi2_multipler: 1.0
+UpdaterOptions.h:46     - sigma_pix: 1.00
+VioManagerOptions.h:183   Updater ZUPT:
+UpdaterOptions.h:45     - chi2_multipler: 0.0
+UpdaterOptions.h:46     - sigma_pix: 1.00
+VioManagerOptions.h:353 STATE PARAMETERS:
+VioManagerOptions.h:354   - gravity_mag: 9.8100
+VioManagerOptions.h:355   - gravity: 0.000, 0.000, 9.810
+VioManagerOptions.h:356   - camera masks?: 0
+VioManagerOptions.h:365   - calib_camimu_dt: 0.0000
+VioManagerOptions.h:366 CAMERA PARAMETERS:
+VioManagerOptions.h:381 cam_0_fisheye:0
+cam_0_wh:
+160 x 120
+cam_0_intrinsic(0:3):
+108.124 108.124      80      60
+cam_0_intrinsic(4:7):
+0 0 0 0
+cam_0_extrinsic(0:3):
+0.5 0.5 0.5 0.5
+cam_0_extrinsic(4:6):
+    0 0.002 -0.12
+T_C0toI:
+     0      0      1   0.12
+     1      0      0      0
+     0      1      0 -0.002
+     0      0      0      1
+
+VioManagerOptions.h:383 IMU PARAMETERS:
+VioManagerOptions.h:391 imu model:kalibr
+Dw (columnwise):1 0 0 1 0 1
+Da (columnwise):1 0 0 1 0 1
+Tg (columnwise):0 0 0 0 0 0 0 0 0
+q_GYROtoI: 0 0 0 1
+q_ACCtoI: 0 0 0 1
+VioManager.cpp:53 =======================================
+VioManager.cpp:54 OPENVINS ON-MANIFOLD EKF IS STARTING
+VioManager.cpp:55 =======================================
+VioManagerOptions.h:110 ESTIMATOR PARAMETERS:
+StateOptions.h:158   - use_fej: 1
+StateOptions.h:159   - integration: 1
+StateOptions.h:160   - calib_cam_extrinsics: 0
+StateOptions.h:161   - calib_cam_intrinsics: 0
+StateOptions.h:162   - calib_cam_timeoffset: 0
+StateOptions.h:163   - calib_imu_intrinsics: 0
+StateOptions.h:164   - calib_imu_g_sensitivity: 0
+StateOptions.h:165   - imu_model: 0
+StateOptions.h:166   - max_clones: 11
+StateOptions.h:167   - max_slam: 50
+StateOptions.h:168   - max_slam_in_update: 25
+StateOptions.h:169   - max_msckf_in_update: 40
+StateOptions.h:170   - max_aruco: 1024
+StateOptions.h:171   - max_cameras: 1
+StateOptions.h:172   - feat_rep_msckf: GLOBAL_3D
+StateOptions.h:173   - feat_rep_slam: ANCHORED_MSCKF_INVERSE_DEPTH
+StateOptions.h:174   - feat_rep_aruco: ANCHORED_MSCKF_INVERSE_DEPTH
+InertialInitializerOptions.h:125 INITIALIZATION SETTINGS:
+InertialInitializerOptions.h:150   - init_window_time: 2.00
+InertialInitializerOptions.h:151   - init_imu_thresh: 1.50
+InertialInitializerOptions.h:152   - init_max_disparity: 10.00
+InertialInitializerOptions.h:153   - init_max_features: 10.00
+InertialInitializerOptions.h:171   - init_dyn_use: 0
+InertialInitializerOptions.h:172   - init_dyn_mle_opt_calib: 0
+InertialInitializerOptions.h:173   - init_dyn_mle_max_iter: 50
+InertialInitializerOptions.h:174   - init_dyn_mle_max_threads: 6
+InertialInitializerOptions.h:175   - init_dyn_mle_max_time: 0.05
+InertialInitializerOptions.h:176   - init_dyn_num_pose: 6
+InertialInitializerOptions.h:177   - init_dyn_min_deg: 10.00
+InertialInitializerOptions.h:178   - init_dyn_inflation_ori: 1.00e+01
+InertialInitializerOptions.h:179   - init_dyn_inflation_vel: 1.00e+02
+InertialInitializerOptions.h:180   - init_dyn_inflation_bg: 1.00e+01
+InertialInitializerOptions.h:181   - init_dyn_inflation_ba: 1.00e+02
+InertialInitializerOptions.h:182   - init_dyn_min_rec_cond: 1.00e-12
+InertialInitializerOptions.h:188   - init_dyn_bias_g: 0.00, 0.00, 0.00
+InertialInitializerOptions.h:189   - init_dyn_bias_a: 0.00, 0.00, 0.00
+InertialInitializerOptions.h:216 NOISE PARAMETERS:
+InertialInitializerOptions.h:224   - gyroscope_noise_density: 0.000055
+InertialInitializerOptions.h:225   - accelerometer_noise_density: 0.00043
+InertialInitializerOptions.h:226   - gyroscope_random_walk: 0.0000000
+InertialInitializerOptions.h:227   - accelerometer_random_walk: 0.000000
+InertialInitializerOptions.h:228   - sigma_pix: 1.00
+InertialInitializerOptions.h:317 STATE PARAMETERS:
+InertialInitializerOptions.h:318   - gravity_mag: 9.8100
+InertialInitializerOptions.h:319   - gravity: 0.000, 0.000, 9.810
+InertialInitializerOptions.h:320   - num_cameras: 1
+InertialInitializerOptions.h:321   - use_stereo: 0
+InertialInitializerOptions.h:322   - downsize cameras: 0
+InertialInitializerOptions.h:329   - calib_camimu_dt: 0.0000
+InertialInitializerOptions.h:344 cam_0_fisheye:0
+cam_0_wh:
+160 x 120
+cam_0_intrinsic(0:3):
+108.124 108.124      80      60
+cam_0_intrinsic(4:7):
+0 0 0 0
+cam_0_extrinsic(0:3):
+0.5 0.5 0.5 0.5
+cam_0_extrinsic(4:6):
+    0 0.002 -0.12
+T_C0toI:
+     0      0      1   0.12
+     1      0      0      0
+     0      1      0 -0.002
+     0      0      0      1
+
+VioManagerOptions.h:123   - dt_slam_delay: 1.0
+VioManagerOptions.h:124   - zero_velocity_update: 1
+VioManagerOptions.h:125   - zupt_max_velocity: 0.10
+VioManagerOptions.h:126   - zupt_noise_multiplier: 10.00
+VioManagerOptions.h:127   - zupt_max_disparity: 0.5000
+VioManagerOptions.h:128   - zupt_only_at_beginning?: 1
+VioManagerOptions.h:129   - record timing?: 0
+VioManagerOptions.h:130   - record timing filepath: /tmp/traj_timing.txt
+VioManagerOptions.h:157 NOISE PARAMETERS:
+NoiseManager.h:62   - gyroscope_noise_density: 0.000055
+NoiseManager.h:63   - accelerometer_noise_density: 0.00043
+NoiseManager.h:64   - gyroscope_random_walk: 0.0000000
+NoiseManager.h:65   - accelerometer_random_walk: 0.000000
+VioManagerOptions.h:177   Updater MSCKF Feats:
+UpdaterOptions.h:45     - chi2_multipler: 1.0
+UpdaterOptions.h:46     - sigma_pix: 1.00
+VioManagerOptions.h:179   Updater SLAM Feats:
+UpdaterOptions.h:45     - chi2_multipler: 1.0
+UpdaterOptions.h:46     - sigma_pix: 1.00
+VioManagerOptions.h:181   Updater ARUCO Tags:
+UpdaterOptions.h:45     - chi2_multipler: 1.0
+UpdaterOptions.h:46     - sigma_pix: 1.00
+VioManagerOptions.h:183   Updater ZUPT:
+UpdaterOptions.h:45     - chi2_multipler: 0.0
+UpdaterOptions.h:46     - sigma_pix: 1.00
+VioManagerOptions.h:353 STATE PARAMETERS:
+VioManagerOptions.h:354   - gravity_mag: 9.8100
+VioManagerOptions.h:355   - gravity: 0.000, 0.000, 9.810
+VioManagerOptions.h:356   - camera masks?: 0
+VioManagerOptions.h:365   - calib_camimu_dt: 0.0000
+VioManagerOptions.h:366 CAMERA PARAMETERS:
+VioManagerOptions.h:381 cam_0_fisheye:0
+cam_0_wh:
+160 x 120
+cam_0_intrinsic(0:3):
+108.124 108.124      80      60
+cam_0_intrinsic(4:7):
+0 0 0 0
+cam_0_extrinsic(0:3):
+0.5 0.5 0.5 0.5
+cam_0_extrinsic(4:6):
+    0 0.002 -0.12
+T_C0toI:
+     0      0      1   0.12
+     1      0      0      0
+     0      1      0 -0.002
+     0      0      0      1
+
+VioManagerOptions.h:383 IMU PARAMETERS:
+VioManagerOptions.h:391 imu model:kalibr
+Dw (columnwise):1 0 0 1 0 1
+Da (columnwise):1 0 0 1 0 1
+Tg (columnwise):0 0 0 0 0 0 0 0 0
+q_GYROtoI: 0 0 0 1
+q_ACCtoI: 0 0 0 1
+VioManagerOptions.h:486 FEATURE TRACKING PARAMETERS:
+VioManagerOptions.h:487   - use_stereo: 0
+VioManagerOptions.h:488   - use_klt: 1
+VioManagerOptions.h:489   - use_aruco: 0
+VioManagerOptions.h:490   - downsize aruco: 1
+VioManagerOptions.h:491   - downsize cameras: 0
+VioManagerOptions.h:492   - num opencv threads: 1
+VioManagerOptions.h:493   - use multi-threading pubs: 0
+VioManagerOptions.h:494   - use multi-threading subs: 0
+VioManagerOptions.h:495   - num_pts: 200
+VioManagerOptions.h:496   - fast threshold: 20
+VioManagerOptions.h:497   - grid X by Y: 5 by 5
+VioManagerOptions.h:498   - min px dist: 10
+VioManagerOptions.h:499   - hist method: 1
+VioManagerOptions.h:500   - knn ratio: 0.700
+VioManagerOptions.h:501   - track frequency: 21.0
+FeatureInitializerOptions.h:87 	- triangulate_1d: 0
+FeatureInitializerOptions.h:88 	- refine_features: 1
+FeatureInitializerOptions.h:89 	- max_runs: 5
+FeatureInitializerOptions.h:90 	- init_lamda: 0.001
+FeatureInitializerOptions.h:91 	- max_lamda: 10000000000.000
+FeatureInitializerOptions.h:92 	- min_dx: 0.0000010
+FeatureInitializerOptions.h:93 	- min_dcost: 0.0000010
+FeatureInitializerOptions.h:94 	- lam_mult: 10.000
+FeatureInitializerOptions.h:95 	- min_dist: 0.100
+FeatureInitializerOptions.h:96 	- max_dist: 60.000
+FeatureInitializerOptions.h:97 	- max_baseline: 40.000
+FeatureInitializerOptions.h:98 	- max_cond_number: 10000.000
+VioManagerHelper.cpp:102 FD_INIT_FRAME t=0.002000000 db=0
+InertialInitializer.cpp:93 FD_INIT_DISP newest=-1.000000000 old=0 new=0 stage=no_feature_time
+VioManagerHelper.cpp:172 [33m[init]: failed initialization in 0.0001 seconds
+[0mVioManager.cpp:314 [34m[TIME]: 0.0072 seconds for tracking
+[0mVioManagerHelper.cpp:102 FD_INIT_FRAME t=0.100000000 db=0
+InertialInitializer.cpp:93 FD_INIT_DISP newest=-1.000000000 old=0 new=0 stage=no_feature_time
+VioManagerHelper.cpp:172 [33m[init]: failed initialization in 0.0000 seconds
+[0mVioManager.cpp:314 [34m[TIME]: 0.0004 seconds for tracking
+[0mVioManagerHelper.cpp:102 FD_INIT_FRAME t=0.200000000 db=0
+InertialInitializer.cpp:93 FD_INIT_DISP newest=-1.000000000 old=0 new=0 stage=no_feature_time
+VioManagerHelper.cpp:172 [33m[init]: failed initialization in 0.0000 seconds
+[0mVioManager.cpp:314 [34m[TIME]: 0.0005 seconds for tracking
+[0mVioManagerHelper.cpp:102 FD_INIT_FRAME t=0.300000000 db=33
+InertialInitializer.cpp:93 FD_INIT_DISP newest=0.300000000 old=0 new=0 stage=insufficient_time
+VioManagerHelper.cpp:172 [33m[init]: failed initialization in 0.0000 seconds
+[0mVioManager.cpp:314 [34m[TIME]: 0.0063 seconds for tracking
+[0mVioManagerHelper.cpp:102 FD_INIT_FRAME t=0.400000000 db=33
+InertialInitializer.cpp:93 FD_INIT_DISP newest=0.400000000 old=0 new=0 stage=insufficient_time
+VioManagerHelper.cpp:172 [33m[init]: failed initialization in 0.0000 seconds
+[0mVioManager.cpp:314 [34m[TIME]: 0.0003 seconds for tracking
+[0mVioManagerHelper.cpp:102 FD_INIT_FRAME t=0.500000000 db=33
+InertialInitializer.cpp:93 FD_INIT_DISP newest=0.500000000 old=0 new=0 stage=insufficient_time
+VioManagerHelper.cpp:172 [33m[init]: failed initialization in 0.0000 seconds
+[0mVioManager.cpp:314 [34m[TIME]: 0.0005 seconds for tracking
+[0mVioManagerHelper.cpp:102 FD_INIT_FRAME t=0.600000000 db=33
+InertialInitializer.cpp:93 FD_INIT_DISP newest=0.600000000 old=0 new=0 stage=insufficient_time
+VioManagerHelper.cpp:172 [33m[init]: failed initialization in 0.0000 seconds
+[0mVioManager.cpp:314 [34m[TIME]: 0.0003 seconds for tracking
+[0mVioManagerHelper.cpp:102 FD_INIT_FRAME t=0.700000000 db=33
+InertialInitializer.cpp:93 FD_INIT_DISP newest=0.700000000 old=0 new=0 stage=insufficient_time
+VioManagerHelper.cpp:172 [33m[init]: failed initialization in 0.0000 seconds
+[0mVioManager.cpp:314 [34m[TIME]: 0.0003 seconds for tracking
+[0mVioManagerHelper.cpp:102 FD_INIT_FRAME t=0.800000000 db=33
+InertialInitializer.cpp:93 FD_INIT_DISP newest=0.800000000 old=0 new=0 stage=insufficient_time
+VioManagerHelper.cpp:172 [33m[init]: failed initialization in 0.0000 seconds
+[0mVioManager.cpp:314 [34m[TIME]: 0.0003 seconds for tracking
+[0mVioManagerHelper.cpp:102 FD_INIT_FRAME t=0.900000000 db=33
+InertialInitializer.cpp:93 FD_INIT_DISP newest=0.900000000 old=0 new=0 stage=insufficient_time
+VioManagerHelper.cpp:172 [33m[init]: failed initialization in 0.0000 seconds
+[0mVioManager.cpp:314 [34m[TIME]: 0.0003 seconds for tracking
+[0mVioManagerHelper.cpp:102 FD_INIT_FRAME t=1.000000000 db=33
+InertialInitializer.cpp:93 FD_INIT_DISP newest=1.000000000 old=0 new=0 stage=insufficient_time
+VioManagerHelper.cpp:172 [33m[init]: failed initialization in 0.0000 seconds
+[0mVioManager.cpp:314 [34m[TIME]: 0.0003 seconds for tracking
+[0mVioManagerHelper.cpp:102 FD_INIT_FRAME t=1.100000000 db=33
+InertialInitializer.cpp:93 FD_INIT_DISP newest=1.100000000 old=0 new=0 stage=insufficient_time
+VioManagerHelper.cpp:172 [33m[init]: failed initialization in 0.0000 seconds
+[0mVioManager.cpp:314 [34m[TIME]: 0.0004 seconds for tracking
+[0mVioManagerHelper.cpp:102 FD_INIT_FRAME t=1.200000000 db=33
+InertialInitializer.cpp:93 FD_INIT_DISP newest=1.200000000 old=0 new=0 stage=insufficient_time
+VioManagerHelper.cpp:172 [33m[init]: failed initialization in 0.0000 seconds
+[0mVioManager.cpp:314 [34m[TIME]: 0.0004 seconds for tracking
+[0mVioManagerHelper.cpp:102 FD_INIT_FRAME t=1.300000000 db=33
+InertialInitializer.cpp:93 FD_INIT_DISP newest=1.300000000 old=0 new=0 stage=insufficient_time
+VioManagerHelper.cpp:172 [33m[init]: failed initialization in 0.0000 seconds
+[0mVioManager.cpp:314 [34m[TIME]: 0.0004 seconds for tracking
+[0mVioManagerHelper.cpp:102 FD_INIT_FRAME t=1.400000000 db=33
+InertialInitializer.cpp:93 FD_INIT_DISP newest=1.400000000 old=0 new=0 stage=insufficient_time
+VioManagerHelper.cpp:172 [33m[init]: failed initialization in 0.0000 seconds
+[0mVioManager.cpp:314 [34m[TIME]: 0.0004 seconds for tracking
+[0mVioManagerHelper.cpp:102 FD_INIT_FRAME t=1.500000000 db=33
+InertialInitializer.cpp:93 FD_INIT_DISP newest=1.500000000 old=0 new=0 stage=insufficient_time
+VioManagerHelper.cpp:172 [33m[init]: failed initialization in 0.0000 seconds
+[0mVioManager.cpp:314 [34m[TIME]: 0.0003 seconds for tracking
+[0mVioManagerHelper.cpp:102 FD_INIT_FRAME t=1.600000000 db=33
+InertialInitializer.cpp:93 FD_INIT_DISP newest=1.600000000 old=0 new=0 stage=insufficient_time
+VioManagerHelper.cpp:172 [33m[init]: failed initialization in 0.0000 seconds
+[0mVioManager.cpp:314 [34m[TIME]: 0.0006 seconds for tracking
+[0mVioManagerHelper.cpp:102 FD_INIT_FRAME t=1.700000000 db=33
+InertialInitializer.cpp:93 FD_INIT_DISP newest=1.700000000 old=0 new=0 stage=insufficient_time
+VioManagerHelper.cpp:172 [33m[init]: failed initialization in 0.0000 seconds
+[0mVioManager.cpp:314 [34m[TIME]: 0.0004 seconds for tracking
+[0mVioManagerHelper.cpp:102 FD_INIT_FRAME t=1.800000000 db=33
+InertialInitializer.cpp:93 FD_INIT_DISP newest=1.800000000 old=0 new=0 stage=insufficient_time
+VioManagerHelper.cpp:172 [33m[init]: failed initialization in 0.0000 seconds
+[0mVioManager.cpp:314 [34m[TIME]: 0.0004 seconds for tracking
+[0mVioManagerHelper.cpp:102 FD_INIT_FRAME t=1.900000000 db=33
+InertialInitializer.cpp:93 FD_INIT_DISP newest=1.900000000 old=0 new=0 stage=insufficient_time
+VioManagerHelper.cpp:172 [33m[init]: failed initialization in 0.0000 seconds
+[0mVioManager.cpp:314 [34m[TIME]: 0.0004 seconds for tracking
+[0mVioManagerHelper.cpp:102 FD_INIT_FRAME t=2.000000000 db=33
+InertialInitializer.cpp:93 FD_INIT_DISP newest=2.000000000 old=0 new=0 stage=insufficient_time
+VioManagerHelper.cpp:172 [33m[init]: failed initialization in 0.0000 seconds
+[0mVioManager.cpp:314 [34m[TIME]: 0.0004 seconds for tracking
+[0mVioManagerHelper.cpp:102 FD_INIT_FRAME t=2.100000000 db=33
+InertialInitializer.cpp:121 FD_INIT_DISP newest=2.100000000 old=32 new=32 stage=ready
+InertialInitializer.cpp:132 [33m[init]: disparity is 0.030,0.002 (10.00 thresh)
+[0mInertialInitializer.cpp:143 [32m[init]: USING STATIC INITIALIZER METHOD!
+[0mStaticInitializer.cpp:98 [33m[init-s]: IMU excitation stats: 141.013,0.011
+[0mStaticInitializer.cpp:116 [33m[init-s]: to much IMU excitation, above threshold 141.013,0.011 > 1.500
+[0mVioManagerHelper.cpp:172 [33m[init]: failed initialization in 0.0002 seconds
+[0mVioManager.cpp:314 [34m[TIME]: 0.0006 seconds for tracking
+[0mVioManagerHelper.cpp:102 FD_INIT_FRAME t=2.200000000 db=33
+InertialInitializer.cpp:121 FD_INIT_DISP newest=2.200000000 old=32 new=32 stage=ready
+InertialInitializer.cpp:132 [33m[init]: disparity is 0.034,0.001 (10.00 thresh)
+[0mInertialInitializer.cpp:143 [32m[init]: USING STATIC INITIALIZER METHOD!
+[0mStaticInitializer.cpp:98 [33m[init-s]: IMU excitation stats: 140.922,0.011
+[0mStaticInitializer.cpp:116 [33m[init-s]: to much IMU excitation, above threshold 140.922,0.011 > 1.500
+[0mVioManagerHelper.cpp:172 [33m[init]: failed initialization in 0.0001 seconds
+[0mVioManager.cpp:314 [34m[TIME]: 0.0004 seconds for tracking
+[0mVioManagerHelper.cpp:102 FD_INIT_FRAME t=2.300000000 db=33
+InertialInitializer.cpp:121 FD_INIT_DISP newest=2.300000000 old=32 new=32 stage=ready
+InertialInitializer.cpp:132 [33m[init]: disparity is 0.034,0.000 (10.00 thresh)
+[0mInertialInitializer.cpp:143 [32m[init]: USING STATIC INITIALIZER METHOD!
+[0mStaticInitializer.cpp:98 [33m[init-s]: IMU excitation stats: 0.011,0.011
+[0mVioManagerHelper.cpp:138 [32m[init]: successful initialization in 0.0001 seconds
+[0mVioManagerHelper.cpp:139 [32m[init]: orientation = 0.7071, -0.7071, -0.0000, 0.0000
+[0mVioManagerHelper.cpp:141 [32m[init]: bias gyro = -0.0001, 0.0000, 0.0000
+[0mVioManagerHelper.cpp:143 [32m[init]: velocity = 0.0000, 0.0000, 0.0000
+[0mVioManagerHelper.cpp:144 [32m[init]: bias accel = 0.0000, -0.0000, 0.0005
+[0mVioManagerHelper.cpp:146 [32m[init]: position = 0.0000, 0.0000, 0.0000
+[0mVioManagerHelper.cpp:166 [33m[init]: moved the state forward 0.00 seconds
+[0mVioManager.cpp:314 [34m[TIME]: 0.0005 seconds for tracking
+[0mVioManager.cpp:349 waiting for enough clone states (1 of 5)....
+VioManager.cpp:349 waiting for enough clone states (2 of 5)....
+VioManager.cpp:349 waiting for enough clone states (3 of 5)....
+VioManager.cpp:349 waiting for enough clone states (4 of 5)....
+VioManager.cpp:613 [34m[TIME]: 0.0009 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0008 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0000 seconds for SLAM update (0 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0019 seconds for re-tri & marg (5 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.003979 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = 0.707,-0.707,0.000,0.000 | p_IinG = 0.001,-0.000,0.004 | dist = 0.00 (meters)
+VioManager.cpp:657 bg = -0.0001,0.0000,0.0000 | ba = 0.0000,-0.0000,0.0005
+VioManager.cpp:613 [34m[TIME]: 0.0005 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0002 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0016 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0000 seconds for SLAM update (0 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0003 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0001 seconds for re-tri & marg (6 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002807 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = 0.707,-0.707,0.000,0.000 | p_IinG = 0.001,-0.000,0.010 | dist = 0.01 (meters)
+VioManager.cpp:657 bg = -0.0001,0.0000,0.0000 | ba = 0.0000,-0.0000,0.0005
+VioManager.cpp:613 [34m[TIME]: 0.0006 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0002 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0000 seconds for SLAM update (0 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0001 seconds for re-tri & marg (7 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.000985 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = 0.707,-0.707,0.000,0.000 | p_IinG = 0.001,-0.001,0.021 | dist = 0.02 (meters)
+VioManager.cpp:657 bg = -0.0001,0.0000,0.0000 | ba = 0.0000,-0.0000,0.0005
+VioManager.cpp:613 [34m[TIME]: 0.0006 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0002 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0000 seconds for SLAM update (0 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (8 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.00096 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = 0.707,-0.707,0.000,0.000 | p_IinG = 0.001,-0.001,0.039 | dist = 0.04 (meters)
+VioManager.cpp:657 bg = -0.0001,0.0000,0.0000 | ba = 0.0000,-0.0000,0.0005
+VioManager.cpp:613 [34m[TIME]: 0.0005 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0002 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0001 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0000 seconds for SLAM update (0 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0001 seconds for re-tri & marg (9 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.000924 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = 0.707,-0.707,0.000,0.000 | p_IinG = 0.001,-0.001,0.062 | dist = 0.06 (meters)
+VioManager.cpp:657 bg = -0.0001,0.0000,0.0000 | ba = 0.0000,-0.0000,0.0005
+VioManager.cpp:613 [34m[TIME]: 0.0005 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0002 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0000 seconds for SLAM update (0 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (10 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.000888 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = 0.707,-0.707,0.000,0.000 | p_IinG = 0.001,-0.001,0.090 | dist = 0.09 (meters)
+VioManager.cpp:657 bg = -0.0001,0.0000,0.0000 | ba = 0.0000,-0.0000,0.0005
+VioManager.cpp:613 [34m[TIME]: 0.0005 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0002 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0000 seconds for SLAM update (0 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0001 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.0009 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = 0.707,-0.707,0.000,0.000 | p_IinG = 0.001,-0.001,0.122 | dist = 0.12 (meters)
+VioManager.cpp:657 bg = -0.0001,0.0000,0.0000 | ba = 0.0000,-0.0000,0.0005
+VioManager.cpp:613 [34m[TIME]: 0.0006 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0002 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0003 seconds for MSCKF update (4 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0000 seconds for SLAM update (0 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0003 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.00139 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.708,0.707,-0.000,0.000 | p_IinG = -0.002,0.006,0.157 | dist = 0.15 (meters)
+VioManager.cpp:657 bg = -0.0002,-0.0000,0.0006 | ba = 0.0000,-0.0000,0.0003
+VioManager.cpp:613 [34m[TIME]: 0.0008 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0002 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0000 seconds for SLAM update (0 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.001193 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.708,0.707,-0.000,0.000 | p_IinG = -0.002,0.006,0.194 | dist = 0.19 (meters)
+VioManager.cpp:657 bg = -0.0002,-0.0000,0.0006 | ba = 0.0000,-0.0000,0.0003
+VioManager.cpp:613 [34m[TIME]: 0.0008 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0002 seconds for MSCKF update (2 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0000 seconds for SLAM update (0 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.001449 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = 0.710,-0.704,0.002,0.002 | p_IinG = -0.008,0.056,0.229 | dist = 0.23 (meters)
+VioManager.cpp:657 bg = 0.0004,-0.0021,0.0039 | ba = 0.0000,-0.0001,-0.0003
+VioManager.cpp:613 [34m[TIME]: 0.0006 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0002 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0000 seconds for SLAM update (0 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.001042 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = 0.711,-0.704,0.002,0.002 | p_IinG = -0.008,0.062,0.265 | dist = 0.27 (meters)
+VioManager.cpp:657 bg = 0.0004,-0.0021,0.0039 | ba = 0.0000,-0.0001,-0.0003
+VioManager.cpp:613 [34m[TIME]: 0.0009 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0002 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0000 seconds for SLAM update (0 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.001351 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = 0.711,-0.704,0.002,0.002 | p_IinG = -0.008,0.070,0.299 | dist = 0.30 (meters)
+VioManager.cpp:657 bg = 0.0004,-0.0021,0.0039 | ba = 0.0000,-0.0001,-0.0003
+VioManager.cpp:613 [34m[TIME]: 0.0008 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0002 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0000 seconds for SLAM update (0 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.001259 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = 0.711,-0.703,0.002,0.002 | p_IinG = -0.008,0.078,0.329 | dist = 0.33 (meters)
+VioManager.cpp:657 bg = 0.0004,-0.0021,0.0039 | ba = 0.0000,-0.0001,-0.0003
+VioManager.cpp:613 [34m[TIME]: 0.0006 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0002 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0000 seconds for SLAM update (27 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0083 seconds for SLAM delayed init (27 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0003 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.009554 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.701,0.713,-0.000,0.003 | p_IinG = 0.068,0.011,0.372 | dist = 0.36 (meters)
+VioManager.cpp:657 bg = -0.0031,0.0021,-0.0058 | ba = 0.0002,0.0004,0.0030
+VioManager.cpp:613 [34m[TIME]: 0.0006 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0004 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0004 seconds for MSCKF update (3 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0009 seconds for SLAM update (26 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002524 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.702,0.712,-0.000,0.003 | p_IinG = 0.065,0.007,0.382 | dist = 0.38 (meters)
+VioManager.cpp:657 bg = -0.0031,0.0020,-0.0051 | ba = 0.0002,0.0004,0.0003
+VioManager.cpp:613 [34m[TIME]: 0.0007 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0004 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0001 seconds for MSCKF update (1 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0007 seconds for SLAM update (26 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002141 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.702,0.712,-0.000,0.003 | p_IinG = 0.062,0.003,0.392 | dist = 0.39 (meters)
+VioManager.cpp:657 bg = -0.0027,0.0017,-0.0048 | ba = 0.0002,0.0004,-0.0006
+VioManager.cpp:613 [34m[TIME]: 0.0006 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0003 seconds for MSCKF update (1 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0006 seconds for SLAM update (24 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0001 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.001925 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.703,0.711,-0.000,0.002 | p_IinG = 0.054,0.005,0.395 | dist = 0.40 (meters)
+VioManager.cpp:657 bg = -0.0023,0.0015,-0.0040 | ba = 0.0002,0.0003,-0.0017
+VioManager.cpp:613 [34m[TIME]: 0.0006 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0002 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0007 seconds for SLAM update (25 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0004 seconds for SLAM delayed init (1 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0001 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002104 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.703,0.711,-0.000,0.002 | p_IinG = 0.050,0.004,0.401 | dist = 0.40 (meters)
+VioManager.cpp:657 bg = -0.0020,0.0011,-0.0038 | ba = 0.0002,0.0003,-0.0011
+VioManager.cpp:613 [34m[TIME]: 0.0005 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0007 seconds for SLAM update (25 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0005 seconds for SLAM delayed init (1 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002126 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.703,0.712,-0.001,0.002 | p_IinG = 0.049,0.003,0.402 | dist = 0.40 (meters)
+VioManager.cpp:657 bg = -0.0018,0.0007,-0.0038 | ba = 0.0002,0.0003,-0.0010
+VioManager.cpp:613 [34m[TIME]: 0.0006 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0002 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0007 seconds for SLAM update (26 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0004 seconds for SLAM delayed init (1 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002146 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.702,0.712,-0.001,0.001 | p_IinG = 0.051,0.000,0.399 | dist = 0.40 (meters)
+VioManager.cpp:657 bg = -0.0016,0.0001,-0.0041 | ba = 0.0001,0.0002,-0.0015
+VioManager.cpp:613 [34m[TIME]: 0.0005 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0009 seconds for SLAM update (27 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0004 seconds for SLAM delayed init (1 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0001 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002229 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.702,0.712,-0.001,0.001 | p_IinG = 0.050,-0.001,0.399 | dist = 0.40 (meters)
+VioManager.cpp:657 bg = -0.0014,0.0000,-0.0040 | ba = 0.0001,0.0002,-0.0015
+VioManager.cpp:613 [34m[TIME]: 0.0007 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0004 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0012 seconds for SLAM update (28 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0004 seconds for SLAM delayed init (1 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002901 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.702,0.712,-0.001,0.001 | p_IinG = 0.048,-0.001,0.400 | dist = 0.41 (meters)
+VioManager.cpp:657 bg = -0.0012,0.0000,-0.0039 | ba = 0.0002,0.0002,-0.0015
+VioManager.cpp:613 [34m[TIME]: 0.0005 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0002 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0010 seconds for SLAM update (28 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0001 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.001925 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.702,0.712,-0.001,0.001 | p_IinG = 0.047,-0.001,0.400 | dist = 0.41 (meters)
+VioManager.cpp:657 bg = -0.0011,0.0000,-0.0038 | ba = 0.0002,0.0001,-0.0015
+VioManager.cpp:613 [34m[TIME]: 0.0005 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0004 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0011 seconds for SLAM update (28 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0003 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002385 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.702,0.712,-0.001,0.001 | p_IinG = 0.046,-0.001,0.400 | dist = 0.41 (meters)
+VioManager.cpp:657 bg = -0.0010,-0.0000,-0.0036 | ba = 0.0003,0.0001,-0.0014
+VioManager.cpp:613 [34m[TIME]: 0.0007 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0010 seconds for SLAM update (28 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0007 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.00276 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.702,0.712,-0.001,0.001 | p_IinG = 0.045,-0.001,0.401 | dist = 0.41 (meters)
+VioManager.cpp:657 bg = -0.0009,-0.0000,-0.0035 | ba = 0.0003,0.0001,-0.0014
+VioManager.cpp:613 [34m[TIME]: 0.0008 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0001 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0012 seconds for SLAM update (28 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0001 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0003 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.00277 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.702,0.712,-0.001,0.001 | p_IinG = 0.043,-0.001,0.401 | dist = 0.41 (meters)
+VioManager.cpp:657 bg = -0.0008,0.0000,-0.0033 | ba = 0.0004,0.0001,-0.0013
+VioManager.cpp:613 [34m[TIME]: 0.0007 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0004 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0012 seconds for SLAM update (28 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0001 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002592 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.702,0.712,-0.001,0.001 | p_IinG = 0.042,-0.001,0.401 | dist = 0.41 (meters)
+VioManager.cpp:657 bg = -0.0007,0.0000,-0.0032 | ba = 0.0004,0.0000,-0.0013
+VioManager.cpp:613 [34m[TIME]: 0.0006 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0004 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0012 seconds for SLAM update (28 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.00248 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.703,0.712,-0.001,0.000 | p_IinG = 0.041,-0.001,0.401 | dist = 0.41 (meters)
+VioManager.cpp:657 bg = -0.0006,0.0000,-0.0030 | ba = 0.0005,0.0000,-0.0012
+VioManager.cpp:613 [34m[TIME]: 0.0006 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0010 seconds for SLAM update (28 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0003 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002266 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.703,0.712,-0.001,0.000 | p_IinG = 0.040,-0.001,0.401 | dist = 0.41 (meters)
+VioManager.cpp:657 bg = -0.0006,0.0000,-0.0029 | ba = 0.0005,-0.0000,-0.0011
+VioManager.cpp:613 [34m[TIME]: 0.0006 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0012 seconds for SLAM update (28 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002336 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.703,0.711,-0.000,0.000 | p_IinG = 0.073,-0.001,0.399 | dist = 0.44 (meters)
+VioManager.cpp:657 bg = -0.0004,0.0001,-0.0024 | ba = 0.0006,-0.0000,-0.0008
+VioManager.cpp:613 [34m[TIME]: 0.0008 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0001 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0007 seconds for SLAM update (23 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.001981 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.703,0.711,-0.000,0.000 | p_IinG = 0.230,-0.002,0.389 | dist = 0.60 (meters)
+VioManager.cpp:657 bg = -0.0002,0.0001,-0.0025 | ba = 0.0008,0.0001,0.0004
+VioManager.cpp:613 [34m[TIME]: 0.0006 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0007 seconds for SLAM update (23 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.001852 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.703,0.711,-0.000,0.000 | p_IinG = 0.434,-0.002,0.383 | dist = 0.81 (meters)
+VioManager.cpp:657 bg = -0.0002,0.0002,-0.0025 | ba = 0.0010,0.0002,0.0010
+VioManager.cpp:613 [34m[TIME]: 0.0008 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0001 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0005 seconds for SLAM update (19 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.001768 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.703,0.711,0.000,0.000 | p_IinG = 0.522,-0.002,0.384 | dist = 0.89 (meters)
+VioManager.cpp:657 bg = -0.0002,0.0002,-0.0024 | ba = 0.0010,0.0002,0.0010
+VioManager.cpp:613 [34m[TIME]: 0.0007 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0002 seconds for MSCKF update (1 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0004 seconds for SLAM update (18 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.001785 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.703,0.711,-0.000,0.000 | p_IinG = 0.487,-0.001,0.384 | dist = 0.93 (meters)
+VioManager.cpp:657 bg = -0.0002,0.0002,-0.0024 | ba = 0.0010,0.0002,0.0010
+VioManager.cpp:613 [34m[TIME]: 0.0007 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0001 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0006 seconds for SLAM update (18 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0001 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.001784 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.703,0.711,-0.000,0.001 | p_IinG = 0.329,0.001,0.382 | dist = 1.09 (meters)
+VioManager.cpp:657 bg = -0.0003,0.0002,-0.0024 | ba = 0.0010,0.0003,0.0013
+VioManager.cpp:613 [34m[TIME]: 0.0007 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0001 seconds for MSCKF update (2 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0004 seconds for SLAM update (19 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0004 seconds for SLAM delayed init (1 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0003 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002205 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.703,0.711,-0.000,0.001 | p_IinG = 0.123,0.003,0.381 | dist = 1.29 (meters)
+VioManager.cpp:657 bg = -0.0003,0.0002,-0.0023 | ba = 0.0010,0.0003,0.0015
+VioManager.cpp:613 [34m[TIME]: 0.0006 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0004 seconds for SLAM update (20 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0004 seconds for SLAM delayed init (1 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.001962 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.703,0.711,-0.000,0.000 | p_IinG = 0.034,0.004,0.381 | dist = 1.38 (meters)
+VioManager.cpp:657 bg = -0.0003,0.0001,-0.0022 | ba = 0.0010,0.0003,0.0016
+VioManager.cpp:613 [34m[TIME]: 0.0007 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0004 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0004 seconds for MSCKF update (3 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0006 seconds for SLAM update (24 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0013 seconds for SLAM delayed init (4 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.003647 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.703,0.711,-0.000,0.000 | p_IinG = 0.069,0.005,0.383 | dist = 1.41 (meters)
+VioManager.cpp:657 bg = -0.0002,0.0001,-0.0021 | ba = 0.0010,0.0002,0.0015
+VioManager.cpp:613 [34m[TIME]: 0.0008 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0001 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0008 seconds for SLAM update (25 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0004 seconds for SLAM delayed init (1 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002618 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.703,0.711,-0.000,0.000 | p_IinG = 0.226,0.003,0.384 | dist = 1.57 (meters)
+VioManager.cpp:657 bg = -0.0001,0.0001,-0.0019 | ba = 0.0010,0.0002,0.0014
+VioManager.cpp:613 [34m[TIME]: 0.0008 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0010 seconds for SLAM update (25 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002273 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.704,0.711,0.000,0.000 | p_IinG = 0.431,0.001,0.383 | dist = 1.77 (meters)
+VioManager.cpp:657 bg = -0.0001,0.0001,-0.0018 | ba = 0.0009,0.0003,0.0015
+VioManager.cpp:613 [34m[TIME]: 0.0015 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0002 seconds for MSCKF update (1 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0009 seconds for SLAM update (25 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.003119 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.704,0.711,0.000,0.000 | p_IinG = 0.519,0.000,0.383 | dist = 1.86 (meters)
+VioManager.cpp:657 bg = -0.0000,0.0001,-0.0018 | ba = 0.0009,0.0003,0.0016
+VioManager.cpp:613 [34m[TIME]: 0.0007 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0015 seconds for SLAM update (26 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0004 seconds for SLAM delayed init (1 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0003 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.003116 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.703,0.711,0.000,0.000 | p_IinG = 0.485,0.002,0.383 | dist = 1.90 (meters)
+VioManager.cpp:657 bg = -0.0001,0.0001,-0.0018 | ba = 0.0009,0.0003,0.0016
+VioManager.cpp:613 [34m[TIME]: 0.0006 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0005 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0010 seconds for SLAM update (27 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0004 seconds for SLAM delayed init (1 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0003 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002778 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.703,0.711,-0.000,0.000 | p_IinG = 0.326,0.003,0.383 | dist = 2.05 (meters)
+VioManager.cpp:657 bg = -0.0001,0.0001,-0.0018 | ba = 0.0010,0.0003,0.0017
+VioManager.cpp:613 [34m[TIME]: 0.0009 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0004 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0002 seconds for MSCKF update (2 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0014 seconds for SLAM update (30 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0016 seconds for SLAM delayed init (3 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0004 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.004781 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.704,0.711,-0.000,0.000 | p_IinG = 0.120,0.005,0.383 | dist = 2.26 (meters)
+VioManager.cpp:657 bg = -0.0001,0.0001,-0.0017 | ba = 0.0010,0.0003,0.0016
+VioManager.cpp:613 [34m[TIME]: 0.0010 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0005 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0012 seconds for SLAM update (31 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0005 seconds for SLAM delayed init (1 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.003417 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.704,0.711,-0.000,0.000 | p_IinG = 0.031,0.006,0.384 | dist = 2.35 (meters)
+VioManager.cpp:657 bg = -0.0001,0.0001,-0.0016 | ba = 0.0010,0.0003,0.0015
+VioManager.cpp:613 [34m[TIME]: 0.0009 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0006 seconds for MSCKF update (3 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0013 seconds for SLAM update (31 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0001 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.003166 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.704,0.710,0.000,0.000 | p_IinG = 0.028,0.006,0.384 | dist = 2.35 (meters)
+VioManager.cpp:657 bg = -0.0001,0.0001,-0.0015 | ba = 0.0009,0.0004,0.0014
+VioManager.cpp:613 [34m[TIME]: 0.0007 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0004 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0013 seconds for SLAM update (31 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0003 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002732 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.704,0.710,0.000,0.000 | p_IinG = 0.027,0.006,0.385 | dist = 2.35 (meters)
+VioManager.cpp:657 bg = -0.0001,0.0001,-0.0014 | ba = 0.0009,0.0004,0.0013
+VioManager.cpp:613 [34m[TIME]: 0.0007 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0014 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0004 seconds for SLAM delayed init (1 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.003114 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.704,0.710,0.000,0.000 | p_IinG = 0.027,0.006,0.385 | dist = 2.35 (meters)
+VioManager.cpp:657 bg = -0.0001,0.0001,-0.0014 | ba = 0.0009,0.0004,0.0012
+VioManager.cpp:613 [34m[TIME]: 0.0008 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0005 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0014 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0003 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002967 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.704,0.710,0.000,0.000 | p_IinG = 0.026,0.006,0.386 | dist = 2.35 (meters)
+VioManager.cpp:657 bg = -0.0001,0.0001,-0.0013 | ba = 0.0008,0.0004,0.0012
+VioManager.cpp:613 [34m[TIME]: 0.0006 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0014 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002616 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.704,0.710,0.000,0.000 | p_IinG = 0.026,0.006,0.386 | dist = 2.35 (meters)
+VioManager.cpp:657 bg = -0.0000,0.0001,-0.0012 | ba = 0.0007,0.0005,0.0011
+VioManager.cpp:613 [34m[TIME]: 0.0008 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0004 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0019 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.003226 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.704,0.710,0.000,0.000 | p_IinG = 0.026,0.006,0.386 | dist = 2.35 (meters)
+VioManager.cpp:657 bg = -0.0000,0.0001,-0.0012 | ba = 0.0006,0.0005,0.0011
+VioManager.cpp:613 [34m[TIME]: 0.0009 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0005 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0022 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.003895 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.704,0.710,0.000,0.000 | p_IinG = 0.026,0.007,0.386 | dist = 2.35 (meters)
+VioManager.cpp:657 bg = -0.0000,0.0001,-0.0011 | ba = 0.0005,0.0006,0.0011
+VioManager.cpp:613 [34m[TIME]: 0.0006 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0012 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002334 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.704,0.710,0.000,0.000 | p_IinG = 0.027,0.007,0.386 | dist = 2.35 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0001,-0.0011 | ba = 0.0005,0.0006,0.0010
+VioManager.cpp:613 [34m[TIME]: 0.0006 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0013 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.00237 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.705,0.710,0.000,0.000 | p_IinG = 0.027,0.007,0.387 | dist = 2.35 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0001,-0.0010 | ba = 0.0004,0.0007,0.0010
+VioManager.cpp:613 [34m[TIME]: 0.0007 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0017 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0001 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.003067 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.705,0.710,0.000,0.000 | p_IinG = 0.027,0.007,0.387 | dist = 2.35 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0010 | ba = 0.0003,0.0007,0.0010
+VioManager.cpp:613 [34m[TIME]: 0.0007 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0013 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002457 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.705,0.710,0.000,0.000 | p_IinG = 0.027,0.007,0.387 | dist = 2.35 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0010 | ba = 0.0002,0.0008,0.0010
+VioManager.cpp:613 [34m[TIME]: 0.0006 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0013 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0001 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002333 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.705,0.710,0.000,0.000 | p_IinG = 0.027,0.007,0.387 | dist = 2.35 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0009 | ba = 0.0002,0.0008,0.0009
+VioManager.cpp:613 [34m[TIME]: 0.0006 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0015 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0003 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002642 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.705,0.709,0.000,0.000 | p_IinG = 0.027,0.008,0.387 | dist = 2.35 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0009 | ba = 0.0001,0.0009,0.0009
+VioManager.cpp:613 [34m[TIME]: 0.0007 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0013 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002504 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.705,0.709,0.000,0.000 | p_IinG = 0.027,0.008,0.387 | dist = 2.35 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0009 | ba = 0.0001,0.0009,0.0009
+VioManager.cpp:613 [34m[TIME]: 0.0006 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0002 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0012 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002223 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.705,0.709,0.000,0.000 | p_IinG = 0.027,0.008,0.387 | dist = 2.35 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0008 | ba = 0.0001,0.0010,0.0009
+VioManager.cpp:613 [34m[TIME]: 0.0007 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0013 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002538 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.705,0.709,0.000,0.000 | p_IinG = 0.027,0.008,0.387 | dist = 2.35 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0008 | ba = 0.0001,0.0010,0.0008
+VioManager.cpp:613 [34m[TIME]: 0.0006 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0002 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0012 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002215 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.705,0.709,-0.000,0.000 | p_IinG = 0.027,0.008,0.388 | dist = 2.35 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0008 | ba = 0.0001,0.0011,0.0008
+VioManager.cpp:613 [34m[TIME]: 0.0006 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0012 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0001 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002248 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.705,0.709,-0.000,0.000 | p_IinG = 0.026,0.008,0.388 | dist = 2.35 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0008 | ba = 0.0001,0.0011,0.0008
+VioManager.cpp:613 [34m[TIME]: 0.0006 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0012 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.00231 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.705,0.709,-0.000,0.000 | p_IinG = 0.026,0.008,0.388 | dist = 2.35 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0008 | ba = 0.0001,0.0011,0.0007
+VioManager.cpp:613 [34m[TIME]: 0.0009 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0004 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0018 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.00331 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.705,0.709,-0.000,0.000 | p_IinG = 0.026,0.009,0.388 | dist = 2.35 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0007 | ba = 0.0001,0.0012,0.0007
+VioManager.cpp:613 [34m[TIME]: 0.0009 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0014 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002913 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.705,0.709,-0.000,0.000 | p_IinG = 0.025,0.009,0.388 | dist = 2.35 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0007 | ba = 0.0001,0.0012,0.0007
+VioManager.cpp:613 [34m[TIME]: 0.0007 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0014 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0001 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002675 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.705,0.709,-0.000,0.000 | p_IinG = 0.025,0.009,0.389 | dist = 2.35 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0007 | ba = 0.0001,0.0012,0.0007
+VioManager.cpp:613 [34m[TIME]: 0.0011 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0005 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0026 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0003 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.004431 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.705,0.709,-0.000,0.000 | p_IinG = 0.025,0.009,0.389 | dist = 2.36 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0007 | ba = 0.0002,0.0013,0.0007
+VioManager.cpp:613 [34m[TIME]: 0.0011 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0005 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0024 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0006 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.004588 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.705,0.709,-0.000,0.000 | p_IinG = 0.025,0.009,0.389 | dist = 2.36 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0007 | ba = 0.0002,0.0013,0.0006
+VioManager.cpp:613 [34m[TIME]: 0.0008 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0017 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.003015 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.705,0.709,-0.000,0.000 | p_IinG = 0.024,0.009,0.389 | dist = 2.36 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0006 | ba = 0.0002,0.0013,0.0006
+VioManager.cpp:613 [34m[TIME]: 0.0007 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0014 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002572 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.705,0.709,-0.000,0.000 | p_IinG = 0.024,0.009,0.389 | dist = 2.36 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0006 | ba = 0.0002,0.0014,0.0006
+VioManager.cpp:613 [34m[TIME]: 0.0007 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0004 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0015 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002823 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.705,0.709,-0.000,0.000 | p_IinG = 0.024,0.009,0.389 | dist = 2.36 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0006 | ba = 0.0002,0.0014,0.0006
+VioManager.cpp:613 [34m[TIME]: 0.0007 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0013 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0001 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002437 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.705,0.709,-0.000,0.000 | p_IinG = 0.024,0.009,0.389 | dist = 2.36 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0006 | ba = 0.0002,0.0014,0.0006
+VioManager.cpp:613 [34m[TIME]: 0.0006 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0012 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002326 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.705,0.709,-0.000,0.000 | p_IinG = 0.024,0.009,0.390 | dist = 2.36 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0006 | ba = 0.0002,0.0015,0.0005
+VioManager.cpp:613 [34m[TIME]: 0.0006 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0002 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0012 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002218 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.705,0.709,-0.000,0.000 | p_IinG = 0.023,0.009,0.390 | dist = 2.36 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0006 | ba = 0.0002,0.0015,0.0005
+VioManager.cpp:613 [34m[TIME]: 0.0006 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0011 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002161 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.705,0.709,-0.000,0.000 | p_IinG = 0.023,0.009,0.390 | dist = 2.36 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0005 | ba = 0.0002,0.0015,0.0005
+VioManager.cpp:613 [34m[TIME]: 0.0008 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0017 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.003014 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.705,0.709,-0.000,0.000 | p_IinG = 0.023,0.009,0.390 | dist = 2.36 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0005 | ba = 0.0002,0.0016,0.0005
+VioManager.cpp:613 [34m[TIME]: 0.0006 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0002 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0012 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002183 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.705,0.709,-0.000,0.000 | p_IinG = 0.023,0.009,0.390 | dist = 2.36 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0005 | ba = 0.0002,0.0016,0.0005
+VioManager.cpp:613 [34m[TIME]: 0.0006 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0012 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0001 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0001 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002361 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.705,0.709,-0.000,0.000 | p_IinG = 0.022,0.010,0.390 | dist = 2.36 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0005 | ba = 0.0002,0.0016,0.0005
+VioManager.cpp:613 [34m[TIME]: 0.0007 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0012 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0003 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002361 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.705,0.709,-0.000,0.000 | p_IinG = 0.022,0.010,0.390 | dist = 2.36 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0005 | ba = 0.0002,0.0016,0.0005
+VioManager.cpp:613 [34m[TIME]: 0.0006 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0011 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002201 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.705,0.709,-0.000,0.000 | p_IinG = 0.022,0.010,0.390 | dist = 2.36 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0005 | ba = 0.0002,0.0016,0.0005
+VioManager.cpp:613 [34m[TIME]: 0.0006 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0002 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0012 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002277 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.706,0.709,-0.000,0.000 | p_IinG = 0.022,0.010,0.390 | dist = 2.36 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0005 | ba = 0.0002,0.0017,0.0004
+VioManager.cpp:613 [34m[TIME]: 0.0006 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0002 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0013 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002405 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.706,0.709,-0.000,0.000 | p_IinG = 0.022,0.010,0.391 | dist = 2.36 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0004 | ba = 0.0002,0.0017,0.0004
+VioManager.cpp:613 [34m[TIME]: 0.0006 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0002 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0012 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0001 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002208 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.706,0.709,-0.000,0.000 | p_IinG = 0.021,0.010,0.391 | dist = 2.36 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0004 | ba = 0.0002,0.0017,0.0004
+VioManager.cpp:613 [34m[TIME]: 0.0006 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0012 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0001 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.00223 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.706,0.709,-0.000,0.000 | p_IinG = 0.021,0.010,0.391 | dist = 2.36 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0004 | ba = 0.0002,0.0017,0.0004
+VioManager.cpp:613 [34m[TIME]: 0.0006 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0012 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002291 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.706,0.709,-0.000,0.000 | p_IinG = 0.021,0.010,0.391 | dist = 2.36 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0004 | ba = 0.0002,0.0017,0.0004
+VioManager.cpp:613 [34m[TIME]: 0.0006 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0012 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0003 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002444 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.706,0.709,-0.000,0.000 | p_IinG = 0.021,0.010,0.391 | dist = 2.36 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0004 | ba = 0.0002,0.0018,0.0004
+VioManager.cpp:613 [34m[TIME]: 0.0006 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0012 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002241 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.706,0.709,-0.000,0.000 | p_IinG = 0.021,0.010,0.391 | dist = 2.36 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0004 | ba = 0.0002,0.0018,0.0004
+VioManager.cpp:613 [34m[TIME]: 0.0006 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0013 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002451 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.706,0.709,-0.000,0.000 | p_IinG = 0.021,0.010,0.392 | dist = 2.36 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0004 | ba = 0.0002,0.0018,0.0004
+VioManager.cpp:613 [34m[TIME]: 0.0007 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0013 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0001 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002462 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.706,0.709,-0.000,0.000 | p_IinG = 0.021,0.010,0.392 | dist = 2.36 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0004 | ba = 0.0003,0.0018,0.0004
+VioManager.cpp:613 [34m[TIME]: 0.0007 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0002 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0012 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0001 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0003 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002537 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.706,0.709,-0.000,0.000 | p_IinG = 0.020,0.010,0.392 | dist = 2.36 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0004 | ba = 0.0003,0.0018,0.0003
+VioManager.cpp:613 [34m[TIME]: 0.0006 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0013 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002409 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.706,0.708,-0.000,0.000 | p_IinG = 0.020,0.010,0.392 | dist = 2.36 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0004 | ba = 0.0003,0.0018,0.0003
+VioManager.cpp:613 [34m[TIME]: 0.0007 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0014 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002674 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.706,0.708,-0.000,0.000 | p_IinG = 0.020,0.010,0.392 | dist = 2.36 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0003 | ba = 0.0003,0.0019,0.0003
+VioManager.cpp:613 [34m[TIME]: 0.0007 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0004 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0012 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002604 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.706,0.708,-0.000,0.000 | p_IinG = 0.020,0.009,0.392 | dist = 2.36 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0003 | ba = 0.0003,0.0019,0.0003
+VioManager.cpp:613 [34m[TIME]: 0.0006 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0002 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0011 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0001 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002052 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.706,0.708,-0.000,0.000 | p_IinG = 0.020,0.009,0.392 | dist = 2.36 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0003 | ba = 0.0003,0.0019,0.0003
+VioManager.cpp:613 [34m[TIME]: 0.0006 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0002 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0012 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0001 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002097 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.706,0.708,-0.000,0.000 | p_IinG = 0.020,0.009,0.393 | dist = 2.36 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0003 | ba = 0.0003,0.0019,0.0003
+VioManager.cpp:613 [34m[TIME]: 0.0006 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0002 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0011 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002158 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.706,0.708,-0.000,0.000 | p_IinG = 0.020,0.009,0.393 | dist = 2.36 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0003 | ba = 0.0003,0.0019,0.0003
+VioManager.cpp:613 [34m[TIME]: 0.0006 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0002 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0013 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002264 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.706,0.708,-0.000,0.000 | p_IinG = 0.020,0.009,0.393 | dist = 2.36 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0003 | ba = 0.0003,0.0020,0.0003
+VioManager.cpp:613 [34m[TIME]: 0.0006 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0002 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0011 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002166 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.706,0.708,-0.000,0.000 | p_IinG = 0.019,0.009,0.393 | dist = 2.36 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0003 | ba = 0.0003,0.0020,0.0003
+VioManager.cpp:613 [34m[TIME]: 0.0007 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0014 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002581 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.706,0.708,-0.000,0.000 | p_IinG = 0.019,0.009,0.393 | dist = 2.36 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0003 | ba = 0.0003,0.0020,0.0003
+VioManager.cpp:613 [34m[TIME]: 0.0006 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0002 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0011 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0001 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002104 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.706,0.708,-0.000,0.000 | p_IinG = 0.019,0.009,0.393 | dist = 2.36 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0003 | ba = 0.0003,0.0020,0.0003
+VioManager.cpp:613 [34m[TIME]: 0.0007 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0013 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0003 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002681 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.706,0.708,-0.000,0.000 | p_IinG = 0.019,0.009,0.393 | dist = 2.36 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0003 | ba = 0.0003,0.0021,0.0002
+VioManager.cpp:613 [34m[TIME]: 0.0006 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0002 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0014 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0001 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002513 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.706,0.708,-0.000,0.000 | p_IinG = 0.019,0.009,0.393 | dist = 2.36 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0003 | ba = 0.0004,0.0021,0.0002
+VioManager.cpp:613 [34m[TIME]: 0.0007 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0005 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0013 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002693 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.706,0.708,-0.000,0.000 | p_IinG = 0.019,0.009,0.394 | dist = 2.36 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0003 | ba = 0.0004,0.0021,0.0002
+VioManager.cpp:613 [34m[TIME]: 0.0006 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0014 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002551 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.706,0.708,-0.000,0.000 | p_IinG = 0.019,0.009,0.394 | dist = 2.36 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0003 | ba = 0.0004,0.0021,0.0002
+VioManager.cpp:613 [34m[TIME]: 0.0005 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0002 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0011 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0001 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002016 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.706,0.708,-0.000,0.000 | p_IinG = 0.019,0.009,0.394 | dist = 2.36 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0002 | ba = 0.0004,0.0021,0.0002
+VioManager.cpp:613 [34m[TIME]: 0.0006 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0011 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0001 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002177 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.706,0.708,-0.000,0.000 | p_IinG = 0.018,0.009,0.394 | dist = 2.36 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0002 | ba = 0.0004,0.0022,0.0002
+VioManager.cpp:613 [34m[TIME]: 0.0006 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0002 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0012 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0001 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002149 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.706,0.708,-0.000,0.000 | p_IinG = 0.018,0.009,0.394 | dist = 2.36 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0002 | ba = 0.0004,0.0022,0.0002
+VioManager.cpp:613 [34m[TIME]: 0.0006 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0002 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0011 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002096 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.706,0.708,-0.000,0.000 | p_IinG = 0.018,0.009,0.394 | dist = 2.36 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0002 | ba = 0.0004,0.0022,0.0002
+VioManager.cpp:613 [34m[TIME]: 0.0016 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0006 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0034 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0005 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.006086 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.706,0.708,-0.000,0.000 | p_IinG = 0.018,0.009,0.394 | dist = 2.36 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0002 | ba = 0.0004,0.0022,0.0002
+VioManager.cpp:613 [34m[TIME]: 0.0010 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0018 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0003 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.003394 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.706,0.708,-0.000,0.000 | p_IinG = 0.018,0.009,0.394 | dist = 2.36 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0002 | ba = 0.0004,0.0023,0.0002
+VioManager.cpp:613 [34m[TIME]: 0.0010 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0004 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0018 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.003437 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.706,0.708,-0.000,0.000 | p_IinG = 0.018,0.009,0.394 | dist = 2.36 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0002 | ba = 0.0004,0.0023,0.0002
+VioManager.cpp:613 [34m[TIME]: 0.0008 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0012 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.00252 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.706,0.708,-0.000,0.000 | p_IinG = 0.018,0.009,0.394 | dist = 2.36 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0002 | ba = 0.0004,0.0023,0.0002
+VioManager.cpp:613 [34m[TIME]: 0.0007 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0015 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0003 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002872 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.706,0.708,-0.000,0.000 | p_IinG = 0.018,0.009,0.394 | dist = 2.36 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0002 | ba = 0.0004,0.0023,0.0002
+VioManager.cpp:613 [34m[TIME]: 0.0006 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0013 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0001 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0003 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002545 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.706,0.708,-0.000,0.000 | p_IinG = 0.017,0.009,0.394 | dist = 2.36 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0002 | ba = 0.0004,0.0023,0.0001
+VioManager.cpp:613 [34m[TIME]: 0.0006 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0011 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002219 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.706,0.708,-0.000,0.000 | p_IinG = 0.017,0.009,0.394 | dist = 2.36 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0002 | ba = 0.0004,0.0023,0.0001
+VioManager.cpp:613 [34m[TIME]: 0.0005 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0002 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0012 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0001 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.00205 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.706,0.708,-0.000,0.000 | p_IinG = 0.017,0.009,0.394 | dist = 2.36 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0002 | ba = 0.0004,0.0024,0.0001
+VioManager.cpp:613 [34m[TIME]: 0.0006 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0012 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002376 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.706,0.708,-0.000,0.000 | p_IinG = 0.017,0.009,0.394 | dist = 2.36 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0002 | ba = 0.0004,0.0024,0.0001
+VioManager.cpp:613 [34m[TIME]: 0.0006 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0012 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002267 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.706,0.708,-0.000,0.000 | p_IinG = 0.017,0.009,0.394 | dist = 2.36 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0002 | ba = 0.0004,0.0024,0.0001
+VioManager.cpp:613 [34m[TIME]: 0.0008 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0015 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002826 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.706,0.708,-0.000,0.000 | p_IinG = 0.017,0.009,0.394 | dist = 2.36 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0002 | ba = 0.0004,0.0024,0.0001
+VioManager.cpp:613 [34m[TIME]: 0.0007 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0014 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002568 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.706,0.708,-0.000,0.000 | p_IinG = 0.017,0.009,0.394 | dist = 2.36 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0002 | ba = 0.0004,0.0024,0.0001
+VioManager.cpp:613 [34m[TIME]: 0.0007 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0014 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0003 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002716 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.706,0.708,-0.000,0.000 | p_IinG = 0.017,0.009,0.394 | dist = 2.36 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0002 | ba = 0.0004,0.0024,0.0001
+VioManager.cpp:613 [34m[TIME]: 0.0006 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0002 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0012 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0001 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002175 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.706,0.708,-0.000,0.000 | p_IinG = 0.017,0.009,0.394 | dist = 2.36 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0002 | ba = 0.0004,0.0024,0.0001
+VioManager.cpp:613 [34m[TIME]: 0.0007 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0015 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0003 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002677 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.706,0.708,-0.000,0.000 | p_IinG = 0.017,0.009,0.394 | dist = 2.36 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0002 | ba = 0.0004,0.0024,0.0001
+VioManager.cpp:613 [34m[TIME]: 0.0006 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0002 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0012 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002184 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.706,0.708,-0.000,0.000 | p_IinG = 0.016,0.009,0.394 | dist = 2.36 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0002 | ba = 0.0004,0.0024,0.0001
+VioManager.cpp:613 [34m[TIME]: 0.0006 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0013 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.00232 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.706,0.708,-0.000,0.000 | p_IinG = 0.016,0.009,0.394 | dist = 2.36 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0002 | ba = 0.0004,0.0024,0.0001
+VioManager.cpp:613 [34m[TIME]: 0.0007 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0012 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0001 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002382 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.706,0.708,-0.000,0.000 | p_IinG = 0.016,0.009,0.394 | dist = 2.36 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0002 | ba = 0.0004,0.0025,0.0001
+VioManager.cpp:613 [34m[TIME]: 0.0006 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0013 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0001 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002406 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.706,0.708,-0.000,0.000 | p_IinG = 0.016,0.009,0.394 | dist = 2.36 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0002 | ba = 0.0003,0.0025,0.0001
+VioManager.cpp:613 [34m[TIME]: 0.0006 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0002 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0012 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002316 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.706,0.708,-0.000,0.000 | p_IinG = 0.016,0.009,0.394 | dist = 2.36 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0002 | ba = 0.0003,0.0025,0.0001
+VioManager.cpp:613 [34m[TIME]: 0.0006 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0012 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002179 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.706,0.708,-0.000,0.000 | p_IinG = 0.016,0.009,0.394 | dist = 2.36 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0002 | ba = 0.0003,0.0025,0.0001
+VioManager.cpp:613 [34m[TIME]: 0.0006 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0002 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0012 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002256 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.706,0.708,-0.000,0.000 | p_IinG = 0.016,0.009,0.394 | dist = 2.36 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0001 | ba = 0.0003,0.0025,0.0001
+VioManager.cpp:613 [34m[TIME]: 0.0007 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0002 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0012 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002275 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.706,0.708,-0.000,0.000 | p_IinG = 0.016,0.009,0.394 | dist = 2.36 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0001 | ba = 0.0003,0.0025,0.0001
+VioManager.cpp:613 [34m[TIME]: 0.0006 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0016 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002749 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.706,0.708,-0.000,0.000 | p_IinG = 0.016,0.009,0.394 | dist = 2.37 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0001 | ba = 0.0003,0.0025,0.0001
+VioManager.cpp:613 [34m[TIME]: 0.0014 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0005 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0022 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0001 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.004377 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.706,0.708,-0.000,0.000 | p_IinG = 0.016,0.009,0.394 | dist = 2.37 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0001 | ba = 0.0003,0.0025,0.0001
+VioManager.cpp:613 [34m[TIME]: 0.0016 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0006 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0026 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0006 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.005437 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.706,0.708,-0.000,0.000 | p_IinG = 0.015,0.009,0.394 | dist = 2.37 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0001 | ba = 0.0003,0.0025,0.0001
+VioManager.cpp:613 [34m[TIME]: 0.0008 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0004 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0016 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.003151 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.706,0.708,-0.000,0.000 | p_IinG = 0.015,0.009,0.394 | dist = 2.37 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0001 | ba = 0.0003,0.0025,0.0001
+VioManager.cpp:613 [34m[TIME]: 0.0006 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0002 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0011 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002116 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.706,0.708,-0.000,0.000 | p_IinG = 0.015,0.009,0.394 | dist = 2.37 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0001 | ba = 0.0003,0.0025,0.0001
+VioManager.cpp:613 [34m[TIME]: 0.0008 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0014 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0001 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.00271 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.706,0.708,-0.000,0.000 | p_IinG = 0.015,0.009,0.394 | dist = 2.37 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0001 | ba = 0.0003,0.0025,0.0001
+VioManager.cpp:613 [34m[TIME]: 0.0006 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0012 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0001 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0001 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002317 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.706,0.708,-0.000,0.000 | p_IinG = 0.015,0.009,0.394 | dist = 2.37 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0001 | ba = 0.0003,0.0025,0.0001
+VioManager.cpp:613 [34m[TIME]: 0.0006 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0013 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0001 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.00234 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.706,0.708,-0.000,0.000 | p_IinG = 0.015,0.009,0.394 | dist = 2.37 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0001 | ba = 0.0002,0.0025,0.0001
+VioManager.cpp:613 [34m[TIME]: 0.0006 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0012 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002249 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.706,0.708,-0.000,0.000 | p_IinG = 0.015,0.009,0.394 | dist = 2.37 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0001 | ba = 0.0002,0.0025,0.0001
+VioManager.cpp:613 [34m[TIME]: 0.0006 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0012 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002275 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.706,0.708,-0.000,0.000 | p_IinG = 0.015,0.009,0.394 | dist = 2.37 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0001 | ba = 0.0002,0.0025,0.0001
+VioManager.cpp:613 [34m[TIME]: 0.0006 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0012 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002277 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.706,0.708,-0.000,0.000 | p_IinG = 0.015,0.009,0.394 | dist = 2.37 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0001 | ba = 0.0002,0.0025,0.0001
+VioManager.cpp:613 [34m[TIME]: 0.0006 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0013 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002338 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.706,0.708,-0.000,0.000 | p_IinG = 0.015,0.009,0.394 | dist = 2.37 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0001 | ba = 0.0002,0.0025,0.0001
+VioManager.cpp:613 [34m[TIME]: 0.0006 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0014 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002423 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.706,0.708,-0.000,0.000 | p_IinG = 0.015,0.009,0.395 | dist = 2.37 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0001 | ba = 0.0002,0.0025,0.0001
+VioManager.cpp:613 [34m[TIME]: 0.0007 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0016 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0003 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002801 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.706,0.708,-0.000,0.000 | p_IinG = 0.015,0.009,0.395 | dist = 2.37 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0001 | ba = 0.0002,0.0025,0.0001
+VioManager.cpp:613 [34m[TIME]: 0.0006 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0013 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002431 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.706,0.708,-0.000,0.000 | p_IinG = 0.015,0.009,0.395 | dist = 2.37 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0001 | ba = 0.0002,0.0025,0.0001
+VioManager.cpp:613 [34m[TIME]: 0.0006 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0012 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0003 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002445 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.706,0.708,-0.000,0.000 | p_IinG = 0.015,0.009,0.395 | dist = 2.37 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0001 | ba = 0.0002,0.0026,0.0001
+VioManager.cpp:613 [34m[TIME]: 0.0006 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0002 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0011 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0001 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002128 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.706,0.708,-0.000,0.000 | p_IinG = 0.015,0.008,0.395 | dist = 2.37 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0001 | ba = 0.0001,0.0026,0.0001
+VioManager.cpp:613 [34m[TIME]: 0.0011 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0014 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.003013 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.706,0.708,-0.000,0.000 | p_IinG = 0.015,0.008,0.395 | dist = 2.37 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0001 | ba = 0.0001,0.0026,0.0001
+VioManager.cpp:613 [34m[TIME]: 0.0005 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0002 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0013 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0001 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002348 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.706,0.708,-0.000,0.000 | p_IinG = 0.015,0.008,0.395 | dist = 2.37 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0001 | ba = 0.0001,0.0026,0.0001
+VioManager.cpp:613 [34m[TIME]: 0.0007 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0004 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0001 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0013 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002686 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.706,0.708,-0.000,0.000 | p_IinG = 0.015,0.008,0.395 | dist = 2.37 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0001 | ba = 0.0001,0.0026,0.0001
+VioManager.cpp:613 [34m[TIME]: 0.0006 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0012 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0001 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.00226 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.706,0.708,-0.000,0.000 | p_IinG = 0.015,0.008,0.395 | dist = 2.37 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0001 | ba = 0.0001,0.0026,0.0001
+VioManager.cpp:613 [34m[TIME]: 0.0008 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0016 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.00292 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.706,0.708,-0.000,0.000 | p_IinG = 0.015,0.008,0.395 | dist = 2.37 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0001 | ba = 0.0001,0.0026,0.0001
+VioManager.cpp:613 [34m[TIME]: 0.0006 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0012 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0001 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002302 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.706,0.708,-0.000,0.000 | p_IinG = 0.015,0.008,0.395 | dist = 2.37 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0001 | ba = 0.0000,0.0026,0.0001
+VioManager.cpp:613 [34m[TIME]: 0.0006 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0012 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0001 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002236 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.706,0.708,-0.000,0.000 | p_IinG = 0.015,0.008,0.395 | dist = 2.37 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0001 | ba = 0.0000,0.0026,0.0000
+VioManager.cpp:613 [34m[TIME]: 0.0006 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0012 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002248 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.706,0.708,-0.000,0.000 | p_IinG = 0.015,0.008,0.395 | dist = 2.37 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0001 | ba = 0.0000,0.0026,0.0000
+VioManager.cpp:613 [34m[TIME]: 0.0013 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0004 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0018 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.003807 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.706,0.708,-0.000,0.000 | p_IinG = 0.014,0.008,0.395 | dist = 2.37 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0001 | ba = -0.0000,0.0026,0.0000
+VioManager.cpp:613 [34m[TIME]: 0.0007 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0013 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0003 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002637 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.706,0.708,-0.000,0.000 | p_IinG = 0.014,0.008,0.395 | dist = 2.37 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0001 | ba = -0.0000,0.0026,0.0000
+VioManager.cpp:613 [34m[TIME]: 0.0010 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0004 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0020 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.003751 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.706,0.708,-0.000,0.000 | p_IinG = 0.014,0.008,0.395 | dist = 2.37 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0001 | ba = -0.0001,0.0026,0.0000
+VioManager.cpp:613 [34m[TIME]: 0.0006 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0012 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0001 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.00225 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.706,0.708,-0.000,0.000 | p_IinG = 0.014,0.008,0.395 | dist = 2.37 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0001 | ba = -0.0001,0.0026,0.0000
+VioManager.cpp:613 [34m[TIME]: 0.0006 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0013 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002434 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.706,0.708,-0.000,0.000 | p_IinG = 0.014,0.008,0.395 | dist = 2.37 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0001 | ba = -0.0001,0.0026,0.0000
+VioManager.cpp:613 [34m[TIME]: 0.0005 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0012 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0001 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002304 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.706,0.708,-0.000,0.000 | p_IinG = 0.014,0.008,0.395 | dist = 2.37 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0001 | ba = -0.0001,0.0026,0.0000
+VioManager.cpp:613 [34m[TIME]: 0.0006 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0002 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0012 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0001 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002189 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.706,0.708,-0.000,0.000 | p_IinG = 0.014,0.008,0.395 | dist = 2.37 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0001 | ba = -0.0002,0.0026,0.0000
+VioManager.cpp:613 [34m[TIME]: 0.0007 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0004 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0012 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.0025 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.707,0.708,-0.000,0.000 | p_IinG = 0.014,0.008,0.395 | dist = 2.37 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0001 | ba = -0.0002,0.0026,0.0000
+VioManager.cpp:613 [34m[TIME]: 0.0006 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0012 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.00231 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.707,0.708,-0.000,0.000 | p_IinG = 0.014,0.008,0.395 | dist = 2.37 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0001 | ba = -0.0002,0.0026,0.0000
+VioManager.cpp:613 [34m[TIME]: 0.0008 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0012 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0001 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002396 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.707,0.708,-0.000,0.000 | p_IinG = 0.014,0.008,0.395 | dist = 2.37 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0001 | ba = -0.0002,0.0026,0.0000
+VioManager.cpp:613 [34m[TIME]: 0.0006 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0002 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0012 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002221 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.707,0.708,-0.000,0.000 | p_IinG = 0.014,0.008,0.395 | dist = 2.37 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0001 | ba = -0.0003,0.0026,0.0000
+VioManager.cpp:613 [34m[TIME]: 0.0006 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0012 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002361 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.707,0.708,-0.000,0.000 | p_IinG = 0.014,0.008,0.395 | dist = 2.37 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0001 | ba = -0.0003,0.0026,0.0000
+VioManager.cpp:613 [34m[TIME]: 0.0006 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0002 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0011 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002155 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.707,0.708,-0.000,0.000 | p_IinG = 0.014,0.008,0.395 | dist = 2.37 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0001 | ba = -0.0003,0.0026,0.0000
+VioManager.cpp:613 [34m[TIME]: 0.0006 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0011 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0001 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002168 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.707,0.708,-0.000,0.000 | p_IinG = 0.013,0.008,0.395 | dist = 2.37 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0001 | ba = -0.0003,0.0026,0.0000
+VioManager.cpp:613 [34m[TIME]: 0.0007 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0013 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002445 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.707,0.708,-0.000,0.000 | p_IinG = 0.013,0.008,0.395 | dist = 2.37 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0001 | ba = -0.0004,0.0027,0.0000
+VioManager.cpp:613 [34m[TIME]: 0.0007 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0014 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002475 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.707,0.708,-0.000,0.000 | p_IinG = 0.013,0.008,0.395 | dist = 2.37 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0001 | ba = -0.0004,0.0027,0.0000
+VioManager.cpp:613 [34m[TIME]: 0.0006 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0012 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002272 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.707,0.708,-0.000,0.000 | p_IinG = 0.013,0.008,0.395 | dist = 2.37 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0001 | ba = -0.0004,0.0027,0.0000
+VioManager.cpp:613 [34m[TIME]: 0.0006 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0015 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0001 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0004 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002858 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.707,0.708,-0.000,0.000 | p_IinG = 0.013,0.008,0.395 | dist = 2.37 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0001 | ba = -0.0005,0.0027,0.0000
+VioManager.cpp:613 [34m[TIME]: 0.0006 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0012 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002251 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.707,0.708,-0.000,0.000 | p_IinG = 0.013,0.008,0.395 | dist = 2.37 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0001 | ba = -0.0005,0.0027,0.0000
+VioManager.cpp:613 [34m[TIME]: 0.0006 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0014 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0001 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002456 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.707,0.708,-0.000,0.000 | p_IinG = 0.013,0.008,0.395 | dist = 2.37 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0001 | ba = -0.0005,0.0027,0.0000
+VioManager.cpp:613 [34m[TIME]: 0.0006 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0012 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0001 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.00224 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.707,0.708,-0.000,0.000 | p_IinG = 0.013,0.008,0.395 | dist = 2.37 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0001 | ba = -0.0005,0.0027,0.0000
+VioManager.cpp:613 [34m[TIME]: 0.0006 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0013 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002462 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.707,0.708,-0.000,0.000 | p_IinG = 0.013,0.008,0.395 | dist = 2.37 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0001 | ba = -0.0006,0.0027,0.0000
+VioManager.cpp:613 [34m[TIME]: 0.0006 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0012 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002299 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.707,0.708,-0.000,0.000 | p_IinG = 0.013,0.008,0.395 | dist = 2.37 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0001 | ba = -0.0006,0.0027,0.0000
+VioManager.cpp:613 [34m[TIME]: 0.0007 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0013 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002372 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.707,0.708,-0.000,0.000 | p_IinG = 0.012,0.008,0.395 | dist = 2.37 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0001 | ba = -0.0006,0.0027,0.0000
+VioManager.cpp:613 [34m[TIME]: 0.0006 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0012 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002217 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.707,0.708,-0.000,0.000 | p_IinG = 0.012,0.008,0.395 | dist = 2.37 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0001 | ba = -0.0006,0.0027,0.0000
+VioManager.cpp:613 [34m[TIME]: 0.0006 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0012 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0001 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002198 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.707,0.708,-0.000,0.000 | p_IinG = 0.012,0.008,0.395 | dist = 2.37 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0001 | ba = -0.0006,0.0027,0.0000
+VioManager.cpp:613 [34m[TIME]: 0.0006 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0013 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.00245 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.707,0.708,-0.000,0.000 | p_IinG = 0.012,0.008,0.395 | dist = 2.37 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0001 | ba = -0.0007,0.0027,0.0000
+VioManager.cpp:613 [34m[TIME]: 0.0006 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0012 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002278 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.707,0.708,-0.000,0.000 | p_IinG = 0.012,0.008,0.395 | dist = 2.37 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0001 | ba = -0.0007,0.0027,0.0000
+VioManager.cpp:613 [34m[TIME]: 0.0007 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0013 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0003 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002529 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.707,0.708,-0.000,0.000 | p_IinG = 0.012,0.008,0.396 | dist = 2.37 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0001 | ba = -0.0007,0.0027,0.0000
+VioManager.cpp:613 [34m[TIME]: 0.0006 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0002 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0011 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0001 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002219 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.707,0.708,-0.000,0.000 | p_IinG = 0.012,0.008,0.396 | dist = 2.37 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0001 | ba = -0.0007,0.0027,0.0000
+VioManager.cpp:613 [34m[TIME]: 0.0007 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0012 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0001 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002282 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.707,0.708,-0.000,0.000 | p_IinG = 0.012,0.008,0.396 | dist = 2.37 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0001 | ba = -0.0007,0.0027,-0.0000
+VioManager.cpp:613 [34m[TIME]: 0.0006 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0012 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0001 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002282 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.707,0.708,-0.000,0.000 | p_IinG = 0.012,0.008,0.396 | dist = 2.37 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0001 | ba = -0.0007,0.0027,-0.0000
+VioManager.cpp:613 [34m[TIME]: 0.0005 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0002 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0012 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.00216 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.707,0.708,-0.000,0.000 | p_IinG = 0.012,0.008,0.396 | dist = 2.37 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0001 | ba = -0.0007,0.0027,-0.0000
+VioManager.cpp:613 [34m[TIME]: 0.0006 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0016 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002708 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.707,0.708,-0.000,0.000 | p_IinG = 0.012,0.008,0.396 | dist = 2.37 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0001 | ba = -0.0007,0.0027,-0.0000
+VioManager.cpp:613 [34m[TIME]: 0.0008 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0004 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0021 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0004 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.003799 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.707,0.708,-0.000,0.000 | p_IinG = 0.012,0.008,0.396 | dist = 2.37 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0001 | ba = -0.0008,0.0027,-0.0000
+VioManager.cpp:613 [34m[TIME]: 0.0006 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0002 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0011 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002184 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.707,0.708,-0.000,0.000 | p_IinG = 0.012,0.008,0.396 | dist = 2.37 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0001 | ba = -0.0008,0.0027,-0.0000
+VioManager.cpp:613 [34m[TIME]: 0.0006 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0012 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0001 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002149 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.707,0.708,-0.000,0.000 | p_IinG = 0.012,0.008,0.396 | dist = 2.37 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0001 | ba = -0.0008,0.0027,-0.0000
+VioManager.cpp:613 [34m[TIME]: 0.0008 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0013 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.00265 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.707,0.708,-0.000,0.000 | p_IinG = 0.012,0.007,0.396 | dist = 2.37 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0001 | ba = -0.0008,0.0027,-0.0000
+VioManager.cpp:613 [34m[TIME]: 0.0006 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0002 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0011 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.00214 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.707,0.708,-0.000,0.000 | p_IinG = 0.012,0.007,0.396 | dist = 2.38 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0001 | ba = -0.0008,0.0027,-0.0000
+VioManager.cpp:613 [34m[TIME]: 0.0008 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0014 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002746 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.707,0.708,-0.000,0.000 | p_IinG = 0.012,0.007,0.396 | dist = 2.38 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0001 | ba = -0.0008,0.0027,-0.0000
+VioManager.cpp:613 [34m[TIME]: 0.0008 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0012 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002435 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.707,0.708,-0.000,0.000 | p_IinG = 0.012,0.007,0.396 | dist = 2.38 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0001 | ba = -0.0009,0.0027,-0.0000
+VioManager.cpp:613 [34m[TIME]: 0.0006 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0013 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0001 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0003 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.00255 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.707,0.708,-0.000,0.000 | p_IinG = 0.012,0.007,0.396 | dist = 2.38 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0001 | ba = -0.0009,0.0027,-0.0000
+VioManager.cpp:613 [34m[TIME]: 0.0010 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0019 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.003582 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.707,0.708,-0.000,0.000 | p_IinG = 0.011,0.007,0.396 | dist = 2.38 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0001 | ba = -0.0009,0.0027,-0.0000
+VioManager.cpp:613 [34m[TIME]: 0.0006 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0002 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0012 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.00224 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.707,0.708,-0.000,0.000 | p_IinG = 0.011,0.007,0.396 | dist = 2.38 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0000 | ba = -0.0009,0.0027,-0.0000
+VioManager.cpp:613 [34m[TIME]: 0.0006 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0013 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002508 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.707,0.708,-0.000,0.000 | p_IinG = 0.011,0.007,0.396 | dist = 2.38 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0000 | ba = -0.0009,0.0027,-0.0000
+VioManager.cpp:613 [34m[TIME]: 0.0007 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0014 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002542 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.707,0.708,-0.000,0.000 | p_IinG = 0.011,0.007,0.396 | dist = 2.38 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0000 | ba = -0.0009,0.0027,-0.0000
+VioManager.cpp:613 [34m[TIME]: 0.0006 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0012 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0001 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002196 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.707,0.708,-0.000,0.000 | p_IinG = 0.011,0.007,0.396 | dist = 2.38 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0000 | ba = -0.0009,0.0026,-0.0000
+VioManager.cpp:613 [34m[TIME]: 0.0006 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0013 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0001 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002282 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.707,0.708,-0.000,0.000 | p_IinG = 0.011,0.007,0.396 | dist = 2.38 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0000 | ba = -0.0009,0.0026,-0.0000
+VioManager.cpp:613 [34m[TIME]: 0.0006 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0012 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0001 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002131 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.707,0.708,-0.000,0.000 | p_IinG = 0.011,0.008,0.396 | dist = 2.38 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0000 | ba = -0.0009,0.0026,-0.0000
+VioManager.cpp:613 [34m[TIME]: 0.0006 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0013 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002349 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.707,0.708,-0.000,0.000 | p_IinG = 0.011,0.008,0.396 | dist = 2.38 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0000 | ba = -0.0010,0.0026,-0.0000
+VioManager.cpp:613 [34m[TIME]: 0.0006 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0012 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002336 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.707,0.708,-0.000,0.000 | p_IinG = 0.011,0.008,0.396 | dist = 2.38 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0000 | ba = -0.0010,0.0026,-0.0000
+VioManager.cpp:613 [34m[TIME]: 0.0007 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0013 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0003 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002566 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.707,0.708,-0.000,0.000 | p_IinG = 0.011,0.008,0.396 | dist = 2.38 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0000 | ba = -0.0010,0.0026,-0.0000
+VioManager.cpp:613 [34m[TIME]: 0.0007 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0002 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0012 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002331 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.707,0.708,-0.000,0.000 | p_IinG = 0.011,0.008,0.396 | dist = 2.38 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0000 | ba = -0.0010,0.0026,-0.0000
+VioManager.cpp:613 [34m[TIME]: 0.0006 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0012 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0001 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0001 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002296 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.707,0.708,-0.000,0.000 | p_IinG = 0.011,0.008,0.396 | dist = 2.38 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0000 | ba = -0.0010,0.0026,-0.0000
+VioManager.cpp:613 [34m[TIME]: 0.0007 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0002 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0012 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0003 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.00241 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.707,0.708,-0.000,0.000 | p_IinG = 0.011,0.008,0.396 | dist = 2.38 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0000 | ba = -0.0010,0.0026,-0.0000
+VioManager.cpp:613 [34m[TIME]: 0.0006 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0012 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002242 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.707,0.708,-0.000,0.000 | p_IinG = 0.011,0.008,0.396 | dist = 2.38 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0000 | ba = -0.0010,0.0026,-0.0000
+VioManager.cpp:613 [34m[TIME]: 0.0006 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0002 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0012 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002318 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.707,0.708,-0.000,0.000 | p_IinG = 0.011,0.008,0.396 | dist = 2.38 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0000 | ba = -0.0010,0.0026,-0.0000
+VioManager.cpp:613 [34m[TIME]: 0.0006 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0012 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002356 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.707,0.707,-0.000,0.000 | p_IinG = 0.011,0.008,0.396 | dist = 2.38 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0000 | ba = -0.0010,0.0026,-0.0000
+VioManager.cpp:613 [34m[TIME]: 0.0006 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0013 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0001 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002293 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.707,0.707,-0.000,0.000 | p_IinG = 0.011,0.008,0.396 | dist = 2.38 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0000 | ba = -0.0011,0.0026,-0.0000
+VioManager.cpp:613 [34m[TIME]: 0.0007 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0013 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002418 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.707,0.708,-0.000,0.000 | p_IinG = 0.011,0.008,0.396 | dist = 2.38 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0000 | ba = -0.0011,0.0026,-0.0000
+VioManager.cpp:613 [34m[TIME]: 0.0008 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0013 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002537 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.707,0.707,-0.000,0.000 | p_IinG = 0.011,0.008,0.396 | dist = 2.38 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0000 | ba = -0.0011,0.0026,-0.0000
+VioManager.cpp:613 [34m[TIME]: 0.0007 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0015 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0003 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002781 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.707,0.708,-0.000,0.000 | p_IinG = 0.011,0.008,0.396 | dist = 2.38 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0000 | ba = -0.0011,0.0026,-0.0000
+VioManager.cpp:613 [34m[TIME]: 0.0006 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0003 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0014 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002445 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.707,0.708,-0.000,0.000 | p_IinG = 0.011,0.008,0.396 | dist = 2.38 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0000 | ba = -0.0011,0.0026,-0.0000
+VioManager.cpp:613 [34m[TIME]: 0.0005 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0002 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0013 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0003 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002454 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.707,0.708,-0.000,0.000 | p_IinG = 0.011,0.008,0.396 | dist = 2.38 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0000 | ba = -0.0011,0.0025,-0.0000
+VioManager.cpp:613 [34m[TIME]: 0.0006 seconds for tracking
+[0mVioManager.cpp:614 [34m[TIME]: 0.0002 seconds for propagation
+[0mVioManager.cpp:615 [34m[TIME]: 0.0000 seconds for MSCKF update (0 feats)
+[0mVioManager.cpp:617 [34m[TIME]: 0.0014 seconds for SLAM update (32 feats)
+[0mVioManager.cpp:618 [34m[TIME]: 0.0000 seconds for SLAM delayed init (0 feats)
+[0mVioManager.cpp:620 [34m[TIME]: 0.0002 seconds for re-tri & marg (11 clones in state)
+[0mVioManager.cpp:628 [34m[TIME]: 0.002577 seconds for total (camera 0)
+[0mVioManager.cpp:654 q_GtoI = -0.707,0.708,-0.000,0.000 | p_IinG = 0.011,0.008,0.396 | dist = 2.38 (meters)
+VioManager.cpp:657 bg = 0.0000,0.0000,-0.0000 | ba = -0.0011,0.0025,-0.0001

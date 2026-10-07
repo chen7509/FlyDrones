@@ -443,3 +443,123 @@ requests/acknowledgements, native binaries and dependency identities,
 independent audit, source/tests/specification/plan, regressions and this
 report as it stood before this archive statement.  The archive itself is
 unchanged by this final paragraph.
+
+## Fixed-input OpenVINS feature-rejection trace
+
+The actual OpenVINS feature path has now been traced on the complete sealed
+`study-v21/capture-v1` input without starting PX4 or Gazebo. OpenVINS remains
+pinned at `69488123ed9362dd44b6f28e7f4680abbff1442b` under GPL-3.0-or-later. A
+separate GPL diagnostic worktree adds structured counters only to `TrackKLT`,
+`VioManager`, `UpdaterMSCKF`, and `UpdaterSLAM`; it does not alter a threshold,
+feature ordering, state, random source, input, configuration, or branch
+condition. The normal FlyDrones runtime does not load the patch.
+
+The uninstrumented and diagnostic replays consume the same 6,477 sealed source
+records and have identical source-request SHA-256
+`7794cc35334069c0b10cb48c5c7bb754d1cc642acf8c664d104061505f478868`.
+All 250 camera state rows match in every non-timing field within the
+prospectively fixed `1e-12` tolerance. Initialization, motion-latch, ZUPT flag,
+16-dimensional IMU state and closed fusion fields therefore remain equivalent.
+Separate final runs retain refusal before initialization and on a duplicate
+motion intent; both fail closed with native exit 2. Replay clocks are newly
+generated and are not online-latency evidence.
+
+Across 222 regular-update trace frames, KLT topped 9,662 tracks and retained
+9,438; 224 were out of bounds, with zero combined KLT/RANSAC and mask rejections in this
+fixed run. The tracker itself is therefore not the dominant observed loss.
+The pipeline selected 1,235 MSCKF candidates but accepted only 23. Exact
+updater accounting attributes 1,202 to insufficient measurement history, six
+to triangulation failure and four to refinement failure; none failed its
+chi-square test. Delayed SLAM initialization received 160 candidates, accepted
+46 and rejected 114 at triangulation. Existing SLAM landmarks received 6,427
+update attempts, accepted 6,425 and rejected only two by chi-square. Every
+updater total reconciles exactly with the pipeline record.
+
+This corrects the earlier inference from standard logs that SLAM used no
+features. Those logs did not expose candidate flow; the structured trace shows
+substantial existing-landmark SLAM updates and limited successful delayed
+initialization. The first demonstrated visual bottlenecks are short MSCKF track
+histories and delayed-SLAM triangulation, while existing SLAM update acceptance
+is high. This is a fixed-input mechanism classification, not a complete root
+cause for the 47.7 m physical trajectory error. It does not establish that
+changing clone length, tracker policy, triangulation, camera calibration, or
+motion excitation will improve the estimator, and no such parameter was tuned.
+
+The diagnostic probe SHA-256 is
+`945e5279ef4286ef85dda65a9bf0f1dc6532536cad951c00aee8ad0be3ac49b6`,
+the loaded diagnostic library SHA-256 is
+`fc8af64f7417917c2f5f70f493adcf53d842d5439314784550c9ce0d73b38c4f`,
+and the isolated patch SHA-256 is
+`def348ff3f007e86fdba83ad9fe22cd612101acf6af7b5947034145fc851925a`.
+The library is reproducible from the frozen patch/build but is not copied into
+the repository because it is 292,684,400 bytes. The strict audit reports
+`qualified=true`, `physical_replay=false`, `fusion_eligible=false`,
+`truth_used=false`, `root_cause_qualified=false`, and
+`online_latency_qualified=false`.
+
+This stage does not qualify physical VIO, estimator health, calibrated
+covariance, quality/reset handling, ODOMETRY, EKF2 injection, arming, flight,
+training, fruit-fly policy performance, or a physical retry. The next safe step
+is a separately specified fixed-input sensitivity experiment against the two
+observed mechanisms, with development inputs kept separate from any frozen
+evaluation set. No active PX4, Gazebo, OpenVINS replay, training, or test
+process remains.
+
+Focused validation reports 69 passing motion-intent, native-adapter,
+initializer and feature-trace tests. The complete repository suite reports
+1,767 passed, 3 existing skips and the same 2 existing warnings in 237.61 s.
+Changed-file Ruff and `git diff --check` pass.
+
+The sealed evidence archive is
+`evidence/openvins-feature-rejection-trace-dev-1701.zip`. It contains 106
+members, is 34,044,292 bytes and has SHA-256
+`b54c99ce51b3604b55421adc6cef19e1191b7d3f261bdf9092575a28205def92`.
+ZIP CRC, unique member names, manifest count and all 105 manifest-listed member
+sizes and hashes verify. It includes the preceding native motion-intent archive,
+control and diagnostic fixed replays, retained intermediate traces, final
+pre-initialization and duplicate refusals, the exact GPL patch, binary/build
+identities, strict audit, regressions, research, source/tests/specification/plan
+and this report as it stood before this archive statement. The archive itself
+is unchanged by this final paragraph.
+
+A final terminology review found that OpenVINS combines KLT status and
+fundamental-matrix RANSAC into one output mask. The trace field was renamed
+from the overly narrow `ransac` to `klt_or_ransac`, the isolated library was
+rebuilt, and the complete sealed replay, equivalence audit, negative protocol
+runs, focused tests and full regression were repeated. Counts and conclusions
+are unchanged. The earlier archive with SHA-256
+`b54c99ce51b3604b55421adc6cef19e1191b7d3f261bdf9092575a28205def92`
+is retained as superseded intermediate evidence; it is not the final archive.
+
+
+The final sealed evidence archive is
+`evidence/openvins-feature-rejection-trace-dev-1701-v2.zip`. It contains 145
+members, is 36,943,110 bytes and has SHA-256
+`dce47e4de3bd7a1800328178cc203af2369fca7078f496d1f2abeee8b4217fd5`.
+ZIP CRC, unique member names, manifest count and all 144 manifest-listed member
+sizes and hashes verify. It preserves the superseded trace and archive as
+intermediate evidence and adds the final combined KLT/RANSAC schema, rebuilt
+library identity, complete `trace-full-v5`, final negative runs, strict v2
+audit, repeated regressions, updated research, source/tests/specification/plan
+and this report as it stood before this archive statement. The archive itself
+is unchanged by this final paragraph.
+
+The v2 archive remains valid for its recorded bytes, but final publication
+checks added the repository's existing patch-file whitespace exception to the
+new GPL patch path and normalized trailing blank lines in documentation and
+sealing scripts. No code, trace count, replay state, test result, or diagnosis
+changed. The v2 archive is therefore retained as a superseded packaging
+intermediate; the following v3 archive is authoritative.
+
+
+The authoritative sealed evidence archive is
+`evidence/openvins-feature-rejection-trace-dev-1701-v3.zip`. It contains 149
+members, is 36,946,632 bytes and has SHA-256
+`9cda14fbd4c1ad2764b0c9832f17d5f513266f79d27347bf18aba7df505d71bd`.
+ZIP CRC, unique member names, manifest count and all 148 manifest-listed member
+sizes and hashes verify. It preserves both superseded archives, all retained
+attempts and failures, final fixed-input and refusal evidence, the exact GPL
+patch and build identities, audits, regressions, research,
+`.gitattributes`, source/tests/specification/plan and this report as it stood
+before this archive statement. The archive itself is unchanged by this final
+paragraph.

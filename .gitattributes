@@ -10,6 +10,7 @@ Dockerfile* text eol=lf
 results/fly-ego-comparison/** -text
 evidence/*.zip -text
 tools/benchmark/openvins_init_feature_trace.patch text eol=lf whitespace=-blank-at-eol
+tools/benchmark/gpl/openvins_feature_trace.patch text eol=lf whitespace=-blank-at-eol
 # These frozen inputs had CRLF in the original experiment worktree.
 src/flydrones/__init__.py text eol=crlf
 src/flydrones/__main__.py text eol=crlf

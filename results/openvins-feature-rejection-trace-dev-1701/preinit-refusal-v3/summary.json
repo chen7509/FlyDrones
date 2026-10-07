@@ -1,0 +1,19 @@
+{
+  "binary_sha256": "945e5279ef4286ef85dda65a9bf0f1dc6532536cad951c00aee8ad0be3ac49b6",
+  "config_sha256": "eaa40224f0de2f4c5b0f1d33504d215670544b9cc000252a0e92f404478360e6",
+  "fusion_eligible": false,
+  "native_log_sha256": "d2f391d51f256ff58eab3cc71c326897657dac814df8d00f76af3f8f78bb9ac4",
+  "native_result": {
+    "accepted": 0,
+    "exit": 2,
+    "failure": "RuntimeError('native acknowledgement EOF')",
+    "fusion_eligible": false,
+    "quality": null,
+    "reset_counter": null
+  },
+  "physical_replay": false,
+  "qualified": true,
+  "refusal": "RuntimeError('native acknowledgement EOF')",
+  "schema": "openvins-motion-intent-preinit-refusal-v1",
+  "truth_used": false
+}

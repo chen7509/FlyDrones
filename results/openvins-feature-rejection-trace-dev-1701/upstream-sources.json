@@ -1,0 +1,14 @@
+{
+  "openvins_commit": "69488123ed9362dd44b6f28e7f4680abbff1442b",
+  "license": "GPL-3.0-or-later",
+  "repository": "https://github.com/rpng/open_vins",
+  "official_docs": [
+    "https://docs.openvins.com/classov__core_1_1TrackKLT.html",
+    "https://docs.openvins.com/classov__core_1_1FeatureInitializer.html",
+    "https://docs.openvins.com/classov__msckf_1_1UpdaterMSCKF.html",
+    "https://docs.openvins.com/structov__msckf_1_1VioManagerOptions.html"
+  ],
+  "paper": "https://doi.org/10.1109/ICRA40945.2020.9196524",
+  "last_recorded_push": "2025-11-30",
+  "maintenance_cadence": "uncertain"
+}
