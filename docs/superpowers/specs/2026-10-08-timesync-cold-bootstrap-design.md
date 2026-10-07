@@ -53,6 +53,9 @@ Public transitions take keyword-only now_ns and epoch_token:
 5. feed_stream(data, listener_token): use the pinned multi prefix profile, preserve
    each raw chunk. Later replies/statuses are serial; a second outstanding reply,
    unsolicited/duplicate row, wrong listener/epoch, field drift or reset fails.
+   Partial unsolicited bytes also refuse immediately; a completed reserved record
+   followed by a partial next record in the same chunk refuses, rather than
+   retaining those early bytes across the next reply reservation.
    The first real new status uses listener ordinal2 and observer ordinal2 directly;
    no renumbering or dropped generation is invented. High RTT afterward follows
    the existing observer: preserve rejection, require enough later accepted data.
@@ -69,6 +72,9 @@ The outer study remains25s; this class only covers its readiness interval.
 Use a nonblocking transition lock; concurrent/reentrant calls latch refusal,
 including when a journal callback swallows a reentry exception. Retain partial
 events, never pretend a failed journal rolled back delivered bytes.
+Cap the modeled journal at65536 events (plus at most one terminal refusal), so
+empty chunks or a nonadvancing supplied clock cannot grow evidence without bound.
+This evidence-size limit changes neither the500-sample threshold nor time gates.
 
 All results retain live_convergence_qualified/network_authorized/fusion_qualified
 false. Only successful final closure sets modeled_bootstrap_ready. External

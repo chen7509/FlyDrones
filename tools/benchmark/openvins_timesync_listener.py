@@ -56,6 +56,11 @@ class TimesyncListenerDecoder:
         self._fault = reason
         raise ValueError(reason)
 
+    @property
+    def incomplete_frame_bytes(self) -> int:
+        """Raw bytes after the last complete record, including partial prefix."""
+        return self._frame_bytes
+
     def check(self, now_ns: int) -> None:
         if self._fault is not None:
             raise ValueError("listener failure latched: " + self._fault)
