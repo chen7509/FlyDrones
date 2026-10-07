@@ -31,7 +31,7 @@ ___________ test_frozen_failure_and_correction_match_current_bytes ____________
 >       correction = validate_correction(AUDIT, ARCHIVE, IMPLEMENTATION)
                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-tests\benchmark\test_source_watchdog_retry_preflight.py:32: 
+tests\benchmark\test_source_watchdog_retry_preflight.py:32:
 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
 
 correction_audit = WindowsPath('C:/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/causal-pair-sim-time-physical-boundary-dev-1701/startup-cohort-audit.json')
