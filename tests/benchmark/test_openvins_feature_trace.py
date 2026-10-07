@@ -27,6 +27,142 @@ SLAM_UPDATE = (
 )
 
 
+def _detail_log(timestamp="3.100000000", feature_offset=0):
+    track = (
+        f"FD_TRACK t={timestamp} cam=0 initial=0 previous=3 topped=3 "
+        "klt_or_ransac=0 out_of_bounds=0 masked=0 accepted=3 reset=0"
+    )
+    pipe = (
+        f"FD_PIPE t={timestamp} db=3 lost=3 marg=0 maxtracks=0 "
+        "msckf_selected=3 msckf_accepted=1 slam_delayed=1 "
+        "slam_delayed_accepted=0 slam_update=0 slam_update_accepted=0"
+    )
+    msckf = (
+        f"FD_MSCKF t={timestamp} input=3 insufficient=2 triangulation=0 "
+        "refinement=0 chi2=0 accepted=1"
+    )
+    slam = (
+        f"FD_SLAM_DELAY t={timestamp} input=1 insufficient=0 triangulation=1 "
+        "refinement=0 initialization=0 accepted=0"
+    )
+    rows = [track, pipe, msckf, slam]
+    histories = (
+        (10 + feature_offset, "lost", 1, 1, 0, "3.000000000", "3.000000000"),
+        (11 + feature_offset, "lost", 3, 1, 2, "2.700000000", "3.000000000"),
+        (12 + feature_offset, "lost", 3, 2, 1, "2.800000000", "3.000000000"),
+    )
+    for feat, origin, before, after, removed, first, last in histories:
+        rows.append(
+            f"FD_SELECT t={timestamp} stage=msckf feat={feat} origin={origin} "
+            f"raw_meas={before} raw_cams=1 raw_first={first} raw_last={last}"
+        )
+        rows.append(
+            f"FD_HISTORY t={timestamp} stage=msckf feat={feat} before={before} "
+            f"after={after} removed={removed} cams_before=1 cams_after=1 "
+            f"before_range=1 first_before={first} last_before={last} "
+            f"after_range=1 first_after=3.000000000 last_after=3.000000000 "
+            "clones=11 clone_first=2.100000000 clone_last=3.100000000"
+        )
+    rows.append(
+        f"FD_TRI t={timestamp} stage=msckf feat={12 + feature_offset} mode=3d "
+        "meas=2 cams=1 anchor_cam=0 anchor_t=3.000000000 cond_finite=1 "
+        "cond=12.5 depth_finite=1 depth=4.0 max_anchor_baseline=0.20 "
+        "max_pair_baseline=0.20 max_parallax_rad=0.04 reject_cond=0 "
+        "reject_min_depth=0 reject_max_depth=0 reject_nonfinite=0 accepted=1"
+    )
+    slam_feat = 20 + feature_offset
+    rows.append(
+        f"FD_SELECT t={timestamp} stage=slam_delay feat={slam_feat} "
+        "origin=maxtracks_to_slam raw_meas=4 raw_cams=1 "
+        "raw_first=2.700000000 raw_last=3.000000000"
+    )
+    rows.append(
+        f"FD_HISTORY t={timestamp} stage=slam_delay feat={slam_feat} before=4 "
+        "after=4 removed=0 cams_before=1 cams_after=1 before_range=1 "
+        "first_before=2.700000000 last_before=3.000000000 after_range=1 "
+        "first_after=2.700000000 last_after=3.000000000 clones=11 "
+        "clone_first=2.100000000 clone_last=3.100000000"
+    )
+    rows.append(
+        f"FD_TRI t={timestamp} stage=slam_delay feat={slam_feat} mode=3d "
+        "meas=4 cams=1 anchor_cam=0 anchor_t=3.000000000 cond_finite=1 "
+        "cond=20000.0 depth_finite=1 depth=4.0 max_anchor_baseline=0.001 "
+        "max_pair_baseline=0.001 max_parallax_rad=0.0001 reject_cond=1 "
+        "reject_min_depth=0 reject_max_depth=0 reject_nonfinite=0 accepted=0"
+    )
+    return "\n".join(rows) + "\n"
+
+
+def test_parse_trace_reconciles_history_and_geometry_records():
+    from tools.benchmark.openvins_feature_trace import parse_trace
+
+    parsed = parse_trace(_detail_log(), require_detail=True)
+    record = parsed["records"][0]
+    assert len(record["select"]) == 4
+    assert len(record["history"]) == 4
+    assert len(record["triangulation"]) == 2
+    classes = {
+        row["feat"]: row["classification"] for row in record["history"]
+    }
+    assert classes[10] == "raw_short"
+    assert classes[11] == "clone_pruned"
+    assert classes[12] == "sufficient"
+    assert record["triangulation"][1]["reject_cond"] == 1
+
+
+@pytest.mark.parametrize(
+    ("old", "new", "match"),
+    [
+        ("cond=12.5", "cond=nan", "numeric"),
+        ("cond_finite=1 cond=12.5", "cond_finite=0 cond=12.5", "placeholder"),
+        ("mode=3d", "mode=1d", "triangulation mode"),
+        ("after=2 removed=1", "after=2 removed=2", "measurement count"),
+        ("origin=lost", "origin=unknown", "origin"),
+        ("raw_first=2.700000000", "raw_first=2.600000000", "history range"),
+    ],
+)
+def test_parse_trace_rejects_invalid_history_geometry(old, new, match):
+    from tools.benchmark.openvins_feature_trace import parse_trace
+
+    with pytest.raises(ValueError, match=match):
+        parse_trace(_detail_log().replace(old, new, 1), require_detail=True)
+
+
+def test_parse_trace_rejects_duplicate_or_missing_detail_records():
+    from tools.benchmark.openvins_feature_trace import parse_trace
+
+    text = _detail_log()
+    select = next(line for line in text.splitlines() if "stage=msckf feat=10 " in line)
+    with pytest.raises(ValueError, match="duplicate"):
+        parse_trace(text + select + "\n", require_detail=True)
+    without_history = "\n".join(
+        line
+        for line in text.splitlines()
+        if not (line.startswith("FD_HISTORY") and "feat=10 " in line)
+    )
+    with pytest.raises(ValueError, match="history"):
+        parse_trace(without_history + "\n", require_detail=True)
+    without_tri = "\n".join(
+        line
+        for line in text.splitlines()
+        if not (line.startswith("FD_TRI") and "stage=msckf" in line)
+    )
+    with pytest.raises(ValueError, match="triangulation"):
+        parse_trace(without_tri + "\n", require_detail=True)
+
+
+def test_parse_trace_scopes_same_feature_to_stage_and_timestamp():
+    from tools.benchmark.openvins_feature_trace import parse_trace
+
+    parsed = parse_trace(
+        _detail_log("3.100000000", 0) + _detail_log("3.200000000", 0),
+        require_detail=True,
+    )
+    assert parsed["frames"] == 2
+    assert parsed["records"][0]["select"][0]["feat"] == 10
+    assert parsed["records"][1]["select"][0]["feat"] == 10
+
+
 def test_parse_trace_binds_exact_counts_and_stages():
     from tools.benchmark.openvins_feature_trace import parse_trace
 

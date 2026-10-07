@@ -61,8 +61,84 @@ SCHEMAS = {
         "chi2",
         "accepted",
     ),
+    "FD_SELECT": (
+        "t",
+        "stage",
+        "feat",
+        "origin",
+        "raw_meas",
+        "raw_cams",
+        "raw_first",
+        "raw_last",
+    ),
+    "FD_HISTORY": (
+        "t",
+        "stage",
+        "feat",
+        "before",
+        "after",
+        "removed",
+        "cams_before",
+        "cams_after",
+        "before_range",
+        "first_before",
+        "last_before",
+        "after_range",
+        "first_after",
+        "last_after",
+        "clones",
+        "clone_first",
+        "clone_last",
+    ),
+    "FD_TRI": (
+        "t",
+        "stage",
+        "feat",
+        "mode",
+        "meas",
+        "cams",
+        "anchor_cam",
+        "anchor_t",
+        "cond_finite",
+        "cond",
+        "depth_finite",
+        "depth",
+        "max_anchor_baseline",
+        "max_pair_baseline",
+        "max_parallax_rad",
+        "reject_cond",
+        "reject_min_depth",
+        "reject_max_depth",
+        "reject_nonfinite",
+        "accepted",
+    ),
 }
 TIMING_FIELDS = {"receive_ns", "start_ns", "end_ns", "acknowledged_ns"}
+DETAIL_KINDS = {"FD_SELECT", "FD_HISTORY", "FD_TRI"}
+DETAIL_NAMES = {
+    "FD_SELECT": "select",
+    "FD_HISTORY": "history",
+    "FD_TRI": "triangulation",
+}
+TEXT_FIELDS = {"stage", "origin", "mode"}
+DECIMAL_TEXT_FIELDS = {
+    "raw_first",
+    "raw_last",
+    "first_before",
+    "last_before",
+    "first_after",
+    "last_after",
+    "clone_first",
+    "clone_last",
+    "anchor_t",
+}
+FLOAT_FIELDS = {
+    "cond",
+    "depth",
+    "max_anchor_baseline",
+    "max_pair_baseline",
+    "max_parallax_rad",
+}
 
 
 def _parse_line(line):
@@ -93,13 +169,188 @@ def _parse_line(line):
         raise ValueError("invalid trace timestamp")
     parsed = {"t": str(timestamp)}
     for key, value in fields.items():
-        if not value.isascii() or not value.isdecimal():
-            raise ValueError("invalid trace count")
-        parsed[key] = int(value)
+        if kind in DETAIL_KINDS and key in TEXT_FIELDS:
+            if not value.isascii() or not value or not value.replace("_", "").isalnum():
+                raise ValueError("invalid trace text")
+            parsed[key] = value
+        elif kind in DETAIL_KINDS and key in DECIMAL_TEXT_FIELDS:
+            try:
+                number = Decimal(value)
+            except InvalidOperation as exc:
+                raise ValueError("invalid trace numeric") from exc
+            if not number.is_finite() or number < 0:
+                raise ValueError("invalid trace numeric")
+            parsed[key] = str(number)
+        elif kind in DETAIL_KINDS and key in FLOAT_FIELDS:
+            try:
+                number = float(value)
+            except ValueError as exc:
+                raise ValueError("invalid trace numeric") from exc
+            if not math.isfinite(number):
+                raise ValueError("invalid trace numeric")
+            parsed[key] = number
+        else:
+            if not value.isascii() or not value.isdecimal():
+                raise ValueError("invalid trace count")
+            parsed[key] = int(value)
     return kind, timestamp, parsed
 
 
-def parse_trace(text):
+def _decimal(value):
+    try:
+        number = Decimal(value)
+    except InvalidOperation as exc:
+        raise ValueError("invalid trace numeric") from exc
+    if not number.is_finite():
+        raise ValueError("invalid trace numeric")
+    return number
+
+
+def _validate_detail(timestamp, slot, *, required):
+    selects = slot.get("select", [])
+    histories = slot.get("history", [])
+    triangulations = slot.get("triangulation", [])
+    msckf = slot.get("msckf")
+    slam_delay = slot.get("slam_delay")
+    expected = {
+        "msckf": 0 if msckf is None else msckf["input"],
+        "slam_delay": 0 if slam_delay is None else slam_delay["input"],
+    }
+    if not required and not (selects or histories or triangulations):
+        return
+    def bind(rows, label):
+        result = {}
+        for row in rows:
+            identity = (row.get("stage"), row.get("feat"))
+            if identity in result:
+                raise ValueError(f"duplicate {label} detail identity")
+            result[identity] = row
+        return result
+
+    select_map = bind(selects, "selection")
+    history_map = bind(histories, "history")
+    tri_map = bind(triangulations, "triangulation")
+    expected_total = sum(expected.values())
+    if len(selects) != expected_total:
+        raise ValueError("selection detail count mismatch")
+    if len(histories) != expected_total:
+        raise ValueError("history detail count mismatch")
+    if set(select_map) != set(history_map):
+        raise ValueError("selection/history identity mismatch")
+
+    origins = {
+        "msckf": {"lost", "marg", "maxtracks"},
+        "slam_delay": {"maxtracks_to_slam", "aruco_marg"},
+    }
+    for identity, select in select_map.items():
+        stage, _ = identity
+        if stage not in expected:
+            raise ValueError("invalid detail stage")
+        if select["origin"] not in origins[stage]:
+            raise ValueError("invalid selection origin")
+        if select["raw_meas"] < 1 or select["raw_cams"] < 1:
+            raise ValueError("invalid selection measurement count")
+        if _decimal(select["raw_first"]) > _decimal(select["raw_last"]):
+            raise ValueError("invalid selection time range")
+
+    for identity, history in history_map.items():
+        select = select_map[identity]
+        if history["before"] != select["raw_meas"]:
+            raise ValueError("selection/history measurement count mismatch")
+        if (
+            history["first_before"] != select["raw_first"]
+            or history["last_before"] != select["raw_last"]
+        ):
+            raise ValueError("selection/history range mismatch")
+        if history["before"] < history["after"] or history["removed"] != history["before"] - history["after"]:
+            raise ValueError("history measurement count mismatch")
+        if history["cams_before"] != select["raw_cams"] or history["cams_after"] > history["cams_before"]:
+            raise ValueError("history camera count mismatch")
+        for flag in ("before_range", "after_range"):
+            if history[flag] not in (0, 1):
+                raise ValueError("invalid history range flag")
+        if history["before_range"] != int(history["before"] > 0):
+            raise ValueError("invalid history before range")
+        if history["after_range"] != int(history["after"] > 0):
+            raise ValueError("invalid history after range")
+        for flag, first, last in (
+            ("before_range", "first_before", "last_before"),
+            ("after_range", "first_after", "last_after"),
+        ):
+            first_value = _decimal(history[first])
+            last_value = _decimal(history[last])
+            if history[flag] == 0 and (first_value != 0 or last_value != 0):
+                raise ValueError("invalid empty history range")
+            if history[flag] == 1 and first_value > last_value:
+                raise ValueError("invalid history time range")
+        if history["clones"] < 1 or _decimal(history["clone_first"]) > _decimal(history["clone_last"]):
+            raise ValueError("invalid clone range")
+        if history["before"] < 2:
+            history["classification"] = "raw_short"
+        elif history["after"] < 2:
+            history["classification"] = "clone_pruned"
+        else:
+            history["classification"] = "sufficient"
+
+    for identity, tri in tri_map.items():
+        if identity not in history_map:
+            raise ValueError("triangulation identity mismatch")
+        history = history_map[identity]
+        if tri["mode"] != "3d":
+            raise ValueError("invalid triangulation mode")
+        if tri["meas"] != history["after"] or tri["cams"] != history["cams_after"]:
+            raise ValueError("triangulation measurement count mismatch")
+        for flag in (
+            "cond_finite",
+            "depth_finite",
+            "reject_cond",
+            "reject_min_depth",
+            "reject_max_depth",
+            "reject_nonfinite",
+            "accepted",
+        ):
+            if tri[flag] not in (0, 1):
+                raise ValueError("invalid triangulation boolean")
+        if tri["cond_finite"] == 0 and tri["cond"] != 0:
+            raise ValueError("invalid finite placeholder")
+        if tri["depth_finite"] == 0 and tri["depth"] != 0:
+            raise ValueError("invalid finite placeholder")
+        if tri["cond"] < 0 or any(
+            tri[key] < 0
+            for key in ("max_anchor_baseline", "max_pair_baseline", "max_parallax_rad")
+        ):
+            raise ValueError("invalid triangulation geometry")
+        rejected = any(
+            tri[key]
+            for key in (
+                "reject_cond",
+                "reject_min_depth",
+                "reject_max_depth",
+                "reject_nonfinite",
+            )
+        )
+        if tri["accepted"] != int(not rejected):
+            raise ValueError("triangulation acceptance mismatch")
+
+    for stage, input_count in expected.items():
+        stage_select = {identity for identity in select_map if identity[0] == stage}
+        if len(stage_select) != input_count:
+            raise ValueError("stage detail count mismatch")
+        stage_histories = [history_map[identity] for identity in stage_select]
+        insufficient = sum(row["after"] < 2 for row in stage_histories)
+        updater = msckf if stage == "msckf" else slam_delay
+        if updater is None or insufficient != updater["insufficient"]:
+            raise ValueError("history/updater insufficient mismatch")
+        expected_tri = {identity for identity in stage_select if history_map[identity]["after"] >= 2}
+        actual_tri = {identity for identity in tri_map if identity[0] == stage}
+        if expected_tri != actual_tri:
+            raise ValueError("missing or unexpected triangulation detail")
+        rejected = sum(tri_map[identity]["accepted"] == 0 for identity in actual_tri)
+        if rejected != updater["triangulation"]:
+            raise ValueError("triangulation/updater rejection mismatch")
+
+
+def parse_trace(text, *, require_detail=False):
     records = {}
     for raw_line in text.splitlines():
         parsed = _parse_line(raw_line.strip())
@@ -107,6 +358,9 @@ def parse_trace(text):
             continue
         kind, timestamp, fields = parsed
         slot = records.setdefault(timestamp, {})
+        if kind in DETAIL_KINDS:
+            slot.setdefault(DETAIL_NAMES[kind], []).append(fields)
+            continue
         name = kind.removeprefix("FD_").lower()
         if name in slot:
             if name not in {"slam_delay", "slam_update"}:
@@ -196,6 +450,7 @@ def parse_trace(text):
             raise ValueError("SLAM update count mismatch")
         if timestamp < 0:
             raise ValueError("invalid timestamp")
+        _validate_detail(timestamp, slot, required=require_detail)
 
     update_records = [
         {"timestamp": str(timestamp), **slot}
