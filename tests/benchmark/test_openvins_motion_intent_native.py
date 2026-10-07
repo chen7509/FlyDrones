@@ -149,6 +149,13 @@ def test_gpl_linked_adapter_exports_read_only_full_imu_covariance():
         assert text in source
 
 
+def test_gpl_linked_adapter_aligns_fast_targets_to_the_absolute_50_hz_grid():
+    source = Path("tools/benchmark/openvins_online_probe.cpp").read_text()
+    assert "align_fast_target_ns" in source
+    assert "((sample + fast_period_ns - 1) / fast_period_ns) * fast_period_ns" in source
+    assert "next_target=align_fast_target_ns(sample);" in source
+
+
 def test_integrated_gate_reports_native_adapter_only_when_explicit():
     import io
 

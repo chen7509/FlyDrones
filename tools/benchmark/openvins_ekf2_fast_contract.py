@@ -152,6 +152,14 @@ def _typed_equal(left: object, right: object) -> bool:
     return left == right
 
 
+def fast_sample_timing_qualified(target_ns: object, last_camera_ns: object, available_imu_ns: object) -> bool:
+    if any(type(value) is not int for value in (target_ns, last_camera_ns, available_imu_ns)):
+        return False
+    visual_age_ns = target_ns - last_camera_ns
+    imu_boundary_age_ns = available_imu_ns - target_ns
+    return 0 < visual_age_ns <= 100_000_000 and 0 < imu_boundary_age_ns <= 4_000_000
+
+
 def _sample_flags(row: object) -> np.ndarray:
     if not isinstance(row, dict) or set(row) != SAMPLE_FIELDS:
         raise ValueError("invalid fast cohort sample")

@@ -41,6 +41,7 @@ def cohort_plan(seed_set="initial-v1"):
         "initial-v1": (27101, 27111),
         "compatibility-retry-v2": (27201, 27211),
         "propagated-ekf2-v3": (27401, 27411),
+        "propagated-ekf2-aligned-v4": (27501, 27511),
     }
     if seed_set not in bases:
         raise ValueError("unknown physical cohort seed set")
@@ -206,7 +207,7 @@ def main(argv=None):
     parser.add_argument("--prepare-only", action="store_true", required=True)
     parser.add_argument(
         "--seed-set",
-        choices=["initial-v1", "compatibility-retry-v2", "propagated-ekf2-v3"],
+        choices=["initial-v1", "compatibility-retry-v2", "propagated-ekf2-v3", "propagated-ekf2-aligned-v4"],
         default="initial-v1",
     )
     values = vars(parser.parse_args(argv))

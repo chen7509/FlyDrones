@@ -9,7 +9,7 @@ from pathlib import Path
 import numpy as np
 from scipy.spatial.transform import Rotation
 
-from tools.benchmark.openvins_ekf2_fast_contract import transform_fast12
+from tools.benchmark.openvins_ekf2_fast_contract import fast_sample_timing_qualified, transform_fast12
 from tools.benchmark.trajectory_gauge_contract import YawTranslationGauge, _truth_state, select_origin, trajectory_contract
 
 
@@ -77,6 +77,8 @@ def build_fast_run(capture: Path, completion: Path) -> dict:
         boundary_age = row["available_imu_ns"] - target
         if visual_age is None:
             raise ValueError("public fast target lacks camera")
+        if not fast_sample_timing_qualified(target, row["last_camera_ns"], row["available_imu_ns"]):
+            raise ValueError("public fast target violates frozen camera/IMU freshness")
         samples.append(
             {
                 "target_ns": target,

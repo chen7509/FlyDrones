@@ -23,6 +23,11 @@ long long clock_ns() {
   return std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::steady_clock::now().time_since_epoch()).count();
 }
 
+long long align_fast_target_ns(long long sample) {
+  constexpr long long fast_period_ns = 20000000;
+  return ((sample + fast_period_ns - 1) / fast_period_ns) * fast_period_ns;
+}
+
 class OnlineManager : public ov_msckf::VioManager {
 public:
   using ov_msckf::VioManager::VioManager;
@@ -165,7 +170,7 @@ int main(int argc, char **argv) {
       }
       const long long start=clock_ns();
       if (kind=='I') {
-        if (first_imu<0) {first_imu=sample; next_target=sample;}
+        if (first_imu<0) {first_imu=sample; next_target=align_fast_target_ns(sample);}
         last_imu=sample;
         if(manager) {
           ov_core::ImuData data;
