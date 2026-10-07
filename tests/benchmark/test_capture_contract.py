@@ -81,7 +81,10 @@ def test_health_profile_is_opt_in_and_requires_complete_shadow_path(tmp_path):
     assert options[index:index + 2] == ['--health-profile', 'px4-d6f12ad-gate-floor-v1']
 
 
-@pytest.mark.parametrize('profile', ['imu-source-loss-after-8s-v1', 'native-restart-after-8s-v1'])
+@pytest.mark.parametrize('profile', [
+    'imu-source-loss-after-8s-v1', 'native-restart-after-8s-v1',
+    'imu-source-loss-after-8s-immediate-v2', 'native-restart-after-8s-failclosed-v2',
+])
 def test_health_fault_profile_is_declared_forwarded_and_requires_health_shadow(tmp_path, profile):
     complete = [
         '--health-profile', 'px4-d6f12ad-gate-floor-v1',

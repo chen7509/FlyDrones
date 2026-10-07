@@ -28,27 +28,27 @@ def test_fault_plan_predeclares_distinct_profiles_seeds_and_expected_outcomes():
 
     assert fault_plan() == [
         {
-            "run_id": "source-loss-seed-27301",
+            "run_id": "source-loss-retry-seed-27311",
             "role": "source_loss",
-            "seed": 27301,
-            "health_fault_profile": "imu-source-loss-after-8s-v1",
+            "seed": 27311,
+            "health_fault_profile": "imu-source-loss-after-8s-immediate-v2",
             "expected_capture_status": "capture_failed",
             "expected_command_returncode": 2,
         },
         {
-            "run_id": "native-restart-seed-27302",
+            "run_id": "native-restart-retry-seed-27312",
             "role": "native_restart",
-            "seed": 27302,
-            "health_fault_profile": "native-restart-after-8s-v1",
-            "expected_capture_status": "capture_completed",
-            "expected_command_returncode": 0,
+            "seed": 27312,
+            "health_fault_profile": "native-restart-after-8s-failclosed-v2",
+            "expected_capture_status": "capture_failed",
+            "expected_command_returncode": 2,
         },
     ]
 
 
 @pytest.mark.parametrize(
     "profile",
-    ["imu-source-loss-after-8s-v1", "native-restart-after-8s-v1"],
+    ["imu-source-loss-after-8s-immediate-v2", "native-restart-after-8s-failclosed-v2"],
 )
 def test_fault_run_args_preserves_workload_and_declares_fault(tmp_path, profile):
     from tools.benchmark.openvins_health_fault_physical_preflight import fault_run_args

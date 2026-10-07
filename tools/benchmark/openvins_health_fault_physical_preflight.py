@@ -34,20 +34,20 @@ CODE_PATHS = (
 def fault_plan():
     return [
         {
-            "run_id": "source-loss-seed-27301",
+            "run_id": "source-loss-retry-seed-27311",
             "role": "source_loss",
-            "seed": 27301,
-            "health_fault_profile": "imu-source-loss-after-8s-v1",
+            "seed": 27311,
+            "health_fault_profile": "imu-source-loss-after-8s-immediate-v2",
             "expected_capture_status": "capture_failed",
             "expected_command_returncode": 2,
         },
         {
-            "run_id": "native-restart-seed-27302",
+            "run_id": "native-restart-retry-seed-27312",
             "role": "native_restart",
-            "seed": 27302,
-            "health_fault_profile": "native-restart-after-8s-v1",
-            "expected_capture_status": "capture_completed",
-            "expected_command_returncode": 0,
+            "seed": 27312,
+            "health_fault_profile": "native-restart-after-8s-failclosed-v2",
+            "expected_capture_status": "capture_failed",
+            "expected_command_returncode": 2,
         },
     ]
 

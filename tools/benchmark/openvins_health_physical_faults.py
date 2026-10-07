@@ -26,6 +26,20 @@ PROFILES = {
         "source_kind": None,
         "source_loss_wall_timeout_ns": None,
     },
+    "imu-source-loss-after-8s-immediate-v2": {
+        "name": "imu-source-loss-after-8s-immediate-v2",
+        "trigger_sample_ns": 8_000_000_000,
+        "source_kind": "imu",
+        "source_loss_wall_timeout_ns": 0,
+        "detection_mode": "first_dropped_sample",
+    },
+    "native-restart-after-8s-failclosed-v2": {
+        "name": "native-restart-after-8s-failclosed-v2",
+        "trigger_sample_ns": 8_000_000_000,
+        "source_kind": None,
+        "source_loss_wall_timeout_ns": None,
+        "expected_terminal_behavior": "readiness_loss_capture_failure",
+    },
 }
 
 
@@ -190,7 +204,7 @@ class ManagedHealthShadow:
         if self.closed or self.failure:
             return
         wall_ns = self.now()
-        if self.profile["name"] == "native-restart-after-8s-v1":
+        if self.profile["name"].startswith("native-restart-"):
             if self.restart_count == 0 and row.get("sample_ns", 0) >= self.profile["trigger_sample_ns"]:
                 self._restart(row, wall_ns)
                 if self.failure:
@@ -209,6 +223,18 @@ class ManagedHealthShadow:
                         }
                     )
                 self.dropped_source_records += 1
+                if self.profile.get("detection_mode") == "first_dropped_sample":
+                    self.failure = "source_loss:" + target
+                    self.health.fail("source_failure")
+                    self._emit(
+                        {
+                            "event": "source_loss_detected",
+                            "sample_ns": row["sample_ns"],
+                            "wall_monotonic_ns": wall_ns,
+                            "source_kind": target,
+                            "elapsed_wall_ns": 0,
+                        }
+                    )
                 return
             if (
                 self.triggered_wall_ns is not None

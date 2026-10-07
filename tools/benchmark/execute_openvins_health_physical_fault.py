@@ -12,8 +12,8 @@ from tools.benchmark.capture_contract import read_declaration
 from tools.benchmark.declared_runtime_snapshot import file_record
 
 EXPECTED = {
-    "source_loss": ("imu-source-loss-after-8s-v1", "capture_failed", 2),
-    "native_restart": ("native-restart-after-8s-v1", "capture_completed", 0),
+    "source_loss": ("imu-source-loss-after-8s-immediate-v2", "capture_failed", 2),
+    "native_restart": ("native-restart-after-8s-failclosed-v2", "capture_failed", 2),
 }
 
 

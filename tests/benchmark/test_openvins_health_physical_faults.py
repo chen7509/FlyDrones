@@ -82,6 +82,8 @@ def test_fault_profiles_are_fixed_and_unknown_values_fail_closed():
 
     source = fault_profile("imu-source-loss-after-8s-v1")
     restart = fault_profile("native-restart-after-8s-v1")
+    immediate = fault_profile("imu-source-loss-after-8s-immediate-v2")
+    failclosed_restart = fault_profile("native-restart-after-8s-failclosed-v2")
     assert source == {
         "name": "imu-source-loss-after-8s-v1",
         "trigger_sample_ns": 8_000_000_000,
@@ -94,6 +96,8 @@ def test_fault_profiles_are_fixed_and_unknown_values_fail_closed():
         "source_kind": None,
         "source_loss_wall_timeout_ns": None,
     }
+    assert immediate["detection_mode"] == "first_dropped_sample"
+    assert failclosed_restart["expected_terminal_behavior"] == "readiness_loss_capture_failure"
     with pytest.raises(ValueError, match="health fault profile"):
         fault_profile("typo")
 
@@ -127,6 +131,26 @@ def test_source_loss_drops_only_estimator_imu_and_latches_negative_health(tmp_pa
     records = [json.loads(line) for line in (tmp_path / "health-fault-events.jsonl").read_text().splitlines()]
     assert [row["event"] for row in records] == ["source_loss_started", "source_loss_detected"]
     assert all(row["fusion_eligible"] is False for row in records)
+
+
+def test_v2_source_loss_latches_on_first_dropped_imu_before_causal_camera_timeout(tmp_path):
+    from tools.benchmark.openvins_health_physical_faults import ManagedHealthShadow
+
+    health = OnlineHealthEvidence(tmp_path, session_id="fault-session-0", profile=CovarianceProfile())
+    manager = ManagedHealthShadow(
+        tmp_path,
+        profile="imu-source-loss-after-8s-immediate-v2",
+        health=health,
+        client_factory=lambda index, session_id: FakeClient(index),
+        now=lambda: 100,
+    )
+    manager.on_record(event("imu", 8_000_000_000, 1), None)
+    result = manager.finish()
+    health_result = health.finish()
+    assert result["failure"] == "source_loss:imu"
+    assert result["dropped_source_records"] == 1
+    assert health_result["last_health"]["reasons"] == ["source_failure"]
+    assert result["sessions"][0]["shadow"]["failure"] is None
 
 
 def test_native_restart_replaces_session_once_and_continues_with_reset_one(tmp_path):

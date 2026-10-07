@@ -9,9 +9,11 @@ def study(tmp_path, *, role="source_loss", expected=2):
     root.mkdir()
     destination = root / "capture-v1"
     profile = (
-        "imu-source-loss-after-8s-v1" if role == "source_loss" else "native-restart-after-8s-v1"
+        "imu-source-loss-after-8s-immediate-v2"
+        if role == "source_loss"
+        else "native-restart-after-8s-failclosed-v2"
     )
-    status = "capture_failed" if role == "source_loss" else "capture_completed"
+    status = "capture_failed"
     manifest = {
         "schema": "openvins-health-physical-fault-preflight-v1",
         "prepare_only": True,
@@ -31,7 +33,7 @@ def study(tmp_path, *, role="source_loss", expected=2):
     return root, destination
 
 
-@pytest.mark.parametrize("role,expected", [("source_loss", 2), ("native_restart", 0)])
+@pytest.mark.parametrize("role,expected", [("source_loss", 2), ("native_restart", 2)])
 def test_fault_executor_preserves_expected_failure_and_success(role, expected, tmp_path):
     from tools.benchmark.execute_openvins_health_physical_fault import execute
 
@@ -40,7 +42,7 @@ def test_fault_executor_preserves_expected_failure_and_success(role, expected, t
     def runner(*args, **kwargs):
         destination.mkdir()
         (destination / "result.json").write_text(
-            json.dumps({"status": "capture_failed" if expected else "capture_completed"})
+            json.dumps({"status": "capture_failed"})
         )
         return SimpleNamespace(returncode=expected)
 
@@ -64,14 +66,14 @@ def test_fault_executor_rejects_tampered_expected_outcome_before_dispatch(tmp_pa
 def test_fault_executor_keeps_unexpected_result_and_returns_failure(tmp_path):
     from tools.benchmark.execute_openvins_health_physical_fault import execute
 
-    root, destination = study(tmp_path, role="native_restart", expected=0)
+    root, destination = study(tmp_path, role="native_restart", expected=2)
 
     def runner(*args, **kwargs):
         destination.mkdir()
-        (destination / "result.json").write_text(json.dumps({"status": "capture_failed"}))
-        return SimpleNamespace(returncode=2)
+        (destination / "result.json").write_text(json.dumps({"status": "capture_completed"}))
+        return SimpleNamespace(returncode=0)
 
     assert execute(root, resources_fn=lambda: [], runner=runner) == 2
     completion = json.loads((root / "physical-completion.json").read_text())
     assert completion["outcome_matches_expectation"] is False
-    assert completion["command_returncode"] == 2
+    assert completion["command_returncode"] == 0

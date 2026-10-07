@@ -180,7 +180,12 @@ def parse_capture_args(argv=None):
     parser.add_argument("--health-profile", choices=["px4-d6f12ad-gate-floor-v1"])
     parser.add_argument(
         "--health-fault-profile",
-        choices=["imu-source-loss-after-8s-v1", "native-restart-after-8s-v1"],
+        choices=[
+            "imu-source-loss-after-8s-v1",
+            "native-restart-after-8s-v1",
+            "imu-source-loss-after-8s-immediate-v2",
+            "native-restart-after-8s-failclosed-v2",
+        ],
     )
     parser.add_argument("--motion-profile", choices=["lateral-wrench-v1", "supported-lateral-v1", "supported-ready-v1"])
     parser.add_argument("--physics-trace-profile", choices=["substep-lateral-v1", "substep-supported-v1", "substep-ready-v1"])
@@ -655,7 +660,7 @@ def main():
                 args.source_fanout_profile,
                 native_session_id=native_session_id if args.shadow_binary else None,
             )
-            if args.health_fault_profile == "native-restart-after-8s-v1":
+            if args.health_fault_profile and args.health_fault_profile.startswith("native-restart-"):
                 shadow.set_session_replacement_callback(
                     lambda session_id, reset_total: readiness.replace_session(
                         session_id, reset_total=reset_total
