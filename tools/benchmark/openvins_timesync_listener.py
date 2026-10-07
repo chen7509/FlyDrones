@@ -26,14 +26,23 @@ class TimesyncListenerDecoder:
         ("source_protocol", 0, 255),
     )
     _DECIMAL = rb"(0|-?[1-9][0-9]{0,19})"
+    _PINNED_MULTI_PREFIX = b"\x1b[2J\n\x1b[H"
 
-    def __init__(self, instance: int, expected_records: int, start_ns: int):
+    def __init__(self, instance: int, expected_records: int, start_ns: int,
+                 *, output_profile: str = "plain-v1"):
         if type(instance) is not int or not 0 <= instance <= 255:
             raise ValueError("invalid topic instance")
         if type(expected_records) is not int or not 1 <= expected_records <= 4096:
             raise ValueError("invalid expected records")
         if type(start_ns) is not int or not 0 <= start_ns < 2**64:
             raise ValueError("invalid starting clock")
+        if type(output_profile) is not str or output_profile not in ("plain-v1", "px4-d6f12ad-multi-v1"):
+            raise ValueError("invalid output profile")
+        if output_profile == "px4-d6f12ad-multi-v1" and expected_records < 2:
+            raise ValueError("pinned multi profile requires multiple records")
+        self._profile = output_profile
+        self._prefix = self._PINNED_MULTI_PREFIX if output_profile == "px4-d6f12ad-multi-v1" else b""
+        self._prefix_index = 0
         self._instance = instance
         self._expected = expected_records
         self._last_now = self._last_complete = start_ns
@@ -101,37 +110,43 @@ class TimesyncListenerDecoder:
         self.check(now_ns)
         if type(data) is not bytes or len(data) > self.MAX_CHUNK:
             self._fail("invalid or oversized byte chunk")
-        if any(byte != 10 and not 32 <= byte <= 126 for byte in data):
-            self._fail("non-ASCII or control output")
         self._total += len(data)
         if self._total > self.MAX_TOTAL:
             self._fail("total byte limit")
-        self._partial += data
         records = []
-        while b"\n" in self._partial:
-            line, self._partial = self._partial.split(b"\n", 1)
-            self._frame_bytes += len(line) + 1
+        for byte in data:
+            if self._count == self._expected:
+                self._fail("extra record or trailing data")
+            self._frame_bytes += 1
             if self._frame_bytes > self.MAX_FRAME:
                 self._fail("frame byte limit")
+            if self._prefix_index < len(self._prefix):
+                if byte != self._prefix[self._prefix_index]:
+                    self._fail("pinned multi prefix mismatch")
+                self._prefix_index += 1
+                continue
+            if byte != 10 and not 32 <= byte <= 126:
+                self._fail("non-ASCII or control output")
+            if byte != 10:
+                self._partial += bytes([byte])
+                continue
+            line, self._partial = self._partial, b""
             record = self._accept_line(line)
             if record is not None:
                 self._last_complete = now_ns
+                self._prefix_index = 0
                 records.append(record)
-        if self._count == self._expected and self._partial:
-            self._fail("trailing bytes after expected records")
-        if self._frame_bytes + len(self._partial) > self.MAX_FRAME:
-            self._fail("incomplete frame byte limit")
         return records
 
     def finish(self, now_ns: int, exit_code: int) -> dict:
         self.check(now_ns)
         if type(exit_code) is not int or exit_code != 0:
             self._fail("listener nonzero or unknown exit")
-        if self._partial or self._line or self._count != self._expected:
+        if self._partial or self._line or self._prefix_index or self._count != self._expected:
             self._fail("listener truncated or premature EOF")
         self._closed = True
         return {
-            "records": self._count, "bytes": self._total,
+            "records": self._count, "bytes": self._total, "output_profile": self._profile,
             "listener_consumption_only": True,
             "live_listener_qualified": False, "network_authorized": False,
             "fusion_qualified": False,
