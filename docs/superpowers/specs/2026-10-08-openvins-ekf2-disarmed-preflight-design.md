@@ -86,6 +86,18 @@ ambiguous values fail before mutation. Apply and verify failures latch as the
 primary error; rollback is still attempted, and rollback failures are reported
 without replacing the primary error.
 
+All desired values must be validated before any transport operation. Register
+each write attempt for reverse-order restoration before calling the transport:
+missing acknowledgement or a raised transport error does not prove that PX4
+left the value unchanged. Restore readback must still be attempted when the
+restore acknowledgement fails; both outcomes remain in the result and a lost
+acknowledgement still fails qualification. After restoration, read the entire
+baseline again and reject drift, including parameters not written by this
+transaction, without overwriting unrelated changes. Only the boolean `True`
+counts as an acknowledgement. Cancellation during transport operations attempts
+the remaining restorations and records `last_result` before re-raising; this
+is not a crash/SIGKILL guarantee or a replacement for bounded live I/O.
+
 The receiver-only profile contains only `EKF2_EV_CTRL=0`, which already equals
 the retained baseline. It does not change height reference, other aiding
 sources, noise, delay, lever arms, policy, arming or setpoints. The equal zero
@@ -130,3 +142,15 @@ parameters. This design does not authorize it.
   `vehicle_visual_odometry`, PX4 receiver parity, EKF2 innovation or fusion.
 - **Still false:** network ODOMETRY, live parameter access, fusion, arming,
   hardware/HITL/flight calibration and flight readiness.
+
+## 2026-10-08 rollback correction
+
+The first sealed Task 4 archive predates tests for remotely committed writes
+with lost acknowledgements and for malformed values late in a desired profile.
+Those tests exposed missing rollback coverage. Preserve that archive as
+historical evidence; a future study must consume a new preflight bound to the
+corrected implementation, not the old `ebf2680` preflight. The exact pinned PX4
+`src/modules/mavlink/mavlink_parameters.cpp` calls `param_set` before
+`send_param`, consistent with the
+[MAVLink parameter protocol](https://mavlink.io/en/services/parameter.html).
+The correction is validated with stateful synthetic transports only.

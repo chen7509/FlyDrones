@@ -280,6 +280,7 @@ class ParameterTransaction:
 
     def __init__(self, transport: ParameterTransport):
         self._transport = transport
+        self.last_result: dict | None = None
 
     def _read_one(self, name: str) -> int | float:
         values = self._transport.read(name)
@@ -299,61 +300,87 @@ class ParameterTransaction:
         return type(left) is type(right) and left == right
 
     def apply_verify_restore(self, desired: dict[str, int | float]) -> dict:
+        self.last_result = None
+        desired = dict(desired)
         unknown = sorted(set(desired) - set(_REQUIRED_PARAMETERS))
         if unknown:
             raise ValueError("unknown parameters: " + ",".join(unknown))
-        if desired.get("EKF2_EV_CTRL") != 0:
-            raise ValueError("receiver-only study requires EKF2_EV_CTRL=0")
-        baseline = self.snapshot()
-        changed: list[str] = []
-        events: list[dict] = []
-        primary_failure: str | None = None
-
+        # Validate the entire profile before even reading a transport.  A bad
+        # later value must not strand an earlier mutation outside rollback.
         for name, value in desired.items():
             if isinstance(value, bool) or not isinstance(value, (int, float)) or not math.isfinite(float(value)):
                 raise ValueError(f"invalid desired parameter {name}")
-            if self._equal(baseline[name], value):
-                events.append({"phase": "apply", "parameter": name, "status": "unchanged"})
-                continue
-            try:
-                acknowledged = self._transport.write(name, value)
-            except Exception as exc:
-                primary_failure = f"write_exception:{name}:{type(exc).__name__}"
-                events.append({"phase": "apply", "parameter": name, "status": "write_exception"})
-                break
-            if not acknowledged:
-                primary_failure = "write_failed:" + name
-                events.append({"phase": "apply", "parameter": name, "status": "write_failed"})
-                break
-            changed.append(name)
-            try:
-                observed = self._read_one(name)
-            except Exception as exc:
-                primary_failure = f"verify_read_failed:{name}:{type(exc).__name__}"
-                events.append({"phase": "apply", "parameter": name, "status": "verify_read_failed"})
-                break
-            if not self._equal(observed, value):
-                primary_failure = "verify_failed:" + name
-                events.append({"phase": "apply", "parameter": name, "status": "verify_failed"})
-                break
-            events.append({"phase": "apply", "parameter": name, "status": "verified"})
+        if desired.get("EKF2_EV_CTRL") != 0:
+            raise ValueError("receiver-only study requires EKF2_EV_CTRL=0")
+        baseline = self.snapshot()
+        attempted: list[str] = []
+        events: list[dict] = []
+        primary_failure: str | None = None
+        interruption: BaseException | None = None
+
+        try:
+            for name, value in desired.items():
+                if self._equal(baseline[name], value):
+                    events.append({"phase": "apply", "parameter": name, "status": "unchanged"})
+                    continue
+                # PARAM_SET can commit remotely before its PARAM_VALUE is lost.
+                # Every attempt is restore-owned, regardless of acknowledgement.
+                attempted.append(name)
+                try:
+                    acknowledged = self._transport.write(name, value)
+                except BaseException as exc:
+                    if not isinstance(exc, Exception):
+                        interruption = exc
+                    primary_failure = f"write_exception:{name}:{type(exc).__name__}"
+                    events.append({"phase": "apply", "parameter": name, "status": "write_exception"})
+                    break
+                if acknowledged is not True:
+                    primary_failure = "write_failed:" + name
+                    events.append({"phase": "apply", "parameter": name, "status": "write_failed"})
+                    break
+                try:
+                    observed = self._read_one(name)
+                except BaseException as exc:
+                    if not isinstance(exc, Exception):
+                        interruption = exc
+                    primary_failure = f"verify_read_failed:{name}:{type(exc).__name__}"
+                    events.append({"phase": "apply", "parameter": name, "status": "verify_read_failed"})
+                    break
+                if not self._equal(observed, value):
+                    primary_failure = "verify_failed:" + name
+                    events.append({"phase": "apply", "parameter": name, "status": "verify_failed"})
+                    break
+                events.append({"phase": "apply", "parameter": name, "status": "verified"})
+        except BaseException as exc:
+            # Signals may interrupt after a write returns, not only inside I/O.
+            # Protect the whole mutation phase before entering restoration.
+            if primary_failure is None:
+                primary_failure = f"apply_exception:{type(exc).__name__}"
+            if not isinstance(exc, Exception) and interruption is None:
+                interruption = exc
+            events.append({"phase": "apply", "status": "interrupted", "error": type(exc).__name__})
 
         rollback_failures: list[str] = []
-        for name in reversed(changed):
+        for name in reversed(attempted):
             expected = baseline[name]
             try:
                 acknowledged = self._transport.write(name, expected)
-            except Exception as exc:
+            except BaseException as exc:
+                if not isinstance(exc, Exception) and interruption is None:
+                    interruption = exc
                 rollback_failures.append(f"restore_write_exception:{name}:{type(exc).__name__}")
                 events.append({"phase": "restore", "parameter": name, "status": "write_exception"})
-                continue
-            if not acknowledged:
-                rollback_failures.append("restore_write_failed:" + name)
-                events.append({"phase": "restore", "parameter": name, "status": "write_failed"})
-                continue
+            else:
+                if acknowledged is not True:
+                    rollback_failures.append("restore_write_failed:" + name)
+                    events.append({"phase": "restore", "parameter": name, "status": "write_failed"})
+            # Readback is independent evidence, not a substitute for the lost
+            # acknowledgement.  Keep both and continue restoring other attempts.
             try:
                 observed = self._read_one(name)
-            except Exception as exc:  # the concrete failure is retained below
+            except BaseException as exc:
+                if not isinstance(exc, Exception) and interruption is None:
+                    interruption = exc
                 rollback_failures.append(f"restore_read_failed:{name}:{type(exc).__name__}")
                 events.append({"phase": "restore", "parameter": name, "status": "read_failed"})
                 continue
@@ -363,9 +390,27 @@ class ParameterTransaction:
             else:
                 events.append({"phase": "restore", "parameter": name, "status": "verified"})
 
-        return {
+        final_values: dict[str, int | float] = {}
+        for name, expected in baseline.items():
+            try:
+                observed = self._read_one(name)
+            except BaseException as exc:
+                if not isinstance(exc, Exception) and interruption is None:
+                    interruption = exc
+                rollback_failures.append(f"final_read_failed:{name}:{type(exc).__name__}")
+                events.append({"phase": "final", "parameter": name, "status": "read_failed"})
+                continue
+            final_values[name] = observed
+            matches = self._equal(observed, expected)
+            if not matches:
+                rollback_failures.append("final_verify_failed:" + name)
+            events.append({"phase": "final", "parameter": name, "status": "verified" if matches else "verify_failed"})
+
+        self.last_result = {
             "baseline": baseline,
             "desired": dict(desired),
+            "attempted_parameters": attempted,
+            "final_values": final_values,
             "events": events,
             "primary_failure": primary_failure,
             "rollback_attempted": True,
@@ -373,6 +418,11 @@ class ParameterTransaction:
             "qualified": primary_failure is None and not rollback_failures,
             "network_parameter_access": False,
         }
+        if interruption is not None:
+            # Preserve cancellation semantics after best-effort cleanup.  The
+            # caller can retain last_result even though the call did not return.
+            raise interruption
+        return self.last_result
 
 
 def ulog_acceptance_profile() -> dict:
