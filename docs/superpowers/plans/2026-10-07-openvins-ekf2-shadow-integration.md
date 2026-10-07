@@ -119,6 +119,9 @@ physical study in the same change.
   Offline serial status matching is now implemented under
   `docs/OPENVINS_TIMESYNC_OBSERVER_REPORT.md`; its synthetic/native-filter
   checks do not qualify actual listener delivery or cold/channel identity.
+  Offline stream interval apply/body/restore is now implemented under
+  `docs/OPENVINS_TIMESYNC_INTERVAL_REPORT.md`; exact restorable-baseline and
+  failure-path checks do not qualify live ACK correlation or actual rate.
 - [x] Snapshot `EKF2_EV_CTRL`, `EKF2_EV_NOISE_MD`, `EKF2_EV_QMIN`,
   `EKF2_EV_DELAY`, `EKF2_EV_POS_X/Y/Z`, `EKF2_IMU_POS_X/Y/Z`, height reference
   and other active aiding source parameters. Refuse a missing/ambiguous value.
