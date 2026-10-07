@@ -37,6 +37,12 @@ def test_cohort_plan_freezes_development_before_distinct_held_out_seeds():
         {"run_id": "held-out-seed-27212", "role": "held_out", "seed": 27212},
         {"run_id": "held-out-seed-27213", "role": "held_out", "seed": 27213},
     ]
+    assert cohort_plan("propagated-ekf2-v3") == [
+        {"run_id": "development-seed-27401", "role": "development", "seed": 27401},
+        {"run_id": "held-out-seed-27411", "role": "held_out", "seed": 27411},
+        {"run_id": "held-out-seed-27412", "role": "held_out", "seed": 27412},
+        {"run_id": "held-out-seed-27413", "role": "held_out", "seed": 27413},
+    ]
 
 
 def test_run_args_replaces_binary_and_binds_health_profile_seed(tmp_path):

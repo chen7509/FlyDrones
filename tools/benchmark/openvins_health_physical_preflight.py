@@ -31,11 +31,17 @@ CODE_PATHS = (
     "tools/benchmark/estimator_aware_readiness.py",
     "tools/benchmark/openvins_health_physical_preflight.py",
     "tools/benchmark/audit_openvins_health_cohort.py",
+    "tools/benchmark/openvins_ekf2_fast_contract.py",
+    "tools/benchmark/build_openvins_ekf2_fast_run_evidence.py",
 )
 
 
 def cohort_plan(seed_set="initial-v1"):
-    bases = {"initial-v1": (27101, 27111), "compatibility-retry-v2": (27201, 27211)}
+    bases = {
+        "initial-v1": (27101, 27111),
+        "compatibility-retry-v2": (27201, 27211),
+        "propagated-ekf2-v3": (27401, 27411),
+    }
     if seed_set not in bases:
         raise ValueError("unknown physical cohort seed set")
     development, held_out = bases[seed_set]
@@ -198,7 +204,11 @@ def main(argv=None):
     for name in ("output", "source-study", "source-audit", "health-binary", "capture-script", "python"):
         parser.add_argument("--" + name, type=Path, required=True)
     parser.add_argument("--prepare-only", action="store_true", required=True)
-    parser.add_argument("--seed-set", choices=["initial-v1", "compatibility-retry-v2"], default="initial-v1")
+    parser.add_argument(
+        "--seed-set",
+        choices=["initial-v1", "compatibility-retry-v2", "propagated-ekf2-v3"],
+        default="initial-v1",
+    )
     values = vars(parser.parse_args(argv))
     values.pop("prepare_only")
     print(json.dumps(prepare(**values, resources=active_resources()), indent=2))

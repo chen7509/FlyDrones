@@ -274,6 +274,14 @@ class OfflineEkf2Composer:
         }
         return self._emit(transition)
 
+    def fail(self, reason: str) -> dict:
+        """Latch one external source/native/journal failure without fabricating a sample."""
+        if self.closed:
+            raise RuntimeError("offline composer already closed")
+        if not isinstance(reason, str) or not reason:
+            raise ValueError("invalid external failure reason")
+        return self._emit(self._latch(reason))
+
     def finish(self) -> dict:
         if self.closed:
             raise RuntimeError("offline composer already closed")

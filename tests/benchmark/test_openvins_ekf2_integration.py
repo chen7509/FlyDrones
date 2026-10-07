@@ -242,3 +242,15 @@ def test_composition_never_opens_a_socket(monkeypatch):
 
     monkeypatch.setattr(socket, "socket", forbidden_socket)
     assert composer().compose(camera(), source_health(), clock())["status"] == "candidate"
+
+
+def test_explicit_external_failure_latches_composer():
+    instance = composer()
+    failed = instance.fail("source_failure")
+    assert failed["status"] == "refused"
+    assert failed["refusal"] == {
+        "reason": "source_failure",
+        "reasons": ["source_failure"],
+        "latched": True,
+    }
+    assert instance.compose(camera(), source_health(), clock())["refusal"]["reason"] == "source_failure"
