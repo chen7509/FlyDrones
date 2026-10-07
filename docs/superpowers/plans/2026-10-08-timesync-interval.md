@@ -33,5 +33,10 @@ Timeout guarantees require a future bounded adapter, not a synchronous wrapper.
   exception formatting cleanup bypass, four behavioral RED-to-GREEN cases.
 - [x] Full pytest with current-tree PYTHONPATH:2154 passed/3 skipped/2 existing
   warnings in329.43s; changed Ruff and diff checks passed.
-- [ ] Add `docs/OPENVINS_TIMESYNC_INTERVAL_REPORT.md`, seal evidence with hashes/CRC.
-- [ ] Commit/push personal and update PR65 without marking live gates complete.
+- [x] Add `docs/OPENVINS_TIMESYNC_INTERVAL_REPORT.md`, seal evidence with hashes/CRC:
+  38 members, SHA256 `ffd12ba00a70f5ea32ae2724a8603009dd47dba4d08dfe088dbe2bfd56d26629`.
+- [x] Commit/push personal and update PR65 without marking live gates complete.
+  Implementation/seal `43a309e`. These completion marks record publication after
+  sealing; the ZIP retains the pre-publication plan. First PR-body construction
+  failed on CRLF matching, made no edit, and succeeded after newline normalization;
+  the original attempt note is retained outside the already sealed archive.
