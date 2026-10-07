@@ -127,6 +127,11 @@ physical study in the same change.
   failed the fixture's two-second first-frame window; explicit unbuffering is
   only a candidate. Real listener startup, cold/exclusive identity and accepted
   throughput remain unqualified.
+  Channel research in `docs/OPENVINS_TIMESYNC_CHANNEL_REPORT.md` now rules out
+  treating the selected UDP partner as an ingress ACL or a MAVLink channel index
+  as a guaranteed uORB instance. One ordinary-UDP user/network namespace probe
+  passed on WSL; the production isolated launcher and cold first-status bootstrap
+  remain to be implemented and verified. No live gate is checked by that probe.
 - [x] Snapshot `EKF2_EV_CTRL`, `EKF2_EV_NOISE_MD`, `EKF2_EV_QMIN`,
   `EKF2_EV_DELAY`, `EKF2_EV_POS_X/Y/Z`, `EKF2_IMU_POS_X/Y/Z`, height reference
   and other active aiding source parameters. Refuse a missing/ambiguous value.
