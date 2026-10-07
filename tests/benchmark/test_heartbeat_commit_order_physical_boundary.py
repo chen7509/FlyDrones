@@ -36,7 +36,9 @@ def adapt_saved_audits(monkeypatch):
 def make_boundary(tmp_path, monkeypatch):
     adapt_saved_audits(monkeypatch)
     study = tmp_path / "study"
-    shutil.copytree(STUDY, study)
+    # The production destination now exists after the one-shot run.  This
+    # boundary-construction fixture must copy prepare/startup inputs only.
+    shutil.copytree(STUDY, study, ignore=shutil.ignore_patterns("capture-v1"))
     manifest_path = study / "study-manifest.json"
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
     destination = study / "capture-v1"
