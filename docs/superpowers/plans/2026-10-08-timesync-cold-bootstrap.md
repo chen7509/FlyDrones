@@ -37,6 +37,6 @@ including check(now_ns=..., epoch_token=...) and read-only events/progress copie
       a real exclusive JSONL journal; no socket/process/native replays.
 - [x] Independent read-only review, material repairs RED/GREEN; full pytest with
       current-tree PYTHONPATH, changed Ruff and diff-check.
-- [ ] Report implementation versus live proof, frozen source/fixture identities,
+- [x] Report implementation versus live proof, frozen source/fixture identities,
       failures and next actual process/transport binding; seal ZIP/hash/CRC.
-- [ ] Update parent plan/PR65, commit/push only personal. Keep overall goal active.
+- [x] Update parent plan/PR65, commit/push only personal. Keep overall goal active.
