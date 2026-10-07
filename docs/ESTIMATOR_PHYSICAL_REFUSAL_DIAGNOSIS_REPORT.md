@@ -583,3 +583,30 @@ The authoritative evidence for this added stage is
 The next stage is constrained to a minimal VIO/motion correction followed by a
 complete 25-second physical drift rerun; it must not expand generic evidence
 infrastructure or proceed to EKF2, training, or multi-aircraft work first.
+
+## Motion-intent corrected complete physical retry
+
+The separately named `study-v23/capture-v1` run applied the verified
+truth-free native motion intent before the frozen 2.621 s support-motion anchor
+and completed the full 25 s PX4/Gazebo workload. No stationary update was
+accepted after motion began. Against the unchanged prospective gauge, maximum
+position error fell from the immutable prior 47.719487 m failure to 0.078755 m,
+terminal error was 0.020517 m, maximum velocity error was 0.082112 m/s and
+maximum attitude error was 0.999105 degrees. The frozen 0.25 m and 0.25 m/s
+accuracy screens therefore pass.
+
+The run retained all source, physics, native-reference, OpenVINS, supervisor
+and ULog evidence. It produced 222 public states through 24.9 s, 11 nonzero
+MSCKF updates using 23 features and 209 nonzero SLAM updates using 6,473
+features. Native camera processing P95 was 3.376 ms; source-arrival to native
+acknowledgement P95 was 79.754 ms and is not policy decision latency.
+
+This result qualifies the complete disarmed physical execution and the VIO
+accuracy screens only. Reset and quality remain unknown and covariance/noise
+remain uncalibrated, so estimator health, ODOMETRY, EKF2 injection, fusion,
+arming, flight, training and multi-aircraft expansion remain closed. Full
+details are in `docs/OPENVINS_MOTION_INTENT_PHYSICAL_RETRY_REPORT.md`.
+
+The sealed physical-retry archive is
+`evidence/openvins-motion-intent-physical-retry-dev-1701.zip`, SHA-256
+`0467cb57cf632bf540110d5981fc8d8e9778aa4ac9bd3d9f5bda55171f00fb96`.
