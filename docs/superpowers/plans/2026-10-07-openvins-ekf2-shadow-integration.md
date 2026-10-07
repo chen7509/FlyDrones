@@ -35,16 +35,16 @@ first with EKF2 fusion disabled and then with disarmed fusion observation.
 **Files:** Add focused source snapshots and metadata under a new write-once
 results destination; add tests for the design equations.
 
-- [ ] Record exact source/hash/license/maintenance evidence for PX4 receiver,
+- [x] Record exact source/hash/license/maintenance evidence for PX4 receiver,
   VehicleOdometry, EKF2 external-vision ingest/control, timesync, aid-source
   messages, MAVLink common ODOMETRY, pymavlink 2.4.49 and OpenVINS IMU state.
-- [ ] Write RED analytic and finite-difference tests for the 9x15 Jacobian,
+- [x] Write RED analytic and finite-difference tests for the 9x15 Jacobian,
   including noncommuting attitude, nonzero velocity, cross covariance and the
   old-12x12/new-15x15 distinction.
-- [ ] Implement a pure transform that consumes the bounded 15x15 covariance and
+- [x] Implement a pure transform that consumes the bounded 15x15 covariance and
   retains the full 9x9 output covariance plus PX4-consumed diagonals.
-- [ ] Verify quaternion direction/sign and float32 representability.
-- [ ] Run focused tests, Ruff and diff checks; seal evidence.
+- [x] Verify quaternion direction/sign and float32 representability.
+- [x] Run focused tests, Ruff and diff checks; seal evidence.
 
 **Exit:** Geometry and covariance tests pass against exact pins. No serializer,
 socket, PX4 process or simulator is used.
