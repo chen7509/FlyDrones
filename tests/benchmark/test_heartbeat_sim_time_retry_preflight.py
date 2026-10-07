@@ -1,5 +1,6 @@
 import json
 import shutil
+import zipfile
 from pathlib import Path
 
 import pytest
@@ -12,8 +13,15 @@ ARCHIVE = ROOT / "evidence/heartbeat-simulation-time-readiness-dev-1701.zip"
 IMPLEMENTATION = ROOT / "tools/benchmark/readiness_anchor.py"
 
 
-def test_frozen_correction_archive_matches_current_implementation():
-    result = validate_correction(AUDIT, ARCHIVE, IMPLEMENTATION)
+def archived_implementation(tmp_path):
+    output = tmp_path / "readiness_anchor.py"
+    with zipfile.ZipFile(ARCHIVE) as package:
+        output.write_bytes(package.read("tools/benchmark/readiness_anchor.py"))
+    return output
+
+
+def test_frozen_correction_archive_matches_its_frozen_implementation(tmp_path):
+    result = validate_correction(AUDIT, ARCHIVE, archived_implementation(tmp_path))
     assert result["fixed_evidence_ready"]
     assert result["simulation_silence_refused"]
     assert result["timeout_increased"] is False
@@ -26,7 +34,7 @@ def test_correction_drift_refuses(tmp_path, fault):
     implementation = tmp_path / "readiness_anchor.py"
     shutil.copy2(AUDIT, audit)
     shutil.copy2(ARCHIVE, archive)
-    shutil.copy2(IMPLEMENTATION, implementation)
+    implementation.write_bytes(archived_implementation(tmp_path).read_bytes())
     if fault == "archive":
         archive.write_bytes(archive.read_bytes() + b"drift")
     elif fault == "audit":

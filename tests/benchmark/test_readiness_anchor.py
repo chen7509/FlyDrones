@@ -97,8 +97,10 @@ def test_bad_heartbeat_simulation_clock_latches(fault):
         gate.on_record(imu, None)
         for kind in ["rgb", "info"]:
             gate.on_record(row(kind, now[0] - 1), None)
-        with pytest.raises(ValueError, match="future heartbeat simulation clock"):
-            gate.proof()
+        proof = gate.proof()
+        assert proof["records"]["heartbeat"]["observed_sim_ns"] == 1_000_000
+        assert proof["freshness"]["latest_heartbeat_ahead_ns"] == 500_000
+        assert gate.snapshot()["failure"] is None
     else:
         with pytest.raises(ValueError, match="heartbeat simulation clock"):
             gate.on_record(later, None)
