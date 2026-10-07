@@ -88,6 +88,7 @@ class ReadOnlyListener:
         self._closed = self._done = self._parsed_terminal = False
         self._fault = None
         self._lock = Lock()
+        self._regular_events = 0  # One independent terminal-refusal slot is separate.
         self._result = dict(transport_complete=False, network_authorized=False, fusion_qualified=False,
                             live_listener_qualified=False, events=[], error=None, close_error=None,
                             refusal_journal_error=None, return_journal_error=None, connection_evidence=None)
@@ -128,9 +129,10 @@ class ReadOnlyListener:
         return copy.deepcopy(self._result)
 
     def _record(self, kind, **fields):
-        if len(self._result['events']) >= self.MAX_EVENTS:
+        if self._regular_events >= self.MAX_EVENTS:
             raise ValueError('listener journal event limit')
         event = dict(kind=kind, **fields)
+        self._regular_events += 1
         self._result['events'].append(copy.deepcopy(event))
         if self._journal(copy.deepcopy(event)) is not None:
             raise ValueError('listener journal must return None')
@@ -139,7 +141,7 @@ class ReadOnlyListener:
 
     def _reserve_events(self, count):
         # poll has a single owner: reserve evidence capacity before doing I/O.
-        if len(self._result['events']) + count > self.MAX_EVENTS:
+        if self._regular_events + count > self.MAX_EVENTS:
             raise ValueError('listener journal event limit')
 
     def _returned(self, kind, **fields):

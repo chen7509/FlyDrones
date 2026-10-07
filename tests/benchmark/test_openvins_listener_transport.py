@@ -322,3 +322,25 @@ def test_post_io_clock_interrupt_survives_secondary_journal_error():
         obj.poll()
     assert backend.connection.closed==1
     assert 'secondary return journal failure' in obj.evidence['return_journal_error']
+
+
+@pytest.mark.parametrize('operation,slots',[('send',2),('recv',3)])
+def test_concurrent_refusal_does_not_consume_io_return_reservation(operation,slots):
+    obj,backend=make([MULTI+b'\0\0'])
+    obj.MAX_EVENTS=len(obj.evidence['events'])+slots
+    original=getattr(backend.connection,operation)
+
+    def race(data):
+        result=original(data)
+        with pytest.raises(ValueError,match='concurrent'):
+            obj.poll()
+        return result
+
+    setattr(backend.connection,operation,race)
+    with pytest.raises(ValueError):
+        obj.poll()
+    events=obj.evidence['events']
+    assert any(e['kind']==operation+'_return' for e in events)
+    assert sum(e['kind']=='refusal' for e in events)==1
+    assert len(events)<=obj.MAX_EVENTS+1
+    assert backend.connection.closed==1
