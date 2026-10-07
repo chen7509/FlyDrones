@@ -129,6 +129,10 @@ def prepare(output: Path, capture: Path, native_binary: Path, native_config: Pat
         "native_config": Path(native_config).resolve(strict=True),
         "runtime_snapshot": Path(runtime_snapshot).resolve(strict=True),
         "replay_runner": Path(__file__).resolve(strict=True),
+        "file_shadow_adapter": Path(__file__).with_name("openvins_ekf2_file_shadow.py").resolve(strict=True),
+        "integration_contract": Path(__file__).with_name("openvins_ekf2_integration.py").resolve(strict=True),
+        "health_contract": Path(__file__).with_name("openvins_health_contract.py").resolve(strict=True),
+        "online_shadow": Path(__file__).with_name("openvins_online_shadow.py").resolve(strict=True),
     }
     manifest = {
         "schema": "openvins-ekf2-file-shadow-replay-manifest-v1",
