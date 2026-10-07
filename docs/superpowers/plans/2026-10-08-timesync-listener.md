@@ -34,5 +34,9 @@ Native stub source/method boundary and installed-client limitations explicit.
   trailing non-LF bytes after expected count,2 behavioral cases corrected.
 - [x] Full current-tree pytest:2440 passed/3 skipped/2 existing warnings in329.64s;
   changed Ruff and diff checks passed.
-- [ ] Report in `docs/OPENVINS_TIMESYNC_LISTENER_REPORT.md`, archive member hashes/CRC.
-- [ ] Commit/push personal, update PR65; retain remaining live gates explicitly.
+- [x] Report in `docs/OPENVINS_TIMESYNC_LISTENER_REPORT.md`, archive member hashes/CRC:
+  72 members/142944bytes, SHA256
+  `999eef9ccca35343fcec547a6e0fbefe70401221846eadc62bc9cd2dbae3dc40`.
+- [x] Commit/push personal, update PR65; retain remaining live gates explicitly.
+  Implementation/seal `3163044`; these publication marks are recorded afterward
+  and do not alter the archive's pre-publication plan snapshot.
