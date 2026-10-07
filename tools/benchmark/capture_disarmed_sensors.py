@@ -132,6 +132,27 @@ def record_worker_trajectory_policy(output, contract, policy_path):
     return record
 
 
+def apply_simulation_seed(output, seed, rand_type):
+    """Apply the declared Gazebo Math seed before TestFixture construction.
+
+    This records the API call boundary only.  It does not assert that every
+    separately implemented runtime plugin draws from this global generator.
+    """
+    if type(seed) is not int or not 1 <= seed < 2**32:
+        raise ValueError("invalid simulation seed")
+    rand_type.seed(seed)
+    record = {
+        "schema": "gazebo-simulation-seed-v1",
+        "seed": seed,
+        "api": "gz.math7.Rand.seed",
+        "applied_before_test_fixture": True,
+        "all_runtime_rng_coverage_qualified": False,
+        "fusion_eligible": False,
+    }
+    write_manifest(Path(output) / "simulation-random-seed.json", record)
+    return record
+
+
 def parse_capture_args(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", type=Path, required=True)
@@ -141,6 +162,7 @@ def parse_capture_args(argv=None):
     parser.add_argument("--runtime-binding", type=Path, help="Declared baseline, generated hashes and lookup environment")
     parser.add_argument("--trajectory-gauge-policy", type=Path,
                         help="Prospective truth-independent trajectory scoring policy")
+    parser.add_argument("--simulation-seed", type=int, help="Declared Gazebo Math random seed")
     parser.add_argument("--shadow-binary", type=Path)
     parser.add_argument("--shadow-config", type=Path)
     parser.add_argument("--reference-module", type=Path)
@@ -155,9 +177,12 @@ def parse_capture_args(argv=None):
         ],
     )
     parser.add_argument("--motion-intent-profile", choices=["native-beginning-zupt-v1"])
+    parser.add_argument("--health-profile", choices=["px4-d6f12ad-gate-floor-v1"])
     parser.add_argument("--motion-profile", choices=["lateral-wrench-v1", "supported-lateral-v1", "supported-ready-v1"])
     parser.add_argument("--physics-trace-profile", choices=["substep-lateral-v1", "substep-supported-v1", "substep-ready-v1"])
     args = parser.parse_args(argv)
+    if args.simulation_seed is not None and not 1 <= args.simulation_seed < 2**32:
+        parser.error("simulation seed must be in [1, 2^32)")
     if args.runtime_binding and not args.execution_contract:
         parser.error("runtime binding requires an execution declaration")
     if args.trajectory_gauge_policy and (not args.runtime_binding or not args.execution_contract):
@@ -174,6 +199,10 @@ def parse_capture_args(argv=None):
         parser.error("source fan-out requires complete supported native/reference configuration without fault injection")
     if args.motion_intent_profile and args.source_fanout_profile != "ready-shadow-heartbeat-estimator-v1":
         parser.error("native motion intent requires estimator-aware source fan-out")
+    if args.health_profile and (
+        not args.shadow_binary or args.source_fanout_profile != "ready-shadow-heartbeat-estimator-v1"
+    ):
+        parser.error("health evidence requires estimator-aware native shadow input")
     if args.reference_fault_profile and not args.reference_module:
         parser.error("runtime refusal requires native reference configuration")
     if bool(args.reference_module) != bool(args.reference_sha256):
@@ -469,7 +498,7 @@ def main():
             lambda: result.update(end_sim_ns=clock["sim_ns"], capture_wall_s=time.monotonic() - started),
             priority=110,
         )
-        import gz.math7  # noqa: F401 - register math types for sim bindings
+        import gz.math7  # register math types for sim bindings
         from gz.msgs10.camera_info_pb2 import CameraInfo
         from gz.msgs10.image_pb2 import Image
         from gz.msgs10.imu_pb2 import IMU
@@ -477,13 +506,22 @@ def main():
         from gz.transport13 import Node
         from pymavlink import mavutil
 
+        if args.simulation_seed is not None:
+            result["simulation_seed"] = apply_simulation_seed(output, args.simulation_seed, gz.math7.Rand)
+
         if binding:
             binding.observe("postimports")
 
         shadow = None
         source_guard = None
         if args.shadow_binary:
-            from tools.benchmark.openvins_online_shadow import NativeClient, ShadowInput, SourceWatchdog, validate_frozen_config
+            from tools.benchmark.openvins_online_shadow import (
+                NativeClient,
+                OnlineHealthEvidence,
+                ShadowInput,
+                SourceWatchdog,
+                validate_frozen_config,
+            )
 
             validate_frozen_config(args.shadow_config)
             shadow_dir = output / "shadow"
@@ -519,7 +557,16 @@ def main():
 
             journal.cleanup("native consumer", finish_native, priority=95)
             native_session_id = "online-native-" + str(client.process.pid)
-            shadow = ShadowInput(client, shadow_dir, session_id=native_session_id)
+            health = None
+            if args.health_profile:
+                from tools.benchmark.openvins_health_contract import CovarianceProfile
+
+                health = OnlineHealthEvidence(
+                    shadow_dir,
+                    session_id=native_session_id,
+                    profile=CovarianceProfile(sim_domain_qualified=False, name=args.health_profile),
+                )
+            shadow = ShadowInput(client, shadow_dir, session_id=native_session_id, health=health)
 
             def finish_shadow():
                 result["shadow"] = shadow.finish()
@@ -527,6 +574,15 @@ def main():
                     errors.append("shadow input failed: " + result["shadow"]["failure"])
 
             journal.cleanup("shadow input", finish_shadow, priority=90)
+            if health is not None:
+                def finish_health():
+                    if errors:
+                        health.fail(
+                            "source_failure" if result.get("source_watchdog_failure") else "capture_failure"
+                        )
+                    result["estimator_health"] = health.finish()
+
+                journal.cleanup("estimator health", finish_health, priority=92)
         if args.shadow_binary or args.physics_trace_profile:
             from tools.benchmark.openvins_online_shadow import SourceWatchdog
 

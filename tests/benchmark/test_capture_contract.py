@@ -22,6 +22,63 @@ def test_declared_ordinary_limits_and_workload(tmp_path):
     assert selected['imu_hz'] == 250
     assert selected['rgbd_hz'] == 10
     assert selected['rgbd_size'] == [160, 120]
+    assert 'simulation_seed' not in selected
+
+
+def test_simulation_seed_is_declared_forwarded_and_applied_before_fixture(tmp_path):
+    selected = args(tmp_path, '--simulation-seed', '27101')
+    declaration = contract.execution_contract(selected)
+    assert declaration['simulation_seed'] == 27101
+    assert contract.worker_options(selected)[-2:] == ['--simulation-seed', '27101']
+
+    calls = []
+
+    class Rand:
+        @staticmethod
+        def seed(value):
+            calls.append(value)
+
+    output = tmp_path / 'capture'
+    output.mkdir()
+    record = capture.apply_simulation_seed(output, selected.simulation_seed, Rand)
+    assert calls == [27101]
+    assert record == {
+        'schema': 'gazebo-simulation-seed-v1',
+        'seed': 27101,
+        'api': 'gz.math7.Rand.seed',
+        'applied_before_test_fixture': True,
+        'all_runtime_rng_coverage_qualified': False,
+        'fusion_eligible': False,
+    }
+    assert json.loads((output / 'simulation-random-seed.json').read_text()) == record
+
+
+@pytest.mark.parametrize('seed', ['0', '-1', str(2**32), '1.5'])
+def test_simulation_seed_refuses_out_of_range_values(tmp_path, seed):
+    with pytest.raises(SystemExit):
+        args(tmp_path, '--simulation-seed', seed)
+
+
+def test_health_profile_is_opt_in_and_requires_complete_shadow_path(tmp_path):
+    with pytest.raises(SystemExit):
+        args(tmp_path, '--health-profile', 'px4-d6f12ad-gate-floor-v1')
+
+    selected = args(
+        tmp_path,
+        '--health-profile', 'px4-d6f12ad-gate-floor-v1',
+        '--shadow-binary', str(tmp_path / 'online-probe'),
+        '--shadow-config', str(tmp_path / 'config'),
+        '--reference-module', str(tmp_path / 'reference.so'),
+        '--reference-sha256', 'a' * 64,
+        '--source-fanout-profile', 'ready-shadow-heartbeat-estimator-v1',
+        '--motion-profile', 'supported-ready-v1',
+        '--physics-trace-profile', 'substep-ready-v1',
+    )
+    declaration = contract.execution_contract(selected)
+    assert declaration['profiles']['health_profile'] == 'px4-d6f12ad-gate-floor-v1'
+    options = contract.worker_options(selected)
+    index = options.index('--health-profile')
+    assert options[index:index + 2] == ['--health-profile', 'px4-d6f12ad-gate-floor-v1']
 
 
 @pytest.mark.parametrize('field,value', [
