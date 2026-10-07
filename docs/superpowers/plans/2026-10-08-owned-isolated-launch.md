@@ -24,31 +24,31 @@ tests/benchmark/test_isolated_namespace.py.
 Interfaces: validate_observation(parent, observation, ready); run_worker(envelope,
 output, backend=None) returns a result with exit/error/qualification fields.
 
-- [ ] Write invalid identity/topology/FD and journal-failure cases; observe RED.
-- [ ] Implement strict pure gate and actual proc/ip observation; snapshot checks
+- [x] Write invalid identity/topology/FD and journal-failure cases; observe RED.
+- [x] Implement strict pure gate and actual proc/ip observation; snapshot checks
       reuse declared_runtime_snapshot. Worker rechecks before command creation.
-- [ ] Run focused tests; verify command was never invoked for refused cases.
+- [x] Run focused tests; verify command was never invoked for refused cases.
 
 ## Task2: existing-supervisor composition
 
 Interface: launch_isolated(command, output, inventory, environment, timeout_s)
 creates exclusive evidence root and returns terminal result. No shell/fallback.
 
-- [ ] Test missing roles/undeclared executable, envelope drift, invalid timeout,
+- [x] Test missing roles/undeclared executable, envelope drift, invalid timeout,
       missing worker result, post snapshot failure and supervisor failure.
-- [ ] Implement exact command/environment declaration and pre/post capture;
+- [x] Implement exact command/environment declaration and pre/post capture;
       existing supervise_worker owns group cleanup and signal evidence.
-- [ ] Verify targeted snapshot/supervisor regressions and changed Ruff/diff.
+- [x] Verify targeted snapshot/supervisor regressions and changed Ruff/diff.
 
 ## Task3: prospective ordinary-process harness and review
 
 File: tests/benchmark/check_isolated_namespace.py; fresh results directory.
 
-- [ ] Freeze selected runtime/dependency and producer hashes before harness.
-- [ ] Run normal, exit7, TERM-resistant timeout and direct-worker refusal once;
+- [x] Freeze selected runtime/dependency and producer hashes before harness.
+- [x] Run normal, exit7, TERM-resistant timeout and direct-worker refusal once;
       verify original-group evidence, command marker, namespace/mapping/topology,
       exact environment and parent-state stability. No physical processes.
-- [ ] Run full pytest with explicit current-tree PYTHONPATH.
-- [ ] Independent bounded review; repair material findings with RED/GREEN evidence.
-- [ ] Report scope/remaining gates, seal ZIP/hash/CRC, commit/push personal and
+- [x] Run full pytest with explicit current-tree PYTHONPATH.
+- [x] Independent bounded review; repair material findings with RED/GREEN evidence.
+- [x] Report scope/remaining gates, seal ZIP/hash/CRC, commit/push personal and
       update existing draftPR65. Do not mark overall goal complete.

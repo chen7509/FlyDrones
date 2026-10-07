@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+import json
 import os
 import signal
 import subprocess
@@ -25,6 +26,19 @@ def child(mode, marker):
     if mode == 'timeout':
         time.sleep(60)
     return 7 if mode == 'exit7' else 0
+
+
+def audit_child_marker(marker, worker, expected_environment):
+    if type(marker) is not dict or marker.keys() != {'identity', 'environment', 'mode'}:
+        raise ValueError('child marker schema')
+    identity = marker['identity']
+    ns.validate_identity(identity)
+    if marker['environment'] != expected_environment:
+        raise ValueError('child environment mismatch')
+    if (identity['pid'] == worker['pid'] or identity['start_ticks'] < worker['start_ticks']
+            or any(identity[k] != worker[k] for k in ('net', 'user', 'uid', 'gid', 'euid', 'egid', 'pgrp', 'session'))):
+        raise ValueError('child namespace/credential/owned group mismatch')
+    return True
 
 
 def inventory(output):
@@ -77,6 +91,8 @@ def main():
         result = ns.launch_isolated(command, out / mode, selected, env, 4 if mode == 'timeout' else 20)
         write_manifest(out / f'{mode}-assessment.json', dict(elapsed_s=time.monotonic() - started, result=result))
         assert marker.exists(), result
+        audit_child_marker(json.loads(marker.read_text()),
+                           json.loads((out / mode / 'worker/gate.json').read_text())['identity'], env)
         assert result['isolated_launch_qualified'] is (mode == 'normal'), result
         cleanup = result['supervisor']['cleanup']
         assert cleanup['no_executing_members'] and cleanup['group_absent'], result
