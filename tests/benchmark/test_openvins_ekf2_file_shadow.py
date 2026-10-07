@@ -1,3 +1,4 @@
+import hashlib
 import json
 import socket
 from unittest import mock
@@ -8,6 +9,7 @@ import pytest
 from tools.benchmark.openvins_causal_input import raw_profile
 from tools.benchmark.openvins_ekf2_file_shadow import FileOnlyEkf2ShadowEvidence
 from tools.benchmark.openvins_online_shadow import ShadowInput
+from tools.benchmark.replay_openvins_ekf2_file_shadow import ArchivedNative
 
 
 def declaration(session="session-a"):
@@ -166,3 +168,37 @@ def test_declaration_is_strict_and_precedes_outputs(tmp_path):
     with pytest.raises(ValueError):
         FileOnlyEkf2ShadowEvidence(tmp_path, bad)
     assert not any(tmp_path.iterdir())
+
+
+def test_archived_native_requires_exact_action_payload_and_ack_identity():
+    action = {"kind": "camera", "sample_ns": 100, "source_arrival_ns": 200}
+    pixels = b"rgb"
+    request = {
+        "sequence": 7,
+        "action": action,
+        "dispatch_ns": 300,
+        "rgb_sha256": hashlib.sha256(pixels).hexdigest(),
+    }
+    acknowledgement = {"sequence": 7, "kind": "C", "sample_ns": 100, "dispatch_ns": 300}
+    client = ArchivedNative([request], [acknowledgement])
+    assert client.send(action, pixels) == acknowledgement
+    assert client.finish(require_exhausted=True)["remaining"] == 0
+
+    client = ArchivedNative([request], [acknowledgement])
+    with pytest.raises(ValueError, match="differs from retained request"):
+        client.send({**action, "sample_ns": 101}, pixels)
+
+
+def test_archived_native_predeclared_timeout_latches_before_ack():
+    action = {"kind": "camera", "sample_ns": 12_000_000_000, "source_arrival_ns": 20}
+    request = {
+        "sequence": 0,
+        "action": action,
+        "dispatch_ns": 30,
+        "rgb_sha256": hashlib.sha256(b"rgb").hexdigest(),
+    }
+    acknowledgement = {"sequence": 0, "kind": "C", "sample_ns": action["sample_ns"], "dispatch_ns": 30}
+    client = ArchivedNative([request], [acknowledgement], timeout_camera_sample_ns=action["sample_ns"])
+    with pytest.raises(TimeoutError, match="predeclared native timeout"):
+        client.send(action, b"rgb")
+    assert client.finish(require_exhausted=False)["failure"] == "predeclared native timeout"
