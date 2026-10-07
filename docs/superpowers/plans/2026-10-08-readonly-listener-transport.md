@@ -25,4 +25,4 @@ File: tests/benchmark/check_openvins_listener_transport.py.
 - [x] Independent review and RED/GREEN repairs; full regression.
 - [x] Update report with actual versus synthetic/final-hardening boundaries;
       seal new ZIP/hash/CRC without overwriting old evidence.
-- [ ] Commit/push personal, update draft PR65; retain full goal and live gates.
+- [x] Commit/push personal, update draft PR65; retain full goal and live gates.
