@@ -144,7 +144,7 @@ def _validate_camera_ack(value, now):
 class EstimatorAwareReadiness:
     """Require a fresh internal camera state in addition to existing source proof."""
 
-    def __init__(self, output, source_readiness, *, clock=time.monotonic_ns, stream=None):
+    def __init__(self, output, source_readiness, *, clock=time.monotonic_ns, stream=None, session_id=None):
         self.output = Path(output)
         self.source_readiness = source_readiness
         self.clock = clock
@@ -159,6 +159,14 @@ class EstimatorAwareReadiness:
         self.clock_high_water_ns = None
         self.closed = False
         self.close_errors = []
+        if session_id is not None and (
+            not isinstance(session_id, str) or not session_id or any(character.isspace() for character in session_id)
+        ):
+            raise ValueError("invalid estimator session")
+        self.session_id = session_id
+        self.reset_total = 0
+        self.used_session_ids = set() if session_id is None else {session_id}
+        self.session_replacements = 0
 
     @property
     def failure(self):
@@ -265,6 +273,43 @@ class EstimatorAwareReadiness:
                 raise ValueError("motion intent requires internal estimator state")
             return copy.deepcopy(self.latest_motion_intent_state)
 
+    def replace_session(self, new_session_id, *, reset_total):
+        with self.lock:
+            now = self._available()
+            if self.session_id is None:
+                raise ValueError("initial estimator session unavailable")
+            if (
+                not isinstance(new_session_id, str)
+                or not new_session_id
+                or any(character.isspace() for character in new_session_id)
+                or new_session_id in self.used_session_ids
+            ):
+                raise ValueError("invalid or reused estimator session")
+            if type(reset_total) is not int or reset_total != self.reset_total + 1:
+                raise ValueError("invalid estimator reset total")
+            previous = self.session_id
+            self.session_id = new_session_id
+            self.reset_total = reset_total
+            self.used_session_ids.add(new_session_id)
+            self.session_replacements += 1
+            self.first_internal = None
+            self.latest_internal = None
+            self.latest_motion_intent_state = None
+            self.last_sequence = None
+            self.last_sample = None
+            record = {
+                "event": "estimator_session_replacement",
+                "previous_session_id": previous,
+                "session_id": new_session_id,
+                "reset_total": reset_total,
+                "reset_counter": reset_total % 256,
+                "journal_monotonic_ns": now,
+                "truth_used": False,
+                "fusion_eligible": False,
+            }
+            self._emit(record)
+            return copy.deepcopy(record)
+
     def proof(self):
         with self.lock:
             try:
@@ -295,6 +340,9 @@ class EstimatorAwareReadiness:
                 "latest_internal": copy.deepcopy(self.latest_internal),
                 "failure": self.failure,
                 "clock_high_water_ns": self.clock_high_water_ns,
+                "session_id": self.session_id,
+                "reset_total": self.reset_total,
+                "session_replacements": self.session_replacements,
                 "truth_used": False,
                 "fusion_eligible": False,
             }
@@ -316,6 +364,9 @@ class EstimatorAwareReadiness:
                 "latest_internal": copy.deepcopy(self.latest_internal),
                 "failure": self.failure,
                 "clock_high_water_ns": self.clock_high_water_ns,
+                "session_id": self.session_id,
+                "reset_total": self.reset_total,
+                "session_replacements": self.session_replacements,
                 "close_errors": copy.deepcopy(self.close_errors),
                 "truth_used": False,
                 "fusion_eligible": False,

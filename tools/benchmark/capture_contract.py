@@ -9,6 +9,7 @@ from pathlib import Path
 PROFILE_FIELDS = ('motion_profile', 'physics_trace_profile', 'reference_fault_profile', 'source_fanout_profile')
 MOTION_INTENT_FIELD = 'motion_intent_profile'
 HEALTH_PROFILE_FIELD = 'health_profile'
+HEALTH_FAULT_FIELD = 'health_fault_profile'
 PATH_FIELDS = ('shadow_binary', 'shadow_config', 'reference_module')
 POLICY_FIELD = 'trajectory_gauge_policy'
 SCALAR_FIELDS = ('simulation_seed',)
@@ -111,6 +112,9 @@ def execution_contract(args, launch_environment=None):
     health_profile = getattr(args, HEALTH_PROFILE_FIELD, None)
     if health_profile is not None:
         result['profiles'][HEALTH_PROFILE_FIELD] = health_profile
+    health_fault = getattr(args, HEALTH_FAULT_FIELD, None)
+    if health_fault is not None:
+        result['profiles'][HEALTH_FAULT_FIELD] = health_fault
     if policy_path is not None:
         result['trajectory_gauge_policy'] = trajectory_gauge_policy_record(policy_path)
     simulation_seed = getattr(args, 'simulation_seed', None)
@@ -156,7 +160,8 @@ def validate_declaration(args, launch_environment=None):
 
 def worker_options(args):
     result = []
-    for field in PATH_FIELDS + PROFILE_FIELDS + SCALAR_FIELDS + (MOTION_INTENT_FIELD, HEALTH_PROFILE_FIELD,
+    for field in PATH_FIELDS + PROFILE_FIELDS + SCALAR_FIELDS + (
+        MOTION_INTENT_FIELD, HEALTH_PROFILE_FIELD, HEALTH_FAULT_FIELD,
         'reference_sha256', 'execution_contract', 'runtime_binding', POLICY_FIELD,
     ):
         value = getattr(args, field, None)

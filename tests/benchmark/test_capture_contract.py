@@ -81,6 +81,33 @@ def test_health_profile_is_opt_in_and_requires_complete_shadow_path(tmp_path):
     assert options[index:index + 2] == ['--health-profile', 'px4-d6f12ad-gate-floor-v1']
 
 
+@pytest.mark.parametrize('profile', ['imu-source-loss-after-8s-v1', 'native-restart-after-8s-v1'])
+def test_health_fault_profile_is_declared_forwarded_and_requires_health_shadow(tmp_path, profile):
+    complete = [
+        '--health-profile', 'px4-d6f12ad-gate-floor-v1',
+        '--health-fault-profile', profile,
+        '--shadow-binary', str(tmp_path / 'online-probe'),
+        '--shadow-config', str(tmp_path / 'config'),
+        '--reference-module', str(tmp_path / 'reference.so'),
+        '--reference-sha256', 'a' * 64,
+        '--source-fanout-profile', 'ready-shadow-heartbeat-estimator-v1',
+        '--motion-profile', 'supported-ready-v1',
+        '--physics-trace-profile', 'substep-ready-v1',
+        '--motion-intent-profile', 'native-beginning-zupt-v1',
+    ]
+    selected = args(tmp_path, *complete)
+    declaration = contract.execution_contract(selected)
+    assert declaration['profiles']['health_fault_profile'] == profile
+    options = contract.worker_options(selected)
+    index = options.index('--health-fault-profile')
+    assert options[index:index + 2] == ['--health-fault-profile', profile]
+
+    with pytest.raises(SystemExit):
+        args(tmp_path, '--health-fault-profile', profile)
+    with pytest.raises(SystemExit):
+        args(tmp_path, *complete, '--reference-fault-profile', 'native-pre-epoch-v1')
+
+
 @pytest.mark.parametrize('field,value', [
     ('wall_budget_s', 60), ('supervisor_s', 90), ('imu_hz', 249),
     ('physics_step_ns', 1000000.0), ('estimator_run', 0), ('extra', 'ignored'),

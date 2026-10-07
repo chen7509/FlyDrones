@@ -611,6 +611,41 @@ def test_capture_profile_rejects_incomplete_or_fault_configuration(tmp_path):
         parse_capture_args(complete[:4])
 
 
+def test_explicit_estimator_session_replacement_accepts_restarted_native_sequence(tmp_path):
+    from tools.benchmark.estimator_aware_readiness import EstimatorAwareReadiness
+
+    now = [10_000_000_000]
+    readiness = EstimatorAwareReadiness(
+        tmp_path,
+        JournaledReadiness(clock=lambda: now[0]),
+        clock=lambda: now[0],
+        session_id="fault-session-0",
+    )
+    readiness.observe_ack_batch(
+        [ack(sequence=7, sample_ns=2_400_000_000, internal=True)],
+        source_row(sequence=11, sample_ns=2_400_000_000),
+    )
+    transition = readiness.replace_session("fault-session-1", reset_total=1)
+    assert transition["previous_session_id"] == "fault-session-0"
+    assert transition["session_id"] == "fault-session-1"
+    assert transition["reset_total"] == 1
+    with pytest.raises(ValueError, match="motion intent"):
+        readiness.motion_intent_state()
+
+    readiness.observe_ack_batch(
+        [ack(sequence=0, sample_ns=8_100_000_000, internal=True)],
+        source_row(sequence=12, observed_sim=8_100_000_000, sample_ns=8_100_000_000),
+    )
+    assert readiness.motion_intent_state()["native_sequence"] == 0
+    snapshot = readiness.snapshot()
+    assert snapshot["session_id"] == "fault-session-1"
+    assert snapshot["reset_total"] == 1
+    assert snapshot["session_replacements"] == 1
+    with pytest.raises(ValueError, match="session"):
+        readiness.replace_session("fault-session-0", reset_total=2)
+    readiness.finish()
+
+
 def test_motion_intent_state_projects_latest_internal_ack(tmp_path):
     from tools.benchmark.estimator_aware_readiness import EstimatorAwareReadiness
 

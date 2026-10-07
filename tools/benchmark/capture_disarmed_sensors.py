@@ -178,6 +178,10 @@ def parse_capture_args(argv=None):
     )
     parser.add_argument("--motion-intent-profile", choices=["native-beginning-zupt-v1"])
     parser.add_argument("--health-profile", choices=["px4-d6f12ad-gate-floor-v1"])
+    parser.add_argument(
+        "--health-fault-profile",
+        choices=["imu-source-loss-after-8s-v1", "native-restart-after-8s-v1"],
+    )
     parser.add_argument("--motion-profile", choices=["lateral-wrench-v1", "supported-lateral-v1", "supported-ready-v1"])
     parser.add_argument("--physics-trace-profile", choices=["substep-lateral-v1", "substep-supported-v1", "substep-ready-v1"])
     args = parser.parse_args(argv)
@@ -203,6 +207,15 @@ def parse_capture_args(argv=None):
         not args.shadow_binary or args.source_fanout_profile != "ready-shadow-heartbeat-estimator-v1"
     ):
         parser.error("health evidence requires estimator-aware native shadow input")
+    if args.health_fault_profile and (
+        not args.health_profile
+        or args.reference_fault_profile
+        or args.source_fanout_profile != "ready-shadow-heartbeat-estimator-v1"
+        or args.motion_intent_profile != "native-beginning-zupt-v1"
+        or args.motion_profile != "supported-ready-v1"
+        or args.physics_trace_profile != "substep-ready-v1"
+    ):
+        parser.error("health fault requires the complete unarmed estimator-aware physical profile")
     if args.reference_fault_profile and not args.reference_module:
         parser.error("runtime refusal requires native reference configuration")
     if bool(args.reference_module) != bool(args.reference_sha256):
@@ -236,7 +249,7 @@ def parse_capture_args(argv=None):
     return args
 
 
-def build_readiness(output, source_fanout_profile, *, clock=time.monotonic_ns):
+def build_readiness(output, source_fanout_profile, *, clock=time.monotonic_ns, native_session_id=None):
     """Build the legacy source gate plus the opt-in estimator-aware wrapper."""
     from tools.benchmark.readiness_anchor import JournaledReadiness
 
@@ -244,7 +257,9 @@ def build_readiness(output, source_fanout_profile, *, clock=time.monotonic_ns):
     if source_fanout_profile == "ready-shadow-heartbeat-estimator-v1":
         from tools.benchmark.estimator_aware_readiness import EstimatorAwareReadiness
 
-        return source_readiness, EstimatorAwareReadiness(output, source_readiness, clock=clock)
+        return source_readiness, EstimatorAwareReadiness(
+            output, source_readiness, clock=clock, session_id=native_session_id
+        )
     return source_readiness, source_readiness
 
 
@@ -445,11 +460,12 @@ def main():
         "physics_trace_profile": args.physics_trace_profile,
         "reference_profile": "supported-ready-native-reference-v1" if args.reference_module else None,
         "reference_fault_profile": args.reference_fault_profile,
+        "health_fault_profile": args.health_fault_profile,
         "source_fanout_profile": args.source_fanout_profile,
     }
     clock = {"sim_ns": 0}
     arming = {"unarmed_wall_ns": None}
-    owned_ready = {"px4": False, "openvins": False}
+    owned_ready = {"px4": False}
     owned_processes = {}
     started = time.monotonic()
     with CaptureJournal(output, result) as journal:
@@ -526,51 +542,94 @@ def main():
             validate_frozen_config(args.shadow_config)
             shadow_dir = output / "shadow"
             shadow_dir.mkdir()
-            def openvins_ready():
-                if binding and "openvins" in binding.required_owned and not owned_ready["openvins"]:
-                    binding.observe_owned("openvins", "ready")
-                    owned_ready["openvins"] = True
+            health = None
+            client_roles = {}
 
-            client = NativeClient(
-                [
-                    str(args.shadow_binary.resolve()),
-                    str(args.shadow_config.resolve()),
-                    str(shadow_dir / "states.jsonl"),
-                    str(shadow_dir / "fast.jsonl"),
-                ],
-                shadow_dir,
-                on_first_ack=openvins_ready,
-            )
-            if binding and "openvins" in binding.required_owned:
-                binding.register_owned("openvins", client.process, args.shadow_binary)
-                owned_processes["openvins"] = client.process
+            def create_client(index, session_id, session_dir):
+                role = "openvins" if index == 0 else "openvins-restart"
+                owned_ready[role] = False
 
-            def finish_native():
-                if binding and "openvins" in binding.required_owned and owned_ready["openvins"]:
+                def openvins_ready():
+                    if binding and role in binding.required_owned and not owned_ready[role]:
+                        binding.observe_owned(role, "ready")
+                        owned_ready[role] = True
+
+                native = NativeClient(
+                    [
+                        str(args.shadow_binary.resolve()),
+                        str(args.shadow_config.resolve()),
+                        str(session_dir / "states.jsonl"),
+                        str(session_dir / "fast.jsonl"),
+                    ],
+                    session_dir,
+                    on_first_ack=openvins_ready,
+                )
+                if binding and role in binding.required_owned:
+                    binding.register_owned(role, native.process, args.shadow_binary)
+                    owned_processes[role] = native.process
+                client_roles[id(native)] = role
+                return native
+
+            def finish_client(native):
+                role = client_roles[id(native)]
+                if binding and role in binding.required_owned and owned_ready[role]:
                     try:
-                        binding.observe_owned("openvins", "prestop")
+                        binding.observe_owned(role, "prestop")
                     except Exception as exc:
                         errors.append("OpenVINS runtime mapping: " + repr(exc))
-                result["native"] = client.finish()
-                if result["native"]["failure"] or result["native"]["exit"] != 0:
-                    errors.append("native consumer failed: " + str(result["native"]))
+                summary = native.finish()
+                if summary["failure"] or summary["exit"] != 0:
+                    errors.append("native consumer failed: " + str(summary))
+                return summary
 
-            journal.cleanup("native consumer", finish_native, priority=95)
-            native_session_id = "online-native-" + str(client.process.pid)
-            health = None
-            if args.health_profile:
+            if args.health_fault_profile:
                 from tools.benchmark.openvins_health_contract import CovarianceProfile
+                from tools.benchmark.openvins_health_physical_faults import ManagedHealthShadow
 
+                native_session_id = "fault-session-0"
                 health = OnlineHealthEvidence(
                     shadow_dir,
                     session_id=native_session_id,
                     profile=CovarianceProfile(sim_domain_qualified=False, name=args.health_profile),
                 )
-            shadow = ShadowInput(client, shadow_dir, session_id=native_session_id, health=health)
+
+                def fault_client_factory(index, session_id):
+                    return create_client(index, session_id, shadow_dir / f"session-{index}")
+
+                shadow = ManagedHealthShadow(
+                    shadow_dir,
+                    profile=args.health_fault_profile,
+                    health=health,
+                    client_factory=fault_client_factory,
+                    client_finisher=finish_client,
+                )
+                client = shadow
+            else:
+                native_session_id = "online-native-pending"
+                client = create_client(0, native_session_id, shadow_dir)
+                native_session_id = "online-native-" + str(client.process.pid)
+                if args.health_profile:
+                    from tools.benchmark.openvins_health_contract import CovarianceProfile
+
+                    health = OnlineHealthEvidence(
+                        shadow_dir,
+                        session_id=native_session_id,
+                        profile=CovarianceProfile(sim_domain_qualified=False, name=args.health_profile),
+                    )
+                shadow = ShadowInput(client, shadow_dir, session_id=native_session_id, health=health)
+
+                def finish_native():
+                    result["native"] = finish_client(client)
+
+                journal.cleanup("native consumer", finish_native, priority=95)
 
             def finish_shadow():
                 result["shadow"] = shadow.finish()
-                if result["shadow"]["failure"]:
+                expected_source_loss = (
+                    args.health_fault_profile == "imu-source-loss-after-8s-v1"
+                    and result["shadow"]["failure"] == "source_loss:imu"
+                )
+                if result["shadow"]["failure"] and not expected_source_loss:
                     errors.append("shadow input failed: " + result["shadow"]["failure"])
 
             journal.cleanup("shadow input", finish_shadow, priority=90)
@@ -591,7 +650,17 @@ def main():
             journal.cleanup("source health", lambda: result.update(source_health=source_guard.snapshot()), priority=85)
         readiness = None
         if args.motion_profile == "supported-ready-v1":
-            _source_readiness, readiness = build_readiness(output, args.source_fanout_profile)
+            _source_readiness, readiness = build_readiness(
+                output,
+                args.source_fanout_profile,
+                native_session_id=native_session_id if args.shadow_binary else None,
+            )
+            if args.health_fault_profile == "native-restart-after-8s-v1":
+                shadow.set_session_replacement_callback(
+                    lambda session_id, reset_total: readiness.replace_session(
+                        session_id, reset_total=reset_total
+                    )
+                )
             journal.cleanup(
                 "readiness evidence",
                 lambda: result.update(
