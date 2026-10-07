@@ -63,4 +63,8 @@ update parent plan with the offline-only status.
   Initial wrong-install-path collection failure preserved; explicit current-tree
   PYTHONPATH retry passed 2102/3 skipped. Final targeted checks:142 passed.
 - [x] Seal source comparisons, test outputs and files; verify CRC/member hashes.
-- [ ] Commit/push personal, update PR65. Leave all live Task4/5 gates incomplete.
+- [x] Commit/push personal, update PR65. Leave all live Task4/5 gates incomplete.
+  Implementation/evidence: `3c69dbf`; archive SHA-256
+  `9076ce18cf5126bca6115440a055aa55ed8625d3aa588136c8e01405bee4ccfe`.
+  Plan completion marks were recorded after sealing/publication; the archive
+  retains the pre-seal plan snapshot.
