@@ -54,17 +54,17 @@ socket, PX4 process or simulator is used.
 **Files:** Add a transport-neutral integration contract and focused tests. Keep
 the existing offline contract for historical replay compatibility.
 
-- [ ] Write RED tests proving that quality/reset/profile/session cannot be
+- [x] Write RED tests proving that quality/reset/profile/session cannot be
   overridden, and that quality 0/-1, stale visual updates, source/native faults,
   time regression and invalid covariance cannot produce a packet candidate.
-- [ ] Implement one state machine that consumes the health result and emits
+- [x] Implement one state machine that consumes the health result and emits
   either a candidate with quality 1 or a structured refusal.
-- [ ] Add explicit estimator, clock and publisher identities; validate session
+- [x] Add explicit estimator, clock and publisher identities; validate session
   replacement, reset increment/wrap and old-session rejection.
-- [ ] Encode/decode in memory with pymavlink 2.4.49 and verify every field,
+- [x] Encode/decode in memory with pymavlink 2.4.49 and verify every field,
   upper-triangle index, frame enum and estimator type. Monkeypatch socket APIs in
   tests so any network attempt fails.
-- [ ] Inject loss, delay, duplicate, reorder, restart, covariance and write/close
+- [x] Inject loss, delay, duplicate, reorder, restart, covariance and write/close
   faults; retain every refusal.
 
 **Exit:** Offline composition is fail closed and packet bytes round-trip without
