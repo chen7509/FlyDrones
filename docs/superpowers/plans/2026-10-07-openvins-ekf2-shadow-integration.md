@@ -122,6 +122,11 @@ physical study in the same change.
   Offline stream interval apply/body/restore is now implemented under
   `docs/OPENVINS_TIMESYNC_INTERVAL_REPORT.md`; exact restorable-baseline and
   failure-path checks do not qualify live ACK correlation or actual rate.
+  Non-PTY byte decoding and an unchanged-client synthetic buffering probe are
+  recorded in `docs/OPENVINS_TIMESYNC_LISTENER_REPORT.md`. Default piped stdout
+  failed the fixture's two-second first-frame window; explicit unbuffering is
+  only a candidate. Real listener startup, cold/exclusive identity and accepted
+  throughput remain unqualified.
 - [x] Snapshot `EKF2_EV_CTRL`, `EKF2_EV_NOISE_MD`, `EKF2_EV_QMIN`,
   `EKF2_EV_DELAY`, `EKF2_EV_POS_X/Y/Z`, `EKF2_IMU_POS_X/Y/Z`, height reference
   and other active aiding source parameters. Refuse a missing/ambiguous value.
