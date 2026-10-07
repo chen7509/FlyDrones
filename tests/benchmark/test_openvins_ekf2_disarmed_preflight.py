@@ -307,6 +307,6 @@ def test_one_shot_prepare_refuses_to_overwrite(tmp_path):
     result = json.loads(output.read_text())
     assert result["physical_destination_present"] is False
     assert result["implementation"]["commit"] == "a" * 40
-    assert result["implementation"]["files"][0]["bytes"] == len("VALUE = 1\n")
+    assert result["implementation"]["files"][0]["bytes"] == implementation.stat().st_size
     with pytest.raises(FileExistsError):
         main(args)
