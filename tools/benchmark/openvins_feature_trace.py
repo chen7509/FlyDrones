@@ -104,6 +104,7 @@ SCHEMAS = {
         "depth_finite",
         "depth",
         "max_anchor_baseline",
+        "geometry_finite",
         "max_pair_baseline",
         "max_parallax_rad",
         "reject_cond",
@@ -303,6 +304,7 @@ def _validate_detail(timestamp, slot, *, required):
         for flag in (
             "cond_finite",
             "depth_finite",
+            "geometry_finite",
             "reject_cond",
             "reject_min_depth",
             "reject_max_depth",
@@ -314,6 +316,11 @@ def _validate_detail(timestamp, slot, *, required):
         if tri["cond_finite"] == 0 and tri["cond"] != 0:
             raise ValueError("invalid finite placeholder")
         if tri["depth_finite"] == 0 and tri["depth"] != 0:
+            raise ValueError("invalid finite placeholder")
+        if tri["geometry_finite"] == 0 and any(
+            tri[key] != 0
+            for key in ("max_anchor_baseline", "max_pair_baseline", "max_parallax_rad")
+        ):
             raise ValueError("invalid finite placeholder")
         if tri["cond"] < 0 or any(
             tri[key] < 0

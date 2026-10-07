@@ -1,6 +1,7 @@
 import copy
 import hashlib
 import json
+from pathlib import Path
 
 import pytest
 
@@ -67,6 +68,7 @@ def _detail_log(timestamp="3.100000000", feature_offset=0):
         f"FD_TRI t={timestamp} stage=msckf feat={12 + feature_offset} mode=3d "
         "meas=2 cams=1 anchor_cam=0 anchor_t=3.000000000 cond_finite=1 "
         "cond=12.5 depth_finite=1 depth=4.0 max_anchor_baseline=0.20 "
+        "geometry_finite=1 "
         "max_pair_baseline=0.20 max_parallax_rad=0.04 reject_cond=0 "
         "reject_min_depth=0 reject_max_depth=0 reject_nonfinite=0 accepted=1"
     )
@@ -87,6 +89,7 @@ def _detail_log(timestamp="3.100000000", feature_offset=0):
         f"FD_TRI t={timestamp} stage=slam_delay feat={slam_feat} mode=3d "
         "meas=4 cams=1 anchor_cam=0 anchor_t=3.000000000 cond_finite=1 "
         "cond=20000.0 depth_finite=1 depth=4.0 max_anchor_baseline=0.001 "
+        "geometry_finite=1 "
         "max_pair_baseline=0.001 max_parallax_rad=0.0001 reject_cond=1 "
         "reject_min_depth=0 reject_max_depth=0 reject_nonfinite=0 accepted=0"
     )
@@ -119,6 +122,7 @@ def test_parse_trace_reconciles_history_and_geometry_records():
         ("after=2 removed=1", "after=2 removed=2", "measurement count"),
         ("origin=lost", "origin=unknown", "origin"),
         ("raw_first=2.700000000", "raw_first=2.600000000", "history range"),
+        ("geometry_finite=1 max_pair_baseline=0.20", "geometry_finite=0 max_pair_baseline=0.20", "placeholder"),
     ],
 )
 def test_parse_trace_rejects_invalid_history_geometry(old, new, match):
@@ -161,6 +165,28 @@ def test_parse_trace_scopes_same_feature_to_stage_and_timestamp():
     assert parsed["frames"] == 2
     assert parsed["records"][0]["select"][0]["feat"] == 10
     assert parsed["records"][1]["select"][0]["feat"] == 10
+
+
+def test_feature_history_geometry_patch_is_trace_only_and_preserves_rejections():
+    patch = Path(
+        "tools/benchmark/gpl/openvins_feature_history_geometry.patch"
+    ).read_text(encoding="utf-8")
+    for source in (
+        "ov_core/src/feat/FeatureInitializer.cpp",
+        "ov_core/src/feat/FeatureInitializer.h",
+        "ov_msckf/src/core/VioManager.cpp",
+        "ov_msckf/src/update/UpdaterMSCKF.cpp",
+        "ov_msckf/src/update/UpdaterSLAM.cpp",
+    ):
+        assert f"diff --git a/{source} b/{source}" in patch
+    for marker in ("FD_SELECT", "FD_HISTORY", "FD_TRI"):
+        assert marker in patch
+    assert "std::abs(condA) > _options.max_cond_number" in patch
+    assert "p_f(2, 0) < _options.min_dist" in patch
+    assert "p_f(2, 0) > _options.max_dist" in patch
+    assert "std::isnan(p_f.norm())" in patch
+    assert "parse_config" not in patch
+    assert "initialize_with_gt" not in patch
 
 
 def test_parse_trace_binds_exact_counts_and_stages():
