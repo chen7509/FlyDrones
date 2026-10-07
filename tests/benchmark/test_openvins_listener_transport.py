@@ -269,3 +269,56 @@ def test_returned_io_is_retained_even_if_it_crosses_deadline(operation):
     else:
         assert events[0]['raw_hex']==(MULTI+b'\0\0').hex()
     assert backend.connection.closed==1
+
+
+@pytest.mark.parametrize('returned_clock',[9,True])
+def test_single_bad_return_clock_cannot_be_hidden_by_next_good_read(returned_clock):
+    obj,backend=make([])
+    original=backend.connection.send
+
+    def send(data):
+        value=original(data)
+        readings=deque([returned_clock,10])
+        backend.clock=lambda:readings.popleft() if readings else 10
+        return value
+
+    backend.connection.send=send
+    with pytest.raises(ValueError,match='clock'):
+        obj.poll()
+    assert any(e['kind']=='send_return' for e in obj.evidence['events'])
+
+
+@pytest.mark.parametrize('slots',[1,2])
+def test_event_budget_reserved_before_effectful_io(slots):
+    obj,backend=make([MULTI+b'\0\0'])
+    obj.MAX_EVENTS=len(obj.evidence['events'])+slots
+    with pytest.raises(ValueError,match='event limit'):
+        obj.poll()
+    if slots==1:
+        assert backend.connection.sent==b''
+    else:
+        assert len(backend.connection.reads)==1
+        assert any(e['kind']=='send_return' for e in obj.evidence['events'])
+
+
+def test_post_io_clock_interrupt_survives_secondary_journal_error():
+    def journal(event):
+        if event['kind']=='send_return':
+            raise OSError('secondary return journal failure')
+
+    obj,backend=make([],journal=journal)
+    original=backend.connection.send
+
+    def interrupt():
+        raise KeyboardInterrupt('primary clock interrupt')
+
+    def send(data):
+        result=original(data)
+        backend.clock=interrupt
+        return result
+
+    backend.connection.send=send
+    with pytest.raises(KeyboardInterrupt,match='primary clock interrupt'):
+        obj.poll()
+    assert backend.connection.closed==1
+    assert 'secondary return journal failure' in obj.evidence['return_journal_error']

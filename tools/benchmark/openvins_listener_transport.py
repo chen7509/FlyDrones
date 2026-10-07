@@ -90,7 +90,7 @@ class ReadOnlyListener:
         self._lock = Lock()
         self._result = dict(transport_complete=False, network_authorized=False, fusion_qualified=False,
                             live_listener_qualified=False, events=[], error=None, close_error=None,
-                            refusal_journal_error=None, connection_evidence=None)
+                            refusal_journal_error=None, return_journal_error=None, connection_evidence=None)
         self._offset = 0
         self._snapshot = b''
         self._envelope = ReplyEnvelope()
@@ -137,6 +137,11 @@ class ReadOnlyListener:
         if self._fault:
             raise ValueError('listener failure latched')
 
+    def _reserve_events(self, count):
+        # poll has a single owner: reserve evidence capacity before doing I/O.
+        if len(self._result['events']) + count > self.MAX_EVENTS:
+            raise ValueError('listener journal event limit')
+
     def _returned(self, kind, **fields):
         # A completed syscall remains evidence even when its return is late or
         # the subsequent clock observation fails. Never discard actual bytes.
@@ -146,14 +151,25 @@ class ReadOnlyListener:
         except BaseException as exc:
             fields['clock_error'] = _error(exc)
             clock_error = exc
-        self._record(kind, **fields)
+        try:
+            self._record(kind, **fields)
+        except BaseException as journal_error:
+            self._result['return_journal_error'] = _error(journal_error)
+            if clock_error is not None and not isinstance(clock_error, Exception):
+                raise clock_error from journal_error
+            if clock_error is not None and isinstance(journal_error, Exception):
+                raise clock_error from journal_error
+            raise
         if clock_error is not None:
             raise clock_error
+        self._accept_clock(fields['returned_clock_ns'])
 
     def _check(self, *, check_frame=True):
+        return self._accept_clock(self._backend.clock(), check_frame=check_frame)
+
+    def _accept_clock(self, now, *, check_frame=True):
         if self._fault:
             raise ValueError(self._fault)
-        now = self._backend.clock()
         if type(now) is not int or not self._last_now <= now < 2**64:
             raise ValueError('listener local clock regression')
         self._last_now = now
@@ -218,6 +234,7 @@ class ReadOnlyListener:
             self._owner()
             if self._offset < len(self._command):
                 remaining = self._command[self._offset:]
+                self._reserve_events(2)
                 self._record('send_attempt', offset=self._offset, raw_hex=remaining.hex(), at_ns=self._check())
                 self._owner()
                 self._check()
@@ -235,6 +252,7 @@ class ReadOnlyListener:
                     return output
             self._owner()
             self._check()
+            self._reserve_events(1)
             try:
                 raw = self._connection.recv(4096)
             except BlockingIOError:
