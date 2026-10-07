@@ -30,12 +30,25 @@ def _jsonl(path: Path) -> list[dict]:
     return rows
 
 
+def fast_grid_qualified(rows: object, first_imu_ns: object, end_sim_ns: object) -> bool:
+    period_ns = 20_000_000
+    if not isinstance(rows, list) or type(first_imu_ns) is not int or type(end_sim_ns) is not int:
+        return False
+    if first_imu_ns <= 0 or end_sim_ns <= first_imu_ns:
+        return False
+    first_target_ns = ((first_imu_ns + period_ns - 1) // period_ns) * period_ns
+    expected = range(first_target_ns, end_sim_ns, period_ns)
+    targets = [row.get("target_ns") if isinstance(row, dict) else None for row in rows]
+    return targets == list(expected)
+
+
 def build_fast_run(capture: Path, completion: Path) -> dict:
     capture = Path(capture).resolve(strict=True)
     completed = _json(Path(completion).resolve(strict=True))
     result = _json(capture / "result.json")
     states = _jsonl(capture / "shadow" / "states.jsonl")
     fast = _jsonl(capture / "shadow" / "fast.jsonl")
+    events = _jsonl(capture / "events.jsonl")
     truth_rows = _jsonl(capture / "native-reference.jsonl")
     anchor = _json(capture / "readiness-anchor.json")
     motion = _json(capture / "motion-profile.json")
@@ -102,11 +115,12 @@ def build_fast_run(capture: Path, completion: Path) -> dict:
         and completed.get("launcher_returncode") == 0
         and completed.get("resources_after") == []
     )
+    first_imu_ns = next((row.get("sample_ns") for row in events if row.get("kind") == "imu"), None)
     native_health = bool(
         result.get("native", {}).get("exit") == 0
         and result.get("native", {}).get("failure") is None
         and samples
-        and len(fast) == 1250
+        and fast_grid_qualified(fast, first_imu_ns, result.get("end_sim_ns"))
         and all(row.get("filter_unchanged") is True for row in fast)
     )
     trajectory_qualified = bool(

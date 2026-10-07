@@ -4,6 +4,7 @@ import numpy as np
 import pytest
 from scipy.spatial.transform import Rotation
 
+from tools.benchmark.build_openvins_ekf2_fast_run_evidence import fast_grid_qualified
 from tools.benchmark.openvins_ekf2_fast_contract import (
     COMPONENTS,
     audit_fast_cohort,
@@ -71,6 +72,13 @@ def run(samples):
 def test_fast_sample_timing_rejects_the_observed_101_ms_camera_boundary():
     assert fast_sample_timing_qualified(2_900_000_000, 2_800_000_000, 2_904_000_000) is True
     assert fast_sample_timing_qualified(2_901_000_000, 2_800_000_000, 2_904_000_000) is False
+
+
+def test_fast_grid_is_derived_from_first_imu_and_exclusive_run_end():
+    rows = [{"target_ns": target} for target in range(20_000_000, 25_000_000_000, 20_000_000)]
+    assert len(rows) == 1249
+    assert fast_grid_qualified(rows, first_imu_ns=1_000_000, end_sim_ns=25_000_000_000) is True
+    assert fast_grid_qualified(rows + [{"target_ns": 25_000_000_000}], 1_000_000, 25_000_000_000) is False
 
 
 def test_fast_cohort_requires_prospective_exact_runs_and_passes_coverage():
