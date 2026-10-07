@@ -131,6 +131,11 @@ still absent. Obtain separate authorization for Task 5.
 **Authorization required:** This is the first network ODOMETRY and PX4 parameter
 stage.
 
+Offline preparation only: `tools/benchmark/audit_openvins_receiver_parity.py`
+compares retained bytes and ULog under the contract in
+`docs/OPENVINS_RECEIVER_PARITY_REPORT.md`. A component field match does not
+complete any physical Task 5 checkbox or qualify clock convergence/fusion.
+
 - [ ] Confirm all training/PX4/Gazebo/OpenVINS resources are idle and the exact
   committed preflight head is checked out.
 - [ ] Run one bounded study with the vehicle unarmed and `EKF2_EV_CTRL=0`.
