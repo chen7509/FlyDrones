@@ -138,6 +138,17 @@ def test_gpl_linked_adapter_contains_narrow_fail_closed_motion_latch():
         assert text in source
 
 
+def test_gpl_linked_adapter_exports_read_only_full_imu_covariance():
+    source = Path("tools/benchmark/openvins_online_probe.cpp").read_text()
+    for text in [
+        '"state/StateHelper.h"',
+        "StateHelper::get_marginal_covariance(state, {state->_imu})",
+        '\\\"imu_covariance15\\\"',
+        "cov.rows()!=15 || cov.cols()!=15 || !cov.allFinite()",
+    ]:
+        assert text in source
+
+
 def test_integrated_gate_reports_native_adapter_only_when_explicit():
     import io
 

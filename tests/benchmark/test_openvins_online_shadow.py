@@ -2,9 +2,15 @@ import hashlib
 import json
 import math
 
+import numpy as np
 import pytest
 
-from tools.benchmark.openvins_online_shadow import SourceWatchdog, encode_packet, validate_ack
+from tools.benchmark.openvins_online_shadow import (
+    SourceWatchdog,
+    encode_packet,
+    project_camera_health_row,
+    validate_ack,
+)
 
 
 def imu():
@@ -51,6 +57,72 @@ def test_ack_checks_actual_cross_process_clock_interval():
     for field, value in [("sequence", 1), ("receive_ns", 199), ("end_ns", 211), ("start_ns", 206)]:
         with pytest.raises(ValueError):
             validate_ack(dict(ack, **{field: value}), sequence=0, kind="I", dispatch_ns=200, acknowledged_ns=210)
+
+
+def camera_ack(**updates):
+    value = {
+        "sequence": 4,
+        "kind": "C",
+        "sample_ns": 3_000_000_000,
+        "receive_ns": 201,
+        "start_ns": 202,
+        "end_ns": 205,
+        "gray_first": 10,
+        "internal_initialized": True,
+        "public_initialized": True,
+        "initializer_time_s": 1.2,
+        "state_time_s": 3.0,
+        "last_regular_update_s": 2.9,
+        "zupt_flag_latched": False,
+        "has_moved_since_zupt": True,
+        "imu_state": [0.0, 0.0, 0.0, 1.0] + [0.0] * 12,
+        "imu_covariance15": (np.eye(15) * 1e-3).tolist(),
+        "fusion_eligible": False,
+        "quality": None,
+        "reset_counter": None,
+    }
+    value.update(updates)
+    return value
+
+
+def test_camera_health_projection_retains_exact_native_covariance():
+    projected = project_camera_health_row(camera_ack(), session_id="native-42")
+    assert projected["session_id"] == "native-42"
+    assert projected["sample_ns"] == 3_000_000_000
+    assert np.asarray(projected["imu_covariance15"]).shape == (15, 15)
+    assert projected["public_initialized"] is True
+    assert "imu_state" not in projected
+
+
+def test_camera_health_projection_accepts_uninitialized_null_state_and_covariance():
+    ack = camera_ack(
+        internal_initialized=False,
+        public_initialized=False,
+        state_time_s=-1.0,
+        last_regular_update_s=-1.0,
+        imu_state=None,
+        imu_covariance15=None,
+    )
+    projected = project_camera_health_row(ack, session_id="native-42")
+    assert projected["internal_initialized"] is False
+    assert projected["imu_covariance15"] is None
+
+
+@pytest.mark.parametrize("corruption", ["missing", "short", "nan", "asymmetric", "unexpected_quality"])
+def test_camera_health_projection_rejects_covariance_or_health_mutation(corruption):
+    ack = camera_ack()
+    if corruption == "missing":
+        del ack["imu_covariance15"]
+    elif corruption == "short":
+        ack["imu_covariance15"] = [[1.0]]
+    elif corruption == "nan":
+        ack["imu_covariance15"][0][0] = math.nan
+    elif corruption == "asymmetric":
+        ack["imu_covariance15"][0][1] = 0.1
+    else:
+        ack["quality"] = 1
+    with pytest.raises(ValueError):
+        project_camera_health_row(ack, session_id="native-42")
 
 
 def test_watchdog_detects_total_silence_without_pending_images():

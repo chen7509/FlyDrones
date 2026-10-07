@@ -14,6 +14,8 @@ import threading
 import time
 from contextlib import ExitStack
 
+import numpy as np
+
 from tools.benchmark.openvins_causal_input import CausalInput, InputRefusal
 
 MOTION_INTENT_ACTION_FIELDS = {
@@ -48,6 +50,28 @@ MOTION_INTENT_NATIVE_ACK_FIELDS = {
     "fusion_eligible",
     "quality",
 }
+CAMERA_HEALTH_ACK_FIELDS = {
+    "sequence",
+    "kind",
+    "sample_ns",
+    "receive_ns",
+    "start_ns",
+    "end_ns",
+    "gray_first",
+    "internal_initialized",
+    "public_initialized",
+    "initializer_time_s",
+    "state_time_s",
+    "last_regular_update_s",
+    "zupt_flag_latched",
+    "has_moved_since_zupt",
+    "imu_state",
+    "imu_covariance15",
+    "fusion_eligible",
+    "quality",
+    "reset_counter",
+}
+CAMERA_HEALTH_TRANSPORT_FIELDS = {"acknowledged_ns", "source_arrival_ns", "dispatch_ns"}
 
 
 def _sha256_text(value, name):
@@ -152,6 +176,56 @@ def project_motion_intent_ack(row, action):
         "try_zupt": True,
         "zupt_only_at_beginning": True,
         "reset_counter": None,
+    }
+
+
+def project_camera_health_row(row, *, session_id):
+    """Validate one native camera acknowledgement and project health inputs."""
+    if not isinstance(row, dict) or set(row) not in (
+        CAMERA_HEALTH_ACK_FIELDS,
+        CAMERA_HEALTH_ACK_FIELDS | CAMERA_HEALTH_TRANSPORT_FIELDS,
+    ):
+        raise ValueError("invalid native camera acknowledgement schema")
+    if not isinstance(session_id, str) or not session_id.strip() or any(character.isspace() for character in session_id):
+        raise ValueError("invalid estimator session identity")
+    if (
+        row["kind"] != "C"
+        or type(row["internal_initialized"]) is not bool
+        or type(row["public_initialized"]) is not bool
+        or row["public_initialized"] and not row["internal_initialized"]
+        or row["fusion_eligible"] is not False
+        or row["quality"] is not None
+        or row["reset_counter"] is not None
+    ):
+        raise ValueError("invalid native camera health flags")
+    if row["internal_initialized"]:
+        covariance = np.asarray(row["imu_covariance15"], dtype=float)
+        if covariance.shape != (15, 15) or not np.all(np.isfinite(covariance)):
+            raise ValueError("invalid native camera covariance")
+        scale = max(1.0, float(np.max(np.abs(covariance))))
+        if not np.allclose(covariance, covariance.T, rtol=0, atol=1e-10 * scale):
+            raise ValueError("invalid native camera covariance")
+        if float(np.linalg.eigvalsh((covariance + covariance.T) * 0.5)[0]) < -1e-12 * scale:
+            raise ValueError("invalid native camera covariance")
+        covariance_value = covariance.tolist()
+    else:
+        if row["imu_state"] is not None or row["imu_covariance15"] is not None:
+            raise ValueError("uninitialized native camera has state")
+        covariance_value = None
+    for name in ("sample_ns", "receive_ns", "start_ns", "end_ns"):
+        _integer(row[name])
+    for name in ("state_time_s", "last_regular_update_s"):
+        if type(row[name]) is bool or not isinstance(row[name], (int, float)) or not math.isfinite(row[name]):
+            raise ValueError("invalid native camera state time")
+    return {
+        "kind": "C",
+        "session_id": session_id,
+        "sample_ns": row["sample_ns"],
+        "internal_initialized": row["internal_initialized"],
+        "public_initialized": row["public_initialized"],
+        "state_time_s": row["state_time_s"],
+        "last_regular_update_s": row["last_regular_update_s"],
+        "imu_covariance15": covariance_value,
     }
 
 

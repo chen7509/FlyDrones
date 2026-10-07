@@ -12,6 +12,7 @@
 #include "core/VioManager.h"
 #include "core/VioManagerOptions.h"
 #include "state/State.h"
+#include "state/StateHelper.h"
 #include "utils/opencv_yaml_parse.h"
 #include "utils/print.h"
 #include "utils/sensor_data.h"
@@ -65,10 +66,20 @@ public:
         << ",\"has_moved_since_zupt\":" << has_moved_since_zupt;
     if (ready()) {
       auto v = state->_imu->value();
+      auto cov = ov_msckf::StateHelper::get_marginal_covariance(state, {state->_imu});
+      if (cov.rows()!=15 || cov.cols()!=15 || !cov.allFinite())
+        throw std::runtime_error("invalid native IMU covariance");
       out << ",\"imu_state\":[";
       for (int i=0; i<v.size(); ++i) { if(i) out << ','; out << v(i); }
+      out << "],\"imu_covariance15\":[";
+      for (int row=0; row<15; ++row) {
+        if(row) out << ',';
+        out << '[';
+        for (int col=0; col<15; ++col) { if(col) out << ','; out << cov(row,col); }
+        out << ']';
+      }
       out << ']';
-    } else out << ",\"imu_state\":null";
+    } else out << ",\"imu_state\":null,\"imu_covariance15\":null";
   }
 
 private:
