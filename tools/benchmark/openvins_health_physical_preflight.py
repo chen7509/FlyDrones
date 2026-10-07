@@ -28,17 +28,23 @@ CODE_PATHS = (
     "tools/benchmark/capture_disarmed_sensors.py",
     "tools/benchmark/openvins_health_contract.py",
     "tools/benchmark/openvins_online_shadow.py",
+    "tools/benchmark/estimator_aware_readiness.py",
     "tools/benchmark/openvins_health_physical_preflight.py",
     "tools/benchmark/audit_openvins_health_cohort.py",
 )
 
 
-def cohort_plan():
+def cohort_plan(seed_set="initial-v1"):
+    bases = {"initial-v1": (27101, 27111), "compatibility-retry-v2": (27201, 27211)}
+    if seed_set not in bases:
+        raise ValueError("unknown physical cohort seed set")
+    development, held_out = bases[seed_set]
     return [
-        {"run_id": "development-seed-27101", "role": "development", "seed": 27101},
-        {"run_id": "held-out-seed-27111", "role": "held_out", "seed": 27111},
-        {"run_id": "held-out-seed-27112", "role": "held_out", "seed": 27112},
-        {"run_id": "held-out-seed-27113", "role": "held_out", "seed": 27113},
+        {"run_id": f"development-seed-{development}", "role": "development", "seed": development},
+        *[
+            {"run_id": f"held-out-seed-{held_out + offset}", "role": "held_out", "seed": held_out + offset}
+            for offset in range(3)
+        ],
     ]
 
 
@@ -95,7 +101,10 @@ def _load_source(source_study, source_audit):
     return source, audit_path, contract, binding
 
 
-def prepare(output, *, source_study, source_audit, health_binary, capture_script, python, resources):
+def prepare(
+    output, *, source_study, source_audit, health_binary, capture_script, python, resources,
+    seed_set="initial-v1",
+):
     if resources:
         raise ValueError("competing resources present")
     output = Path(output)
@@ -107,7 +116,7 @@ def prepare(output, *, source_study, source_audit, health_binary, capture_script
     python = Path(python).absolute()
     root = Path(__file__).resolve().parents[2]
     code_paths = [str((root / name).resolve(strict=True)) for name in CODE_PATHS]
-    plan = cohort_plan()
+    plan = cohort_plan(seed_set)
     output.mkdir(parents=True)
     runs = []
     for selected in plan:
@@ -169,6 +178,7 @@ def prepare(output, *, source_study, source_audit, health_binary, capture_script
         "motion_geometry": "supported-ready-v1/native-beginning-zupt-v1",
         "randomization_scope": "gz.math7 global seed; same geometry; full plugin RNG coverage unqualified",
         "profile": PROFILE,
+        "seed_set": seed_set,
         "source_study": file_record(source / "study-manifest.json"),
         "source_audit": file_record(audit_path),
         "health_binary": file_record(health_binary),
@@ -188,6 +198,7 @@ def main(argv=None):
     for name in ("output", "source-study", "source-audit", "health-binary", "capture-script", "python"):
         parser.add_argument("--" + name, type=Path, required=True)
     parser.add_argument("--prepare-only", action="store_true", required=True)
+    parser.add_argument("--seed-set", choices=["initial-v1", "compatibility-retry-v2"], default="initial-v1")
     values = vars(parser.parse_args(argv))
     values.pop("prepare_only")
     print(json.dumps(prepare(**values, resources=active_resources()), indent=2))

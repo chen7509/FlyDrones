@@ -34,6 +34,7 @@ CAMERA_ACK_KEYS = COMMON_ACK_KEYS | {
     "zupt_flag_latched",
     "has_moved_since_zupt",
     "imu_state",
+    "imu_covariance15",
 }
 MAX_NS = 2**63 - 1
 MAX_MAGNITUDE = 1e10
@@ -97,6 +98,7 @@ def _validate_camera_ack(value, now):
     regular = _number(value["last_regular_update_s"], "regular update time")
     state_time = _number(value["state_time_s"], "state time")
     state = value["imu_state"]
+    covariance = value["imu_covariance15"]
     if value["internal_initialized"]:
         if _seconds_to_ns(state_time, "state time") != sample:
             raise ValueError("native state/sample mismatch")
@@ -112,6 +114,15 @@ def _validate_camera_ack(value, now):
         quaternion_norm = math.sqrt(sum(item * item for item in numbers[:4]))
         if abs(quaternion_norm - 1.0) > 1e-5:
             raise ValueError("invalid native quaternion")
+        if (
+            type(covariance) is not list
+            or len(covariance) != 15
+            or any(type(row) is not list or len(row) != 15 for row in covariance)
+        ):
+            raise ValueError("invalid native IMU covariance")
+        for row in covariance:
+            for item in row:
+                _number(item, "native IMU covariance")
     else:
         untouched = initializer == state_time == -1
         handoff_pending = (
@@ -120,6 +131,7 @@ def _validate_camera_ack(value, now):
         )
         if (
             state is not None
+            or covariance is not None
             or regular != -1
             or value["zupt_flag_latched"]
             or value["has_moved_since_zupt"]

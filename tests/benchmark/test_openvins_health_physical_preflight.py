@@ -31,6 +31,13 @@ def test_cohort_plan_freezes_development_before_distinct_held_out_seeds():
     ]
     assert len({row["seed"] for row in plan}) == len(plan)
 
+    assert cohort_plan("compatibility-retry-v2") == [
+        {"run_id": "development-seed-27201", "role": "development", "seed": 27201},
+        {"run_id": "held-out-seed-27211", "role": "held_out", "seed": 27211},
+        {"run_id": "held-out-seed-27212", "role": "held_out", "seed": 27212},
+        {"run_id": "held-out-seed-27213", "role": "held_out", "seed": 27213},
+    ]
+
 
 def test_run_args_replaces_binary_and_binds_health_profile_seed(tmp_path):
     args = run_args(

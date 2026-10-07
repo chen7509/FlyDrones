@@ -120,6 +120,10 @@ def ack(*, sequence=4, sample_ns=2_400_000_000, acknowledged_ns=10_000_000_000,
         "zupt_flag_latched": False,
         "has_moved_since_zupt": internal,
         "imu_state": [0.0, 0.0, 0.0, 1.0] + [0.0] * 12 if internal else None,
+        "imu_covariance15": (
+            [[1e-3 if row == column else 0.0 for column in range(15)] for row in range(15)]
+            if internal else None
+        ),
         "fusion_eligible": False,
         "quality": None,
         "reset_counter": None,
@@ -269,6 +273,7 @@ def test_initializer_handoff_is_valid_but_never_grants_readiness(tmp_path):
         {"initializer_time_s": 2.301, "state_time_s": 2.301},
         {"last_regular_update_s": 1.304},
         {"imu_state": [0.0] * 16},
+        {"imu_covariance15": [[0.0] * 15 for _ in range(14)]},
         {"public_initialized": True},
         {"zupt_flag_latched": True},
         {"has_moved_since_zupt": True},
