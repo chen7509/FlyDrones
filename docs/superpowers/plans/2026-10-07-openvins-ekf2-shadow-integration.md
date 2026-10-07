@@ -98,24 +98,24 @@ parameter access occurs.
 **Files:** Add a spec, one-shot launcher and preflight only. Do not dispatch the
 physical study in the same change.
 
-- [ ] Research and freeze the actual MAVLink endpoint, system/component IDs,
+- [x] Research and freeze the actual MAVLink endpoint, system/component IDs,
   TIMESYNC behavior, PX4 binary/rootfs, model, parameter baseline and ULog topic
   set.
-- [ ] Implement a bounded TIMESYNC client using the same explicit remote
+- [x] Implement a bounded TIMESYNC client using the same explicit remote
   monotonic clock as ODOMETRY. Freeze the sim-to-remote transform, reset the
   clock session on pause/jump/restart, budget the pinned 500-sample convergence
   window before the study timer, and require convergence before any ODOMETRY
   candidate can leave the sender.
-- [ ] Snapshot `EKF2_EV_CTRL`, `EKF2_EV_NOISE_MD`, `EKF2_EV_QMIN`,
+- [x] Snapshot `EKF2_EV_CTRL`, `EKF2_EV_NOISE_MD`, `EKF2_EV_QMIN`,
   `EKF2_EV_DELAY`, `EKF2_EV_POS_X/Y/Z`, `EKF2_IMU_POS_X/Y/Z`, height reference
   and other active aiding source parameters. Refuse a missing/ambiguous value.
   Bind the EV point to the IMU reference point; use all-zero values only after
   the baseline proves both triplets are zero.
-- [ ] Implement acknowledged apply/verify/restore/verify transactions. Any
+- [x] Implement acknowledged apply/verify/restore/verify transactions. Any
   failure latches and still attempts rollback without hiding the original error.
-- [ ] Freeze `EKF2_EV_CTRL=0` for the first receiver-only run; no policy or
+- [x] Freeze `EKF2_EV_CTRL=0` for the first receiver-only run; no policy or
   setpoint source is permitted.
-- [ ] Predeclare ULog topics and acceptance rules for visual odometry, timesync,
+- [x] Predeclare ULog topics and acceptance rules for visual odometry, timesync,
   estimator status/flags and EV aid sources.
 
 **Exit:** Preflight and synthetic rollback tests pass; physical destination is
