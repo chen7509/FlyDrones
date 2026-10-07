@@ -8,6 +8,15 @@ Review: draft PR 65
 
 ## Decision
 
+**Correction after sealing (2026-10-08):** the original archive remains intact,
+but its rollback qualification was too broad. New tests reproduced remotely
+committed writes being omitted from restoration after an acknowledgement loss,
+and early writes surviving a malformed later profile value. The corrected
+implementation and replacement preflight are tracked in
+`docs/OPENVINS_PARAMETER_ROLLBACK_REPORT.md`. Do not launch from the archived
+`ebf2680` implementation-bound preflight; its evidence does not cover these
+failure paths. No live PX4 parameter mutation occurred in either stage.
+
 Task 4 prepare-only work passes. The future receiver-only study now has a
 frozen endpoint, a clock/TIMESYNC contract matching the pinned PX4 filter, an
 actual retained parameter baseline, a reversible transaction model, runtime

@@ -113,6 +113,11 @@ physical study in the same change.
   the baseline proves both triplets are zero.
 - [x] Implement acknowledged apply/verify/restore/verify transactions. Any
   failure latches and still attempts rollback without hiding the original error.
+- [x] Correct the post-seal rollback gap: prevalidate the complete desired
+  profile, restore all attempted writes despite lost acknowledgements, protect
+  the complete apply phase against cancellation, and verify the full baseline.
+  Preserve the old archive; use the replacement preflight recorded in
+  `docs/OPENVINS_PARAMETER_ROLLBACK_REPORT.md` for any future launch.
 - [x] Freeze `EKF2_EV_CTRL=0` for the first receiver-only run; no policy or
   setpoint source is permitted.
 - [x] Predeclare ULog topics and acceptance rules for visual odometry, timesync,
