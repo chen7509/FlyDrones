@@ -289,9 +289,24 @@ def test_one_shot_prepare_refuses_to_overwrite(tmp_path):
     output = tmp_path / "preflight.json"
     runtime.write_text(json.dumps(runtime_binding()), encoding="utf-8")
     parameters.write_text(json.dumps(retained_parameter_baseline()), encoding="utf-8")
-    args = ["--runtime-binding", str(runtime), "--parameter-baseline", str(parameters), "--output", str(output)]
+    implementation = tmp_path / "implementation.py"
+    implementation.write_text("VALUE = 1\n", encoding="utf-8")
+    args = [
+        "--runtime-binding",
+        str(runtime),
+        "--parameter-baseline",
+        str(parameters),
+        "--implementation-commit",
+        "a" * 40,
+        "--implementation-file",
+        str(implementation),
+        "--output",
+        str(output),
+    ]
     assert main(args) == 0
-    assert json.loads(output.read_text())["physical_destination_present"] is False
+    result = json.loads(output.read_text())
+    assert result["physical_destination_present"] is False
+    assert result["implementation"]["commit"] == "a" * 40
+    assert result["implementation"]["files"][0]["bytes"] == len("VALUE = 1\n")
     with pytest.raises(FileExistsError):
         main(args)
-
