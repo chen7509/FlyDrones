@@ -1,3 +1,4 @@
+import hashlib
 import io
 
 import pytest
@@ -38,6 +39,9 @@ def native_ack(action, **updates):
         "native_sequence": 11,
         "sample_ns": action["sample_ns"],
         "intent_sha256": action["intent_sha256"],
+        "estimator_session_sha256": hashlib.sha256(b"native-42").hexdigest(),
+        "clock_id_sha256": hashlib.sha256(b"gazebo-sim+linux-monotonic").hexdigest(),
+        "command_sequence": 0,
         "receive_ns": 1200,
         "start_ns": 1201,
         "end_ns": 1202,
@@ -45,6 +49,8 @@ def native_ack(action, **updates):
         "internal_initialized": True,
         "has_moved_since_zupt": True,
         "motion_intent_applied": True,
+        "try_zupt": True,
+        "zupt_only_at_beginning": True,
         "reset_counter": None,
     }
     value.update(updates)

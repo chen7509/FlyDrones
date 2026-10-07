@@ -1,0 +1,433 @@
+Setting printing level to: DEBUG
+VioManagerOptions.h:110 ESTIMATOR PARAMETERS:
+StateOptions.h:158   - use_fej: 1
+StateOptions.h:159   - integration: 1
+StateOptions.h:160   - calib_cam_extrinsics: 0
+StateOptions.h:161   - calib_cam_intrinsics: 0
+StateOptions.h:162   - calib_cam_timeoffset: 0
+StateOptions.h:163   - calib_imu_intrinsics: 0
+StateOptions.h:164   - calib_imu_g_sensitivity: 0
+StateOptions.h:165   - imu_model: 0
+StateOptions.h:166   - max_clones: 11
+StateOptions.h:167   - max_slam: 50
+StateOptions.h:168   - max_slam_in_update: 25
+StateOptions.h:169   - max_msckf_in_update: 40
+StateOptions.h:170   - max_aruco: 1024
+StateOptions.h:171   - max_cameras: 1
+StateOptions.h:172   - feat_rep_msckf: GLOBAL_3D
+StateOptions.h:173   - feat_rep_slam: ANCHORED_MSCKF_INVERSE_DEPTH
+StateOptions.h:174   - feat_rep_aruco: ANCHORED_MSCKF_INVERSE_DEPTH
+InertialInitializerOptions.h:125 INITIALIZATION SETTINGS:
+InertialInitializerOptions.h:150   - init_window_time: 2.00
+InertialInitializerOptions.h:151   - init_imu_thresh: 1.50
+InertialInitializerOptions.h:152   - init_max_disparity: 10.00
+InertialInitializerOptions.h:153   - init_max_features: 10.00
+InertialInitializerOptions.h:171   - init_dyn_use: 0
+InertialInitializerOptions.h:172   - init_dyn_mle_opt_calib: 0
+InertialInitializerOptions.h:173   - init_dyn_mle_max_iter: 50
+InertialInitializerOptions.h:174   - init_dyn_mle_max_threads: 6
+InertialInitializerOptions.h:175   - init_dyn_mle_max_time: 0.05
+InertialInitializerOptions.h:176   - init_dyn_num_pose: 6
+InertialInitializerOptions.h:177   - init_dyn_min_deg: 10.00
+InertialInitializerOptions.h:178   - init_dyn_inflation_ori: 1.00e+01
+InertialInitializerOptions.h:179   - init_dyn_inflation_vel: 1.00e+02
+InertialInitializerOptions.h:180   - init_dyn_inflation_bg: 1.00e+01
+InertialInitializerOptions.h:181   - init_dyn_inflation_ba: 1.00e+02
+InertialInitializerOptions.h:182   - init_dyn_min_rec_cond: 1.00e-12
+InertialInitializerOptions.h:188   - init_dyn_bias_g: 0.00, 0.00, 0.00
+InertialInitializerOptions.h:189   - init_dyn_bias_a: 0.00, 0.00, 0.00
+InertialInitializerOptions.h:216 NOISE PARAMETERS:
+InertialInitializerOptions.h:224   - gyroscope_noise_density: 0.000055
+InertialInitializerOptions.h:225   - accelerometer_noise_density: 0.00043
+InertialInitializerOptions.h:226   - gyroscope_random_walk: 0.0000000
+InertialInitializerOptions.h:227   - accelerometer_random_walk: 0.000000
+InertialInitializerOptions.h:228   - sigma_pix: 1.00
+InertialInitializerOptions.h:317 STATE PARAMETERS:
+InertialInitializerOptions.h:318   - gravity_mag: 9.8100
+InertialInitializerOptions.h:319   - gravity: 0.000, 0.000, 9.810
+InertialInitializerOptions.h:320   - num_cameras: 1
+InertialInitializerOptions.h:321   - use_stereo: 0
+InertialInitializerOptions.h:322   - downsize cameras: 0
+InertialInitializerOptions.h:329   - calib_camimu_dt: 0.0000
+InertialInitializerOptions.h:344 cam_0_fisheye:0
+cam_0_wh:
+160 x 120
+cam_0_intrinsic(0:3):
+108.124 108.124      80      60
+cam_0_intrinsic(4:7):
+0 0 0 0
+cam_0_extrinsic(0:3):
+0.5 0.5 0.5 0.5
+cam_0_extrinsic(4:6):
+    0 0.002 -0.12
+T_C0toI:
+     0      0      1   0.12
+     1      0      0      0
+     0      1      0 -0.002
+     0      0      0      1
+
+VioManagerOptions.h:123   - dt_slam_delay: 1.0
+VioManagerOptions.h:124   - zero_velocity_update: 1
+VioManagerOptions.h:125   - zupt_max_velocity: 0.10
+VioManagerOptions.h:126   - zupt_noise_multiplier: 10.00
+VioManagerOptions.h:127   - zupt_max_disparity: 0.5000
+VioManagerOptions.h:128   - zupt_only_at_beginning?: 1
+VioManagerOptions.h:129   - record timing?: 0
+VioManagerOptions.h:130   - record timing filepath: /tmp/traj_timing.txt
+opencv_yaml_parse.h:400 the node multi_threading_pubs of type [b] was not found (not required)...
+opencv_yaml_parse.h:400 the node multi_threading_subs of type [b] was not found (not required)...
+VioManagerOptions.h:486 FEATURE TRACKING PARAMETERS:
+VioManagerOptions.h:487   - use_stereo: 0
+VioManagerOptions.h:488   - use_klt: 1
+VioManagerOptions.h:489   - use_aruco: 0
+VioManagerOptions.h:490   - downsize aruco: 1
+VioManagerOptions.h:491   - downsize cameras: 0
+VioManagerOptions.h:492   - num opencv threads: 4
+VioManagerOptions.h:493   - use multi-threading pubs: 1
+VioManagerOptions.h:494   - use multi-threading subs: 0
+VioManagerOptions.h:495   - num_pts: 200
+VioManagerOptions.h:496   - fast threshold: 20
+VioManagerOptions.h:497   - grid X by Y: 5 by 5
+VioManagerOptions.h:498   - min px dist: 10
+VioManagerOptions.h:499   - hist method: 1
+VioManagerOptions.h:500   - knn ratio: 0.700
+VioManagerOptions.h:501   - track frequency: 21.0
+opencv_yaml_parse.h:400 the node fi_triangulate_1d of type [b] was not found (not required)...
+opencv_yaml_parse.h:400 the node fi_refine_features of type [b] was not found (not required)...
+opencv_yaml_parse.h:365 the node fi_max_runs of type [i] was not found (not required)...
+opencv_yaml_parse.h:365 the node fi_init_lamda of type [d] was not found (not required)...
+opencv_yaml_parse.h:365 the node fi_max_lamda of type [d] was not found (not required)...
+opencv_yaml_parse.h:365 the node fi_min_dx of type [d] was not found (not required)...
+opencv_yaml_parse.h:365 the node fi_min_dcost of type [d] was not found (not required)...
+opencv_yaml_parse.h:365 the node fi_lam_mult of type [d] was not found (not required)...
+opencv_yaml_parse.h:365 the node fi_min_dist of type [d] was not found (not required)...
+opencv_yaml_parse.h:365 the node fi_max_dist of type [d] was not found (not required)...
+opencv_yaml_parse.h:365 the node fi_max_baseline of type [d] was not found (not required)...
+opencv_yaml_parse.h:365 the node fi_max_cond_number of type [d] was not found (not required)...
+FeatureInitializerOptions.h:87 	- triangulate_1d: 0
+FeatureInitializerOptions.h:88 	- refine_features: 1
+FeatureInitializerOptions.h:89 	- max_runs: 5
+FeatureInitializerOptions.h:90 	- init_lamda: 0.001
+FeatureInitializerOptions.h:91 	- max_lamda: 10000000000.000
+FeatureInitializerOptions.h:92 	- min_dx: 0.0000010
+FeatureInitializerOptions.h:93 	- min_dcost: 0.0000010
+FeatureInitializerOptions.h:94 	- lam_mult: 10.000
+FeatureInitializerOptions.h:95 	- min_dist: 0.100
+FeatureInitializerOptions.h:96 	- max_dist: 60.000
+FeatureInitializerOptions.h:97 	- max_baseline: 40.000
+FeatureInitializerOptions.h:98 	- max_cond_number: 10000.000
+VioManagerOptions.h:157 NOISE PARAMETERS:
+NoiseManager.h:62   - gyroscope_noise_density: 0.000055
+NoiseManager.h:63   - accelerometer_noise_density: 0.00043
+NoiseManager.h:64   - gyroscope_random_walk: 0.0000000
+NoiseManager.h:65   - accelerometer_random_walk: 0.000000
+VioManagerOptions.h:177   Updater MSCKF Feats:
+UpdaterOptions.h:45     - chi2_multipler: 1.0
+UpdaterOptions.h:46     - sigma_pix: 1.00
+VioManagerOptions.h:179   Updater SLAM Feats:
+UpdaterOptions.h:45     - chi2_multipler: 1.0
+UpdaterOptions.h:46     - sigma_pix: 1.00
+VioManagerOptions.h:181   Updater ARUCO Tags:
+UpdaterOptions.h:45     - chi2_multipler: 1.0
+UpdaterOptions.h:46     - sigma_pix: 1.00
+VioManagerOptions.h:183   Updater ZUPT:
+UpdaterOptions.h:45     - chi2_multipler: 0.0
+UpdaterOptions.h:46     - sigma_pix: 1.00
+VioManagerOptions.h:353 STATE PARAMETERS:
+VioManagerOptions.h:354   - gravity_mag: 9.8100
+VioManagerOptions.h:355   - gravity: 0.000, 0.000, 9.810
+VioManagerOptions.h:356   - camera masks?: 0
+VioManagerOptions.h:365   - calib_camimu_dt: 0.0000
+VioManagerOptions.h:366 CAMERA PARAMETERS:
+VioManagerOptions.h:381 cam_0_fisheye:0
+cam_0_wh:
+160 x 120
+cam_0_intrinsic(0:3):
+108.124 108.124      80      60
+cam_0_intrinsic(4:7):
+0 0 0 0
+cam_0_extrinsic(0:3):
+0.5 0.5 0.5 0.5
+cam_0_extrinsic(4:6):
+    0 0.002 -0.12
+T_C0toI:
+     0      0      1   0.12
+     1      0      0      0
+     0      1      0 -0.002
+     0      0      0      1
+
+VioManagerOptions.h:383 IMU PARAMETERS:
+VioManagerOptions.h:391 imu model:kalibr
+Dw (columnwise):1 0 0 1 0 1
+Da (columnwise):1 0 0 1 0 1
+Tg (columnwise):0 0 0 0 0 0 0 0 0
+q_GYROtoI: 0 0 0 1
+q_ACCtoI: 0 0 0 1
+VioManager.cpp:53 =======================================
+VioManager.cpp:54 OPENVINS ON-MANIFOLD EKF IS STARTING
+VioManager.cpp:55 =======================================
+VioManagerOptions.h:110 ESTIMATOR PARAMETERS:
+StateOptions.h:158   - use_fej: 1
+StateOptions.h:159   - integration: 1
+StateOptions.h:160   - calib_cam_extrinsics: 0
+StateOptions.h:161   - calib_cam_intrinsics: 0
+StateOptions.h:162   - calib_cam_timeoffset: 0
+StateOptions.h:163   - calib_imu_intrinsics: 0
+StateOptions.h:164   - calib_imu_g_sensitivity: 0
+StateOptions.h:165   - imu_model: 0
+StateOptions.h:166   - max_clones: 11
+StateOptions.h:167   - max_slam: 50
+StateOptions.h:168   - max_slam_in_update: 25
+StateOptions.h:169   - max_msckf_in_update: 40
+StateOptions.h:170   - max_aruco: 1024
+StateOptions.h:171   - max_cameras: 1
+StateOptions.h:172   - feat_rep_msckf: GLOBAL_3D
+StateOptions.h:173   - feat_rep_slam: ANCHORED_MSCKF_INVERSE_DEPTH
+StateOptions.h:174   - feat_rep_aruco: ANCHORED_MSCKF_INVERSE_DEPTH
+InertialInitializerOptions.h:125 INITIALIZATION SETTINGS:
+InertialInitializerOptions.h:150   - init_window_time: 2.00
+InertialInitializerOptions.h:151   - init_imu_thresh: 1.50
+InertialInitializerOptions.h:152   - init_max_disparity: 10.00
+InertialInitializerOptions.h:153   - init_max_features: 10.00
+InertialInitializerOptions.h:171   - init_dyn_use: 0
+InertialInitializerOptions.h:172   - init_dyn_mle_opt_calib: 0
+InertialInitializerOptions.h:173   - init_dyn_mle_max_iter: 50
+InertialInitializerOptions.h:174   - init_dyn_mle_max_threads: 6
+InertialInitializerOptions.h:175   - init_dyn_mle_max_time: 0.05
+InertialInitializerOptions.h:176   - init_dyn_num_pose: 6
+InertialInitializerOptions.h:177   - init_dyn_min_deg: 10.00
+InertialInitializerOptions.h:178   - init_dyn_inflation_ori: 1.00e+01
+InertialInitializerOptions.h:179   - init_dyn_inflation_vel: 1.00e+02
+InertialInitializerOptions.h:180   - init_dyn_inflation_bg: 1.00e+01
+InertialInitializerOptions.h:181   - init_dyn_inflation_ba: 1.00e+02
+InertialInitializerOptions.h:182   - init_dyn_min_rec_cond: 1.00e-12
+InertialInitializerOptions.h:188   - init_dyn_bias_g: 0.00, 0.00, 0.00
+InertialInitializerOptions.h:189   - init_dyn_bias_a: 0.00, 0.00, 0.00
+InertialInitializerOptions.h:216 NOISE PARAMETERS:
+InertialInitializerOptions.h:224   - gyroscope_noise_density: 0.000055
+InertialInitializerOptions.h:225   - accelerometer_noise_density: 0.00043
+InertialInitializerOptions.h:226   - gyroscope_random_walk: 0.0000000
+InertialInitializerOptions.h:227   - accelerometer_random_walk: 0.000000
+InertialInitializerOptions.h:228   - sigma_pix: 1.00
+InertialInitializerOptions.h:317 STATE PARAMETERS:
+InertialInitializerOptions.h:318   - gravity_mag: 9.8100
+InertialInitializerOptions.h:319   - gravity: 0.000, 0.000, 9.810
+InertialInitializerOptions.h:320   - num_cameras: 1
+InertialInitializerOptions.h:321   - use_stereo: 0
+InertialInitializerOptions.h:322   - downsize cameras: 0
+InertialInitializerOptions.h:329   - calib_camimu_dt: 0.0000
+InertialInitializerOptions.h:344 cam_0_fisheye:0
+cam_0_wh:
+160 x 120
+cam_0_intrinsic(0:3):
+108.124 108.124      80      60
+cam_0_intrinsic(4:7):
+0 0 0 0
+cam_0_extrinsic(0:3):
+0.5 0.5 0.5 0.5
+cam_0_extrinsic(4:6):
+    0 0.002 -0.12
+T_C0toI:
+     0      0      1   0.12
+     1      0      0      0
+     0      1      0 -0.002
+     0      0      0      1
+
+VioManagerOptions.h:123   - dt_slam_delay: 1.0
+VioManagerOptions.h:124   - zero_velocity_update: 1
+VioManagerOptions.h:125   - zupt_max_velocity: 0.10
+VioManagerOptions.h:126   - zupt_noise_multiplier: 10.00
+VioManagerOptions.h:127   - zupt_max_disparity: 0.5000
+VioManagerOptions.h:128   - zupt_only_at_beginning?: 1
+VioManagerOptions.h:129   - record timing?: 0
+VioManagerOptions.h:130   - record timing filepath: /tmp/traj_timing.txt
+VioManagerOptions.h:157 NOISE PARAMETERS:
+NoiseManager.h:62   - gyroscope_noise_density: 0.000055
+NoiseManager.h:63   - accelerometer_noise_density: 0.00043
+NoiseManager.h:64   - gyroscope_random_walk: 0.0000000
+NoiseManager.h:65   - accelerometer_random_walk: 0.000000
+VioManagerOptions.h:177   Updater MSCKF Feats:
+UpdaterOptions.h:45     - chi2_multipler: 1.0
+UpdaterOptions.h:46     - sigma_pix: 1.00
+VioManagerOptions.h:179   Updater SLAM Feats:
+UpdaterOptions.h:45     - chi2_multipler: 1.0
+UpdaterOptions.h:46     - sigma_pix: 1.00
+VioManagerOptions.h:181   Updater ARUCO Tags:
+UpdaterOptions.h:45     - chi2_multipler: 1.0
+UpdaterOptions.h:46     - sigma_pix: 1.00
+VioManagerOptions.h:183   Updater ZUPT:
+UpdaterOptions.h:45     - chi2_multipler: 0.0
+UpdaterOptions.h:46     - sigma_pix: 1.00
+VioManagerOptions.h:353 STATE PARAMETERS:
+VioManagerOptions.h:354   - gravity_mag: 9.8100
+VioManagerOptions.h:355   - gravity: 0.000, 0.000, 9.810
+VioManagerOptions.h:356   - camera masks?: 0
+VioManagerOptions.h:365   - calib_camimu_dt: 0.0000
+VioManagerOptions.h:366 CAMERA PARAMETERS:
+VioManagerOptions.h:381 cam_0_fisheye:0
+cam_0_wh:
+160 x 120
+cam_0_intrinsic(0:3):
+108.124 108.124      80      60
+cam_0_intrinsic(4:7):
+0 0 0 0
+cam_0_extrinsic(0:3):
+0.5 0.5 0.5 0.5
+cam_0_extrinsic(4:6):
+    0 0.002 -0.12
+T_C0toI:
+     0      0      1   0.12
+     1      0      0      0
+     0      1      0 -0.002
+     0      0      0      1
+
+VioManagerOptions.h:383 IMU PARAMETERS:
+VioManagerOptions.h:391 imu model:kalibr
+Dw (columnwise):1 0 0 1 0 1
+Da (columnwise):1 0 0 1 0 1
+Tg (columnwise):0 0 0 0 0 0 0 0 0
+q_GYROtoI: 0 0 0 1
+q_ACCtoI: 0 0 0 1
+VioManagerOptions.h:486 FEATURE TRACKING PARAMETERS:
+VioManagerOptions.h:487   - use_stereo: 0
+VioManagerOptions.h:488   - use_klt: 1
+VioManagerOptions.h:489   - use_aruco: 0
+VioManagerOptions.h:490   - downsize aruco: 1
+VioManagerOptions.h:491   - downsize cameras: 0
+VioManagerOptions.h:492   - num opencv threads: 1
+VioManagerOptions.h:493   - use multi-threading pubs: 0
+VioManagerOptions.h:494   - use multi-threading subs: 0
+VioManagerOptions.h:495   - num_pts: 200
+VioManagerOptions.h:496   - fast threshold: 20
+VioManagerOptions.h:497   - grid X by Y: 5 by 5
+VioManagerOptions.h:498   - min px dist: 10
+VioManagerOptions.h:499   - hist method: 1
+VioManagerOptions.h:500   - knn ratio: 0.700
+VioManagerOptions.h:501   - track frequency: 21.0
+FeatureInitializerOptions.h:87 	- triangulate_1d: 0
+FeatureInitializerOptions.h:88 	- refine_features: 1
+FeatureInitializerOptions.h:89 	- max_runs: 5
+FeatureInitializerOptions.h:90 	- init_lamda: 0.001
+FeatureInitializerOptions.h:91 	- max_lamda: 10000000000.000
+FeatureInitializerOptions.h:92 	- min_dx: 0.0000010
+FeatureInitializerOptions.h:93 	- min_dcost: 0.0000010
+FeatureInitializerOptions.h:94 	- lam_mult: 10.000
+FeatureInitializerOptions.h:95 	- min_dist: 0.100
+FeatureInitializerOptions.h:96 	- max_dist: 60.000
+FeatureInitializerOptions.h:97 	- max_baseline: 40.000
+FeatureInitializerOptions.h:98 	- max_cond_number: 10000.000
+VioManagerHelper.cpp:102 FD_INIT_FRAME t=0.002000000 db=0
+InertialInitializer.cpp:93 FD_INIT_DISP newest=-1.000000000 old=0 new=0 stage=no_feature_time
+VioManagerHelper.cpp:172 [33m[init]: failed initialization in 0.0001 seconds
+[0mVioManager.cpp:314 [34m[TIME]: 0.0090 seconds for tracking
+[0mVioManagerHelper.cpp:102 FD_INIT_FRAME t=0.100000000 db=0
+InertialInitializer.cpp:93 FD_INIT_DISP newest=-1.000000000 old=0 new=0 stage=no_feature_time
+VioManagerHelper.cpp:172 [33m[init]: failed initialization in 0.0000 seconds
+[0mVioManager.cpp:314 [34m[TIME]: 0.0004 seconds for tracking
+[0mVioManagerHelper.cpp:102 FD_INIT_FRAME t=0.200000000 db=0
+InertialInitializer.cpp:93 FD_INIT_DISP newest=-1.000000000 old=0 new=0 stage=no_feature_time
+VioManagerHelper.cpp:172 [33m[init]: failed initialization in 0.0000 seconds
+[0mVioManager.cpp:314 [34m[TIME]: 0.0005 seconds for tracking
+[0mVioManagerHelper.cpp:102 FD_INIT_FRAME t=0.300000000 db=33
+InertialInitializer.cpp:93 FD_INIT_DISP newest=0.300000000 old=0 new=0 stage=insufficient_time
+VioManagerHelper.cpp:172 [33m[init]: failed initialization in 0.0000 seconds
+[0mVioManager.cpp:314 [34m[TIME]: 0.0068 seconds for tracking
+[0mVioManagerHelper.cpp:102 FD_INIT_FRAME t=0.400000000 db=33
+InertialInitializer.cpp:93 FD_INIT_DISP newest=0.400000000 old=0 new=0 stage=insufficient_time
+VioManagerHelper.cpp:172 [33m[init]: failed initialization in 0.0000 seconds
+[0mVioManager.cpp:314 [34m[TIME]: 0.0005 seconds for tracking
+[0mVioManagerHelper.cpp:102 FD_INIT_FRAME t=0.500000000 db=33
+InertialInitializer.cpp:93 FD_INIT_DISP newest=0.500000000 old=0 new=0 stage=insufficient_time
+VioManagerHelper.cpp:172 [33m[init]: failed initialization in 0.0000 seconds
+[0mVioManager.cpp:314 [34m[TIME]: 0.0004 seconds for tracking
+[0mVioManagerHelper.cpp:102 FD_INIT_FRAME t=0.600000000 db=33
+InertialInitializer.cpp:93 FD_INIT_DISP newest=0.600000000 old=0 new=0 stage=insufficient_time
+VioManagerHelper.cpp:172 [33m[init]: failed initialization in 0.0000 seconds
+[0mVioManager.cpp:314 [34m[TIME]: 0.0004 seconds for tracking
+[0mVioManagerHelper.cpp:102 FD_INIT_FRAME t=0.700000000 db=33
+InertialInitializer.cpp:93 FD_INIT_DISP newest=0.700000000 old=0 new=0 stage=insufficient_time
+VioManagerHelper.cpp:172 [33m[init]: failed initialization in 0.0001 seconds
+[0mVioManager.cpp:314 [34m[TIME]: 0.0005 seconds for tracking
+[0mVioManagerHelper.cpp:102 FD_INIT_FRAME t=0.800000000 db=33
+InertialInitializer.cpp:93 FD_INIT_DISP newest=0.800000000 old=0 new=0 stage=insufficient_time
+VioManagerHelper.cpp:172 [33m[init]: failed initialization in 0.0000 seconds
+[0mVioManager.cpp:314 [34m[TIME]: 0.0003 seconds for tracking
+[0mVioManagerHelper.cpp:102 FD_INIT_FRAME t=0.900000000 db=33
+InertialInitializer.cpp:93 FD_INIT_DISP newest=0.900000000 old=0 new=0 stage=insufficient_time
+VioManagerHelper.cpp:172 [33m[init]: failed initialization in 0.0000 seconds
+[0mVioManager.cpp:314 [34m[TIME]: 0.0004 seconds for tracking
+[0mVioManagerHelper.cpp:102 FD_INIT_FRAME t=1.000000000 db=33
+InertialInitializer.cpp:93 FD_INIT_DISP newest=1.000000000 old=0 new=0 stage=insufficient_time
+VioManagerHelper.cpp:172 [33m[init]: failed initialization in 0.0000 seconds
+[0mVioManager.cpp:314 [34m[TIME]: 0.0003 seconds for tracking
+[0mVioManagerHelper.cpp:102 FD_INIT_FRAME t=1.100000000 db=33
+InertialInitializer.cpp:93 FD_INIT_DISP newest=1.100000000 old=0 new=0 stage=insufficient_time
+VioManagerHelper.cpp:172 [33m[init]: failed initialization in 0.0000 seconds
+[0mVioManager.cpp:314 [34m[TIME]: 0.0005 seconds for tracking
+[0mVioManagerHelper.cpp:102 FD_INIT_FRAME t=1.200000000 db=33
+InertialInitializer.cpp:93 FD_INIT_DISP newest=1.200000000 old=0 new=0 stage=insufficient_time
+VioManagerHelper.cpp:172 [33m[init]: failed initialization in 0.0000 seconds
+[0mVioManager.cpp:314 [34m[TIME]: 0.0004 seconds for tracking
+[0mVioManagerHelper.cpp:102 FD_INIT_FRAME t=1.300000000 db=33
+InertialInitializer.cpp:93 FD_INIT_DISP newest=1.300000000 old=0 new=0 stage=insufficient_time
+VioManagerHelper.cpp:172 [33m[init]: failed initialization in 0.0000 seconds
+[0mVioManager.cpp:314 [34m[TIME]: 0.0004 seconds for tracking
+[0mVioManagerHelper.cpp:102 FD_INIT_FRAME t=1.400000000 db=33
+InertialInitializer.cpp:93 FD_INIT_DISP newest=1.400000000 old=0 new=0 stage=insufficient_time
+VioManagerHelper.cpp:172 [33m[init]: failed initialization in 0.0000 seconds
+[0mVioManager.cpp:314 [34m[TIME]: 0.0003 seconds for tracking
+[0mVioManagerHelper.cpp:102 FD_INIT_FRAME t=1.500000000 db=33
+InertialInitializer.cpp:93 FD_INIT_DISP newest=1.500000000 old=0 new=0 stage=insufficient_time
+VioManagerHelper.cpp:172 [33m[init]: failed initialization in 0.0000 seconds
+[0mVioManager.cpp:314 [34m[TIME]: 0.0003 seconds for tracking
+[0mVioManagerHelper.cpp:102 FD_INIT_FRAME t=1.600000000 db=33
+InertialInitializer.cpp:93 FD_INIT_DISP newest=1.600000000 old=0 new=0 stage=insufficient_time
+VioManagerHelper.cpp:172 [33m[init]: failed initialization in 0.0000 seconds
+[0mVioManager.cpp:314 [34m[TIME]: 0.0003 seconds for tracking
+[0mVioManagerHelper.cpp:102 FD_INIT_FRAME t=1.700000000 db=33
+InertialInitializer.cpp:93 FD_INIT_DISP newest=1.700000000 old=0 new=0 stage=insufficient_time
+VioManagerHelper.cpp:172 [33m[init]: failed initialization in 0.0000 seconds
+[0mVioManager.cpp:314 [34m[TIME]: 0.0003 seconds for tracking
+[0mVioManagerHelper.cpp:102 FD_INIT_FRAME t=1.800000000 db=33
+InertialInitializer.cpp:93 FD_INIT_DISP newest=1.800000000 old=0 new=0 stage=insufficient_time
+VioManagerHelper.cpp:172 [33m[init]: failed initialization in 0.0000 seconds
+[0mVioManager.cpp:314 [34m[TIME]: 0.0004 seconds for tracking
+[0mVioManagerHelper.cpp:102 FD_INIT_FRAME t=1.900000000 db=33
+InertialInitializer.cpp:93 FD_INIT_DISP newest=1.900000000 old=0 new=0 stage=insufficient_time
+VioManagerHelper.cpp:172 [33m[init]: failed initialization in 0.0000 seconds
+[0mVioManager.cpp:314 [34m[TIME]: 0.0004 seconds for tracking
+[0mVioManagerHelper.cpp:102 FD_INIT_FRAME t=2.000000000 db=33
+InertialInitializer.cpp:93 FD_INIT_DISP newest=2.000000000 old=0 new=0 stage=insufficient_time
+VioManagerHelper.cpp:172 [33m[init]: failed initialization in 0.0000 seconds
+[0mVioManager.cpp:314 [34m[TIME]: 0.0004 seconds for tracking
+[0mVioManagerHelper.cpp:102 FD_INIT_FRAME t=2.100000000 db=33
+InertialInitializer.cpp:121 FD_INIT_DISP newest=2.100000000 old=32 new=32 stage=ready
+InertialInitializer.cpp:132 [33m[init]: disparity is 0.030,0.002 (10.00 thresh)
+[0mInertialInitializer.cpp:143 [32m[init]: USING STATIC INITIALIZER METHOD!
+[0mStaticInitializer.cpp:98 [33m[init-s]: IMU excitation stats: 141.013,0.011
+[0mStaticInitializer.cpp:116 [33m[init-s]: to much IMU excitation, above threshold 141.013,0.011 > 1.500
+[0mVioManagerHelper.cpp:172 [33m[init]: failed initialization in 0.0001 seconds
+[0mVioManager.cpp:314 [34m[TIME]: 0.0005 seconds for tracking
+[0mVioManagerHelper.cpp:102 FD_INIT_FRAME t=2.200000000 db=33
+InertialInitializer.cpp:121 FD_INIT_DISP newest=2.200000000 old=32 new=32 stage=ready
+InertialInitializer.cpp:132 [33m[init]: disparity is 0.034,0.001 (10.00 thresh)
+[0mInertialInitializer.cpp:143 [32m[init]: USING STATIC INITIALIZER METHOD!
+[0mStaticInitializer.cpp:98 [33m[init-s]: IMU excitation stats: 140.922,0.011
+[0mStaticInitializer.cpp:116 [33m[init-s]: to much IMU excitation, above threshold 140.922,0.011 > 1.500
+[0mVioManagerHelper.cpp:172 [33m[init]: failed initialization in 0.0001 seconds
+[0mVioManager.cpp:314 [34m[TIME]: 0.0003 seconds for tracking
+[0mVioManagerHelper.cpp:102 FD_INIT_FRAME t=2.300000000 db=33
+InertialInitializer.cpp:121 FD_INIT_DISP newest=2.300000000 old=32 new=32 stage=ready
+InertialInitializer.cpp:132 [33m[init]: disparity is 0.034,0.000 (10.00 thresh)
+[0mInertialInitializer.cpp:143 [32m[init]: USING STATIC INITIALIZER METHOD!
+[0mStaticInitializer.cpp:98 [33m[init-s]: IMU excitation stats: 0.011,0.011
+[0mVioManagerHelper.cpp:138 [32m[init]: successful initialization in 0.0001 seconds
+[0mVioManagerHelper.cpp:139 [32m[init]: orientation = 0.7071, -0.7071, -0.0000, 0.0000
+[0mVioManagerHelper.cpp:141 [32m[init]: bias gyro = -0.0001, 0.0000, 0.0000
+[0mVioManagerHelper.cpp:143 [32m[init]: velocity = 0.0000, 0.0000, 0.0000
+[0mVioManagerHelper.cpp:144 [32m[init]: bias accel = 0.0000, -0.0000, 0.0005
+[0mVioManagerHelper.cpp:146 [32m[init]: position = 0.0000, 0.0000, 0.0000
+[0mVioManagerHelper.cpp:166 [33m[init]: moved the state forward 0.00 seconds
+[0mVioManager.cpp:314 [34m[TIME]: 0.0004 seconds for tracking
+[0mVioManager.cpp:349 waiting for enough clone states (1 of 5)....
+native_refusal: duplicate native motion intent

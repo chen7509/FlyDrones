@@ -1,5 +1,6 @@
 import json
 import shutil
+import zipfile
 from pathlib import Path
 
 import pytest
@@ -20,16 +21,23 @@ AUDIT = ROOT / "results/causal-pair-sim-time-physical-boundary-dev-1701/startup-
 COMPLETION = ROOT / "results/estimator-physical-refusal-diagnosis-dev-1701/physical-run-v9-completion.json"
 BOUNDARY_AUDIT = ROOT / "results/estimator-physical-refusal-diagnosis-dev-1701/physical-run-v9-boundary-audit.json"
 ARCHIVE = ROOT / "evidence/source-watchdog-startup-cohort-dev-1701.zip"
-IMPLEMENTATION = ROOT / "tools/benchmark/openvins_online_shadow.py"
+ARCHIVE_IMPLEMENTATION = "tools/benchmark/openvins_online_shadow.py"
 
 
 def write_json(path, value):
     path.write_text(json.dumps(value), encoding="utf-8")
 
 
-def test_frozen_failure_and_correction_match_current_bytes():
+def extract_archived_implementation(destination):
+    with zipfile.ZipFile(ARCHIVE) as package:
+        destination.write_bytes(package.read(ARCHIVE_IMPLEMENTATION))
+    return destination
+
+
+def test_frozen_failure_and_correction_match_current_bytes(tmp_path):
     source, manifest, audit = validate_source(SOURCE, AUDIT, COMPLETION, BOUNDARY_AUDIT)
-    correction = validate_correction(AUDIT, ARCHIVE, IMPLEMENTATION)
+    implementation = extract_archived_implementation(tmp_path / "openvins_online_shadow.py")
+    correction = validate_correction(AUDIT, ARCHIVE, implementation)
     assert source == SOURCE.resolve()
     assert manifest["schema"] == "causal-pair-simulation-time-physical-retry-preflight-v1"
     assert audit["classification"] == "startup-readiness-before-fresh-source-cohort"
@@ -43,7 +51,7 @@ def test_correction_drift_refuses(tmp_path, fault):
     implementation = tmp_path / "openvins_online_shadow.py"
     shutil.copy2(AUDIT, audit)
     shutil.copy2(ARCHIVE, archive)
-    shutil.copy2(IMPLEMENTATION, implementation)
+    extract_archived_implementation(implementation)
     if fault == "archive":
         archive.write_bytes(archive.read_bytes() + b"drift")
     elif fault == "audit":

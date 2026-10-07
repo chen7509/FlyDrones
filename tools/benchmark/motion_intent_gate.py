@@ -35,6 +35,9 @@ ACK_FIELDS = {
     "native_sequence",
     "sample_ns",
     "intent_sha256",
+    "estimator_session_sha256",
+    "clock_id_sha256",
+    "command_sequence",
     "receive_ns",
     "start_ns",
     "end_ns",
@@ -42,6 +45,8 @@ ACK_FIELDS = {
     "internal_initialized",
     "has_moved_since_zupt",
     "motion_intent_applied",
+    "try_zupt",
+    "zupt_only_at_beginning",
     "reset_counter",
 }
 
@@ -65,12 +70,24 @@ def _digest(value):
 class MotionIntentGate:
     """Require a native movement latch before the first commanded-motion step."""
 
-    def __init__(self, *, session_id, clock_id, output=None, stream=None, clock=time.monotonic_ns):
+    def __init__(
+        self,
+        *,
+        session_id,
+        clock_id,
+        output=None,
+        stream=None,
+        clock=time.monotonic_ns,
+        native_adapter_integrated=False,
+    ):
         if not isinstance(session_id, str) or not session_id.strip() or not isinstance(clock_id, str) or not clock_id.strip():
             raise ValueError("explicit session and clock identifiers required")
         if (output is None) == (stream is None):
             raise ValueError("provide exactly one journal destination")
         self.session_id, self.clock_id, self.clock = session_id, clock_id, clock
+        if type(native_adapter_integrated) is not bool:
+            raise ValueError("invalid native-adapter integration flag")
+        self.native_adapter_integrated = native_adapter_integrated
         self._owns_stream = stream is None
         self.stream = Path(output, "motion-intent.jsonl").open("x", encoding="utf8") if stream is None else stream
         self.failure = None
@@ -194,6 +211,14 @@ class MotionIntentGate:
                 raise ValueError("native motion-intent identity mismatch")
             if row["intent_sha256"] != self.action["intent_sha256"]:
                 raise ValueError("native motion-intent hash mismatch")
+            expected_session = hashlib.sha256(self.session_id.encode()).hexdigest()
+            expected_clock = hashlib.sha256(self.clock_id.encode()).hexdigest()
+            if (
+                row["estimator_session_sha256"] != expected_session
+                or row["clock_id_sha256"] != expected_clock
+                or row["command_sequence"] != self.action["command_sequence"]
+            ):
+                raise ValueError("native motion-intent session/clock mismatch")
             sequence = _integer(row["native_sequence"], "native sequence")
             clocks = [_integer(row[key], key, minimum=1) for key in ("receive_ns", "start_ns", "end_ns", "acknowledged_ns")]
             if sequence <= self.estimator["native_sequence"] or not (
@@ -204,7 +229,16 @@ class MotionIntentGate:
                 raise ValueError("native motion-intent acknowledgement deadline")
             if _reset(row["reset_counter"]) != self.estimator["reset_counter"]:
                 raise ValueError("native reset changed during motion intent")
-            if any(row[key] is not True for key in ("internal_initialized", "has_moved_since_zupt", "motion_intent_applied")):
+            if any(
+                row[key] is not True
+                for key in (
+                    "internal_initialized",
+                    "has_moved_since_zupt",
+                    "motion_intent_applied",
+                    "try_zupt",
+                    "zupt_only_at_beginning",
+                )
+            ):
                 raise ValueError("native motion intent was not applied to initialized estimator")
             self.ack = copy.deepcopy(row)
             self._emit({"event": "motion_intent_applied", **row, "truth_used": False})
@@ -239,7 +273,7 @@ class MotionIntentGate:
             "failure": self.failure,
             "qualified": qualified,
             "truth_used": False,
-            "native_adapter_integrated": False,
+            "native_adapter_integrated": self.native_adapter_integrated,
             "physical_validation": False,
             "fusion_eligible": False,
         }

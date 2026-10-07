@@ -16,6 +16,51 @@ from contextlib import ExitStack
 
 from tools.benchmark.openvins_causal_input import CausalInput, InputRefusal
 
+MOTION_INTENT_ACTION_FIELDS = {
+    "kind",
+    "sample_ns",
+    "source_arrival_ns",
+    "session_id",
+    "clock_id",
+    "command_sequence",
+    "intent_sha256",
+}
+MOTION_INTENT_NATIVE_ACK_FIELDS = {
+    "sequence",
+    "kind",
+    "sample_ns",
+    "receive_ns",
+    "start_ns",
+    "end_ns",
+    "acknowledged_ns",
+    "source_arrival_ns",
+    "dispatch_ns",
+    "intent_sha256",
+    "estimator_session_sha256",
+    "clock_id_sha256",
+    "command_sequence",
+    "internal_initialized",
+    "has_moved_since_zupt",
+    "motion_intent_applied",
+    "try_zupt",
+    "zupt_only_at_beginning",
+    "reset_counter",
+    "fusion_eligible",
+    "quality",
+}
+
+
+def _sha256_text(value, name):
+    if not isinstance(value, str) or not value or any(character.isspace() for character in value):
+        raise ValueError("invalid " + name)
+    return hashlib.sha256(value.encode()).hexdigest()
+
+
+def _sha256_digest(value, name):
+    if not isinstance(value, str) or not re.fullmatch(r"[0-9a-f]{64}", value):
+        raise ValueError("invalid " + name)
+    return value
+
 
 def _integer(value, *, minimum=1):
     if type(value) is not int or not minimum <= value < 2**63:
@@ -24,6 +69,8 @@ def _integer(value, *, minimum=1):
 
 
 def encode_packet(action, *, sequence, dispatch_ns, pixels=None):
+    if not isinstance(action, dict):
+        raise ValueError("invalid native action")
     _integer(sequence, minimum=0)
     sample = _integer(action["sample_ns"])
     arrival = _integer(action["source_arrival_ns"])
@@ -44,9 +91,68 @@ def encode_packet(action, *, sequence, dispatch_ns, pixels=None):
         if len(packet) > 512:
             raise ValueError("oversized header")
         return packet
+    if action["kind"] == "motion_intent":
+        if set(action) != MOTION_INTENT_ACTION_FIELDS or pixels is not None:
+            raise ValueError("invalid motion-intent action schema")
+        command_sequence = _integer(action["command_sequence"], minimum=0)
+        if command_sequence != 0:
+            raise ValueError("invalid motion-intent command sequence")
+        intent = _sha256_digest(action["intent_sha256"], "motion-intent hash")
+        session = _sha256_text(action["session_id"], "estimator session")
+        clock = _sha256_text(action["clock_id"], "clock domain")
+        packet = f"M {prefix} {command_sequence} {intent} {session} {clock}\n".encode("ascii")
+        if len(packet) > 512:
+            raise ValueError("oversized header")
+        return packet
     if action["kind"] != "camera" or type(pixels) is not bytes or len(pixels) != 57600:
         raise ValueError("invalid owned RGB bytes")
     return f"C {prefix} 57600\n".encode("ascii") + pixels
+
+
+def project_motion_intent_ack(row, action):
+    """Project one exact native M acknowledgement into MotionIntentGate's schema."""
+    if not isinstance(row, dict) or set(row) != MOTION_INTENT_NATIVE_ACK_FIELDS:
+        raise ValueError("invalid native motion-intent acknowledgement schema")
+    if not isinstance(action, dict) or set(action) != MOTION_INTENT_ACTION_FIELDS:
+        raise ValueError("invalid motion-intent action schema")
+    expected_session = _sha256_text(action["session_id"], "estimator session")
+    expected_clock = _sha256_text(action["clock_id"], "clock domain")
+    if (
+        row["kind"] != "M"
+        or row["sample_ns"] != action["sample_ns"]
+        or row["intent_sha256"] != _sha256_digest(action["intent_sha256"], "motion-intent hash")
+        or row["estimator_session_sha256"] != expected_session
+        or row["clock_id_sha256"] != expected_clock
+        or row["command_sequence"] != action["command_sequence"]
+        or row["internal_initialized"] is not True
+        or row["has_moved_since_zupt"] is not True
+        or row["motion_intent_applied"] is not True
+        or row["try_zupt"] is not True
+        or row["zupt_only_at_beginning"] is not True
+        or row["reset_counter"] is not None
+        or row["fusion_eligible"] is not False
+        or row["quality"] is not None
+    ):
+        raise ValueError("native motion-intent acknowledgement mismatch")
+    return {
+        "kind": "M",
+        "native_sequence": _integer(row["sequence"], minimum=0),
+        "sample_ns": _integer(row["sample_ns"]),
+        "intent_sha256": row["intent_sha256"],
+        "estimator_session_sha256": row["estimator_session_sha256"],
+        "clock_id_sha256": row["clock_id_sha256"],
+        "command_sequence": row["command_sequence"],
+        "receive_ns": _integer(row["receive_ns"]),
+        "start_ns": _integer(row["start_ns"]),
+        "end_ns": _integer(row["end_ns"]),
+        "acknowledged_ns": _integer(row["acknowledged_ns"]),
+        "internal_initialized": True,
+        "has_moved_since_zupt": True,
+        "motion_intent_applied": True,
+        "try_zupt": True,
+        "zupt_only_at_beginning": True,
+        "reset_counter": None,
+    }
 
 
 def validate_ack(ack, *, sequence, kind, dispatch_ns, acknowledged_ns):
@@ -259,6 +365,9 @@ class NativeClient:
             )
             self.acks.flush()
             raise
+
+    def send_motion_intent(self, action):
+        return project_motion_intent_ack(self.send(action), action)
 
     def finish(self):
         if self.closed:

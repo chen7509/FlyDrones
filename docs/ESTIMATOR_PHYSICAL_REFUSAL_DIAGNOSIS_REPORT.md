@@ -364,3 +364,83 @@ The frozen diagnostic classification remains `raw-frame-front-end-capacity-not-e
 TDD retained the missing-module RED state before implementation. The final focused set covers motion-intent identity, clocks, reset/reconnect, safety, zero motion, truth-field injection, duplicate intent, acknowledgement mutation and actuation-before-ack, plus malformed/duplicate PPMs, frozen-config drift, ambiguous logs and low-information frames. The two new modules report 27 passing tests; the wider readiness/native/fan-out/diagnosis set reports 132 passing tests. The complete repository suite reports 1,737 passed, 3 existing skips and the same 2 existing warnings in 323.57 s. Changed-file Ruff and `git diff --check` pass. No PX4, Gazebo, OpenVINS process or physical replay was started.
 
 The sealed evidence archive is `evidence/openvins-motion-intent-visual-diagnosis-dev-1701.zip`. It contains 17 members, is 21,479,721 bytes and has SHA-256 `983237138868eeb702cd0a1cb047d7444995dd27605b18e8a4c117354fb05775`. ZIP CRC, unique member names, manifest count and all 16 manifest-listed member sizes and hashes verify. It includes the preceding physical VIO diagnosis archive, the truth-free motion-intent contract and tests, both fixed-frame visual diagnostics, retained RED/GREEN evidence, research, full regression and Ruff outputs, the specification, plan and this report as it stood before this archive statement. The archive itself is unchanged by this final paragraph.
+
+## Native OpenVINS motion-intent handoff
+
+The truth-free contract is now connected to the existing single GPL-linked
+OpenVINS research worker.  Pinned `VioManager` exposes its options,
+initialization state, ZUPT latch and movement flag to the existing
+`OnlineManager` subclass.  The new bounded `M` packet carries only a source
+sequence, effective sample time, transport clocks, command sequence and
+SHA-256 identities for the intent, estimator session and clock session.  The
+native side refuses it before internal initialization, under any ZUPT option
+other than the frozen `try_zupt=true` and
+`zupt_only_at_beginning=true`, after movement, or when its identity and time
+contract are not exact.  A qualified request sets the existing
+`has_moved_since_zupt` flag and clears the stale `did_zupt_update` latch before
+the external effective actuation sample.  It does not change OpenVINS source,
+noise, thresholds, camera data, physics or the static initializer.
+
+The adapter was compiled with Ubuntu g++ 13.3.0 against OpenVINS commit
+`69488123ed9362dd44b6f28e7f4680abbff1442b`.  The linked
+`libov_msckf_lib.so` SHA-256 is
+`532ae57a6a952a0137cc1de291bc47ad556d419c7524fbb23b7a90c00addab5b`;
+the final `online_probe-v2` SHA-256 is
+`d7252cdb97b4b73baa64f6950e3a03299fd4e0c6bb8252a568fcbc118218719e`.
+The relevant installed `VioManager` files match their recorded hashes, while
+two previously disclosed changes elsewhere in the installed OpenVINS
+worktree remain outside this adapter.  Installed-patch equivalence to a clean
+upstream build is not claimed.  OpenVINS remains GPL-3.0-or-later; the last
+recorded upstream push is 2025-11-30 and current maintenance cadence is
+uncertain.
+
+RED protocol tests first failed because the `M` packet, acknowledgement
+projection and native latch did not exist.  The first fixed replay then found
+an extra `gray_first` field in the native acknowledgement and correctly
+failed strict schema validation; that attempt is retained.  Separate final
+negative runs prove refusal before initialization and on a duplicate intent,
+both with native exit 2 and the expected native error.  No permissive retry or
+schema relaxation was used.
+
+The final `fixed-replay-v3` consumes 783 immutable source records from the
+sealed physical input and sends one motion-intent packet.  Internal
+initialization occurs at sample 2.400 s and the intent becomes effective at
+the prospectively frozen 2.621 s command sample.  Native acknowledgement
+sequence 627 binds the exact intent, estimator session, clock session,
+command sequence and ZUPT options.  Camera states at 2.7, 2.8, 2.9 and 3.0 s
+all retain `has_moved_since_zupt=true` and
+`zupt_flag_latched=false`.  Vertical accelerometer bias remains
+`0.00045162984734758993` over this early window instead of reproducing the
+physical run's approximately -0.172 m/s² post-ZUPT corruption.  The
+independent replay audit has no failures.
+
+This proves only the causal native handoff and early ZUPT suppression on fixed
+input.  Replay arrival times were newly generated monotonic clocks and are not
+latency evidence.  The replay stops after the 3.0 s camera; it does not prove
+complete trajectory accuracy, later visual correction, physical safety,
+quality/reset/covariance, fusion, ODOMETRY, EKF2 injection, arming, flight or
+fruit-fly policy performance.  PX4 and Gazebo were not started.
+
+The new and adjacent native/gate/diagnosis checks report 181 passing tests.
+The first correctly configured full regression exposed one historical test
+that compared an old sealed correction with the live, intentionally changed
+adapter; 1,752 other tests passed.  That test now extracts the implementation
+from its own immutable archive, preserving the old validator and its drift
+failure.  A subsequent invocation without the required `PYTHONPATH=src`
+failed during collection and is retained as a harness-environment failure.
+The final explicit-worktree run reports 1,753 passed, 3 existing skips and the
+same 2 existing warnings in 254.70 s.  No PX4, Gazebo, OpenVINS, capture,
+training or test process remains active.
+
+The sealed evidence archive is
+`evidence/openvins-motion-intent-native-dev-1701.zip`.  It contains 82
+members, is 22,594,772 bytes and has SHA-256
+`33c10710b668426e08acf1afa9c1d483d7e1aae14aa84a372c7eebdaccd3a15c`.
+ZIP CRC, unique member names, manifest count and all 81 manifest-listed
+member sizes and hashes verify.  It includes the prior physical/fixed-frame
+diagnosis archive, final and retained failed native protocol runs, exact
+requests/acknowledgements, native binaries and dependency identities,
+independent audit, source/tests/specification/plan, regressions and this
+report as it stood before this archive statement.  The archive itself is
+unchanged by this final paragraph.
+
