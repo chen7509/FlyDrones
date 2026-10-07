@@ -39,6 +39,9 @@ SAMPLE_FIELDS = {
     "session_id",
     "quality",
     "reset_counter",
+    "public_initialized",
+    "health_reasons",
+    "failed_latched",
     "position_error_xyz_m",
     "velocity_error_xyz_m_s",
     "attitude_error_tangent_xyz_rad",
@@ -130,6 +133,10 @@ def _sample_flags(row: object, session_id: str) -> np.ndarray:
         raise ValueError("invalid sample quality")
     if type(row["reset_counter"]) is not int or not 0 <= row["reset_counter"] <= 255:
         raise ValueError("invalid sample reset counter")
+    if type(row["public_initialized"]) is not bool or type(row["failed_latched"]) is not bool:
+        raise ValueError("invalid sample health flags")
+    if not isinstance(row["health_reasons"], list) or any(not isinstance(item, str) for item in row["health_reasons"]):
+        raise ValueError("invalid sample health reasons")
     attitude = np.abs(_vector(row["attitude_error_tangent_xyz_rad"], "attitude error"))
     position = np.abs(_vector(row["position_error_xyz_m"], "position error"))
     velocity = np.abs(_vector(row["velocity_error_xyz_m_s"], "velocity error"))
@@ -185,17 +192,24 @@ def audit_cohort(manifest: object, run_evidence: object) -> dict:
 
         run_flags = []
         qualities = []
+        prequalification_health = []
         reset_counters = []
         for row in samples:
             flags = _sample_flags(row, session_id)
             run_flags.append(flags)
             qualities.append(row["quality"])
+            prequalification_health.append(
+                row["quality"] == 0
+                and row["public_initialized"] is True
+                and row["failed_latched"] is False
+                and row["health_reasons"] == ["covariance_profile_unqualified"]
+            )
             reset_counters.append(row["reset_counter"])
             passed += flags.astype(np.int64)
             total += 1
-        if qualities and any(value != 1 for value in qualities):
-            run_reasons.append("health_not_positive")
-            reasons.append(f"health_not_positive:{run_id}")
+        if qualities and not all(prequalification_health):
+            run_reasons.append("health_not_prequalification_ready")
+            reasons.append(f"health_not_prequalification_ready:{run_id}")
         if reset_counters and len(set(reset_counters)) != 1:
             run_reasons.append("reset_changed")
             reasons.append(f"reset_changed:{run_id}")

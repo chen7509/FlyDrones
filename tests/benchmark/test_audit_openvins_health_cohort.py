@@ -7,7 +7,16 @@ from tools.benchmark.audit_openvins_health_cohort import audit_cohort, build_man
 from tools.benchmark.openvins_health_contract import CovarianceProfile
 
 
-def sample(*, scale=0.5, session_id="session-a", quality=1, reset_counter=0):
+def sample(
+    *,
+    scale=0.5,
+    session_id="session-a",
+    quality=0,
+    reset_counter=0,
+    public_initialized=True,
+    health_reasons=None,
+    failed_latched=False,
+):
     profile = CovarianceProfile(sim_domain_qualified=False)
     covariance = np.eye(15)
     covariance[0:3, 0:3] *= profile.attitude_variance_floor
@@ -17,6 +26,9 @@ def sample(*, scale=0.5, session_id="session-a", quality=1, reset_counter=0):
         "session_id": session_id,
         "quality": quality,
         "reset_counter": reset_counter,
+        "public_initialized": public_initialized,
+        "health_reasons": ["covariance_profile_unqualified"] if health_reasons is None else health_reasons,
+        "failed_latched": failed_latched,
         "position_error_xyz_m": [scale * 0.25] * 3,
         "velocity_error_xyz_m_s": [scale * 0.25] * 3,
         "attitude_error_tangent_xyz_rad": [scale * np.deg2rad(10.0)] * 3,
@@ -95,16 +107,33 @@ def test_session_truth_binding_quality_and_reset_must_remain_consistent():
         audit_cohort(manifest("held-1"), {"held-1": run(changed)})
 
     quality = [sample() for _ in range(100)]
-    quality[50] = sample(quality=0)
+    quality[50] = sample(quality=-1, health_reasons=["native_failure"], failed_latched=True)
     result = audit_cohort(manifest("held-1"), {"held-1": run(quality)})
     assert result["covariance_sim_domain_qualified"] is False
-    assert "health_not_positive:held-1" in result["reasons"]
+    assert "health_not_prequalification_ready:held-1" in result["reasons"]
 
     reset = [sample() for _ in range(100)]
     reset[50] = sample(reset_counter=1)
     result = audit_cohort(manifest("held-1"), {"held-1": run(reset)})
     assert result["covariance_sim_domain_qualified"] is False
     assert "reset_changed:held-1" in result["reasons"]
+
+
+@pytest.mark.parametrize(
+    "changes",
+    [
+        {"quality": 1, "health_reasons": []},
+        {"public_initialized": False},
+        {"health_reasons": ["regular_update_stale"]},
+        {"failed_latched": True, "quality": -1, "health_reasons": ["source_failure"]},
+    ],
+)
+def test_only_unqualified_profile_may_hold_quality_at_zero_before_promotion(changes):
+    rows = [sample() for _ in range(100)]
+    rows[50] = sample(**changes)
+    result = audit_cohort(manifest("held-1"), {"held-1": run(rows)})
+    assert result["covariance_sim_domain_qualified"] is False
+    assert "health_not_prequalification_ready:held-1" in result["reasons"]
 
 
 def test_manifest_profile_mutation_and_unlisted_evidence_are_rejected():
