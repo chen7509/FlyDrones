@@ -202,3 +202,10 @@ def test_archived_native_predeclared_timeout_latches_before_ack():
     with pytest.raises(TimeoutError, match="predeclared native timeout"):
         client.send(action, b"rgb")
     assert client.finish(require_exhausted=False)["failure"] == "predeclared native timeout"
+
+
+def test_receiver_rate_accepts_a_complete_exact_10_hz_sequence(tmp_path):
+    evidence = FileOnlyEkf2ShadowEvidence(tmp_path, declaration())
+    evidence.sample_times = [2_000_000_000, 2_100_000_000, 2_200_000_000]
+    assert evidence._receiver_rate_qualified() is True
+    evidence.finish()

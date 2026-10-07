@@ -219,7 +219,7 @@ class FileOnlyEkf2ShadowEvidence(OnlineHealthEvidence):
         if len(self.sample_times) < 2 or len(set(self.sample_times)) != len(self.sample_times):
             return False
         expected = round(1e9 / self.declaration["expected_camera_rate_hz"])
-        return all(b - a == expected for a, b in zip(self.sample_times, self.sample_times[1:], strict=True))
+        return all(b - a == expected for a, b in zip(self.sample_times, self.sample_times[1:]))
 
     def finish(self):
         if self.closed:
