@@ -192,6 +192,16 @@ class IntervalExchange:
                             live_rate_qualified=False, fusion_qualified=False)
 
     @property
+    def progress(self):
+        """Scalar health checks must not repeatedly copy historical events."""
+        result = self._result
+        return dict(phase=self._phase, cleanup_deadline_ns=self._cleanup,
+                    failure=result['primary_failure'] or result['terminal_failure']
+                    or next(iter(result['restore_failures']), None),
+                    modeled_transaction_pass=result['modeled_transaction_pass'],
+                    network_authorized=False, fusion_qualified=False)
+
+    @property
     def evidence(self):
         return copy.deepcopy(dict(self._result, phase=self._phase, pending=self._pending,
                                   cleanup_deadline_ns=self._cleanup))

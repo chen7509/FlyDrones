@@ -273,3 +273,73 @@ orders with interleaved heartbeats and sequential outgoing command IDs. It is no
 the actual capture receive loop, online heartbeat availability or performance.
 No fresh whole-repository result or independent whole-plan review is claimed.
 Network/live/fusion flags remain false. All historical failures are preserved.
+
+## Task2 checkpoint: actual receive composition, normal transaction
+
+`ObservedWireSession`, `OwnedWireBootstrap` and `TimesyncWireResponder` now have
+an opt-in `interval_transaction=True` composition. The default remains the old
+bootstrap-only behavior. The actual capture CLI/runner still does not select
+this new mode. **Task2 remains incomplete for fault-time restricted restoration.**
+
+The normal path uses the existing one DatagramReceiver, one pinned codec and
+one outgoing sequence for all commands and TIMESYNC replies. Command polling
+never recursively receives; command replies are dispatched from the same decoded
+datagram as heartbeat traffic. Commands use the same supplied socket and final
+descriptor/owner/source checks, without inventing an inbound packet to send GET.
+Only independently read-back candidate configuration enables synchronization
+replies. Earlier requests are retained without replying/counting and preserve
+their request high-water mark. One pending reply still forbids a second reply.
+
+The500-sample listener completion is recorded separately from overall bootstrap
+readiness. Baseline SET, restore readback and final readback must finish inside
+the original8s before readiness or maintenance. A regular interval poll during
+maintenance is a health-checked no-op, not a second transaction. Heartbeats remain
+processable while waiting for the first/stream status, while the existing reply
+reservation prevents another TIMESYNC from bypassing that wait.
+
+Command send intent/actual returned count/return time and phase evidence stay in
+the wire journal, including short sends or timeouts after a side effect. An
+attempted command consumes its shared sequence even when a later check fails.
+The phase core exposes scalar progress so repeated safety checks need not copy
+its historical events. This is a structural change, not a measured real-time
+or simulation-capacity result.
+
+Eight initial composition assertions failed for missing constructor integration.
+Two actual integration failures then exposed a heartbeat blocked by the old
+listener-phase gate and a normal maintenance poll rejected as a new command.
+Both are fixed; the logs retain their actual raised exceptions. Four additional
+fault/boundary cases were added as GREEN coverage, not claimed as RED fixes.
+The scalar-progress test was initially scheduled as RED but finished after the
+implementation and therefore passed; that GREEN output is retained. An explicit
+later backout test verified it fails with only the getter absent, and restored
+the exact source bytes. It is not described as an initial observed RED.
+
+Final `observed-interval-final-v1`: **72 pytest and153 installed-codec WSL tests
+passed**,24 selected production/test hashes unchanged before/after; changed Ruff
+and diff-check pass. The normal combined case makes507 actual injected-socket
+writes/reads: six interval commands,500 bootstrap replies and one maintenance
+reply, with contiguous modulo256 sequence and six heartbeat deliveries. It
+retains the same receiver/codec objects, checks restore-before-maintenance,
+and leaves the caller-owned socket open. Other cases cover wrong ACK target,
+armed mixed datagram, descriptor/owner changes, missing response waiting,
+final mismatch, short/late send, and unchanged legacy command prohibition.
+No actual UDP, simulator, estimator, training, EKF2 or arming occurred.
+
+### Remaining integration gap — do not enable a physical study yet
+
+The existing fail-closed normal wrappers close listeners and refuse all further
+I/O on failure; the observed wrapper also closes retention. The phase helper's
+10s cleanup semantics therefore do **not** yet imply owner-bound restoration
+after a source failure or expired8s startup. The wire guard intentionally grants
+no exception to a failed wire. Do not clear failure flags, reset clocks, reopen
+a second receiver, extend8s, or claim all cleanup tests pass.
+
+Next implement an explicit restoration-only lifetime on the same owned
+descriptor/codec, deriving its immutable deadline from the first STOPPING event.
+Keep source/primary failure latched and ordinary TIMESYNC/fanout/force disabled;
+retain incoming safety frames and abort on armed or changed identity. Preserve
+2s operation limits and all partial effects before closing receiver/retention,
+then owned PX4. Test source loss, expiry, identity/descriptor changes, stale/armed
+heartbeat, interruption and journal failure through this actual composition.
+Only afterward can Task2 finish and Task3 bind the real capture lifecycle with
+injected factories. Task4 review/archive and the larger FlyDrones goal stay open.

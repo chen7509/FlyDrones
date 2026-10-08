@@ -278,3 +278,15 @@ class ExchangeTests(unittest.TestCase):
             self.ack(510)
         self.assertLessEqual(len(self.exchange.evidence['restore_failures']), 1)
         self.assertEqual(self.exchange.evidence['primary_failure'], 'cancel before mutation')
+
+    def test_progress_has_no_history_and_cannot_mutate_state(self):
+        self.assertTrue(hasattr(self.exchange, 'progress'), 'bounded scalar exchange progress missing')
+        self.exchange.poll()
+        state = self.exchange.progress
+        self.assertNotIn('events', state)
+        self.assertNotIn('pending', state)
+        self.assertEqual(state['phase'], 'baseline')
+        state['phase'] = 'done'
+        self.assertEqual(self.exchange.progress['phase'], 'baseline')
+        self.exchange.stop('source failure')
+        self.assertEqual(self.exchange.progress['failure'], 'source failure')

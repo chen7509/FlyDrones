@@ -23,7 +23,8 @@ class ObservedWireSession:
     MAX_SELECTIONS = 4096
 
     def __init__(self, process, expected, path, remote_clock, clock_lane, sock, start_ns,
-                 journal, descriptor_guard, *, backend=None, heartbeat_sink=None, retention=None):
+                 journal, descriptor_guard, *, backend=None, heartbeat_sink=None, retention=None,
+                 interval_transaction=False):
         if (type(remote_clock) is not RemoteMonotonicClock or type(clock_lane) is not JournaledSimulationClock
                 or not callable(journal) or not callable(descriptor_guard)
                 or type(start_ns) is not int or not 0 <= start_ns < 2**64 - 8_000_000_000
@@ -35,6 +36,7 @@ class ObservedWireSession:
         self._backend = backend or LinuxBackend()
         self._journal, self._descriptor_guard = journal, descriptor_guard
         self._heartbeat_sink = heartbeat_sink
+        self._interval_enabled = interval_transaction
         self._start = self._last_now = start_ns
         self._deadline = start_ns + 8_000_000_000
         self._maintenance = None
@@ -56,7 +58,8 @@ class ObservedWireSession:
             self._core = OwnedWireBootstrap(process, expected, path, remote_clock, start_ns,
                                             lambda e: self._forward('core', e), self._send, backend=self._backend,
                                             heartbeat_sink=None if heartbeat_sink is None else self._dispatch_heartbeat,
-                                            retention=retention)
+                                            retention=retention, interval_transaction=interval_transaction,
+                                            interval_send_sink=self._send_interval if interval_transaction else None)
             self._receiver = DatagramReceiver(sock, self._context, self._backend.clock, start_ns,
                                                lambda e: self._forward('receiver', e), retention=retention)
         except BaseException as exc:
@@ -155,6 +158,13 @@ class ObservedWireSession:
         # actual return count, including a short write or a later source fault.
         return self._sock.sendto(raw, self._flags, peer)
 
+    def _send_interval(self, raw, peer):
+        # Commands need a fresh independent source, but no invented inbound
+        # packet selection. Use the same socket/flags and ownership boundary.
+        self._receiver.check()
+        self._final_boundary()
+        return self._sock.sendto(raw, self._flags, peer)
+
     def _dispatch_heartbeat(self, event):
         self._receiver.check()
         self._final_boundary()
@@ -238,6 +248,11 @@ class ObservedWireSession:
     def poll_datagram(self):
         def action():
             phases = ('ready', 'pending') if self._maintenance is not None else ('first_ready', 'stream_ready')
+            if self._interval_enabled and self._maintenance is None:
+                # Receive heartbeats while the daemon listener is waiting. The
+                # reply reservation still forbids another TIMESYNC in pending.
+                phases += ('empty_pending', 'first_pending', 'first_confirmed',
+                           'replay_pending', 'stream_pending', 'finish_pending', 'done')
             if self._core.progress['phase'] not in phases:
                 raise ValueError('datagram refused before listener readiness')
             if len(self._selections) >= self.MAX_SELECTIONS:
@@ -257,6 +272,15 @@ class ObservedWireSession:
             if result['wire_bootstrap_complete']:
                 self._complete = True
         self._operation(self._core.poll, commit)
+        return self.progress
+
+    def poll_interval(self):
+        if not self._interval_enabled:
+            raise ValueError('interval mode not enabled at construction')
+        def commit(result):
+            if result['wire_bootstrap_complete']:
+                self._complete = True
+        self._operation(self._core.poll_interval, commit)
         return self.progress
 
     def begin_maintenance(self, deadline_ns):

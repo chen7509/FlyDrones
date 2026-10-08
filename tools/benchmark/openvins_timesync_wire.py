@@ -14,6 +14,7 @@ from threading import Lock
 
 from tools.benchmark.openvins_ekf2_disarmed_preflight import RemoteMonotonicClock
 from tools.benchmark.openvins_segmented_journal import event_log, record_failure, require_capacity
+from tools.benchmark.openvins_timesync_interval import IntervalExchange
 from tools.benchmark.owned_daemon_connection import _error
 
 
@@ -145,13 +146,17 @@ class TimesyncWireResponder:
     MAX_EVENTS = 8192
 
     def __init__(self, remote_clock, reserve_reply, send_sink, journal, now, start_ns, peer=("127.0.0.1", 14588),
-                 *, heartbeat_sink=None, retention=None):
+                 *, heartbeat_sink=None, retention=None, interval_transaction=False, interval_send_sink=None):
         if not isinstance(remote_clock, RemoteMonotonicClock):
             raise ValueError("existing remote clock required")
         if any(not callable(c) for c in (reserve_reply, send_sink, journal, now)):
             raise ValueError("explicit callbacks required")
         if heartbeat_sink is not None and not callable(heartbeat_sink):
             raise ValueError("heartbeat sink must be callable")
+        if (type(interval_transaction) is not bool
+                or interval_transaction and not callable(heartbeat_sink)
+                or interval_send_sink is not None and (not interval_transaction or not callable(interval_send_sink))):
+            raise ValueError('explicit interval mode requires heartbeat and valid command sink')
         self._heartbeat_sink = heartbeat_sink
         if type(start_ns) is not int or not 0 <= start_ns < 2**64 - 8_000_000_000:
             raise ValueError("invalid start clock")
@@ -173,16 +178,31 @@ class TimesyncWireResponder:
         self._sequence = 0
         self._last_identity = None
         self._lock = Lock()
+        self._interval = self._interval_snapshot = None
+        self._interval_sink = interval_send_sink or send_sink
+        self._last_seen_request = None
+        if interval_transaction:
+            self._interval = IntervalExchange(self._send_interval_command, self._interval_guard, now, start_ns)
+
+    def _interval_failure(self):
+        if self._interval is None:
+            return None
+        return self._interval.progress['failure']
 
     @property
     def progress(self):
         """Cheap status for composition; never copy packet logs during polling."""
-        return dict(failure=self._failure, network_authorized=False, delivery_proven=False,
+        state = None if self._interval is None else self._interval.progress
+        return dict(failure=self._failure or self._interval_failure(),
+                    interval_phase=None if state is None else state['phase'],
+                    interval_transaction_pass=False if state is None else state['modeled_transaction_pass'],
+                    network_authorized=False, delivery_proven=False,
                     live_convergence_qualified=False, fusion_qualified=False)
 
     @property
     def evidence(self):
         return dict(events=copy.deepcopy(self._events), failure=self._failure,
+                    interval=None if self._interval is None else self._interval.evidence,
                     journal_errors=copy.deepcopy(self._journal_errors),
                     refusal_journal_error=self._refusal_journal_error, clock_session=self._session,
                     network_authorized=False, delivery_proven=False, live_convergence_qualified=False,
@@ -191,6 +211,8 @@ class TimesyncWireResponder:
     def _check(self):
         if self._failure is not None:
             raise ValueError("wire failure latched: " + self._failure)
+        if self._interval_failure() is not None:
+            raise ValueError('interval exchange failed: ' + self._interval_failure())
         value = self._accept_time(self._now())
         if value >= self._deadline:
             raise ValueError("wire global deadline")
@@ -206,6 +228,56 @@ class TimesyncWireResponder:
             raise ValueError("shared remote clock failed: " + self._remote.failure)
         self._codec.check()
         return value
+
+    def _interval_guard(self, stopping):
+        # This normal-path binding deliberately grants no exception to a failed
+        # wire. Restricted fault restoration needs a separate owner-bound path.
+        self._check()
+
+    def _send_interval_command(self, operation, value):
+        self._check()
+        raw = self._codec.encode_interval_command(operation, value, self._sequence)
+        self._record('interval_send_attempt', operation=operation, value=value,
+                     sequence=self._sequence, raw_hex=raw.hex(), peer=self._peer)
+        send_started_ns = self._check()
+        self._require_event_capacity()
+        # An ambiguous effect consumes its sequence; it must not be reused by
+        # a later separately authorized restoration attempt.
+        self._sequence = (self._sequence + 1) % 256
+        count = self._interval_sink(raw, self._peer)
+        self._record('interval_send_return', count=count, send_started_ns=send_started_ns)
+        if type(count) is not int or count != len(raw):
+            raise ValueError('invalid or short interval send count')
+
+    def _record_interval(self):
+        state = self._interval.evidence
+        if state != self._interval_snapshot:
+            self._interval_snapshot = copy.deepcopy(state)
+            self._record('interval_state', state=state)
+
+    def _interval_operation(self, callback):
+        if self._interval is None:
+            raise ValueError('interval mode not enabled at construction')
+        if not self._lock.acquire(blocking=False):
+            self._abort(ValueError('concurrent interval wire operation'))
+            raise ValueError('concurrent interval wire operation')
+        try:
+            self._check()
+            callback()
+            self._record_interval()
+            self._check()
+        except BaseException as exc:
+            self._abort(exc)
+            raise
+        finally:
+            self._lock.release()
+
+    def poll_interval(self):
+        self._interval_operation(lambda: self._interval.poll())
+        return self.progress
+
+    def finish_interval_body(self):
+        self._interval_operation(lambda: self._interval.body_complete(True))
 
     def _continue_with(self, continuation):
         """Internal composition binding; keep codec/sequence/last request intact."""
@@ -244,7 +316,7 @@ class TimesyncWireResponder:
         # For send_return record the actual effect before checking clock/result.
         event = dict(kind=kind, at_last_checked_ns=self._last_now, **copy.deepcopy(data))
         clock_error = None
-        if kind == "send_return":
+        if kind in ("send_return", 'interval_send_return'):
             try:
                 event["returned_ns"] = self._now()
             except BaseException as exc:
@@ -261,7 +333,7 @@ class TimesyncWireResponder:
             raise
         if clock_error is not None:
             raise clock_error
-        if kind == "send_return":
+        if kind in ("send_return", 'interval_send_return'):
             self._accept_time(event["returned_ns"])
         self._check()
 
@@ -346,11 +418,21 @@ class TimesyncWireResponder:
             self._record("decoded", messages=messages)
             if any(m["system"] != 9 or m["component"] != 1 for m in messages):
                 raise ValueError("unexpected header source")
+            if self._interval is not None:
+                responses = [self._codec.interval_response(m) for m in messages
+                             if m['type'] in ('COMMAND_ACK', 'MESSAGE_INTERVAL')]
+                # Armed/bad heartbeat cannot be followed by command acceptance.
+                self._dispatch_heartbeat(messages, received_ns, observed_sim_ns)
+                for row in responses:
+                    self._interval.feed(row, received_ns)
+                    self._record_interval()
+                    self._check()
             requests = [m for m in messages if m["type"] == "TIMESYNC"]
             if len(requests) > 1:
                 raise ValueError("multiple TIMESYNC requests")
             if not requests:
-                self._dispatch_heartbeat(messages, received_ns, observed_sim_ns)
+                if self._interval is None:
+                    self._dispatch_heartbeat(messages, received_ns, observed_sim_ns)
                 return None
             message = requests[0]
             tc1, request = message["fields"]["tc1"], message["fields"]["ts1"]
@@ -358,12 +440,20 @@ class TimesyncWireResponder:
                 raise ValueError("invalid request identity or unexpected response")
             if self._last_identity is not None and request <= self._last_identity[0]:
                 raise ValueError("request identity regression or reuse")
+            if self._interval is not None:
+                if self._last_seen_request is not None and request <= self._last_seen_request:
+                    raise ValueError('seen request identity regression or reuse')
+                self._last_seen_request = request
+                if self._continuation is None and self._interval.progress['phase'] != 'body':
+                    self._record('interval_wait_request', request_ns=request, phase=self._interval.progress['phase'])
+                    return None
             reply = self._remote.respond_to_px4_request(tc1_ns=tc1, ts1_ns=request, observed_sim_ns=observed_sim_ns)
             response = reply["tc1_ns"]
             if self._last_identity is not None and response <= self._last_identity[1]:
                 raise ValueError("response identity regression or reuse")
             encoded = self._codec.encode_reply(request, response, self._sequence)
-            self._dispatch_heartbeat(messages, received_ns, observed_sim_ns)
+            if self._interval is None:
+                self._dispatch_heartbeat(messages, received_ns, observed_sim_ns)
             self._record("reply_prepared", request_ns=request, response_ns=response, raw_hex=encoded.hex(),
                          sequence=self._sequence, clock_session=reply["clock_session_id"])
             self._check()

@@ -12,7 +12,7 @@ from tools.benchmark.owned_daemon_connection import LinuxBackend, _error
 
 class OwnedWireBootstrap:
     def __init__(self, process, expected, path, remote_clock, start_ns, journal, send_sink, *, backend=None,
-                 heartbeat_sink=None, retention=None):
+                 heartbeat_sink=None, retention=None, interval_transaction=False, interval_send_sink=None):
         if not callable(journal) or not callable(send_sink) or heartbeat_sink is not None and not callable(heartbeat_sink):
             raise ValueError("explicit journal and sink required")
         self._journal, self._sink = journal, send_sink
@@ -22,6 +22,9 @@ class OwnedWireBootstrap:
         self._failure = None
         self._cleanup_errors = []
         self._complete = self._closed = False
+        self._listener_complete = False
+        self._interval_enabled = interval_transaction
+        self._interval_sink = interval_send_sink or send_sink
         self._maintenance = None
         self._start = start_ns
         self._replies = 0
@@ -32,7 +35,9 @@ class OwnedWireBootstrap:
                                          retention=retention)
             self._wire = TimesyncWireResponder(remote_clock, self._owned.reserve_reply, self._send,
                                               lambda event: self._record("wire", event), self._backend.clock, start_ns,
-                                              heartbeat_sink=heartbeat_sink, retention=retention)
+                                              heartbeat_sink=heartbeat_sink, retention=retention,
+                                              interval_transaction=interval_transaction,
+                                              interval_send_sink=self._send_interval if interval_transaction else None)
         except BaseException as exc:
             self._abort(exc)
             raise
@@ -47,6 +52,9 @@ class OwnedWireBootstrap:
         failure = self._failure or value.get("failure") or wire_failure
         complete = self._complete and failure is None
         value.update(failure=failure, wire_bootstrap_complete=complete,
+                     interval_phase=None if self._wire is None else self._wire.progress['interval_phase'],
+                     interval_transaction_pass=False if self._wire is None else self._wire.progress['interval_transaction_pass'],
+                     timesync_listener_complete=self._listener_complete,
                      transport_bootstrap_complete=complete, modeled_bootstrap_ready=complete,
                      completed_reply_attempts=self._replies, network_authorized=False,
                      delivery_proven=False, live_convergence_qualified=False, fusion_qualified=False)
@@ -75,6 +83,12 @@ class OwnedWireBootstrap:
         self._owned.check()
         self._open()
         return self._sink(raw, peer)
+
+    def _send_interval(self, raw, peer):
+        self._open()
+        self._owned.check(allow_completed=True)
+        self._open()
+        return self._interval_sink(raw, peer)
 
     def _abort(self, error):
         with self._state_lock:
@@ -129,8 +143,28 @@ class OwnedWireBootstrap:
             ):
                 raise ValueError("composed status/reply count mismatch")
             if result["transport_bootstrap_complete"]:
-                self._complete = True
-        self._operation(self._owned.poll, commit)
+                if not self._listener_complete:
+                    self._listener_complete = True
+                    if self._interval_enabled:
+                        self._wire.finish_interval_body()
+                self._complete = not self._interval_enabled or self._wire.progress['interval_transaction_pass']
+        action = (lambda: self._owned.progress) if self._listener_complete and self._maintenance is None else self._owned.poll
+        self._operation(action, commit)
+        return self.progress
+
+    def poll_interval(self):
+        if not self._interval_enabled:
+            raise ValueError('interval mode not enabled at construction')
+        def action():
+            if self._maintenance is not None and self._wire.progress['interval_transaction_pass']:
+                return self._wire.progress  # Already restored; never begin a second transaction.
+            if (self._wire.progress['interval_phase'] != 'body'
+                    and self._owned.progress['phase'] not in ('first_ready', 'stream_ready', 'done')):
+                raise ValueError('interval command requires listener readiness')
+            return self._wire.poll_interval()
+        def commit(result):
+            self._complete = self._listener_complete and result['interval_transaction_pass']
+        self._operation(action, commit)
         return self.progress
 
     def begin_maintenance(self, deadline_ns):
