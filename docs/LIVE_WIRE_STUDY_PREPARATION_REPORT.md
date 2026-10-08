@@ -445,3 +445,36 @@ audit producer copies, installed proto/license sources, decoder module hashes,
 original input identities and all relevant RED/GREEN outputs. Loaded decoder
 binary bytes are referenced by hash rather than embedded. The archived report
 precedes this seal paragraph. Publication remains local, not verified on PR65.
+
+## Interval response and failure regression increment
+
+Five behavioral counterexamples showed that the normal interval auditor accepted
+altered intermediate ACK/readback fields and a missing per-response snapshot
+while the original decoded responses and terminal success remained intact. The
+auditor now preserves response order within each datagram and compares every
+corresponding pending-state snapshot. All five counterexamples now refuse; ACK
+and readback in either legitimate order still pass. No transport or flight policy
+changed.
+
+The initial RED log also contains one test-construction failure: reindexing a
+corrupted index undid the intended restore-before-body mutation. That test now
+moves the actual record before reindexing. Missing-record cases likewise reindex
+their synthetic envelopes so rejection exercises transaction evidence rather
+than only the independent global-index check.
+
+Six additional failure cases use the actual observed-session, interval and
+segmented-retention classes with synthetic socket/owner/clock fixtures. Source
+loss followed by successful restoration is still a failed capture. Missing ACK
+and short send remain unverified even when later readbacks match baseline. Armed
+input, cleanup expiry and unknown baseline also refuse. Replacing only the final
+state with success does not make any case pass normal audit. These are new GREEN
+coverage cases, not claimed as six newly repaired production failures. They do
+not provide live failure-cleanup qualification.
+
+WSL pinned-codec, interval, listener and production restoration regression:
+47 unittest methods passed in 41.343 seconds. The full positive study fixture,
+prospective package, producer attestation and whole-package review remain open.
+No simulator, estimator, UDP, ODOMETRY, EKF2, arming or training was started.
+The Windows study validator, file entry and evidence-reader regression passed
+107 tests in 77.67 seconds. Changed-file Ruff and diff checks pass; this is not a
+full-repository test run. All publication in this increment is local.

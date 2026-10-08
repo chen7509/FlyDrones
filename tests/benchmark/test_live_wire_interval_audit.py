@@ -98,7 +98,8 @@ class IntervalAuditTests(unittest.TestCase):
                 elif fault == "wrong_command_sequence":
                     commands[3]["event"]["sequence"] += 1
                 elif fault == "restore_before_body":
-                    commands[3]["index"] = commands[2]["index"] + 1
+                    rows.remove(commands[3])
+                    rows.insert(rows.index(commands[2]) + 1, commands[3])
                 elif fault == "missing_state":
                     rows.remove(next(r for r in states if r["event"]["state"]["pending"] is not None))
                 elif fault == "deadline_extension":
@@ -111,5 +112,39 @@ class IntervalAuditTests(unittest.TestCase):
                     states[-1]["event"]["state"]["baseline_us"] = 10000
                 elif fault == "missing_terminal_state":
                     rows.remove(states[-1])
+                # Exercise the missing transaction evidence, not merely the
+                # segmented reader's separate global-index integrity check.
+                for index, row in enumerate(rows):
+                    row["index"] = index
                 with self.assertRaises(ValueError):
                     self.run_audit(e)
+
+    def test_each_response_state_must_match_original_ack_and_readback(self):
+        # A terminal success must not hide disagreement between the decoded
+        # response and the per-response state emitted by the real producer.
+        for fault in ("ack_result", "ack_bool", "readback", "premature_ack", "missing_response_state"):
+            with self.subTest(fault=fault):
+                evidence = copy.deepcopy(self.evidence)
+                rows = evidence["records"]
+                states = [
+                    row for row in rows
+                    if row["source"] == "wire" and row["event"]["kind"] == "interval_state"
+                    and row["event"]["state"]["pending"] is not None
+                ]
+                if fault in ("ack_result", "ack_bool"):
+                    pending = next(row["event"]["state"]["pending"] for row in states
+                                   if row["event"]["state"]["pending"]["ack"] == 0)
+                    pending["ack"] = 1 if fault == "ack_result" else False
+                elif fault == "readback":
+                    pending = next(row["event"]["state"]["pending"] for row in states
+                                   if row["event"]["state"]["pending"]["interval_us"] == 100000)
+                    pending["interval_us"] = 100001
+                elif fault == "premature_ack":
+                    states[0]["event"]["state"]["pending"]["ack"] = 0
+                else:
+                    rows.remove(next(row for row in states
+                                     if row["event"]["state"]["pending"]["interval_us"] == 100000))
+                    for index, row in enumerate(rows):
+                        row["index"] = index
+                with self.assertRaises(ValueError):
+                    self.run_audit(evidence)

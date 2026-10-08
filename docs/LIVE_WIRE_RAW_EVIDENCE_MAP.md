@@ -316,3 +316,21 @@ This is simulation-message consistency, not hardware/extrinsic calibration.
 Windows lacks the official decoder, so its three real-codec tests skip explicitly;
 the same three unittest methods (one positive and 19 fault subcases) run in WSL.
 Task3 must bind the auditor's decoder/runtime dependencies in the prepared package.
+
+## Interval response states and failed captures
+
+The normal interval audit now joins each decoded ACK/readback to the specific
+pending-state snapshot recorded immediately after that response. A datagram may
+carry ACK and readback in either order; both intermediate states must appear in
+that same order before the next receive or command. Matching final baseline and
+success flags do not excuse a missing snapshot, an incorrect ACK result, a
+boolean substituted for numeric zero, or a readback absent from the wire bytes.
+
+Six synthetic-I/O runs of the production observed-session/restoration classes
+exercise source loss with successful restoration, missing restore ACK, short
+restore send, armed heartbeat, cleanup deadline and unknown baseline. Segmented
+records are read back through the real retention reader and refused by the normal
+auditor, even after replacing the terminal snapshot with success. Successful
+cleanup of a failed capture remains different from successful normal execution.
+This test does not qualify failure cleanup as live, authenticate a PX4 peer, or
+replace the still-pending full positive study integration.

@@ -1316,6 +1316,7 @@ def audit_wire_interval_records(records, context):
     sequence = 0
     acknowledgments = readbacks = 0
     previous_events = []
+    response_states = []
 
     def complete(command):
         return (
@@ -1332,6 +1333,8 @@ def audit_wire_interval_records(records, context):
         event, index = row["event"], row["index"]
         kind, now = event.get("kind"), event.get("at_last_checked_ns")
         _integer(now, start, context["total_deadline_ns"] - 1, "transaction event time")
+        if response_states and kind in ("interval_send_attempt", "receive", "decoded"):
+            raise ValueError("missing per-response interval state before next operation")
         if kind in ("interval_send_attempt", "reply_prepared"):
             _equal(event["sequence"], sequence, "shared outgoing sequence")
             sequence = (sequence + 1) % 256
@@ -1404,6 +1407,13 @@ def audit_wire_interval_records(records, context):
                     pending["readback"] = restorable_interval(response["interval_us"])
                     readbacks += 1
                 pending["last_response_index"] = index
+                # One datagram can contain ACK and readback in either order.
+                # The producer records a distinct state after feeding each;
+                # preserve that order rather than comparing to the final pair.
+                response_states.append(dict(
+                    ack=None if pending["ack"] is None else pending["ack"]["result"],
+                    interval_us=pending["readback"],
+                ))
             receive = None
         elif kind == "interval_state":
             state = event["state"]
@@ -1425,6 +1435,8 @@ def audit_wire_interval_records(records, context):
             _equal(history[: len(previous_events)], previous_events, "interval event history prefix")
             previous_events = history
             bound = state["pending"]
+            if response_states and bound is None:
+                raise ValueError("discarded per-response interval state")
             if bound is not None:
                 _shape(bound, ("command", "sent_ns", "deadline_ns", "ack", "interval_us"), "pending command")
                 if pending is None or pending["returned"] is None:
@@ -1443,10 +1455,16 @@ def audit_wire_interval_records(records, context):
                     for key in ("command", "sent_ns", "deadline_ns"):
                         _equal(bound[key], pending["pending_state"][key], "immutable pending " + key)
                     _equal(state["phase"], pending["phase"], "pending phase")
+                expected_response = response_states.pop(0) if response_states else dict(
+                    ack=None if pending["ack"] is None else pending["ack"]["result"],
+                    interval_us=pending["readback"],
+                )
+                for key, expected in expected_response.items():
+                    _equal(bound[key], expected, "per-response state " + key)
             elif pending is not None and not complete(pending):
                 raise ValueError("state discarded incomplete raw transaction")
             states.append(row)
-    if not complete(pending) or not states or not commands:
+    if response_states or not complete(pending) or not states or not commands:
         raise ValueError("incomplete raw rate transaction")
     baseline = restorable_interval(commands[0]["readback"])
     if baseline == 10000:
