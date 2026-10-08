@@ -478,3 +478,13 @@ No simulator, estimator, UDP, ODOMETRY, EKF2, arming or training was started.
 The Windows study validator, file entry and evidence-reader regression passed
 107 tests in 77.67 seconds. Changed-file Ruff and diff checks pass; this is not a
 full-repository test run. All publication in this increment is local.
+
+Producer `fe1e9c7` is sealed in
+`evidence/live-wire-interval-failure-offline-progress-dev-1701.zip`: 15 members,
+60,610 bytes, SHA256
+`6a23585da5d8e5ff37b4d64b0a9987390659455a7c8193d9b84da88544e17d1f`.
+CRC and every member hash were checked. The package retains the initial RED
+output (five production counterexamples and one test-construction issue), final
+regressions, source copies and ledger. Synthetic journals use temporary test
+directories; their generators and outcomes are preserved, not a new physical
+capture. The archived report precedes this seal paragraph.
