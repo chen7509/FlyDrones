@@ -11,6 +11,7 @@ from threading import Lock
 
 from tools.benchmark.openvins_timesync_bootstrap import parse_snapshot
 from tools.benchmark.openvins_timesync_listener import TimesyncListenerDecoder
+from tools.benchmark.openvins_timesync_maintenance import _TimesyncMaintenance
 from tools.benchmark.owned_daemon_connection import (
     ConnectionRefusal,
     LinuxBackend,
@@ -80,12 +81,15 @@ class ListenerRefusal(ValueError):
 class ReadOnlyListener:
     MAX_EVENTS = 65536
 
-    def __init__(self, process, expected, path, mode, count, start_ns, deadline_ns, journal, *, backend=None):
+    def __init__(self, process, expected, path, mode, count, start_ns, deadline_ns, journal, *, backend=None,
+                 continuation=None):
         self._backend = backend or LinuxBackend()
         self._process, self._expected = process, copy.deepcopy(expected)
         self._journal = journal
         self._connection = None
         self._closed = self._done = self._parsed_terminal = False
+        self._cancelled = False
+        self._continuation = continuation
         self._fault = None
         self._lock = Lock()
         self._regular_events = 0  # One independent terminal-refusal slot is separate.
@@ -100,13 +104,25 @@ class ReadOnlyListener:
             self._command = listener_command(mode, count)
             self._mode = mode
             validate_owner(self._expected)
+            limit = 8_000_000_000
+            if continuation is not None:
+                if type(continuation) is not _TimesyncMaintenance:
+                    raise ValueError('actual maintenance continuation required')
+                context = continuation.progress
+                if (mode != 'stream' or count != 4096 or context['failure'] is not None
+                        or context['phase'] != 'replay_pending' or start_ns != context['handoff_ns']
+                        or deadline_ns != context['deadline_ns']):
+                    raise ValueError('maintenance listener context mismatch')
+                limit = 300_000_000_000
             if (type(start_ns) is not int or type(deadline_ns) is not int
                     or not 0 <= start_ns < deadline_ns < 2**64
-                    or deadline_ns-start_ns > 8000000000 or not callable(journal)):
+                    or deadline_ns-start_ns > limit or not callable(journal)):
                 raise ValueError('bounded listener clock window/journal required')
             self._last_now = self._last_complete = start_ns
             self._deadline = deadline_ns
             entry = self._check(check_frame=False)
+            if continuation is not None:
+                continuation._claim_transport(entry)
             self._last_complete = entry
             if mode == 'stream':
                 self._decoder = TimesyncListenerDecoder(0, count, entry, output_profile='px4-d6f12ad-multi-v1')
@@ -128,7 +144,7 @@ class ReadOnlyListener:
     def evidence(self):
         return copy.deepcopy(self._result)
 
-    def _record(self, kind, **fields):
+    def _record(self, kind, *, allow_failed=False, **fields):
         if self._regular_events >= self.MAX_EVENTS:
             raise ValueError('listener journal event limit')
         event = dict(kind=kind, **fields)
@@ -136,7 +152,7 @@ class ReadOnlyListener:
         self._result['events'].append(copy.deepcopy(event))
         if self._journal(copy.deepcopy(event)) is not None:
             raise ValueError('listener journal must return None')
-        if self._fault:
+        if self._fault and not allow_failed:
             raise ValueError('listener failure latched')
 
     def _reserve_events(self, count):
@@ -177,6 +193,10 @@ class ReadOnlyListener:
         self._last_now = now
         if now >= self._deadline:
             raise ValueError('listener global deadline timeout')
+        if self._continuation is not None:
+            context = self._continuation.progress
+            if context['failure'] is not None or context['phase'] == 'cancelled':
+                raise ValueError('maintenance continuation failed or cancelled')
         if check_frame and now-self._last_complete >= 2000000000:
             raise ValueError('listener complete-frame timeout')
         if self._decoder is not None and not self._parsed_terminal:
@@ -224,7 +244,59 @@ class ReadOnlyListener:
         if not self._done and not self._closed:
             self._abort(ValueError('listener aborted before completion'))
 
+    def cancel(self, reason):
+        """Maintenance-only partial subscription close; not a daemon-exit proof."""
+        if self._continuation is None or type(reason) is not str or not 1 <= len(reason) <= 256:
+            raise ValueError('maintenance context and bounded cancellation reason required')
+        if not self._lock.acquire(blocking=False):
+            self._abort(ValueError('concurrent listener cancellation'))
+            raise ListenerRefusal(self._result)
+        interruption = None
+        try:
+            if self._cancelled:
+                return self.evidence
+            if self._done:
+                raise ValueError('finite listener already completed, not cancelled')
+            self._result['cancellation_requested'] = True
+            try:
+                self._reserve_events(2)
+                self._record('cancellation_requested', reason=reason, allow_failed=True)
+                self._owner()
+                self._check()
+            except BaseException as exc:
+                self._abort(exc)
+                if not isinstance(exc, Exception):
+                    interruption = exc
+            finally:
+                try:
+                    self._close_socket()
+                except BaseException as exc:
+                    self._abort(exc)
+                    if not isinstance(exc, Exception) and interruption is None:
+                        interruption = exc
+                self._result.update(incomplete_frame_bytes=self._decoder.incomplete_frame_bytes,
+                                    socket_close_returned=self._closed and self._result['close_error'] is None,
+                                    daemon_exit_proven=False)
+                try:
+                    self._record('cancellation_result', allow_failed=True,
+                                 incomplete_frame_bytes=self._result['incomplete_frame_bytes'],
+                                 socket_close_returned=self._result['socket_close_returned'],
+                                 close_error=self._result['close_error'], daemon_exit_proven=False)
+                except BaseException as exc:
+                    self._result['cancel_journal_error'] = _error(exc)
+                    self._abort(exc)
+                    if not isinstance(exc, Exception) and interruption is None:
+                        interruption = exc
+                self._cancelled = True
+            if interruption is not None:
+                raise interruption
+            return self.evidence
+        finally:
+            self._lock.release()
+
     def poll(self):
+        if self._cancelled:
+            raise ValueError('listener cancelled')
         if self._done:
             raise ValueError('listener already completed')
         if not self._lock.acquire(blocking=False):

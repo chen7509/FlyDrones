@@ -40,12 +40,42 @@ fails closed at the boundary without claiming an unmatched final status.
 Logs and initial failures: `results/capture-wire-lifecycle-dev-1701`. No stage
 archive or final independent implementation review yet: Task1 is still running.
 
+## Implemented transport prerequisite
+
+ReadOnlyListener now accepts the exact internal continuation for a4096-record
+maintenance subscription. Its start and absolute deadline must equal that
+continuation's values; legacy callers retain the original8s window. One listener
+may claim the context, even if its later connection fails. A second claim faults
+the context and the original listener refuses further work. A cancelled/failed
+continuation also refuses subsequent reads. This supplies a dependency for the
+owned/observed wire composition; it does not install that composition in capture.
+
+Explicit maintenance cancellation retains partial-frame bytes, primary/journal/
+close errors and whether the supplied backend's socket close returned. It never
+claims daemon exit or clean completion of the finite subscription. Interruption
+still runs close and then re-raises. Normal repeat cancellation is idempotent.
+The raw-core cancellation and socket cancellation remain separate evidence.
+
+16 new transport cases and96 related transport/core/owned-bootstrap cases passed
+(112 total). The first12 failures asserted the absent constructor interface.
+Two additional behavioral REDs exposed double attachment before the first record
+and reads after context cancellation; both are fixed. Two further interruption/
+terminal-journal cases passed as added coverage, not RED fixes. No live socket or
+daemon was used; backend, ownership and time are injected. These are intermediate
+results, not completion of the whole lifecycle plan.
+
+Final combined focused verification of this partial implementation: **512 passed**,
+with selected source hashes identical before/after (`final-v1/before.json` and
+`after.json`); installed-codec WSL regression **74 OK**. Changed Ruff/diff pass.
+These counts supersede the intermediate subset counts for current source state.
+
 ## Still required by this same plan
 
 - Bind the continuation through OwnedBootstrap/OwnedWire/ObservedWire, retaining
   the same decoder/receive owner and unchanged legacy behavior.
-- Add explicit bounded maintenance transport/cancellation and segmented retention;
-  the current core keeps bounded in-memory evidence and is not the journal design.
+- Integrate the explicit maintenance transport/cancellation with the owned runner
+  and add segmented retention; the current core keeps bounded in-memory evidence
+  and is not the journal design.
 - Implement the nonblocking stream-interval exchange and restoration-only failure
   path, then actual capture registration and injected end-to-end runner tests.
 - Independent whole-change review, final regression/evidence and PR publication.

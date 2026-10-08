@@ -22,7 +22,7 @@ class _TimesyncMaintenance:
         self._observer = observer
         self._baseline, self._last_observed = copy.deepcopy(last_status), copy.deepcopy(last_observed)
         self._listener, self._epoch = listener, epoch
-        self._now = self._last_progress = now_ns
+        self._handoff = self._now = self._last_progress = now_ns
         self._deadline, self._journal, self._source_failure = deadline_ns, journal, source_failure
         self._decoder = TimesyncListenerDecoder(0, 4096, now_ns, output_profile='px4-d6f12ad-multi-v1')
         self._lock = Lock()
@@ -31,6 +31,7 @@ class _TimesyncMaintenance:
         self._events = []
         self._cancel_journal_error = None
         self._pending_at_cancel = False
+        self._transport_claimed = False
         self._record('continuation_received', baseline=self._baseline, observer=self._last_observed,
                      deadline_ns=deadline_ns, counts_as_new_sample=False)
 
@@ -44,6 +45,8 @@ class _TimesyncMaintenance:
         healthy = (failure is None and self._phase == 'ready' and self._correlated > 0
                    and self._last_observed['accepted'])
         return dict(phase=self._phase, failure=failure, listener_token=self._listener,
+                    handoff_ns=self._handoff, deadline_ns=self._deadline,
+                    transport_claimed=self._transport_claimed,
                     raw_records_seen=self._seen, maintenance_correlated_samples=self._correlated,
                     modeled_accepted_samples=self._last_observed['modeled_accepted_samples'],
                     estimated_offset_us=self._last_observed['estimated_offset_us'],
@@ -109,6 +112,14 @@ class _TimesyncMaintenance:
     def check(self, *, now_ns, epoch_token):
         with self._step(now_ns, epoch_token):
             return self.progress
+
+    def _claim_transport(self, now_ns):
+        """Consume the single listener attachment, including a failed open."""
+        with self._step(now_ns, self._epoch):
+            if self._transport_claimed or self._phase != 'replay_pending':
+                self._fail('maintenance listener transport already claimed or progressed')
+            self._record('listener_transport_claim')
+            self._transport_claimed = True
 
     def reserve_reply(self, request_ns, response_ns, *, now_ns, epoch_token):
         with self._step(now_ns, epoch_token):
