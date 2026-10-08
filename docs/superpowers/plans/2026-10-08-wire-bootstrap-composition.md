@@ -35,7 +35,7 @@
 - [x] Independent read-only review; fix Important/Critical once with RED→GREEN.
 - [x] Freeze producer/source/dependency hashes and execute new matrix once; Expected:500 matched synthetic responses only in normal case, named faults refuse, all direct-owned children terminate with expected status and retained logs.
 - [x] Full Windows regression and WSL targeted suite, changedRuff/diff; Expected: passes with explicit platform skips.
-- [ ] Report/archive/hash/CRC, commit/push personal, update/verify/attach PR65.
+- [x] Report/archive/hash/CRC, commit/push personal, update/verify/attach PR65.
 
 ## Execution ledger
 Pre-flight: Task1 adds pure checks consumed by Task2; check must not call poll or reset deadlines. Actualreserve returns false-authority intent dict. Fixture uses rawbytes through pipe, not UDP.
