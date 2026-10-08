@@ -1,4 +1,4 @@
-"""Execute one frozen OpenVINS health physical run exactly once."""
+"""Execute one explicitly selected, frozen health or wire study exactly once."""
 
 from __future__ import annotations
 
@@ -94,9 +94,9 @@ def _absent_outputs(outputs):
 def prepare_live_wire_execution(manifest_path):
     """Read-only binding to this runner's record format, not an activation API.
 
-    The public execute/main entries continue to reject live-wire manifests.
-    The internal runner can be exercised with an explicitly fake runner in
-    offline tests. A later separately reviewed activation entry is required.
+    The health execute entry continues to reject live-wire manifests. This
+    prepared plan grants no authority; execute_live_wire requires a separate
+    explicit selection and the operator's authority for actual execution.
     """
     from tools.benchmark.live_wire_study import _equal, validate_live_wire_study_files
 
@@ -132,12 +132,49 @@ def prepare_live_wire_execution(manifest_path):
     }
 
 
+def execute_live_wire(manifest_path, *, approved_manifest_sha256,
+                      resources_fn, runner=subprocess.run):
+    """Select an exact manifest and retain one attempt; digest is not consent.
+
+    The operator must have separate authorization before using a real runner.
+    Neither the offline manifest nor the intent record certifies that authority.
+    """
+    if (type(approved_manifest_sha256) is not str
+            or len(approved_manifest_sha256) != 64
+            or any(c not in '0123456789abcdef' for c in approved_manifest_sha256)):
+        raise ValueError('invalid approved manifest digest')
+    plan = prepare_live_wire_execution(manifest_path)
+    if approved_manifest_sha256 != plan['study_manifest']['sha256']:
+        raise ValueError('approved manifest digest differs from validated manifest')
+    request = Path(plan['study_manifest']['requested']).parent / 'activation-request.json'
+    if os.path.lexists(request):
+        raise ValueError('activation request already exists: ' + str(request))
+    resolved = request.resolve()
+    for output in plan['outputs'].values():
+        candidate = Path(output).resolve()
+        if (candidate == resolved or candidate in resolved.parents
+                or resolved in candidate.parents):
+            raise ValueError('activation request and executor output paths overlap')
+    if resources_fn():
+        raise ValueError('competing resources present')
+    _write_x(request, {
+        'schema': 'live-wire-activation-request-v1',
+        'approved_manifest_sha256': approved_manifest_sha256,
+        'study_manifest': plan['study_manifest'],
+        'executor': plan['executor'],
+        'requested_wall_ns': time.time_ns(),
+        'request_is_not_dispatch': True,
+        'fusion_eligible': False,
+    })
+    return _execute_once(plan, resources_fn=resources_fn, runner=runner)
+
+
 def _execute_once(plan, *, resources_fn, runner):
     """Shared one-attempt mechanics; this private function is not authorization.
 
-    Production health execution supplies a validated health plan. Wire tests
-    supply the read-only prospective plan and a fake runner. There is no public
-    wire activation entry in this package and no default subprocess runner here.
+    Health and explicit wire entries supply validated plans. Offline tests supply
+    a fake runner. This private function has no default subprocess runner and
+    does not infer execution authority from a prepared plan.
     """
     from tools.benchmark.capture_contract import _typed_equal
 
@@ -216,9 +253,20 @@ def main(argv=None):
     from tools.benchmark.capture_disarmed_sensors import active_resources
 
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--study", type=Path, required=True)
+    route = parser.add_mutually_exclusive_group(required=True)
+    route.add_argument("--study", type=Path)
+    route.add_argument("--live-wire-study", type=Path)
+    parser.add_argument("--approved-manifest-sha256")
     parser.add_argument("--development-gate", type=Path)
     args = parser.parse_args(argv)
+    if args.live_wire_study is not None:
+        if args.approved_manifest_sha256 is None or args.development_gate is not None:
+            parser.error('wire study requires --approved-manifest-sha256 and forbids --development-gate')
+        return execute_live_wire(args.live_wire_study,
+                                 approved_manifest_sha256=args.approved_manifest_sha256,
+                                 resources_fn=active_resources)
+    if args.approved_manifest_sha256 is not None:
+        parser.error('--approved-manifest-sha256 requires --live-wire-study')
     return execute(args.study, resources_fn=active_resources, development_gate=args.development_gate)
 
 
