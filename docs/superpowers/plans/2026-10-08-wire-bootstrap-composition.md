@@ -22,19 +22,19 @@
 ### Task 1: Receive clocks and non-consuming health checks
 **Files:** tools/benchmark/openvins_timesync_wire.py, openvins_owned_bootstrap.py; corresponding tests.
 **Interfaces:** consumes existing failure latches; produces wire.check(), owned.check(), nondecreasingreceived_ns.
-- [ ] Add receive-regression/tie and check-without-I/O/deadline tests; run them RED.
-- [ ] Implement preserving current evidence, gates and counters; run relevant WSLunittest and Windowspytest GREEN.
-- [ ] Commit explicit paths.
+- [x] Add receive-regression/tie and check-without-I/O/deadline tests; run them RED.
+- [x] Implement preserving current evidence, gates and counters; run relevant WSLunittest and Windowspytest GREEN.
+- [x] Commit explicit paths.
 
 ### Task 2: Composed production gate and actual byte fixture
 **Files:** tools/benchmark/openvins_wire_bootstrap.py; tests/benchmark/test_openvins_wire_bootstrap.py; tests/benchmark/check_openvins_wire_bootstrap.py.
 **Interfaces:** consumes Task1 check methods and actualreserve callback; produces OwnedWireBootstrap poll/receive/progress/evidence/close.
-- [ ] Write real-codec WSL unit cases for every spec invariant; Expected: feature missing then behavioral RED where applicable.
-- [ ] Implement and pass cases without permissive fake reserve or liveauthority.
-- [ ] Build one explicit four-case process harness with fixed cases/expected outcomes and real child byte decode; compile/lint before execution, no blind reruns.
-- [ ] Independent read-only review; fix Important/Critical once with RED→GREEN.
-- [ ] Freeze producer/source/dependency hashes and execute new matrix once; Expected:500 matched synthetic responses only in normal case, named faults refuse, all direct-owned children terminate with expected status and retained logs.
-- [ ] Full Windows regression and WSL targeted suite, changedRuff/diff; Expected: passes with explicit platform skips.
+- [x] Write real-codec WSL unit cases for every spec invariant; Expected: feature missing then behavioral RED where applicable.
+- [x] Implement and pass cases without permissive fake reserve or liveauthority.
+- [x] Build one explicit four-case process harness with fixed cases/expected outcomes and real child byte decode; compile/lint before execution, no blind reruns.
+- [x] Independent read-only review; fix Important/Critical once with RED→GREEN.
+- [x] Freeze producer/source/dependency hashes and execute new matrix once; Expected:500 matched synthetic responses only in normal case, named faults refuse, all direct-owned children terminate with expected status and retained logs.
+- [x] Full Windows regression and WSL targeted suite, changedRuff/diff; Expected: passes with explicit platform skips.
 - [ ] Report/archive/hash/CRC, commit/push personal, update/verify/attach PR65.
 
 ## Execution ledger
