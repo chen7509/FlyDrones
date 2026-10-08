@@ -32,13 +32,13 @@ Produces: public `frame_features`, `parameter_mapping_digest`, frozen
 `CheckpointIdentity(checkpoint_sha256, config_digest, dataset_sha256)`,
 `load_inference_core(...) -> LoadedInferenceCore(core, provenance)` per spec.
 
-- [ ] Write and run RED cases for public feature parity, file hash/topology/
+- [x] Write and run RED cases for public feature parity, file hash/topology/
   mapping/feature-order refusal, tiny/full identity, checkpoint exact keys/dtypes/
   shapes/nonfinite data, metadata mismatch and fixed-buffer injection.
-- [ ] Reuse parameter/checkpoint loaders; expose unchanged feature/mapping code;
+- [x] Reuse parameter/checkpoint loaders; expose unchanged feature/mapping code;
   validate all checkpoint tensors before copying, disable gradients, retain
   ordinary pre/post hashes. No optimizer/global RNG restoration.
-- [ ] Run `python -m pytest tests/connectome_training/test_inference_artifact.py
+- [x] Run `python -m pytest tests/connectome_training/test_inference_artifact.py
   tests/connectome_training/test_parameters.py tests/connectome_training/test_curriculum.py
   tests/connectome_training/test_model.py -q`; expected all pass. Commit.
 
@@ -50,12 +50,12 @@ Files: add `src/flydrones/connectome_training/inference.py` and
 Consumes Task 1 loaded core/features; produces `InferenceLimits` and
 `ConnectomeInferenceController` with `step(SequenceFrame)->Decision`, reset/close.
 
-- [ ] RED: analytic raw output, parity with direct recurrent core, reset,
+- [x] RED: analytic raw output, parity with direct recurrent core, reset,
   correct ENU shaping, camera reuse and changed content, all time/refusal cases,
   nonfinite state/output, fail latch and terminal close.
-- [ ] Implement single-owner CPU synchronous state transaction and diagnostic
+- [x] Implement single-owner CPU synchronous state transaction and diagnostic
   evidence. Default envelope uses existing `shape_command`; no live I/O.
-- [ ] Run `python -m pytest tests/connectome_training -q`; expected all pass.
+- [x] Run `python -m pytest tests/connectome_training -q`; expected all pass.
   Commit implementation and Task 2 result.
 
 ## Task 3: Verification, evidence and resource decision
@@ -63,14 +63,14 @@ Consumes Task 1 loaded core/features; produces `InferenceLimits` and
 Files: report `docs/CONNECTOME_INFERENCE_ADAPTER_REPORT.md`; evidence directory
 `results/connectome-inference-adapter-dev-1701`; preserve this plan's ledger.
 
-- [ ] Run full pytest, changed Ruff and diff check; report every failure/skip.
-- [ ] One independent review of the package against this spec; fix meaningful
+- [x] Run full pytest, changed Ruff and diff check; report every failure/skip.
+- [x] One independent review of the package against this spec; fix meaningful
   findings with demonstrated RED/GREEN and relevant regression.
-- [ ] Recheck available RAM before any full-core construction. Below 4 GiB:
+- [x] Recheck available RAM before any full-core construction. Below 4 GiB:
   retain resource preflight and do not run full model. Otherwise independently
   predeclare bounded initialization-only CPU probe before executing; no reuse
   of tiny results to declare full inference or learning performance.
-- [ ] Record verified/implemented/unmeasured/failure boundaries, seal evidence
+- [x] Record verified/implemented/unmeasured/failure boundaries, seal evidence
   with member hashes/CRC, commit. Existing remote upload problem remains
   separate; no blind push retry, merge or history rewrite.
 
