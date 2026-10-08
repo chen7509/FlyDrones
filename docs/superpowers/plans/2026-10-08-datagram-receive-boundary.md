@@ -28,7 +28,7 @@
 - [x] Implement bounded adapter and pass tests; no real socket operations.
 - [x] Final read-only review and one Important/Critical RED→GREEN pass.
 - [x] Full pytest, changed Ruff/diff; preserve counts/skips/failed counterexamples.
-- [ ] Report and exclusive evidence/hash/CRC, commit/push personal, update/verify/attach PR65.
+- [x] Report and exclusive evidence/hash/CRC, commit/push personal, update/verify/attach PR65.
 
 ## Ruling
 User explicitly preapproved every routine step; no repeated plan approval. Current authority remains offline. Do not extend this stage to a real network study just because code can accept a real socket.
