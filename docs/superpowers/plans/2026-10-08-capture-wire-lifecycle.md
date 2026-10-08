@@ -93,7 +93,7 @@ with injected factories in tests. Execution declaration binds the new mode.
   RED/GREEN; explicitly document any remaining Minor.
 - [x] Focused regressions, changed Ruff and diff-check. Broaden only for uncovered
   behavior or failures; do not claim old full-suite results as current.
-- [x] Seal normal/failure in-process evidence, selected source hashes and report;
+- [ ] Seal normal/failure in-process evidence, selected source hashes and report;
   update status matrix, push personal only, verify/update draftPR65 and attach it.
 
 ## Review focus

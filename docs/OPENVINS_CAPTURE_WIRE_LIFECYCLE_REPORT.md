@@ -689,3 +689,9 @@ normal/failed runs, RED/GREEN outputs, expanded regression failure/retry, resear
 selected tested-source snapshots and the whole-plan review package remain preserved.
 This completes the offline implementation scope; it does not complete the FlyDrones
 goal or establish actual capture/PX4/network/fusion qualification.
+
+Publication status: code through `e4312ed` reached draftPR65. Archive commit
+`deb78be` is local: repeated HTTPS pushes returned HTTP408 (one retry also failed
+TLS handshake), and remote-head checks confirmed no archive publication. A small
+code-only fast-forward succeeded. Task4 final publication therefore remains open;
+no evidence was deleted or certificate verification disabled.
