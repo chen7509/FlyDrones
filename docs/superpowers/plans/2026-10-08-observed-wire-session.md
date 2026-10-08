@@ -26,6 +26,8 @@ Interfaces: DatagramReceiver.check/progress; JournaledSimulationClock.validate_s
 - [x] WSL actual-class composition tests first, including normal500 and bounded failures; implement one-socket path.
 - [x] Independent whole-change review; reproduce and repair Important/Critical findings in one pass.
 - [x] Related Windows and WSL regressions, changed Ruff/diff; retain skipped dependency scope.
-- [ ] Report/research hashes/sealed evidence; commit/push personal/update and verify draftPR65.
+- [x] Report/research hashes/sealed evidence; commit/push personal/update and verify draftPR65.
+
+Publication artifacts: report OPENVINS_OBSERVED_WIRE_SESSION_REPORT.md; production a034562; seal 3c6835f. ZIP SHA256 5338b4f98872f6c72dd74051ab2a8349889df7fe871a6dc4157d85e3bf1d36e8 (51 members). Remote publication verification is retained separately in the results directory; the archive intentionally captures the pre-publication checklist.
 
 Ruling: prior explicit user preapproval covers routine stages. Independent review is required by executing-plans. Keep the existing worktree/evidence; do not clean it. Targeted integration/dependency suites are appropriate; no fresh full-repository pass unless a new concern warrants it.
