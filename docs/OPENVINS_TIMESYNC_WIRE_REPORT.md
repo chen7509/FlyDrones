@@ -110,3 +110,11 @@ a new training study.
 Next work is concrete bounded receive/send ownership plus correlated interval
 ACK/query transport, with offline refusal testing first. The overall FlyDrones
 goal remains open; this report is one dependency, not final drone readiness.
+
+Sealed archive: `evidence/openvins-timesync-wire-dev-1701.zip`,54members,
+94248bytes, SHA256
+`52dc2f8e459f08d208f5d605c6d3de4b38514562160ab82cef0a9417651c3944`.
+Every member hash and CRC verified; preceding owned-bootstrap archive unchanged.
+Archive includes the pre-publication report and post-test selected source copies;
+the eight files checked by the WSL wrapper stayed stable. It is not a complete
+OS/runtime closure snapshot or an actual flight capture.

@@ -40,7 +40,7 @@
 
 - [x] Independent read-only review of current stage. Fix Important/Critical findings once with behavioral RED→GREEN and regressions.
 - [x] Run full Windows pytest once after final changes; Expected: pass with existing skips plus explicit missing-codec skip. Do not claim it replaces WSL codec tests.
-- [ ] Seal all selected research/test evidence with member hashes/CRC, no old archive overwrite; accurately separate historical probe from final code.
+- [x] Seal all selected research/test evidence with member hashes/CRC, no old archive overwrite; accurately separate historical probe from final code.
 - [ ] Commit/push personal and update/attach draft PR65; verify remote head and body.
 
 ## Execution ledger
