@@ -1,0 +1,184 @@
+"""Independent PostUpdate clock evidence, with no transport or live authority.
+
+The caller binds the callback to an owned TestFixture and supplies its guard.
+This module does not prove that binding or PX4's consumption of its clock topic.
+Journal callbacks require outer supervision; they cannot be preempted here.
+"""
+from __future__ import annotations
+
+import copy
+import re
+from dataclasses import asdict, dataclass
+from datetime import timedelta
+from threading import Lock, RLock
+
+from tools.benchmark.owned_daemon_connection import _error
+
+
+@dataclass(frozen=True)
+class ClockObservation:
+    iteration: int
+    sim_ns: int
+    callback_ns: int
+    journal_return_ns: int
+
+
+@dataclass(frozen=True)
+class ClockSelection:
+    observation: ClockObservation
+    received_ns: int
+    selected_ns: int
+
+
+class JournaledSimulationClock:
+    STEP_NS = 1_000_000
+    FRESHNESS_NS = 2_000_000_000
+    MAX_SAMPLES = 25_000
+
+    def __init__(self, session_id, now, journal, start_ns, guard):
+        if (type(session_id) is not str or re.fullmatch(r'[A-Za-z0-9_.:-]{1,128}', session_id) is None
+                or not all(callable(f) for f in (now, journal, guard))
+                or type(start_ns) is not int or not 0 <= start_ns < 2**64):
+            raise ValueError('explicit simulation session/clock/journal/guard required')
+        self._session = session_id
+        self._now, self._journal, self._guard = now, journal, guard
+        self._start = self._last_now = start_ns
+        self._state, self._writer = RLock(), Lock()
+        self._checking = False
+        self._latest = self._pending_ns = self._failure = None
+        self._observations, self._attempts = [], []
+
+    @property
+    def session_id(self):
+        return self._session
+
+    @property
+    def evidence(self):
+        with self._state:
+            return dict(session_id=self._session, observations=[asdict(x) for x in self._observations],
+                        attempts=copy.deepcopy(self._attempts), failure=self._failure,
+                        pending_callback_ns=self._pending_ns, runtime_source_proven=False,
+                        px4_clock_consumption_proven=False, network_authorized=False, fusion_qualified=False)
+
+    def _open(self):
+        if self._failure is not None:
+            raise ValueError('simulation clock failure latched: ' + self._failure)
+
+    def _fail(self, exc):
+        with self._state:
+            if self._failure is None:
+                self._failure = 'simulation clock refusal'
+                self._failure = _error(exc)
+
+    def _clock_locked(self):
+        self._open()
+        value = self._now()
+        self._open()
+        if type(value) is not int or not self._last_now <= value < 2**64:
+            raise ValueError('invalid or regressed simulation observation wall clock')
+        self._last_now = value
+        return value
+
+    def _check_locked(self, *, return_entry=False):
+        self._open()
+        if self._checking:
+            self._fail(ValueError('reentrant clock/guard check'))
+            self._open()
+        self._checking = True
+        try:
+            entry = self._clock_locked()
+            if self._guard() is not None:
+                raise ValueError('simulation session guard must return None')
+            self._open()
+            now = self._clock_locked()
+            if return_entry and now - entry >= self.FRESHNESS_NS:
+                raise ValueError('callback entry freshness expired during guard')
+            for origin in (self._latest.callback_ns if self._latest else None, self._pending_ns):
+                if origin is not None and now - origin >= self.FRESHNESS_NS:
+                    raise ValueError('simulation clock source freshness expired')
+            return entry if return_entry else now
+        finally:
+            self._checking = False
+
+    def check(self):
+        try:
+            with self._state:
+                self._check_locked()
+        except BaseException as exc:
+            self._fail(exc)
+            raise
+
+    @staticmethod
+    def _duration(value):
+        if type(value) is not timedelta:
+            raise ValueError('exact timedelta required for installed UpdateInfo profile')
+        return ((value.days * 86400 + value.seconds) * 1_000_000 + value.microseconds) * 1000
+
+    def post_update(self, info, ecm=None):
+        """A single writer; no ECM/pose/sensor data enters this clock lane."""
+        if not self._writer.acquire(blocking=False):
+            exc = ValueError('concurrent simulation clock writer')
+            self._fail(exc)
+            raise exc
+        attempt = None
+        try:
+            with self._state:
+                callback_ns = self._check_locked(return_entry=True)
+                if len(self._observations) >= self.MAX_SAMPLES:
+                    raise ValueError('simulation clock sample limit')
+                self._pending_ns = callback_ns
+                iteration, sim_time, dt, paused = info.iterations, info.sim_time, info.dt, info.paused
+                sim_ns, dt_ns = self._duration(sim_time), self._duration(dt)
+                if (type(iteration) is not int or iteration != len(self._observations) + 1
+                        or type(paused) is not bool or paused
+                        or dt_ns != self.STEP_NS or sim_ns != iteration * self.STEP_NS):
+                    raise ValueError('simulation profile gap/pause/reset/type mismatch')
+                attempt = dict(kind='clock_observation_attempt', session_id=self._session,
+                               iteration=iteration, sim_ns=sim_ns, dt_ns=dt_ns,
+                               paused=paused, callback_ns=callback_ns)
+                self._attempts.append(attempt)
+            # Publish only after a successful return. Readers may still obtain
+            # the last committed sample while this journal callback is pending.
+            result = self._journal(copy.deepcopy(attempt))
+            with self._state:
+                returned = self._clock_locked()
+                attempt['journal_return_ns'] = returned
+                if result is not None:
+                    raise ValueError('clock journal must return None')
+                self._check_locked()
+                observation = ClockObservation(iteration, sim_ns, callback_ns, returned)
+                self._observations.append(observation)
+                self._latest = observation
+                attempt['accepted'] = True
+                self._pending_ns = None
+        except BaseException as exc:
+            self._fail(exc)
+            with self._state:
+                if attempt is not None:
+                    attempt['accepted'] = False
+                    attempt['error'] = self._failure
+            if not isinstance(exc, Exception):
+                raise
+            raise ValueError(_error(exc)) from exc
+        finally:
+            self._writer.release()
+
+    def snapshot(self, received_ns):
+        """Select current reply-preparation time, not time at packet receipt.
+
+        Selection does not refresh the sample or consume a TIMESYNC identity.
+        A caller must recheck this lane before its later side effect.
+        """
+        try:
+            with self._state:
+                now = self._check_locked()
+                if type(received_ns) is not int or not self._start <= received_ns <= now:
+                    raise ValueError('invalid packet receipt clock')
+                if now - received_ns >= self.FRESHNESS_NS:
+                    raise ValueError('packet receipt freshness expired')
+                if self._latest is None:
+                    raise ValueError('no committed simulation observation')
+                return ClockSelection(self._latest, received_ns, now)
+        except BaseException as exc:
+            self._fail(exc)
+            raise
