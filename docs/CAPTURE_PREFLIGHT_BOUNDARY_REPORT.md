@@ -100,3 +100,15 @@ Every member and ZIP CRC verified. Producer: `47b3fd1af2e1c3f741adf759615a2a120c
 Source copies were recorded after `regression-v2`, not claimed as a runtime
 pre/post freeze. The included report precedes this seal paragraph. Prior stage
 archives, failed physical studies and pending-upload records remain unchanged.
+
+## Publication limitation
+
+The Git remote still reports `e4312ed`; this correction and both local archive
+commits have not reached PR65. The previous Git push ended with HTTP 408. A
+GitHub Git-database API trial recreated the existing `e4312ed` object with the
+identical hash, establishing an exact-object alternative without rewriting
+history. Two small blobs uploaded, but the 25 MB archive blob request exceeded
+its 300-second bound. A subsequent HEAD request for that exact blob returned
+404 and the branch still pointed to `e4312ed`. No reference was moved. Requests,
+responses and the timeout are retained under the results directory; no TLS check
+was disabled. This is a publication blocker, not a VIO or learning failure.
