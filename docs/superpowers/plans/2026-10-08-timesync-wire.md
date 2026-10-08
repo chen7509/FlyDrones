@@ -41,10 +41,17 @@
 - [x] Independent read-only review of current stage. Fix Important/Critical findings once with behavioral RED→GREEN and regressions.
 - [x] Run full Windows pytest once after final changes; Expected: pass with existing skips plus explicit missing-codec skip. Do not claim it replaces WSL codec tests.
 - [x] Seal all selected research/test evidence with member hashes/CRC, no old archive overwrite; accurately separate historical probe from final code.
-- [ ] Commit/push personal and update/attach draft PR65; verify remote head and body.
+- [x] Commit/push personal and update/attach draft PR65; verify remote head and body.
 
 ## Execution ledger
 
 Pre-flight: Task1 produces code/tests consumed by Task2 report/archive; installed codec probe is research only, not final adapter proof.
 Ruling: use stdlib unittest in WSL because installed pymavlink exists there but pytest does not; no dependency install. Windows pytest skip is reported separately; cost if wrong is missing Linux test collection, prevented by explicit unittest run.
 Ruling: preserve plan workspace and all evidence despite generic cleanup advice, per user's explicit preservation instruction.
+
+Task1 completed789b78e..dacad9e: finalWSL42passed and eight selected file hashes
+unchanged; Windowsadjacent141passed/1skip, full3193passed/4skip/2existing warnings.
+Task2 evidence54members sealed52dc2f8e459f08d208f5d605c6d3de4b38514562160ab82cef0a9417651c3944.
+PR65 head6c2b3f5 and exactbody/draft verified after push to personal; artifact
+attached. No actualPX4/UDP/fusion authority. Receivedtimestamp monotonicity is
+one deferredMinor, documented explicitly in report and next dependency note.
