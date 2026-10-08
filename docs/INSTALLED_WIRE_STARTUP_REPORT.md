@@ -119,3 +119,17 @@ failure/restore acceptance. This result does not itself activate that study.
 ODOMETRY, EKF2 parameter changes/injection, arming, training and 5/20-aircraft
 expansion remain outside this startup result. Full fruit-fly learning/division
 and fair upstream-baseline comparisons remain downstream goals.
+
+## Evidence seal
+
+`evidence/installed-wire-startup-dev-1701.zip` contains 93 members (728,872 bytes),
+SHA256 `b9c25ae47336904033c9d557b04e66bf9b57dae70e6eb837ce4c85af8b0092de`.
+CRC, unique member names, exact manifest membership, lengths and every member
+SHA256 were checked after creation. The original source archive is referenced by
+hash and consumed-member identities rather than duplicated. This archive includes
+all 79 study/harness/log files present before sealing, including the sibling
+supervisor journal, plus selected production source copies and the prior design.
+Source copies were matched to the pre-run committed-source SHA256 map; their
+copying happened after the run. The archived report is the pre-seal version from
+`4b38e9f`, while the actual study producer remains `600ada0`. No study was rerun.
+This seal is local; remote archive publication remains a separate pending check.
