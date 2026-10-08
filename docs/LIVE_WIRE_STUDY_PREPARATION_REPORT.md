@@ -488,3 +488,47 @@ output (five production counterexamples and one test-construction issue), final
 regressions, source copies and ledger. Synthetic journals use temporary test
 directories; their generators and outcomes are preserved, not a new physical
 capture. The archived report precedes this seal paragraph.
+
+## Shared-clock fixture integration (partial)
+
+The old protocol unit fixture's remote origin is 1 ms, while the prospective
+study requires origins 0/0. A new explicitly synthetic fixture uses the latter
+without rewriting old records. It runs the production observed-session, codec,
+clock and segmented journal classes with fake datagram/daemon/owner interfaces.
+Each timesync response uses the simulation epoch actually committed to the
+fixture's shared clock. Its 500 startup pairs and 149 maintenance pairs span a
+25-second synthetic timeline, including both legal non-counting boundaries.
+The chosen simulation-to-wall schedule is test data, not a measured RTF.
+
+Physical callback rows and source arrivals share that timeline. The generator
+retains 25,000 clock/reference cycles, 50,000 pre/post rows, 6,251 IMU and 251
+RGB/CameraInfo/depth events. CameraInfo uses actual installed protobuf encoding;
+the existing CausalInput and packet encoder generate 6,501 sensor requests.
+ACKs and stationary physical states are synthetic. All 250 camera states remain
+uninitialized and derived health remains quality zero. No estimator process ran.
+
+The test discards the generator's in-memory output and reads the files using
+the production bounded reader before invoking eight real auditors, with no leaf
+auditor doubles. Cross-clock corruptions are refused. This joins protocol,
+interval, listener, physical coverage, source/native, camera, health and watchdog
+checks; it does **not** complete the full normal study fixture. Initialized motion,
+anchor/gauge, fast predictions, resource/runtime bindings, ULog and the actual
+file-entry composition still need to be joined. All whole-study/live/fusion and
+physical-execution qualification flags remain false.
+
+The first fixture attempt failed during construction because the interval-mode
+heartbeat consumer was omitted. It is retained as a fixture setup failure, not
+a production regression or behavioral RED. After supplying that explicit fake
+consumer, the joined tests and existing WSL protocol/interval/listener tests
+passed 12 unittest methods in 45.201 seconds. Windows source-generator and
+coverage/health/safety regressions passed 129 tests in 49.22 seconds. Installed
+protobuf deprecation warnings are retained. No full-repository or live validation
+is claimed, and no production algorithm changed in this increment.
+
+The retained `joined-clock-source-v1` synthetic bundle was independently read
+back and passed those same eight checks over 524 consumed files. Fifty-six
+already-loaded repository source files were copied and hashed before generation
+and checked afterward. Two generator dependencies loaded later
+(`live_wire_source_fixture.py` and `test_live_wire_camera_info.py`) have only
+post-load hashes in this run; that limitation is explicit and is not repaired
+retroactively. The bundle is not a complete runtime freeze or physical evidence.
