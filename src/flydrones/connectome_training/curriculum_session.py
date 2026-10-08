@@ -210,6 +210,12 @@ def _sequence_directories(paths: tuple[str, ...]) -> list[TrainingSequence]:
             )
     if not sequence_paths:
         raise ValueError("sequence evidence paths contain no sequence manifests")
+    selected: set[Path] = set()
+    for path in sequence_paths:
+        identity = path.resolve(strict=True)
+        if identity in selected:
+            raise ValueError(f"duplicate sequence directory: {path}")
+        selected.add(identity)
     return [load_sequence(path) for path in sequence_paths]
 
 
