@@ -554,9 +554,11 @@ def main():
     archive_sha = hashlib.sha256(archive.read_bytes()).hexdigest()
     if archive_sha != "669f3646e74c4e95826f12e79b456aba861a5b4003087541ce7dc1dc8cd1f4f3":
         raise ValueError("development scene seal changed")
-    # Reserve the intended local receiver before simulation; no remote endpoint is used.
-    with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as probe:
-        probe.bind(("127.0.0.1", 14548))
+    # A point-in-time port check, not a reservation for the later receiver.
+    # Startup preflight validates files only and must not create a network endpoint.
+    if not args.startup_preflight:
+        with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as probe:
+            probe.bind(("127.0.0.1", 14548))
     if contract["schema"] == "capture-execution-v1":
         output.mkdir(parents=True, exist_ok=False)
     input_hashes = {}
@@ -612,7 +614,7 @@ def main():
         "errors": errors,
         "eligible_for_vio_input": False,
         "eligible_for_px4_fusion": False,
-        "estimator_run": bool(args.shadow_binary),
+        "estimator_run": bool(args.shadow_binary) and not args.startup_preflight,
         "capture_schema": "disarmed-sensors-v2",
         "physics_trace_profile": args.physics_trace_profile,
         "reference_profile": "supported-ready-native-reference-v1" if args.reference_module else None,
