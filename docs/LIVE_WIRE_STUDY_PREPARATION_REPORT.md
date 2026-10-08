@@ -110,3 +110,15 @@ review record and selected current production source snapshots. Producer/report
 commit is `8b18f0b`; the archived report precedes this seal paragraph. The earlier
 `design-check-v1.json` binds the pre-clarification plan at `cc7db35`, while this
 archive manifest binds the final version. Neither is a runtime pre/post freeze.
+
+## Offline implementation progress evidence
+
+Producer commit `5d88e62` follows Task 1 commit `a042dd6`.
+`evidence/live-wire-study-offline-progress-dev-1701.zip` contains 21 members,
+37,388 bytes, SHA256
+`eaae9323953f644a5e8b182071f229fdb6178c21a637ad12dac0aa5b248a782e`.
+All member hashes/lengths and ZIP CRC were verified. The archive retains both
+REDs, the transient regression failure and its reruns, source/tests, the reviewed
+spec/plan and reports before this seal paragraph. It is an interim progress
+archive, not completion of Tasks 2–3 or the whole-package independent review.
+These commits/artifacts are local; no successful remote upload is claimed.
