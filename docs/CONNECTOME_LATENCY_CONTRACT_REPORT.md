@@ -106,6 +106,19 @@ groups loader fixture. Changed-file Ruff and `git diff --check` pass. The initia
 Ruff invocation corrected five import/modernization issues before the full suite.
 Logs are retained in `results/connectome-latency-contract-dev-1701`.
 
+After source commit `51a35d7`, one explicit fake CLI check retained 30 raw samples
+and reported `eligible=false`, `passed=false`, reason `not_complete_model`. It is
+an instrumentation check, not a new full-model benchmark.
+
+Evidence archive: `evidence/connectome-latency-contract-dev-1701.zip`, 20 members,
+SHA-256 `45f08b7b381d1725e147404e4e6b385f3aa08e40d0aeabc8ba71745f1cd12f10`.
+All member hashes, lengths and ZIP CRC were verified. It includes historical
+baseline/initialization/smoke JSON copies, current source snapshots, RED/GREEN/full
+regression logs, the review note and next-inference research. Copies are explicitly
+post-verification snapshots; the report inside precedes this seal paragraph. The
+original baseline SHA-256 is unchanged. Code and evidence are local pending the
+previously retained remote publication problem; no push retry is claimed here.
+
 ## Next dependency
 
 Before claiming full learned fruit-fly performance, design an inference-only
