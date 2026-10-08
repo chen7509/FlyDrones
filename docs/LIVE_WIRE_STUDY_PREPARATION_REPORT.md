@@ -336,3 +336,13 @@ its earlier auditor bytes were reconstructed afterward and matched exactly to
 the source hash recorded by the probe. This is explicitly a verified post-run
 reconstruction, not a pre-run source copy. The archived report precedes this seal
 paragraph. No whole-study qualification, live run or remote upload is claimed.
+
+Coverage increment producer `9145ea9` is preserved in
+`evidence/live-wire-coverage-offline-progress-dev-1701.zip`: 42 members,
+124,342 bytes, SHA256
+`1071768d86ccb248cf25a9e7deb03b95da9ad8cbdc21fc5d53fce1213dec27cd`.
+All member bytes/hashes and ZIP CRC were verified. The archive includes the
+intermediate failures, final 336-test regression, fixed-input identity records,
+source provenance and explicit partial-completion boundaries. Existing physical
+inputs are referenced by hash, not duplicated or changed. The archived report
+precedes this seal paragraph; publication remains local.
