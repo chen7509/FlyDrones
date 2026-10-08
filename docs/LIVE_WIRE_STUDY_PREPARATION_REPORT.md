@@ -57,11 +57,37 @@ rate is predicted from this calculation and no timeout is increased.
 
 ## Next work
 
-Execute Task 1 of `docs/superpowers/plans/2026-10-08-live-wire-study.md`: a pure
-prospective validator and read-only file adapter, with negative tests for
-startup-only substitution, omitted native load, clock scope and declaration drift.
-Then build the raw-chain auditor and freeze a complete reviewable package before
-considering any live activation. All three implementation tasks are still open.
+Task 1 of `docs/superpowers/plans/2026-10-08-live-wire-study.md` is implemented:
+`live_wire_study.py` validates the exact prospective schema and production command,
+then separately verifies real file identities, the full declared dependency
+snapshot and all four frozen estimator configuration files. Pure validation
+performs no file/process/network I/O. The file adapter is preparation-only,
+rejects existing/colliding outputs and never starts the runtime. Producer commit
+is declared, not independently attested by these APIs. All live/fusion results
+remain false even after preparation succeeds.
+
+The 41 new tests include strict types/profiles/load/clock/session, missing or
+changed inputs, omitted calibration/freeze declarations, forbidden runtime effects
+and output collisions. Initial RED was a missing-API assertion, not an existing
+behavior regression. A separate deterministic boundary test reproduced acceptance
+of an output created during the final dependency read; the final output recheck
+fixed it. Four other boundary tests already passed and are not claimed as fixes.
+This remains ordinary drift observation, not an atomic output reservation or a
+guarantee against changes after return.
+
+The related six-file regression suite passed **172 tests, 2 skipped** in 20.50 s;
+changed-file Ruff passed. Earlier run `regression-green-v2.txt` actually contains
+**1 failed, 171 passed, 2 skipped**: an existing preflight test rejected a change
+in `stat()` values while reading its execution declaration. Its isolated rerun
+passed, then the identical six-file suite passed. Both outcomes are retained in
+`results/live-wire-study-contract-dev-1701`; the transient cause is unproven,
+and no capture/worker code was changed or repair of that issue claimed. The two
+skips are the existing Windows symlink permission cases. No full repository or
+physical test result is claimed for this stage.
+
+Tasks 2–3 remain open: build the raw-chain auditor, then freeze and independently
+review a complete package before considering any live activation. The validator
+tests use explicitly synthetic files and do not qualify installed resources.
 
 The broader goal remains open: actual VIO-to-EKF2 fusion, complete fruit-fly
 learning/division in that closed loop, fair upstream comparison, 5/20-aircraft

@@ -61,22 +61,22 @@ Reuse only pure shape/value validators in the document layer. Existing
 `capture_contract.validate_declaration`, `execution_contract` and
 `wire_configuration_record` access the filesystem and belong in the file adapter.
 
-- [ ] Read relevant committed capture contracts, installed-startup artifacts and
+- [x] Read relevant committed capture contracts, installed-startup artifacts and
   the spec. Define exact manifest schema `live-wire-study-v1`, explicit study ID,
   producer commit, development seed 27601, expected normal outcome, command,
   input file identities, selected profiles, clock scope, limits, audit-version
   hash and output paths. Reject unknown/missing keys and bool-as-int.
-- [ ] Write failing tests for valid unchanged full-load input, startup-only flag,
+- [x] Write failing tests for valid unchanged full-load input, startup-only flag,
   missing native/config/reference inputs, synthetic epoch scope, wrong limits,
   modified wire config, profile drift, duplicate/colliding output paths, nonlocal
   endpoint and unknown authority fields. All qualification outputs start false.
-- [ ] Run `python -m pytest tests/benchmark/test_live_wire_study.py -q`; retain
+- [x] Run `python -m pytest tests/benchmark/test_live_wire_study.py -q`; retain
   the actual RED cause, distinguishing missing API from behavior assertions.
-- [ ] Implement the strict pure contract by invoking existing pure validators and
+- [x] Implement the strict pure contract by invoking existing pure validators and
   comparing explicit required invariants, never reconstructing lookup order.
   The file adapter must compare exact declared hashes and preserve lexical and
   resolved identities; missing files refuse rather than get omitted.
-- [ ] Add guards against network/process effects and Gazebo runtime imports to
+- [x] Add guards against network/process effects and Gazebo runtime imports to
   the file adapter, plus a failed hash/missing-file case. An ordinary `subprocess`
   module import through existing validators is allowed; spawning is not. Run the
   new tests plus capture-contract regressions;
