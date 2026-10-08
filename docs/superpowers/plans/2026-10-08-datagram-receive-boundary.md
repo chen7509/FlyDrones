@@ -23,11 +23,11 @@
 ### Task 1: Read boundary and offline fault matrix
 **Files:** tools/benchmark/openvins_datagram_receive.py; tests/benchmark/test_openvins_datagram_receive.py.
 **Interfaces:** DatagramReceiver.poll→ReceivedDatagram or None; evidence retains returned data/failure and false authority.
-- [ ] Retain fixed API/source/license/reuse research.
-- [ ] Write synthetic normal/boundary/fault cases; record initial RED accurately.
-- [ ] Implement bounded adapter and pass tests; no real socket operations.
-- [ ] Final read-only review and one Important/Critical RED→GREEN pass.
-- [ ] Full pytest, changed Ruff/diff; preserve counts/skips/failed counterexamples.
+- [x] Retain fixed API/source/license/reuse research.
+- [x] Write synthetic normal/boundary/fault cases; record initial RED accurately.
+- [x] Implement bounded adapter and pass tests; no real socket operations.
+- [x] Final read-only review and one Important/Critical RED→GREEN pass.
+- [x] Full pytest, changed Ruff/diff; preserve counts/skips/failed counterexamples.
 - [ ] Report and exclusive evidence/hash/CRC, commit/push personal, update/verify/attach PR65.
 
 ## Ruling
