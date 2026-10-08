@@ -402,6 +402,107 @@ def retain_supervisor_ulogs(summary, runtime, output, *, collector=collect_ulogs
         return dict(errors=[repr(exc)], runtime_retained=str(runtime))
 
 
+def run_capture_runtime(*, journal, output, result, errors, fixture, post_update,
+                        wire_owner, source_guard, binding, owned_ready, owned_processes,
+                        read_heartbeats, stop, binary, build, runtime, env, clock, writer,
+                        shadow, motion, contract, started, spawn=None, thread_factory=None,
+                        monotonic=None):
+    """Production stepping/ownership path; external services may be injected.
+
+    Preparation and sensor/native construction remain in main. This runner uses
+    those exact prepared objects and the existing CaptureJournal cleanup order.
+    """
+    spawn = subprocess.Popen if spawn is None else spawn
+    thread_factory = threading.Thread if thread_factory is None else thread_factory
+    monotonic = time.monotonic if monotonic is None else monotonic
+    server = None
+    if wire_owner is None:
+        fixture.on_post_update(post_update)
+        fixture.finalize()
+        server = fixture.server()
+        if binding:
+            binding.observe("postfinalize")
+    if source_guard:
+        watchdog_stop = threading.Event()
+
+        def watch_sources():
+            while not watchdog_stop.wait(0.05):
+                try:
+                    source_guard.check(time.monotonic_ns())
+                except Exception as exc:
+                    result["source_watchdog_failure"] = dict(
+                        source_guard.snapshot(), checked_ns=time.monotonic_ns(), reason=repr(exc)
+                    )
+                    errors.append("source watchdog: " + repr(exc))
+                    return
+
+        watchdog_thread = thread_factory(target=watch_sources, daemon=True)
+        watchdog_thread.start()
+        journal.cleanup("source watchdog", lambda: (watchdog_stop.set(), watchdog_thread.join(timeout=1)), priority=10)
+    if wire_owner is None:
+        heartbeat_thread = thread_factory(target=read_heartbeats, daemon=True)
+        heartbeat_thread.start()
+        journal.cleanup("heartbeat", lambda: (stop.set(), heartbeat_thread.join(timeout=3)), priority=40)
+    log = (output / "px4.log").open("x")
+    journal.cleanup("log close", log.close, priority=70)
+    process = spawn(
+        [str(binary), "-i", "8", "-d", str(build / "etc")],
+        cwd=runtime,
+        env=env,
+        stdout=log,
+        stderr=subprocess.STDOUT,
+        start_new_session=False,
+    )
+    def stop_px4():
+        if binding and "px4" in binding.required_owned and owned_ready["px4"]:
+            try:
+                binding.observe_owned("px4", "prestop")
+            except Exception as exc:
+                errors.append("PX4 runtime mapping: " + repr(exc))
+        if process.poll() is None:
+            process.terminate()
+            try:
+                process.wait(timeout=10)
+            except subprocess.TimeoutExpired:
+                process.kill()
+                process.wait(timeout=5)
+                errors.append("owned PX4 required SIGKILL")
+        result["px4_exit_code"] = process.returncode
+
+    journal.cleanup("owned PX4", stop_px4, priority=20)
+    if binding and "px4" in binding.required_owned:
+        binding.register_owned("px4", process, binary)
+        owned_processes["px4"] = process
+    with (output / "process.json").open("x") as f:
+        json.dump({"pid": process.pid, "args": process.args, "started_wall_ns": time.time_ns()}, f, indent=2)
+    if source_guard:
+        source_guard.start(time.monotonic_ns())
+    if wire_owner is not None:
+        wire_owner.bind(process, fixture, post_update)
+        fixture.finalize()
+        server = fixture.server()
+        if binding:
+            binding.observe('postfinalize')
+        wire_owner.driver.start()
+    first_step_observed = False
+    while clock["sim_ns"] < contract["simulation_duration_ns"]:
+        if errors or writer.error:
+            raise RuntimeError("capture callback/writer failure: " + str(errors or writer.error))
+        if shadow and shadow.failure:
+            raise RuntimeError("shadow failure: " + shadow.failure)
+        if process.poll() is not None:
+            raise RuntimeError("PX4 exited during capture")
+        wall_budget = contract["wall_budget_s"]
+        if monotonic() - started > wall_budget:
+            raise TimeoutError(f"capture exceeded{wall_budget}s wall budget")
+        if not server.run(True, 10 if motion else 1000, False):
+            raise RuntimeError("Gazebo rejected simulation run")
+        if binding and binding.required_self and not first_step_observed:
+            binding.observe("postfirststep")
+            first_step_observed = True
+    result["status"] = "capture_completed"
+
+
 def main():
     args = parse_capture_args()
     binding_doc = None
@@ -943,92 +1044,14 @@ def main():
             elif motion:
                 motion.post_update(info, _ecm)
 
-        server = None
-        if wire_owner is None:
-            fixture.on_post_update(post_update)
-            fixture.finalize()
-            server = fixture.server()
-            if binding:
-                binding.observe("postfinalize")
-        if source_guard:
-            watchdog_stop = threading.Event()
-
-            def watch_sources():
-                while not watchdog_stop.wait(0.05):
-                    try:
-                        source_guard.check(time.monotonic_ns())
-                    except Exception as exc:
-                        result["source_watchdog_failure"] = dict(
-                            source_guard.snapshot(), checked_ns=time.monotonic_ns(), reason=repr(exc)
-                        )
-                        errors.append("source watchdog: " + repr(exc))
-                        return
-
-            watchdog_thread = threading.Thread(target=watch_sources, daemon=True)
-            watchdog_thread.start()
-            journal.cleanup("source watchdog", lambda: (watchdog_stop.set(), watchdog_thread.join(timeout=1)), priority=10)
-        if wire_owner is None:
-            heartbeat_thread = threading.Thread(target=read_heartbeats, daemon=True)
-            heartbeat_thread.start()
-            journal.cleanup("heartbeat", lambda: (stop.set(), heartbeat_thread.join(timeout=3)), priority=40)
-        log = (output / "px4.log").open("x")
-        journal.cleanup("log close", log.close, priority=70)
-        process = subprocess.Popen(
-            [str(binary), "-i", "8", "-d", str(build / "etc")],
-            cwd=runtime,
-            env=env,
-            stdout=log,
-            stderr=subprocess.STDOUT,
-            start_new_session=False,
+        run_capture_runtime(
+            journal=journal, output=output, result=result, errors=errors, fixture=fixture,
+            post_update=post_update, wire_owner=wire_owner, source_guard=source_guard,
+            binding=binding, owned_ready=owned_ready, owned_processes=owned_processes,
+            read_heartbeats=read_heartbeats, stop=stop, binary=binary, build=build,
+            runtime=runtime, env=env, clock=clock, writer=writer, shadow=shadow,
+            motion=motion, contract=contract, started=started,
         )
-        def stop_px4():
-            if binding and "px4" in binding.required_owned and owned_ready["px4"]:
-                try:
-                    binding.observe_owned("px4", "prestop")
-                except Exception as exc:
-                    errors.append("PX4 runtime mapping: " + repr(exc))
-            if process.poll() is None:
-                process.terminate()
-                try:
-                    process.wait(timeout=10)
-                except subprocess.TimeoutExpired:
-                    process.kill()
-                    process.wait(timeout=5)
-                    errors.append("owned PX4 required SIGKILL")
-            result["px4_exit_code"] = process.returncode
-
-        journal.cleanup("owned PX4", stop_px4, priority=20)
-        if binding and "px4" in binding.required_owned:
-            binding.register_owned("px4", process, binary)
-            owned_processes["px4"] = process
-        with (output / "process.json").open("x") as f:
-            json.dump({"pid": process.pid, "args": process.args, "started_wall_ns": time.time_ns()}, f, indent=2)
-        if source_guard:
-            source_guard.start(time.monotonic_ns())
-        if wire_owner is not None:
-            wire_owner.bind(process, fixture, post_update)
-            fixture.finalize()
-            server = fixture.server()
-            if binding:
-                binding.observe('postfinalize')
-            wire_owner.driver.start()
-        first_step_observed = False
-        while clock["sim_ns"] < contract["simulation_duration_ns"]:
-            if errors or writer.error:
-                raise RuntimeError("capture callback/writer failure: " + str(errors or writer.error))
-            if shadow and shadow.failure:
-                raise RuntimeError("shadow failure: " + shadow.failure)
-            if process.poll() is not None:
-                raise RuntimeError("PX4 exited during capture")
-            wall_budget = contract["wall_budget_s"]
-            if time.monotonic() - started > wall_budget:
-                raise TimeoutError(f"capture exceeded{wall_budget}s wall budget")
-            if not server.run(True, 10 if motion else 1000, False):
-                raise RuntimeError("Gazebo rejected simulation run")
-            if binding and binding.required_self and not first_step_observed:
-                binding.observe("postfirststep")
-                first_step_observed = True
-        result["status"] = "capture_completed"
     print(json.dumps({k: v for k, v in result.items() if k != "writer"}, indent=2))
     return 0 if result["status"] == "capture_completed" else 2
 

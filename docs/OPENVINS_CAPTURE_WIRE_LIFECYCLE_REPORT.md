@@ -570,3 +570,53 @@ guards. Those requirements are not replaced by the selector/owner composition
 test. Task4 independent whole-change review and stage sealing remain pending.
 Do not run a live study merely because the new CLI selection now exists. Fusion,
 network authority, swarm qualification and the historical failed gates are unchanged.
+
+## Task3: production runner integration
+
+The existing main lifecycle tail is now `run_capture_runtime`, called by main
+with its prepared fixture, writer, native shadow, receiver owner, runtime binding
+and original capture clock. It preserves the existing 10-step motion batches,
+25s simulation target, original-start300s wall budget and cleanup priorities.
+Only process/thread construction and the wall-budget clock have explicit injection
+seams; production defaults retain the former services. This extraction does not
+claim execution of CLI validation, archive extraction or native/sensor construction.
+
+The new composed test executes that production runner and real CaptureJournal,
+selected CaptureWireOwner, codec, interval exchange, independent clock, segmented
+journals, CaptureWriter, heartbeat fanout and ShadowInput. A real Python receiver
+thread owns each protocol tick. A deterministic test scheduler grants ticks and
+an injected peer answers actual encoded commands; it does not replace protocol
+state transitions. The injected fixture delivers25,000 sequential1ms callbacks,
+500 bootstrap samples, restoration and745 maintenance reply/status pairs. The
+test forbids real UDP/PX4 constructors and Gazebo/native constructor imports.
+Transport success does not manufacture sensor readiness or call the estimator.
+Writer draining and the synthetic wall clock are not online latency evidence.
+
+Seven additional composed cases retain registration failure, source loss after
+interval mutation, descriptor and process identity replacement, missing/replayed
+maintenance status and a lost restoration reply. Source failure restores the
+baseline through the same managed reader before owned-process stop. Changed
+identity refuses restoration; a lost reply remains unverified even after the
+synthetic peer applies the SET. All cases preserve failure and close/join evidence.
+Six orchestration cases also exercise the ordinary25s runner loop, original wall
+deadline, constructor/finalize/runtime-map failure and cleanup failure followed by
+owned-process cleanup. The blocked-reader mechanics remain covered by the real
+driver tests; the orchestration cleanup-error case uses an injected callback and
+does not claim a real blocked OS thread.
+
+The initial five tests failed because the runner injection entry was absent.
+The first composed attempt exposed test-fixture defects: equal synthetic receive
+times and temporary-directory removal before registered cleanup. That failed log
+is retained. Distinct per-receive times and correct test-resource lifetime fixed
+the fixture; no physical or production repair is claimed for those errors.
+Subsequent fault cases were added passing against the existing refusal logic,
+not described as observed production REDs.
+
+Final focused verification `capture-runner-final-v1` passed315 pytest and129 WSL
+tests, with39 selected source/test hashes unchanged and changed Ruff/diff-check
+passing. Eight composed runs retain raw clock, segmented protocol, fanout and
+terminal records beneath that directory. This is current affected regression
+evidence, not a full-repository test result. No actual UDP, PX4, Gazebo, estimator,
+training or fusion ran. Task3 implementation is complete; Task4 independent
+whole-plan review and final sealing/publication remain pending. Live activation
+still requires the separate prospective study gate.

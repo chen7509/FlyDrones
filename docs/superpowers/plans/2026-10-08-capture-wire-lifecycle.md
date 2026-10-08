@@ -75,17 +75,17 @@ only owned-baseline restoration, retaining failure and2s operation bounds.
 **Interfaces:** actual runner supplies one socket/process/fixture/clock/fanout,
 with injected factories in tests. Execution declaration binds the new mode.
 
-- [ ] Add failing capture-path tests proving exclusive legacy/new selection,
+- [x] Add failing capture-path tests proving exclusive legacy/new selection,
   single PostUpdate registration, real heartbeat fanout delivery, startup gate,
   two correlated maintenance exchanges across the listener boundary, missing/
   replayed maintenance refusal, and restore-before-owned-PX4-stop ordering.
-- [ ] Implement registration/health hooks with existing CaptureJournal and
+- [x] Implement registration/health hooks with existing CaptureJournal and
   runtime-binding boundaries; no default behavior or simulation-load change.
-- [ ] Exercise constructor/registration failure, source loss, process/descriptor
+- [x] Exercise constructor/registration failure, source loss, process/descriptor
   replacement, shutdown, blocked/failed cleanup and refusal after failure.
-- [ ] Run actual runner with injected factories only; fail tests if socket,
+- [x] Run actual runner with injected factories only; fail tests if socket,
   Gazebo Server, estimator or PX4 factories escape to real implementations.
-- [ ] Commit, document remaining actual-runtime evidence gaps.
+- [x] Commit, document remaining actual-runtime evidence gaps.
 
 ### Task 4: Review and publish the integrated result
 
