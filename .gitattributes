@@ -10,7 +10,7 @@ Dockerfile* text eol=lf
 results/fly-ego-comparison/** -text
 evidence/*.zip -text
 # Retained anchor fixture has a byte-level hash and must survive checkout intact.
-tests/benchmark/fixtures/live_wire/retained-anchor-subset.json -text
+tests/benchmark/fixtures/live_wire/retained-anchor-subset.json -text whitespace=cr-at-eol
 tools/benchmark/openvins_init_feature_trace.patch text eol=lf whitespace=-blank-at-eol
 tools/benchmark/gpl/openvins_feature_trace.patch text eol=lf whitespace=-blank-at-eol
 # These frozen inputs had CRLF in the original experiment worktree.
