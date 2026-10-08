@@ -541,3 +541,55 @@ CRC and all member hashes were verified. Raw synthetic clock, wire, callback,
 image/protobuf, source and native-protocol records are included alongside source
 snapshots, initial setup failure and regression results. The report inside the
 archive precedes this seal paragraph. This remains local publication only.
+
+## Initialized synthetic chain integration (partial)
+
+The new opt-in fixture keeps the shared zero-origin clock and full input counts,
+then introduces explicitly synthetic internal state at 1.2 s and public state at
+1.3 s. It uses the actual packet encoder, health contract, estimator readiness,
+motion-intent gate and anchored force policy. It does not run OpenVINS, PX4,
+Gazebo, network transport or force APIs. The original uninitialized fixture
+remains a separate case.
+
+A synthetic native M acknowledgement is inserted after the first initialized
+camera acknowledgement. All later packet sequences and hashes are regenerated
+together. The readiness journal attributes a camera update to the later IMU
+delivery that actually releases that image; its original image arrival remains
+recorded separately. The first combined attempt incorrectly grouped the update
+by image arrival and was refused by the real readiness clock check. That fixture
+construction failure, including an unclosed test output warning, is retained;
+the generator now attributes by dispatch window and closes the journal on error.
+This is a fixture repair, not a newly discovered production estimator defect.
+
+The saved anchor is 1.405 s, selected at the next pre-step after the 1.2 s camera
+update is released at 1.204 s. The production policies generate the expected
+1,600 lateral command steps. They never call a physical force API. The recorded
+stationary reference is independent of those force commands, so agreement with
+the known synthetic camera trajectory is only a composition/coordinate test,
+not mechanical consistency or VIO precision evidence. Identity world-from-FLU
+requires the corresponding 180-degree x rotation for this FRD state; replacing
+it with identity correctly fails the gauge's diagnostic screen.
+
+The 1,249 aligned synthetic fast targets contain 60 unavailable and 1,189
+successful numeric records. Initialization cannot be borrowed from a camera
+processed after the triggering IMU. There are 238 internal and 237 public camera
+states; all 250 derived health rows retain quality zero. No covariance, trajectory,
+whole-study, physical, live, or fusion qualification is granted. The frozen
+first-internal gauge origin remains 1.2 s; it is not picked after seeing errors.
+
+The test discards generated memory and rereads the v2 synthetic bundle from
+disk before invoking 12 real leaf auditors. Policies and result inputs used by
+the gauge are saved files as well. Corruptions of IMU trigger time, processing
+interval, initialization, quality, native intent identity, anchor source receipt
+and camera receipt attribution are rejected. The v2 reader rejects older fixture
+schemas explicitly; sealed v1 data is unchanged. Runtime/resource/ULog/full file
+entry integration and the prospective preparation package remain incomplete.
+
+Validation: Windows workload/physical-fast/health/safety/anchor/file-entry
+regressions passed 200 tests in 117.95 s. WSL pinned-codec joined/protocol/interval/
+listener regression passed 21 unittest methods in 64.521 s; after saving gauge
+inputs as original fixture files, both joined suites passed 12 methods in
+35.142 s. Changed-file Ruff and diff checks passed. The initial missing-key/API
+failures are fixture-development evidence, not production behavioral REDs.
+Installed protobuf deprecation warnings remain. No full-repository test run,
+whole-package review, actual runtime activation or remote publication is claimed.

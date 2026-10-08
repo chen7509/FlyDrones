@@ -334,3 +334,21 @@ auditor, even after replacing the terminal snapshot with success. Successful
 cleanup of a failed capture remains different from successful normal execution.
 This test does not qualify failure cleanup as live, authenticate a PX4 peer, or
 replace the still-pending full positive study integration.
+# Initialized shared-clock fixture boundary
+
+The test-only `live_wire_motion_fixture.py` joins synthetic native I/C/M records
+to the original shared-clock source deliveries, actual readiness/intent policy
+journals and saved force-command records. Fast predictions, raw native ACKs,
+physical reference states, heartbeat observations and force API returns remain
+explicitly synthetic. No estimator, force API or dynamics engine runs; the
+stationary state is not caused by the force commands.
+
+The v2 fixture saves gauge policy and synthetic completion inputs as files and
+rereads them before 12 real leaf checks. Source identity, the later IMU delivery
+responsible for a camera acknowledgement, selection pre-step, motion ACK,
+first-internal gauge origin and fast trigger order share one chain. That is a
+composition check, not runtime producer attestation, a complete file-entry
+positive case, mechanical consistency, or physical/live/fusion qualification.
+Remaining joins: declared runtime/resource inputs, ULog, prospective manifest
+and the full production file entry. Previous v1 evidence is not rewritten.
+

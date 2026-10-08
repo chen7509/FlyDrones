@@ -8,7 +8,14 @@ from tools.benchmark.openvins_online_shadow import encode_packet
 from tools.benchmark.ready_shadow_fanout import digest
 
 
-def build_chain(callback_clock_lag_ns=0, *, arrival_clock=None, info_payloads=None, session_id="synthetic-1"):
+def build_chain(
+    callback_clock_lag_ns=0, *, arrival_clock=None, info_payloads=None, session_id="synthetic-1", initialized_at_ns=None
+):
+    # This opt-in is synthetic native output, never an estimator implementation.
+    if initialized_at_ns is not None and (
+        type(initialized_at_ns) is not int or initialized_at_ns < 100_000_000 or initialized_at_ns % 100_000_000
+    ):
+        raise ValueError("synthetic initialization must select an existing camera epoch")
     schedule = [(1_000_000, "imu")]
     schedule += [(i * 4_000_000, "imu") for i in range(1, 6251)]
     for stamp in [2_000_000] + [i * 100_000_000 for i in range(1, 251)]:
@@ -114,6 +121,20 @@ def build_chain(callback_clock_lag_ns=0, *, arrival_clock=None, info_payloads=No
                     imu_state=None,
                     imu_covariance15=None,
                 )
+                if initialized_at_ns is not None and action["sample_ns"] >= initialized_at_ns:
+                    public = action["sample_ns"] > initialized_at_ns
+                    ack.update(
+                        internal_initialized=True,
+                        public_initialized=public,
+                        initializer_time_s=initialized_at_ns * 1e-9,
+                        state_time_s=action["sample_ns"] * 1e-9,
+                        last_regular_update_s=action["sample_ns"] * 1e-9 if public else -1.0,
+                        # FRD relative to the fixture's identity world-from-FLU:
+                        # 180 degrees about x, not identity. p/v/bias are known
+                        # test values; they are not fed to any native process.
+                        imu_state=[1.0, 0.0, 0.0, 0.0, *([0.0] * 12)],
+                        imu_covariance15=[[0.01 if i == j else 0.0 for j in range(15)] for i in range(15)],
+                    )
                 states.append(
                     {
                         key: value
@@ -146,3 +167,46 @@ def build_chain(callback_clock_lag_ns=0, *, arrival_clock=None, info_payloads=No
         terminal=terminal,
         session_id=session_id,
     )
+
+
+def synthetic_fast_records(acknowledgements):
+    """Known static test estimates on the absolute grid, not propagation output.
+
+    Follow the supplied I/C dispatch order: a C arriving after the I that
+    releases it cannot retroactively initialize predictions in that I call.
+    Each successful state uses the preceding synthetic camera state only.
+    """
+    rows, camera, target = [], None, 20_000_000
+    for ack in acknowledgements:
+        if ack["kind"] == "C":
+            camera = ack
+        if ack["kind"] != "I":
+            continue
+        while target < ack["sample_ns"]:
+            internal = camera is not None and camera["internal_initialized"]
+            successful = internal and 0 < target - camera["sample_ns"] <= 100_000_000
+            state = camera["imu_state"] if successful else None
+            rows.append(
+                dict(
+                    target_ns=target,
+                    last_camera_ns=camera["sample_ns"] if camera else None,
+                    available_imu_ns=ack["sample_ns"],
+                    filter_time_s=camera["state_time_s"] if camera else -1.0,
+                    camera_imu_offset_s=0.0,
+                    internal_initialized=internal,
+                    public_initialized=camera["public_initialized"] if camera else False,
+                    success=successful,
+                    filter_unchanged=True,
+                    propagation_wall_s=1e-9,
+                    state13=[*state[:10], 0.0, 0.0, 0.0] if successful else None,
+                    covariance12=[[0.01 if i == j else 0.0 for j in range(12)] for i in range(12)] if successful else None,
+                    trigger_sequence=ack["sequence"],
+                    native_begin_ns=ack["start_ns"],
+                    native_end_ns=ack["end_ns"],
+                    fusion_eligible=False,
+                    quality=None,
+                    reset_counter=None,
+                )
+            )
+            target += 20_000_000
+    return rows

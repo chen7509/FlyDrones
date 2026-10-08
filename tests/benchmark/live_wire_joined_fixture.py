@@ -245,13 +245,13 @@ def build_joined_wire_physics(directory):
     )
 
 
-def add_joined_sources(evidence):
+def add_joined_sources(evidence, *, initialized_at_ns=None):
     """Attach synthetic inputs/ACKs and real CameraInfo bytes on the same clock.
 
-    Native ACKs are deliberately uninitialized: this makes no claim that an
-    estimator ran or that the full normal-motion/gauge fixture is ready.
+    Native ACKs default to uninitialized. Optional initialized output remains
+    synthetic: no estimator ran and the full normal study is still incomplete.
     """
-    from tests.benchmark.live_wire_source_fixture import build_chain
+    from tests.benchmark.live_wire_source_fixture import build_chain, synthetic_fast_records
     from tests.benchmark.test_live_wire_camera_info import fixture as camera_fixture
     from tools.benchmark.openvins_online_shadow import OnlineHealthEvidence, SourceWatchdog
 
@@ -268,9 +268,19 @@ def add_joined_sources(evidence):
         post = evidence["physical"]["trace"][2 * (stamp // STEP - 1) + 1]
         return post["wall_ns"] + used[stamp] * 100
 
-    source = build_chain(arrival_clock=arrival, info_payloads=payloads, session_id="online-native-322")
+    source = build_chain(
+        arrival_clock=arrival,
+        info_payloads=payloads,
+        session_id="online-native-322",
+        initialized_at_ns=initialized_at_ns,
+    )
     directory = evidence["directory"] / "shadow"
     directory.mkdir()
+    if initialized_at_ns is not None:
+        from tests.benchmark.live_wire_motion_fixture import build_motion
+
+        build_motion(source, evidence["physical"]["trace"], directory)
+    fast = synthetic_fast_records(source["acknowledgements"])
     health = OnlineHealthEvidence(directory, session_id=source["session_id"])
     for state in source["states"]:
         health.observe_camera(state)
@@ -283,6 +293,7 @@ def add_joined_sources(evidence):
             guard.observe(row["kind"], row["arrival_monotonic_ns"])
     evidence.update(
         source=source,
+        fast=dict(records=fast, acknowledgements=source["acknowledgements"], end_sim_ns=END),
         camera=dict(
             sources=source["sources"],
             payloads=source["payloads"],
@@ -312,6 +323,7 @@ def add_joined_sources(evidence):
         ("shadow/native-requests.jsonl", source["requests"]),
         ("shadow/native-acks.jsonl", source["acknowledgements"]),
         ("shadow/states.jsonl", source["states"]),
+        ("shadow/synthetic-fast-state.jsonl", fast),
     ):
         with (capture / name).open("x", encoding="utf8") as stream:
             for row in rows:
@@ -327,11 +339,16 @@ def add_joined_sources(evidence):
         (
             "synthetic-provenance.json",
             dict(
-                schema="joined-offline-fixture-v1",
+                schema="joined-offline-fixture-v2",
                 synthetic_provenance=True,
-                fake_interfaces=["datagram", "daemon", "owner", "physical_state", "native_ack"],
+                fake_interfaces=["datagram", "daemon", "owner", "physical_state", "native_ack", "fast_prediction"],
+                synthetic_initialization_ns=initialized_at_ns,
+                synthetic_motion=initialized_at_ns is not None,
+                force_calls_executed=False,
+                physical_state_independent_of_force_commands=True,
                 shared_clock="simulation_ns/2+10, test scheduling only; not measured RTF",
-                omitted=["runtime_maps", "resource_graph", "fast_predictions", "motion", "anchor", "gauge", "ULog"],
+                omitted=["runtime_maps", "resource_graph", "ULog", "full_file_entry"]
+                + ([] if initialized_at_ns is not None else ["motion", "anchor", "gauge"]),
                 native_estimator_run=False,
                 physical_execution_qualified=False,
                 whole_study_qualified=False,
@@ -368,10 +385,13 @@ def read_joined_fixture(directory):
         return reader.lines(reader.member(directory, name), maximum_rows=maximum)
 
     provenance = document("synthetic-provenance.json")
+    if provenance["schema"] != "joined-offline-fixture-v2":
+        raise ValueError("this reader expects the new synthetic schema; do not rewrite old evidence")
     if provenance["synthetic_provenance"] is not True or any(
         provenance[key] is not False
         for key in (
             "native_estimator_run",
+            "force_calls_executed",
             "physical_execution_qualified",
             "whole_study_qualified",
             "live_qualified",
@@ -379,6 +399,8 @@ def read_joined_fixture(directory):
         )
     ):
         raise ValueError("synthetic fixture cannot grant actual execution")
+    if provenance["physical_state_independent_of_force_commands"] is not True:
+        raise ValueError("synthetic fixture cannot claim mechanical consistency")
     session = document("synthetic-wire-session.json")
     context = document("synthetic-context.json")
     retained = read_segmented_wire_records(directory / "wire-segments", session["retention"])
@@ -420,6 +442,11 @@ def read_joined_fixture(directory):
         clock_attempts=lines("wire-clock.jsonl"),
         physical=physical,
         source=source,
+        fast=dict(
+            records=lines("shadow/synthetic-fast-state.jsonl"),
+            acknowledgements=source["acknowledgements"],
+            end_sim_ns=END,
+        ),
         camera=dict(
             sources=sources,
             payloads=payloads,
@@ -444,6 +471,37 @@ def read_joined_fixture(directory):
         physical_execution_qualified=False,
         provenance=provenance,
     )
+    if provenance["synthetic_motion"]:
+        anchor = document("shadow/synthetic-readiness-anchor.json")
+        value["motion"] = dict(
+            anchor=anchor,
+            profile=anchor["profile"],
+            forces=lines("shadow/synthetic-forces.jsonl"),
+            trace=physical["trace"],
+            intent_records=lines("shadow/synthetic-motion-intent.jsonl"),
+            requests=source["requests"],
+            acknowledgements=source["acknowledgements"],
+            intent_terminal=document("shadow/synthetic-motion-intent-result.json"),
+            motion_terminal=document("shadow/synthetic-motion-result.json"),
+            session_id=source["session_id"],
+        )
+        value["anchor"] = dict(
+            anchor=anchor,
+            sources=sources,
+            fanout=source["fanout"],
+            heartbeat_records=lines("shadow/synthetic-heartbeat-observation.jsonl"),
+            estimator_records=lines("shadow/estimator-readiness.jsonl"),
+            acknowledgements=source["acknowledgements"],
+        )
+        value["gauge"] = dict(
+            states=source["states"],
+            reference=physical["reference"],
+            policy=document("shadow/synthetic-gauge-policy.json"),
+            anchor=anchor,
+            motion_profile=anchor["profile"],
+            health_terminal=value["health"]["terminal"],
+            result=document("shadow/synthetic-capture-result.json"),
+        )
     reader.finish()
     value["consumed_files"] = reader.files
     return value
