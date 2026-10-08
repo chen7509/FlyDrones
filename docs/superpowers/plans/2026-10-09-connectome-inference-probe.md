@@ -22,10 +22,10 @@ Files: src/flydrones/connectome_training/profiling.py;
 tests/connectome_training/test_profiling.py.
 Produces `profile_controller(controller, observations, *, on_sample=None)`.
 
-- [ ] RED callback is after measured finish; receives raw timestamps and defensive
+- [x] RED callback is after measured finish; receives raw timestamps and defensive
   copy; exception aborts after preserving earlier rows. Existing stats unchanged.
-- [ ] Implement optional callback, no change to default behavior or timing boundary.
-- [ ] Run `python -m pytest tests/connectome_training/test_profiling.py
+- [x] Implement optional callback, no change to default behavior or timing boundary.
+- [x] Run `python -m pytest tests/connectome_training/test_profiling.py
   tests/connectome_training/test_profile_baseline.py -q`; commit.
 
 ## Task 2: Parent and actual worker
@@ -35,12 +35,12 @@ tests/connectome_training/test_inference_probe.py.
 Consumes Task1 hook and previous real loader/controller. Produces `ProbeSpec`,
 `available_memory_bytes()`, `run_probe(spec, output)`, private worker entry and CLI.
 
-- [ ] RED strict fields/checkpoint pairing, low/unknown RAM refuses before spawn,
+- [x] RED strict fields/checkpoint pairing, low/unknown RAM refuses before spawn,
   exclusive directory, request/input drift, retained errors, actual tiny worker
   lifecycle and camera reuse, timeout cleanup/partial logs, no false full gate.
-- [ ] Implement fixed worker command, stdlib preflight, request digest, direct-child
+- [x] Implement fixed worker command, stdlib preflight, request digest, direct-child
   bounded ownership, worker recheck, profiler journaling and reports per spec.
-- [ ] Run `python -m pytest tests/connectome_training/test_inference_probe.py
+- [x] Run `python -m pytest tests/connectome_training/test_inference_probe.py
   tests/connectome_training/test_profiling.py tests/connectome_training/test_inference.py
   tests/connectome_training/test_inference_artifact.py -q`; commit.
 
@@ -49,7 +49,7 @@ Consumes Task1 hook and previous real loader/controller. Produces `ProbeSpec`,
 Files: docs/CONNECTOME_INFERENCE_PROBE_REPORT.md;
 results/connectome-inference-probe-dev-1701 and corresponding evidence ZIP.
 
-- [ ] After idle check and source commit, once call actual full CLI against existing
+- [x] After idle check and source commit, once call actual full CLI against existing
   full initialization; preserve resource refusal if <4GiB, never force allocation.
   Run separate tiny fixture invocation; never label it full or trained performance.
 - [ ] Full pytest, changed Ruff/diff, one independent review. Important findings
@@ -62,3 +62,5 @@ results/connectome-inference-probe-dev-1701 and corresponding evidence ZIP.
 No spawned model when memory unavailable; no successful result after timeout;
 no callback I/O inside measured step; no camera timestamp fabrication on reuse;
 no tiny/initialization evidence promoted into trained full or flight performance.
+
+Validation note: full suite 1 failed/3897 passed/33 skipped; focused existing preflight file 9 passed. Original stat-change failure root cause unresolved. Task 3 validation remains open; evidence is sealed with this failure retained, not declared fully passing.
