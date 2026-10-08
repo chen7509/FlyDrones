@@ -206,13 +206,15 @@ def extract_receiver_rows(ulog):
     return rows
 
 
-def validate_ulog_stream(raw):
+def validate_ulog_stream(raw, *, include_topic_counts=False):
     """Check complete v1 framing and subscription accounting before pyulog.
 
     This narrow evidence profile refuses appended logs, unsubscribe/reuse and
     unknown records. It is not a general ULog validator or a content checksum.
     pyulog 1.2.4 can silently ignore truncated tails and overwrite subscriptions.
     """
+    if type(include_topic_counts) is not bool:
+        raise ValueError('ULog topic-count option must be boolean')
     if not isinstance(raw, bytes) or len(raw) < 16 or raw[:8] != b'ULog\x01\x12\x35\x01':
         raise ValueError('invalid or unsupported ULog header')
     offset = 16
@@ -221,6 +223,7 @@ def validate_ulog_stream(raw):
     topics = set()
     formats = set()
     data_section = False
+    topic_counts = {}
     while offset < len(raw):
         start = offset
         if len(raw)-offset < 3:
@@ -258,12 +261,14 @@ def validate_ulog_stream(raw):
                 raise ValueError('undefined ULog subscription format')
             subscriptions[msg_id] = key
             topics.add(key)
+            topic_counts[key] = 0
         elif kind == 'D':
             if size < 2:
                 raise ValueError('short ULog data record')
             msg_id = struct.unpack_from('<H', payload)[0]
             if msg_id not in subscriptions:
                 raise ValueError('ULog data without subscription')
+            topic_counts[subscriptions[msg_id]] += 1
             if subscriptions[msg_id][0] == 'vehicle_visual_odometry':
                 receiver_count += 1
         elif kind == 'O':
@@ -274,8 +279,12 @@ def validate_ulog_stream(raw):
             data_section = True
     if count == 0:
         raise ValueError('empty ULog messages')
-    return {'profile': 'complete-unappended-ulog-v1', 'bytes': len(raw),
-            'message_count': count, 'receiver_data_count': receiver_count}
+    result = {'profile': 'complete-unappended-ulog-v1', 'bytes': len(raw),
+              'message_count': count, 'receiver_data_count': receiver_count}
+    if include_topic_counts:
+        result['topic_counts'] = [{'name': name, 'multi_id': multi_id, 'data_count': size}
+                                  for (name, multi_id), size in topic_counts.items()]
+    return result
 
 
 class _ObservedULogBuffer(io.BytesIO):

@@ -110,8 +110,62 @@ return is not daemon exit. Full workload, runtime binding and owned cleanup must
 still substantiate an actual capture independently. All live/fusion flags remain
 false, and these tests are fake-I/O producer fixtures rather than actual captures.
 
-Remaining Task 2 work: actual launch/descriptor/runtime joins, full normal/failure
-cleanup, ULog/source/native evidence, startup-only negative fixture, and complete
-study adapter/structured audit.
+## Runtime, ULog and source/native increments
+
+`audit_live_wire_runtime.audit_runtime_mapping_records` re-parses retained raw
+maps and compares device/inode/executable and registered PID/session/start ticks
+against declared pre/post files. It checks generated copies, baseline continuity,
+declared map roles/stages and observation budget. A claimed successful mapping
+summary alone is insufficient. Required resource-graph semantics and final
+study/dispatch identity joins remain outside this helper; runtime closure stays
+false. Final synthetic regressions reject disguising an owned map as a self map
+and exceeding the declared observation budget. The existing normal development
+capture was checked with the earlier helper, before those two guards; it was not
+recaptured or silently re-audited with a different producer.
+
+`native_supervisor_integration.audit_supervisor` now accepts the explicitly named
+`normal-capture-v1` profile (completed/exit0/300s). Its default epoch-fault profile
+is unchanged (failed/exit2/90s). Both reuse the original group-identity, WNOWAIT,
+signals, journal and reap checks. Normal evidence is not rewritten to resemble a
+fault. Qualified original-group cleanup does not cover escaped descendants.
+
+`audit_live_wire_ulog.audit_unarmed_ulog` validates immutable whole-stream bytes,
+manifest identity and pinned pyulog1.2.4 decoding. Optional counts in the existing
+ULog framing validator join each raw data topic to decoded samples; the default
+validator return contract is unchanged. Truncation, dropout, missing topic,
+non-monotonic time, armed state and decoder sample omission refuse. Its observed
+unarmed samples are not a proof of unlogged intervals or exact 25s coverage.
+
+`audit_live_wire_workload.audit_source_native_records` reuses `CausalInput` and
+`encode_packet` without constructing a native client. It joins exact source
+sequences, FLU/FRD transforms, sample cadence, RGB/CameraInfo payload hashes,
+two fan-out journal records, ordered consumer returns, causal releases, complete
+encoded request length/hash, native ack clocks and the camera state file. Source
+processing and native ack limits remain 2s. A single retained terminal camera at
+25s may remain unavailable for `later_imu_missing`; removing this record refuses.
+Motion-intent request/ack semantics are checked, but authority from the original
+motion log/anchor must still be joined by the full adapter. Raw depth records
+retain dimensions and cadence; the original producer did not retain depth pixels,
+so this cannot attest depth image content.
+
+The shared callback `observed_sim_ns` is distinct from a sensor's `sample_ns`.
+The fixed development log has 107 IMU callbacks observing the preceding 1ms
+PostUpdate clock. The first new auditor wrongly imposed sample<=observation and
+refused; that outcome is retained. A synthetic regression reproduced it, and the
+auditor now preserves both timestamps and replays the existing causal watermark
+rules. No runtime clock, sensor, watchdog or acceptance threshold changed.
+
+The new fixed-input workload audit matches 6251 IMU + 250 camera native actions,
+one motion intent and 222 public camera states, with all 251 RGB/info/depth source
+records and 24 heartbeats retained. This is a new offline join on old development
+input, not a new estimator replay or a live-wire run. It grants no VIO accuracy,
+health/watchdog, motion authority, runtime or fusion qualification. Payload paths
+and source/native runtime provenance still require the full adapter.
+
+Remaining Task 2 work: full study/dispatch/owner/descriptor joins, source/native
+health and physics/fast-output coverage, payload file/CameraInfo decoding
+provenance, restoration on failure, real startup-only negative fixture and the
+complete study adapter/structured audit. The new helpers alone cannot qualify
+Task 2 or authorize the live study.
 The whole-package independent review remains pending after Tasks 2–3. No physical
 or network experiment has been run in this implementation step.

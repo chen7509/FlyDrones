@@ -162,6 +162,65 @@ learning/division in that closed loop, fair upstream comparison, 5/20-aircraft
 qualification and external hardware/flight evidence. The five-camera 0.873 RTF
 result still fails its 0.95 threshold.
 
+## Additional offline runtime/workload verification (Task 2 still open)
+
+Three new read-only modules cover retained runtime mapping, unarmed ULog and
+source/native work. Normal cleanup now reuses the existing supervisor auditor
+with explicit completed/exit0/300s semantics; the original fault profile remains
+the default. No process manager, alternate estimator, decoder or live launcher
+was added. Whole-study qualification and Task 3 are still unfinished.
+
+The runtime helper checks declared/observed roles, executable/owner identity,
+raw `/proc` maps against file identities, generated snapshots and pre/post drift.
+The earlier fixed development capture gave five self stages, four owned stages
+and 1366 mapped-file observations. This positive predates the final two guard
+fixes; final guards were verified synthetically, without re-running that capture.
+Two assertion REDs exposed owned-map masquerading and an exceeded observation
+budget, then passed after correction. The related regression recorded 111 passed.
+Normal cleanup checked seven original disk/in-memory journal events and an empty
+original group after reap, with no supervisor group signals; escaped descendants
+remain explicitly unqualified.
+
+ULog verification requires full framing, pinned pyulog1.2.4 decoding and equality
+of raw topic counts and decoded samples. The retained development ULog has
+68849 raw messages and 51 observations each of vehicle status and actuator armed,
+all standby/unarmed. Recorded bounds are 0.215–24.725s; that is not continuous
+coverage of the full 25s. Four WSL unittest methods (with binary/manifest/decoder
+fault subcases) and 66 related Windows tests passed. No package was installed.
+
+The new source/native audit joins 6251 IMU + 251 each RGB/info/depth + 24 heartbeat
+source rows through 14056 fan-out records to 6501 sensor acknowledgements and one
+motion-intent acknowledgement. It retains all 250 processed camera states (222
+public) and the final `later_imu_missing` record. It re-encodes request bytes from
+the retained source/pixels and compares their exact hashes, rather than trusting
+the stored success flags. It does not recompute an accuracy pass or attest a
+native process merely from those records.
+
+The first workload test invocation failed collection because PYTHONPATH did not
+select `src`; the corrected invocation produced a missing-API assertion RED.
+The first fixed-input harness then incorrectly expected `native-session.json`
+to contain session_id; it actually contains PID, and the capture producer derives
+`online-native-<pid>`. That harness failure is preserved. Fixed attempt v2 refused
+the auditor's incorrect sample<=callback-clock assumption. The retained record
+has 107 IMU callbacks whose shared clock is 1ms behind the sensor stamp. Five
+behavioral REDs covered this distinction, missing explicit null terminal fields
+and unexpected IMU ack fields; all passed after correction. These are auditor
+fixes, not changes to simulation timing or safety gates.
+
+Fixed workload attempt v3 passed with input and producer hashes unchanged before
+and after the read-only audit. The new 31 cases and directly reused causal-input,
+fan-out and online-shadow regressions passed (129 total, 37.81s). Changed-file
+Ruff and diff checks passed. Counts from these overlapping suites are not summed
+into a new full-repository count. No full-repository test or independent whole-
+package review is claimed for this incomplete increment.
+
+All fixed checks reference the old development seed27201 capture; none launch
+PX4, Gazebo, OpenVINS, UDP or training. Unarmed log observations, mapping records
+and causal packet matches are distinct from actual live communication and EKF2
+fusion. Full manifest/dispatch/descriptor joins, health/physics/fast coverage,
+payload file provenance, startup-only refusal and the whole-study entry point
+remain required. Historical failures and remote-publication limitations remain.
+
 ## Design evidence seal
 
 `evidence/live-wire-study-design-dev-1701.zip` contains 30 members, 92,235 bytes,
