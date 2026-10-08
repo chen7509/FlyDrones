@@ -22,10 +22,10 @@
 ### Task 1: Journaled callback lane and evidence
 Files: tools/benchmark/openvins_simulation_clock.py; tests/benchmark/test_openvins_simulation_clock.py.
 Interfaces: JournaledSimulationClock.post_update(info, ecm=None), snapshot(received_ns), check(), evidence; frozen ClockObservation and ClockSelection.
-- [ ] Add normal/failure tests and record initial RED.
-- [ ] Implement the spec and pass targeted tests, including actual RemoteMonotonicClock composition.
-- [ ] Independent read-only review; one necessary Critical/Important fix pass with counterexamples.
-- [ ] Run targeted dependency regressions and changed Ruff/diff; broaden only for a demonstrated concern.
+- [x] Add normal/failure tests and record initial RED.
+- [x] Implement the spec and pass targeted tests, including actual RemoteMonotonicClock composition.
+- [x] Independent read-only review; one necessary Critical/Important fix pass with counterexamples.
+- [x] Run targeted dependency regressions and changed Ruff/diff; broaden only for a demonstrated concern.
 - [ ] Save report/research/test/evidence hashes, commit and push personal; verify existing draft PR65.
 
 Ruling: Existing user preapproval replaces repeated plan approval. This package does not hook the lane into a historical producer or repeat physical tests. Targeted verification is proportionate to an opt-in unconnected module; it is not a fresh whole-repository pass.
