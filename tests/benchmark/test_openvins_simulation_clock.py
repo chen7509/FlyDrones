@@ -1,5 +1,5 @@
 """Injected UpdateInfo and journal only; never constructs a simulator/socket."""
-from dataclasses import FrozenInstanceError
+from dataclasses import FrozenInstanceError, replace
 from datetime import timedelta
 from threading import Event, RLock, Thread, current_thread
 from types import SimpleNamespace
@@ -76,6 +76,39 @@ def test_request_does_not_supply_sim_clock_and_reuse_not_fresh():
     assert again.observation is selected.observation
     with pytest.raises(ValueError, match='paused or regressed'):
         remote.respond_to_px4_request(tc1_ns=0, ts1_ns=999_999_000, observed_sim_ns=again.observation.sim_ns)
+
+
+def test_selected_clock_stays_old_when_latest_source_is_fresh():
+    r = Rig()
+    r.lane.post_update(info())
+    selected = r.lane.snapshot(100)
+    assert r.lane.validate_selection(selected) is None
+    r.now = 1_500_000_100
+    r.lane.post_update(info(2))
+    r.now = 2_000_000_100
+    r.lane.check()
+    with pytest.raises(ValueError, match='selected.*freshness'):
+        r.lane.validate_selection(selected)
+    assert r.lane.progress['failure']
+    assert r.lane.progress['committed_samples'] == 2
+
+
+def test_other_lane_observation_not_accepted_by_matching_values():
+    r, other = Rig(), Rig()
+    r.lane.post_update(info())
+    other.lane.post_update(info())
+    with pytest.raises(ValueError, match='belongs'):
+        r.lane.validate_selection(other.lane.snapshot(100))
+
+
+@pytest.mark.parametrize('fields', [dict(received_ns=True), dict(received_ns=99), dict(selected_ns=101),
+                                  dict(selected_ns=99), dict(selected_ns=1.0)])
+def test_malformed_selection_timestamps_refused(fields):
+    r = Rig()
+    r.lane.post_update(info())
+    selected = replace(r.lane.snapshot(100), **fields)
+    with pytest.raises(ValueError):
+        r.lane.validate_selection(selected)
 
 
 @pytest.mark.parametrize('changes', [

@@ -31,8 +31,9 @@ class DatagramReceiver:
                 or not all(callable(f) for f in (guard, now, journal))):
             raise ValueError("explicit receive clock/guard/journal required")
         self._recv_flags = getattr(socket, "MSG_DONTWAIT", None)
-        if type(self._recv_flags) is not int or self._recv_flags <= 0:
+        if type(self._recv_flags) not in (int, socket.MsgFlag) or self._recv_flags <= 0:
             raise ValueError("platform MSG_DONTWAIT required")
+        self._recv_flags = int(self._recv_flags)
         self._sock, self._guard, self._now, self._journal = sock, guard, now, journal
         self._last = self._start = start_ns
         self._events, self._journal_errors = [], []
@@ -44,6 +45,11 @@ class DatagramReceiver:
         except BaseException as exc:
             self._fail(exc)
             raise
+
+    @property
+    def progress(self):
+        return dict(failure=self._failure, sender_process_proven=False, network_authorized=False,
+                    live_convergence_qualified=False, fusion_qualified=False)
 
     @property
     def evidence(self):
@@ -180,5 +186,19 @@ class DatagramReceiver:
             if not isinstance(exc, Exception):
                 raise
             raise ValueError(_error(exc)) from exc
+        finally:
+            self._lock.release()
+
+    def check(self):
+        """Non-consuming revalidation, for the final send boundary."""
+        self._open()
+        if not self._lock.acquire(blocking=False):
+            self._fail(ValueError("concurrent datagram check"))
+            raise ValueError("concurrent datagram check")
+        try:
+            self._check()
+        except BaseException as exc:
+            self._fail(exc)
+            raise
         finally:
             self._lock.release()

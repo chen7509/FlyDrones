@@ -54,6 +54,13 @@ class JournaledSimulationClock:
         return self._session
 
     @property
+    def progress(self):
+        with self._state:
+            return dict(session_id=self._session, failure=self._failure,
+                        committed_samples=len(self._observations), pending_callback_ns=self._pending_ns,
+                        runtime_source_proven=False, network_authorized=False, fusion_qualified=False)
+
+    @property
     def evidence(self):
         with self._state:
             return dict(session_id=self._session, observations=[asdict(x) for x in self._observations],
@@ -201,6 +208,27 @@ class JournaledSimulationClock:
                 if self._latest is None:
                     raise ValueError('no committed simulation observation')
                 return ClockSelection(self._latest, received_ns, now)
+        except BaseException as exc:
+            self._fail(exc)
+            raise
+
+    def validate_selection(self, selection):
+        """Recheck the selected sample, not merely a newer committed sample."""
+        try:
+            with self._state:
+                now = self._check_locked()
+                if type(selection) is not ClockSelection or type(selection.observation) is not ClockObservation:
+                    raise ValueError('invalid clock selection type')
+                sample = selection.observation
+                if (type(sample.iteration) is not int or not 1 <= sample.iteration <= len(self._observations)
+                        or self._observations[sample.iteration - 1] is not sample):
+                    raise ValueError('selected observation belongs to another clock lane')
+                if (type(selection.received_ns) is not int or type(selection.selected_ns) is not int
+                        or not self._start <= selection.received_ns <= selection.selected_ns <= now
+                        or selection.selected_ns < sample.journal_return_ns):
+                    raise ValueError('invalid clock selection timestamp ordering')
+                if now - sample.callback_ns >= self.FRESHNESS_NS or now - selection.received_ns >= self.FRESHNESS_NS:
+                    raise ValueError('selected clock or packet freshness expired')
         except BaseException as exc:
             self._fail(exc)
             raise

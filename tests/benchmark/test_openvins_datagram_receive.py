@@ -58,6 +58,36 @@ class Rig:
             return self.journal_hook(event)
 
 
+def test_check_revalidates_without_consuming_or_refreshing():
+    r = Rig()
+    assert r.obj.check() is None
+    assert r.sock.calls == []
+    assert r.obj.progress['failure'] is None
+    r.sock.local = ('127.0.0.1', 1)
+    with pytest.raises(ValueError, match='local endpoint'):
+        r.obj.check()
+    assert r.obj.progress['failure']
+    assert r.sock.calls == []
+
+
+def test_check_reentry_latches_without_second_read():
+    r = Rig()
+    def reenter():
+        with pytest.raises(ValueError, match='concurrent'):
+            r.obj.check()
+    r.guard_hook = reenter
+    with pytest.raises(ValueError, match='latched'):
+        r.obj.check()
+    assert r.sock.calls == []
+
+
+def test_stdlib_msgflag_enum_accepted(monkeypatch):
+    # Same enum type returned by installed WSL socket.MSG_DONTWAIT; still fake I/O.
+    monkeypatch.setattr(socket, 'MSG_DONTWAIT', socket.MsgFlag(64))
+    r = Rig()
+    assert r.obj.poll().data == b'packet'
+
+
 def test_normal_packet_immutable_and_no_authority():
     r = Rig()
     packet = r.obj.poll()
