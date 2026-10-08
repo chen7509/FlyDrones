@@ -1,5 +1,9 @@
 # Shared wire heartbeat dispatch
 
+Follow-up: test-only `bd04203` and `OPENVINS_WIRE_FANOUT_REPORT.md` cover the
+previously deferred journaled-fanout Minor. The historical stage and archive below
+remain unchanged in scope; actual capture lifecycle wiring is still unverified.
+
 The supplied-socket wire path now optionally forwards validated, unarmed PX4 heartbeats through its existing decoder before replying to TIMESYNC. This removes one missing interface for a future single-reader capture integration. **The actual capture receiver thread is unchanged, and no actual network/physics run was performed.** Production commit: 3944962d3ee6611db9e542179c8579d1b8923337.
 
 ## Why this change
