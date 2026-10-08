@@ -89,6 +89,12 @@ Tasks 2–3 remain open: build the raw-chain auditor, then freeze and independen
 review a complete package before considering any live activation. The validator
 tests use explicitly synthetic files and do not qualify installed resources.
 
+Task 2 has begun with a segmented evidence reader and producer-field map in
+`LIVE_WIRE_RAW_EVIDENCE_MAP.md`. Its 19 new cases and related storage/contract
+tests passed (72 total), including 8192+8 records and refusal of numeric overflow.
+This verifies retained file integrity only. Complete packet/status/clock joins,
+workload/shutdown qualification and the study audit entry point remain unfinished.
+
 The broader goal remains open: actual VIO-to-EKF2 fusion, complete fruit-fly
 learning/division in that closed loop, fair upstream comparison, 5/20-aircraft
 qualification and external hardware/flight evidence. The five-camera 0.873 RTF
