@@ -677,4 +677,15 @@ and native estimation, physics, hardware and flight. The independent review did
 not re-review the repair commit; its findings were closed with retained local
 counterexamples and current regressions in the prescribed single repair pass.
 No actual network, physical capture, ODOMETRY/EKF2, arming or training is authorized
-by this result. Final stage archive and publication are recorded below once sealed.
+by this result. The stage archive is recorded below; no live study is activated.
+
+## Stage archive
+
+`evidence/capture-wire-lifecycle-dev-1701.zip` contains1209 members (25436935 bytes). SHA256:
+`d988bf1bbba27cd2d827b9663cc6e525f5bfc4a549cabb0b3f4485007e588807`. Every member hash and ZIP CRC verified.
+The manifest names producer `e4312edd366ad10c8c05a0807e099e629fd99c4c`; the report copy
+inside the archive precedes this self-referential archive-hash paragraph. Raw
+normal/failed runs, RED/GREEN outputs, expanded regression failure/retry, research,
+selected tested-source snapshots and the whole-plan review package remain preserved.
+This completes the offline implementation scope; it does not complete the FlyDrones
+goal or establish actual capture/PX4/network/fusion qualification.

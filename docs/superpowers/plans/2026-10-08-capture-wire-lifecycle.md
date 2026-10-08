@@ -89,11 +89,11 @@ with injected factories in tests. Execution declaration binds the new mode.
 
 ### Task 4: Review and publish the integrated result
 
-- [ ] Independent review of whole change; repair Important/Critical with observed
+- [x] Independent review of whole change; repair Important/Critical with observed
   RED/GREEN; explicitly document any remaining Minor.
-- [ ] Focused regressions, changed Ruff and diff-check. Broaden only for uncovered
+- [x] Focused regressions, changed Ruff and diff-check. Broaden only for uncovered
   behavior or failures; do not claim old full-suite results as current.
-- [ ] Seal normal/failure in-process evidence, selected source hashes and report;
+- [x] Seal normal/failure in-process evidence, selected source hashes and report;
   update status matrix, push personal only, verify/update draftPR65 and attach it.
 
 ## Review focus
