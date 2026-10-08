@@ -1,10 +1,10 @@
 from __future__ import annotations
 
+import json
+import struct
 from dataclasses import asdict, dataclass, replace
 from hashlib import sha256
-import json
 from pathlib import Path
-import struct
 
 import numpy as np
 
@@ -46,6 +46,19 @@ class ParameterSet:
     type_bias_mv: np.ndarray
     tau_m_ms: float
     readout: np.ndarray
+
+
+def parameter_mapping_digest(parameters: ParameterSet) -> str:
+    """Exact legacy curriculum mapping identity, shared with inference."""
+    digest = sha256()
+    for value in (
+        parameters.input_feature_index,
+        parameters.input_neuron_index,
+        parameters.output_neuron_index,
+    ):
+        array = np.ascontiguousarray(value, dtype="<i8")
+        digest.update(array.tobytes())
+    return digest.hexdigest()
 
 
 def _file_digest(path: Path) -> str:

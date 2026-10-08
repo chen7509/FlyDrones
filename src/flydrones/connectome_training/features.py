@@ -23,7 +23,7 @@ FEATURE_NAMES = (
 )
 
 
-def _frame_features(frame: SequenceFrame) -> np.ndarray:
+def frame_features(frame: SequenceFrame) -> np.ndarray:
     depth = np.asarray(frame.depth_m, np.float32)
     rgb = np.asarray(frame.rgb)
     if depth.ndim != 2 or depth.shape[1] < 3:
@@ -77,7 +77,7 @@ def sequence_tensors(
 ) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
     if not sequence.frames or len(sequence.frames) != len(sequence.targets):
         raise ValueError("sequence frames and targets must have the same non-zero length")
-    features = np.stack([_frame_features(frame) for frame in sequence.frames])
+    features = np.stack([frame_features(frame) for frame in sequence.frames])
     commands = np.stack(
         [
             np.asarray(
