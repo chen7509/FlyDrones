@@ -86,8 +86,14 @@ def record_worker_environment(output, contract, contract_path, *, reader=None):
     before = contract_path.stat()
     payload = contract_path.read_bytes()
     after = contract_path.stat()
-    if before != after:
-        raise ValueError("execution contract changed while worker read it")
+    # A read may update atime. Compare identity/mutation fields explicitly:
+    # stat_result tuple equality omits the nanosecond timestamp attributes.
+    fields = ("st_mode", "st_ino", "st_dev", "st_nlink", "st_uid", "st_gid",
+              "st_size", "st_mtime_ns", "st_ctime_ns")
+    changes = {name: (getattr(before, name), getattr(after, name)) for name in fields
+               if getattr(before, name) != getattr(after, name)}
+    if changes:
+        raise ValueError(f"execution contract changed while worker read it: {changes}")
     read = reader or (lambda: Path("/proc/self/environ").read_bytes())
     observed = parse_initial_environment(read())
     matches = _typed_equal(observed, expected)

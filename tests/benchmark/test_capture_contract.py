@@ -1,5 +1,7 @@
 import hashlib
 import json
+import os
+from pathlib import Path
 from types import SimpleNamespace
 
 import pytest
@@ -372,6 +374,59 @@ def test_worker_environment_evidence_write_failure_refuses(tmp_path, monkeypatch
         capture.record_worker_environment(
             tmp_path / 'capture', declaration, contract_path, reader=lambda: b'HOME=/home/test\0',
         )
+
+
+@pytest.mark.parametrize('field,accept', [
+    ('st_atime', True), ('st_mtime_ns', False), ('st_ctime_ns', False),
+    ('st_ino', False), ('st_dev', False), ('st_mode', False),
+    ('st_size', False), ('st_nlink', False), ('st_uid', False), ('st_gid', False),
+])
+def test_worker_contract_read_distinguishes_access_from_mutation(tmp_path, monkeypatch, field, accept):
+    """Stat boundary injection: real file read/write, only OS metadata is controlled."""
+    declaration = {'schema': 'capture-execution-v2', 'launch_environment': {'HOME': '/home/test'}}
+    path = tmp_path / 'execution.json'
+    path.write_text(json.dumps(declaration))
+    original = path.stat()
+    values = list(original)
+    attrs = {name: getattr(original, name) for name in dir(original) if name.startswith('st_')}
+    if field.endswith('_ns'):
+        attrs[field] += 1  # Below stat tuple's second precision.
+    else:
+        index = {'st_mode': 0, 'st_ino': 1, 'st_dev': 2, 'st_nlink': 3,
+                 'st_uid': 4, 'st_gid': 5, 'st_size': 6, 'st_atime': 7}[field]
+        values[index] += 1
+        attrs[field] += 1
+        if field == 'st_atime':
+            attrs['st_atime_ns'] += 1_000_000_000
+    changed = os.stat_result(values, attrs)
+    real_stat, real_read = Path.stat, Path.read_bytes
+    read_finished = False
+
+    def observed_stat(selected, *a, **kw):
+        if selected == path:
+            return changed if read_finished else original
+        return real_stat(selected, *a, **kw)
+
+    def observed_read(selected):
+        nonlocal read_finished
+        data = real_read(selected)
+        if selected == path:
+            read_finished = True
+        return data
+
+    monkeypatch.setattr(Path, 'stat', observed_stat)
+    monkeypatch.setattr(Path, 'read_bytes', observed_read)
+    output = tmp_path / 'capture'
+    if accept:
+        record = capture.record_worker_environment(
+            output, declaration, path, reader=lambda: b'HOME=/home/test\0')
+        assert record['matches'] is True
+        assert record['execution_contract']['sha256'] == hashlib.sha256(real_read(path)).hexdigest()
+    else:
+        with pytest.raises(ValueError, match='execution contract changed'):
+            capture.record_worker_environment(
+                output, declaration, path, reader=lambda: b'HOME=/home/test\0')
+        assert not output.exists()
 
 
 def test_parent_derives_v2_environment_and_passes_it_to_supervisor(tmp_path, monkeypatch):
