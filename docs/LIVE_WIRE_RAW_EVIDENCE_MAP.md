@@ -2,8 +2,8 @@
 
 Task 2 of the reviewed live-wire plan is incomplete. This map records the current
 producer contracts to avoid inventing a new transport or accepting summary-only
-success. The only implemented auditor helper so far is the read-only segmented
-record reader. The full `audit_live_wire_study(study_path)` entry point is not yet
+success. The segmented record reader and the raw protocol consistency helper are
+implemented. The full `audit_live_wire_study(study_path)` entry point is not yet
 implemented and no real communication is qualified.
 
 | Fact | Existing producer / retained source | Required join and boundary |
@@ -46,8 +46,49 @@ A separate `1e999` test failed because standard JSON parsing produced infinity
 without invoking parse_constant; finite parse_float now refuses it. Real producer
 segmentation at 8192+8 records was verified with synthetic event payloads.
 
-Remaining Task 2 work: the complete synthetic positive communication chain with
-the two permitted non-counting replays; independent corruption/refusal matrix;
-raw bytes/status/clock/owner joins and pinned observer replay; actual workload,
-ULog/runtime/cleanup checks; study-file adapter and structured audit result.
-The whole-package independent review remains pending after Tasks 2–3.
+## Protocol consistency helper
+
+`audit_wire_protocol_records` now cross-checks raw receive return, selection,
+decoded request, reply preparation, observer reservation, attempted send, returned
+byte count and later status. It replays existing ColdTimesyncBootstrap and its
+maintenance continuation, which use the pinned SerialTimesyncObserver. It does
+not implement an approximate replacement filter or MAVLink decoder. PinnedCodec
+enforces installed pymavlink 2.4.49 and the existing dialect source hash.
+
+The clock check requires all 25000 exact 1 ms disk-shaped attempts and committed
+observations, matching session/iteration/times and journal-return fields. It does
+not promote those records to proven simulator callback provenance. Each selected
+sample must match an actual member of the supplied observation list. The owned
+context hashes to the expected cold epoch tag; the hash still is not kernel
+ownership or fresh-process proof.
+
+The positive fixture runs the existing observed/interval/segmented producer
+objects with injected socket and process I/O. It contains 500 accepted cold
+samples, two accepted maintenance samples, the exact non-counting latest replay
+and maintenance boundary. Its clock disk-shaped attempts are reconstructed from
+the synthetic lane's in-memory attempts: they are explicitly not real capture
+I/O evidence. It retains the existing fixture's 1 ms remote origin; it is not the
+future study's 0/0 clock profile or an installed preparation pass.
+
+Sixteen corruption subcases cover raw request/response/receive changes, short or
+missing send return, missing/mismatched status, missing cold snapshot, ordinal,
+epoch, clock gap/return/session, foreign selection and the two replay boundaries.
+Deletion cases reindex the remaining history so they exercise missing causal
+records rather than only ordinal-gap rejection. Initial RED was a missing API.
+A separate genuine producer fixture gave two correlated maintenance pairs but
+only one accepted sample (the first had excessive RTT); it exposed acceptance
+based on correlation count alone. The auditor now also requires at least two
+accepted samples. This behavioral RED and subsequent GREEN are retained.
+
+The helper still returns `live_qualified=false`, `fusion_qualified=false`,
+`owner_transport_qualified=false`, `interval_qualified=false` and
+`workload_qualified=false`. It cannot authorize live communication or accept an
+entire study. In particular, a matching modeled status requires later joins to
+the original owned listener transport, and interval state summaries require
+their own raw command/ACK/readback audit.
+
+Remaining Task 2 work: actual owner/descriptor/listener transport joins, raw
+interval apply/readback/restore and cleanup, ULog/source/native/runtime evidence,
+startup-only negative fixture, and complete study adapter/structured audit.
+The whole-package independent review remains pending after Tasks 2–3. No physical
+or network experiment has been run in this implementation step.

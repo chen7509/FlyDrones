@@ -92,8 +92,29 @@ tests use explicitly synthetic files and do not qualify installed resources.
 Task 2 has begun with a segmented evidence reader and producer-field map in
 `LIVE_WIRE_RAW_EVIDENCE_MAP.md`. Its 19 new cases and related storage/contract
 tests passed (72 total), including 8192+8 records and refusal of numeric overflow.
-This verifies retained file integrity only. Complete packet/status/clock joins,
+The next implementation adds raw packet/status/clock consistency joins, replaying
+the existing cold/maintenance filter classes and fixed pymavlink codec. The
+positive synthetic fixture includes 500 accepted bootstrap and two accepted
+maintenance samples, both non-counting boundary replays, and 25000 synthetic
+clock observations. Sixteen independent corruption subcases refuse. A separate
+behavioral RED exposed two correlated maintenance pairs with only one accepted;
+requiring at least two accepted samples fixes that false pass.
+
+Verification for this increment: **21 WSL unittest methods** (including three new
+methods with the 16 corruption subcases) and **124 Windows pytest cases** passed;
+changed-file Ruff passed. These suites overlap previous checks and are not added
+into one unique-test total. An initial WSL command incorrectly included a pytest
+module on an interpreter without pytest; its import failure remains in
+`protocol-regression-v2.txt`. The test was routed to existing Windows pytest,
+without installing dependencies. The synthetic fixture's remote origin is 1 ms,
+not the prospective 0/0 profile, and its clock disk-shaped attempts are explicitly
+reconstructed test data. No installed/live qualification follows from this test.
+
+Actual owner/descriptor/listener transport joins, raw interval restoration,
 workload/shutdown qualification and the study audit entry point remain unfinished.
+All live, fusion, transport-ownership, interval and workload qualification flags
+from the protocol helper remain false; only supplied protocol consistency is
+checked. No physical/UDP/native-estimator run was started.
 
 The broader goal remains open: actual VIO-to-EKF2 fusion, complete fruit-fly
 learning/division in that closed loop, fair upstream comparison, 5/20-aircraft
