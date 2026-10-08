@@ -112,9 +112,9 @@ class SegmentedWireJournal:
             row = dict(index=self._records, source=source, source_index=self._counts[source],
                        phase=self._phase, event=copy.deepcopy(event))
             raw = self._encode(row)
+            self._failed_record = row  # One bounded in-flight record also covers byte rejection.
             if self._bytes + len(raw) > self.MAX_BYTES:
                 raise ValueError('segmented byte capacity exhausted before write')
-            self._failed_record = row  # At most one in-flight/rejected write, never an entire history.
             if self._file is None:
                 number = len(self._segments) + len(self._unsealed)
                 if number >= self.MAX_SEGMENTS:

@@ -80,7 +80,8 @@ class CaptureWireDriver:
                 if any(origin is not None and not 0 <= now - origin < 2_000_000_000 for origin in origins):
                     raise ValueError('capture pre-step reader/source/progress expired')
                 return (self.phase == 'maintenance' and state['phase'] in ('ready', 'pending')
-                        and state['maintenance_correlated_samples'] > 0)
+                        and state['maintenance_correlated_samples'] > 0
+                        and state.get('maintenance_last_accepted') is True)
             except BaseException as exc:
                 self._fail(exc)
                 self.request_stop(self.failure)
@@ -122,6 +123,16 @@ class CaptureWireDriver:
                 self._fail(exc)
                 if not isinstance(exc, Exception):
                     interruptions.append(exc)
+        # Some evidence owners latch ordinary close failures and return normally.
+        # Propagate their terminal state before CaptureJournal decides success.
+        try:
+            failure = self.session.progress['failure']
+            if failure:
+                self._fail(ValueError('terminal session failure: ' + failure))
+        except BaseException as exc:
+            self._fail(exc)
+            if not isinstance(exc, Exception):
+                interruptions.append(exc)
         self.closed, self.phase = True, 'closed'
         if interruptions:
             raise interruptions[0]
@@ -427,6 +438,8 @@ class CaptureWireOwner:
                 except BaseException as exc:
                     self._fail(exc)
                     failures.append(exc)
+        if self.store is not None and self.store.failure:
+            self._fail(ValueError('terminal retention failure: ' + self.store.failure))
         evidence = dict(failure=self.failure, fusion_qualified=False, network_authorized=False,
                         driver=None if self.driver is None else self.driver.progress,
                         session=None if self.driver is None else self.driver.session.evidence)

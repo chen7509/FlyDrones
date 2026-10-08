@@ -182,6 +182,7 @@ class TimesyncWireResponder:
         self._interval_sink = interval_send_sink or send_sink
         self._last_seen_request = None
         self._last_unarmed = None
+        self._safety_refused = False
         self._restoration = self._restore_guard = self._restore_sink = None
         self._restore_active = False
         if interval_transaction:
@@ -296,6 +297,8 @@ class TimesyncWireResponder:
     def _check_restoration(self):
         if self._restoration is None:
             raise ValueError('no restoration context')
+        if self._safety_refused:
+            raise ValueError('restoration refused after invalid/armed heartbeat')
         now = self._accept_time(self._now())
         self._restoration.check(now)
         if self._restore_guard() is not None:
@@ -478,11 +481,12 @@ class TimesyncWireResponder:
         finally:
             self._lock.release()
 
-    def _dispatch_heartbeat(self, messages, received_ns, observed_sim_ns):
+    def _validate_heartbeat(self, messages, received_ns, observed_sim_ns):
         if self._heartbeat_sink is None:
             return
         heartbeats = [(index, m) for index, m in enumerate(messages) if m['type'] == 'HEARTBEAT']
         if len(heartbeats) > 1:
+            self._last_unarmed, self._safety_refused = None, True
             raise ValueError('multiple heartbeats in fixed datagram profile')
         if not heartbeats:
             return
@@ -492,9 +496,17 @@ class TimesyncWireResponder:
                 or type(fields['base_mode']) is not int or not 0 <= fields['base_mode'] < 128
                 or type(fields['custom_mode']) is not int or not 0 <= fields['custom_mode'] < 2**32
                 or type(observed_sim_ns) is not int or not 0 <= observed_sim_ns < 2**63):
+            self._last_unarmed, self._safety_refused = None, True
             raise ValueError('unarmed PX4 heartbeat and observed simulation time required')
         event = dict(kind='heartbeat', arrival_monotonic_ns=received_ns, observed_sim_ns=observed_sim_ns,
                      system_id=9, base_mode=fields['base_mode'], custom_mode=fields['custom_mode'])
+        return index, event
+
+    def _dispatch_heartbeat(self, messages, received_ns, observed_sim_ns):
+        validated = self._validate_heartbeat(messages, received_ns, observed_sim_ns)
+        if validated is None:
+            return
+        index, event = validated
         self._record('heartbeat_dispatch_attempt', frame_index=index, event=event)
         self._require_event_capacity()  # reserve space before a possibly delivered callback
         returned = self._heartbeat_sink(copy.deepcopy(event))
@@ -528,9 +540,30 @@ class TimesyncWireResponder:
             self._record("decoded", messages=messages)
             if any(m["system"] != 9 or m["component"] != 1 for m in messages):
                 raise ValueError("unexpected header source")
+            self._validate_heartbeat(messages, received_ns, observed_sim_ns)
+            requests = [m for m in messages if m["type"] == "TIMESYNC"]
+            if len(requests) > 1:
+                raise ValueError("multiple TIMESYNC requests")
+            if requests:
+                tc1, request = requests[0]['fields']['tc1'], requests[0]['fields']['ts1']
+                if tc1 != 0 or type(request) is not int or not 0 < request < 2**63 or request % 1000:
+                    raise ValueError("invalid request identity or unexpected response")
+                if self._last_identity is not None and request <= self._last_identity[0]:
+                    raise ValueError("request identity regression or reuse")
+                if self._interval is not None and self._last_seen_request is not None and request <= self._last_seen_request:
+                    raise ValueError('seen request identity regression or reuse')
+                # Validate the clock/encoding before any heartbeat or ACK effects.
+                # Use a private clock copy so ignored startup requests do not
+                # consume the real mapping lane before an actual reply is allowed.
+                preview = copy.deepcopy(self._remote).respond_to_px4_request(
+                    tc1_ns=tc1, ts1_ns=request, observed_sim_ns=observed_sim_ns)
+                if self._last_identity is not None and preview['tc1_ns'] <= self._last_identity[1]:
+                    raise ValueError("response identity regression or reuse")
+                self._codec.encode_reply(request, preview['tc1_ns'], self._sequence)
             if self._interval is not None:
                 responses = [self._codec.interval_response(m) for m in messages
                              if m['type'] in ('COMMAND_ACK', 'MESSAGE_INTERVAL')]
+                self._interval.validate_responses(responses, received_ns)
                 # Armed/bad heartbeat cannot be followed by command acceptance.
                 self._dispatch_heartbeat(messages, received_ns, observed_sim_ns)
                 for row in responses:

@@ -398,6 +398,22 @@ class IntervalExchange:
                 self._check_deadline()
         self._run(action)
 
+    def validate_responses(self, rows, received_ns):
+        """Preflight a decoded batch with the same feed rules, without effects.
+
+        The preview owns copied bounded state and a separate lock. feed never
+        sends commands; only poll does. No preview state is committed as evidence.
+        Actual feed retains its own time/deadline checks after callback delivery.
+        """
+        preview = copy.copy(self)
+        preview._lock = Lock()
+        preview._pending = copy.deepcopy(self._pending)
+        preview._result = copy.deepcopy(self._result)
+        for row in rows:
+            preview.feed(row, received_ns)
+            if preview.progress['failure']:
+                raise ValueError('invalid interval response batch: ' + preview.progress['failure'])
+
     def feed(self, row, received_ns):
         def action():
             if not self._check_deadline():

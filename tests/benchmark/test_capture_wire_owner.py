@@ -20,6 +20,11 @@ class WireOwnerTests(unittest.TestCase):
         self.case = driver_cases.CaptureDriverTests('runTest')
         self.case.setUp()
         self.case.driver._close()
+        # The fixture's unused cold session has intentionally failed on close.
+        # The subsequently constructed selected owner is a separate capture.
+        self.preparation_errors = tuple(self.case.errors)
+        self.case.errors = []
+        self.case.result = dict(status='incomplete', errors=self.case.errors)
         self.case.case.setUp()
         self.f = self.case.case.f
         self.f.obj.close()

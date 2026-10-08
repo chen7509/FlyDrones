@@ -50,6 +50,7 @@ class _TimesyncMaintenance:
                     transport_claimed=self._transport_claimed,
                     raw_records_seen=self._seen, maintenance_correlated_samples=self._correlated,
                     maintenance_last_progress_ns=self._last_progress,
+                    maintenance_last_accepted=bool(self._correlated > 0 and self._last_observed['accepted']),
                     modeled_accepted_samples=self._last_observed['modeled_accepted_samples'],
                     estimated_offset_us=self._last_observed['estimated_offset_us'],
                     maintenance_healthy=healthy,

@@ -1,8 +1,11 @@
 # Capture wire lifecycle — work in progress
 
-The full lifecycle plan is **not complete**. The actual capture reader selection, CLI,
-socket, process and physics registration remain unchanged. No actual network,
-PX4/Gazebo/OpenVINS, ODOMETRY, EKF2, arming or training run was started.
+Tasks1-3 are implemented, including opt-in reader selection and the production
+runner with injected-service verification. Task4 independent review found five
+Important issues, now repaired with counterexample and regression evidence. The sections
+below preserve historical checkpoints; later sections supersede earlier pending
+implementation statements. No actual network, PX4/Gazebo/OpenVINS, ODOMETRY, EKF2,
+arming or training run was started for this lifecycle implementation.
 
 ## Implemented core: cold-to-maintenance listener continuation
 
@@ -587,7 +590,7 @@ journals, CaptureWriter, heartbeat fanout and ShadowInput. A real Python receive
 thread owns each protocol tick. A deterministic test scheduler grants ticks and
 an injected peer answers actual encoded commands; it does not replace protocol
 state transitions. The injected fixture delivers25,000 sequential1ms callbacks,
-500 bootstrap samples, restoration and745 maintenance reply/status pairs. The
+500 bootstrap samples, restoration and746 maintenance reply/status pairs. The
 test forbids real UDP/PX4 constructors and Gazebo/native constructor imports.
 Transport success does not manufacture sensor readiness or call the estimator.
 Writer draining and the synthetic wall clock are not online latency evidence.
@@ -620,3 +623,58 @@ evidence, not a full-repository test result. No actual UDP, PX4, Gazebo, estimat
 training or fusion ran. Task3 implementation is complete; Task4 independent
 whole-plan review and final sealing/publication remain pending. Live activation
 still requires the separate prospective study gate.
+
+## Task4: independent review repair and final regression
+
+The independent whole-plan review covered `2c4f044..bd28908`. A fresh reviewer
+could not be spawned because of the agent-thread limit, so the completed
+independent design-review seat was reused. This was not fresh-context review.
+It found no Critical issues, five Important issues and one Minor report issue.
+All were accepted after local reproduction and source inspection:
+
+- A correlated but rejected maintenance sample could grant pre-step readiness.
+  The gate now requires the latest observer acceptance, including pending pairs.
+- Armed-heartbeat refusal retained an earlier unarmed restoration permission.
+  It now revokes that permission and latches a restoration safety refusal.
+- Interval mode delivered heartbeat before checking a malformed mixed request.
+  Request identity/multiplicity/clock/encoding, heartbeat and the whole decoded
+  response batch are preflighted before heartbeat/ACK effects. The response preview
+  reuses bounded feed state and never sends; actual feed still checks time.
+- Terminal segmented flush failures could remain only in component state while
+  CaptureJournal reported success. Driver/owner now propagate final component
+  and retention failures into capture errors before terminal result selection.
+- A byte-quota rejection could lose an executed send's return record. The single
+  in-flight failure slot now captures that record before rejecting its byte size;
+  quota and persistence qualification are unchanged.
+
+The stale opening status was corrected and earlier text explicitly marked as
+historical checkpoints. The original five-test counterexample run had six failing
+assertions; an additional duplicate-ACK batch also failed. These RED logs remain.
+The first focused repair run passed six tests. Clock-mapping refusal and analogous
+heartbeat/listener return-slot coverage were subsequently added GREEN.
+
+Expanded verification v1 retained three WSL import errors because pytest-only
+modules were assigned to the unittest environment. An old owner fixture also
+reused errors from its deliberately closed preparatory cold session. Tests now
+use the installed Windows pytest for those modules and a separate capture result
+for the subsequently constructed owner; preparatory failure is retained separately.
+This is a fixture/environment correction, not permission to clear a live failure.
+
+Final `capture-review-final-v2`: **413 pytest and198 WSL tests passed**, with53
+selected source/test hashes unchanged before/after, changed Ruff and diff-check
+passing. This is expanded affected regression, not a new full-repository result.
+Nine composed runner cases retain their logs. The added terminal-flush case
+reaches25,000 callbacks but correctly remains `capture_failed`. Offline auditing
+verified all retained member bytes/hashes and global/per-source record indices;
+the intentionally unsealed flush-failure member remains failed even when its
+stored bytes match the declared digest. Normal output has500 bootstrap and746
+maintenance pairs. The earlier745 report count was an inclusive-endpoint arithmetic
+mistake, corrected from raw records without re-running the estimator or physics.
+
+Review exclusions remain unverified: full CLI preparation, actual OS descriptor
+and process provenance, ACK timing/rate, PX4 convergence, concurrent live sensors
+and native estimation, physics, hardware and flight. The independent review did
+not re-review the repair commit; its findings were closed with retained local
+counterexamples and current regressions in the prescribed single repair pass.
+No actual network, physical capture, ODOMETRY/EKF2, arming or training is authorized
+by this result. Final stage archive and publication are recorded below once sealed.

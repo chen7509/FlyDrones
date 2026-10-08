@@ -48,6 +48,9 @@ class RuntimeWireIntegrationTests(unittest.TestCase):
     def test_missing_restore_reply_remains_failed_before_owned_stop(self):
         self.run_case('lost-restore')
 
+    def test_terminal_flush_failure_cannot_report_capture_completed(self):
+        self.run_case('terminal-flush')
+
     def run_case(self, fault=None):
         tmp = self.enterContext(tempfile.TemporaryDirectory())
         if root := os.environ.get('FLYDRONES_RUNNER_EVIDENCE'):
@@ -188,6 +191,14 @@ class RuntimeWireIntegrationTests(unittest.TestCase):
                     until(lambda: owner.driver.phase == 'maintenance')
                 if index >= 500:
                     self.assertTrue(owner.health_ready())
+            if step == 25000 and fault == 'terminal-flush':
+                stream = owner.store._file
+                class FailingFlush:
+                    def flush(self):
+                        raise OSError('injected terminal flush failure')
+                    def __getattr__(self, name):
+                        return getattr(stream, name)
+                owner.store._file = FailingFlush()
             return True
         def register(callback):
             if fault == 'registration':
@@ -241,6 +252,12 @@ class RuntimeWireIntegrationTests(unittest.TestCase):
             if fault:
                 self.assertEqual(result['status'], 'capture_failed')
                 self.assertTrue(result['errors'])
+                if fault == 'terminal-flush':
+                    self.assertEqual(step, 25000)
+                    self.assertIn('injected terminal flush failure', str(result['errors']))
+                    self.assertFalse(owner.driver._thread.is_alive())
+                    self.assertLess(events.index('socket-close'), events.index('px4-stop'))
+                    return
                 self.assertLess(step, 25000)
                 self.assertEqual(native.calls, [])
                 self.assertTrue(sock.closed)
