@@ -593,3 +593,23 @@ inputs as original fixture files, both joined suites passed 12 methods in
 failures are fixture-development evidence, not production behavioral REDs.
 Installed protobuf deprecation warnings remain. No full-repository test run,
 whole-package review, actual runtime activation or remote publication is claimed.
+
+The retained `initialized-motion-v1` bundle from producer `f12ca9b` was generated
+once and reread through the bounded file reader: 534 consumed files and all 12
+leaf checks. Fifty-four loaded repository sources were copied and hashed before
+generation and checked unchanged afterward. Seven modules loaded lazily during
+audit have only post-load hashes/copies, explicitly listed in `audit.json`; this
+is not a complete runtime freeze. No run was repeated to hide that boundary.
+The bundle records 23,596 synthetic support commands and 1,600 lateral commands;
+none were applied to a simulator. Full file-entry and producer-attestation work
+remain open. A trailing blank line added to the evidence map failed the first
+publication diff check; the documentation-only correction is retained separately.
+
+The source and retained synthetic evidence are sealed in
+`evidence/live-wire-initialized-motion-offline-dev-1701.zip`: 615 members,
+3,649,212 bytes, SHA256
+`2ee94d95eba18ead4ccb3302c1e1f7c628d751ddf366afaed14edc8c1ef607aa`.
+CRC and every manifest member hash were verified. The archive preserves the
+fixture-development failures, successful regressions, raw synthetic records,
+before/after source evidence and post-load-only source boundary. Its report
+precedes this seal paragraph. Publication remains local; Task 2 is not complete.

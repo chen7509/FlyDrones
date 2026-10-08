@@ -334,7 +334,8 @@ auditor, even after replacing the terminal snapshot with success. Successful
 cleanup of a failed capture remains different from successful normal execution.
 This test does not qualify failure cleanup as live, authenticate a PX4 peer, or
 replace the still-pending full positive study integration.
-# Initialized shared-clock fixture boundary
+
+## Initialized shared-clock fixture boundary
 
 The test-only `live_wire_motion_fixture.py` joins synthetic native I/C/M records
 to the original shared-clock source deliveries, actual readiness/intent policy
@@ -351,4 +352,3 @@ composition check, not runtime producer attestation, a complete file-entry
 positive case, mechanical consistency, or physical/live/fusion qualification.
 Remaining joins: declared runtime/resource inputs, ULog, prospective manifest
 and the full production file entry. Previous v1 evidence is not rewritten.
-
