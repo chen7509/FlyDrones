@@ -83,6 +83,63 @@ class PinnedCodec:
         encoder.seq = sequence
         return self._mav.MAVLink_timesync_message(response_ns, request_ns).pack(encoder)
 
+    def encode_interval_command(self, operation, interval_us, sequence):
+        """Build one pinned command; sequence remains owned by the sole caller.
+
+        No send, retry, ACK or transport authority is implied by these bytes.
+        """
+        from tools.benchmark.openvins_timesync_interval import restorable_interval
+
+        self.check()
+        if type(sequence) is not int or not 0 <= sequence <= 255:
+            raise ValueError('invalid sender sequence')
+        if type(operation) is not str:
+            raise ValueError('invalid interval operation type')
+        if operation == 'get' and interval_us is None:
+            command, value = 510, 0
+        elif operation == 'set':
+            command, value = 511, restorable_interval(interval_us)
+        else:
+            raise ValueError('invalid interval operation')
+        encoder = self._mav.MAVLink(None, srcSystem=254, srcComponent=191)
+        encoder.seq = sequence
+        return self._mav.MAVLink_command_long_message(9, 1, command, 0, 111, value, 0, 0, 0, 0, 0).pack(encoder)
+
+    def interval_response(self, row):
+        """Normalize a row from this decoder, not an independent receive path.
+
+        The owner must supply original receive time and enforce pending-operation
+        correlation. Headers/ACK targets are not authentication or a nonce.
+        """
+        from tools.benchmark.openvins_timesync_interval import restorable_interval
+
+        self.check()
+        if type(row) is not dict or set(row) != {'type', 'system', 'component', 'sequence', 'framing', 'fields', 'raw_hex'}:
+            raise ValueError('invalid interval response row')
+        for key, expected in [('system', 9), ('component', 1), ('framing', 2)]:
+            if type(row[key]) is not int or row[key] != expected:
+                raise ValueError('interval response source/framing')
+        if type(row['sequence']) is not int or not 0 <= row['sequence'] <= 255:
+            raise ValueError('interval response sequence')
+        fields = row['fields']
+        if type(fields) is not dict or fields.get('mavpackettype') != row['type']:
+            raise ValueError('interval response fields')
+        if row['type'] == 'COMMAND_ACK':
+            keys = {'command', 'result', 'progress', 'result_param2', 'target_system', 'target_component'}
+            if set(fields) != keys | {'mavpackettype'} or any(type(fields[k]) is not int for k in keys):
+                raise ValueError('ACK schema')
+            if (fields['command'] not in (510, 511) or fields['target_system'] != 254
+                    or fields['target_component'] != 191 or fields['progress'] != 0
+                    or fields['result_param2'] != 0 or fields['result'] not in (0, 1, 2, 3, 4, 6)):
+                raise ValueError('ACK command/target/result outside fixed profile')
+            return dict(kind='ack', command=fields['command'], result=fields['result'])
+        if row['type'] == 'MESSAGE_INTERVAL':
+            if (set(fields) != {'mavpackettype', 'message_id', 'interval_us'}
+                    or type(fields['message_id']) is not int or fields['message_id'] != 111):
+                raise ValueError('interval response message identity/schema')
+            return dict(kind='interval', message_id=111, interval_us=restorable_interval(fields['interval_us']))
+        raise ValueError('not an interval response')
+
 
 class TimesyncWireResponder:
     MAX_EVENTS = 8192

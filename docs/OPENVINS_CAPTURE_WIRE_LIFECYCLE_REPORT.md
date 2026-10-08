@@ -201,3 +201,75 @@ pass is claimed. Task1 of the lifecycle plan is complete. Task2 interval/restore
 Task3 actual runner registration and Task4 independent whole-change review/sealed
 stage evidence remain open. The full FlyDrones goal and fusion qualification
 remain incomplete; hardware and flight evidence are unchanged.
+
+## Task2 checkpoint: pinned commands and nonblocking phase core
+
+The latest implementation adds `PinnedCodec.encode_interval_command` and
+`interval_response`, plus `IntervalExchange` in the existing interval module.
+The existing synchronous transaction remains unchanged as a comparison oracle.
+**Task2 is still incomplete:** the actual Observed/Owned receive owner has not
+yet bound this exchange to its shared sender sequence, heartbeat dispatch and
+restricted cleanup transport. No actual capture reader or network mode changed.
+
+### Source decision and boundaries
+
+Reuse PX4 d6f12ad1c4f70ad3230afd7d86e971421e02fef4 (BSD-3-Clause) and installed
+pymavlink2.4.49 with the existing LGPL/generated-code provenance. The archived
+maintenance observations are reused: neither repository was archived; last pushes
+were2026-10-07T16:06:37Z and2026-10-06T23:56:46Z respectively. These are prior
+observations, not newly verified activity or installed-whole-checkout equivalence.
+No package installation or estimator/algorithm/paper choice changed.
+
+The fixed [PX4 receiver](https://github.com/PX4/PX4-Autopilot/blob/d6f12ad1c4f70ad3230afd7d86e971421e02fef4/src/modules/mavlink/mavlink_receiver.cpp)
+sends MESSAGE_INTERVAL directly for GET510, while publishing the command ACK
+separately. The fixed [sender](https://github.com/PX4/PX4-Autopilot/blob/d6f12ad1c4f70ad3230afd7d86e971421e02fef4/src/modules/mavlink/mavlink_main.cpp)
+drains ACKs with transmit-buffer and known-target conditions, copying original
+sender identity to ACK target fields. The implementation therefore requires both
+GET ACK and interval response, accepting either order. SET511 ACK alone never
+qualifies readback. Real installed codec schema and both source hashes are retained
+in `results/capture-wire-lifecycle-dev-1701/interval-codec-inspection.json`.
+
+The [MAVLink command protocol](https://mavlink.io/en/services/command.html) distinguishes
+acceptance from completed effects and normally uses retries. This narrowly scoped
+profile deliberately refuses ambiguous retries. It uses sender254/191,target9/1,
+confirmation0, TIMESYNC111, positive exactly-restorable intervals and zero unused
+parameters. ACK target/source and result shape are checked; MAVLink1 and missing
+target extensions are refused for this profile. MESSAGE_INTERVAL contains no
+transaction nonce: one pending command and local arrival-time checks cannot prove
+perfect attribution of a delayed response across repeated same-command operations.
+Header equality is not authentication. Both limitations remain explicit.
+
+Adopting the existing codec avoids a second blocking `recv_match` reader and
+requires no new dependency. The phase core keeps one pending operation, at most
+six normal command effects and96 events; it does not consume sensor streams.
+Real CPU/memory/transport latency is not measured here. Adaptation cost remains
+the actual owner binding and runner integration, not just these helpers.
+
+### Behavior and verification
+
+`poll` advances at most one effect without receiving or running the bootstrap
+body. `feed` accepts normalized decoded command replies; the body completes
+explicitly. Each operation has2s, normal startup8s, and primary failure can enter
+one immutable10s restoration-only window. Writes are owned before calling the
+sender, including ambiguous exceptions. Independent restore/final readbacks retain
+primary versus restoration failures. Every active entry checks the supplied
+identity/safety guard; terminal refusal preserves pending state and one bounded
+terminal failure. The outer owner must still implement that guard, keep heartbeats
+flowing, interrupt blocked callbacks, and suppress ordinary traffic during cleanup.
+This helper alone does not provide any of those actual-runtime guarantees.
+
+Initial6 codec/12 exchange missing-interface assertions were RED. Additional
+behavioral REDs exposed missing identity checks while awaiting final readback,
+unsolicited post-completion ACK preserving success, unbounded duplicate terminal
+failure accumulation, and missing pending evidence on hard refusal. All were
+fixed and retained; the pending-evidence test first raised KeyError before it was
+rewritten as an explicit failing assertion. Added passing boundary coverage is
+not mislabeled as RED-to-GREEN work.
+
+Final `interval-final-v1` verification: **71 pytest and123 installed-codec WSL
+unittest passed**,20 selected source/test hashes unchanged before/after, changed
+Ruff/diff-check passed. The injected mixed-frame codec loop tests both ACK/interval
+orders with interleaved heartbeats and sequential outgoing command IDs. It is not
+the actual capture receive loop, online heartbeat availability or performance.
+No fresh whole-repository result or independent whole-plan review is claimed.
+Network/live/fusion flags remain false. All historical failures are preserved.

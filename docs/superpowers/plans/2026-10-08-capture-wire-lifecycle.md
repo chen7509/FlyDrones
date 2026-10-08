@@ -58,7 +58,7 @@ explicit begin/feed/poll exchange phases; body is bootstrap only, and restoratio
 must finish before MAINTENANCE. Restricted10s cleanup after primary failure allows
 only owned-baseline restoration, retaining failure and2s operation bounds.
 
-- [ ] Retain fixed codec/PX4 command and interval field evidence; confirm exact
+- [x] Retain fixed codec/PX4 command and interval field evidence; confirm exact
   query command/ACK target semantics before encoding commands.
 - [ ] Tests first: baseline, apply/readback, body, restore/readback; no second
   reader; heartbeat during waits; missing/wrong/duplicate/late responses; mutation
