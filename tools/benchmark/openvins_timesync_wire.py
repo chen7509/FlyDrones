@@ -86,11 +86,15 @@ class PinnedCodec:
 class TimesyncWireResponder:
     MAX_EVENTS = 8192
 
-    def __init__(self, remote_clock, reserve_reply, send_sink, journal, now, start_ns, peer=("127.0.0.1", 14588)):
+    def __init__(self, remote_clock, reserve_reply, send_sink, journal, now, start_ns, peer=("127.0.0.1", 14588),
+                 *, heartbeat_sink=None):
         if not isinstance(remote_clock, RemoteMonotonicClock):
             raise ValueError("existing remote clock required")
         if any(not callable(c) for c in (reserve_reply, send_sink, journal, now)):
             raise ValueError("explicit callbacks required")
+        if heartbeat_sink is not None and not callable(heartbeat_sink):
+            raise ValueError("heartbeat sink must be callable")
+        self._heartbeat_sink = heartbeat_sink
         if type(start_ns) is not int or not 0 <= start_ns < 2**64 - 8_000_000_000:
             raise ValueError("invalid start clock")
         if peer != ("127.0.0.1", 14588) or type(peer) is not tuple:
@@ -134,6 +138,8 @@ class TimesyncWireResponder:
             raise ValueError("wire request deadline")
         if self._remote.session_id != self._session:
             raise ValueError("remote clock session changed")
+        if self._remote.failure is not None:
+            raise ValueError("shared remote clock failed: " + self._remote.failure)
         self._codec.check()
         return value
 
@@ -203,6 +209,31 @@ class TimesyncWireResponder:
         finally:
             self._lock.release()
 
+    def _dispatch_heartbeat(self, messages, received_ns, observed_sim_ns):
+        if self._heartbeat_sink is None:
+            return
+        heartbeats = [(index, m) for index, m in enumerate(messages) if m['type'] == 'HEARTBEAT']
+        if len(heartbeats) > 1:
+            raise ValueError('multiple heartbeats in fixed datagram profile')
+        if not heartbeats:
+            return
+        index, message = heartbeats[0]
+        fields = message['fields']
+        if (fields['autopilot'] != 12 or fields['mavlink_version'] != 3
+                or type(fields['base_mode']) is not int or not 0 <= fields['base_mode'] < 128
+                or type(fields['custom_mode']) is not int or not 0 <= fields['custom_mode'] < 2**32
+                or type(observed_sim_ns) is not int or not 0 <= observed_sim_ns < 2**63):
+            raise ValueError('unarmed PX4 heartbeat and observed simulation time required')
+        event = dict(kind='heartbeat', arrival_monotonic_ns=received_ns, observed_sim_ns=observed_sim_ns,
+                     system_id=9, base_mode=fields['base_mode'], custom_mode=fields['custom_mode'])
+        self._record('heartbeat_dispatch_attempt', frame_index=index, event=event)
+        self._require_event_capacity()  # reserve space before a possibly delivered callback
+        returned = self._heartbeat_sink(copy.deepcopy(event))
+        self._record('heartbeat_dispatch_return', frame_index=index,
+                     returned_none=returned is None, return_type=type(returned).__name__)
+        if returned is not None:
+            raise ValueError('heartbeat sink must return None')
+
     def receive(self, raw, peer, received_ns, observed_sim_ns):
         if not self._lock.acquire(blocking=False):
             self._abort(ValueError("concurrent wire operation"))
@@ -231,6 +262,7 @@ class TimesyncWireResponder:
             if len(requests) > 1:
                 raise ValueError("multiple TIMESYNC requests")
             if not requests:
+                self._dispatch_heartbeat(messages, received_ns, observed_sim_ns)
                 return None
             message = requests[0]
             tc1, request = message["fields"]["tc1"], message["fields"]["ts1"]
@@ -243,6 +275,7 @@ class TimesyncWireResponder:
             if self._last_identity is not None and response <= self._last_identity[1]:
                 raise ValueError("response identity regression or reuse")
             encoded = self._codec.encode_reply(request, response, self._sequence)
+            self._dispatch_heartbeat(messages, received_ns, observed_sim_ns)
             self._record("reply_prepared", request_ns=request, response_ns=response, raw_hex=encoded.hex(),
                          sequence=self._sequence, clock_session=reply["clock_session_id"])
             self._check()

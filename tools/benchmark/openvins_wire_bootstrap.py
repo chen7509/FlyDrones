@@ -11,8 +11,9 @@ from tools.benchmark.owned_daemon_connection import LinuxBackend, _error
 
 
 class OwnedWireBootstrap:
-    def __init__(self, process, expected, path, remote_clock, start_ns, journal, send_sink, *, backend=None):
-        if not callable(journal) or not callable(send_sink):
+    def __init__(self, process, expected, path, remote_clock, start_ns, journal, send_sink, *, backend=None,
+                 heartbeat_sink=None):
+        if not callable(journal) or not callable(send_sink) or heartbeat_sink is not None and not callable(heartbeat_sink):
             raise ValueError("explicit journal and sink required")
         self._journal, self._sink = journal, send_sink
         self._backend = backend or LinuxBackend()
@@ -27,7 +28,8 @@ class OwnedWireBootstrap:
             self._owned = OwnedBootstrap(process, expected, path, remote_clock.session_id, start_ns,
                                          lambda event: self._record("owned", event), backend=self._backend)
             self._wire = TimesyncWireResponder(remote_clock, self._owned.reserve_reply, self._send,
-                                              lambda event: self._record("wire", event), self._backend.clock, start_ns)
+                                              lambda event: self._record("wire", event), self._backend.clock, start_ns,
+                                              heartbeat_sink=heartbeat_sink)
         except BaseException as exc:
             self._abort(exc)
             raise

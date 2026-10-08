@@ -22,16 +22,18 @@ class ObservedWireSession:
     MAX_SELECTIONS = 4096
 
     def __init__(self, process, expected, path, remote_clock, clock_lane, sock, start_ns,
-                 journal, descriptor_guard, *, backend=None):
+                 journal, descriptor_guard, *, backend=None, heartbeat_sink=None):
         if (type(remote_clock) is not RemoteMonotonicClock or type(clock_lane) is not JournaledSimulationClock
                 or not callable(journal) or not callable(descriptor_guard)
-                or type(start_ns) is not int or not 0 <= start_ns < 2**64 - 8_000_000_000):
+                or type(start_ns) is not int or not 0 <= start_ns < 2**64 - 8_000_000_000
+                or heartbeat_sink is not None and not callable(heartbeat_sink)):
             raise ValueError('actual clock types and explicit journal/descriptor guard required')
         validate_owner(expected)
         self._process, self._expected = process, copy.deepcopy(expected)
         self._lane, self._remote, self._sock = clock_lane, remote_clock, sock
         self._backend = backend or LinuxBackend()
         self._journal, self._descriptor_guard = journal, descriptor_guard
+        self._heartbeat_sink = heartbeat_sink
         self._start = self._last_now = start_ns
         self._lock, self._state = Lock(), RLock()
         self._failure = self._selection = self._receiver = self._core = None
@@ -47,7 +49,8 @@ class ObservedWireSession:
         self._flags = int(self._flags)
         try:
             self._core = OwnedWireBootstrap(process, expected, path, remote_clock, start_ns,
-                                            lambda e: self._forward('core', e), self._send, backend=self._backend)
+                                            lambda e: self._forward('core', e), self._send, backend=self._backend,
+                                            heartbeat_sink=None if heartbeat_sink is None else self._dispatch_heartbeat)
             self._receiver = DatagramReceiver(sock, self._context, self._backend.clock, start_ns,
                                                lambda e: self._forward('receiver', e))
         except BaseException as exc:
@@ -139,6 +142,13 @@ class ObservedWireSession:
         # No callback or post-send check here: wire code must first retain the
         # actual return count, including a short write or a later source fault.
         return self._sock.sendto(raw, self._flags, peer)
+
+    def _dispatch_heartbeat(self, event):
+        self._receiver.check()
+        self._final_boundary()
+        # Return directly so the core retains partial delivery before checking
+        # whether the callback changed health or crossed a deadline.
+        return self._heartbeat_sink(event)
 
     def _final_boundary(self):
         """Check ages after socket profile calls and any state-lock wait.
