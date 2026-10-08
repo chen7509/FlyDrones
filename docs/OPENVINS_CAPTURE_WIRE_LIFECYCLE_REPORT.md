@@ -444,3 +444,59 @@ are still pending. Existing live capture continues selecting the legacy reader.
 Task3's complete injected-runner test and Task4 final independent review/archive
 are not replaced by these hook tests. Details and source selection are retained
 in `results/capture-wire-lifecycle-dev-1701/capture-hooks-research.md`.
+
+## Task3 checkpoint: serial capture driver and managed reader shutdown
+
+`capture_wire_lifecycle.CaptureWireDriver` now advances the supplied actual
+ObservedWireSession, owned listener, pinned codec and interval exchange. Each
+tick polls at most one datagram and one command effect. It waits for an independent
+PostUpdate observation before command traffic, transfers to maintenance only
+after the original500/bootstrap/restoration gates, and keeps the original total
+deadline. Failure enters STOPPING; subsequent restoration retains the primary
+failure and uses the same receiver and bounded cleanup allowance. No deadline is
+renewed by repeated stop requests.
+
+`bind_capture_wire`, exported from the capture module, registers one PostUpdate
+wrapper and priority15 cleanup (before owned PX4 priority20). The wrapper records
+only the independent clock and calls the existing supplied post callback. Either
+callback failure stops the driver; new callbacks after STOPPING are refused.
+The managed reader restores through its sole polling owner, then cleanup joins
+that reader before closing the socket. A join timeout records failure and leaves
+the still-live reader's descriptor owned. Blocking user callbacks still require
+outer process supervision; a Python join cannot preempt them. Failed thread start
+and repeated cleanup are covered. No new dependency or upstream algorithm changed;
+the existing fixed-source lifecycle/interval research remains the basis.
+
+Sixteen new cases exercise the real composed protocol classes with injected I/O:
+500 startup samples, baseline restoration, two maintenance correlations, missing
+status, source loss/restoration, original10s cleanup expiry, callback/registration/
+declaration failure, independent clock ordering, managed thread join/timeout,
+failed start, stopped callbacks, secondary close errors and concurrent-tick
+refusal. The normal managed-thread case uses an actual Python thread with an
+injected socket/backend; the blocked-thread case is synthetic. It is not evidence
+of a real blocked PX4 process exiting.
+
+The initial five missing-entry assertions failed then passed. Follow-on checks
+found callback failure not latching STOPPING, invalid binding leaking its socket,
+stop-clock failure interrupting cleanup, command traffic before the first clock
+observation, failed-start cleanup, post callbacks after STOPPING and concurrent
+tick refusal leaving ordinary work enabled. Their RED/GREEN records are retained.
+The first cold-clock test lacked the required heartbeat sink and failed during
+construction; the corrected case then observed the premature command assertion.
+The socket-close secondary-error case passed on addition and is coverage, not a
+claimed bug fix. Two initial import-order lint findings were corrected.
+
+`capture-driver-final-v1` passed **271 pytest and114 WSL tests**, with selected
+source/test hashes unchanged before/after and changed Ruff/diff-check passing.
+This is focused affected regression evidence, not a new full-repository result.
+No actual socket, PX4/Gazebo/OpenVINS, capture main or training ran; fusion and
+network authorization remain false.
+
+Task3 remains incomplete: actual main still selects the legacy reader. The new
+registration/driver is not yet selected by a declared capture profile. Exclusive
+mode selection, actual process/descriptor construction, pre-step health wiring,
+startup/maintenance gate integration and the full injected-main test must still
+be completed. In particular the driver's `progress.ready` is a protocol snapshot,
+not by itself a concurrent pre-step freshness proof. These component tests do not
+replace that integration. Task4 independent whole-change review and final stage
+archive also remain pending. No live study is enabled from this checkpoint.

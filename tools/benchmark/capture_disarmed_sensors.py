@@ -31,6 +31,7 @@ from tools.benchmark.capture_contract import (  # noqa: E402
     validate_launch_environment,
     worker_options,
 )
+from tools.benchmark.capture_wire_lifecycle import bind_capture_wire  # noqa: E402, F401
 from tools.benchmark.declared_runtime_snapshot import write_manifest  # noqa: E402
 from tools.benchmark.disarmed_sensor_provenance import CaptureJournal, CaptureWriter, supervise_worker  # noqa: E402
 
