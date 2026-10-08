@@ -678,3 +678,29 @@ The complete synthetic package is sealed in
 CRC and all manifest member hashes were checked. The archive report precedes
 this seal paragraph; it includes the development failure and regression logs.
 Task 2 is complete offline; publication is local and Task 3 remains pending.
+
+## Prospective executor binding
+
+The existing health one-shot executor now exposes a read-only
+`prepare_live_wire_execution` adapter. It binds the validated manifest, exact
+executor file identity, schemas, command and all output paths. Health execution
+and offline wire tests use the same private single-attempt mechanics. There is
+no new launcher and no public live activation entry: the existing CLI still
+rejects a live-wire manifest. Calling a private Python function is not an
+authorization boundary; no stronger security guarantee is claimed.
+
+A fake runner exercises normal completion, child failure, exception preservation,
+resource leftovers and refusal of a second attempt. Its normal envelopes pass
+the production dispatch-record checker, whose independent executor-attestation
+flag remains false. Changed manifest/executor/command/schema, existing output,
+extra stdout/capture overlap and competing resources refuse. The initial missing
+adapter failures were prerequisite REDs. An additional behavior test reproduced
+an existing health-runner bug: old stdout caused dispatch creation before the
+exclusive stdout open failed. The shared path now checks all outputs first;
+that assertion passed after the change. No prior evidence was altered.
+
+Targeted Windows regression passed 107 tests, including the existing health
+runner, prospective study validator and file-entry routing tests, in 82.01 s.
+These fake child runs are not real process/physics tests. Preparation of the
+installed package and its independent review remain open; actual live producer
+attestation, network qualification and fusion are still false.
