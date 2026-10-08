@@ -367,6 +367,19 @@ class HarnessEvidenceTests(unittest.TestCase):
                 with patch.object(harness.shutil, "copytree", copy), self.assertRaises((AssertionError, OSError)):
                     harness.audit_copy(run, destination, result)
                 self.assertIsNotNone(result["harness_error"])
+                if mode == "journal":
+                    self.assertTrue((destination / "journal.jsonl").is_file())
+
+    def test_json_peer_tuple_is_compared_as_persisted_value(self):
+        from tests.benchmark import check_openvins_wire_bootstrap as harness
+        with tempfile.TemporaryDirectory() as root:
+            run = Path(root) / "run"
+            run.mkdir()
+            event = {"peer": ("127.0.0.1", 14588)}
+            (run / "journal.jsonl").write_text(json.dumps({"source": "wire", "event": event}) + "\n")
+            result = dict(harness_error=None, evidence={"wire": {"events": [event]}, "owned": {"events": []}})
+            harness.audit_copy(run, Path(root) / "copy", result)
+            self.assertIsNone(result["harness_error"])
 
     def test_post_hash_drift_cannot_report_complete(self):
         from tests.benchmark import check_openvins_wire_bootstrap as harness

@@ -87,12 +87,15 @@ def child(args):
 def audit_copy(run, destination, result):
     """Retain post-cleanup audit failures instead of labeling a case complete."""
     try:
-        entries = [json.loads(line) for line in (run / "journal.jsonl").read_text().splitlines()]
-        for source in ("wire", "owned"):
-            assert [event["event"] for event in entries if event["source"] == source] == result["evidence"][source]["events"]
+        # Preserve raw artifacts even if the subsequent audit refuses them.
         shutil.copytree(run, destination)
         assert {p.name: hashlib.sha256(p.read_bytes()).hexdigest() for p in run.iterdir()} == {
             p.name: hashlib.sha256(p.read_bytes()).hexdigest() for p in destination.iterdir()}
+        entries = [json.loads(line) for line in (run / "journal.jsonl").read_text().splitlines()]
+        for source in ("wire", "owned"):
+            # JSON intentionally serializes tuple peers as arrays.
+            expected = json.loads(json.dumps(result["evidence"][source]["events"]))
+            assert [event["event"] for event in entries if event["source"] == source] == expected
     except BaseException as exc:
         result["harness_error"] = _error(exc)
         raise
@@ -123,12 +126,13 @@ def main(args):
     matrix_completed, matrix_error = False, None
     try:
         for case in CASES:
-            temporary = Path(tempfile.mkdtemp(prefix="fly-wire-bootstrap-"))
+            temporary = Path(tempfile.mkdtemp(prefix="fly-wire-bootstrap-", dir="/var/tmp"))
             run = temporary / "evidence"
             run.mkdir()
             save(output / (case + "-scratch.json"), dict(retained_local_dir=str(run)))
             process = adapter = None
             error = harness_error = None
+            case_exception = None
             signals, sent, requests = [], [], []
             start = elapsed = None
             with (run / "journal.jsonl").open("x") as journal_file, (run / "stderr.txt").open("xb") as stderr:
@@ -214,7 +218,7 @@ def main(args):
                     assert server["commands"] == [c.hex() for c in expected_commands]
                 except BaseException as exc:
                     harness_error = _error(exc)
-                    raise
+                    case_exception = exc
                 finally:
                     if adapter is not None:
                         adapter.close()
@@ -237,6 +241,8 @@ def main(args):
                     save(run / "result.json", result)
                     results.append(result)
             audit_copy(run, output / case, result)
+            if case_exception is not None:
+                raise case_exception
         matrix_completed = True
     except BaseException as exc:
         matrix_error = _error(exc)
