@@ -12,6 +12,8 @@ Files: tools/benchmark/openvins_timesync_wire.py, openvins_wire_bootstrap.py, op
 - [x] Write actual-codec tests for HB-only/mixed and failure boundaries; observe RED.
 - [x] Add the optional callback through existing classes, validate before side effects, preserve delivery attempts/returns and existing defaults; GREEN.
 - [x] Independent whole-change review; fix Important/Critical with deterministic RED→GREEN in one pass.
-- [ ] Related Windows/WSL tests, changed Ruff/diff, report, immutable evidence, commit/push personal and verify PR65.
+- [x] Related Windows/WSL tests, changed Ruff/diff, report, immutable evidence, commit/push personal and verify PR65.
+
+Production3944962, reportfba7cbb, seal14cd0e9. Evidence43members, SHA2565fe96b567181e1e0c485ae307c39767f43a30958bfa37fed2ea0c9edf32e60d4. Archive contains the pre-publication checklist; remote head/body verification is retained separately in results. Minor deferred: journaled fanout branch integration, explicit in report and next dependency.
 
 No actual capture CLI/network changes. No concurrent reading through mavutil and recvmsg. Do not present synthetic receive times as measured latency. Existing100Hz interval transaction is an offline model, not a qualified applied setting. Full objective stays active.
