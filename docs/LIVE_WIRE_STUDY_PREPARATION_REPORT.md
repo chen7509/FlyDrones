@@ -1,5 +1,12 @@
 # Live wire study preparation status
 
+Current entry/preparation status is recorded in
+[LIVE_WIRE_EXPLICIT_ENTRY_REPORT.md](LIVE_WIRE_EXPLICIT_ENTRY_REPORT.md).
+The 2026-10-09 v5 package binds implementation 438f9f8; its installed-file
+validation and independent package review passed. Actual activation remains
+unperformed. Earlier increment descriptions below are retained as history and
+must not be read as the latest completion state.
+
 ## Current outcome
 
 The next unarmed communication study has a committed specification and offline
