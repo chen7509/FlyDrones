@@ -704,3 +704,74 @@ runner, prospective study validator and file-entry routing tests, in 82.01 s.
 These fake child runs are not real process/physics tests. Preparation of the
 installed package and its independent review remain open; actual live producer
 attestation, network qualification and fusion are still false.
+
+## Installed prospective package (Task 3)
+
+Preparation `study-v2` passed against the actual installed selection: 575 original
+entries became 581 explicitly declared files, with one accepted committed Python
+source change and unchanged selected binary/model/config bytes. Forty bounded
+read-only SDK queries resolved eight original resource documents and 46 edges.
+They instantiated no Server, PX4 or native estimator. The full file validator and
+read-only executor adapter passed. Four mutated copies (seed, startup command,
+auditor digest and clock scope) were refused, with original responses retained.
+
+`results/live-wire-study-dev-1701/study-v2` binds source commit `f7163b3`, exact
+manifest/executor identities, normal full-load command, 0/0 simulation epoch,
+unchanged watchdogs and absent future outputs. The preparation saved 555 tracked
+Python hashes before querying; all matched afterward. Copies retained later are
+explicitly post-preparation copies matched to those hashes, not runtime pre-copy
+evidence. Installed external dependencies remain identified by path/identity/hash;
+this is not whole-OS or actual loaded-runtime qualification.
+
+The first preparation, `study-v1`, failed before SDK queries because its generator
+assumed a historical `gz_env.sh` copy was inside the capture directory. The actual
+runtime manifest records an ephemeral runtime directory that cleanup removed.
+That failure and generator are preserved. Source line 579 copies the selected
+PX4 `build/rootfs/gz_env.sh`; its declared digest matches the generated-file digest.
+The separately named v2 uses a **new** copy of that exact input and records its
+current identity. It does not reconstruct or overwrite historical runtime proof.
+Five other generated files match the sealed startup archive byte for byte.
+
+The actual prospective package has no dispatch, capture, network or estimator
+execution. Independent whole-package review is in progress. Preparation alone
+cannot enable live activation; full record-chain, live and fusion qualification
+remain false. Source/live producer attestation must not be inferred from a
+matching prospective executor identity or synthetic dispatch envelope.
+
+### Whole-package review correction
+
+The independent review found one Important gap: v2 bound the main auditor, but
+its six lazily imported audit modules were absent from the declaration. The
+separate 555-file source hash list was not enforced by the file validator or
+executor adapter. V2's narrower declared-file checks remain valid historical
+observations; its audit-dependency freeze is **incomplete** and cannot support
+preparation completion. V2 and its original result remain unchanged.
+
+The single fix pass adds recursive static repository Python source discovery,
+rooted in the auditor, validator and existing executor. It parses imports,
+including function-local and relative imports, and includes package initializers
+without executing those modules. The file adapter now requires every discovered
+source to match a baseline record. Missing local modules, ambiguous repository
+module roots, omitted dependencies and drift refuse. Dynamic import/exec syntax,
+external imports and unresolved attribute/submodule edges are recorded, while
+runtime closure remains unqualified. Python's built-in AST was selected to avoid
+loading reviewed code; no dependency was installed. Reference:
+https://docs.python.org/3.12/library/ast.html (PSF; versioned documentation does not
+assert installed patch equivalence).
+
+The omitted lazy-leaf counterexample failed before the fix (DID NOT RAISE).
+Six other initial failures concerned the missing discovery API. All seven source
+checks and 17 executor checks then passed (24 tests, 56.76 s); broader regression
+is pending. A separately named v3 preparation will freeze the corrected source;
+v2 will not be retroactively reclassified as complete.
+
+The final affected Windows suite passed 114 tests in 246.43 s, including the
+behavioral review counterexample and existing validator/entry/health-runner
+regressions. Changed-file Ruff passed. The WSL complete raw file-entry regression
+is still pending; no physical rerun has been made for this correction.
+
+WSL complete-entry regression passed all five methods in 50.095 s, using the
+installed codecs and ULog/protobuf readers. Existing dependency deprecation
+warnings are retained. The Important finding is addressed by the demonstrated
+counterexample and passing regressions; no second per-helper review or physical
+trial was used. This does not establish dynamic source or live producer closure.

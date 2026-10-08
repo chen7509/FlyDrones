@@ -109,6 +109,11 @@ def fixture(tmp_path):
     binding["inventory"]["runtime-root:native-reference"] = [str(reference)]
     binding["inventory"]["config"] = [str(p) for p in [config, *calibrations, freeze]]
     binding["inventory"]["policy"] = [str(paths["wire_config"]), str(paths["gauge_policy"])]
+    from tools.benchmark.repository_python_sources import audit_source_roots, discover_sources
+    repo = Path(__file__).resolve().parents[2]
+    binding["inventory"]["runtime:audit-source-closure"] = [
+        row['requested'] for row in discover_sources(repo, audit_source_roots(repo))['files']
+    ]
     binding["baseline"] = snapshot(binding["inventory"])
     write(paths["binding"], binding)
     outputs = {

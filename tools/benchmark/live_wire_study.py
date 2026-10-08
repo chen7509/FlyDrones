@@ -288,6 +288,7 @@ def validate_live_wire_study_files(manifest_path):
     """Preparation-only ordinary drift checks. No atomic/hostile-ABA guarantee."""
     from tools.benchmark.capture_contract import declared_command
     from tools.benchmark.capture_disarmed_sensors import parse_capture_args
+    from tools.benchmark.repository_python_sources import audit_source_roots, verify_sources
 
     path = Path(manifest_path)
     before_manifest = file_record(path)
@@ -301,6 +302,11 @@ def validate_live_wire_study_files(manifest_path):
             docs[role] = read_declaration(expected["requested"])
             _equal(file_record(expected["requested"]), expected, "study file after read " + role)
     result = validate_live_wire_study(document, **docs)
+    root = Path(__file__).resolve().parents[2]
+    source_freeze = verify_sources(root, audit_source_roots(root), docs['binding']['baseline']['files'])
+    result['static_audit_sources_verified'] = True
+    result['static_audit_source_count'] = len(source_freeze['files'])
+    result['dynamic_source_closure_qualified'] = False
     # Check all declared dependencies, not only the four small JSON documents.
     current = snapshot(docs["binding"]["inventory"])
     verify_unchanged(docs["binding"]["baseline"], current)
