@@ -24,12 +24,13 @@ def controller(tiny_artifacts, **kwargs):
     return ConnectomeInferenceController(loaded), loaded
 
 
-def test_analytic_zero_topology_prediction_and_enu_intent(tiny_artifacts):
+@pytest.mark.parametrize("yaw", [0., np.pi / 2])
+def test_analytic_zero_topology_prediction_and_enu_intent(tiny_artifacts, yaw):
     adapter, loaded = controller(tiny_artifacts, zero=True)
     # dt=50ms, tau=20ms -> alpha=1. Depth drives [1,1,1], luminance=0.
     rates = np.array([1 / (1 + np.exp(-1))] * 3 + [.5])
     expected = np.tanh(rates * [0.3, -0.2, 0.4, 0.1])
-    result = adapter.step(frame())
+    result = adapter.step(frame(yaw=yaw))
     assert result.evidence["raw_command"] == pytest.approx(expected)
     vector = expected[:3] / np.linalg.norm(expected[:3]) * .06
     assert result.command.velocity_enu == pytest.approx(vector)
@@ -94,10 +95,14 @@ def test_reused_timestamp_with_changed_pixels_refuses(changes, tiny_artifacts):
 def test_invalid_input_latches_without_committing_state(sample, tiny_artifacts):
     adapter, _ = controller(tiny_artifacts)
     adapter.step(frame())
+    voltage = adapter._state.voltage.clone()
+    previous = adapter._previous
     with pytest.raises(ValueError):
         adapter.step(sample)
     assert adapter.call_index == 1
     assert adapter.last_sim_ns == 50_000_000
+    assert torch.equal(adapter._state.voltage, voltage)
+    assert adapter._previous == previous
     assert adapter.failure is not None
     with pytest.raises(RuntimeError, match="failed"):
         adapter.step(frame(100_000_000))
@@ -108,6 +113,9 @@ def test_invalid_input_latches_without_committing_state(sample, tiny_artifacts):
 @pytest.mark.parametrize("bad_state", [False, True])
 def test_nonfinite_native_core_result_is_rejected_before_commit(tiny_artifacts, monkeypatch, bad_state):
     adapter, loaded = controller(tiny_artifacts)
+    adapter.step(frame())
+    voltage = adapter._state.voltage.clone()
+    previous = adapter._previous
     real = loaded.core.forward_step
     def bad(*args):
         output, state = real(*args)
@@ -116,8 +124,11 @@ def test_nonfinite_native_core_result_is_rejected_before_commit(tiny_artifacts, 
         return torch.full_like(output, float("nan")), state
     monkeypatch.setattr(loaded.core, "forward_step", bad)
     with pytest.raises(ValueError, match="core"):
-        adapter.step(frame())
-    assert adapter.call_index == 0
+        adapter.step(frame(100_000_000))
+    assert adapter.call_index == 1
+    assert adapter.last_sim_ns == 50_000_000
+    assert torch.equal(adapter._state.voltage, voltage)
+    assert adapter._previous == previous
     assert adapter.failure is not None
 
 
