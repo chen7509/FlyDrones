@@ -314,6 +314,52 @@ class WireTests(unittest.TestCase):
         self.assertEqual(returned.get("returned_ns"), -1)
         self.assertEqual(returned["count"], len(self.sent[0][0]))
 
+    def test_return_capacity_required_before_send(self):
+        self.wire.MAX_EVENTS = 5
+        self.refusal(reason="event limit")
+        self.assertEqual(self.sent, [])
+
+    def test_reentrant_refusal_does_not_consume_reserved_return_slot(self):
+        self.wire.MAX_EVENTS = 6
+        def sink(raw, peer):
+            try:
+                self.receive()
+            except ValueError:
+                pass
+            return len(raw)
+        self.sink_hook = sink
+        self.refusal(reason="latched|concurrent")
+        self.assertEqual(len(self.sent), 1)
+        self.assertEqual(sum(e["kind"] == "send_return" for e in self.wire.evidence["events"]), 1)
+        self.assertEqual(sum(e["kind"] == "refusal" for e in self.wire.evidence["events"]), 1)
+
+    def test_return_clock_interrupt_survives_secondary_journal_failure(self):
+        def stop_clock():
+            raise KeyboardInterrupt("return clock interrupted")
+        def sink(raw, peer):
+            self.wire._now = stop_clock
+            return len(raw)
+        def journal(event):
+            if event["kind"] == "send_return":
+                raise OSError("secondary journal error")
+        self.sink_hook, self.journal_hook = sink, journal
+        with self.assertRaisesRegex(KeyboardInterrupt, "return clock interrupted"):
+            self.receive()
+        self.assertIn("secondary journal error", str(self.wire.evidence))
+        self.assertIsNotNone(self.wire.evidence["failure"])
+
+    def test_hostile_error_string_still_latches_refusal(self):
+        class BadError(Exception):
+            def __str__(self):
+                raise RuntimeError("cannot format")
+        self.journal_hook = lambda e: (_ for _ in ()).throw(BadError())
+        with self.assertRaisesRegex(ValueError, "BadError.*unprintable"):
+            self.receive()
+        self.journal_hook = None
+        self.assertIsNotNone(self.wire.evidence["failure"])
+        self.refusal(reason="latched")
+        self.assertEqual(self.sent, [])
+
 
 if __name__ == "__main__":
     unittest.main()

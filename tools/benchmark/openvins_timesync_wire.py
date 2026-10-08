@@ -13,6 +13,7 @@ from pathlib import Path
 from threading import Lock
 
 from tools.benchmark.openvins_ekf2_disarmed_preflight import RemoteMonotonicClock
+from tools.benchmark.owned_daemon_connection import _error
 
 
 class PinnedCodec:
@@ -101,6 +102,8 @@ class TimesyncWireResponder:
         self._start = self._last_now = start_ns
         self._received = None
         self._events = []
+        self._regular_events = 0
+        self._journal_errors = []
         self._failure = self._refusal_journal_error = None
         self._sequence = 0
         self._last_identity = None
@@ -109,6 +112,7 @@ class TimesyncWireResponder:
     @property
     def evidence(self):
         return dict(events=copy.deepcopy(self._events), failure=self._failure,
+                    journal_errors=copy.deepcopy(self._journal_errors),
                     refusal_journal_error=self._refusal_journal_error, clock_session=self._session,
                     network_authorized=False, delivery_proven=False, live_convergence_qualified=False,
                     fusion_qualified=False)
@@ -133,8 +137,8 @@ class TimesyncWireResponder:
         return value
 
     def _record(self, kind, **data):
-        if len(self._events) >= self.MAX_EVENTS:
-            raise ValueError("wire event limit")
+        self._require_event_capacity()
+        self._regular_events += 1
         # For send_return record the actual effect before checking clock/result.
         event = dict(kind=kind, at_last_checked_ns=self._last_now, **copy.deepcopy(data))
         clock_error = None
@@ -143,27 +147,39 @@ class TimesyncWireResponder:
                 event["returned_ns"] = self._now()
             except BaseException as exc:
                 clock_error = exc
-                event["return_clock_error"] = type(exc).__name__ + ": " + str(exc)
+                event["return_clock_error"] = _error(exc)
         self._events.append(copy.deepcopy(event))
-        if self._journal(copy.deepcopy(event)) is not None:
-            raise ValueError("journal must return None")
+        try:
+            if self._journal(copy.deepcopy(event)) is not None:
+                raise ValueError("journal must return None")
+        except BaseException as exc:
+            self._journal_errors.append(dict(kind=kind, error=_error(exc)))
+            if clock_error is not None and (not isinstance(clock_error, Exception) or isinstance(exc, Exception)):
+                raise clock_error from exc
+            raise
         if clock_error is not None:
             raise clock_error
         if kind == "send_return":
             self._accept_time(event["returned_ns"])
         self._check()
 
+    def _require_event_capacity(self):
+        if self._regular_events >= self.MAX_EVENTS:
+            raise ValueError("wire event limit")
+
     def _abort(self, error):
         if self._failure is not None:
             return
-        self._failure = type(error).__name__ + ": " + str(error)
+        # Latch before running even an exception's potentially user-defined str.
+        self._failure = "wire refusal (formatting error)"
+        self._failure = _error(error)
         event = dict(kind="refusal", reason=self._failure, at_last_checked_ns=self._last_now)
         self._events.append(copy.deepcopy(event))
         try:
             if self._journal(copy.deepcopy(event)) is not None:
                 raise ValueError("refusal journal must return None")
         except BaseException as exc:
-            self._refusal_journal_error = type(exc).__name__ + ": " + str(exc)
+            self._refusal_journal_error = _error(exc)
 
     def receive(self, raw, peer, received_ns, observed_sim_ns):
         if not self._lock.acquire(blocking=False):
@@ -214,6 +230,8 @@ class TimesyncWireResponder:
             self._check()
             self._record("send_attempt", raw_hex=encoded.hex(), peer=self._peer)
             send_started_ns = self._check()
+            # One return slot remains reserved; the refusal slot is separate.
+            self._require_event_capacity()
             count = self._sink(encoded, self._peer)
             self._record("send_return", count=count, send_started_ns=send_started_ns)
             if type(count) is not int or count != len(encoded):
@@ -228,7 +246,7 @@ class TimesyncWireResponder:
             self._abort(exc)
             if not isinstance(exc, Exception):
                 raise
-            raise ValueError(type(exc).__name__ + ": " + str(exc)) from exc
+            raise ValueError(_error(exc)) from exc
         finally:
             self._received = None
             self._lock.release()
