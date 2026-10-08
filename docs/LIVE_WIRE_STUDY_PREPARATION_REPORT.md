@@ -263,3 +263,16 @@ GREEN/regressions and source-field inspection. The archive contains synthetic
 and offline evidence only; this report inside it precedes this seal paragraph.
 Task 2, Task 3 and whole-package review are unfinished. Publication is local;
 this seal makes no remote-head or actual runtime qualification claim.
+
+Runtime/workload increment producer `29ceeca` is preserved in
+`evidence/live-wire-runtime-workload-offline-progress-dev-1701.zip`: 55 members,
+201,875 bytes, SHA256
+`4d474c645db983db05a3c66e14e2b0ea842ed2e0270ad26cc473ccffaa7b6ef8`.
+All member hashes/lengths, uniqueness and CRC passed. Fixed audits retain input
+hash references to the unchanged old development capture instead of duplicating
+its raw images and ULog. The earlier runtime-positive helper's hash is recorded,
+but its exact earlier source was not retained; the archive explicitly records
+that limitation and contains the final guarded source and synthetic regressions.
+Workload v1/v2/v3 sources and the failed harness/refusal outputs are preserved.
+This is local offline progress, not Task 2 completion, a full-suite result,
+whole-package review, remote publication or live-study qualification.
