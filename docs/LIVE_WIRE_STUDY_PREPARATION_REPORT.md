@@ -305,3 +305,15 @@ that limitation and contains the final guarded source and synthetic regressions.
 Workload v1/v2/v3 sources and the failed harness/refusal outputs are preserved.
 This is local offline progress, not Task 2 completion, a full-suite result,
 whole-package review, remote publication or live-study qualification.
+
+Study-entry increment producer `9622718` is preserved in
+`evidence/live-wire-study-entry-offline-progress-dev-1701.zip`: 37 members,
+98,652 bytes, SHA256
+`03a4f8ba59944cf128251c6bdd948728044c43ac82767a53ca91639dc31e5ce8`.
+Member lengths/hashes, uniqueness and CRC passed. It includes raw startup-negative
+fixture provenance, synthetic cross-file/routing tests and retained RED/GREEN
+outputs. The WSL declared-reader probe preceded the final metadata-scope fix;
+its earlier auditor bytes were reconstructed afterward and matched exactly to
+the source hash recorded by the probe. This is explicitly a verified post-run
+reconstruction, not a pre-run source copy. The archived report precedes this seal
+paragraph. No whole-study qualification, live run or remote upload is claimed.
