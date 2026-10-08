@@ -129,3 +129,14 @@ actual request. The historical full LIF baseline hash stayed unchanged. The full
 model was never loaded, and the tiny result remains ineligible for full timing.
 This paragraph is added after sealing and is not inside the archive. Publication
 is local only; no remote push, simulation or training was performed.
+
+## Follow-up regression verification (2026-10-09)
+
+The later offline adapter stage fixed independently reproducible stat comparison
+problems at 6eb290c: access-time false refusal and missed nanosecond mtime/ctime
+changes. The original failed event's exact field remains unknown. With that fix
+and the Observation adapter, the full suite at cfd3e8e passed 3920 tests, with
+33 skips and 3 warnings; final test-only image/dtype coverage passed 13 tests.
+See [the follow-up report](OFFLINE_BENCHMARK_ADAPTER_REPORT.md). The earlier failed
+suite and sealed ZIP remain unchanged; no full-model timing, training or flight
+qualification follows from the new regression result.

@@ -52,9 +52,9 @@ results/connectome-inference-probe-dev-1701 and corresponding evidence ZIP.
 - [x] After idle check and source commit, once call actual full CLI against existing
   full initialization; preserve resource refusal if <4GiB, never force allocation.
   Run separate tiny fixture invocation; never label it full or trained performance.
-- [ ] Full pytest, changed Ruff/diff, one independent review. Important findings
+- [x] Full pytest, changed Ruff/diff, one independent review. Important findings
   get behavioral RED/GREEN; minor coverage honestly labeled.
-- [ ] Record source/config/version/input hashes, report actual outcomes/limits,
+- [x] Record source/config/version/input hashes, report actual outcomes/limits,
   seal member hashes/CRC, commit locally; retain remote publication constraint.
 
 ## Review focus
@@ -64,3 +64,5 @@ no callback I/O inside measured step; no camera timestamp fabrication on reuse;
 no tiny/initialization evidence promoted into trained full or flight performance.
 
 Validation note: full suite 1 failed/3897 passed/33 skipped; focused existing preflight file 9 passed. Original stat-change failure root cause unresolved. Task 3 validation remains open; evidence is sealed with this failure retained, not declared fully passing.
+
+Follow-up: implementation/review/evidence tasks are complete with the later cfd3e8e full regression3920passed33skipped and final coverage13passed. The initial failed suite remains sealed; its original changed stat field remains unproven. Full inference was resource-refused and not qualified. Bounded instrumentation plan completion is not goal completion.

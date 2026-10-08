@@ -30,20 +30,25 @@ def loaded_core(tiny_artifacts):
     return load_inference_core(source, folder, mode='tiny-fixture')
 
 
-def test_observation_maps_si_fields_and_owns_arrays():
-    obs = observation()
+@pytest.mark.parametrize('depth_dtype', [np.float32, np.float64])
+def test_observation_maps_si_fields_and_owns_arrays(depth_dtype):
+    pixels = np.arange(18, dtype=np.uint8).reshape(2, 3, 3)
+    depth = np.array([[2., 4., 8.], [3., 5., 9.]], dtype=depth_dtype)
+    obs = observation(rgb=pixels.copy(), depth_m=depth.copy())
     result = api().observation_frame(obs)
     assert result.sim_ns == result.frame_ns == 50_000_000
     assert result.position_enu.tolist() == [1., 2., 3.]
     assert result.velocity_enu.tolist() == [.2, -.3, .4]
     assert result.goal_enu.tolist() == [4., 6., 8.]
     assert (result.yaw, result.yaw_rate) == (1.2, -.5)
-    assert result.rgb[0, 0].tolist() == [117, 117, 117]
-    assert result.depth_m[0].tolist() == [2., 4., 8.]
+    np.testing.assert_array_equal(result.rgb, pixels)
+    np.testing.assert_array_equal(result.depth_m, depth)
+    assert result.rgb.dtype == np.uint8
+    assert result.depth_m.dtype == depth_dtype
     obs.rgb[:] = 0
     obs.depth_m[:] = 1
-    assert result.rgb[0, 0].tolist() == [117, 117, 117]
-    assert result.depth_m[0].tolist() == [2., 4., 8.]
+    np.testing.assert_array_equal(result.rgb, pixels)
+    np.testing.assert_array_equal(result.depth_m, depth)
 
 
 @pytest.mark.parametrize('source', ['synthetic', 'gazebo-model-truth'])
