@@ -1,6 +1,6 @@
 # Curriculum corpus selection diagnostic and duplicate-path fix
 
-Date: 2026-10-09. Base 5ac5b94. Scope: offline data selection only.
+Date: 2026-10-09. Base 5ac5b94; fix 64c804f. Scope: offline data selection only.
 
 ## Outcome
 
@@ -95,3 +95,21 @@ attempted. These are current observations, not permanent hardware infeasibility.
 Full learning/division, inference timing, fair physical comparison, five/20-aircraft
 and hardware/flight evidence remain incomplete. The five-camera 0.873 RTF result
 still fails the 0.95 gate.
+
+## Evidence seal
+
+`evidence/curriculum-corpus-binding-audit-dev-1701.zip` has 57 members and 59,615
+bytes; SHA256 `ee9e98f6424d8cfa45bbb388346d0de36577251537f40c4b6d0345168af889ed`.
+All member bytes/hashes and ZIP CRC were verified. It keeps the original accepted
+duplicate diagnostic, immutable synthetic fixtures, fixed public-config refusal,
+RED/GREEN logs, review and source/config/report copies at 64c804f. The old loader
+was recovered from Git 5ac5b94 with working-tree newline conversion and matched
+the exact pre-fix audit hash; it is not represented as a source copy made before
+that run. This seal paragraph and commit identifier were added afterward.
+
+The independent training-module change is absent from the v5 wire binding. All
+228 Windows-accessible worktree files selected by that binding still match its
+hashes; actual activation outputs remain absent and the selected manifest SHA
+remains 419950ff5e5c3a59422acfd473f04cfb171c35a5660969b071a61bcf0f0e9395.
+Linux installed identities were not rechecked. Final host filtering found no
+matching test/model/simulator process. Changes are local; no publication claimed.
