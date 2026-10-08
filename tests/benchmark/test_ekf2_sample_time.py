@@ -111,3 +111,14 @@ def test_fault_history_cannot_recover_without_a_new_session_or_poison_the_past()
     assert report["records"][0]["sample_timing_usable"] is True
     assert report["records"][1]["sample_timing_usable"] is False
     assert "vehicle_attitude_sample_history_invalid" in report["records"][1]["reasons"]
+
+
+@pytest.mark.parametrize("attitude_us,expected", [(150_000, True), (149_999, False)])
+def test_sample_skew_accepts_exact_limit_and_rejects_next_representable_microsecond(
+    attitude_us, expected,
+):
+    data = topics(samples=(200_000,))
+    data["vehicle_attitude"]["timestamp_sample"] = np.array([attitude_us], np.int64)
+    row = audit([210_000_000], data)["records"][0]
+    assert row["sample_timing_usable"] is expected
+    assert ("state_sample_skew" in row["reasons"]) is (not expected)
