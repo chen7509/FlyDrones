@@ -147,8 +147,8 @@ class OwnedBootstrap:
                 self._refusal_journal_error = _error(exc)
 
     @contextmanager
-    def _step(self):
-        if self._done:
+    def _step(self, *, allow_completed=False):
+        if self._done and not allow_completed:
             raise ValueError("owned bootstrap already completed")
         if not self._lock.acquire(blocking=False):
             self._abort(ValueError("concurrent owned bootstrap operation"))
@@ -170,9 +170,9 @@ class OwnedBootstrap:
             result = self._bootstrap.reserve_reply(request_ns, response_ns, now_ns=self._check(), epoch_token=self._epoch)
         return result
 
-    def check(self):
+    def check(self, *, allow_completed=False):
         """Check existing ownership/deadlines without opening or reading a command."""
-        with self._step():
+        with self._step(allow_completed=allow_completed):
             pass
         return self.progress
 

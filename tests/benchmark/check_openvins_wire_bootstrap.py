@@ -84,6 +84,20 @@ def child(args):
         save(args.result.parent / "wire-received.json", evidence)
 
 
+def audit_copy(run, destination, result):
+    """Retain post-cleanup audit failures instead of labeling a case complete."""
+    try:
+        entries = [json.loads(line) for line in (run / "journal.jsonl").read_text().splitlines()]
+        for source in ("wire", "owned"):
+            assert [event["event"] for event in entries if event["source"] == source] == result["evidence"][source]["events"]
+        shutil.copytree(run, destination)
+        assert {p.name: hashlib.sha256(p.read_bytes()).hexdigest() for p in run.iterdir()} == {
+            p.name: hashlib.sha256(p.read_bytes()).hexdigest() for p in destination.iterdir()}
+    except BaseException as exc:
+        result["harness_error"] = _error(exc)
+        raise
+
+
 def main(args):
     output = args.output.absolute()
     output.mkdir(parents=True, exist_ok=False)
@@ -106,6 +120,7 @@ def main(args):
         start="after ordinary child ready, not PX4 cold launch", poll_seconds=.001,
         actual_px4=False, network_authorized=False, fusion_qualified=False))
     results = []
+    matrix_completed, matrix_error = False, None
     try:
         for case in CASES:
             temporary = Path(tempfile.mkdtemp(prefix="fly-wire-bootstrap-"))
@@ -221,18 +236,18 @@ def main(args):
                                                exit=None if process is None else process.returncode))
                     save(run / "result.json", result)
                     results.append(result)
-            entries = [json.loads(line) for line in (run / "journal.jsonl").read_text().splitlines()]
-            for source in ("wire", "owned"):
-                assert [event["event"] for event in entries if event["source"] == source] == result["evidence"][source]["events"]
-            destination = output / case
-            shutil.copytree(run, destination)
-            assert {p.name: hashlib.sha256(p.read_bytes()).hexdigest() for p in run.iterdir()} == {
-                p.name: hashlib.sha256(p.read_bytes()).hexdigest() for p in destination.iterdir()}
+            audit_copy(run, output / case, result)
+        matrix_completed = True
+    except BaseException as exc:
+        matrix_error = _error(exc)
+        raise
     finally:
         after = hashes()
         save(output / "post-hashes.json", after)
         save(output / "summary.json", dict(results=results, source_stable=before == after,
-             complete=len(results) == len(CASES) and all(r["harness_error"] is None for r in results)))
+             matrix_error=matrix_error, all_case_audits_completed=matrix_completed,
+             complete=matrix_completed and before == after and len(results) == len(CASES)
+             and all(r["harness_error"] is None for r in results)))
     assert before == after
     print("4 private wire/listener cases matched;500 pipe replies decoded; no actual PX4/UDP")
 

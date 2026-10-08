@@ -3,8 +3,7 @@
 from __future__ import annotations
 
 import copy
-from contextlib import contextmanager
-from threading import Lock
+from threading import Lock, RLock
 
 from tools.benchmark.openvins_owned_bootstrap import OwnedBootstrap
 from tools.benchmark.openvins_timesync_wire import TimesyncWireResponder
@@ -18,6 +17,7 @@ class OwnedWireBootstrap:
         self._journal, self._sink = journal, send_sink
         self._backend = backend or LinuxBackend()
         self._lock = Lock()
+        self._state_lock = RLock()
         self._failure = None
         self._cleanup_errors = []
         self._complete = self._closed = False
@@ -62,10 +62,7 @@ class OwnedWireBootstrap:
     def _healthy(self):
         self._open()
         self._wire.check()
-        # poll() already makes its final owner/clock check before marking done.
-        # A finished underlying bootstrap forbids further check operations.
-        if not self._owned.progress["transport_bootstrap_complete"]:
-            self._owned.check()
+        self._owned.check(allow_completed=True)
 
     def _send(self, raw, peer):
         # Do not call wire.check while inside wire.receive's operation lock.
@@ -75,25 +72,31 @@ class OwnedWireBootstrap:
         return self._sink(raw, peer)
 
     def _abort(self, error):
-        if self._failure is None:
-            self._failure = "wire bootstrap refusal (formatting error)"
-            self._failure = _error(error)
+        with self._state_lock:
+            if self._failure is None:
+                self._failure = "wire bootstrap refusal (formatting error)"
+                self._failure = _error(error)
         if self._owned is not None:
             try:
                 self._owned.close()
             except BaseException as exc:
                 self._cleanup_errors.append(_error(exc))
 
-    @contextmanager
-    def _operation(self):
+    def _operation(self, action, commit):
         self._open()
         if not self._lock.acquire(blocking=False):
             self._abort(ValueError("concurrent wire bootstrap operation"))
             raise ValueError("concurrent wire bootstrap operation")
         try:
             self._healthy()
-            yield
+            result = action()
             self._healthy()
+            # Close/refusal and commit share a state lock. No callback runs
+            # between the last open check and these local state assignments.
+            with self._state_lock:
+                self._open()
+                commit(result)
+            return result
         except BaseException as exc:
             self._abort(exc)
             if not isinstance(exc, Exception):
@@ -103,26 +106,26 @@ class OwnedWireBootstrap:
             self._lock.release()
 
     def receive(self, raw, peer, received_ns, observed_sim_ns):
-        with self._operation():
-            result = self._wire.receive(raw, peer, received_ns, observed_sim_ns)
-        if result is not None:
-            self._replies += 1
-        return result
+        def commit(result):
+            if result is not None:
+                self._replies += 1
+        return self._operation(lambda: self._wire.receive(raw, peer, received_ns, observed_sim_ns), commit)
 
     def poll(self):
-        with self._operation():
-            result = self._owned.poll()
+        def commit(result):
             if result["transport_bootstrap_complete"] and (
                 result["modeled_accepted_samples"] != 500 or self._replies != 500
             ):
                 raise ValueError("composed status/reply count mismatch")
-        if result["transport_bootstrap_complete"]:
-            self._complete = True
+            if result["transport_bootstrap_complete"]:
+                self._complete = True
+        self._operation(self._owned.poll, commit)
         return self.progress
 
     def close(self):
-        if self._closed:
-            return
-        self._closed = True
-        if not self._complete:
-            self._abort(ValueError("wire bootstrap closed before completion"))
+        with self._state_lock:
+            if self._closed:
+                return
+            self._closed = True
+            if not self._complete:
+                self._abort(ValueError("wire bootstrap closed before completion"))

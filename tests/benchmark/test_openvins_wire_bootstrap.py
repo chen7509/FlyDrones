@@ -1,9 +1,14 @@
 """Pinned-codec composition with simulated socket reads, no running PX4."""
 
 import copy
+import json
+import tempfile
 import unittest
 from collections import deque
+from pathlib import Path
+from threading import Lock
 from types import SimpleNamespace
+from unittest.mock import patch
 
 try:
     from pymavlink.dialects.v20 import common as mav
@@ -252,6 +257,137 @@ class CompositionTests(unittest.TestCase):
         self.assertEqual(len(self.backend.used), 1)
         self.assertEqual(self.backend.connections[0].closed, 1)
         self.assert_failed()
+
+    def prepare_last_reply(self):
+        self.stream_ready()
+        for index in range(1, 499):
+            self.backend.now += 1000000
+            self.receive(index)
+            self.backend.connections[2].reads.append(frame(index))
+            self.obj.poll()
+
+    def release_hook(self, callback):
+        class HookedLock:
+            def __init__(self):
+                self.lock = Lock()
+                self.callback = callback
+
+            def acquire(self, blocking=False):
+                return self.lock.acquire(blocking=blocking)
+
+            def release(self):
+                self.lock.release()
+                once, self.callback = self.callback, None
+                if once is not None:
+                    once()
+        self.obj._lock = HookedLock()
+
+    def test_final_reply_count_commits_before_another_poll_can_enter(self):
+        self.prepare_last_reply()
+        self.backend.connections[2].reads.extend([frame(499) + b"\0\0", b""])
+        errors = []
+        def other_thread_step():
+            try:
+                self.obj.poll()
+                self.obj.poll()
+            except ValueError as exc:
+                errors.append(str(exc))
+        self.release_hook(other_thread_step)
+        self.receive(499)
+        self.assertEqual(errors, [])
+        self.assertTrue(self.obj.progress["wire_bootstrap_complete"])
+
+    def test_final_completion_commits_before_new_receive_can_enter(self):
+        self.prepare_last_reply()
+        self.receive(499)
+        self.backend.connections[2].reads.extend([frame(499) + b"\0\0", b""])
+        self.obj.poll()
+        refusals = []
+        def late_request():
+            try:
+                self.receive(500)
+            except ValueError as exc:
+                refusals.append(str(exc))
+        self.release_hook(late_request)
+        self.obj.poll()
+        self.assertEqual(len(refusals), 1)
+        self.assertTrue(self.obj.progress["wire_bootstrap_complete"])
+        self.assertIsNone(self.obj.progress["failure"])
+
+    def test_terminal_owner_and_frame_deadline_remain_checked(self):
+        self.prepare_last_reply()
+        self.receive(499)
+        self.backend.connections[2].reads.extend([frame(499) + b"\0\0", b""])
+        self.obj.poll()
+        old_clock = self.backend.clock
+        def clock():
+            if self.obj._owned.progress["transport_bootstrap_complete"]:
+                self.backend.now = self.obj._owned._stream_frame_ns + 2000000000
+            return old_clock()
+        self.backend.clock = clock
+        with self.assertRaisesRegex(ValueError, "complete-frame timeout"):
+            self.obj.poll()
+        self.assert_failed()
+
+    def test_close_during_final_health_prevents_reply_commit(self):
+        self.first_ready()
+        old_healthy = self.obj._healthy
+        calls = []
+        def healthy():
+            old_healthy()
+            calls.append(True)
+            if len(calls) == 2:
+                self.obj.close()
+        self.obj._healthy = healthy
+        with self.assertRaises(ValueError):
+            self.receive()
+        self.assertEqual(self.obj.progress["completed_reply_attempts"], 0)
+        self.assertEqual(len(self.sent), 1)
+        self.assert_failed()
+
+
+class HarnessEvidenceTests(unittest.TestCase):
+    def test_post_cleanup_journal_and_copy_failure_mark_case(self):
+        from tests.benchmark import check_openvins_wire_bootstrap as harness
+        for mode in ("journal", "copy", "copy-hash"):
+            with self.subTest(mode=mode), tempfile.TemporaryDirectory() as root:
+                run, destination = Path(root) / "run", Path(root) / "copy"
+                run.mkdir()
+                (run / "journal.jsonl").write_text("")
+                result = dict(harness_error=None, evidence={"wire": {"events": []}, "owned": {"events": []}})
+                original_copy = harness.shutil.copytree
+                def copy(source, dest, mode=mode, original_copy=original_copy):
+                    if mode == "copy":
+                        raise OSError("copy refused")
+                    original_copy(source, dest)
+                    if mode == "copy-hash":
+                        (dest / "journal.jsonl").write_text("changed")
+                if mode == "journal":
+                    result["evidence"]["wire"]["events"].append({"missing": True})
+                with patch.object(harness.shutil, "copytree", copy), self.assertRaises((AssertionError, OSError)):
+                    harness.audit_copy(run, destination, result)
+                self.assertIsNotNone(result["harness_error"])
+
+    def test_post_hash_drift_cannot_report_complete(self):
+        from tests.benchmark import check_openvins_wire_bootstrap as harness
+        original_read = Path.read_bytes
+        original_save = harness.save
+        after_pre = []
+        def read(path):
+            data = original_read(path)
+            return data + b"drift" if after_pre and path == Path(harness.__file__) else data
+        def save(path, value):
+            original_save(path, value)
+            if path.name == "prospective.json":
+                after_pre.append(True)
+        with tempfile.TemporaryDirectory() as root:
+            output = Path(root) / "output"
+            with patch.object(harness, "CASES", []), patch.object(harness, "save", save), patch.object(Path, "read_bytes", read):
+                with self.assertRaises(AssertionError):
+                    harness.main(SimpleNamespace(output=output, producer="unit-no-process"))
+            summary = json.loads((output / "summary.json").read_text())
+            self.assertFalse(summary["source_stable"])
+            self.assertFalse(summary["complete"])
 
 
 if __name__ == "__main__":
