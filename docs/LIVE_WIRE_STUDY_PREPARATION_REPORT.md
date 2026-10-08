@@ -8,12 +8,31 @@ checks are implemented and tested. The full study auditor and actual prepared
 dispatch package remain unfinished. No new physical, network or estimator run
 occurred in this preparation work. Fusion remains false.
 
-The latest increment adds `audit_live_wire_study(study_path)` and cross-file
-wire/runtime/supervisor identity joins. It invokes available raw auditors and
-returns staged refusals, consumed-file hashes and explicit unverified gates.
-Task 2 still lacks physical/reference/fast coverage, health/watchdog/motion/gauge
-joins, resource graph/CameraInfo decoding and a complete positive study fixture.
+The latest increment adds raw physical callback, fast-prediction and derived
+health coverage checks to `audit_live_wire_study(study_path)`. It invokes available
+raw auditors and returns staged refusals, consumed-file hashes and explicit
+unverified gates. Task 2 still lacks watchdog/motion/gauge joins, resource graph/
+CameraInfo decoding and a complete positive study fixture.
 Task 3's installed executor/package and whole-package review remain pending.
+
+The coverage increment passes 336 targeted/directly affected regression tests
+(108.52s), changed-file Ruff and diff checks. This is not a new full-repository
+pass. Missing APIs first failed assertions; seven entry-route counterexamples
+showed that absent physical/fast/health files were previously ignored. A later
+behavioral RED exposed an unchecked final reference-attempt wall time and is now
+GREEN. Intermediate wrong `maximum_rows` keyword and health profile lookup under
+`inputs` instead of `profiles` caused retained test failures before correction.
+
+Fresh reference/trace/clock coverage and fast IMU-call joins have synthetic
+positive/negative tests. Actual retained development seed27201 health replays all
+250 camera records exactly with quality 0. Its legacy 1ms-origin fast grid is
+correctly refused under the current absolute-20ms producer profile; this is a
+version mismatch, not a new VIO failure. All consumed files and producer hashes
+were unchanged across that read-only check. The producer source before the final
+reference wall-time guard was reconstructed afterward and matched its recorded
+hash `51a3d12063ee0d9d9930bf1251bd723262f40beae84141a5fcf9ee438d6f72a5`;
+it is not described as a pre-run source copy. No physical clock join against
+that old run, new estimator execution, network transmission or fusion is claimed.
 
 A byte-identical actual startup-only result (SHA256
 `bea9ffb42b6a412ab757f1ad1d036e8db17c4871d63e17fec2441dcaeb6d930c`) says

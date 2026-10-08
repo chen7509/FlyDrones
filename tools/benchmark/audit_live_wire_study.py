@@ -298,15 +298,41 @@ def audit_live_wire_study(study_path):
             ],
             "actual native command and configuration",
         )
+        native_acks = reader.lines(reader.member(capture, "shadow/native-acks.jsonl"))
+        states = reader.lines(reader.member(capture, "shadow/states.jsonl"))
+        shadow_terminal = reader.document(reader.member(capture, "shadow/shadow-input-result.json"))
         checks[stage] = audit_source_native_records(
             sources=sources,
             payloads=payloads,
             fanout=reader.lines(reader.member(capture, "source-fanout.jsonl")),
             requests=reader.lines(reader.member(capture, "shadow/native-requests.jsonl")),
-            acknowledgements=reader.lines(reader.member(capture, "shadow/native-acks.jsonl")),
-            states=reader.lines(reader.member(capture, "shadow/states.jsonl")),
-            terminal=reader.document(reader.member(capture, "shadow/shadow-input-result.json")),
+            acknowledgements=native_acks,
+            states=states,
+            terminal=shadow_terminal,
             session_id="online-native-" + str(native_session["pid"]),
+        )
+        stage = "physical_coverage"
+        checks[stage] = audit_physical_coverage_records(
+            reference=reader.lines(reader.member(capture, "native-reference.jsonl")),
+            trace=reader.lines(reader.member(capture, "physics-substeps.jsonl"), maximum_rows=50000),
+            observations=session["clock"]["observations"],
+            terminal=result["native_reference"],
+            trace_terminal=result["physics_trace"],
+        )
+        stage = "fast_coverage"
+        checks[stage] = audit_fast_coverage_records(
+            records=reader.lines(reader.member(capture, "shadow/fast.jsonl")),
+            acknowledgements=native_acks,
+            end_sim_ns=result["end_sim_ns"],
+        )
+        stage = "health_coverage"
+        checks[stage] = audit_health_coverage_records(
+            states=states,
+            records=reader.lines(reader.member(capture, "shadow/health-evidence.jsonl")),
+            terminal=reader.document(reader.member(capture, "shadow/health-result.json")),
+            shadow_last=shadow_terminal["health_last"],
+            session_id="online-native-" + str(native_session["pid"]),
+            profile_name=documents["execution"]["profiles"]["health_profile"],
         )
         stage = "ulog"
         ulog_manifest = reader.document(reader.member(capture, "px4-ulog-manifest.json"))
@@ -331,8 +357,7 @@ def audit_live_wire_study(study_path):
         consumed_files=reader.files,
         unverified=[
             "prospective executor/producer attestation",
-            "physical/reference and fast-output coverage",
-            "health, source-watchdog, motion-authority and gauge joins",
+            "source-watchdog, motion-authority and gauge joins",
             "resource graph and CameraInfo decode",
             "complete positive study fixture and whole-package review",
         ],
@@ -340,6 +365,24 @@ def audit_live_wire_study(study_path):
         live_qualified=False,
         fusion_qualified=False,
     )
+
+
+def audit_physical_coverage_records(**kwargs):
+    from tools.benchmark.audit_live_wire_coverage import audit_physical_coverage_records as audit
+
+    return audit(**kwargs)
+
+
+def audit_fast_coverage_records(**kwargs):
+    from tools.benchmark.audit_live_wire_coverage import audit_fast_coverage_records as audit
+
+    return audit(**kwargs)
+
+
+def audit_health_coverage_records(**kwargs):
+    from tools.benchmark.audit_live_wire_coverage import audit_health_coverage_records as audit
+
+    return audit(**kwargs)
 
 
 def _completed_capture(result):

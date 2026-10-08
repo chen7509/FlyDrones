@@ -180,6 +180,8 @@ def routed_fixture(tmp_path, monkeypatch):
             eligible_for_px4_fusion=False,
             px4_exit_code=0,
             runtime_binding={},
+            native_reference={},
+            physics_trace={},
             px4_ulogs=[dict(path="px4-ulog/log/test.ulg", bytes=3, sha256=hashlib.sha256(b"log").hexdigest(), valid_header=True)],
         ),
     )
@@ -194,10 +196,19 @@ def routed_fixture(tmp_path, monkeypatch):
             put(f"runtime-maps-{role}-{phase}.json", {})
             (capture / f"runtime-maps-{role}-{phase}.txt").write_text("synthetic mapping")
     (capture.parent / (capture.name + ".supervisor-events.jsonl")).write_text("{}\n")
-    put("wire-lifecycle.json", dict(session=dict(retention={}, clock={})))
+    put("wire-lifecycle.json", dict(session=dict(retention={}, clock=dict(observations=[]))))
     lines("wire-clock.jsonl", [{}])
     lines("events.jsonl", [dict(kind="heartbeat")])
-    for name in ("source-fanout", "shadow/native-requests", "shadow/native-acks", "shadow/states"):
+    for name in (
+        "source-fanout",
+        "shadow/native-requests",
+        "shadow/native-acks",
+        "shadow/states",
+        "shadow/fast",
+        "shadow/health-evidence",
+        "native-reference",
+        "physics-substeps",
+    ):
         lines(name + ".jsonl", [{}])
     put(
         "shadow/native-session.json",
@@ -211,7 +222,8 @@ def routed_fixture(tmp_path, monkeypatch):
             ],
         ),
     )
-    put("shadow/shadow-input-result.json", {})
+    put("shadow/shadow-input-result.json", dict(health_last={}))
+    put("shadow/health-result.json", {})
     entry = json.loads((capture / "result.json").read_text())["px4_ulogs"][0]
     put("px4-ulog-manifest.json", dict(schema="flydrones-px4-ulog-capture-v1", logs=[entry]))
     log = capture / entry["path"]
@@ -229,6 +241,9 @@ def routed_fixture(tmp_path, monkeypatch):
     monkeypatch.setattr(audit, "audit_wire_interval_records", lambda *args: dict(synthetic_double=True))
     monkeypatch.setattr(audit, "audit_owned_listener_records", lambda **kw: dict(synthetic_double=True))
     monkeypatch.setattr(audit_live_wire_workload, "audit_source_native_records", lambda **kw: dict(synthetic_double=True))
+    monkeypatch.setattr(audit, "audit_physical_coverage_records", lambda **kw: dict(synthetic_double=True))
+    monkeypatch.setattr(audit, "audit_fast_coverage_records", lambda **kw: dict(synthetic_double=True))
+    monkeypatch.setattr(audit, "audit_health_coverage_records", lambda **kw: dict(synthetic_double=True))
 
     def ulog(raw, value):
         assert raw == b"log" and value == entry
@@ -245,6 +260,36 @@ def test_routes_original_ulog_manifest_shape_without_qualification(tmp_path, mon
     assert out["checks"]["ulog"] == dict(synthetic_double=True)
     assert out["unverified"]
     assert out["record_chain_qualified"] is out["live_qualified"] is False
+
+
+@pytest.mark.parametrize(
+    "member,stage",
+    [
+        ("native-reference.jsonl", "physical_coverage"),
+        ("physics-substeps.jsonl", "physical_coverage"),
+        ("shadow/fast.jsonl", "fast_coverage"),
+        ("shadow/health-evidence.jsonl", "health_coverage"),
+        ("shadow/health-result.json", "health_coverage"),
+    ],
+)
+def test_missing_coverage_file_is_not_hidden_by_terminal_success(tmp_path, monkeypatch, member, stage):
+    _, path, capture = routed_fixture(tmp_path, monkeypatch)
+    (capture / member).unlink()
+    out = api()(path)
+    assert out["refusals"] and out["refusals"][0]["stage"] == stage
+
+
+def test_entry_calls_both_coverage_auditors(tmp_path, monkeypatch):
+    _, path, _ = routed_fixture(tmp_path, monkeypatch)
+    out = api()(path)
+    assert out["checks"].get("physical_coverage") == dict(synthetic_double=True)
+    assert out["checks"].get("fast_coverage") == dict(synthetic_double=True)
+
+
+def test_entry_calls_health_replay(tmp_path, monkeypatch):
+    _, path, _ = routed_fixture(tmp_path, monkeypatch)
+    out = api()(path)
+    assert out["checks"].get("health_coverage") == dict(synthetic_double=True)
 
 
 def test_wrong_native_configuration_cannot_be_hidden_by_matching_binary(tmp_path, monkeypatch):

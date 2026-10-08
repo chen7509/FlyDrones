@@ -210,7 +210,44 @@ proof of uniqueness.
 A real installed-startup result is preserved byte-for-byte as a negative test
 fixture with original path/SHA. Despite `capture_completed`, it has no estimator
 run and is refused under a synthetic valid study manifest. File-routing positives
-use explicit leaf doubles, not a full positive raw chain. Physical/reference and
-fast coverage, health/watchdog/motion/gauge joins, resource graph/CameraInfo decode
-and the full positive integration fixture remain open. The entry consequently
+use explicit leaf doubles, not a full positive raw chain. Watchdog/motion/gauge
+joins, resource graph/CameraInfo decode and the full positive integration fixture
+remain open. The entry consequently
 always returns `record_chain_qualified=false` and lists the unverified gates.
+
+## Raw physical, prediction and derived-health coverage
+
+`audit_live_wire_coverage.py` now joins all 25000 `native-reference.jsonl`
+cycles and 50000 old `physics-substeps.jsonl` rows to the protocol-checked
+PostUpdate clock observations. It checks exact epochs, stable parent/child
+identity, canary flags, finite/unit states, equivalent RPY/quaternion orientation,
+existing MotionPolicy abort bounds, callback order and terminal counts/errors.
+The actual wrapper calls the clock before the fresh reference and old Link post
+trace. Old Link fields retain `component_refresh_verified=false`; numeric equality
+with fresh child fields is deliberately not required. Recorded canaries and
+loaded backend provenance are not independent authentication of physical truth.
+
+Fast outputs join their `trigger_sequence` to the exact native IMU acknowledgement,
+sample, call start/end and most recently processed camera acknowledgement. The
+current `align_fast_target_ns` C++ implementation and existing `fast_grid_qualified`
+require 1249 absolute 20ms-aligned targets for first IMU=1ms/end=25s. Unavailable
+targets must remain null; successful predictions reuse `transform_fast12` numeric/
+PSD screening. Neither this check nor `filter_unchanged` proves all upstream cache
+members unchanged, calibrated uncertainty, trajectory accuracy or full decision
+latency. The old seed27201 producer has 1250 targets starting at 1ms and correctly
+refuses this current profile. Its timestamps and historical results are unchanged.
+
+All 250 camera-health records are recomputed with `project_camera_health_row` and
+the existing `OpenVinsHealthContract`. The frozen capture constructs profile
+`px4-d6f12ad-gate-floor-v1` with `sim_domain_qualified=false`; no terminal claim
+can promote it. Native quality/reset remain null, derived single-session reset
+remains zero and final health must match both health-result and ShadowInput.
+The default source-health input is the producer's default, not independent
+watchdog evidence. This normal-run auditor rejects a replacement/failure; the
+separate fault study is not reclassified as a normal completed run.
+
+The file entry invokes these checks and records missing/invalid files at
+physical_coverage, fast_coverage or health_coverage. Synthetic file-routing tests
+still use leaf doubles. Only the standalone health replay and expected legacy
+fast-grid refusal were checked against retained seed27201 files in this increment;
+there is no old physical wire-clock journal to fabricate for that run.
