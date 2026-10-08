@@ -5,6 +5,44 @@ import pytest
 from flydrones.connectome_training.profiling import profile_controller, summarize_latency
 
 
+def test_stream_callback_runs_after_external_finish_and_cannot_mutate_results(monkeypatch):
+    clock_calls = []
+    ticks = iter([100, 200])
+    def clock():
+        value = next(ticks)
+        clock_calls.append(value)
+        return value
+    monkeypatch.setattr("time.perf_counter_ns", clock)
+    controller = SimpleNamespace(step=lambda obs: SimpleNamespace(
+        elapsed_wall_s=0., evidence={"brain_wall_s": 0., "nested": {"value": 1}},
+    ))
+    received = []
+    def sink(row):
+        assert clock_calls == [100, 200]
+        received.append(row.copy())
+        row["outer_wall_s"] = 999
+        row["nested"]["value"] = 7
+    result = profile_controller(controller, [SimpleNamespace(sim_ns=1)], on_sample=sink)
+    assert received[0]["finished_perf_ns"] == 200
+    assert result["outer_s"]["p95"] == pytest.approx(1e-7)
+    assert result["raw_samples"][0]["nested"] == {"value": 1}
+
+
+def test_stream_error_aborts_preserving_previously_delivered_rows():
+    received = []
+    controller = SimpleNamespace(step=lambda obs: SimpleNamespace(
+        elapsed_wall_s=0., evidence={"brain_wall_s": 0.},
+    ))
+    def sink(row):
+        if received:
+            raise OSError("writer failure")
+        received.append(row)
+    with pytest.raises(OSError, match="writer failure"):
+        profile_controller(controller, [SimpleNamespace(sim_ns=i) for i in range(3)], on_sample=sink)
+    assert len(received) == 1
+    assert received[0]["sim_ns"] == 0
+
+
 def test_latency_summary_has_interpolated_percentiles_and_components():
     samples = [
         {"elapsed_wall_s": 0.10, "brain_wall_s": 0.08},

@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import time
 from collections.abc import Iterable
+from copy import deepcopy
 from numbers import Real
 
 import numpy as np
@@ -53,12 +54,14 @@ def summarize_latency(samples: Iterable[dict]) -> dict:
     }
 
 
-def profile_controller(controller, observations) -> dict:
+def profile_controller(controller, observations, *, on_sample=None) -> dict:
     """Measure synchronous step calls; does not synchronize asynchronous devices.
 
     total_s/neural_s remain controller-reported diagnostics for v1 comparison.
     outer_s is the externally measured input-to-Decision-return interval; it
     excludes input acquisition, warmup, report serialization and flight transport.
+    Optional on_sample receives a defensive copy after timing; its exceptions
+    propagate so a failed evidence writer cannot silently qualify a run.
     """
     rows = []
     for observation in observations:
@@ -75,6 +78,8 @@ def profile_controller(controller, observations) -> dict:
         evidence["finished_perf_ns"] = finished
         evidence["sim_ns"] = observation.sim_ns
         rows.append(evidence)
+        if on_sample is not None:
+            on_sample(deepcopy(evidence))
     result = summarize_latency(rows)
     result["outer_s"] = _stats([row["outer_wall_s"] for row in rows])
     result["raw_samples"] = rows
