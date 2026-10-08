@@ -67,3 +67,14 @@ The broader goal remains open: actual VIO-to-EKF2 fusion, complete fruit-fly
 learning/division in that closed loop, fair upstream comparison, 5/20-aircraft
 qualification and external hardware/flight evidence. The five-camera 0.873 RTF
 result still fails its 0.95 threshold.
+
+## Design evidence seal
+
+`evidence/live-wire-study-design-dev-1701.zip` contains 30 members, 92,235 bytes,
+SHA256 `db8d03f6b73585f14fa6711c0c3c3624412e6f27593fba9e60b8bc07faa4f0bc`.
+All member lengths/hashes, uniqueness and CRC passed. It includes the reviewed
+and clarified plan/spec, research references and retained sources, read-only
+review record and selected current production source snapshots. Producer/report
+commit is `8b18f0b`; the archived report precedes this seal paragraph. The earlier
+`design-check-v1.json` binds the pre-clarification plan at `cc7db35`, while this
+archive manifest binds the final version. Neither is a runtime pre/post freeze.
