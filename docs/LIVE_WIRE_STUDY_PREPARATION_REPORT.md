@@ -8,12 +8,20 @@ checks are implemented and tested. The full study auditor and actual prepared
 dispatch package remain unfinished. No new physical, network or estimator run
 occurred in this preparation work. Fusion remains false.
 
-The latest increment adds raw physical callback, fast-prediction and derived
-health coverage checks to `audit_live_wire_study(study_path)`. It invokes available
-raw auditors and returns staged refusals, consumed-file hashes and explicit
-unverified gates. Task 2 still lacks watchdog/motion/gauge joins, resource graph/
-CameraInfo decoding and a complete positive study fixture.
+The latest increment adds recorded source-health intervals, fixture motion,
+anchor source/estimator attribution and existing-gauge scoring to
+`audit_live_wire_study(study_path)`. It invokes available raw auditors and returns
+staged refusals, consumed-file hashes and explicit unverified gates. Task 2 still
+lacks resource graph/CameraInfo decoding, a complete positive study fixture and
+remaining failure-path coverage. Per-call watchdog/readiness observations are
+not present in the historical logs and remain explicitly unproven.
 Task 3's installed executor/package and whole-package review remain pending.
+
+This increment passes 391 targeted/directly affected tests (77.95s), including
+101 safety/anchor/file-entry tests. Changed-file Ruff and diff checks pass. The
+initial anchor API assertion and three missing-entry-route assertions failed
+before implementation; all outputs are retained. This is not a full-repository
+test pass or the final whole-package review.
 
 The coverage increment passes 336 targeted/directly affected regression tests
 (108.52s), changed-file Ruff and diff checks. This is not a new full-repository
@@ -346,3 +354,34 @@ intermediate failures, final 336-test regression, fixed-input identity records,
 source provenance and explicit partial-completion boundaries. Existing physical
 inputs are referenced by hash, not duplicated or changed. The archived report
 precedes this seal paragraph; publication remains local.
+
+## Offline safety and anchor increment
+
+Implemented source interval, fixture motion, existing-gauge scoring and anchor
+source/estimator attribution checks in the read-only study entry. The new anchor
+tests contain unchanged selected records with documented original input hashes;
+they are explicitly an incomplete fixture. File-entry positive routing still
+uses named leaf doubles and cannot qualify a full raw chain.
+
+The fixed safety audit consumes old development seed27201 without launching a
+simulator or estimator. It checks 25,000 pre-steps, 6,251 IMU and 251 RGB/info
+arrivals, 22,382 support force records and 1,600 lateral force records. Reusing
+the existing gauge gives approximately 0.06599 m maximum position error,
+0.02288 m/s velocity error and 0.9451 degree attitude error. Diagnostic screens,
+public coverage and capture completeness pass; the scorer's estimator health,
+post-origin/full-motion and trajectory qualification remain false because the
+quality/covariance requirements are not promoted by this offline audit.
+
+A separate anchor-only audit of the same retained capture joins all 226 internal
+estimator records and 24 heartbeat observations. The selected heartbeat wall
+age is 2.294545129 seconds and simulation age is 0.975 seconds, consistent with
+the frozen simulation-time heartbeat gate. Its post-flush receipt is bounded,
+not independently timestamped. No later readiness-call history is fabricated.
+
+Both new fixed audits preserve exact producer source copies before checking and
+verify consumed inputs again afterward. Subsequent formatting/integration changes
+are tested separately; no historical physical run is reattributed to them.
+The earlier legacy fast-grid mismatch remains a refusal of the current profile.
+Task 2 still needs resource/CameraInfo joins, a complete positive raw chain and
+remaining failure-path coverage. Task 3 preparation and whole-package review are
+pending. Live/fusion flags remain false; all changes are local pending publication.

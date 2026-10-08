@@ -251,3 +251,35 @@ physical_coverage, fast_coverage or health_coverage. Synthetic file-routing test
 still use leaf doubles. Only the standalone health replay and expected legacy
 fast-grid refusal were checked against retained seed27201 files in this increment;
 there is no old physical wire-clock journal to fabricate for that run.
+
+## Recorded safety and anchor attribution
+
+`audit_live_wire_safety.py` joins all high-rate arrivals and physical pre-step
+times through the existing SourceWatchdog constraints. It checks the unchanged
+10-second startup and 2-second operational limits before a new arrival can hide
+a silence. This chronological recorded-time check is not a record of every
+actual watchdog call or cross-source lock acquisition. The saved guard start
+is bounded by capture start and first pre-step in the file entry; the standalone
+old-data harness only has the saved guard start, explicitly marked indirect.
+
+All recorded fixture forces are replayed through AnchoredPolicy and per-link
+mass distribution, joined to the one MotionIntentGate request, native M ack and
+camera state. The command's source label is not flight-controller authentication.
+These are external unarmed fixture forces, not learned flight control.
+
+Anchor attribution checks saved high-rate receipts against latest completed
+source deliveries, receipt call bounds and exact source hashes. Every initialized
+native C acknowledgement supplied by the full workload check must reproduce one
+EstimatorAwareReadiness record. First/latest committed states must match the
+saved anchor. Heartbeat original records are separately hashed, joined to queued
+source records and reconciled FIFO with the existing two-second pending bound.
+The saved heartbeat receipt lies between observation and reconciliation; there
+is no separate post-flush timestamp to invent. JournaledReadiness recomputes
+the source proof. Heartbeat freshness uses simulation time, high-rate freshness
+uses wall time. Neither this check nor complete force counts proves every later
+per-step readiness call. Whole-capture coverage remains a separate prerequisite.
+
+Gauge scoring reuses the frozen trajectory policy and first-internal-state origin,
+preserving startup unavailable time and public coverage failures. Fresh reference
+data are used only in this offline scorer. Diagnostic scores do not promote
+quality zero, calibrate covariance or authorize fusion.

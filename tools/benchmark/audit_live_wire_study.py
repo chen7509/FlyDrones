@@ -161,8 +161,8 @@ def _dispatch_records(manifest, manifest_identity, dispatch, completion):
 def audit_live_wire_study(study_path):
     """Read actual study files and compose available auditors, failing closed.
 
-    Task 2 still lacks the final physical/health/dispatch-producer joins and
-    whole-package positive fixture. Those remain explicit unverified gates;
+    Task 2 still lacks resource/CameraInfo joins, dispatch-producer attestation
+    and the whole-package positive fixture. These remain unverified gates;
     this entry cannot yet return whole-study/live qualification.
     """
     from tools.benchmark.audit_live_wire_runtime import audit_runtime_mapping_records
@@ -301,20 +301,24 @@ def audit_live_wire_study(study_path):
         native_acks = reader.lines(reader.member(capture, "shadow/native-acks.jsonl"))
         states = reader.lines(reader.member(capture, "shadow/states.jsonl"))
         shadow_terminal = reader.document(reader.member(capture, "shadow/shadow-input-result.json"))
+        native_requests = reader.lines(reader.member(capture, "shadow/native-requests.jsonl"))
+        fanout = reader.lines(reader.member(capture, "source-fanout.jsonl"))
         checks[stage] = audit_source_native_records(
             sources=sources,
             payloads=payloads,
-            fanout=reader.lines(reader.member(capture, "source-fanout.jsonl")),
-            requests=reader.lines(reader.member(capture, "shadow/native-requests.jsonl")),
+            fanout=fanout,
+            requests=native_requests,
             acknowledgements=native_acks,
             states=states,
             terminal=shadow_terminal,
             session_id="online-native-" + str(native_session["pid"]),
         )
         stage = "physical_coverage"
+        reference = reader.lines(reader.member(capture, "native-reference.jsonl"))
+        trace = reader.lines(reader.member(capture, "physics-substeps.jsonl"), maximum_rows=50000)
         checks[stage] = audit_physical_coverage_records(
-            reference=reader.lines(reader.member(capture, "native-reference.jsonl")),
-            trace=reader.lines(reader.member(capture, "physics-substeps.jsonl"), maximum_rows=50000),
+            reference=reference,
+            trace=trace,
             observations=session["clock"]["observations"],
             terminal=result["native_reference"],
             trace_terminal=result["physics_trace"],
@@ -326,14 +330,59 @@ def audit_live_wire_study(study_path):
             end_sim_ns=result["end_sim_ns"],
         )
         stage = "health_coverage"
+        health_terminal = reader.document(reader.member(capture, "shadow/health-result.json"))
         checks[stage] = audit_health_coverage_records(
             states=states,
             records=reader.lines(reader.member(capture, "shadow/health-evidence.jsonl")),
-            terminal=reader.document(reader.member(capture, "shadow/health-result.json")),
+            terminal=health_terminal,
             shadow_last=shadow_terminal["health_last"],
             session_id="online-native-" + str(native_session["pid"]),
             profile_name=documents["execution"]["profiles"]["health_profile"],
         )
+        stage = "source_health"
+        checks[stage] = audit_source_health_records(
+            sources=sources,
+            trace=trace,
+            terminal=result["source_health"],
+            capture_start_ns=context["start_ns"],
+            watchdog_failure=result.get("source_watchdog_failure"),
+        )
+        stage = "motion"
+        anchor = reader.document(reader.member(capture, "readiness-anchor.json"))
+        motion_profile = reader.document(reader.member(capture, "motion-profile.json"))
+        checks[stage] = audit_motion_records(
+            anchor=anchor,
+            profile=motion_profile,
+            forces=reader.lines(reader.member(capture, "motion-force.jsonl")),
+            trace=trace,
+            intent_records=reader.lines(reader.member(capture, "motion-intent.jsonl")),
+            requests=native_requests,
+            acknowledgements=native_acks,
+            intent_terminal=result["motion_intent"],
+            motion_terminal=result["motion"],
+            session_id="online-native-" + str(native_session["pid"]),
+        )
+        stage = "anchor_attribution"
+        checks[stage] = audit_anchor_records(
+            anchor=anchor,
+            sources=sources,
+            fanout=fanout,
+            heartbeat_records=reader.lines(reader.member(capture, "heartbeat-observations.jsonl")),
+            estimator_records=reader.lines(reader.member(capture, "estimator-readiness.jsonl")),
+            acknowledgements=native_acks,
+        )
+        stage = "gauge"
+        checks[stage] = audit_gauge_records(
+            states=states,
+            reference=reference,
+            policy=documents["gauge_policy"],
+            anchor=anchor,
+            motion_profile=motion_profile,
+            health_terminal=health_terminal,
+            result=result,
+        )
+        for field in ("diagnostic_screens_pass", "public_coverage_qualified", "capture_complete"):
+            _equal(checks[stage][field], True, "normal study trajectory " + field)
         stage = "ulog"
         ulog_manifest = reader.document(reader.member(capture, "px4-ulog-manifest.json"))
         _shape(ulog_manifest, ("schema", "logs"), "ULog manifest")
@@ -357,7 +406,7 @@ def audit_live_wire_study(study_path):
         consumed_files=reader.files,
         unverified=[
             "prospective executor/producer attestation",
-            "source-watchdog, motion-authority and gauge joins",
+            "per-call readiness/watchdog and independent heartbeat flush timestamp observations",
             "resource graph and CameraInfo decode",
             "complete positive study fixture and whole-package review",
         ],
@@ -381,6 +430,30 @@ def audit_fast_coverage_records(**kwargs):
 
 def audit_health_coverage_records(**kwargs):
     from tools.benchmark.audit_live_wire_coverage import audit_health_coverage_records as audit
+
+    return audit(**kwargs)
+
+
+def audit_anchor_records(**kwargs):
+    from tools.benchmark.audit_live_wire_safety import audit_anchor_records as audit
+
+    return audit(**kwargs)
+
+
+def audit_source_health_records(**kwargs):
+    from tools.benchmark.audit_live_wire_safety import audit_source_health_records as audit
+
+    return audit(**kwargs)
+
+
+def audit_motion_records(**kwargs):
+    from tools.benchmark.audit_live_wire_safety import audit_motion_records as audit
+
+    return audit(**kwargs)
+
+
+def audit_gauge_records(**kwargs):
+    from tools.benchmark.audit_live_wire_safety import audit_gauge_records as audit
 
     return audit(**kwargs)
 

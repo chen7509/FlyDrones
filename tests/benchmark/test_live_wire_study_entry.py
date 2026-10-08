@@ -182,6 +182,9 @@ def routed_fixture(tmp_path, monkeypatch):
             runtime_binding={},
             native_reference={},
             physics_trace={},
+            source_health={},
+            motion={},
+            motion_intent={},
             px4_ulogs=[dict(path="px4-ulog/log/test.ulg", bytes=3, sha256=hashlib.sha256(b"log").hexdigest(), valid_header=True)],
         ),
     )
@@ -224,6 +227,12 @@ def routed_fixture(tmp_path, monkeypatch):
     )
     put("shadow/shadow-input-result.json", dict(health_last={}))
     put("shadow/health-result.json", {})
+    put("readiness-anchor.json", {})
+    put("motion-profile.json", {})
+    lines("motion-intent.jsonl", [{}])
+    lines("motion-force.jsonl", [{}])
+    lines("heartbeat-observations.jsonl", [{}])
+    lines("estimator-readiness.jsonl", [{}])
     entry = json.loads((capture / "result.json").read_text())["px4_ulogs"][0]
     put("px4-ulog-manifest.json", dict(schema="flydrones-px4-ulog-capture-v1", logs=[entry]))
     log = capture / entry["path"]
@@ -233,7 +242,7 @@ def routed_fixture(tmp_path, monkeypatch):
         audit_live_wire_runtime, "audit_runtime_mapping_records", lambda **kw: dict(owners=dict(openvins=dict(pid=322)))
     )
     monkeypatch.setattr(native_supervisor_integration, "audit_supervisor", lambda *args, **kw: dict(qualified=True))
-    monkeypatch.setattr(audit, "audit_wire_capture_identity", lambda **kw: dict(context={}))
+    monkeypatch.setattr(audit, "audit_wire_capture_identity", lambda **kw: dict(context=dict(start_ns=1)))
     monkeypatch.setattr(
         audit, "read_segmented_wire_records", lambda *args: dict(records=[], members=[], channels={}, integrity_verified=True)
     )
@@ -244,6 +253,16 @@ def routed_fixture(tmp_path, monkeypatch):
     monkeypatch.setattr(audit, "audit_physical_coverage_records", lambda **kw: dict(synthetic_double=True))
     monkeypatch.setattr(audit, "audit_fast_coverage_records", lambda **kw: dict(synthetic_double=True))
     monkeypatch.setattr(audit, "audit_health_coverage_records", lambda **kw: dict(synthetic_double=True))
+    monkeypatch.setattr(audit, "audit_source_health_records", lambda **kw: dict(synthetic_double=True))
+    monkeypatch.setattr(audit, "audit_motion_records", lambda **kw: dict(synthetic_double=True))
+    monkeypatch.setattr(audit, "audit_anchor_records", lambda **kw: dict(synthetic_double=True), raising=False)
+    monkeypatch.setattr(
+        audit,
+        "audit_gauge_records",
+        lambda **kw: dict(
+            synthetic_double=True, diagnostic_screens_pass=True, public_coverage_qualified=True, capture_complete=True
+        ),
+    )
 
     def ulog(raw, value):
         assert raw == b"log" and value == entry
@@ -290,6 +309,46 @@ def test_entry_calls_health_replay(tmp_path, monkeypatch):
     _, path, _ = routed_fixture(tmp_path, monkeypatch)
     out = api()(path)
     assert out["checks"].get("health_coverage") == dict(synthetic_double=True)
+
+
+@pytest.mark.parametrize("member", ["readiness-anchor.json", "motion-profile.json", "motion-intent.jsonl", "motion-force.jsonl"])
+def test_missing_motion_evidence_cannot_hide_behind_result(tmp_path, monkeypatch, member):
+    _, path, capture = routed_fixture(tmp_path, monkeypatch)
+    (capture / member).unlink()
+    out = api()(path)
+    assert out["refusals"] and out["refusals"][0]["stage"] == "motion"
+
+
+def test_entry_calls_source_and_motion_and_gauge(tmp_path, monkeypatch):
+    _, path, _ = routed_fixture(tmp_path, monkeypatch)
+    out = api()(path)
+    for stage in ["source_health", "motion", "gauge"]:
+        assert out["checks"].get(stage, {}).get("synthetic_double") is True
+
+
+@pytest.mark.parametrize("member", ["heartbeat-observations.jsonl", "estimator-readiness.jsonl"])
+def test_missing_anchor_source_journal_refuses(tmp_path, monkeypatch, member):
+    _, path, capture = routed_fixture(tmp_path, monkeypatch)
+    (capture / member).unlink()
+    out = api()(path)
+    assert out["refusals"] and out["refusals"][0]["stage"] == "anchor_attribution"
+
+
+def test_entry_calls_anchor_attribution(tmp_path, monkeypatch):
+    _, path, _ = routed_fixture(tmp_path, monkeypatch)
+    assert api()(path)["checks"].get("anchor_attribution", {}).get("synthetic_double") is True
+
+
+def test_diagnostic_gauge_failure_remains_visible(tmp_path, monkeypatch):
+    _, path, _ = routed_fixture(tmp_path, monkeypatch)
+    monkeypatch.setattr(
+        audit,
+        "audit_gauge_records",
+        lambda **kw: dict(diagnostic_screens_pass=False, public_coverage_qualified=True, capture_complete=True),
+    )
+    out = api()(path)
+    assert out["checks"].get("gauge", {}).get("diagnostic_screens_pass") is False
+    assert out["refusals"] and out["refusals"][0]["stage"] == "gauge"
 
 
 def test_wrong_native_configuration_cannot_be_hidden_by_matching_binary(tmp_path, monkeypatch):
