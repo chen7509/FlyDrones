@@ -35,6 +35,9 @@ class ObservedWireSession:
         self._journal, self._descriptor_guard = journal, descriptor_guard
         self._heartbeat_sink = heartbeat_sink
         self._start = self._last_now = start_ns
+        self._deadline = start_ns + 8_000_000_000
+        self._maintenance = None
+        self._transitioning = self._closing = False
         self._lock, self._state = Lock(), RLock()
         self._failure = self._selection = self._receiver = self._core = None
         self._closed = self._complete = False
@@ -88,7 +91,7 @@ class ObservedWireSession:
         failure = self.progress['failure']
         if failure is not None:
             raise ValueError('observed session failure latched: ' + failure)
-        if self._closed or self._complete:
+        if self._closed or self._closing or (self._complete and self._maintenance is None and not self._transitioning):
             raise ValueError('observed session completed or closed')
 
     def _clock(self):
@@ -98,7 +101,7 @@ class ObservedWireSession:
         if type(now) is not int or not self._last_now <= now < 2**64:
             raise ValueError('observed session wall clock invalid/regressed')
         self._last_now = now
-        if now - self._start >= 8_000_000_000:
+        if now >= self._deadline:
             raise ValueError('observed session global deadline')
         return now
 
@@ -129,10 +132,14 @@ class ObservedWireSession:
         self._open()
 
     def _forward(self, source, event):
-        self._open()
+        # Cleanup evidence can be written after failure/close intent. Only this
+        # journal path is exempt; _open continues to refuse receive/send work.
+        if not self._closing:
+            self._open()
         if self._journal(dict(source=source, event=copy.deepcopy(event))) is not None:
             raise ValueError('observed session journal must return None')
-        self._open()
+        if not self._closing:
+            self._open()
 
     def _send(self, raw, peer):
         if self._selection is None:
@@ -161,14 +168,15 @@ class ObservedWireSession:
         self._open()
         lane = self._lane.progress
         now = self._backend.clock()
-        if self._failure or lane['failure'] or self._remote.failure or self._closed or self._complete:
+        terminal = self._complete and self._maintenance is None and not self._transitioning
+        if self._failure or lane['failure'] or self._remote.failure or self._closed or self._closing or terminal:
             raise ValueError('observed boundary dependency failed or closed')
         if self._clock_signature() != self._signature or lane['session_id'] != self._signature[0]:
             raise ValueError('observed clock session/origin changed')
         if type(now) is not int or not self._last_now <= now < 2**64:
             raise ValueError('observed boundary clock invalid/regressed')
         self._last_now = now
-        if now - self._start >= 8_000_000_000:
+        if now >= self._deadline:
             raise ValueError('observed session global deadline')
         origins = [lane['latest_callback_ns'], lane['pending_callback_ns']]
         if self._selection is not None:
@@ -185,24 +193,25 @@ class ObservedWireSession:
                 return
             self._failure = 'observed session refusal'
             self._failure = _error(exc)
-        if self._core is not None:
-            try:
-                self._core.close()
-            except BaseException as cleanup:
-                self._cleanup_errors.append(_error(cleanup))
+        try:
+            self._close_core()
+        except BaseException as cleanup:
+            self._cleanup_errors.append(_error(cleanup))
         try:
             if self._journal(dict(source='refusal', event=dict(reason=self._failure))) is not None:
                 raise ValueError('refusal journal must return None')
         except BaseException as secondary:
             self._refusal_journal_error = _error(secondary)
 
-    def _operation(self, action, commit):
-        if self._complete and self.progress['failure'] is None:
+    def _operation(self, action, commit, *, transition=False):
+        if (self._complete and self._maintenance is None and not self._transitioning
+                and not transition and self.progress['failure'] is None):
             raise ValueError('observed session completed or closed')
         if not self._lock.acquire(blocking=False):
             self._abort(ValueError('concurrent observed session operation'))
             raise ValueError('concurrent observed session operation')
         try:
+            self._transitioning = transition
             self._open()
             self._receiver.check()
             result = action()
@@ -217,12 +226,14 @@ class ObservedWireSession:
                 raise
             raise ValueError(_error(exc)) from exc
         finally:
+            self._transitioning = False
             self._selection = None
             self._lock.release()
 
     def poll_datagram(self):
         def action():
-            if self._core.progress['phase'] not in ('first_ready', 'stream_ready'):
+            phases = ('ready', 'pending') if self._maintenance is not None else ('first_ready', 'stream_ready')
+            if self._core.progress['phase'] not in phases:
                 raise ValueError('datagram refused before listener readiness')
             if len(self._selections) >= self.MAX_SELECTIONS:
                 raise ValueError('clock selection capacity')
@@ -243,12 +254,39 @@ class ObservedWireSession:
         self._operation(self._core.poll, commit)
         return self.progress
 
+    def begin_maintenance(self, deadline_ns):
+        """One explicit startup-bounded transition of all existing receive layers."""
+        def action():
+            if not self._complete or self._maintenance is not None:
+                raise ValueError('observed maintenance requires one completed bootstrap')
+            context = self._core.begin_maintenance(deadline_ns)
+            self._receiver._continue_with(context)
+            return context
+
+        def commit(context):
+            self._maintenance = context
+            self._deadline = context.progress['deadline_ns']
+
+        return self._operation(action, commit, transition=True)
+
+    def _close_core(self):
+        if self._closing:
+            return
+        self._closing = True
+        try:
+            if self._core is not None:
+                self._core.close()
+        finally:
+            self._closing = False
+
     def close(self):
         with self._state:
-            if self._closed:
+            if self._closed or self._closing:
                 return
-            self._closed = True
-            if not self._complete:
-                self._abort(ValueError('observed session closed before completion'))
-            elif self._core is not None:
-                self._core.close()
+            try:
+                if not self._complete:
+                    self._abort(ValueError('observed session closed before completion'))
+                else:
+                    self._close_core()
+            finally:
+                self._closed = True

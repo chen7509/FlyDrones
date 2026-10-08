@@ -35,7 +35,7 @@ observer/filter, last identities, codec sequence, clock and failure state. The
 maintenance listener's raw ordinal/epoch is separate from accepted sample count;
 one exact boundary snapshot is not a new sample. No repeated rollover.
 
-- [ ] Trace current completion/deadline/observer dependencies and record the
+- [x] Trace current completion/deadline/observer dependencies and record the
   exact transition interfaces in the execution ledger before editing.
 - [ ] Write failing tests for successful bootstrap then heartbeat/TIMESYNC,
   no transition before500/after8s, no cleared fault, expired maintenance and

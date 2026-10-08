@@ -22,6 +22,8 @@ class OwnedWireBootstrap:
         self._failure = None
         self._cleanup_errors = []
         self._complete = self._closed = False
+        self._maintenance = None
+        self._start = start_ns
         self._replies = 0
         self._owned = self._wire = None
         try:
@@ -55,14 +57,14 @@ class OwnedWireBootstrap:
                     wire=None if self._wire is None else self._wire.evidence,
                     cleanup_errors=copy.deepcopy(self._cleanup_errors))
 
-    def _open(self):
+    def _open(self, *, allow_completed=False):
         if self._failure is not None:
             raise ValueError("wire bootstrap failure latched: " + self._failure)
-        if self._closed or self._complete:
+        if self._closed or (self._complete and self._maintenance is None and not allow_completed):
             raise ValueError("wire bootstrap already completed or closed")
 
-    def _healthy(self):
-        self._open()
+    def _healthy(self, *, allow_completed=False):
+        self._open(allow_completed=allow_completed)
         self._wire.check()
         self._owned.check(allow_completed=True)
 
@@ -84,26 +86,30 @@ class OwnedWireBootstrap:
             except BaseException as exc:
                 self._cleanup_errors.append(_error(exc))
 
-    def _operation(self, action, commit):
-        self._open()
+    def _operation(self, action, commit, *, allow_completed=False):
         if not self._lock.acquire(blocking=False):
             self._abort(ValueError("concurrent wire bootstrap operation"))
             raise ValueError("concurrent wire bootstrap operation")
         try:
-            self._healthy()
-            result = action()
-            self._healthy()
-            # Close/refusal and commit share a state lock. No callback runs
-            # between the last open check and these local state assignments.
-            with self._state_lock:
-                self._open()
-                commit(result)
-            return result
-        except BaseException as exc:
-            self._abort(exc)
-            if not isinstance(exc, Exception):
-                raise
-            raise ValueError(_error(exc)) from exc
+            # A terminal legacy call is refused without invalidating its
+            # completed result; a concurrent call always latches failure.
+            self._open(allow_completed=allow_completed)
+            try:
+                health = (lambda: self._healthy(allow_completed=True)) if allow_completed else self._healthy
+                health()
+                result = action()
+                health()
+                # Close/refusal and commit share a state lock. No callback runs
+                # between the last open check and these local state assignments.
+                with self._state_lock:
+                    self._open(allow_completed=allow_completed)
+                    commit(result)
+                return result
+            except BaseException as exc:
+                self._abort(exc)
+                if not isinstance(exc, Exception):
+                    raise
+                raise ValueError(_error(exc)) from exc
         finally:
             self._lock.release()
 
@@ -115,6 +121,8 @@ class OwnedWireBootstrap:
 
     def poll(self):
         def commit(result):
+            if self._maintenance is not None:
+                return
             if result["transport_bootstrap_complete"] and (
                 result["modeled_accepted_samples"] != 500 or self._replies != 500
             ):
@@ -124,6 +132,24 @@ class OwnedWireBootstrap:
         self._operation(self._owned.poll, commit)
         return self.progress
 
+    def begin_maintenance(self, deadline_ns):
+        """Bind the existing wire decoder to the one owned filter continuation."""
+        def action():
+            if not self._complete or self._maintenance is not None:
+                raise ValueError('wire maintenance requires one completed bootstrap')
+            context = self._owned.begin_maintenance(deadline_ns)
+            self._wire._continue_with(context)
+            return context
+
+        def commit(context):
+            now = self._backend.clock()
+            self._open(allow_completed=True)
+            if type(now) is not int or not self._start <= now < self._start + 8_000_000_000:
+                raise ValueError('wire maintenance transition exceeded startup deadline')
+            self._maintenance = context
+
+        return self._operation(action, commit, allow_completed=True)
+
     def close(self):
         with self._state_lock:
             if self._closed:
@@ -131,3 +157,5 @@ class OwnedWireBootstrap:
             self._closed = True
             if not self._complete:
                 self._abort(ValueError("wire bootstrap closed before completion"))
+            elif self._maintenance is not None:
+                self._owned.close()

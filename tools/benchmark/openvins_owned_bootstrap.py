@@ -60,6 +60,8 @@ class OwnedBootstrap:
         self._refusal_journal_error = None
         self._count = stream_records
         self._stream_frame_ns = None
+        self._maintenance = None
+        self._maintenance_closed = self._transitioning = self._cleaning = False
         self._bootstrap = ColdTimesyncBootstrap(
             session_id, self._epoch, start_ns, lambda event: self._record("bootstrap", event), stream_records=stream_records
         )
@@ -68,9 +70,14 @@ class OwnedBootstrap:
     @property
     def progress(self):
         result = self._bootstrap.progress
+        if self._maintenance is not None:
+            result.update(self._maintenance.progress)
         complete = self._done and self._fault is None
         result.update(
-            failure=self._fault or result["failure"], transport_bootstrap_complete=complete, modeled_bootstrap_ready=complete
+            failure=self._fault or result["failure"], transport_bootstrap_complete=complete, modeled_bootstrap_ready=complete,
+            bootstrap_completed=self._done, maintenance_closed=self._maintenance_closed,
+            maintenance_healthy=(self._maintenance is not None and self._fault is None
+                                 and not self._maintenance_closed and result.get('maintenance_healthy', False)),
         )
         return result
 
@@ -86,6 +93,8 @@ class OwnedBootstrap:
             identity_tag_basis="owner hash, not cold-epoch proof",
             bootstrap_progress=self._bootstrap.progress,
             bootstrap_events=self._bootstrap.events,
+            maintenance_progress=None if self._maintenance is None else self._maintenance.progress,
+            maintenance_events=[] if self._maintenance is None else self._maintenance.events,
             transports=[transport.evidence for transport in self._transports],
             construction_refusal=copy.deepcopy(self._construction_refusal),
             cleanup_errors=copy.deepcopy(self._cleanup_errors),
@@ -99,7 +108,8 @@ class OwnedBootstrap:
         if type(now) is not int or not self._last_now <= now < 2**64:
             raise ValueError("owned bootstrap clock regression")
         self._last_now = now
-        if now >= self._deadline:
+        deadline = min(self._deadline, self._start + 8000000000) if self._transitioning else self._deadline
+        if now >= deadline:
             raise ValueError("owned bootstrap global deadline")
         return now
 
@@ -112,25 +122,72 @@ class OwnedBootstrap:
         now = self._clock()
         if self._stream_frame_ns is not None and now - self._stream_frame_ns >= 2000000000:
             raise ValueError("owned bootstrap final complete-frame timeout")
-        if self._bootstrap.progress["phase"] != "done":
+        if self._maintenance is not None:
+            self._maintenance.check(now_ns=now, epoch_token=self._epoch)
+        elif self._bootstrap.progress["phase"] != "done":
             self._bootstrap.check(now_ns=now, epoch_token=self._epoch)
         return now
 
     def _record(self, source, event, command_index=None):
         if self._regular_events >= self.MAX_EVENTS:
             raise ValueError("owned bootstrap event limit")
-        envelope = dict(source=source, command_index=command_index, event=copy.deepcopy(event), at_ns=self._clock())
+        # Cleanup journals retain the last accepted time; they do not grant an
+        # exception to owner/deadline checks for any ordinary operation or I/O.
+        envelope = dict(source=source, command_index=command_index, event=copy.deepcopy(event),
+                        at_ns=self._last_now if self._cleaning else self._clock())
+        if self._cleaning:
+            envelope['time_basis'] = 'last_checked_clock_during_cleanup'
         self._regular_events += 1
         self._events.append(copy.deepcopy(envelope))
         if self._journal(copy.deepcopy(envelope)) is not None:
             raise ValueError("owned bootstrap journal must return None")
-        self._clock()
+        if not self._cleaning:
+            self._clock()
+
+    def _stop_maintenance(self, reason):
+        if self._cleaning or self._maintenance_closed:
+            return
+        self._cleaning = True
+        interruption = None
+        try:
+            # Cancel socket first: cancelling the context first would make even
+            # the normal owned listener cleanup appear as a context failure.
+            if self._current is not None and self._role == 'maintenance':
+                try:
+                    result = self._current.cancel(reason)
+                    for key in ('error', 'close_error', 'cancel_journal_error'):
+                        if result.get(key) is not None:
+                            self._cleanup_errors.append(result[key])
+                except BaseException as exc:
+                    self._cleanup_errors.append(_error(exc))
+                    if not isinstance(exc, Exception):
+                        interruption = exc
+            try:
+                result = self._maintenance.cancel(reason, now_ns=self._last_now, epoch_token=self._epoch)
+                if result['failure'] is not None:
+                    self._cleanup_errors.append(result['failure'])
+            except BaseException as exc:
+                self._cleanup_errors.append(_error(exc))
+                if not isinstance(exc, Exception) and interruption is None:
+                    interruption = exc
+            self._maintenance_closed = True
+            if self._cleanup_errors and self._fault is None:
+                self._fault = self._cleanup_errors[0]
+        finally:
+            self._cleaning = False
+        if interruption is not None:
+            raise interruption
 
     def _abort(self, error):
         first = self._fault is None
         if first:
             self._fault = _error(error)
-        if self._current is not None:
+        if self._maintenance is not None:
+            try:
+                self._stop_maintenance('owned maintenance refusal')
+            except BaseException as exc:
+                self._cleanup_errors.append(_error(exc))
+        elif self._current is not None:
             try:
                 self._current.close()
             except BaseException as exc:
@@ -148,7 +205,9 @@ class OwnedBootstrap:
 
     @contextmanager
     def _step(self, *, allow_completed=False):
-        if self._done and not allow_completed:
+        if self._maintenance_closed:
+            raise ValueError('owned maintenance closed')
+        if self._done and self._maintenance is None and not allow_completed:
             raise ValueError("owned bootstrap already completed")
         if not self._lock.acquire(blocking=False):
             self._abort(ValueError("concurrent owned bootstrap operation"))
@@ -167,8 +226,26 @@ class OwnedBootstrap:
 
     def reserve_reply(self, request_ns, response_ns):
         with self._step():
-            result = self._bootstrap.reserve_reply(request_ns, response_ns, now_ns=self._check(), epoch_token=self._epoch)
+            consumer = self._maintenance if self._maintenance is not None else self._bootstrap
+            result = consumer.reserve_reply(request_ns, response_ns, now_ns=self._check(), epoch_token=self._epoch)
         return result
+
+    def begin_maintenance(self, deadline_ns):
+        """Transfer once within startup8s; does not open a command or send a reply."""
+        self._transitioning = True
+        try:
+            with self._step(allow_completed=True):
+                if not self._done or self._current is not None or self._maintenance is not None:
+                    raise ValueError('owned maintenance requires completed, untransferred bootstrap')
+                self._maintenance = self._bootstrap.take_continuation(
+                    self._epoch + '-maintenance', deadline_ns,
+                    lambda event: self._record('maintenance', event),
+                    now_ns=self._check(), epoch_token=self._epoch)
+                self._record('coordinator', dict(kind='maintenance_started', deadline_ns=deadline_ns))
+                self._deadline = deadline_ns
+            return self._maintenance
+        finally:
+            self._transitioning = False
 
     def check(self, *, allow_completed=False):
         """Check existing ownership/deadlines without opening or reading a command."""
@@ -178,7 +255,7 @@ class OwnedBootstrap:
 
     def _open(self, role):
         index = len(self._transports)
-        if index >= 3 or role != ("empty", "first", "stream")[index]:
+        if index >= 4 or role != ("empty", "first", "stream", "maintenance")[index]:
             raise ValueError("unexpected listener command order")
         if role == "stream":
             self._bootstrap.begin_stream(self._listener_token, now_ns=self._check(), epoch_token=self._epoch)
@@ -189,12 +266,13 @@ class OwnedBootstrap:
                 self._process,
                 self._owner_expected,
                 self._path,
-                "stream" if role == "stream" else "snapshot",
-                self._count if role == "stream" else 1,
-                self._start,
+                "stream" if role in ('stream', 'maintenance') else "snapshot",
+                4096 if role == 'maintenance' else self._count if role == "stream" else 1,
+                self._maintenance.progress['handoff_ns'] if role == 'maintenance' else self._start,
                 self._deadline,
                 lambda event: self._record("transport", event, index),
                 backend=self._backend,
+                continuation=self._maintenance if role == 'maintenance' else None,
             )
         except ListenerRefusal as exc:
             self._construction_refusal = exc.evidence
@@ -208,16 +286,22 @@ class OwnedBootstrap:
                 role = {"empty_pending": "empty", "first_pending": "first", "first_confirmed": "stream"}.get(
                     self._bootstrap.progress["phase"]
                 )
+                if self._maintenance is not None:
+                    role = 'maintenance'
                 if role is not None:
                     self._open(role)
             if self._current is not None:
                 output = self._current.poll()
                 now = self._check()
-                if self._role == "stream" and output["stdout"]:
-                    self._bootstrap.feed_stream(output["stdout"], self._listener_token, now_ns=now, epoch_token=self._epoch)
+                if self._role in ('stream', 'maintenance') and output["stdout"]:
+                    consumer = self._maintenance if self._role == 'maintenance' else self._bootstrap
+                    token = consumer.progress['listener_token'] if self._role == 'maintenance' else self._listener_token
+                    consumer.feed_stream(output["stdout"], token, now_ns=now, epoch_token=self._epoch)
                     if output["records"]:
                         self._stream_frame_ns = now
                 if output["terminal"] is not None:
+                    if self._role == 'maintenance':
+                        raise ValueError('maintenance listener ended; rollover forbidden')
                     if self._role == "stream":
                         self._bootstrap.finish_stream(0, self._listener_token, now_ns=self._check(), epoch_token=self._epoch)
                     else:
@@ -232,5 +316,21 @@ class OwnedBootstrap:
         return self.progress
 
     def close(self):
+        if self._maintenance is not None:
+            if not self._lock.acquire(blocking=False):
+                self._abort(ValueError('concurrent owned maintenance close'))
+                return
+            try:
+                if not self._maintenance_closed:
+                    try:
+                        self._check()
+                    except BaseException as exc:
+                        self._abort(exc)
+                        if not isinstance(exc, Exception):
+                            raise
+                    self._stop_maintenance('owned maintenance close')
+            finally:
+                self._lock.release()
+            return
         if not self._done and self._fault is None:
             self._abort(ValueError("owned bootstrap aborted before completion"))

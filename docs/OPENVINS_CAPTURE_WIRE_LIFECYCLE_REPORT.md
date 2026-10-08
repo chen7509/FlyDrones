@@ -71,11 +71,8 @@ These counts supersede the intermediate subset counts for current source state.
 
 ## Still required by this same plan
 
-- Bind the continuation through OwnedBootstrap/OwnedWire/ObservedWire, retaining
-  the same decoder/receive owner and unchanged legacy behavior.
-- Integrate the explicit maintenance transport/cancellation with the owned runner
-  and add segmented retention; the current core keeps bounded in-memory evidence
-  and is not the journal design.
+- Add segmented retention to the composed lifecycle; the current layers retain
+  their bounded in-memory evidence and are not the segmented journal design.
 - Implement the nonblocking stream-interval exchange and restoration-only failure
   path, then actual capture registration and injected end-to-end runner tests.
 - Independent whole-change review, final regression/evidence and PR publication.
@@ -83,3 +80,57 @@ These counts supersede the intermediate subset counts for current source state.
 Neither this implementation nor a boolean in its progress grants network,
 delivery, live convergence or fusion qualification. Full fruit-fly learning,
 division, fair comparison and swarm/hardware/flight evidence remain incomplete.
+
+## Composed continuation through the observed receiver
+
+The existing OwnedBootstrap, OwnedWireBootstrap and ObservedWireSession now have
+an explicit one-time `begin_maintenance(deadline_ns)` transition. It requires the
+successful finite500-sample bootstrap and must finish within the original8s,
+including journal/owner/descriptor/clock callbacks. It retains the observer,
+codec sequence, last request identity, independent simulation-clock lane and
+supplied datagram receiver. No new datagram socket or reader is constructed.
+The fourth read-only daemon command is a single4096-record maintenance listener;
+its first raw snapshot is the previous boundary, not sample501. Ordinary reply
+reservation and correlated listener polling then use the transferred context.
+
+Bootstrap completion is historical (`bootstrap_completed`); maintenance health
+is distinct and is false before the first new accepted pair, during a pending
+reply, after cancellation or refusal. The supplied absolute deadline remains
+bounded by original start+300s. All2s source/progress checks and legacy terminal
+defaults remain. Heartbeat dispatch is possible while a maintenance status is
+pending; a new TIMESYNC request still cannot replace that outstanding reservation.
+
+Owned cancellation closes only its supplied daemon connection, retains pending
+and partial bytes, and leaves the caller-owned datagram socket to its lifecycle
+owner. The outer session allows cleanup journals after a failure/close intent
+without reopening ordinary receive/send operations. Cleanup journal times are
+explicitly last-checked observations, not newly observed cancellation times.
+Journal/close/interrupt errors and concurrent-operation primary failures remain
+distinct. No daemon-exit proof or clean finite subscription completion is inferred.
+
+New cases:20 owned-layer tests,5 actual-codec wire composition tests and5 observed
+composition tests. The main observed case uses one injected receiver for510
+datagrams (505 TIMESYNC,5 heartbeat), retains505 accepted modeled samples and
+reply sequence244 at request500, and crosses the original8s only after the
+successful transition. Missing status, stale source, descriptor change, replay,
+late/reentrant transition, partial cancellation and cleanup failures are covered.
+These are synthetic clocks/daemon bytes with real parsers and installed codec,
+not measured live throughput or PX4 reception/convergence.
+
+Initial missing-interface assertion failures:15 owned,5 wire,5 observed. The first
+wire regression also exposed two test-fixture interface errors (`HookedLock`
+lacks `locked`) and one overly eager health-call signature change; lock acquisition
+and the unchanged default health call were restored, preserving terminal/reentrant
+semantics. An added cleanup test initially required a concurrent primary refusal
+to also appear as a socket/journal cleanup error. That assertion was corrected to
+check the retained primary refusal; it was not a production bug or RED-to-GREEN
+fix. The other cleanup additions passed as new coverage.
+
+Current focused verification: **627 pytest passed and130 installed-codec WSL
+unittest passed**, with30 selected source/test hashes unchanged before/after.
+Changed Ruff and diff-check pass. Raw outputs and hashes are under
+`results/capture-wire-lifecycle-dev-1701/composition-final-v1`; initial failures
+remain alongside them. No fresh whole-repository pass is claimed. Actual capture
+registration remains unchanged; Task1 is still open for segmented retention, and
+the plan's interval/restore, runner, final independent review and sealed evidence
+tasks remain outstanding. No network/physics/estimator/arming/training run occurred.

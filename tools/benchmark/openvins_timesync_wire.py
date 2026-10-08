@@ -104,6 +104,8 @@ class TimesyncWireResponder:
         self._reserve, self._sink, self._journal, self._now = reserve_reply, send_sink, journal, now
         self._peer = peer
         self._start = self._last_now = start_ns
+        self._deadline = start_ns + 8_000_000_000
+        self._continuation = None
         self._received = None
         self._last_received = None
         self._events = []
@@ -132,8 +134,12 @@ class TimesyncWireResponder:
         if self._failure is not None:
             raise ValueError("wire failure latched: " + self._failure)
         value = self._accept_time(self._now())
-        if value - self._start >= 8_000_000_000:
+        if value >= self._deadline:
             raise ValueError("wire global deadline")
+        if self._continuation is not None:
+            context = self._continuation.progress
+            if context['failure'] is not None or context['phase'] == 'cancelled':
+                raise ValueError('wire maintenance context failed or cancelled')
         if self._received is not None and value - self._received >= 2_000_000_000:
             raise ValueError("wire request deadline")
         if self._remote.session_id != self._session:
@@ -142,6 +148,31 @@ class TimesyncWireResponder:
             raise ValueError("shared remote clock failed: " + self._remote.failure)
         self._codec.check()
         return value
+
+    def _continue_with(self, continuation):
+        """Internal composition binding; keep codec/sequence/last request intact."""
+        from tools.benchmark.openvins_timesync_maintenance import _TimesyncMaintenance
+
+        if not self._lock.acquire(blocking=False):
+            self._abort(ValueError('concurrent wire maintenance binding'))
+            raise ValueError('concurrent wire maintenance binding')
+        try:
+            now = self._check()
+            if type(continuation) is not _TimesyncMaintenance or self._continuation is not None:
+                raise ValueError('one exact maintenance continuation required')
+            state = continuation.progress
+            if (state['failure'] is not None or state['phase'] != 'replay_pending'
+                    or not self._start <= state['handoff_ns'] <= now < self._start + 8_000_000_000
+                    or not now < state['deadline_ns'] <= self._start + 300_000_000_000):
+                raise ValueError('wire maintenance context/deadline invalid')
+            self._record('maintenance_bound', deadline_ns=state['deadline_ns'], listener_token=state['listener_token'])
+            self._check()  # The binding journal must finish inside the original8s.
+            self._continuation, self._deadline = continuation, state['deadline_ns']
+        except BaseException as exc:
+            self._abort(exc)
+            raise
+        finally:
+            self._lock.release()
 
     def _accept_time(self, value):
         if type(value) is not int or not self._last_now <= value < 2**64:

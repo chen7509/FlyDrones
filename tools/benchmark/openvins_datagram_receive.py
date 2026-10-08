@@ -36,6 +36,8 @@ class DatagramReceiver:
         self._recv_flags = int(self._recv_flags)
         self._sock, self._guard, self._now, self._journal = sock, guard, now, journal
         self._last = self._start = start_ns
+        self._deadline = start_ns + 8_000_000_000
+        self._continuation = None
         self._events, self._journal_errors = [], []
         self._regular_events = 0
         self._failure = None
@@ -62,6 +64,10 @@ class DatagramReceiver:
     def _open(self):
         if self._failure is not None:
             raise ValueError("datagram receiver failure latched: " + self._failure)
+        if self._continuation is not None:
+            state = self._continuation.progress
+            if state['failure'] is not None or state['phase'] == 'cancelled':
+                raise ValueError('datagram maintenance context failed or cancelled')
 
     def _clock(self):
         self._open()
@@ -70,9 +76,35 @@ class DatagramReceiver:
         if type(value) is not int or not self._last <= value < 2**64:
             raise ValueError("datagram receive clock invalid or regressed")
         self._last = value
-        if value >= self._start + 8_000_000_000:
+        if value >= self._deadline:
             raise ValueError("datagram receive global deadline")
         return value
+
+    def _continue_with(self, continuation):
+        """Bind once without replacing the supplied descriptor or high water mark."""
+        from tools.benchmark.openvins_timesync_maintenance import _TimesyncMaintenance
+
+        if not self._lock.acquire(blocking=False):
+            self._fail(ValueError('concurrent receive maintenance binding'))
+            raise ValueError('concurrent receive maintenance binding')
+        try:
+            now = self._check()
+            if type(continuation) is not _TimesyncMaintenance or self._continuation is not None:
+                raise ValueError('one exact receiver continuation required')
+            state = continuation.progress
+            if (state['failure'] is not None or state['phase'] != 'replay_pending'
+                    or not self._start <= state['handoff_ns'] <= now < self._start + 8_000_000_000
+                    or not now < state['deadline_ns'] <= self._start + 300_000_000_000):
+                raise ValueError('receive maintenance context/deadline invalid')
+            self._publish(self._append('maintenance_bound', deadline_ns=state['deadline_ns'],
+                                       listener_token=state['listener_token']))
+            self._check()  # Binding and all callbacks still obey bootstrap8s.
+            self._continuation, self._deadline = continuation, state['deadline_ns']
+        except BaseException as exc:
+            self._fail(exc)
+            raise
+        finally:
+            self._lock.release()
 
     @staticmethod
     def _address(value, expected):
