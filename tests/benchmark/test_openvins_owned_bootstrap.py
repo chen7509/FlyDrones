@@ -231,7 +231,7 @@ def test_bootstrap_journal_fault_is_immediate_and_blocks_next_command(failure):
             if failure == "raise":
                 raise OSError("intent journal failed")
             if failure == "late":
-                holder["backend"].now = late_ns
+                holder["backend"].now = 8000000010
             if failure == "reenter":
                 with pytest.raises(ValueError):
                     holder["obj"].poll()
@@ -244,6 +244,8 @@ def test_bootstrap_journal_fault_is_immediate_and_blocks_next_command(failure):
     with pytest.raises(ValueError):
         obj.poll()
     assert len(backend.used) == 1
+    expected_reason = {"raise": "intent journal failed", "late": "deadline", "reenter": "concurrent"}[failure]
+    assert expected_reason in obj.progress["failure"]
 
 
 def test_journal_argument_mutation_does_not_change_evidence():
