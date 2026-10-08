@@ -532,3 +532,12 @@ and checked afterward. Two generator dependencies loaded later
 (`live_wire_source_fixture.py` and `test_live_wire_camera_info.py`) have only
 post-load hashes in this run; that limitation is explicit and is not repaired
 retroactively. The bundle is not a complete runtime freeze or physical evidence.
+
+Source commit `3919de3` and the partial synthetic bundle are sealed in
+`evidence/live-wire-joined-clock-source-offline-dev-1701.zip`: 597 members,
+3,492,233 bytes, SHA256
+`3bd1d01262e9934cd29f9a5f16bed0968668daecff7160d99077bfc56c7f37d4`.
+CRC and all member hashes were verified. Raw synthetic clock, wire, callback,
+image/protobuf, source and native-protocol records are included alongside source
+snapshots, initial setup failure and regression results. The report inside the
+archive precedes this seal paragraph. This remains local publication only.
