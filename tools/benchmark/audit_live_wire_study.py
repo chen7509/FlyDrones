@@ -161,8 +161,8 @@ def _dispatch_records(manifest, manifest_identity, dispatch, completion):
 def audit_live_wire_study(study_path):
     """Read actual study files and compose available auditors, failing closed.
 
-    Task 2 still lacks resource/CameraInfo joins, dispatch-producer attestation
-    and the whole-package positive fixture. These remain unverified gates;
+    Task 2 still lacks dispatch-producer attestation and the whole-package
+    positive fixture. These remain unverified gates;
     this entry cannot yet return whole-study/live qualification.
     """
     from tools.benchmark.audit_live_wire_runtime import audit_runtime_mapping_records
@@ -230,6 +230,36 @@ def audit_live_wire_study(study_path):
             maps=maps,
             owners=owners,
             process=reader.document(reader.member(capture, "process.json")),
+        )
+        stage = "resource_graph"
+        graph = reader.document(reader.member(capture, "resource-graph.json"))
+        query_paths = sorted(capture.glob("resource-query-*.json"))
+        if not 1 <= len(query_paths) <= 512:
+            raise ValueError("resource query evidence count")
+        _equal(
+            [p.name for p in query_paths],
+            [f"resource-query-{i:04d}.json" for i in range(len(query_paths))],
+            "resource query sequence",
+        )
+        original_documents = {}
+        for document in graph["documents"]:
+            source = document["source"]
+            if source in original_documents:
+                raise ValueError("duplicate graph document")
+            matching = [r for r in pre["files"] if r["requested"] == source]
+            if not matching:
+                matching = [r for r in pre["files"] if r["resolved"] == source]
+            if not matching:
+                raise ValueError("graph source absent from snapshot")
+            original_documents[source] = reader.declared_file({k: v for k, v in matching[0].items() if k != "role"})
+        checks[stage] = audit_resource_graph_records(
+            declaration=declaration,
+            pre=pre,
+            after_queries=reader.document(reader.member(capture, "runtime-binding-after-queries.json")),
+            graph=graph,
+            context=reader.document(reader.member(capture, "resource-search-context.json")),
+            queries=[reader.document(reader.member(capture, p.name)) for p in query_paths],
+            documents=original_documents,
         )
         stage = "cleanup"
         checks[stage] = audit_supervisor(
@@ -312,6 +342,13 @@ def audit_live_wire_study(study_path):
             states=states,
             terminal=shadow_terminal,
             session_id="online-native-" + str(native_session["pid"]),
+        )
+        stage = "camera_info"
+        checks[stage] = audit_camera_info_records(
+            sources=sources,
+            payloads=payloads,
+            manifest=reader.document(reader.member(capture, "camera-info.json")),
+            first_payload=reader.raw(reader.member(capture, "camera-info.pb"), 1024 * 1024),
         )
         stage = "physical_coverage"
         reference = reader.lines(reader.member(capture, "native-reference.jsonl"))
@@ -407,7 +444,7 @@ def audit_live_wire_study(study_path):
         unverified=[
             "prospective executor/producer attestation",
             "per-call readiness/watchdog and independent heartbeat flush timestamp observations",
-            "resource graph and CameraInfo decode",
+            "failure-path restoration and full producer attestation",
             "complete positive study fixture and whole-package review",
         ],
         record_chain_qualified=False,
@@ -430,6 +467,18 @@ def audit_fast_coverage_records(**kwargs):
 
 def audit_health_coverage_records(**kwargs):
     from tools.benchmark.audit_live_wire_coverage import audit_health_coverage_records as audit
+
+    return audit(**kwargs)
+
+
+def audit_resource_graph_records(**kwargs):
+    from tools.benchmark.audit_live_wire_resources import audit_resource_graph_records as audit
+
+    return audit(**kwargs)
+
+
+def audit_camera_info_records(**kwargs):
+    from tools.benchmark.audit_live_wire_resources import audit_camera_info_records as audit
 
     return audit(**kwargs)
 

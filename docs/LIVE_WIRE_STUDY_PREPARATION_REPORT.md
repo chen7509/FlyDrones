@@ -8,16 +8,15 @@ checks are implemented and tested. The full study auditor and actual prepared
 dispatch package remain unfinished. No new physical, network or estimator run
 occurred in this preparation work. Fusion remains false.
 
-The latest increment adds recorded source-health intervals, fixture motion,
-anchor source/estimator attribution and existing-gauge scoring to
-`audit_live_wire_study(study_path)`. It invokes available raw auditors and returns
-staged refusals, consumed-file hashes and explicit unverified gates. Task 2 still
-lacks resource graph/CameraInfo decoding, a complete positive study fixture and
-remaining failure-path coverage. Per-call watchdog/readiness observations are
+The latest increment adds original resource-query/XML graph reconstruction and
+official CameraInfo protobuf decoding to `audit_live_wire_study(study_path)`.
+It invokes available raw auditors and returns staged refusals, consumed-file
+hashes and explicit unverified gates. Task 2 still lacks a complete positive
+study fixture and remaining failure-path coverage. Per-call watchdog/readiness observations are
 not present in the historical logs and remain explicitly unproven.
 Task 3's installed executor/package and whole-package review remain pending.
 
-This increment passes 391 targeted/directly affected tests (77.95s), including
+The previous safety/anchor increment passed 391 targeted/directly affected tests (77.95s), including
 101 safety/anchor/file-entry tests. Changed-file Ruff and diff checks pass. The
 initial anchor API assertion and three missing-entry-route assertions failed
 before implementation; all outputs are retained. This is not a full-repository
@@ -394,6 +393,33 @@ An explicit reindex now preserves SHA256 `421c15f47dc7ff9e91891369df69ccbc08a8c1
 The narrow `cr-at-eol` whitespace attribute recognizes the retained CRLF bytes.
 The index-byte check and 24 anchor tests pass; no estimator algorithm changed.
 
+## Resource and camera increment
+
+The new pure resource audit reuses production traversal with in-memory original
+XML and recorded SDK replies. It validates query arguments/context/raw stdout
+and stderr, deadlines, no omitted/extra queries, graph equality and declared file
+identity. Production `build_graph` retains bounded reads and final evidence write;
+the private shared traversal introduces no additional process or search path.
+CameraInfo is decoded with Gazebo's installed generated protobuf class, including
+raw timestamps, fixed geometry and rectification rather than accepting hashes alone.
+
+A new read-only check of retained seed27201 succeeds for 251 camera protobufs,
+8 XML documents, 46 graph edges and 40 query records. It tracks 338 consumed files,
+including exact pre-audit producer copies and hash identities of loaded decoder
+modules, and verifies them again afterward. No original data was changed, SDK
+resolver executed, estimator replayed, or new physical run performed. Gazebo
+messages package10.4.0 and Python protobuf runtime4.21.12 are recorded separately
+from Debian's protobuf package version3.21.12; installed source/license snapshots
+are retained. Installed version is not a claim of active upstream maintenance.
+
+The first CameraInfo entry test run overlapped the integration edit and passed;
+its filename `camera-entry-red-v1.txt` does not make it RED evidence. Removing
+only that entry stage, waiting for the run to finish, then restoring it produced
+three actual failing assertions in `camera-entry-red-v2.txt`. Resource entry has
+five independently observed missing-file/route REDs. Unit missing-API REDs and
+all intermediate outputs are retained. Tests and fixed audits remain distinct
+from a full positive raw-chain integration or final whole-package review.
+
 Safety/anchor increment is sealed in
 `evidence/live-wire-safety-anchor-offline-progress-dev-1701.zip`: 62 members,
 210,733 bytes, SHA256
@@ -402,3 +428,10 @@ CRC and every member were verified. Core implementation is `588c5fb`; final
 fixture byte preservation is `53e64ea`. Exact pre-audit producers, both old-input
 checks, test failures and successful regressions are included. The report inside
 the archive precedes this seal paragraph. Local only; no runtime authorization.
+
+Final resource/camera regression: 249 passed, 3 skipped in 102.49 seconds.
+The three skips require Gazebo's official Python message package unavailable on
+Windows; all three real-protobuf unittest methods passed in WSL (0.198 seconds).
+Changed-file Ruff and diff checks pass. This covers the new auditor, study entry,
+source/native joins and affected production graph/runtime/calibration helpers;
+it is not a full-repository pass or the final independent review.

@@ -11,6 +11,16 @@ CLASSIC = 'file://media/materials/scripts/gazebo.material'
 
 
 def build_graph(world, client, known_rows, output):
+    def read_source(path):
+        with Path(path).open('rb') as stream:
+            return stream.read(32 * 1024 * 1024 + 1)
+
+    return _build_graph(world, client, known_rows, read_source,
+                        lambda result: write_manifest(Path(output) / 'resource-graph.json', result))
+
+
+def _build_graph(world, client, known_rows, read_source, record_result):
+    """Shared traversal; production and offline audit supply distinct I/O owners."""
     known = {p: row for row in known_rows if not row['role'].startswith('bootstrap:') for p in (row['requested'], row['resolved'])}
     result = dict(schema='bound-local-resource-graph-v1', documents=[], edges=[], errors=[],
                   local_file_graph_verified=False, runtime_closure_qualified=False,
@@ -28,8 +38,7 @@ def build_graph(world, client, known_rows, output):
         row = declared(path)
         if row['bytes'] > 32 * 1024 * 1024:
             raise ValueError('source exceeds 32MiB graph limit')
-        with Path(path).open('rb') as stream:
-            data = stream.read(32 * 1024 * 1024 + 1)
+        data = read_source(path)
         if len(data) != row['bytes'] or hashlib.sha256(data).hexdigest() != row['sha256']:
             raise ValueError('original source drift after baseline')
         client.check_budget()
@@ -104,4 +113,4 @@ def build_graph(world, client, known_rows, output):
         result['errors'].append(repr(exc))
         raise
     finally:
-        write_manifest(Path(output) / 'resource-graph.json', result)
+        record_result(result)

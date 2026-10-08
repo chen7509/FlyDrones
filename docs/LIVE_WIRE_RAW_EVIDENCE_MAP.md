@@ -283,3 +283,36 @@ Gauge scoring reuses the frozen trajectory policy and first-internal-state origi
 preserving startup unavailable time and public coverage failures. Fresh reference
 data are used only in this offline scorer. Diagnostic scores do not promote
 quality zero, calibrate covariance or authorize fusion.
+
+## Original resource queries and camera protobufs
+
+The resource stage joins `resource-graph.json` to the pre-snapshot's graph and
+requires exact file stability in `runtime-binding-after-queries.json`. Query
+members must be numbered contiguously from zero; failures/extra records refuse.
+The original command, cwd/environment, return status, stdout/stderr hexadecimal
+bytes and textual mirrors, clocks and total query budget are checked. Existing
+`native_resource_client.validate_response` validates each decoded native reply.
+The original `bound_resource_graph` traversal now has a private I/O-separated
+core, shared by production and the offline auditor. Production still performs
+its original bounded reads and final `write_manifest`; the auditor uses already
+read XML bytes and retained replies. No SDK process or new resolver is created.
+Every query and document must be consumed; duplicate edges remain in the graph.
+This reproduces recorded dependency selection, not mesh/image decoding, rendering,
+current search-context discovery, runtime authentication or full runtime closure.
+
+The file entry reads declared original XML through the existing path/identity/hash
+reader. A currently changed/missing original refuses rather than reconstructing
+historical bytes. The retained seed27201 check consumed 8 unchanged XML documents,
+46 edges and 40 native query records, with pre/post input verification.
+
+Each of 251 `camera-info-messages/<sample>.pb` payloads is decoded using installed
+`gz.msgs10.camera_info_pb2.CameraInfo`. Raw hash, normalized sec/nsec, RGB sample,
+frame metadata, fixed intrinsics/projection/distortion and identity rectification
+are checked. Unknown protobuf fields refuse this narrow fixed profile; duplicate
+or invalid frame metadata does not silently select a frame. The existing
+`camera_info_fields` and `raw_profile` define expected calibration fields. The
+first protobuf and `camera-info.json` must agree byte-for-byte and by count/hash.
+This is simulation-message consistency, not hardware/extrinsic calibration.
+Windows lacks the official decoder, so its three real-codec tests skip explicitly;
+the same three unittest methods (one positive and 19 fault subcases) run in WSL.
+Task3 must bind the auditor's decoder/runtime dependencies in the prepared package.

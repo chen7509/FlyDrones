@@ -190,6 +190,10 @@ def routed_fixture(tmp_path, monkeypatch):
     )
     for name in ("runtime-binding-pre", "runtime-binding-post", "supervisor", "process", "wire-owner"):
         put(name + ".json", {})
+    put("resource-graph.json", dict(documents=[]))
+    put("resource-search-context.json", {})
+    put("runtime-binding-after-queries.json", {})
+    put("resource-query-0000.json", {})
     for phase in ["postgraph", "bootstrap", *docs["binding"]["runtime_maps"]["self_phases"]]:
         put("runtime-maps-" + phase + ".json", {})
         (capture / ("runtime-maps-" + phase + ".txt")).write_text("synthetic mapping")
@@ -227,6 +231,8 @@ def routed_fixture(tmp_path, monkeypatch):
     )
     put("shadow/shadow-input-result.json", dict(health_last={}))
     put("shadow/health-result.json", {})
+    put("camera-info.json", {})
+    (capture / "camera-info.pb").write_bytes(b"camera")
     put("readiness-anchor.json", {})
     put("motion-profile.json", {})
     lines("motion-intent.jsonl", [{}])
@@ -255,6 +261,8 @@ def routed_fixture(tmp_path, monkeypatch):
     monkeypatch.setattr(audit, "audit_health_coverage_records", lambda **kw: dict(synthetic_double=True))
     monkeypatch.setattr(audit, "audit_source_health_records", lambda **kw: dict(synthetic_double=True))
     monkeypatch.setattr(audit, "audit_motion_records", lambda **kw: dict(synthetic_double=True))
+    monkeypatch.setattr(audit, "audit_camera_info_records", lambda **kw: dict(synthetic_double=True))
+    monkeypatch.setattr(audit, "audit_resource_graph_records", lambda **kw: dict(synthetic_double=True), raising=False)
     monkeypatch.setattr(audit, "audit_anchor_records", lambda **kw: dict(synthetic_double=True), raising=False)
     monkeypatch.setattr(
         audit,
@@ -337,6 +345,35 @@ def test_missing_anchor_source_journal_refuses(tmp_path, monkeypatch, member):
 def test_entry_calls_anchor_attribution(tmp_path, monkeypatch):
     _, path, _ = routed_fixture(tmp_path, monkeypatch)
     assert api()(path)["checks"].get("anchor_attribution", {}).get("synthetic_double") is True
+
+
+@pytest.mark.parametrize("member", ["camera-info.json", "camera-info.pb"])
+def test_entry_requires_camera_calibration_bytes(tmp_path, monkeypatch, member):
+    _, path, capture = routed_fixture(tmp_path, monkeypatch)
+    (capture / member).unlink()
+    result = api()(path)
+    assert result["refusals"] and result["refusals"][0]["stage"] == "camera_info"
+
+
+def test_entry_calls_camera_decoder(tmp_path, monkeypatch):
+    _, path, _ = routed_fixture(tmp_path, monkeypatch)
+    assert api()(path)["checks"].get("camera_info", {}).get("synthetic_double") is True
+
+
+@pytest.mark.parametrize(
+    "member",
+    ["resource-graph.json", "resource-search-context.json", "resource-query-0000.json", "runtime-binding-after-queries.json"],
+)
+def test_entry_requires_resource_records(tmp_path, monkeypatch, member):
+    _, path, capture = routed_fixture(tmp_path, monkeypatch)
+    (capture / member).unlink()
+    result = api()(path)
+    assert result["refusals"] and result["refusals"][0]["stage"] == "resource_graph"
+
+
+def test_entry_calls_resource_graph_auditor(tmp_path, monkeypatch):
+    _, path, _ = routed_fixture(tmp_path, monkeypatch)
+    assert api()(path)["checks"].get("resource_graph", {}).get("synthetic_double") is True
 
 
 def test_diagnostic_gauge_failure_remains_visible(tmp_path, monkeypatch):
