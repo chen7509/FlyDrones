@@ -22,10 +22,10 @@
 ### Task 1: Compose and verify observed wire session
 Files: new tools/benchmark/openvins_observed_wire_session.py, tests/benchmark/test_openvins_observed_wire_session.py; supporting narrow checks in existing receiver/clock modules and tests.
 Interfaces: DatagramReceiver.check/progress; JournaledSimulationClock.validate_selection/progress; ObservedWireSession.poll_listener/poll_datagram/close/progress/evidence.
-- [ ] Unit counterexamples for receiver check and selection validation; implement without changing existing defaults.
-- [ ] WSL actual-class composition tests first, including normal500 and bounded failures; implement one-socket path.
-- [ ] Independent whole-change review; reproduce and repair Important/Critical findings in one pass.
-- [ ] Related Windows and WSL regressions, changed Ruff/diff; retain skipped dependency scope.
+- [x] Unit counterexamples for receiver check and selection validation; implement without changing existing defaults.
+- [x] WSL actual-class composition tests first, including normal500 and bounded failures; implement one-socket path.
+- [x] Independent whole-change review; reproduce and repair Important/Critical findings in one pass.
+- [x] Related Windows and WSL regressions, changed Ruff/diff; retain skipped dependency scope.
 - [ ] Report/research hashes/sealed evidence; commit/push personal/update and verify draftPR65.
 
 Ruling: prior explicit user preapproval covers routine stages. Independent review is required by executing-plans. Keep the existing worktree/evidence; do not clean it. Targeted integration/dependency suites are appropriate; no fresh full-repository pass unless a new concern warrants it.
