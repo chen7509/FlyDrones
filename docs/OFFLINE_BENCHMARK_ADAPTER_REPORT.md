@@ -113,3 +113,15 @@ Library protocol compatibility is not evidence that a real benchmark or an
 EKF2-controlled aircraft used the adapter. Full learning/division, held-out fair
 comparison, the failed five-camera 0.873 RTF gate, and hardware/HITL/flight remain
 open. Changes stay local under the existing publication limitation.
+
+
+## Sealed evidence
+
+`evidence/connectome-benchmark-adapter-dev-1701.zip`: 23 members, 49,112 bytes,
+SHA256 `396a7b70fa287fd5bddd8028db6bd14923e9c79d21e34daff2b329c0a4af9a02`.
+All member bytes/hashes and CRC verified. It retains RED/GREEN/full-suite/final
+coverage logs, review disposition, next-dependency inspection, host observation,
+and source/document copies at 38c0925. These copies are post-verification, not
+runtime pre/post freeze. The earlier failed suite's ZIP is referenced by its
+verified unchanged hash. This seal paragraph was appended afterward.
+Code and evidence remain local; no remote push, merge or activation was attempted.
