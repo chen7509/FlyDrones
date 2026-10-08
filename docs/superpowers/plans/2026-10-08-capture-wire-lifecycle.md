@@ -60,15 +60,15 @@ only owned-baseline restoration, retaining failure and2s operation bounds.
 
 - [x] Retain fixed codec/PX4 command and interval field evidence; confirm exact
   query command/ACK target semantics before encoding commands.
-- [ ] Tests first: baseline, apply/readback, body, restore/readback; no second
+- [x] Tests first: baseline, apply/readback, body, restore/readback; no second
   reader; heartbeat during waits; missing/wrong/duplicate/late responses; mutation
   with lost ACK; all partial effects and restoration failures retained.
-- [ ] Implement bounded nonblocking progression in the existing receive owner.
+- [x] Implement bounded nonblocking progression in the existing receive owner.
   Do not call a blocking receive recursively from the transaction.
-- [ ] Compare success/failure/restore outcomes to the existing oracle; verify
+- [x] Compare success/failure/restore outcomes to the existing oracle; verify
   failure-before/after mutation, expired primary deadline, changed owner/descriptor,
   repeat interruption and cleanup deadline cannot permit ordinary traffic.
-- [ ] Targeted interval/codec regression and commit. Offline flags remain false.
+- [x] Targeted interval/codec regression and commit. Offline flags remain false.
 
 ### Task 3: Actual capture registration and cleanup integration
 

@@ -15,6 +15,7 @@ from tools.benchmark.openvins_datagram_receive import DatagramReceiver
 from tools.benchmark.openvins_ekf2_disarmed_preflight import RemoteMonotonicClock
 from tools.benchmark.openvins_segmented_journal import event_log
 from tools.benchmark.openvins_simulation_clock import JournaledSimulationClock
+from tools.benchmark.openvins_timesync_interval import _RestorationWindow
 from tools.benchmark.openvins_wire_bootstrap import OwnedWireBootstrap
 from tools.benchmark.owned_daemon_connection import LinuxBackend, _error, validate_owner
 
@@ -45,6 +46,9 @@ class ObservedWireSession:
         self._failure = self._selection = self._receiver = self._core = None
         self._closed = self._complete = False
         self._retention = retention
+        self._restoration = None
+        self._restoring = self._restoration_bound = False
+        self._restoration_init_error = None
         self._selections, self._cleanup_errors = event_log(retention, 'selection'), []
         self._refusal_journal_error = None
         self._signature = self._clock_signature()
@@ -74,7 +78,12 @@ class ObservedWireSession:
                    or self._lane.progress['failure'] or self._remote.failure
                    or (None if self._retention is None else self._retention.failure))
         complete = self._complete and failure is None
+        interval = None if self._core is None or self._core._wire is None else self._core._wire._interval
+        state = None if interval is None else interval.progress
+        finished = self._restoration_bound and state is not None and state['phase'] == 'done'
+        restored = finished and self._restoration.failure is None and state['baseline_restoration_verified']
         return dict(core, failure=failure, observed_bootstrap_complete=complete,
+                    restoration_finished=finished, restoration_verified=bool(restored),
                     modeled_bootstrap_ready=complete, transport_bootstrap_complete=complete,
                     network_authorized=False, delivery_proven=False, live_convergence_qualified=False,
                     runtime_source_proven=False, sender_process_proven=False, fusion_qualified=False)
@@ -82,6 +91,8 @@ class ObservedWireSession:
     @property
     def evidence(self):
         return dict(self.progress, selections=copy.deepcopy(self._selections),
+                    restoration=None if self._restoration is None else self._restoration.evidence,
+                    restoration_init_error=self._restoration_init_error,
                     retention=None if self._retention is None else self._retention.evidence,
                     clock_signature=self._signature, clock=self._lane.evidence,
                     receiver=None if self._receiver is None else self._receiver.evidence,
@@ -115,6 +126,9 @@ class ObservedWireSession:
 
     def _context(self):
         """Called by receiver at read/check boundaries; no recursive receiver call."""
+        if self._restoring:
+            self._restoration_context()
+            return
         self._clock()
         if self._descriptor_guard(self._sock) is not None:
             raise ValueError('descriptor guard must return None')
@@ -142,11 +156,13 @@ class ObservedWireSession:
     def _forward(self, source, event):
         # Cleanup evidence can be written after failure/close intent. Only this
         # journal path is exempt; _open continues to refuse receive/send work.
-        if not self._closing:
+        if not self._closing and not self._restoring:
             self._open()
         if self._journal(dict(source=source, event=copy.deepcopy(event))) is not None:
             raise ValueError('observed session journal must return None')
-        if not self._closing:
+        if self._restoring:
+            self._restoration.check(self._backend.clock())
+        elif not self._closing:
             self._open()
 
     def _send(self, raw, peer):
@@ -208,8 +224,17 @@ class ObservedWireSession:
                 return
             self._failure = 'observed session refusal'
             self._failure = _error(exc)
+        if self._interval_enabled and self._core is not None and self._core._wire is not None:
+            try:
+                now = self._backend.clock()
+                if type(now) is not int or now < self._last_now:
+                    raise ValueError('first STOPPING clock invalid/regressed')
+                self._last_now = now
+                self._restoration = _RestorationWindow(self._core._wire._interval, now)
+            except BaseException as clock_error:
+                self._restoration_init_error = _error(clock_error)
         try:
-            self._close_core()
+            self._close_core(keep_retention=self._restoration is not None)
         except BaseException as cleanup:
             self._cleanup_errors.append(_error(cleanup))
         try:
@@ -283,6 +308,105 @@ class ObservedWireSession:
         self._operation(self._core.poll_interval, commit)
         return self.progress
 
+    def _restoration_context(self):
+        """Identity checks only; failed estimator/source state is never cleared."""
+        if not self._restoring or self._restoration is None or self._closed or self._closing:
+            raise ValueError('restoration not active or session closed')
+        now = self._backend.clock()
+        self._restoration.check(now)
+        if type(now) is not int or now < self._last_now:
+            raise ValueError('restoration session clock regression')
+        self._last_now = now
+        if self._descriptor_guard(self._sock) is not None:
+            raise ValueError('restoration descriptor guard must return None')
+        actual = self._backend.observe(self._process)
+        validate_owner(actual)
+        if actual != self._expected:
+            raise ValueError('restoration owner changed')
+        if self._clock_signature() != self._signature or self._lane.session_id != self._signature[0]:
+            raise ValueError('restoration session/origin changed')
+        now = self._backend.clock()
+        self._restoration.check(now)
+        if type(now) is not int or now < self._last_now:
+            raise ValueError('restoration session clock regression')
+        self._last_now = now
+        return now
+
+    def _restoration_guard(self):
+        self._restoration_context()
+
+    def _send_restoration(self, raw, peer):
+        if peer != self._receiver.PEER or type(peer) is not tuple:
+            raise ValueError('restoration send peer changed')
+        self._receiver._check_restoration(self._restoration)
+        now = self._restoration_context()
+        last = self._core._wire._last_unarmed
+        if last is None or not 0 <= now - last < 2_000_000_000:
+            raise ValueError('restoration send needs fresh unarmed observation')
+        # Wire records the actual return before subsequent checks, as in normal I/O.
+        return self._sock.sendto(raw, self._flags, peer)
+
+    def begin_restoration(self, reason):
+        """Explicit STOPPING; do not close the caller-owned descriptor here."""
+        if not self._interval_enabled or self._closed or self._closing:
+            raise ValueError('interval restoration unavailable or closed')
+        if self._failure is not None and self._restoration is None:
+            raise ValueError('first STOPPING has no valid restoration clock')
+        if self._restoration is not None and self._restoration.failure is not None:
+            raise ValueError('restoration already refused')
+        if not self._lock.acquire(blocking=False):
+            self._abort(ValueError('concurrent restoration entry'))
+            raise ValueError('concurrent restoration entry')
+        try:
+            if self._failure is None:
+                self._abort(ValueError(reason if type(reason) is str else 'explicit stopping'))
+            if self._restoration is None:
+                raise ValueError('first STOPPING has no valid restoration clock')
+            self._restoring = True
+            self._restoration_context()
+            if not self._restoration_bound:
+                self._receiver._bind_restoration(self._restoration)
+                self._core._wire._bind_restoration(self._restoration, self._restoration_guard,
+                                                   self._send_restoration, self._failure)
+                self._restoration_bound = True
+            return self.progress
+        except BaseException as exc:
+            if self._restoration is not None:
+                self._restoration.fail(_error(exc))
+            self._cleanup_errors.append(_error(exc))
+            raise
+        finally:
+            self._restoring = False
+            self._lock.release()
+
+    def poll_restoration(self):
+        """One read and at most one restricted command effect per caller tick."""
+        if not self._restoration_bound or self._closed or self._closing:
+            raise ValueError('restoration not bound or session closed')
+        if self._restoration.failure is not None:
+            raise ValueError('restoration already refused')
+        if not self._lock.acquire(blocking=False):
+            self._restoration.fail('concurrent restoration poll')
+            raise ValueError('concurrent restoration poll')
+        self._restoring = True
+        try:
+            self._restoration_context()
+            packet = self._receiver._poll_restoration(self._restoration)
+            if packet is not None:
+                self._core._wire._receive_restoration(packet.data, packet.peer, packet.received_ns)
+            self._core._wire._poll_restoration()
+            self._restoration_context()
+            return self.progress
+        except BaseException as exc:
+            self._restoration.fail(_error(exc))
+            self._cleanup_errors.append(_error(exc))
+            if not isinstance(exc, Exception):
+                raise
+            raise ValueError(_error(exc)) from exc
+        finally:
+            self._restoring = False
+            self._lock.release()
+
     def begin_maintenance(self, deadline_ns):
         """One explicit startup-bounded transition of all existing receive layers."""
         def action():
@@ -300,21 +424,30 @@ class ObservedWireSession:
 
         return self._operation(action, commit, transition=True)
 
-    def _close_core(self):
+    def _close_core(self, *, keep_retention=False):
         if self._closing:
             return
         self._closing = True
-        try:
+        failures = []
+        def attempt(action):
+            try:
+                action()
+            except BaseException as exc:
+                failures.append(exc)
+                self._cleanup_errors.append(_error(exc))
+        def stopping():
             if self._retention is not None and not self._retention.evidence['closed']:
                 self._retention.phase('stopping')
+        try:
+            attempt(stopping)
             if self._core is not None:
-                self._core.close()
+                attempt(self._core.close)
+            if self._retention is not None and not keep_retention:
+                attempt(self._retention.close)
         finally:
-            try:
-                if self._retention is not None:
-                    self._retention.close()
-            finally:
-                self._closing = False
+            self._closing = False
+        if failures:
+            raise next((exc for exc in failures if not isinstance(exc, Exception)), failures[0])
 
     def close(self):
         with self._state:
@@ -323,7 +456,13 @@ class ObservedWireSession:
             try:
                 if not self._complete:
                     self._abort(ValueError('observed session closed before completion'))
+                    if self._interval_enabled:
+                        if self._restoration is not None and not self.progress['restoration_verified']:
+                            self._cleanup_errors.append('interval restoration incomplete on close')
+                        self._close_core()
                 else:
                     self._close_core()
             finally:
+                if self._restoration is not None:
+                    self._restoration.closed = True
                 self._closed = True

@@ -12,6 +12,7 @@ from dataclasses import dataclass
 from threading import Lock
 
 from tools.benchmark.openvins_segmented_journal import SegmentedEvents, event_log, record_failure, require_capacity
+from tools.benchmark.openvins_timesync_interval import _RestorationWindow
 from tools.benchmark.owned_daemon_connection import _error
 
 
@@ -39,6 +40,9 @@ class DatagramReceiver:
         self._last = self._start = start_ns
         self._deadline = start_ns + 8_000_000_000
         self._continuation = None
+        self._restoration = None
+        self._restoring = False
+        self._datagram_returns = 0
         self._events, self._journal_errors = event_log(retention, 'receiver'), []
         self._draft = None
         self._regular_events = 0
@@ -58,6 +62,7 @@ class DatagramReceiver:
     @property
     def evidence(self):
         return dict(events=copy.deepcopy(self._events), failure=self._failure,
+                    datagram_returns=self._datagram_returns,
                     unpublished_event=copy.deepcopy(self._draft),
                     journal_errors=copy.deepcopy(self._journal_errors),
                     timestamp_basis="userspace monotonic recvmsg return, not kernel arrival",
@@ -65,6 +70,12 @@ class DatagramReceiver:
                     live_convergence_qualified=False, fusion_qualified=False)
 
     def _open(self):
+        if self._restoration is not None:
+            if not self._restoring:
+                raise ValueError('receiver restricted to restoration')
+            if self._restoration.failure is not None or self._restoration.closed:
+                raise ValueError('receiver restoration window failed or closed')
+            return
         if self._failure is not None:
             raise ValueError("datagram receiver failure latched: " + self._failure)
         if self._continuation is not None:
@@ -79,9 +90,40 @@ class DatagramReceiver:
         if type(value) is not int or not self._last <= value < 2**64:
             raise ValueError("datagram receive clock invalid or regressed")
         self._last = value
+        if self._restoring:
+            return self._restoration.check(value)
         if value >= self._deadline:
             raise ValueError("datagram receive global deadline")
         return value
+
+    def _bind_restoration(self, window):
+        if type(window) is not _RestorationWindow or self._restoration is not None:
+            raise ValueError('one exact receiver restoration window required')
+        now = self._now()
+        if type(now) is not int or now < self._last:
+            raise ValueError('receiver restoration clock regression')
+        window.check(now)
+        self._last = now
+        self._restoration = window
+
+    def _restore_call(self, window, action):
+        if window is not self._restoration or self._restoring:
+            window.fail('receiver restoration identity/concurrency')
+            raise ValueError('receiver restoration identity/concurrency')
+        self._restoring = True
+        try:
+            return action()
+        except BaseException as exc:
+            window.fail(_error(exc))
+            raise
+        finally:
+            self._restoring = False
+
+    def _poll_restoration(self, window):
+        return self._restore_call(window, self.poll)
+
+    def _check_restoration(self, window):
+        return self._restore_call(window, self.check)
 
     def _continue_with(self, continuation):
         """Bind once without replacing the supplied descriptor or high water mark."""
@@ -185,6 +227,8 @@ class DatagramReceiver:
             raise ValueError("concurrent datagram receive")
         try:
             self._check()
+            if self._datagram_returns >= 4096:
+                raise ValueError('total datagram return capacity')
             require_capacity(self._events, self._regular_events, self.MAX_EVENTS, 2)
             self._publish(self._append("receive_attempt", last_checked_ns=self._last))
             started = self._check()
@@ -195,6 +239,7 @@ class DatagramReceiver:
                 if returned - started >= 2_000_000_000:
                     raise ValueError("receive call timeout") from None
                 return None
+            self._datagram_returns += 1
             # Save actual returned bytes before any clock/guard/journal callback.
             event = self._append("receive_return", started_ns=started, received_ns=None,
                                  **self._description(result))

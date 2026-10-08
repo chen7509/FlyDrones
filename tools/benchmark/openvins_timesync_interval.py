@@ -198,6 +198,10 @@ class IntervalExchange:
         return dict(phase=self._phase, cleanup_deadline_ns=self._cleanup,
                     failure=result['primary_failure'] or result['terminal_failure']
                     or next(iter(result['restore_failures']), None),
+                    baseline_restoration_verified=(self._phase == 'done'
+                        and result['terminal_failure'] is None and not result['restore_failures']
+                        and result['baseline_us'] is not None and result['final_us'] == result['baseline_us']
+                        and (not result['mutation_attempted'] or result['restore_attempted'])),
                     modeled_transaction_pass=result['modeled_transaction_pass'],
                     network_authorized=False, fusion_qualified=False)
 
@@ -296,12 +300,18 @@ class IntervalExchange:
         finally:
             self._lock.release()
 
-    def stop(self, reason):
+    def stop(self, reason, *, stopping_ns=None):
         """Latch primary failure; repeated STOPPING cannot renew or retry."""
         def action():
             if self._cleanup is not None:
                 return
-            self._enter_stop()
+            if stopping_ns is not None:
+                if type(stopping_ns) is not int or not 0 <= stopping_ns <= self._last:
+                    self._terminal('invalid first stopping timestamp')
+                    return
+                self._cleanup = stopping_ns + 10_000_000_000
+            else:
+                self._enter_stop()
             self._result['primary_failure'] = str(reason) if type(reason) is str else 'external stop'
             self._event('stop', reason=self._result['primary_failure'], pending=copy.deepcopy(self._pending))
             if self._phase not in ('restore', 'restore_readback', 'final'):
@@ -433,3 +443,40 @@ class IntervalExchange:
             self._event('body_completed')
             self._phase = 'restore' if self._result['mutation_attempted'] else 'final'
         self._run(action, terminal_input=True)
+
+
+class _RestorationWindow:
+    """Internal single-owner lifetime; not a network or flight authorization."""
+    def __init__(self, exchange, started_ns):
+        if type(exchange) is not IntervalExchange or type(started_ns) is not int or not 0 <= started_ns < 2**64 - 10_000_000_000:
+            raise ValueError('exact exchange and bounded restoration clock required')
+        self._exchange = exchange
+        self.started_ns = self._last = started_ns
+        previous = exchange.progress['cleanup_deadline_ns']
+        self.deadline_ns = min(started_ns + 10_000_000_000, previous) if previous is not None else started_ns + 10_000_000_000
+        self.failure = None
+        self.closed = False
+
+    def matches(self, exchange):
+        return exchange is self._exchange
+
+    def fail(self, reason):
+        if self.failure is None:
+            self.failure = reason
+
+    def check(self, now_ns):
+        if self.failure is not None or self.closed:
+            raise ValueError('restoration window failed or closed')
+        if type(now_ns) is not int or not self._last <= now_ns < 2**64:
+            self.fail('restoration clock regression/type')
+        elif now_ns >= self.deadline_ns:
+            self.fail('restoration absolute deadline')
+        if self.failure is not None:
+            raise ValueError(self.failure)
+        self._last = now_ns
+        return now_ns
+
+    @property
+    def evidence(self):
+        return dict(started_ns=self.started_ns, deadline_ns=self.deadline_ns, last_checked_ns=self._last,
+                    failure=self.failure, closed=self.closed, network_authorized=False, fusion_qualified=False)

@@ -325,7 +325,7 @@ armed mixed datagram, descriptor/owner changes, missing response waiting,
 final mismatch, short/late send, and unchanged legacy command prohibition.
 No actual UDP, simulator, estimator, training, EKF2 or arming occurred.
 
-### Remaining integration gap — do not enable a physical study yet
+### Previous checkpoint gap (resolved below for composition, not capture runner)
 
 The existing fail-closed normal wrappers close listeners and refuse all further
 I/O on failure; the observed wrapper also closes retention. The phase helper's
@@ -343,3 +343,59 @@ then owned PX4. Test source loss, expiry, identity/descriptor changes, stale/arm
 heartbeat, interruption and journal failure through this actual composition.
 Only afterward can Task2 finish and Task3 bind the real capture lifecycle with
 injected factories. Task4 review/archive and the larger FlyDrones goal stay open.
+
+## Task2: restricted restoration on the original receive owner
+
+The opt-in observed composition now retains a separate restoration window from
+the first observed failure/STOPPING. Its absolute10s deadline cannot be renewed
+by a later cleanup call; an earlier exchange cleanup deadline takes precedence.
+The normal8s startup deadline, primary/source failure, receiver/codec identity,
+sequence and clock high-water marks remain intact. Only the exact bound exchange
+can send its owned baseline SET and independent GET/readbacks. Each operation
+retains its2s limit and there is no ambiguous write retry.
+
+Cleanup still checks the original process identity, descriptor, fixed peer and
+clock/session. A fresh unarmed PX4 heartbeat is required at the final send
+boundary. Safety heartbeats are recorded but not delivered to the normal fanout;
+TIMESYNC is retained and ignored, never replied to during cleanup. The failed
+source is not reopened. An armed frame, changed identity, interruption, deadline,
+clock regression or journal failure latches restoration refusal. Repeated refused
+entry/poll calls cannot grow terminal evidence or create another attempt.
+
+The same receiver counts all actual recvmsg returns across normal and cleanup
+traffic and refuses before a4097th datagram return attempt. Shared segmented
+retention remains open while restricted restoration is possible, then seals on
+close. The supplied socket remains caller-owned. No claim about actual capture
+thread join, socket teardown or PX4 stop ordering is made until Task3 integrates
+those owners. A restore result proves only its modeled interval ACK/readbacks;
+it never clears the primary failure or grants bootstrap, fusion or arming.
+
+The new24 composition tests cover source loss, expired startup, late/repeated
+cleanup entry, owner/descriptor/session changes, clock reversal, stale/armed
+heartbeats, ignored TIMESYNC, interruption, journal error, reentrant close,
+unknown/already-candidate baseline, ambiguous apply/restore effects, missing ACK,
+wrong peer raw retention, shared4096 bound and segmented close. Body failure,
+lost apply ACK and short restoration send outcomes are compared with the existing
+synchronous oracle; that oracle is never called by the receive owner.
+
+The initial10 missing-entry assertions were RED before restoration implementation.
+This continuation additionally observed and fixed three assertion failures:
+phase bookkeeping failure skipped listener closure; frequent progress traversed
+interval history; repeated refused cleanup grew terminal errors. Logs preserve
+each RED and GREEN. Other added cases were GREEN coverage, not claimed as fixes.
+Closure now independently attempts phase bookkeeping, listener close and store
+close, records all errors and propagates interruptions. Scalar progress avoids
+history copies; no measured runtime performance improvement is claimed.
+
+Final `restoration-final-v2` passed128 pytest and177 installed-codec WSL tests,
+with selected source hashes unchanged before/after, changed Ruff and diff-check
+passing. The first complete run passed the same tests but failed three Ruff B023
+checks in the new oracle fixture; binding the scenario explicitly fixed them.
+Both runs remain preserved. These are focused affected regressions, not a new
+whole-repository result. No actual network, physics, estimator or training ran.
+
+Task2 composition implementation/verification is complete. Task3 actual capture
+registration, injected-runner tests, cleanup ordering and Task4 independent
+whole-change review/evidence archive are still uncompleted. Do not enable a
+physical study from this checkpoint. The broader learning/swarm/comparison goal
+and all historical physical failures remain unchanged.

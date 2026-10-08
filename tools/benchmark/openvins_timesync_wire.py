@@ -14,7 +14,7 @@ from threading import Lock
 
 from tools.benchmark.openvins_ekf2_disarmed_preflight import RemoteMonotonicClock
 from tools.benchmark.openvins_segmented_journal import event_log, record_failure, require_capacity
-from tools.benchmark.openvins_timesync_interval import IntervalExchange
+from tools.benchmark.openvins_timesync_interval import IntervalExchange, _RestorationWindow
 from tools.benchmark.owned_daemon_connection import _error
 
 
@@ -181,6 +181,9 @@ class TimesyncWireResponder:
         self._interval = self._interval_snapshot = None
         self._interval_sink = interval_send_sink or send_sink
         self._last_seen_request = None
+        self._last_unarmed = None
+        self._restoration = self._restore_guard = self._restore_sink = None
+        self._restore_active = False
         if interval_transaction:
             self._interval = IntervalExchange(self._send_interval_command, self._interval_guard, now, start_ns)
 
@@ -209,6 +212,10 @@ class TimesyncWireResponder:
                     fusion_qualified=False)
 
     def _check(self):
+        if self._restore_active:
+            return self._check_restoration()
+        if self._restoration is not None:
+            raise ValueError('ordinary wire forbidden during restoration')
         if self._failure is not None:
             raise ValueError("wire failure latched: " + self._failure)
         if self._interval_failure() is not None:
@@ -230,12 +237,18 @@ class TimesyncWireResponder:
         return value
 
     def _interval_guard(self, stopping):
-        # This normal-path binding deliberately grants no exception to a failed
-        # wire. Restricted fault restoration needs a separate owner-bound path.
         self._check()
 
     def _send_interval_command(self, operation, value):
         self._check()
+        if self._restore_active:
+            state = self._interval.evidence
+            if (state['phase'] not in ('restore', 'restore_readback', 'final')
+                    or operation == 'set' and (state['phase'] != 'restore' or value != state['baseline_us'])
+                    or operation == 'get' and state['phase'] == 'restore'):
+                raise ValueError('non-restoration command refused')
+            if not self._fresh_unarmed():
+                raise ValueError('fresh unarmed restoration observation required')
         raw = self._codec.encode_interval_command(operation, value, self._sequence)
         self._record('interval_send_attempt', operation=operation, value=value,
                      sequence=self._sequence, raw_hex=raw.hex(), peer=self._peer)
@@ -244,7 +257,8 @@ class TimesyncWireResponder:
         # An ambiguous effect consumes its sequence; it must not be reused by
         # a later separately authorized restoration attempt.
         self._sequence = (self._sequence + 1) % 256
-        count = self._interval_sink(raw, self._peer)
+        sink = self._restore_sink if self._restore_active else self._interval_sink
+        count = sink(raw, self._peer)
         self._record('interval_send_return', count=count, send_started_ns=send_started_ns)
         if type(count) is not int or count != len(raw):
             raise ValueError('invalid or short interval send count')
@@ -278,6 +292,101 @@ class TimesyncWireResponder:
 
     def finish_interval_body(self):
         self._interval_operation(lambda: self._interval.body_complete(True))
+
+    def _check_restoration(self):
+        if self._restoration is None:
+            raise ValueError('no restoration context')
+        now = self._accept_time(self._now())
+        self._restoration.check(now)
+        if self._restore_guard() is not None:
+            raise ValueError('restoration ownership guard must return None')
+        now = self._accept_time(self._now())
+        self._restoration.check(now)
+        if self._remote.session_id != self._session:
+            raise ValueError('restoration clock session changed')
+        if self._received is not None and now - self._received >= 2_000_000_000:
+            raise ValueError('restoration received packet expired')
+        self._codec.check()
+        return now
+
+    def _fresh_unarmed(self):
+        return self._last_unarmed is not None and 0 <= self._last_now - self._last_unarmed < 2_000_000_000
+
+    def _restore_operation(self, action):
+        if self._restoration is None:
+            raise ValueError('restoration not bound')
+        if not self._lock.acquire(blocking=False):
+            self._restoration.fail('concurrent restoration wire operation')
+            raise ValueError('concurrent restoration wire operation')
+        self._restore_active = True
+        try:
+            self._check_restoration()
+            result = action()
+            self._check_restoration()
+            return result
+        except BaseException as exc:
+            self._restoration.fail(_error(exc))
+            raise
+        finally:
+            self._received = None
+            self._restore_active = False
+            self._lock.release()
+
+    def _bind_restoration(self, window, guard, sink, reason):
+        if (type(window) is not _RestorationWindow or not window.matches(self._interval)
+                or self._restoration is not None or not callable(guard) or not callable(sink)):
+            raise ValueError('one owner-bound restoration context required')
+        self._restoration, self._restore_guard, self._restore_sink = window, guard, sink
+        def bind():
+            self._interval.stop(reason, stopping_ns=window.started_ns)
+            self._record_interval()
+        self._restore_operation(bind)
+
+    def _poll_restoration(self):
+        def poll():
+            state = self._interval.evidence
+            # Continue deadline checks while waiting for a fresh safety heartbeat.
+            # Do not spend the one restore attempt before a send is permitted.
+            if state['pending'] is None and state['phase'] != 'done' and not self._fresh_unarmed():
+                return
+            self._interval.poll()
+            self._record_interval()
+        self._restore_operation(poll)
+
+    def _receive_restoration(self, raw, peer, received_ns):
+        def receive():
+            if type(raw) is not bytes or not 0 < len(raw) <= self._codec.MAX_DATAGRAM_BYTES:
+                raise ValueError('invalid restoration datagram')
+            self._record('restoration_receive', raw_hex=raw.hex(), peer=peer, received_ns=received_ns)
+            if type(peer) is not tuple or peer != self._peer:
+                raise ValueError('restoration peer changed')
+            if (type(received_ns) is not int or not 0 <= received_ns <= self._last_now
+                    or self._last_received is not None and received_ns < self._last_received):
+                raise ValueError('restoration receive time invalid')
+            self._received = self._last_received = received_ns
+            self._check_restoration()
+            messages = self._codec.decode_datagram(raw)
+            self._record('restoration_decoded', messages=messages)
+            if any(m['system'] != 9 or m['component'] != 1 for m in messages):
+                raise ValueError('restoration header source changed')
+            heartbeats = [m for m in messages if m['type'] == 'HEARTBEAT']
+            if len(heartbeats) > 1:
+                raise ValueError('multiple restoration safety heartbeats')
+            for message in heartbeats:
+                fields = message['fields']
+                if (fields['autopilot'] != 12 or fields['mavlink_version'] != 3
+                        or type(fields['base_mode']) is not int or not 0 <= fields['base_mode'] < 128):
+                    raise ValueError('restoration requires unarmed PX4 heartbeat')
+                self._record('restoration_heartbeat', arrival_monotonic_ns=received_ns,
+                             observed_sim_ns=None, base_mode=fields['base_mode'], normal_fanout=False)
+                self._last_unarmed = received_ns
+            for message in messages:
+                if message['type'] in ('COMMAND_ACK', 'MESSAGE_INTERVAL'):
+                    self._interval.feed(self._codec.interval_response(message), received_ns)
+                    self._record_interval()
+                elif message['type'] != 'HEARTBEAT':
+                    self._record('restoration_ignored', message_type=message['type'])
+        self._restore_operation(receive)
 
     def _continue_with(self, continuation):
         """Internal composition binding; keep codec/sequence/last request intact."""
@@ -393,6 +502,7 @@ class TimesyncWireResponder:
                      returned_none=returned is None, return_type=type(returned).__name__)
         if returned is not None:
             raise ValueError('heartbeat sink must return None')
+        self._last_unarmed = received_ns
 
     def receive(self, raw, peer, received_ns, observed_sim_ns):
         if not self._lock.acquire(blocking=False):

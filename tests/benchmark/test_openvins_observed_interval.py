@@ -11,7 +11,7 @@ from tools.benchmark.openvins_observed_wire_session import ObservedWireSession
 
 
 class ObservedIntervalTests(unittest.TestCase):
-    def setUp(self):
+    def setUp(self, *, retention=None):
         self.assertIn('interval_transaction', inspect.signature(ObservedWireSession).parameters,
                       'observed single-reader interval binding missing')
         self.f = fixtures.ObservedSessionTests('runTest')
@@ -22,7 +22,8 @@ class ObservedIntervalTests(unittest.TestCase):
         self.f.obj = ObservedWireSession(
             SimpleNamespace(pid=321), fixtures.OWNER, '/tmp/private/socket', self.f.remote,
             self.f.lane, self.f.sock, 10, self.f.journal, self.f.descriptor_guard,
-            backend=self.f.backend, heartbeat_sink=self.delivered.append, interval_transaction=True)
+            backend=self.f.backend, heartbeat_sink=self.delivered.append, interval_transaction=True,
+            retention=retention)
         self.obj = self.f.obj
         self.f.ready()
         self.f.clock_to(body(0)[0])
