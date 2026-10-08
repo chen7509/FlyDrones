@@ -101,6 +101,7 @@ class TimesyncWireResponder:
         self._peer = peer
         self._start = self._last_now = start_ns
         self._received = None
+        self._last_received = None
         self._events = []
         self._regular_events = 0
         self._journal_errors = []
@@ -181,6 +182,21 @@ class TimesyncWireResponder:
         except BaseException as exc:
             self._refusal_journal_error = _error(exc)
 
+    def check(self):
+        """Non-consuming serialized health check, including idle global timeout."""
+        if not self._lock.acquire(blocking=False):
+            self._abort(ValueError("concurrent wire operation"))
+            raise ValueError("concurrent wire operation")
+        try:
+            self._check()
+        except BaseException as exc:
+            self._abort(exc)
+            if not isinstance(exc, Exception):
+                raise
+            raise ValueError(_error(exc)) from exc
+        finally:
+            self._lock.release()
+
     def receive(self, raw, peer, received_ns, observed_sim_ns):
         if not self._lock.acquire(blocking=False):
             self._abort(ValueError("concurrent wire operation"))
@@ -196,6 +212,9 @@ class TimesyncWireResponder:
                 raise ValueError("unexpected peer")
             if type(received_ns) is not int or not 0 <= received_ns <= self._last_now:
                 raise ValueError("invalid receive time")
+            if self._last_received is not None and received_ns < self._last_received:
+                raise ValueError("receive clock regression")
+            self._last_received = received_ns
             self._received = received_ns
             self._check()
             messages = self._codec.decode_datagram(raw)

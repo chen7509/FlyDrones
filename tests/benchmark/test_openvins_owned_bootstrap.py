@@ -104,6 +104,32 @@ def make(journal=None):
     return obj, backend
 
 
+def test_public_check_does_not_open_or_consume_listener():
+    obj, backend = make()
+    assert obj.check()["phase"] == "empty_pending"
+    assert not backend.used
+    obj.poll()
+    remaining = list(backend.connections[0].reads)
+    obj.check()
+    assert list(backend.connections[0].reads) == remaining
+    assert len(backend.used) == 1
+
+
+def test_public_check_checks_owner_and_pending_deadline():
+    obj, backend = make()
+    first_ready(obj)
+    obj.reserve_reply(*body()[:2])
+    backend.now += 2000000000
+    with pytest.raises(ValueError, match="timeout|deadline"):
+        obj.check()
+    assert obj.progress["failure"]
+    obj, backend = make()
+    backend.owner["start_ticks"] += 1
+    with pytest.raises(ValueError, match="owner"):
+        obj.check()
+    assert not backend.used
+
+
 def first_ready(obj):
     obj.poll()
     assert obj.poll()["phase"] == "first_ready"

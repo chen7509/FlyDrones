@@ -170,6 +170,12 @@ class OwnedBootstrap:
             result = self._bootstrap.reserve_reply(request_ns, response_ns, now_ns=self._check(), epoch_token=self._epoch)
         return result
 
+    def check(self):
+        """Check existing ownership/deadlines without opening or reading a command."""
+        with self._step():
+            pass
+        return self.progress
+
     def _open(self, role):
         index = len(self._transports)
         if index >= 3 or role != ("empty", "first", "stream")[index]:

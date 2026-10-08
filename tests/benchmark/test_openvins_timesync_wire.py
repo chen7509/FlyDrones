@@ -360,6 +360,39 @@ class WireTests(unittest.TestCase):
         self.refusal(reason="latched")
         self.assertEqual(self.sent, [])
 
+    def test_receive_clock_regression_even_on_heartbeat_refuses(self):
+        self.time = 1000
+        self.receive(heartbeat(), received_ns=1000)
+        self.time = 1001
+        self.refusal(heartbeat(), received_ns=999, reason="receive.*regression")
+        self.assertEqual(self.sent, [])
+
+    def test_equal_receive_clocks_are_allowed_for_resolution_ties(self):
+        self.time = 1000
+        self.receive(heartbeat(), received_ns=1000)
+        self.receive(received_ns=1000)
+        self.assertEqual(len(self.sent), 1)
+
+    def test_public_check_does_not_send_or_journal_and_enforces_idle_deadline(self):
+        self.assertIsNone(self.wire.check())
+        self.assertEqual(self.events, [])
+        self.assertEqual(self.sent, [])
+        self.time = 8_000_000_000
+        with self.assertRaisesRegex(ValueError, "global"):
+            self.wire.check()
+        self.assertIsNotNone(self.wire.evidence["failure"])
+
+    def test_reentrant_public_check_latches_before_send(self):
+        def hook(event):
+            if event["kind"] == "receive":
+                try:
+                    self.wire.check()
+                except ValueError:
+                    pass
+        self.journal_hook = hook
+        self.refusal(reason="latched|concurrent")
+        self.assertEqual(self.sent, [])
+
 
 if __name__ == "__main__":
     unittest.main()
