@@ -79,7 +79,7 @@ physical scenes and their failures have not been rerun or changed.
 
 - Verified offline: socket-free startup-preflight branch, accurate preflight
   estimator flag, strict wire declaration and normal/failure entry paths.
-- Still pending: evidence sealing and publication of this correction; the
+- Still pending: publication of this correction and its sealed evidence; the
   previous 25 MB archive also remains pending upload.
 - Not run: actual installed startup-preflight with the new wire declaration,
   live wire synchronization, new physical VIO, ODOMETRY, EKF2 injection, arming,
@@ -91,3 +91,12 @@ physical scenes and their failures have not been rerun or changed.
 All previous simulation/hardware limits remain: fusion false, raw noise uncalibrated,
 five-camera 0.873 RTF below 0.95, no HITL/flight qualification, and no completed
 fair full-fruit-fly versus upstream baseline comparison.
+
+## Sealed evidence
+
+`evidence/capture-preflight-boundary-dev-1701.zip`: 23 members, 75,418 bytes,
+SHA256 `d6e112fe1214a852af23752583235a8b8aeae3a77d523a12279100341b8d455f`.
+Every member and ZIP CRC verified. Producer: `47b3fd1af2e1c3f741adf759615a2a120c6e0f6f`.
+Source copies were recorded after `regression-v2`, not claimed as a runtime
+pre/post freeze. The included report precedes this seal paragraph. Prior stage
+archives, failed physical studies and pending-upload records remain unchanged.
