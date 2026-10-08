@@ -435,3 +435,13 @@ Windows; all three real-protobuf unittest methods passed in WSL (0.198 seconds).
 Changed-file Ruff and diff checks pass. This covers the new auditor, study entry,
 source/native joins and affected production graph/runtime/calibration helpers;
 it is not a full-repository pass or the final independent review.
+
+Resource/camera producer `972912f` is sealed in
+`evidence/live-wire-resource-camera-offline-progress-dev-1701.zip`: 46 members,
+173,725 bytes, SHA256
+`a5b47471421804182a6bb6e7267c4507a76d1a4ccb0d6540ffc723436a8d9f40`.
+CRC and all member bytes/hashes were verified. The archive includes exact fixed-
+audit producer copies, installed proto/license sources, decoder module hashes,
+original input identities and all relevant RED/GREEN outputs. Loaded decoder
+binary bytes are referenced by hash rather than embedded. The archived report
+precedes this seal paragraph. Publication remains local, not verified on PR65.
