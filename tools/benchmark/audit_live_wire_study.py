@@ -161,8 +161,8 @@ def _dispatch_records(manifest, manifest_identity, dispatch, completion):
 def audit_live_wire_study(study_path):
     """Read actual study files and compose available auditors, failing closed.
 
-    Task 2 still lacks dispatch-producer attestation and the whole-package
-    positive fixture. These remain unverified gates;
+    A complete synthetic file fixture exercises all raw joins. Actual dispatch
+    producer attestation and whole-package review remain unverified gates;
     this entry cannot yet return whole-study/live qualification.
     """
     from tools.benchmark.audit_live_wire_runtime import audit_runtime_mapping_records
@@ -444,8 +444,8 @@ def audit_live_wire_study(study_path):
         unverified=[
             "prospective executor/producer attestation",
             "per-call readiness/watchdog and independent heartbeat flush timestamp observations",
-            "failure-path restoration and full producer attestation",
-            "complete positive study fixture and whole-package review",
+            "live failure-path restoration and full producer attestation",
+            "whole-package review",
         ],
         record_chain_qualified=False,
         live_qualified=False,

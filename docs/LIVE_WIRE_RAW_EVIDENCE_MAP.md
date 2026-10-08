@@ -352,3 +352,17 @@ composition check, not runtime producer attestation, a complete file-entry
 positive case, mechanical consistency, or physical/live/fusion qualification.
 Remaining joins: declared runtime/resource inputs, ULog, prospective manifest
 and the full production file entry. Previous v1 evidence is not rewritten.
+
+## Complete synthetic file-entry boundary
+
+`test_live_wire_complete_fixture.py` now passes every stage of the production
+file entry without replacing any leaf auditor. It generates original owner-bound
+wire records, uses actual file identities for tiny test assets, supplies synthetic
+runtime/supervisor/dispatch records and an analytic binary ULog, and keeps their
+provenance explicit. The full entry rejects changed runtime/native identities,
+failed resource queries and truncated ULog bytes. It creates no runtime or socket.
+
+This closes the offline composition gap, not the actual-producer gap. The minimal
+SDF is not the installed scene and the two-sample ULog is not full-capture evidence.
+Task 3 must bind actual selected resources/executor/version before activation;
+record-chain/live/fusion flags stay false and whole-package review is pending.

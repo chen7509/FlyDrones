@@ -613,3 +613,53 @@ CRC and every manifest member hash were verified. The archive preserves the
 fixture-development failures, successful regressions, raw synthetic records,
 before/after source evidence and post-load-only source boundary. Its report
 precedes this seal paragraph. Publication remains local; Task 2 is not complete.
+
+## Complete synthetic file-entry composition
+
+One new synthetic package now reaches all 21 stages of the production
+`audit_live_wire_study` entry with no refusals and no leaf-auditor replacements.
+It connects the shared-clock input/native/health/motion chain to file-backed
+declarations, runtime maps, owner/descriptor identities, resource-query records,
+supervisor journals, binary ULog, dispatch and completion envelopes. The test
+forbids subprocess creation and socket construction during the audit.
+
+The prospective test-file generator was moved into a pytest-independent shared
+helper so WSL can use the installed pymavlink and pyulog without installing a
+test framework. Existing validator tests consume that same helper. The shared
+wire generator now accepts an explicit synthetic owner, so its original journals
+are generated with the selected temporary-file identity; no old journal is
+rewritten afterward to make the owner join pass.
+
+All process, mapping, SDK query, dispatch, force and estimator observations in
+this package are synthetic. The placeholder executables are never executed. Its
+minimal SDF has no asset edges and does not represent the installed physical
+scene. The analytic ULog has two unarmed samples per topic, not 25 seconds of
+actual aircraft logging. The package's separate provenance document says so
+explicitly. The normal-shaped simulated envelopes contain producer fields such
+as `physical_run=true`; those are test inputs, not evidence that a physical run
+occurred. Overall record-chain/live/fusion qualification remains false, including
+after all 21 raw stages pass.
+
+Changing a registered owner, the native-session PID or a resource query's exit
+code is refused at the corresponding runtime, source/native or resource stage.
+Truncating the original ULog is refused after the other checks. The first five
+full-entry unittest methods passed in WSL in 30.704 s. The initial missing fixture
+assertion is retained as an implementation prerequisite failure, not a repaired
+production defect. Only the auditor's stale "complete positive fixture" status
+wording changes; actual producer attestation and whole-package review stay open.
+
+Final regression: all Windows `test_live_wire*.py` modules yielded 349 passed,
+15 skipped in 117.72 s; skips reflect unavailable installed-codec/decoder paths
+on Windows. The WSL full-entry, joined, protocol, interval, listener, restoration,
+ULog and CameraInfo suites passed 34 unittest methods in 94.150 s. The complete
+entry's five methods ran in WSL, not merely as Windows skips. Changed-file Ruff
+and diff checks passed. This is targeted regression, not all repository tests.
+
+Task 2's offline raw-chain implementation and complete synthetic composition
+are complete. Task 3 still must prepare the actual installed selection, bind and
+freeze the existing executor/auditor, validate those actual files, conduct the
+single whole-package review and resolve publication. No live/physical outcome
+is inferred from the fixture. The last checked installed preflight is
+`results/installed-wire-startup-dev-1701/study-v1`; its startup-only manifest must
+not be reused as the new normal-study manifest. The planned new
+`results/live-wire-study-dev-1701/study-v1` directory did not exist at this check.

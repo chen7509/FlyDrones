@@ -92,7 +92,7 @@ journals, owned listener evidence, clock JSONL and capture runtime artifacts.
 returns structured checks/refusals. It uses Task 1's manifest validation. Factor
 pure joins only when needed for unit tests; do not add an alternate live codec.
 
-- [ ] Inventory the exact current producer fields from retained in-process
+- [x] Inventory the exact current producer fields from retained in-process
   lifecycle records and installed-startup artifacts. Bind each required fact to
   its raw source and record any unobservable property as an explicit limitation.
   Synthetic fixture mode is separately named and cannot return live qualification.
@@ -100,26 +100,26 @@ pure joins only when needed for unit tests; do not add an alternate live codec.
   boundary snapshot as allowed non-counting records, with the existing listener
   ordinal normalization. Include both in the positive fixture; neither supplies
   an accepted sample or excuses a mismatched/arbitrary duplicate.
-- [ ] Write tests that start with one consistent synthetic record chain and
+- [x] Write tests that start with one consistent synthetic record chain and
   independently remove/change the raw request, response tc1, selected clock
   membership, kernel send return, owned status, cold-start evidence, listener
   ordinal, descriptor/session identity and runtime input hash. Include a real
   startup-only result that must be refused. Run and retain RED.
-- [ ] Implement exact manifest/member hashing, sequence and identity joins,
+- [x] Implement exact manifest/member hashing, sequence and identity joins,
   original clock monotonicity and 1 ms observation coverage, pinned observer
   replay, 500 accepted bootstrap samples and two accepted maintenance pairs.
   Preserve actual-vs-modeled labels; reject reset/gap/unexpected replay instead of
   rebasing. The two explicit non-counting boundary records above are not faults.
-- [ ] Add baseline apply/readback/restore checks with original deadline and
+- [x] Add baseline apply/readback/restore checks with original deadline and
   complete shutdown evidence. Test successful send without receipt, missing
   restore readback, armed input and cleanup failures despite normal summary flags.
-- [ ] Add workload/provenance checks: 25000 actual callbacks, full raw/native
+- [x] Add workload/provenance checks: 25000 actual callbacks, full raw/native
   processing according to the frozen existing profile (including allowed final
   camera later-IMU refusal), ULog unarmed evidence and required runtime phases.
   Test missing ULog, source/native gaps and lowered declared load. Do not invent
   a fresh accuracy qualification; reuse the frozen gauge/health auditors only
   where their exact inputs are available.
-- [ ] Run the new audit tests and directly affected existing observer/clock/
+- [x] Run the new audit tests and directly affected existing observer/clock/
   lifecycle tests, with WSL pinned-codec routing where Windows lacks pymavlink.
   Expect GREEN. Retain all negative fixture outcomes; commit.
 

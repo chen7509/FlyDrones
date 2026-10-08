@@ -35,7 +35,7 @@ class SyntheticBackend(Backend):
         return connection
 
 
-def build_joined_wire_physics(directory):
+def build_joined_wire_physics(directory, *, owner=None):
     """Generate original records once with zero-origin and one monotonic clock.
 
     The synthetic physics clock advances at 2x wall speed, permitting the fixed
@@ -44,6 +44,8 @@ def build_joined_wire_physics(directory):
     """
     directory.mkdir(parents=True)
     backend, sock = SyntheticBackend(), Datagram()
+    owner = copy.deepcopy(OWNER if owner is None else owner)
+    backend.owner = copy.deepcopy(owner)
     retention = SegmentedWireJournal(directory / "wire-segments")
     attempts, reference, trace = [], [], []
     step = 0
@@ -65,8 +67,8 @@ def build_joined_wire_physics(directory):
         lane = JournaledSimulationClock(SESSION, backend.clock, journal, 10, lambda: None)
         remote = RemoteMonotonicClock(SESSION, sim_origin_ns=0, remote_origin_ns=0)
         session = ObservedWireSession(
-            SimpleNamespace(pid=OWNER["pid"]),
-            OWNER,
+            SimpleNamespace(pid=owner["pid"]),
+            owner,
             DAEMON,
             remote,
             lane,
@@ -212,7 +214,7 @@ def build_joined_wire_physics(directory):
         retention=terminal,
         clock=clock,
         clock_attempts=disk_attempts,
-        context=dict(owner=copy.deepcopy(OWNER), start_ns=10, total_deadline_ns=300_000_000_010, clock_signature=[SESSION, 0, 0]),
+        context=dict(owner=copy.deepcopy(owner), start_ns=10, total_deadline_ns=300_000_000_010, clock_signature=[SESSION, 0, 0]),
         session=lifecycle,
         physical=dict(
             reference=reference,
