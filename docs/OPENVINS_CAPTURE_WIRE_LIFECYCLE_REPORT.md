@@ -1,6 +1,6 @@
 # Capture wire lifecycle — work in progress
 
-The full lifecycle plan is **not complete**. The actual capture reader, CLI,
+The full lifecycle plan is **not complete**. The actual capture reader selection, CLI,
 socket, process and physics registration remain unchanged. No actual network,
 PX4/Gazebo/OpenVINS, ODOMETRY, EKF2, arming or training run was started.
 
@@ -399,3 +399,48 @@ registration, injected-runner tests, cleanup ordering and Task4 independent
 whole-change review/evidence archive are still uncompleted. Do not enable a
 physical study from this checkpoint. The broader learning/swarm/comparison goal
 and all historical physical failures remain unchanged.
+
+## Task3 checkpoint: actual capture heartbeat effects and interruption cleanup
+
+Task3 is still open. The existing capture reader now invokes the extracted
+`dispatch_capture_heartbeat` hook, which preserves the supplied arrival timestamp
+for both arming freshness and journal/fanout dispatch. Runtime mapping is observed
+once before marking its ready state. Mapping or dispatch failure leaves arming
+freshness unset and propagates to the existing capture error path. Armed input
+clears freshness and remains refused. This hook is exercised with the real pinned
+codec, CaptureWriter, journaled fanout and ShadowInput, with injected network and
+native transport. It is not the full new capture reader.
+
+The actual CaptureJournal previously swallowed a body interruption and stopped
+remaining cleanups on a callback interruption. It now attempts every registered
+cleanup in priority order, retains primary/secondary failures, attempts the
+exclusive terminal result, and re-raises the original/first interruption. A
+failure while formatting an exception cannot skip the next owner. Terminal file
+failure is propagated, marks the in-memory result failed and never overwrites an
+existing result file. Ordinary exception-to-capture_failed handling is retained.
+This follows Python's [context-manager semantics](https://docs.python.org/3.12/reference/datamodel.html#object.__exit__)
+and [interruption hierarchy](https://docs.python.org/3.12/library/exceptions.html#KeyboardInterrupt).
+Synchronous callbacks are not preempted by this journal; outer supervision is
+still required. This change does not prove real process exits or cleanup latency.
+
+Twelve new hook/journal tests passed: eight existing cleanup counterexamples,
+three initially missing hook assertions, and one additional terminal-write status
+counterexample. The first RED run was interrupted by a mismatched SystemExit
+expectation; the corrected test catches either interruption and asserts object
+identity. All failures remain. Three additional actual-codec/fanout cases passed;
+their first run had one incorrect assertion about which component records queue
+overflow. The existing writer raises synchronously; fanout latches it. The test
+was corrected to check the actual failing boundary, with no writer change.
+
+Final `capture-hooks-final-v1`: **271 pytest and70 WSL tests passed**,25 selected
+source/test hashes unchanged, changed Ruff/diff-check passed. The scope includes
+capture contract, journal, runtime binding, reference refusal, physics-trace
+cleanup and source/fanout regressions; it is not a new whole-repository result.
+No capture main, real socket/PX4/Gazebo/OpenVINS or training was executed.
+
+The sole-reader selection and driver, one PostUpdate clock registration, startup
+gate, maintenance exchanges and actual restoration-before-PX4-stop registration
+are still pending. Existing live capture continues selecting the legacy reader.
+Task3's complete injected-runner test and Task4 final independent review/archive
+are not replaced by these hook tests. Details and source selection are retained
+in `results/capture-wire-lifecycle-dev-1701/capture-hooks-research.md`.

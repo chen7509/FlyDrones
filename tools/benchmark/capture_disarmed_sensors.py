@@ -328,6 +328,26 @@ def dispatch_heartbeat(event, writer, fanout):
         writer.submit(event)
 
 
+def dispatch_capture_heartbeat(event, writer, fanout, arming, binding, owned_ready, owned_processes):
+    """Capture effects shared by the legacy reader and future single wire owner.
+
+    Use the actual receive observation; never resample time to make it fresh.
+    Mapping or dispatch failure cannot leave an unarmed freshness grant behind.
+    """
+    from tools.benchmark.disarmed_sensor_provenance import validate_event
+
+    arming['unarmed_wall_ns'] = None
+    checked = validate_event(event)
+    if checked['kind'] != 'heartbeat' or checked['system_id'] != 9:
+        raise ValueError('capture heartbeat source required')
+    if (binding and 'px4' in binding.required_owned and not owned_ready['px4']
+            and 'px4' in owned_processes):
+        binding.observe_owned('px4', 'ready')
+        owned_ready['px4'] = True
+    dispatch_heartbeat(checked, writer, fanout)
+    arming['unarmed_wall_ns'] = checked['arrival_monotonic_ns']
+
+
 def needs_supervisor_retention(summary):
     return (
         summary["status"] != "worker_exited"
@@ -744,15 +764,7 @@ def main():
                 try:
                     heartbeat = receiver.recv_match(type="HEARTBEAT", blocking=True, timeout=0.1)
                     if heartbeat is not None and heartbeat.get_srcSystem() == 9 and heartbeat.autopilot == 12:
-                        arming["unarmed_wall_ns"] = None if heartbeat.base_mode & 128 else time.monotonic_ns()
-                        if (binding and "px4" in binding.required_owned and not owned_ready["px4"]
-                                and "px4" in owned_processes and arming["unarmed_wall_ns"] is not None):
-                            try:
-                                binding.observe_owned("px4", "ready")
-                                owned_ready["px4"] = True
-                            except Exception as exc:
-                                errors.append("PX4 runtime mapping: " + repr(exc))
-                        dispatch_heartbeat(
+                        dispatch_capture_heartbeat(
                             {
                                 "kind": "heartbeat",
                                 "arrival_monotonic_ns": time.monotonic_ns(),
@@ -760,7 +772,7 @@ def main():
                                 "system_id": 9,
                                 "base_mode": int(heartbeat.base_mode),
                                 "custom_mode": int(heartbeat.custom_mode),
-                            }, writer, fanout
+                            }, writer, fanout, arming, binding, owned_ready, owned_processes
                         )
                 except Exception as exc:
                     errors.append(repr(exc))

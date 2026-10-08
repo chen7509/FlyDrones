@@ -4,6 +4,7 @@ import json
 import tempfile
 import unittest
 from pathlib import Path
+from types import SimpleNamespace
 from unittest.mock import patch
 
 try:
@@ -13,7 +14,12 @@ except ImportError as exc:
 
 from tests.benchmark import test_openvins_wire_heartbeat as wire_fixture
 from tools.benchmark import disarmed_sensor_provenance as provenance
-from tools.benchmark.capture_disarmed_sensors import build_readiness, build_source_fanout, dispatch_heartbeat
+from tools.benchmark.capture_disarmed_sensors import (
+    build_readiness,
+    build_source_fanout,
+    dispatch_capture_heartbeat,
+    dispatch_heartbeat,
+)
 from tools.benchmark.openvins_online_shadow import ShadowInput
 
 
@@ -184,6 +190,59 @@ class FanoutIntegrationTests(unittest.TestCase):
         self.wire.refuse(wire_fixture.heartbeat() + wire_fixture.packet())
         self.assertTrue(self.fanout.failure)
         self.assertEqual(self.fanout.observed, 1)
+
+
+class CaptureSinkIntegrationTests(unittest.TestCase):
+    def setUp(self):
+        self.pipeline = FanoutIntegrationTests('runTest')
+        self.pipeline.setUp()
+        self.addCleanup(self.pipeline.doCleanups)
+        self.pipeline.build()
+        self.arming, self.ready, self.mappings = {'unarmed_wall_ns': None}, {'px4': False}, []
+        self.binding = SimpleNamespace(required_owned={'px4'}, observe_owned=self.map_ready)
+        self.map_error = None
+        p = self.pipeline
+        p.wire.hook = lambda event: dispatch_capture_heartbeat(
+            event, p.writer, p.fanout, self.arming, self.binding, self.ready, {'px4': object()})
+
+    def map_ready(self, role, phase):
+        if self.map_error:
+            raise self.map_error
+        self.mappings.append((role, phase))
+
+    def test_capture_effects_feed_actual_fanout_with_original_receive_time(self):
+        p = self.pipeline
+        p.wire.receive(wire_fixture.heartbeat())
+        self.assertEqual(self.arming['unarmed_wall_ns'], 10)
+        p.f.backend.now = 20
+        p.wire.receive(wire_fixture.heartbeat())
+        self.assertEqual(self.arming['unarmed_wall_ns'], 20)
+        self.assertEqual(self.mappings, [('px4', 'ready')])
+        self.assertTrue(self.ready['px4'])
+        p.finish_writer()
+        self.assertEqual((p.fanout.observed, p.fanout.reconciled), (2, 2))
+        self.assertEqual([r['arrival_monotonic_ns'] for r in p.rows('events.jsonl')], [10, 20])
+        p.assert_no_native_or_readiness()
+
+    def test_runtime_mapping_failure_refuses_wire_before_reply_or_fanout(self):
+        p = self.pipeline
+        self.map_error = OSError('runtime mapping unavailable')
+        p.wire.refuse(wire_fixture.heartbeat() + wire_fixture.packet())
+        self.assertIsNone(self.arming['unarmed_wall_ns'])
+        self.assertFalse(self.ready['px4'])
+        self.assertEqual(p.fanout.observed, 0)
+        self.assertEqual(p.writer.queue.qsize(), 0)
+
+    def test_queue_failure_clears_previous_unarmed_grant(self):
+        p = self.pipeline
+        p.wire.receive(wire_fixture.heartbeat())
+        self.assertEqual(self.arming['unarmed_wall_ns'], 10)
+        p.writer.queue.maxsize = 1  # first unconsumed real record fills the queue
+        p.f.backend.now = 20
+        p.wire.refuse(wire_fixture.heartbeat() + wire_fixture.packet())
+        self.assertIsNone(self.arming['unarmed_wall_ns'])
+        self.assertIn('overflow', p.fanout.failure)
+        self.assertEqual(p.writer.queue.qsize(), 1)
 
 
 if __name__ == '__main__':

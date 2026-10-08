@@ -310,17 +310,35 @@ class CaptureJournal:
         self.callbacks.append((priority, label, callback))
 
     def __exit__(self, kind, value, traceback):
+        def describe(exc):
+            try:
+                return repr(exc)
+            except BaseException:
+                return '<unprintable exception>'
+
+        interruption = value if value is not None and not isinstance(value, Exception) else None
         if value is not None:
-            self.result["errors"].append(repr(value))
+            self.result["errors"].append(describe(value))
         for _, label, callback in sorted(self.callbacks, key=lambda item: item[0]):
             try:
                 callback()
-            except Exception as exc:
-                self.result["errors"].append(label + ": " + repr(exc))
+            except BaseException as exc:
+                self.result["errors"].append(label + ": " + describe(exc))
+                if interruption is None and not isinstance(exc, Exception):
+                    interruption = exc
         if self.result["errors"] or self.result["status"] != "capture_completed":
             self.result["status"] = "capture_failed"
-        with (self.output / "result.json").open("x") as stream:
-            json.dump(self.result, stream, indent=2)
+        try:
+            with (self.output / "result.json").open("x") as stream:
+                json.dump(self.result, stream, indent=2)
+        except BaseException as exc:
+            self.result['status'] = 'capture_failed'
+            self.result['errors'].append('terminal result: ' + describe(exc))
+            if interruption is not None:
+                raise interruption from exc
+            raise
+        if interruption is not None:
+            raise interruption
         return value is not None
 
 
