@@ -27,19 +27,19 @@
 **Files:** create tools/benchmark/openvins_timesync_wire.py and tests/benchmark/test_openvins_timesync_wire.py.
 **Interfaces:** consumes RemoteMonotonicClock.respond_to_px4_request and callback reserve_reply(request_ns,response_ns) returning existing false-authority intent; produces PinnedCodec and TimesyncWireResponder.receive/evidence.
 
-- [ ] Write stdlib unittest tests against actual WSL installed pymavlink; first verify missing feature, not a dependency failure. Include all Review Focus boundaries.
-- [ ] Run `wsl -d Ubuntu --cd <worktree> python3 -m unittest tests.benchmark.test_openvins_timesync_wire -v`; Expected: missing feature failure initially, then all cases pass after implementation. Record import-stage failure accurately.
-- [ ] Implement the spec with bounded evidence and no socket surface.
-- [ ] Run Windows adjacent observer/bootstrap/owned-bootstrap pytest and changed Ruff/diff-check; Expected: all pass. WSL actual-codec suite remains separate from Windows skip.
-- [ ] Commit explicit code/tests/spec/plan paths.
+- [x] Write stdlib unittest tests against actual WSL installed pymavlink; first verify missing feature, not a dependency failure. Include all Review Focus boundaries.
+- [x] Run `wsl -d Ubuntu --cd <worktree> python3 -m unittest tests.benchmark.test_openvins_timesync_wire -v`; Expected: missing feature failure initially, then all cases pass after implementation. Record import-stage failure accurately.
+- [x] Implement the spec with bounded evidence and no socket surface.
+- [x] Run Windows adjacent observer/bootstrap/owned-bootstrap pytest and changed Ruff/diff-check; Expected: all pass. WSL actual-codec suite remains separate from Windows skip.
+- [x] Commit explicit code/tests/spec/plan paths.
 
 ### Task 2: Review, evidence and publication
 
 **Files:** docs/OPENVINS_TIMESYNC_WIRE_REPORT.md; evidence/openvins-timesync-wire-dev-1701.zip and SHA/verification; existing research results.
 **Interfaces:** consumes Task1 suite outputs, unchanged historical codec probe and pinned research; produces bounded stage report, archive and next dependency note.
 
-- [ ] Independent read-only review of current stage. Fix Important/Critical findings once with behavioral RED→GREEN and regressions.
-- [ ] Run full Windows pytest once after final changes; Expected: pass with existing skips plus explicit missing-codec skip. Do not claim it replaces WSL codec tests.
+- [x] Independent read-only review of current stage. Fix Important/Critical findings once with behavioral RED→GREEN and regressions.
+- [x] Run full Windows pytest once after final changes; Expected: pass with existing skips plus explicit missing-codec skip. Do not claim it replaces WSL codec tests.
 - [ ] Seal all selected research/test evidence with member hashes/CRC, no old archive overwrite; accurately separate historical probe from final code.
 - [ ] Commit/push personal and update/attach draft PR65; verify remote head and body.
 
