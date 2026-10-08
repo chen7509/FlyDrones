@@ -663,3 +663,18 @@ is inferred from the fixture. The last checked installed preflight is
 `results/installed-wire-startup-dev-1701/study-v1`; its startup-only manifest must
 not be reused as the new normal-study manifest. The planned new
 `results/live-wire-study-dev-1701/study-v1` directory did not exist at this check.
+
+The single retained synthetic producer `79b4500` completed all 21 file-entry
+stages with no refusals and 571 consumed-file records. Its 76 initially loaded
+repository sources were copied before and matched afterward; three lazy imports
+have only post-load hashes and copies, explicitly retained. Complete runtime
+freeze and record-chain/live/fusion qualification remain false. This is not an
+installed-scene run. No repeated audit was used to hide the source boundary.
+
+The complete synthetic package is sealed in
+`evidence/live-wire-complete-file-entry-offline-dev-1701.zip`: 705 members,
+5,597,069 bytes, SHA256
+`8adfd2049c69ac4821b22c06ac73aca0eb6678cd020e4bb747b2cb0b96cb5aeb`.
+CRC and all manifest member hashes were checked. The archive report precedes
+this seal paragraph; it includes the development failure and regression logs.
+Task 2 is complete offline; publication is local and Task 3 remains pending.
