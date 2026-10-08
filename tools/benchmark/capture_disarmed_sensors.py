@@ -29,6 +29,7 @@ from tools.benchmark.capture_contract import (  # noqa: E402
     read_declaration,
     validate_declaration,
     validate_launch_environment,
+    wire_configuration_record,
     worker_options,
 )
 from tools.benchmark.capture_wire_lifecycle import bind_capture_wire  # noqa: E402, F401
@@ -164,6 +165,8 @@ def parse_capture_args(argv=None):
     parser.add_argument("--trajectory-gauge-policy", type=Path,
                         help="Prospective truth-independent trajectory scoring policy")
     parser.add_argument("--simulation-seed", type=int, help="Declared Gazebo Math random seed")
+    parser.add_argument("--wire-config", type=Path,
+                        help="Declared single-reader lifecycle and explicit remote clock mapping")
     parser.add_argument("--shadow-binary", type=Path)
     parser.add_argument("--shadow-config", type=Path)
     parser.add_argument("--reference-module", type=Path)
@@ -191,6 +194,12 @@ def parse_capture_args(argv=None):
     parser.add_argument("--motion-profile", choices=["lateral-wrench-v1", "supported-lateral-v1", "supported-ready-v1"])
     parser.add_argument("--physics-trace-profile", choices=["substep-lateral-v1", "substep-supported-v1", "substep-ready-v1"])
     args = parser.parse_args(argv)
+    if args.wire_config and (
+        not args.execution_contract or not args.runtime_binding
+        or args.source_fanout_profile != "ready-shadow-heartbeat-estimator-v1"
+        or args.reference_fault_profile
+    ):
+        parser.error("wire lifecycle requires declared runtime binding and estimator-aware source fan-out")
     if args.simulation_seed is not None and not 1 <= args.simulation_seed < 2**32:
         parser.error("simulation seed must be in [1, 2^32)")
     if args.runtime_binding and not args.execution_contract:
@@ -267,6 +276,26 @@ def build_readiness(output, source_fanout_profile, *, clock=time.monotonic_ns, n
             output, source_readiness, clock=clock, session_id=native_session_id
         )
     return source_readiness, source_readiness
+
+
+def prepare_capture_receiver(contract, *, journal, result, output, start_ns, source_guard,
+                             heartbeat_sink, legacy_factory, wire_factory=None):
+    """The actual capture selects exactly one receiving resource path."""
+    if 'wire' not in contract:
+        receiver = legacy_factory()
+        journal.cleanup('receiver', receiver.close, priority=50)
+        return receiver, None
+    selected = contract['wire']
+    if not _typed_equal(wire_configuration_record(selected['path']), selected):
+        raise ValueError('declared wire configuration changed before resource selection')
+    if wire_factory is None:
+        from tools.benchmark.capture_wire_lifecycle import CaptureWireOwner
+        wire_factory = CaptureWireOwner
+    owner = wire_factory(journal, result, output, contract['wire']['configuration'],
+                         start_ns=time.monotonic_ns(),
+                         total_deadline_ns=start_ns + contract['wall_budget_s'] * 1_000_000_000,
+                         source_guard=source_guard, heartbeat_sink=heartbeat_sink)
+    return None, owner
 
 
 def build_source_fanout(output, profile, readiness, shadow):
@@ -467,7 +496,8 @@ def main():
                 **{key: contract[key] for key in ("simulation_duration_ns", "physics_step_ns", "imu_hz", "rgbd_hz")},
                 "execution_contract": contract,
                 "prospective_declaration_verified": args.execution_contract is not None,
-                "command_policy": "read-only heartbeat; no arm/offboard/setpoint/ODOMETRY",
+                "command_policy": ("owned TIMESYNC interval query/apply/restore; no arm/offboard/setpoint/ODOMETRY"
+                                   if args.wire_config else "read-only heartbeat; no arm/offboard/setpoint/ODOMETRY"),
                 "uxrce_port": 18888,
                 "uxrce_agent_launched": False,
             },
@@ -493,7 +523,8 @@ def main():
     arming = {"unarmed_wall_ns": None}
     owned_ready = {"px4": False}
     owned_processes = {}
-    started = time.monotonic()
+    started_ns = time.monotonic_ns()
+    started = started_ns / 1_000_000_000
     with CaptureJournal(output, result) as journal:
         binding = None
         if binding_doc is not None:
@@ -512,6 +543,8 @@ def main():
                         px4 / "Tools/simulation/gz/models/x500/model.sdf",
                         px4 / "Tools/simulation/gz/models/x500_base/model.sdf"]
             required += estimator_inputs(args.shadow_binary, args.shadow_config, args.reference_module)
+            if args.wire_config:
+                required.append(args.wire_config.resolve(strict=True))
             required += [Path(module.__file__).resolve() for module in tuple(sys.modules.values())
                          if getattr(module, "__file__", None) and Path(module.__file__).resolve().is_relative_to(ROOT)]
             binding.start({name: runtime / name if name == "gz_env.sh" else output / name for name in GENERATED_NAMES},
@@ -729,8 +762,17 @@ def main():
         journal.cleanup("writer", lambda: result.update(writer=writer.finish()), priority=80)
         stop = threading.Event()
         node = Node()
-        receiver = mavutil.mavlink_connection("udpin:127.0.0.1:14548", source_system=254)
-        journal.cleanup("receiver", receiver.close, priority=50)
+        def wire_source_guard():
+            if errors or writer.error or (shadow and shadow.failure):
+                raise ValueError('capture wire source failure: ' + str(errors or writer.error or shadow.failure))
+            if source_guard:
+                source_guard.check(time.monotonic_ns())
+        receiver, wire_owner = prepare_capture_receiver(
+            contract, journal=journal, result=result, output=output, start_ns=started_ns,
+            source_guard=wire_source_guard,
+            heartbeat_sink=lambda event: dispatch_capture_heartbeat(
+                event, writer, fanout, arming, binding, owned_ready, owned_processes),
+            legacy_factory=lambda: mavutil.mavlink_connection('udpin:127.0.0.1:14548', source_system=254))
 
         def submit(kind, message):
             arrival = time.monotonic_ns()
@@ -843,10 +885,15 @@ def main():
 
                     AnchoredPolicy = MotionIntentAnchoredPolicy
 
+                base_proof = fanout.proof if fanout else readiness.proof
+                def motion_readiness():
+                    if wire_owner is not None and not wire_owner.health_ready():
+                        return None
+                    return base_proof()
                 extra = dict(
                     policy=(
                         AnchoredPolicy(
-                            fanout.proof if fanout else readiness.proof,
+                            motion_readiness,
                             lambda row: persist_anchor(output, row),
                             prepare_motion=lambda anchor, proof: apply_native_motion_intent(
                                 motion_intent, readiness, client, anchor, proof
@@ -854,7 +901,7 @@ def main():
                         )
                         if motion_intent
                         else AnchoredPolicy(
-                            fanout.proof if fanout else readiness.proof,
+                            motion_readiness,
                             lambda row: persist_anchor(output, row),
                         )
                     ),
@@ -876,6 +923,8 @@ def main():
                                 if errors or writer.error or shadow.failure:
                                     raise RuntimeError("pre-step source failure: " + str(errors or writer.error or shadow.failure))
                                 source_guard.check(time.monotonic_ns())
+                                if wire_owner is not None:
+                                    wire_owner.health_ready()
 
                             if not fanout.pre_step(lambda: pre_motion(reference, motion, info, ecm), health):
                                 if not any(e.startswith("source fan-out:") for e in errors):
@@ -894,11 +943,13 @@ def main():
             elif motion:
                 motion.post_update(info, _ecm)
 
-        fixture.on_post_update(post_update)
-        fixture.finalize()
-        server = fixture.server()
-        if binding:
-            binding.observe("postfinalize")
+        server = None
+        if wire_owner is None:
+            fixture.on_post_update(post_update)
+            fixture.finalize()
+            server = fixture.server()
+            if binding:
+                binding.observe("postfinalize")
         if source_guard:
             watchdog_stop = threading.Event()
 
@@ -916,9 +967,10 @@ def main():
             watchdog_thread = threading.Thread(target=watch_sources, daemon=True)
             watchdog_thread.start()
             journal.cleanup("source watchdog", lambda: (watchdog_stop.set(), watchdog_thread.join(timeout=1)), priority=10)
-        heartbeat_thread = threading.Thread(target=read_heartbeats, daemon=True)
-        heartbeat_thread.start()
-        journal.cleanup("heartbeat", lambda: (stop.set(), heartbeat_thread.join(timeout=3)), priority=40)
+        if wire_owner is None:
+            heartbeat_thread = threading.Thread(target=read_heartbeats, daemon=True)
+            heartbeat_thread.start()
+            journal.cleanup("heartbeat", lambda: (stop.set(), heartbeat_thread.join(timeout=3)), priority=40)
         log = (output / "px4.log").open("x")
         journal.cleanup("log close", log.close, priority=70)
         process = subprocess.Popen(
@@ -929,10 +981,6 @@ def main():
             stderr=subprocess.STDOUT,
             start_new_session=False,
         )
-        if binding and "px4" in binding.required_owned:
-            binding.register_owned("px4", process, binary)
-            owned_processes["px4"] = process
-
         def stop_px4():
             if binding and "px4" in binding.required_owned and owned_ready["px4"]:
                 try:
@@ -950,10 +998,20 @@ def main():
             result["px4_exit_code"] = process.returncode
 
         journal.cleanup("owned PX4", stop_px4, priority=20)
+        if binding and "px4" in binding.required_owned:
+            binding.register_owned("px4", process, binary)
+            owned_processes["px4"] = process
         with (output / "process.json").open("x") as f:
             json.dump({"pid": process.pid, "args": process.args, "started_wall_ns": time.time_ns()}, f, indent=2)
         if source_guard:
             source_guard.start(time.monotonic_ns())
+        if wire_owner is not None:
+            wire_owner.bind(process, fixture, post_update)
+            fixture.finalize()
+            server = fixture.server()
+            if binding:
+                binding.observe('postfinalize')
+            wire_owner.driver.start()
         first_step_observed = False
         while clock["sim_ns"] < contract["simulation_duration_ns"]:
             if errors or writer.error:

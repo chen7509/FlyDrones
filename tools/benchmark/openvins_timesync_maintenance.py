@@ -49,6 +49,7 @@ class _TimesyncMaintenance:
                     handoff_ns=self._handoff, deadline_ns=self._deadline,
                     transport_claimed=self._transport_claimed,
                     raw_records_seen=self._seen, maintenance_correlated_samples=self._correlated,
+                    maintenance_last_progress_ns=self._last_progress,
                     modeled_accepted_samples=self._last_observed['modeled_accepted_samples'],
                     estimated_offset_us=self._last_observed['estimated_offset_us'],
                     maintenance_healthy=healthy,

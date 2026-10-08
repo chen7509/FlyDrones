@@ -309,6 +309,52 @@ class CaptureDriverTests(unittest.TestCase):
         self.until(lambda: self.driver.progress['closed'])
         self.assertTrue(self.case.obj.progress['restoration_verified'])
 
+    def test_pre_step_health_refuses_stale_reader_even_before_its_next_tick(self):
+        self.assertTrue(hasattr(self.driver, 'health_ready'), 'pre-step health missing')
+        self.assertFalse(self.driver.health_ready())
+        self.bootstrap()
+        self.f.backend.now += 10_000_000
+        self.f.clock_to(body(500)[0])
+        self.f.enqueue(500)
+        self.tick()
+        self.f.backend.connections[3].reads.append(status(500, 2))
+        self.tick()
+        self.assertTrue(self.driver.health_ready())
+        self.f.backend.now += 2_000_000_000
+        with self.assertRaises(ValueError):
+            self.driver.health_ready()
+        self.assertEqual(self.driver.progress['phase'], 'stopping')
+
+    def test_pending_pair_keeps_previous_health_only_within_original_window(self):
+        self.assertTrue(hasattr(self.driver, 'health_ready'), 'pre-step health missing')
+        self.bootstrap()
+        for index in (500, 501):
+            self.f.backend.now += 10_000_000
+            self.f.clock_to(body(index)[0])
+            self.f.enqueue(index)
+            self.tick()
+            if index == 501:
+                self.assertFalse(self.driver.progress['ready'])
+                self.assertTrue(self.driver.health_ready())
+            self.f.backend.connections[3].reads.append(status(index, index - 498))
+            self.tick()
+        self.driver.request_stop()
+        with self.assertRaises(ValueError):
+            self.driver.health_ready()
+
+    def test_stop_during_maintenance_handoff_cannot_reopen_ordinary_phase(self):
+        self.case.configured()
+        self.interval_us = 10000
+        self.case.complete_listener()
+        original = self.case.obj.begin_maintenance
+        def stop_during_handoff(deadline):
+            self.driver.request_stop('concurrent capture stop')
+            return original(deadline)
+        self.case.obj.begin_maintenance = stop_during_handoff
+        self.until(lambda: self.driver.progress['phase'] != 'startup')
+        self.assertEqual(self.driver.progress['phase'], 'stopping')
+        self.assertTrue(self.driver.progress['failure'])
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -500,3 +500,73 @@ be completed. In particular the driver's `progress.ready` is a protocol snapshot
 not by itself a concurrent pre-step freshness proof. These component tests do not
 replace that integration. Task4 independent whole-change review and final stage
 archive also remain pending. No live study is enabled from this checkpoint.
+
+## Task3 checkpoint: declared main selection and selected-owner composition
+
+The main now has an opt-in `--wire-config` path. Without it the legacy receiver
+remains selected. The new mode requires an execution declaration, runtime binding
+and the complete estimator-aware fanout profile. Its small JSON document declares
+`capture-wire-v1`, a session ID, simulation origin0 and an explicit remote origin;
+the execution contract records its path/resolved identity, bytes, SHA256 and
+configuration. Worker forwarding and runtime required-input selection include it.
+The selected file is rechecked against the declaration immediately before receiver
+construction; it cannot silently change between initial validation and selection.
+This is ordinary drift detection, not an atomic or hostile-ABA guarantee.
+
+The actual `prepare_capture_receiver` call selects either the legacy mavutil
+receiver or `CaptureWireOwner`. The latter creates one nonblocking datagram socket,
+records its descriptor identity/namespace, creates bounded segmented retention
+and an independent clock journal, and subsequently binds the owned PX4 process.
+The installed fixed daemon path remains `/tmp/px4-sock-8`. Endpoint agreement
+still does not authenticate the UDP sender's PID. The prior fixed Python/socket/
+proc, pinned PX4 and codec research is reused; no new dependency or calibration
+was introduced and no fresh upstream maintenance observation is claimed.
+
+In the new main branch, PostUpdate registration/finalization follows owned-process
+binding; the legacy branch retains its earlier ordering. Only the selected
+receiver thread starts. The motion readiness wrapper checks wire health in
+addition to the existing sensor/native proof, so startup can continue with zero
+force while the wire gate is pending. The independent pre-step check detects a
+stale reader/source/status even before another receive tick. A currently pending
+correlation can retain earlier established health within the original2s window;
+it is not automatically an expired source. The original8s bootstrap and original
+capture-start300s total bounds remain distinct. This gate is point-in-time and
+does not retroactively cancel a step already executing.
+
+The main registers owned-PX4 cleanup before runtime-map registration. Wire owner
+cleanup remains priority15, preceding PX4 priority20; it restores through and joins
+the sole reader before closing its socket and journals. The ordering is implemented
+in main, but the complete main constructor/failure path is not yet exercised with
+all factories injected. Normal physical startup or shutdown is not claimed.
+
+New tests cover declaration/forwarding/drift, exclusive factory selection,
+pre-step expiry, a pending pair, stopped handoff and selected resource ownership.
+The composed case uses the actual main selector, owner, clock wrapper, driver,
+codec, interval exchange, CaptureWriter, estimator-aware heartbeat fanout and
+ShadowInput. It drives500 startup samples, restores the baseline, checks two
+maintenance pairs and reconciles a post-bootstrap heartbeat. Its injected socket
+and process backend never call actual network/PX4. Writer draining is deterministic
+through the real write method; this is not asynchronous latency evidence. Native
+estimator calls are forbidden and asserted absent; no sensor/VIO readiness is
+fabricated from transport success.
+
+Observed behavior REDs exposed a STOPPING-to-MAINTENANCE race, a missing owner/socket
+network-namespace comparison and configuration drift being accepted before
+resource creation. They now pass after correction. Other initial failures were
+missing APIs. The first owner composition attempt reused a consumed test backend
+and a test-only daemon-path assertion; a fresh backend plus an explicit assertion
+of the real fixed path corrected that fixture. Both outputs are preserved, with
+no claim of a physical failure or production fix for that setup mistake.
+
+Final `capture-entry-final-v2`: **309 pytest and121 WSL tests passed**,37 selected
+source/test hashes stable, changed Ruff/diff-check passed. Version1 passed308/121;
+the subsequent observed configuration-drift failure justified version2. All logs
+remain in `results/capture-wire-lifecycle-dev-1701`. No full-repository pass,
+actual main execution, socket/PX4/Gazebo/OpenVINS or training result is claimed.
+
+Task3 is still open for complete injected-main/runner validation, including actual
+registered cleanup order, constructor and shutdown failures, and factory-escape
+guards. Those requirements are not replaced by the selector/owner composition
+test. Task4 independent whole-change review and stage sealing remain pending.
+Do not run a live study merely because the new CLI selection now exists. Fusion,
+network authority, swarm qualification and the historical failed gates are unchanged.
