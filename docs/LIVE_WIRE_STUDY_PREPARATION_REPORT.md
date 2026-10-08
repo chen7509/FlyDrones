@@ -193,3 +193,14 @@ Member hashes/lengths and CRC passed. It retains relevant producer/filter/fixtur
 sources and successful/failed test outputs. It contains synthetic test evidence,
 not a physical capture or a completed study audit; independent review remains
 pending. Archived report precedes this paragraph. Publication remains local.
+
+Interval/listener increment producer `fab26b6` is preserved in
+`evidence/live-wire-interval-listener-offline-progress-dev-1701.zip`: 37 members,
+102,592 bytes, SHA256
+`c2813a83a5a16265a62d11582cb2d3d6f298b1c75137c7e7b377328e94ac1ae3`.
+Member hashes/lengths, uniqueness and CRC passed. It retains source/fixtures,
+the failed implementation/schema run, missing-API and boolean-index REDs, final
+GREEN/regressions and source-field inspection. The archive contains synthetic
+and offline evidence only; this report inside it precedes this seal paragraph.
+Task 2, Task 3 and whole-package review are unfinished. Publication is local;
+this seal makes no remote-head or actual runtime qualification claim.
