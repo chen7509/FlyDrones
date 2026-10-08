@@ -165,3 +165,15 @@ source health and estimator/session/reset identity; derive calibrated camera
 pose from the correct body origin; and keep unknown qualification false. The
 current archived unarmed study is not a replacement training corpus. Actual
 VIO-to-EKF2/live activation remains outside this stage's authorization.
+
+## Sealed evidence
+
+`evidence/ekf2-sample-time-dev-1701.zip`: 39 members, 480,110 bytes, SHA256
+`4a34ff156b71dd1b20433a62b7b34aa53bcd6bde1ec5dd28d99a543f62550230`.
+All member bytes/hashes and CRC were checked. It retains the selected input
+manifests, consumed non-truth topic arrays, all-frame reports, parser wheel and
+research sources, RED/GREEN/full-suite output, final boundary tests, review and
+next requirements. The original ULog is referenced by its sealed archive/hash
+rather than duplicated. Source/document copies are post-verification at
+`320a09c`; this seal paragraph was appended afterward. Work remains local under
+the existing publication limitation; no remote push or merge was attempted.
