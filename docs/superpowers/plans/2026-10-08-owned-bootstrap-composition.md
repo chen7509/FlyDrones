@@ -26,21 +26,21 @@ and provisional stream results escaping as final readiness. Cover in Task1 tests
 Files: tools/benchmark/openvins_owned_bootstrap.py,
 tests/benchmark/test_openvins_owned_bootstrap.py.
 
-- [ ] Retain fixed upstream/API and existing interface research; write failing
+- [x] Retain fixed upstream/API and existing interface research; write failing
       normal/fault tests. Expected: new interface unavailable, clearly label this
       initial failure; later behavioral counterexamples must fail assertions.
-- [ ] Implement poll/reserve_reply/close/progress/evidence with copied journal
+- [x] Implement poll/reserve_reply/close/progress/evidence with copied journal
       envelopes and shared clock/owner gates. No actual reply sender.
-- [ ] Run tests and adjacent bootstrap/transport regressions, Ruff/diff; expected
+- [x] Run tests and adjacent bootstrap/transport regressions, Ruff/diff; expected
       no failures. Commit implementation and tests.
 
 ## Task2: actual private fixture and publication
 
 File: tests/benchmark/check_openvins_owned_bootstrap.py.
 
-- [ ] Freeze explicit normal500 and fault cases, command/control payloads and
+- [x] Freeze explicit normal500 and fault cases, command/control payloads and
       selected hashes; run one private-server matrix, preserve all outcomes.
-- [ ] Independent code/evidence review; behavioral RED/GREEN for material fixes;
+- [x] Independent code/evidence review; behavioral RED/GREEN for material fixes;
       full regression expected green. Do not claim real PX4 convergence.
 - [ ] Update report and verified/implemented/unverified/failed boundaries; seal
       new archive with SHA/member hashes/CRC; preserve previous archive.
