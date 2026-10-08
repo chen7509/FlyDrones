@@ -59,6 +59,278 @@ def _read_stable(path, maximum):
     return data, before
 
 
+def audit_owned_listener_records(*, records, context, daemon_path):
+    """Join retained connection/command/stdout records, not attest a launch.
+
+    SO_PEERCRED observations bind the recorded connection to the declared owner.
+    The producer does not journal every owner recheck or a kernel descriptor ID;
+    this helper cannot prove fresh launch, absence of FD transfer, or daemon exit.
+    Caller must separately verify runtime ownership, workload and cleanup.
+    """
+    from pathlib import PurePosixPath
+
+    from tools.benchmark.openvins_listener_transport import ReplyEnvelope, listener_command
+    from tools.benchmark.openvins_timesync_bootstrap import parse_snapshot
+    from tools.benchmark.openvins_timesync_listener import TimesyncListenerDecoder
+    from tools.benchmark.owned_daemon_connection import validate_owner
+
+    _shape(context, ("owner", "start_ns", "total_deadline_ns", "clock_signature"), "listener context")
+    validate_owner(context["owner"])
+    start, end = context["start_ns"], context["total_deadline_ns"]
+    _integer(start, 0, 2**64 - 300_000_000_001, "listener start")
+    _integer(end, start + 8_000_000_001, start + 300_000_000_000, "listener deadline")
+    if (
+        type(daemon_path) is not str
+        or not daemon_path.startswith("/")
+        or "\0" in daemon_path
+        or ".." in PurePosixPath(daemon_path).parts
+        or not 1 <= len(daemon_path.encode()) <= 107
+    ):
+        raise ValueError("invalid daemon path")
+    if type(records) is not list or not records:
+        raise ValueError("missing listener records")
+    counters = {}
+    for index, row in enumerate(records):
+        _shape(row, ("index", "source", "source_index", "phase", "event"), "listener record")
+        _equal(row["index"], index, "record index")
+        if type(row["source"]) is not str or type(row["event"]) is not dict:
+            raise ValueError("record source/event")
+        _equal(row["source_index"], counters.get(row["source"], 0), "source index")
+        counters[row["source"]] = row["source_index"] + 1
+    owned = [r for r in records if r["source"] == "owned"]
+    last = start
+    for row in owned:
+        item = row["event"]
+        keys = {"source", "command_index", "event", "at_ns"}
+        if "time_basis" in item:
+            _equal(item["time_basis"], "last_checked_clock_during_cleanup", "cleanup time basis")
+            keys.add("time_basis")
+        _shape(item, keys, "owned envelope")
+        if item["command_index"] is not None:
+            _integer(item["command_index"], 0, 3, "owned command index")
+        if type(item["event"]) is not dict:
+            raise ValueError("owned event schema")
+        _integer(item["at_ns"], last, end - 1, "owned clock")
+        last = item["at_ns"]
+        if item["source"] not in ("coordinator", "transport", "bootstrap", "maintenance"):
+            raise ValueError("unknown owned source")
+    # Retention mirrors are separate producer writes. Neither is a substitute for
+    # the other, and arbitrary duplicate status rows cannot supply missing I/O.
+    for source, mirrored in (("cold", "bootstrap"), ("maintenance", "maintenance")):
+        direct = [r for r in records if r["source"] == source]
+        wrappers = [r for r in owned if r["event"]["source"] == mirrored]
+        _equal(len(wrappers), len(direct), "owned status mirror count")
+        for raw, wrapped in zip(direct, wrappers):
+            _equal(wrapped["event"]["command_index"], None, "status command index")
+            _equal(wrapped["event"]["event"], raw["event"], "owned status mirror")
+            if (source == "cold" and wrapped["index"] >= raw["index"]) or (
+                source == "maintenance" and raw["index"] >= wrapped["index"]
+            ):
+                raise ValueError("status mirror ordering")
+    coordinators = [r for r in owned if r["event"]["source"] == "coordinator"]
+    expected_order = [
+        ("command_open", 0),
+        ("command_finished", 0),
+        ("command_open", 1),
+        ("command_finished", 1),
+        ("command_open", 2),
+        ("command_finished", 2),
+        ("maintenance_started", None),
+        ("command_open", 3),
+    ]
+    _equal(
+        [(r["event"]["event"].get("kind"), r["event"]["command_index"]) for r in coordinators],
+        expected_order,
+        "owned command lifecycle",
+    )
+    roles = ("empty", "first", "stream", "maintenance")
+    for row in coordinators:
+        item = row["event"]
+        event = item["event"]
+        if event["kind"] == "maintenance_started":
+            _equal(event, {"kind": "maintenance_started", "deadline_ns": end}, "maintenance deadline")
+        else:
+            _equal(event, {"kind": event["kind"], "role": roles[item["command_index"]]}, "command role")
+    bootstrap_records = maintenance_records = 0
+    for number in range(4):
+        opened = next(r for r in coordinators if r["event"]["command_index"] == number)
+        boundary = (
+            next(
+                r
+                for r in coordinators
+                if r["event"]["command_index"] == number and r["event"]["event"]["kind"] == "command_finished"
+            )["index"]
+            if number < 3
+            else len(records)
+        )
+        direct = [r for r in records if r["source"] == f"listener-{number}"]
+        wrappers = [r for r in owned if r["event"]["source"] == "transport" and r["event"]["command_index"] == number]
+        _equal(len(direct), len(wrappers), "transport mirror count")
+        if len(direct) < 6:
+            raise ValueError("incomplete listener transport")
+        for i, (raw, wrapped) in enumerate(zip(direct, wrappers)):
+            _equal(wrapped["event"]["event"], raw["event"], "transport mirror")
+            upper = direct[i + 1]["index"] if i + 1 < len(direct) else boundary
+            if not opened["index"] < raw["index"] < wrapped["index"] < upper:
+                raise ValueError("transport mirror/command order")
+        deadline = start + 8_000_000_000 if number < 3 else end
+        entry = opened["event"]["at_ns"]
+        connection, peer = direct[0]["event"], direct[1]["event"]
+        _shape(connection, ("kind", "observation"), "connect envelope")
+        _shape(peer, ("kind", "observation"), "peer envelope")
+        _equal(connection["kind"], "connection", "connect kind")
+        _equal(peer["kind"], "connection", "peer kind")
+        attempt, observation = connection["observation"], peer["observation"]
+        _shape(attempt, ("kind", "path", "owner", "deadline_ns", "at_ns"), "connect attempt")
+        _equal(attempt["kind"], "connect_attempt", "connect operation")
+        _equal(attempt["path"], daemon_path, "socket path")
+        _equal(attempt["owner"], context["owner"], "connection owner")
+        _integer(attempt["at_ns"], entry, deadline - 1, "connect time")
+        _integer(
+            attempt["deadline_ns"], attempt["at_ns"] + 1, min(deadline, attempt["at_ns"] + 2_000_000_000), "connect deadline"
+        )
+        _shape(observation, ("kind", "owner", "peer", "at_ns"), "peer observation")
+        _equal(observation["kind"], "peer_observed", "peer operation")
+        _equal(observation["owner"], context["owner"], "observed owner")
+        _equal(observation["peer"], {k: context["owner"][k] for k in ("pid", "uid", "gid")}, "peer credential")
+        _integer(observation["at_ns"], attempt["at_ns"], attempt["deadline_ns"] - 1, "peer time")
+        command = listener_command("snapshot" if number < 2 else "stream", 1 if number < 2 else 500 if number == 2 else 4096)
+        decoder = (
+            None
+            if number < 2
+            else TimesyncListenerDecoder(0, 500 if number == 2 else 4096, entry, output_profile="px4-d6f12ad-multi-v1")
+        )
+        envelope, snapshot = ReplyEnvelope(), b""
+        offset, pending, eof, parsed, cancelled = 0, None, False, False, False
+        last = observation["at_ns"]
+        consumer = "cold" if number < 3 else "maintenance"
+        chunks = [
+            r
+            for r in records
+            if r["source"] == consumer and r["event"].get("kind") == "raw_chunk" and opened["index"] < r["index"] < boundary
+        ]
+        used = count = 0
+        for i in range(2, len(direct)):
+            row, wrapper = direct[i], wrappers[i]["event"]
+            event, kind = row["event"], row["event"].get("kind")
+            now = event.get("at_ns", event.get("returned_clock_ns", wrapper["at_ns"]))
+            _integer(now, last, deadline - 1, "listener event time")
+            _integer(wrapper["at_ns"], now, deadline - 1, "listener wrapper time")
+            last = now
+            if parsed or cancelled:
+                raise ValueError("record after listener terminal")
+            if kind == "send_attempt":
+                _shape(event, ("kind", "offset", "raw_hex", "at_ns"), "command attempt")
+                if offset == len(command):
+                    raise ValueError("command retransmission")
+                _equal(event["offset"], offset, "command offset")
+                _equal(event["raw_hex"], command[offset:].hex(), "allowed command bytes")
+                pending = now
+            elif kind == "send_return":
+                _shape(event, ("kind", "count", "offset", "returned_clock_ns"), "command return")
+                if pending is None:
+                    raise ValueError("command return without attempt")
+                _equal(event["offset"], offset, "command return offset")
+                _integer(event["count"], 1, len(command) - offset, "command send count")
+                offset += event["count"]
+                pending = None
+            elif kind == "recv_return":
+                _shape(event, ("kind", "raw_hex", "eof", "returned_clock_ns"), "daemon read")
+                if offset != len(command) or pending is not None or eof:
+                    raise ValueError("read before command sent or after EOF")
+                raw = bytes.fromhex(event["raw_hex"])
+                _equal(raw.hex(), event["raw_hex"], "canonical raw bytes")
+                _equal(event["eof"], not raw, "daemon EOF")
+                if not raw:
+                    envelope.finish()
+                    eof = True
+                else:
+                    data = envelope.feed(raw)
+                    if number < 2:
+                        snapshot += data
+                        if len(snapshot) > 1024:
+                            raise ValueError("snapshot size")
+                    elif data:
+                        if used >= len(chunks):
+                            raise ValueError("missing consumer stdout")
+                        chunk = chunks[used]
+                        used += 1
+                        upper = direct[i + 1]["index"] if i + 1 < len(direct) else boundary
+                        if not row["index"] < chunk["index"] < upper:
+                            raise ValueError("stdout consumer order")
+                        _equal(chunk["event"]["raw_hex"], data.hex(), "daemon stdout to consumer")
+                        process_time = chunk["event"]["now_ns"]
+                        _integer(process_time, wrapper["at_ns"], min(deadline - 1, now + 1_999_999_999), "stdout processing time")
+                        count += len(decoder.feed(data, process_time))
+            elif kind == "parsed_eof":
+                _shape(event, ("kind", "terminal", "at_ns"), "parsed daemon EOF")
+                if not eof or number == 3:
+                    raise ValueError("missing daemon EOF or premature maintenance exit")
+                expected = dict(parse_snapshot(snapshot, 0), raw_hex=snapshot.hex()) if number < 2 else decoder.finish(now, 0)
+                _equal(event["terminal"], expected, "parsed terminal")
+                target_kind = ("empty_snapshot", "first_status", "stream_finished")[number]
+                matches = [
+                    r
+                    for r in records
+                    if r["source"] == "cold" and r["event"].get("kind") == target_kind and row["index"] < r["index"] < boundary
+                ]
+                _equal(len(matches), 1, "terminal consumer count")
+                if number < 2:
+                    _equal(matches[0]["event"]["raw_hex"], snapshot.hex(), "snapshot to cold consumer")
+                else:
+                    _equal(matches[0]["event"]["terminal"], expected, "stream terminal to cold consumer")
+                parsed = True
+            elif kind == "cancellation_requested":
+                _shape(event, ("kind", "reason"), "listener cancel")
+                if number != 3 or i != len(direct) - 2 or eof or pending is not None:
+                    raise ValueError("unexpected listener cancellation")
+                _equal(event["reason"], "owned maintenance close", "cancel reason")
+                decoder.check(now)
+            elif kind == "cancellation_result":
+                if number != 3 or direct[i - 1]["event"].get("kind") != "cancellation_requested":
+                    raise ValueError("cancel result without intent")
+                _equal(
+                    event,
+                    dict(
+                        kind="cancellation_result",
+                        incomplete_frame_bytes=0,
+                        socket_close_returned=True,
+                        close_error=None,
+                        daemon_exit_proven=False,
+                    ),
+                    "socket cancellation result",
+                )
+                _equal(decoder.incomplete_frame_bytes, 0, "partial maintenance frame")
+                cancelled = True
+            else:
+                raise ValueError("unknown or failed transport event")
+        _equal(used, len(chunks), "all consumer raw chunks matched")
+        if number < 3 and not parsed or number == 3 and not cancelled:
+            raise ValueError("listener terminal missing")
+        if number == 2:
+            bootstrap_records = count
+            _equal(count, 500, "bootstrap record count")
+        elif number == 3:
+            maintenance_records = count
+            _integer(count, 3, 4095, "maintenance boundary plus responses")
+    _equal(
+        sum(1 for r in owned if r["event"]["source"] == "transport"),
+        sum(1 for r in records if r["source"] in {f"listener-{i}" for i in range(4)}),
+        "all transport mirrors consumed",
+    )
+    return dict(
+        listener_records_consistent=True,
+        connections=4,
+        completed_commands=3,
+        bootstrap_records=bootstrap_records,
+        maintenance_records=maintenance_records,
+        owner_launch_qualified=False,
+        daemon_exit_proven=False,
+        live_qualified=False,
+        fusion_qualified=False,
+    )
+
+
 def read_segmented_wire_records(directory, terminal):
     """Verify producer member index against terminal evidence and raw JSONL.
 
@@ -456,6 +728,214 @@ def audit_wire_protocol_records(*, records, clock, clock_attempts, context):
         owner_transport_qualified=False,
         interval_qualified=False,
         workload_qualified=False,
+        live_qualified=False,
+        fusion_qualified=False,
+    )
+
+
+def audit_wire_interval_records(records, context):
+    """Verify the normal raw rate transaction; no failure cleanup or live grant.
+
+    This is an offline cross-check of the producer's normal bounded command
+    sequence. PinnedCodec and restorable_interval retain the actual wire/PX4
+    conversions. Caller must also verify protocol, owner, clock and shutdown.
+    """
+    from tools.benchmark.openvins_timesync_interval import restorable_interval
+    from tools.benchmark.openvins_timesync_wire import PinnedCodec
+
+    start = context["start_ns"]
+    _integer(start, 0, 2**64 - 300_000_000_000, "interval start")
+    deadline = start + 8_000_000_000
+    if type(records) is not list or not records:
+        raise ValueError("missing raw transaction history")
+    for index, row in enumerate(records):
+        _equal(row["index"], index, "transaction global ordinal")
+    codec = PinnedCodec()
+    commands, states = [], []
+    pending = receive = None
+    sequence = 0
+    acknowledgments = readbacks = 0
+    previous_events = []
+
+    def complete(command):
+        return (
+            command is not None
+            and command["returned"] is not None
+            and command["pending_state"] is not None
+            and command["ack"] is not None
+            and (command["operation"] == "set" or command["readback"] is not None)
+        )
+
+    for row in records:
+        if row["source"] != "wire":
+            continue
+        event, index = row["event"], row["index"]
+        kind, now = event.get("kind"), event.get("at_last_checked_ns")
+        _integer(now, start, context["total_deadline_ns"] - 1, "transaction event time")
+        if kind in ("interval_send_attempt", "reply_prepared"):
+            _equal(event["sequence"], sequence, "shared outgoing sequence")
+            sequence = (sequence + 1) % 256
+        if kind == "interval_send_attempt":
+            if len(commands) >= 6 or pending is not None and not complete(pending):
+                raise ValueError("command before prior raw responses completed")
+            _integer(now, start, deadline - 1, "command startup deadline")
+            raw = codec.encode_interval_command(event["operation"], event["value"], event["sequence"])
+            _equal(event["raw_hex"], raw.hex(), "raw command encoding")
+            _equal(event["peer"], ["127.0.0.1", 14588], "command peer")
+            pending = dict(
+                operation=event["operation"],
+                value=event["value"],
+                command=511 if event["operation"] == "set" else 510,
+                attempt_index=index,
+                attempt_ns=now,
+                raw_bytes=len(raw),
+                returned=None,
+                pending_state=None,
+                phase=None,
+                ack=None,
+                readback=None,
+                last_response_index=None,
+            )
+            commands.append(pending)
+        elif kind == "interval_send_return":
+            if pending is None or pending["returned"] is not None:
+                raise ValueError("unexpected command return")
+            _equal(event["count"], pending["raw_bytes"], "command send length")
+            _integer(event["send_started_ns"], pending["attempt_ns"], deadline - 1, "command send start")
+            _integer(
+                event["returned_ns"],
+                event["send_started_ns"],
+                min(deadline, event["send_started_ns"] + 2_000_000_000) - 1,
+                "command return deadline",
+            )
+            pending["returned"] = event["returned_ns"]
+        elif kind == "receive":
+            receive = event
+        elif kind == "decoded":
+            if receive is None:
+                raise ValueError("decoded transaction input without raw bytes")
+            decoded = codec.decode_datagram(bytes.fromhex(receive["raw_hex"]))
+            _equal(decoded, event["messages"], "transaction decoded bytes")
+            for message in decoded:
+                if message["system"] != 9 or message["component"] != 1:
+                    raise ValueError("unexpected interval input identity")
+                if message["type"] == "HEARTBEAT":
+                    fields = message["fields"]
+                    if fields["autopilot"] != 12 or fields["mavlink_version"] != 3 or not 0 <= fields["base_mode"] < 128:
+                        raise ValueError("unarmed PX4 heartbeat required")
+                if message["type"] not in ("COMMAND_ACK", "MESSAGE_INTERVAL"):
+                    continue
+                if pending is None or pending["returned"] is None or pending["pending_state"] is None:
+                    raise ValueError("response without sent command and original pending deadline")
+                bound = pending["pending_state"]
+                _integer(receive["received_ns"], pending["returned"], bound["deadline_ns"] - 1, "response receive deadline")
+                _integer(now, receive["received_ns"], bound["deadline_ns"] - 1, "response processing deadline")
+                response = codec.interval_response(message)
+                if response["kind"] == "ack":
+                    if pending["ack"] is not None:
+                        raise ValueError("duplicate command ACK")
+                    _equal(response["command"], pending["command"], "ACK command")
+                    _equal(response["result"], 0, "accepted ACK")
+                    pending["ack"] = response
+                    acknowledgments += 1
+                else:
+                    if pending["operation"] != "get" or pending["readback"] is not None:
+                        raise ValueError("unsolicited or duplicate readback")
+                    pending["readback"] = restorable_interval(response["interval_us"])
+                    readbacks += 1
+                pending["last_response_index"] = index
+            receive = None
+        elif kind == "interval_state":
+            state = event["state"]
+            for key, value in dict(
+                primary_failure=None,
+                terminal_failure=None,
+                restore_failures=[],
+                terminal_pending=None,
+                cleanup_deadline_ns=None,
+                candidate_us=10000,
+                network_authorized=False,
+                live_rate_qualified=False,
+                fusion_qualified=False,
+            ).items():
+                _equal(state.get(key), value, "normal interval state " + key)
+            history = state["events"]
+            if type(history) is not list or len(history) > 96 or len(history) < len(previous_events):
+                raise ValueError("invalid interval history")
+            _equal(history[: len(previous_events)], previous_events, "interval event history prefix")
+            previous_events = history
+            bound = state["pending"]
+            if bound is not None:
+                _shape(bound, ("command", "sent_ns", "deadline_ns", "ack", "interval_us"), "pending command")
+                if pending is None or pending["returned"] is None:
+                    raise ValueError("pending state without raw send")
+                _equal(bound["command"], pending["command"], "pending command identity")
+                _integer(bound["sent_ns"], start, pending["attempt_ns"], "original command reservation time")
+                _equal(bound["deadline_ns"], min(deadline, bound["sent_ns"] + 2_000_000_000), "original operation deadline")
+                if pending["returned"] >= bound["deadline_ns"]:
+                    raise ValueError("command return after original operation deadline")
+                if pending["pending_state"] is None:
+                    if pending["ack"] is not None or pending["readback"] is not None:
+                        raise ValueError("pending deadline supplied after response")
+                    pending["pending_state"] = copy.deepcopy(bound)
+                    pending["phase"] = state["phase"]
+                else:
+                    for key in ("command", "sent_ns", "deadline_ns"):
+                        _equal(bound[key], pending["pending_state"][key], "immutable pending " + key)
+                    _equal(state["phase"], pending["phase"], "pending phase")
+            elif pending is not None and not complete(pending):
+                raise ValueError("state discarded incomplete raw transaction")
+            states.append(row)
+    if not complete(pending) or not states or not commands:
+        raise ValueError("incomplete raw rate transaction")
+    baseline = restorable_interval(commands[0]["readback"])
+    if baseline == 10000:
+        pattern = [("baseline", "get", None, baseline), ("final", "get", None, baseline)]
+    else:
+        pattern = [
+            ("baseline", "get", None, baseline),
+            ("apply", "set", 10000, None),
+            ("apply_readback", "get", None, 10000),
+            ("restore", "set", baseline, None),
+            ("restore_readback", "get", None, baseline),
+            ("final", "get", None, baseline),
+        ]
+    _equal(len(commands), len(pattern), "normal command count")
+    for command, (phase, operation, value, readback) in zip(commands, pattern):
+        for key, expected in dict(phase=phase, operation=operation, value=value, readback=readback).items():
+            _equal(command[key], expected, "raw transaction " + key)
+        if not complete(command):
+            raise ValueError("missing raw transaction response")
+    cold_finished = [r["index"] for r in records if r["source"] == "cold" and r["event"]["kind"] == "stream_finished"]
+    maintenance = [r["index"] for r in records if r["source"] == "wire" and r["event"]["kind"] == "maintenance_bound"]
+    replies = [r["index"] for r in records if r["source"] == "wire" and r["event"]["kind"] == "reply_prepared"]
+    if len(cold_finished) != 1 or len(maintenance) != 1 or not replies:
+        raise ValueError("missing unique body/handoff boundary")
+    before_body = commands[0 if baseline == 10000 else 2]
+    restore_or_final = commands[1 if baseline == 10000 else 3]
+    if not before_body["last_response_index"] < replies[0] < cold_finished[0] < restore_or_final["attempt_index"]:
+        raise ValueError("apply/body/restore causal order")
+    terminal = states[-1]
+    if not pending["last_response_index"] < terminal["index"] < maintenance[0]:
+        raise ValueError("restoration did not precede maintenance handoff")
+    for key, value in dict(
+        phase="done",
+        pending=None,
+        baseline_us=baseline,
+        final_us=baseline,
+        mutation_attempted=baseline != 10000,
+        restore_attempted=baseline != 10000,
+        modeled_transaction_pass=True,
+    ).items():
+        _equal(terminal["event"]["state"][key], value, "terminal raw/state agreement " + key)
+    return dict(
+        interval_consistent=True,
+        baseline_us=baseline,
+        candidate_us=10000,
+        command_count=len(commands),
+        ack_count=acknowledgments,
+        readback_count=readbacks,
+        owner_transport_qualified=False,
         live_qualified=False,
         fusion_qualified=False,
     )

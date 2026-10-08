@@ -20,13 +20,21 @@ class ProtocolAuditTests(unittest.TestCase):
         cls.evidence = cls.build_records(Path(cls.directory.name) / "segments")
 
     @staticmethod
-    def build_records(directory, *, rejected_first_maintenance=False):
+    def build_records(directory, *, rejected_first_maintenance=False, baseline_us=100000):
         store = SegmentedWireJournal(directory)
         case = fixture.ObservedIntervalTests("runTest")
         case.setUp(retention=store)
-        case.configured()
+        if baseline_us == 10000:
+            case.query(10000)
+        elif baseline_us == 100000:
+            case.configured()
+        else:
+            raise ValueError("fixture baseline unsupported")
         case.complete_listener()
-        case.restored()
+        if baseline_us == 10000:
+            case.query(10000)
+        else:
+            case.restored()
         case.obj.begin_maintenance(300_000_000_010)
         case.f.backend.connections.append(Connection([status(499, 1)]))
         case.obj.poll_listener()

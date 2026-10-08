@@ -87,8 +87,31 @@ entire study. In particular, a matching modeled status requires later joins to
 the original owned listener transport, and interval state summaries require
 their own raw command/ACK/readback audit.
 
-Remaining Task 2 work: actual owner/descriptor/listener transport joins, raw
-interval apply/readback/restore and cleanup, ULog/source/native/runtime evidence,
-startup-only negative fixture, and complete study adapter/structured audit.
+The subsequent `audit_wire_interval_records` helper checks normal baseline GET,
+optional SET/readback, bootstrap, restoration SET/readback and final GET against
+actual pinned decoded command/ACK/interval messages. It checks original pending
+deadlines, shared outgoing sequence and maintenance ordering; no-mutation baseline
+10000 us still requires final GET. Twelve missing/corrupt evidence cases refuse.
+Failure-time restoration remains separate and unqualified.
+
+`audit_owned_listener_records` joins all four connection/owner/peer observations
+and exact command bytes/returns to daemon raw response envelopes, parsed EOF or
+maintenance cancellation and cold/maintenance consumer records. Every listener
+event must match its owned transport mirror with command index and order; both
+status mirrors must remain exact. It uses the existing production parsers.
+Sixteen independent negative cases refuse; bool-as-int transport command index
+acceptance was reproduced then fixed. Normal 500-record bootstrap plus three
+maintenance records (one boundary, two new responses) passes only consistency.
+
+The listener retains no per-operation kernel descriptor ID and does not log every
+owner recheck. SO_PEERCRED observations are not fresh-launch or non-transfer proof.
+The cancellation wrapper time is the last checked cleanup clock; socket close
+return is not daemon exit. Full workload, runtime binding and owned cleanup must
+still substantiate an actual capture independently. All live/fusion flags remain
+false, and these tests are fake-I/O producer fixtures rather than actual captures.
+
+Remaining Task 2 work: actual launch/descriptor/runtime joins, full normal/failure
+cleanup, ULog/source/native evidence, startup-only negative fixture, and complete
+study adapter/structured audit.
 The whole-package independent review remains pending after Tasks 2–3. No physical
 or network experiment has been run in this implementation step.

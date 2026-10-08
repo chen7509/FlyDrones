@@ -3,9 +3,10 @@
 ## Current outcome
 
 The next unarmed communication study has a committed specification and offline
-implementation plan. The prospective validator, raw-chain auditor and actual
-prepared dispatch package are **not implemented by this documentation stage**.
-No new physical, network or estimator run occurred. Fusion remains false.
+implementation plan. The prospective validator and several raw-chain consistency
+checks are implemented and tested. The full study auditor and actual prepared
+dispatch package remain unfinished. No new physical, network or estimator run
+occurred in this preparation work. Fusion remains false.
 
 The immediately preceding installed startup preflight is now sealed in
 `evidence/installed-wire-startup-dev-1701.zip`, SHA256
@@ -110,11 +111,51 @@ without installing dependencies. The synthetic fixture's remote origin is 1 ms,
 not the prospective 0/0 profile, and its clock disk-shaped attempts are explicitly
 reconstructed test data. No installed/live qualification follows from this test.
 
-Actual owner/descriptor/listener transport joins, raw interval restoration,
-workload/shutdown qualification and the study audit entry point remain unfinished.
+At that protocol-only increment, owner/descriptor/listener transport joins, raw
+interval restoration, workload/shutdown and the study entry point were unfinished.
 All live, fusion, transport-ownership, interval and workload qualification flags
 from the protocol helper remain false; only supplied protocol consistency is
 checked. No physical/UDP/native-estimator run was started.
+
+### Subsequent interval and listener increment
+
+The two raw joins above now have separate offline helpers. Interval auditing
+decodes the actual command/ACK/readback bytes with the existing pinned codec,
+checks pending deadlines and common outgoing sequence, and requires baseline
+restoration before maintenance. It also accepts the production no-mutation path
+when the original interval already equals 10000 us, but still requires final
+readback. Twelve altered or missing-evidence cases refuse. This is the normal
+transaction path, not a completed audit of failure-time restoration.
+
+Listener auditing joins each of four recorded connection/peer observations,
+allowed command bytes and send returns, daemon byte envelopes and EOF, decoded
+snapshots/stream chunks, coordinator records and their redundant journal copies.
+It reuses ReplyEnvelope, TimesyncListenerDecoder and parse_snapshot. Sixteen
+negative cases include wrong peer/process/path, missing copies or EOF, altered
+raw status, command bytes/count, terminal/clock and cancellation failures. A
+behavioral RED exposed bool-as-int command indices; strict integer validation
+now refuses them. The initial missing-API RED and first implementation's incorrect
+cancellation schema assumption are retained separately. Cancellation events have
+no own timestamp: their wrapper retains the last checked cleanup clock, not a
+new observation of socket-close time.
+
+The combined WSL suite passed **21 unittest methods** in 31.565 s, including the
+interval/listener helpers, protocol regression and existing observed-interval
+tests. Negative subcases are inside methods, not additional independent method
+counts. The separate Windows reader/storage/prospective regression passed 72
+cases in 8.55 s; these overlap earlier checks and are not summed into a new unique
+total. Changed-file Ruff passed. No live sockets, simulator, PX4 or estimator
+were started. Tests use explicitly injected I/O and synthetic clock records.
+The existing listener-transport, owned-bootstrap and listener-decoder regression
+suite also passed 356 cases in 3.19 s; it exercises the reused producer parsers.
+
+These helpers report record consistency only. The producer does not journal every
+owner recheck or a kernel descriptor ID for each listener operation; matching
+SO_PEERCRED/owner observations cannot prove a fresh launch or exclude descriptor
+transfer. Maintenance socket-close evidence does not prove daemon process exit.
+The actual runtime/descriptor/launch binding, complete workload and cleanup,
+startup-only refusal and whole-study adapter remain open, followed by Task 3's
+installed preparation and whole-package review. No overall Task 2 pass is claimed.
 
 The broader goal remains open: actual VIO-to-EKF2 fusion, complete fruit-fly
 learning/division in that closed loop, fair upstream comparison, 5/20-aircraft
