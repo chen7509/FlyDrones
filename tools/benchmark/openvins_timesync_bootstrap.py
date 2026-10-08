@@ -65,6 +65,8 @@ class ColdTimesyncBootstrap:
         self._lock = Lock()
         self._observer = SerialTimesyncObserver(session_id, 0)
         self._first = self._last_observer = self._decoder = self._listener = None
+        self._last_status = None
+        self._continuation_taken = False
         self._seen = 0
 
     @property
@@ -75,6 +77,7 @@ class ColdTimesyncBootstrap:
     def progress(self):
         count = 0 if self._last_observer is None else self._last_observer['modeled_accepted_samples']
         return dict(phase=self._phase, failure=self._fault, stream_records_seen=self._seen,
+                    continuation_taken=self._continuation_taken,
                     modeled_accepted_samples=count, modeled_bootstrap_ready=self._phase == 'done' and self._fault is None,
                     live_convergence_qualified=False, network_authorized=False, fusion_qualified=False)
 
@@ -84,15 +87,17 @@ class ColdTimesyncBootstrap:
         raise ValueError(reason)
 
     @contextmanager
-    def _step(self, now_ns, epoch_token):
+    def _step(self, now_ns, epoch_token, *, transfer=False):
         if not self._lock.acquire(blocking=False):
             self._fail('concurrent bootstrap transition')
         had_fault = self._fault is not None
         try:
             if self._fault is not None:
                 raise ValueError('bootstrap failure latched: ' + self._fault)
-            if self._phase == 'done':
+            if self._phase == 'done' and not transfer:
                 self._fail('bootstrap already finished')
+            if transfer and self._continuation_taken:
+                self._fail('bootstrap continuation already taken')
             if type(epoch_token) is not str or epoch_token != self._epoch:
                 self._fail('PX4 epoch comparison tag changed')
             if type(now_ns) is not int or not self._now <= now_ns < 2**64:
@@ -103,7 +108,7 @@ class ColdTimesyncBootstrap:
             if now_ns - self._last_progress >= self.PROGRESS_NS:
                 self._fail('bootstrap progress timeout')
             self._observer.check(now_ns)
-            if self._decoder is not None:
+            if self._decoder is not None and self._phase != 'done':
                 self._decoder.check(now_ns)
             yield
         except BaseException as exc:
@@ -175,6 +180,7 @@ class ColdTimesyncBootstrap:
                 self._fail('first status did not produce one accepted sample')
             self._record('first_status', raw_hex=raw.hex(), snapshot=parsed, observer=observed)
             self._first = parsed['status']
+            self._last_status = copy.deepcopy(parsed['status'])
             self._observer, self._last_observer = predicted, observed
             self._advance('first_confirmed')
             return self.progress
@@ -219,6 +225,7 @@ class ColdTimesyncBootstrap:
                     observed = predicted.observe_status(row, now_ns)
                     self._record('stream_status', status=row, observer=observed)
                     self._observer, self._last_observer = predicted, observed
+                    self._last_status = copy.deepcopy(row)
                 self._seen += 1
                 self._advance('finish_pending' if self._seen == self._expected else 'stream_ready')
             return self.progress
@@ -233,3 +240,27 @@ class ColdTimesyncBootstrap:
             self._record('stream_finished', terminal=terminal, observer=self._last_observer)
             self._advance('done')
             return self.progress
+
+    def take_continuation(self, listener_token, deadline_ns, journal, *, now_ns, epoch_token):
+        """One-time internal filter handoff; no transport/clock qualification grant."""
+        from tools.benchmark.openvins_timesync_maintenance import _TimesyncMaintenance
+
+        with self._step(now_ns, epoch_token, transfer=True):
+            self._require('done')
+            if (not _token(listener_token) or listener_token == self._listener
+                    or type(deadline_ns) is not int or not now_ns < deadline_ns <= self._start + 300_000_000_000
+                    or not callable(journal) or self._last_status is None
+                    or not self._last_observer['observed_model_converged']):
+                self._fail('invalid continuation identity/deadline/journal or unconverged bootstrap')
+            self._record('continuation_transfer_attempt', listener_token=listener_token, deadline_ns=deadline_ns)
+            # Construction journals before this object gives up the observer.
+            # A raised/reentrant journal leaves no usable continuation to return.
+            continuation = _TimesyncMaintenance(
+                self._observer, self._last_status, self._last_observer, listener_token,
+                self._epoch, now_ns, deadline_ns, journal, lambda: self._fault)
+            if self._fault is not None:
+                raise ValueError('bootstrap failure during transfer journal')
+            self._record('continuation_transferred', listener_token=listener_token, deadline_ns=deadline_ns)
+            self._observer = None
+            self._continuation_taken = True
+            return continuation
