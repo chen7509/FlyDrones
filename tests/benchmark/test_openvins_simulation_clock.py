@@ -1,6 +1,7 @@
 """Injected UpdateInfo and journal only; never constructs a simulator/socket."""
 from dataclasses import FrozenInstanceError
 from datetime import timedelta
+from threading import Event, RLock, Thread, current_thread
 from types import SimpleNamespace
 
 import pytest
@@ -221,3 +222,67 @@ def test_session_is_readonly_and_requires_new_object():
         r.lane.session_id = 'replacement'
     with pytest.raises(ValueError):
         JournaledSimulationClock('', lambda: 100, lambda _: None, 100, lambda: None)
+
+
+def test_callback_waiting_for_reader_lock_cannot_become_fresh():
+    r = Rig()
+    reader_inside, writer_entered, release = Event(), Event(), Event()
+    errors = []
+
+    class SignaledStateLock:
+        def __init__(self):
+            self.inner = RLock()
+
+        def __enter__(self):
+            if current_thread() is writer:
+                writer_entered.set()
+            return self.inner.__enter__()
+
+        def __exit__(self, *args):
+            return self.inner.__exit__(*args)
+
+    r.lane._state = SignaledStateLock()
+    def guard():
+        reader_inside.set()
+        if not release.wait(2):
+            raise RuntimeError('test synchronization timeout')
+    r.guard_hook = guard
+    def invoke(fn):
+        try:
+            fn()
+        except Exception as exc:
+            errors.append(str(exc))
+    reader = Thread(target=invoke, args=(r.lane.check,))
+    writer = Thread(target=invoke, args=(lambda: r.lane.post_update(info()),))
+    try:
+        reader.start()
+        assert reader_inside.wait(2)
+        writer.start()
+        assert writer_entered.wait(2)
+        r.now = 3_000_000_100
+    finally:
+        release.set()
+        reader.join(2)
+        if writer.ident is not None:
+            writer.join(2)
+    assert not reader.is_alive() and not writer.is_alive()
+    assert errors and r.lane.evidence['failure']
+    assert not r.lane.evidence['observations']
+
+
+def test_journal_return_clock_reentry_latches_before_publication():
+    r = Rig()
+    armed = False
+    def clock():
+        nonlocal armed
+        if armed:
+            armed = False
+            r.lane.check()
+        return r.now
+    def journal(_):
+        nonlocal armed
+        armed = True
+    r.lane._now, r.hook = clock, journal
+    with pytest.raises(ValueError, match='latched|reentrant'):
+        r.lane.post_update(info())
+    assert not r.lane.evidence['observations']

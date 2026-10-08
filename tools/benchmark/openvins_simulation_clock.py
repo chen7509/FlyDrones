@@ -10,7 +10,7 @@ import copy
 import re
 from dataclasses import asdict, dataclass
 from datetime import timedelta
-from threading import Lock, RLock
+from threading import Lock, RLock, local
 
 from tools.benchmark.owned_daemon_connection import _error
 
@@ -44,6 +44,7 @@ class JournaledSimulationClock:
         self._now, self._journal, self._guard = now, journal, guard
         self._start = self._last_now = start_ns
         self._state, self._writer = RLock(), Lock()
+        self._clock_context = local()
         self._checking = False
         self._latest = self._pending_ns = self._failure = None
         self._observations, self._attempts = [], []
@@ -70,33 +71,45 @@ class JournaledSimulationClock:
                 self._failure = 'simulation clock refusal'
                 self._failure = _error(exc)
 
+    def _read_clock(self):
+        # Per-thread recursion guard: independent reader/writer threads may
+        # sample the same monotonic clock concurrently, but it cannot call back
+        # into this lane recursively, including at journal-return observation.
+        if getattr(self._clock_context, 'active', False):
+            exc = ValueError('reentrant simulation observation clock')
+            self._fail(exc)
+            raise exc
+        self._clock_context.active = True
+        try:
+            return self._now()
+        finally:
+            self._clock_context.active = False
+
     def _clock_locked(self):
         self._open()
-        value = self._now()
+        value = self._read_clock()
         self._open()
         if type(value) is not int or not self._last_now <= value < 2**64:
             raise ValueError('invalid or regressed simulation observation wall clock')
         self._last_now = value
         return value
 
-    def _check_locked(self, *, return_entry=False):
+    def _check_locked(self):
         self._open()
         if self._checking:
             self._fail(ValueError('reentrant clock/guard check'))
             self._open()
         self._checking = True
         try:
-            entry = self._clock_locked()
+            self._clock_locked()
             if self._guard() is not None:
                 raise ValueError('simulation session guard must return None')
             self._open()
             now = self._clock_locked()
-            if return_entry and now - entry >= self.FRESHNESS_NS:
-                raise ValueError('callback entry freshness expired during guard')
             for origin in (self._latest.callback_ns if self._latest else None, self._pending_ns):
                 if origin is not None and now - origin >= self.FRESHNESS_NS:
                     raise ValueError('simulation clock source freshness expired')
-            return entry if return_entry else now
+            return now
         finally:
             self._checking = False
 
@@ -122,11 +135,20 @@ class JournaledSimulationClock:
             raise exc
         attempt = None
         try:
+            # Read before waiting for _state: guard/journal/reader contention
+            # must not move the callback's observed arrival later.
+            callback_ns = self._read_clock()
             with self._state:
-                callback_ns = self._check_locked(return_entry=True)
+                self._open()
+                if (type(callback_ns) is not int or not self._start <= callback_ns < 2**64
+                        or (self._latest and callback_ns < self._latest.callback_ns)):
+                    raise ValueError('invalid callback entry clock')
+                self._pending_ns = callback_ns
+                now = self._check_locked()
+                if callback_ns > now:
+                    raise ValueError('callback entry clock is in the future')
                 if len(self._observations) >= self.MAX_SAMPLES:
                     raise ValueError('simulation clock sample limit')
-                self._pending_ns = callback_ns
                 iteration, sim_time, dt, paused = info.iterations, info.sim_time, info.dt, info.paused
                 sim_ns, dt_ns = self._duration(sim_time), self._duration(dt)
                 if (type(iteration) is not int or iteration != len(self._observations) + 1
