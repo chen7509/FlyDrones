@@ -52,6 +52,15 @@ passed **140 tests**, including capture declaration, resource binding/graph,
 startup auditing and the production capture runner. Changed-file Ruff and
 `git diff --check` passed. This is not a new whole-repository regression claim.
 
+Independent read-only review of `11cb88a..ebe7c03` found no Critical/Important
+issues and two Minor coverage weaknesses. Both were addressed: the ordinary
+capture fixture now fails from `bind()` after checking the intended address/port,
+and preparation failures must match their expected reason and show zero forbidden
+factory/import calls (a swallowed guard assertion cannot satisfy them). These are
+additional GREEN assertions, not production RED/GREEN repairs. Final affected
+regression `regression-v2.txt` again passed **140 tests**; changed Ruff passed.
+The reviewer did not rerun tests or re-review the strengthened assertions.
+
 The new tests call the real parent/worker `main()`, parser, declaration validation,
 file extraction, generated-file copying, frozen configuration validation,
 `RuntimeBinding`, graph scanner, snapshots and `CaptureJournal`. Test pins map
@@ -70,8 +79,8 @@ physical scenes and their failures have not been rerun or changed.
 
 - Verified offline: socket-free startup-preflight branch, accurate preflight
   estimator flag, strict wire declaration and normal/failure entry paths.
-- Still pending: independent review, evidence sealing and publication of this
-  correction; the previous 25 MB archive also remains pending upload.
+- Still pending: evidence sealing and publication of this correction; the
+  previous 25 MB archive also remains pending upload.
 - Not run: actual installed startup-preflight with the new wire declaration,
   live wire synchronization, new physical VIO, ODOMETRY, EKF2 injection, arming,
   learning or multi-aircraft expansion.

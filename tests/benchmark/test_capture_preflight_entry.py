@@ -131,22 +131,25 @@ def setup_entry(tmp_path, monkeypatch, *, preflight=True, wire=True):
 
     monkeypatch.setattr(binding, 'QueryClient', SDK)
     original_import = builtins.__import__
+    forbidden_calls = []
 
     def guarded_import(name, *args, **kwargs):
         if name == 'gz' or name.startswith('gz.') or name.startswith('pymavlink'):
+            forbidden_calls.append('import:' + name)
             raise AssertionError('runtime native import escaped preflight: ' + name)
         return original_import(name, *args, **kwargs)
 
     monkeypatch.setattr(builtins, '__import__', guarded_import)
 
     def forbidden(*_args, **_kwargs):
+        forbidden_calls.append('factory')
         raise AssertionError('network/process factory escaped offline entry')
 
     monkeypatch.setattr(capture.socket, 'socket', forbidden)
     monkeypatch.setattr(capture.subprocess, 'Popen', forbidden)
     monkeypatch.setattr(capture, 'run_capture_runtime', forbidden)
     return SimpleNamespace(output=output, wire=wire_path, declaration=declaration,
-                           generated=generated, required=required, argv=argv)
+                           generated=generated, required=required, argv=argv, forbidden_calls=forbidden_calls)
 
 
 @pytest.mark.parametrize('wire', [False, True])
@@ -159,6 +162,7 @@ def test_preflight_main_has_no_network_or_runtime_side_effects(tmp_path, monkeyp
     assert result['runtime_binding']['owned_phases'] == {'px4': [], 'openvins': []}
     assert result['runtime_binding']['runtime_mapping_coverage_verified'] is False
     assert result['eligible_for_px4_fusion'] is False
+    assert case.forbidden_calls == []
 
 
 def test_preflight_main_does_not_report_planned_estimator_as_executed(tmp_path, monkeypatch):
@@ -196,10 +200,18 @@ def test_preflight_wire_drift_refuses_before_output_or_factories(tmp_path, monke
 def test_ordinary_capture_still_checks_port_before_runtime(tmp_path, monkeypatch):
     case = setup_entry(tmp_path, monkeypatch, preflight=False)
 
-    def busy(*_args):
-        raise OSError('test occupied UDP port')
+    class BusyPort:
+        def __enter__(self):
+            return self
 
-    monkeypatch.setattr(capture.socket, 'socket', busy)
+        def bind(self, endpoint):
+            assert endpoint == ('127.0.0.1', 14548)
+            raise OSError('test occupied UDP port')
+
+        def __exit__(self, *_args):
+            pass
+
+    monkeypatch.setattr(capture.socket, 'socket', lambda *_args: BusyPort())
     with pytest.raises(OSError, match='occupied UDP port'):
         capture.main()
     assert not (case.output / 'launch.json').exists()
@@ -223,7 +235,11 @@ def test_preflight_preparation_failure_stays_failed_without_estimator(tmp_path, 
     assert capture.main() == 2
     result = json.loads((case.output / 'result.json').read_text())
     assert result['status'] == 'capture_failed'
-    assert result['errors']
+    expected = {'calibration': 'frozen configuration/calibration changed',
+                'generated-copy': 'actual generated copy hash mismatch',
+                'sdk-query': 'test SDK query refused'}[failure]
+    assert len(result['errors']) == 1 and expected in result['errors'][0]
+    assert case.forbidden_calls == []
     assert result['estimator_run'] is False
     assert result['eligible_for_vio_input'] is False
     assert result['eligible_for_px4_fusion'] is False
