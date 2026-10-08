@@ -90,3 +90,17 @@ receiver injection, fusion and closed-loop flight remain separate gates.
 Full fruit-fly learning/division, full-model latency, fair upstream comparison,
 multi-aircraft capacity, hardware and flight remain incomplete. This stage does
 not resolve the memory requirement or the five-camera 0.873 versus 0.95 RTF gap.
+
+## Sealed evidence
+
+`evidence/live-wire-explicit-entry-dev-1701.zip` contains 149 members, 1,058,824
+bytes, SHA256 `024de8ba20fc1cfee296b366e7c4d892ef62376a51230697b85f2d4a408b1899`.
+Every member's bytes/hash and ZIP CRC were checked. The source/report copies
+are post-verification copies at 1c12e96; this seal paragraph was added afterward.
+The archive retains v4 and v5, their generators/committed source inventories,
+tests including the first collection failure, reviews, prospective action and
+final offline verification. No historical failure or older evidence was replaced.
+Final host process filtering and WSL selected-resource scan found no matching
+test/PX4/Gazebo/OpenVINS job. This is an observation, not a global process proof.
+Commits and the sealed artifact are local; this report makes no new remote
+publication claim.
