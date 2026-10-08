@@ -57,6 +57,9 @@ filesystem/network/process I/O and returns a defensive normalized copy.
 `validate_live_wire_study_files(manifest_path) -> dict` is a separate read-only
 path/hash adapter; it must not dispatch, import Gazebo runtime or construct a
 socket. Do not overload a study's `prepared` flag into `live_qualified`.
+Reuse only pure shape/value validators in the document layer. Existing
+`capture_contract.validate_declaration`, `execution_contract` and
+`wire_configuration_record` access the filesystem and belong in the file adapter.
 
 - [ ] Read relevant committed capture contracts, installed-startup artifacts and
   the spec. Define exact manifest schema `live-wire-study-v1`, explicit study ID,
@@ -69,12 +72,14 @@ socket. Do not overload a study's `prepared` flag into `live_qualified`.
   endpoint and unknown authority fields. All qualification outputs start false.
 - [ ] Run `python -m pytest tests/benchmark/test_live_wire_study.py -q`; retain
   the actual RED cause, distinguishing missing API from behavior assertions.
-- [ ] Implement the strict pure contract by invoking existing validators and
+- [ ] Implement the strict pure contract by invoking existing pure validators and
   comparing explicit required invariants, never reconstructing lookup order.
   The file adapter must compare exact declared hashes and preserve lexical and
   resolved identities; missing files refuse rather than get omitted.
-- [ ] Add a network/process-import guard test to the file adapter and a failed
-  hash/missing-file case. Run the new tests plus capture-contract regressions;
+- [ ] Add guards against network/process effects and Gazebo runtime imports to
+  the file adapter, plus a failed hash/missing-file case. An ordinary `subprocess`
+  module import through existing validators is allowed; spawning is not. Run the
+  new tests plus capture-contract regressions;
   expect all pass. Commit only explicit files and logs intended for publication.
 
 ### Task 2: Raw chain auditor, with synthetic provenance kept explicit
@@ -91,6 +96,10 @@ pure joins only when needed for unit tests; do not add an alternate live codec.
   lifecycle records and installed-startup artifacts. Bind each required fact to
   its raw source and record any unobservable property as an explicit limitation.
   Synthetic fixture mode is separately named and cannot return live qualification.
+  Preserve the producer's exact bootstrap latest-status replay and maintenance
+  boundary snapshot as allowed non-counting records, with the existing listener
+  ordinal normalization. Include both in the positive fixture; neither supplies
+  an accepted sample or excuses a mismatched/arbitrary duplicate.
 - [ ] Write tests that start with one consistent synthetic record chain and
   independently remove/change the raw request, response tc1, selected clock
   membership, kernel send return, owned status, cold-start evidence, listener
@@ -99,7 +108,8 @@ pure joins only when needed for unit tests; do not add an alternate live codec.
 - [ ] Implement exact manifest/member hashing, sequence and identity joins,
   original clock monotonicity and 1 ms observation coverage, pinned observer
   replay, 500 accepted bootstrap samples and two accepted maintenance pairs.
-  Preserve actual-vs-modeled labels; reject reset/gap/replay instead of rebasing.
+  Preserve actual-vs-modeled labels; reject reset/gap/unexpected replay instead of
+  rebasing. The two explicit non-counting boundary records above are not faults.
 - [ ] Add baseline apply/readback/restore checks with original deadline and
   complete shutdown evidence. Test successful send without receipt, missing
   restore readback, armed input and cleanup failures despite normal summary flags.
