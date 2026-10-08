@@ -102,3 +102,17 @@ separate missing evidence. Existing WSL2 five-camera 0.873 RTF remains below
 0.95; no native Linux installation, HITL or real flight is claimed. Previously
 retained remote upload failures remain a publication limitation; this stage
 does not retry a large push, rewrite history or bypass TLS.
+
+## Sealed evidence
+
+`evidence/connectome-inference-adapter-dev-1701.zip` contains 41 members,
+94,862 bytes, SHA256
+`f245d88a9b7b273b4ddd1bc8cfd06a5bb626a5504fb4adf13e12910e68d98c5d`.
+Every member's bytes/hash and ZIP CRC were checked. It includes API-presence
+RED logs, targeted and whole-suite results, independent review disposition,
+post-test resource refusal, historical baseline identity, source copies and
+next-dependency notes. Source/document copies are post-verification snapshots,
+not runtime pre/post evidence. The bundled report precedes this seal paragraph;
+its ledger still labels sealing as pending, superseded by this verified archive
+record. Source and archive remain local pending the existing publication issue.
+This completes the bounded adapter plan, not the overall FlyDrones objective.
