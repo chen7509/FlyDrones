@@ -8,6 +8,35 @@ checks are implemented and tested. The full study auditor and actual prepared
 dispatch package remain unfinished. No new physical, network or estimator run
 occurred in this preparation work. Fusion remains false.
 
+The latest increment adds `audit_live_wire_study(study_path)` and cross-file
+wire/runtime/supervisor identity joins. It invokes available raw auditors and
+returns staged refusals, consumed-file hashes and explicit unverified gates.
+Task 2 still lacks physical/reference/fast coverage, health/watchdog/motion/gauge
+joins, resource graph/CameraInfo decoding and a complete positive study fixture.
+Task 3's installed executor/package and whole-package review remain pending.
+
+A byte-identical actual startup-only result (SHA256
+`bea9ffb42b6a412ab757f1ad1d036e8db17c4871d63e17fec2441dcaeb6d930c`) says
+`capture_completed` but has `estimator_run=false`. Under a synthetic valid study
+manifest it is explicitly rejected without an audit-file write or process/socket.
+Cross-file negatives change PID, executable inode, birth ticks, namespace/group,
+lifecycle mirrors, clock/configuration/deadline, dispatch command/seed/manifest
+and native command/configuration. File-routing positives use named leaf doubles;
+they are not a complete positive raw chain or a live result.
+
+Initial missing-API REDs were followed by 153 related Windows tests in 29.69s
+and eight pinned-codec WSL unittest methods in 28.791s. Behavioral REDs exposed
+the wrong ULog manifest shape, an unstructured malformed-file-index error,
+binary-only native-command checking, numeric startup-flag acceptance and an
+overly broad file-verification flag. All were corrected; the final 51 targeted
+tests passed in 20.53s. Counts overlap and are not a new full-repository total.
+Changed Ruff passed after one test-import ordering fix; diff-check passed.
+
+An installed Python symlink was read/hash-checked without execution; an independent
+same-content retarget refused. This is ordinary drift detection, not atomic or
+hostile-ABA protection. No dispatcher was activated, existing physical input was
+not modified, no full-repository pass is claimed, and publication remains local.
+
 The immediately preceding installed startup preflight is now sealed in
 `evidence/installed-wire-startup-dev-1701.zip`, SHA256
 `b9c25ae47336904033c9d557b04e66bf9b57dae70e6eb837ce4c85af8b0092de`:

@@ -10,6 +10,7 @@ import copy
 import hashlib
 import json
 import math
+import stat
 from pathlib import Path
 
 from tools.benchmark.capture_contract import _typed_equal, _unique_pairs
@@ -57,6 +58,400 @@ def _read_stable(path, maximum):
     _equal(len(data), before["bytes"], "evidence read length")
     _equal(hashlib.sha256(data).hexdigest(), before["sha256"], "evidence read hash")
     return data, before
+
+
+class StudyEvidenceReader:
+    """Bounded stable reads; no output creation, launch or network operation."""
+
+    def __init__(self):
+        self.files, self.total = {}, 0
+
+    def raw(self, path, maximum=64 * 1024 * 1024):
+        path = Path(path)
+        if len(self.files) >= 10000 or self.total > 2 * 1024**3:
+            raise ValueError("study evidence read budget exceeded")
+        raw, identity = _read_stable(path, maximum)
+        self.total += len(raw)
+        if self.total > 2 * 1024**3:
+            raise ValueError("study evidence read budget exceeded")
+        key = str(path)
+        if key in self.files:
+            _equal(identity, self.files[key], "repeated file identity")
+        self.files[key] = identity
+        return raw
+
+    def document(self, path):
+        return _json(self.raw(path))
+
+    def declared_file(self, expected):
+        # Declared executables may be symlinks (e.g. /usr/bin/python3). Check
+        # their complete declared chain, read the canonical regular target and
+        # recheck the original chain. Ordinary evidence members still disallow
+        # final symlinks. Neither operation is hostile-ABA protection.
+        requested = expected["requested"]
+        _equal(file_record(requested), expected, "declared input identity")
+        raw = self.raw(expected["resolved"])
+        _equal(hashlib.sha256(raw).hexdigest(), expected["sha256"], "declared input hash")
+        _equal(file_record(requested), expected, "declared input after read")
+        self.files[requested] = expected
+        return raw
+
+    def lines(self, path, maximum_rows=30000):
+        raw = self.raw(path)
+        if not raw or not raw.endswith(b"\n"):
+            raise ValueError("missing or unterminated JSONL")
+        lines = raw.splitlines()
+        if len(lines) > maximum_rows or any(not line for line in lines):
+            raise ValueError("invalid JSONL count/blank row")
+        return [_json(line) for line in lines]
+
+    def member(self, root, relative):
+        root, relative = Path(root), Path(relative)
+        if relative.is_absolute() or ".." in relative.parts or not (root / relative).resolve().is_relative_to(root.resolve()):
+            raise ValueError("capture member escapes evidence root")
+        return root / relative
+
+    def finish(self):
+        for path, identity in self.files.items():
+            _equal(file_record(path), identity, "final study input identity")
+
+
+def _dispatch_records(manifest, manifest_identity, dispatch, completion):
+    """Prospective record envelope for the existing one-shot execution pattern.
+
+    This is a read-only contract. No dispatcher is created or invoked here.
+    The future preparation must bind the actual executor before activation.
+    """
+    for key, expected in dict(
+        schema="live-wire-study-dispatch-v1",
+        study_manifest=manifest_identity,
+        run_id=manifest["study_id"],
+        role="development",
+        seed=27601,
+        destination=manifest["outputs"]["capture"],
+        command=manifest["command"],
+        resources_before=[],
+        single_actual_attempt=True,
+        physical_run=True,
+        fusion_eligible=False,
+    ).items():
+        if key not in dispatch:
+            raise ValueError("missing dispatch field: " + key)
+        _equal(dispatch[key], expected, "dispatch " + key)
+    _integer(dispatch.get("started_wall_ns"), 1, 2**63 - 1, "dispatch wall time")
+    for key, expected in dict(
+        schema="live-wire-study-completion-v1",
+        run_id=manifest["study_id"],
+        destination=manifest["outputs"]["capture"],
+        destination_exists=True,
+        command_returncode=0,
+        launcher_returncode=0,
+        launcher_error=None,
+        resources_after=[],
+        physical_run=True,
+        fusion_eligible=False,
+    ).items():
+        if key not in completion:
+            raise ValueError("missing completion field: " + key)
+        _equal(completion[key], expected, "completion " + key)
+    _integer(completion.get("ended_wall_ns"), dispatch["started_wall_ns"], 2**63 - 1, "completion wall time")
+    return dict(records_consistent=True, executor_identity_attested=False, single_attempt_independently_proven=False)
+
+
+def audit_live_wire_study(study_path):
+    """Read actual study files and compose available auditors, failing closed.
+
+    Task 2 still lacks the final physical/health/dispatch-producer joins and
+    whole-package positive fixture. Those remain explicit unverified gates;
+    this entry cannot yet return whole-study/live qualification.
+    """
+    from tools.benchmark.audit_live_wire_runtime import audit_runtime_mapping_records
+    from tools.benchmark.audit_live_wire_ulog import audit_unarmed_ulog
+    from tools.benchmark.audit_live_wire_workload import audit_source_native_records
+    from tools.benchmark.live_wire_study import DOC_ROLES, FILE_ROLES, _file, validate_live_wire_study
+    from tools.benchmark.native_supervisor_integration import audit_supervisor
+
+    reader, checks, refusals = StudyEvidenceReader(), {}, []
+    stage = "documents"
+    try:
+        path = Path(study_path)
+        if path.is_dir():
+            path = path / "study-manifest.json"
+        manifest = reader.document(path)
+        if type(manifest) is not dict:
+            raise ValueError("study manifest must be an object")
+        _shape(manifest.get("files"), FILE_ROLES, "study input file index")
+        documents = {}
+        for role, expected in manifest["files"].items():
+            _file(expected)
+            raw = reader.declared_file(expected)
+            if role in DOC_ROLES:
+                documents[role] = _json(raw)
+        validated = validate_live_wire_study(manifest, **documents)
+        checks[stage] = {key: value for key, value in validated.items() if key != "manifest"}
+        checks[stage]["manifest_file_records_verified"] = True
+        checks[stage]["full_dependency_inventory_read"] = False
+        capture = Path(manifest["outputs"]["capture"])
+        stage = "capture"
+        result = reader.document(reader.member(capture, "result.json"))
+        _completed_capture(result)
+        checks[stage] = dict(normal_terminal_record=True, physical_workload_independently_proven=False)
+        stage = "dispatch"
+        checks[stage] = _dispatch_records(
+            manifest,
+            reader.files[str(path)],
+            reader.document(manifest["outputs"]["dispatch"]),
+            reader.document(manifest["outputs"]["completion"]),
+        )
+        stage = "runtime"
+        pre = reader.document(reader.member(capture, "runtime-binding-pre.json"))
+        post = reader.document(reader.member(capture, "runtime-binding-post.json"))
+        declaration = documents["binding"]
+        maps, owners = {}, {}
+        for phase in ["postgraph", "bootstrap", *declaration["runtime_maps"]["self_phases"]]:
+            name = "runtime-maps-" + phase
+            maps[name] = dict(
+                raw=reader.raw(reader.member(capture, name + ".txt")).decode("utf8"),
+                summary=reader.document(reader.member(capture, name + ".json")),
+            )
+        for role, phases in declaration["runtime_maps"]["owned_roles"].items():
+            owners[role] = reader.document(reader.member(capture, "runtime-owner-" + role + ".json"))
+            for phase in phases:
+                name = "runtime-maps-" + role + "-" + phase
+                maps[name] = dict(
+                    raw=reader.raw(reader.member(capture, name + ".txt")).decode("utf8"),
+                    summary=reader.document(reader.member(capture, name + ".json")),
+                )
+        checks[stage] = audit_runtime_mapping_records(
+            declaration=declaration,
+            pre=pre,
+            post=post,
+            summary=result["runtime_binding"],
+            maps=maps,
+            owners=owners,
+            process=reader.document(reader.member(capture, "process.json")),
+        )
+        stage = "cleanup"
+        checks[stage] = audit_supervisor(
+            reader.document(reader.member(capture, "supervisor.json")),
+            reader.lines(capture.parent / (capture.name + ".supervisor-events.jsonl")),
+            profile="normal-capture-v1",
+        )
+        _equal(checks[stage]["qualified"], True, "normal raw supervisor audit")
+        stage = "capture_identity"
+        lifecycle = reader.document(reader.member(capture, "wire-lifecycle.json"))
+        checks[stage] = audit_wire_capture_identity(
+            result=result,
+            wire_owner=reader.document(reader.member(capture, "wire-owner.json")),
+            lifecycle=lifecycle,
+            wire_config=documents["wire_config"],
+            runtime=checks["runtime"],
+            pre=pre,
+            cleanup=checks["cleanup"],
+        )
+        context, session = checks[stage]["context"], lifecycle["session"]
+        stage = "segments"
+        retained = read_segmented_wire_records(reader.member(capture, "wire-segments"), session["retention"])
+        for identity in retained["members"]:
+            reader.files[identity["requested"]] = identity
+        checks[stage] = dict(integrity_verified=retained["integrity_verified"], channels=retained["channels"])
+        records = retained["records"]
+        stage = "protocol"
+        checks[stage] = audit_wire_protocol_records(
+            records=records,
+            clock=session["clock"],
+            context=context,
+            clock_attempts=reader.lines(reader.member(capture, "wire-clock.jsonl")),
+        )
+        stage = "interval"
+        checks[stage] = audit_wire_interval_records(records, context)
+        stage = "listener"
+        checks[stage] = audit_owned_listener_records(records=records, context=context, daemon_path="/tmp/px4-sock-8")
+        stage = "source_native"
+        sources = reader.lines(reader.member(capture, "events.jsonl"))
+        payloads = {}
+        for row in sources:
+            if row["kind"] not in ("info", "rgb"):
+                continue
+            _integer(row.get("source_sequence"), 0, 30000, "payload source sequence")
+            _integer(row.get("sample_ns"), 1, 25_000_000_000, "payload sample")
+            if row["source_sequence"] in payloads:
+                raise ValueError("duplicate payload identity")
+            if row["kind"] == "rgb":
+                raw = reader.raw(reader.member(capture, "rgb-frames/" + str(row["sample_ns"]) + ".ppm"), 57617)
+                header = b"P6\n160 120\n255\n"
+                if not raw.startswith(header):
+                    raise ValueError("unexpected retained RGB header")
+                payloads[row["source_sequence"]] = raw[len(header) :]
+            else:
+                _equal(row["payload_path"], "camera-info-messages/" + str(row["sample_ns"]) + ".pb", "CameraInfo path")
+                payloads[row["source_sequence"]] = reader.raw(reader.member(capture, row["payload_path"]), 1024 * 1024)
+        native_session = reader.document(reader.member(capture, "shadow/native-session.json"))
+        _equal(native_session["pid"], checks["runtime"]["owners"]["openvins"]["pid"], "actual native process")
+        _equal(
+            native_session["command"],
+            [
+                documents["execution"]["inputs"]["shadow_binary"],
+                documents["execution"]["inputs"]["shadow_config"],
+                str(capture / "shadow/states.jsonl"),
+                str(capture / "shadow/fast.jsonl"),
+            ],
+            "actual native command and configuration",
+        )
+        checks[stage] = audit_source_native_records(
+            sources=sources,
+            payloads=payloads,
+            fanout=reader.lines(reader.member(capture, "source-fanout.jsonl")),
+            requests=reader.lines(reader.member(capture, "shadow/native-requests.jsonl")),
+            acknowledgements=reader.lines(reader.member(capture, "shadow/native-acks.jsonl")),
+            states=reader.lines(reader.member(capture, "shadow/states.jsonl")),
+            terminal=reader.document(reader.member(capture, "shadow/shadow-input-result.json")),
+            session_id="online-native-" + str(native_session["pid"]),
+        )
+        stage = "ulog"
+        ulog_manifest = reader.document(reader.member(capture, "px4-ulog-manifest.json"))
+        _shape(ulog_manifest, ("schema", "logs"), "ULog manifest")
+        _equal(ulog_manifest["schema"], "flydrones-px4-ulog-capture-v1", "ULog schema")
+        entries = ulog_manifest["logs"]
+        _equal(entries, result["px4_ulogs"], "ULog manifest/result mirror")
+        if type(entries) is not list or len(entries) != 1:
+            raise ValueError("one owned PX4 ULog required")
+        entry = entries[0]
+        checks[stage] = audit_unarmed_ulog(reader.raw(reader.member(capture, entry["path"]), 512 * 1024 * 1024), entry)
+    except (ValueError, OSError, TypeError, KeyError, ImportError, RuntimeError, OverflowError) as exc:
+        refusals.append(dict(stage=stage, reason=repr(exc)))
+    try:
+        reader.finish()
+    except (ValueError, OSError) as exc:
+        refusals.append(dict(stage="final_input_integrity", reason=repr(exc)))
+    return dict(
+        schema="live-wire-study-audit-v1",
+        checks=checks,
+        refusals=refusals,
+        consumed_files=reader.files,
+        unverified=[
+            "prospective executor/producer attestation",
+            "physical/reference and fast-output coverage",
+            "health, source-watchdog, motion-authority and gauge joins",
+            "resource graph and CameraInfo decode",
+            "complete positive study fixture and whole-package review",
+        ],
+        record_chain_qualified=False,
+        live_qualified=False,
+        fusion_qualified=False,
+    )
+
+
+def _completed_capture(result):
+    if (
+        type(result) is not dict
+        or result.get("startup_preflight_only") is True
+        or result.get("startup_preflight_completed") is True
+    ):
+        raise ValueError("startup-only evidence cannot qualify a live study")
+    for key in ("startup_preflight_only", "startup_preflight_completed"):
+        if key in result:
+            _equal(result[key], False, "normal capture " + key)
+    for key, expected in dict(
+        status="capture_completed",
+        errors=[],
+        estimator_run=True,
+        end_sim_ns=25_000_000_000,
+        eligible_for_px4_fusion=False,
+        px4_exit_code=0,
+    ).items():
+        if key not in result:
+            raise ValueError("missing completed capture field: " + key)
+        _equal(result[key], expected, "capture " + key)
+
+
+def audit_wire_capture_identity(*, result, wire_owner, lifecycle, wire_config, runtime, pre, cleanup):
+    """Compose raw runtime/cleanup audits with the recorded wire owner.
+
+    runtime/cleanup are internal audit results, not trusted external summaries.
+    A header FD observation is not authentication of every UDP sender.
+    """
+    from tools.benchmark.owned_daemon_connection import validate_owner
+
+    _completed_capture(result)
+    _equal(result.get("wire_lifecycle"), lifecycle, "terminal lifecycle mirror")
+    _shape(wire_owner, ("owner", "descriptor", "configuration", "start_ns", "total_deadline_ns"), "wire owner")
+    _equal(wire_owner["configuration"], wire_config, "actual wire configuration")
+    owner, descriptor = wire_owner["owner"], wire_owner["descriptor"]
+    validate_owner(owner)
+    _shape(descriptor, ("fd", "device", "inode", "mode", "net"), "wire descriptor")
+    for field in ("fd", "device", "inode", "mode"):
+        _integer(descriptor[field], 0, 2**64 - 1, "descriptor " + field)
+    if not stat.S_ISSOCK(descriptor["mode"]):
+        raise ValueError("original datagram descriptor is not a socket")
+    _equal(descriptor["net"], owner["net"], "owner/socket namespace")
+    start, end = wire_owner["start_ns"], wire_owner["total_deadline_ns"]
+    _integer(start, 1, 2**63 - 1 - 300_000_000_000, "wire start")
+    _equal(end, start + 300_000_000_000, "wire total deadline")
+    _equal(runtime.get("runtime_records_consistent"), True, "raw runtime audit")
+    observed_owner = runtime["owners"]["px4"]
+    for field in ("pid", "pgrp", "session", "start_ticks"):
+        _equal(owner[field], observed_owner[field], "wire/runtime " + field)
+    _equal(owner["exe"], observed_owner["executable"], "wire/runtime executable")
+    selected = [row for row in pre["files"] if row["resolved"] == owner["exe"]]
+    if not selected:
+        raise ValueError("wire executable absent from runtime snapshot")
+    for row in selected:
+        _equal(owner["exe_device"], row["identity"]["device"], "wire executable device")
+        _equal(owner["exe_inode"], row["identity"]["inode"], "wire executable inode")
+    _equal(cleanup.get("qualified"), True, "raw normal cleanup audit")
+    _equal(cleanup.get("capture_status_retained"), "capture_completed", "normal cleanup status")
+    for field in ("pgrp", "session"):
+        _equal(owner[field], cleanup["owner"][field], "wire/supervisor " + field)
+    _integer(owner["start_ticks"], cleanup["owner"]["start_ticks"], 2**64 - 1, "child birth after owner")
+    _shape(lifecycle, ("failure", "fusion_qualified", "network_authorized", "driver", "session"), "lifecycle")
+    for key, value in dict(failure=None, fusion_qualified=False, network_authorized=False).items():
+        _equal(lifecycle[key], value, "lifecycle " + key)
+    _equal(
+        lifecycle["driver"],
+        dict(phase="closed", closed=True, failure=None, ready=False, fusion_qualified=False, network_authorized=False),
+        "closed driver",
+    )
+    session = lifecycle["session"]
+    for key, value in dict(
+        failure=None,
+        cleanup_errors=[],
+        refusal_journal_error=None,
+        restoration_init_error=None,
+        observed_bootstrap_complete=True,
+        interval_transaction_pass=True,
+    ).items():
+        if key not in session:
+            raise ValueError("missing terminal session field: " + key)
+        _equal(session[key], value, "session " + key)
+    signature = [wire_config["session_id"], wire_config["sim_origin_ns"], wire_config["remote_origin_ns"]]
+    _equal(session["clock_signature"], signature, "terminal clock signature")
+    core, owned = session["core"], session["core"]["owned"]
+    for record in (core, owned):
+        for key, value in dict(failure=None, cleanup_errors=[]).items():
+            if key not in record:
+                raise ValueError("missing terminal owner field")
+            _equal(record[key], value, "owner/core " + key)
+    for key, value in dict(
+        owner=owner,
+        path="/tmp/px4-sock-8",
+        start_ns=start,
+        deadline_ns=end,
+        construction_refusal=None,
+        refusal_journal_error=None,
+    ).items():
+        if key not in owned:
+            raise ValueError("missing listener terminal field")
+        _equal(owned[key], value, "listener " + key)
+    return dict(
+        capture_identity_consistent=True,
+        context=dict(owner=copy.deepcopy(owner), start_ns=start, total_deadline_ns=end, clock_signature=signature),
+        descriptor_observation=copy.deepcopy(descriptor),
+        per_packet_sender_authenticated=False,
+        descriptor_transfer_excluded=False,
+        live_qualified=False,
+        fusion_qualified=False,
+    )
 
 
 def audit_owned_listener_records(*, records, context, daemon_path):

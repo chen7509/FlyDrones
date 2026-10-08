@@ -3,8 +3,9 @@
 Task 2 of the reviewed live-wire plan is incomplete. This map records the current
 producer contracts to avoid inventing a new transport or accepting summary-only
 success. The segmented record reader and the raw protocol consistency helper are
-implemented. The full `audit_live_wire_study(study_path)` entry point is not yet
-implemented and no real communication is qualified.
+implemented. `audit_live_wire_study(study_path)` now composes the available checks
+as a read-only entry with structured refusals and an explicit unverified list.
+Its final qualification gates are incomplete; no real communication is qualified.
 
 | Fact | Existing producer / retained source | Required join and boundary |
 | --- | --- | --- |
@@ -169,3 +170,47 @@ complete study adapter/structured audit. The new helpers alone cannot qualify
 Task 2 or authorize the live study.
 The whole-package independent review remains pending after Tasks 2–3. No physical
 or network experiment has been run in this implementation step.
+
+## Study entry and cross-file identity joins
+
+`audit_wire_capture_identity` binds terminal/result copies, closed driver, clock
+configuration and original descriptor namespace to the PX4 executable device/
+inode, PID/start ticks and session/group already checked from raw runtime maps.
+It joins that group and process birth ordering to the normal supervisor audit.
+Listener path/start/deadline/expected owner must match the wire owner. Failure
+fields and cleanup errors cannot disappear behind a successful capture summary.
+Inputs named runtime/cleanup are internal results of raw helpers, not arbitrary
+external success summaries. No per-packet authentication or FD-transfer exclusion
+is inferred.
+
+The entry reads declared inputs, validates the document contract and refuses
+startup-only/failed/incomplete capture before loading dispatch, runtime maps,
+supervisor journal, lifecycle/segments/clock, source/native and ULog evidence.
+It calls existing raw auditors. Failures retain stage/reason and consumed file
+identities. Final ordinary drift checks re-read identities. This API creates no
+audit file, socket, process or Gazebo object.
+
+Declared symlinks (such as `/usr/bin/python3`) are followed only after matching
+the complete frozen lexical/resolved chain. The canonical regular file is hashed
+and the original chain checked again, including at return. Capture members still
+reject final symlinks/path escapes. A real WSL same-content retarget refused; the
+selected binary was only read. Seven manifest files being verified does not mean
+the full dependency inventory was read: those flags are separate, and the broad
+`files_verified` flag remains false in this partial entry.
+
+Prospective envelope names are `live-wire-study-dispatch-v1` and
+`live-wire-study-completion-v1`. They retain the existing one-shot pattern's
+manifest identity, command, run/seed/destination, pre/post resource observations,
+timestamps and failure semantics. No producer currently emits these envelopes.
+Task 3 must adapt/freeze the existing one-shot executor; the health-only executor
+cannot directly consume the new manifest. No second general launcher is added.
+Executor attestation remains false; a single-attempt field is not independent
+proof of uniqueness.
+
+A real installed-startup result is preserved byte-for-byte as a negative test
+fixture with original path/SHA. Despite `capture_completed`, it has no estimator
+run and is refused under a synthetic valid study manifest. File-routing positives
+use explicit leaf doubles, not a full positive raw chain. Physical/reference and
+fast coverage, health/watchdog/motion/gauge joins, resource graph/CameraInfo decode
+and the full positive integration fixture remain open. The entry consequently
+always returns `record_chain_qualified=false` and lists the unverified gates.
