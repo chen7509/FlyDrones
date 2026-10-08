@@ -60,6 +60,23 @@ def test_remote_monotonic_clock_is_shared_by_odometry_and_timesync():
     assert clock.map_odometry_sample(1_080_000) == 10_020_000
 
 
+def test_remote_clock_health_read_does_not_consume_or_clear_fault():
+    clock = api().RemoteMonotonicClock("health-a", sim_origin_ns=0, remote_origin_ns=1_000)
+    assert clock.failure is None
+    assert clock.failure is None
+    assert clock.map_odometry_sample(10) == 1_010
+    assert clock.failure is None
+    with pytest.raises(ValueError):
+        clock.map_odometry_sample(10)
+    assert clock.failure == "simulation_time_not_strictly_monotonic"
+    assert clock.failure == "simulation_time_not_strictly_monotonic"
+    with pytest.raises(ValueError, match="replacement"):
+        clock.respond_to_px4_request(tc1_ns=0, ts1_ns=100, observed_sim_ns=20)
+    clock.replace_session("health-b", sim_origin_ns=0, remote_origin_ns=1_000)
+    assert clock.failure is None
+    assert clock.map_odometry_sample(10) == 1_010
+
+
 def test_timesync_rejects_high_rtt_and_resets_on_jump_or_session_replacement():
     sync = api().BoundedTimesyncVerifier("clock-a")
     assert sync.observe(exchange(0, rtt_ns=10_000_000))["accepted"] is False

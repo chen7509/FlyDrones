@@ -135,6 +135,53 @@ class ObservedSessionTests(unittest.TestCase):
         self.assertEqual(self.obj.evidence['selections'], [])
         self.assertEqual(self.sock.sent, [])
 
+    def test_profile_check_expiry_refuses_before_send(self):
+        self.ready()
+        def install_slow_profile():
+            def local():
+                self.backend.now = 2_000_000_010
+                return self.sock.local
+            self.sock.getsockname = local
+        self.at_send_attempt(install_slow_profile)
+        with self.assertRaises(ValueError):
+            self.receive()
+        self.assertEqual(self.sock.sent, [])
+        self.assert_failed()
+
+    def test_profile_check_expiry_refuses_final_completion(self):
+        self.ready()
+        self.receive()
+        for _ in range(3):
+            self.obj.poll_listener()
+        for index in range(1, 500):
+            self.backend.now += 1_000_000
+            self.receive(index)
+            self.backend.connections[2].reads.append(frame(index))
+            self.obj.poll_listener()
+        self.backend.connections[2].reads.extend([b'\0\0', b''])
+        self.obj.poll_listener()
+        def local():
+            if self.obj._core.progress['wire_bootstrap_complete']:
+                self.backend.now += 2_000_000_000
+            return self.sock.local
+        self.sock.getsockname = local
+        with self.assertRaises(ValueError):
+            self.obj.poll_listener()
+        self.assertEqual(len(self.sock.sent), 500)
+        self.assert_failed()
+
+    def test_shared_remote_fault_refuses_before_send(self):
+        self.ready()
+        def invalidate():
+            self.remote.map_odometry_sample(100_000_000)
+            with self.assertRaises(ValueError):
+                self.remote.map_odometry_sample(100_000_000)
+        self.at_send_attempt(invalidate)
+        with self.assertRaises(ValueError):
+            self.receive()
+        self.assertEqual(self.sock.sent, [])
+        self.assert_failed()
+
     def test_wrong_phase_refused_before_read(self):
         with self.assertRaises(ValueError):
             self.obj.poll_datagram()

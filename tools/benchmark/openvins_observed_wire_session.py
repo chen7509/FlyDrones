@@ -58,7 +58,8 @@ class ObservedWireSession:
     def progress(self):
         core = {} if self._core is None else self._core.progress
         receiver = {} if self._receiver is None else self._receiver.progress
-        failure = self._failure or core.get('failure') or receiver.get('failure') or self._lane.progress['failure']
+        failure = (self._failure or core.get('failure') or receiver.get('failure')
+                   or self._lane.progress['failure'] or self._remote.failure)
         complete = self._complete and failure is None
         return dict(core, failure=failure, observed_bootstrap_complete=complete,
                     modeled_bootstrap_ready=complete, transport_bootstrap_complete=complete,
@@ -134,10 +135,39 @@ class ObservedWireSession:
         if self._selection is None:
             raise ValueError('send requires selected independent clock')
         self._receiver.check()
-        self._open()
+        self._final_boundary()
         # No callback or post-send check here: wire code must first retain the
         # actual return count, including a short write or a later source fault.
         return self._sock.sendto(raw, self._flags, peer)
+
+    def _final_boundary(self):
+        """Check ages after socket profile calls and any state-lock wait.
+
+        Snapshot source health before the final clock read; no journal, guard,
+        socket accessor or state-lock acquisition follows that clock read here.
+        This is a point-in-time check, not atomic with external source changes
+        or the subsequent OS send. No post-send exception may hide its count.
+        """
+        self._open()
+        lane = self._lane.progress
+        now = self._backend.clock()
+        if self._failure or lane['failure'] or self._remote.failure or self._closed or self._complete:
+            raise ValueError('observed boundary dependency failed or closed')
+        if self._clock_signature() != self._signature or lane['session_id'] != self._signature[0]:
+            raise ValueError('observed clock session/origin changed')
+        if type(now) is not int or not self._last_now <= now < 2**64:
+            raise ValueError('observed boundary clock invalid/regressed')
+        self._last_now = now
+        if now - self._start >= 8_000_000_000:
+            raise ValueError('observed session global deadline')
+        origins = [lane['latest_callback_ns'], lane['pending_callback_ns']]
+        if self._selection is not None:
+            origins.extend((self._selection.received_ns, self._selection.observation.callback_ns))
+            if self._selection.selected_ns > now:
+                raise ValueError('selected clock is in the future')
+        for origin in origins:
+            if origin is not None and (not self._start <= origin <= now or now - origin >= 2_000_000_000):
+                raise ValueError('source/selected clock/packet expired at final boundary')
 
     def _abort(self, exc):
         with self._state:
@@ -168,7 +198,7 @@ class ObservedWireSession:
             result = action()
             self._receiver.check()
             with self._state:
-                self._open()
+                self._final_boundary()
                 commit(result)
             return result
         except BaseException as exc:

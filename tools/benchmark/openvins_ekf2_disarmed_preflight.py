@@ -77,6 +77,11 @@ class RemoteMonotonicClock:
             raise ValueError("clock session replacement must change identity")
         self._configure(session_id, sim_origin_ns, remote_origin_ns)
 
+    @property
+    def failure(self) -> str | None:
+        """Read session health without mapping or consuming another sample."""
+        return self._fault
+
     def _map(self, sim_ns: int, lane: str) -> int:
         if self._fault is not None:
             raise ValueError("clock session replacement required: " + self._fault)

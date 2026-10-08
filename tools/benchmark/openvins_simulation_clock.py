@@ -57,6 +57,7 @@ class JournaledSimulationClock:
     def progress(self):
         with self._state:
             return dict(session_id=self._session, failure=self._failure,
+                        latest_callback_ns=None if self._latest is None else self._latest.callback_ns,
                         committed_samples=len(self._observations), pending_callback_ns=self._pending_ns,
                         runtime_source_proven=False, network_authorized=False, fusion_qualified=False)
 
