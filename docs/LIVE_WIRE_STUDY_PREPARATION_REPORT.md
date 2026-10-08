@@ -143,3 +143,12 @@ REDs, the transient regression failure and its reruns, source/tests, the reviewe
 spec/plan and reports before this seal paragraph. It is an interim progress
 archive, not completion of Tasks 2–3 or the whole-package independent review.
 These commits/artifacts are local; no successful remote upload is claimed.
+
+Protocol increment producer `65dc05c` is preserved in
+`evidence/live-wire-protocol-offline-progress-dev-1701.zip`: 23 members,
+59,839 bytes, SHA256
+`668792846b73427e5d66242c0595bac3fb6b0eaca05eb36045eedcde278ab3dd`.
+Member hashes/lengths and CRC passed. It retains relevant producer/filter/fixture
+sources and successful/failed test outputs. It contains synthetic test evidence,
+not a physical capture or a completed study audit; independent review remains
+pending. Archived report precedes this paragraph. Publication remains local.
