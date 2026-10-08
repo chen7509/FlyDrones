@@ -1,4 +1,5 @@
 __pycache__/
+/results/connectome-latency-contract-dev-1701/
 *.py[cod]
 *.egg-info/
 .venv/
