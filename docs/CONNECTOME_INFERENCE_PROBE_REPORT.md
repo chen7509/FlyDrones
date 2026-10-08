@@ -116,3 +116,16 @@ Its `Observation` interface explicitly labels current odometry/camera pose as
 model-truth-derived. An independent offline bridge therefore remains necessary,
 with an explicit policy identity and input provenance. No physical benchmark,
 ODOMETRY, training job or new controller activation was started during this check.
+
+## Progress evidence seal
+
+`evidence/connectome-inference-probe-dev-1701.zip`: 56 members, 86,245 bytes,
+SHA256 `04f196671982358f4dfeb0030641112592aed546213b1b82faf6b886d6f9cc02`.
+CRC and all member bytes/hashes verified. The archive includes the initial failed
+full regression, focused recheck and diagnostic non-reproduction. It is a progress
+snapshot, not a passing completion certificate. Source/document copies were made
+after verification at 4e1779e; selected tiny-run input hashes still matched its
+actual request. The historical full LIF baseline hash stayed unchanged. The full
+model was never loaded, and the tiny result remains ineligible for full timing.
+This paragraph is added after sealing and is not inside the archive. Publication
+is local only; no remote push, simulation or training was performed.
