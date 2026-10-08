@@ -59,6 +59,7 @@ class OwnedBootstrap:
         self._cleanup_errors = []
         self._refusal_journal_error = None
         self._count = stream_records
+        self._stream_frame_ns = None
         self._bootstrap = ColdTimesyncBootstrap(
             session_id, self._epoch, start_ns, lambda event: self._record("bootstrap", event), stream_records=stream_records
         )
@@ -109,6 +110,8 @@ class OwnedBootstrap:
         if actual != self._owner_expected:
             raise ValueError("owned bootstrap owner changed")
         now = self._clock()
+        if self._stream_frame_ns is not None and now - self._stream_frame_ns >= 2000000000:
+            raise ValueError("owned bootstrap final complete-frame timeout")
         if self._bootstrap.progress["phase"] != "done":
             self._bootstrap.check(now_ns=now, epoch_token=self._epoch)
         return now
@@ -206,6 +209,8 @@ class OwnedBootstrap:
                 now = self._check()
                 if self._role == "stream" and output["stdout"]:
                     self._bootstrap.feed_stream(output["stdout"], self._listener_token, now_ns=now, epoch_token=self._epoch)
+                    if output["records"]:
+                        self._stream_frame_ns = now
                 if output["terminal"] is not None:
                     if self._role == "stream":
                         self._bootstrap.finish_stream(0, self._listener_token, now_ns=self._check(), epoch_token=self._epoch)

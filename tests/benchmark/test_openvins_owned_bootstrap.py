@@ -231,7 +231,7 @@ def test_bootstrap_journal_fault_is_immediate_and_blocks_next_command(failure):
             if failure == "raise":
                 raise OSError("intent journal failed")
             if failure == "late":
-                holder["backend"].now = 8000000010
+                holder["backend"].now = late_ns
             if failure == "reenter":
                 with pytest.raises(ValueError):
                     holder["obj"].poll()
@@ -266,12 +266,14 @@ def test_abort_is_idempotent_and_cannot_resume():
     assert not obj.progress["transport_bootstrap_complete"]
 
 
-def test_late_final_journal_never_exposes_readiness():
+@pytest.mark.parametrize("late_ns", [2000000010, 8000000010])
+@pytest.mark.parametrize("trigger", ["command_finished", "stream_finished"])
+def test_late_final_journal_never_exposes_readiness(late_ns, trigger):
     holder = {}
 
     def journal(event):
-        if event["source"] == "coordinator" and event["event"] == dict(kind="command_finished", role="stream"):
-            holder["backend"].now = 8000000010
+        if event["event"].get("kind") == trigger and (trigger == "stream_finished" or event["event"].get("role") == "stream"):
+            holder["backend"].now = late_ns
 
     obj, backend = make(journal)
     holder["backend"] = backend
@@ -282,9 +284,10 @@ def test_late_final_journal_never_exposes_readiness():
         obj.poll()
     backend.connections[2].reads.extend([b"\0\0", b""])
     obj.poll()
-    with pytest.raises(ValueError, match="deadline"):
+    with pytest.raises(ValueError, match="deadline|timeout"):
         obj.poll()
-    assert obj.evidence["bootstrap_progress"]["modeled_bootstrap_ready"]
+    if trigger == "command_finished":
+        assert obj.evidence["bootstrap_progress"]["modeled_bootstrap_ready"]
     assert not obj.progress["modeled_bootstrap_ready"]
     assert not obj.progress["transport_bootstrap_complete"]
 
