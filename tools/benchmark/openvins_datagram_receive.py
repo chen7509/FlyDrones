@@ -11,6 +11,7 @@ import socket
 from dataclasses import dataclass
 from threading import Lock
 
+from tools.benchmark.openvins_segmented_journal import SegmentedEvents, event_log, record_failure, require_capacity
 from tools.benchmark.owned_daemon_connection import _error
 
 
@@ -26,7 +27,7 @@ class DatagramReceiver:
     LOCAL = ("127.0.0.1", 14548)
     PEER = ("127.0.0.1", 14588)
 
-    def __init__(self, sock, guard, now, start_ns, journal):
+    def __init__(self, sock, guard, now, start_ns, journal, *, retention=None):
         if (type(start_ns) is not int or not 0 <= start_ns < 2**64 - 8_000_000_000
                 or not all(callable(f) for f in (guard, now, journal))):
             raise ValueError("explicit receive clock/guard/journal required")
@@ -38,7 +39,8 @@ class DatagramReceiver:
         self._last = self._start = start_ns
         self._deadline = start_ns + 8_000_000_000
         self._continuation = None
-        self._events, self._journal_errors = [], []
+        self._events, self._journal_errors = event_log(retention, 'receiver'), []
+        self._draft = None
         self._regular_events = 0
         self._failure = None
         self._lock = Lock()
@@ -56,6 +58,7 @@ class DatagramReceiver:
     @property
     def evidence(self):
         return dict(events=copy.deepcopy(self._events), failure=self._failure,
+                    unpublished_event=copy.deepcopy(self._draft),
                     journal_errors=copy.deepcopy(self._journal_errors),
                     timestamp_basis="userspace monotonic recvmsg return, not kernel arrival",
                     sender_process_proven=False, network_authorized=False,
@@ -129,14 +132,19 @@ class DatagramReceiver:
         return self._clock()
 
     def _append(self, kind, **fields):
-        if self._regular_events >= self.MAX_EVENTS:
-            raise ValueError("receive event capacity")
+        require_capacity(self._events, self._regular_events, self.MAX_EVENTS)
         self._regular_events += 1
         event = dict(kind=kind, **fields)
-        self._events.append(event)
+        if isinstance(self._events, SegmentedEvents):
+            self._draft = event
+        else:
+            self._events.append(event)
         return event
 
     def _publish(self, event):
+        if isinstance(self._events, SegmentedEvents):
+            self._events.append(event)
+            self._draft = None
         if self._journal(copy.deepcopy(event)) is not None:
             raise ValueError("receive journal must return None")
         self._open()
@@ -147,7 +155,7 @@ class DatagramReceiver:
         self._failure = "receive refusal (formatting error)"
         self._failure = _error(exc)
         event = dict(kind="refusal", reason=self._failure, last_checked_ns=self._last)
-        self._events.append(event)  # separate terminal slot, including at capacity
+        record_failure(self._events, event)  # Explicit terminal slot if storage refused.
         try:
             if self._journal(copy.deepcopy(event)) is not None:
                 raise ValueError("refusal journal must return None")
@@ -177,8 +185,7 @@ class DatagramReceiver:
             raise ValueError("concurrent datagram receive")
         try:
             self._check()
-            if self._regular_events + 2 > self.MAX_EVENTS:
-                raise ValueError("receive event capacity before read")
+            require_capacity(self._events, self._regular_events, self.MAX_EVENTS, 2)
             self._publish(self._append("receive_attempt", last_checked_ns=self._last))
             started = self._check()
             try:

@@ -13,6 +13,7 @@ from pathlib import Path
 from threading import Lock
 
 from tools.benchmark.openvins_ekf2_disarmed_preflight import RemoteMonotonicClock
+from tools.benchmark.openvins_segmented_journal import event_log, record_failure, require_capacity
 from tools.benchmark.owned_daemon_connection import _error
 
 
@@ -87,7 +88,7 @@ class TimesyncWireResponder:
     MAX_EVENTS = 8192
 
     def __init__(self, remote_clock, reserve_reply, send_sink, journal, now, start_ns, peer=("127.0.0.1", 14588),
-                 *, heartbeat_sink=None):
+                 *, heartbeat_sink=None, retention=None):
         if not isinstance(remote_clock, RemoteMonotonicClock):
             raise ValueError("existing remote clock required")
         if any(not callable(c) for c in (reserve_reply, send_sink, journal, now)):
@@ -108,7 +109,7 @@ class TimesyncWireResponder:
         self._continuation = None
         self._received = None
         self._last_received = None
-        self._events = []
+        self._events = event_log(retention, 'wire')
         self._regular_events = 0
         self._journal_errors = []
         self._failure = self._refusal_journal_error = None
@@ -208,8 +209,7 @@ class TimesyncWireResponder:
         self._check()
 
     def _require_event_capacity(self):
-        if self._regular_events >= self.MAX_EVENTS:
-            raise ValueError("wire event limit")
+        require_capacity(self._events, self._regular_events, self.MAX_EVENTS)
 
     def _abort(self, error):
         if self._failure is not None:
@@ -218,7 +218,7 @@ class TimesyncWireResponder:
         self._failure = "wire refusal (formatting error)"
         self._failure = _error(error)
         event = dict(kind="refusal", reason=self._failure, at_last_checked_ns=self._last_now)
-        self._events.append(copy.deepcopy(event))
+        record_failure(self._events, copy.deepcopy(event))
         try:
             if self._journal(copy.deepcopy(event)) is not None:
                 raise ValueError("refusal journal must return None")

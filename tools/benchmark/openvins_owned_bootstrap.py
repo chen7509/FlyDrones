@@ -15,6 +15,7 @@ from pathlib import PurePosixPath
 from threading import Lock
 
 from tools.benchmark.openvins_listener_transport import ListenerRefusal, ReadOnlyListener
+from tools.benchmark.openvins_segmented_journal import event_log, record_failure, require_capacity
 from tools.benchmark.openvins_timesync_bootstrap import ColdTimesyncBootstrap
 from tools.benchmark.owned_daemon_connection import LinuxBackend, _error, validate_owner
 
@@ -28,7 +29,8 @@ class BootstrapRefusal(ValueError):
 class OwnedBootstrap:
     MAX_EVENTS = 65536
 
-    def __init__(self, process, expected, path, session_id, start_ns, journal, *, stream_records=500, backend=None):
+    def __init__(self, process, expected, path, session_id, start_ns, journal, *, stream_records=500, backend=None,
+                 retention=None):
         validate_owner(expected)
         if type(process.pid) is not int or process.pid != expected["pid"]:
             raise ValueError("owned process PID mismatch")
@@ -51,7 +53,8 @@ class OwnedBootstrap:
         self._lock = Lock()
         self._fault = None
         self._done = False
-        self._events = []
+        self._retention = retention
+        self._events = event_log(retention, 'owned')
         self._regular_events = 0
         self._transports = []
         self._current = self._role = None
@@ -63,7 +66,8 @@ class OwnedBootstrap:
         self._maintenance = None
         self._maintenance_closed = self._transitioning = self._cleaning = False
         self._bootstrap = ColdTimesyncBootstrap(
-            session_id, self._epoch, start_ns, lambda event: self._record("bootstrap", event), stream_records=stream_records
+            session_id, self._epoch, start_ns, lambda event: self._record("bootstrap", event), stream_records=stream_records,
+            retention=retention,
         )
         self._clock()
 
@@ -129,8 +133,7 @@ class OwnedBootstrap:
         return now
 
     def _record(self, source, event, command_index=None):
-        if self._regular_events >= self.MAX_EVENTS:
-            raise ValueError("owned bootstrap event limit")
+        require_capacity(self._events, self._regular_events, self.MAX_EVENTS)
         # Cleanup journals retain the last accepted time; they do not grant an
         # exception to owner/deadline checks for any ordinary operation or I/O.
         envelope = dict(source=source, command_index=command_index, event=copy.deepcopy(event),
@@ -196,7 +199,7 @@ class OwnedBootstrap:
             event = dict(
                 source="coordinator", command_index=None, event=dict(kind="refusal", reason=self._fault), at_ns=self._last_now
             )
-            self._events.append(copy.deepcopy(event))
+            record_failure(self._events, copy.deepcopy(event))
             try:
                 if self._journal(copy.deepcopy(event)) is not None:
                     raise ValueError("refusal journal must return None")
@@ -273,6 +276,7 @@ class OwnedBootstrap:
                 lambda event: self._record("transport", event, index),
                 backend=self._backend,
                 continuation=self._maintenance if role == 'maintenance' else None,
+                retention=self._retention, retention_channel=f'listener-{index}',
             )
         except ListenerRefusal as exc:
             self._construction_refusal = exc.evidence

@@ -12,6 +12,7 @@ import re
 from contextlib import contextmanager
 from threading import Lock
 
+from tools.benchmark.openvins_segmented_journal import SegmentedEvents, event_log, record_failure, require_capacity
 from tools.benchmark.openvins_timesync_listener import TimesyncListenerDecoder
 from tools.benchmark.openvins_timesync_observer import SerialTimesyncObserver
 
@@ -47,7 +48,7 @@ class ColdTimesyncBootstrap:
     PROGRESS_NS = 2_000_000_000
     MAX_EVENTS = 65536
 
-    def __init__(self, session_id, epoch_token, start_ns, journal, *, stream_records=500):
+    def __init__(self, session_id, epoch_token, start_ns, journal, *, stream_records=500, retention=None):
         if not _token(session_id) or not _token(epoch_token) or not callable(journal):
             raise ValueError('invalid bootstrap identity or journal')
         if type(start_ns) is not int or not 0 <= start_ns < 2**64:
@@ -61,7 +62,8 @@ class ColdTimesyncBootstrap:
         self._expected = stream_records
         self._phase = 'empty_pending'
         self._fault = None
-        self._events = []
+        self._retention = retention
+        self._events = event_log(retention, 'cold')
         self._lock = Lock()
         self._observer = SerialTimesyncObserver(session_id, 0)
         self._first = self._last_observer = self._decoder = self._listener = None
@@ -114,9 +116,9 @@ class ColdTimesyncBootstrap:
         except BaseException as exc:
             if self._fault is None:
                 self._fault = 'transition failure: ' + type(exc).__name__
-            if not had_fault and len(self._events) <= self.MAX_EVENTS:
-                self._events.append(dict(kind='refusal', phase=self._phase, now_ns=self._now,
-                                         error_type=type(exc).__name__, reason=self._fault))
+            if not had_fault and (isinstance(self._events, SegmentedEvents) or len(self._events) <= self.MAX_EVENTS):
+                record_failure(self._events, dict(kind='refusal', phase=self._phase, now_ns=self._now,
+                                                 error_type=type(exc).__name__, reason=self._fault))
             raise
         finally:
             self._lock.release()
@@ -126,8 +128,7 @@ class ColdTimesyncBootstrap:
             self._fail('unexpected phase: ' + self._phase + ', expected ' + phase)
 
     def _record(self, kind, **values):
-        if len(self._events) >= self.MAX_EVENTS:
-            self._fail('journal event limit')
+        require_capacity(self._events, len(self._events), self.MAX_EVENTS)
         event = dict(kind=kind, phase=self._phase, now_ns=self._now, epoch_token=self._epoch,
                      session_id=self._session, **copy.deepcopy(values))
         result = self._journal(copy.deepcopy(event))
@@ -257,7 +258,7 @@ class ColdTimesyncBootstrap:
             # A raised/reentrant journal leaves no usable continuation to return.
             continuation = _TimesyncMaintenance(
                 self._observer, self._last_status, self._last_observer, listener_token,
-                self._epoch, now_ns, deadline_ns, journal, lambda: self._fault)
+                self._epoch, now_ns, deadline_ns, journal, lambda: self._fault, retention=self._retention)
             if self._fault is not None:
                 raise ValueError('bootstrap failure during transfer journal')
             self._record('continuation_transferred', listener_token=listener_token, deadline_ns=deadline_ns)

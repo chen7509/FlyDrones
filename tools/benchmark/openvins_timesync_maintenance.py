@@ -10,6 +10,7 @@ import copy
 from contextlib import contextmanager
 from threading import Lock
 
+from tools.benchmark.openvins_segmented_journal import SegmentedEvents, event_log, record_failure, require_capacity
 from tools.benchmark.openvins_timesync_listener import TimesyncListenerDecoder
 from tools.benchmark.owned_daemon_connection import _error
 
@@ -18,7 +19,7 @@ class _TimesyncMaintenance:
     MAX_EVENTS = 65536
 
     def __init__(self, observer, last_status, last_observed, listener, epoch,
-                 now_ns, deadline_ns, journal, source_failure):
+                 now_ns, deadline_ns, journal, source_failure, *, retention=None):
         self._observer = observer
         self._baseline, self._last_observed = copy.deepcopy(last_status), copy.deepcopy(last_observed)
         self._listener, self._epoch = listener, epoch
@@ -28,7 +29,7 @@ class _TimesyncMaintenance:
         self._lock = Lock()
         self._phase, self._failure = 'replay_pending', None
         self._seen = self._correlated = 0
-        self._events = []
+        self._events = event_log(retention, 'maintenance')
         self._cancel_journal_error = None
         self._pending_at_cancel = False
         self._transport_claimed = False
@@ -80,8 +81,7 @@ class _TimesyncMaintenance:
         self._decoder.check(now_ns)
 
     def _record(self, kind, *, closing=False, **values):
-        if len(self._events) >= self.MAX_EVENTS:
-            self._fail('maintenance event limit')
+        require_capacity(self._events, len(self._events), self.MAX_EVENTS)
         event = dict(kind=kind, phase=self._phase, now_ns=self._now,
                      epoch_token=self._epoch, listener_token=self._listener, **copy.deepcopy(values))
         self._events.append(copy.deepcopy(event))
@@ -102,9 +102,9 @@ class _TimesyncMaintenance:
         except BaseException as exc:
             if self._failure is None:
                 self._failure = 'maintenance transition: ' + type(exc).__name__
-            if len(self._events) <= self.MAX_EVENTS:
-                self._events.append(dict(kind='refusal', phase=self._phase,
-                                         now_ns=self._now, reason=self._failure))
+            if isinstance(self._events, SegmentedEvents) or len(self._events) <= self.MAX_EVENTS:
+                record_failure(self._events, dict(kind='refusal', phase=self._phase,
+                                                 now_ns=self._now, reason=self._failure))
             raise
         finally:
             self._lock.release()

@@ -13,6 +13,7 @@ from threading import Lock, RLock
 
 from tools.benchmark.openvins_datagram_receive import DatagramReceiver
 from tools.benchmark.openvins_ekf2_disarmed_preflight import RemoteMonotonicClock
+from tools.benchmark.openvins_segmented_journal import event_log
 from tools.benchmark.openvins_simulation_clock import JournaledSimulationClock
 from tools.benchmark.openvins_wire_bootstrap import OwnedWireBootstrap
 from tools.benchmark.owned_daemon_connection import LinuxBackend, _error, validate_owner
@@ -22,7 +23,7 @@ class ObservedWireSession:
     MAX_SELECTIONS = 4096
 
     def __init__(self, process, expected, path, remote_clock, clock_lane, sock, start_ns,
-                 journal, descriptor_guard, *, backend=None, heartbeat_sink=None):
+                 journal, descriptor_guard, *, backend=None, heartbeat_sink=None, retention=None):
         if (type(remote_clock) is not RemoteMonotonicClock or type(clock_lane) is not JournaledSimulationClock
                 or not callable(journal) or not callable(descriptor_guard)
                 or type(start_ns) is not int or not 0 <= start_ns < 2**64 - 8_000_000_000
@@ -41,7 +42,8 @@ class ObservedWireSession:
         self._lock, self._state = Lock(), RLock()
         self._failure = self._selection = self._receiver = self._core = None
         self._closed = self._complete = False
-        self._selections, self._cleanup_errors = [], []
+        self._retention = retention
+        self._selections, self._cleanup_errors = event_log(retention, 'selection'), []
         self._refusal_journal_error = None
         self._signature = self._clock_signature()
         if clock_lane.session_id != self._signature[0]:
@@ -53,9 +55,10 @@ class ObservedWireSession:
         try:
             self._core = OwnedWireBootstrap(process, expected, path, remote_clock, start_ns,
                                             lambda e: self._forward('core', e), self._send, backend=self._backend,
-                                            heartbeat_sink=None if heartbeat_sink is None else self._dispatch_heartbeat)
+                                            heartbeat_sink=None if heartbeat_sink is None else self._dispatch_heartbeat,
+                                            retention=retention)
             self._receiver = DatagramReceiver(sock, self._context, self._backend.clock, start_ns,
-                                               lambda e: self._forward('receiver', e))
+                                               lambda e: self._forward('receiver', e), retention=retention)
         except BaseException as exc:
             self._abort(exc)
             raise
@@ -65,7 +68,8 @@ class ObservedWireSession:
         core = {} if self._core is None else self._core.progress
         receiver = {} if self._receiver is None else self._receiver.progress
         failure = (self._failure or core.get('failure') or receiver.get('failure')
-                   or self._lane.progress['failure'] or self._remote.failure)
+                   or self._lane.progress['failure'] or self._remote.failure
+                   or (None if self._retention is None else self._retention.failure))
         complete = self._complete and failure is None
         return dict(core, failure=failure, observed_bootstrap_complete=complete,
                     modeled_bootstrap_ready=complete, transport_bootstrap_complete=complete,
@@ -75,6 +79,7 @@ class ObservedWireSession:
     @property
     def evidence(self):
         return dict(self.progress, selections=copy.deepcopy(self._selections),
+                    retention=None if self._retention is None else self._retention.evidence,
                     clock_signature=self._signature, clock=self._lane.evidence,
                     receiver=None if self._receiver is None else self._receiver.evidence,
                     core=None if self._core is None else self._core.evidence,
@@ -264,6 +269,8 @@ class ObservedWireSession:
             return context
 
         def commit(context):
+            if self._retention is not None:
+                self._retention.phase('maintenance')
             self._maintenance = context
             self._deadline = context.progress['deadline_ns']
 
@@ -274,10 +281,16 @@ class ObservedWireSession:
             return
         self._closing = True
         try:
+            if self._retention is not None and not self._retention.evidence['closed']:
+                self._retention.phase('stopping')
             if self._core is not None:
                 self._core.close()
         finally:
-            self._closing = False
+            try:
+                if self._retention is not None:
+                    self._retention.close()
+            finally:
+                self._closing = False
 
     def close(self):
         with self._state:

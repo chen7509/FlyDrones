@@ -37,17 +37,17 @@ one exact boundary snapshot is not a new sample. No repeated rollover.
 
 - [x] Trace current completion/deadline/observer dependencies and record the
   exact transition interfaces in the execution ledger before editing.
-- [ ] Write failing tests for successful bootstrap then heartbeat/TIMESYNC,
+- [x] Write failing tests for successful bootstrap then heartbeat/TIMESYNC,
   no transition before500/after8s, no cleared fault, expired maintenance and
   unchanged legacy completion rejection. Use actual codec with fake transport.
-- [ ] Add missing/duplicate/replayed maintenance status, invalid boundary snapshot,
+- [x] Add missing/duplicate/replayed maintenance status, invalid boundary snapshot,
   partial subscription cancellation and repeated-transfer/rollover RED cases.
-- [ ] Implement the explicit transition and ongoing status-health checks; make
+- [x] Implement the explicit transition and ongoing status-health checks; make
   the tests pass without weakening bootstrap or two-second limits.
-- [ ] Add the lifecycle-only segmented journal and tests crossing8192 events,
+- [x] Add the lifecycle-only segmented journal and tests crossing8192 events,
   verifying all hashes/indexes and refusing64-segment/512MiB exhaustion or failed
   close; leave legacy defaults and total4096 datagram bound unchanged.
-- [ ] Run related observed/wire/observer/clock regressions and commit.
+- [x] Run related observed/wire/observer/clock regressions and commit.
 
 ### Task 2: Single-reader interval transaction
 

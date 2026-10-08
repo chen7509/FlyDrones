@@ -9,6 +9,7 @@ from __future__ import annotations
 import copy
 from threading import Lock
 
+from tools.benchmark.openvins_segmented_journal import event_log, record_failure, require_capacity
 from tools.benchmark.openvins_timesync_bootstrap import parse_snapshot
 from tools.benchmark.openvins_timesync_listener import TimesyncListenerDecoder
 from tools.benchmark.openvins_timesync_maintenance import _TimesyncMaintenance
@@ -82,7 +83,7 @@ class ReadOnlyListener:
     MAX_EVENTS = 65536
 
     def __init__(self, process, expected, path, mode, count, start_ns, deadline_ns, journal, *, backend=None,
-                 continuation=None):
+                 continuation=None, retention=None, retention_channel=None):
         self._backend = backend or LinuxBackend()
         self._process, self._expected = process, copy.deepcopy(expected)
         self._journal = journal
@@ -94,7 +95,8 @@ class ReadOnlyListener:
         self._lock = Lock()
         self._regular_events = 0  # One independent terminal-refusal slot is separate.
         self._result = dict(transport_complete=False, network_authorized=False, fusion_qualified=False,
-                            live_listener_qualified=False, events=[], error=None, close_error=None,
+                            live_listener_qualified=False, events=event_log(retention, retention_channel),
+                            error=None, close_error=None,
                             refusal_journal_error=None, return_journal_error=None, connection_evidence=None)
         self._offset = 0
         self._snapshot = b''
@@ -145,8 +147,7 @@ class ReadOnlyListener:
         return copy.deepcopy(self._result)
 
     def _record(self, kind, *, allow_failed=False, **fields):
-        if self._regular_events >= self.MAX_EVENTS:
-            raise ValueError('listener journal event limit')
+        require_capacity(self._result['events'], self._regular_events, self.MAX_EVENTS)
         event = dict(kind=kind, **fields)
         self._regular_events += 1
         self._result['events'].append(copy.deepcopy(event))
@@ -157,8 +158,7 @@ class ReadOnlyListener:
 
     def _reserve_events(self, count):
         # poll has a single owner: reserve evidence capacity before doing I/O.
-        if self._regular_events + count > self.MAX_EVENTS:
-            raise ValueError('listener journal event limit')
+        require_capacity(self._result['events'], self._regular_events, self.MAX_EVENTS, count)
 
     def _returned(self, kind, **fields):
         # A completed syscall remains evidence even when its return is late or
@@ -233,7 +233,7 @@ class ReadOnlyListener:
             pass  # separately retained by _close_socket; do not mask primary
         if first:
             event = dict(kind='refusal', error=self._fault, close_error=self._result['close_error'])
-            self._result['events'].append(copy.deepcopy(event))
+            record_failure(self._result['events'], copy.deepcopy(event))
             try:
                 if self._journal(copy.deepcopy(event)) is not None:
                     raise ValueError('refusal journal must return None')

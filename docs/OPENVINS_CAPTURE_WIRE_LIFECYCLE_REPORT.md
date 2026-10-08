@@ -71,8 +71,6 @@ These counts supersede the intermediate subset counts for current source state.
 
 ## Still required by this same plan
 
-- Add segmented retention to the composed lifecycle; the current layers retain
-  their bounded in-memory evidence and are not the segmented journal design.
 - Implement the nonblocking stream-interval exchange and restoration-only failure
   path, then actual capture registration and injected end-to-end runner tests.
 - Independent whole-change review, final regression/evidence and PR publication.
@@ -134,3 +132,72 @@ remain alongside them. No fresh whole-repository pass is claimed. Actual capture
 registration remains unchanged; Task1 is still open for segmented retention, and
 the plan's interval/restore, runner, final independent review and sealed evidence
 tasks remain outstanding. No network/physics/estimator/arming/training run occurred.
+
+## Task1 completed: explicit segmented lifecycle retention
+
+The opt-in `capture-wire-segmented-v1` store is now composed through the same
+observed session, owned coordinator, cold/maintenance observer logs, listener
+transport, wire decoder and datagram receiver. Ten fixed source channels share
+64 segments of8192 events and512MiB of JSONL record bytes. Each row has absolute
+and per-source indices, phase and original event fields. Selection count remains
+4096. Legacy constructors still use their original lists and limits. The existing
+bounded25,000-observation clock table remains protocol state; this change is not
+a claim that the whole application has constant memory or bounded external sinks.
+
+Selected implementation: existing Python pathlib/json/hashlib/threading only,
+no dependency installation or new simulation algorithm. This continues the fixed
+Python3.12/API research recorded by the lifecycle spec and earlier runtime-binding
+work. Exclusive creation prevents overwriting a preexisting directory/member.
+The writer retains only active buffered output, digest/counters, member references
+and at most one in-flight failed row; it does not retain the entire event history
+in each layer. Segments are flushed, closed and checked by hash/length before
+being marked sealed. Short write, flush/close failure, hash mismatch or quota
+exhaustion fails closed; partial files and unpersisted terminal failures remain
+explicit. File operations still require the caller's bounded supervision.
+
+Evidence getters return source/member references, plus explicitly unsealed active
+metadata; they do not seal a member or read back the whole history. The manifest
+is a **member index only**, never a completion grant for its own still-pending
+close. Final returned evidence reports complete retention only after every close
+has returned without failure. No fsync, atomic durable commit, hostile-ABA defense
+or storage-speed qualification is claimed.512MiB covers serialized record members;
+small indexes/failure diagnostics are separate metadata, not additional hidden
+record segments. Failed capture remains failed even if its retained prefix is valid.
+
+The receiver holds an explicit pending return draft until its clock observation
+and publication. This preserves actual received bytes with unknown timestamp on
+clock failure, and preserves an unpersisted draft if storage refuses after the
+read. It never silently freezes an earlier `received_ns=None` copy as the later
+successful return record. Cleanup journals stay distinct from normal operations.
+
+Integration evidence uses real installed codecs/components with injected I/O:
+1100 TIMESYNC and600 heartbeat datagrams, same receive owner and1100 accepted
+modeled samples, more than8192 wire events with every persisted index/hash checked.
+A separate4096-datagram case rejects the4097th before reading it; no cap was raised.
+Shared storage failure prevents the next read and still closes the owned listener.
+Actual capture registration remains unchanged, and no network/physics/estimator
+run was executed. Offline completion does not authorize such a run.
+
+Initial failures are retained:10 missing-storage assertions,3 missing-retention
+binding assertions; the first composition found two repeat-cleanup errors caused
+by reapplying phase changes to a store already closed during refusal. Both passed
+after the idempotent cleanup correction. Two additional behavioral REDs exposed
+close reentry and a manifest prematurely claiming success before its own close;
+both are fixed. Four received-byte/timing cases passed as added coverage, not
+RED-to-GREEN fixes.
+
+Full prospective quotas were exercised with real temporary synthetic files:
+524,288 records/64 members/59,022,324 bytes, then the next record rejected;
+511 approximately1MiB records/535,881,392 bytes, then the next record rejected by
+the536,870,912-byte cap. All member hashes and every record/source index were
+verified. Temporary bulk fixture data was removed by the test harness; generator,
+hashes, metadata and results are retained in `full-capacity-v1` and `v2`. These
+are storage tests, not sensor captures or measured runtime performance.
+
+Final current-source verification (`retention-final-v1`): **643 pytest passed,
+133 installed-codec WSL unittest passed**, full-capacity-v2 passed,35 selected
+source/test hashes unchanged. Changed Ruff/diff-check pass; no new full-repository
+pass is claimed. Task1 of the lifecycle plan is complete. Task2 interval/restore,
+Task3 actual runner registration and Task4 independent whole-change review/sealed
+stage evidence remain open. The full FlyDrones goal and fusion qualification
+remain incomplete; hardware and flight evidence are unchanged.
