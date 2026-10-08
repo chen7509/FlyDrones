@@ -385,3 +385,20 @@ The earlier legacy fast-grid mismatch remains a refusal of the current profile.
 Task 2 still needs resource/CameraInfo joins, a complete positive raw chain and
 remaining failure-path coverage. Task 3 preparation and whole-package review are
 pending. Live/fusion flags remain false; all changes are local pending publication.
+
+The retained anchor subset has an explicit Git byte-preservation attribute.
+An index-byte assertion caught JSON newline normalization after the first
+implementation commit. Attribute-only re-add did not refresh the cached blob;
+the misleadingly named `anchor-index-green-v1.txt` retains that second failure.
+An explicit reindex now preserves SHA256 `421c15f47dc7ff9e91891369df69ccbc08a8c1f5bc25ce894899dba93e0117d5`.
+The narrow `cr-at-eol` whitespace attribute recognizes the retained CRLF bytes.
+The index-byte check and 24 anchor tests pass; no estimator algorithm changed.
+
+Safety/anchor increment is sealed in
+`evidence/live-wire-safety-anchor-offline-progress-dev-1701.zip`: 62 members,
+210,733 bytes, SHA256
+`40bc23faff20761a8d57761754aaea44520bebf293e7b91fd2202bb7da2e25ae`.
+CRC and every member were verified. Core implementation is `588c5fb`; final
+fixture byte preservation is `53e64ea`. Exact pre-audit producers, both old-input
+checks, test failures and successful regressions are included. The report inside
+the archive precedes this seal paragraph. Local only; no runtime authorization.
