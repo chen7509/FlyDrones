@@ -8,6 +8,12 @@ import pytest
 from tools.benchmark.openvins_datagram_receive import DatagramReceiver
 
 
+@pytest.fixture(autouse=True)
+def synthetic_linux_flag(monkeypatch):
+    # Installed WSL constant observed read-only; Windows does not execute UDP.
+    monkeypatch.setattr(socket, "MSG_DONTWAIT", 64, raising=False)
+
+
 class FakeSocket:
     family, type, proto = socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP
 
@@ -56,7 +62,7 @@ def test_normal_packet_immutable_and_no_authority():
     r = Rig()
     packet = r.obj.poll()
     assert (packet.data, packet.peer, packet.received_ns) == (b"packet", ("127.0.0.1", 14588), 100)
-    assert r.sock.calls == [(4096, 0, 0)]
+    assert r.sock.calls == [(4096, 0, 64)]
     with pytest.raises(FrozenInstanceError):
         packet.received_ns = 200
     assert not any(r.obj.evidence[key] for key in (
@@ -67,7 +73,7 @@ def test_not_ready_checks_health_without_fabricating_packet():
     r = Rig()
     r.sock.result = BlockingIOError()
     assert r.obj.poll() is None
-    assert r.sock.calls == [(4096, 0, 0)]
+    assert r.sock.calls == [(4096, 0, 64)]
     assert not any(e["kind"] == "receive_return" for e in r.obj.evidence["events"])
 
 
@@ -212,3 +218,18 @@ def test_float_socket_metadata_refused(field, value):
     with pytest.raises(ValueError):
         r.obj.poll()
     assert not r.sock.calls
+
+
+def test_alias_blocking_mode_requires_per_call_nonblocking_flag():
+    r = Rig()
+    def alias_mode():
+        if r.sock.calls[-1][2] != 64:
+            raise RuntimeError("synthetic alias would block without per-call flag")
+    r.sock.hook = alias_mode
+    assert r.obj.poll().data == b"packet"
+
+
+def test_missing_nonblocking_flag_refuses_before_socket_read(monkeypatch):
+    monkeypatch.delattr(socket, "MSG_DONTWAIT")
+    with pytest.raises(ValueError, match="MSG_DONTWAIT"):
+        Rig()

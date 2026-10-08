@@ -30,6 +30,9 @@ class DatagramReceiver:
         if (type(start_ns) is not int or not 0 <= start_ns < 2**64 - 8_000_000_000
                 or not all(callable(f) for f in (guard, now, journal))):
             raise ValueError("explicit receive clock/guard/journal required")
+        self._recv_flags = getattr(socket, "MSG_DONTWAIT", None)
+        if type(self._recv_flags) is not int or self._recv_flags <= 0:
+            raise ValueError("platform MSG_DONTWAIT required")
         self._sock, self._guard, self._now, self._journal = sock, guard, now, journal
         self._last = self._start = start_ns
         self._events, self._journal_errors = [], []
@@ -141,7 +144,7 @@ class DatagramReceiver:
             self._publish(self._append("receive_attempt", last_checked_ns=self._last))
             started = self._check()
             try:
-                result = self._sock.recvmsg(4096, 0, 0)
+                result = self._sock.recvmsg(4096, 0, self._recv_flags)
             except BlockingIOError:
                 returned = self._check()
                 if returned - started >= 2_000_000_000:
