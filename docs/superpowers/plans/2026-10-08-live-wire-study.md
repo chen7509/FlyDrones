@@ -129,25 +129,27 @@ pure joins only when needed for unit tests; do not add an alternate live codec.
 artifacts; report `docs/LIVE_WIRE_STUDY_PREPARATION_REPORT.md`. This task creates
 no live dispatch or capture output.
 
-- [ ] Generate a prospective command, complete declaration and manifest for the
+- [x] Generate a prospective command, complete declaration and manifest for the
   actual installed selection using read-only resolution. Reuse the exact selected
   model/config/binaries from the installed preflight; explain and hash any later
   committed source differences. No giant inventory rescan substitutes for selection.
-- [ ] Freeze the exact audit implementation/version and all selected input hashes
+- [x] Freeze the exact audit implementation/version and all selected input hashes
   before any later activation. Bind the existing one-shot dispatch behavior and
   failure preservation; don't introduce a second general launcher.
-- [ ] Run Task 1 validation on the actual files; deliberately mutated copies must
+- [x] Run Task 1 validation on the actual files; deliberately mutated copies must
   refuse. These tests are offline and create no socket or simulator. Report
   preparation qualified separately from all still-false live outcomes.
-- [ ] Independent whole-package review of spec, plan, validator and auditor,
+- [x] Independent whole-package review of spec, plan, validator and auditor,
   especially the five review-focus cases; repair Important/Critical once with
   demonstrated RED/GREEN. No new physical trial as a review shortcut.
-- [ ] Seal/report the prepared package and targeted tests, changed Ruff and
+- [x] Seal/report the prepared package and targeted tests, changed Ruff and
   `git diff --check`; commit. Update PR65 with local/remote publication distinction.
-- [ ] Evaluate the separate activation gate against the latest user scope. If
+- [x] Evaluate the separate activation gate against the latest user scope. If
   actual communication remains restricted, leave the package ready for review
   and continue independent offline goal work; never execute simply because a
   manifest exists. Do not mark the overall FlyDrones goal complete.
+
+Task 3 evidence: v1 preparation failed from an ephemeral-copy path assumption; v2 retained an incomplete lazy-audit freeze; corrected v3 is the current prospective package. See the report for one independent review, its single RED/GREEN fix pass, 114 Windows/five WSL checks and actual-file mutations. No public live activation entry exists. Remote code publication remains pending.
 
 ## Later live acceptance (not an instruction to launch now)
 

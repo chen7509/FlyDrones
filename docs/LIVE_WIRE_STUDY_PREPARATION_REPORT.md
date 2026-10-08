@@ -775,3 +775,43 @@ installed codecs and ULog/protobuf readers. Existing dependency deprecation
 warnings are retained. The Important finding is addressed by the demonstrated
 counterexample and passing regressions; no second per-helper review or physical
 trial was used. This does not establish dynamic source or live producer closure.
+
+### Corrected installed preparation
+
+V3 preparation completed at source commit `57e6e97`: all 610 declared files and
+82 static repository source dependencies verified. Eight documents/46 resource
+edges resolved in 40 bounded native path queries; five mutated actual manifests
+were refused, including removal of `audit_live_wire_safety.py` from an otherwise
+consistent inventory. The source discovery lists 60 external imports, one dynamic
+edge and 362 unresolved attribute/submodule references. These are explicit limits,
+not claims of complete runtime import resolution. The v3 generator retains its
+own `independent_review_complete=false`: it does not certify review; the separate
+review record and single RED/GREEN correction establish the offline review work.
+No second review of the corrected package is implied.
+
+All 557 predeclared tracked Python hashes matched after preparation; their later
+retained copies are labeled post-preparation. Future capture, dispatch,
+completion, audit and stdout paths are absent. No normal capture, network,
+estimator, training or physics run was performed. V1 failure and v2's incomplete
+audit-source freeze remain retained. Local source freeze and preparation checks
+are complete for this offline scope; live producer attestation, runtime behavior,
+actual communication and fusion remain unverified. The public executor still has
+no live-wire activation entry, so this package cannot launch by itself.
+
+The single review found no Critical issue and one Important issue, addressed by
+one behavioral RED/GREEN correction plus 114 Windows and five WSL regression
+checks. Existing user scope still restricts actual activation; no new permission
+is inferred from a prepared manifest. Continue independent offline work toward
+the full fruit-fly policy and fair baseline goals. The overall FlyDrones objective
+remains active; no 5/20-aircraft or hardware qualification is inferred.
+
+Evidence sealed: `evidence/live-wire-study-preparation-dev-1701.zip`, 1,274 members,
+4,161,440 bytes, SHA256
+`f156cac75c9b6237b6d3c6237d329b0a2c30b613619c26ad75e8c1f3e7f3ffe5`.
+CRC and every member hash were verified. It preserves v1/v2/v3, the review,
+RED/GREEN/regression logs, original selected-source provenance and both sets of
+post-preparation source copies. Its report/plan precede this seal paragraph.
+Task 3's offline preparation and review work are complete. Remote PR65 was read
+at `e4312edd366ad10c8c05a0807e099e629fd99c4c`; code and archives after that head
+remain local pending the retained publication problem. A PR body update does
+not publish those files or authorize activation.
