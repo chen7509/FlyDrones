@@ -111,6 +111,12 @@ class TimesyncWireResponder:
         self._lock = Lock()
 
     @property
+    def progress(self):
+        """Cheap status for composition; never copy packet logs during polling."""
+        return dict(failure=self._failure, network_authorized=False, delivery_proven=False,
+                    live_convergence_qualified=False, fusion_qualified=False)
+
+    @property
     def evidence(self):
         return dict(events=copy.deepcopy(self._events), failure=self._failure,
                     journal_errors=copy.deepcopy(self._journal_errors),
