@@ -70,6 +70,14 @@ def test_all_invalid_frame_round_trips_as_evidence(tmp_path):
     assert not restored.frames[0].depth_valid.any()
 
 
+def test_v3_rejects_infinite_depth_even_if_mask_marks_it_invalid(tmp_path):
+    depth = np.array([[1.0, np.inf, np.nan]], np.float32)
+    mask = np.array([[True, False, False]], np.bool_)
+    with pytest.raises(ValueError, match="depth"):
+        write_sequence(tmp_path / "invalid", sequence(depth, mask))
+    assert not (tmp_path / "invalid").exists()
+
+
 @pytest.mark.parametrize("mask", [
     np.array([[1, 0, 1]], np.uint8),
     np.array([True, False, True], np.bool_),

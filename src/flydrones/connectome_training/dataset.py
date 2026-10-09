@@ -69,6 +69,15 @@ def _finite(name: str, value: np.ndarray) -> None:
         raise ValueError(f"{name} contains non-finite values")
 
 
+def _finite_float32(name: str, value: object) -> None:
+    """Reject finite source values that overflow the on-disk float32 contract."""
+    array = np.asarray(value)
+    _finite(name, array)
+    with np.errstate(over="ignore"):
+        stored = np.asarray(array, dtype=np.float32)
+    _finite(name, stored)
+
+
 def _validate(sequence: TrainingSequence) -> None:
     if not sequence.frames or len(sequence.frames) != len(sequence.targets):
         raise ValueError("frames and targets must have the same non-zero length")
@@ -92,18 +101,22 @@ def _validate(sequence: TrainingSequence) -> None:
                     or not all(depth.shape) or rgb.dtype != np.uint8
                     or rgb.shape != (*depth.shape, 3)):
                 raise ValueError("v3 depth geometry or depth_m dtype invalid")
+            if np.any(np.isinf(depth)) or np.any(depth <= 0):
+                raise ValueError("v3 depth_m contains invalid values")
             expected = np.isfinite(depth) & (depth > 0)
             if (valid.dtype != np.bool_ or valid.shape != depth.shape
                     or not np.array_equal(valid, expected)):
                 raise ValueError("depth_valid mask invalid")
         else:
-            _finite("depth_m", np.asarray(frame.depth_m))
+            _finite_float32("depth_m", frame.depth_m)
         for name in ("position_enu", "velocity_enu", "goal_enu"):
-            _finite(name, np.asarray(getattr(frame, name)))
+            _finite_float32(name, getattr(frame, name))
+        _finite_float32("yaw", frame.yaw)
+        _finite_float32("yaw_rate", frame.yaw_rate)
     for target in sequence.targets:
-        _finite("teacher_velocity_enu", np.asarray(target.velocity_enu))
+        _finite_float32("teacher_velocity_enu", target.velocity_enu)
         horizon = np.asarray(target.horizon_enu)
-        _finite("teacher_horizon_enu", horizon)
+        _finite_float32("teacher_horizon_enu", horizon)
         if horizon.ndim != 2 or horizon.shape[1] != 3 or horizon.shape[0] < 1:
             raise ValueError("teacher_horizon_enu shape invalid")
         if target.horizon_valid is not None:
@@ -113,7 +126,8 @@ def _validate(sequence: TrainingSequence) -> None:
                 raise ValueError("teacher_horizon_valid mask invalid")
             if np.any(horizon[~valid] != 0):
                 raise ValueError("invalid teacher horizon padding")
-        _finite("teacher_yaw_rate", np.asarray(target.yaw_rate))
+        _finite_float32("teacher_yaw_rate", target.yaw_rate)
+        _finite_float32("teacher_minimum_clearance_m", target.minimum_clearance_m)
     if any(target.horizon_valid is not None for target in sequence.targets) and any(
             target.horizon_valid is None for target in sequence.targets):
         raise ValueError("mixed v1/v2 teacher horizons")
