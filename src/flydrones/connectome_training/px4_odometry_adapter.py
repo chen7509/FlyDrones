@@ -203,7 +203,8 @@ class Px4OdometryCausalAdapter:
             raise ValueError("no causal PX4 state for camera")
         if (camera.sample_us - event.sample_us > _MAX_AGE_US
                 or camera.receipt_monotonic_ns - event.receipt_monotonic_ns > _MAX_RECEIPT_AGE_NS):
-            raise ValueError("PX4 state stale at camera")
+            self.failure_reason = "PX4 state stale at camera"
+            raise ValueError(self.failure_reason)
         body = _rotation(event.q_body_to_ned_wxyz).as_matrix()
         optical = _rotation(self.extrinsic.q_camera_to_body_wxyz).as_matrix()
         world_body = _NED_TO_ENU @ body

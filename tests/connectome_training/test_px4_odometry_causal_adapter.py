@@ -200,6 +200,43 @@ def test_missing_stale_and_future_camera_queries_refuse():
             adapter.at_camera(stamp)
 
 
+@pytest.mark.parametrize("stale_camera", [
+    CameraStamp(110_001, 25_000_000),
+    CameraStamp(10_020, 120_000_001),
+])
+def test_stale_px4_source_latches_until_new_adapter(stale_camera):
+    adapter = Px4OdometryCausalAdapter(_extrinsic())
+    adapter.push(_event())
+    with pytest.raises(ValueError, match="PX4 state stale at camera"):
+        adapter.at_camera(stale_camera)
+    assert adapter.failure_reason == "PX4 state stale at camera"
+    with pytest.raises(ValueError, match="latched"):
+        adapter.push(_event(sample_us=110_000, publication_us=110_010,
+                            receipt_monotonic_ns=121_000_000))
+    with pytest.raises(ValueError, match="latched"):
+        adapter.at_camera(CameraStamp(111_000, 125_000_000))
+    new_session = Px4OdometryCausalAdapter(_extrinsic())
+    new_session.push(_event(sample_us=110_000, publication_us=110_010,
+                            receipt_monotonic_ns=121_000_000))
+    assert new_session.at_camera(CameraStamp(111_000, 125_000_000)).event.sample_us == 110_000
+
+
+def test_startup_without_a_px4_state_can_wait_for_first_state():
+    adapter = Px4OdometryCausalAdapter(_extrinsic())
+    with pytest.raises(ValueError, match="no causal PX4 state"):
+        adapter.at_camera(CameraStamp(9_000, 19_000_000))
+    assert adapter.failure_reason is None
+    adapter.push(_event())
+    assert adapter.at_camera(CameraStamp(10_020, 25_000_000)).event.sample_us == 10_000
+
+
+def test_px4_source_at_both_exact_age_limits_is_still_accepted():
+    adapter = Px4OdometryCausalAdapter(_extrinsic())
+    adapter.push(_event())
+    assert adapter.at_camera(CameraStamp(110_000, 120_000_000)).event.sample_us == 10_000
+    assert adapter.failure_reason is None
+
+
 def test_bad_extrinsic_or_near_vertical_heading_refuses():
     with pytest.raises(ValueError):
         Px4OdometryCausalAdapter(_extrinsic(artifact_sha256="unverified"))
