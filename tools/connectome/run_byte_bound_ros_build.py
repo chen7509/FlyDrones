@@ -63,6 +63,45 @@ def _profile() -> dict:
     }
 
 
+def _docker_build_command(argv: list[str]) -> bool:
+    args = [part.lower() for part in argv[1:]]
+
+    def skip_options(index: int, value_options: set[str]) -> int:
+        while index < len(args) and args[index].startswith("-"):
+            option = args[index].split("=", 1)[0]
+            index += 2 if option in value_options and "=" not in args[index] else 1
+        return index
+
+    index = skip_options(0, {
+        "--config", "-c", "--context", "--host", "-h", "--log-level", "-l",
+        "--tlscacert", "--tlscert", "--tlskey",
+    })
+    if index >= len(args):
+        return False
+    action = args[index]
+    index += 1
+    if action in {"build", "bake"}:
+        return True
+    if action in {"image", "builder"}:
+        return index < len(args) and args[index] == "build"
+    if action == "buildx":
+        index = skip_options(index, {"--builder"})
+        return index < len(args) and args[index] in {"build", "bake"}
+    if action == "compose":
+        index = skip_options(index, {
+            "--file", "-f", "--project-name", "-p", "--env-file", "--profile", "--project-directory",
+            "--ansi", "--progress", "--parallel",
+        })
+        if index >= len(args):
+            return False
+        if args[index] == "build":
+            return True
+        if args[index] != "up":
+            return False
+        return any(part in {"--build", "--build=true", "--build=1"} for part in args[index + 1:])
+    return False
+
+
 def _preflight(record_name: str = "preflight.json") -> dict:
     free_kib = psutil.virtual_memory().available // 1024
     containers = subprocess.run(
@@ -79,10 +118,13 @@ def _preflight(record_name: str = "preflight.json") -> dict:
             continue
         try:
             name = (process.info["name"] or "").lower()
-            command = " ".join(process.info["cmdline"] or []).lower()
+            argv = process.info["cmdline"] or []
+            command = " ".join(argv).lower()
         except (psutil.AccessDenied, psutil.NoSuchProcess):
             continue
+        docker_build = name in {"docker", "docker.exe"} and _docker_build_command(argv)
         if (name in {"px4", "gz", "gzserver", "gazebo", "colcon"}
+                or docker_build
                 or ("python" in name and any(
                     token in command for token in ("pytest", "train", "openvins")
                 ))):
