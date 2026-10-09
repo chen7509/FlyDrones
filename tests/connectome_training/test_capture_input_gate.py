@@ -1,5 +1,6 @@
 """Synthetic gate tests do not constitute a live PX4 estimator validation."""
 
+import base64
 import hashlib
 import json
 import subprocess
@@ -12,6 +13,7 @@ import pytest
 
 from flydrones.benchmark.contract import Observation
 from flydrones.benchmark.gateway import NativeGazeboPx4Backend
+from flydrones.benchmark.sensors import encode_observation
 from flydrones.connectome_training.capture_input import (
     CaptureInputEvidence,
     validate_capture_input,
@@ -63,6 +65,37 @@ def _valid(tmp_path: Path):
 
 def test_well_formed_deployment_visible_evidence_passes_synthetic_gate(tmp_path):
     assert validate_capture_input(*_valid(tmp_path)) is None
+
+
+def test_partial_missing_depth_keeps_original_observation_and_requires_source_gate(tmp_path):
+    backend, obs, evidence, config = _valid(tmp_path)
+    depth = obs.depth_m.copy()
+    depth[0, 0] = np.nan
+    partial = replace(obs, depth_m=depth)
+    assert validate_capture_input(backend, partial, evidence, config) is None
+    payload = json.loads(encode_observation(partial))
+    encoded = np.frombuffer(base64.b64decode(payload["depth_m"]["data"]), dtype="<f4")
+    assert np.isnan(encoded[0])
+    assert encoded[1] == 1.0
+    with pytest.raises(ValueError, match="estimator"):
+        validate_capture_input(backend, partial, replace(evidence, xy_valid=False), config)
+
+
+@pytest.mark.parametrize("invalid", [np.inf, -np.inf, 0.0, -0.1])
+def test_non_nan_invalid_depth_value_is_rejected(tmp_path, invalid):
+    backend, obs, evidence, config = _valid(tmp_path)
+    depth = obs.depth_m.copy()
+    depth[0, 0] = invalid
+    with pytest.raises(ValueError, match="depth"):
+        validate_capture_input(backend, replace(obs, depth_m=depth), evidence, config)
+
+
+def test_normalized_depth_requires_float32_and_valid_pixel(tmp_path):
+    backend, obs, evidence, config = _valid(tmp_path)
+    for depth in (obs.depth_m.astype(np.float64),
+                  np.full(obs.depth_m.shape, np.nan, np.float32)):
+        with pytest.raises(ValueError, match="depth"):
+            validate_capture_input(backend, replace(obs, depth_m=depth), evidence, config)
 
 
 def test_boolean_alone_does_not_prove_teacher_inspection(tmp_path):

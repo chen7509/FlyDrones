@@ -119,9 +119,10 @@ def validate_capture_input(
             or min(observation.rgb.shape[:2]) < 1
             or not isinstance(observation.depth_m, np.ndarray)
             or observation.depth_m.shape != observation.rgb.shape[:2]
-            or not np.issubdtype(observation.depth_m.dtype, np.floating)
-            or not np.all(np.isfinite(observation.depth_m))
-            or np.any(observation.depth_m < 0)):
+            or observation.depth_m.dtype != np.float32
+            or np.any(np.isinf(observation.depth_m))
+            or np.any(observation.depth_m <= 0)
+            or not np.any(np.isfinite(observation.depth_m))):
         raise ValueError("RGB-D depth frame invalid")
     quaternion = _finite_vector(observation.camera_pose, 7, "camera pose")[3:]
     if not .95 <= float(np.linalg.norm(quaternion)) <= 1.05:
