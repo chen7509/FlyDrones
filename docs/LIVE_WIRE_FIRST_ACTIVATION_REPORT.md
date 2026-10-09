@@ -67,6 +67,61 @@ startup/progress failure; they do not yet attribute it to low RAM, Docker,
 rendering, scheduler delays or a specific PX4 startup defect. Do not extend a
 watchdog or call the trial a WSL capacity measurement from this single run.
 
+### Read-only startup timing diagnosis
+
+A subsequent read-only audit of the retained v6 `wire-owner.json`, segmented
+wire journal, and `wire-clock.jsonl` narrows the failing transition. The owned
+wire start clock was recorded as monotonic 392190302651 ns; that timestamp
+does not independently date the socket bind. The exact `never published\n`
+snapshot was accepted at 392982936914 ns (0.792634263 s later), moving the
+bootstrap from `empty_pending` to `first_ready` and resetting its progress
+timer. The refusal occurred at 394982970648 ns, **2.000033734 s after that
+transition**, while still in `first_ready`. This matches the source's fixed
+2-second inclusive progress gate; it is not the 8-second total window.
+
+The receiver logged 91 receive attempts after the empty snapshot, but no
+received datagram or `reply_intent`. A separate `GET_MESSAGE_INTERVAL` baseline
+query was sent after the first clock callback, with no ACK or readback before
+the stop; no interval mutation was attempted. The first and last Gazebo clock
+callbacks arrived 1.256698994 s and 1.880335515 s after the empty snapshot.
+The simulation had advanced only 3 ms by the last callback. The PX4 log shows
+startup reaching “Gazebo world is ready” and then being interrupted; there is
+no positive heartbeat, TIMESYNC request, or completed arming-state ULog in
+this capture.
+
+Thus the observed failure is specifically **no first TIMESYNC request before
+the fixed `first_ready` progress deadline**. The retained data cannot identify
+whether PX4 startup, the lockstep scheduling/render path, host contention or
+another cause delayed that request. Three milliseconds of startup simulation
+also cannot establish a steady-state RTF. The frozen protocol expressly forbids
+resetting the progress timer without a phase transition, so repeating v6 or
+moving the timer to hide startup would not validate the original contract.
+No additional physical run, sensor/estimator replay, or configuration change
+was made for this diagnosis.
+
+Read-only inspection of the checked-out PX4 `d6f12ad` sources adds a narrower
+startup hypothesis: `rcS` sources `px4-rc.mavlink` late in startup, the onboard
+link configures `TIMESYNC` at 10 Hz, and `MavlinkStream::update` sends its first
+message immediately once that stream actually runs. Those four source files
+were clean in the local checkout. The missing request is therefore consistent
+with startup not reaching or scheduling the onboard stream before the wall
+deadline, but this capture lacks a timestamped `rcS`/stream-start event and
+cannot prove which stage held it up or exclude a transport problem. The 3 ms
+Gazebo record does not by itself establish when PX4's stream loop ran.
+
+The same checkout's earlier, completed, single-aircraft health-cohort
+development capture ran 25 s of simulation with the same declared physics,
+IMU and camera rates. Its supervisor observed the worker from monotonic
+7.680028769 s to 86.092704011 s, about 78.413 s overall (25/78.413 ≈ 0.319
+simulated seconds per wall second, including startup and cleanup). That is a
+separate run, not a measured RTF for v6. Even if the interval transaction had
+established its proposed 100 Hz TIMESYNC rate immediately, 500 accepted
+samples require roughly 5 s of simulation; at that historical average pace
+the simulated interval alone would take about 15.7 s wall time, beyond the
+frozen 8 s total bootstrap window. This is a **feasibility warning for this
+WSL2 host**, not a proof of the exact v6 bottleneck or a license to change the
+rate, threshold, clock basis or physics load and call the original study passed.
+
 ## Bounded repair
 
 `bind_capture_wire` now retains both callback and stop-path exceptions instead
@@ -105,6 +160,10 @@ Diagnose the retained startup timing sequence and pinned PX4 listener readiness
 before designing a separate retry. Keep 2s progress / 8s bootstrap and all
 existing watchdogs and workload fixed unless a genuinely different research
 question is explicitly designed; do not silently loosen them to pass.
+The read-only timing audit above completes the first step: the next question is
+why no PX4 TIMESYNC request reached the owned receiver in that fixed window.
+That needs bounded startup/lockstep evidence or a separately frozen diagnostic
+study, not a blind repeat of the failed physical capture.
 The callback fix changes selected source bytes: v6 cannot be reused for another
 attempt, and no v7 has been prepared or executed. Preserve the v5 refusal and v6
 physical failure independently. Full learning/division, deployment-visible
