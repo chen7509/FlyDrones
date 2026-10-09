@@ -22,7 +22,7 @@ from .dataset import (
     TrainingSequence,
     load_sequence,
 )
-from .features import FEATURE_NAMES, sequence_tensors
+from .features import FEATURE_NAMES, feature_profile_for_names, sequence_tensors
 from .governance import validate_dataset_partitions
 from .losses import LossWeights
 from .model import ConnectomeConstrainedCore
@@ -101,7 +101,10 @@ def resolve_device(requested: str) -> torch.device:
     return torch.device(requested)
 
 
-def _dataset_digest(datasets: dict[str, tuple[list[TrainingSequence], list[TrainingSequence]]]) -> str:
+def _dataset_digest(
+    datasets: dict[str, tuple[list[TrainingSequence], list[TrainingSequence]]],
+    profile: str,
+) -> str:
     digest = sha256()
     for stage_id in sorted(datasets):
         digest.update(stage_id.encode("utf-8"))
@@ -118,9 +121,17 @@ def _dataset_digest(datasets: dict[str, tuple[list[TrainingSequence], list[Train
                         sort_keys=True,
                     ).encode("utf-8")
                 )
-                for tensor in sequence_tensors(sequence):
+                for tensor in sequence_tensors(sequence, profile=profile):
                     digest.update(np.ascontiguousarray(tensor.numpy()).tobytes())
     return digest.hexdigest()
+
+
+def _validate_profile_sequences(sequences: list[TrainingSequence], profile: str) -> None:
+    for sequence in sequences:
+        try:
+            sequence_tensors(sequence, profile=profile)
+        except ValueError as exc:
+            raise ValueError(f"{profile} sequence feature contract invalid") from exc
 
 
 def _synthetic_sequence(stage: CurriculumStage, split: str, seed: int) -> TrainingSequence:
@@ -242,6 +253,9 @@ def _full_components(
     parameters = load_parameter_set(parameters_path)
     if parameters.identity.label != "full-male-cns":
         raise ValueError("complete curriculum requires a full-male-cns parameter artifact")
+    profile = feature_profile_for_names(parameters.input_features)
+    for train, validation in datasets.values():
+        _validate_profile_sequences(train + validation, profile)
     verify_source_digest(connectome_path, parameters.identity.model_sha256)
     connectome = Connectome.load(connectome_path)
     return connectome, parameters, datasets
@@ -274,12 +288,13 @@ class ConnectomeCurriculumSession:
         self.config = config
         self.datasets = datasets
         self.parameters = parameters
+        self.feature_profile = feature_profile_for_names(parameters.input_features)
         self.device = resolve_device(device or config.profile.device)
         self.model = ConnectomeConstrainedCore(connectome, parameters).to(self.device)
         self.optimizer = torch.optim.Adam(self.model.parameters(), lr=learning_rate)
         self.truncate_steps = truncate_steps
         self.loss_weights = LossWeights()
-        self.dataset_sha256 = _dataset_digest(datasets)
+        self.dataset_sha256 = _dataset_digest(datasets, self.feature_profile)
         self.mapping_sha256 = parameter_mapping_digest(parameters)
         self.model_identity = (
             f"{config.profile.model_mode}:{parameters.identity.model_sha256}:"

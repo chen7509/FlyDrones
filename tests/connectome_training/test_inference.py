@@ -1,11 +1,12 @@
 from dataclasses import replace
+from hashlib import sha256
 
 import numpy as np
 import pytest
 import torch
 
 from flydrones.connectome_training.dataset import SequenceFrame
-from flydrones.connectome_training.features import frame_features
+from flydrones.connectome_training.features import MASKED_FEATURE_NAMES, frame_features
 from flydrones.connectome_training.inference import ConnectomeInferenceController, InferenceLimits
 from flydrones.connectome_training.inference_artifact import load_inference_core
 from flydrones.connectome_training.model import RecurrentState
@@ -59,6 +60,42 @@ def test_continuous_state_matches_direct_core_and_explicit_reset(tiny_artifacts)
     assert first.evidence["call_index"] == 1
     assert first.evidence["session_index"] == 2
     assert all(value.grad is None for value in loaded.core.parameters())
+
+
+def test_masked_controller_matches_direct_core_and_refuses_legacy_frame(tiny_artifacts):
+    adapter, loaded = controller(tiny_artifacts, feature_names=MASKED_FEATURE_NAMES)
+    depth = np.array([[1.0, np.nan, 2.0], [1.0, 3.0, 2.0]], np.float32)
+    sample = frame(depth_m=depth, depth_valid=np.isfinite(depth))
+    with torch.inference_mode():
+        expected, _ = loaded.core.forward_step(
+            torch.from_numpy(frame_features(sample, profile="depth-mask-v3"))[None, :],
+            loaded.core.initial_state(1), .05,
+        )
+    result = adapter.step(sample)
+    assert result.evidence["raw_command"] == pytest.approx(expected[0].tolist())
+    assert result.evidence["feature_profile"] == "depth-mask-v3"
+    adapter.reset(0)
+    with pytest.raises(ValueError, match="depth_valid"):
+        adapter.step(frame())
+    assert adapter.failure is not None
+
+
+def test_legacy_controller_refuses_masked_frame(tiny_artifacts):
+    adapter, _ = controller(tiny_artifacts)
+    sample = frame(depth_valid=np.ones((2, 3), np.bool_))
+    with pytest.raises(ValueError, match="masked depth"):
+        adapter.step(sample)
+    assert adapter.failure is not None
+
+
+def test_legacy_image_digest_is_unchanged(tiny_artifacts):
+    adapter, _ = controller(tiny_artifacts)
+    sample = frame()
+    digest = sha256()
+    for value in (sample.rgb, sample.depth_m):
+        digest.update(str((value.shape, value.dtype.str)).encode("ascii"))
+        digest.update(np.ascontiguousarray(value).tobytes())
+    assert adapter.step(sample).evidence["image_sha256"] == digest.hexdigest()
 
 
 def test_held_camera_is_labeled_reused_not_new_estimate(tiny_artifacts):

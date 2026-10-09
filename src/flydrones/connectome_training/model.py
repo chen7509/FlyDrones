@@ -101,6 +101,7 @@ class ConnectomeConstrainedCore(nn.Module):
             torch.tensor(parameter_set.readout, dtype=torch.float32)
         )
         self.n_neurons = int(connectome.n)
+        self.input_features = tuple(parameter_set.input_features)
         self.n_features = len(parameter_set.input_features)
         self.n_outputs = len(parameter_set.outputs)
 

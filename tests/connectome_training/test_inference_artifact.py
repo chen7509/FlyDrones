@@ -7,10 +7,19 @@ import torch
 
 from flydrones.connectome_training.checkpoint import save_checkpoint
 from flydrones.connectome_training.dataset import SequenceFrame, SequenceProvenance, TeacherTarget, TrainingSequence
-from flydrones.connectome_training.features import FEATURE_NAMES, frame_features, sequence_tensors
+from flydrones.connectome_training.features import (
+    FEATURE_NAMES,
+    MASKED_FEATURE_NAMES,
+    frame_features,
+    sequence_tensors,
+)
 from flydrones.connectome_training.inference_artifact import CheckpointIdentity, load_inference_core
 from flydrones.connectome_training.model import ConnectomeConstrainedCore
-from flydrones.connectome_training.parameters import parameter_mapping_digest
+from flydrones.connectome_training.parameters import (
+    initial_parameter_set,
+    parameter_mapping_digest,
+    save_parameter_set,
+)
 
 
 def checkpoint(tmp_path, connectome, parameters, *, mutate=None, metadata_change=None):
@@ -54,6 +63,46 @@ def test_initialization_load_has_frozen_gradients_and_no_training_claim(tiny_art
     assert loaded.provenance["full_topology"] is False
     assert loaded.provenance["training_success_verified"] is False
     assert loaded.provenance["files_stable"] is True
+
+
+def test_masked_feature_artifact_loads_only_with_its_versioned_mapping(
+        tiny_artifacts, tmp_path):
+    source, folder, connectome, parameters = tiny_artifacts(
+        feature_names=MASKED_FEATURE_NAMES,
+    )
+    initialized = load_inference_core(source, folder, mode="tiny-fixture")
+    assert initialized.provenance["feature_profile"] == "depth-mask-v3"
+    assert initialized.core.input_features == MASKED_FEATURE_NAMES
+    path, pinned, _ = checkpoint(tmp_path, connectome, parameters)
+    learned = load_inference_core(
+        source, folder, mode="tiny-fixture", checkpoint_path=path,
+        checkpoint_identity=pinned,
+    )
+    assert learned.provenance["feature_profile"] == "depth-mask-v3"
+    assert learned.provenance["parameter_mapping_sha256"] == (
+        parameter_mapping_digest(parameters)
+    )
+
+
+@pytest.mark.parametrize("checkpoint_features,loaded_features", [
+    (FEATURE_NAMES, MASKED_FEATURE_NAMES),
+    (MASKED_FEATURE_NAMES, FEATURE_NAMES),
+])
+def test_v1_and_v3_checkpoints_cannot_cross_feature_profiles(
+        tiny_artifacts, tmp_path, checkpoint_features, loaded_features):
+    source, _, connectome, trained_parameters = tiny_artifacts(
+        feature_names=checkpoint_features,
+    )
+    saved_checkpoint, pinned, _ = checkpoint(tmp_path, connectome, trained_parameters)
+    other_parameters = initial_parameter_set(
+        trained_parameters.identity, loaded_features, ("vx", "vy", "vz", "yaw_rate"),
+        np.array([0, 1, 2, 3]),
+    )
+    other_folder = save_parameter_set(tmp_path / "other-parameters", other_parameters)
+    with pytest.raises(ValueError, match="metadata mismatch"):
+        load_inference_core(source, other_folder, mode="tiny-fixture",
+                            checkpoint_path=saved_checkpoint,
+                            checkpoint_identity=pinned)
 
 
 def test_tiny_cannot_be_loaded_as_full(tiny_artifacts):

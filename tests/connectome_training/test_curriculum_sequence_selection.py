@@ -1,9 +1,13 @@
 """Real sequence files, without model construction or training."""
 from dataclasses import replace
 
+import numpy as np
 import pytest
 
-from flydrones.connectome_training.curriculum_session import _sequence_directories
+from flydrones.connectome_training.curriculum_session import (
+    _sequence_directories,
+    _validate_profile_sequences,
+)
 from flydrones.connectome_training.dataset import TrainingSequence, write_sequence
 from tests.connectome_training.test_dataset import frame, provenance, target
 
@@ -59,3 +63,17 @@ def test_missing_and_empty_source_are_still_refused(tmp_path):
         _sequence_directories((str(tmp_path / 'absent'),))
     with pytest.raises(ValueError, match='no sequence manifests'):
         _sequence_directories((str(tmp_path),))
+
+
+def test_full_curriculum_rejects_mixed_depth_feature_profiles_before_model_load():
+    old = TrainingSequence(provenance(), [frame(50)], [target()])
+    masked_frame = replace(frame(100), depth_valid=np.ones((4, 6), np.bool_))
+    masked_target = replace(target(), horizon_valid=np.array([True, True]))
+    masked = TrainingSequence(replace(provenance(), seed=102),
+                              [masked_frame], [masked_target])
+    with pytest.raises(ValueError, match="depth-mask-v3"):
+        _validate_profile_sequences([old, masked], "depth-mask-v3")
+    with pytest.raises(ValueError, match="legacy-v1"):
+        _validate_profile_sequences([old, masked], "legacy-v1")
+    _validate_profile_sequences([masked], "depth-mask-v3")
+    _validate_profile_sequences([old], "legacy-v1")

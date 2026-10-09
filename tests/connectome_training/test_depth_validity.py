@@ -13,7 +13,13 @@ from flydrones.connectome_training.dataset import (
     load_sequence,
     write_sequence,
 )
-from flydrones.connectome_training.features import frame_features
+from flydrones.connectome_training.features import (
+    FEATURE_NAMES,
+    MASKED_FEATURE_NAMES,
+    feature_profile_for_names,
+    frame_features,
+    sequence_tensors,
+)
 
 
 def frame(depth: np.ndarray, mask: np.ndarray | None) -> SequenceFrame:
@@ -135,6 +141,58 @@ def test_old_feature_adapter_refuses_even_all_valid_v3_depth():
     depth = np.ones((1, 3), np.float32)
     with pytest.raises(ValueError, match="masked depth feature profile not implemented"):
         frame_features(frame(depth, np.ones((1, 3), bool)))
+
+
+def test_masked_feature_profile_uses_only_measured_depth_and_exposes_coverage():
+    depth = np.array([[1.0, np.nan, 2.0, 4.0, np.nan, np.nan]], np.float32)
+    mask = np.isfinite(depth)
+    sample = frame(depth, mask)
+    expected = [1.0, 1.0 / 3.0, 0.0, 0.5, 1.0, 0.0,
+                0.0, 0.0, 0.0, 0.0, 0.0, 0.5, 0.0, 0.0, 0.25]
+    assert len(MASKED_FEATURE_NAMES) == 15
+    assert MASKED_FEATURE_NAMES[3:6] == (
+        "depth_valid_left", "depth_valid_center", "depth_valid_right",
+    )
+    assert frame_features(sample, profile="depth-mask-v3") == pytest.approx(expected)
+    assert sequence_tensors(sequence(depth, mask), profile="depth-mask-v3")[0][0, 0] == (
+        pytest.approx(expected)
+    )
+
+
+def test_feature_order_selects_exact_version_without_relabeling():
+    assert feature_profile_for_names(FEATURE_NAMES) == "legacy-v1"
+    assert feature_profile_for_names(MASKED_FEATURE_NAMES) == "depth-mask-v3"
+    with pytest.raises(ValueError, match="feature order"):
+        feature_profile_for_names(tuple(reversed(MASKED_FEATURE_NAMES)))
+
+
+def test_masked_feature_profile_refuses_wholly_missing_depth():
+    depth = np.full((1, 6), np.nan, np.float32)
+    with pytest.raises(ValueError, match="valid pixel"):
+        frame_features(frame(depth, np.zeros((1, 6), np.bool_)), profile="depth-mask-v3")
+
+
+@pytest.mark.parametrize("depth,mask", [
+    (np.array([[1.0, np.inf, 2.0]], np.float32), np.array([[True, False, True]])),
+    (np.array([[1.0, np.nan, 2.0]], np.float32), np.array([[True, True, True]])),
+    (np.array([[1.0, np.nan, 2.0]], np.float64), np.array([[True, False, True]])),
+    (np.array([[1.0, np.nan, 2.0]], np.float32), np.array([[1, 0, 1]], np.uint8)),
+])
+def test_masked_feature_profile_rejects_invalid_geometry_or_mask(depth, mask):
+    with pytest.raises(ValueError, match="depth|mask"):
+        frame_features(frame(depth, mask), profile="depth-mask-v3")
+
+
+def test_masked_feature_profile_rejects_invalid_rgb_or_state():
+    depth = np.ones((1, 3), np.float32)
+    sample = frame(depth, np.ones((1, 3), np.bool_))
+    sample.rgb = np.zeros((1, 3, 3), np.float32)
+    with pytest.raises(ValueError, match="rgb|mask"):
+        frame_features(sample, profile="depth-mask-v3")
+    sample.rgb = np.zeros((1, 3, 3), np.uint8)
+    sample.velocity_enu[0] = np.inf
+    with pytest.raises(ValueError, match="state"):
+        frame_features(sample, profile="depth-mask-v3")
 
 
 def test_unmasked_legacy_schema_is_unchanged(tmp_path):

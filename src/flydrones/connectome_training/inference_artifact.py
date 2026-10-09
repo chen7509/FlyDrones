@@ -12,7 +12,7 @@ from flydrones.benchmark.provenance import sha256_file
 from flydrones.brain.connectome import Connectome
 
 from .checkpoint import load_checkpoint
-from .features import FEATURE_NAMES
+from .features import feature_profile_for_names
 from .model import ConnectomeConstrainedCore
 from .parameters import FULL_CONNECTIONS, FULL_NEURONS, load_parameter_set, parameter_mapping_digest
 
@@ -74,8 +74,9 @@ def load_inference_core(
             raise ValueError("full MaleCNS identity required")
     elif identity.label == "full-male-cns" or identity.neurons > 1024:
         raise ValueError("tiny fixture requires a non-full model of at most 1024 neurons")
-    if parameters.input_features != FEATURE_NAMES or parameters.outputs != OUTPUT_NAMES:
+    if parameters.outputs != OUTPUT_NAMES:
         raise ValueError("feature/output order does not match inference contract")
+    feature_profile = feature_profile_for_names(parameters.input_features)
     mapping = parameter_mapping_digest(parameters)
     model_mode = "full-male-cns" if mode == "full-male-cns" else "tiny-connectome"
     model_identity = f"{model_mode}:{identity.model_sha256}:{identity.topology_sha256}:{mapping}:device=cpu"
@@ -122,6 +123,7 @@ def load_inference_core(
         "model_sha256": identity.model_sha256,
         "topology_sha256": identity.topology_sha256,
         "parameter_mapping_sha256": mapping,
+        "feature_profile": feature_profile,
         "full_topology": mode == "full-male-cns",
         "parameter_origin": "checkpoint-parameters" if checkpoint is not None else "initialization-only",
         "checkpoint_sha256": before.get("checkpoint"),

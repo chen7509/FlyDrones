@@ -10,6 +10,8 @@ import numpy as np
 
 from flydrones.brain.connectome import Connectome
 
+from .features import MASKED_FEATURE_NAMES
+
 SCHEMA = "flydrones-connectome-parameters-v1"
 ARRAY_KEYS = (
     "input_gain",
@@ -49,8 +51,11 @@ class ParameterSet:
 
 
 def parameter_mapping_digest(parameters: ParameterSet) -> str:
-    """Exact legacy curriculum mapping identity, shared with inference."""
+    """Preserve legacy identity while binding the ordered v3 feature profile."""
     digest = sha256()
+    if parameters.input_features == MASKED_FEATURE_NAMES:
+        digest.update(b"flydrones-feature-profile:depth-mask-v3\0")
+        digest.update(json.dumps(MASKED_FEATURE_NAMES, separators=(",", ":")).encode("utf-8"))
     for value in (
         parameters.input_feature_index,
         parameters.input_neuron_index,
@@ -162,6 +167,9 @@ def _validate(parameters: ParameterSet) -> None:
         input_feature_index >= len(parameters.input_features)
     ):
         raise ValueError("input feature index is out of range")
+    if (parameters.input_features == MASKED_FEATURE_NAMES
+            and set(input_feature_index.tolist()) != set(range(len(MASKED_FEATURE_NAMES)))):
+        raise ValueError("masked input feature coverage incomplete")
     if np.any(input_neuron_index < 0) or np.any(input_neuron_index >= identity.neurons):
         raise ValueError("input neuron index is out of range")
     if len(np.unique(input_neuron_index)) != len(input_neuron_index):

@@ -42,9 +42,14 @@ def _timestamp(value, name):
     return int(value)
 
 
-def _image_digest(rgb, depth):
+def _image_digest(rgb, depth, mask=None):
     digest = sha256()
     for value in (rgb, depth):
+        digest.update(str((value.shape, value.dtype.str)).encode("ascii"))
+        digest.update(np.ascontiguousarray(value).tobytes())
+    if mask is not None:
+        value = np.asarray(mask)
+        digest.update(b"\0depth-valid-v3\0")
         digest.update(str((value.shape, value.dtype.str)).encode("ascii"))
         digest.update(np.ascontiguousarray(value).tobytes())
     return digest.hexdigest()
@@ -108,10 +113,10 @@ class ConnectomeInferenceController:
             if (rgb.dtype != np.uint8 or rgb.ndim != 3 or rgb.shape[2] != 3
                     or rgb.shape[0] < 1 or rgb.shape[1] < 3 or depth.shape != rgb.shape[:2]):
                 raise ValueError("nonempty uint8 RGB and matching depth required")
-            features = frame_features(frame)
+            features = frame_features(frame, profile=self.provenance["feature_profile"])
             if not np.isfinite(features).all():
                 raise ValueError("inference features are nonfinite")
-            image_digest = _image_digest(rgb, depth)
+            image_digest = _image_digest(rgb, depth, frame.depth_valid)
             reused = frame_ns == self.last_frame_ns
             if reused and image_digest != self._last_image_digest:
                 raise ValueError("reused camera timestamp has changed image content")
@@ -139,6 +144,7 @@ class ConnectomeInferenceController:
                 "parameter_origin": self.provenance["parameter_origin"],
                 "full_topology": self.provenance["full_topology"],
                 "model_identity": self.provenance["model_identity"],
+                "feature_profile": self.provenance["feature_profile"],
                 "checkpoint_sha256": self.provenance["checkpoint_sha256"],
                 "training_success_verified": False, "flight_eligible": False,
                 "raw_command": raw_values, "brain_wall_s": core_wall_s,
