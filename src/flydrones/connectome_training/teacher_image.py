@@ -7,8 +7,11 @@ trajectory in the benchmark world.
 
 from __future__ import annotations
 
+import hashlib
 import json
+import os
 import re
+import stat
 import subprocess
 import threading
 import time
@@ -27,6 +30,7 @@ _BINARIES = (
 _EXECUTABLES = {"ego_planner ego_planner_node", "ego_planner traj_server"}
 _HASH_LINE = re.compile(r"([0-9a-f]{64})  (/ego_ws/install/ego_planner/lib/ego_planner/[^\n]+)\Z")
 _OUTPUT_LIMIT = 65536
+_INSPECTION_LIMIT = 65536
 
 
 class _CleanupUnverified(RuntimeError):
@@ -206,3 +210,112 @@ def inspect_pinned_ego_image(
             json.dump(evidence, stream, indent=2, ensure_ascii=False, allow_nan=False)
             stream.write("\n")
     return evidence
+
+
+def verify_pinned_ego_inspection(path: Path, expected_sha256: str) -> dict:
+    """Verify the saved inspection transcript, not planner execution or image freshness.
+
+    The caller must pin the exact file digest before using the record. A saved
+    transcript is evidence of the earlier check, not a live Docker attestation.
+    """
+    path = Path(path)
+    if not isinstance(expected_sha256, str) or re.fullmatch(r"[0-9a-f]{64}", expected_sha256) is None:
+        raise ValueError("teacher inspection record digest invalid")
+    before = path.lstat()
+    if not stat.S_ISREG(before.st_mode) or before.st_size > _INSPECTION_LIMIT:
+        raise ValueError("teacher inspection record file invalid")
+    flags = os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0)
+    with os.fdopen(os.open(path, flags), "rb") as source:
+        opened = os.fstat(source.fileno())
+        raw = source.read(_INSPECTION_LIMIT + 1)
+    after = path.lstat()
+    if (len(raw) > _INSPECTION_LIMIT or before.st_dev != opened.st_dev
+            or before.st_ino != opened.st_ino or before.st_size != opened.st_size
+            or (after.st_dev, after.st_ino, after.st_size, after.st_mtime_ns)
+            != (before.st_dev, before.st_ino, before.st_size, before.st_mtime_ns)
+            or len(raw) != opened.st_size):
+        raise ValueError("teacher inspection record changed during read")
+    if hashlib.sha256(raw).hexdigest() != expected_sha256:
+        raise ValueError("teacher inspection record digest mismatch")
+
+    def unique_object(pairs: list[tuple[str, object]]) -> dict:
+        result = {}
+        for key, value in pairs:
+            if key in result:
+                raise ValueError("teacher inspection record duplicate JSON key")
+            result[key] = value
+        return result
+
+    try:
+        record = json.loads(raw, object_pairs_hook=unique_object)
+    except (UnicodeDecodeError, json.JSONDecodeError) as exc:
+        raise ValueError("teacher inspection record JSON invalid") from exc
+    if (type(record) is not dict
+            or set(record) != {"schema", "inspected", "image_id", "upstream_commit",
+                               "upstream_repository", "commands", "executables",
+                               "planner_executed", "trajectory_produced",
+                               "student_capture_authorized"}
+            or record["schema"] != "flydrones-ego-image-inspection-v1"
+            or record["inspected"] is not True
+            or record["image_id"] != EGO_IMAGE_ID
+            or record["upstream_commit"] != EGO_COMMIT
+            or record["upstream_repository"] != _UPSTREAM
+            or any(record[key] is not False for key in (
+                "planner_executed", "trajectory_produced", "student_capture_authorized"))):
+        raise ValueError("teacher inspection record identity invalid")
+    commands = record["commands"]
+    if type(commands) is not list or len(commands) != 6:
+        raise ValueError("teacher inspection record commands invalid")
+    expected = (
+        ("image ID", ["docker", "image", "inspect", EGO_IMAGE_ID,
+                      "--format", "{{.Id}}"], EGO_IMAGE_ID + "\n"),
+        ("upstream commit", ["git", "-C", _SOURCE, "rev-parse", "HEAD"], EGO_COMMIT + "\n"),
+        ("clean worktree", ["git", "-C", _SOURCE, "status", "--porcelain"], ""),
+        ("upstream remote", ["git", "-C", _SOURCE, "config", "--local",
+                             "--get-all", "remote.origin.url"], _UPSTREAM + "\n"),
+        ("ROS executables", ["bash", "-lc",
+                             "source /opt/ros/humble/setup.bash && source /ego_ws/install/setup.bash "
+                             "&& ros2 pkg executables ego_planner"], None),
+        ("binary hashes", ["sha256sum", *_BINARIES], None),
+    )
+    for index, (label, argv, stdout) in enumerate(expected):
+        command = commands[index]
+        if (type(command) is not dict
+                or set(command) != {"label", "argv", "stdout", "stderr", "returncode"}
+                or command["label"] != label or type(command["returncode"]) is not int
+                or command["returncode"] != 0
+                or command["stderr"] != "" or type(command["stdout"]) is not str):
+            raise ValueError("teacher inspection record commands invalid")
+        actual_argv = command["argv"]
+        if index == 0:
+            if actual_argv != argv:
+                raise ValueError("teacher inspection record commands invalid")
+        else:
+            if type(actual_argv) is not list or len(actual_argv) < 15:
+                raise ValueError("teacher inspection record commands invalid")
+            name_position = actual_argv.index("--name") if "--name" in actual_argv else -1
+            name = actual_argv[name_position + 1] if 0 <= name_position < len(actual_argv) - 1 else ""
+            if re.fullmatch(r"flydrones-ego-inspect-[0-9a-f]{32}", name) is None:
+                raise ValueError("teacher inspection record container name invalid")
+            expected_argv = [
+                "docker", "run", "--rm", "--pull=never", "--name", name,
+                "--memory", "256m", "--cpus", "0.25", "--network", "none",
+                "--read-only", "--pids-limit", "64", "--entrypoint", "/usr/bin/timeout",
+                EGO_IMAGE_ID, "15s", *argv,
+            ]
+            if actual_argv != expected_argv:
+                raise ValueError("teacher inspection record commands invalid")
+        if stdout is not None and command["stdout"] != stdout:
+            raise ValueError("teacher inspection record output invalid")
+    listed = commands[4]["stdout"].splitlines()
+    if len(listed) != len(_EXECUTABLES) or set(listed) != _EXECUTABLES:
+        raise ValueError("teacher inspection record executables invalid")
+    parsed = {}
+    for line in commands[5]["stdout"].splitlines():
+        match = _HASH_LINE.fullmatch(line)
+        if match is None or match.group(2) in parsed:
+            raise ValueError("teacher inspection record binary hashes invalid")
+        parsed[match.group(2)] = match.group(1)
+    if set(parsed) != set(_BINARIES) or record["executables"] != parsed:
+        raise ValueError("teacher inspection record binary hashes invalid")
+    return record

@@ -8,4 +8,12 @@ Docker Desktop 已运行。检查固定镜像 ID `sha256:a4dae62b38bc01a01d084be
 
 针对身份漂移、重复/改写远端、镜像/进程错误、超时、超大输出、无法确认的容器清理及无效摘要进行了拒绝测试。清理失败时，原命令的有限输出与清理命令、返回码会一同留在 `inspection.json`，并拒绝通过。相邻测试 **49 passed**；改动文件 Ruff 与 `git diff --check` 通过。最终真实 Docker 检查记录为 `results/ego-image-inspection-dev-1701-v3/inspection.json`。先前 v1/v2 结果保留；v3 是故障证据加固后新执行，不回填旧检查。
 
-**仍关闭的门槛：** `validate_capture_input()` 的 `teacher_image_inspected` 目前仍是调用者提供的布尔值，尚未绑定本次证据；没有真实教师 `position_ref` 或可用于学生的部署可见 PX4 EKF2/标定相机位姿采集器。因此 `student_capture_authorized=false`，不启动 54 条正式语料或完整 MaleCNS 训练。当前宿主可用物理内存检查约 0.5–0.8 GiB，低于全连接组训练的 4 GiB 前置要求；本阶段未与正在进行的测试或仿真竞争资源。下一项依赖是让实际采集器产生可验证的非真值状态、相机位姿与教师轨迹，再把本检查身份绑定到采集前门；先做单个开发回合并保留失败。
+## 后续采集门记录绑定
+
+`CaptureInputEvidence` 现要求检查记录的文件路径和预期 SHA-256；`validate_capture_input()` 不再凭调用者填写的 `teacher_image_inspected=true` 放行。新校验器读取有限大小的普通文件，核对摘要、镜像 ID、提交、远端、六次只读命令及其原始输出、两个程序摘要和失败状态。重算摘要也不能让改写的提交输出、联网容器命令、浮点返回码、重复 JSON 键或带失败字段的报告通过。现有 v3 真实检查记录 5,406 字节，可由新校验器读取并通过；这个读取没有重新执行 Docker 或 EGO 规划。
+
+这只把采集门绑定到**先前保存的检查记录**。路径和摘要仍需由未来采集会话在启动前封存，保存的命令文本不能证明执行当下的镜像未变化，更不能证明教师实际产生 `position_ref`。正常通过用例仍是模拟的只读 Docker 命令输出，不是物理采集。相关采集门、镜像检查、语料配置/轨迹及基准适配共 **69 passed**；改动文件 Ruff 和 `git diff --check` 通过。
+
+**仍关闭的门槛：** 没有真实教师 `position_ref` 或可用于学生的部署可见 PX4 EKF2/标定相机位姿采集器，因此 `student_capture_authorized=false`，不启动 54 条正式语料或完整 MaleCNS 训练。2026-10-09 本次检查时 Docker 已运行，但宿主空闲物理内存曾降至约 0.42 GiB，且另一个长任务仍在运行；完整连接组 4 GiB 前置要求未满足。本阶段没有与它并行启动 PX4/Gazebo、EGO 规划或训练。下一依赖是由实际采集会话在启动前封存镜像检查身份，并产生可验证的非真值状态、相机位姿与教师轨迹；先做单个开发回合，保留全部失败。
+
+本次记录绑定证据封存于 `evidence/teacher-inspection-binding-dev-1701.zip`，9 个成员，15,304 字节，SHA-256 `941c203a607eaf4936b744f511e90ba5f7a78bf947fc5b1a1a737d80353a009b`；成员摘要与 ZIP CRC 已核对。包内报告副本早于本段归档摘要，不回填旧镜像检查记录。
