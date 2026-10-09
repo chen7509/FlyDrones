@@ -24,6 +24,8 @@ FEATURE_NAMES = (
 
 
 def frame_features(frame: SequenceFrame) -> np.ndarray:
+    if frame.depth_valid is not None:
+        raise ValueError("masked depth feature profile not implemented")
     depth = np.asarray(frame.depth_m, np.float32)
     rgb = np.asarray(frame.rgb)
     if depth.ndim != 2 or depth.shape[1] < 3:
