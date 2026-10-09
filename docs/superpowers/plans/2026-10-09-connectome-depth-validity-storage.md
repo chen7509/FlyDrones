@@ -41,7 +41,7 @@
 - [x] Run `PYTHONPATH=src python -m pytest tests/connectome_training/test_depth_validity.py -q` and retain the expected RED output.
 - [x] Implement only the v3 storage/loader validation and explicit old-feature refusal; do not add a trainer or imputation.
 - [x] Run the new tests and `tests/connectome_training/test_dataset.py`, `test_recorder.py`, `test_train_stage_b.py`, plus Ruff and `git diff --check`; retain GREEN output.
-- [ ] Review the diff for old-schema changes, update the stage report with achieved and untested claims, commit and push to `personal`.
+- [x] Review the diff for old-schema changes, update the stage report with achieved and untested claims, commit and push to `personal` (8758302).
 
 ### Task 2: Future capture integration gate
 
