@@ -9,4 +9,4 @@
 - [x] Add failing tests for partial NaN acceptance with unchanged source/teacher checks and EGO image encoding; reject all-invalid, infinity, zero, negative, float64, malformed and truth-backed data.
 - [x] Capture RED output, then implement the minimal normalized-depth predicate in `validate_capture_input()`.
 - [x] Run capture gate, v3 storage and related benchmark sensor/adapter tests; run changed-file Ruff and diff check.
-- [ ] Review, report actual versus untested behavior, seal source/test/log evidence, commit and push to `personal`.
+- [x] Review, report actual versus untested behavior, seal source/test/log evidence, commit and push to `personal` (ac9ac2c).
