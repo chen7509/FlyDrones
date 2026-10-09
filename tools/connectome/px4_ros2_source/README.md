@@ -4,6 +4,8 @@ This ROS 2 Humble program subscribes to `/fmu/out/vehicle_odometry` and never pu
 
 Build prerequisites are ROS 2 Humble `rclcpp`, OpenSSL and **official** `PX4/px4_msgs` at commit `148bdb4b8214a4d8de83029777fe8d334c74db6f`. Its `msg/VehicleOdometry.msg` Git blob must be `cf117ff82cdbf191bf576db91db900b7ce34f6a7`, matching the fixed local PX4 checkout. Do not replace it with whatever `px4_msgs` main branch happens to contain. Run `colcon build --packages-select px4_msgs flydrones_px4_ros2_source --executor sequential --parallel-workers 1` in a writable ROS workspace containing those two packages, after sourcing `/opt/ros/humble/setup.bash`. Before a build, check host free memory and existing tests/PX4/Gazebo; the 2026-10-10 host had only about 0.5–1.3 GiB free, so a full `px4_msgs` build was not dispatched in that state.
 
+For a new byte-qualified build, use `python -m flydrones.connectome_training.px4_ros2_build_source prepare --repo PINNED_PX4_MSGS_GIT_REPO --collector tools/connectome/px4_ros2_source --destination NEW_WORKSPACE`, then run `... verify --destination NEW_WORKSPACE` immediately before and after the bounded container build. The prepared profile fixes `colcon build --base-paths src` so the compiler consumes the very `src` tree whose files were hashed. Windows preparation requires Python 3.12 or later so junctions can be rejected; older Windows Python fails closed. The tool never launches a build; passing preparation and verification alone does not prove any executable was built, and cannot repair the earlier CRLF build's provenance gap.
+
 Usage after a verified build:
 
 ```text
