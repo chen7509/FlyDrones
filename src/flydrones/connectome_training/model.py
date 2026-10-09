@@ -18,6 +18,45 @@ def _inverse_softplus(value: torch.Tensor) -> torch.Tensor:
     return value + torch.log(-torch.expm1(-value))
 
 
+def _compact_csr_topology(connectome: Connectome, expected_connections: int) -> torch.Tensor:
+    """Build the fixed, row-normalized graph without per-edge metadata buffers."""
+    limit = np.iinfo(np.int32).max
+    if connectome.n > limit or expected_connections > limit:
+        raise ValueError("compact CSR topology exceeds int32 index range")
+    # The COO reference normalizes raw edges before coalescing duplicates.
+    # In particular, +2 and -1 at one coordinate contribute 3, not 1, to
+    # the incoming absolute-weight denominator.
+    raw = connectome.weights.astype(np.float32, copy=True)
+    if not np.isfinite(raw.data).all():
+        raise ValueError("connectome weights contain non-finite values")
+    incoming = np.zeros(connectome.n, dtype=np.float64)
+    chunk_size = 1_000_000
+    for start in range(0, raw.nnz, chunk_size):
+        end = min(start + chunk_size, raw.nnz)
+        incoming += np.bincount(
+            raw.indices[start:end],
+            weights=np.abs(raw.data[start:end]),
+            minlength=connectome.n,
+        )
+    for start in range(0, raw.nnz, chunk_size):
+        end = min(start + chunk_size, raw.nnz)
+        raw.data[start:end] /= np.maximum(1.0, incoming[raw.indices[start:end]])
+
+    weights = raw.tocsr()
+    weights.sum_duplicates()
+    weights.eliminate_zeros()
+    weights.sort_indices()
+    if weights.nnz != expected_connections:
+        raise ValueError("compact CSR topology does not match parameter identity")
+    return torch.sparse_csr_tensor(
+        torch.from_numpy(weights.indptr.astype(np.int32, copy=False)),
+        torch.from_numpy(weights.indices.astype(np.int32, copy=False)),
+        torch.from_numpy(weights.data),
+        size=(connectome.n, connectome.n),
+        check_invariants=True,
+    )
+
+
 @dataclass(frozen=True)
 class RecurrentState:
     voltage: torch.Tensor
@@ -31,8 +70,12 @@ class ConnectomeConstrainedCore(nn.Module):
         self,
         connectome: Connectome,
         parameter_set: ParameterSet,
+        *,
+        topology_format: str = "coo_reference",
     ):
         super().__init__()
+        if topology_format not in {"coo_reference", "csr_compact_v1"}:
+            raise ValueError("unsupported topology format")
         expected = build_structure_identity(
             connectome, parameter_set.identity.model_sha256
         )
@@ -44,14 +87,6 @@ class ConnectomeConstrainedCore(nn.Module):
             or expected.cell_types != actual.cell_types
         ):
             raise ValueError("parameter identity does not match connectome topology")
-
-        weights = connectome.weights.tocoo().astype(np.float32)
-        order = np.lexsort((weights.col, weights.row))
-        rows = np.asarray(weights.row[order], np.int64)
-        columns = np.asarray(weights.col[order], np.int64)
-        values = np.asarray(weights.data[order], np.float32)
-        if not np.isfinite(values).all():
-            raise ValueError("connectome weights contain non-finite values")
 
         input_features = np.asarray(parameter_set.input_feature_index, np.int64)
         inputs = np.asarray(parameter_set.input_neuron_index, np.int64)
@@ -66,22 +101,31 @@ class ConnectomeConstrainedCore(nn.Module):
             raise ValueError("connectome contains a cell type absent from parameters")
         type_index = np.asarray(mapped_types, np.int64)
 
-        magnitudes = np.abs(values)
-        incoming = np.bincount(rows, weights=magnitudes, minlength=connectome.n)
-        normalized = magnitudes / np.maximum(1.0, incoming[rows])
-        edge_indices = torch.tensor(np.vstack([rows, columns]), dtype=torch.long)
-        edge_values = torch.tensor(np.sign(values) * normalized, dtype=torch.float32)
-        fixed_topology = torch.sparse_coo_tensor(
-            edge_indices,
-            edge_values,
-            (connectome.n, connectome.n),
-            check_invariants=True,
-        ).coalesce()
-
-        self.register_buffer("edge_row", torch.tensor(rows, dtype=torch.long))
-        self.register_buffer("edge_column", torch.tensor(columns, dtype=torch.long))
-        self.register_buffer("edge_sign", torch.tensor(np.sign(values), dtype=torch.float32))
-        self.register_buffer("edge_magnitude", torch.tensor(magnitudes, dtype=torch.float32))
+        if topology_format == "csr_compact_v1":
+            fixed_topology = _compact_csr_topology(connectome, actual.connections)
+        else:
+            weights = connectome.weights.tocoo().astype(np.float32)
+            order = np.lexsort((weights.col, weights.row))
+            rows = np.asarray(weights.row[order], np.int64)
+            columns = np.asarray(weights.col[order], np.int64)
+            values = np.asarray(weights.data[order], np.float32)
+            if not np.isfinite(values).all():
+                raise ValueError("connectome weights contain non-finite values")
+            magnitudes = np.abs(values)
+            incoming = np.bincount(rows, weights=magnitudes, minlength=connectome.n)
+            normalized = magnitudes / np.maximum(1.0, incoming[rows])
+            edge_indices = torch.tensor(np.vstack([rows, columns]), dtype=torch.long)
+            edge_values = torch.tensor(np.sign(values) * normalized, dtype=torch.float32)
+            fixed_topology = torch.sparse_coo_tensor(
+                edge_indices,
+                edge_values,
+                (connectome.n, connectome.n),
+                check_invariants=True,
+            ).coalesce()
+            self.register_buffer("edge_row", torch.tensor(rows, dtype=torch.long))
+            self.register_buffer("edge_column", torch.tensor(columns, dtype=torch.long))
+            self.register_buffer("edge_sign", torch.tensor(np.sign(values), dtype=torch.float32))
+            self.register_buffer("edge_magnitude", torch.tensor(magnitudes, dtype=torch.float32))
         self.register_buffer("fixed_topology", fixed_topology)
         self.register_buffer("type_index", torch.tensor(type_index, dtype=torch.long))
         self.register_buffer(
