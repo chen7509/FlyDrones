@@ -34,8 +34,9 @@ def observe_px4_startup(
     max_wall_ns: int,
     now_ns: Callable[[], int] = time.monotonic_ns,
     sleep: Callable[[float], None] = time.sleep,
+    on_ready: Callable[[], None] | None = None,
 ) -> dict:
-    """Observe only a newly created log and retain all missing markers as null."""
+    """Observe a newly created log; announce readiness after the absence check."""
     if type(max_wall_ns) is not int or not 0 < max_wall_ns <= 300_000_000_000:
         raise ValueError("observer deadline invalid")
     log_path = Path(log_path)
@@ -67,6 +68,8 @@ def observe_px4_startup(
                 pass
             else:
                 raise ValueError("log existed before observer start")
+            if on_ready is not None:
+                on_ready()
             while True:
                 if now_ns() - start >= max_wall_ns:
                     result["status"] = "deadline_partial" if identity else "deadline_without_log"

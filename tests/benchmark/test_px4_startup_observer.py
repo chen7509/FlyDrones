@@ -59,6 +59,54 @@ def test_observer_times_out_with_missing_markers_and_no_log(tmp_path):
     assert all(value is None for value in result["markers"].values())
 
 
+def test_observer_announces_ready_only_after_absent_log_check(tmp_path):
+    from tools.benchmark.observe_px4_startup import observe_px4_startup
+
+    clock = Clock()
+    log = tmp_path / "px4.log"
+    ready = []
+
+    def on_ready():
+        assert not log.exists()
+        ready.append(clock.now())
+        log.write_bytes(b"INFO Startup script returned successfully\n")
+
+    result = observe_px4_startup(
+        log, tmp_path / "observed.json", max_wall_ns=40_000_000,
+        now_ns=clock.now, sleep=clock.sleep, on_ready=on_ready,
+    )
+    assert ready == [1_000_000_000]
+    assert result["status"] == "startup_completed"
+
+
+def test_observer_ready_callback_failure_is_retained(tmp_path):
+    from tools.benchmark.observe_px4_startup import observe_px4_startup
+
+    output = tmp_path / "observed.json"
+
+    def fail():
+        raise RuntimeError("diagnostic readiness failed")
+
+    with pytest.raises(RuntimeError, match="diagnostic readiness failed"):
+        observe_px4_startup(tmp_path / "px4.log", output,
+                            max_wall_ns=40_000_000, on_ready=fail)
+    saved = json.loads(output.read_text())
+    assert saved["status"] == "observer_failed"
+    assert "diagnostic readiness failed" in saved["failure"]
+
+
+def test_observer_never_announces_ready_for_preexisting_log(tmp_path):
+    from tools.benchmark.observe_px4_startup import observe_px4_startup
+
+    log = tmp_path / "px4.log"
+    log.write_text("historical\n")
+    called = []
+    with pytest.raises(ValueError, match="existed before observer"):
+        observe_px4_startup(log, tmp_path / "observed.json",
+                            max_wall_ns=40_000_000, on_ready=lambda: called.append(True))
+    assert called == []
+
+
 def test_observer_does_not_accept_a_log_first_seen_after_deadline(tmp_path):
     from tools.benchmark.observe_px4_startup import observe_px4_startup
 

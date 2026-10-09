@@ -230,6 +230,21 @@ Its synthetic/CLI evidence is sealed in
 `evidence/live-wire-px4-startup-observer-dev-1701-v3.zip` (9 members,
 6,845 bytes, SHA256 `3ffcc9b8f4f47148b47ce1c290811a10e85ab85632d6404556c70a9d64ec6077`);
 member hashes and ZIP CRC were verified.
+The subsequent observer revision adds an optional readiness callback only after
+confirming that the log does not already exist. This allows a future coordinator
+to wait for an explicit pre-capture handshake instead of guessing from thread
+creation or output-file existence. A pre-existing log never triggers readiness;
+a failed callback remains an observer failure in its output. The old v3 evidence
+describes the earlier implementation and was not rewritten. This callback has
+only synthetic test coverage so far; no coordinator or physical diagnostic has
+used it, and no startup cause has been established.
+The focused suite reports 11 passed and one Windows symlink-permission skip;
+an independent WSL POSIX probe confirmed the readiness callback runs before
+log creation and records a startup-success marker. Neither run invoked PX4.
+The handshake increment is sealed separately in
+`evidence/live-wire-px4-startup-handshake-dev-1701.zip` (8 members,
+14,805 bytes, SHA256 `186c11f858e8ed6377c531fd023e468dae57dd9d95af5a730ea3ee628b050539`);
+the archived report copy predates this self-referential hash paragraph.
 The callback fix changes selected source bytes: v6 cannot be reused for another
 attempt, and no v7 has been prepared or executed. Preserve the v5 refusal and v6
 physical failure independently. Full learning/division, deployment-visible
