@@ -93,6 +93,12 @@ class ReadyShadowFanout:
                 raise ValueError("fan-out CameraInfo bytes")
             if hashlib.sha256(payload).hexdigest() != row["payload_sha256"]:
                 raise ValueError("fan-out CameraInfo hash")
+        elif kind == "depth" and "payload_path" in row:
+            if payload is not None:
+                raise ValueError("unexpected fan-out depth bytes")
+            data = self._file(row["payload_path"])
+            if len(data) != row["payload_bytes"] or hashlib.sha256(data).hexdigest() != row["payload_sha256"]:
+                raise ValueError("fan-out depth payload mismatch")
         elif payload is not None:
             raise ValueError("unexpected fan-out payload")
         return base

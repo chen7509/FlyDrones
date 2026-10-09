@@ -146,6 +146,8 @@ def execution_contract(args, launch_environment=None):
         if not args.execution_contract or not args.runtime_binding or fault:
             raise ValueError('wire mode requires a declared bound ordinary capture')
         result['wire'] = wire_configuration_record(wire_config)
+    if getattr(args, 'record_depth_payload', False):
+        result['record_depth_payload'] = True
     return result
 
 
@@ -195,6 +197,8 @@ def worker_options(args):
             result += ['--' + field.replace('_', '-'), str(value)]
     if getattr(args, 'startup_preflight', False):
         result.append('--startup-preflight')
+    if getattr(args, 'record_depth_payload', False):
+        result.append('--record-depth-payload')
     return result
 
 

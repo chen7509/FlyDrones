@@ -161,6 +161,26 @@ def apply_simulation_seed(output, seed, rand_type):
     return record
 
 
+def depth_payload(message):
+    """Own the fixed Gazebo R_FLOAT32 image bytes without normalizing pixels."""
+    if (type(message.width) is not int or message.width != 160
+            or type(message.height) is not int or message.height != 120
+            or type(message.step) is not int or message.step != 640
+            or type(message.pixel_format_type) is not int or message.pixel_format_type != 13
+            or type(message.data) is not bytes or len(message.data) != 160 * 120 * 4):
+        raise ValueError("unexpected depth image format or length")
+    payload = message.SerializeToString()
+    if type(payload) is not bytes or not 0 < len(payload) <= 131_072:
+        raise ValueError("invalid serialized depth image")
+    return payload
+
+
+def handle_capture_callback_error(writer, errors, exc, *, record_depth_payload):
+    if record_depth_payload:
+        writer.latch_failure(exc)
+    errors.append(repr(exc))
+
+
 def parse_capture_args(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", type=Path, required=True)
@@ -171,6 +191,8 @@ def parse_capture_args(argv=None):
     parser.add_argument("--trajectory-gauge-policy", type=Path,
                         help="Prospective truth-independent trajectory scoring policy")
     parser.add_argument("--simulation-seed", type=int, help="Declared Gazebo Math random seed")
+    parser.add_argument("--record-depth-payload", action="store_true",
+                        help="Opt-in exact depth protobuf sidecar for future nontruth EGO capture")
     parser.add_argument("--wire-config", type=Path,
                         help="Declared single-reader lifecycle and explicit remote clock mapping")
     parser.add_argument("--shadow-binary", type=Path)
@@ -210,6 +232,10 @@ def parse_capture_args(argv=None):
         parser.error("simulation seed must be in [1, 2^32)")
     if args.runtime_binding and not args.execution_contract:
         parser.error("runtime binding requires an execution declaration")
+    if args.record_depth_payload and (
+        not args.execution_contract or not args.runtime_binding or not args.source_fanout_profile
+    ):
+        parser.error("depth payload capture requires declared runtime binding and source fan-out")
     if args.trajectory_gauge_policy and (not args.runtime_binding or not args.execution_contract):
         parser.error("trajectory gauge policy requires runtime binding and execution declaration")
     if args.startup_preflight and (
@@ -867,6 +893,7 @@ def main():
             output, sequence_records=fanout is not None,
             on_record=fanout.on_record if fanout else readiness.on_record if readiness else shadow.on_record if shadow else None,
             on_idle=fanout.on_idle if fanout else shadow.tick_idle if shadow else None,
+            record_depth_payload=args.record_depth_payload,
         )
         journal.cleanup("writer", lambda: result.update(writer=writer.finish()), priority=80)
         stop = threading.Event()
@@ -907,9 +934,11 @@ def main():
                         event.update(width=int(message.width), height=int(message.height))
                         if kind == "rgb":
                             payload = bytes(message.data)
+                        elif kind == "depth" and args.record_depth_payload:
+                            payload = depth_payload(message)
                 writer.submit(event, payload)
             except Exception as exc:
-                errors.append(repr(exc))
+                handle_capture_callback_error(writer, errors, exc, record_depth_payload=args.record_depth_payload)
 
         def read_heartbeats():
             while not stop.is_set():

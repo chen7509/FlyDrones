@@ -25,6 +25,26 @@ def test_declared_ordinary_limits_and_workload(tmp_path):
     assert selected['rgbd_hz'] == 10
     assert selected['rgbd_size'] == [160, 120]
     assert 'simulation_seed' not in selected
+    assert 'record_depth_payload' not in selected
+
+
+def test_depth_payload_opt_in_is_declared_and_forwarded_only_with_bound_fanout(tmp_path):
+    with pytest.raises(SystemExit):
+        args(tmp_path, '--record-depth-payload')
+    selected = args(
+        tmp_path, '--record-depth-payload',
+        '--execution-contract', str(tmp_path / 'execution.json'),
+        '--runtime-binding', str(tmp_path / 'binding.json'),
+        '--shadow-binary', str(tmp_path / 'online-probe'),
+        '--shadow-config', str(tmp_path / 'config'),
+        '--reference-module', str(tmp_path / 'reference.so'),
+        '--reference-sha256', 'a' * 64,
+        '--source-fanout-profile', 'ready-shadow-heartbeat-estimator-v1',
+        '--motion-profile', 'supported-ready-v1',
+        '--physics-trace-profile', 'substep-ready-v1',
+    )
+    assert contract.execution_contract(selected)['record_depth_payload'] is True
+    assert contract.worker_options(selected).count('--record-depth-payload') == 1
 
 
 def test_simulation_seed_is_declared_forwarded_and_applied_before_fixture(tmp_path):

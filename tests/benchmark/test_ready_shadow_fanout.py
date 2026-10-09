@@ -1,4 +1,5 @@
 import copy
+import hashlib
 import io
 import json
 import threading
@@ -148,6 +149,28 @@ def test_rgb_closed_exact_bytes_and_local_path(tmp_path, fault):
     f.on_record(row(kind="rgb"), pixels)
     assert bool(f.failure) == (fault is not None)
     assert len(s.rows) == int(fault is None)
+    f.finish()
+
+
+@pytest.mark.parametrize("fault", [None, "missing", "changed"])
+def test_depth_sidecar_is_verified_without_native_pixel_delivery(tmp_path, fault):
+    class BytesConsumer(Consumer):
+        def on_record(self, record, payload):
+            assert payload is None
+            super().on_record(record, payload)
+
+    f, r, s, _ = setup(tmp_path, readiness=BytesConsumer(), shadow=BytesConsumer())
+    payload = b"exact depth protobuf"
+    source = row(kind="depth")
+    source.update(payload_path="depth-messages/1000.pb", payload_bytes=len(payload),
+                  payload_sha256=hashlib.sha256(payload).hexdigest())
+    if fault != "missing":
+        folder = tmp_path / "depth-messages"
+        folder.mkdir()
+        (folder / "1000.pb").write_bytes(b"changed" if fault == "changed" else payload)
+    f.on_record(source, None)
+    assert bool(f.failure) == (fault is not None)
+    assert len(r.rows) == len(s.rows) == int(fault is None)
     f.finish()
 
 
