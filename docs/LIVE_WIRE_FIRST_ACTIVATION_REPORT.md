@@ -109,6 +109,46 @@ deadline, but this capture lacks a timestamped `rcS`/stream-start event and
 cannot prove which stage held it up or exclude a transport problem. The 3 ms
 Gazebo record does not by itself establish when PX4's stream loop ran.
 
+### PX4 bridge-stage comparison (later read-only audit)
+
+The failed v6 `px4.log` (SHA256
+`a9cc6ebeda2a4ce7f08b3ec1d2c7619d07c503c79cfb69b90faa27e4f0d205ab`)
+was compared without rerunning physics against the four completed 25-second
+health-cohort PX4 logs in `results/openvins-health-physical-dev-1701-v2`.
+All five contain `Gazebo world is ready` and `PX4_GZ_MODEL_NAME set` at log
+lines 35–36. The failed run then terminates its startup script with status 15;
+it has **no** `lockstep_scheduler` initial-time, `gz_bridge` world/model,
+MAVLink Onboard, or startup-success record. Each completed run contains all
+four later markers (initial-time line 37, bridge line 38, Onboard line
+42–43, success line 51–52). This comparison establishes marker presence,
+not wall-clock latency: the PX4 text logs have no monotonic timestamp per
+line and the earlier cohort is a separate run.
+
+The current checked-out PX4 source is `d6f12ad1c4f70ad3230afd7d86e971421e02fef4`;
+`px4-rc.gzsim`, `GZBridge.cpp` and `lockstep_scheduler.cpp` are clean in that
+checkout (SHA256 respectively `dba9b8e3bfd4a5e7fef6cdb6ba7d6a23d593884886b6b91d132568f0ea4038eb`,
+`8f6f1d7e450e341137be573a51674c6ffc518ef63badbdaa71667d0f462b8dfd`,
+`92c8d2e153eea5deefc0aa427c601d92aa9f3c7fa8f3db40714fbdb3bd2f2117`).
+`px4-rc.gzsim` invokes `gz_bridge start` immediately after the model-attach
+message. `GZBridge::init` subscribes to `/world/<world>/clock` and waits for
+its first callback before other required sensor subscriptions; the startup
+script reaches MAVLink later. This makes bridge/clock startup an upstream
+candidate for the missing TIMESYNC request. Because the failed log lacks
+even the bridge's first world/model message, it does **not** prove whether
+the command entered its task, subscribed to clock, or had not flushed a
+message by interruption. The Python-side clock callbacks do not prove PX4's
+separate subscriber received a clock. No bridge code or runtime parameter
+was changed for this audit.
+
+The comparison is separately sealed as
+`evidence/live-wire-px4-startup-audit-dev-1701.zip` (11 members,
+23,347 bytes, SHA256 `d943142bc89ddf2dcc5d2bf25432cdec3b7c00b6b3896a48a4abf31fdab2628d`).
+It contains the five exact PX4 logs, three clean-checkout source files, the
+read-only builder and a marker/identity JSON; member hashes and ZIP CRC were
+verified. The failed log was byte-equal to the original v6 sealed ZIP. The
+four completed logs were copied from retained local cohort results at audit
+time, not misrepresented as original v6 members.
+
 The same checkout's earlier, completed, single-aircraft health-cohort
 development capture ran 25 s of simulation with the same declared physics,
 IMU and camera rates. Its supervisor observed the worker from monotonic
@@ -164,6 +204,32 @@ The read-only timing audit above completes the first step: the next question is
 why no PX4 TIMESYNC request reached the owned receiver in that fixed window.
 That needs bounded startup/lockstep evidence or a separately frozen diagnostic
 study, not a blind repeat of the failed physical capture.
+The bridge-stage comparison above narrows that study: timestamp the owned
+PX4 log's model-attach, first bridge/clock, MAVLink Onboard and startup-success
+markers against the existing Gazebo clock and receiver journals, with a
+bounded read-only observer. Preserve missing markers as missing; never infer
+their occurrence from another process's clock. This is a separate diagnostic
+condition with its own instrumentation cost, not a qualification retry or a
+reason to relax the original 2s/8s windows.
+`tools/benchmark/observe_px4_startup.py` now provides that opt-in,
+standalone read-only file observer. It must start before the study creates
+`px4.log`; it records first **observation** time on the host monotonic clock,
+file identity and absent markers as null, with a 1 MiB input and explicit
+wall deadline. Path aliases between log and output, nonregular/symlink logs,
+replacement, disappearance, observed shrink, changed-prefix rewrite and
+existing output fail closed. Eight Windows tests passed and one symlink test
+was skipped for host privilege; a separate real POSIX dangling-symlink probe
+passed in WSL. Ruff passed and an actual CLI missing-log invocation returned
+the expected refusal. A truncate-and-regrow with an identical consumed prefix
+is not distinguishable by this bounded file observer; its marker evidence
+cannot serve as a source-authenticated PX4 event trace. This tool has not been
+run alongside PX4/Gazebo, so it supplies no v6 timestamps and cannot qualify
+the wire bootstrap by itself. A later physical diagnostic needs a separately
+frozen manifest, new output path and resource-clear check before using it.
+Its synthetic/CLI evidence is sealed in
+`evidence/live-wire-px4-startup-observer-dev-1701-v3.zip` (9 members,
+6,845 bytes, SHA256 `3ffcc9b8f4f47148b47ce1c290811a10e85ab85632d6404556c70a9d64ec6077`);
+member hashes and ZIP CRC were verified.
 The callback fix changes selected source bytes: v6 cannot be reused for another
 attempt, and no v7 has been prepared or executed. Preserve the v5 refusal and v6
 physical failure independently. Full learning/division, deployment-visible
@@ -180,5 +246,6 @@ sources. The changed lifecycle source is reconstructed from producer Git bytes
 with line endings checked against the predeclared digest, explicitly not a
 pre-run copy. Other source copies match frozen digests after the run. Installed
 libraries are represented by declared identities/hashes, not full binary copies.
-This seal paragraph was added after archiving. Publication of this increment is
-local; no remote push, second physical run or full-model test is claimed.
+This seal paragraph was added after archiving. The archive itself was not
+rewritten by later publication and audit changes. No second physical run or
+full-model test is claimed.
