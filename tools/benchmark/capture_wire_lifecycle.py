@@ -303,8 +303,14 @@ def bind_capture_wire(fixture, journal, result, session, original_post, *, total
             original_post(info, ecm)
         except BaseException as exc:
             driver._fail(exc)
-            driver.request_stop(driver.failure)
-            raise
+            try:
+                driver.request_stop(driver.failure)
+            except BaseException as stop_exc:
+                driver._fail(stop_exc)
+            # This callback runs on Gazebo's native worker. Propagating a Python
+            # exception here can abort the process before CaptureJournal cleanup.
+            # Keep the failure latched: pre-step health refuses further force and
+            # the existing outer runner raises after its bounded stepping chunk.
     try:
         driver = CaptureWireDriver(session, result, total_deadline_ns=total_deadline_ns)
         if not callable(original_post):

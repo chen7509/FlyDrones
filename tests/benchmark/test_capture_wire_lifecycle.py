@@ -166,10 +166,12 @@ class CaptureDriverTests(unittest.TestCase):
         step = self.case.f.step + 1
         info = SimpleNamespace(iterations=step, paused=False, dt=timedelta(milliseconds=1),
                                sim_time=timedelta(milliseconds=step))
-        with self.assertRaisesRegex(ValueError, 'reference post failed'):
-            callbacks[0](info, None)
+        self.assertIsNone(callbacks[0](info, None))
         self.assertTrue(driver.progress['failure'])
         self.assertEqual(driver.progress['phase'], 'stopping')
+        self.assertTrue(any('reference post failed' in e for e in self.errors))
+        with self.assertRaises(ValueError):
+            driver.health_ready()
 
     def test_invalid_binding_deadline_closes_unbound_supplied_resources(self):
         from tools.benchmark.capture_wire_lifecycle import bind_capture_wire
@@ -283,9 +285,37 @@ class CaptureDriverTests(unittest.TestCase):
         step = self.f.step + 1
         info = SimpleNamespace(iterations=step, paused=False, dt=timedelta(milliseconds=1),
                                sim_time=timedelta(milliseconds=step))
-        with self.assertRaisesRegex(ValueError, 'stopping|closed'):
-            self.callbacks[0](info, None)
+        self.assertIsNone(self.callbacks[0](info, None))
         self.assertEqual(self.f.lane.progress['committed_samples'], before)
+        self.assertEqual(self.original, [])
+        self.assertTrue(any('stopping or closed' in e for e in self.errors))
+
+    def test_closed_driver_callback_records_refusal_without_crossing_native_boundary(self):
+        self.driver._close()
+        before = self.f.lane.progress['committed_samples']
+        self.assertIsNone(self.callbacks[0](object(), None))
+        self.assertEqual(self.f.lane.progress['committed_samples'], before)
+        self.assertEqual(self.original, [])
+        self.assertTrue(self.driver.progress['failure'])
+
+    def test_invalid_clock_callback_records_failure_and_skips_original(self):
+        self.assertIsNone(self.callbacks[0](object(), None))
+        self.assertEqual(self.original, [])
+        self.assertTrue(self.errors)
+        self.assertEqual(self.driver.progress['phase'], 'stopping')
+
+    def test_stop_interruption_is_retained_without_escaping_callback(self):
+        def interrupted_stop(reason):
+            raise KeyboardInterrupt('stop interrupted')
+
+        self.driver.request_stop = interrupted_stop
+        try:
+            returned = self.callbacks[0](object(), None)
+        except BaseException as exc:
+            self.fail(f'exception crossed native callback boundary: {exc!r}')
+        self.assertIsNone(returned)
+        self.assertTrue(any('stop interrupted' in e for e in self.errors))
+        self.assertTrue(self.driver.failure)
         self.assertEqual(self.original, [])
 
     def test_socket_close_failure_is_preserved_separately_from_source_failure(self):
