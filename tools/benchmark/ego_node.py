@@ -4,7 +4,6 @@
 from __future__ import annotations
 
 import argparse
-import base64
 import json
 import socket
 import struct
@@ -14,18 +13,13 @@ import time
 import numpy as np
 import rclpy
 from builtin_interfaces.msg import Time
+from ego_wire_observation import ObservationSequence, decode_observation
 from geometry_msgs.msg import PoseStamped
 from nav_msgs.msg import Odometry
 from quadrotor_msgs.msg import PositionCommand
 from rclpy.node import Node
 from rosgraph_msgs.msg import Clock
 from sensor_msgs.msg import Image
-
-
-OBSERVATION_FIELDS = {
-    'sim_ns', 'frame_ns', 'rgb', 'depth_m', 'camera_pose',
-    'position', 'velocity', 'yaw', 'yaw_rate', 'goal',
-}
 
 
 def stamp(nanoseconds: int) -> Time:
@@ -54,20 +48,6 @@ def send_packet(stream: socket.socket, payload: bytes) -> None:
     stream.sendall(struct.pack('!I', len(payload)) + payload)
 
 
-def decode_observation(payload: bytes) -> dict:
-    data = json.loads(payload)
-    if set(data) != OBSERVATION_FIELDS:
-        raise ValueError('unexpected observation fields')
-    packed = data['depth_m']
-    shape = packed['shape']
-    raw = base64.b64decode(packed['data'], validate=True)
-    depth = np.frombuffer(raw, dtype='<f4').reshape(shape)
-    if depth.shape != (120, 160):
-        raise ValueError('unexpected depth geometry')
-    data['depth_m'] = depth
-    return data
-
-
 class Bridge(Node):
     def __init__(self, host: str, port: int, response_timeout_s: float):
         super().__init__('fly_ego_benchmark_bridge', parameter_overrides=[
@@ -83,6 +63,7 @@ class Bridge(Node):
         self.port = port
         self.response_timeout_s = response_timeout_s
         self.last_frame_ns = -1
+        self.input_sequence = ObservationSequence()
         self.reference_revision = 0
         self.reference = None
         self.trigger_sent = False
@@ -130,6 +111,9 @@ class Bridge(Node):
         half = float(data['yaw']) / 2
         odom.pose.pose.orientation.z = float(np.sin(half))
         odom.pose.pose.orientation.w = float(np.cos(half))
+        # Fixed EGO consumes these components as world velocity. The ROS
+        # Odometry child_frame_id below describes body twist instead; this
+        # interface mismatch remains an explicit fairness qualification gap.
         odom.twist.twist.linear.x, odom.twist.twist.linear.y, odom.twist.twist.linear.z = data['velocity']
         odom.twist.twist.angular.z = float(data['yaw_rate'])
         self.odom_pub.publish(odom)
@@ -186,6 +170,7 @@ class Bridge(Node):
         if set(reset) != {'type', 'seed'} or reset['type'] != 'reset':
             raise ValueError('reset handshake required')
         self.last_frame_ns = -1
+        self.input_sequence.reset()
         self.trigger_sent = False
         with self.condition:
             self.reference = None
@@ -193,6 +178,7 @@ class Bridge(Node):
         send_packet(stream, json.dumps({'status': 'ready'}).encode())
         while rclpy.ok():
             observation = decode_observation(recv_packet(stream))
+            self.input_sequence.accept(observation)
             with self.condition:
                 baseline_revision = self.reference_revision
             self.publish_observation(observation)
