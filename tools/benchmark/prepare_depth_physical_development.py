@@ -49,9 +49,12 @@ def collector_code_paths(root):
         location = getattr(module, "__file__", None)
         if location is None:
             continue
-        candidate = Path(location).resolve(strict=True)
-        if any(candidate.is_relative_to(scope) for scope in roots):
-            paths.add(candidate)
+        module_path = Path(location)
+        lexical = module_path.absolute()
+        candidate = module_path.resolve(strict=False)
+        if any(lexical.is_relative_to(scope) or candidate.is_relative_to(scope)
+               for scope in roots):
+            paths.add(module_path.resolve(strict=True))
     return [str(path) for path in sorted(paths)]
 
 

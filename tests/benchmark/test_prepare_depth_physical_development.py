@@ -5,6 +5,7 @@ from __future__ import annotations
 import hashlib
 import json
 import sys
+import types
 from pathlib import Path
 
 import pytest
@@ -172,3 +173,24 @@ def test_prepare_depth_study_binds_collector_import_closure(tmp_path, monkeypatc
     assert imported <= declared
     assert (benchmark_root / "openvins_health_contract.py") in declared
     assert (benchmark_root / "openvins_health_physical_faults.py") in declared
+
+
+def test_collector_closure_ignores_missing_file_outside_bound_roots(monkeypatch):
+    from tools.benchmark import prepare_depth_physical_development as stage
+
+    unrelated = types.ModuleType("external_missing_ops_for_depth_study")
+    unrelated.__file__ = "_ops.py"
+    monkeypatch.setitem(sys.modules, unrelated.__name__, unrelated)
+    paths = stage.collector_code_paths(Path(stage.__file__).resolve().parents[2])
+    assert str(Path(stage.__file__).resolve()) in paths
+
+
+def test_collector_closure_rejects_missing_file_inside_bound_roots(monkeypatch):
+    from tools.benchmark import prepare_depth_physical_development as stage
+
+    root = Path(stage.__file__).resolve().parents[2]
+    missing = types.ModuleType("missing_bound_depth_module")
+    missing.__file__ = str(root / "tools/benchmark/does_not_exist_depth.py")
+    monkeypatch.setitem(sys.modules, missing.__name__, missing)
+    with pytest.raises(FileNotFoundError):
+        stage.collector_code_paths(root)

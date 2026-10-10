@@ -53,3 +53,21 @@ def test_fourth_attempt_requires_exact_preserved_unlaunched_v3_refusal(tmp_path,
     (prior / "launch.json").write_text("{}", encoding="utf-8")
     with pytest.raises(RuntimeError, match="unlaunched"):
         runner.select_result(["--retry-after-memory-refusal"])
+
+
+def test_fifth_attempt_requires_unlaunched_v4_memory_refusal(tmp_path, monkeypatch):
+    monkeypatch.setattr(runner, "ROOT", tmp_path)
+    prior = tmp_path / "results/px4-ros2-full-synthetic-dev-1701-v4"
+    prior.mkdir(parents=True)
+    (prior / "preflight.json").write_text(
+        json.dumps({"free_kib": 839672, "minimum_free_kib": 900000}), encoding="utf-8"
+    )
+    (prior / "result.json").write_text(
+        json.dumps({"status": "preflight_failed", "started": False}), encoding="utf-8"
+    )
+    assert runner.select_result(["--retry-after-v4-memory-refusal"]) == (
+        tmp_path / "results/px4-ros2-full-synthetic-dev-1701-v5"
+    )
+    (prior / "launch.json").write_text("{}", encoding="utf-8")
+    with pytest.raises(RuntimeError, match="unlaunched"):
+        runner.select_result(["--retry-after-v4-memory-refusal"])
