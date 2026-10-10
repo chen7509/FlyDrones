@@ -54,4 +54,4 @@
 - [x] Preserve RED/GREEN, versions, hashes, test output, every failed run and build limitation.
 - [x] Independently inspect reader/writer schema parity and qualification boundaries.
 - [x] Run final targeted/adjacent tests, Ruff and `git diff --check`; seal ZIP with per-member hashes/CRC.
-- [ ] Commit and push only `personal`, update draft PR65, leave owned live PX4/Agent, camera calibration and EGO integration as explicit later gates.
+- [x] Commit and push only `personal`, update draft PR65, leave owned live PX4/Agent, camera calibration and EGO integration as explicit later gates. The sealed archive intentionally contains the pre-publication checklist; this publication tick is a later administrative update.
