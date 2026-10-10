@@ -240,11 +240,14 @@ def validate_live_wire_study(document, *, execution, binding, wire_config, gauge
         if role not in binding["inventory"] or len(binding["inventory"][role]) != 1:
             raise ValueError("explicit runtime root required")
     validate_trajectory_gauge_policy(gauge_policy)
-    _equal(
-        wire_config,
-        dict(schema="capture-wire-v1", session_id=document["study_id"] + ".clock", sim_origin_ns=0, remote_origin_ns=0),
-        "wire clock",
-    )
+    expected_wire = dict(schema="capture-wire-v1", session_id=document["study_id"] + ".clock",
+                         sim_origin_ns=0, remote_origin_ns=0)
+    if type(wire_config) is dict and wire_config.get("schema") == "capture-wire-startup-v2":
+        cap = wire_config.get("startup_max_wall_ns")
+        if type(cap) is not int or not 0 < cap <= 60_000_000_000:
+            raise ValueError("invalid startup wall cap")
+        expected_wire.update(schema="capture-wire-startup-v2", startup_max_wall_ns=cap)
+    _equal(wire_config, expected_wire, "wire clock")
     _shape(
         execution,
         set(WORKLOAD) | {"profiles", "inputs", "reference_sha256", "launch_environment", "trajectory_gauge_policy", "wire"},

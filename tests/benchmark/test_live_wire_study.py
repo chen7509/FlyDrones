@@ -42,6 +42,24 @@ def test_pure_validates_without_reading_or_granting_live_authority(tmp_path, mon
     assert manifest["command"][-1] != "changed"
 
 
+def test_staged_startup_study_validates_files_without_granting_live_authority(tmp_path):
+    manifest, _, path = fixture(tmp_path, staged_wire=True)
+    result = api().validate_live_wire_study_files(path)
+    assert result["files_verified"] is True
+    assert result["manifest"] == manifest
+    assert result["live_qualified"] is False and result["fusion_qualified"] is False
+    assert all(not Path(p).exists() for p in manifest["outputs"].values())
+
+
+@pytest.mark.parametrize("cap", [0, 60_000_000_001, True, 60.0])
+def test_staged_startup_study_rejects_invalid_cap(tmp_path, cap):
+    manifest, docs, _ = fixture(tmp_path, staged_wire=True)
+    docs["wire_config"]["startup_max_wall_ns"] = cap
+    docs["execution"]["wire"]["configuration"]["startup_max_wall_ns"] = cap
+    with pytest.raises(ValueError, match="invalid startup wall cap"):
+        api().validate_live_wire_study(manifest, **docs)
+
+
 @pytest.mark.parametrize(
     "mutation",
     [

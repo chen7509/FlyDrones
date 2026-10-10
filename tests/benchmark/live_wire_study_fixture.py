@@ -65,7 +65,7 @@ def write(path, value):
     return path
 
 
-def fixture(tmp_path):
+def fixture(tmp_path, *, staged_wire=False):
     binding, _, _, _, _ = graph_fixture(tmp_path)
     binding["schema"] = "capture-resource-binding-v3"
     binding["runtime_maps"] = dict(
@@ -101,6 +101,9 @@ def fixture(tmp_path):
         {"sha256": {p.name: hashlib.sha256(p.read_bytes()).hexdigest() for p in [config, *calibrations]}},
     )
     wire = dict(schema="capture-wire-v1", session_id="normal-v1.clock", sim_origin_ns=0, remote_origin_ns=0)
+    if staged_wire:
+        wire["schema"] = "capture-wire-startup-v2"
+        wire["startup_max_wall_ns"] = 60_000_000_000
     gauge = trajectory_gauge_policy()
     write(paths["wire_config"], wire)
     write(paths["gauge_policy"], gauge)
