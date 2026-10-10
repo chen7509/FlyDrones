@@ -2,6 +2,7 @@ __pycache__/
 /results/connectome-latency-contract-dev-1701/
 /results/agent-linux-inventory-dev-1701/
 /results/ekf2-v6-readback-dev-1701/
+/results/ekf2-v6-yaw-dev-1701/
 *.py[cod]
 *.egg-info/
 .venv/
