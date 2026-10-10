@@ -26,8 +26,11 @@
 #include <rclcpp/serialized_message.hpp>
 #include <rmw/types.h>
 
+#include "full_odometry_fields.hpp"
+
 namespace {
 constexpr auto kSchema = "flydrones.px4_ros2_odometry_cdr.v1";
+constexpr auto kSchemaV2 = "flydrones.px4_ros2_odometry_cdr.v2";
 constexpr auto kTopic = "/fmu/out/vehicle_odometry";
 constexpr auto kType = "px4_msgs/msg/VehicleOdometry";
 constexpr auto kBlob = "cf117ff82cdbf191bf576db91db900b7ce34f6a7";
@@ -78,8 +81,9 @@ std::string sequence_json(std::uint64_t value) {
 
 class ExclusiveJournal {
 public:
-  ExclusiveJournal(const std::filesystem::path & path, std::string run_id)
-  : run_id_(std::move(run_id)) {
+  ExclusiveJournal(const std::filesystem::path & path, std::string run_id, bool full_state_v2)
+  : run_id_(std::move(run_id)), full_state_v2_(full_state_v2),
+    schema_(full_state_v2 ? kSchemaV2 : kSchema) {
     if (!std::regex_match(run_id_, std::regex("[A-Za-z0-9][A-Za-z0-9_.-]{0,127}"))) {
       throw std::invalid_argument("run id invalid");
     }
@@ -115,7 +119,7 @@ public:
     const std::string gid = hex(info.publisher_gid.data, sizeof(info.publisher_gid.data));
     const std::string bytes = hex(raw.buffer, raw.buffer_length);
     std::ostringstream line;
-    line << "{\"schema\":\"" << kSchema << "\",\"kind\":\"sample\""
+    line << "{\"schema\":\"" << schema_ << "\",\"kind\":\"sample\""
          << ",\"topic\":\"" << kTopic << "\",\"ros_type\":\"" << kType << '"'
          << ",\"message_blob_sha\":\"" << kBlob << "\",\"run_id\":\"" << run_id_ << '"'
          << ",\"journal_sequence\":" << journal_sequence
@@ -131,8 +135,11 @@ public:
          << ",\"pose_frame\":" << static_cast<int>(decoded.pose_frame)
          << ",\"velocity_frame\":" << static_cast<int>(decoded.velocity_frame)
          << ",\"reset_counter\":" << static_cast<int>(decoded.reset_counter)
-         << ",\"quality\":" << static_cast<int>(decoded.quality)
-         << ",\"cdr_hex\":\"" << bytes << "\",\"cdr_sha256\":\""
+         << ",\"quality\":" << static_cast<int>(decoded.quality);
+    if (full_state_v2_) {
+      flydrones::append_full_odometry_fields(line, decoded);
+    }
+    line << ",\"cdr_hex\":\"" << bytes << "\",\"cdr_sha256\":\""
          << sha256(raw.buffer, raw.buffer_length) << "\"}\n";
     write_all(line.str());
   }
@@ -144,7 +151,7 @@ public:
     }
     const bool oversized = raw.buffer_length > kMaxCdr;
     std::ostringstream line;
-    line << "{\"schema\":\"" << kSchema << "\",\"kind\":\"fault\""
+    line << "{\"schema\":\"" << schema_ << "\",\"kind\":\"fault\""
          << ",\"run_id\":\"" << run_id_ << "\",\"reason\":\"" << reason << '"'
          << ",\"cdr_length\":" << raw.buffer_length
          << ",\"cdr_hex\":\"" << (oversized ? "" : hex(raw.buffer, raw.buffer_length))
@@ -158,7 +165,7 @@ public:
     if (!can_finish()) {throw std::runtime_error("journal terminal already attempted");}
     terminal_attempted_ = true;
     std::ostringstream line;
-    line << "{\"schema\":\"" << kSchema << "\",\"kind\":\"finish\""
+    line << "{\"schema\":\"" << schema_ << "\",\"kind\":\"finish\""
          << ",\"run_id\":\"" << run_id_ << "\",\"samples\":" << samples
          << ",\"status\":\"" << (complete ? "complete" : "failed") << '"'
          << ",\"reason\":\"" << reason << "\"}\n";
@@ -192,6 +199,8 @@ private:
 
   int fd_{-1};
   std::string run_id_;
+  bool full_state_v2_;
+  const char * schema_;
   bool terminal_attempted_{false};
 };
 
@@ -310,14 +319,16 @@ std::uint32_t bounded_argument(const char * text, std::uint32_t maximum) {
 }  // namespace
 
 int main(int argc, char ** argv) {
-  if (argc != 5) {
-    std::cerr << "usage: px4_odometry_source OUTPUT.jsonl RUN_ID MAX_SECONDS MAX_SAMPLES\n";
+  if ((argc != 5 && argc != 6)
+      || (argc == 6 && std::string(argv[5]) != "--full-state-v2")) {
+    std::cerr << "usage: px4_odometry_source OUTPUT.jsonl RUN_ID MAX_SECONDS MAX_SAMPLES"
+              << " [--full-state-v2]\n";
     return 2;
   }
   try {
     const auto seconds = bounded_argument(argv[3], 120);
     const auto max_samples = bounded_argument(argv[4], 8192);
-    ExclusiveJournal journal(argv[1], argv[2]);
+    ExclusiveJournal journal(argv[1], argv[2], argc == 6);
     std::shared_ptr<OdometrySource> node;
     try {
       verify_installed_type();

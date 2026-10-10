@@ -10,6 +10,7 @@ from pathlib import Path
 import pytest
 
 COLLECTOR_FILES = ("CMakeLists.txt", "package.xml", "px4_odometry_source.cpp", "README.md")
+FULL_COLLECTOR_FILES = COLLECTOR_FILES + ("full_odometry_fields.hpp",)
 
 
 def _git(repo: Path, *args: str) -> str:
@@ -56,6 +57,80 @@ def test_prepared_build_consumes_raw_git_bytes_not_worktree_line_endings(pinned_
     assert profile["build_command"] == "colcon build --base-paths src --packages-select px4_msgs flydrones_px4_ros2_source --executor sequential --parallel-workers 1 --event-handlers console_direct+"
     assert profile["files"]["src/px4_msgs/msg/VehicleOdometry.msg"] == hashlib.sha256(built_msg.read_bytes()).hexdigest()
     assert verify_workspace(destination)["file_count"] == 2 + len(COLLECTOR_FILES)
+
+
+def test_full_state_profile_seals_new_header_without_changing_legacy_profile(pinned_tree, tmp_path):
+    from flydrones.connectome_training.px4_ros2_build_source import (
+        prepare_workspace,
+        verify_workspace,
+    )
+
+    repo, commit, collector = pinned_tree
+    (collector / "full_odometry_fields.hpp").write_bytes(b"fixed full state header\n")
+    destination = tmp_path / "full-build-input"
+    profile = prepare_workspace(repo, commit, collector, destination, collector_files=FULL_COLLECTOR_FILES)
+    header = destination / "src/flydrones_px4_ros2_source/full_odometry_fields.hpp"
+    assert profile["files"]["src/flydrones_px4_ros2_source/full_odometry_fields.hpp"] == hashlib.sha256(header.read_bytes()).hexdigest()
+    assert profile["schema"] == "flydrones.px4_ros2_build_source.v2"
+    assert profile["build_command"].startswith("MAKEFLAGS=-j1 colcon build ")
+    assert verify_workspace(destination)["file_count"] == 2 + len(FULL_COLLECTOR_FILES)
+    header.write_bytes(b"different\n")
+    with pytest.raises(ValueError, match="source bytes changed"):
+        verify_workspace(destination)
+
+
+def test_full_state_profile_requires_exact_supported_collector_set(pinned_tree, tmp_path):
+    from flydrones.connectome_training.px4_ros2_build_source import prepare_workspace
+
+    repo, commit, collector = pinned_tree
+    with pytest.raises(ValueError, match="unsupported collector file set"):
+        prepare_workspace(repo, commit, collector, tmp_path / "invalid", collector_files=("README.md",))
+
+
+def test_current_collector_cannot_be_prepared_without_its_header(pinned_tree, tmp_path):
+    from flydrones.connectome_training.px4_ros2_build_source import prepare_workspace
+
+    repo, commit, collector = pinned_tree
+    (collector / "px4_odometry_source.cpp").write_bytes(b'#include "full_odometry_fields.hpp"\n')
+    (collector / "full_odometry_fields.hpp").write_bytes(b"#pragma once\n")
+    with pytest.raises(ValueError, match="full-state header requires v2 source profile"):
+        prepare_workspace(repo, commit, collector, tmp_path / "invalid")
+
+
+def test_full_state_workspace_can_derive_from_verified_legacy_git_blob_tree(pinned_tree, tmp_path):
+    from flydrones.connectome_training.px4_ros2_build_source import (
+        derive_full_state_workspace,
+        prepare_workspace,
+        verify_workspace,
+    )
+
+    repo, commit, collector = pinned_tree
+    legacy = tmp_path / "legacy"
+    prepare_workspace(repo, commit, collector, legacy)
+    (collector / "full_odometry_fields.hpp").write_bytes(b"#pragma once\n")
+    (collector / "px4_odometry_source.cpp").write_bytes(b'#include "full_odometry_fields.hpp"\n')
+    full = tmp_path / "full"
+    profile = derive_full_state_workspace(legacy, collector, full)
+    assert profile["git_commit"] == commit
+    assert profile["parent_source_profile_sha256"] == hashlib.sha256(
+        (legacy / "build-source-profile.json").read_bytes()).hexdigest()
+    assert (full / "src/px4_msgs/msg/VehicleOdometry.msg").read_bytes() == b"uint64 timestamp\nuint8 quality\n"
+    assert verify_workspace(full)["file_count"] == 2 + len(FULL_COLLECTOR_FILES)
+
+
+def test_full_state_derivation_rejects_corrupt_parent(pinned_tree, tmp_path):
+    from flydrones.connectome_training.px4_ros2_build_source import (
+        derive_full_state_workspace,
+        prepare_workspace,
+    )
+
+    repo, commit, collector = pinned_tree
+    legacy = tmp_path / "legacy"
+    prepare_workspace(repo, commit, collector, legacy)
+    (legacy / "src/px4_msgs/msg/VehicleOdometry.msg").write_bytes(b"bad")
+    (collector / "full_odometry_fields.hpp").write_bytes(b"#pragma once\n")
+    with pytest.raises(ValueError, match="source bytes changed"):
+        derive_full_state_workspace(legacy, collector, tmp_path / "full")
 
 
 def test_verifier_rejects_changed_actual_build_file(pinned_tree, tmp_path):
