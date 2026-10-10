@@ -118,9 +118,24 @@ def select_result(arguments: list[str]) -> Path:
                 or preflight["free_kib"] >= preflight["minimum_free_kib"]):
             raise RuntimeError("only an unlaunched v4 memory refusal can be retried")
         return ROOT / "results/px4-ros2-full-synthetic-dev-1701-v5"
+    if arguments == ["--retry-after-v5-memory-refusal"]:
+        prior = ROOT / "results/px4-ros2-full-synthetic-dev-1701-v5"
+        previous = json.loads((prior / "result.json").read_text(encoding="utf-8"))
+        preflight = json.loads((prior / "preflight.json").read_text(encoding="utf-8"))
+        if (previous.get("status") != "preflight_failed"
+                or previous.get("started") is not False
+                or (prior / "launch.json").exists()
+                or type(preflight.get("free_kib")) is not int
+                or type(preflight.get("minimum_free_kib")) is not int
+                or preflight["minimum_free_kib"] != MIN_FREE_KIB
+                or preflight["free_kib"] < 0
+                or preflight["free_kib"] >= preflight["minimum_free_kib"]):
+            raise RuntimeError("only an unlaunched v5 memory refusal can be retried")
+        return ROOT / "results/px4-ros2-full-synthetic-dev-1701-v6"
     raise SystemExit("usage: run_full_odometry_synthetic.py "
                      "[--retry-after-preflight|--retry-after-startup-failure|"
-                     "--retry-after-memory-refusal|--retry-after-v4-memory-refusal]")
+                     "--retry-after-memory-refusal|--retry-after-v4-memory-refusal|"
+                     "--retry-after-v5-memory-refusal]")
 
 
 def main() -> int:
