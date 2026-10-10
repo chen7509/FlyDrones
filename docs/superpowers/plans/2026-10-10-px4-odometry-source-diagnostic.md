@@ -36,11 +36,11 @@
 - Create: `src/flydrones/connectome_training/px4_logger_diagnostic_profile.py`
 - Test: `tests/connectome_training/test_px4_logger_diagnostic_profile.py`
 
-- [ ] Write tests for `audit_profile(topics: bytes, declaration: object) -> LoggerProfileAudit`: canonical input yields `logger_file_candidate=True` and all downstream qualifications false. Test visible-name mutation, duplicate/extra line, CRLF, missing final LF, unknown key, wrong PX4/logger/topic SHA, `sdlog_profile=True`, and `diagnostic_only=False`; every mutation refuses with a stable reason.
-- [ ] Run the new test file and observe the missing implementation failure.
-- [ ] Add the exact fixture and seven-key declaration from the spec. The auditor first validates the strict declaration schema and exact types, then compares the 230 bytes and SHA, then parses the fixed v1.17 three-field syntax without accepting malformed or duplicate names. Return an immutable audit result with `reason`, `logger_file_candidate`, `runtime_topic_selection_verified`, `dds_ulog_parity_verified`, `source_authenticated`, and `eligible_for_training`.
-- [ ] Run targeted tests; compare the checked-in fixture SHA with the spec literal and run changed-file Ruff.
-- [ ] Commit only this task's source, fixtures and tests.
+- [x] Write tests for `audit_profile(topics: bytes, declaration: object) -> LoggerProfileAudit`: canonical input yields `logger_file_candidate=True` and all downstream qualifications false. Test visible-name mutation, duplicate/extra line, CRLF, missing final LF, unknown key, wrong PX4/logger/topic SHA, `sdlog_profile=True`, and `diagnostic_only=False`; every mutation refuses with a stable reason.
+- [x] Run the new test file and observe the missing implementation failure.
+- [x] Add the exact fixture and seven-key declaration from the spec. The auditor first validates the strict declaration schema and exact types, then compares the 230 bytes and SHA, then parses the fixed v1.17 three-field syntax without accepting malformed or duplicate names. Return an immutable audit result with `reason`, `logger_file_candidate`, `runtime_topic_selection_verified`, `dds_ulog_parity_verified`, `source_authenticated`, and `eligible_for_training`.
+- [x] Run targeted tests; compare the checked-in fixture SHA with the spec literal and run changed-file Ruff.
+- [x] Commit only this task's source, fixtures and tests.
 
 ### Task 2: Read-only CLI and old-log refusal regression
 
@@ -49,11 +49,11 @@
 - Extend: `tests/connectome_training/test_px4_logger_diagnostic_profile.py`
 - Create: `docs/PX4_ODOMETRY_SOURCE_DIAGNOSTIC_REPORT.md`
 
-- [ ] Write a CLI test for `main(argv: list[str]) -> int`: a canonical file/declaration prints a JSON candidate and exits 0, a modified file prints structured refusal and exits 1, and absent/unreadable input refuses. CLI success is only the offline file candidate. Avoid importing the whole training package, which requires Torch in WSL.
-- [ ] Run those tests RED, then implement `--topics` and `--declaration` arguments with a direct isolated import of the pure auditor and strict read errors.
-- [ ] Run the CLI on the fixed fixture and a separate mutated copy; save outputs and exit codes in a new results directory. Re-run `audit_px4_ulog_odometry.py` on the two old ULogs without starting PX4; both must remain refused because `vehicle_odometry` is absent.
-- [ ] Run targeted and relevant adjacent tests, changed-file Ruff, `git diff --check`, and an independent review. State any full-suite limit explicitly if a competing task or memory makes it unsafe; do not invent a pass.
-- [ ] Write a report that separates file candidate, runtime untested, old ULog refusal, and the later Agent/DDS dependencies. Seal source/config/report/results with member hashes and CRC in a new evidence ZIP; commit, push only `personal`, and update draft PR65.
+- [x] Write a CLI test for `main(argv: list[str]) -> int`: a canonical file/declaration prints a JSON candidate and exits 0, a modified file prints structured refusal and exits 1, and absent/unreadable input refuses. CLI success is only the offline file candidate. Avoid importing the whole training package, which requires Torch in WSL.
+- [x] Run those tests RED, then implement `--topics` and `--declaration` arguments with a direct isolated import of the pure auditor and strict read errors.
+- [x] Run the CLI on the fixed fixture and a separate mutated copy; save outputs and exit codes in a new results directory. Re-run `audit_px4_ulog_odometry.py` on the two old ULogs without starting PX4; both must remain refused because `vehicle_odometry` is absent.
+- [x] Run targeted and relevant adjacent tests, changed-file Ruff, `git diff --check`, and an independent review. State any full-suite limit explicitly if a competing task or memory makes it unsafe; do not invent a pass.
+- [x] Write a report that separates file candidate, runtime untested, old ULog refusal, and the later Agent/DDS dependencies. Seal source/config/report/results with member hashes and CRC in a new evidence ZIP; commit, push only `personal`, and update draft PR65.
 
 ### Task 3: Future owned physical source trial (deferred by explicit gates)
 

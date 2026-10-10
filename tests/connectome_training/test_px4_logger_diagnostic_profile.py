@@ -2,6 +2,8 @@
 
 import importlib
 import json
+import subprocess
+import sys
 from pathlib import Path
 
 import pytest
@@ -80,3 +82,58 @@ def test_committed_fixtures_match_spec_literal():
     assert topics.read_bytes() == TOPICS
     assert len(topics.read_bytes()) == 230
     assert json.loads(declaration.read_text(encoding="utf-8")) == DECLARATION
+
+
+def run_cli(topics: Path, declaration: Path):
+    script = ROOT / "tools/connectome/audit_px4_logger_diagnostic.py"
+    return subprocess.run(
+        [sys.executable, str(script), "--topics", str(topics),
+         "--declaration", str(declaration)],
+        capture_output=True, text=True, check=False, timeout=10,
+    )
+
+
+def test_cli_accepts_only_offline_candidate_without_training_grant():
+    folder = ROOT / "config/px4/source-diagnostic-v1"
+    completed = run_cli(folder / "logger_topics.txt", folder / "profile.json")
+    assert completed.returncode == 0, completed.stderr
+    result = json.loads(completed.stdout)
+    assert result["audit"]["logger_file_candidate"] is True
+    assert result["audit"]["source_authenticated"] is False
+    assert result["audit"]["eligible_for_training"] is False
+
+
+def test_cli_retains_structured_refusal_for_mutation_and_missing_file(tmp_path):
+    topics = tmp_path / "logger_topics.txt"
+    topics.write_bytes(TOPICS.replace(b"vehicle_odometry 0 0", b"vehicle_odometry 20 0"))
+    declaration = ROOT / "config/px4/source-diagnostic-v1/profile.json"
+    changed = run_cli(topics, declaration)
+    assert changed.returncode == 1
+    assert json.loads(changed.stdout)["audit"]["logger_file_candidate"] is False
+    missing = run_cli(tmp_path / "missing.txt", declaration)
+    assert missing.returncode == 1
+    assert json.loads(missing.stdout)["audit"]["reason"] == "input_unavailable"
+
+
+def test_cli_refuses_duplicate_declaration_keys(tmp_path):
+    declaration = tmp_path / "profile.json"
+    declaration.write_text(
+        json.dumps(DECLARATION)[:-1] + ', "sdlog_profile": 0}', encoding="utf-8"
+    )
+    topics = ROOT / "config/px4/source-diagnostic-v1/logger_topics.txt"
+    completed = run_cli(topics, declaration)
+    assert completed.returncode == 1
+    assert json.loads(completed.stdout)["audit"]["reason"] == "declaration_json_invalid"
+
+
+def test_cli_missing_required_option_keeps_structured_refusal():
+    script = ROOT / "tools/connectome/audit_px4_logger_diagnostic.py"
+    completed = subprocess.run(
+        [sys.executable, str(script), "--topics", str(ROOT / "config/px4/source-diagnostic-v1/logger_topics.txt")],
+        capture_output=True, text=True, check=False, timeout=10,
+    )
+    assert completed.returncode == 1
+    result = json.loads(completed.stdout)
+    assert result["audit"]["reason"] == "cli_arguments_invalid"
+    assert result["audit"]["logger_file_candidate"] is False
+    assert result["eligible_for_live_capture"] is False
