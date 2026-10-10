@@ -1,0 +1,19 @@
+# Checked EGO v3 recorder interface (2026-10-09)
+
+## Result
+
+`TeacherSequenceRecorder.append_capture_checked()` now offers an opt-in path for a claimed deployment-visible observation. It preserves the original RGB-D ndarray/dtype contract, copies the complete observation, then applies the existing `validate_capture_input()` source, time, camera-calibration, pinned-image and non-truth checks to that owned copy. It requires an EGO-marked decision with an exact-schema reference stamped for the current observation and checks that its command matches the received position/velocity reference and tracking gain. The recorder derives `depth_valid` from that same validated depth frame and later builds horizon validity only from reference positions actually received. Mixing checked v3 and legacy frames is rejected before mutation; the legacy recorder API and v1/v2 schema remain available.
+
+This interface does not attest a live source. Tests supply synthetic PX4/EGO-looking objects and a forged inspection command runner. The repository still has only a Gazebo-truth flight backend; there is no PX4 EKF2/calibrated-camera observation producer or 54-job corpus capture process. Therefore no generated v3 test sequence is real training evidence, no model training was started, and no PX4/EGO physical comparison result follows.
+
+## Verification
+
+The first new tests failed because `append_capture_checked` did not exist. Subsequent RED tests exposed missing command/gain checks, nonnumeric command handling and mutable state aliasing. Independent review found three further Important integrity issues, each reproduced before its fix: finite source values overflowing on-disk float32, original list depth being accepted after array coercion, and camera-buffer reuse between validation and copy causing an unvalidated infinite pixel to be archived. The checked path now validates an owned snapshot after checking original RGB-D types; recorder and archive validation reject unrepresentable float32 values before append/write, and v3 archives reject infinite or nonpositive depth. Final read-only re-review found no remaining Important or Critical issue in this interface.
+
+Synthetic tests cover a two-frame v3 NaN-mask round trip, valid/padded horizon, copy isolation, truth source, stale or missing reference, wrong controller/command, missing gain, invalid depth/clearance, mode mixing, direct-finish refusal and no partial append after failure. The final targeted run passed **60/60**, the related EGO/sensor adapter tests **18/18**, and the final full connectome suite **273 passed, 1 skipped**, with one PyTorch sparse-tensor warning. Changed-file Ruff and `git diff --check` passed. Original failure and final test logs are retained in `results/checked-ego-v3-recorder-dev-1701/`; the initial ZIP predates the independent review and is retained only as provisional evidence.
+
+The final 19-member evidence package is `evidence/checked-ego-v3-recorder-dev-1701-v2.zip` (SHA-256 `0a7c32dd386d23c7a296c38578bad61c9e4c459fbc483c50b8d39aae4527a4fc`). Its CRC and member SHA-256 checks passed. This package records code and offline tests, not a live teacher corpus.
+
+## Next dependency
+
+Docker 29.4 is available and the pinned EGO image is present, but no container was running at this stage; host free RAM was only about 0.3–1.1 GiB. No new container, training or PX4/Gazebo run was started. An owned capture producer must bind actual PX4 EKF2 samples, calibrated camera pose, raw image timing, pinned EGO container process/reference and world/config provenance before it invokes this method. It must retain failed runs, ULog and process identities and keep scorer truth outside the controller input. The current v3 archive is refused by the old 12-feature learner until a separately versioned mask-aware feature and full MaleCNS input-neuron mapping passes its own safety and training tests. The frozen physical and five-drone capacity gates are unchanged.

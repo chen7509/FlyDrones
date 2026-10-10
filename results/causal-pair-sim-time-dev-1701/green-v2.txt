@@ -1,0 +1,13 @@
+F........................................................                [100%]
+================================== FAILURES ===================================
+_____ test_real_attempt_is_wall_pair_age_refusal_and_fixed_replay_passes ______
+
+    def test_real_attempt_is_wall_pair_age_refusal_and_fixed_replay_passes():
+        result = audit(CAPTURE, DISPATCH, COMPLETION)
+>       assert result["failure_evidence_qualified"]
+E       assert False
+
+tests\benchmark\test_audit_causal_pair_sim_time_physical_attempt.py:16: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/benchmark/test_audit_causal_pair_sim_time_physical_attempt.py::test_real_attempt_is_wall_pair_age_refusal_and_fixed_replay_passes
+1 failed, 56 passed in 0.88s

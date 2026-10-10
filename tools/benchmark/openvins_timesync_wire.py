@@ -1,0 +1,631 @@
+"""Pinned TIMESYNC bytes to an injected sink; no socket or live authority.
+
+Source/header equality is not authentication. Synchronous callbacks require
+outer bounded supervision. A sink byte count is not PX4 receipt or convergence.
+"""
+
+from __future__ import annotations
+
+import copy
+import hashlib
+import importlib.metadata
+from pathlib import Path
+from threading import Lock
+
+from tools.benchmark.openvins_ekf2_disarmed_preflight import RemoteMonotonicClock
+from tools.benchmark.openvins_segmented_journal import event_log, record_failure, require_capacity
+from tools.benchmark.openvins_timesync_interval import IntervalExchange, _RestorationWindow
+from tools.benchmark.owned_daemon_connection import _error
+
+
+class PinnedCodec:
+    SOURCE_SHA256 = "a7c6b23d908322134d19cb94b937c1ea6b1f5d5ffa9d1b0ad139174bf8d75809"
+    MAX_DATAGRAM_BYTES = 4096
+    MAX_FRAMES = 64
+
+    def __init__(self):
+        from pymavlink.dialects.v20 import common
+
+        self._mav = common
+        if importlib.metadata.version("pymavlink") != "2.4.49":
+            raise ValueError("pymavlink version mismatch")
+        if hashlib.sha256(Path(common.__file__).read_bytes()).hexdigest() != self.SOURCE_SHA256:
+            raise ValueError("pymavlink selected source hash mismatch")
+        self.check()
+
+    def check(self):
+        if self._mav.MAVLINK_IGNORE_CRC:
+            raise ValueError("CRC bypass forbidden")
+        cls = self._mav.MAVLink_timesync_message
+        if cls.fieldnames != ["tc1", "ts1"] or cls.crc_extra != 34:
+            raise ValueError("TIMESYNC schema mismatch")
+
+    def decode_datagram(self, raw):
+        self.check()
+        if type(raw) is not bytes or not 0 < len(raw) <= self.MAX_DATAGRAM_BYTES:
+            raise ValueError("invalid datagram bytes/size")
+        offset, decoded = 0, []
+        while offset < len(raw):
+            if len(decoded) >= self.MAX_FRAMES:
+                raise ValueError("datagram frame limit")
+            magic = raw[offset]
+            if magic not in (0xFE, 0xFD):
+                raise ValueError("invalid MAVLink framing")
+            header = 10 if magic == 0xFD else 6
+            if len(raw) - offset < header:
+                raise ValueError("truncated header")
+            if magic == 0xFD and (raw[offset + 2] or raw[offset + 3]):
+                raise ValueError("unsigned fixed profile forbids flags/signed frames")
+            payload = raw[offset + 1]
+            size = header + payload + 2
+            if len(raw) - offset < size:
+                raise ValueError("truncated payload/checksum")
+            msgid = int.from_bytes(raw[offset + 7:offset + 10], "little") if magic == 0xFD else raw[offset + 5]
+            if msgid not in self._mav.mavlink_map:
+                raise ValueError("unknown dialect message")
+            if msgid == 111 and (payload > 16 or (magic == 0xFE and payload != 16)):
+                raise ValueError("TIMESYNC payload schema length")
+            frame = raw[offset:offset + size]
+            msg = self._mav.MAVLink(None).decode(bytearray(frame))
+            decoded.append(dict(type=msg.get_type(), system=msg.get_srcSystem(), component=msg.get_srcComponent(),
+                                sequence=msg.get_seq(), framing=1 if magic == 0xFE else 2,
+                                fields=msg.to_dict(), raw_hex=frame.hex()))
+            offset += size
+        return decoded
+
+    def encode_reply(self, request_ns, response_ns, sequence):
+        self.check()
+        for value in (request_ns, response_ns):
+            if type(value) is not int or not 0 < value < 2**63 or value % 1000:
+                raise ValueError("invalid reply identity")
+        if type(sequence) is not int or not 0 <= sequence <= 255:
+            raise ValueError("invalid sender sequence")
+        encoder = self._mav.MAVLink(None, srcSystem=254, srcComponent=191)
+        encoder.seq = sequence
+        return self._mav.MAVLink_timesync_message(response_ns, request_ns).pack(encoder)
+
+    def encode_interval_command(self, operation, interval_us, sequence):
+        """Build one pinned command; sequence remains owned by the sole caller.
+
+        No send, retry, ACK or transport authority is implied by these bytes.
+        """
+        from tools.benchmark.openvins_timesync_interval import restorable_interval
+
+        self.check()
+        if type(sequence) is not int or not 0 <= sequence <= 255:
+            raise ValueError('invalid sender sequence')
+        if type(operation) is not str:
+            raise ValueError('invalid interval operation type')
+        if operation == 'get' and interval_us is None:
+            command, value = 510, 0
+        elif operation == 'set':
+            command, value = 511, restorable_interval(interval_us)
+        else:
+            raise ValueError('invalid interval operation')
+        encoder = self._mav.MAVLink(None, srcSystem=254, srcComponent=191)
+        encoder.seq = sequence
+        return self._mav.MAVLink_command_long_message(9, 1, command, 0, 111, value, 0, 0, 0, 0, 0).pack(encoder)
+
+    def interval_response(self, row):
+        """Normalize a row from this decoder, not an independent receive path.
+
+        The owner must supply original receive time and enforce pending-operation
+        correlation. Headers/ACK targets are not authentication or a nonce.
+        """
+        from tools.benchmark.openvins_timesync_interval import restorable_interval
+
+        self.check()
+        if type(row) is not dict or set(row) != {'type', 'system', 'component', 'sequence', 'framing', 'fields', 'raw_hex'}:
+            raise ValueError('invalid interval response row')
+        for key, expected in [('system', 9), ('component', 1), ('framing', 2)]:
+            if type(row[key]) is not int or row[key] != expected:
+                raise ValueError('interval response source/framing')
+        if type(row['sequence']) is not int or not 0 <= row['sequence'] <= 255:
+            raise ValueError('interval response sequence')
+        fields = row['fields']
+        if type(fields) is not dict or fields.get('mavpackettype') != row['type']:
+            raise ValueError('interval response fields')
+        if row['type'] == 'COMMAND_ACK':
+            keys = {'command', 'result', 'progress', 'result_param2', 'target_system', 'target_component'}
+            if set(fields) != keys | {'mavpackettype'} or any(type(fields[k]) is not int for k in keys):
+                raise ValueError('ACK schema')
+            if (fields['command'] not in (510, 511) or fields['target_system'] != 254
+                    or fields['target_component'] != 191 or fields['progress'] != 0
+                    or fields['result_param2'] != 0 or fields['result'] not in (0, 1, 2, 3, 4, 6)):
+                raise ValueError('ACK command/target/result outside fixed profile')
+            return dict(kind='ack', command=fields['command'], result=fields['result'])
+        if row['type'] == 'MESSAGE_INTERVAL':
+            if (set(fields) != {'mavpackettype', 'message_id', 'interval_us'}
+                    or type(fields['message_id']) is not int or fields['message_id'] != 111):
+                raise ValueError('interval response message identity/schema')
+            return dict(kind='interval', message_id=111, interval_us=restorable_interval(fields['interval_us']))
+        raise ValueError('not an interval response')
+
+
+class TimesyncWireResponder:
+    MAX_EVENTS = 8192
+
+    def __init__(self, remote_clock, reserve_reply, send_sink, journal, now, start_ns, peer=("127.0.0.1", 14588),
+                 *, heartbeat_sink=None, retention=None, interval_transaction=False, interval_send_sink=None):
+        if not isinstance(remote_clock, RemoteMonotonicClock):
+            raise ValueError("existing remote clock required")
+        if any(not callable(c) for c in (reserve_reply, send_sink, journal, now)):
+            raise ValueError("explicit callbacks required")
+        if heartbeat_sink is not None and not callable(heartbeat_sink):
+            raise ValueError("heartbeat sink must be callable")
+        if (type(interval_transaction) is not bool
+                or interval_transaction and not callable(heartbeat_sink)
+                or interval_send_sink is not None and (not interval_transaction or not callable(interval_send_sink))):
+            raise ValueError('explicit interval mode requires heartbeat and valid command sink')
+        self._heartbeat_sink = heartbeat_sink
+        if type(start_ns) is not int or not 0 <= start_ns < 2**64 - 8_000_000_000:
+            raise ValueError("invalid start clock")
+        if peer != ("127.0.0.1", 14588) or type(peer) is not tuple:
+            raise ValueError("fixed peer profile required")
+        self._codec = PinnedCodec()
+        self._remote, self._session = remote_clock, remote_clock.session_id
+        self._reserve, self._sink, self._journal, self._now = reserve_reply, send_sink, journal, now
+        self._peer = peer
+        self._start = self._last_now = start_ns
+        self._deadline = start_ns + 8_000_000_000
+        self._continuation = None
+        self._received = None
+        self._last_received = None
+        self._events = event_log(retention, 'wire')
+        self._regular_events = 0
+        self._journal_errors = []
+        self._failure = self._refusal_journal_error = None
+        self._sequence = 0
+        self._last_identity = None
+        self._lock = Lock()
+        self._interval = self._interval_snapshot = None
+        self._interval_sink = interval_send_sink or send_sink
+        self._last_seen_request = None
+        self._last_unarmed = None
+        self._safety_refused = False
+        self._restoration = self._restore_guard = self._restore_sink = None
+        self._restore_active = False
+        if interval_transaction:
+            self._interval = IntervalExchange(self._send_interval_command, self._interval_guard, now, start_ns)
+
+    def _interval_failure(self):
+        if self._interval is None:
+            return None
+        return self._interval.progress['failure']
+
+    @property
+    def progress(self):
+        """Cheap status for composition; never copy packet logs during polling."""
+        state = None if self._interval is None else self._interval.progress
+        return dict(failure=self._failure or self._interval_failure(),
+                    interval_phase=None if state is None else state['phase'],
+                    interval_transaction_pass=False if state is None else state['modeled_transaction_pass'],
+                    network_authorized=False, delivery_proven=False,
+                    live_convergence_qualified=False, fusion_qualified=False)
+
+    @property
+    def evidence(self):
+        return dict(events=copy.deepcopy(self._events), failure=self._failure,
+                    interval=None if self._interval is None else self._interval.evidence,
+                    journal_errors=copy.deepcopy(self._journal_errors),
+                    refusal_journal_error=self._refusal_journal_error, clock_session=self._session,
+                    network_authorized=False, delivery_proven=False, live_convergence_qualified=False,
+                    fusion_qualified=False)
+
+    def _check(self):
+        if self._restore_active:
+            return self._check_restoration()
+        if self._restoration is not None:
+            raise ValueError('ordinary wire forbidden during restoration')
+        if self._failure is not None:
+            raise ValueError("wire failure latched: " + self._failure)
+        if self._interval_failure() is not None:
+            raise ValueError('interval exchange failed: ' + self._interval_failure())
+        value = self._accept_time(self._now())
+        if value >= self._deadline:
+            raise ValueError("wire global deadline")
+        if self._continuation is not None:
+            context = self._continuation.progress
+            if context['failure'] is not None or context['phase'] == 'cancelled':
+                raise ValueError('wire maintenance context failed or cancelled')
+        if self._received is not None and value - self._received >= 2_000_000_000:
+            raise ValueError("wire request deadline")
+        if self._remote.session_id != self._session:
+            raise ValueError("remote clock session changed")
+        if self._remote.failure is not None:
+            raise ValueError("shared remote clock failed: " + self._remote.failure)
+        self._codec.check()
+        return value
+
+    def _interval_guard(self, stopping):
+        self._check()
+
+    def _send_interval_command(self, operation, value):
+        self._check()
+        if self._restore_active:
+            state = self._interval.evidence
+            if (state['phase'] not in ('restore', 'restore_readback', 'final')
+                    or operation == 'set' and (state['phase'] != 'restore' or value != state['baseline_us'])
+                    or operation == 'get' and state['phase'] == 'restore'):
+                raise ValueError('non-restoration command refused')
+            if not self._fresh_unarmed():
+                raise ValueError('fresh unarmed restoration observation required')
+        raw = self._codec.encode_interval_command(operation, value, self._sequence)
+        self._record('interval_send_attempt', operation=operation, value=value,
+                     sequence=self._sequence, raw_hex=raw.hex(), peer=self._peer)
+        send_started_ns = self._check()
+        self._require_event_capacity()
+        # An ambiguous effect consumes its sequence; it must not be reused by
+        # a later separately authorized restoration attempt.
+        self._sequence = (self._sequence + 1) % 256
+        sink = self._restore_sink if self._restore_active else self._interval_sink
+        count = sink(raw, self._peer)
+        self._record('interval_send_return', count=count, send_started_ns=send_started_ns)
+        if type(count) is not int or count != len(raw):
+            raise ValueError('invalid or short interval send count')
+
+    def _record_interval(self):
+        state = self._interval.evidence
+        if state != self._interval_snapshot:
+            self._interval_snapshot = copy.deepcopy(state)
+            self._record('interval_state', state=state)
+
+    def _interval_operation(self, callback):
+        if self._interval is None:
+            raise ValueError('interval mode not enabled at construction')
+        if not self._lock.acquire(blocking=False):
+            self._abort(ValueError('concurrent interval wire operation'))
+            raise ValueError('concurrent interval wire operation')
+        try:
+            self._check()
+            callback()
+            self._record_interval()
+            self._check()
+        except BaseException as exc:
+            self._abort(exc)
+            raise
+        finally:
+            self._lock.release()
+
+    def poll_interval(self):
+        self._interval_operation(lambda: self._interval.poll())
+        return self.progress
+
+    def finish_interval_body(self):
+        self._interval_operation(lambda: self._interval.body_complete(True))
+
+    def _check_restoration(self):
+        if self._restoration is None:
+            raise ValueError('no restoration context')
+        if self._safety_refused:
+            raise ValueError('restoration refused after invalid/armed heartbeat')
+        now = self._accept_time(self._now())
+        self._restoration.check(now)
+        if self._restore_guard() is not None:
+            raise ValueError('restoration ownership guard must return None')
+        now = self._accept_time(self._now())
+        self._restoration.check(now)
+        if self._remote.session_id != self._session:
+            raise ValueError('restoration clock session changed')
+        if self._received is not None and now - self._received >= 2_000_000_000:
+            raise ValueError('restoration received packet expired')
+        self._codec.check()
+        return now
+
+    def _fresh_unarmed(self):
+        return self._last_unarmed is not None and 0 <= self._last_now - self._last_unarmed < 2_000_000_000
+
+    def _restore_operation(self, action):
+        if self._restoration is None:
+            raise ValueError('restoration not bound')
+        if not self._lock.acquire(blocking=False):
+            self._restoration.fail('concurrent restoration wire operation')
+            raise ValueError('concurrent restoration wire operation')
+        self._restore_active = True
+        try:
+            self._check_restoration()
+            result = action()
+            self._check_restoration()
+            return result
+        except BaseException as exc:
+            self._restoration.fail(_error(exc))
+            raise
+        finally:
+            self._received = None
+            self._restore_active = False
+            self._lock.release()
+
+    def _bind_restoration(self, window, guard, sink, reason):
+        if (type(window) is not _RestorationWindow or not window.matches(self._interval)
+                or self._restoration is not None or not callable(guard) or not callable(sink)):
+            raise ValueError('one owner-bound restoration context required')
+        self._restoration, self._restore_guard, self._restore_sink = window, guard, sink
+        def bind():
+            self._interval.stop(reason, stopping_ns=window.started_ns)
+            self._record_interval()
+        self._restore_operation(bind)
+
+    def _poll_restoration(self):
+        def poll():
+            state = self._interval.evidence
+            # Continue deadline checks while waiting for a fresh safety heartbeat.
+            # Do not spend the one restore attempt before a send is permitted.
+            if state['pending'] is None and state['phase'] != 'done' and not self._fresh_unarmed():
+                return
+            self._interval.poll()
+            self._record_interval()
+        self._restore_operation(poll)
+
+    def _receive_restoration(self, raw, peer, received_ns):
+        def receive():
+            if type(raw) is not bytes or not 0 < len(raw) <= self._codec.MAX_DATAGRAM_BYTES:
+                raise ValueError('invalid restoration datagram')
+            self._record('restoration_receive', raw_hex=raw.hex(), peer=peer, received_ns=received_ns)
+            if type(peer) is not tuple or peer != self._peer:
+                raise ValueError('restoration peer changed')
+            if (type(received_ns) is not int or not 0 <= received_ns <= self._last_now
+                    or self._last_received is not None and received_ns < self._last_received):
+                raise ValueError('restoration receive time invalid')
+            self._received = self._last_received = received_ns
+            self._check_restoration()
+            messages = self._codec.decode_datagram(raw)
+            self._record('restoration_decoded', messages=messages)
+            if any(m['system'] != 9 or m['component'] != 1 for m in messages):
+                raise ValueError('restoration header source changed')
+            heartbeats = [m for m in messages if m['type'] == 'HEARTBEAT']
+            if len(heartbeats) > 1:
+                raise ValueError('multiple restoration safety heartbeats')
+            for message in heartbeats:
+                fields = message['fields']
+                if (fields['autopilot'] != 12 or fields['mavlink_version'] != 3
+                        or type(fields['base_mode']) is not int or not 0 <= fields['base_mode'] < 128):
+                    raise ValueError('restoration requires unarmed PX4 heartbeat')
+                self._record('restoration_heartbeat', arrival_monotonic_ns=received_ns,
+                             observed_sim_ns=None, base_mode=fields['base_mode'], normal_fanout=False)
+                self._last_unarmed = received_ns
+            for message in messages:
+                if message['type'] in ('COMMAND_ACK', 'MESSAGE_INTERVAL'):
+                    self._interval.feed(self._codec.interval_response(message), received_ns)
+                    self._record_interval()
+                elif message['type'] != 'HEARTBEAT':
+                    self._record('restoration_ignored', message_type=message['type'])
+        self._restore_operation(receive)
+
+    def _continue_with(self, continuation):
+        """Internal composition binding; keep codec/sequence/last request intact."""
+        from tools.benchmark.openvins_timesync_maintenance import _TimesyncMaintenance
+
+        if not self._lock.acquire(blocking=False):
+            self._abort(ValueError('concurrent wire maintenance binding'))
+            raise ValueError('concurrent wire maintenance binding')
+        try:
+            now = self._check()
+            if type(continuation) is not _TimesyncMaintenance or self._continuation is not None:
+                raise ValueError('one exact maintenance continuation required')
+            state = continuation.progress
+            if (state['failure'] is not None or state['phase'] != 'replay_pending'
+                    or not self._start <= state['handoff_ns'] <= now < self._start + 8_000_000_000
+                    or not now < state['deadline_ns'] <= self._start + 300_000_000_000):
+                raise ValueError('wire maintenance context/deadline invalid')
+            self._record('maintenance_bound', deadline_ns=state['deadline_ns'], listener_token=state['listener_token'])
+            self._check()  # The binding journal must finish inside the original8s.
+            self._continuation, self._deadline = continuation, state['deadline_ns']
+        except BaseException as exc:
+            self._abort(exc)
+            raise
+        finally:
+            self._lock.release()
+
+    def _accept_time(self, value):
+        if type(value) is not int or not self._last_now <= value < 2**64:
+            raise ValueError("local clock regression/type")
+        self._last_now = value
+        return value
+
+    def _record(self, kind, **data):
+        self._require_event_capacity()
+        self._regular_events += 1
+        # For send_return record the actual effect before checking clock/result.
+        event = dict(kind=kind, at_last_checked_ns=self._last_now, **copy.deepcopy(data))
+        clock_error = None
+        if kind in ("send_return", 'interval_send_return'):
+            try:
+                event["returned_ns"] = self._now()
+            except BaseException as exc:
+                clock_error = exc
+                event["return_clock_error"] = _error(exc)
+        self._events.append(copy.deepcopy(event))
+        try:
+            if self._journal(copy.deepcopy(event)) is not None:
+                raise ValueError("journal must return None")
+        except BaseException as exc:
+            self._journal_errors.append(dict(kind=kind, error=_error(exc)))
+            if clock_error is not None and (not isinstance(clock_error, Exception) or isinstance(exc, Exception)):
+                raise clock_error from exc
+            raise
+        if clock_error is not None:
+            raise clock_error
+        if kind in ("send_return", 'interval_send_return'):
+            self._accept_time(event["returned_ns"])
+        self._check()
+
+    def _require_event_capacity(self):
+        require_capacity(self._events, self._regular_events, self.MAX_EVENTS)
+
+    def _abort(self, error):
+        if self._failure is not None:
+            return
+        # Latch before running even an exception's potentially user-defined str.
+        self._failure = "wire refusal (formatting error)"
+        self._failure = _error(error)
+        event = dict(kind="refusal", reason=self._failure, at_last_checked_ns=self._last_now)
+        record_failure(self._events, copy.deepcopy(event))
+        try:
+            if self._journal(copy.deepcopy(event)) is not None:
+                raise ValueError("refusal journal must return None")
+        except BaseException as exc:
+            self._refusal_journal_error = _error(exc)
+
+    def check(self):
+        """Non-consuming serialized health check, including idle global timeout."""
+        if not self._lock.acquire(blocking=False):
+            self._abort(ValueError("concurrent wire operation"))
+            raise ValueError("concurrent wire operation")
+        try:
+            self._check()
+        except BaseException as exc:
+            self._abort(exc)
+            if not isinstance(exc, Exception):
+                raise
+            raise ValueError(_error(exc)) from exc
+        finally:
+            self._lock.release()
+
+    def _validate_heartbeat(self, messages, received_ns, observed_sim_ns):
+        if self._heartbeat_sink is None:
+            return
+        heartbeats = [(index, m) for index, m in enumerate(messages) if m['type'] == 'HEARTBEAT']
+        if len(heartbeats) > 1:
+            self._last_unarmed, self._safety_refused = None, True
+            raise ValueError('multiple heartbeats in fixed datagram profile')
+        if not heartbeats:
+            return
+        index, message = heartbeats[0]
+        fields = message['fields']
+        if (fields['autopilot'] != 12 or fields['mavlink_version'] != 3
+                or type(fields['base_mode']) is not int or not 0 <= fields['base_mode'] < 128
+                or type(fields['custom_mode']) is not int or not 0 <= fields['custom_mode'] < 2**32
+                or type(observed_sim_ns) is not int or not 0 <= observed_sim_ns < 2**63):
+            self._last_unarmed, self._safety_refused = None, True
+            raise ValueError('unarmed PX4 heartbeat and observed simulation time required')
+        event = dict(kind='heartbeat', arrival_monotonic_ns=received_ns, observed_sim_ns=observed_sim_ns,
+                     system_id=9, base_mode=fields['base_mode'], custom_mode=fields['custom_mode'])
+        return index, event
+
+    def _dispatch_heartbeat(self, messages, received_ns, observed_sim_ns):
+        validated = self._validate_heartbeat(messages, received_ns, observed_sim_ns)
+        if validated is None:
+            return
+        index, event = validated
+        self._record('heartbeat_dispatch_attempt', frame_index=index, event=event)
+        self._require_event_capacity()  # reserve space before a possibly delivered callback
+        returned = self._heartbeat_sink(copy.deepcopy(event))
+        self._record('heartbeat_dispatch_return', frame_index=index,
+                     returned_none=returned is None, return_type=type(returned).__name__)
+        if returned is not None:
+            raise ValueError('heartbeat sink must return None')
+        self._last_unarmed = received_ns
+
+    def receive(self, raw, peer, received_ns, observed_sim_ns):
+        if not self._lock.acquire(blocking=False):
+            self._abort(ValueError("concurrent wire operation"))
+            raise ValueError("concurrent wire operation")
+        try:
+            self._check()
+            if type(raw) is not bytes or not 0 < len(raw) <= self._codec.MAX_DATAGRAM_BYTES:
+                raise ValueError("invalid datagram bytes/size")
+            # Retain rejected bounded input before interpreting its contents.
+            self._record("receive", raw_hex=raw.hex(), peer=peer, received_ns=received_ns,
+                         observed_sim_ns=observed_sim_ns)
+            if type(peer) is not tuple or peer != self._peer:
+                raise ValueError("unexpected peer")
+            if type(received_ns) is not int or not 0 <= received_ns <= self._last_now:
+                raise ValueError("invalid receive time")
+            if self._last_received is not None and received_ns < self._last_received:
+                raise ValueError("receive clock regression")
+            self._last_received = received_ns
+            self._received = received_ns
+            self._check()
+            messages = self._codec.decode_datagram(raw)
+            self._record("decoded", messages=messages)
+            if any(m["system"] != 9 or m["component"] != 1 for m in messages):
+                raise ValueError("unexpected header source")
+            self._validate_heartbeat(messages, received_ns, observed_sim_ns)
+            requests = [m for m in messages if m["type"] == "TIMESYNC"]
+            if len(requests) > 1:
+                raise ValueError("multiple TIMESYNC requests")
+            if requests:
+                tc1, request = requests[0]['fields']['tc1'], requests[0]['fields']['ts1']
+                if tc1 != 0 or type(request) is not int or not 0 < request < 2**63 or request % 1000:
+                    raise ValueError("invalid request identity or unexpected response")
+                if self._last_identity is not None and request <= self._last_identity[0]:
+                    raise ValueError("request identity regression or reuse")
+                if self._interval is not None and self._last_seen_request is not None and request <= self._last_seen_request:
+                    raise ValueError('seen request identity regression or reuse')
+                # Validate the clock/encoding before any heartbeat or ACK effects.
+                # Use a private clock copy so ignored startup requests do not
+                # consume the real mapping lane before an actual reply is allowed.
+                preview = copy.deepcopy(self._remote).respond_to_px4_request(
+                    tc1_ns=tc1, ts1_ns=request, observed_sim_ns=observed_sim_ns)
+                if self._last_identity is not None and preview['tc1_ns'] <= self._last_identity[1]:
+                    raise ValueError("response identity regression or reuse")
+                self._codec.encode_reply(request, preview['tc1_ns'], self._sequence)
+            if self._interval is not None:
+                responses = [self._codec.interval_response(m) for m in messages
+                             if m['type'] in ('COMMAND_ACK', 'MESSAGE_INTERVAL')]
+                self._interval.validate_responses(responses, received_ns)
+                # Armed/bad heartbeat cannot be followed by command acceptance.
+                self._dispatch_heartbeat(messages, received_ns, observed_sim_ns)
+                for row in responses:
+                    self._interval.feed(row, received_ns)
+                    self._record_interval()
+                    self._check()
+            requests = [m for m in messages if m["type"] == "TIMESYNC"]
+            if len(requests) > 1:
+                raise ValueError("multiple TIMESYNC requests")
+            if not requests:
+                if self._interval is None:
+                    self._dispatch_heartbeat(messages, received_ns, observed_sim_ns)
+                return None
+            message = requests[0]
+            tc1, request = message["fields"]["tc1"], message["fields"]["ts1"]
+            if tc1 != 0 or type(request) is not int or not 0 < request < 2**63 or request % 1000:
+                raise ValueError("invalid request identity or unexpected response")
+            if self._last_identity is not None and request <= self._last_identity[0]:
+                raise ValueError("request identity regression or reuse")
+            if self._interval is not None:
+                if self._last_seen_request is not None and request <= self._last_seen_request:
+                    raise ValueError('seen request identity regression or reuse')
+                self._last_seen_request = request
+                if self._continuation is None and self._interval.progress['phase'] != 'body':
+                    self._record('interval_wait_request', request_ns=request, phase=self._interval.progress['phase'])
+                    return None
+            reply = self._remote.respond_to_px4_request(tc1_ns=tc1, ts1_ns=request, observed_sim_ns=observed_sim_ns)
+            response = reply["tc1_ns"]
+            if self._last_identity is not None and response <= self._last_identity[1]:
+                raise ValueError("response identity regression or reuse")
+            encoded = self._codec.encode_reply(request, response, self._sequence)
+            if self._interval is None:
+                self._dispatch_heartbeat(messages, received_ns, observed_sim_ns)
+            self._record("reply_prepared", request_ns=request, response_ns=response, raw_hex=encoded.hex(),
+                         sequence=self._sequence, clock_session=reply["clock_session_id"])
+            self._check()
+            intent = self._reserve(request, response)
+            expected = dict(request_ns=request, response_ns=response, transmission_proven=False,
+                            network_authorized=False, fusion_qualified=False)
+            if type(intent) is not dict or intent != expected or any(type(intent[k]) is not type(v) for k, v in expected.items()):
+                raise ValueError("reservation intent mismatch")
+            self._record("reserved", intent=intent)
+            self._check()
+            self._record("send_attempt", raw_hex=encoded.hex(), peer=self._peer)
+            send_started_ns = self._check()
+            # One return slot remains reserved; the refusal slot is separate.
+            self._require_event_capacity()
+            count = self._sink(encoded, self._peer)
+            self._record("send_return", count=count, send_started_ns=send_started_ns)
+            if type(count) is not int or count != len(encoded):
+                raise ValueError("invalid or short send count")
+            self._last_identity = (request, response)
+            self._sequence = (self._sequence + 1) % 256
+            self._check()
+            return dict(sink_accepted_all_bytes=True, request_ns=request, response_ns=response,
+                        network_authorized=False, delivery_proven=False, live_convergence_qualified=False,
+                        fusion_qualified=False)
+        except BaseException as exc:
+            self._abort(exc)
+            if not isinstance(exc, Exception):
+                raise
+            raise ValueError(_error(exc)) from exc
+        finally:
+            self._received = None
+            self._lock.release()

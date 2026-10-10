@@ -42,9 +42,17 @@ def setup(tmp_path, stream=None):
     return f, r, s, now
 
 
-def sensors(r, stamp):
+def sensors(r, stamp, sim=1_000_000_000):
     for kind in ["imu", "rgb", "info"]:
-        r.on_record(dict(kind=kind, arrival_monotonic_ns=stamp, recorded_monotonic_ns=stamp), None)
+        r.on_record(
+            dict(
+                kind=kind,
+                arrival_monotonic_ns=stamp,
+                recorded_monotonic_ns=stamp,
+                **({"observed_sim_ns": sim} if kind == "imu" else {}),
+            ),
+            None,
+        )
 
 
 def test_observe_then_reconcile_without_regressing_latest(tmp_path):
@@ -179,7 +187,7 @@ def test_freshness_and_hidden_failure_not_bypassed(tmp_path, cause):
         if cause == "sensor_stale":
             f.observe_heartbeat(event(now[0]))
         if cause == "heartbeat_stale":
-            sensors(r, now[0])
+            sensors(r, now[0], 3_000_000_001)
 
     def action():
         if f.proof() is None:

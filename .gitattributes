@@ -9,7 +9,10 @@ Dockerfile* text eol=lf
 # Preserve the exact historical result bytes, including generated line endings.
 results/fly-ego-comparison/** -text
 evidence/*.zip -text
+# Retained anchor fixture has a byte-level hash and must survive checkout intact.
+tests/benchmark/fixtures/live_wire/retained-anchor-subset.json -text whitespace=cr-at-eol
 tools/benchmark/openvins_init_feature_trace.patch text eol=lf whitespace=-blank-at-eol
+tools/benchmark/gpl/openvins_feature_trace.patch text eol=lf whitespace=-blank-at-eol
 # These frozen inputs had CRLF in the original experiment worktree.
 src/flydrones/__init__.py text eol=crlf
 src/flydrones/__main__.py text eol=crlf
@@ -51,3 +54,5 @@ src/flydrones/drones/sim.py -text
 src/flydrones/motor/decoder.py -text
 src/flydrones/runtime.py -text
 src/flydrones/safety.py -text
+# Prospective PX4 logger diagnostic is matched by an exact LF-byte hash.
+config/px4/source-diagnostic-v1/logger_topics.txt text eol=lf

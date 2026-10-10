@@ -7,6 +7,7 @@ import json
 import math
 import os
 import queue
+import re
 import subprocess
 import threading
 import time
@@ -62,16 +63,108 @@ def validate_event(event, *, allow_legacy_info=False):
     return result
 
 
+def verify_depth_manifest(output):
+    """Check exact in-root depth source bytes; do not interpret or qualify pixels."""
+    output = Path(output)
+
+    def unique(pairs):
+        row = {}
+        for key, value in pairs:
+            if key in row:
+                raise ValueError("duplicate depth manifest key")
+            row[key] = value
+        return row
+
+    manifest_path = output / "depth-payload-manifest.json"
+    if manifest_path.is_symlink() or not manifest_path.is_file():
+        raise ValueError("depth manifest missing or linked")
+    if manifest_path.stat().st_size > 262_144:
+        raise ValueError("depth manifest too large")
+    value = json.loads(manifest_path.read_text(encoding="utf-8"), object_pairs_hook=unique)
+    if (type(value) is not dict or value.keys() != {"schema", "frames"}
+            or value["schema"] != "flydrones-depth-payload-v1"
+            or type(value["frames"]) is not list or len(value["frames"]) > 512):
+        raise ValueError("depth manifest schema invalid")
+    directory = output / "depth-messages"
+    if directory.is_symlink() or (directory.exists() and not directory.is_dir()):
+        raise ValueError("depth directory invalid")
+    selected = set()
+    last = -1
+    for frame in value["frames"]:
+        if type(frame) is not dict or frame.keys() != {"sample_ns", "path", "bytes", "sha256"}:
+            raise ValueError("depth frame schema invalid")
+        stamp, length, digest = frame["sample_ns"], frame["bytes"], frame["sha256"]
+        if (type(stamp) is not int or stamp <= last
+                or frame["path"] != f"depth-messages/{stamp}.pb"
+                or type(length) is not int or not 0 < length <= 131_072
+                or type(digest) is not str or re.fullmatch(r"[0-9a-f]{64}", digest) is None):
+            raise ValueError("depth frame identity invalid")
+        file = output / frame["path"]
+        if file.is_symlink() or file.parent.is_symlink() or not file.is_file():
+            raise ValueError("depth frame missing or linked")
+        if file.stat().st_size != length:
+            raise ValueError("depth frame size changed")
+        payload = file.read_bytes()
+        if len(payload) != length or hashlib.sha256(payload).hexdigest() != digest:
+            raise ValueError("depth frame bytes changed")
+        selected.add(file.name)
+        last = stamp
+    actual = {item.name for item in directory.iterdir()} if directory.exists() else set()
+    if actual != selected:
+        raise ValueError("depth directory has missing or undeclared files")
+    events_path = output / "events.jsonl"
+    if events_path.is_symlink() or not events_path.is_file():
+        raise ValueError("sensor event journal missing or linked")
+    recorded = []
+    with events_path.open(encoding="utf-8") as stream:
+        while True:
+            line = stream.readline(1_048_577)
+            if not line:
+                break
+            if len(line) > 1_048_576 or not line.endswith("\n"):
+                raise ValueError("invalid sensor event journal line")
+            row = json.loads(line, object_pairs_hook=unique)
+            if type(row) is not dict:
+                raise ValueError("invalid sensor event row")
+            if row.get("kind") == "depth":
+                base = {key: item for key, item in row.items() if key != "source_sequence"}
+                audit_event_records([base], required_kinds=[])
+                recorded.append(dict(sample_ns=row["sample_ns"], path=row.get("payload_path"),
+                                     bytes=row.get("payload_bytes"), sha256=row.get("payload_sha256")))
+    if recorded != value["frames"]:
+        raise ValueError("depth events differ from payload manifest")
+    return value
+
+
 class CaptureWriter:
-    def __init__(self, output, *, capacity=4096, start_worker=True, on_record=None, sequence_records=False):
+    def __init__(
+        self,
+        output,
+        *,
+        capacity=4096,
+        start_worker=True,
+        on_record=None,
+        on_idle=None,
+        idle_period_s=0.05,
+        sequence_records=False,
+        record_depth_payload=False,
+    ):
         if type(capacity) is not int or capacity < 1:
             raise ValueError("invalid queue capacity")
+        if on_idle is not None and (
+            not callable(on_idle)
+            or type(idle_period_s) not in (int, float)
+            or not math.isfinite(idle_period_s)
+            or idle_period_s <= 0
+        ):
+            raise ValueError("invalid idle callback configuration")
         self.output = output
         self.stream = (output / "events.jsonl").open("x", encoding="utf8")
         self.rgb = RgbFrameRecorder(output)
         self.info = CameraInfoRecorder(output, topic="/benchmark/rgbd/camera_info")
         self.queue = queue.Queue(capacity)
         self.lock = threading.Lock()
+        self.delivery_lock = threading.Lock()
         self.last = {}
         self.written = Counter()
         self.error = None
@@ -79,7 +172,11 @@ class CaptureWriter:
         self.thread = None
         self.max_queue = 0
         self.on_record = on_record
+        self.on_idle = on_idle
+        self.idle_period_s = idle_period_s
         self.sequence_records = sequence_records
+        self.record_depth_payload = record_depth_payload
+        self.depth_frames = []
         self.source_sequence = 0
         if start_worker:
             self.start()
@@ -90,12 +187,30 @@ class CaptureWriter:
         self.thread = threading.Thread(target=self._worker, daemon=True)
         self.thread.start()
 
+    def latch_failure(self, exc):
+        """Stop future source delivery and wait for any already active delivery."""
+        with self.lock:
+            if self.error is None:
+                self.error = repr(exc)
+            try:
+                self.queue.put_nowait(None)
+            except queue.Full:
+                pass
+        with self.delivery_lock:
+            pass
+
     def submit(self, event, payload=None):
         row = validate_event(event)
         if row["kind"] == "rgb" and (not isinstance(payload, bytes) or len(payload) != 160 * 120 * 3):
             raise ValueError("invalid RGB payload")
         if row["kind"] == "info" and (not isinstance(payload, bytes) or not payload):
             raise ValueError("invalid camera info payload")
+        if row["kind"] == "depth":
+            if self.record_depth_payload:
+                if type(payload) is not bytes or not 0 < len(payload) <= 131_072:
+                    raise ValueError("invalid depth payload")
+            elif payload is not None:
+                raise ValueError("unexpected depth payload")
         with self.lock:
             if self.closed or self.error:
                 raise RuntimeError("writer unavailable: " + str(self.error))
@@ -128,6 +243,23 @@ class CaptureWriter:
                 stream.write(payload)
             row["payload_path"] = relative
             row["payload_sha256"] = hashlib.sha256(payload).hexdigest()
+        if row["kind"] == "depth" and self.record_depth_payload:
+            directory = self.output / "depth-messages"
+            if directory.is_symlink() or (directory.exists() and not directory.is_dir()):
+                raise ValueError("depth directory linked or invalid")
+            directory.mkdir(exist_ok=True)
+            if directory.is_symlink() or directory.resolve().parent != self.output.resolve():
+                raise ValueError("depth directory escaped output root")
+            relative = "depth-messages/" + str(row["sample_ns"]) + ".pb"
+            with (self.output / relative).open("xb") as stream:
+                if stream.write(payload) != len(payload):
+                    raise OSError("short depth payload write")
+                stream.flush()
+            row["payload_path"] = relative
+            row["payload_bytes"] = len(payload)
+            row["payload_sha256"] = hashlib.sha256(payload).hexdigest()
+            self.depth_frames.append(dict(sample_ns=row["sample_ns"], path=relative,
+                                          bytes=len(payload), sha256=row["payload_sha256"]))
         # This is record preparation time, not filesystem durability or sensor-generation wall time.
         row["recorded_monotonic_ns"] = time.monotonic_ns()
         encoded = json.dumps(row, allow_nan=False) + "\n"
@@ -136,22 +268,37 @@ class CaptureWriter:
         self.written[row["kind"]] += 1
         if self.on_record is not None:
             self.stream.flush()
-            self.on_record(dict(row), payload)
+            with self.delivery_lock:
+                if self.error:
+                    raise RuntimeError("writer failed before source delivery: " + self.error)
+                self.on_record(dict(row), None if row["kind"] == "depth" else payload)
 
     def _worker(self):
         try:
             while True:
-                item = self.queue.get()
+                try:
+                    item = self.queue.get(timeout=self.idle_period_s if self.on_idle is not None else None)
+                except queue.Empty:
+                    # Holding the submit lock makes this an observed empty FIFO boundary.
+                    # The callback runs on the same single-owner thread as on_record.
+                    with self.lock:
+                        if not self.closed and not self.error and self.queue.empty():
+                            self.on_idle(time.monotonic_ns())
+                    continue
                 if item is None:
+                    break
+                if self.error:
                     break
                 self._write_event(*item)
         except BaseException as exc:
-            self.error = repr(exc)
+            if self.error is None:
+                self.error = repr(exc)
         finally:
             try:
                 self.stream.close()
             except OSError as exc:
-                self.error = repr(exc)
+                if self.error is None:
+                    self.error = repr(exc)
 
     def finish(self):
         with self.lock:
@@ -172,13 +319,23 @@ class CaptureWriter:
         if self.error:
             raise RuntimeError(self.error)
         rgb, info = self.rgb.finish(), self.info.finish()
-        return {
+        summary = {
             "written": dict(self.written),
             "max_queue_depth": self.max_queue,
             "rgb": rgb,
             "camera_info": info,
             "timing_scope": "callback arrival to record preparation, not end-to-end latency",
         }
+        if self.record_depth_payload:
+            depth = {"schema": "flydrones-depth-payload-v1", "frames": self.depth_frames}
+            encoded = json.dumps(depth, indent=2) + "\n"
+            with (self.output / "depth-payload-manifest.json").open("x", encoding="utf-8") as stream:
+                if stream.write(encoded) != len(encoded):
+                    raise OSError("short depth manifest write")
+                stream.flush()
+            verify_depth_manifest(self.output)
+            summary["depth_payload"] = depth
+        return summary
 
 
 def compare_imu(imu_rows, px4_us, px4_gyro, px4_accel):
@@ -232,6 +389,7 @@ def audit_event_records(rows, *, required_kinds, allow_legacy_info=False):
         "writer_begin_monotonic_ns",
         "recorded_monotonic_ns",
         "payload_path",
+        "payload_bytes",
         "payload_sha256",
     }
     counts = Counter()
@@ -245,6 +403,14 @@ def audit_event_records(rows, *, required_kinds, allow_legacy_info=False):
             if not isinstance(digest, str) or len(digest) != 64 or any(c not in "0123456789abcdef" for c in digest):
                 raise ValueError("invalid camera info payload digest")
             expected.update(payload_path="camera-info-messages/" + str(row["sample_ns"]) + ".pb", payload_sha256=digest)
+        if row["kind"] == "depth" and any(k in row for k in ("payload_path", "payload_bytes", "payload_sha256")):
+            digest, length = row.get("payload_sha256"), row.get("payload_bytes")
+            if (row.get("payload_path") != f"depth-messages/{row['sample_ns']}.pb"
+                    or type(length) is not int or not 0 < length <= 131_072
+                    or type(digest) is not str or re.fullmatch(r"[0-9a-f]{64}", digest) is None):
+                raise ValueError("invalid depth payload identity")
+            expected.update(payload_path=row["payload_path"], payload_bytes=length,
+                            payload_sha256=digest)
         begin, end = row.get("writer_begin_monotonic_ns"), row.get("recorded_monotonic_ns")
         if (
             type(begin) is not int
@@ -283,17 +449,35 @@ class CaptureJournal:
         self.callbacks.append((priority, label, callback))
 
     def __exit__(self, kind, value, traceback):
+        def describe(exc):
+            try:
+                return repr(exc)
+            except BaseException:
+                return '<unprintable exception>'
+
+        interruption = value if value is not None and not isinstance(value, Exception) else None
         if value is not None:
-            self.result["errors"].append(repr(value))
+            self.result["errors"].append(describe(value))
         for _, label, callback in sorted(self.callbacks, key=lambda item: item[0]):
             try:
                 callback()
-            except Exception as exc:
-                self.result["errors"].append(label + ": " + repr(exc))
+            except BaseException as exc:
+                self.result["errors"].append(label + ": " + describe(exc))
+                if interruption is None and not isinstance(exc, Exception):
+                    interruption = exc
         if self.result["errors"] or self.result["status"] != "capture_completed":
             self.result["status"] = "capture_failed"
-        with (self.output / "result.json").open("x") as stream:
-            json.dump(self.result, stream, indent=2)
+        try:
+            with (self.output / "result.json").open("x") as stream:
+                json.dump(self.result, stream, indent=2)
+        except BaseException as exc:
+            self.result['status'] = 'capture_failed'
+            self.result['errors'].append('terminal result: ' + describe(exc))
+            if interruption is not None:
+                raise interruption from exc
+            raise
+        if interruption is not None:
+            raise interruption
         return value is not None
 
 

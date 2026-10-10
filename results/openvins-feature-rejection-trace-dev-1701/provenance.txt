@@ -1,0 +1,529 @@
+WINDOWS_GIT_HEAD
+3864a3e4909565707b84f4290490fda08d4f54d2
+WINDOWS_GIT_STATUS
+ M docs/ESTIMATOR_PHYSICAL_REFUSAL_DIAGNOSIS_REPORT.md
+?? docs/superpowers/plans/2026-10-07-openvins-feature-rejection-trace.md
+?? docs/superpowers/specs/2026-10-07-openvins-feature-rejection-trace-design.md
+?? results/causal-pair-physical-attempt-dev-1701-gate-ruff.txt
+?? results/causal-pair-physical-attempt-dev-1701-gate-tests.txt
+?? results/causal-pair-physical-attempt-dev-1701-member-gate-green.txt
+?? results/causal-pair-physical-attempt-dev-1701-member-gate-red.txt
+?? results/causal-pair-physical-attempt-dev-1701-preaudit-v2.txt
+?? results/causal-pair-physical-attempt-dev-1701-preaudit.txt
+?? results/causal-pair-physical-attempt-dev-1701-study-v11-audit.txt
+?? results/causal-pair-physical-attempt-dev-1701-study-v11-postaudit.txt
+?? results/causal-pair-physical-attempt-dev-1701-study-v11-prepare.txt
+?? results/causal-pair-physical-attempt-dev-1701-study-v11-startup-audit.txt
+?? results/causal-pair-retry-preflight-dev-1701-audit-output-v1.txt
+?? results/causal-pair-retry-preflight-dev-1701-audit-output-v2.txt
+?? results/causal-pair-retry-preflight-dev-1701-changed-files.txt
+?? results/causal-pair-retry-preflight-dev-1701-commits.txt
+?? results/causal-pair-retry-preflight-dev-1701-diff-check.txt
+?? results/causal-pair-retry-preflight-dev-1701-final-diff.txt
+?? results/causal-pair-retry-preflight-dev-1701-final-full.txt
+?? results/causal-pair-retry-preflight-dev-1701-final-ruff.txt
+?? results/causal-pair-retry-preflight-dev-1701-final-targeted.txt
+?? results/causal-pair-retry-preflight-dev-1701-full-tests-v2.txt
+?? results/causal-pair-retry-preflight-dev-1701-full-tests.txt
+?? results/causal-pair-retry-preflight-dev-1701-green-v1.txt
+?? results/causal-pair-retry-preflight-dev-1701-green-v2.txt
+?? results/causal-pair-retry-preflight-dev-1701-prepare-output.txt
+?? results/causal-pair-retry-preflight-dev-1701-red.txt
+?? results/causal-pair-retry-preflight-dev-1701-ruff.txt
+?? results/causal-pair-retry-preflight-dev-1701-startup-audit-green-v1.txt
+?? results/causal-pair-retry-preflight-dev-1701-startup-audit-green-v2.txt
+?? results/causal-pair-retry-preflight-dev-1701-startup-audit-output-v2.txt
+?? results/causal-pair-retry-preflight-dev-1701-startup-audit-output.txt
+?? results/causal-pair-retry-preflight-dev-1701-startup-audit-red.txt
+?? results/causal-pair-retry-preflight-dev-1701-status-before-seal.txt
+?? results/causal-pair-retry-preflight-dev-1701-targeted-tests.txt
+?? results/causal-pair-sim-time-physical-boundary-dev-1701/
+?? results/causal-pair-stage-dev-1701/
+?? results/causal-wall-deadline-dev-1701/
+?? results/declared-launch-environment-dev-1701/
+?? results/estimator-aware-readiness-preflight-dev-1701/audit-v1.json
+?? results/estimator-aware-readiness-preflight-dev-1701/study-v1/
+?? results/estimator-aware-readiness-preflight-dev-1701/study-v2/capture-v1.supervisor-environment.json
+?? results/estimator-aware-readiness-preflight-dev-1701/study-v2/capture-v1.supervisor-events.jsonl
+?? results/estimator-aware-readiness-preflight-dev-1701/study-v2/capture-v1/
+?? results/estimator-heartbeat-physical-attempt-dev-1701-preaudit.txt
+?? results/estimator-heartbeat-retry-preflight-dev-1701/
+?? results/estimator-heartbeat-routing-dev-1701/
+?? results/estimator-physical-refusal-diagnosis-dev-1701/causal-deadline-retry-commits.txt
+?? results/estimator-physical-refusal-diagnosis-dev-1701/causal-deadline-retry-final-diff-check.txt
+?? results/estimator-physical-refusal-diagnosis-dev-1701/causal-deadline-retry-full-tests-v2.txt
+?? results/estimator-physical-refusal-diagnosis-dev-1701/causal-deadline-retry-full-tests.txt
+?? results/estimator-physical-refusal-diagnosis-dev-1701/causal-deadline-retry-resource-scan-windows.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/causal-deadline-retry-resource-scan-wsl.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/causal-deadline-retry-resource-scan.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/causal-deadline-retry-ruff.txt
+?? results/estimator-physical-refusal-diagnosis-dev-1701/changed-ruff.txt
+?? results/estimator-physical-refusal-diagnosis-dev-1701/current-head-for-physical-v10.txt
+?? results/estimator-physical-refusal-diagnosis-dev-1701/current-head-for-physical-v11.txt
+?? results/estimator-physical-refusal-diagnosis-dev-1701/current-head-for-physical-v4.txt
+?? results/estimator-physical-refusal-diagnosis-dev-1701/current-head-for-physical-v5.txt
+?? results/estimator-physical-refusal-diagnosis-dev-1701/current-head-for-physical-v6.txt
+?? results/estimator-physical-refusal-diagnosis-dev-1701/current-head-for-physical-v7.txt
+?? results/estimator-physical-refusal-diagnosis-dev-1701/current-head-for-physical-v9.txt
+?? results/estimator-physical-refusal-diagnosis-dev-1701/current-head-for-startup-v12.txt
+?? results/estimator-physical-refusal-diagnosis-dev-1701/current-head-for-startup-v3.txt
+?? results/estimator-physical-refusal-diagnosis-dev-1701/current-head-for-startup-v4.txt
+?? results/estimator-physical-refusal-diagnosis-dev-1701/current-head-for-startup-v5.txt
+?? results/estimator-physical-refusal-diagnosis-dev-1701/current-head-for-startup-v6.txt
+?? results/estimator-physical-refusal-diagnosis-dev-1701/current-head-for-startup-v7.txt
+?? results/estimator-physical-refusal-diagnosis-dev-1701/current-head-for-startup-v8.txt
+?? results/estimator-physical-refusal-diagnosis-dev-1701/diff-check.txt
+?? results/estimator-physical-refusal-diagnosis-dev-1701/full-tests.txt
+?? results/estimator-physical-refusal-diagnosis-dev-1701/heartbeat-commit-order-audit.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/heartbeat-commit-order-boundary-diff-check.txt
+?? results/estimator-physical-refusal-diagnosis-dev-1701/heartbeat-commit-order-boundary-full-tests.txt
+?? results/estimator-physical-refusal-diagnosis-dev-1701/heartbeat-commit-order-boundary-ruff.txt
+?? results/estimator-physical-refusal-diagnosis-dev-1701/heartbeat-commit-order-boundary-targeted-tests.txt
+?? results/estimator-physical-refusal-diagnosis-dev-1701/heartbeat-commit-order-commits.txt
+?? results/estimator-physical-refusal-diagnosis-dev-1701/heartbeat-commit-order-diff-check.txt
+?? results/estimator-physical-refusal-diagnosis-dev-1701/heartbeat-commit-order-diff.patch
+?? results/estimator-physical-refusal-diagnosis-dev-1701/heartbeat-commit-order-full-tests-v2.txt
+?? results/estimator-physical-refusal-diagnosis-dev-1701/heartbeat-commit-order-full-tests.txt
+?? results/estimator-physical-refusal-diagnosis-dev-1701/heartbeat-commit-order-retry-commits.txt
+?? results/estimator-physical-refusal-diagnosis-dev-1701/heartbeat-commit-order-retry-diff-check.txt
+?? results/estimator-physical-refusal-diagnosis-dev-1701/heartbeat-commit-order-retry-diff.patch
+?? results/estimator-physical-refusal-diagnosis-dev-1701/heartbeat-commit-order-retry-final-ruff.txt
+?? results/estimator-physical-refusal-diagnosis-dev-1701/heartbeat-commit-order-retry-full-tests.txt
+?? results/estimator-physical-refusal-diagnosis-dev-1701/heartbeat-commit-order-retry-green.txt
+?? results/estimator-physical-refusal-diagnosis-dev-1701/heartbeat-commit-order-retry-prepare-output.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/heartbeat-commit-order-retry-prepare-v21-output.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/heartbeat-commit-order-retry-red.txt
+?? results/estimator-physical-refusal-diagnosis-dev-1701/heartbeat-commit-order-retry-ruff.txt
+?? results/estimator-physical-refusal-diagnosis-dev-1701/heartbeat-commit-order-retry-status-before-seal.txt
+?? results/estimator-physical-refusal-diagnosis-dev-1701/heartbeat-commit-order-retry-targeted-tests.txt
+?? results/estimator-physical-refusal-diagnosis-dev-1701/heartbeat-commit-order-ruff.txt
+?? results/estimator-physical-refusal-diagnosis-dev-1701/heartbeat-commit-order-status-before-seal.txt
+?? results/estimator-physical-refusal-diagnosis-dev-1701/heartbeat-commit-order-targeted-tests.txt
+?? results/estimator-physical-refusal-diagnosis-dev-1701/installed-package-provenance.tsv
+?? results/estimator-physical-refusal-diagnosis-dev-1701/motion-intent-visual-evidence-seal.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/motion-intent-visual-full-tests.txt
+?? results/estimator-physical-refusal-diagnosis-dev-1701/motion-intent-visual-research.md
+?? results/estimator-physical-refusal-diagnosis-dev-1701/motion-intent-visual-ruff.txt
+?? results/estimator-physical-refusal-diagnosis-dev-1701/physical-run-launcher-preflight-failure.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/physical-run-v1-completion.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/physical-run-v1-dispatch.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/physical-run-v10-boundary-audit.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/physical-run-v10-boundary.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/physical-run-v10-completion.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/physical-run-v10-dispatch.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/physical-run-v10-output.txt
+?? results/estimator-physical-refusal-diagnosis-dev-1701/physical-run-v11-attempt-audit-console.txt
+?? results/estimator-physical-refusal-diagnosis-dev-1701/physical-run-v11-attempt-audit-v2-console.txt
+?? results/estimator-physical-refusal-diagnosis-dev-1701/physical-run-v11-attempt-audit-v2.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/physical-run-v11-attempt-audit.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/physical-run-v11-boundary-audit.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/physical-run-v11-boundary.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/physical-run-v11-completion.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/physical-run-v11-dispatch.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/physical-run-v11-evidence-seal.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/physical-run-v11-focused-tests.txt
+?? results/estimator-physical-refusal-diagnosis-dev-1701/physical-run-v11-full-tests-v2.txt
+?? results/estimator-physical-refusal-diagnosis-dev-1701/physical-run-v11-full-tests.txt
+?? results/estimator-physical-refusal-diagnosis-dev-1701/physical-run-v11-output.txt
+?? results/estimator-physical-refusal-diagnosis-dev-1701/physical-run-v11-resource-scan.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/physical-run-v11-ruff.txt
+?? results/estimator-physical-refusal-diagnosis-dev-1701/physical-run-v11-visual-feature-starvation-diagnosis-console.txt
+?? results/estimator-physical-refusal-diagnosis-dev-1701/physical-run-v11-visual-feature-starvation-diagnosis-v2-console.txt
+?? results/estimator-physical-refusal-diagnosis-dev-1701/physical-run-v11-visual-feature-starvation-diagnosis-v2.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/physical-run-v11-visual-feature-starvation-diagnosis.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/physical-run-v11-zupt-bias-diagnosis-console.txt
+?? results/estimator-physical-refusal-diagnosis-dev-1701/physical-run-v11-zupt-bias-diagnosis-v2-console.txt
+?? results/estimator-physical-refusal-diagnosis-dev-1701/physical-run-v11-zupt-bias-diagnosis-v2.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/physical-run-v11-zupt-bias-diagnosis-v3-console.txt
+?? results/estimator-physical-refusal-diagnosis-dev-1701/physical-run-v11-zupt-bias-diagnosis.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/physical-run-v2-completion.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/physical-run-v2-dispatch.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/physical-run-v3-commits.txt
+?? results/estimator-physical-refusal-diagnosis-dev-1701/physical-run-v3-completion.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/physical-run-v3-deadline-diagnostic.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/physical-run-v3-diff-check.txt
+?? results/estimator-physical-refusal-diagnosis-dev-1701/physical-run-v3-dispatch.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/physical-run-v3-evidence-manifest.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/physical-run-v3-full-tests.txt
+?? results/estimator-physical-refusal-diagnosis-dev-1701/physical-run-v3-ruff.txt
+?? results/estimator-physical-refusal-diagnosis-dev-1701/physical-run-v3-targeted-tests.txt
+?? results/estimator-physical-refusal-diagnosis-dev-1701/physical-run-v4-commits.txt
+?? results/estimator-physical-refusal-diagnosis-dev-1701/physical-run-v4-completion.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/physical-run-v4-diff-check.txt
+?? results/estimator-physical-refusal-diagnosis-dev-1701/physical-run-v4-dispatch.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/physical-run-v4-launcher.py
+?? results/estimator-physical-refusal-diagnosis-dev-1701/physical-run-v4-output.txt
+?? results/estimator-physical-refusal-diagnosis-dev-1701/physical-run-v4-resource-scan-windows.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/physical-run-v4-resource-scan-wsl.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/physical-run-v5-completion.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/physical-run-v5-dispatch.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/physical-run-v5-launcher.py
+?? results/estimator-physical-refusal-diagnosis-dev-1701/physical-run-v5-output.txt
+?? results/estimator-physical-refusal-diagnosis-dev-1701/physical-run-v6-completion.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/physical-run-v6-dispatch.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/physical-run-v6-launcher.py
+?? results/estimator-physical-refusal-diagnosis-dev-1701/physical-run-v6-output.txt
+?? results/estimator-physical-refusal-diagnosis-dev-1701/physical-run-v7-completion.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/physical-run-v7-dispatch.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/physical-run-v7-launcher.py
+?? results/estimator-physical-refusal-diagnosis-dev-1701/physical-run-v7-output.txt
+?? results/estimator-physical-refusal-diagnosis-dev-1701/physical-run-v9-boundary-audit.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/physical-run-v9-boundary.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/physical-run-v9-completion.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/physical-run-v9-dispatch.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/physical-run-v9-output.txt
+?? results/estimator-physical-refusal-diagnosis-dev-1701/post-attempt-full-tests.txt
+?? results/estimator-physical-refusal-diagnosis-dev-1701/post-attempt-targeted-tests.txt
+?? results/estimator-physical-refusal-diagnosis-dev-1701/pr65-body-boundary-v11.md
+?? results/estimator-physical-refusal-diagnosis-dev-1701/pr65-body-commit-order-retry.md
+?? results/estimator-physical-refusal-diagnosis-dev-1701/pr65-body-current-v2.md
+?? results/estimator-physical-refusal-diagnosis-dev-1701/pr65-body-current.md
+?? results/estimator-physical-refusal-diagnosis-dev-1701/pr65-body-heartbeat-commit-order.md
+?? results/estimator-physical-refusal-diagnosis-dev-1701/pr65-body-motion-intent.md
+?? results/estimator-physical-refusal-diagnosis-dev-1701/pr65-body-physical-vio-diagnosis.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/pr65-body-physical-vio-diagnosis.md
+?? results/estimator-physical-refusal-diagnosis-dev-1701/prospective-renderer-environment-v1.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/pycompile.txt
+?? results/estimator-physical-refusal-diagnosis-dev-1701/renderer-probe-v1/
+?? results/estimator-physical-refusal-diagnosis-dev-1701/renderer-probe-v2/
+?? results/estimator-physical-refusal-diagnosis-dev-1701/renderer-probe-v3/
+?? results/estimator-physical-refusal-diagnosis-dev-1701/renderer-probe-v4/
+?? results/estimator-physical-refusal-diagnosis-dev-1701/renderer-probe-v5.launch.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/renderer-probe-v5.supervisor-environment.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/renderer-probe-v5.supervisor-events.jsonl
+?? results/estimator-physical-refusal-diagnosis-dev-1701/renderer-probe-v5/
+?? results/estimator-physical-refusal-diagnosis-dev-1701/renderer-probe-v6.launch.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/renderer-probe-v6.supervisor-environment.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/renderer-probe-v6.supervisor-events.jsonl
+?? results/estimator-physical-refusal-diagnosis-dev-1701/renderer-probe-v6/
+?? results/estimator-physical-refusal-diagnosis-dev-1701/renderer-probe-v7-audit.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/renderer-probe-v7.launch.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/renderer-probe-v7.supervisor-environment.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/renderer-probe-v7.supervisor-events.jsonl
+?? results/estimator-physical-refusal-diagnosis-dev-1701/renderer-probe-v7/
+?? results/estimator-physical-refusal-diagnosis-dev-1701/resource-scan.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/seal_motion_intent_visual.py
+?? results/estimator-physical-refusal-diagnosis-dev-1701/stage-summary.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/startup-preflight-full-tests.txt
+?? results/estimator-physical-refusal-diagnosis-dev-1701/startup-preflight-targeted-tests.txt
+?? results/estimator-physical-refusal-diagnosis-dev-1701/startup-preflight-v1-audit.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/startup-preflight-v1-completion.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/startup-preflight-v1-dispatch.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/startup-preflight-v1-output.txt
+?? results/estimator-physical-refusal-diagnosis-dev-1701/startup-preflight-v11-audit.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/startup-preflight-v11-completion.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/startup-preflight-v11-dispatch.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/startup-preflight-v11-output.txt
+?? results/estimator-physical-refusal-diagnosis-dev-1701/startup-preflight-v12-audit.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/startup-preflight-v12-completion.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/startup-preflight-v12-dispatch.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/startup-preflight-v12-output.txt
+?? results/estimator-physical-refusal-diagnosis-dev-1701/startup-preflight-v12-resource-scan.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/startup-preflight-v2-audit.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/startup-preflight-v2-completion.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/startup-preflight-v2-dispatch.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/startup-preflight-v2-output.txt
+?? results/estimator-physical-refusal-diagnosis-dev-1701/startup-preflight-v3-audit.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/startup-preflight-v3-completion.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/startup-preflight-v3-dispatch.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/startup-preflight-v3-predispatch-failure-v2.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/startup-preflight-v3-predispatch-failure.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/startup-preflight-v4-audit-context.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/startup-preflight-v4-audit-v2.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/startup-preflight-v4-audit.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/startup-preflight-v4-completion.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/startup-preflight-v4-dispatch.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/startup-preflight-v4-launcher.py
+?? results/estimator-physical-refusal-diagnosis-dev-1701/startup-preflight-v4-output.txt
+?? results/estimator-physical-refusal-diagnosis-dev-1701/startup-preflight-v4-resource-scan-windows.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/startup-preflight-v4-resource-scan-wsl.txt
+?? results/estimator-physical-refusal-diagnosis-dev-1701/startup-preflight-v5-audit.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/startup-preflight-v5-completion.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/startup-preflight-v5-dispatch.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/startup-preflight-v5-launcher.py
+?? results/estimator-physical-refusal-diagnosis-dev-1701/startup-preflight-v5-output.txt
+?? results/estimator-physical-refusal-diagnosis-dev-1701/startup-preflight-v6-audit.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/startup-preflight-v6-completion.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/startup-preflight-v6-dispatch.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/startup-preflight-v6-launcher.py
+?? results/estimator-physical-refusal-diagnosis-dev-1701/startup-preflight-v6-output.txt
+?? results/estimator-physical-refusal-diagnosis-dev-1701/startup-preflight-v7-launcher-failure.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/startup-preflight-v7-launcher.py
+?? results/estimator-physical-refusal-diagnosis-dev-1701/startup-preflight-v8-completion.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/startup-preflight-v8-dispatch.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/startup-preflight-v8-launcher.py
+?? results/estimator-physical-refusal-diagnosis-dev-1701/startup-preflight-v8-output.txt
+?? results/estimator-physical-refusal-diagnosis-dev-1701/study-v10-audit-v1.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/study-v10-audit-v2.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/study-v10-audit-v3.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/study-v10-audit-v4.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/study-v10-committed-context.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/study-v10/
+?? results/estimator-physical-refusal-diagnosis-dev-1701/study-v11-audit-v1.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/study-v11-audit-v2.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/study-v11/
+?? results/estimator-physical-refusal-diagnosis-dev-1701/study-v12-audit-v1.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/study-v12-audit-v2.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/study-v12/
+?? results/estimator-physical-refusal-diagnosis-dev-1701/study-v13-audit-v1.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/study-v13-audit-v2.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/study-v13-audit-v3.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/study-v13-audit-v4-postseal.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/study-v13-audit-v5-physical-head.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/study-v13/
+?? results/estimator-physical-refusal-diagnosis-dev-1701/study-v14/
+?? results/estimator-physical-refusal-diagnosis-dev-1701/study-v15-audit-v2-committed.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/study-v15/
+?? results/estimator-physical-refusal-diagnosis-dev-1701/study-v18/capture-v1.supervisor-environment.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/study-v18/capture-v1.supervisor-events.jsonl
+?? results/estimator-physical-refusal-diagnosis-dev-1701/study-v18/capture-v1/
+?? results/estimator-physical-refusal-diagnosis-dev-1701/study-v19/
+?? results/estimator-physical-refusal-diagnosis-dev-1701/study-v20-audit-v1.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/study-v20-audit-v2-committed.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/study-v20-audit-v3-startup-head.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/study-v20/
+?? results/estimator-physical-refusal-diagnosis-dev-1701/study-v21-audit-v1.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/study-v21-audit-v2-startup-head.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/study-v21-audit-v3-poststartup.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/study-v21/
+?? results/estimator-physical-refusal-diagnosis-dev-1701/study-v3-audit-output-v2.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/study-v3-audit-output.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/study-v3-audit-v2.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/study-v3-audit.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/study-v3-prepare-output-v2.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/study-v3-prepare-output.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/study-v3/
+?? results/estimator-physical-refusal-diagnosis-dev-1701/study-v4-audit-output-v2.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/study-v4-audit-output.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/study-v4-audit-v2.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/study-v4-audit.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/study-v4-prepare-output.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/study-v4-run-output.txt
+?? results/estimator-physical-refusal-diagnosis-dev-1701/study-v4/
+?? results/estimator-physical-refusal-diagnosis-dev-1701/study-v5-audit-output-v2.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/study-v5-audit-output.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/study-v5-audit-v2.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/study-v5-audit.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/study-v5-capture-audit.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/study-v5-prepare-output.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/study-v5-run-output.txt
+?? results/estimator-physical-refusal-diagnosis-dev-1701/study-v5/
+?? results/estimator-physical-refusal-diagnosis-dev-1701/study-v6-audit-output.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/study-v6-audit.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/study-v6-prepare-output.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/study-v6/
+?? results/estimator-physical-refusal-diagnosis-dev-1701/study-v7-audit-output.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/study-v7-audit.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/study-v7-prepare-output.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/study-v7/
+?? results/estimator-physical-refusal-diagnosis-dev-1701/study-v8-audit-output-v2.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/study-v8-audit-output.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/study-v8-audit-v2.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/study-v8-audit.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/study-v8-capture-v1-audit.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/study-v8-prepare-output.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/study-v8-run-output.txt
+?? results/estimator-physical-refusal-diagnosis-dev-1701/study-v8/
+?? results/estimator-physical-refusal-diagnosis-dev-1701/study-v9-audit-v2.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/study-v9-audit-v3.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/study-v9-audit.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/study-v9-capture-v1-audit.json
+?? results/estimator-physical-refusal-diagnosis-dev-1701/study-v9/
+?? results/estimator-physical-refusal-diagnosis-dev-1701/targeted-tests.txt
+?? results/full-load-runtime-mapping-dev-1701/
+?? results/openvins-feature-rejection-trace-dev-1701/
+?? results/openvins-handoff-physical-attempt-dev-1701/
+?? results/openvins-handoff-retry-preflight-dev-1701/
+?? results/openvins-initializer-handoff-contract-dev-1701/
+?? results/openvins-lazy-runtime-closure-dev-1701/
+?? results/openvins-lazy-runtime-prepare-dev-1701-prepare-output.txt
+?? results/openvins-lazy-runtime-prepare-dev-1701/
+?? results/openvins-motion-intent-native-dev-1701/pr65-body-native-motion-intent.md
+?? results/owned-runtime-maps-changed-ruff.txt
+?? results/owned-runtime-maps-commits.txt
+?? results/owned-runtime-maps-dev-1701-v2/
+?? results/owned-runtime-maps-dev-1701-v3/
+?? results/owned-runtime-maps-dev-1701/
+?? results/owned-runtime-maps-diff-check.txt
+?? results/owned-runtime-maps-evidence-assembly/
+?? results/owned-runtime-maps-full-tests.txt
+?? results/owned-runtime-maps-ruff-current.json
+?? results/owned-runtime-maps-targeted-tests.txt
+?? results/source-watchdog-physical-boundary-dev-1701/
+?? results/source-watchdog-retry-preflight-dev-1701/
+?? results/supported-heartbeat-gauge-preflight-dev-1701/
+?? results/trajectory-gauge-contract-dev-1701/
+?? tests/benchmark/test_openvins_feature_trace.py
+?? tools/benchmark/audit_openvins_feature_trace.py
+?? tools/benchmark/gpl/
+?? tools/benchmark/openvins_feature_trace.py
+WSL_OPENVINS_HEAD
+69488123ed9362dd44b6f28e7f4680abbff1442b
+WSL_OPENVINS_STATUS
+ M ov_core/src/track/TrackKLT.cpp
+ M ov_init/src/init/InertialInitializer.cpp
+ M ov_msckf/src/core/VioManager.cpp
+ M ov_msckf/src/core/VioManagerHelper.cpp
+ M ov_msckf/src/update/UpdaterMSCKF.cpp
+ M ov_msckf/src/update/UpdaterSLAM.cpp
+COMPILER
+g++ (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0
+CMAKE
+cmake version 3.28.3
+LDD
+	linux-vdso.so.1 (0x00007fff4b5f5000)
+	libov_msckf_lib.so => /home/yuchen7509/flydrones-upstream/open_vins_feature_trace/ov_msckf/build/libov_msckf_lib.so (0x000074ce5fe00000)
+	libopencv_calib3d.so.406 => /lib/x86_64-linux-gnu/libopencv_calib3d.so.406 (0x000074ce5fc2b000)
+	libopencv_imgcodecs.so.406 => /lib/x86_64-linux-gnu/libopencv_imgcodecs.so.406 (0x000074ce5fbd2000)
+	libopencv_imgproc.so.406 => /lib/x86_64-linux-gnu/libopencv_imgproc.so.406 (0x000074ce5f600000)
+	libopencv_core.so.406 => /lib/x86_64-linux-gnu/libopencv_core.so.406 (0x000074ce5f200000)
+	libboost_filesystem.so.1.83.0 => /lib/x86_64-linux-gnu/libboost_filesystem.so.1.83.0 (0x000074ce5fbaf000)
+	libstdc++.so.6 => /lib/x86_64-linux-gnu/libstdc++.so.6 (0x000074ce5ee00000)
+	libm.so.6 => /lib/x86_64-linux-gnu/libm.so.6 (0x000074ce5f117000)
+	libgcc_s.so.1 => /lib/x86_64-linux-gnu/libgcc_s.so.1 (0x000074ce5fb81000)
+	libc.so.6 => /lib/x86_64-linux-gnu/libc.so.6 (0x000074ce5ea00000)
+	libopencv_aruco.so.406 => /lib/x86_64-linux-gnu/libopencv_aruco.so.406 (0x000074ce5f5a3000)
+	libceres.so.4 => /lib/x86_64-linux-gnu/libceres.so.4 (0x000074ce5e400000)
+	libopencv_video.so.406 => /lib/x86_64-linux-gnu/libopencv_video.so.406 (0x000074ce5f09e000)
+	libopencv_features2d.so.406 => /lib/x86_64-linux-gnu/libopencv_features2d.so.406 (0x000074ce5ed48000)
+	libglog.so.1 => /lib/x86_64-linux-gnu/libglog.so.1 (0x000074ce5ed12000)
+	libopencv_flann.so.406 => /lib/x86_64-linux-gnu/libopencv_flann.so.406 (0x000074ce5eca9000)
+	libjpeg.so.8 => /lib/x86_64-linux-gnu/libjpeg.so.8 (0x000074ce5ec26000)
+	libwebp.so.7 => /lib/x86_64-linux-gnu/libwebp.so.7 (0x000074ce5e985000)
+	libpng16.so.16 => /lib/x86_64-linux-gnu/libpng16.so.16 (0x000074ce5e3c8000)
+	libgdcmMSFF.so.3.0 => /lib/x86_64-linux-gnu/libgdcmMSFF.so.3.0 (0x000074ce5e000000)
+	libtiff.so.6 => /lib/x86_64-linux-gnu/libtiff.so.6 (0x000074ce5e33b000)
+	libopenjp2.so.7 => /lib/x86_64-linux-gnu/libopenjp2.so.7 (0x000074ce5e2da000)
+	libOpenEXR-3_1.so.30 => /lib/x86_64-linux-gnu/libOpenEXR-3_1.so.30 (0x000074ce5dc00000)
+	libgdal.so.34 => /lib/x86_64-linux-gnu/libgdal.so.34 (0x000074ce5c400000)
+	libgdcmDSED.so.3.0 => /lib/x86_64-linux-gnu/libgdcmDSED.so.3.0 (0x000074ce5df08000)
+	libz.so.1 => /lib/x86_64-linux-gnu/libz.so.1 (0x000074ce5fb65000)
+	libGLX.so.0 => /lib/x86_64-linux-gnu/libGLX.so.0 (0x000074ce5e2a7000)
+	liblapack.so.3 => /lib/x86_64-linux-gnu/liblapack.so.3 (0x000074ce5bc00000)
+	libblas.so.3 => /lib/x86_64-linux-gnu/libblas.so.3 (0x000074ce5c359000)
+	libtbb.so.12 => /lib/x86_64-linux-gnu/libtbb.so.12 (0x000074ce5e253000)
+	/lib64/ld-linux-x86-64.so.2 (0x000074ce601ce000)
+	libcholmod.so.5 => /lib/x86_64-linux-gnu/libcholmod.so.5 (0x000074ce5ba41000)
+	libspqr.so.4 => /lib/x86_64-linux-gnu/libspqr.so.4 (0x000074ce5c303000)
+	libopencv_dnn.so.406 => /lib/x86_64-linux-gnu/libopencv_dnn.so.406 (0x000074ce5b600000)
+	libgflags.so.2.2 => /lib/x86_64-linux-gnu/libgflags.so.2.2 (0x000074ce5f582000)
+	libunwind.so.8 => /lib/x86_64-linux-gnu/libunwind.so.8 (0x000074ce5f083000)
+	libsharpyuv.so.0 => /lib/x86_64-linux-gnu/libsharpyuv.so.0 (0x000074ce60147000)
+	libgdcmDICT.so.3.0 => /lib/x86_64-linux-gnu/libgdcmDICT.so.3.0 (0x000074ce5b200000)
+	libgdcmjpeg8.so.3.0 => /lib/x86_64-linux-gnu/libgdcmjpeg8.so.3.0 (0x000074ce5ba16000)
+	libgdcmjpeg12.so.3.0 => /lib/x86_64-linux-gnu/libgdcmjpeg12.so.3.0 (0x000074ce5b9eb000)
+	libgdcmjpeg16.so.3.0 => /lib/x86_64-linux-gnu/libgdcmjpeg16.so.3.0 (0x000074ce5b9c0000)
+	libcharls.so.2 => /lib/x86_64-linux-gnu/libcharls.so.2 (0x000074ce5b5ac000)
+	libuuid.so.1 => /lib/x86_64-linux-gnu/libuuid.so.1 (0x000074ce5fb5b000)
+	libjson-c.so.5 => /lib/x86_64-linux-gnu/libjson-c.so.5 (0x000074ce5e23f000)
+	libgdcmIOD.so.3.0 => /lib/x86_64-linux-gnu/libgdcmIOD.so.3.0 (0x000074ce5dbea000)
+	libgdcmCommon.so.3.0 => /lib/x86_64-linux-gnu/libgdcmCommon.so.3.0 (0x000074ce5b587000)
+	libzstd.so.1 => /lib/x86_64-linux-gnu/libzstd.so.1 (0x000074ce5b146000)
+	liblzma.so.5 => /lib/x86_64-linux-gnu/liblzma.so.5 (0x000074ce5b555000)
+	libLerc.so.4 => /lib/x86_64-linux-gnu/libLerc.so.4 (0x000074ce5b0bf000)
+	libjbig.so.0 => /lib/x86_64-linux-gnu/libjbig.so.0 (0x000074ce5ec16000)
+	libdeflate.so.0 => /lib/x86_64-linux-gnu/libdeflate.so.0 (0x000074ce5e22c000)
+	libImath-3_1.so.29 => /lib/x86_64-linux-gnu/libImath-3_1.so.29 (0x000074ce5b507000)
+	libIlmThread-3_1.so.30 => /lib/x86_64-linux-gnu/libIlmThread-3_1.so.30 (0x000074ce5f574000)
+	libIex-3_1.so.30 => /lib/x86_64-linux-gnu/libIex-3_1.so.30 (0x000074ce5b03c000)
+	libcurl.so.4 => /lib/x86_64-linux-gnu/libcurl.so.4 (0x000074ce5af7b000)
+	libodbc.so.2 => /lib/x86_64-linux-gnu/libodbc.so.2 (0x000074ce5af0b000)
+	libodbcinst.so.2 => /lib/x86_64-linux-gnu/libodbcinst.so.2 (0x000074ce5b9ac000)
+	libxml2.so.2 => /lib/x86_64-linux-gnu/libxml2.so.2 (0x000074ce5ad29000)
+	libcrypto.so.3 => /lib/x86_64-linux-gnu/libcrypto.so.3 (0x000074ce5a800000)
+	liblz4.so.1 => /lib/x86_64-linux-gnu/liblz4.so.1 (0x000074ce5b4e5000)
+	libblosc.so.1 => /lib/x86_64-linux-gnu/libblosc.so.1 (0x000074ce5dbda000)
+	libarmadillo.so.12 => /lib/libarmadillo.so.12 (0x000074ce5c2f0000)
+	libqhull_r.so.8.0 => /lib/x86_64-linux-gnu/libqhull_r.so.8.0 (0x000074ce5a790000)
+	libxerces-c-3.2.so => /lib/x86_64-linux-gnu/libxerces-c-3.2.so (0x000074ce5a400000)
+	libgeotiff.so.5 => /lib/x86_64-linux-gnu/libgeotiff.so.5 (0x000074ce5a75a000)
+	libheif.so.1 => /lib/x86_64-linux-gnu/libheif.so.1 (0x000074ce5a33f000)
+	libaec.so.0 => /lib/x86_64-linux-gnu/libaec.so.0 (0x000074ce5b4dc000)
+	libpoppler.so.134 => /lib/x86_64-linux-gnu/libpoppler.so.134 (0x000074ce59e00000)
+	libgif.so.7 => /lib/x86_64-linux-gnu/libgif.so.7 (0x000074ce5ad1e000)
+	libnetcdf.so.19 => /lib/x86_64-linux-gnu/libnetcdf.so.19 (0x000074ce59c15000)
+	libcfitsio.so.10 => /lib/x86_64-linux-gnu/libcfitsio.so.10 (0x000074ce59800000)
+	libhdf5_serial.so.103 => /lib/x86_64-linux-gnu/libhdf5_serial.so.103 (0x000074ce59400000)
+	libsqlite3.so.0 => /lib/x86_64-linux-gnu/libsqlite3.so.0 (0x000074ce5a1d7000)
+	libpq.so.5 => /lib/x86_64-linux-gnu/libpq.so.5 (0x000074ce5a180000)
+	libkmlbase.so.1 => /lib/x86_64-linux-gnu/libkmlbase.so.1 (0x000074ce59bf8000)
+	libkmldom.so.1 => /lib/x86_64-linux-gnu/libkmldom.so.1 (0x000074ce59b66000)
+	libkmlengine.so.1 => /lib/x86_64-linux-gnu/libkmlengine.so.1 (0x000074ce59b38000)
+	libfyba.so.0 => /lib/x86_64-linux-gnu/libfyba.so.0 (0x000074ce597aa000)
+	libpcre2-8.so.0 => /lib/x86_64-linux-gnu/libpcre2-8.so.0 (0x000074ce59366000)
+	libspatialite.so.8 => /lib/x86_64-linux-gnu/libspatialite.so.8 (0x000074ce58a00000)
+	libmysqlclient.so.21 => /lib/x86_64-linux-gnu/libmysqlclient.so.21 (0x000074ce58200000)
+	libfreexl.so.1 => /lib/x86_64-linux-gnu/libfreexl.so.1 (0x000074ce59b27000)
+	libogdi.so.4.1 => /lib/x86_64-linux-gnu/libogdi.so.4.1 (0x000074ce59b0c000)
+	libexpat.so.1 => /lib/x86_64-linux-gnu/libexpat.so.1 (0x000074ce5977c000)
+	libgeos_c.so.1 => /lib/x86_64-linux-gnu/libgeos_c.so.1 (0x000074ce5931d000)
+	libproj.so.25 => /lib/x86_64-linux-gnu/libproj.so.25 (0x000074ce57e00000)
+	libdfalt.so.0 => /lib/x86_64-linux-gnu/libdfalt.so.0 (0x000074ce59279000)
+	libmfhdfalt.so.0 => /lib/x86_64-linux-gnu/libmfhdfalt.so.0 (0x000074ce59250000)
+	libGLdispatch.so.0 => /lib/x86_64-linux-gnu/libGLdispatch.so.0 (0x000074ce59198000)
+	libX11.so.6 => /lib/x86_64-linux-gnu/libX11.so.6 (0x000074ce588c3000)
+	libgfortran.so.5 => /lib/x86_64-linux-gnu/libgfortran.so.5 (0x000074ce57a00000)
+	libamd.so.3 => /lib/x86_64-linux-gnu/libamd.so.3 (0x000074ce5918b000)
+	libcolamd.so.3 => /lib/x86_64-linux-gnu/libcolamd.so.3 (0x000074ce5ad15000)
+	libcamd.so.3 => /lib/x86_64-linux-gnu/libcamd.so.3 (0x000074ce5a175000)
+	libccolamd.so.3 => /lib/x86_64-linux-gnu/libccolamd.so.3 (0x000074ce5917f000)
+	libsuitesparseconfig.so.7 => /lib/x86_64-linux-gnu/libsuitesparseconfig.so.7 (0x000074ce5b9a7000)
+	libgomp.so.1 => /lib/x86_64-linux-gnu/libgomp.so.1 (0x000074ce57daa000)
+	libprotobuf.so.32 => /lib/x86_64-linux-gnu/libprotobuf.so.32 (0x000074ce57600000)
+	libnghttp2.so.14 => /lib/x86_64-linux-gnu/libnghttp2.so.14 (0x000074ce58898000)
+	libidn2.so.0 => /lib/x86_64-linux-gnu/libidn2.so.0 (0x000074ce581de000)
+	librtmp.so.1 => /lib/x86_64-linux-gnu/librtmp.so.1 (0x000074ce57d8c000)
+	libssh.so.4 => /lib/x86_64-linux-gnu/libssh.so.4 (0x000074ce5798e000)
+	libpsl.so.5 => /lib/x86_64-linux-gnu/libpsl.so.5 (0x000074ce5916b000)
+	libssl.so.3 => /lib/x86_64-linux-gnu/libssl.so.3 (0x000074ce57556000)
+	libgssapi_krb5.so.2 => /lib/x86_64-linux-gnu/libgssapi_krb5.so.2 (0x000074ce57d38000)
+	libldap.so.2 => /lib/x86_64-linux-gnu/libldap.so.2 (0x000074ce57930000)
+	liblber.so.2 => /lib/x86_64-linux-gnu/liblber.so.2 (0x000074ce58888000)
+	libbrotlidec.so.1 => /lib/x86_64-linux-gnu/libbrotlidec.so.1 (0x000074ce581d0000)
+	libltdl.so.7 => /lib/x86_64-linux-gnu/libltdl.so.7 (0x000074ce581c5000)
+	libicuuc.so.74 => /lib/x86_64-linux-gnu/libicuuc.so.74 (0x000074ce57200000)
+	libsnappy.so.1 => /lib/x86_64-linux-gnu/libsnappy.so.1 (0x000074ce57d2d000)
+	libarpack.so.2 => /lib/x86_64-linux-gnu/libarpack.so.2 (0x000074ce5750c000)
+	libsuperlu.so.6 => /lib/x86_64-linux-gnu/libsuperlu.so.6 (0x000074ce5749c000)
+	libcurl-gnutls.so.4 => /lib/x86_64-linux-gnu/libcurl-gnutls.so.4 (0x000074ce57145000)
+	libfreetype.so.6 => /lib/x86_64-linux-gnu/libfreetype.so.6 (0x000074ce57079000)
+	libfontconfig.so.1 => /lib/x86_64-linux-gnu/libfontconfig.so.1 (0x000074ce5744b000)
+	liblcms2.so.2 => /lib/x86_64-linux-gnu/liblcms2.so.2 (0x000074ce57017000)
+	libnss3.so => /lib/x86_64-linux-gnu/libnss3.so (0x000074ce56ee8000)
+	libsmime3.so => /lib/x86_64-linux-gnu/libsmime3.so (0x000074ce57907000)
+	libplc4.so => /lib/x86_64-linux-gnu/libplc4.so (0x000074ce59775000)
+	libnspr4.so => /lib/x86_64-linux-gnu/libnspr4.so (0x000074ce56ea9000)
+	libhdf5_serial_hl.so.100 => /lib/x86_64-linux-gnu/libhdf5_serial_hl.so.100 (0x000074ce57426000)
+	libbz2.so.1.0 => /lib/x86_64-linux-gnu/libbz2.so.1.0 (0x000074ce578f3000)
+	libsz.so.2 => /lib/x86_64-linux-gnu/libsz.so.2 (0x000074ce58883000)
+	libminizip.so.1 => /lib/x86_64-linux-gnu/libminizip.so.1 (0x000074ce57d20000)
+	liburiparser.so.1 => /lib/x86_64-linux-gnu/liburiparser.so.1 (0x000074ce5740f000)
+	libfyut.so.0 => /lib/x86_64-linux-gnu/libfyut.so.0 (0x000074ce56e9e000)
+	libfygm.so.0 => /lib/x86_64-linux-gnu/libfygm.so.0 (0x000074ce56e95000)
+	librttopo.so.1 => /lib/x86_64-linux-gnu/librttopo.so.1 (0x000074ce56e25000)
+	libresolv.so.2 => /lib/x86_64-linux-gnu/libresolv.so.2 (0x000074ce56e13000)
+	libtirpc.so.3 => /lib/x86_64-linux-gnu/libtirpc.so.3 (0x000074ce56de6000)
+	libgeos.so.3.12.1 => /lib/x86_64-linux-gnu/libgeos.so.3.12.1 (0x000074ce56a00000)
+	libxcb.so.1 => /lib/x86_64-linux-gnu/libxcb.so.1 (0x000074ce56dbd000)
+	libunistring.so.5 => /lib/x86_64-linux-gnu/libunistring.so.5 (0x000074ce56853000)
+	libgnutls.so.30 => /lib/x86_64-linux-gnu/libgnutls.so.30 (0x000074ce56658000)
+	libhogweed.so.6 => /lib/x86_64-linux-gnu/libhogweed.so.6 (0x000074ce56d75000)
+	libnettle.so.8 => /lib/x86_64-linux-gnu/libnettle.so.8 (0x000074ce56d20000)
+	libgmp.so.10 => /lib/x86_64-linux-gnu/libgmp.so.10 (0x000074ce56c9c000)
+	libkrb5.so.3 => /lib/x86_64-linux-gnu/libkrb5.so.3 (0x000074ce5658f000)
+	libk5crypto.so.3 => /lib/x86_64-linux-gnu/libk5crypto.so.3 (0x000074ce56c70000)
+	libcom_err.so.2 => /lib/x86_64-linux-gnu/libcom_err.so.2 (0x000074ce578ed000)
+	libkrb5support.so.0 => /lib/x86_64-linux-gnu/libkrb5support.so.0 (0x000074ce56582000)
+	libsasl2.so.2 => /lib/x86_64-linux-gnu/libsasl2.so.2 (0x000074ce56568000)
+	libbrotlicommon.so.1 => /lib/x86_64-linux-gnu/libbrotlicommon.so.1 (0x000074ce56545000)
+	libicudata.so.74 => /lib/x86_64-linux-gnu/libicudata.so.74 (0x000074ce54600000)
+	libnssutil3.so => /lib/x86_64-linux-gnu/libnssutil3.so (0x000074ce56513000)
+	libplds4.so => /lib/x86_64-linux-gnu/libplds4.so (0x000074ce56c6b000)
+	libXau.so.6 => /lib/x86_64-linux-gnu/libXau.so.6 (0x000074ce5650d000)
+	libXdmcp.so.6 => /lib/x86_64-linux-gnu/libXdmcp.so.6 (0x000074ce56505000)
+	libp11-kit.so.0 => /lib/x86_64-linux-gnu/libp11-kit.so.0 (0x000074ce56361000)
+	libtasn1.so.6 => /lib/x86_64-linux-gnu/libtasn1.so.6 (0x000074ce545ea000)
+	libkeyutils.so.1 => /lib/x86_64-linux-gnu/libkeyutils.so.1 (0x000074ce545e3000)
+	libbsd.so.0 => /lib/x86_64-linux-gnu/libbsd.so.0 (0x000074ce545cd000)
+	libffi.so.8 => /lib/x86_64-linux-gnu/libffi.so.8 (0x000074ce545c1000)
+	libmd.so.0 => /lib/x86_64-linux-gnu/libmd.so.0 (0x000074ce545b2000)

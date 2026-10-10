@@ -5,7 +5,7 @@ from collections.abc import Iterable
 import torch
 
 from .dataset import TrainingSequence
-from .features import sequence_tensors
+from .features import feature_profile_for_names, sequence_tensors
 from .losses import LossWeights, sequence_loss
 from .model import ConnectomeConstrainedCore
 
@@ -47,7 +47,9 @@ def _empty_totals() -> dict[str, float]:
 def _on_model_device(
     model: ConnectomeConstrainedCore, sequence: TrainingSequence
 ) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
-    tensors = sequence_tensors(sequence)
+    tensors = sequence_tensors(
+        sequence, profile=feature_profile_for_names(model.input_features)
+    )
     reference = next(model.parameters())
     return tuple(
         tensor.to(device=reference.device, dtype=reference.dtype)

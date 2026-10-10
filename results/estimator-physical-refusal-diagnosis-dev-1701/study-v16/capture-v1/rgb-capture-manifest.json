@@ -1,0 +1,13 @@
+{
+  "schema": "flydrones-rgb-capture-v1",
+  "frames": [
+    {
+      "frame_ns": 2000000,
+      "path": "rgb-frames/2000000.ppm",
+      "width": 160,
+      "height": 120,
+      "sha256": "c4b606ca3921dc574cdd9673fcb3434a461539292584639ab72f581f8b6b7132"
+    }
+  ],
+  "out_of_order_drops": 0
+}

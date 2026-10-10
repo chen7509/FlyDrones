@@ -1,15 +1,15 @@
 from __future__ import annotations
 
-from hashlib import sha256
 import json
 import os
-from pathlib import Path
 import random
 import time
+from hashlib import sha256
+from pathlib import Path
 
 import numpy as np
-from scipy import sparse
 import torch
+from scipy import sparse
 
 from flydrones.brain.connectome import Connectome
 
@@ -22,11 +22,17 @@ from .dataset import (
     TrainingSequence,
     load_sequence,
 )
-from .features import FEATURE_NAMES, sequence_tensors
+from .features import FEATURE_NAMES, feature_profile_for_names, sequence_tensors
 from .governance import validate_dataset_partitions
 from .losses import LossWeights
 from .model import ConnectomeConstrainedCore
-from .parameters import ParameterSet, build_structure_identity, initial_parameter_set, load_parameter_set
+from .parameters import (
+    ParameterSet,
+    build_structure_identity,
+    initial_parameter_set,
+    load_parameter_set,
+    parameter_mapping_digest,
+)
 from .trainer import evaluate_sequences, train_epoch
 
 OUTPUT_NAMES = ("vx", "vy", "vz", "yaw_rate")
@@ -95,19 +101,10 @@ def resolve_device(requested: str) -> torch.device:
     return torch.device(requested)
 
 
-def _mapping_digest(parameters: ParameterSet) -> str:
-    digest = sha256()
-    for value in (
-        parameters.input_feature_index,
-        parameters.input_neuron_index,
-        parameters.output_neuron_index,
-    ):
-        array = np.ascontiguousarray(value, dtype="<i8")
-        digest.update(array.tobytes())
-    return digest.hexdigest()
-
-
-def _dataset_digest(datasets: dict[str, tuple[list[TrainingSequence], list[TrainingSequence]]]) -> str:
+def _dataset_digest(
+    datasets: dict[str, tuple[list[TrainingSequence], list[TrainingSequence]]],
+    profile: str,
+) -> str:
     digest = sha256()
     for stage_id in sorted(datasets):
         digest.update(stage_id.encode("utf-8"))
@@ -124,9 +121,17 @@ def _dataset_digest(datasets: dict[str, tuple[list[TrainingSequence], list[Train
                         sort_keys=True,
                     ).encode("utf-8")
                 )
-                for tensor in sequence_tensors(sequence):
+                for tensor in sequence_tensors(sequence, profile=profile):
                     digest.update(np.ascontiguousarray(tensor.numpy()).tobytes())
     return digest.hexdigest()
+
+
+def _validate_profile_sequences(sequences: list[TrainingSequence], profile: str) -> None:
+    for sequence in sequences:
+        try:
+            sequence_tensors(sequence, profile=profile)
+        except ValueError as exc:
+            raise ValueError(f"{profile} sequence feature contract invalid") from exc
 
 
 def _synthetic_sequence(stage: CurriculumStage, split: str, seed: int) -> TrainingSequence:
@@ -216,6 +221,12 @@ def _sequence_directories(paths: tuple[str, ...]) -> list[TrainingSequence]:
             )
     if not sequence_paths:
         raise ValueError("sequence evidence paths contain no sequence manifests")
+    selected: set[Path] = set()
+    for path in sequence_paths:
+        identity = path.resolve(strict=True)
+        if identity in selected:
+            raise ValueError(f"duplicate sequence directory: {path}")
+        selected.add(identity)
     return [load_sequence(path) for path in sequence_paths]
 
 
@@ -242,6 +253,9 @@ def _full_components(
     parameters = load_parameter_set(parameters_path)
     if parameters.identity.label != "full-male-cns":
         raise ValueError("complete curriculum requires a full-male-cns parameter artifact")
+    profile = feature_profile_for_names(parameters.input_features)
+    for train, validation in datasets.values():
+        _validate_profile_sequences(train + validation, profile)
     verify_source_digest(connectome_path, parameters.identity.model_sha256)
     connectome = Connectome.load(connectome_path)
     return connectome, parameters, datasets
@@ -274,13 +288,14 @@ class ConnectomeCurriculumSession:
         self.config = config
         self.datasets = datasets
         self.parameters = parameters
+        self.feature_profile = feature_profile_for_names(parameters.input_features)
         self.device = resolve_device(device or config.profile.device)
         self.model = ConnectomeConstrainedCore(connectome, parameters).to(self.device)
         self.optimizer = torch.optim.Adam(self.model.parameters(), lr=learning_rate)
         self.truncate_steps = truncate_steps
         self.loss_weights = LossWeights()
-        self.dataset_sha256 = _dataset_digest(datasets)
-        self.mapping_sha256 = _mapping_digest(parameters)
+        self.dataset_sha256 = _dataset_digest(datasets, self.feature_profile)
+        self.mapping_sha256 = parameter_mapping_digest(parameters)
         self.model_identity = (
             f"{config.profile.model_mode}:{parameters.identity.model_sha256}:"
             f"{parameters.identity.topology_sha256}:"

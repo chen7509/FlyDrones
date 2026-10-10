@@ -19,6 +19,8 @@ from tools.benchmark.owned_runtime_maps import OwnedRuntimeMaps, parse_maps
 GENERATED_NAMES = ('world.sdf', 'world.json', 'ground_albedo.png', 'obstacle_albedo.png', 'board_albedo.png', 'gz_env.sh')
 ENV_KEYS = ('GZ_SIM_RESOURCE_PATH', 'GZ_SIM_SYSTEM_PLUGIN_PATH', 'GZ_SIM_SERVER_CONFIG_PATH',
             'LD_LIBRARY_PATH', 'PYTHONPATH', 'SDF_PATH', 'GZ_FILE_PATH', 'GZ_HOMEDIR', 'HOME')
+OPTIONAL_ENV_KEYS = ('MESA_SHADER_CACHE_DISABLE',)
+OWNED_RUNTIME_ROLES = {'px4', 'openvins', 'openvins-restart'}
 
 
 def validate_binding(doc):
@@ -54,8 +56,10 @@ def validate_binding(doc):
     if type(baseline) is not dict or baseline.get('schema') != 'declared-files-v1' or not baseline.get('files'):
         raise ValueError('binding baseline missing')
     env = doc['environment']
-    if (type(env) is not dict or set(env) != set(ENV_KEYS)
-            or any(v is not None and type(v) is not str for v in env.values())):
+    valid_env_sets = (set(ENV_KEYS), set(ENV_KEYS) | set(OPTIONAL_ENV_KEYS))
+    if (type(env) is not dict or set(env) not in valid_env_sets
+            or any(v is not None and type(v) is not str for v in env.values())
+            or ('MESA_SHADER_CACHE_DISABLE' in env and env['MESA_SHADER_CACHE_DISABLE'] != 'true')):
         raise ValueError('binding environment must explicitly include lookup keys')
     generated = doc['generated']
     if (type(generated) is not dict or set(generated) != set(GENERATED_NAMES)
@@ -81,7 +85,7 @@ def validate_binding(doc):
         self_phases = runtime['self_phases']
         roles = runtime['owned_roles']
         if (type(self_phases) is not list or not self_phases
-                or type(roles) is not dict or not roles or not set(roles) <= {'px4', 'openvins'}):
+                or type(roles) is not dict or not roles or not set(roles) <= OWNED_RUNTIME_ROLES):
             raise ValueError('runtime maps phases and roles required')
         lists = [self_phases, *roles.values()]
         if any(type(items) is not list or not items for items in lists):
@@ -137,7 +141,7 @@ class RuntimeBinding:
         if self.before is not None or self.pre_recorded or self.errors or self.closed:
             raise ValueError('binding already started or failed')
         try:
-            actual_env = {key: environment.get(key) for key in ENV_KEYS}
+            actual_env = {key: environment.get(key) for key in self.doc['environment']}
             if not _typed_equal(actual_env, self.doc['environment']):
                 raise ValueError('resource lookup environment mismatch')
             baseline = snapshot(self.doc['inventory'])

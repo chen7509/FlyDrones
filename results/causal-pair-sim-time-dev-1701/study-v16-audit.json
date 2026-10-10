@@ -1,0 +1,20 @@
+{
+  "schema": "causal-pair-simulation-time-physical-attempt-audit-v1",
+  "failures": [],
+  "failure_evidence_qualified": true,
+  "classification": "camera-pair-wall-age-slow-simulation-refusal",
+  "pair_wall_age_ns": 355099344,
+  "idle_wall_age_ns": 294079878,
+  "pair_sim_age_ns": 0,
+  "fixed_replay_camera_released": true,
+  "simulation_silence_refused": true,
+  "physical_retry_performed": true,
+  "complete_physical_execution_qualified": false,
+  "runtime_mapping_coverage_verified": false,
+  "runtime_closure_qualified": false,
+  "vio_accuracy_qualified": false,
+  "estimator_health_qualified": false,
+  "fusion_eligible": false,
+  "flight_ready": false,
+  "fruit_fly_policy_failure": false
+}

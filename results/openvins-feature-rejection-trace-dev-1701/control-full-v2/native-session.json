@@ -1,0 +1,13 @@
+{
+  "pid": 404,
+  "command": [
+    "results/openvins-motion-intent-native-dev-1701/online_probe-v2",
+    "results/openvins-online-shadow-dev-1701/raw-model-zero-bias-diffusion-v1/estimator_config.yaml",
+    "results/openvins-feature-rejection-trace-dev-1701/control-full-v2/states.jsonl",
+    "results/openvins-feature-rejection-trace-dev-1701/control-full-v2/fast.jsonl"
+  ],
+  "started_monotonic_ns": 64948883742,
+  "reset_counter": null,
+  "quality": null,
+  "fusion_eligible": false
+}

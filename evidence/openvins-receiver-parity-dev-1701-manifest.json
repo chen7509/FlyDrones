@@ -1,0 +1,11 @@
+{
+  "archive": "evidence/openvins-receiver-parity-dev-1701.zip",
+  "sha256": "cef59990fda45d563eeeff7bc516d5178d665d451ef803e08f47a3ad77e8f54e",
+  "bytes": 429154,
+  "members": 256,
+  "crc_verified": true,
+  "all_member_hashes_verified": true,
+  "physical_receiver_qualified": false,
+  "fusion_qualified": false,
+  "task5_authorized": false
+}

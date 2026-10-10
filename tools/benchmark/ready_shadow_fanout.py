@@ -93,6 +93,12 @@ class ReadyShadowFanout:
                 raise ValueError("fan-out CameraInfo bytes")
             if hashlib.sha256(payload).hexdigest() != row["payload_sha256"]:
                 raise ValueError("fan-out CameraInfo hash")
+        elif kind == "depth" and "payload_path" in row:
+            if payload is not None:
+                raise ValueError("unexpected fan-out depth bytes")
+            data = self._file(row["payload_path"])
+            if len(data) != row["payload_bytes"] or hashlib.sha256(data).hexdigest() != row["payload_sha256"]:
+                raise ValueError("fan-out depth payload mismatch")
         elif payload is not None:
             raise ValueError("unexpected fan-out payload")
         return base
@@ -221,6 +227,26 @@ class ReadyShadowFanout:
             except Exception as exc:
                 self._fail(exc)
                 return False
+
+    def on_idle(self, wall_monotonic_ns):
+        """Forward a writer-proven empty-FIFO tick and retain any shadow refusal."""
+        with self.lock:
+            if self.failure or self.closed:
+                return False
+            if self.shadow.tick_idle(wall_monotonic_ns):
+                return True
+            self._fail(ValueError("shadow failed during source idle: " + str(self.shadow.failure)))
+            event = {
+                "event": "source_idle_refusal",
+                "wall_monotonic_ns": wall_monotonic_ns,
+                "failure": self.failure,
+                "failure_latched_ns": self.failure_ns,
+            }
+            try:
+                self._emit(event)
+            except Exception as exc:
+                self.close_errors.append(dict(operation="idle_refusal_journal", reason=repr(exc)))
+            return False
 
     def finish(self):
         with self.lock:

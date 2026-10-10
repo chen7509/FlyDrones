@@ -1,0 +1,8 @@
+# Byte-bound ROS 2 subscriber build
+
+The preceding `workspace-v3` is an exact 259-file source preparation, not a build. This plan copies that sealed input into a new, independent workspace and attempts one bounded `colcon` build. No PX4, Gazebo, Agent, ODOMETRY publisher, trainer or controller runs in this stage.
+
+- Verify `workspace-v3` before copying, then verify the new workspace before and after the build. Source bytes and file count must match the original profile; build outputs are kept outside `src`.
+- Before Docker starts, require no competing simulator/training/test/container and host free physical memory at least 900,000 KiB. Record the actual value. The fixed image is `fly-ego-benchmark:humble`, digest `sha256:a4dae62b38bc01a01d084be7b68db83ec804fef7673604e1a9c986a4baa88a6a`. Use one CPU, 768 MiB RAM without swap, 128 PIDs, no network and one owned named container.
+- Inside `/workspace`, source ROS 2 Humble and run only `colcon build --base-paths src --packages-select px4_msgs flydrones_px4_ros2_source --executor sequential --parallel-workers 1 --event-handlers console_direct+`. The outer wall limit is 1,800 seconds. Preserve stdout, stderr, Docker and `colcon` exits, timeout, and any failure; never infer success from output files alone.
+- After termination, verify the 259 source files again. Inspect package output and generated `VehicleOdometry` type provenance, record binary and generated type hashes and container cleanup. Keep the previous CRLF build historically unqualified. A successful build would establish only byte-bound local ROS compilation; Agent/PX4 identity, sensor timing, ULog, VIO quality and learning remain separate gates.

@@ -1,0 +1,399 @@
+{
+  "status": "capture_failed",
+  "errors": [
+    "source fan-out: ValueError(\"shadow failed during source idle: ValueError('pending input exceeded wall wait')\")",
+    "RuntimeError('capture callback/writer failure: [\\'source fan-out: ValueError(\"shadow failed during source idle: ValueError(\\\\\\'pending input exceeded wall wait\\\\\\')\")\\']')",
+    "owned PX4 required SIGKILL",
+    "native reference: ValueError('incomplete native reference status')",
+    "motion fixture: ValueError('incomplete supported fixture')",
+    "physics trace: incomplete terminal physics trace",
+    "source fan-out: ValueError(\"shadow failed during source idle: ValueError('pending input exceeded wall wait')\")",
+    "shadow input failed: ValueError('pending input exceeded wall wait')",
+    "runtime binding: []"
+  ],
+  "eligible_for_vio_input": false,
+  "eligible_for_px4_fusion": false,
+  "estimator_run": true,
+  "capture_schema": "disarmed-sensors-v2",
+  "physics_trace_profile": "substep-ready-v1",
+  "reference_profile": "supported-ready-native-reference-v1",
+  "reference_fault_profile": null,
+  "source_fanout_profile": "ready-shadow-heartbeat-estimator-v1",
+  "px4_exit_code": -9,
+  "native_reference": {
+    "pre_count": 3,
+    "post_count": 3,
+    "failure": "ValueError('incomplete native reference status')",
+    "last_attempt": {
+      "phase": "post",
+      "ns_repr": "3000000",
+      "wall_ns": 75665454992
+    },
+    "native": {
+      "failed": false,
+      "pending": false,
+      "last_ns": 3000000
+    },
+    "close_errors": [],
+    "complete": false,
+    "eligible_for_px4_fusion": false
+  },
+  "motion": {
+    "failure": "ValueError('incomplete supported fixture')",
+    "last_ns": 3000000,
+    "active_steps": 0,
+    "signed_impulse_ns": 0.0,
+    "absolute_impulse_ns": 0.0,
+    "full_profile_requested": false,
+    "eligible_for_px4_fusion": false,
+    "support_steps": 0,
+    "anchor_ns": null,
+    "expected_support_steps": null,
+    "close_errors": [],
+    "recorded_commands": 0,
+    "truth_records": 0,
+    "last_attempt": null,
+    "force_scope": "one-step API; no persistent wrench",
+    "clearance_records": 3
+  },
+  "physics_trace": {
+    "records": 6,
+    "bytes_written": 2803,
+    "unavailable_records": 0,
+    "failure": "incomplete terminal physics trace",
+    "last_attempt": {
+      "phase": "post",
+      "sim_ns_repr": "3000000",
+      "record_index": 5
+    },
+    "close_errors": [],
+    "complete": false,
+    "backend_recorded": true,
+    "eligible_for_px4_fusion": false
+  },
+  "writer": {
+    "written": {
+      "imu": 3,
+      "info": 1,
+      "depth": 1,
+      "rgb": 1
+    },
+    "max_queue_depth": 2,
+    "rgb": {
+      "schema": "flydrones-rgb-capture-v1",
+      "frames": [
+        {
+          "frame_ns": 2000000,
+          "path": "rgb-frames/2000000.ppm",
+          "width": 160,
+          "height": 120,
+          "sha256": "c4b606ca3921dc574cdd9673fcb3434a461539292584639ab72f581f8b6b7132"
+        }
+      ],
+      "out_of_order_drops": 0
+    },
+    "camera_info": {
+      "schema": "flydrones-camera-info-v1",
+      "topic": "/benchmark/rgbd/camera_info",
+      "message_count": 1,
+      "changed_stable_fields": 0,
+      "first_message_sha256": "6d2ed00a687f29103f8c48e5f49fedd4b0b903852682cc2c8b6592eb6e3b1437",
+      "camera_info": {
+        "width": 160,
+        "height": 120,
+        "frame_id": "camera_link",
+        "intrinsics_k": [
+          108.12401050876075,
+          0.0,
+          80.0,
+          0.0,
+          108.12401050876075,
+          60.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "projection_p": [
+          108.12401050876075,
+          0.0,
+          80.0,
+          0.0,
+          0.0,
+          108.12401050876075,
+          60.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        "distortion_model": 0,
+        "distortion_k": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      }
+    },
+    "timing_scope": "callback arrival to record preparation, not end-to-end latency"
+  },
+  "source_fanout": {
+    "profile": "ready-shadow-heartbeat-estimator-v1",
+    "committed": 2,
+    "skipped": 4,
+    "failure": "ValueError(\"shadow failed during source idle: ValueError('pending input exceeded wall wait')\")",
+    "failure_latched_ns": 76824326193,
+    "last_disposition": {
+      "event": "source_delivery",
+      "sequence_repr": "1",
+      "dispositions": {
+        "shadow": "returned",
+        "readiness": "returned"
+      },
+      "source_sha256": "e925d049d6a02ada6f676e4c02cc887023e7bd8b59fbf2522be70f1ba1fbc491",
+      "payload_sha256": "6d2ed00a687f29103f8c48e5f49fedd4b0b903852682cc2c8b6592eb6e3b1437",
+      "source_sequence": 1,
+      "begin_ns": 76541435685,
+      "consumers": {
+        "shadow": {
+          "start_ns": 76541435685,
+          "returned_ns": 76565520943
+        },
+        "readiness": {
+          "start_ns": 76565542545,
+          "returned_ns": 76565597762
+        }
+      },
+      "end_ns": 76565598401
+    },
+    "close_errors": [],
+    "refusals": [
+      {
+        "event": "source_refusal",
+        "sequence_repr": "2",
+        "dispositions": {
+          "shadow": "not_attempted",
+          "readiness": "not_attempted"
+        },
+        "source_sha256": "77c9cc14f7f674a20cfda82b5a2e47c294458dc635442dc1ceaacaf91a0fa730",
+        "payload_sha256": null,
+        "failure": "ValueError(\"shadow failed during source idle: ValueError('pending input exceeded wall wait')\")",
+        "failure_latched_ns": 76824326193
+      },
+      {
+        "event": "source_refusal",
+        "sequence_repr": "3",
+        "dispositions": {
+          "shadow": "not_attempted",
+          "readiness": "not_attempted"
+        },
+        "source_sha256": "43cee48faa33715c4948e0e046717061f13b372711fc2d0dc294d6b68fa59c4b",
+        "payload_sha256": "0111bab72571dd185bf87e426dc5cb858ae9a0aed7074392074211bbdb345b98",
+        "failure": "ValueError(\"shadow failed during source idle: ValueError('pending input exceeded wall wait')\")",
+        "failure_latched_ns": 76824326193
+      },
+      {
+        "event": "source_refusal",
+        "sequence_repr": "4",
+        "dispositions": {
+          "shadow": "not_attempted",
+          "readiness": "not_attempted"
+        },
+        "source_sha256": "040aaefff6b5b37be407db708fa58f3cd2ee2a3a1702f59cb77179cc7162a6e7",
+        "payload_sha256": null,
+        "failure": "ValueError(\"shadow failed during source idle: ValueError('pending input exceeded wall wait')\")",
+        "failure_latched_ns": 76824326193
+      },
+      {
+        "event": "source_refusal",
+        "sequence_repr": "5",
+        "dispositions": {
+          "shadow": "not_attempted",
+          "readiness": "not_attempted"
+        },
+        "source_sha256": "997e870d6d5e3ad9e1457e5e8ed36546eba080e232db962a49a0ffb218fbaf5c",
+        "payload_sha256": null,
+        "failure": "ValueError(\"shadow failed during source idle: ValueError('pending input exceeded wall wait')\")",
+        "failure_latched_ns": 76824326193
+      }
+    ],
+    "fusion_eligible": false,
+    "quality": null,
+    "reset_counter": null,
+    "stop_scope": "subsequent gated pre-steps after failure latch; not retroactive cancellation",
+    "heartbeat": {
+      "observed": 0,
+      "reconciled": 0,
+      "pending": [],
+      "failure": null,
+      "close_errors": [],
+      "last_attempt": null,
+      "scope": "independent receiver observation; not estimator acknowledgement"
+    }
+  },
+  "source_health": {
+    "started_ns": 73905538349,
+    "ready_ns": 76883730253,
+    "last_arrivals": {
+      "imu": 76888029154,
+      "info": 76528630909,
+      "rgb": 76883730253
+    },
+    "startup_timeout_ns": 10000000000,
+    "operational_timeout_ns": 2000000000
+  },
+  "readiness": {
+    "source": {
+      "records": {
+        "imu": {
+          "kind": "imu",
+          "arrival_monotonic_ns": 75113106330,
+          "observed_sim_ns": 1000000,
+          "sample_ns": 1000000,
+          "gyro_flu": [
+            0.0009610409596939513,
+            0.0001323244007501259,
+            0.0005982785040939525
+          ],
+          "accel_flu": [
+            0.0002148602754568093,
+            -0.0028071295203178884,
+            -0.011175123417259104
+          ],
+          "sim_age_at_callback_ns": 0,
+          "gyro_frd": [
+            0.0009610409596939513,
+            -0.0001323244007501259,
+            -0.0005982785040939525
+          ],
+          "accel_frd": [
+            0.0002148602754568093,
+            0.0028071295203178884,
+            0.011175123417259104
+          ],
+          "source_sequence": 0,
+          "writer_begin_monotonic_ns": 75113275885,
+          "recorded_monotonic_ns": 75113277314,
+          "journal_ack_monotonic_ns": 75137059347
+        },
+        "info": {
+          "kind": "info",
+          "arrival_monotonic_ns": 76528630909,
+          "observed_sim_ns": 3000000,
+          "sample_ns": 2000000,
+          "camera_info": {
+            "width": 160,
+            "height": 120,
+            "frame_id": "camera_link",
+            "intrinsics_k": [
+              108.12401050876075,
+              0.0,
+              80.0,
+              0.0,
+              108.12401050876075,
+              60.0,
+              0.0,
+              0.0,
+              1.0
+            ],
+            "projection_p": [
+              108.12401050876075,
+              0.0,
+              80.0,
+              0.0,
+              0.0,
+              108.12401050876075,
+              60.0,
+              0.0,
+              0.0,
+              0.0,
+              1.0,
+              0.0
+            ],
+            "distortion_model": 0,
+            "distortion_k": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ]
+          },
+          "sim_age_at_callback_ns": 1000000,
+          "source_sequence": 1,
+          "writer_begin_monotonic_ns": 76528929811,
+          "payload_path": "camera-info-messages/2000000.pb",
+          "payload_sha256": "6d2ed00a687f29103f8c48e5f49fedd4b0b903852682cc2c8b6592eb6e3b1437",
+          "recorded_monotonic_ns": 76538008996,
+          "journal_ack_monotonic_ns": 76565555534
+        }
+      },
+      "failure": null,
+      "clock_high_water_ns": 76565555534
+    },
+    "first_internal": null,
+    "latest_internal": null,
+    "failure": null,
+    "clock_high_water_ns": 76565479364,
+    "close_errors": [],
+    "truth_used": false,
+    "fusion_eligible": false
+  },
+  "shadow": {
+    "failure": "ValueError('pending input exceeded wall wait')",
+    "inputs_accepted": 2,
+    "delivered": 1,
+    "skipped_after_failure": 0,
+    "pending": [
+      {
+        "sample_ns": 2000000,
+        "rgb_sequence": null,
+        "info_sequence": 1,
+        "reason": "pending input exceeded wall wait",
+        "eligible_for_px4_fusion": false
+      }
+    ],
+    "retained_pixel_stamps": [],
+    "released_unacknowledged": [],
+    "fusion_eligible": false,
+    "quality": null,
+    "reset_counter": null,
+    "last_delivery_acks": []
+  },
+  "native": {
+    "exit": 0,
+    "accepted": 1,
+    "failure": null,
+    "fusion_eligible": false,
+    "quality": null,
+    "reset_counter": null
+  },
+  "px4_ulogs": [],
+  "runtime_binding": {
+    "pre_recorded": true,
+    "declared_files_stable": true,
+    "local_file_graph_verified": true,
+    "phases": [
+      "postgraph",
+      "bootstrap",
+      "postimports",
+      "postfinalize",
+      "postfirststep"
+    ],
+    "owned_phases": {
+      "px4": [],
+      "openvins": [
+        "ready",
+        "prestop"
+      ]
+    },
+    "runtime_mapping_coverage_verified": false,
+    "errors": [],
+    "runtime_closure_qualified": false,
+    "scope": "declared self and registered owned phases only; whole runtime not qualified"
+  },
+  "end_sim_ns": 10000000,
+  "capture_wall_s": 32.283268834000005
+}

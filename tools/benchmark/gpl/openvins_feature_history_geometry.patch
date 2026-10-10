@@ -1,0 +1,324 @@
+diff --git a/ov_core/src/feat/FeatureInitializer.cpp b/ov_core/src/feat/FeatureInitializer.cpp
+index 05b8d9e..8150a8f 100644
+--- a/ov_core/src/feat/FeatureInitializer.cpp
++++ b/ov_core/src/feat/FeatureInitializer.cpp
+@@ -25,10 +25,15 @@
+ #include "utils/print.h"
+ #include "utils/quat_ops.h"
+ 
++#include <algorithm>
++#include <cmath>
++#include <vector>
++
+ using namespace ov_core;
+ 
+ bool FeatureInitializer::single_triangulation(std::shared_ptr<Feature> feat,
+-                                              std::unordered_map<size_t, std::unordered_map<double, ClonePose>> &clonesCAM) {
++                                              std::unordered_map<size_t, std::unordered_map<double, ClonePose>> &clonesCAM,
++                                              const char *trace_stage, double trace_timestamp) {
+ 
+   // Total number of measurements
+   // Also set the first measurement to be the anchor frame
+@@ -48,6 +53,8 @@ bool FeatureInitializer::single_triangulation(std::shared_ptr<Feature> feat,
+   // Our linear system matrices
+   Eigen::Matrix3d A = Eigen::Matrix3d::Zero();
+   Eigen::Vector3d b = Eigen::Vector3d::Zero();
++  std::vector<Eigen::Vector3d> trace_positions;
++  std::vector<Eigen::Vector3d> trace_bearings;
+ 
+   // Get the position of the anchor pose
+   ClonePose anchorclone = clonesCAM.at(feat->anchor_cam_id).at(feat->anchor_clone_timestamp);
+@@ -75,6 +82,8 @@ bool FeatureInitializer::single_triangulation(std::shared_ptr<Feature> feat,
+       b_i << feat->uvs_norm.at(pair.first).at(m)(0), feat->uvs_norm.at(pair.first).at(m)(1), 1;
+       b_i = R_AtoCi.transpose() * b_i;
+       b_i = b_i / b_i.norm();
++      trace_positions.emplace_back(p_CiinA);
++      trace_bearings.emplace_back(b_i);
+       Eigen::Matrix3d Bperp = skew_x(b_i);
+ 
+       // Append to our linear system
+@@ -94,6 +103,47 @@ bool FeatureInitializer::single_triangulation(std::shared_ptr<Feature> feat,
+   singularValues = svd.singularValues();
+   double condA = singularValues(0, 0) / singularValues(singularValues.rows() - 1, 0);
+ 
++  double max_anchor_baseline = 0.0;
++  double max_pair_baseline = 0.0;
++  double max_parallax_rad = 0.0;
++  bool geometry_finite = true;
++  for (size_t i = 0; i < trace_positions.size(); i++) {
++    if (!trace_positions.at(i).allFinite() || !trace_bearings.at(i).allFinite()) {
++      geometry_finite = false;
++      continue;
++    }
++    max_anchor_baseline = std::max(max_anchor_baseline, trace_positions.at(i).norm());
++    for (size_t j = i + 1; j < trace_positions.size(); j++) {
++      if (!trace_positions.at(j).allFinite() || !trace_bearings.at(j).allFinite()) {
++        geometry_finite = false;
++        continue;
++      }
++      max_pair_baseline = std::max(max_pair_baseline, (trace_positions.at(i) - trace_positions.at(j)).norm());
++      double cosine = trace_bearings.at(i).dot(trace_bearings.at(j));
++      cosine = std::max(-1.0, std::min(1.0, cosine));
++      max_parallax_rad = std::max(max_parallax_rad, std::acos(cosine));
++    }
++  }
++  geometry_finite = geometry_finite && std::isfinite(max_anchor_baseline) && std::isfinite(max_pair_baseline) &&
++                    std::isfinite(max_parallax_rad);
++  const bool cond_finite = std::isfinite(condA);
++  const bool depth_finite = std::isfinite(p_f(2, 0));
++  const bool reject_cond = std::abs(condA) > _options.max_cond_number;
++  const bool reject_min_depth = p_f(2, 0) < _options.min_dist;
++  const bool reject_max_depth = p_f(2, 0) > _options.max_dist;
++  const bool reject_nonfinite = std::isnan(p_f.norm());
++  const bool accepted = !(reject_cond || reject_min_depth || reject_max_depth || reject_nonfinite);
++
++  PRINT_INFO(
++      "FD_TRI t=%.9f stage=%s feat=%zu mode=3d meas=%d cams=%zu anchor_cam=%zu anchor_t=%.9f cond_finite=%d cond=%.17g "
++      "depth_finite=%d depth=%.17g max_anchor_baseline=%.17g geometry_finite=%d max_pair_baseline=%.17g "
++      "max_parallax_rad=%.17g reject_cond=%d reject_min_depth=%d reject_max_depth=%d reject_nonfinite=%d accepted=%d\n",
++      trace_timestamp, trace_stage, feat->featid, total_meas, feat->timestamps.size(), feat->anchor_cam_id,
++      feat->anchor_clone_timestamp, cond_finite ? 1 : 0, cond_finite ? std::abs(condA) : 0.0, depth_finite ? 1 : 0,
++      depth_finite ? p_f(2, 0) : 0.0, geometry_finite ? max_anchor_baseline : 0.0, geometry_finite ? 1 : 0,
++      geometry_finite ? max_pair_baseline : 0.0, geometry_finite ? max_parallax_rad : 0.0, reject_cond ? 1 : 0,
++      reject_min_depth ? 1 : 0, reject_max_depth ? 1 : 0, reject_nonfinite ? 1 : 0, accepted ? 1 : 0);
++
+   // std::stringstream ss;
+   // ss << feat->featid << " - cond " << std::abs(condA) << " - z " << p_f(2, 0) << std::endl;
+   // PRINT_DEBUG(ss.str().c_str());
+@@ -420,4 +470,4 @@ double FeatureInitializer::compute_error(std::unordered_map<size_t, std::unorder
+   }
+ 
+   return err;
+-}
+\ No newline at end of file
++}
+diff --git a/ov_core/src/feat/FeatureInitializer.h b/ov_core/src/feat/FeatureInitializer.h
+index 6477f6b..0ecc557 100644
+--- a/ov_core/src/feat/FeatureInitializer.h
++++ b/ov_core/src/feat/FeatureInitializer.h
+@@ -97,7 +97,8 @@ public:
+    * in global frame)
+    * @return Returns false if it fails to triangulate (based on the thresholds)
+    */
+-  bool single_triangulation(std::shared_ptr<Feature> feat, std::unordered_map<size_t, std::unordered_map<double, ClonePose>> &clonesCAM);
++  bool single_triangulation(std::shared_ptr<Feature> feat, std::unordered_map<size_t, std::unordered_map<double, ClonePose>> &clonesCAM,
++                            const char *trace_stage, double trace_timestamp);
+ 
+   /**
+    * @brief Uses a linear triangulation to get initial estimate for the feature, treating the anchor observation as a true bearing.
+@@ -145,4 +146,4 @@ protected:
+ 
+ } // namespace ov_core
+ 
+-#endif // OPEN_VINS_FEATUREINITIALIZER_H
+\ No newline at end of file
++#endif // OPEN_VINS_FEATUREINITIALIZER_H
+diff --git a/ov_msckf/src/core/VioManager.cpp b/ov_msckf/src/core/VioManager.cpp
+index f5dd317..42c111a 100644
+--- a/ov_msckf/src/core/VioManager.cpp
++++ b/ov_msckf/src/core/VioManager.cpp
+@@ -375,6 +375,9 @@ void VioManager::do_feature_propagate_update(const ov_core::CameraData &message)
+       feats_slam = trackARUCO->get_feature_database()->features_containing(state->margtimestep(), false, true);
+     }
+   }
++  std::vector<size_t> trace_aruco_marg_ids;
++  for (const auto &feature : feats_slam)
++    trace_aruco_marg_ids.emplace_back(feature->featid);
+ 
+   // Remove any lost features that were from other image streams
+   // E.g: if we are cam1 and cam0 has not processed yet, we don't want to try to use those in the update yet
+@@ -409,6 +412,7 @@ void VioManager::do_feature_propagate_update(const ov_core::CameraData &message)
+ 
+   // Find tracks that have reached max length, these can be made into SLAM features
+   std::vector<std::shared_ptr<Feature>> feats_maxtracks;
++  std::vector<size_t> trace_maxtracks_to_slam_ids;
+   auto it2 = feats_marg.begin();
+   while (it2 != feats_marg.end()) {
+     // See if any of our camera's reached max track
+@@ -447,6 +451,8 @@ void VioManager::do_feature_propagate_update(const ov_core::CameraData &message)
+     // If we have at least 1 that we can add, lets add it!
+     // Note: we remove them from the feat_marg array since we don't want to reuse information...
+     if (valid_amount > 0) {
++      for (auto it = feats_maxtracks.end() - valid_amount; it != feats_maxtracks.end(); ++it)
++        trace_maxtracks_to_slam_ids.emplace_back((*it)->featid);
+       feats_slam.insert(feats_slam.end(), feats_maxtracks.end() - valid_amount, feats_maxtracks.end());
+       feats_maxtracks.erase(feats_maxtracks.end() - valid_amount, feats_maxtracks.end());
+     }
+@@ -522,6 +528,47 @@ void VioManager::do_feature_propagate_update(const ov_core::CameraData &message)
+   // NOTE: this should only really be used if you want to track a lot of features, or have limited computational resources
+   if ((int)featsup_MSCKF.size() > state->_options.max_msckf_in_update)
+     featsup_MSCKF.erase(featsup_MSCKF.begin(), featsup_MSCKF.end() - state->_options.max_msckf_in_update);
++  auto trace_contains_id = [](const std::vector<std::shared_ptr<Feature>> &features, size_t feature_id) {
++    return std::any_of(features.begin(), features.end(),
++                       [feature_id](const std::shared_ptr<Feature> &feature) { return feature->featid == feature_id; });
++  };
++  auto trace_id_in = [](const std::vector<size_t> &ids, size_t feature_id) {
++    return std::find(ids.begin(), ids.end(), feature_id) != ids.end();
++  };
++  auto trace_selection = [&](const std::shared_ptr<Feature> &feature, const char *stage, const char *origin) {
++    size_t measurements = 0;
++    size_t cameras = 0;
++    double first = 0.0;
++    double last = 0.0;
++    bool have_time = false;
++    for (const auto &pair : feature->timestamps) {
++      if (!pair.second.empty())
++        cameras++;
++      for (double timestamp : pair.second) {
++        measurements++;
++        if (!have_time || timestamp < first)
++          first = timestamp;
++        if (!have_time || timestamp > last)
++          last = timestamp;
++        have_time = true;
++      }
++    }
++    PRINT_INFO("FD_SELECT t=%.9f stage=%s feat=%zu origin=%s raw_meas=%zu raw_cams=%zu raw_first=%.9f raw_last=%.9f\n",
++               state->_timestamp, stage, feature->featid, origin, measurements, cameras, first, last);
++  };
++  for (const auto &feature : featsup_MSCKF) {
++    const char *origin = trace_contains_id(feats_lost, feature->featid)      ? "lost"
++                         : trace_contains_id(feats_marg, feature->featid)   ? "marg"
++                         : trace_contains_id(feats_maxtracks, feature->featid) ? "maxtracks"
++                                                                            : "unclassified";
++    trace_selection(feature, "msckf", origin);
++  }
++  for (const auto &feature : feats_slam_DELAYED) {
++    const char *origin = trace_id_in(trace_maxtracks_to_slam_ids, feature->featid) ? "maxtracks_to_slam"
++                         : trace_id_in(trace_aruco_marg_ids, feature->featid)       ? "aruco_marg"
++                                                                                     : "unclassified";
++    trace_selection(feature, "slam_delay", origin);
++  }
+   const size_t trace_db = trackFEATS->get_feature_database()->get_internal_data().size();
+   const size_t trace_lost = feats_lost.size();
+   const size_t trace_marg = feats_marg.size();
+diff --git a/ov_msckf/src/update/UpdaterMSCKF.cpp b/ov_msckf/src/update/UpdaterMSCKF.cpp
+index 9030156..07ef822 100644
+--- a/ov_msckf/src/update/UpdaterMSCKF.cpp
++++ b/ov_msckf/src/update/UpdaterMSCKF.cpp
+@@ -39,6 +39,33 @@ using namespace ov_core;
+ using namespace ov_type;
+ using namespace ov_msckf;
+ 
++namespace {
++struct TraceFeatureSpan {
++  size_t measurements = 0;
++  size_t cameras = 0;
++  double first = 0.0;
++  double last = 0.0;
++};
++
++TraceFeatureSpan trace_feature_span(const std::shared_ptr<Feature> &feature) {
++  TraceFeatureSpan span;
++  bool have_time = false;
++  for (const auto &pair : feature->timestamps) {
++    if (!pair.second.empty())
++      span.cameras++;
++    for (double timestamp : pair.second) {
++      span.measurements++;
++      if (!have_time || timestamp < span.first)
++        span.first = timestamp;
++      if (!have_time || timestamp > span.last)
++        span.last = timestamp;
++      have_time = true;
++    }
++  }
++  return span;
++}
++} // namespace
++
+ UpdaterMSCKF::UpdaterMSCKF(UpdaterOptions &options, ov_core::FeatureInitializerOptions &feat_init_options) : _options(options) {
+ 
+   // Save our raw pixel noise squared
+@@ -84,7 +111,17 @@ void UpdaterMSCKF::update(std::shared_ptr<State> state, std::vector<std::shared_
+   while (it0 != feature_vec.end()) {
+ 
+     // Clean the feature
++    const TraceFeatureSpan trace_before = trace_feature_span(*it0);
+     (*it0)->clean_old_measurements(clonetimes);
++    const TraceFeatureSpan trace_after = trace_feature_span(*it0);
++    PRINT_INFO(
++        "FD_HISTORY t=%.9f stage=msckf feat=%zu before=%zu after=%zu removed=%zu cams_before=%zu cams_after=%zu "
++        "before_range=%d first_before=%.9f last_before=%.9f after_range=%d first_after=%.9f last_after=%.9f clones=%zu "
++        "clone_first=%.9f clone_last=%.9f\n",
++        state->_timestamp, (*it0)->featid, trace_before.measurements, trace_after.measurements,
++        trace_before.measurements - trace_after.measurements, trace_before.cameras, trace_after.cameras,
++        trace_before.measurements > 0 ? 1 : 0, trace_before.first, trace_before.last, trace_after.measurements > 0 ? 1 : 0,
++        trace_after.first, trace_after.last, clonetimes.size(), clonetimes.front(), clonetimes.back());
+ 
+     // Count how many measurements
+     int ct_meas = 0;
+@@ -132,7 +169,7 @@ void UpdaterMSCKF::update(std::shared_ptr<State> state, std::vector<std::shared_
+     if (initializer_feat->config().triangulate_1d) {
+       success_tri = initializer_feat->single_triangulation_1d(*it1, clones_cam);
+     } else {
+-      success_tri = initializer_feat->single_triangulation(*it1, clones_cam);
++      success_tri = initializer_feat->single_triangulation(*it1, clones_cam, "msckf", state->_timestamp);
+     }
+ 
+     // Gauss-newton refine the feature
+diff --git a/ov_msckf/src/update/UpdaterSLAM.cpp b/ov_msckf/src/update/UpdaterSLAM.cpp
+index 6268c7b..8c401c2 100644
+--- a/ov_msckf/src/update/UpdaterSLAM.cpp
++++ b/ov_msckf/src/update/UpdaterSLAM.cpp
+@@ -40,6 +40,33 @@ using namespace ov_core;
+ using namespace ov_type;
+ using namespace ov_msckf;
+ 
++namespace {
++struct TraceFeatureSpan {
++  size_t measurements = 0;
++  size_t cameras = 0;
++  double first = 0.0;
++  double last = 0.0;
++};
++
++TraceFeatureSpan trace_feature_span(const std::shared_ptr<Feature> &feature) {
++  TraceFeatureSpan span;
++  bool have_time = false;
++  for (const auto &pair : feature->timestamps) {
++    if (!pair.second.empty())
++      span.cameras++;
++    for (double timestamp : pair.second) {
++      span.measurements++;
++      if (!have_time || timestamp < span.first)
++        span.first = timestamp;
++      if (!have_time || timestamp > span.last)
++        span.last = timestamp;
++      have_time = true;
++    }
++  }
++  return span;
++}
++} // namespace
++
+ UpdaterSLAM::UpdaterSLAM(UpdaterOptions &options_slam, UpdaterOptions &options_aruco, ov_core::FeatureInitializerOptions &feat_init_options)
+     : _options_slam(options_slam), _options_aruco(options_aruco) {
+ 
+@@ -86,7 +113,17 @@ void UpdaterSLAM::delayed_init(std::shared_ptr<State> state, std::vector<std::sh
+   while (it0 != feature_vec.end()) {
+ 
+     // Clean the feature
++    const TraceFeatureSpan trace_before = trace_feature_span(*it0);
+     (*it0)->clean_old_measurements(clonetimes);
++    const TraceFeatureSpan trace_after = trace_feature_span(*it0);
++    PRINT_INFO(
++        "FD_HISTORY t=%.9f stage=slam_delay feat=%zu before=%zu after=%zu removed=%zu cams_before=%zu cams_after=%zu "
++        "before_range=%d first_before=%.9f last_before=%.9f after_range=%d first_after=%.9f last_after=%.9f clones=%zu "
++        "clone_first=%.9f clone_last=%.9f\n",
++        state->_timestamp, (*it0)->featid, trace_before.measurements, trace_after.measurements,
++        trace_before.measurements - trace_after.measurements, trace_before.cameras, trace_after.cameras,
++        trace_before.measurements > 0 ? 1 : 0, trace_before.first, trace_before.last, trace_after.measurements > 0 ? 1 : 0,
++        trace_after.first, trace_after.last, clonetimes.size(), clonetimes.front(), clonetimes.back());
+ 
+     // Count how many measurements
+     int ct_meas = 0;
+@@ -134,7 +171,7 @@ void UpdaterSLAM::delayed_init(std::shared_ptr<State> state, std::vector<std::sh
+     if (initializer_feat->config().triangulate_1d) {
+       success_tri = initializer_feat->single_triangulation_1d(*it1, clones_cam);
+     } else {
+-      success_tri = initializer_feat->single_triangulation(*it1, clones_cam);
++      success_tri = initializer_feat->single_triangulation(*it1, clones_cam, "slam_delay", state->_timestamp);
+     }
+ 
+     // Gauss-newton refine the feature

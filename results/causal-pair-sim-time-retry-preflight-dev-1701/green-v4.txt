@@ -1,0 +1,16 @@
+...........F.                                                            [100%]
+================================== FAILURES ===================================
+________________ test_generated_study_passes_independent_audit ________________
+
+    def test_generated_study_passes_independent_audit():
+        result = audit(STUDY)
+>       assert result["failures"] == []
+E       assert ["audit:FileN...\u7edf\u627e\u4e0d\u5230\u6307\u5b9a\u7684\u8def\u5f84\u3002')"] == []
+E         
+E         Left contains one more item: "audit:FileNotFoundError(2, '\u7cfb\u7edf\u627e\u4e0d\u5230\u6307\u5b9a\u7684\u8def\u5f84\u3002')"
+E         Use -v to get more diff
+
+tests\benchmark\test_causal_pair_sim_time_retry_preflight.py:101: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/benchmark/test_causal_pair_sim_time_retry_preflight.py::test_generated_study_passes_independent_audit
+1 failed, 12 passed in 1.79s

@@ -1,5 +1,7 @@
 import hashlib
 import json
+import os
+from pathlib import Path
 from types import SimpleNamespace
 
 import pytest
@@ -22,6 +24,113 @@ def test_declared_ordinary_limits_and_workload(tmp_path):
     assert selected['imu_hz'] == 250
     assert selected['rgbd_hz'] == 10
     assert selected['rgbd_size'] == [160, 120]
+    assert 'simulation_seed' not in selected
+    assert 'record_depth_payload' not in selected
+
+
+def test_depth_payload_opt_in_is_declared_and_forwarded_only_with_bound_fanout(tmp_path):
+    with pytest.raises(SystemExit):
+        args(tmp_path, '--record-depth-payload')
+    selected = args(
+        tmp_path, '--record-depth-payload',
+        '--execution-contract', str(tmp_path / 'execution.json'),
+        '--runtime-binding', str(tmp_path / 'binding.json'),
+        '--shadow-binary', str(tmp_path / 'online-probe'),
+        '--shadow-config', str(tmp_path / 'config'),
+        '--reference-module', str(tmp_path / 'reference.so'),
+        '--reference-sha256', 'a' * 64,
+        '--source-fanout-profile', 'ready-shadow-heartbeat-estimator-v1',
+        '--motion-profile', 'supported-ready-v1',
+        '--physics-trace-profile', 'substep-ready-v1',
+    )
+    assert contract.execution_contract(selected)['record_depth_payload'] is True
+    assert contract.worker_options(selected).count('--record-depth-payload') == 1
+
+
+def test_simulation_seed_is_declared_forwarded_and_applied_before_fixture(tmp_path):
+    selected = args(tmp_path, '--simulation-seed', '27101')
+    declaration = contract.execution_contract(selected)
+    assert declaration['simulation_seed'] == 27101
+    assert contract.worker_options(selected)[-2:] == ['--simulation-seed', '27101']
+
+    calls = []
+
+    class Rand:
+        @staticmethod
+        def seed(value):
+            calls.append(value)
+
+    output = tmp_path / 'capture'
+    output.mkdir()
+    record = capture.apply_simulation_seed(output, selected.simulation_seed, Rand)
+    assert calls == [27101]
+    assert record == {
+        'schema': 'gazebo-simulation-seed-v1',
+        'seed': 27101,
+        'api': 'gz.math7.Rand.seed',
+        'applied_before_test_fixture': True,
+        'all_runtime_rng_coverage_qualified': False,
+        'fusion_eligible': False,
+    }
+    assert json.loads((output / 'simulation-random-seed.json').read_text()) == record
+
+
+@pytest.mark.parametrize('seed', ['0', '-1', str(2**32), '1.5'])
+def test_simulation_seed_refuses_out_of_range_values(tmp_path, seed):
+    with pytest.raises(SystemExit):
+        args(tmp_path, '--simulation-seed', seed)
+
+
+def test_health_profile_is_opt_in_and_requires_complete_shadow_path(tmp_path):
+    with pytest.raises(SystemExit):
+        args(tmp_path, '--health-profile', 'px4-d6f12ad-gate-floor-v1')
+
+    selected = args(
+        tmp_path,
+        '--health-profile', 'px4-d6f12ad-gate-floor-v1',
+        '--shadow-binary', str(tmp_path / 'online-probe'),
+        '--shadow-config', str(tmp_path / 'config'),
+        '--reference-module', str(tmp_path / 'reference.so'),
+        '--reference-sha256', 'a' * 64,
+        '--source-fanout-profile', 'ready-shadow-heartbeat-estimator-v1',
+        '--motion-profile', 'supported-ready-v1',
+        '--physics-trace-profile', 'substep-ready-v1',
+    )
+    declaration = contract.execution_contract(selected)
+    assert declaration['profiles']['health_profile'] == 'px4-d6f12ad-gate-floor-v1'
+    options = contract.worker_options(selected)
+    index = options.index('--health-profile')
+    assert options[index:index + 2] == ['--health-profile', 'px4-d6f12ad-gate-floor-v1']
+
+
+@pytest.mark.parametrize('profile', [
+    'imu-source-loss-after-8s-v1', 'native-restart-after-8s-v1',
+    'imu-source-loss-after-8s-immediate-v2', 'native-restart-after-8s-failclosed-v2',
+])
+def test_health_fault_profile_is_declared_forwarded_and_requires_health_shadow(tmp_path, profile):
+    complete = [
+        '--health-profile', 'px4-d6f12ad-gate-floor-v1',
+        '--health-fault-profile', profile,
+        '--shadow-binary', str(tmp_path / 'online-probe'),
+        '--shadow-config', str(tmp_path / 'config'),
+        '--reference-module', str(tmp_path / 'reference.so'),
+        '--reference-sha256', 'a' * 64,
+        '--source-fanout-profile', 'ready-shadow-heartbeat-estimator-v1',
+        '--motion-profile', 'supported-ready-v1',
+        '--physics-trace-profile', 'substep-ready-v1',
+        '--motion-intent-profile', 'native-beginning-zupt-v1',
+    ]
+    selected = args(tmp_path, *complete)
+    declaration = contract.execution_contract(selected)
+    assert declaration['profiles']['health_fault_profile'] == profile
+    options = contract.worker_options(selected)
+    index = options.index('--health-fault-profile')
+    assert options[index:index + 2] == ['--health-fault-profile', profile]
+
+    with pytest.raises(SystemExit):
+        args(tmp_path, '--health-fault-profile', profile)
+    with pytest.raises(SystemExit):
+        args(tmp_path, *complete, '--reference-fault-profile', 'native-pre-epoch-v1')
 
 
 @pytest.mark.parametrize('field,value', [
@@ -110,6 +219,18 @@ def test_launch_environment_union_preserves_absent_and_present_empty():
         'GZ_FILE_PATH': '', 'HOME': '/home/test', 'LANG': 'C.UTF-8', 'PATH': '/usr/bin',
         'SDF_PATH': '',
     }
+
+
+def test_worker_options_propagates_startup_preflight(tmp_path):
+    selected = args(tmp_path)
+    selected.startup_preflight = True
+    options = contract.worker_options(selected)
+    assert options.count('--startup-preflight') == 1
+
+
+def test_startup_preflight_requires_complete_declared_inputs(tmp_path):
+    with pytest.raises(SystemExit):
+        args(tmp_path, '--startup-preflight')
 
 
 def test_launch_environment_refuses_overlap_conflict():
@@ -275,6 +396,59 @@ def test_worker_environment_evidence_write_failure_refuses(tmp_path, monkeypatch
         )
 
 
+@pytest.mark.parametrize('field,accept', [
+    ('st_atime', True), ('st_mtime_ns', False), ('st_ctime_ns', False),
+    ('st_ino', False), ('st_dev', False), ('st_mode', False),
+    ('st_size', False), ('st_nlink', False), ('st_uid', False), ('st_gid', False),
+])
+def test_worker_contract_read_distinguishes_access_from_mutation(tmp_path, monkeypatch, field, accept):
+    """Stat boundary injection: real file read/write, only OS metadata is controlled."""
+    declaration = {'schema': 'capture-execution-v2', 'launch_environment': {'HOME': '/home/test'}}
+    path = tmp_path / 'execution.json'
+    path.write_text(json.dumps(declaration))
+    original = path.stat()
+    values = list(original)
+    attrs = {name: getattr(original, name) for name in dir(original) if name.startswith('st_')}
+    if field.endswith('_ns'):
+        attrs[field] += 1  # Below stat tuple's second precision.
+    else:
+        index = {'st_mode': 0, 'st_ino': 1, 'st_dev': 2, 'st_nlink': 3,
+                 'st_uid': 4, 'st_gid': 5, 'st_size': 6, 'st_atime': 7}[field]
+        values[index] += 1
+        attrs[field] += 1
+        if field == 'st_atime':
+            attrs['st_atime_ns'] += 1_000_000_000
+    changed = os.stat_result(values, attrs)
+    real_stat, real_read = Path.stat, Path.read_bytes
+    read_finished = False
+
+    def observed_stat(selected, *a, **kw):
+        if selected == path:
+            return changed if read_finished else original
+        return real_stat(selected, *a, **kw)
+
+    def observed_read(selected):
+        nonlocal read_finished
+        data = real_read(selected)
+        if selected == path:
+            read_finished = True
+        return data
+
+    monkeypatch.setattr(Path, 'stat', observed_stat)
+    monkeypatch.setattr(Path, 'read_bytes', observed_read)
+    output = tmp_path / 'capture'
+    if accept:
+        record = capture.record_worker_environment(
+            output, declaration, path, reader=lambda: b'HOME=/home/test\0')
+        assert record['matches'] is True
+        assert record['execution_contract']['sha256'] == hashlib.sha256(real_read(path)).hexdigest()
+    else:
+        with pytest.raises(ValueError, match='execution contract changed'):
+            capture.record_worker_environment(
+                output, declaration, path, reader=lambda: b'HOME=/home/test\0')
+        assert not output.exists()
+
+
 def test_parent_derives_v2_environment_and_passes_it_to_supervisor(tmp_path, monkeypatch):
     environment = {'HOME': '/home/test', 'PYTHONPATH': None, 'SDF_PATH': ''}
     graph_environment = {'HOME': '/home/test', 'PATH': '/usr/bin', 'LANG': 'C.UTF-8'}
@@ -305,3 +479,72 @@ def test_parent_derives_v2_environment_and_passes_it_to_supervisor(tmp_path, mon
     assert calls[0][2]['launch_environment'] == launch_environment
     assert calls[0][2]['execution_contract'] == declaration_path
     assert calls[0][2]['timeout_s'] == 300
+
+
+def test_motion_intent_profile_is_declared_and_forwarded_only_when_enabled(tmp_path):
+    legacy = args(tmp_path)
+    enabled = args(
+        tmp_path,
+        '--motion-intent-profile', 'native-beginning-zupt-v1',
+        '--source-fanout-profile', 'ready-shadow-heartbeat-estimator-v1',
+        '--shadow-binary', str(tmp_path / 'native'),
+        '--shadow-config', str(tmp_path / 'config'),
+        '--reference-module', str(tmp_path / 'reference'),
+        '--reference-sha256', 'a' * 64,
+        '--motion-profile', 'supported-ready-v1',
+        '--physics-trace-profile', 'substep-ready-v1',
+    )
+
+    assert 'motion_intent_profile' not in contract.execution_contract(legacy)['profiles']
+    assert contract.execution_contract(enabled)['profiles']['motion_intent_profile'] == 'native-beginning-zupt-v1'
+    options = contract.worker_options(enabled)
+    index = options.index('--motion-intent-profile')
+    assert options[index + 1] == 'native-beginning-zupt-v1'
+
+
+def test_native_motion_intent_bridge_requires_unarmed_proof_and_applies_before_anchor():
+    from tools.benchmark.capture_disarmed_sensors import apply_native_motion_intent
+
+    now = iter(range(1_000, 1_020))
+
+    class Readiness:
+        def motion_intent_state(self):
+            return {"state": "internal"}
+
+    class Gate:
+        session_id = "session"
+        clock_id = "clock"
+        failure = None
+
+        def __init__(self):
+            self.calls = []
+
+        def observe_estimator(self, value):
+            self.calls.append(("state", value))
+
+        def request(self, command):
+            self.calls.append(("request", command))
+            return {"action": command["effective_sim_ns"]}
+
+        def acknowledge(self, ack):
+            self.calls.append(("ack", ack))
+
+        def authorize_step(self, ns):
+            self.calls.append(("authorize", ns))
+            return True
+
+    class Client:
+        def send_motion_intent(self, action):
+            return {"native": action}
+
+    gate = Gate()
+    proof = {"records": {"heartbeat": {"base_mode": 0}}}
+    apply_native_motion_intent(gate, Readiness(), Client(), 2_600_000_000, proof, clock=lambda: next(now))
+
+    assert [call[0] for call in gate.calls] == ["state", "request", "ack", "authorize"]
+    assert gate.calls[1][1]["effective_sim_ns"] == 2_600_000_000
+    assert gate.calls[1][1]["velocity_setpoint_frd_m_s"] == [0.0, 0.0, -0.2]
+    with pytest.raises(ValueError, match="unarmed"):
+        apply_native_motion_intent(gate, Readiness(), Client(), 3_000_000_000,
+                                   {"records": {"heartbeat": {"base_mode": 128}}},
+                                   clock=lambda: next(now))

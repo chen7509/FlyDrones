@@ -1,0 +1,37 @@
+{
+  "status": "capture_completed",
+  "errors": [],
+  "eligible_for_vio_input": false,
+  "eligible_for_px4_fusion": false,
+  "estimator_run": false,
+  "capture_schema": "disarmed-sensors-v2",
+  "physics_trace_profile": "substep-ready-v1",
+  "reference_profile": "supported-ready-native-reference-v1",
+  "reference_fault_profile": null,
+  "health_fault_profile": null,
+  "source_fanout_profile": "ready-shadow-heartbeat-estimator-v1",
+  "startup_preflight_only": true,
+  "startup_preflight_completed": true,
+  "runtime_binding": {
+    "pre_recorded": true,
+    "declared_files_stable": true,
+    "local_file_graph_verified": true,
+    "phases": [
+      "postgraph",
+      "bootstrap"
+    ],
+    "owned_phases": {
+      "px4": [],
+      "openvins": []
+    },
+    "runtime_mapping_coverage_verified": false,
+    "errors": [],
+    "runtime_closure_qualified": false,
+    "scope": "declared self and registered owned phases only; whole runtime not qualified"
+  },
+  "physical_execution_qualified": false,
+  "vio_accuracy_qualified": false,
+  "estimator_health_qualified": false,
+  "fusion_eligible": false,
+  "flight_ready": false
+}

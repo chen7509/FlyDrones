@@ -1,0 +1,22 @@
+[2J
+[H
+TOPIC: timesync_status instance 0 #1
+ timesync_status
+    timestamp: 102000 (0.000001 seconds ago)
+    remote_timestamp: 102000
+    observed_offset: -1000
+    estimated_offset: -1000
+    round_trip_time: 2000
+    source_protocol: 0
+
+[2J
+[H
+TOPIC: timesync_status instance 0 #2
+ timesync_status
+    timestamp: 122000 (0.000001 seconds ago)
+    remote_timestamp: 122000
+    observed_offset: -1000
+    estimated_offset: -1000
+    round_trip_time: 2000
+    source_protocol: 0
+

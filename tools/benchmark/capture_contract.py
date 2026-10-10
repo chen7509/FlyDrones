@@ -3,12 +3,17 @@ from __future__ import annotations
 
 import hashlib
 import json
+import re
 import stat
 from pathlib import Path
 
 PROFILE_FIELDS = ('motion_profile', 'physics_trace_profile', 'reference_fault_profile', 'source_fanout_profile')
+MOTION_INTENT_FIELD = 'motion_intent_profile'
+HEALTH_PROFILE_FIELD = 'health_profile'
+HEALTH_FAULT_FIELD = 'health_fault_profile'
 PATH_FIELDS = ('shadow_binary', 'shadow_config', 'reference_module')
 POLICY_FIELD = 'trajectory_gauge_policy'
+SCALAR_FIELDS = ('simulation_seed',)
 
 
 def validate_launch_environment(value):
@@ -81,6 +86,30 @@ def trajectory_gauge_policy_record(path):
     return {**before, 'schema': document['schema']}
 
 
+def wire_configuration_record(path):
+    """Freeze an explicit clock mapping; no implicit origin or live authority."""
+    before = _file_identity(path)
+    value = read_declaration(path)
+    staged = type(value) is dict and value.get('schema') == 'capture-wire-startup-v2'
+    keys = {'schema', 'session_id', 'sim_origin_ns', 'remote_origin_ns'}
+    if staged:
+        keys.add('startup_max_wall_ns')
+    if (type(value) is not dict
+            or value.keys() != keys
+            or value['schema'] not in ('capture-wire-v1', 'capture-wire-startup-v2')
+            or type(value['session_id']) is not str
+            or re.fullmatch(r'[A-Za-z0-9_.:-]{1,128}', value['session_id']) is None
+            or type(value['sim_origin_ns']) is not int or value['sim_origin_ns'] != 0
+            or type(value['remote_origin_ns']) is not int
+            or not 0 <= value['remote_origin_ns'] < 2**63 - 25_000_000_000
+            or staged and (type(value['startup_max_wall_ns']) is not int
+                           or not 0 < value['startup_max_wall_ns'] <= 60_000_000_000)):
+        raise ValueError('invalid capture wire clock configuration')
+    if before != _file_identity(path):
+        raise ValueError('wire configuration changed during validation')
+    return dict(before, configuration=value)
+
+
 def execution_contract(args, launch_environment=None):
     fault = args.reference_fault_profile
     if fault not in (None, 'native-pre-epoch-v1'):
@@ -102,8 +131,29 @@ def execution_contract(args, launch_environment=None):
     )
     if launch_environment is not None:
         result['launch_environment'] = validate_launch_environment(launch_environment)
+    motion_intent = getattr(args, MOTION_INTENT_FIELD, None)
+    if motion_intent is not None:
+        result['profiles'][MOTION_INTENT_FIELD] = motion_intent
+    health_profile = getattr(args, HEALTH_PROFILE_FIELD, None)
+    if health_profile is not None:
+        result['profiles'][HEALTH_PROFILE_FIELD] = health_profile
+    health_fault = getattr(args, HEALTH_FAULT_FIELD, None)
+    if health_fault is not None:
+        result['profiles'][HEALTH_FAULT_FIELD] = health_fault
     if policy_path is not None:
         result['trajectory_gauge_policy'] = trajectory_gauge_policy_record(policy_path)
+    simulation_seed = getattr(args, 'simulation_seed', None)
+    if simulation_seed is not None:
+        if type(simulation_seed) is not int or not 1 <= simulation_seed < 2**32:
+            raise ValueError('invalid simulation seed')
+        result['simulation_seed'] = simulation_seed
+    wire_config = getattr(args, 'wire_config', None)
+    if wire_config is not None:
+        if not args.execution_contract or not args.runtime_binding or fault:
+            raise ValueError('wire mode requires a declared bound ordinary capture')
+        result['wire'] = wire_configuration_record(wire_config)
+    if getattr(args, 'record_depth_payload', False):
+        result['record_depth_payload'] = True
     return result
 
 
@@ -142,14 +192,19 @@ def validate_declaration(args, launch_environment=None):
 
 def worker_options(args):
     result = []
-    for field in PATH_FIELDS + PROFILE_FIELDS + (
-        'reference_sha256', 'execution_contract', 'runtime_binding', POLICY_FIELD,
+    for field in PATH_FIELDS + PROFILE_FIELDS + SCALAR_FIELDS + (
+        MOTION_INTENT_FIELD, HEALTH_PROFILE_FIELD, HEALTH_FAULT_FIELD,
+        'reference_sha256', 'execution_contract', 'runtime_binding', POLICY_FIELD, 'wire_config',
     ):
         value = getattr(args, field, None)
         if value is not None:
-            if field in PATH_FIELDS + ('execution_contract', 'runtime_binding', POLICY_FIELD):
+            if field in PATH_FIELDS + ('execution_contract', 'runtime_binding', POLICY_FIELD, 'wire_config'):
                 value = str(Path(value).resolve())
             result += ['--' + field.replace('_', '-'), str(value)]
+    if getattr(args, 'startup_preflight', False):
+        result.append('--startup-preflight')
+    if getattr(args, 'record_depth_payload', False):
+        result.append('--record-depth-payload')
     return result
 
 

@@ -1,8 +1,8 @@
 from dataclasses import replace
 
 import numpy as np
-from scipy import sparse
 import torch
+from scipy import sparse
 
 from flydrones.brain.connectome import Connectome
 from flydrones.connectome_training.dataset import (
@@ -11,7 +11,11 @@ from flydrones.connectome_training.dataset import (
     TeacherTarget,
     TrainingSequence,
 )
-from flydrones.connectome_training.features import FEATURE_NAMES, sequence_tensors
+from flydrones.connectome_training.features import (
+    FEATURE_NAMES,
+    MASKED_FEATURE_NAMES,
+    sequence_tensors,
+)
 from flydrones.connectome_training.losses import LossWeights, sequence_loss
 from flydrones.connectome_training.model import ConnectomeConstrainedCore
 from flydrones.connectome_training.parameters import (
@@ -53,18 +57,18 @@ def toy_sequence(clearance=0.8):
     return TrainingSequence(provenance, frames, targets)
 
 
-def toy_model():
-    n = len(FEATURE_NAMES) + 4
+def toy_model(feature_names=FEATURE_NAMES):
+    n = len(feature_names) + 4
     connectome = Connectome(
         "toy",
         sparse.eye(n, format="csc", dtype=np.float32),
-        np.array(["input"] * len(FEATURE_NAMES) + ["DN"] * 4),
+        np.array(["input"] * len(feature_names) + ["DN"] * 4),
         np.array([""] * n),
     )
     identity = build_structure_identity(connectome, "c" * 64)
     params = initial_parameter_set(
         identity,
-        FEATURE_NAMES,
+        feature_names,
         ("vx", "vy", "vz", "yaw_rate"),
         np.arange(n - 4, n),
     )
@@ -112,3 +116,18 @@ def test_offline_training_reduces_loss_and_resets_between_sequences():
         train_epoch(model, sequences, optimizer, truncate_steps=3)
     after = evaluate_sequences(model, sequences, truncate_steps=3)["total"]
     assert after < before * 0.7
+
+
+def test_masked_tiny_core_train_and_evaluate_use_fifteen_inputs():
+    data = toy_sequence()
+    for frame in data.frames:
+        frame.depth_m[0, 0] = np.nan
+        frame.depth_valid = np.isfinite(frame.depth_m)
+    model = toy_model(MASKED_FEATURE_NAMES)
+    features, _, _ = sequence_tensors(data, profile="depth-mask-v3")
+    assert features.shape == (1, 6, 15)
+    before = evaluate_sequences(model, [data], truncate_steps=3)["total"]
+    optimizer = torch.optim.Adam(model.parameters(), lr=0.01)
+    metrics = train_epoch(model, [data], optimizer, truncate_steps=3)
+    assert np.isfinite(before) and np.isfinite(metrics["total"])
+    assert model.n_features == 15

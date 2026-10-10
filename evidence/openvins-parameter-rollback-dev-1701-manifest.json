@@ -1,0 +1,10 @@
+{
+  "archive": "evidence/openvins-parameter-rollback-dev-1701.zip",
+  "sha256": "299b64cc757b490711a04cf2fd91ad3295e46fd227372cfbfc4ee3c634c3bc79",
+  "bytes": 207125,
+  "members": 31,
+  "crc_verified": true,
+  "all_member_hashes_verified": true,
+  "synthetic_only": true,
+  "task5_authorized": false
+}

@@ -1,0 +1,13 @@
+{
+  "archive": "openvins-ekf2-transform-dev-1701.zip",
+  "bytes": 424973,
+  "crc_pass": true,
+  "ekf2_fusion": false,
+  "manifest_sha256": "efd2febac15486d1951c2bc591c380128051af0d00f6de6b9cacc327bd15ef17",
+  "member_count": 35,
+  "network_odometry": false,
+  "physics": false,
+  "px4_parameter_changes": false,
+  "schema": "openvins-ekf2-transform-publication-v1",
+  "sha256": "734f11db482a4cd96b8381068962f80d580f344a04dbf0d42bcd951cca0d2e7e"
+}

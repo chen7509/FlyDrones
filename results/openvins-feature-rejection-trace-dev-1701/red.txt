@@ -1,0 +1,154 @@
+FFFFFFFFF                                                                [100%]
+================================== FAILURES ===================================
+_______________ test_parse_trace_binds_exact_counts_and_stages ________________
+
+    def test_parse_trace_binds_exact_counts_and_stages():
+>       from tools.benchmark.openvins_feature_trace import parse_trace
+E       ModuleNotFoundError: No module named 'tools.benchmark.openvins_feature_trace'
+
+tests\benchmark\test_openvins_feature_trace.py:22: ModuleNotFoundError
+_ test_parse_trace_rejects_count_schema_and_truth_mutations[FD_MSCKF t=3.100000000 input=5 insufficient=1 triangulation=2 refinement=0 chi2=1 accepted=2] _
+
+line = 'FD_MSCKF t=3.100000000 input=5 insufficient=1 triangulation=2 refinement=0 chi2=1 accepted=2'
+
+    @pytest.mark.parametrize(
+        "line",
+        [
+            MSCKF.replace("accepted=1", "accepted=2"),
+            MSCKF.replace("chi2=1", "chi2=-1"),
+            PIPE.replace("msckf_selected=5", "msckf_selected=4"),
+            TRACK.replace("accepted=41", "accepted=42"),
+            TRACK + " truth_speed=0.0",
+            MSCKF.replace("input=5", "input=nan"),
+        ],
+    )
+    def test_parse_trace_rejects_count_schema_and_truth_mutations(line):
+>       from tools.benchmark.openvins_feature_trace import parse_trace
+E       ModuleNotFoundError: No module named 'tools.benchmark.openvins_feature_trace'
+
+tests\benchmark\test_openvins_feature_trace.py:43: ModuleNotFoundError
+_ test_parse_trace_rejects_count_schema_and_truth_mutations[FD_MSCKF t=3.100000000 input=5 insufficient=1 triangulation=2 refinement=0 chi2=-1 accepted=1] _
+
+line = 'FD_MSCKF t=3.100000000 input=5 insufficient=1 triangulation=2 refinement=0 chi2=-1 accepted=1'
+
+    @pytest.mark.parametrize(
+        "line",
+        [
+            MSCKF.replace("accepted=1", "accepted=2"),
+            MSCKF.replace("chi2=1", "chi2=-1"),
+            PIPE.replace("msckf_selected=5", "msckf_selected=4"),
+            TRACK.replace("accepted=41", "accepted=42"),
+            TRACK + " truth_speed=0.0",
+            MSCKF.replace("input=5", "input=nan"),
+        ],
+    )
+    def test_parse_trace_rejects_count_schema_and_truth_mutations(line):
+>       from tools.benchmark.openvins_feature_trace import parse_trace
+E       ModuleNotFoundError: No module named 'tools.benchmark.openvins_feature_trace'
+
+tests\benchmark\test_openvins_feature_trace.py:43: ModuleNotFoundError
+_ test_parse_trace_rejects_count_schema_and_truth_mutations[FD_PIPE t=3.100000000 db=76 lost=3 marg=2 maxtracks=1 msckf_selected=4 msckf_accepted=1 slam_delayed=1 slam_delayed_accepted=0 slam_update=0 slam_update_accepted=0] _
+
+line = 'FD_PIPE t=3.100000000 db=76 lost=3 marg=2 maxtracks=1 msckf_selected=4 msckf_accepted=1 slam_delayed=1 slam_delayed_accepted=0 slam_update=0 slam_update_accepted=0'
+
+    @pytest.mark.parametrize(
+        "line",
+        [
+            MSCKF.replace("accepted=1", "accepted=2"),
+            MSCKF.replace("chi2=1", "chi2=-1"),
+            PIPE.replace("msckf_selected=5", "msckf_selected=4"),
+            TRACK.replace("accepted=41", "accepted=42"),
+            TRACK + " truth_speed=0.0",
+            MSCKF.replace("input=5", "input=nan"),
+        ],
+    )
+    def test_parse_trace_rejects_count_schema_and_truth_mutations(line):
+>       from tools.benchmark.openvins_feature_trace import parse_trace
+E       ModuleNotFoundError: No module named 'tools.benchmark.openvins_feature_trace'
+
+tests\benchmark\test_openvins_feature_trace.py:43: ModuleNotFoundError
+_ test_parse_trace_rejects_count_schema_and_truth_mutations[FD_TRACK t=3.100000000 cam=0 initial=0 previous=40 topped=50 ransac=8 out_of_bounds=1 masked=0 accepted=42 reset=0] _
+
+line = 'FD_TRACK t=3.100000000 cam=0 initial=0 previous=40 topped=50 ransac=8 out_of_bounds=1 masked=0 accepted=42 reset=0'
+
+    @pytest.mark.parametrize(
+        "line",
+        [
+            MSCKF.replace("accepted=1", "accepted=2"),
+            MSCKF.replace("chi2=1", "chi2=-1"),
+            PIPE.replace("msckf_selected=5", "msckf_selected=4"),
+            TRACK.replace("accepted=41", "accepted=42"),
+            TRACK + " truth_speed=0.0",
+            MSCKF.replace("input=5", "input=nan"),
+        ],
+    )
+    def test_parse_trace_rejects_count_schema_and_truth_mutations(line):
+>       from tools.benchmark.openvins_feature_trace import parse_trace
+E       ModuleNotFoundError: No module named 'tools.benchmark.openvins_feature_trace'
+
+tests\benchmark\test_openvins_feature_trace.py:43: ModuleNotFoundError
+_ test_parse_trace_rejects_count_schema_and_truth_mutations[FD_TRACK t=3.100000000 cam=0 initial=0 previous=40 topped=50 ransac=8 out_of_bounds=1 masked=0 accepted=41 reset=0 truth_speed=0.0] _
+
+line = 'FD_TRACK t=3.100000000 cam=0 initial=0 previous=40 topped=50 ransac=8 out_of_bounds=1 masked=0 accepted=41 reset=0 truth_speed=0.0'
+
+    @pytest.mark.parametrize(
+        "line",
+        [
+            MSCKF.replace("accepted=1", "accepted=2"),
+            MSCKF.replace("chi2=1", "chi2=-1"),
+            PIPE.replace("msckf_selected=5", "msckf_selected=4"),
+            TRACK.replace("accepted=41", "accepted=42"),
+            TRACK + " truth_speed=0.0",
+            MSCKF.replace("input=5", "input=nan"),
+        ],
+    )
+    def test_parse_trace_rejects_count_schema_and_truth_mutations(line):
+>       from tools.benchmark.openvins_feature_trace import parse_trace
+E       ModuleNotFoundError: No module named 'tools.benchmark.openvins_feature_trace'
+
+tests\benchmark\test_openvins_feature_trace.py:43: ModuleNotFoundError
+_ test_parse_trace_rejects_count_schema_and_truth_mutations[FD_MSCKF t=3.100000000 input=nan insufficient=1 triangulation=2 refinement=0 chi2=1 accepted=1] _
+
+line = 'FD_MSCKF t=3.100000000 input=nan insufficient=1 triangulation=2 refinement=0 chi2=1 accepted=1'
+
+    @pytest.mark.parametrize(
+        "line",
+        [
+            MSCKF.replace("accepted=1", "accepted=2"),
+            MSCKF.replace("chi2=1", "chi2=-1"),
+            PIPE.replace("msckf_selected=5", "msckf_selected=4"),
+            TRACK.replace("accepted=41", "accepted=42"),
+            TRACK + " truth_speed=0.0",
+            MSCKF.replace("input=5", "input=nan"),
+        ],
+    )
+    def test_parse_trace_rejects_count_schema_and_truth_mutations(line):
+>       from tools.benchmark.openvins_feature_trace import parse_trace
+E       ModuleNotFoundError: No module named 'tools.benchmark.openvins_feature_trace'
+
+tests\benchmark\test_openvins_feature_trace.py:43: ModuleNotFoundError
+_____________ test_parse_trace_rejects_duplicate_or_missing_stage _____________
+
+    def test_parse_trace_rejects_duplicate_or_missing_stage():
+>       from tools.benchmark.openvins_feature_trace import parse_trace
+E       ModuleNotFoundError: No module named 'tools.benchmark.openvins_feature_trace'
+
+tests\benchmark\test_openvins_feature_trace.py:53: ModuleNotFoundError
+_____ test_compare_state_rows_excludes_clocks_but_binds_estimator_values ______
+
+    def test_compare_state_rows_excludes_clocks_but_binds_estimator_values():
+>       from tools.benchmark.openvins_feature_trace import compare_state_rows
+E       ModuleNotFoundError: No module named 'tools.benchmark.openvins_feature_trace'
+
+tests\benchmark\test_openvins_feature_trace.py:62: ModuleNotFoundError
+=========================== short test summary info ===========================
+FAILED tests/benchmark/test_openvins_feature_trace.py::test_parse_trace_binds_exact_counts_and_stages
+FAILED tests/benchmark/test_openvins_feature_trace.py::test_parse_trace_rejects_count_schema_and_truth_mutations[FD_MSCKF t=3.100000000 input=5 insufficient=1 triangulation=2 refinement=0 chi2=1 accepted=2]
+FAILED tests/benchmark/test_openvins_feature_trace.py::test_parse_trace_rejects_count_schema_and_truth_mutations[FD_MSCKF t=3.100000000 input=5 insufficient=1 triangulation=2 refinement=0 chi2=-1 accepted=1]
+FAILED tests/benchmark/test_openvins_feature_trace.py::test_parse_trace_rejects_count_schema_and_truth_mutations[FD_PIPE t=3.100000000 db=76 lost=3 marg=2 maxtracks=1 msckf_selected=4 msckf_accepted=1 slam_delayed=1 slam_delayed_accepted=0 slam_update=0 slam_update_accepted=0]
+FAILED tests/benchmark/test_openvins_feature_trace.py::test_parse_trace_rejects_count_schema_and_truth_mutations[FD_TRACK t=3.100000000 cam=0 initial=0 previous=40 topped=50 ransac=8 out_of_bounds=1 masked=0 accepted=42 reset=0]
+FAILED tests/benchmark/test_openvins_feature_trace.py::test_parse_trace_rejects_count_schema_and_truth_mutations[FD_TRACK t=3.100000000 cam=0 initial=0 previous=40 topped=50 ransac=8 out_of_bounds=1 masked=0 accepted=41 reset=0 truth_speed=0.0]
+FAILED tests/benchmark/test_openvins_feature_trace.py::test_parse_trace_rejects_count_schema_and_truth_mutations[FD_MSCKF t=3.100000000 input=nan insufficient=1 triangulation=2 refinement=0 chi2=1 accepted=1]
+FAILED tests/benchmark/test_openvins_feature_trace.py::test_parse_trace_rejects_duplicate_or_missing_stage
+FAILED tests/benchmark/test_openvins_feature_trace.py::test_compare_state_rows_excludes_clocks_but_binds_estimator_values
+9 failed in 0.47s

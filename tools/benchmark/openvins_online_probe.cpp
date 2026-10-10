@@ -12,6 +12,7 @@
 #include "core/VioManager.h"
 #include "core/VioManagerOptions.h"
 #include "state/State.h"
+#include "state/StateHelper.h"
 #include "utils/opencv_yaml_parse.h"
 #include "utils/print.h"
 #include "utils/sensor_data.h"
@@ -22,10 +23,46 @@ long long clock_ns() {
   return std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::steady_clock::now().time_since_epoch()).count();
 }
 
+long long align_fast_target_ns(long long sample) {
+  constexpr long long fast_period_ns = 20000000;
+  return ((sample + fast_period_ns - 1) / fast_period_ns) * fast_period_ns;
+}
+
 class OnlineManager : public ov_msckf::VioManager {
 public:
   using ov_msckf::VioManager::VioManager;
   bool ready() const { return is_initialized_vio; }
+  void apply_motion_intent(long long effective_sim_ns, long long command_sequence,
+                           const std::string &intent_sha256, const std::string &session_sha256,
+                           const std::string &clock_sha256) {
+    if (!ready()) throw std::runtime_error("motion intent before internal initialization");
+    if (!params.try_zupt || !params.zupt_only_at_beginning)
+      throw std::runtime_error("motion intent requires frozen beginning-only ZUPT configuration");
+    if (motion_intent_applied || has_moved_since_zupt)
+      throw std::runtime_error("duplicate native motion intent");
+    if (command_sequence != 0) throw std::runtime_error("invalid native motion intent sequence");
+    const auto state_ns = static_cast<long long>(std::llround(state->_timestamp * 1e9));
+    if (effective_sim_ns < state_ns) throw std::runtime_error("motion intent precedes initialized state");
+    has_moved_since_zupt = true;
+    did_zupt_update = false;
+    motion_intent_applied = true;
+    motion_intent_effective_ns = effective_sim_ns;
+    motion_intent_sequence = command_sequence;
+    motion_intent_sha256 = intent_sha256;
+    motion_session_sha256 = session_sha256;
+    motion_clock_sha256 = clock_sha256;
+  }
+  void motion_fields(std::ostream &out) const {
+    out << std::boolalpha << ",\"intent_sha256\":\"" << motion_intent_sha256
+        << "\",\"estimator_session_sha256\":\"" << motion_session_sha256
+        << "\",\"clock_id_sha256\":\"" << motion_clock_sha256
+        << "\",\"command_sequence\":" << motion_intent_sequence
+        << ",\"internal_initialized\":" << ready()
+        << ",\"has_moved_since_zupt\":" << has_moved_since_zupt
+        << ",\"motion_intent_applied\":" << motion_intent_applied
+        << ",\"try_zupt\":" << params.try_zupt
+        << ",\"zupt_only_at_beginning\":" << params.zupt_only_at_beginning;
+  }
   void fields(std::ostream &out) {
     out << std::setprecision(17) << std::boolalpha
         << ",\"internal_initialized\":" << ready() << ",\"public_initialized\":" << initialized()
@@ -34,12 +71,35 @@ public:
         << ",\"has_moved_since_zupt\":" << has_moved_since_zupt;
     if (ready()) {
       auto v = state->_imu->value();
+      auto cov = ov_msckf::StateHelper::get_marginal_covariance(state, {state->_imu});
+      if (cov.rows()!=15 || cov.cols()!=15 || !cov.allFinite())
+        throw std::runtime_error("invalid native IMU covariance");
       out << ",\"imu_state\":[";
       for (int i=0; i<v.size(); ++i) { if(i) out << ','; out << v(i); }
+      out << "],\"imu_covariance15\":[";
+      for (int row=0; row<15; ++row) {
+        if(row) out << ',';
+        out << '[';
+        for (int col=0; col<15; ++col) { if(col) out << ','; out << cov(row,col); }
+        out << ']';
+      }
       out << ']';
-    } else out << ",\"imu_state\":null";
+    } else out << ",\"imu_state\":null,\"imu_covariance15\":null";
   }
+
+private:
+  bool motion_intent_applied = false;
+  long long motion_intent_effective_ns = -1;
+  long long motion_intent_sequence = -1;
+  std::string motion_intent_sha256, motion_session_sha256, motion_clock_sha256;
 };
+
+bool is_sha256(const std::string &value) {
+  if (value.size() != 64) return false;
+  for (char character : value)
+    if (!((character >= '0' && character <= '9') || (character >= 'a' && character <= 'f'))) return false;
+  return true;
+}
 
 bool read_header(std::string &header) {
   header.clear();
@@ -79,19 +139,21 @@ int main(int argc, char **argv) {
     while (read_header(header)) {
       std::istringstream row(header);
       char kind; long long seq, sample, arrival, dispatch;
-      if (!(row>>kind>>seq>>sample>>arrival>>dispatch) || (kind!='I' && kind!='C') || seq!=sequence ||
+      if (!(row>>kind>>seq>>sample>>arrival>>dispatch) || (kind!='I' && kind!='C' && kind!='M') || seq!=sequence ||
           sample<=0 || arrival<=0 || dispatch<arrival || dispatch<last_dispatch)
         throw std::runtime_error("invalid packet identity/clock");
       const long long receive=clock_ns();
       if (dispatch>receive) throw std::runtime_error("native receive precedes dispatch");
       std::string extra;
+      std::string intent_sha256, session_sha256, clock_sha256;
+      long long command_sequence=-1;
       double values[6]{};
       cv::Mat gray;
       if(kind=='I') {
         for (double &v:values) if (!(row>>v) || !std::isfinite(v)) throw std::runtime_error("invalid IMU vector");
         if(row>>extra) throw std::runtime_error("extra IMU fields");
         if (sample<=last_imu || (last_imu>=0 && sample-last_imu>4000000)) throw std::runtime_error("IMU regression/gap");
-      } else {
+      } else if(kind=='C') {
         long long count;
         if (!(row>>count) || count!=57600 || row>>extra) throw std::runtime_error("invalid RGB size/fields");
         if (sample<=last_camera || first_imu<0 || sample<first_imu || sample>=last_imu || last_imu-sample>200000000)
@@ -101,10 +163,14 @@ int main(int argc, char **argv) {
         if (std::cin.gcount()!=57600) throw std::runtime_error("truncated RGB payload");
         cv::Mat rgb(120,160,CV_8UC3,pixels.data());
         cv::cvtColor(rgb, gray, cv::COLOR_RGB2GRAY); // owns output; pixels may go out of scope.
+      } else {
+        if (!(row>>command_sequence>>intent_sha256>>session_sha256>>clock_sha256) || row>>extra ||
+            command_sequence!=0 || !is_sha256(intent_sha256) || !is_sha256(session_sha256) || !is_sha256(clock_sha256))
+          throw std::runtime_error("invalid motion intent fields");
       }
       const long long start=clock_ns();
       if (kind=='I') {
-        if (first_imu<0) {first_imu=sample; next_target=sample;}
+        if (first_imu<0) {first_imu=sample; next_target=align_fast_target_ns(sample);}
         last_imu=sample;
         if(manager) {
           ov_core::ImuData data;
@@ -124,7 +190,7 @@ int main(int argc, char **argv) {
           }
           fast.flush();
         }
-      } else {
+      } else if(kind=='C') {
         last_camera=sample;
         if(manager) {
           ov_core::CameraData data;
@@ -134,13 +200,18 @@ int main(int argc, char **argv) {
           data.masks.push_back(cv::Mat::zeros(gray.rows,gray.cols,CV_8UC1));
           manager->feed_measurement_camera(data);
         }
+      } else {
+        if (!manager) throw std::runtime_error("motion intent requires estimator");
+        manager->apply_motion_intent(sample, command_sequence, intent_sha256, session_sha256, clock_sha256);
       }
       const auto end=clock_ns();
       std::ostringstream ack;
       ack << "{\"sequence\":" << sequence << ",\"kind\":\"" << kind << "\",\"sample_ns\":" << sample
           << ",\"receive_ns\":" << receive << ",\"start_ns\":" << start << ",\"end_ns\":" << end
-          << ",\"gray_first\":" << (kind=='C' ? int(gray.at<unsigned char>(0,0)) : -1);
+          ;
+      if (kind!='M') ack << ",\"gray_first\":" << (kind=='C' ? int(gray.at<unsigned char>(0,0)) : -1);
       if (manager && kind=='C') manager->fields(ack);
+      if (manager && kind=='M') manager->motion_fields(ack);
       ack << ",\"fusion_eligible\":false,\"quality\":null,\"reset_counter\":null}";
       if (kind=='C') {states<<ack.str()<<'\n'; states.flush();}
       const auto response=ack.str()+"\n";

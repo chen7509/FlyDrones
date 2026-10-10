@@ -120,28 +120,70 @@ def ack(*, sequence=4, sample_ns=2_400_000_000, acknowledged_ns=10_000_000_000,
         "zupt_flag_latched": False,
         "has_moved_since_zupt": internal,
         "imu_state": [0.0, 0.0, 0.0, 1.0] + [0.0] * 12 if internal else None,
+        "imu_covariance15": (
+            [[1e-3 if row == column else 0.0 for column in range(15)] for row in range(15)]
+            if internal else None
+        ),
         "fusion_eligible": False,
         "quality": None,
         "reset_counter": None,
     }
 
 
-def source_row(sequence=8, arrival=9_999_999_900, observed_sim=2_404_000_000):
+def source_row(sequence=8, arrival=9_999_999_900, observed_sim=2_404_000_000,
+               sample_ns=None, sim_age_at_callback_ns=None):
+    sample_ns = observed_sim if sample_ns is None else sample_ns
+    derived_age = observed_sim - sample_ns
     return {
         "kind": "imu",
         "source_sequence": sequence,
-        "sample_ns": observed_sim,
+        "sample_ns": sample_ns,
         "arrival_monotonic_ns": arrival,
         "observed_sim_ns": observed_sim,
+        "sim_age_at_callback_ns": (
+            derived_age if sim_age_at_callback_ns is None else sim_age_at_callback_ns
+        ),
         "gyro_flu": [0.1, 0.2, 0.3],
         "accel_flu": [0.0, 0.0, 9.81],
     }
 
 
+def test_one_physics_step_sensor_lead_is_causal(tmp_path):
+    gate, _, _ = setup_readiness(tmp_path)
+    row = source_row(observed_sim=3_000_000, sample_ns=4_000_000)
+    gate.observe_ack_batch([ack(sample_ns=4_000_000)], row)
+    assert gate.proof()["estimator_internal"]["sample_ns"] == 4_000_000
+    assert gate.finish()["failure"] is None
+
+
+@pytest.mark.parametrize(
+    "row",
+    [
+        source_row(observed_sim=3_000_000, sample_ns=4_000_001),
+        source_row(
+            observed_sim=3_000_000,
+            sample_ns=4_000_000,
+            sim_age_at_callback_ns=0,
+        ),
+    ],
+)
+def test_invalid_sensor_lead_or_derived_age_refuses(tmp_path, row):
+    gate, _, _ = setup_readiness(tmp_path)
+    with pytest.raises(ValueError, match="simulation clock"):
+        gate.observe_ack_batch([ack(sample_ns=4_000_000)], row)
+    assert gate.failure
+    gate.finish()
+
+
 def source_ready(base, now):
     for kind in ["imu", "rgb", "info"]:
         base.on_record(
-            {"kind": kind, "arrival_monotonic_ns": now, "recorded_monotonic_ns": now},
+            {
+                "kind": kind,
+                "arrival_monotonic_ns": now,
+                "recorded_monotonic_ns": now,
+                **({"observed_sim_ns": 1_000_000_000} if kind == "imu" else {}),
+            },
             None,
         )
     base.on_record(
@@ -151,6 +193,7 @@ def source_ready(base, now):
             "recorded_monotonic_ns": now,
             "system_id": 9,
             "base_mode": 29,
+            "observed_sim_ns": 1_000_000_000,
         },
         None,
     )
@@ -202,6 +245,53 @@ def test_estimator_readiness_requires_causal_internal_camera_ack(tmp_path):
     out = gate.finish()
     assert out["first_internal"] == out["latest_internal"]
     assert out["failure"] is None
+
+
+def test_initializer_handoff_is_valid_but_never_grants_readiness(tmp_path):
+    gate, _, _ = setup_readiness(tmp_path)
+    pending = ack(sequence=600, sample_ns=2_300_000_000, internal=False)
+    pending.update(initializer_time_s=1.304, state_time_s=1.304)
+
+    gate.observe_ack_batch(
+        [pending],
+        source_row(sequence=649, observed_sim=2_304_000_000),
+    )
+
+    assert gate.proof() is None
+    snapshot = gate.snapshot()
+    assert snapshot["first_internal"] is None
+    assert snapshot["latest_internal"] is None
+    assert snapshot["failure"] is None
+    assert gate.finish()["failure"] is None
+
+
+@pytest.mark.parametrize(
+    "mutation",
+    [
+        {"initializer_time_s": -1.0, "state_time_s": 1.304},
+        {"initializer_time_s": 1.304, "state_time_s": 1.305},
+        {"initializer_time_s": 2.301, "state_time_s": 2.301},
+        {"last_regular_update_s": 1.304},
+        {"imu_state": [0.0] * 16},
+        {"imu_covariance15": [[0.0] * 15 for _ in range(14)]},
+        {"public_initialized": True},
+        {"zupt_flag_latched": True},
+        {"has_moved_since_zupt": True},
+    ],
+)
+def test_malformed_initializer_handoff_latches_failure(tmp_path, mutation):
+    gate, _, _ = setup_readiness(tmp_path)
+    pending = ack(sequence=600, sample_ns=2_300_000_000, internal=False)
+    pending.update(initializer_time_s=1.304, state_time_s=1.304)
+    pending.update(mutation)
+
+    with pytest.raises(ValueError):
+        gate.observe_ack_batch(
+            [pending],
+            source_row(sequence=649, observed_sim=2_304_000_000),
+        )
+    assert gate.failure
+    gate.finish()
 
 
 def test_first_internal_is_immutable_and_latest_refreshes(tmp_path):
@@ -341,6 +431,7 @@ def test_estimator_heartbeat_fanout_commits_ack_before_source_readiness(tmp_path
             "recorded_monotonic_ns": now[0],
             "system_id": 9,
             "base_mode": 29,
+                "observed_sim_ns": 1_000_000_000,
         },
         None,
     )
@@ -359,6 +450,88 @@ def test_estimator_heartbeat_fanout_commits_ack_before_source_readiness(tmp_path
     assert fanout.committed == 1 and base.records["imu"]["source_sequence"] == 0
     assert fanout.finish()["profile"] == "ready-shadow-heartbeat-estimator-v1"
     assert readiness.finish()["failure"] is None
+
+
+def queued_heartbeat(sequence=0, now=10_000_000_000):
+    return {
+        "kind": "heartbeat",
+        "arrival_monotonic_ns": now - 100,
+        "observed_sim_ns": 1_507_000_000,
+        "system_id": 9,
+        "base_mode": 29,
+        "custom_mode": 50_593_792,
+        "source_sequence": sequence,
+        "writer_begin_monotonic_ns": now - 90,
+        "recorded_monotonic_ns": now - 80,
+    }
+
+
+def test_estimator_heartbeat_reconciles_without_estimator_sample(tmp_path):
+    """Regression for immutable study-v11 source sequence 426."""
+    from tools.benchmark.estimator_aware_readiness import (
+        EstimatorAwareReadiness,
+        EstimatorJournaledHeartbeatFanout,
+    )
+
+    now = [10_000_000_000]
+    base = JournaledReadiness(clock=lambda: now[0])
+    readiness = EstimatorAwareReadiness(tmp_path, base, clock=lambda: now[0])
+    shadow = AckShadow([])
+    heartbeat_stream = io.StringIO()
+    fanout = EstimatorJournaledHeartbeatFanout(
+        tmp_path,
+        readiness,
+        shadow,
+        clock=lambda: now[0],
+        heartbeat_stream=heartbeat_stream,
+    )
+    queued = queued_heartbeat(now=now[0])
+    raw = {
+        key: value
+        for key, value in queued.items()
+        if key not in {"source_sequence", "writer_begin_monotonic_ns", "recorded_monotonic_ns"}
+    }
+    fanout.observe_heartbeat(raw)
+    fanout.on_record(queued, None)
+
+    result = fanout.finish()
+    assert result["failure"] is None
+    assert result["heartbeat"]["observed"] == result["heartbeat"]["reconciled"] == 1
+    assert result["committed"] == 1
+    assert readiness.snapshot()["latest_internal"] is None
+    assert readiness.finish()["failure"] is None
+
+
+def test_estimator_heartbeat_refuses_native_ack_without_sample_attribution(tmp_path):
+    from tools.benchmark.estimator_aware_readiness import (
+        EstimatorAwareReadiness,
+        EstimatorJournaledHeartbeatFanout,
+    )
+
+    now = [10_000_000_000]
+    base = JournaledReadiness(clock=lambda: now[0])
+    readiness = EstimatorAwareReadiness(tmp_path, base, clock=lambda: now[0])
+    fanout = EstimatorJournaledHeartbeatFanout(
+        tmp_path,
+        readiness,
+        AckShadow([ack()]),
+        clock=lambda: now[0],
+        heartbeat_stream=io.StringIO(),
+    )
+    queued = queued_heartbeat(now=now[0])
+    raw = {
+        key: value
+        for key, value in queued.items()
+        if key not in {"source_sequence", "writer_begin_monotonic_ns", "recorded_monotonic_ns"}
+    }
+    fanout.observe_heartbeat(raw)
+    fanout.on_record(queued, None)
+
+    assert fanout.failure and "heartbeat" in fanout.failure
+    assert fanout.committed == 0
+    assert base.records["heartbeat"]["arrival_monotonic_ns"] == raw["arrival_monotonic_ns"]
+    fanout.finish()
+    readiness.finish()
 
 
 def test_invalid_ack_batch_fails_fanout_before_readiness_commit(tmp_path):
@@ -436,3 +609,62 @@ def test_capture_profile_rejects_incomplete_or_fault_configuration(tmp_path):
         parse_capture_args(complete + ["--reference-fault-profile", "native-pre-epoch-v1"])
     with pytest.raises(SystemExit):
         parse_capture_args(complete[:4])
+
+
+def test_explicit_estimator_session_replacement_accepts_restarted_native_sequence(tmp_path):
+    from tools.benchmark.estimator_aware_readiness import EstimatorAwareReadiness
+
+    now = [10_000_000_000]
+    readiness = EstimatorAwareReadiness(
+        tmp_path,
+        JournaledReadiness(clock=lambda: now[0]),
+        clock=lambda: now[0],
+        session_id="fault-session-0",
+    )
+    readiness.observe_ack_batch(
+        [ack(sequence=7, sample_ns=2_400_000_000, internal=True)],
+        source_row(sequence=11, sample_ns=2_400_000_000),
+    )
+    transition = readiness.replace_session("fault-session-1", reset_total=1)
+    assert transition["previous_session_id"] == "fault-session-0"
+    assert transition["session_id"] == "fault-session-1"
+    assert transition["reset_total"] == 1
+    with pytest.raises(ValueError, match="motion intent"):
+        readiness.motion_intent_state()
+
+    readiness.observe_ack_batch(
+        [ack(sequence=0, sample_ns=8_100_000_000, internal=True)],
+        source_row(sequence=12, observed_sim=8_100_000_000, sample_ns=8_100_000_000),
+    )
+    assert readiness.motion_intent_state()["native_sequence"] == 0
+    snapshot = readiness.snapshot()
+    assert snapshot["session_id"] == "fault-session-1"
+    assert snapshot["reset_total"] == 1
+    assert snapshot["session_replacements"] == 1
+    with pytest.raises(ValueError, match="session"):
+        readiness.replace_session("fault-session-0", reset_total=2)
+    readiness.finish()
+
+
+def test_motion_intent_state_projects_latest_internal_ack(tmp_path):
+    from tools.benchmark.estimator_aware_readiness import EstimatorAwareReadiness
+
+    now = [10_000_000_000]
+    readiness = EstimatorAwareReadiness(
+        tmp_path, JournaledReadiness(clock=lambda: now[0]), clock=lambda: now[0]
+    )
+    value = ack(sequence=7, sample_ns=2_400_000_000, internal=True)
+    readiness.observe_ack_batch(
+        [value], source_row(sequence=11, sample_ns=2_400_000_000)
+    )
+
+    assert readiness.motion_intent_state() == {
+        "kind": "C",
+        "native_sequence": 7,
+        "sample_ns": 2_400_000_000,
+        "acknowledged_ns": value["acknowledged_ns"],
+        "internal_initialized": True,
+        "has_moved_since_zupt": value["has_moved_since_zupt"],
+        "reset_counter": None,
+    }
+    readiness.finish()

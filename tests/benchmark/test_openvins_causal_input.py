@@ -106,17 +106,77 @@ def test_faults_latch_and_never_resume(failure):
         send(s, 1, sample("imu", 4_000_000))
 
 
-def test_silent_source_and_queue_overflow_are_explicit():
+def test_wall_idle_does_not_expire_simulation_pair_and_queue_overflow_is_explicit():
     s = stream()
     send(s, 0, sample("rgb", 2_000_000))
-    assert s.tick(1_250_000_000) == []
-    with pytest.raises(ValueError, match="wait"):
-        s.tick(1_250_000_001)
+    assert s.tick(1_250_000_001) == []
     s = stream()
     for n in range(8):
-        send(s, n, sample("rgb", 2_000_000 + n * 100_000_000))
+        send(s, n, sample("rgb", 2_000_000 + n * 30_000_000))
     with pytest.raises(ValueError, match="capacity"):
-        send(s, 8, sample("rgb", 802_000_000))
+        send(s, 8, sample("rgb", 242_000_000))
+
+
+def test_study_v9_exact_stamp_complement_transitions_before_old_stage_expires():
+    """The exact complementary RGB changes dependency stage before expiry."""
+    s = stream()
+    assert send(s, 0, sample("imu", 1_000_000, wall=26_727_469_680))[0]["kind"] == "imu"
+    assert send(s, 1, sample("info", 2_000_000, wall=28_173_399_627)) == []
+    assert send(s, 2, sample("rgb", 2_000_000, wall=28_432_165_379)) == []
+    actions = send(s, 3, sample("imu", 4_000_000, wall=28_432_743_501))
+    assert [action["kind"] for action in actions] == ["imu", "camera"]
+    assert actions[1]["sample_ns"] == 2_000_000
+    assert actions[1]["rgb_sequence"] == 2 and actions[1]["info_sequence"] == 1
+
+
+def test_study_v16_same_sim_pair_survives_slow_wall_callbacks():
+    s = stream()
+    send(s, 0, sample("imu", 1_000_000, wall=75_113_106_330))
+    info = sample("info", 2_000_000, wall=76_528_630_909)
+    info["observed_sim_ns"] = 3_000_000
+    assert send(s, 1, info) == []
+    assert s.tick(76_822_710_787) == []
+    rgb = sample("rgb", 2_000_000, wall=76_883_730_253)
+    rgb["observed_sim_ns"] = 3_000_000
+    assert send(s, 2, rgb) == []
+    actions = send(s, 3, sample("imu", 4_000_000, wall=76_885_044_839))
+    assert [action["kind"] for action in actions] == ["imu", "camera"]
+    assert actions[1]["release_sim_ns"] == 4_000_000
+
+
+def test_reverse_exact_stamp_complement_uses_the_same_stage_transition():
+    s = stream()
+    send(s, 0, sample("imu", 1_000_000, wall=900_000_000))
+    send(s, 1, sample("rgb", 2_000_000, wall=1_000_000_000))
+    send(s, 2, sample("info", 2_000_000, wall=1_258_765_752))
+    actions = send(s, 3, sample("imu", 4_000_000, wall=1_259_000_000))
+    assert [action["kind"] for action in actions] == ["imu", "camera"]
+    assert actions[1]["rgb_sequence"] == 1 and actions[1]["info_sequence"] == 2
+
+
+def test_paired_stage_waiting_for_imu_is_not_expired_by_wall_idle():
+    s = stream()
+    send(s, 0, sample("imu", 1_000_000, wall=900_000_000))
+    send(s, 1, sample("info", 2_000_000, wall=1_000_000_000))
+    send(s, 2, sample("rgb", 2_000_000, wall=1_200_000_000))
+    assert s.tick(1_450_000_001) == []
+    assert s.finish()[0]["reason"] == "later_imu_missing"
+
+
+def test_simulation_advance_expires_another_unpaired_stamp():
+    s = stream()
+    send(s, 0, sample("info", 2_000_000, wall=1_000_000_000))
+    with pytest.raises(ValueError, match="simulation wait"):
+        send(s, 1, sample("rgb", 253_000_001, wall=1_000_000_001))
+
+
+def test_paired_stage_wall_delay_does_not_change_simulation_contract():
+    s = stream()
+    send(s, 0, sample("imu", 1_000_000, wall=900_000_000))
+    send(s, 1, sample("info", 2_000_000, wall=1_000_000_000))
+    send(s, 2, sample("rgb", 2_000_000, wall=1_258_765_752))
+    actions = send(s, 3, sample("imu", 4_000_000, wall=1_508_765_753))
+    assert [action["kind"] for action in actions] == ["imu", "camera"]
 
 
 def test_end_of_capture_preserves_missing_boundary_and_metadata():
@@ -144,11 +204,11 @@ def test_pending_copy_does_not_follow_external_mutation_and_cross_stream_wall_or
     assert actions[1]["release_wall_ns"] >= original["arrival_monotonic_ns"]
 
 
-def test_newly_enqueued_stale_camera_is_rejected_at_current_watermark():
+def test_newly_enqueued_old_sim_camera_is_rejected_at_current_sim_watermark():
     s = stream()
-    send(s, 0, sample("imu", 1_000_000))
+    send(s, 0, sample("imu", 300_000_001))
     s.tick(2_000_000_000)
-    with pytest.raises(ValueError, match="wait"):
+    with pytest.raises(ValueError, match="simulation wait"):
         send(s, 1, sample("rgb", 2_000_000, wall=1_100_000_000))
 
 

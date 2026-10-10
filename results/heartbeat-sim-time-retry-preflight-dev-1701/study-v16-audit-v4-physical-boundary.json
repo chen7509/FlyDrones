@@ -1,0 +1,12 @@
+{
+  "schema": "heartbeat-simulation-time-physical-retry-audit-v1",
+  "failures": [],
+  "prepare_qualified": true,
+  "physical_execution_qualified": false,
+  "runtime_mapping_coverage_verified": false,
+  "runtime_closure_qualified": false,
+  "vio_accuracy_qualified": false,
+  "estimator_health_qualified": false,
+  "fusion_eligible": false,
+  "flight_ready": false
+}

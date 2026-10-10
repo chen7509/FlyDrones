@@ -1,0 +1,22 @@
+
+=================================== ERRORS ====================================
+_______ ERROR collecting tests/benchmark/test_openvins_online_shadow.py _______
+ImportError while importing test module 'C:\Users\yuche\.codex\worktrees\FlyDrones\track-eligibility\tests\benchmark\test_openvins_online_shadow.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+..\..\..\..\AppData\Local\Programs\Python\Python312\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\benchmark\test_openvins_online_shadow.py:7: in <module>
+    from tools.benchmark.openvins_online_shadow import SourceWatchdog, encode_packet, validate_ack
+tools\benchmark\openvins_online_shadow.py:17: in <module>
+    from tools.benchmark.openvins_causal_input import CausalInput, InputRefusal
+tools\benchmark\openvins_causal_input.py:10: in <module>
+    from tools.benchmark.disarmed_sensor_provenance import validate_event
+tools\benchmark\disarmed_sensor_provenance.py:18: in <module>
+    from flydrones.benchmark.camera_info_capture import CameraInfoRecorder
+E   ModuleNotFoundError: No module named 'flydrones.benchmark'
+=========================== short test summary info ===========================
+ERROR tests/benchmark/test_openvins_online_shadow.py
+!!!!!!!!!!!!!!!!!!! Interrupted: 1 error during collection !!!!!!!!!!!!!!!!!!!!
+1 error in 1.64s

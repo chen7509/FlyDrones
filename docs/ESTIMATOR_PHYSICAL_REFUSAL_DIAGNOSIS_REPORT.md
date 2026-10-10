@@ -1,0 +1,612 @@
+# Estimator Physical Refusal Diagnosis Report
+
+## Outcome
+
+The first estimator-aware physical study did not reach motion or VIO scoring. It failed closed at simulation time 10 ms after 26.700906317 s wall time. The vehicle remained unarmed, support and lateral force counts were zero, fusion remained false, and no ULog was produced. The owned PX4 process ultimately required SIGKILL even though the post-run resource scan was empty.
+
+This result is a harness/runtime-evidence failure. It is not evidence that OpenVINS accuracy failed, and it is unrelated to fruit-fly training, weights, loss, decision quality, or swarm policy.
+
+## Confirmed defects
+
+The readiness failure was a contract mismatch. The source record contained `sample_ns=4000000`, `observed_sim_ns=3000000`, and `sim_age_at_callback_ns=-1000000`. The producer's established provenance contract permits this one-step lead, but estimator-aware readiness rejected every `source_sample > observed_sim`. New RED tests reproduced the physical record and two invalid cases. The implementation now requires an exact derived age, permits at most 1,000,000 ns lead, and still rejects future wall arrival and larger or inconsistent simulation leads. The focused file now has 23 passing tests; changed-file Ruff and `git diff --check` pass.
+
+The runtime-binding failure is independent. Bootstrap, imports, finalize, and OpenVINS-ready mappings were covered. The first Gazebo renderer step introduced 24 mappings. Twenty-three are shared libraries owned by installed Ubuntu packages covering OGRE-Next, LLVM/Mesa, DRM, EGL/GL, XCB/X11, Wayland, sensors, edit, ELF, and PCI access. The remaining path, `~/.cache/mesa_shader_cache/index`, is mutable runtime data and must not be added to the immutable declared-file set.
+
+## Isolated renderer diagnosis
+
+Seven retained probe attempts narrowed the first-render-step contract without PX4, OpenVINS, force application, training, or flight. The first three attempts exposed evidence-order and path-shadowing defects. Attempt four showed two anonymous deleted SYSV mappings inherited from the ambient display environment. Attempt five removed those mappings with the exact declared child environment and `MESA_SHADER_CACHE_DISABLE=true`, but revealed 25 additional libraries that had already been frozen in the historical baseline and merely loaded at a different phase. Attempt six correctly rejected duplicate resolved identities assigned to multiple declared roles. Attempt seven accepted role aliases while still comparing exact resolved identities.
+
+`renderer-probe-v7` completed exactly ten 1 ms simulation steps. The first render step took 3.046523781 s wall time and produced one RGB image, one depth image, one camera-info record, and three IMU records. It added the same 23 historical renderer libraries plus 25 exact files already present in the frozen baseline; the Mesa disk-cache path was absent. Package ownership, version, architecture, installation status, file hashes, and copyright-file hashes were retained for every added mapping. The owned process group exited without SIGKILL and was absent after reap. The independent audit has no failures.
+
+This qualifies only the isolated renderer mapping closure under the prospectively declared environment. It does not qualify the complete capture runtime closure, physical execution, VIO accuracy or health, fusion, EKF2 injection, or flight. Disabling Mesa's mutable on-disk cache preserves rendering, physics, sensor rates, and image size; it is an evidence-stability setting rather than a capacity or RTF optimization.
+
+## Corrected prepare-only package
+
+The first prepare invocation failed before creating an output because the consumed `study-v2` directory also contained its two retained supervisor files. The validator now accepts exactly the original six source files plus those two known post-run files and still rejects every other file.
+
+The generated `study-v3` package was rejected twice. The first rejection found that independently recomputed monotonic snapshot timestamps cannot be byte-equal to the original scan. After the auditor was corrected to compare all binding content while validating the recorded clock interval separately, the package correctly failed again because its frozen auditor hash and file snapshot predated that code change. `study-v3` and both failed audits remain retained.
+
+The unchanged, stabilized code then generated `study-v4`. Its first audit observed a transient NTFS/WSL metadata mismatch; a second audit, without modifying any package member, passed with no failures. `study-v4` contains exactly seven files, has no `capture-v1` directory, and preserves the original 25 s duration, 1 ms physics step, 250 Hz raw IMU, 10 Hz 160×120 RGB-D stream, motion profiles, vehicle, force profile, watchdogs, OpenVINS inputs, and safety limits. The only launch-environment addition is `MESA_SHADER_CACHE_DISABLE=true`. The manifest hash is `182eb4df8c309601e24ee118a50e4af844f2f414472eb775638fb9e9c30108b7`; its runtime-binding hash is `490c9b05f1801b631fdc2da560bb7e031ec5cb06e529ba09651cbd70619f114f`.
+
+The passing audit qualifies `study-v4` only as a prepare-only package. `physical_execution_qualified`, `runtime_mapping_coverage_verified`, `runtime_closure_qualified`, `vio_accuracy_qualified`, `estimator_health_qualified`, `fusion_eligible`, and `flight_ready` all remain false. No generated command was executed in this stage.
+
+Verification completed with 87 focused tests passing and the full repository suite at 1,426 passed, 3 skipped, and 2 existing warnings. Changed-file Ruff, Python bytecode compilation, and `git diff --check` passed. The final active-resource scan was empty. The evidence archive contains 81 members, is 455,586 bytes, and has SHA-256 `d80ef0845908e3b8cac90a53e816a6657b44cc9de31e2f4aeb5e582e805fbe0b`. It includes all seven renderer attempts, retained prepare/audit failures, the passing package/audit, selected original physical-refusal records, source/tests, and verification outputs.
+
+## Current qualification
+
+- Timestamp false-positive: fixed in code and focused tests.
+- Renderer first-step mapping closure: qualified only for the isolated ten-step probe under its exact declared environment.
+- Corrected next-run package: `study-v4` prepare-only audit passed; physical execution has not started.
+- Physical execution, runtime closure, VIO accuracy/health, quality/reset/covariance, fusion, EKF2 injection, flight, and fruit-fly learning: not qualified by this run.
+- The failed `study-v2/capture-v1` remains immutable. A future attempt must use a new audited package and destination.
+
+## Execution-entry refusal and single capture attempt
+
+The first dispatch wrapper stopped before writing a dispatch record because WSL could not resolve the Windows worktree Git pointer. A second `study-v4` dispatch reached the capture CLI but was rejected before creating its destination: adding `MESA_SHADER_CACHE_DISABLE` to the binding made the old exact environment-schema validator reject the package. Neither event started PX4, Gazebo, OpenVINS, or a physical capture.
+
+The binding validator was changed to accept only the optional value `MESA_SHADER_CACHE_DISABLE=true`, while retaining compatibility with old declarations and rejecting arbitrary renderer variables. The prepare builder and its independent auditor now invoke the real `validate_binding` execution entry. `study-v5` passed two audits, including one after committing the fix.
+
+The single allowed actual attempt then created `study-v5/capture-v1` and failed closed during `RuntimeBinding.start`: the runtime comparison projected only the legacy environment keys and omitted the now-declared Mesa key. The capture audit has no failures. No TestFixture, PX4 process, OpenVINS worker, force, motion, ULog, VIO input, or fusion was produced. The worker exited 2; the original owned process group was reaped without SIGKILL, with no executing members and no remaining resources. This is another startup harness-contract failure and says nothing about VIO accuracy or fruit-fly learning.
+
+A RED test reproduced the optional-key mismatch. `RuntimeBinding.start` now compares exactly the keys in the validated binding declaration; 26 binding tests pass. The failed capture is immutable and will not be rerun under this stage. A future physical attempt requires a separately named, newly frozen package and plan; the current verified fix alone is not evidence of physical execution.
+
+Post-attempt verification has 113 focused tests passing and changed-file Ruff passing. The second immutable evidence archive contains 43 members, is 778,777 bytes, and has SHA-256 `93e4bfd4c4d87bfdfa74b9453d749c7cd49c65595b90b494352bee65ebe159f7`. It includes the first evidence ZIP, both pre-dispatch refusals, the full `study-v5` package and failed capture, supervisor journal, cleanup and ULog evidence, independent capture audit, the RED/GREEN fix, and post-attempt tests.
+
+The final full repository regression after the runtime comparison fix reports 1,428 passed, 3 skipped, and the same 2 existing warnings. A five-member verification archive containing the attempt archive, full test output, final fix and test has SHA-256 `cfbede041e5bcc75aac68e1e6f1dd9ab77d5a0f26da43ce3135f1a4fd3eff02a` and size 778,538 bytes.
+
+## Real capture-CLI startup preflight
+
+The next gate now uses the production capture parent and worker instead of reimplementing their validation. An opt-in `--startup-preflight` flag requires the execution contract, runtime binding, and trajectory policy; the parent forwards it through the existing owned-group supervisor. The worker performs the ordinary pinned binary/archive checks, active-resource check, scene extraction, runtime input creation, environment recording, generated-file validation, SDK resource queries, local graph construction, and `RuntimeBinding.start`. It returns before importing `TestFixture` or starting PX4, OpenVINS, ULog collection, force, or motion.
+
+`study-v6/startup-preflight-v1` returned zero. Its binding pre-record was written, declared files remained stable, and the local resource graph verified. Only `postgraph` and `bootstrap` self phases ran; PX4 and OpenVINS owned phases are empty and full runtime mapping coverage remains false. The supervisor exited zero, used no SIGKILL, reaped the original group, and the final resource scan was empty. The independent audit has no failures and explicitly keeps physical execution, runtime closure, VIO accuracy/health, fusion, and flight false.
+
+After adding the final CLI guard that refuses startup preflight without all three declarations, commit `84327d7` generated `study-v7`. Its prepare-only audit passed, and the current committed capture CLI repeated the non-physical startup preflight at the new `study-v7/startup-preflight-v1` destination. The second independent audit also has no failures, confirms no PX4/OpenVINS/physics files, and leaves all downstream qualifications false. `study-v7` is the authoritative current-code startup package; no physical target was started from it.
+
+Final verification for this gate has 140 focused tests passing and the full repository suite at 1,430 passed, 3 skipped, and the same 2 existing warnings. The 86-member evidence archive is 1,411,658 bytes with SHA-256 `98d41ab3736eea00c423606e928682005932e9a8e5e0ab0ad9b0838c1dc4a68b`; it contains the prior attempt evidence, current package, complete preflight output and supervisor journal, independent audit, source/tests/spec/plan, and final test logs.
+
+## Startup-authorized physical retry
+
+The startup evidence was bound into a new prepare-only `study-v8` package and independently audited before execution. Its execution contract retained the 25 s duration, 1 ms physics step, 250 Hz raw IMU, 10 Hz 160×120 RGB-D stream, original supported-motion profile, 300 s worker/supervisor limits, 2 s source watchdogs, frozen OpenVINS inputs, safety limits, and `MESA_SHADER_CACHE_DISABLE=true`. The package and post-commit audit passed before a destination existed.
+
+Exactly one new target, `study-v8/capture-v1`, was then run. It passed the previously failing startup gates and actually started Gazebo, PX4 and the pinned OpenVINS process. It failed closed at simulation time 10 ms after 27.082512718 s capture wall time. No support or lateral force was applied, the motion anchor remained unset, absolute impulse was zero, fusion remained false, no ULog was produced, and no VIO accuracy result exists. The worker-owned PX4 process required SIGKILL. The outer supervisor itself sent no group SIGKILL, observed only the exited leader zombie, reaped it, and recorded an empty original process group; the independent post-run scan was also empty. These two cleanup facts are reported separately and do not imply all escaped descendants were covered.
+
+The immediate refusal is exact and reproducible from the retained clocks. The causal input contract has a fixed 250,000,000 ns pending wall-wait limit. CameraInfo for the 2 ms frame arrived at monotonic 66,678,238,723 ns; RGB arrived 227,335,041 ns later. The next strictly later 4 ms IMU arrived only 948,721 ns after RGB, so the required boundary existed at the source. While RGB was being fanned out, `ShadowInput` called the causal scheduler's explicit wall-clock tick after local processing. Failure latched at 66,947,892,850 ns: CameraInfo had then been pending for 269,654,127 ns, 19,654,127 ns beyond the limit. The later IMU had already arrived 41,370,365 ns before failure but its writer processing began 906,445 ns after the failure latch. Thus the source record was available, while callback/recording/fan-out scheduling prevented it from being consumed before the development transport deadline.
+
+This evidence qualifies the failure classification only: `causal-input-wall-deadline-platform-scheduling-refusal`. It is not the 2 s source-health watchdog, an OpenVINS accuracy result, a fruit-fly learning or decision failure, or evidence about swarm performance. The fixed 250 ms limit was originally specified as a development transport refusal threshold, and the exact-boundary unit test remains valid. The next stage must use retained fixed inputs to decide whether `tick(now)` should include local consumer processing time or represent only absence of new source arrivals. It must preserve a real silent-source expiry and may not simply increase or disable the limit. No new physical run is authorized by this diagnosis.
+
+The independent attempt auditor has nine passing normal/fault cases and reports no failures on the immutable capture. It verifies the exact refusal, zero motion/force, closed fusion/VIO gates, absent ULog, complete self runtime phases through `postfirststep`, OpenVINS `ready`/`prestop` mappings, missing PX4 owned mappings, worker PX4 SIGKILL, outer-supervisor drain, and empty post-run resources. All physical execution, runtime closure, VIO accuracy/health, fusion, flight, and fruit-fly-policy qualifications remain false.
+
+Post-attempt verification reports 29 focused audit/causal-input tests passing and the full repository suite at 1,444 passed, 3 skipped, with the same 2 existing warnings. Changed-file Ruff, bytecode compilation, and `git diff --check` pass. No simulator, estimator, PX4, or training process was started by these verification steps.
+
+The immutable attempt evidence archive contains 134 members, is 744,546 bytes, and has SHA-256 `2d6e568f93f313f90e444e88414b0cf807a8153aec8fd32fbec7c2bf39568f06`. It includes the complete `study-v8` package and failed capture, dispatch/completion records, independent audit and timing diagnostic, supervisor/ULog/runtime evidence, source/tests, and verification outputs. This final archive statement postdates the report copy inside the archive; the archive itself is unchanged.
+
+## Fixed-input causal deadline correction
+
+The original specification and implementation were compared against the immutable `study-v8` clocks before editing. `CausalInput.accept()` already advances its watermark from captured source-arrival timestamps and expires a pending record when a newly observed source arrival crosses 250 ms. The public `tick()` separately advances wall time for explicit source-silence checks. `ShadowInput.on_record()` additionally called `tick(time.monotonic_ns())` after local record/native handling. That extra call made service time look like source absence and caused the physical refusal even though the later IMU had already reached the source queue.
+
+A deterministic test reproduces the retained clocks. Before correction, it fails on RGB with `pending input exceeded wall wait`; the RED output is preserved. The implementation removes only that post-service tick. For actual source silence, `CaptureWriter` now calls an idle hook from the same owner thread only after a timed queue wait and locked empty-FIFO recheck. That hook advances the explicit causal tick through the fan-out; refusal is journaled, latched and blocks later pre-step force. Queued records are therefore consumed before an idle tick. The change does not alter the 250 ms pending limit, 200 ms image/IMU lag, 4 ms IMU-gap limit, queue capacities, 2 s native/fan-out/source-health limits, failure latch, FIFO order, reset/quality fields, or fusion permissions.
+
+The corrected fixed replay consumes the original `events.jsonl` with SHA-256 `07b07a241359f8fc710115ee5115aa2962db9da0fe97d7b75f05a3f92ed91278`. Six source records contain five estimator-relevant inputs. They produce exactly four native actions: 1 ms IMU, 4 ms IMU, one 2 ms camera released by that strictly later 4 ms boundary, and 8 ms IMU. The original RGB bytes retain SHA-256 `0111bab72571dd185bf87e426dc5cb858ae9a0aed7074392074211bbdb345b98`. No post-service clock call occurs. A separate online-adapter case whose **source arrival** crosses 250 ms still latches the refusal, while direct explicit-silence tests continue to pass at exactly 250 ms and fail at 250 ms plus 1 ns.
+
+This is a fixed-input scheduling correction only. It starts no simulator, PX4, OpenVINS process, training or flight, and it does not retroactively qualify `study-v8`, VIO accuracy/health, runtime closure, fusion, EKF2 or fruit-fly policy behavior. The relevant input, online-shadow, writer, fan-out and capture-contract suite reports 152 passing tests. The full repository suite reports 1,449 passed, 3 skipped and the same 2 existing warnings. A new physical attempt requires another prospectively frozen package after evidence sealing; the failed capture remains immutable.
+
+The sealed correction archive contains 46 members, is 774,443 bytes, and has SHA-256 `ec064cda89c8cc1549b9e188c5ab7a57daaccae46d888bfd36b2d4557fef8add`. It contains the prior immutable attempt archive, exact consumed sensor/image records, RED and GREEN tests, fixed replay v2, audit v2, source/tests/spec/plan and verification outputs. This archive statement postdates the report member inside the archive; the archive itself is unchanged.
+
+## Corrected retry package
+
+A new builder consumes the immutable `study-v8` failed attempt, its completion and independent audit, plus the sealed causal-deadline correction. It refuses any workload drift or positive downstream claim, recomputes current source hashes, and creates a fresh destination. The first invocation stopped before creating an output because audit-v2 did not explicitly contain `runtime_mapping_coverage_verified=false`; that omission was not interpreted as a pass. Audit-v3 adds the explicit false field without changing code or the sealed correction archive, and the failed prepare output remains retained.
+
+The second invocation created prepare-only `study-v9`. Its independent audit has no failures. The package retains the 25 s duration, 1 ms physics step, 250 Hz raw IMU, 10 Hz 160×120 RGB-D stream, original motion/force/safety contracts, 300 s process limits, fixed OpenVINS/native inputs and launch environment. It binds the current deadline-correction code and evidence and points only to the new `study-v9/capture-v1` destination. No capture directory exists, no simulator or estimator was started, and every physical/runtime/VIO/fusion/flight qualification remains false.
+
+Commit `bd4f55e` was then audited again from the committed tree with no failures. Two startup wrapper mistakes were retained rather than hidden: WSL could not initially resolve the Windows worktree pointer, and a second wrapper invocation failed to propagate the selected head into WSL. Both stopped before a destination or dispatch record existed, started no physical process, and left the resource scan empty.
+
+The corrected wrapper ran the production capture parent and worker with `--startup-preflight` at the fresh `study-v9/startup-preflight-v1` destination. It returned zero and completed only the local graph, `postgraph`, and `bootstrap` phases. Runtime binding was recorded before startup, declared files remained stable, and the local graph verified. PX4 and OpenVINS owned phases stayed empty; no physics trace, ULog, motion, force, estimator session, or fusion output was created. The supervisor journal matches its in-memory events, sent no SIGKILL, reaped the original process group, and the post-run resource scan is empty. This cleanup claim is limited to that owned original group and does not qualify escaped descendants.
+
+The independent startup audit has no failures and explicitly keeps physical execution, full runtime mapping, runtime closure, VIO accuracy and health, fusion, flight, and fruit-fly-policy behavior false. This establishes that the corrected package reaches the last non-physical gate on the current committed code. It does not itself authorize a success claim for the pending physical target.
+
+The first final regression command inherited `PYTHONPATH` from another worktree and stopped during collection with 60 import errors; that output is retained as an environment failure. Re-running with `PYTHONPATH` explicitly bound to this worktree completed with 1,465 passed, 3 skipped, and the same 2 existing warnings in 236.16 s. Changed-file Ruff and `git diff --check` pass. Clean Windows and WSL resource scans contain no PX4, Gazebo, OpenVINS, capture, training, or test process. The 125-member startup evidence archive is 1,439,939 bytes with SHA-256 `72ddd116aa41c20218ef5a9878e56f776022da9d09b8ff045216abf5e0efe804`; CRC and every recorded member hash verify. This archive statement postdates the report member inside the archive, and the archive itself is unchanged.
+
+## Corrected physical retry result
+
+Exactly one new target, `study-v9/capture-v1`, was run after the committed-tree and startup audits passed. It reached Gazebo, PX4, the fixed OpenVINS worker, and the first physics steps, then failed closed again at simulation time 10 ms. No support or lateral force was applied, the motion anchor remained unset, absolute impulse was zero, no ULog or VIO accuracy result exists, and fusion remained false. The capture is immutable and will not be repeated.
+
+This refusal is different from the `study-v8` local-service-time defect. CameraInfo and RGB for the same 2 ms frame reached the source at 28,173,399,627 ns and 28,432,165,379 ns. Their 258,765,752 ns source-arrival gap exceeded the unchanged 250 ms pending limit by 8,765,752 ns. The later 4 ms IMU reached the source 578,122 ns after RGB and 32,809,456 ns before the failure latch, but its writer processing began after the latch. The corrected code no longer performs a post-service tick; `CausalInput.accept` itself advances the source-arrival watermark and expires the pending CameraInfo before inserting the complementary RGB.
+
+The independent attempt audit has no failures and classifies this as `causal-input-same-stamp-pair-source-arrival-deadline-refusal`. It is a WSL/source callback scheduling and pairing-contract failure, not the 2 s source-health watchdog, OpenVINS accuracy, fruit-fly training, weights, loss, decision logic, or swarm behavior. The worker-owned PX4 required SIGKILL. The outer supervisor sent no group SIGKILL, reaped its original owned process group, and the post-run resource scan was empty; escaped descendants remain outside that claim.
+
+The next stage must use the retained fixed input to define whether a same-stamp complementary item may complete an existing pair after the pending interval has crossed 250 ms while still preserving true source-silence, missing-pair, stale, sequence, capacity, IMU-boundary, and latched-failure rejection. Raising or disabling the limit is not an acceptable fix. No new physical run is authorized by this result. Physical execution qualification, full runtime mapping and closure, VIO accuracy and health, quality/reset/covariance, fusion, EKF2 injection, flight, and fruit-fly policy evaluation all remain false.
+
+The immutable attempt archive contains 201 members, is 2,718,066 bytes, and has SHA-256 `446324db06388601ba689e0125398cf15e3c0bdb5cf63c2220bdc74297e981fd`. It contains the complete `study-v9` package, startup preflight, failed physical capture, source events and payloads, dispatch/completion/supervisor records, exact timing audit, clean post-run resource scans, previous correction/preflight evidence, and the last full regression output. CRC and every recorded member hash verify. This archive statement postdates the report member inside the archive; the archive itself is unchanged.
+
+## Fixed-input camera-pair stage correction
+
+The retained `study-v9` input was used to isolate the dependency-stage semantics without starting Gazebo, PX4, OpenVINS, training, or a new physical capture. ROS 2 `message_filters` ExactTime and the fixed OpenVINS camera/IMU queue were reviewed as upstream references. Their exact-stamp grouping and strictly-later-IMU behavior were adopted as semantics only; no ROS dependency was added and the pinned OpenVINS binary was not changed. Versions, licenses, maintenance metadata, source snapshots, and rejection reasons for looser arrival-time alternatives are retained with the evidence.
+
+The scheduler now treats an unmatched RGB or CameraInfo and an exact-stamp RGB+CameraInfo pair as two bounded dependency stages. The unmatched stage starts at the single record's captured source arrival. Its exact-stamp complement may complete that stage before expiry is evaluated for that stamp; all unrelated stamps still expire normally. Once paired, the same unchanged 250,000,000 ns limit starts at the later pair arrival while the pair waits for an actually consumed strictly-later IMU. IMU input and explicit idle ticks receive no exemption. The exact boundary remains valid and one nanosecond beyond it fails and latches. Queue sizes, FIFO/source sequence, calibration and resolution checks, 200 ms image/IMU sample lag, 4 ms IMU gap, 2 s watchdogs, reset/quality fields, rollback, and closed fusion gates are unchanged.
+
+RED tests reproduced the original 258,765,752 ns same-stamp source gap and the independent replay auditor initially failed to detect modified CameraInfo bytes; both failures are retained. The corrected fixed replay consumes the immutable six source rows and emits exactly four actions: the 1 ms IMU, 4 ms IMU, one 2 ms camera using source RGB sequence 3 and CameraInfo sequence 1 with the consumed 4 ms IMU boundary, and the 8 ms IMU. The original RGB bytes retain SHA-256 `0111bab72571dd185bf87e426dc5cb858ae9a0aed7074392074211bbdb345b98`. The independent audit now also reads and hashes the original CameraInfo protobuf and rejects payload changes, reordered input, altered limits, action changes, physical artifacts, or any positive downstream qualification.
+
+Verification reports 62 focused tests passing, then the full repository suite at 1,479 passed, 3 skipped, with the same 2 existing warnings. Changed-file Ruff and `git diff --check` pass. This qualifies only the fixed-input pairing correction. It does not qualify physical execution, runtime closure, VIO accuracy or health, quality/reset/covariance, fusion, EKF2 injection, flight, or fruit-fly policy behavior. The failed physical capture remains immutable, and this stage does not authorize another physical attempt.
+
+The sealed evidence archive contains 49 members, is 2,737,296 bytes, and has SHA-256 `e6cc10331d4a466365d6508440c008700d070d2f6f9d7c9982098364dbcf8d14`. CRC and every manifest member hash verify. It includes the immutable physical-attempt archive, exact source events and camera payloads, upstream snapshots, RED/GREEN evidence, fixed replay and audit, source/tests/spec/plan, report, and full verification output. This archive statement postdates the report member inside the archive; the archive itself is unchanged.
+
+## Causal-pair retry prepare-only and startup preflight
+
+A new builder now accepts only the immutable `study-v9/capture-v1` refusal with its exact `causal-input-same-stamp-pair-source-arrival-deadline-refusal` classification, fixed 250,000,000 ns limit, 258,765,752 ns same-stamp gap and 8,765,752 ns excess. It also pins the pair-stage evidence archive by filename and SHA-256, verifies ZIP CRC, unique member names, the manifest count, every member size/hash, and byte identity of the independent fixed-replay audit. It rejects any positive downstream claim, modified timing, wrong completion destination, active competing resource, existing output, or workload drift.
+
+The resulting `study-v10` package is prepare-only. It copies the previous trajectory, lazy-runtime, estimator-readiness, physical-refusal, startup-authorization and deadline-correction contracts, adds the pair-correction authorization, and recomputes the complete runtime-binding baseline. Its independent audit passed before and after commit `8558081e95d7b25d292709ad34df624c320a034b`. The execution contract remains 25 s, 1 ms physics, 250 Hz raw IMU, 10 Hz 160×120 RGB-D, the same vehicle/OpenVINS/native inputs, supported-motion and force profiles, 300 s worker/supervisor budgets, 2 s watchdogs, launch environment, safety limits and closed fusion gates. The physical `study-v10/capture-v1` destination does not exist.
+
+Exactly one production `--startup-preflight` was then run at the separate `study-v10/startup-preflight-v1` destination. It returned zero, recorded a stable declared-file baseline and verified the local resource graph. Runtime phases are exactly `postgraph` and `bootstrap`; PX4 and OpenVINS owned phases are empty. No TestFixture physics trace, PX4 process/log/ULog, OpenVINS session, sensor event stream, motion, force, ODOMETRY, arming, or fusion artifact exists. The owned original process group exited without SIGKILL, was absent after leader reap, and the disk event journal matches the in-memory cleanup events. This cleanup claim does not cover descendants that escaped the owned session.
+
+The reusable startup-preflight auditor was developed with RED/GREEN tests and re-ran from committed head `329eaab` against the launch made at `8558081`; it reports no failures. Windows and WSL post-run scans are empty. Final verification reports 72 targeted tests passing and the full repository suite at 1,504 passed, 3 skipped, with the same 2 existing warnings. Changed-file Ruff, bytecode compilation and `git diff --check` pass.
+
+This stage qualifies only the prepare-only declaration and non-physical startup path. Physical execution, complete runtime mapping/closure, VIO accuracy and health, quality/reset/covariance, fusion, EKF2 injection, flight, and fruit-fly learning or swarm behavior remain unqualified. No physical retry was launched.
+
+The sealed stage archive contains 120 members, is 3,395,644 bytes, and has SHA-256 `4616e031ac0417a4f84304a104f73ad981ac0d2efb6da8c6097e4e22378ef12e`. ZIP CRC, manifest count and every member size/hash verify. It contains the prior pair-stage archive, complete `study-v10` package and startup-preflight result, dispatch/completion/supervisor/resource evidence, both independent audits and committed-tree contexts, RED/GREEN tests, full regression output, source/tests/spec/plan and report. This archive statement postdates the report member inside the archive; the archive itself is unchanged.
+
+## Causal-pair physical attempt and heartbeat-routing correction
+
+The post-startup package audit correctly refused `study-v10` after the auditor itself changed, so no `study-v10/capture-v1` destination was created. With no further code drift, a fresh `study-v11` package passed its prepare-only audit, the production startup preflight returned zero, and the package passed the post-startup audit. Exactly one immutable physical target, `study-v11/capture-v1`, was then dispatched. It will not be overwritten or retried.
+
+The attempt progressed to simulation time 1.520 s and retained a 366,069-byte valid ULog with SHA-256 `4022c83abf1a1ad93a4d4cfa08fcfe8a8c027729e00a621ac0174bf6b42d726c`. PX4 and the native worker exited zero. The capture recorded 381 IMU samples, 16 RGB/CameraInfo/depth groups, one observed unarmed heartbeat, 1,518 native-reference cycles and 3,036 pre/post physics rows. The owned original process group required no SIGKILL and was absent after leader reap; this does not qualify descendants outside that group.
+
+The run failed closed before its motion anchor. Support, lateral force and recorded force commands are all zero, fusion remained false, and no VIO accuracy score exists. Source sequence 426 is the first queued heartbeat. Its independent observation has system ID 9, base mode 29 and simulation time 1.507 s, but correctly has no estimator `sample_ns`. The shadow route returned, while the readiness route was not attempted. `EstimatorJournaledHeartbeatFanout._after_shadow` passed the heartbeat and an empty acknowledgement batch to `EstimatorAwareReadiness.observe_ack_batch`, which requires a sampled sensor attribution and raised `invalid source sample`. The heartbeat therefore remained observed but unreconciled.
+
+The independent immutable-capture audit passes all fourteen checks and classifies the result as `estimator-ack-routing-heartbeat-without-sample-refusal`. It verifies the source hash, exact routing disposition, zero motion/force, blocked fusion, valid retained ULog, PX4 exit, owned-group reap and limited cleanup scope. This is a harness routing defect. It is not a fruit-fly learning, training, weights, loss, VIO accuracy, PX4 dynamics or swarm-policy failure.
+
+The fixed-input correction keeps estimator acknowledgement validation strict for sampled sources. A heartbeat now bypasses only the estimator-ack attribution hook and continues through the existing independent observation/reconciliation lane. If the shadow ever reports a native acknowledgement batch for a heartbeat, the fan-out refuses it because the acknowledgement has no legitimate sampled-source attribution. The correction does not invent a timestamp, substitute heartbeat simulation time, change any watchdog, weaken source identity, alter OpenVINS, or open the fusion gate.
+
+Two RED tests reproduce the exact unsampled heartbeat refusal and the inverse invalid-ack case. The corrected estimator-readiness file has 25 passing tests; the correction plus independent audit has 33 passing tests. Changed-file Ruff passes. The full repository suite reports 1,515 passed, 3 skipped and the same 2 existing warnings in 245.03 s. No simulator, PX4, OpenVINS process, training or physical retry was started during diagnosis and verification.
+
+This stage qualifies only the fixed-input failure classification and heartbeat/estimator routing correction. The physical run remains failed and immutable. Complete 25 s physical execution, runtime closure, VIO accuracy and health, quality/reset/covariance, fusion, EKF2 injection, flight, multi-vehicle expansion and fruit-fly policy comparison remain unqualified. Any future attempt requires a new prepare-only study, committed-code audit, separate production startup preflight and a new destination.
+
+The sealed evidence archive contains 230 members, is 5,576,226 bytes, and has SHA-256 `e3a339d93bf7864919bd2733a890669ff85288d05941e6eb56ea2b3b50320017`. ZIP CRC and every manifest member size/hash verify. It contains the prior prepare/preflight archive, complete `study-v11` package, startup preflight and immutable physical capture, dispatch/completion/supervisor records, full sensor/native/reference/runtime/ULog evidence, independent routing audit, RED/GREEN tests, source/tests/spec/plan and full regression output. This statement postdates the report member inside the archive; the archive itself is unchanged.
+
+## Estimator-heartbeat retry package and startup preflight
+
+The new prepare-only builder accepts only the immutable `study-v11/capture-v1` routing refusal, the passing `estimator-heartbeat-routing-audit-v1`, the exact physical completion record and `evidence/estimator-heartbeat-routing-dev-1701.zip` with SHA-256 `e3a339d93bf7864919bd2733a890669ff85288d05941e6eb56ea2b3b50320017`. It verifies the archive CRC, unique names, stage/schema, manifest count, every member size/hash and byte identity of the archived audit. Wrong classification, motion/fusion drift, missing ULog, destination/resource drift, renamed or changed archives, positive claims and unknown package members are rejected.
+
+The first generated `study-v12` passed its initial audit. Ruff then normalized only the declared builder's import block. A second audit correctly rejected `study-v12` with `binding baseline`; the package and both audits are retained, and it was not modified or started. After the code stabilized, fresh `study-v13` passed its prepare-only audit before and after commit `7a559e8b6f5b683c821c3ff22c04adfe68af0e78`.
+
+`study-v13` retains the original 25 s simulation, 1 ms physics step, 250 Hz raw IMU, 10 Hz 160×120 RGB-D stream, vehicle, gravity, supported-motion and force profiles, 200 ms future anchor, 8 s readiness bound, unchanged 250 ms causal dependency stages, 2 s source/native/fan-out watchdogs, 300 s worker/supervisor budgets, pinned OpenVINS/native inputs and all safety limits. Its physical `capture-v1` does not exist, and all physical/runtime/VIO/fusion/flight claims remain false.
+
+Exactly one production startup preflight ran at `study-v13/startup-preflight-v1`. It returned zero and completed only local resource graph, `postgraph` and `bootstrap` work. PX4 and OpenVINS owned phases are empty. It produced no physics trace, source event stream, PX4 log or ULog, OpenVINS session, motion, force, ODOMETRY, arming or fusion artifact. Its original owned process group exited without SIGKILL and was absent after leader reap; disk and in-memory supervisor events match. This cleanup statement does not cover descendants outside that owned group.
+
+The independent startup audit and post-startup package audit both have no failures. Final Windows and WSL resource scans are empty. Verification reports 74 focused tests passing and the full repository suite at 1,538 passed, 3 skipped and the same 2 existing warnings in 236.64 s. Changed-file Ruff and `git diff --check` pass.
+
+This qualifies only the new prepare-only package and production startup-preflight path. It does not qualify physical execution, complete runtime mapping or closure, VIO accuracy/health, quality/reset/covariance, fusion, EKF2 injection, flight, multi-vehicle expansion or fruit-fly policy comparison. This stage does not authorize or perform a physical retry.
+
+The sealed evidence archive contains 125 members, is 6,221,892 bytes, and has SHA-256 `d8f12d06359aaa014274ffeec576e7b186fcd2163978fe6eb6c585c91e16963d`. ZIP CRC and every manifest member size/hash verify. It contains the prior immutable attempt/correction archive, rejected `study-v12`, authoritative `study-v13`, all prepare and post-startup audits, production preflight dispatch/completion/supervisor/resource evidence, RED/GREEN and full regression output, source/tests/spec/plan and report. This statement postdates the report member inside the archive; the archive itself is unchanged.
+
+## Estimator-heartbeat physical attempt and initializer-handoff correction
+
+After the physical-attempt boundary was committed as `f0bd50f`, `study-v13` again passed its package audit and the target/resource preconditions. Exactly one production attempt created the immutable `study-v13/capture-v1`. It ran to simulation time 2.320 s over 25.337454690 s wall time and stopped before the readiness anchor. PX4 and the pinned OpenVINS worker both exited zero. The capture retained one valid 559,564-byte ULog with SHA-256 `6f964b510991feacf0df81fa6d091ea3074fe78bf38cedafc74f81b61a67ed08` and verified declared runtime mapping coverage; whole-runtime closure remains false.
+
+The previous heartbeat-routing correction is now verified in a real physical run: one unarmed heartbeat was observed and reconciled, with no pending heartbeat or heartbeat failure. The new first refusal occurred at source sequence 649 after the shadow path processed RGB sample 2.300 s. Native camera acknowledgement 600 reported `internal_initialized=false`, `public_initialized=false`, `initializer_time_s=state_time_s=1.304`, `last_regular_update_s=-1`, `imu_state=null`, and closed quality/reset/fusion fields. The readiness validator rejected this as `uninitialized acknowledgement has state`. No estimator-readiness record, motion anchor, support step, lateral-force step or force command was produced; impulse is zero and fusion remained false. The owned process group required no SIGKILL and was absent after leader reap; escaped descendants remain outside that claim. The post-run resource scan is empty.
+
+Pinned OpenVINS commit `69488123ed9362dd44b6f28e7f4680abbff1442b` explains the record. With subscriber multithreading disabled, `try_to_initialize` joins its worker. A successful worker sets `state->_timestamp`, `startup_time` and `thread_init_success`, but the current call still returns false; the manager consumes the success latch and sets `is_initialized_vio` on the next image. The project's earlier state-diagnostics contract already identifies this single-frame form as `initializer_handoff_pending`. The independent attempt audit therefore classifies the failure as `openvins-synchronous-initializer-handoff-contract-refusal`. It is a FlyDrones harness-contract mismatch before motion, not VIO accuracy, training, weights, loss, fruit-fly policy, PX4 dynamics or swarm behavior.
+
+The corrected acknowledgement contract accepts only two uninitialized forms: all timestamps at the untouched `-1` sentinel, or equal finite nonnegative initializer/state timestamps no later than the camera sample. Both require no IMU state, no regular update, no public initialization, no ZUPT latch and no movement latch. A pending handoff remains unavailable: it creates no readiness journal record, cannot set first/latest internal readiness, cannot authorize motion or fusion, and cannot pass `proof()`. Eight inverse malformed cases remain fail-closed. The pinned OpenVINS binary, estimator configuration, physics, 25 s workload, 1 ms step, 250 Hz IMU, 10 Hz 160×120 RGB-D stream, watchdogs, force profile and safety gates were not changed, and no physical retry was made during this correction.
+
+Verification reports 71 focused tests passing. The full repository suite reports 1,554 passed, 3 skipped and the same 2 existing warnings in 236.15 s. Changed-file Ruff and `git diff --check` pass. Complete 25 s execution, runtime closure, VIO accuracy/health, calibrated covariance, reset/quality handling, fusion, EKF2 injection, flight, multi-vehicle expansion and the open-source comparison remain unqualified. A future physical attempt requires a new prospectively frozen package, startup preflight and new destination; `study-v13/capture-v1` will not be overwritten or rerun.
+
+The sealed evidence archive contains 266 members, is 2,702,459 bytes, and has SHA-256 `7807e049a298de58c82e9073d73a8ded9fccdcaf35b5eba0527ded8f549dd5b9`. ZIP CRC and every manifest member size/hash verify. It contains the complete immutable `study-v13` package and physical capture, dispatch/completion/supervisor evidence, valid ULog, source/native/runtime/reference logs, independent attempt audit, pinned OpenVINS control-flow sources, RED/GREEN tests, full regression output, implementation/spec/plan and the report as it stood before this archive statement. The archive itself is unchanged by this final statement.
+
+## OpenVINS handoff-corrected prepare-only package
+
+The new builder accepts only the immutable `study-v13/capture-v1` refusal, its successful `estimator-handoff-physical-attempt-audit-v1`, physical completion record and the exact handoff-correction archive named above. It verifies the archive name and SHA-256, CRC, unique member names, manifest schema/stage/count, every member size/hash, archive claims and byte identity of the external audit. It also rechecks the failure time/cause, source sequence 649 route, reconciled heartbeat, exact pending acknowledgement, zero motion/force, closed fusion, PX4/native exits, valid ULog, historical runtime mapping coverage, unqualified runtime closure, completion destination and empty resource scan. Drift in any of these fields is rejected.
+
+The first generated package, `study-v14`, was intentionally retained after its independent audit rejected `authorization contract`. The authorization used the same key for historical source-run mapping coverage and the new package's unearned runtime-mapping qualification; the mandatory false claim correctly overrode the historical value. No process was started and no physical destination exists. A RED test now requires separate `source_runtime_mapping_coverage_verified=true` and `runtime_mapping_coverage_verified=false` fields.
+
+Fresh `study-v15` was generated after that correction. Its initial and committed-tree independent prepare-only audits have no failures. It preserves the exact 25 s/1 ms/250 Hz/10 Hz 160×120 workload, pinned OpenVINS/native inputs, vehicle and gravity, motion/force profiles, 200 ms future anchor, 8 s initial readiness, 250 ms dependency stages, 2 s watchdogs, 300 s process limits and closed safety/fusion claims.
+
+The first startup wrapper, `startup-preflight-v7`, refused before dispatch because its committed-audit path was wrong. It created no destination and started no process; the failure record remains retained. The audit bytes were then copied unchanged into the location required by the immutable wrapper. Exactly one production startup preflight ran at `study-v15/startup-preflight-v1` through `startup-preflight-v8`. It returned zero from committed head `9730ed80e76838c94cac58e792a5c8fcdaeb9e14`. Runtime phases are exactly `postgraph` and `bootstrap`; PX4 and OpenVINS owned phases are empty. No physics trace, source-event stream, OpenVINS session, PX4 log or ULog, motion, force, arming, ODOMETRY or fusion artifact was created.
+
+The startup-preflight audit and post-startup package audit both have no failures. The owned original process group exited without SIGKILL and was absent after leader reap; disk and in-memory supervisor events match. This claim does not cover descendants that escaped the owned session. Resource scans before and after dispatch were empty. The future physical destination `study-v15/capture-v1` remains absent. Physical execution, complete runtime mapping or closure, VIO accuracy and health, covariance/quality/reset handling, fusion, EKF2 injection, flight and fruit-fly policy behavior remain unqualified. This stage does not authorize or perform a physical retry.
+
+Final focused verification reports 27 passing tests, and changed-file Ruff plus `git diff --check` pass. An initial full-suite invocation inherited an editable installation from a different worktree and failed during collection; that environmental failure is retained. With this worktree's `src` explicitly first on `PYTHONPATH`, the full repository suite reports 1,579 passed, 3 skipped and the same 2 existing warnings in 238.74 s.
+
+The sealed evidence archive contains 127 members, is 3,276,935 bytes and has SHA-256 `7f8bbaacf577a073b8c0452a18151bb8aa5c2bb244b8517d74490bf86984c647`. ZIP CRC, manifest count and every member size/hash verify. It contains the prior immutable initializer-handoff archive, retained rejected `study-v14`, authoritative `study-v15`, production startup-preflight result and supervisor journal, dispatch/completion and both independent audits, RED/GREEN and full regression evidence, source/tests/spec/plan and the report as it stood before this archive statement. The archive itself is unchanged by this final statement.
+
+## Handoff-corrected physical attempt and heartbeat wall-age refusal
+
+A separately committed execution boundary at `5d36f6fd6fb47df412cb70044256e8313eeb017b` re-audited `study-v15`, pinned the preceding 127-member archive, confirmed its startup audit, exact command/destination, absent target/evidence and empty Windows/WSL resource scans. The one-shot wrapper's non-mutating check then passed. Exactly one physical target, `study-v15/capture-v1`, was created; it will not be overwritten or retried.
+
+The run progressed to simulation time 4.650 s over 30.177133016 s capture wall time. The initializer-handoff correction worked in the physical path: the first accepted internal state is at sample 2.400 s with public initialization still false, the first public-initialized state is at 3.300 s, and public initialization remains true through the last readiness record at 4.600 s. Twenty-three readiness records contain no truth input and keep fusion false. The fixture selected readiness at simulation time 2.420 s, fixed its future anchor at 2.620 s and applied 2,027 support commands through 4.646 s. The lateral window would start at 5.620 s, so no lateral-force step occurred before the refusal.
+
+The earliest terminal cause is `journaled-heartbeat-wall-age-slow-simulation-refusal`. The last of three observed and reconciled unarmed heartbeats arrived at wall clock 254,526,101,224 ns and simulation time 3.679 s. At the failing proof, the source-readiness clock high-water mark was 256,526,875,529 ns. Its wall-clock age was therefore 2,000,774,305 ns, only 774,305 ns over the fixed 2 s limit, while its simulation-time age at the last motion step was 968,000,000 ns. No fourth heartbeat had yet been emitted; the final recorded source item was the 4.648 s IMU sample. Thus source readiness returned unavailable and the anchored fixture failed closed as `readiness lost after anchor`. This is a wall-clock freshness/platform-slowdown interaction around a simulation-clock 1 Hz heartbeat, not a missing OpenVINS state or a fruit-fly learning failure.
+
+The immutable run retains one valid 1,223,179-byte ULog with SHA-256 `0ee34751ce7bf829e3a2bb4516bbe063b15f08292a90af2088decc82cb24b6a4`. PX4 and the pinned native OpenVINS worker both exited zero. Declared runtime mapping coverage is verified; whole-runtime closure remains false. The original owned process group needed no SIGKILL and was absent after leader reap, while escaped descendants remain outside that claim. The post-run resource scan is empty.
+
+The independent audit has no failures and verifies the exact wall/simulation ages, internal-to-public transition, zero lateral motion, retained ULog, runtime scope, cleanup and empty resources. The run did not finish 25 s and produced no complete gauge-scored VIO accuracy or estimator-health result. Quality/reset/covariance remain unset, and VIO input, fusion, EKF2 injection, flight, multi-vehicle expansion and fruit-fly policy conclusions all remain unqualified. No second physical attempt was made.
+
+Verification reports 91 focused audit/readiness/heartbeat/anchor tests passing. The full repository suite reports 1,590 passed, 3 skipped and the same 2 existing warnings in 230.02 s. Changed-file Ruff and `git diff --check` pass.
+
+The sealed evidence archive contains 298 members, is 7,759,124 bytes and has SHA-256 `f63991801f050bda1b85f5588b588ec64c12ee89e587748ac2dce082ad688642`. ZIP CRC, manifest count and every member size/hash verify. It contains the prior handoff-retry archive, the complete `study-v15` package, startup preflight and immutable physical capture, dispatch/completion/supervisor and resource evidence, ULog and all source/native/readiness/reference/physics/motion/runtime records, independent audit, RED/GREEN and full regression output, source/tests/spec/plan and the report as it stood before this archive statement. The archive itself is unchanged by this final statement.
+# Heartbeat simulation-time readiness correction
+
+The immutable `study-v15/capture-v1` failure was replayed without starting PX4, Gazebo, OpenVINS or training. Its last heartbeat was 2.000774305 s old in host wall time but only 0.968 s old in PX4/Gazebo simulation time. PX4's Gazebo bridge advances the PX4 clock from lockstep simulation time, so the old all-sources wall-clock test incorrectly rejected a healthy 1 Hz simulation-time heartbeat while slow simulation was still before the next heartbeat deadline.
+
+`JournaledReadiness` now keeps the unchanged 2 s monotonic-wall limit for IMU, RGB and CameraInfo, as well as the existing queue, native, source and supervisor watchdogs. Heartbeat liveness alone uses the newest wall-fresh journaled IMU simulation timestamp. Heartbeat simulation timestamps may repeat before the simulator advances but cannot regress; future heartbeat timestamps fail closed. The proof records wall age and simulation age separately.
+
+The fixed-evidence replay now accepts the observed 2.000774305 s wall / 0.968 s simulation case and rejects a counterfactual 2.000000001 s simulation-time silence. No timeout was increased and no real-time-factor scaling was added. This is an offline gate correction only: VIO accuracy, estimator quality/reset/covariance, fusion, ODOMETRY, EKF2, flight, fruit-fly learning and swarm behavior remain unqualified. A later physical rerun needs a separately sealed attempt.
+
+Verification passed 87 focused checks and the complete 1,597-test suite (3 skipped, 2 existing warnings). The sealed evidence archive is `evidence/heartbeat-simulation-time-readiness-dev-1701.zip`.
+
+## Heartbeat-corrected physical attempt and causal camera-pair timing correction
+
+`study-v16` preserved the previously frozen 25 s simulation, 1 ms physics step, 250 Hz raw IMU, 10 Hz 160×120 RGB-D stream, vehicle, gravity, OpenVINS/native binaries and configuration, supported-motion/force profile, readiness bounds, watchdogs and safety gates. Its prepare-only audit passed before and after commit. Exactly one production startup preflight completed only the expected `postgraph` and `bootstrap` phases, with no PX4/OpenVINS owned phase, physics, sensor stream, motion, ULog or fusion output. The startup audit and the final physical-boundary audit had no failures.
+
+The one-shot wrapper then created exactly one immutable physical destination, `study-v16/capture-v1`. The run failed closed at simulation time 10 ms after 32.283268834 s of wall time. It never selected a readiness anchor and produced zero support, lateral-force or other force commands. It produced no estimator-ready record, no public VIO initialization, no ULog, no ODOMETRY and no fusion output. The pinned native worker exited zero. PX4 did not complete its startup/attachment path and was killed during owned cleanup; the outer owned process group itself required no SIGKILL and was absent after leader reap. Post-run resource scans are empty. Runtime file stability and the local resource graph were retained, but owned PX4 runtime phases were absent, so runtime mapping coverage and whole-runtime closure are false.
+
+The earliest recorded failure was `pending input exceeded wall wait` in the causal RGB/CameraInfo input path. The CameraInfo for sample 2 ms arrived at wall clock 76,528,630,909 ns with observed simulation time 3 ms. An empty-FIFO service tick at 76,822,710,787 ns made that pending item 294,079,878 ns old in host wall time. Its matching RGB frame arrived at 76,883,730,253 ns, a wall-clock separation of 355,099,344 ns, while both records still carried the same 3 ms observed simulation time. The old 250 ms wall-age rule therefore rejected an intact same-sample camera pair solely because lockstep simulation and rendering were slower than wall time. This occurred before the run emitted or tested any heartbeat, so the earlier heartbeat simulation-time correction remains physically unverified in this attempt.
+
+`CausalInput` now keeps arrival order, queue bounds, IMU gap checks, the single native worker and all source/native/fan-out/supervisor wall watchdogs. Only the causal dependency age for an RGB/CameraInfo pair uses its monotonically advancing observed simulation-time watermark and the unchanged 250 ms threshold. Host idle service ticks do not advance that dependency age. Every released action records both wall and simulation release watermarks. A fixed-evidence replay releases the exact `study-v16` pair, while a counterfactual pair missing for more than 250 ms of simulation time still fails closed. No timeout was enlarged, no old frame was repeated, and no physical retry was made after this correction.
+
+The independent audit classifies the run as `camera-pair-wall-age-slow-simulation-refusal` and has no failures. It records pair wall age 355,099,344 ns, idle wall age 294,079,878 ns and pair simulation age 0. This is a harness timing-contract failure under slow WSL2 lockstep execution, not OpenVINS accuracy, training, weights, loss, the fruit-fly policy, PX4 flight dynamics or swarm behavior.
+
+Verification reports 57 focused tests passing and the full repository suite at 1,606 passed, 3 skipped and the same 2 existing warnings in 240.21 s. Changed-file Ruff and `git diff --check` pass. Complete 25 s physical execution, the heartbeat correction in a physical run, runtime mapping/closure, VIO accuracy and health, quality/reset/covariance, fusion, EKF2 injection, flight, multi-vehicle expansion and the open-source comparison remain unqualified. A future physical attempt requires a new prospectively frozen package and startup preflight; `study-v16/capture-v1` will not be overwritten or rerun.
+
+The sealed evidence archive contains 226 members, is 1,411,776 bytes and has SHA-256 `1b063c7e502670f646984fa3dd64b963a4a77e1d46686f269e9bf353fcc15ef9`. ZIP CRC, unique member names, manifest count and every listed member size/hash verify. It contains the prior heartbeat correction archive, the complete `study-v16` package, startup preflight and immutable physical capture, dispatch/completion/supervisor and resource evidence, independent attempt audit, RED/GREEN and full regression output, implementation/tests/spec/plan and this report as it stood before this archive statement. The archive itself is unchanged by this final statement.
+
+## Causal-pair simulation-time retry package and startup preflight
+
+The new prepare-only builder accepts only the immutable `study-v16/capture-v1` refusal, `physical-run-v8-completion.json`, the zero-failure `causal-pair-simulation-time-physical-attempt-audit-v1`, the exact correction archive with SHA-256 `1b063c7e502670f646984fa3dd64b963a4a77e1d46686f269e9bf353fcc15ef9`, and the archived/current `openvins_causal_input.py` bytes. It checks ZIP CRC, unique names, manifest count, every member size/hash, audit byte identity, the exact 355,099,344 ns pair wall age, 294,079,878 ns idle wall age, zero pair simulation age, fixed-replay release, simulation-silence refusal, zero motion/ULog/fusion claims and the single physical completion destination. Archive, source, implementation, runtime binding, command, workload, destination or positive-claim drift is rejected.
+
+The first generated package, `study-v17`, initially passed. The auditor then received a test-driven helper change, so a second audit correctly rejected `study-v17` with `binding baseline`. That package remains immutable and was never started. It was not rewritten to hide the drift. Fresh `study-v18` was generated after the code stabilized. Its initial and committed-tree audits have no failures. It preserves the exact 25 s simulation, 1 ms physics step, 250 Hz raw IMU, 10 Hz 160×120 RGB-D, vehicle, gravity, OpenVINS/native inputs, trajectory gauge, support/lateral-force profiles, 200 ms future anchor, 8 s initial readiness, unchanged high-rate wall watchdogs, 300 s process limits and all safety gates. Its new camera-pair dependency threshold remains 250 ms in observed simulation time; the already-qualified PX4 heartbeat simulation-time rule is carried forward. No timeout was enlarged and no frame is repeated.
+
+A one-shot launcher pinned committed head `bddefaf505edff403fae8c12fa99a034e36b4f40`, the committed package audit, exact declared command, absent startup destination and empty resources. Exactly one production startup preflight then created `study-v18/startup-preflight-v1` and returned zero. Runtime phases are exactly `postgraph` and `bootstrap`; PX4 and OpenVINS owned phases are empty. It created no process/PX4 log, ULog manifest, physics trace, sensor event stream, source fan-out, native session, estimator readiness, motion or force artifact. All physical, runtime mapping/closure, VIO, estimator-health, fusion and flight claims remain false.
+
+The startup auditor reports all checks true: committed head, preflight-only completion, allowed phases, disk/in-memory supervisor event equality, clean original process group, no physical artifacts, empty resources and closed downstream claims. The original owned group exited without SIGKILL and was absent after leader reap. As before, this is scoped to the owned original process group and does not claim visibility into descendants that escaped that session. Independent Windows and WSL post-run scans are empty.
+
+The first combined focused-test invocation inherited a `flydrones` editable installation from another worktree and failed during collection; that environmental failure is retained. With this worktree's `src` explicitly first on `PYTHONPATH`, 70 focused tests passed. The full repository suite reports 1,619 passed, 3 skipped and the same 2 existing warnings in 249.89 s. Production/test changed-file Ruff and source diff checks pass. The executed launcher is retained byte-for-byte; its deliberate post-`sys.path` import is not included in the Ruff claim.
+
+This stage qualifies only the prepare-only package and startup-preflight path. It did not start PX4, Gazebo physics, OpenVINS processing, training or a fruit-fly policy, and it does not authorize a physical attempt. Complete 25 s execution, both timing corrections in a physical run, runtime mapping/closure, VIO accuracy and health, quality/reset/covariance, ODOMETRY, EKF2 injection, flight, multi-vehicle scaling and the open-source comparison remain unqualified. Any physical attempt requires a separately committed one-shot boundary and a new immutable destination.
+
+The sealed evidence archive contains 138 members, is 2,119,070 bytes and has SHA-256 `c82a50d272acc80230e52763c53c3143dc71c093bb75281cd0d64fbd7d196e6b`. ZIP CRC, unique names, manifest count and every listed member size/hash verify. It contains the prior physical-attempt/correction archive, retained rejected `study-v17`, authoritative `study-v18`, the production startup preflight and supervisor journal, dispatch/completion and independent audits, resource scans, RED/GREEN and full regression output, source/tests/spec/plan and this report as it stood before this archive statement. The archive itself is unchanged by this final statement.
+
+## Simulation-time pair correction physical attempt and startup-cohort refusal
+
+A separately committed boundary at `4bcb3edd8fcbee729d2654000aa83dc8d1d2c591` checked the live Git HEAD, the exact 138-member archive above, the live post-startup `study-v18` package audit, the startup dispatch/completion/audit, the unchanged execution contract, absent `study-v18/capture-v1` target and empty resource scan. An independent boundary audit had no failures. The committed executor then wrote its dispatch record before running the manifest command and used exclusive creation for dispatch, output and completion. Exactly one physical destination was created; it will not be overwritten or retried.
+
+The run failed closed at simulation time 10 ms after 32.07738838 s of capture wall time. It retained six source records: IMU at 1 ms, CameraInfo/depth/RGB for the 2 ms camera sample observed at 3 ms, and IMU at 4 and 8 ms. Only the first IMU and CameraInfo reached both fan-out consumers before failure. OpenVINS accepted one IMU and no camera update; there is no internal or public initialization, readiness anchor, support or lateral-force command, ULog, ODOMETRY or fusion output. Runtime file stability and the local resource graph passed, and OpenVINS ready/pre-stop mappings were recorded, but incomplete execution leaves runtime mapping coverage and closure false.
+
+The earliest refusal is `source silence: imu`. The watchdog began at wall-monotonic 142,350,667,291 ns. Its first IMU arrived at 143,738,881,833 ns, first CameraInfo at 145,553,630,562 ns and first RGB at 145,818,189,234 ns. The old state transition marked the watchdog operational on that RGB even though the IMU was already older than the unchanged 2 s operational limit. It latched failure 254,629 ns later, with IMU age 2,079,562,030 ns. The next IMU arrived only 713,794 ns after failure; together with the already recorded CameraInfo and RGB it would have formed a fresh three-source cohort spanning 265,527,095 ns, still only 3.468490366 s into the unchanged 10 s startup allowance.
+
+The independent fixed-evidence audit has no failures and classifies this as `startup-readiness-before-fresh-source-cohort`. `SourceWatchdog` now enters its operational state only when the latest IMU, RGB and CameraInfo arrivals form a cohort within the existing 2 s wall limit. It still rejects if no such cohort forms within 10 s, and after readiness it retains the same 2 s wall-clock source-silence rule. No timeout was increased, no simulation-time scaling was added to high-rate health, and no old sample is repeated. This correction has only unit/fixed-evidence validation; no second physical attempt was made.
+
+PX4 reached the Gazebo bridge but failed to attach to the existing model, exited with `-9` after its internal cleanup required SIGKILL, and produced no ULog. Separately, the outer recorded supervisor sent no SIGKILL to its original owned group, reaped its zombie leader and observed the group absent; this does not prove coverage of escaped descendants. The executor's post-run resource scan and separate Windows/WSL process scans are empty.
+
+This is a startup health-state/harness failure under slow WSL2 lockstep execution, before any fruit-fly policy, learning, weights or loss calculation. Complete 25 s execution, the camera-pair correction under sustained physical input, heartbeat liveness, VIO accuracy and health, quality/reset/covariance, runtime closure, fusion, EKF2, flight, multi-vehicle scaling and the open-source comparison remain unqualified.
+
+Final verification passed 80 focused boundary/watchdog/fan-out tests and 1,634 repository tests, with 3 existing skips and the same 2 existing warnings in 238.56 s. The real WSL study-v18 input passed a direct boundary build/audit smoke check before dispatch; cross-platform unit fixtures then reduced the Windows suite to its original skip count. Changed-file Ruff and source diff checks pass.
+
+The sealed evidence archive is `evidence/source-watchdog-startup-cohort-dev-1701.zip`. It contains 219 members, is 3,433,132 bytes and has SHA-256 `9899cf5d0908cfa07eb6bcacde334292b67760ee842b7e481051c66b1cf63d98`. ZIP CRC, unique names, manifest count and every member size/hash verify. It includes the prior simulation-time retry archive, authoritative study-v18 package, startup preflight, exact-head boundary, complete immutable physical capture, dispatch/completion/supervisor/runtime records, fixed-evidence audit, RED/GREEN/focused/full regression logs, resource scans, source/tests/spec/plans and this report as it stood before this archive statement. The archive itself is unchanged by this final paragraph.
+
+## Source-watchdog-corrected retry preflight
+
+Committed builder and auditor code generated the fresh prepare-only `study-v19` package after the source-watchdog startup-cohort correction. The package accepts only the immutable `study-v18/capture-v1` refusal, its one-shot completion and boundary audit, the zero-failure startup-cohort audit, and `evidence/source-watchdog-startup-cohort-dev-1701.zip` at SHA-256 `9899cf5d0908cfa07eb6bcacde334292b67760ee842b7e481051c66b1cf63d98`. The archive CRC, unique names, manifest membership, every member size/hash, audit bytes and archived/current `openvins_online_shadow.py` bytes are rechecked. The first and committed-tree package audits have no failures.
+
+The package keeps the 25 s simulation, 1 ms physics step, 250 Hz raw IMU, 10 Hz 160x120 RGB-D stream, vehicle, gravity, OpenVINS/native inputs, trajectory policy, support/lateral-force profile, 200 ms future anchor, 8 s readiness limit, 10 s source startup limit, unchanged 2 s operational watchdogs, 300 s process limits and all safety gates. It repeats no old frame and does not scale the high-rate watchdog by simulation time.
+
+Exactly one startup-only preflight ran at `study-v19/startup-preflight-v1` after commit `33ed23d1cc08d314b9d6fbdc0fbcad1b6958f6cb`. It returned zero and recorded only `postgraph` and `bootstrap` runtime phases; PX4 and OpenVINS owned phases are empty. The result contains no sensor stream, physics trace, motion, force, ULog, ODOMETRY or fusion output. The owned original worker group exited without SIGKILL and was absent after reap; escaped descendants remain outside the supervisor's stated scope. The post-startup package audit and independent startup evidence audit have no failures, and the resource scan is empty.
+
+Focused verification passed 13 tests and changed-file Ruff. The first full-suite invocation inherited an unrelated editable `curriculum-training` source path and failed collection; that output is retained. Repeating with `PYTHONPATH` fixed to this worktree's `src` passed 1,647 tests with 3 existing skips and 2 existing warnings in 203.82 s. This stage qualifies only the prepare-only package and non-physical startup path. Physical execution with the corrected startup cohort, complete runtime mapping/closure, reliable public VIO, quality/reset/covariance, ODOMETRY, EKF2 injection, flight, multi-vehicle expansion and the fruit-fly/open-source comparison remain unqualified. Any physical retry requires a new committed exact-head one-shot boundary and a new immutable destination.
+
+The sealed evidence archive is `evidence/source-watchdog-retry-preflight-dev-1701.zip`. It contains 110 members, is 4,060,467 bytes and has SHA-256 `02055f4886eb0fe5cb2668506d393a2e631c703c93049c4a57a4b3f666196b6d`. ZIP CRC, unique names, manifest count and every member size/hash verify. It includes the prior startup-cohort archive, immutable source failure, authoritative `study-v19`, startup-only capture and supervisor records, independent audits, retained failing and passing regression logs, source/tests/spec/plans and this report as it stood before this archive statement. The archive itself is unchanged by this final paragraph.
+
+## Source-watchdog-corrected physical attempt and heartbeat commit-order correction
+
+The separately committed one-shot boundary at `5ba4e9a9e62c8dd55f408bcc0b7245c44dde070c` rechecked the exact prepare-only package, startup evidence, immutable archive, live Git head, absent destination and empty resource scan. Its committed executor created `study-v19/capture-v1` exactly once. That destination, its dispatch, output and completion records are immutable and will not be overwritten or rerun.
+
+The physical run failed closed at simulation time 2.620 s after 27.331179092 s of capture wall time. PX4 exited zero and retained one valid 657,876-byte ULog with SHA-256 `5b39597ebbbbe8a6458ae1ac1df059ae950285d80913309dfe4284e1b010c70f`. OpenVINS accepted 706 source inputs and acknowledged 679 native deliveries; its internal state initialized at the 2.400 s camera sample, while public initialization remained false. The fixture selected readiness and fixed a 2.619 s future motion anchor, but the refusal occurred before that anchor. Support steps, lateral steps, force commands and both signed and absolute impulse are all zero. No fruit-fly policy ran, no ODOMETRY or EKF2 injection occurred, and fusion remains false. Declared runtime mapping coverage passed; whole-runtime closure remains false. Post-run owned-resource scans are empty.
+
+The earliest terminal cause is a heartbeat/IMU journal commit-order race. The second independent heartbeat arrived with observed simulation time 2.614 s while readiness still had the 2.604 s IMU as its newest committed simulation reference. IMU samples at 2.608 s and 2.612 s had already arrived before the heartbeat but were queued behind other source writes and committed later. The old readiness rule treated the 10 ms heartbeat lead as a permanently invalid future clock and latched failure. The previous committed heartbeat at 1.616 s was only 0.988 s behind the 2.604 s IMU, within the unchanged 2 s simulation-time freshness limit. The independent fixed-evidence audit therefore classifies the failure as `heartbeat-observation-ahead-of-committed-imu`. This is a source-journal ordering defect before motion, not training, weights, loss, fruit-fly policy, VIO accuracy or PX4 flight behavior.
+
+`JournaledReadiness` now retains the newest 32 monotonically received heartbeats. A proof selects the newest heartbeat whose observed simulation time is no later than the latest committed IMU. A newer heartbeat that is ahead remains preserved as pending diagnostic evidence and cannot grant readiness; it no longer invalidates an older causally eligible heartbeat. If no heartbeat is causally eligible, proof returns unavailable without latching a clock failure. Once IMU commit catches up, the newer heartbeat becomes selectable. The existing 2 s simulation freshness limit, high-rate source wall limits, queue bounds, native/source/supervisor watchdogs, physics, sensors, OpenVINS configuration and motion profile are unchanged. A stale older heartbeat still cannot hide a future candidate or grant readiness.
+
+Historical tests that intentionally verify an older frozen correction now read the archived implementation rather than assuming that every later stage must remain byte-identical to it. The one-shot boundary unit fixture now copies only prepare-only inputs and excludes the real `capture-v1`; the production destination itself remains immutable. Verification reports 109 focused tests passing. The full repository suite reports 1,664 passed, 3 existing skips and the same 2 existing warnings in 206.17 s. Changed-file Ruff and `git diff --check` pass. No physical rerun occurred during this correction.
+
+This correction only qualifies the offline ordering contract. Complete 25 s execution, reliable public VIO, accuracy and health, calibrated covariance, quality/reset handling, ODOMETRY, EKF2 injection, flight, multi-vehicle scaling, complete runtime closure and the fruit-fly/open-source comparison remain unqualified. A later retry requires a new committed prepare-only package, startup preflight, exact-head one-shot boundary and destination.
+
+The sealed evidence archive is `evidence/heartbeat-commit-order-dev-1701.zip`. It contains 263 members, is 6,901,780 bytes and has SHA-256 `3983e265f936cc1f156962c4e673ed286fa9938421229e332e91a5bf0f4d02a6`. ZIP CRC, unique member names, manifest count and every listed member size/hash verify. It contains the prior source-watchdog retry archive, the complete immutable `study-v19` package, startup preflight and physical capture, one-shot boundary/dispatch/completion/output, valid ULog, source/native/readiness/reference/runtime records, the independent commit-order audit, retained failing and passing regressions, implementation/tests/spec/plan and this report as it stood before this archive statement. The archive itself is unchanged by this final paragraph.
+
+## Heartbeat commit-order retry packages and startup preflight
+
+The new prepare-only builder accepts only the immutable `study-v19/capture-v1` failure, its physical completion and independently qualified one-shot boundary, the zero-failure commit-order audit and `evidence/heartbeat-commit-order-dev-1701.zip` at SHA-256 `3983e265f936cc1f156962c4e673ed286fa9938421229e332e91a5bf0f4d02a6`. It verifies ZIP CRC, unique names, manifest membership, every member size/hash, external audit byte identity and archived/current `readiness_anchor.py` bytes. It rechecks the 10 ms heartbeat lead, 0.988 s previous-heartbeat age, pre-arrived IMUs, zero force and impulse, internal-only OpenVINS initialization, valid ULog, clean PX4 exit, runtime mapping scope and closed downstream claims.
+
+`study-v20` was generated and its prepare-only audit passed. Its one startup attempt is retained as a failure. The committed startup executor used `study.parents[3]` as its working directory, one level above the repository root, so runtime binding correctly rejected `actual graph search context or loader environment differs` before recording the resource graph. It returned 2, produced no PX4/OpenVINS owned phase, no physics, sensor stream, motion or fusion output, and left resources empty. The failure audit remains negative. A regression test now binds the executor working directory to `study.parents[2]`, the actual repository root. `study-v20/startup-preflight-v1` was not modified or retried.
+
+After committing that executor correction, fresh `study-v21` was generated from the same immutable source and independently audited with no failures. Exactly one startup-only preflight ran from committed head `b66f7743a3c8e0d224b91c7d575b582ce740b1d1` and returned zero. Its runtime phases are exactly `postgraph` and `bootstrap`; PX4 and OpenVINS owned phases are empty. It produced no process log, physics trace, sensor event stream, native session, estimator readiness, motion, force, ULog, ODOMETRY or fusion artifact. Disk and in-memory supervisor events match, the original owned process group exited without SIGKILL and was absent after reap, while escaped descendants remain outside that claim. The final resource scan is empty. Both the post-startup package audit and independent startup audit have no failures.
+
+The package preserves the same 25 s simulation, 1 ms physics step, 250 Hz raw IMU, 10 Hz 160x120 RGB-D stream, vehicle, gravity, pinned estimator/native inputs, trajectory gauge, support/lateral-force profile, 200 ms future anchor, 8 s readiness limit, 10 s high-rate startup limit, 2 s operational limits, 300 s process budgets and all safety gates. No timeout increased and no old sample is repeated.
+
+Verification reports 46 focused readiness/package/startup-executor tests and the complete repository suite at 1,683 passed, 3 existing skips and the same 2 existing warnings in 304.12 s. Changed-file Ruff and diff checks pass. This stage qualifies only the prepare-only package and startup path. Physical execution, reliable public VIO, VIO accuracy/health, calibrated covariance, quality/reset handling, ODOMETRY, EKF2 injection, flight, multi-vehicle scaling, complete runtime closure and the fruit-fly/open-source comparison remain unqualified. A physical attempt requires a new separately committed exact-head one-shot boundary and destination.
+
+The sealed evidence archive is `evidence/heartbeat-commit-order-retry-preflight-dev-1701.zip`. It contains 153 members, is 7,713,518 bytes and has SHA-256 `326f4fb4e1d113a3a8f0efe35bc96e700656e59e0a67395d46ee732a799904b5`. ZIP CRC, unique member names, manifest count and every listed member size/hash verify. It contains the prior commit-order archive, retained failed `study-v20`, authoritative `study-v21`, both startup attempts and their supervisor evidence, exact-head dispatch/completion/audits, resource scan, RED/GREEN/focused/full regressions, implementation/tests/spec/plan and this report as it stood before this archive statement. The archive itself is unchanged by this final paragraph.
+
+## Complete commit-order physical run and VIO accuracy failure
+
+The committed one-shot boundary at `2e6b2127f21a6a426ff099a708883ee0ab6fccc6` was re-audited against the live clean tree, immutable `study-v21` package, startup evidence, absent destination and empty active-resource scan. Its exclusive executor then created `study-v21/capture-v1`, dispatch, output and completion exactly once. The command and launcher both returned zero; the destination will not be overwritten or rerun.
+
+This is the first complete 25 s run in the current chain. It retained 25,000 one-millisecond native-reference cycles, 50,000 pre/post physics records, 6,251 raw IMU records, 251 RGB/CameraInfo/depth records each and 24 unarmed heartbeats. All 7,028 source records reached both fan-out consumers without refusal; all 24 heartbeats were observed and reconciled with no pending item. The native OpenVINS process accepted 6,501 deliveries and exited zero. The final camera remains explicitly pending for a later IMU rather than being duplicated. The fixture selected anchor 2.621 s, recorded 22,380 support commands and all 1,600 lateral steps, with 41.6 N·s absolute and zero signed lateral impulse. PX4 exited zero and retained one valid 7,599,860-byte ULog with SHA-256 `f2a0e9fcd5224ab40b3f0dfb4c1a43faffc624361254901a563f856677057276`. Declared runtime mapping coverage passed; whole-runtime closure remains false. The owned original process group used no SIGKILL and was absent after reap, with no claim about escaped descendants. The post-run resource scan is empty.
+
+OpenVINS produced 226 internally initialized camera states. The first is at 2.400 s, before the frozen motion anchor, and truth did not select it. Public output starts at 3.300 s and covers 217 states through 24.900 s with a 100 ms maximum gap. Five state rows carry the recorded ZUPT latch and 217 rows carry a regular-update timestamp. These availability facts do not qualify accuracy or health.
+
+An initial audit file used the older `motion-ground-truth.jsonl` interface. Review immediately found that its Link dynamic fields still show the previously diagnosed cache problem, including a settled acceleration of 12.2335 m/s². That v1 audit and its console are retained as rejected evidence and are not used for conclusions. The corrected v2 audit consumes the independent non-Link native reference: every one of 25,000 steps had its pre-update canary overwritten in post-update, finite position/velocity/acceleration/angular/orientation fields and matching pre/post simulation time. The scorer still uses the prospectively frozen first-internal origin, four-degree-of-freedom yaw/translation gauge, scale one, zero time shift and no later realignment. Gazebo reference values are read only offline and never enter OpenVINS.
+
+With that corrected reference, all 226 initialized states have exact-time matches. Public coverage and capture completeness pass, and the initial gravity-axis difference is 0.004600 degrees with maximum attitude error 0.150665 degrees. Accuracy fails decisively: maximum and terminal position error are 47.719487 m, maximum velocity error is 4.058389 m/s and the displacement-error lower bound is 46.919797 m. The frozen 0.25 m/s velocity screen is first crossed at 2.900 s; the 0.25 m position screen is first crossed at 3.400 s. Reset and quality are still unknown and covariance is still uncalibrated, so estimator health, trajectory qualification, fusion and flight all remain false even apart from the accuracy failure.
+
+The fixed-input diagnosis identifies the first demonstrated failure mechanism. At 2.600 s, immediately before the motion anchor, the vertical accelerometer bias is 0.000475931 m/s². The upstream log then records five accepted ZUPT decisions. The last three ZUPT-labelled states occur after the 2.621 s physical-motion anchor, from 2.700 through 2.900 s. The fresh physical reference shows up to 0.008800 m displacement and 0.086717 m/s actual speed in that interval. The OpenVINS estimate at the final accepted update already reports 0.107 m/s, above the configured 0.10 m/s ZUPT velocity threshold, but image disparity 0.238 pixels remains below 0.5 pixels with 36 features. In pinned upstream `UpdaterZeroVelocity`, a passing disparity check overrides the chi-square and estimated-speed rejection. The update therefore remains accepted and changes the vertical accelerometer bias to -0.171930192 m/s², a -0.172406123 m/s² change. The first velocity-screen failure occurs on that same 2.900 s state.
+
+This timing and the pinned GPL-3.0 OpenVINS source support the classification `physical-motion-accepted-as-zupt-with-accelerometer-bias-corruption`. It does not prove that this one event explains every terminal metre. The visual path supplied almost no later correction: 217 regular updates contain only two nonzero MSCKF update events with one feature each, and no SLAM update or delayed initialization uses a feature. The vertical bias stays near -0.1718 m/s² while position diverges, whereas attitude stays close to the physical reference. Both the corrupted inertial state and visual feature starvation require separate correction evidence.
+
+The pinned estimator remains OpenVINS `69488123ed9362dd44b6f28e7f4680abbff1442b`, GPL-3.0, with the last recorded upstream push on 2025-11-30 and uncertain current maintenance cadence. Existing frozen source snapshots of `UpdaterZeroVelocity`, `VioManager`, `Propagator`, `UpdaterMSCKF`, `FeatureInitializer` and `TrackKLT`, the official API and calibration guide, and the Geneva et al. ICRA 2020 paper were reused. No package, estimator, noise value, force, threshold or scene was changed. Simply disabling ZUPT is not yet accepted as a fix because the same upstream initialization path then waits for jerk and would change the already frozen initialization contract.
+
+The strict v2 physical-attempt audit has no failures and verifies all counts, journals, ULog bytes, runtime and cleanup scope, the fresh-reference trajectory result and closed downstream gates. This run never executed the fruit-fly policy, learning, weights or loss, so it is not evidence of fruit-fly training failure. Before any new physical run, a separate correction design must inhibit zero-velocity updates after a verifiable motion command without using truth, and must address the two-feature visual-update starvation on fixed input. ODOMETRY, arming and EKF2 injection remain prohibited.
+
+Verification reports 47 focused audit, diagnosis and gauge tests passing. The first full regression ran after the production one-shot destination existed and exposed two non-hermetic boundary tests that copied `capture-v1` into their temporary study. That failure output is retained. The fixture now copies prepare/startup inputs only, leaving the production capture untouched; both original failures pass. The repeated full repository suite reports 1,710 passed, 3 existing skips and the same 2 existing warnings in 300.59 s. Changed-file Ruff and `git diff --check` pass, and the final active-resource scan is empty.
+
+The sealed evidence archive is `evidence/heartbeat-commit-order-physical-vio-diagnosis-dev-1701.zip`. It contains 738 members, is 23,817,523 bytes and has SHA-256 `726a66fd8c53234527b877ff48820e84a9caca580ec79462d6bc9a23689a8b5a`. ZIP CRC, unique member names, manifest count and all 737 manifest-listed member sizes and hashes verify. It contains the prior retry archive, the complete immutable `study-v21` package and one-shot capture, the corrected native-reference accuracy audit, retained rejected stale-reference audits, the ZUPT/bias diagnosis, focused and full regressions, resource scan, implementation, tests, specifications, plans and this report as it stood before this archive statement. The archive itself is unchanged by this final paragraph.
+
+## Truth-free motion intent and fixed-frame visual diagnosis
+
+The next correction stage remains offline. Pinned OpenVINS `VioManager` only suppresses beginning-only ZUPT after `has_moved_since_zupt` becomes true; in the normal path that flag is set after successful regular propagation. The official OpenVINS ZUPT documentation defines the update around a stationary-motion assumption, while the pinned `UpdaterZeroVelocity` source permits image disparity to override its speed and chi-square rejection. This supports using an independently authorized nonzero flight command as negative evidence for a later ZUPT, without consulting simulator truth. The source remains commit `69488123ed9362dd44b6f28e7f4680abbff1442b`, GPL-3.0, non-archived at the recorded lookup with last recorded push `2025-11-30`; current maintenance cadence remains uncertain. No package or upstream source changed.
+
+The new Python `MotionIntentGate` is an evidence contract, not an estimator fix. It accepts one exact safety-supervisor velocity/yaw command only after a causal internal-initialization acknowledgement, in one explicit estimator and clock session, while unarmed. Pose, measured velocity, acceleration and other truth fields are absent and extra fields are rejected. It emits an immutable hashed intent and refuses the effective actuation step until the same native session acknowledges that the intent was applied and `has_moved_since_zupt` is true. Duplicate, stale, future, armed, zero-motion, reset, reconnect, clock-regressed, mismatched and late evidence latches failure. A new session requires a new gate. Static initialization remains available because no intent can be emitted before initialization.
+
+This contract is not yet connected to the GPL-linked native adapter. A later stage must add a bounded native message under the existing single worker, verify the frozen `try_zupt=true` and `zupt_only_at_beginning=true` configuration, latch the existing protected movement flag before actuation and return the evidence acknowledgement. The MIT Python layer does not copy OpenVINS implementation. Until that native protocol and fixed-input replay pass, `native_adapter_integrated=false` and `physical_validation=false`.
+
+The read-only frame diagnostic consumed all 251 sealed PPM files, the frozen front-end config and the original native log without running OpenVINS. It found 54 distinct frame hashes. The deterministic histogram-equalized Harris proxy reported 10/41/44 minimum/median/maximum corners; the sole frame below 20 was the first 0.002 s frame. Across 250 adjacent pairs, the phase-correlation and patch-retention proxy reported 6/41/41 minimum/median/maximum retained corners and at most 7 pixels of translation. Five pairs were below 20: the initial 0.002–0.100 s transition and four pairs during 5.8–7.0 s motion. In contrast, the OpenVINS log contains 217 MSCKF update opportunities with only two one-feature updates, 217 zero-feature SLAM updates, and nine ZUPT disparity checks carrying 36–37 features.
+
+The frozen diagnostic classification remains `raw-frame-front-end-capacity-not-established` because its strict all-frame/all-pair minimum criterion fails. It was not relaxed after viewing the sealed run. The proxy is not OpenVINS' grid, RANSAC, feature database, marginalization or triangulation path, so the mostly high median counts cannot exonerate the image adapter or qualify VIO. The result narrows the next fixed-input work: instrument the actual tracker-to-MSCKF/SLAM path and retain rejection reasons before changing any threshold, texture, motion, noise or scene. The first diagnostic JSON without per-frame timestamps is retained; v2 adds per-frame and per-pair identities without changing classification.
+
+TDD retained the missing-module RED state before implementation. The final focused set covers motion-intent identity, clocks, reset/reconnect, safety, zero motion, truth-field injection, duplicate intent, acknowledgement mutation and actuation-before-ack, plus malformed/duplicate PPMs, frozen-config drift, ambiguous logs and low-information frames. The two new modules report 27 passing tests; the wider readiness/native/fan-out/diagnosis set reports 132 passing tests. The complete repository suite reports 1,737 passed, 3 existing skips and the same 2 existing warnings in 323.57 s. Changed-file Ruff and `git diff --check` pass. No PX4, Gazebo, OpenVINS process or physical replay was started.
+
+The sealed evidence archive is `evidence/openvins-motion-intent-visual-diagnosis-dev-1701.zip`. It contains 17 members, is 21,479,721 bytes and has SHA-256 `983237138868eeb702cd0a1cb047d7444995dd27605b18e8a4c117354fb05775`. ZIP CRC, unique member names, manifest count and all 16 manifest-listed member sizes and hashes verify. It includes the preceding physical VIO diagnosis archive, the truth-free motion-intent contract and tests, both fixed-frame visual diagnostics, retained RED/GREEN evidence, research, full regression and Ruff outputs, the specification, plan and this report as it stood before this archive statement. The archive itself is unchanged by this final paragraph.
+
+## Native OpenVINS motion-intent handoff
+
+The truth-free contract is now connected to the existing single GPL-linked
+OpenVINS research worker.  Pinned `VioManager` exposes its options,
+initialization state, ZUPT latch and movement flag to the existing
+`OnlineManager` subclass.  The new bounded `M` packet carries only a source
+sequence, effective sample time, transport clocks, command sequence and
+SHA-256 identities for the intent, estimator session and clock session.  The
+native side refuses it before internal initialization, under any ZUPT option
+other than the frozen `try_zupt=true` and
+`zupt_only_at_beginning=true`, after movement, or when its identity and time
+contract are not exact.  A qualified request sets the existing
+`has_moved_since_zupt` flag and clears the stale `did_zupt_update` latch before
+the external effective actuation sample.  It does not change OpenVINS source,
+noise, thresholds, camera data, physics or the static initializer.
+
+The adapter was compiled with Ubuntu g++ 13.3.0 against OpenVINS commit
+`69488123ed9362dd44b6f28e7f4680abbff1442b`.  The linked
+`libov_msckf_lib.so` SHA-256 is
+`532ae57a6a952a0137cc1de291bc47ad556d419c7524fbb23b7a90c00addab5b`;
+the final `online_probe-v2` SHA-256 is
+`d7252cdb97b4b73baa64f6950e3a03299fd4e0c6bb8252a568fcbc118218719e`.
+The relevant installed `VioManager` files match their recorded hashes, while
+two previously disclosed changes elsewhere in the installed OpenVINS
+worktree remain outside this adapter.  Installed-patch equivalence to a clean
+upstream build is not claimed.  OpenVINS remains GPL-3.0-or-later; the last
+recorded upstream push is 2025-11-30 and current maintenance cadence is
+uncertain.
+
+RED protocol tests first failed because the `M` packet, acknowledgement
+projection and native latch did not exist.  The first fixed replay then found
+an extra `gray_first` field in the native acknowledgement and correctly
+failed strict schema validation; that attempt is retained.  Separate final
+negative runs prove refusal before initialization and on a duplicate intent,
+both with native exit 2 and the expected native error.  No permissive retry or
+schema relaxation was used.
+
+The final `fixed-replay-v3` consumes 783 immutable source records from the
+sealed physical input and sends one motion-intent packet.  Internal
+initialization occurs at sample 2.400 s and the intent becomes effective at
+the prospectively frozen 2.621 s command sample.  Native acknowledgement
+sequence 627 binds the exact intent, estimator session, clock session,
+command sequence and ZUPT options.  Camera states at 2.7, 2.8, 2.9 and 3.0 s
+all retain `has_moved_since_zupt=true` and
+`zupt_flag_latched=false`.  Vertical accelerometer bias remains
+`0.00045162984734758993` over this early window instead of reproducing the
+physical run's approximately -0.172 m/s² post-ZUPT corruption.  The
+independent replay audit has no failures.
+
+This proves only the causal native handoff and early ZUPT suppression on fixed
+input.  Replay arrival times were newly generated monotonic clocks and are not
+latency evidence.  The replay stops after the 3.0 s camera; it does not prove
+complete trajectory accuracy, later visual correction, physical safety,
+quality/reset/covariance, fusion, ODOMETRY, EKF2 injection, arming, flight or
+fruit-fly policy performance.  PX4 and Gazebo were not started.
+
+The new and adjacent native/gate/diagnosis checks report 181 passing tests.
+The first correctly configured full regression exposed one historical test
+that compared an old sealed correction with the live, intentionally changed
+adapter; 1,752 other tests passed.  That test now extracts the implementation
+from its own immutable archive, preserving the old validator and its drift
+failure.  A subsequent invocation without the required `PYTHONPATH=src`
+failed during collection and is retained as a harness-environment failure.
+The final explicit-worktree run reports 1,753 passed, 3 existing skips and the
+same 2 existing warnings in 254.70 s.  No PX4, Gazebo, OpenVINS, capture,
+training or test process remains active.
+
+The sealed evidence archive is
+`evidence/openvins-motion-intent-native-dev-1701.zip`.  It contains 82
+members, is 22,594,772 bytes and has SHA-256
+`33c10710b668426e08acf1afa9c1d483d7e1aae14aa84a372c7eebdaccd3a15c`.
+ZIP CRC, unique member names, manifest count and all 81 manifest-listed
+member sizes and hashes verify.  It includes the prior physical/fixed-frame
+diagnosis archive, final and retained failed native protocol runs, exact
+requests/acknowledgements, native binaries and dependency identities,
+independent audit, source/tests/specification/plan, regressions and this
+report as it stood before this archive statement.  The archive itself is
+unchanged by this final paragraph.
+
+## Fixed-input OpenVINS feature-rejection trace
+
+The actual OpenVINS feature path has now been traced on the complete sealed
+`study-v21/capture-v1` input without starting PX4 or Gazebo. OpenVINS remains
+pinned at `69488123ed9362dd44b6f28e7f4680abbff1442b` under GPL-3.0-or-later. A
+separate GPL diagnostic worktree adds structured counters only to `TrackKLT`,
+`VioManager`, `UpdaterMSCKF`, and `UpdaterSLAM`; it does not alter a threshold,
+feature ordering, state, random source, input, configuration, or branch
+condition. The normal FlyDrones runtime does not load the patch.
+
+The uninstrumented and diagnostic replays consume the same 6,477 sealed source
+records and have identical source-request SHA-256
+`7794cc35334069c0b10cb48c5c7bb754d1cc642acf8c664d104061505f478868`.
+All 250 camera state rows match in every non-timing field within the
+prospectively fixed `1e-12` tolerance. Initialization, motion-latch, ZUPT flag,
+16-dimensional IMU state and closed fusion fields therefore remain equivalent.
+Separate final runs retain refusal before initialization and on a duplicate
+motion intent; both fail closed with native exit 2. Replay clocks are newly
+generated and are not online-latency evidence.
+
+Across 222 regular-update trace frames, KLT topped 9,662 tracks and retained
+9,438; 224 were out of bounds, with zero combined KLT/RANSAC and mask rejections in this
+fixed run. The tracker itself is therefore not the dominant observed loss.
+The pipeline selected 1,235 MSCKF candidates but accepted only 23. Exact
+updater accounting attributes 1,202 to insufficient measurement history, six
+to triangulation failure and four to refinement failure; none failed its
+chi-square test. Delayed SLAM initialization received 160 candidates, accepted
+46 and rejected 114 at triangulation. Existing SLAM landmarks received 6,427
+update attempts, accepted 6,425 and rejected only two by chi-square. Every
+updater total reconciles exactly with the pipeline record.
+
+This corrects the earlier inference from standard logs that SLAM used no
+features. Those logs did not expose candidate flow; the structured trace shows
+substantial existing-landmark SLAM updates and limited successful delayed
+initialization. The first demonstrated visual bottlenecks are short MSCKF track
+histories and delayed-SLAM triangulation, while existing SLAM update acceptance
+is high. This is a fixed-input mechanism classification, not a complete root
+cause for the 47.7 m physical trajectory error. It does not establish that
+changing clone length, tracker policy, triangulation, camera calibration, or
+motion excitation will improve the estimator, and no such parameter was tuned.
+
+The diagnostic probe SHA-256 is
+`945e5279ef4286ef85dda65a9bf0f1dc6532536cad951c00aee8ad0be3ac49b6`,
+the loaded diagnostic library SHA-256 is
+`fc8af64f7417917c2f5f70f493adcf53d842d5439314784550c9ce0d73b38c4f`,
+and the isolated patch SHA-256 is
+`def348ff3f007e86fdba83ad9fe22cd612101acf6af7b5947034145fc851925a`.
+The library is reproducible from the frozen patch/build but is not copied into
+the repository because it is 292,684,400 bytes. The strict audit reports
+`qualified=true`, `physical_replay=false`, `fusion_eligible=false`,
+`truth_used=false`, `root_cause_qualified=false`, and
+`online_latency_qualified=false`.
+
+This stage does not qualify physical VIO, estimator health, calibrated
+covariance, quality/reset handling, ODOMETRY, EKF2 injection, arming, flight,
+training, fruit-fly policy performance, or a physical retry. The next safe step
+is a separately specified fixed-input sensitivity experiment against the two
+observed mechanisms, with development inputs kept separate from any frozen
+evaluation set. No active PX4, Gazebo, OpenVINS replay, training, or test
+process remains.
+
+Focused validation reports 69 passing motion-intent, native-adapter,
+initializer and feature-trace tests. The complete repository suite reports
+1,767 passed, 3 existing skips and the same 2 existing warnings in 237.61 s.
+Changed-file Ruff and `git diff --check` pass.
+
+The sealed evidence archive is
+`evidence/openvins-feature-rejection-trace-dev-1701.zip`. It contains 106
+members, is 34,044,292 bytes and has SHA-256
+`b54c99ce51b3604b55421adc6cef19e1191b7d3f261bdf9092575a28205def92`.
+ZIP CRC, unique member names, manifest count and all 105 manifest-listed member
+sizes and hashes verify. It includes the preceding native motion-intent archive,
+control and diagnostic fixed replays, retained intermediate traces, final
+pre-initialization and duplicate refusals, the exact GPL patch, binary/build
+identities, strict audit, regressions, research, source/tests/specification/plan
+and this report as it stood before this archive statement. The archive itself
+is unchanged by this final paragraph.
+
+A final terminology review found that OpenVINS combines KLT status and
+fundamental-matrix RANSAC into one output mask. The trace field was renamed
+from the overly narrow `ransac` to `klt_or_ransac`, the isolated library was
+rebuilt, and the complete sealed replay, equivalence audit, negative protocol
+runs, focused tests and full regression were repeated. Counts and conclusions
+are unchanged. The earlier archive with SHA-256
+`b54c99ce51b3604b55421adc6cef19e1191b7d3f261bdf9092575a28205def92`
+is retained as superseded intermediate evidence; it is not the final archive.
+
+
+The final sealed evidence archive is
+`evidence/openvins-feature-rejection-trace-dev-1701-v2.zip`. It contains 145
+members, is 36,943,110 bytes and has SHA-256
+`dce47e4de3bd7a1800328178cc203af2369fca7078f496d1f2abeee8b4217fd5`.
+ZIP CRC, unique member names, manifest count and all 144 manifest-listed member
+sizes and hashes verify. It preserves the superseded trace and archive as
+intermediate evidence and adds the final combined KLT/RANSAC schema, rebuilt
+library identity, complete `trace-full-v5`, final negative runs, strict v2
+audit, repeated regressions, updated research, source/tests/specification/plan
+and this report as it stood before this archive statement. The archive itself
+is unchanged by this final paragraph.
+
+The v2 archive remains valid for its recorded bytes, but final publication
+checks added the repository's existing patch-file whitespace exception to the
+new GPL patch path and normalized trailing blank lines in documentation and
+sealing scripts. No code, trace count, replay state, test result, or diagnosis
+changed. The v2 archive is therefore retained as a superseded packaging
+intermediate; the following v3 archive is authoritative.
+
+
+The authoritative sealed evidence archive is
+`evidence/openvins-feature-rejection-trace-dev-1701-v3.zip`. It contains 149
+members, is 36,946,632 bytes and has SHA-256
+`9cda14fbd4c1ad2764b0c9832f17d5f513266f79d27347bf18aba7df505d71bd`.
+ZIP CRC, unique member names, manifest count and all 148 manifest-listed member
+sizes and hashes verify. It preserves both superseded archives, all retained
+attempts and failures, final fixed-input and refusal evidence, the exact GPL
+patch and build identities, audits, regressions, research,
+`.gitattributes`, source/tests/specification/plan and this report as it stood
+before this archive statement. The archive itself is unchanged by this final
+paragraph.
+
+## Fixed-input feature history and triangulation geometry diagnosis
+
+The next isolated diagnosis is documented in
+`docs/OPENVINS_FEATURE_HISTORY_GEOMETRY_REPORT.md`. A strict, state-neutral
+OpenVINS trace proves that all 1,202 dominant MSCKF insufficient-history
+rejections were already single-observation candidates; none was caused by the
+11-clone cleanup window. It also proves that all 114 delayed-SLAM linear
+triangulation failures exceeded the fixed condition-number limit, with the
+rejected set showing a median 0.00165 m pair baseline and 0.000400 rad
+parallax, versus 0.340 m and 0.118 rad for accepted candidates. The diagnostic
+replay exactly matches 250 uninstrumented camera states within `1e-12` and did
+not run PX4/Gazebo, train weights, publish ODOMETRY, inject EKF2, or arm.
+
+The authoritative evidence for this added stage is
+`evidence/openvins-feature-history-geometry-dev-1701.zip`, SHA-256
+`6d2ba2cc104ffe6e9ead72437ca2fab44a4ded6707ae85ed671c50e405df3f31`.
+The next stage is constrained to a minimal VIO/motion correction followed by a
+complete 25-second physical drift rerun; it must not expand generic evidence
+infrastructure or proceed to EKF2, training, or multi-aircraft work first.
+
+## Motion-intent corrected complete physical retry
+
+The separately named `study-v23/capture-v1` run applied the verified
+truth-free native motion intent before the frozen 2.621 s support-motion anchor
+and completed the full 25 s PX4/Gazebo workload. No stationary update was
+accepted after motion began. Against the unchanged prospective gauge, maximum
+position error fell from the immutable prior 47.719487 m failure to 0.078755 m,
+terminal error was 0.020517 m, maximum velocity error was 0.082112 m/s and
+maximum attitude error was 0.999105 degrees. The frozen 0.25 m and 0.25 m/s
+accuracy screens therefore pass.
+
+The run retained all source, physics, native-reference, OpenVINS, supervisor
+and ULog evidence. It produced 222 public states through 24.9 s, 11 nonzero
+MSCKF updates using 23 features and 209 nonzero SLAM updates using 6,473
+features. Native camera processing P95 was 3.376 ms; source-arrival to native
+acknowledgement P95 was 79.754 ms and is not policy decision latency.
+
+This result qualifies the complete disarmed physical execution and the VIO
+accuracy screens only. Reset and quality remain unknown and covariance/noise
+remain uncalibrated, so estimator health, ODOMETRY, EKF2 injection, fusion,
+arming, flight, training and multi-aircraft expansion remain closed. Full
+details are in `docs/OPENVINS_MOTION_INTENT_PHYSICAL_RETRY_REPORT.md`.
+
+The sealed physical-retry archive is
+`evidence/openvins-motion-intent-physical-retry-dev-1701.zip`, SHA-256
+`0467cb57cf632bf540110d5981fc8d8e9778aa4ac9bd3d9f5bda55171f00fb96`.

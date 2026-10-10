@@ -1,0 +1,8 @@
+{
+  "archive_sha256": "2b6ee4dc97668336c511b7903c79edc754e953a27b0e3a038b85d48ccb9ac117",
+  "member": "results/openvins-listener-wire-format-dev-1701/native-v1/implicit-one.stdout",
+  "sha256": "ac6ac202582da1725b491cc0a7d326198edd5683fed475e080088795e2e5cda0",
+  "bytes": 220,
+  "source": "Unchanged fixed listener with stub uORB/field printer, no real PX4",
+  "live_listener_qualified": false
+}

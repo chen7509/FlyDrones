@@ -1,6 +1,7 @@
 import hashlib
 import importlib.util
 import json
+import threading
 import time
 
 import numpy as np
@@ -25,6 +26,31 @@ def event(**changes):
     )
     value.update(changes)
     return value
+
+
+def test_idle_callback_runs_on_writer_thread_only_after_queued_records_finish(tmp_path):
+    entered = threading.Event()
+    release = threading.Event()
+    idle = threading.Event()
+    seen = []
+
+    def on_record(row, _payload):
+        seen.append(row["sample_ns"])
+        if len(seen) == 1:
+            entered.set()
+            assert release.wait(1)
+
+    writer = api().CaptureWriter(
+        tmp_path, on_record=on_record, on_idle=lambda _now: idle.set(), idle_period_s=0.01
+    )
+    writer.submit(event(sample_ns=4_000_000))
+    assert entered.wait(1)
+    writer.submit(event(sample_ns=8_000_000))
+    assert not idle.wait(0.05)
+    release.set()
+    assert idle.wait(1)
+    assert writer.finish()["written"]["imu"] == 2
+    assert seen == [4_000_000, 8_000_000]
 
 
 def test_flu_frd_axes_and_separate_clocks():
@@ -166,6 +192,215 @@ def test_camera_info_keeps_all_sample_stamps_and_payloads(tmp_path):
     records = [json.loads(line) for line in (tmp_path / "events.jsonl").read_text().splitlines()]
     assert [r["sample_ns"] for r in records] == [2_000_000, 100_000_000]
     assert [(tmp_path / r["payload_path"]).read_bytes() for r in records] == [b"first protobuf", b"second protobuf"]
+
+
+def test_depth_message_format_check_preserves_exact_protobuf():
+    from types import SimpleNamespace
+
+    from tools.benchmark.capture_disarmed_sensors import depth_payload
+
+    good = SimpleNamespace(
+        width=160, height=120, step=640, pixel_format_type=13,
+        data=b"\x00\x00\x20\x41" * (160 * 120),
+        SerializeToString=lambda: b"original protobuf bytes",
+    )
+    assert depth_payload(good) == b"original protobuf bytes"
+    for change in (
+        {"step": 636}, {"pixel_format_type": 0}, {"data": b"short"},
+        {"width": 159}, {"SerializeToString": lambda: b"x" * 131073},
+    ):
+        with pytest.raises(ValueError):
+            depth_payload(SimpleNamespace(**dict(vars(good), **change)))
+
+
+@pytest.mark.parametrize("selected", [False, True])
+def test_capture_callback_failure_preserves_legacy_or_latches_opt_in(selected):
+    from tools.benchmark.capture_disarmed_sensors import handle_capture_callback_error
+
+    class Writer:
+        def __init__(self):
+            self.latched = []
+
+        def latch_failure(self, error):
+            self.latched.append(error)
+
+    writer, errors = Writer(), []
+    failure = ValueError("bad depth image")
+    handle_capture_callback_error(writer, errors, failure, record_depth_payload=selected)
+    assert writer.latched == ([failure] if selected else [])
+    assert errors == [repr(failure)]
+
+
+def test_depth_sidecar_is_exact_and_delivery_does_not_replay_payload(tmp_path):
+    seen = []
+    payload = b"exact gz.msgs.Image protobuf"
+    writer = api().CaptureWriter(tmp_path, record_depth_payload=True,
+                                 on_record=lambda row, data: seen.append((row, data)))
+    row = dict(kind="depth", sample_ns=100_000_000, width=160, height=120,
+               arrival_monotonic_ns=time.monotonic_ns(), observed_sim_ns=100_000_000)
+    writer.submit(row, payload)
+    summary = writer.finish()
+    assert summary["written"]["depth"] == 1
+    assert seen[0][1] is None
+    source = seen[0][0]
+    assert source["payload_path"] == "depth-messages/100000000.pb"
+    assert source["payload_sha256"] == hashlib.sha256(payload).hexdigest()
+    assert (tmp_path / source["payload_path"]).read_bytes() == payload
+    assert api().verify_depth_manifest(tmp_path) == summary["depth_payload"]
+    assert api().audit_event_records([source], required_kinds={"depth"}) == {"depth": 1}
+
+
+def test_depth_sidecar_is_opt_in_and_missing_payload_refuses(tmp_path):
+    row = dict(kind="depth", sample_ns=100_000_000, width=160, height=120,
+               arrival_monotonic_ns=time.monotonic_ns(), observed_sim_ns=100_000_000)
+    (tmp_path / "legacy").mkdir()
+    legacy = api().CaptureWriter(tmp_path / "legacy")
+    with pytest.raises(ValueError, match="depth payload"):
+        legacy.submit(row, b"unexpected")
+    legacy.submit(row)
+    assert "depth_payload" not in legacy.finish()
+    assert not (tmp_path / "legacy/depth-messages").exists()
+    (tmp_path / "selected").mkdir()
+    selected = api().CaptureWriter(tmp_path / "selected", record_depth_payload=True)
+    with pytest.raises(ValueError, match="depth payload"):
+        selected.submit(row)
+    assert selected.finish()["depth_payload"]["frames"] == []
+
+
+def test_depth_sidecar_failure_prevents_source_delivery(tmp_path):
+    seen = []
+    (tmp_path / "depth-messages").mkdir()
+    (tmp_path / "depth-messages/100000000.pb").write_bytes(b"existing")
+    writer = api().CaptureWriter(tmp_path, record_depth_payload=True,
+                                 on_record=lambda *_: seen.append(1))
+    writer.submit(dict(kind="depth", sample_ns=100_000_000, width=160, height=120,
+                       arrival_monotonic_ns=time.monotonic_ns(), observed_sim_ns=100_000_000), b"source")
+    with pytest.raises(RuntimeError):
+        writer.finish()
+    assert seen == []
+    assert (tmp_path / "depth-messages/100000000.pb").read_bytes() == b"existing"
+
+
+def test_depth_directory_link_is_refused_before_sidecar_write(tmp_path, monkeypatch):
+    from pathlib import Path
+
+    original_is_symlink = Path.is_symlink
+    depth_dir = tmp_path / "depth-messages"
+    depth_dir.mkdir()
+    monkeypatch.setattr(Path, "is_symlink", lambda path: path == depth_dir or original_is_symlink(path))
+    seen = []
+    writer = api().CaptureWriter(tmp_path, record_depth_payload=True,
+                                 on_record=lambda *_args: seen.append(1))
+    writer.submit(dict(kind="depth", sample_ns=100_000_000, width=160, height=120,
+                       arrival_monotonic_ns=time.monotonic_ns(), observed_sim_ns=100_000_000), b"source")
+    with pytest.raises(RuntimeError):
+        writer.finish()
+    assert seen == []
+    assert not (depth_dir / "100000000.pb").exists()
+
+
+def test_latched_callback_failure_rejects_queued_delivery(tmp_path):
+    seen = []
+    writer = api().CaptureWriter(tmp_path, record_depth_payload=True, start_worker=False,
+                                 on_record=lambda *_args: seen.append(1))
+    writer.submit(dict(kind="depth", sample_ns=100_000_000, width=160, height=120,
+                       arrival_monotonic_ns=time.monotonic_ns(), observed_sim_ns=100_000_000), b"source")
+    writer.latch_failure(ValueError("malformed depth callback"))
+    with pytest.raises(RuntimeError, match="malformed depth callback"):
+        writer.finish()
+    assert seen == []
+    assert not (tmp_path / "depth-messages/100000000.pb").exists()
+
+
+def test_latched_failure_waits_for_active_delivery_then_refuses_next(tmp_path):
+    entered, release = threading.Event(), threading.Event()
+    seen = []
+
+    def deliver(row, _payload):
+        seen.append(row["sample_ns"])
+        entered.set()
+        assert release.wait(2)
+
+    writer = api().CaptureWriter(tmp_path, record_depth_payload=True, on_record=deliver)
+    for stamp in (100_000_000, 200_000_000):
+        writer.submit(dict(kind="depth", sample_ns=stamp, width=160, height=120,
+                           arrival_monotonic_ns=time.monotonic_ns(), observed_sim_ns=stamp), b"source")
+    assert entered.wait(1)
+    failed = threading.Thread(target=lambda: writer.latch_failure(ValueError("bad depth image")))
+    failed.start()
+    deadline = time.monotonic() + 1
+    while writer.error is None and time.monotonic() < deadline:
+        time.sleep(0.001)
+    assert writer.error is not None
+    release.set()
+    failed.join(timeout=2)
+    assert not failed.is_alive()
+    with pytest.raises(RuntimeError, match="bad depth image"):
+        writer.finish()
+    assert seen == [100_000_000]
+
+
+@pytest.mark.parametrize("change", ["bytes", "missing", "path", "hash", "extra", "event"])
+def test_depth_manifest_rejects_tamper(tmp_path, change):
+    writer = api().CaptureWriter(tmp_path, record_depth_payload=True)
+    writer.submit(dict(kind="depth", sample_ns=100_000_000, width=160, height=120,
+                       arrival_monotonic_ns=time.monotonic_ns(), observed_sim_ns=100_000_000), b"source")
+    writer.finish()
+    path = tmp_path / "depth-messages/100000000.pb"
+    manifest = tmp_path / "depth-payload-manifest.json"
+    if change == "bytes":
+        path.write_bytes(b"changed")
+    elif change == "missing":
+        path.unlink()
+    elif change == "extra":
+        (tmp_path / "depth-messages/200000000.pb").write_bytes(b"undeclared")
+    elif change == "event":
+        events = tmp_path / "events.jsonl"
+        row = json.loads(events.read_text())
+        row["payload_sha256"] = "0" * 64
+        events.write_text(json.dumps(row) + "\n")
+    else:
+        data = json.loads(manifest.read_text())
+        data["frames"][0]["path" if change == "path" else "sha256"] = "../escape.pb" if change == "path" else "0" * 64
+        manifest.write_text(json.dumps(data))
+    with pytest.raises(ValueError):
+        api().verify_depth_manifest(tmp_path)
+
+
+@pytest.mark.parametrize("fault", ["short_write", "close"])
+def test_depth_sidecar_io_failure_prevents_delivery(tmp_path, monkeypatch, fault):
+    from pathlib import Path
+
+    original_open = Path.open
+    seen = []
+
+    class BadFile:
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *_args):
+            if fault == "close":
+                raise OSError("injected depth close failure")
+
+        def write(self, data):
+            return len(data) - int(fault == "short_write")
+
+        def flush(self):
+            return None
+
+    def bad_open(path, *args, **kwargs):
+        if path.suffix == ".pb" and path.parent.name == "depth-messages":
+            return BadFile()
+        return original_open(path, *args, **kwargs)
+
+    monkeypatch.setattr(Path, "open", bad_open)
+    writer = api().CaptureWriter(tmp_path, record_depth_payload=True,
+                                 on_record=lambda *_args: seen.append(1))
+    writer.submit(dict(kind="depth", sample_ns=100_000_000, width=160, height=120,
+                       arrival_monotonic_ns=time.monotonic_ns(), observed_sim_ns=100_000_000), b"source")
+    with pytest.raises(RuntimeError):
+        writer.finish()
+    assert seen == []
 
 
 @pytest.mark.parametrize("phase", ["subscription", "fixture", "ulog"])

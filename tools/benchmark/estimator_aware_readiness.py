@@ -34,9 +34,11 @@ CAMERA_ACK_KEYS = COMMON_ACK_KEYS | {
     "zupt_flag_latched",
     "has_moved_since_zupt",
     "imu_state",
+    "imu_covariance15",
 }
 MAX_NS = 2**63 - 1
 MAX_MAGNITUDE = 1e10
+MAX_SOURCE_SIM_LEAD_NS = 1_000_000
 
 
 def _integer(value, name, *, minimum=0):
@@ -96,6 +98,7 @@ def _validate_camera_ack(value, now):
     regular = _number(value["last_regular_update_s"], "regular update time")
     state_time = _number(value["state_time_s"], "state time")
     state = value["imu_state"]
+    covariance = value["imu_covariance15"]
     if value["internal_initialized"]:
         if _seconds_to_ns(state_time, "state time") != sample:
             raise ValueError("native state/sample mismatch")
@@ -111,15 +114,37 @@ def _validate_camera_ack(value, now):
         quaternion_norm = math.sqrt(sum(item * item for item in numbers[:4]))
         if abs(quaternion_norm - 1.0) > 1e-5:
             raise ValueError("invalid native quaternion")
-    elif state is not None or state_time != -1 or initializer != -1 or regular != -1:
-        raise ValueError("uninitialized acknowledgement has state")
+        if (
+            type(covariance) is not list
+            or len(covariance) != 15
+            or any(type(row) is not list or len(row) != 15 for row in covariance)
+        ):
+            raise ValueError("invalid native IMU covariance")
+        for row in covariance:
+            for item in row:
+                _number(item, "native IMU covariance")
+    else:
+        untouched = initializer == state_time == -1
+        handoff_pending = (
+            0 <= initializer == state_time
+            and _seconds_to_ns(initializer, "initializer handoff time") <= sample
+        )
+        if (
+            state is not None
+            or covariance is not None
+            or regular != -1
+            or value["zupt_flag_latched"]
+            or value["has_moved_since_zupt"]
+            or not (untouched or handoff_pending)
+        ):
+            raise ValueError("invalid uninitialized acknowledgement")
     return sequence, sample, acknowledged
 
 
 class EstimatorAwareReadiness:
     """Require a fresh internal camera state in addition to existing source proof."""
 
-    def __init__(self, output, source_readiness, *, clock=time.monotonic_ns, stream=None):
+    def __init__(self, output, source_readiness, *, clock=time.monotonic_ns, stream=None, session_id=None):
         self.output = Path(output)
         self.source_readiness = source_readiness
         self.clock = clock
@@ -128,11 +153,20 @@ class EstimatorAwareReadiness:
         self._failure = None
         self.first_internal = None
         self.latest_internal = None
+        self.latest_motion_intent_state = None
         self.last_sequence = None
         self.last_sample = None
         self.clock_high_water_ns = None
         self.closed = False
         self.close_errors = []
+        if session_id is not None and (
+            not isinstance(session_id, str) or not session_id or any(character.isspace() for character in session_id)
+        ):
+            raise ValueError("invalid estimator session")
+        self.session_id = session_id
+        self.reset_total = 0
+        self.used_session_ids = set() if session_id is None else {session_id}
+        self.session_replacements = 0
 
     @property
     def failure(self):
@@ -174,7 +208,14 @@ class EstimatorAwareReadiness:
                 source_sample = _integer(source_row.get("sample_ns"), "source sample", minimum=1)
                 source_arrival = _integer(source_row.get("arrival_monotonic_ns"), "source arrival", minimum=1)
                 observed_sim = _integer(source_row.get("observed_sim_ns"), "observed simulation time", minimum=1)
-                if source_arrival > now or source_sample > observed_sim:
+                source_age = source_row.get("sim_age_at_callback_ns")
+                if type(source_age) is not int or not -MAX_NS <= source_age <= MAX_NS:
+                    raise ValueError("invalid source simulation clock")
+                if source_age != observed_sim - source_sample:
+                    raise ValueError("inconsistent source simulation clock")
+                if source_age < -MAX_SOURCE_SIM_LEAD_NS:
+                    raise ValueError("source simulation clock lead exceeded")
+                if source_arrival > now:
                     raise ValueError("future acknowledgement source")
                 for value in acknowledgements:
                     sequence, sample, acknowledged = _validate_common_ack(value, now)
@@ -212,9 +253,62 @@ class EstimatorAwareReadiness:
                     if self.first_internal is None:
                         self.first_internal = copy.deepcopy(record)
                     self.latest_internal = copy.deepcopy(record)
+                    self.latest_motion_intent_state = {
+                        "kind": "C",
+                        "native_sequence": sequence,
+                        "sample_ns": sample,
+                        "acknowledged_ns": acknowledged,
+                        "internal_initialized": True,
+                        "has_moved_since_zupt": value["has_moved_since_zupt"],
+                        "reset_counter": value["reset_counter"],
+                    }
             except BaseException as exc:
                 self._fail(exc)
                 raise ValueError(self.failure) from exc
+
+    def motion_intent_state(self):
+        with self.lock:
+            self._available()
+            if self.latest_motion_intent_state is None:
+                raise ValueError("motion intent requires internal estimator state")
+            return copy.deepcopy(self.latest_motion_intent_state)
+
+    def replace_session(self, new_session_id, *, reset_total):
+        with self.lock:
+            now = self._available()
+            if self.session_id is None:
+                raise ValueError("initial estimator session unavailable")
+            if (
+                not isinstance(new_session_id, str)
+                or not new_session_id
+                or any(character.isspace() for character in new_session_id)
+                or new_session_id in self.used_session_ids
+            ):
+                raise ValueError("invalid or reused estimator session")
+            if type(reset_total) is not int or reset_total != self.reset_total + 1:
+                raise ValueError("invalid estimator reset total")
+            previous = self.session_id
+            self.session_id = new_session_id
+            self.reset_total = reset_total
+            self.used_session_ids.add(new_session_id)
+            self.session_replacements += 1
+            self.first_internal = None
+            self.latest_internal = None
+            self.latest_motion_intent_state = None
+            self.last_sequence = None
+            self.last_sample = None
+            record = {
+                "event": "estimator_session_replacement",
+                "previous_session_id": previous,
+                "session_id": new_session_id,
+                "reset_total": reset_total,
+                "reset_counter": reset_total % 256,
+                "journal_monotonic_ns": now,
+                "truth_used": False,
+                "fusion_eligible": False,
+            }
+            self._emit(record)
+            return copy.deepcopy(record)
 
     def proof(self):
         with self.lock:
@@ -246,6 +340,9 @@ class EstimatorAwareReadiness:
                 "latest_internal": copy.deepcopy(self.latest_internal),
                 "failure": self.failure,
                 "clock_high_water_ns": self.clock_high_water_ns,
+                "session_id": self.session_id,
+                "reset_total": self.reset_total,
+                "session_replacements": self.session_replacements,
                 "truth_used": False,
                 "fusion_eligible": False,
             }
@@ -267,6 +364,9 @@ class EstimatorAwareReadiness:
                 "latest_internal": copy.deepcopy(self.latest_internal),
                 "failure": self.failure,
                 "clock_high_water_ns": self.clock_high_water_ns,
+                "session_id": self.session_id,
+                "reset_total": self.reset_total,
+                "session_replacements": self.session_replacements,
                 "close_errors": copy.deepcopy(self.close_errors),
                 "truth_used": False,
                 "fusion_eligible": False,
@@ -281,6 +381,10 @@ class EstimatorJournaledHeartbeatFanout(JournaledHeartbeatFanout):
 
     def _after_shadow(self, row, payload):
         del payload
+        if row.get("kind") == "heartbeat":
+            if self.shadow.delivery_acks:
+                raise ValueError("heartbeat cannot attribute native acknowledgements")
+            return
         self.observation_readiness.observe_ack_batch(self.shadow.delivery_acks, row)
 
     def finish(self):

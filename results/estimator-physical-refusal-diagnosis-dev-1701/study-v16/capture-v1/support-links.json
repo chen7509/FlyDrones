@@ -1,0 +1,30 @@
+{
+  "masses": {
+    "base_link": 2.0,
+    "rotor_0": 0.016076923076923075,
+    "rotor_1": 0.016076923076923075,
+    "rotor_2": 0.016076923076923075,
+    "rotor_3": 0.016076923076923075,
+    "camera_link": 0.061
+  },
+  "gravity": {
+    "world_gravity": [
+      0.0,
+      0.0,
+      -9.81
+    ],
+    "per_link_scope": "SDF configuration, not runtime GravityEnabled readback",
+    "source_hashes": {
+      "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/capture-v1/world.sdf": "b42bd639080c967ceb84edc7bbf023b064dbd4fc610ccb81a1eaceb5fb373c1e",
+      "/home/yuchen7509/PX4-Autopilot/Tools/simulation/gz/models/x500_base/model.sdf": "e807dca3406f7cd5cb3d545898601c3ec17e0e5242e25cf467a69df1812cf436",
+      "/home/yuchen7509/PX4-Autopilot/Tools/simulation/gz/models/x500/model.sdf": "cfe92f98360967faa895b77aa8a6fff3fc9b290286e94e45297c4bdd7b62fbf9",
+      "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/assets/gazebo/models/x500_benchmark/model.sdf": "ff8eaa1dbb73b77d693e1d29908bc0ebee6ffa64311951e133db38fda82e7ee9",
+      "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/assets/gazebo/models/OakD-Benchmark/model.sdf": "806c532bd2a22e9caa85d79bf5fd974d7ce02b1eb660df7802c1fc557f4ae5fe"
+    }
+  },
+  "runtime_world_gravity": [
+    0.0,
+    0.0,
+    -9.81
+  ]
+}

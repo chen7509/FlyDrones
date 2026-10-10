@@ -1,0 +1,97 @@
+{
+  "schema": "heartbeat-simulation-time-readiness-evidence-v1",
+  "members": [
+    {
+      "path": "docs/ESTIMATOR_PHYSICAL_REFUSAL_DIAGNOSIS_REPORT.md",
+      "bytes": 54038,
+      "sha256": "9f78825c1ae31554441a9ed01827f898fdb82bac71ab15fd294eae918dadcbc0"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-10-07-heartbeat-simulation-time-readiness.md",
+      "bytes": 1371,
+      "sha256": "6390cd20e03e8b8079c6b8553186c1c871aa76f3251e8842a398068175e75f71"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-10-07-heartbeat-simulation-time-readiness-design.md",
+      "bytes": 2957,
+      "sha256": "83107aabb9dab71c31f1f94c22928ac7f0f20ad5c533df7fe2dd80675a3b81f8"
+    },
+    {
+      "path": "results/heartbeat-simulation-time-readiness-dev-1701/diff-check.txt",
+      "bytes": 145,
+      "sha256": "a5992e8ec9e0a5f98f8a1e3e5250a0db364ddc586771cda9027439333cc4175e"
+    },
+    {
+      "path": "results/heartbeat-simulation-time-readiness-dev-1701/diff-stat.txt",
+      "bytes": 539,
+      "sha256": "e821ae71a0412b0d07aa54f537c8a3d3d33eccb13b9941fb4b2a87707cef753e"
+    },
+    {
+      "path": "results/heartbeat-simulation-time-readiness-dev-1701/fixed-evidence-audit-output.txt",
+      "bytes": 469,
+      "sha256": "e31ec840f0f36af502d73d6c6cefb627f87d0a5f0584cac8c5deec1c5e875f1a"
+    },
+    {
+      "path": "results/heartbeat-simulation-time-readiness-dev-1701/fixed-evidence-audit.json",
+      "bytes": 455,
+      "sha256": "faa3f02be1adf5f6b34d65420f27d8f0e73d10cb54821338b5b3afc014f24200"
+    },
+    {
+      "path": "results/heartbeat-simulation-time-readiness-dev-1701/focused-tests.txt",
+      "bytes": 182,
+      "sha256": "2c4fcce79defaf03851b15531a98f73fe526a8b457969038531f0150051d8c92"
+    },
+    {
+      "path": "results/heartbeat-simulation-time-readiness-dev-1701/full-tests.txt",
+      "bytes": 2761,
+      "sha256": "deee884f887f980622c736f584f7348d19cb12df8eeee67e9a535c4f4d78255e"
+    },
+    {
+      "path": "results/heartbeat-simulation-time-readiness-dev-1701/research.json",
+      "bytes": 1530,
+      "sha256": "b2c73dc4db4a771faa3565e0e34a4649e10b3d9b7dec0b92b5daf4d2eecf716d"
+    },
+    {
+      "path": "results/heartbeat-simulation-time-readiness-dev-1701/ruff.txt",
+      "bytes": 20,
+      "sha256": "a4443afdcfb6d7363adb285762515ccf7cf50473b1a05c20c1a50f6bed4d26b0"
+    },
+    {
+      "path": "results/openvins-handoff-physical-attempt-dev-1701/physical-attempt-audit.json",
+      "bytes": 967,
+      "sha256": "65b25711a0b0e3745ecc05c3ec3f8a851ce7a95148cfaf806cb860b5532d9f5e"
+    },
+    {
+      "path": "tests/benchmark/test_audit_heartbeat_sim_time_readiness.py",
+      "bytes": 1251,
+      "sha256": "ff75c9a6fe5a5f8bcb05b0cb3d56b9cdcf8bf9cf848269bc5fe6ef6be5ef06a1"
+    },
+    {
+      "path": "tests/benchmark/test_estimator_aware_readiness.py",
+      "bytes": 21245,
+      "sha256": "ae3e578cac596e1ac7df09124449d1e9a91c716f4fedf58b0905d4ffd323aa17"
+    },
+    {
+      "path": "tests/benchmark/test_journaled_heartbeat_lane.py",
+      "bytes": 11009,
+      "sha256": "6afa28afb5d05b35d69db7b91cb3f5f8c3c551b1d38404105f7a2d4c1f30673c"
+    },
+    {
+      "path": "tests/benchmark/test_readiness_anchor.py",
+      "bytes": 8196,
+      "sha256": "2db83e74671027abea779a86296031d5d88840f80aa5ab33466ad322b67ed48c"
+    },
+    {
+      "path": "tools/benchmark/audit_heartbeat_sim_time_readiness.py",
+      "bytes": 3960,
+      "sha256": "8006deb2cb2824a31acf961c6b2402185df5946bb76acd092e4f8b88fed3c892"
+    },
+    {
+      "path": "tools/benchmark/readiness_anchor.py",
+      "bytes": 9261,
+      "sha256": "533a474e4ab6675e57f05ca56acc5161489aa714c24cf03f4eb4ded40f1c70e7"
+    }
+  ],
+  "physical_rerun": false,
+  "fusion_eligible": false
+}

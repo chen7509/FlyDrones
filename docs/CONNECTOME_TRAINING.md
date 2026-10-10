@@ -8,9 +8,18 @@ Run the deterministic contract tests:
 
 Profile the complete MaleCNS controller:
 
-    $env:PYTHONPATH='src'; python tools/connectome_training/profile_baseline.py
+    $env:PYTHONPATH='src'; python tools/connectome_training/profile_baseline.py --output results/connectome-training/stage-a/baseline_profile_v2.json
 
-The generated JSON separates total, neural and residual overhead latency and evaluates the 35 ms P95 Stage A gate. A failed gate is retained as a baseline result.
+Choose a new output path for each run; existing evidence is refused rather than
+overwritten. The v2 JSON retains per-call external start/end timestamps and
+evaluates the 35 ms P95 Stage A gate using the external synchronous `step` call
+duration. Controller-reported total, neural and residual overhead are separate
+diagnostics. Fake controllers and undersampled runs cannot qualify as complete
+MaleCNS latency evidence. A failed gate is retained as a baseline result.
+
+This profiles the fixed `Brain/LIFNetwork` controller on synthetic black images,
+not a trained `ConnectomeConstrainedCore` checkpoint or sensor-to-actuator flight
+latency. See [the measurement correction and remaining gaps](CONNECTOME_LATENCY_CONTRACT_REPORT.md).
 
 ## Stage B offline training gate
 

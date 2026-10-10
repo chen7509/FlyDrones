@@ -8,12 +8,14 @@ from __future__ import annotations
 
 import re
 from dataclasses import dataclass
+from pathlib import Path
 
 import numpy as np
 
 from flydrones.benchmark.contract import Observation
 from flydrones.benchmark.gateway import NativeGazeboPx4Backend
 from flydrones.connectome_training.corpus_config import CorpusConfig
+from flydrones.connectome_training.teacher_image import verify_pinned_ego_inspection
 
 _SHA256 = re.compile(r"[0-9a-f]{64}\Z")
 _MAX_FRAME_AGE_NS = 100_000_000
@@ -37,6 +39,8 @@ class CaptureInputEvidence:
     teacher_commit: str
     teacher_image_id: str
     teacher_image_inspected: bool
+    teacher_inspection_path: Path | None = None
+    teacher_inspection_sha256: str | None = None
 
 
 def _finite_vector(value: object, size: int, label: str) -> np.ndarray:
@@ -98,14 +102,27 @@ def validate_capture_input(
             or evidence.teacher_image_id != config.teacher_image_id
             or evidence.teacher_image_inspected is not True):
         raise ValueError("teacher identity is not inspected and pinned")
+    if (evidence.teacher_inspection_path is None
+            or evidence.teacher_inspection_sha256 is None):
+        raise ValueError("teacher inspection record missing")
+    try:
+        verified_inspection = verify_pinned_ego_inspection(
+            evidence.teacher_inspection_path, evidence.teacher_inspection_sha256,
+        )
+    except (OSError, ValueError) as exc:
+        raise ValueError("teacher inspection record invalid") from exc
+    if (verified_inspection["image_id"] != config.teacher_image_id
+            or verified_inspection["upstream_commit"] != config.teacher_commit):
+        raise ValueError("teacher inspection record mismatches corpus configuration")
     if (not isinstance(observation.rgb, np.ndarray) or observation.rgb.dtype != np.uint8
             or observation.rgb.ndim != 3 or observation.rgb.shape[2] != 3
             or min(observation.rgb.shape[:2]) < 1
             or not isinstance(observation.depth_m, np.ndarray)
             or observation.depth_m.shape != observation.rgb.shape[:2]
-            or not np.issubdtype(observation.depth_m.dtype, np.floating)
-            or not np.all(np.isfinite(observation.depth_m))
-            or np.any(observation.depth_m < 0)):
+            or observation.depth_m.dtype != np.float32
+            or np.any(np.isinf(observation.depth_m))
+            or np.any(observation.depth_m <= 0)
+            or not np.any(np.isfinite(observation.depth_m))):
         raise ValueError("RGB-D depth frame invalid")
     quaternion = _finite_vector(observation.camera_pose, 7, "camera pose")[3:]
     if not .95 <= float(np.linalg.norm(quaternion)) <= 1.05:
