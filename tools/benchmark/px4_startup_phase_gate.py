@@ -114,14 +114,21 @@ class StartupPhaseGate:
         except BaseException as journal_exc:
             self._evidence['refusal_journal_error'] = _error(journal_exc)
 
-    def _check(self):
-        if self._failure is not None or self._phase != 'startup':
+    def _check(self, *, ready=False):
+        allowed = ('startup', 'ready') if ready else ('startup',)
+        if self._failure is not None or self._phase not in allowed:
             raise ValueError('startup phase failed or already transitioned')
         now = self._backend.clock()
         if type(now) is not int or not self._last_clock <= now < 2**64:
             raise ValueError('startup clock regression')
         self._last_clock = now
-        if now >= self._deadline:
+        deadline = self._deadline
+        if self._phase == 'ready':
+            ready_ns = self._evidence['startup_ready_monotonic_ns']
+            if type(ready_ns) is not int or ready_ns >= 2**64 - 8_000_000_000:
+                raise ValueError('invalid cold transition timestamp')
+            deadline = ready_ns + 8_000_000_000
+        if now >= deadline:
             raise TimeoutError('startup phase deadline expired')
         owner = self._backend.observe(self._process)
         validate_owner(owner)
@@ -153,9 +160,11 @@ class StartupPhaseGate:
             raise ValueError('startup log prefix changed')
         return raw
 
-    def poll_log(self):
+    def poll_log(self, *, after_transition=False):
         try:
-            self._check()
+            if after_transition and self._phase != 'ready':
+                raise ValueError('startup post-transition recheck requires ready phase')
+            self._check(ready=after_transition)
             raw = self._read_log()
             new = raw[len(self._consumed):]
             self._evidence['log'] = dict(path=str(self._path), device=self._baseline['device'],
@@ -166,21 +175,21 @@ class StartupPhaseGate:
             if new:
                 self._consumed = raw
                 self._pending += new
-                observed_at = self._check()
+                observed_at = self._check(ready=after_transition)
                 self._record('startup_log_bytes', at_ns=observed_at, bytes_read=len(raw),
                              sha256=hashlib.sha256(raw).hexdigest(), appended_hex=new.hex())
-                self._check()
+                self._check(ready=after_transition)
                 while b'\n' in self._pending:
                     line, self._pending = self._pending.split(b'\n', 1)
                     self._lines += 1
                     if self.FAILURE in line:
                         raise ValueError('PX4 startup failure marker')
                     if self.SUCCESS in line and self._marker_at is None:
-                        self._marker_at = self._check()
+                        self._marker_at = self._check(ready=after_transition)
                         self._marker_line = self._lines
             self._evidence['log']['marker_line'] = self._marker_line
             self._evidence['log']['marker_observed_ns'] = self._marker_at
-            self._check()
+            self._check(ready=after_transition)
             return self.progress
         except BaseException as exc:
             self._fail(exc)

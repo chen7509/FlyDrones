@@ -90,14 +90,20 @@ def wire_configuration_record(path):
     """Freeze an explicit clock mapping; no implicit origin or live authority."""
     before = _file_identity(path)
     value = read_declaration(path)
+    staged = type(value) is dict and value.get('schema') == 'capture-wire-startup-v2'
+    keys = {'schema', 'session_id', 'sim_origin_ns', 'remote_origin_ns'}
+    if staged:
+        keys.add('startup_max_wall_ns')
     if (type(value) is not dict
-            or value.keys() != {'schema', 'session_id', 'sim_origin_ns', 'remote_origin_ns'}
-            or value['schema'] != 'capture-wire-v1'
+            or value.keys() != keys
+            or value['schema'] not in ('capture-wire-v1', 'capture-wire-startup-v2')
             or type(value['session_id']) is not str
             or re.fullmatch(r'[A-Za-z0-9_.:-]{1,128}', value['session_id']) is None
             or type(value['sim_origin_ns']) is not int or value['sim_origin_ns'] != 0
             or type(value['remote_origin_ns']) is not int
-            or not 0 <= value['remote_origin_ns'] < 2**63 - 25_000_000_000):
+            or not 0 <= value['remote_origin_ns'] < 2**63 - 25_000_000_000
+            or staged and (type(value['startup_max_wall_ns']) is not int
+                           or not 0 < value['startup_max_wall_ns'] <= 60_000_000_000)):
         raise ValueError('invalid capture wire clock configuration')
     if before != _file_identity(path):
         raise ValueError('wire configuration changed during validation')

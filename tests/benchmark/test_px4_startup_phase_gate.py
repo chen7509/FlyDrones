@@ -63,6 +63,34 @@ def test_no_instance_status_remains_pending_even_after_success_marker(tmp_path):
     assert gate.transition()['phase'] == 'ready'
 
 
+def test_ready_phase_rechecks_fresh_log_and_latches_late_startup_failure(tmp_path):
+    gate, log, _, _ = make_gate(tmp_path)
+    log.write_bytes(b'INFO Startup script returned successfully\n')
+    gate.poll_log()
+    gate.accept_status(ready_probe())
+    gate.transition()
+    assert gate.poll_log(after_transition=True)['phase'] == 'ready'
+    with log.open('ab') as stream:
+        stream.write(b'ERROR Startup script returned with return value: 1\n')
+    with pytest.raises(StartupPhaseRefusal, match='startup failure'):
+        gate.poll_log(after_transition=True)
+    assert gate.progress['phase'] == 'failed'
+
+
+def test_successful_transition_before_spawn_cap_uses_original_cold_eight_seconds(tmp_path):
+    gate, log, backend, _ = make_gate(tmp_path)
+    log.write_bytes(b'INFO Startup script returned successfully\n')
+    gate.poll_log()
+    gate.accept_status(ready_probe())
+    backend.now = 60_000_000_009
+    ready = gate.transition()['startup_ready_monotonic_ns']
+    backend.now = 60_000_000_011  # Spawn-phase cap passed after valid transition.
+    assert gate.poll_log(after_transition=True)['phase'] == 'ready'
+    backend.now = ready + 8_000_000_000
+    with pytest.raises(StartupPhaseRefusal, match='deadline'):
+        gate.poll_log(after_transition=True)
+
+
 @pytest.mark.parametrize('change', ['replace', 'truncate', 'rewrite', 'symlink'])
 def test_log_identity_prefix_and_type_must_remain_stable(tmp_path, change):
     gate, log, _, _ = make_gate(tmp_path)

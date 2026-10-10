@@ -292,7 +292,7 @@ class CaptureWireDriver:
 
 
 def bind_capture_wire(fixture, journal, result, session, original_post, *, total_deadline_ns,
-                      register_cleanup=True):
+                      register_cleanup=True, register_callback=True):
     """Register one clock callback and restoration before owned PX4 stop (20)."""
     driver = None
     def post(info, ecm):
@@ -317,7 +317,8 @@ def bind_capture_wire(fixture, journal, result, session, original_post, *, total
             raise ValueError('original PostUpdate callback required')
         if register_cleanup:
             journal.cleanup('capture wire', driver.finish, priority=15)
-        fixture.on_post_update(post)
+        if register_callback:
+            fixture.on_post_update(post)
     except BaseException as exc:
         if driver is not None:
             driver._fail(exc)
@@ -355,6 +356,13 @@ class CaptureWireOwner:
         self.config, self.start_ns, self.deadline = dict(config), start_ns, total_deadline_ns
         self.snapshot, self.heartbeat_sink = descriptor_snapshot, heartbeat_sink
         self.driver = self.sock = self.store = self.clock_file = None
+        self.startup_gate = self.startup_probe = self.startup_file = None
+        self.startup_process = self.startup_expected = None
+        self.startup_transition = None
+        self.startup_transition_count = None
+        self.startup_refusal = self.startup_probe_refusal = None
+        self.startup_callback_registered = False
+        self.source_guard = source_guard
         self.finished = False
         self.failure = None
         journal.cleanup('capture wire owner', self.finish, priority=15)
@@ -390,7 +398,137 @@ class CaptureWireOwner:
         if sock is not self.sock or self.snapshot(sock) != self.descriptor:
             raise ValueError('capture descriptor identity changed')
 
+    def _startup_record(self, row):
+        encoded = json.dumps(row, allow_nan=False) + '\n'
+        if self.startup_file.write(encoded) != len(encoded):
+            raise OSError('short startup evidence write')
+        self.startup_file.flush()
+
+    def begin_startup(self, process, fixture, original_post, *, log_path, initial_log, spawn_ns):
+        """Register the clock before Finalize; defer every cold wire side effect."""
+        if (self.config.get('schema') != 'capture-wire-startup-v2' or self.driver is not None
+                or self.startup_gate is not None or self.finished or self.failure):
+            raise ValueError('staged startup owner unavailable')
+        from tools.benchmark.declared_runtime_snapshot import write_manifest
+        from tools.benchmark.px4_startup_phase_gate import StartupPhaseGate
+
+        try:
+            self._descriptor_guard(self.sock)
+            expected = self.backend.observe(process)
+            if expected['net'] != self.descriptor['net']:
+                raise ValueError('startup owner/descriptor network namespace mismatch')
+            write_manifest(self.output / 'wire-owner.json', dict(
+                owner=expected, descriptor=self.descriptor, configuration=self.config,
+                start_ns=self.start_ns, total_deadline_ns=self.deadline,
+                startup_spawn_ns=spawn_ns))
+            self.startup_file = (self.output / 'wire-startup-events.jsonl').open('x', encoding='utf8')
+            self.startup_gate = StartupPhaseGate(
+                process, expected, log_path, initial_log, spawn_ns,
+                spawn_ns + self.config['startup_max_wall_ns'], self._startup_record,
+                self.source_guard, backend=self.backend)
+            self.startup_process, self.startup_expected = process, expected
+            if not callable(original_post):
+                raise ValueError('original PostUpdate callback required')
+
+            def post(info, ecm):
+                try:
+                    if self.failure or self.finished or (self.driver is not None
+                            and self.driver.phase in ('stopping', 'closed')):
+                        raise ValueError('capture PostUpdate after failure or close')
+                    self.lane.post_update(info)
+                    original_post(info, ecm)
+                except BaseException as exc:
+                    self._fail(exc)
+                    if self.driver is not None:
+                        self.driver._fail(exc)
+                        try:
+                            self.driver.request_stop(self.driver.failure)
+                        except BaseException as stop_exc:
+                            self._fail(stop_exc)
+                    # Native callback exceptions cannot skip CaptureJournal cleanup.
+
+            fixture.on_post_update(post)
+            self.startup_callback_registered = True
+        except BaseException as exc:
+            if hasattr(exc, 'evidence'):
+                self.startup_refusal = exc.evidence
+            self._fail(exc)
+            raise
+
+    def advance_startup(self):
+        """One bounded main-thread status step after a completed simulation chunk."""
+        if self.failure or self.finished or self.startup_gate is None or not self.startup_callback_registered:
+            raise ValueError('startup phase failed, absent or closed')
+        if self.driver is not None:
+            return self.driver.progress
+        from tools.benchmark.px4_owned_startup_probe import OwnedMavlinkStatusProbe, StatusProbeRefusal
+        from tools.benchmark.px4_startup_phase_gate import StartupPhaseRefusal
+
+        try:
+            if self.startup_transition is None:
+                progress = self.startup_gate.poll_log()
+                if progress['log_ready']:
+                    if self.startup_probe is None:
+                        path = Path('/tmp/px4-sock-8')
+                        if path.is_socket():
+                            now = self.backend.clock()
+                            self.startup_probe = OwnedMavlinkStatusProbe(
+                                self.startup_process, self.startup_expected, str(path), now,
+                                min(now + 2_000_000_000,
+                                    self.startup_gate._deadline), self._startup_record,
+                                backend=self.backend)
+                    if self.startup_probe is not None:
+                        parsed = self.startup_probe.poll()
+                        if parsed is not None:
+                            self.startup_gate.accept_status(self.startup_probe)
+                            self.startup_probe = None
+                if self.startup_gate.progress['status_ready'] and self.startup_gate.progress['log_ready']:
+                    self.startup_transition = self.startup_gate.transition()
+                    self.startup_transition_count = self.lane.progress['committed_samples']
+                return self.startup_gate.progress
+
+            self.startup_gate.poll_log(after_transition=True)
+            start_ns = self.startup_transition['startup_ready_monotonic_ns']
+            lane = self.lane.progress
+            now = self.backend.clock()
+            if (lane['failure'] is not None or type(now) is not int
+                    or not start_ns <= now < start_ns + 8_000_000_000):
+                raise ValueError('post-transition clock failure or cold deadline')
+            latest = lane['latest_callback_ns']
+            if (lane['committed_samples'] <= self.startup_transition_count
+                    or latest is None or latest < start_ns
+                    or lane['pending_callback_ns'] is not None):
+                if now - start_ns >= 2_000_000_000:
+                    raise TimeoutError('post-transition source callback absent')
+                return self.startup_gate.progress
+            if now - latest >= 2_000_000_000:
+                raise TimeoutError('post-transition source callback stale')
+            if self.backend.observe(self.startup_process) != self.startup_expected:
+                raise ValueError('post-transition PX4 owner changed')
+            self._descriptor_guard(self.sock)
+            session = ObservedWireSession(
+                self.startup_process, self.startup_expected, '/tmp/px4-sock-8',
+                self.remote, self.lane, self.sock, start_ns,
+                lambda _: None, self._descriptor_guard, backend=self.backend,
+                heartbeat_sink=self.heartbeat_sink, retention=self.store,
+                interval_transaction=True)
+            self.driver = bind_capture_wire(
+                None, self.journal, self.result, session, lambda *_: None,
+                total_deadline_ns=self.deadline, register_cleanup=False,
+                register_callback=False)
+            self.driver.start()
+            return self.startup_gate.progress
+        except BaseException as exc:
+            if isinstance(exc, StatusProbeRefusal):
+                self.startup_probe_refusal = exc.evidence
+            elif isinstance(exc, StartupPhaseRefusal):
+                self.startup_refusal = exc.evidence
+            self._fail(exc)
+            raise
+
     def bind(self, process, fixture, original_post):
+        if self.config.get('schema') == 'capture-wire-startup-v2':
+            raise ValueError('staged startup requires begin_startup before cold session')
         if self.driver is not None or self.finished or self.failure:
             raise ValueError('capture wire owner already bound, failed or closed')
         from tools.benchmark.declared_runtime_snapshot import write_manifest
@@ -424,6 +562,12 @@ class CaptureWireOwner:
         if self.finished:
             return
         failures = []
+        if self.startup_probe is not None:
+            try:
+                self.startup_probe.close()
+            except BaseException as exc:
+                self._fail(exc)
+                failures.append(exc)
         try:
             if self.driver is None:
                 self._fail(ValueError('capture wire never bound'))
@@ -437,7 +581,7 @@ class CaptureWireOwner:
         if self.driver is not None and self.driver._thread is not None and self.driver._thread.is_alive():
             # Do not close or inspect journals still being written by the reader.
             raise RuntimeError('capture reader remains live; retention remains owned')
-        for resource in (self.store, self.clock_file):
+        for resource in (self.store, self.clock_file, self.startup_file):
             if resource is not None:
                 try:
                     resource.close()
@@ -448,7 +592,11 @@ class CaptureWireOwner:
             self._fail(ValueError('terminal retention failure: ' + self.store.failure))
         evidence = dict(failure=self.failure, fusion_qualified=False, network_authorized=False,
                         driver=None if self.driver is None else self.driver.progress,
-                        session=None if self.driver is None else self.driver.session.evidence)
+                        session=None if self.driver is None else self.driver.session.evidence,
+                        startup=(self.startup_gate.evidence if self.startup_gate is not None
+                                 else self.startup_refusal),
+                        startup_probe=(self.startup_probe.evidence if self.startup_probe is not None
+                                       else self.startup_probe_refusal))
         self.result['wire_lifecycle'] = evidence
         try:
             from tools.benchmark.declared_runtime_snapshot import write_manifest

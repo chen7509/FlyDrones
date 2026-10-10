@@ -448,6 +448,8 @@ def run_capture_runtime(*, journal, output, result, errors, fixture, post_update
     thread_factory = threading.Thread if thread_factory is None else thread_factory
     monotonic = time.monotonic if monotonic is None else monotonic
     server = None
+    staged_wire = (wire_owner is not None
+                   and getattr(wire_owner, 'config', {}).get('schema') == 'capture-wire-startup-v2')
     if wire_owner is None:
         fixture.on_post_update(post_update)
         fixture.finalize()
@@ -475,8 +477,13 @@ def run_capture_runtime(*, journal, output, result, errors, fixture, post_update
         heartbeat_thread = thread_factory(target=read_heartbeats, daemon=True)
         heartbeat_thread.start()
         journal.cleanup("heartbeat", lambda: (stop.set(), heartbeat_thread.join(timeout=3)), priority=40)
-    log = (output / "px4.log").open("x")
+    log_path = output / "px4.log"
+    log = log_path.open("x")
     journal.cleanup("log close", log.close, priority=70)
+    log.flush()
+    log_stat = os.fstat(log.fileno())
+    initial_log = dict(device=log_stat.st_dev, inode=log_stat.st_ino, size=log_stat.st_size)
+    spawn_ns = wire_owner.backend.clock() if staged_wire else None
     process = spawn(
         [str(binary), "-i", "8", "-d", str(build / "etc")],
         cwd=runtime,
@@ -510,12 +517,17 @@ def run_capture_runtime(*, journal, output, result, errors, fixture, post_update
     if source_guard:
         source_guard.start(time.monotonic_ns())
     if wire_owner is not None:
-        wire_owner.bind(process, fixture, post_update)
+        if staged_wire:
+            wire_owner.begin_startup(process, fixture, post_update, log_path=log_path.resolve(),
+                                     initial_log=initial_log, spawn_ns=spawn_ns)
+        else:
+            wire_owner.bind(process, fixture, post_update)
         fixture.finalize()
         server = fixture.server()
         if binding:
             binding.observe('postfinalize')
-        wire_owner.driver.start()
+        if wire_owner.driver is not None:
+            wire_owner.driver.start()
     first_step_observed = False
     while clock["sim_ns"] < contract["simulation_duration_ns"]:
         if errors or writer.error:
@@ -529,9 +541,13 @@ def run_capture_runtime(*, journal, output, result, errors, fixture, post_update
             raise TimeoutError(f"capture exceeded{wall_budget}s wall budget")
         if not server.run(True, 10 if motion else 1000, False):
             raise RuntimeError("Gazebo rejected simulation run")
+        if staged_wire:
+            wire_owner.advance_startup()
         if binding and binding.required_self and not first_step_observed:
             binding.observe("postfirststep")
             first_step_observed = True
+    if wire_owner is not None and wire_owner.driver is None:
+        raise RuntimeError('capture ended before owned wire cold session started')
     result["status"] = "capture_completed"
 
 

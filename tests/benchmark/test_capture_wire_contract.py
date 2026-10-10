@@ -12,6 +12,22 @@ def configuration():
                 sim_origin_ns=0, remote_origin_ns=1_000_000)
 
 
+def test_staged_startup_wire_config_freezes_cap_without_changing_physics(tmp_path):
+    candidate = dict(configuration(), schema='capture-wire-startup-v2',
+                     startup_max_wall_ns=60_000_000_000)
+    path = tmp_path / 'staged-wire.json'
+    path.write_text(json.dumps(candidate))
+    assert contract.wire_configuration_record(path)['configuration'] == candidate
+    candidate['startup_max_wall_ns'] = 0
+    path.write_text(json.dumps(candidate))
+    with pytest.raises(ValueError):
+        contract.wire_configuration_record(path)
+    candidate['startup_max_wall_ns'] = 60_000_000_001
+    path.write_text(json.dumps(candidate))
+    with pytest.raises(ValueError):
+        contract.wire_configuration_record(path)
+
+
 def selected(tmp_path):
     path = tmp_path / 'wire.json'
     path.write_text(json.dumps(configuration()))
