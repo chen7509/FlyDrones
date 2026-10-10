@@ -54,3 +54,5 @@ src/flydrones/drones/sim.py -text
 src/flydrones/motor/decoder.py -text
 src/flydrones/runtime.py -text
 src/flydrones/safety.py -text
+# Prospective PX4 logger diagnostic is matched by an exact LF-byte hash.
+config/px4/source-diagnostic-v1/logger_topics.txt text eol=lf
