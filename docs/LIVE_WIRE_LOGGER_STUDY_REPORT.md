@@ -19,6 +19,6 @@ The stable adjacent selection reported **138 passed, 1 skipped** in 322.40 s. Th
 
 The fixed PX4/Agent versions, licensing, upstream interfaces and choice are documented in [the source diagnostic](PX4_ODOMETRY_SOURCE_DIAGNOSTIC_REPORT.md), [the owned logger runtime report](PX4_OWNED_LOGGER_RUNTIME_REPORT.md) and the earlier Agent integration reports. No new dependency was installed. No result in this stage is evidence that the fruit-fly policy learned, that EKF2 fused VIO, or that the drone is safe to arm.
 
-The next step is a separate prospective v3 preparation with the exact real runtime files and executor binding. A physical diagnostic remains conditional on the unchanged memory and safety gates, no competing processes, and one frozen unarmed attempt that preserves the complete ULog, source records and every failure.
+The separate prospective v3 preparation has since been completed and audited in [the v13 preparation report](LIVE_WIRE_LOGGER_V13_PREPARATION_REPORT.md); the first preparation's provenance error is preserved there. A physical diagnostic remains conditional on the unchanged memory and safety gates, no competing processes, and one frozen unarmed attempt that preserves the complete ULog, source records and every failure.
 
 Sealed evidence: `evidence/live-wire-logger-study-dev-1701.zip`, SHA-256 `d4ccd8171ffccb9fcab27480d4df2372854349b6459e57984408f5479ec9388a` (14 selected files plus `MANIFEST.json`; the report inside is its pre-hash snapshot). All ZIP members passed CRC and SHA-256 checks.
