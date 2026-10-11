@@ -59,6 +59,8 @@ class CorpusConfig:
     output_root: Path
     benchmark_config: Path
     vehicle_model: Path
+    benchmark_sha256: str
+    vehicle_model_sha256: str
     teacher_repository: str
     teacher_commit: str
     teacher_image_id: str
@@ -198,6 +200,8 @@ def load_corpus_config(path: Path, *, formal_manifest: Path) -> CorpusConfig:
                               sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode()
     return CorpusConfig(
         tuple(stages), rollouts, development, output, benchmark, model,
+        _sha(raw["benchmark_config"]["sha256"], "benchmark config"),
+        _sha(raw["vehicle_model"]["sha256"], "vehicle model"),
         teacher["repository"], teacher["commit"], teacher["image_id"],
         float(timeout), tuple(terminals), formal_digest, frozenset(formal_hashes),
         hashlib.sha256(digest_bytes).hexdigest(),
