@@ -6,7 +6,7 @@ granting capture or altering PX4. Follow the [design](../specs/2026-10-12-px4-es
 1. [x] Audit the current one-shot status type build result and generated
    artifacts. Keep failure and cleanup evidence. Do not continue from an
    unverified or still-running build.
-2. [ ] Recheck fixed PX4 message/topic generator, installed ROS Humble
+2. [x] Recheck fixed PX4 message/topic generator, installed ROS Humble
    serialization APIs and existing source-journal implementation; record
    exact versions, licenses, maintenance, interface and resource costs.
 3. [ ] Specify a new status journal schema and executable without modifying
