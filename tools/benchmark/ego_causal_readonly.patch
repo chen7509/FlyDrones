@@ -1,0 +1,601 @@
+diff --git a/src/planner/plan_env/CMakeLists.txt b/src/planner/plan_env/CMakeLists.txt
+index d44d0b4..1ddb6c6 100755
+--- a/src/planner/plan_env/CMakeLists.txt
++++ b/src/planner/plan_env/CMakeLists.txt
+@@ -24,6 +24,7 @@ find_package(cv_bridge REQUIRED)
+ find_package(message_filters REQUIRED)
+ 
+ find_package(OpenCV REQUIRED)
++find_package(OpenSSL REQUIRED)
+ find_package(Eigen3 REQUIRED)
+ find_package(PCL REQUIRED)
+ find_package(pcl_conversions REQUIRED)
+@@ -54,6 +55,7 @@ ament_export_include_directories(include)
+ 
+ add_library( plan_env SHARED
+     src/grid_map.cpp 
++    src/causal_trace.cpp
+     src/raycast.cpp
+     src/obj_predictor.cpp 
+     )
+@@ -63,6 +65,7 @@ ament_target_dependencies(plan_env std_msgs visualization_msgs geometry_msgs nav
+ target_link_libraries( plan_env 
+   ${PCL_LIBRARIES}
+   ${OpenCV_LIBS}
++  OpenSSL::Crypto
+ )  
+ 
+ add_executable(obj_generator
+diff --git a/src/planner/plan_env/package.xml b/src/planner/plan_env/package.xml
+index c9894c7..52726c1 100755
+--- a/src/planner/plan_env/package.xml
++++ b/src/planner/plan_env/package.xml
+@@ -18,6 +18,7 @@
+   <depend>cv_bridge</depend> 
+   <depend>message_filters</depend> 
+   <depend>OpenCV</depend> 
++  <depend>libssl-dev</depend>
+   <depend>Eigen3</depend> 
+   <depend>PCL</depend> 
+   <depend>pcl_conversions</depend> 
+diff --git a/src/planner/plan_env/include/plan_env/grid_map.h b/src/planner/plan_env/include/plan_env/grid_map.h
+index cd238a4..d082387 100755
+--- a/src/planner/plan_env/include/plan_env/grid_map.h
++++ b/src/planner/plan_env/include/plan_env/grid_map.h
+@@ -11,6 +11,8 @@
+ #include <queue>
+ #include <rclcpp/rclcpp.hpp>
+ #include <tuple>
++#include <cstdint>
++#include <string>
+ #include <visualization_msgs/msg/marker.hpp>
+ 
+ #include <pcl/point_cloud.h>
+@@ -150,6 +152,22 @@ public:
+   GridMap() {}
+   ~GridMap() {}
+ 
++  // Diagnostic state only. A received image is not an applied map revision.
++  struct CausalMapSnapshot
++  {
++    uint64_t revision = 0;
++    uint64_t applied_depth_sequence = 0;
++    uint64_t depth_receive_sequence = 0;
++    uint64_t cloud_sequence = 0;
++    std::string image_sha256;
++    std::string pose_sha256;
++    int64_t image_stamp_ns = 0;
++    int64_t pose_stamp_ns = 0;
++    std::string pose_kind;
++  };
++
++  CausalMapSnapshot causalMapSnapshot() const { return causal_map_; }
++
+   enum
+   {
+     POSE_STAMPED = 1,
+@@ -202,6 +220,9 @@ public:
+ private:
+   MappingParameters mp_;
+   MappingData md_;
++  CausalMapSnapshot causal_map_;
++  CausalMapSnapshot pending_depth_;
++  uint64_t depth_receive_sequence_ = 0;
+ 
+   // get depth image and camera pose
+   void depthPoseCallback(const sensor_msgs::msg::Image::ConstPtr &img,
+@@ -448,4 +469,4 @@ inline void GridMap::inflatePoint(const Eigen::Vector3i &pt, int step, vector<Ei
+ 
+ inline double GridMap::getResolution() { return mp_.resolution_; }
+ 
+-#endif
+\ No newline at end of file
++#endif
+diff --git a/src/planner/plan_env/src/grid_map.cpp b/src/planner/plan_env/src/grid_map.cpp
+index 0714c57..00688f2 100755
+--- a/src/planner/plan_env/src/grid_map.cpp
++++ b/src/planner/plan_env/src/grid_map.cpp
+@@ -1,4 +1,33 @@
+ #include "plan_env/grid_map.h"
++#include "plan_env/causal_trace.h"
++#include <rclcpp/serialization.hpp>
++#include <rclcpp/serialized_message.hpp>
++
++namespace {
++template <typename Message>
++std::string diagnosticMessageHash(const Message &message)
++{
++  if (!fly_ego_diag::enabled())
++    return {};
++  try
++  {
++    rclcpp::Serialization<Message> serializer;
++    rclcpp::SerializedMessage serialized;
++    serializer.serialize_message(&message, &serialized);
++    const auto &raw = serialized.get_rcl_serialized_message();
++    return fly_ego_diag::sha256(raw.buffer, raw.buffer_length);
++  }
++  catch (...)
++  {
++    return {};  // A missing digest makes downstream attribution fail closed.
++  }
++}
++
++int64_t diagnosticStampNs(const builtin_interfaces::msg::Time &stamp)
++{
++  return static_cast<int64_t>(stamp.sec) * 1000000000LL + stamp.nanosec;
++}
++}  // namespace
+ 
+ // #define current_img_ md_.depth_image_[image_cnt_ & 1]
+ // #define last_img_ md_.depth_image_[!(image_cnt_ & 1)]
+@@ -753,6 +782,23 @@ void GridMap::updateOccupancyCallback()
+ 
+   md_.occ_need_update_ = false;
+   md_.local_updated_ = false;
++  ++causal_map_.revision;
++  ++causal_map_.applied_depth_sequence;
++  causal_map_.image_sha256 = pending_depth_.image_sha256;
++  causal_map_.depth_receive_sequence = pending_depth_.depth_receive_sequence;
++  causal_map_.pose_sha256 = pending_depth_.pose_sha256;
++  causal_map_.image_stamp_ns = pending_depth_.image_stamp_ns;
++  causal_map_.pose_stamp_ns = pending_depth_.pose_stamp_ns;
++  causal_map_.pose_kind = pending_depth_.pose_kind;
++  fly_ego_diag::emit("map_depth_applied", {
++      {"revision", fly_ego_diag::decimal(causal_map_.revision)},
++      {"depth_sequence", fly_ego_diag::decimal(causal_map_.applied_depth_sequence)},
++      {"receive_sequence", fly_ego_diag::decimal(causal_map_.depth_receive_sequence)},
++      {"image_sha256", causal_map_.image_sha256},
++      {"pose_sha256", causal_map_.pose_sha256},
++      {"image_stamp_ns", fly_ego_diag::decimal(causal_map_.image_stamp_ns)},
++      {"pose_stamp_ns", fly_ego_diag::decimal(causal_map_.pose_stamp_ns)},
++      {"pose_kind", causal_map_.pose_kind}});
+ }
+ 
+ void GridMap::depthPoseCallback(const sensor_msgs::msg::Image::ConstPtr &img,
+@@ -767,6 +813,13 @@ void GridMap::depthPoseCallback(const sensor_msgs::msg::Image::ConstPtr &img,
+     (cv_ptr->image).convertTo(cv_ptr->image, CV_16UC1, mp_.k_depth_scaling_factor_);
+   }
+   cv_ptr->image.copyTo(md_.depth_image_);
++  ++depth_receive_sequence_;
++  pending_depth_.depth_receive_sequence = depth_receive_sequence_;
++  pending_depth_.image_sha256 = diagnosticMessageHash(*img);
++  pending_depth_.pose_sha256 = diagnosticMessageHash(*pose);
++  pending_depth_.image_stamp_ns = diagnosticStampNs(img->header.stamp);
++  pending_depth_.pose_stamp_ns = diagnosticStampNs(pose->header.stamp);
++  pending_depth_.pose_kind = "pose_stamped";
+ 
+   // std::cout << "depth: " << md_.depth_image_.cols << ", " << md_.depth_image_.rows << std::endl;
+ 
+@@ -788,6 +841,14 @@ void GridMap::depthPoseCallback(const sensor_msgs::msg::Image::ConstPtr &img,
+     md_.occ_need_update_ = false;
+   }
+ 
++  fly_ego_diag::emit("depth_pose_received", {
++      {"receive_sequence", fly_ego_diag::decimal(depth_receive_sequence_)},
++      {"pending_for_apply", md_.occ_need_update_ ? "true" : "false"},
++      {"image_sha256", pending_depth_.image_sha256},
++      {"pose_sha256", pending_depth_.pose_sha256},
++      {"image_stamp_ns", fly_ego_diag::decimal(pending_depth_.image_stamp_ns)},
++      {"pose_stamp_ns", fly_ego_diag::decimal(pending_depth_.pose_stamp_ns)}});
++
+   md_.flag_use_depth_fusion = true;
+ }
+ 
+@@ -912,6 +973,12 @@ void GridMap::cloudCallback(const sensor_msgs::msg::PointCloud2::ConstPtr &img)
+         md_.occupancy_buffer_inflate_[toAddress(x, y, ceil_id)] = 1;
+       }
+   }
++  ++causal_map_.revision;
++  ++causal_map_.cloud_sequence;
++  fly_ego_diag::emit("map_cloud_applied", {
++      {"revision", fly_ego_diag::decimal(causal_map_.revision)},
++      {"cloud_sequence", fly_ego_diag::decimal(causal_map_.cloud_sequence)},
++      {"cloud_sha256", diagnosticMessageHash(*img)}});
+ }
+ 
+ void GridMap::publishMap()
+@@ -1073,6 +1140,20 @@ void GridMap::depthOdomCallback(const sensor_msgs::msg::Image::ConstPtr &img,
+   }
+   cv_ptr->image.copyTo(md_.depth_image_);
+ 
++  ++depth_receive_sequence_;
++  pending_depth_.depth_receive_sequence = depth_receive_sequence_;
++  pending_depth_.image_sha256 = diagnosticMessageHash(*img);
++  pending_depth_.pose_sha256 = diagnosticMessageHash(*odom);
++  pending_depth_.image_stamp_ns = diagnosticStampNs(img->header.stamp);
++  pending_depth_.pose_stamp_ns = diagnosticStampNs(odom->header.stamp);
++  pending_depth_.pose_kind = "odometry";
++  fly_ego_diag::emit("depth_odom_received", {
++      {"receive_sequence", fly_ego_diag::decimal(depth_receive_sequence_)},
++      {"image_sha256", pending_depth_.image_sha256},
++      {"pose_sha256", pending_depth_.pose_sha256},
++      {"image_stamp_ns", fly_ego_diag::decimal(pending_depth_.image_stamp_ns)},
++      {"pose_stamp_ns", fly_ego_diag::decimal(pending_depth_.pose_stamp_ns)}});
++
+   md_.occ_need_update_ = true;
+   md_.flag_use_depth_fusion = true;
+-}
+\ No newline at end of file
++}
+diff --git a/src/planner/plan_manage/include/ego_planner/ego_replan_fsm.h b/src/planner/plan_manage/include/ego_planner/ego_replan_fsm.h
+index ed91462..ad21cf2 100755
+--- a/src/planner/plan_manage/include/ego_planner/ego_replan_fsm.h
++++ b/src/planner/plan_manage/include/ego_planner/ego_replan_fsm.h
+@@ -10,6 +10,8 @@
+ #include "rclcpp/rclcpp.hpp"
+ #include "std_msgs/msg/empty.hpp"
+ #include <vector>
++#include <cstdint>
++#include <string>
+ #include "visualization_msgs/msg/marker.hpp"
+ 
+ #include "bspline_opt/bspline_optimizer.h"
+@@ -71,6 +73,13 @@ namespace ego_planner
+ 
+     Eigen::Vector3d odom_pos_, odom_vel_, odom_acc_; // odometry state
+     Eigen::Quaterniond odom_orient_;
++    uint64_t causal_odom_sequence_ = 0;
++    std::string causal_odom_sha256_;
++    int64_t causal_odom_stamp_ns_ = 0;
++    std::string causal_start_origin_ = "unknown";
++    int64_t causal_parent_trajectory_id_ = 0;
++    int64_t causal_parent_start_time_ns_ = -1;
++    double causal_parent_sample_s_ = -1.0;
+ 
+     Eigen::Vector3d init_pt_, start_pt_, start_vel_, start_acc_, start_yaw_; // start state
+     Eigen::Vector3d end_pt_, end_vel_;                                       // goal state
+@@ -139,4 +148,4 @@ namespace ego_planner
+ 
+ } // namespace ego_planner
+ 
+-#endif
+\ No newline at end of file
++#endif
+diff --git a/src/planner/plan_manage/src/ego_replan_fsm.cpp b/src/planner/plan_manage/src/ego_replan_fsm.cpp
+index 78d5eee..7561be9 100755
+--- a/src/planner/plan_manage/src/ego_replan_fsm.cpp
++++ b/src/planner/plan_manage/src/ego_replan_fsm.cpp
+@@ -1,5 +1,29 @@
+ 
+ #include <ego_planner/ego_replan_fsm.h>
++#include <plan_env/causal_trace.h>
++#include <rclcpp/serialization.hpp>
++#include <rclcpp/serialized_message.hpp>
++
++namespace {
++template <typename Message>
++std::string diagnosticMessageHash(const Message &message)
++{
++  if (!fly_ego_diag::enabled())
++    return {};
++  try
++  {
++    rclcpp::Serialization<Message> serializer;
++    rclcpp::SerializedMessage serialized;
++    serializer.serialize_message(&message, &serialized);
++    const auto &raw = serialized.get_rcl_serialized_message();
++    return fly_ego_diag::sha256(raw.buffer, raw.buffer_length);
++  }
++  catch (...)
++  {
++    return {};
++  }
++}
++}  // namespace
+ 
+ namespace ego_planner
+ {
+@@ -264,6 +288,16 @@ namespace ego_planner
+     odom_orient_.z() = msg->pose.pose.orientation.z;
+ 
+     have_odom_ = true;
++    ++causal_odom_sequence_;
++    causal_odom_sha256_ = diagnosticMessageHash(*msg);
++    causal_odom_stamp_ns_ = static_cast<int64_t>(msg->header.stamp.sec) * 1000000000LL +
++                            msg->header.stamp.nanosec;
++    fly_ego_diag::emit("fsm_odometry_received", {
++        {"odom_sequence", fly_ego_diag::decimal(causal_odom_sequence_)},
++        {"odom_sha256", causal_odom_sha256_},
++        {"stamp_ns", fly_ego_diag::decimal(causal_odom_stamp_ns_)},
++        {"frame_id", msg->header.frame_id},
++        {"child_frame_id", msg->child_frame_id}});
+   }
+ 
+   void EGOReplanFSM::BroadcastBsplineCallback(const std::shared_ptr<const traj_utils::msg::Bspline> &msg)
+@@ -640,6 +674,10 @@ namespace ego_planner
+ 
+   bool EGOReplanFSM::planFromGlobalTraj(const int trial_times /*=1*/) // zx-todo
+   {
++    causal_start_origin_ = "odometry";
++    causal_parent_trajectory_id_ = 0;
++    causal_parent_start_time_ns_ = -1;
++    causal_parent_sample_s_ = -1.0;
+     start_pt_ = odom_pos_;
+     start_vel_ = odom_vel_;
+     start_acc_.setZero();
+@@ -669,6 +707,11 @@ namespace ego_planner
+     // double t_cur = (time_now - info->start_time_).toSec();
+     double t_cur = (time_now - info->start_time_).seconds();
+ 
++    causal_start_origin_ = "previous_trajectory";
++    causal_parent_trajectory_id_ = info->traj_id_;
++    causal_parent_start_time_ns_ = info->start_time_.nanoseconds();
++    causal_parent_sample_s_ = t_cur;
++
+     start_pt_ = info->position_traj_.evaluateDeBoorT(t_cur);
+     start_vel_ = info->velocity_traj_.evaluateDeBoorT(t_cur);
+     start_acc_ = info->acceleration_traj_.evaluateDeBoorT(t_cur);
+@@ -785,8 +828,11 @@ namespace ego_planner
+ 
+     getLocalTarget();
+ 
++    const auto causal_map_before = planner_manager_->grid_map_->causalMapSnapshot();
++
+     bool plan_and_refine_success =
+         planner_manager_->reboundReplan(start_pt_, start_vel_, start_acc_, local_target_pt_, local_target_vel_, (have_new_target_ || flag_use_poly_init), flag_randomPolyTraj);
++    const auto causal_map_after = planner_manager_->grid_map_->causalMapSnapshot();
+     have_new_target_ = false;
+ 
+     cout << "refine_success=" << plan_and_refine_success << endl;
+@@ -822,6 +868,33 @@ namespace ego_planner
+ 
+       /* 1. publish traj to traj_server */
+       bspline_pub_->publish(bspline);
++      fly_ego_diag::emit("plan_published", {
++          {"trajectory_id", fly_ego_diag::decimal(bspline.traj_id)},
++          {"start_time_ns", fly_ego_diag::decimal(info->start_time_.nanoseconds())},
++          {"bspline_sha256", diagnosticMessageHash(bspline)},
++          {"start_origin", causal_start_origin_},
++          {"parent_trajectory_id", fly_ego_diag::decimal(causal_parent_trajectory_id_)},
++          {"parent_start_time_ns", fly_ego_diag::decimal(causal_parent_start_time_ns_)},
++          {"parent_sample_s", fly_ego_diag::decimal(causal_parent_sample_s_)},
++          {"available_odom_sequence", fly_ego_diag::decimal(causal_odom_sequence_)},
++          {"available_odom_sha256", causal_odom_sha256_},
++          {"available_odom_stamp_ns", fly_ego_diag::decimal(causal_odom_stamp_ns_)},
++          {"map_before_revision", fly_ego_diag::decimal(causal_map_before.revision)},
++          {"map_after_revision", fly_ego_diag::decimal(causal_map_after.revision)},
++          {"map_depth_sequence", fly_ego_diag::decimal(causal_map_before.applied_depth_sequence)},
++          {"map_depth_receive_sequence", fly_ego_diag::decimal(causal_map_before.depth_receive_sequence)},
++          {"map_cloud_sequence", fly_ego_diag::decimal(causal_map_before.cloud_sequence)},
++          {"map_image_sha256", causal_map_before.image_sha256},
++          {"map_pose_sha256", causal_map_before.pose_sha256},
++          {"map_image_stamp_ns", fly_ego_diag::decimal(causal_map_before.image_stamp_ns)},
++          {"map_pose_stamp_ns", fly_ego_diag::decimal(causal_map_before.pose_stamp_ns)},
++          {"map_pose_kind", causal_map_before.pose_kind},
++          {"start_x", fly_ego_diag::decimal(start_pt_.x())},
++          {"start_y", fly_ego_diag::decimal(start_pt_.y())},
++          {"start_z", fly_ego_diag::decimal(start_pt_.z())},
++          {"start_vx", fly_ego_diag::decimal(start_vel_.x())},
++          {"start_vy", fly_ego_diag::decimal(start_vel_.y())},
++          {"start_vz", fly_ego_diag::decimal(start_vel_.z())}});
+ 
+       /* 2. publish traj to the next drone of swarm */
+ 
+diff --git a/src/planner/plan_manage/src/traj_server.cpp b/src/planner/plan_manage/src/traj_server.cpp
+index a32026d..f45aa01 100755
+--- a/src/planner/plan_manage/src/traj_server.cpp
++++ b/src/planner/plan_manage/src/traj_server.cpp
+@@ -5,6 +5,31 @@
+ #include "std_msgs/msg/empty.hpp"
+ #include "visualization_msgs/msg/marker.hpp"
+ #include <rclcpp/rclcpp.hpp>
++#include <rclcpp/serialization.hpp>
++#include <rclcpp/serialized_message.hpp>
++#include <plan_env/causal_trace.h>
++#include <cstdint>
++
++namespace {
++template <typename Message>
++std::string diagnosticMessageHash(const Message &message)
++{
++  if (!fly_ego_diag::enabled())
++    return {};
++  try
++  {
++    rclcpp::Serialization<Message> serializer;
++    rclcpp::SerializedMessage serialized;
++    serializer.serialize_message(&message, &serialized);
++    const auto &raw = serialized.get_rcl_serialized_message();
++    return fly_ego_diag::sha256(raw.buffer, raw.buffer_length);
++  }
++  catch (...)
++  {
++    return {};
++  }
++}
++}  // namespace
+ 
+ rclcpp::Publisher<quadrotor_msgs::msg::PositionCommand>::SharedPtr pos_cmd_pub;
+ 
+@@ -19,6 +44,8 @@ vector<UniformBspline> traj_;
+ double traj_duration_;
+ rclcpp::Time start_time_;
+ int traj_id_;
++int64_t causal_raw_traj_id_ = -1;
++std::string causal_bspline_sha256_;
+ 
+ // yaw control
+ double last_yaw_, last_yaw_dot_;
+@@ -57,6 +84,14 @@ void bsplineCallback(traj_utils::msg::Bspline::ConstPtr msg)
+ 
+   start_time_ = msg->start_time;
+   traj_id_ = msg->traj_id;
++  causal_raw_traj_id_ = msg->traj_id;
++  causal_bspline_sha256_ = diagnosticMessageHash(*msg);
++  if (fly_ego_diag::enabled())
++    fly_ego_diag::emit("server_bspline_received", {
++        {"raw_trajectory_id", fly_ego_diag::decimal(causal_raw_traj_id_)},
++        {"stored_trajectory_id", fly_ego_diag::decimal(traj_id_)},
++        {"start_time_ns", fly_ego_diag::decimal(start_time_.nanoseconds())},
++        {"bspline_sha256", causal_bspline_sha256_}});
+ 
+   traj_.clear();
+   traj_.push_back(pos_traj);
+@@ -229,6 +264,14 @@ void cmdCallback()
+   last_yaw_ = cmd.yaw;
+ 
+   pos_cmd_pub->publish(cmd);
++  if (fly_ego_diag::enabled())
++    fly_ego_diag::emit("server_command_published", {
++        {"raw_trajectory_id", fly_ego_diag::decimal(causal_raw_traj_id_)},
++        {"stored_trajectory_id", fly_ego_diag::decimal(traj_id_)},
++        {"emitted_trajectory_id", fly_ego_diag::decimal(cmd.trajectory_id)},
++        {"command_stamp_ns", fly_ego_diag::decimal(time_now.nanoseconds())},
++        {"bspline_sha256", causal_bspline_sha256_},
++        {"command_sha256", diagnosticMessageHash(cmd)}});
+ }
+ 
+ int main(int argc, char **argv)
+@@ -272,4 +315,4 @@ int main(int argc, char **argv)
+   rclcpp::shutdown();
+ 
+   return 0;
+-}
+\ No newline at end of file
++}
+--- /dev/null
++++ b/src/planner/plan_env/include/plan_env/causal_trace.h
+@@ -0,0 +1,31 @@
++// SPDX-License-Identifier: GPL-3.0-only
++#ifndef FLY_EGO_CAUSAL_TRACE_H
++#define FLY_EGO_CAUSAL_TRACE_H
++
++// Development-only, read-only evidence. Missing records never qualify a teacher.
++#include <cstddef>
++#include <iomanip>
++#include <sstream>
++#include <string>
++#include <utility>
++#include <vector>
++
++namespace fly_ego_diag {
++
++bool enabled();
++std::string sha256(const void *bytes, size_t length);
++std::string jsonEscape(const std::string &value);
++bool emit(const std::string &event,
++          const std::vector<std::pair<std::string, std::string>> &fields);
++
++template <typename Value>
++inline std::string decimal(const Value &value)
++{
++  std::ostringstream out;
++  out << std::setprecision(17) << value;
++  return out.str();
++}
++
++}  // namespace fly_ego_diag
++
++#endif
+--- /dev/null
++++ b/src/planner/plan_env/src/causal_trace.cpp
+@@ -0,0 +1,108 @@
++// SPDX-License-Identifier: GPL-3.0-only
++#include "plan_env/causal_trace.h"
++
++#include <openssl/sha.h>
++#include <sys/file.h>
++#include <fcntl.h>
++#include <unistd.h>
++
++#include <cstdint>
++#include <cstdlib>
++#include <iomanip>
++#include <mutex>
++#include <sstream>
++#include <string>
++
++namespace fly_ego_diag {
++
++bool enabled()
++{
++  const char *path = std::getenv("FLYD_EGO_TRACE_PATH");
++  const char *session = std::getenv("FLYD_EGO_SESSION_ID");
++  return path && session && path[0] == '/' && session[0] != '\0';
++}
++
++std::string sha256(const void *bytes, size_t length)
++{
++  unsigned char digest[SHA256_DIGEST_LENGTH];
++  SHA256(static_cast<const unsigned char *>(bytes), length, digest);
++  std::ostringstream out;
++  out << std::hex << std::setfill('0');
++  for (unsigned char value : digest)
++    out << std::setw(2) << static_cast<unsigned int>(value);
++  return out.str();
++}
++
++std::string jsonEscape(const std::string &value)
++{
++  std::ostringstream out;
++  for (unsigned char ch : value)
++  {
++    if (ch == '"' || ch == '\\')
++      out << '\\' << ch;
++    else if (ch >= 0x20 && ch < 0x7f)
++      out << ch;
++    else
++      out << "\\u00" << std::hex << std::setfill('0') << std::setw(2)
++          << static_cast<unsigned int>(ch) << std::dec;
++  }
++  return out.str();
++}
++
++bool emit(const std::string &event,
++          const std::vector<std::pair<std::string, std::string>> &fields)
++{
++  if (!enabled())
++    return false;
++  const std::string path_prefix(std::getenv("FLYD_EGO_TRACE_PATH"));
++  const std::string session_id(std::getenv("FLYD_EGO_SESSION_ID"));
++  if (session_id.size() > 64 || path_prefix.size() > 4096 ||
++      path_prefix.find('\n') != std::string::npos)
++    return false;
++  for (unsigned char ch : session_id)
++    if (!((ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z') ||
++          (ch >= '0' && ch <= '9') || ch == '_' || ch == '-'))
++      return false;
++  static std::mutex mutex;
++  static uint64_t sequence = 0;
++  std::lock_guard<std::mutex> lock(mutex);
++  try
++  {
++    std::ostringstream line;
++    line << "{\"schema\":1,\"session\":\"" << jsonEscape(session_id)
++         << "\",\"pid\":" << getpid() << ",\"sequence\":" << sequence + 1
++         << ",\"event\":\"" << jsonEscape(event) << '"';
++    for (const auto &field : fields)
++      line << ",\"" << jsonEscape(field.first) << "\":\""
++           << jsonEscape(field.second) << '"';
++    line << "}\n";
++    const std::string data = line.str();
++    const std::string path = path_prefix + "." + std::to_string(getpid()) + ".jsonl";
++    const int fd = open(path.c_str(), O_WRONLY | O_APPEND | O_CREAT | O_CLOEXEC, 0600);
++    if (fd < 0)
++      return false;
++    bool complete = flock(fd, LOCK_EX) == 0;
++    size_t written = 0;
++    while (complete && written < data.size())
++    {
++      const ssize_t count = write(fd, data.data() + written, data.size() - written);
++      if (count <= 0)
++        complete = false;
++      else
++        written += static_cast<size_t>(count);
++    }
++    if (complete)
++      ++sequence;
++    if (flock(fd, LOCK_UN) != 0)
++      complete = false;
++    if (close(fd) != 0)
++      complete = false;
++    return complete;
++  }
++  catch (...)
++  {
++    return false;
++  }
++}
++
++}  // namespace fly_ego_diag
