@@ -54,8 +54,10 @@ def _valid(tmp_path: Path):
         odometry_source="px4_ekf2",
         camera_pose_source="px4_ekf2_calibrated_camera",
         estimator_sim_ns=190_000_000,
+        estimator_status_sim_ns=190_000_000,
         camera_pose_sim_ns=180_000_000,
-        xy_valid=True, z_valid=True, heading_valid=True,
+        xy_valid=True, z_valid=True, v_xy_valid=True, v_z_valid=True,
+        heading_valid=True, dead_reckoning=False, filter_fault_flags=0,
         calibration_verified=True, calibration_sha256="a" * 64,
         teacher_commit=COMMIT, teacher_image_id=IMAGE,
         teacher_image_inspected=True,
@@ -88,6 +90,37 @@ def _recorder() -> TeacherSequenceRecorder:
 
 def test_well_formed_deployment_visible_evidence_passes_synthetic_gate(tmp_path):
     assert validate_capture_input(*_valid(tmp_path)) is None
+
+
+@pytest.mark.parametrize("change", [
+    {"v_xy_valid": False},
+    {"v_xy_valid": 1},
+    {"v_z_valid": False},
+    {"dead_reckoning": True},
+    {"dead_reckoning": 0},
+    {"filter_fault_flags": 1},
+    {"filter_fault_flags": False},
+    {"filter_fault_flags": np.uint32(0)},
+    {"estimator_status_sim_ns": 0},
+    {"estimator_status_sim_ns": 99_000_000},
+    {"estimator_status_sim_ns": 201_000_000},
+    {"estimator_status_sim_ns": True},
+])
+def test_velocity_and_status_health_are_required(tmp_path, change):
+    backend, obs, evidence, config = _valid(tmp_path)
+    with pytest.raises(ValueError, match="estimator"):
+        validate_capture_input(backend, obs, replace(evidence, **change), config)
+
+
+def test_faulted_status_cannot_partially_append_a_teacher_frame(tmp_path):
+    backend, obs, evidence, config = _valid(tmp_path)
+    recorder = _recorder()
+    with pytest.raises(ValueError, match="estimator"):
+        recorder.append_capture_checked(
+            backend, obs, replace(evidence, filter_fault_flags=1), config,
+            _ego_decision(obs), minimum_clearance_m=0.8, terminal=False,
+        )
+    assert not recorder.frames and not recorder.targets and not recorder.references
 
 
 def test_partial_missing_depth_keeps_original_observation_and_requires_source_gate(tmp_path):

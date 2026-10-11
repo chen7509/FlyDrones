@@ -30,10 +30,15 @@ class CaptureInputEvidence:
     odometry_source: str
     camera_pose_source: str
     estimator_sim_ns: int
+    estimator_status_sim_ns: int
     camera_pose_sim_ns: int
     xy_valid: bool
     z_valid: bool
+    v_xy_valid: bool
+    v_z_valid: bool
     heading_valid: bool
+    dead_reckoning: bool
+    filter_fault_flags: int
     calibration_verified: bool
     calibration_sha256: str
     teacher_commit: str
@@ -86,14 +91,24 @@ def validate_capture_input(
     if (type(evidence.estimator_sim_ns) is not int
             or not 0 <= observation.sim_ns - evidence.estimator_sim_ns <= _MAX_ESTIMATOR_AGE_NS):
         raise ValueError("PX4 estimator sample is stale or in the future")
+    if (type(evidence.estimator_status_sim_ns) is not int
+            or evidence.estimator_status_sim_ns <= 0
+            or not 0 <= observation.sim_ns - evidence.estimator_status_sim_ns
+            <= _MAX_ESTIMATOR_AGE_NS):
+        raise ValueError("PX4 estimator status sample is stale or in the future")
     if (type(evidence.camera_pose_sim_ns) is not int
             or not 0 <= evidence.camera_pose_sim_ns <= observation.sim_ns
             or abs(evidence.camera_pose_sim_ns - observation.frame_ns)
             > _MAX_CAMERA_POSE_OFFSET_NS):
         raise ValueError("camera pose and frame timestamps are misaligned")
     if not all(type(value) is bool and value for value in (
-            evidence.xy_valid, evidence.z_valid, evidence.heading_valid)):
-        raise ValueError("PX4 estimator position or heading invalid")
+            evidence.xy_valid, evidence.z_valid, evidence.v_xy_valid,
+            evidence.v_z_valid, evidence.heading_valid)):
+        raise ValueError("PX4 estimator position, velocity or heading invalid")
+    if (evidence.dead_reckoning is not False
+            or type(evidence.filter_fault_flags) is not int
+            or evidence.filter_fault_flags != 0):
+        raise ValueError("PX4 estimator dead reckoning or filter fault")
     if (evidence.calibration_verified is not True
             or not isinstance(evidence.calibration_sha256, str)
             or _SHA256.fullmatch(evidence.calibration_sha256) is None):
