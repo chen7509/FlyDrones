@@ -4,6 +4,7 @@ import json
 import os
 import random
 import time
+from collections import Counter
 from hashlib import sha256
 from pathlib import Path
 
@@ -239,10 +240,10 @@ def _full_components(
     for stage in config.stages:
         train = _sequence_directories(stage.train_paths)
         validation = _sequence_directories(stage.validation_paths)
-        if {item.provenance.seed for item in train} != set(stage.train_seeds):
-            raise ValueError(f"stage {stage.id} training sequence seeds do not match config")
-        if {item.provenance.seed for item in validation} != set(stage.validation_seeds):
-            raise ValueError(f"stage {stage.id} validation sequence seeds do not match config")
+        if Counter(item.provenance.seed for item in train) != Counter(stage.train_seeds):
+            raise ValueError(f"stage {stage.id} requires exactly one sequence per training seed")
+        if Counter(item.provenance.seed for item in validation) != Counter(stage.validation_seeds):
+            raise ValueError(f"stage {stage.id} requires exactly one sequence per validation seed")
         validate_dataset_partitions(
             [item.provenance for item in train],
             [item.provenance for item in validation],
