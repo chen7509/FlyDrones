@@ -9,15 +9,18 @@ import socket
 import struct
 import threading
 import time
+from pathlib import Path
 
 import numpy as np
 import rclpy
 from builtin_interfaces.msg import Time
+from ego_bridge_cdr_journal import BridgeCDRJournal
 from ego_wire_observation import ObservationSequence, decode_observation
 from geometry_msgs.msg import PoseStamped
 from nav_msgs.msg import Odometry
 from quadrotor_msgs.msg import PositionCommand
 from rclpy.node import Node
+from rclpy.serialization import deserialize_message, serialize_message
 from rosgraph_msgs.msg import Clock
 from sensor_msgs.msg import Image
 
@@ -50,18 +53,29 @@ def send_packet(stream: socket.socket, payload: bytes) -> None:
 
 class Bridge(Node):
     def __init__(self, host: str, port: int, response_timeout_s: float,
-                 *, causal_session_id: str | None = None):
+                 *, causal_session_id: str | None = None,
+                 run_id: str | None = None, journal_path: Path | None = None):
         if causal_session_id is not None and (type(causal_session_id) is not str or not causal_session_id):
             raise ValueError('causal planner session id must be nonempty')
+        if (journal_path is None) != (run_id is None) or (
+            journal_path is not None and causal_session_id is None
+        ):
+            raise ValueError('journal requires path, run and causal session')
         super().__init__('fly_ego_benchmark_bridge', parameter_overrides=[
             rclpy.parameter.Parameter('use_sim_time', value=True)
         ])
+        self.journal = (BridgeCDRJournal.open_new(
+            journal_path, run_id=run_id, session_id=causal_session_id,
+            serializer=serialize_message) if journal_path is not None else None)
         self.clock_pub = self.create_publisher(Clock, '/clock', 10)
         self.odom_pub = self.create_publisher(Odometry, '/benchmark/ego/odom', 10)
         self.trigger_pub = self.create_publisher(PoseStamped, '/traj_start_trigger', 1)
         self.pose_pub = self.create_publisher(PoseStamped, '/benchmark/ego/camera_pose', 10)
         self.depth_pub = self.create_publisher(Image, '/benchmark/ego/depth', 10)
-        self.create_subscription(PositionCommand, '/benchmark/ego/position_cmd', self.on_reference, 50)
+        self.create_subscription(
+            PositionCommand, '/benchmark/ego/position_cmd',
+            self.on_reference_raw if self.journal else self.on_reference, 50,
+            raw=self.journal is not None)
         self.host = host
         self.port = port
         self.response_timeout_s = response_timeout_s
@@ -78,6 +92,8 @@ class Bridge(Node):
         self.server_thread.start()
 
     def on_reference(self, message: PositionCommand) -> None:
+        if self.journal is not None:
+            self.journal.require_healthy()
         if message.trajectory_flag != PositionCommand.TRAJECTORY_STATUS_READY:
             return
         with self.condition:
@@ -102,11 +118,34 @@ class Bridge(Node):
             self.reference_revision += 1
             self.condition.notify_all()
 
+    def on_reference_raw(self, raw: bytes) -> None:
+        """Keep received CDR before decoding and before changing reference state."""
+        message_sequence = self.journal.receive_command(raw)
+        try:
+            message = deserialize_message(raw, PositionCommand)
+            stamp_ns = (int(message.header.stamp.sec) * 1_000_000_000
+                        + int(message.header.stamp.nanosec))
+            self.journal.command_decoded(
+                message_sequence, stamp_ns=stamp_ns,
+                trajectory_id=int(message.trajectory_id),
+                ready=message.trajectory_flag == PositionCommand.TRAJECTORY_STATUS_READY)
+            self.on_reference(message)
+        except Exception:
+            self.journal.fail('command_decode_or_reference_failed')
+            raise
+
+    def _publish(self, kind: str, message, sample_ns: int, publisher) -> None:
+        if self.journal is None:
+            publisher(message)
+        else:
+            self.journal.publish(kind, message, sample_ns, publisher)
+
     def publish_observation(self, data: dict) -> None:
         with self.condition:
             self.latest_observation_sim_ns = int(data['sim_ns'])
         message_time = stamp(int(data['sim_ns']))
-        self.clock_pub.publish(Clock(clock=message_time))
+        self._publish('clock', Clock(clock=message_time), int(data['sim_ns']),
+                      self.clock_pub.publish)
 
         odom = Odometry()
         odom.header.stamp = message_time
@@ -121,13 +160,13 @@ class Bridge(Node):
         # interface mismatch remains an explicit fairness qualification gap.
         odom.twist.twist.linear.x, odom.twist.twist.linear.y, odom.twist.twist.linear.z = data['velocity']
         odom.twist.twist.angular.z = float(data['yaw_rate'])
-        self.odom_pub.publish(odom)
+        self._publish('odometry', odom, int(data['sim_ns']), self.odom_pub.publish)
         if not self.trigger_sent:
             trigger = PoseStamped()
             trigger.header.stamp = message_time
             trigger.header.frame_id = 'world'
             trigger.pose = odom.pose.pose
-            self.trigger_pub.publish(trigger)
+            self._publish('trigger', trigger, int(data['sim_ns']), self.trigger_pub.publish)
             self.trigger_sent = True
 
         if int(data['frame_ns']) <= self.last_frame_ns:
@@ -141,7 +180,8 @@ class Bridge(Node):
         camera_pose.pose.position.x, camera_pose.pose.position.y, camera_pose.pose.position.z = pose[:3]
         camera_pose.pose.orientation.x, camera_pose.pose.orientation.y = pose[3:5]
         camera_pose.pose.orientation.z, camera_pose.pose.orientation.w = pose[5:7]
-        self.pose_pub.publish(camera_pose)
+        self._publish('camera_pose', camera_pose, self.last_frame_ns,
+                      self.pose_pub.publish)
 
         depth = np.ascontiguousarray(data['depth_m'], dtype='<f4')
         image = Image()
@@ -152,7 +192,7 @@ class Bridge(Node):
         image.is_bigendian = False
         image.step = image.width * 4
         image.data = depth.tobytes()
-        self.depth_pub.publish(image)
+        self._publish('depth', image, self.last_frame_ns, self.depth_pub.publish)
 
     def serve(self) -> None:
         with socket.create_server((self.host, self.port), reuse_port=False) as server:
@@ -178,6 +218,8 @@ class Bridge(Node):
             if self.causal_reset_consumed:
                 raise ValueError('planner session already consumed a reset; restart the owned planner')
             self.causal_reset_consumed = True
+        if getattr(self, 'journal', None) is not None:
+            self.journal.start_reset(reset['seed'])
         self.last_frame_ns = -1
         self.input_sequence.reset()
         self.trigger_sent = False
@@ -199,6 +241,8 @@ class Bridge(Node):
                     response = {'error': 'EGO produced no new trajectory reference'}
                 else:
                     response = self.reference
+            if getattr(self, 'journal', None) is not None:
+                self.journal.require_healthy()
             send_packet(stream, json.dumps(response, allow_nan=False).encode())
 
 
@@ -209,15 +253,27 @@ def main() -> int:
     parser.add_argument('--response-timeout-s', type=float, default=15.)
     parser.add_argument('--causal-session-id', default=None,
                         help='development-only: allow one reset per owned planner process')
+    parser.add_argument('--run-id', default=None)
+    parser.add_argument('--cdr-journal', type=Path, default=None,
+                        help='opt-in, exclusive development journal outside the read-only mount')
     args = parser.parse_args()
     rclpy.init()
-    node = Bridge(args.host, args.port, args.response_timeout_s,
-                  causal_session_id=args.causal_session_id)
+    try:
+        node = Bridge(args.host, args.port, args.response_timeout_s,
+                      causal_session_id=args.causal_session_id,
+                      run_id=args.run_id, journal_path=args.cdr_journal)
+    except BaseException:
+        rclpy.shutdown()
+        raise
     try:
         rclpy.spin(node)
     finally:
-        node.destroy_node()
-        rclpy.shutdown()
+        try:
+            if node.journal is not None:
+                node.journal.close()
+        finally:
+            node.destroy_node()
+            rclpy.shutdown()
     return 0
 
 

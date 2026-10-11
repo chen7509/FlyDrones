@@ -6,11 +6,13 @@ import json
 import sys
 import threading
 import types
+from io import StringIO
 from pathlib import Path
 
 import numpy as np
 import pytest
 
+from tools.benchmark.ego_bridge_cdr_journal import BridgeCDRJournal
 from tools.benchmark.ego_wire_observation import (
     ObservationSequence,
     decode_observation,
@@ -152,6 +154,11 @@ def bridge_module(monkeypatch):
         monkeypatch.setitem(sys.modules, package, parent_module)
         monkeypatch.setitem(sys.modules, child, child_module)
     rclpy = sys.modules["rclpy"]
+    serialization = types.ModuleType("rclpy.serialization")
+    serialization.serialize_message = lambda message: message
+    serialization.deserialize_message = lambda raw, _type: raw
+    rclpy.serialization = serialization
+    monkeypatch.setitem(sys.modules, "rclpy.serialization", serialization)
     ok_values = iter((True, False))
     rclpy.ok = lambda: next(ok_values)
     path = Path(__file__).resolve().parents[2] / "tools/benchmark/ego_node.py"
@@ -160,6 +167,95 @@ def bridge_module(monkeypatch):
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
     return module
+
+
+def test_optin_bridge_passes_journaled_bytes_to_raw_publisher(monkeypatch):
+    module = bridge_module(monkeypatch)
+    stream = StringIO()
+    ticks = iter(range(1, 100))
+    writer = BridgeCDRJournal(stream, run_id="run", session_id="session",
+                              serializer=lambda message: message,
+                              pid=12, clock=lambda: next(ticks))
+    writer.start_reset(1)
+    bridge = module.Bridge.__new__(module.Bridge)
+    bridge.journal = writer
+    published = []
+    bridge._publish("depth", b"\x00\x01cdr", 123, published.append)
+    events = [json.loads(line) for line in stream.getvalue().splitlines()]
+    assert published == [b"\x00\x01cdr"]
+    assert events[-2]["message_sha256"] == events[-1]["message_sha256"]
+    assert events[-2]["phase"] == "publish_intent"
+    assert events[-1]["phase"] == "publish_returned"
+
+
+def test_optin_raw_command_is_journaled_before_deserialization(monkeypatch):
+    module = bridge_module(monkeypatch)
+    stream = StringIO()
+    ticks = iter(range(1, 100))
+    writer = BridgeCDRJournal(stream, run_id="run", session_id="session",
+                              serializer=lambda message: message,
+                              pid=12, clock=lambda: next(ticks))
+    writer.start_reset(1)
+    message = types.SimpleNamespace(
+        trajectory_flag=1, trajectory_id=7,
+        header=types.SimpleNamespace(stamp=types.SimpleNamespace(sec=0, nanosec=999)),
+        position=types.SimpleNamespace(x=1., y=2., z=3.),
+        velocity=types.SimpleNamespace(x=0., y=0., z=0.), yaw_dot=0.,
+    )
+
+    def decode(raw, _message_type):
+        assert raw == b"\x00\x01command"
+        assert json.loads(stream.getvalue().splitlines()[-1])["phase"] == "command_received"
+        return message
+
+    monkeypatch.setattr(module, "deserialize_message", decode)
+    bridge = module.Bridge.__new__(module.Bridge)
+    bridge.journal = writer
+    bridge.condition = threading.Condition()
+    bridge.latest_observation_sim_ns = 100
+    bridge.reference_revision = 0
+    bridge.on_reference_raw(b"\x00\x01command")
+    assert bridge.reference_revision == 1
+    assert bridge.reference["upstream_stamp_ns"] == 999
+    assert [json.loads(line)["phase"] for line in stream.getvalue().splitlines()][-2:] == [
+        "command_received", "command_decoded"]
+
+
+def test_optin_bad_command_latches_without_reference_update(monkeypatch):
+    module = bridge_module(monkeypatch)
+    writer = BridgeCDRJournal(StringIO(), run_id="run", session_id="session",
+                              serializer=lambda message: message, pid=12)
+    writer.start_reset(1)
+    monkeypatch.setattr(module, "deserialize_message", lambda *_: (_ for _ in ()).throw(
+        ValueError("bad CDR")))
+    bridge = module.Bridge.__new__(module.Bridge)
+    bridge.journal = writer
+    bridge.condition = threading.Condition()
+    bridge.latest_observation_sim_ns = 100
+    bridge.reference_revision = 0
+    with pytest.raises(ValueError, match="bad CDR"):
+        bridge.on_reference_raw(b"\x00\x01bad")
+    assert writer.failed is True
+    assert bridge.reference_revision == 0
+
+
+def test_bridge_construction_failure_still_shuts_down_ros(monkeypatch):
+    module = bridge_module(monkeypatch)
+    calls = []
+    monkeypatch.setattr(module.rclpy, "init", lambda: calls.append("init"), raising=False)
+    monkeypatch.setattr(module.rclpy, "shutdown", lambda: calls.append("shutdown"),
+                        raising=False)
+
+    def fail_constructor(*_args, **_kwargs):
+        raise FileExistsError("journal already exists")
+
+    monkeypatch.setattr(module, "Bridge", fail_constructor)
+    monkeypatch.setattr(sys, "argv", ["ego_node.py", "--run-id", "run",
+                                     "--causal-session-id", "session",
+                                     "--cdr-journal", "old.jsonl"])
+    with pytest.raises(FileExistsError, match="already exists"):
+        module.main()
+    assert calls == ["init", "shutdown"]
 
 
 def test_real_bridge_refuses_future_frame_before_any_ros_publish(monkeypatch):

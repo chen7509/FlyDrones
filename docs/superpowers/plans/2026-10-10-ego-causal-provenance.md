@@ -44,6 +44,7 @@
 - [ ] Version the static candidate instead of rewriting sealed evidence; record completed-map and successful-plan node-clock instants and an event steady-clock instant. Add RED/GREEN source-contract and native-writer tests. Do not call node-clock values simulation time until runtime `/clock`/launch evidence proves it.
 - [ ] Bind exact serialized bridge-published image/pose/odometry and bridge-received command bytes to planner/server records by hashes, stamps, session and process identity; reject independent sequence aliasing, cloud writes and unbound extrinsics. Preserve the conservative equal-sequence offline join until a separate history-aware contract is proven.
 - [x] Add a pure offline, fail-closed candidate reconciler and synthetic multi-plan/fault matrix for the proposed bridge/planner/server journal schema. Keep `runtime_source_verified` and `teacher_qualified` false until a real producer and patched ROS runtime are proven.
+- [x] Add opt-in exact CDR bridge journal using Humble `serialize_message`, `publish(bytes)` and `raw=True` command receipt; audit retained bytes and intent/return pairs, and test fail-closed I/O, serialization, publication, reset, and concurrency behavior without a ROS/PX4/Gazebo run. The source remains explicitly unattested.
 - [ ] Build and test in a resource-controlled development environment; compare patched and unpatched plans under identical input before promoting the patched image.
 
 ## Task 3: Owned single-drone development capture
