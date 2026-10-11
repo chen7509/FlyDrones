@@ -1,0 +1,9 @@
+# Bounded standalone XRCE Agent listener diagnosis
+
+The fixed v2.4.3 Agent binary has passed an offline build and relocated usage check, but it has not owned a live UDP listener. Before joining PX4 and Gazebo, run an isolated, unarmed Agent-only diagnosis on the existing 18888 endpoint. This does not authorize DDS provenance or EKF2 fusion.
+
+Use the sealed runtime tar and exact SHA-256, extract only safe relative members to a fresh Linux scratch directory, set `LD_LIBRARY_PATH` to its `lib`, and launch `udp4 -p 18888` in a new process session. Refuse if the endpoint is already bound. Within a five-second bounded observation, require `/proc` identity and `ss` to attribute the UDP socket to the spawned PID. Retain the raw `ss` output and Agent stdout/stderr. Send no XRCE packets. Stop only the owned group using the existing group evidence utility, then verify no executing member and no remaining port listener. A socket check alone is point-in-time evidence, not a reservation against a racing external process.
+
+Record every failed step, exit status, group-signal journal and source hashes in a fresh output directory. Tests cover malformed `ss` output and wrong PID/port before the physical listener diagnosis. No PX4/Gazebo/OpenVINS, training, ROS or network ODOMETRY is launched. The separate 4 GiB full-model/physical-run resource gate remains unchanged.
+
+Upstream choice: [Agent v2.4.3](https://github.com/eProsima/Micro-XRCE-DDS-Agent/releases/tag/v2.4.3), commit `73622810d984349b80bbac0ef55fc0b694d62222`, Apache-2.0, is the fixed PX4 v1.17 v2-client-compatible release. Its own README specifies UDPv4 and the standalone CLI; pinned `ArgumentParser.hpp` requires `-p/--port`. Present v2 maintenance and deployed library portability remain unproven. Reuse the built bundle and existing process-group supervisor; no new dependency is adopted. The OpenVINS paper does not govern Agent socket lifecycle.
