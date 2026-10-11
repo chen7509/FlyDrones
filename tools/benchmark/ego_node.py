@@ -49,7 +49,10 @@ def send_packet(stream: socket.socket, payload: bytes) -> None:
 
 
 class Bridge(Node):
-    def __init__(self, host: str, port: int, response_timeout_s: float):
+    def __init__(self, host: str, port: int, response_timeout_s: float,
+                 *, causal_session_id: str | None = None):
+        if causal_session_id is not None and (type(causal_session_id) is not str or not causal_session_id):
+            raise ValueError('causal planner session id must be nonempty')
         super().__init__('fly_ego_benchmark_bridge', parameter_overrides=[
             rclpy.parameter.Parameter('use_sim_time', value=True)
         ])
@@ -62,6 +65,8 @@ class Bridge(Node):
         self.host = host
         self.port = port
         self.response_timeout_s = response_timeout_s
+        self.causal_session_id = causal_session_id
+        self.causal_reset_consumed = False
         self.last_frame_ns = -1
         self.input_sequence = ObservationSequence()
         self.reference_revision = 0
@@ -169,6 +174,10 @@ class Bridge(Node):
         reset = json.loads(recv_packet(stream))
         if set(reset) != {'type', 'seed'} or reset['type'] != 'reset':
             raise ValueError('reset handshake required')
+        if getattr(self, 'causal_session_id', None) is not None:
+            if self.causal_reset_consumed:
+                raise ValueError('planner session already consumed a reset; restart the owned planner')
+            self.causal_reset_consumed = True
         self.last_frame_ns = -1
         self.input_sequence.reset()
         self.trigger_sent = False
@@ -198,9 +207,12 @@ def main() -> int:
     parser.add_argument('--host', default='0.0.0.0')
     parser.add_argument('--port', type=int, default=46200)
     parser.add_argument('--response-timeout-s', type=float, default=15.)
+    parser.add_argument('--causal-session-id', default=None,
+                        help='development-only: allow one reset per owned planner process')
     args = parser.parse_args()
     rclpy.init()
-    node = Bridge(args.host, args.port, args.response_timeout_s)
+    node = Bridge(args.host, args.port, args.response_timeout_s,
+                  causal_session_id=args.causal_session_id)
     try:
         rclpy.spin(node)
     finally:

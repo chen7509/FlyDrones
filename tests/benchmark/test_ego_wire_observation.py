@@ -217,6 +217,27 @@ def test_delayed_previous_command_cannot_answer_next_observation(monkeypatch):
     assert sent[-1] == {"error": "EGO produced no new trajectory reference"}
 
 
+def test_causal_mode_refuses_second_reset_without_planner_process_restart(monkeypatch):
+    module = bridge_module(monkeypatch)
+    rclpy = sys.modules["rclpy"]
+    rclpy.ok = lambda: False
+    bridge = module.Bridge.__new__(module.Bridge)
+    bridge.condition = threading.Condition()
+    bridge.input_sequence = ObservationSequence()
+    bridge.reference_revision = 0
+    bridge.causal_session_id = "frozen-process-session-1"
+    bridge.causal_reset_consumed = False
+    received = json.dumps({"type": "reset", "seed": 1}).encode()
+    sent = []
+    monkeypatch.setattr(module, "recv_packet", lambda _stream: received)
+    monkeypatch.setattr(module, "send_packet", lambda _stream, payload: sent.append(json.loads(payload)))
+    bridge.serve_client(None)
+    assert sent == [{"status": "ready"}]
+    with pytest.raises(ValueError, match="planner session"):
+        bridge.serve_client(None)
+    assert sent == [{"status": "ready"}]
+
+
 def test_future_synthetic_fixture_obeys_the_same_wire_contract():
     path = (Path(__file__).resolve().parents[2] / "results/ego-upstream-source-audit-dev-1701"
             / "synthetic_client_v2.py")
