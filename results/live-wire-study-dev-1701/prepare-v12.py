@@ -22,7 +22,7 @@ from tools.benchmark.repository_python_sources import audit_source_roots, discov
 from tools.benchmark.runtime_resource_binding import GENERATED_NAMES, validate_binding
 
 HERE = Path(__file__).resolve().parent
-STUDY = HERE / 'study-v12-retry'
+STUDY = HERE / 'study-v12-retry2'
 SOURCE = HERE / 'study-v11'
 ARCHIVE = ROOT / 'evidence/live-wire-v11-startup-preparation-dev-1701.zip'
 ARCHIVE_SHA = 'ea31808ff8b835a851a84c12f6fd65329fac05170fe8ceef411a8167565e9b26'
@@ -58,6 +58,12 @@ def add_agent_selection(inventory, selected_paths, binary):
     inventory['runtime:agent-selected'] = [path for path in selected_paths if path != binary]
 
 
+def negative_binding_name(case):
+    if case not in {'lazy_leaf_missing', 'agent_missing_role'}:
+        raise ValueError('unsupported negative binding case')
+    return case + '-binding.json'
+
+
 def assert_original_selection_unchanged(original_rows, augmented_rows):
     """Compare each original file exactly, while allowing new declared files."""
     original = {}
@@ -78,7 +84,7 @@ def prepare():
     if resources:
         raise ValueError('competing resources: ' + repr(resources))
     STUDY.mkdir()
-    version = read_declaration(HERE / 'committed-source-v12-retry.json')
+    version = read_declaration(HERE / 'committed-source-v12-retry2.json')
     if version['tracked_worktree_clean'] is not True:
         raise ValueError('tracked source must be committed')
     generator = file_record(__file__)
@@ -144,7 +150,7 @@ def prepare():
     policy = STUDY / 'trajectory-gauge-policy.json'
     with policy.open('xb') as stream:
         stream.write((SOURCE / policy.name).read_bytes())
-    study_id = 'live-wire-agent-dev-1701-v12-retry'
+    study_id = 'live-wire-agent-dev-1701-v12-retry2'
     wire = STUDY / 'wire-config.json'
     write_manifest(wire, dict(schema='capture-wire-startup-v2', session_id=study_id + '.clock',
                              sim_origin_ns=0, remote_origin_ns=0,
@@ -231,7 +237,7 @@ def prepare():
                                        for role,paths in absent['inventory'].items()}
                 absent['inventory'] = {role:paths for role,paths in absent['inventory'].items() if paths}
                 absent['baseline']['files'] = [r for r in absent['baseline']['files'] if r['requested'] != leaf]
-            malformed = negative / 'missing-leaf-binding.json'
+            malformed = negative / negative_binding_name(name)
             write_manifest(malformed, absent)
             changed['files']['binding'] = file_record(malformed)
             changed['command'][changed['command'].index('--runtime-binding') + 1] = str(malformed)

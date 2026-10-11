@@ -25,3 +25,9 @@ def test_agent_selection_preserves_all_requested_aliases(tmp_path):
     script.add_agent_selection(inventory, selected, binary)
     assert inventory["runtime-root:agent"] == [binary]
     assert inventory["runtime:agent-selected"] == [declaration, bundle, alias, versioned]
+
+
+def test_negative_binding_cases_have_distinct_output_names():
+    script = preparer()
+    names = [script.negative_binding_name(case) for case in ("lazy_leaf_missing", "agent_missing_role")]
+    assert len(set(names)) == 2
