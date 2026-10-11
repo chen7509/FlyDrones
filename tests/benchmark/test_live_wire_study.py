@@ -4,6 +4,7 @@ Tiny fixture binaries are never executed and do not qualify installed resources.
 """
 
 import builtins
+import copy
 import importlib.util
 import socket
 import subprocess
@@ -13,6 +14,100 @@ import pytest
 
 from tests.benchmark.live_wire_study_fixture import fixture, write
 from tools.benchmark.declared_runtime_snapshot import file_record, snapshot
+
+
+def agent_fixture(tmp_path):
+    """Pure v2 fixture: fake bytes never become an executable file-adapter input."""
+    from tools.benchmark.agent_capture_runtime import AGENT_SHA256, BUNDLE_SHA256, LIBRARY_SHA256
+
+    manifest, docs, _ = fixture(tmp_path, staged_wire=True)
+    manifest["schema"] = "live-wire-study-v2"
+    manifest["study_id"] = "agent-development-v12"
+    manifest["simulation_seed"] = 27602
+    docs["execution"]["simulation_seed"] = 27602
+    docs["wire_config"]["session_id"] = manifest["study_id"] + ".clock"
+    wire_path = Path(manifest["files"]["wire_config"]["requested"])
+    write(wire_path, docs["wire_config"])
+    manifest["files"]["wire_config"] = file_record(wire_path)
+    docs["execution"]["wire"] = dict(path=str(wire_path), resolved=str(wire_path.resolve()),
+                                       bytes=manifest["files"]["wire_config"]["bytes"],
+                                       sha256=manifest["files"]["wire_config"]["sha256"],
+                                       configuration=copy.deepcopy(docs["wire_config"]))
+    manifest["command"][manifest["command"].index("--simulation-seed") + 1] = "27602"
+    config = tmp_path / "agent-runtime.json"
+    bundle = tmp_path / "bundle.tar.gz"
+    binary = tmp_path / "MicroXRCEAgent"
+    library_dir = tmp_path / "agent-lib"
+    library_dir.mkdir()
+    libraries = [library_dir / name for name in sorted(LIBRARY_SHA256)]
+    for path in [bundle, binary, *libraries]:
+        path.write_bytes(b"synthetic fixture, never executed")
+    write(config, dict(schema="capture-agent-runtime-v1", bundle=str(bundle), binary=str(binary),
+                       lib_dir=str(library_dir), port=18888))
+    selected = [str(config), str(bundle), str(binary), *(str(path) for path in libraries)]
+    hashes = [BUNDLE_SHA256, AGENT_SHA256, *(LIBRARY_SHA256[path.name] for path in libraries)]
+    docs["binding"]["inventory"]["runtime-root:agent"] = [str(binary)]
+    docs["binding"]["inventory"]["runtime:agent-dependencies"] = [str(config), str(bundle),
+                                                                       *(str(path) for path in libraries)]
+    docs["binding"]["runtime_maps"]["owned_roles"]["agent"] = ["ready", "prestop"]
+    docs["binding"]["baseline"] = snapshot(docs["binding"]["inventory"])
+    docs["binding"]["baseline"]["files"] = [row for row in docs["binding"]["baseline"]["files"]
+                                             if row["requested"] != str(wire_path)]
+    docs["binding"]["baseline"]["files"].append(dict(role="policy", **manifest["files"]["wire_config"]))
+    for row in docs["binding"]["baseline"]["files"]:
+        if row["requested"] in [str(bundle), str(binary), *(str(path) for path in libraries)]:
+            row["sha256"] = ({str(bundle): BUNDLE_SHA256, str(binary): AGENT_SHA256,
+                              **{str(path): LIBRARY_SHA256[path.name] for path in libraries}})[row["requested"]]
+    binding_path = Path(manifest["files"]["binding"]["requested"])
+    write(binding_path, docs["binding"])
+    manifest["files"]["binding"] = file_record(binding_path)
+    manifest["files"]["agent_config"] = file_record(config)
+    docs["execution"]["agent"] = dict(
+        schema="capture-agent-runtime-record-v1", declaration=str(config),
+        declaration_sha256=manifest["files"]["agent_config"]["sha256"],
+        configuration=dict(schema="capture-agent-runtime-v1", bundle=str(bundle), binary=str(binary),
+                           lib_dir=str(library_dir), port=18888),
+        selected_paths=selected,
+        files=[dict(path=path, resolved=next(row["resolved"] for row in docs["binding"]["baseline"]["files"]
+                                             if row["requested"] == path),
+                    bytes=next(row["bytes"] for row in docs["binding"]["baseline"]["files"]
+                               if row["requested"] == path), sha256=sha,
+                    device=next(row["identity"]["device"] for row in docs["binding"]["baseline"]["files"]
+                                if row["requested"] == path),
+                    inode=next(row["identity"]["inode"] for row in docs["binding"]["baseline"]["files"]
+                               if row["requested"] == path))
+               for path, sha in zip(selected[1:], hashes)],
+        authority=False, typed_dds_provenance=False, fusion_qualified=False,
+    )
+    manifest["command"] += ["--agent-runtime-config", str(config)]
+    return manifest, docs
+
+
+def test_pure_agent_study_requires_exact_owned_selection(tmp_path):
+    manifest, docs = agent_fixture(tmp_path)
+    result = api().validate_live_wire_study(manifest, **docs)
+    assert result["document_validated"] is True and result["live_qualified"] is False
+    for change in ("missing_role", "wrong_library", "missing_config", "wrong_seed", "extra_command"):
+        changed, payloads = copy.deepcopy(manifest), copy.deepcopy(docs)
+        if change == "missing_role":
+            del payloads["binding"]["runtime_maps"]["owned_roles"]["agent"]
+        elif change == "wrong_library":
+            payloads["execution"]["agent"]["files"][-1]["sha256"] = "0" * 64
+        elif change == "missing_config":
+            del changed["files"]["agent_config"]
+        elif change == "wrong_seed":
+            changed["simulation_seed"] = 27601
+        else:
+            changed["command"].append("--startup-preflight")
+        with pytest.raises(ValueError):
+            api().validate_live_wire_study(changed, **payloads)
+
+
+def test_v1_rejects_agent_addition(tmp_path):
+    manifest, docs, _ = fixture(tmp_path)
+    docs["execution"]["agent"] = {"unapproved": True}
+    with pytest.raises(ValueError):
+        api().validate_live_wire_study(manifest, **docs)
 
 
 def api():

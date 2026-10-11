@@ -17,6 +17,7 @@ from tools.benchmark.runtime_resource_binding import estimator_inputs, validate_
 from tools.benchmark.trajectory_gauge_contract import validate_trajectory_gauge_policy
 
 FILE_ROLES = {"execution", "binding", "wire_config", "gauge_policy", "python", "capture", "auditor"}
+AGENT_FILE_ROLES = FILE_ROLES | {"agent_config"}
 DOC_ROLES = ("execution", "binding", "wire_config", "gauge_policy")
 PROFILES = dict(
     motion_profile="supported-ready-v1",
@@ -154,7 +155,7 @@ def _expected_command(document, execution):
     fields = {
         **execution["inputs"],
         **execution["profiles"],
-        "simulation_seed": 27601,
+        "simulation_seed": document["simulation_seed"],
         "reference_sha256": execution["reference_sha256"],
         "execution_contract": files["execution"]["resolved"],
         "runtime_binding": files["binding"]["resolved"],
@@ -182,7 +183,51 @@ def _expected_command(document, execution):
     for key in order:
         if fields[key] is not None:
             command += ["--" + key.replace("_", "-"), str(fields[key])]
+    if document["schema"] == "live-wire-study-v2":
+        command += ["--agent-runtime-config", document["files"]["agent_config"]["resolved"]]
     return command
+
+
+def _agent_selection(document, execution, binding, baseline):
+    from tools.benchmark.agent_capture_runtime import AGENT_SHA256, BUNDLE_SHA256, LIBRARY_SHA256
+
+    record = execution.get("agent")
+    keys = {"schema", "declaration", "declaration_sha256", "configuration", "selected_paths", "files",
+            "authority", "typed_dds_provenance", "fusion_qualified"}
+    _shape(record, keys, "Agent execution record")
+    config = record["configuration"]
+    _shape(config, ("schema", "bundle", "binary", "lib_dir", "port"), "Agent configuration")
+    _equal(config["schema"], "capture-agent-runtime-v1", "Agent schema")
+    _equal(config["port"], 18888, "Agent port")
+    declaration = document["files"]["agent_config"]
+    _equal(record["schema"], "capture-agent-runtime-record-v1", "Agent record schema")
+    _equal(record["declaration"], declaration["requested"], "Agent declaration")
+    _equal(record["declaration_sha256"], declaration["sha256"], "Agent declaration hash")
+    _equal(baseline.get(_key(declaration["requested"])), declaration, "Agent declaration baseline")
+    for flag in ("authority", "typed_dds_provenance", "fusion_qualified"):
+        _equal(record[flag], False, "Agent " + flag)
+    _path(config["bundle"])
+    _path(config["binary"])
+    directory = _path(config["lib_dir"])
+    selected = [declaration["requested"], config["bundle"], config["binary"]]
+    selected += [str(directory / name) for name in sorted(LIBRARY_SHA256)]
+    _equal(record["selected_paths"], selected, "Agent selected paths")
+    _equal(binding["inventory"].get("runtime-root:agent"), [config["binary"]], "Agent runtime root")
+    _equal(set(binding["runtime_maps"]["owned_roles"]), {"px4", "openvins", "agent"}, "owned roles")
+    if not {"ready", "prestop"} <= set(binding["runtime_maps"]["owned_roles"]["agent"]):
+        raise ValueError("Agent owned phases missing")
+    expected_hashes = [BUNDLE_SHA256, AGENT_SHA256, *(LIBRARY_SHA256[name] for name in sorted(LIBRARY_SHA256))]
+    if type(record["files"]) is not list or len(record["files"]) != len(expected_hashes):
+        raise ValueError("Agent file list incomplete")
+    for path, sha, actual in zip(selected[1:], expected_hashes, record["files"]):
+        _shape(actual, ("path", "resolved", "bytes", "sha256", "device", "inode"), "Agent selected file")
+        current = baseline.get(_key(path))
+        if current is None:
+            raise ValueError("Agent selected file missing from baseline")
+        _equal(actual, dict(path=path, resolved=current["resolved"], bytes=current["bytes"], sha256=sha,
+                            device=current["identity"]["device"], inode=current["identity"]["inode"]),
+               "Agent selected file")
+        _equal(current["sha256"], sha, "Agent fixed file hash")
 
 
 def validate_live_wire_study(document, *, execution, binding, wire_config, gauge_policy):
@@ -206,10 +251,14 @@ def validate_live_wire_study(document, *, execution, binding, wire_config, gauge
         ),
         "study",
     )
+    version = document["schema"]
+    if version not in ("live-wire-study-v1", "live-wire-study-v2"):
+        raise ValueError("unknown live wire study schema")
+    agent_mode = version == "live-wire-study-v2"
     for key, value in dict(
-        schema="live-wire-study-v1",
+        schema=version,
         role="development",
-        simulation_seed=27601,
+        simulation_seed=27602 if agent_mode else 27601,
         expected_status="capture_completed",
         clock_scope="postupdate-simulation-epoch-v1",
         live_activation_authorized=False,
@@ -219,11 +268,11 @@ def validate_live_wire_study(document, *, execution, binding, wire_config, gauge
     _text(document["producer_commit"], "[0-9a-f]{40}", "producer commit")
     _equal(document["limits"], LIMITS, "limits")
     _equal(document["endpoint"], ENDPOINT, "endpoint")
-    _shape(document["files"], FILE_ROLES, "study files")
+    _shape(document["files"], AGENT_FILE_ROLES if agent_mode else FILE_ROLES, "study files")
     for record in document["files"].values():
         _file(record)
     for key in ("requested", "resolved"):
-        if len({_key(r[key]) for r in document["files"].values()}) != len(FILE_ROLES):
+        if len({_key(r[key]) for r in document["files"].values()}) != len(document["files"]):
             raise ValueError("duplicate study file identity")
     validate_binding(binding)
     if binding["schema"] != "capture-resource-binding-v3":
@@ -232,7 +281,7 @@ def validate_live_wire_study(document, *, execution, binding, wire_config, gauge
     runtime = binding["runtime_maps"]
     if (
         not {"postimports", "postfinalize", "postfirststep"} <= set(runtime["self_phases"])
-        or set(runtime["owned_roles"]) != {"px4", "openvins"}
+        or set(runtime["owned_roles"]) != ({"px4", "openvins", "agent"} if agent_mode else {"px4", "openvins"})
         or any(not {"ready", "prestop"} <= set(phases) for phases in runtime["owned_roles"].values())
     ):
         raise ValueError("full native/PX4 runtime coverage must be declared")
@@ -250,11 +299,16 @@ def validate_live_wire_study(document, *, execution, binding, wire_config, gauge
     _equal(wire_config, expected_wire, "wire clock")
     _shape(
         execution,
-        set(WORKLOAD) | {"profiles", "inputs", "reference_sha256", "launch_environment", "trajectory_gauge_policy", "wire"},
+        set(WORKLOAD) | {"profiles", "inputs", "reference_sha256", "launch_environment", "trajectory_gauge_policy", "wire"}
+        | ({"agent"} if agent_mode else set()),
         "execution",
     )
-    for key, value in WORKLOAD.items():
+    for key, value in {**WORKLOAD, "simulation_seed": 27602 if agent_mode else 27601}.items():
         _equal(execution[key], value, "workload " + key)
+    if agent_mode:
+        _agent_selection(document, execution, binding, baseline)
+    elif "agent" in execution:
+        raise ValueError("v1 study cannot select an Agent")
     _equal(execution["profiles"], PROFILES, "profiles")
     _equal(execution["launch_environment"], derive_launch_environment(binding), "environment")
     _shape(execution["inputs"], ("shadow_binary", "shadow_config", "reference_module"), "native inputs")
@@ -296,7 +350,8 @@ def validate_live_wire_study_files(manifest_path):
     path = Path(manifest_path)
     before_manifest = file_record(path)
     document = read_declaration(path)
-    _shape(document.get("files") if type(document) is dict else None, FILE_ROLES, "study files")
+    roles = AGENT_FILE_ROLES if type(document) is dict and document.get("schema") == "live-wire-study-v2" else FILE_ROLES
+    _shape(document.get("files") if type(document) is dict else None, roles, "study files")
     docs = {}
     for role, expected in document["files"].items():
         _file(expected)

@@ -127,7 +127,7 @@ def _dispatch_records(manifest, manifest_identity, dispatch, completion):
         study_manifest=manifest_identity,
         run_id=manifest["study_id"],
         role="development",
-        seed=27601,
+        seed=manifest["simulation_seed"],
         destination=manifest["outputs"]["capture"],
         command=manifest["command"],
         resources_before=[],
@@ -168,7 +168,7 @@ def audit_live_wire_study(study_path):
     from tools.benchmark.audit_live_wire_runtime import audit_runtime_mapping_records
     from tools.benchmark.audit_live_wire_ulog import audit_unarmed_ulog
     from tools.benchmark.audit_live_wire_workload import audit_source_native_records
-    from tools.benchmark.live_wire_study import DOC_ROLES, FILE_ROLES, _file, validate_live_wire_study
+    from tools.benchmark.live_wire_study import AGENT_FILE_ROLES, DOC_ROLES, FILE_ROLES, _file, validate_live_wire_study
     from tools.benchmark.native_supervisor_integration import audit_supervisor
 
     reader, checks, refusals = StudyEvidenceReader(), {}, []
@@ -180,7 +180,8 @@ def audit_live_wire_study(study_path):
         manifest = reader.document(path)
         if type(manifest) is not dict:
             raise ValueError("study manifest must be an object")
-        _shape(manifest.get("files"), FILE_ROLES, "study input file index")
+        roles = AGENT_FILE_ROLES if manifest.get("schema") == "live-wire-study-v2" else FILE_ROLES
+        _shape(manifest.get("files"), roles, "study input file index")
         documents = {}
         for role, expected in manifest["files"].items():
             _file(expected)
