@@ -22,7 +22,7 @@ from tools.benchmark.repository_python_sources import audit_source_roots, discov
 from tools.benchmark.runtime_resource_binding import GENERATED_NAMES, validate_binding
 
 HERE = Path(__file__).resolve().parent
-STUDY = HERE / 'study-v12'
+STUDY = HERE / 'study-v12-retry'
 SOURCE = HERE / 'study-v11'
 ARCHIVE = ROOT / 'evidence/live-wire-v11-startup-preparation-dev-1701.zip'
 ARCHIVE_SHA = 'ea31808ff8b835a851a84c12f6fd65329fac05170fe8ceef411a8167565e9b26'
@@ -46,6 +46,18 @@ def extend_missing(inventory, role, paths):
         inventory[role] = sorted(selected)
 
 
+def add_agent_selection(inventory, selected_paths, binary):
+    """Keep each checked SONAME alias; distinct names can share one inode."""
+    if (type(selected_paths) is not list or len(selected_paths) < 3
+            or selected_paths[2] != binary or len(set(selected_paths)) != len(selected_paths)):
+        raise ValueError('invalid exact Agent selected paths')
+    existing = {path for paths in inventory.values() for path in paths}
+    if existing.intersection(selected_paths):
+        raise ValueError('Agent requested path already selected under another role')
+    inventory['runtime-root:agent'] = [binary]
+    inventory['runtime:agent-selected'] = [path for path in selected_paths if path != binary]
+
+
 def assert_original_selection_unchanged(original_rows, augmented_rows):
     """Compare each original file exactly, while allowing new declared files."""
     original = {}
@@ -66,7 +78,7 @@ def prepare():
     if resources:
         raise ValueError('competing resources: ' + repr(resources))
     STUDY.mkdir()
-    version = read_declaration(HERE / 'committed-source-v12.json')
+    version = read_declaration(HERE / 'committed-source-v12-retry.json')
     if version['tracked_worktree_clean'] is not True:
         raise ValueError('tracked source must be committed')
     generator = file_record(__file__)
@@ -132,7 +144,7 @@ def prepare():
     policy = STUDY / 'trajectory-gauge-policy.json'
     with policy.open('xb') as stream:
         stream.write((SOURCE / policy.name).read_bytes())
-    study_id = 'live-wire-agent-dev-1701-v12'
+    study_id = 'live-wire-agent-dev-1701-v12-retry'
     wire = STUDY / 'wire-config.json'
     write_manifest(wire, dict(schema='capture-wire-startup-v2', session_id=study_id + '.clock',
                              sim_origin_ns=0, remote_origin_ns=0,
@@ -147,9 +159,7 @@ def prepare():
     write_manifest(STUDY / 'audit-source-dependencies.json', source_graph)
     extend_missing(declared['inventory'], 'runtime:static-audit-source', [r['requested'] for r in source_graph['files']])
     extend_missing(declared['inventory'], 'runtime:prospective-policy', [policy, wire])
-    extend_missing(declared['inventory'], 'runtime-root:agent', [agent['configuration']['binary']])
-    extend_missing(declared['inventory'], 'runtime:agent-selected',
-                   [path for path in agent['selected_paths'] if path != agent['configuration']['binary']])
+    add_agent_selection(declared['inventory'], agent['selected_paths'], agent['configuration']['binary'])
     declared['runtime_maps']['owned_roles']['agent'] = ['ready', 'prestop']
     declared['baseline'] = snapshot(declared['inventory'])
     # Do not absorb a race during the augmented snapshot.

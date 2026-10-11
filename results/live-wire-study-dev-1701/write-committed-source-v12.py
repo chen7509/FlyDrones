@@ -30,7 +30,7 @@ def main():
     doc = dict(head=head, tracked_worktree_clean=True,
                preparer_sha256=hashlib.sha256(preparer.read_bytes()).hexdigest(),
                source_sha256=source)
-    path = HERE / "committed-source-v12.json"
+    path = HERE / "committed-source-v12-retry.json"
     with path.open("x", encoding="utf-8", newline="\n") as stream:
         json.dump(doc, stream, indent=2, sort_keys=True)
         stream.write("\n")
