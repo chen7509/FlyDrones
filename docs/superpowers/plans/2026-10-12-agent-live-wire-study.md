@@ -26,18 +26,18 @@
 
 ### Task 1: Validate an Agent-inclusive study
 
-- [ ] Write pure v2 success and rejection tests in `tests/benchmark/test_live_wire_study.py`.
-- [ ] Observe RED, then implement the minimal v2 branch in `tools/benchmark/live_wire_study.py`.
-- [ ] Run v1 and v2 tests, including file-adapter drift cases.
+- [x] Write pure v2 success and rejection tests in `tests/benchmark/test_live_wire_study.py`.
+- [x] Observe RED, then implement the minimal v2 branch in `tools/benchmark/live_wire_study.py`.
+- [x] Run v1 and v2 tests, including file-adapter drift cases.
 
 ### Task 2: Prepare one v12 declaration
 
-- [ ] Add a one-off preparer under `results/live-wire-study-dev-1701/` that verifies the sealed v11 source, committed changes and fixed Agent files.
-- [ ] Generate fresh v12 input/output paths and negative cases without launching anything.
-- [ ] Validate with `validate_live_wire_study_files` and `prepare_live_wire_execution`; independently audit hashes, roles and outputs.
+- [x] Add a one-off preparer under `results/live-wire-study-dev-1701/` that verifies the sealed v11 source, committed changes and fixed Agent files.
+- [x] Generate fresh v12 input/output paths and negative cases without launching anything.
+- [x] Validate with `validate_live_wire_study_files` and `prepare_live_wire_execution`; independently audit hashes, roles and outputs.
 
 ### Task 3: Publish evidence
 
-- [ ] Run targeted regression, changed Ruff and `git diff --check`.
-- [ ] Record verified/implemented/untested/failed status, seal evidence and independently check ZIP members.
+- [x] Run targeted regression, changed Ruff and `git diff --check`.
+- [x] Record verified/implemented/untested/failed status, seal evidence and independently check ZIP members.
 - [ ] Commit exact files, push `personal` only and update draft PR65.
