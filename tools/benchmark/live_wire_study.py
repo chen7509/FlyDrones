@@ -18,6 +18,7 @@ from tools.benchmark.trajectory_gauge_contract import validate_trajectory_gauge_
 
 FILE_ROLES = {"execution", "binding", "wire_config", "gauge_policy", "python", "capture", "auditor"}
 AGENT_FILE_ROLES = FILE_ROLES | {"agent_config"}
+LOGGER_FILE_ROLES = AGENT_FILE_ROLES | {"logger_topics", "logger_profile"}
 DOC_ROLES = ("execution", "binding", "wire_config", "gauge_policy")
 PROFILES = dict(
     motion_profile="supported-ready-v1",
@@ -183,8 +184,10 @@ def _expected_command(document, execution):
     for key in order:
         if fields[key] is not None:
             command += ["--" + key.replace("_", "-"), str(fields[key])]
-    if document["schema"] == "live-wire-study-v2":
+    if document["schema"] in ("live-wire-study-v2", "live-wire-study-v3"):
         command += ["--agent-runtime-config", document["files"]["agent_config"]["resolved"]]
+    if document["schema"] == "live-wire-study-v3":
+        command += ["--logger-diagnostic-profile", "source-diagnostic-v1"]
     return command
 
 
@@ -230,6 +233,35 @@ def _agent_selection(document, execution, binding, baseline):
         _equal(current["sha256"], sha, "Agent fixed file hash")
 
 
+def _logger_selection(document, execution, binding, baseline):
+    record = execution["logger_diagnostic"]
+    _shape(record, ("schema", "profile_id", "source_paths", "topics_sha256", "declaration_sha256",
+                    "px4_environment_override", "diagnostic_only", "runtime_topic_selection_verified",
+                    "dds_ulog_parity_verified", "source_authenticated"), "logger diagnostic record")
+    _equal(record["schema"], "capture-px4-logger-profile-v1", "logger schema")
+    _equal(record["profile_id"], "source-diagnostic-v1", "logger profile")
+    _equal(record["px4_environment_override"], {"PX4_PARAM_SDLOG_PROFILE": "0"}, "logger override")
+    _equal(record["diagnostic_only"], True, "logger diagnostic flag")
+    for flag in ("runtime_topic_selection_verified", "dds_ulog_parity_verified", "source_authenticated"):
+        _equal(record[flag], False, "logger " + flag)
+    topics, declaration = (document["files"][role] for role in ("logger_topics", "logger_profile"))
+    paths = [topics["requested"], declaration["requested"]]
+    _equal(record["source_paths"], paths, "logger source paths")
+    _equal(record["topics_sha256"], topics["sha256"], "logger topics digest")
+    _equal(record["declaration_sha256"], declaration["sha256"], "logger declaration digest")
+    _equal(binding["inventory"].get("runtime:logger-diagnostic"), paths, "logger inventory")
+    for item in (topics, declaration):
+        _equal(baseline.get(_key(item["requested"])), item, "logger baseline")
+
+
+def _canonical_logger_record(record):
+    """File-adapter check; never called by the pure document validator."""
+    from tools.benchmark.px4_logger_runtime import PROFILE_RELATIVE, profile_record
+
+    fixed = profile_record(Path(__file__).resolve().parents[2] / PROFILE_RELATIVE)
+    _equal(record, fixed, "canonical logger profile")
+
+
 def validate_live_wire_study(document, *, execution, binding, wire_config, gauge_policy):
     """Check documents without touching files; no live authorization or code attestation."""
     _shape(
@@ -252,13 +284,15 @@ def validate_live_wire_study(document, *, execution, binding, wire_config, gauge
         "study",
     )
     version = document["schema"]
-    if version not in ("live-wire-study-v1", "live-wire-study-v2"):
+    if version not in ("live-wire-study-v1", "live-wire-study-v2", "live-wire-study-v3"):
         raise ValueError("unknown live wire study schema")
-    agent_mode = version == "live-wire-study-v2"
+    agent_mode = version in ("live-wire-study-v2", "live-wire-study-v3")
+    logger_mode = version == "live-wire-study-v3"
+    expected_seed = 27603 if logger_mode else (27602 if agent_mode else 27601)
     for key, value in dict(
         schema=version,
         role="development",
-        simulation_seed=27602 if agent_mode else 27601,
+        simulation_seed=expected_seed,
         expected_status="capture_completed",
         clock_scope="postupdate-simulation-epoch-v1",
         live_activation_authorized=False,
@@ -268,7 +302,8 @@ def validate_live_wire_study(document, *, execution, binding, wire_config, gauge
     _text(document["producer_commit"], "[0-9a-f]{40}", "producer commit")
     _equal(document["limits"], LIMITS, "limits")
     _equal(document["endpoint"], ENDPOINT, "endpoint")
-    _shape(document["files"], AGENT_FILE_ROLES if agent_mode else FILE_ROLES, "study files")
+    _shape(document["files"], LOGGER_FILE_ROLES if logger_mode else (AGENT_FILE_ROLES if agent_mode else FILE_ROLES),
+           "study files")
     for record in document["files"].values():
         _file(record)
     for key in ("requested", "resolved"):
@@ -300,15 +335,17 @@ def validate_live_wire_study(document, *, execution, binding, wire_config, gauge
     _shape(
         execution,
         set(WORKLOAD) | {"profiles", "inputs", "reference_sha256", "launch_environment", "trajectory_gauge_policy", "wire"}
-        | ({"agent"} if agent_mode else set()),
+        | ({"agent"} if agent_mode else set()) | ({"logger_diagnostic"} if logger_mode else set()),
         "execution",
     )
-    for key, value in {**WORKLOAD, "simulation_seed": 27602 if agent_mode else 27601}.items():
+    for key, value in {**WORKLOAD, "simulation_seed": expected_seed}.items():
         _equal(execution[key], value, "workload " + key)
     if agent_mode:
         _agent_selection(document, execution, binding, baseline)
     elif "agent" in execution:
         raise ValueError("v1 study cannot select an Agent")
+    if logger_mode:
+        _logger_selection(document, execution, binding, baseline)
     _equal(execution["profiles"], PROFILES, "profiles")
     _equal(execution["launch_environment"], derive_launch_environment(binding), "environment")
     _shape(execution["inputs"], ("shadow_binary", "shadow_config", "reference_module"), "native inputs")
@@ -350,7 +387,9 @@ def validate_live_wire_study_files(manifest_path):
     path = Path(manifest_path)
     before_manifest = file_record(path)
     document = read_declaration(path)
-    roles = AGENT_FILE_ROLES if type(document) is dict and document.get("schema") == "live-wire-study-v2" else FILE_ROLES
+    version = document.get("schema") if type(document) is dict else None
+    roles = (LOGGER_FILE_ROLES if version == "live-wire-study-v3"
+             else AGENT_FILE_ROLES if version == "live-wire-study-v2" else FILE_ROLES)
     _shape(document.get("files") if type(document) is dict else None, roles, "study files")
     docs = {}
     for role, expected in document["files"].items():
@@ -360,6 +399,8 @@ def validate_live_wire_study_files(manifest_path):
             docs[role] = read_declaration(expected["requested"])
             _equal(file_record(expected["requested"]), expected, "study file after read " + role)
     result = validate_live_wire_study(document, **docs)
+    if version == "live-wire-study-v3":
+        _canonical_logger_record(docs["execution"]["logger_diagnostic"])
     root = Path(__file__).resolve().parents[2]
     source_freeze = verify_sources(root, audit_source_roots(root), docs['binding']['baseline']['files'])
     result['static_audit_sources_verified'] = True

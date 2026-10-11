@@ -5,6 +5,7 @@ Tiny fixture binaries are never executed and do not qualify installed resources.
 
 import builtins
 import copy
+import hashlib
 import importlib.util
 import socket
 import subprocess
@@ -81,6 +82,172 @@ def agent_fixture(tmp_path):
     )
     manifest["command"] += ["--agent-runtime-config", str(config)]
     return manifest, docs
+
+
+def logger_fixture(tmp_path):
+    """v3 pure fixture: logger bytes are real; synthetic Agent is never run."""
+    from tools.benchmark.px4_logger_runtime import PROFILE_RELATIVE, profile_record
+
+    manifest, docs = agent_fixture(tmp_path)
+    root = Path(__file__).resolve().parents[2]
+    logger = profile_record(root / PROFILE_RELATIVE)
+    topics, declaration = map(Path, logger["source_paths"])
+    manifest["schema"] = "live-wire-study-v3"
+    manifest["study_id"] = "logger-development-v13"
+    manifest["simulation_seed"] = 27603
+    docs["execution"]["simulation_seed"] = 27603
+    docs["execution"]["logger_diagnostic"] = logger
+    docs["wire_config"]["session_id"] = manifest["study_id"] + ".clock"
+    wire_path = Path(manifest["files"]["wire_config"]["requested"])
+    write(wire_path, docs["wire_config"])
+    manifest["files"]["wire_config"] = file_record(wire_path)
+    docs["execution"]["wire"] = dict(path=str(wire_path), resolved=str(wire_path.resolve()),
+                                       bytes=manifest["files"]["wire_config"]["bytes"],
+                                       sha256=manifest["files"]["wire_config"]["sha256"],
+                                       configuration=copy.deepcopy(docs["wire_config"]))
+    for row in docs["binding"]["baseline"]["files"]:
+        if row["requested"] == str(wire_path):
+            row.update(manifest["files"]["wire_config"])
+    docs["binding"]["inventory"]["runtime:logger-diagnostic"] = [str(topics), str(declaration)]
+    for path in (topics, declaration):
+        docs["binding"]["baseline"]["files"].append(dict(role="runtime:logger-diagnostic", **file_record(path)))
+    for role, path in (("logger_topics", topics), ("logger_profile", declaration)):
+        manifest["files"][role] = file_record(path)
+    manifest["command"][manifest["command"].index("--simulation-seed") + 1] = "27603"
+    manifest["command"] += ["--logger-diagnostic-profile", "source-diagnostic-v1"]
+    return manifest, docs
+
+
+def test_pure_logger_study_binds_changed_load_without_granting_authority(tmp_path, monkeypatch):
+    manifest, docs = logger_fixture(tmp_path)
+
+    def forbidden(*_a, **_k):
+        raise AssertionError("pure v3 validation performed I/O")
+
+    with monkeypatch.context() as m:
+        m.setattr(Path, "open", forbidden)
+        m.setattr(Path, "stat", forbidden)
+        m.setattr(subprocess, "Popen", forbidden)
+        m.setattr(socket, "socket", forbidden)
+        result = api().validate_live_wire_study(manifest, **docs)
+    assert result["document_validated"] is True
+    assert result["live_qualified"] is False and result["fusion_qualified"] is False
+
+
+@pytest.mark.parametrize("change", [
+    "missing_topics", "wrong_topics_hash", "wrong_profile_hash", "missing_inventory",
+    "logger_selected", "wrong_env", "wrong_seed", "missing_option", "duplicate_option",
+])
+def test_pure_logger_study_refuses_missing_or_misbound_diagnostic(tmp_path, change):
+    manifest, docs = logger_fixture(tmp_path)
+    if change == "missing_topics":
+        del manifest["files"]["logger_topics"]
+    elif change == "wrong_topics_hash":
+        docs["execution"]["logger_diagnostic"]["topics_sha256"] = "0" * 64
+    elif change == "wrong_profile_hash":
+        docs["execution"]["logger_diagnostic"]["declaration_sha256"] = "0" * 64
+    elif change == "missing_inventory":
+        del docs["binding"]["inventory"]["runtime:logger-diagnostic"]
+    elif change == "logger_selected":
+        docs["execution"]["logger_diagnostic"]["runtime_topic_selection_verified"] = True
+    elif change == "wrong_env":
+        docs["execution"]["logger_diagnostic"]["px4_environment_override"] = {"PX4_PARAM_SDLOG_PROFILE": "131"}
+    elif change == "wrong_seed":
+        manifest["simulation_seed"] = 27602
+    elif change == "missing_option":
+        del manifest["command"][-2:]
+    elif change == "duplicate_option":
+        manifest["command"] += ["--logger-diagnostic-profile", "source-diagnostic-v1"]
+    with pytest.raises(ValueError):
+        api().validate_live_wire_study(manifest, **docs)
+
+
+def test_v2_rejects_diagnostic_logger_addition(tmp_path):
+    manifest, docs = agent_fixture(tmp_path)
+    docs["execution"]["logger_diagnostic"] = {"unapproved": True}
+    manifest["command"] += ["--logger-diagnostic-profile", "source-diagnostic-v1"]
+    with pytest.raises(ValueError):
+        api().validate_live_wire_study(manifest, **docs)
+
+
+def test_v3_file_adapter_checks_current_canonical_profile(tmp_path):
+    _, docs = logger_fixture(tmp_path)
+    record = docs["execution"]["logger_diagnostic"]
+    assert api()._canonical_logger_record(record) is None
+    changed = copy.deepcopy(record)
+    changed["topics_sha256"] = "0" * 64
+    with pytest.raises(ValueError, match="canonical logger"):
+        api()._canonical_logger_record(changed)
+
+
+def v3_file_fixture(tmp_path, monkeypatch):
+    """Serialize v3 with synthetic Agent bytes whose test-only fixed hashes match."""
+    from tools.benchmark import agent_capture_runtime
+
+    manifest, docs = logger_fixture(tmp_path)
+    config = docs["execution"]["agent"]["configuration"]
+    binary, bundle, directory = Path(config["binary"]), Path(config["bundle"]), Path(config["lib_dir"])
+    def digest(path):
+        return hashlib.sha256(path.read_bytes()).hexdigest()
+    monkeypatch.setattr(agent_capture_runtime, "AGENT_SHA256", digest(binary))
+    monkeypatch.setattr(agent_capture_runtime, "BUNDLE_SHA256", digest(bundle))
+    monkeypatch.setattr(agent_capture_runtime, "LIBRARY_SHA256",
+                        {name: digest(directory / name) for name in agent_capture_runtime.LIBRARY_SHA256})
+    for row in docs["execution"]["agent"]["files"]:
+        row["sha256"] = digest(Path(row["path"]))
+    docs["binding"]["baseline"] = snapshot(docs["binding"]["inventory"])
+    binding_path = Path(manifest["files"]["binding"]["requested"])
+    execution_path = Path(manifest["files"]["execution"]["requested"])
+    write(binding_path, docs["binding"])
+    write(execution_path, docs["execution"])
+    manifest["files"]["binding"] = file_record(binding_path)
+    manifest["files"]["execution"] = file_record(execution_path)
+    path = write(tmp_path / "v3-manifest.json", manifest)
+    return path, manifest, docs
+
+
+def test_v3_file_adapter_validates_exact_canonical_files(tmp_path, monkeypatch):
+    from tools.benchmark.audit_live_wire_study import audit_live_wire_study
+
+    path, manifest, _ = v3_file_fixture(tmp_path, monkeypatch)
+    result = api().validate_live_wire_study_files(path)
+    assert result["files_verified"] is True
+    assert result["manifest"] == manifest
+    assert result["live_qualified"] is False
+    audit = audit_live_wire_study(path)
+    assert audit["checks"]["documents"]["canonical_diagnostic_logger_source_verified"] is True
+    assert audit["refusals"][0]["stage"] == "capture"
+    assert any("vehicle_odometry ULog" in item for item in audit["unverified"])
+
+
+def test_v3_file_adapter_refuses_self_consistent_logger_substitution(tmp_path, monkeypatch):
+    from tools.benchmark.audit_live_wire_study import audit_live_wire_study
+
+    path, manifest, docs = v3_file_fixture(tmp_path, monkeypatch)
+    alternate = tmp_path / "alternate-logger"
+    alternate.mkdir()
+    old = list(map(Path, docs["execution"]["logger_diagnostic"]["source_paths"]))
+    new = [alternate / item.name for item in old]
+    for source, target in zip(old, new):
+        target.write_bytes(source.read_bytes())
+    docs["execution"]["logger_diagnostic"]["source_paths"] = list(map(str, new))
+    docs["binding"]["inventory"]["runtime:logger-diagnostic"] = list(map(str, new))
+    docs["binding"]["baseline"]["files"] = [row for row in docs["binding"]["baseline"]["files"]
+                                                  if row["requested"] not in set(map(str, old))]
+    for role, item in zip(("logger_topics", "logger_profile"), new):
+        record = file_record(item)
+        docs["binding"]["baseline"]["files"].append(dict(role="runtime:logger-diagnostic", **record))
+        manifest["files"][role] = record
+    for role, name in (("binding", "binding.json"), ("execution", "execution.json")):
+        target = tmp_path / name
+        write(target, docs[role])
+        manifest["files"][role] = file_record(target)
+    write(path, manifest)
+    with pytest.raises(ValueError, match="canonical logger"):
+        api().validate_live_wire_study_files(path)
+    audit = audit_live_wire_study(path)
+    assert audit["refusals"][0]["stage"] == "documents"
+    assert "canonical logger" in audit["refusals"][0]["reason"]
 
 
 def test_pure_agent_study_requires_exact_owned_selection(tmp_path):

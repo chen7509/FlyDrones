@@ -6,6 +6,7 @@ from types import SimpleNamespace
 import pytest
 
 from tests.benchmark.live_wire_study_fixture import fixture, write
+from tests.benchmark.test_live_wire_study import v3_file_fixture
 from tools.benchmark import execute_openvins_health_physical_run as executor
 from tools.benchmark.declared_runtime_snapshot import file_record
 
@@ -95,6 +96,89 @@ def test_resources_before_intent_refuse(tmp_path):
     with pytest.raises(ValueError, match='competing resources'):
         invoke(path, resources_fn=lambda: ['other simulator'])
     assert not (tmp_path / 'activation-request.json').exists()
+    assert not Path(manifest['outputs']['dispatch']).exists()
+
+
+def test_v3_low_host_memory_refuses_before_activation_request(tmp_path, monkeypatch):
+    manifest_path, manifest, _ = v3_file_fixture(tmp_path, monkeypatch)
+    monkeypatch.setattr(executor, 'host_available_memory_bytes', lambda: 4 * 1024**3 - 1)
+    with pytest.raises(ValueError, match='host memory'):
+        invoke(manifest_path)
+    assert not (tmp_path / 'activation-request.json').exists()
+    assert not Path(manifest['outputs']['dispatch']).exists()
+
+
+def test_v3_memory_evidence_is_bound_to_synthetic_activation(tmp_path, monkeypatch):
+    manifest_path, manifest, _ = v3_file_fixture(tmp_path, monkeypatch)
+    available = 4 * 1024**3 + 12345
+    monkeypatch.setattr(executor, 'host_available_memory_bytes', lambda: available)
+
+    def fake(command, **_kwargs):
+        receipt = json.loads((tmp_path / 'activation-request.json').read_text())
+        assert receipt['host_available_bytes_before_request'] == available
+        assert receipt['host_memory_threshold_bytes'] == 4 * 1024**3
+        assert command == manifest['command']
+        Path(manifest['outputs']['capture']).mkdir()
+        return SimpleNamespace(returncode=0)
+
+    assert invoke(manifest_path, runner=fake) == 0
+
+
+def test_v3_memory_drop_after_request_refuses_dispatch_and_retains_intent(tmp_path, monkeypatch):
+    manifest_path, manifest, _ = v3_file_fixture(tmp_path, monkeypatch)
+    samples = iter([4 * 1024**3 + 1, 4 * 1024**3 - 1])
+    monkeypatch.setattr(executor, 'host_available_memory_bytes', lambda: next(samples))
+    with pytest.raises(ValueError, match='host memory'):
+        invoke(manifest_path)
+    receipt = json.loads((tmp_path / 'activation-request.json').read_text())
+    assert receipt['host_available_bytes_before_request'] == 4 * 1024**3 + 1
+    assert not Path(manifest['outputs']['dispatch']).exists()
+
+
+def test_v3_memory_drop_during_revalidation_refuses_dispatch(tmp_path, monkeypatch):
+    manifest_path, manifest, _ = v3_file_fixture(tmp_path, monkeypatch)
+    available = [4 * 1024**3 + 1]
+    monkeypatch.setattr(executor, 'host_available_memory_bytes', lambda: available[0])
+    original_prepare = executor.prepare_live_wire_execution
+    prepare_calls = []
+
+    def prepare_then_drop(path):
+        plan = original_prepare(path)
+        prepare_calls.append(path)
+        if len(prepare_calls) == 2:
+            available[0] = 4 * 1024**3 - 1
+        return plan
+
+    monkeypatch.setattr(executor, 'prepare_live_wire_execution', prepare_then_drop)
+    with pytest.raises(ValueError, match='host memory'):
+        invoke(manifest_path)
+    assert len(prepare_calls) == 2
+    assert (tmp_path / 'activation-request.json').exists()
+    assert not Path(manifest['outputs']['dispatch']).exists()
+
+
+def test_v3_manifest_change_after_revalidation_cannot_skip_memory_gate(tmp_path, monkeypatch):
+    manifest_path, manifest, _ = v3_file_fixture(tmp_path, monkeypatch)
+    available = [4 * 1024**3 + 1]
+    monkeypatch.setattr(executor, 'host_available_memory_bytes', lambda: available[0])
+    original_prepare = executor.prepare_live_wire_execution
+    prepare_calls = []
+
+    def prepare_then_change_schema(path):
+        plan = original_prepare(path)
+        prepare_calls.append(path)
+        if len(prepare_calls) == 2:
+            altered = json.loads(manifest_path.read_text())
+            altered['schema'] = 'live-wire-study-v2'
+            manifest_path.write_text(json.dumps(altered))
+            available[0] = 4 * 1024**3 - 1
+        return plan
+
+    monkeypatch.setattr(executor, 'prepare_live_wire_execution', prepare_then_change_schema)
+    with pytest.raises(ValueError, match='manifest changed'):
+        invoke(manifest_path)
+    assert len(prepare_calls) == 2
+    assert (tmp_path / 'activation-request.json').exists()
     assert not Path(manifest['outputs']['dispatch']).exists()
 
 

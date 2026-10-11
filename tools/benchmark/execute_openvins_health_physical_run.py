@@ -3,14 +3,61 @@
 from __future__ import annotations
 
 import argparse
+import ctypes
 import json
 import os
+import platform
+import re
 import subprocess
 import time
 from pathlib import Path
 
 from tools.benchmark.capture_contract import read_declaration
 from tools.benchmark.declared_runtime_snapshot import file_record
+
+LIVE_WIRE_HOST_MEMORY_MIN_BYTES = 4 * 1024**3
+
+
+def host_available_memory_bytes():
+    """Observe host free RAM; WSL must query Windows rather than WSL's allotment."""
+    if os.name == "nt":
+        class MemoryStatus(ctypes.Structure):
+            _fields_ = [("length", ctypes.c_ulong), ("load", ctypes.c_ulong),
+                        ("total_phys", ctypes.c_ulonglong), ("available_phys", ctypes.c_ulonglong),
+                        ("total_page", ctypes.c_ulonglong), ("available_page", ctypes.c_ulonglong),
+                        ("total_virtual", ctypes.c_ulonglong), ("available_virtual", ctypes.c_ulonglong),
+                        ("available_extended_virtual", ctypes.c_ulonglong)]
+
+        status = MemoryStatus()
+        status.length = ctypes.sizeof(status)
+        if not ctypes.windll.kernel32.GlobalMemoryStatusEx(ctypes.byref(status)):
+            raise OSError("Windows host memory query failed")
+        return int(status.available_phys)
+    if "microsoft" in platform.release().lower():
+        powershell = Path("/mnt/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe")
+        if not powershell.is_file():
+            raise ValueError("Windows host memory query unavailable in WSL")
+        result = subprocess.run(
+            [str(powershell), "-NoProfile", "-NonInteractive", "-Command",
+             "(Get-CimInstance Win32_OperatingSystem).FreePhysicalMemory"],
+            capture_output=True, timeout=10, check=False,
+        )
+        value = result.stdout.decode("ascii", errors="strict").strip()
+        if result.returncode != 0 or re.fullmatch(r"[0-9]{1,20}", value) is None:
+            raise ValueError("Windows host memory observation invalid")
+        return int(value) * 1024
+    pages = os.sysconf("SC_AVPHYS_PAGES")
+    size = os.sysconf("SC_PAGE_SIZE")
+    if type(pages) is not int or type(size) is not int or pages < 0 or size <= 0:
+        raise ValueError("native host memory observation invalid")
+    return pages * size
+
+
+def _require_live_wire_memory():
+    available = host_available_memory_bytes()
+    if type(available) is not int or available < LIVE_WIRE_HOST_MEMORY_MIN_BYTES:
+        raise ValueError(f"insufficient host memory for live-wire v3: {available!r} bytes")
+    return available
 
 
 def _write_x(path, value):
@@ -146,6 +193,10 @@ def execute_live_wire(manifest_path, *, approved_manifest_sha256,
     plan = prepare_live_wire_execution(manifest_path)
     if approved_manifest_sha256 != plan['study_manifest']['sha256']:
         raise ValueError('approved manifest digest differs from validated manifest')
+    if file_record(plan['study_manifest']['requested']) != plan['study_manifest']:
+        raise ValueError('study manifest changed after preparation')
+    v3 = '--logger-diagnostic-profile' in plan['command']
+    available_before_request = _require_live_wire_memory() if v3 else None
     request = Path(plan['study_manifest']['requested']).parent / 'activation-request.json'
     if os.path.lexists(request):
         raise ValueError('activation request already exists: ' + str(request))
@@ -157,7 +208,7 @@ def execute_live_wire(manifest_path, *, approved_manifest_sha256,
             raise ValueError('activation request and executor output paths overlap')
     if resources_fn():
         raise ValueError('competing resources present')
-    _write_x(request, {
+    receipt = {
         'schema': 'live-wire-activation-request-v1',
         'approved_manifest_sha256': approved_manifest_sha256,
         'study_manifest': plan['study_manifest'],
@@ -165,7 +216,11 @@ def execute_live_wire(manifest_path, *, approved_manifest_sha256,
         'requested_wall_ns': time.time_ns(),
         'request_is_not_dispatch': True,
         'fusion_eligible': False,
-    })
+    }
+    if v3:
+        receipt['host_available_bytes_before_request'] = available_before_request
+        receipt['host_memory_threshold_bytes'] = LIVE_WIRE_HOST_MEMORY_MIN_BYTES
+    _write_x(request, receipt)
     return _execute_once(plan, resources_fn=resources_fn, runner=runner)
 
 
@@ -182,14 +237,20 @@ def _execute_once(plan, *, resources_fn, runner):
     for name in ("study_manifest", "executor"):
         if file_record(plan[name]["requested"]) != plan[name]:
             raise ValueError("executor plan input identity changed: " + name)
+    live_wire_v3 = False
     if plan["profile"] == "live-wire-study-offline-binding":
         expected = prepare_live_wire_execution(plan["study_manifest"]["requested"])
         if not _typed_equal(plan, expected):
             raise ValueError("executor plan differs from validated declaration")
+        live_wire_v3 = '--logger-diagnostic-profile' in expected['command']
+        if file_record(plan['study_manifest']['requested']) != plan['study_manifest']:
+            raise ValueError('study manifest changed after revalidation')
     resources_before = resources_fn()
     if resources_before:
         raise ValueError("competing resources present")
     _absent_outputs(plan["outputs"])
+    if live_wire_v3:
+        _require_live_wire_memory()
     dispatch = Path(plan["outputs"]["dispatch"])
     completion = Path(plan["outputs"]["completion"])
     output = Path(plan["outputs"]["output"])
