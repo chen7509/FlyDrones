@@ -21,5 +21,5 @@ source tree with a bounded, one-shot build and exact provenance evidence.
    the preflight refusal and continue independent work.
 6. [x] Audit result without upgrading firmware/live-source/training claims
    and seal evidence with member hashes/CRC.
-7. [ ] Commit, push only to `personal`, update PR65 and the continuing
+7. [x] Commit, push only to `personal`, update PR65 and the continuing
    automation.

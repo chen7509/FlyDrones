@@ -3,7 +3,7 @@
 **Goal:** Make the missing EKF2 fault/status evidence observable without
 granting capture or altering PX4. Follow the [design](../specs/2026-10-12-px4-estimator-status-journal-design.md).
 
-1. [ ] Audit the current one-shot status type build result and generated
+1. [x] Audit the current one-shot status type build result and generated
    artifacts. Keep failure and cleanup evidence. Do not continue from an
    unverified or still-running build.
 2. [ ] Recheck fixed PX4 message/topic generator, installed ROS Humble
