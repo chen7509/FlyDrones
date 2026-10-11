@@ -2,6 +2,7 @@
 
 This matches records; it does not attest their producers or approve flight/training.
 The pinned PositionCommand lacks a plan start timestamp and consumed-input IDs.
+An available odometry sample is not necessarily the start state of a replan.
 """
 
 from __future__ import annotations
@@ -23,8 +24,9 @@ _MAP_KEYS = frozenset({
 })
 _PLAN_KEYS = frozenset({
     "run_id", "session_id", "trajectory_id_raw", "trajectory_id_stored",
-    "start_time_ns", "odom_sequence", "odom_sha256", "map_revision", "map_source_sequence",
-    "created_sim_ns",
+    "start_time_ns", "available_odom_sequence", "available_odom_sha256",
+    "start_state_origin", "parent_trajectory_id", "map_revision",
+    "map_source_sequence", "created_sim_ns",
 })
 _COMMAND_KEYS = frozenset({
     "run_id", "session_id", "trajectory_id", "header_stamp_ns",
@@ -139,16 +141,26 @@ class EgoCausalJoin:
         if _integer(row["trajectory_id_stored"], "trajectory id", 1, INT_MAX) != traj_id:
             raise ValueError("trajectory id narrowed or aliased")
         _integer(row["start_time_ns"], "plan start time", maximum=MAX_TIMESTAMP_NS)
-        _digest(row["odom_sha256"], "odometry identity")
+        _digest(row["available_odom_sha256"], "odometry identity")
         created_ns = _integer(row["created_sim_ns"], "plan time", maximum=MAX_TIMESTAMP_NS)
-        odom_seq = _integer(row["odom_sequence"], "odometry sequence", 1)
+        odom_seq = _integer(row["available_odom_sequence"], "odometry sequence", 1)
         map_revision = _integer(row["map_revision"], "map revision", 1)
         map_seq = _integer(row["map_source_sequence"], "map source sequence", 1)
+        parent_id = _integer(row["parent_trajectory_id"], "parent trajectory id", 0, INT_MAX)
+        origin = row["start_state_origin"]
+        if origin == "odometry":
+            if parent_id != 0:
+                raise ValueError("invalid start state origin: odometry has parent trajectory")
+        elif origin == "previous_trajectory":
+            if parent_id == traj_id or parent_id not in self._plans:
+                raise ValueError("parent trajectory id missing or self-referential")
+        else:
+            raise ValueError("invalid start state origin")
         source = self._observations.get(odom_seq)
         applied = self._maps.get(map_revision)
         if source is None or applied is None:
             raise ValueError("observation or map revision missing")
-        if row["odom_sha256"] != source["odom_sha256"]:
+        if row["available_odom_sha256"] != source["odom_sha256"]:
             raise ValueError("odometry identity mismatch")
         if applied["source_sequence"] != map_seq or map_seq != odom_seq:
             raise ValueError("plan input sequence does not match applied map")
@@ -173,7 +185,7 @@ class EgoCausalJoin:
         plan = self._plans.get(traj_id)
         if plan is None:
             raise ValueError("matching trajectory id missing")
-        if plan["odom_sequence"] != seq or plan["map_source_sequence"] != seq:
+        if plan["available_odom_sequence"] != seq or plan["map_source_sequence"] != seq:
             raise ValueError("old plan is not for latest observation")
         source = self._observations[seq]
         return {
@@ -185,7 +197,9 @@ class EgoCausalJoin:
             "plan_start_time_ns": plan["start_time_ns"],
             "command_header_stamp_ns": row["header_stamp_ns"],
             "depth_sha256": source["depth_sha256"],
-            "odom_sha256": source["odom_sha256"],
+            "available_odom_sha256": source["odom_sha256"],
+            "start_state_origin": plan["start_state_origin"],
+            "parent_trajectory_id": plan["parent_trajectory_id"],
             "camera_pose_sha256": source["camera_pose_sha256"],
             "calibration_sha256": source["calibration_sha256"],
             "teacher_qualified": False,

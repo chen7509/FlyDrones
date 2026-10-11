@@ -23,6 +23,7 @@
 - Matching trajectory numbers across a reset must not join different sessions.
 - `int64 → int → uint32` trajectory IDs must be positive, at most target `INT_MAX`, exactly equal and unique within a session; reject narrowing/alias values.
 - A depth/pose callback without a completed occupancy update must not qualify a plan as having used that image.
+- Replanning may sample its start state from the previous trajectory; never present merely available odometry as that consumed start state. Record origin and prior trajectory lineage.
 - Nonzero yaw must expose the current world-velocity versus ROS `child_frame_id` semantics explicitly.
 - Malformed/stale source records, missing calibration or any truth-source input fail closed.
 

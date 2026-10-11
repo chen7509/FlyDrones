@@ -46,7 +46,9 @@ def plan(seq=1, trajectory_id=7, **changes):
         "trajectory_id_raw": trajectory_id,
         "trajectory_id_stored": trajectory_id,
         "start_time_ns": 900_000_000 + seq,
-        "odom_sequence": seq, "odom_sha256": ODOM, "map_revision": seq,
+        "available_odom_sequence": seq, "available_odom_sha256": ODOM,
+        "start_state_origin": "odometry", "parent_trajectory_id": 0,
+        "map_revision": seq,
         "map_source_sequence": seq,
         "created_sim_ns": seq * 100_000_000 + 2,
     }
@@ -167,9 +169,9 @@ def test_map_pose_and_plan_odometry_bytes_must_match_source():
         join.add_applied_map(map_applied(camera_pose_sha256="e" * 64))
     join.add_applied_map(map_applied())
     with pytest.raises(ValueError, match="odometry identity"):
-        join.add_plan(plan(odom_sha256="e" * 64))
+        join.add_plan(plan(available_odom_sha256="e" * 64))
     join.add_plan(plan())
-    assert join.match_command(command(), observation_sequence=1)["odom_sha256"] == ODOM
+    assert join.match_command(command(), observation_sequence=1)["available_odom_sha256"] == ODOM
 
 
 def test_failure_has_no_partial_state_and_registered_input_is_copied():
@@ -216,6 +218,30 @@ def test_plan_odom_sequence_must_match_map_applied_source_sequence():
     join.add_observation(observation(2))
     with pytest.raises(ValueError, match="input sequence"):
         join.add_plan(plan(2, trajectory_id=8, map_revision=1, map_source_sequence=1))
+
+
+def test_replan_from_prior_trajectory_records_lineage_without_claiming_odom_start():
+    join = ready_join()
+    join.add_observation(observation(2))
+    join.add_applied_map(map_applied(2))
+    join.add_plan(plan(2, trajectory_id=8, start_state_origin="previous_trajectory",
+                       parent_trajectory_id=7))
+    match = join.match_command(command(trajectory_id=8, seq=2), observation_sequence=2)
+    assert match["start_state_origin"] == "previous_trajectory"
+    assert match["parent_trajectory_id"] == 7
+    assert match["teacher_qualified"] is False
+
+
+def test_replan_cannot_claim_missing_parent_or_odometry_with_parent():
+    join = ready_join()
+    join.add_observation(observation(2))
+    join.add_applied_map(map_applied(2))
+    with pytest.raises(ValueError, match="parent trajectory"):
+        join.add_plan(plan(2, trajectory_id=8, start_state_origin="previous_trajectory",
+                           parent_trajectory_id=6))
+    with pytest.raises(ValueError, match="start state origin"):
+        join.add_plan(plan(2, trajectory_id=8, start_state_origin="odometry",
+                           parent_trajectory_id=7))
 
 
 def test_oversized_numeric_command_and_timestamp_fail_closed_as_value_errors():
