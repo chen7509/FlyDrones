@@ -50,6 +50,33 @@ def test_agent_requires_declared_wire_and_binds_exact_files(tmp_path, monkeypatc
     assert 'agent' not in contract.execution_contract(selected)
 
 
+def test_diagnostic_logger_requires_owned_agent_and_is_declared(tmp_path, monkeypatch):
+    with pytest.raises(SystemExit):
+        args(tmp_path, '--logger-diagnostic-profile', 'source-diagnostic-v1')
+    selected = args(tmp_path)
+    selected.logger_diagnostic_profile = 'source-diagnostic-v1'
+    selected.agent_runtime_config = tmp_path / 'agent.json'
+    selected.wire_config = tmp_path / 'wire.json'
+    selected.runtime_binding = tmp_path / 'binding.json'
+    selected.execution_contract = tmp_path / 'execution.json'
+    monkeypatch.setattr(contract, 'wire_configuration_record',
+                        lambda path: {'path': str(path), 'sha256': 'wire'})
+    from tools.benchmark import agent_capture_runtime
+
+    monkeypatch.setattr(agent_capture_runtime, 'agent_runtime_record',
+                        lambda path: {'declaration': str(path), 'selected_paths': ['/fixed/agent'],
+                                      'configuration': {'port': 18888}})
+    declaration = contract.execution_contract(selected)
+    assert declaration['logger_diagnostic']['topics_sha256'] == (
+        '0bb9a3d9b57c6a73c73e8fee75569b9e690857654c4631b6f6cd5b6654328994')
+    assert declaration['logger_diagnostic']['runtime_topic_selection_verified'] is False
+    assert contract.worker_options(selected)[-2:] == [
+        '--logger-diagnostic-profile', 'source-diagnostic-v1']
+    selected.agent_runtime_config = None
+    with pytest.raises(ValueError, match='Agent'):
+        contract.execution_contract(selected)
+
+
 def test_depth_payload_opt_in_is_declared_and_forwarded_only_with_bound_fanout(tmp_path):
     with pytest.raises(SystemExit):
         args(tmp_path, '--record-depth-payload')

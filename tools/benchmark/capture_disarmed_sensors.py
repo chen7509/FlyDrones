@@ -198,6 +198,8 @@ def parse_capture_args(argv=None):
                         help="Declared single-reader lifecycle and explicit remote clock mapping")
     parser.add_argument("--agent-runtime-config", type=Path,
                         help="Opt-in fixed Agent binary/libraries for an unarmed wire capture")
+    parser.add_argument("--logger-diagnostic-profile", choices=["source-diagnostic-v1"],
+                        help="Opt-in changed-load PX4 odometry logger for a new diagnostic study")
     parser.add_argument("--shadow-binary", type=Path)
     parser.add_argument("--shadow-config", type=Path)
     parser.add_argument("--reference-module", type=Path)
@@ -236,6 +238,12 @@ def parse_capture_args(argv=None):
         or args.reference_fault_profile
     ):
         parser.error("Agent requires a declared ordinary wire capture")
+    if args.logger_diagnostic_profile and (
+        not args.agent_runtime_config or not args.wire_config
+        or not args.execution_contract or not args.runtime_binding
+        or args.reference_fault_profile
+    ):
+        parser.error("diagnostic logger requires declared owned Agent wire capture")
     if args.simulation_seed is not None and not 1 <= args.simulation_seed < 2**32:
         parser.error("simulation seed must be in [1, 2^32)")
     if args.runtime_binding and not args.execution_contract:
@@ -440,6 +448,23 @@ def retain_supervisor_ulogs(summary, runtime, output, *, collector=collect_ulogs
         return dict(px4_ulogs=collector(runtime, output), existing_manifest_verified=False)
     except Exception as exc:
         return dict(errors=[repr(exc)], runtime_retained=str(runtime))
+
+
+def prepare_capture_logger(contract, runtime, result, journal):
+    """Stage the declared diagnostic file before PX4; recheck after PX4 stops."""
+    record = contract.get("logger_diagnostic")
+    if record is None:
+        return None
+    from tools.benchmark.px4_logger_runtime import stage_profile, verify_profile
+
+    staged = stage_profile(record, runtime)
+    result["logger_diagnostic"] = staged
+    journal.cleanup(
+        "diagnostic logger post",
+        lambda: result.update(logger_diagnostic_post=verify_profile(record, staged, runtime)),
+        priority=105,
+    )
+    return staged
 
 
 def run_capture_runtime(*, journal, output, result, errors, fixture, post_update,
@@ -672,6 +697,8 @@ def main():
         PX4_GZ_MODEL_NAME="x500_benchmark_8",
         PX4_UXRCE_DDS_PORT="18888",
     )
+    if contract.get("logger_diagnostic") is not None:
+        env.update(contract["logger_diagnostic"]["px4_environment_override"])
     with (output / "launch.json").open("x") as f:
         json.dump(
             {
@@ -689,6 +716,8 @@ def main():
                 "uxrce_port": 18888,
                 "uxrce_agent_requested": agent_record is not None,
                 "uxrce_agent_launched": None if agent_record is not None else False,
+                "logger_diagnostic_requested": (contract.get("logger_diagnostic") or {}).get("profile_id"),
+                "logger_runtime_selection_verified": False,
             },
             f,
             indent=2,
@@ -715,6 +744,7 @@ def main():
     started_ns = time.monotonic_ns()
     started = started_ns / 1_000_000_000
     with CaptureJournal(output, result) as journal:
+        prepare_capture_logger(contract, runtime, result, journal)
         binding = None
         if binding_doc is not None:
             from tools.benchmark.runtime_resource_binding import GENERATED_NAMES, attach_binding, estimator_inputs
@@ -736,6 +766,8 @@ def main():
                 required.append(args.wire_config.resolve(strict=True))
             if agent_record is not None:
                 required.extend(Path(path) for path in agent_record['selected_paths'])
+            if contract.get("logger_diagnostic") is not None:
+                required.extend(Path(path) for path in contract["logger_diagnostic"]["source_paths"])
             required += [Path(module.__file__).resolve() for module in tuple(sys.modules.values())
                          if getattr(module, "__file__", None) and Path(module.__file__).resolve().is_relative_to(ROOT)]
             binding.start({name: runtime / name if name == "gz_env.sh" else output / name for name in GENERATED_NAMES},

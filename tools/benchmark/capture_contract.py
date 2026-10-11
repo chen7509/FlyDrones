@@ -159,6 +159,15 @@ def execution_contract(args, launch_environment=None):
         from tools.benchmark.agent_capture_runtime import agent_runtime_record
 
         result['agent'] = agent_runtime_record(agent_config)
+    logger_diagnostic = getattr(args, 'logger_diagnostic_profile', None)
+    if logger_diagnostic is not None:
+        if (logger_diagnostic != 'source-diagnostic-v1' or agent_config is None
+                or wire_config is None or not args.execution_contract
+                or not args.runtime_binding or fault):
+            raise ValueError('diagnostic logger requires declared owned Agent wire capture')
+        from tools.benchmark.px4_logger_runtime import PROFILE_RELATIVE, profile_record
+
+        result['logger_diagnostic'] = profile_record(Path(__file__).resolve().parents[2] / PROFILE_RELATIVE)
     if getattr(args, 'record_depth_payload', False):
         result['record_depth_payload'] = True
     return result
@@ -202,7 +211,7 @@ def worker_options(args):
     for field in PATH_FIELDS + PROFILE_FIELDS + SCALAR_FIELDS + (
         MOTION_INTENT_FIELD, HEALTH_PROFILE_FIELD, HEALTH_FAULT_FIELD,
         'reference_sha256', 'execution_contract', 'runtime_binding', POLICY_FIELD,
-        'wire_config', 'agent_runtime_config',
+        'wire_config', 'agent_runtime_config', 'logger_diagnostic_profile',
     ):
         value = getattr(args, field, None)
         if value is not None:
