@@ -56,3 +56,7 @@ src/flydrones/runtime.py -text
 src/flydrones/safety.py -text
 # Prospective PX4 logger diagnostic is matched by an exact LF-byte hash.
 config/px4/source-diagnostic-v1/logger_topics.txt text eol=lf
+# Preserve exact pinned source bytes, including existing whitespace/line endings.
+tests/fixtures/px4_status_transport/*.msg -text -whitespace
+tests/fixtures/px4_status_transport/*.yaml text eol=lf -whitespace
+configs/px4/estimator-status-dds-candidate.yaml text eol=lf -whitespace
