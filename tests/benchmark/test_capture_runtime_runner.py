@@ -77,6 +77,35 @@ class RuntimeRunnerTests(unittest.TestCase):
         self.assertEqual(self.events, ['spawn', 'bind-process', 'register', 'finalize', 'postfinalize',
                                       'reader-start', 'postfirststep', 'wire-finish', 'terminate', ('wait', 10)])
 
+    def test_opt_in_agent_starts_before_px4_and_stops_after_px4(self):
+        self.binding.required_owned = ['px4', 'agent']
+        self.binding.observe_owned = lambda role, phase: self.events.append((role, phase))
+        self.args['agent_record'] = {'configuration': {'binary': '/fixed/agent'}}
+
+        def agent_factory(record, journal, output, *, before_stop, on_stop):
+            self.assertIs(record, self.args['agent_record'])
+            self.events.append('agent-start')
+            process = SimpleNamespace(pid=654)
+            agent = SimpleNamespace(process=process, check=lambda: True)
+
+            def stop_agent():
+                before_stop(agent)
+                self.events.append('agent-stop')
+                on_stop({'cleanup': {'graceful_group_cleanup_verified': True},
+                         'port_released': True, 'errors': [], 'typed_dds_provenance': False})
+
+            journal.cleanup('owned Agent', stop_agent, priority=30)
+            return agent
+
+        self.args['agent_factory'] = agent_factory
+        self.execute()
+        self.assertEqual(self.result['status'], 'capture_completed')
+        self.assertLess(self.events.index('agent-start'), self.events.index('spawn'))
+        self.assertLess(self.events.index('terminate'), self.events.index('agent-stop'))
+        self.assertIn(('agent', 'ready'), self.events)
+        self.assertIn(('agent', 'prestop'), self.events)
+        self.assertFalse(self.result['agent']['typed_dds_provenance'])
+
     def test_process_mapping_failure_still_stops_owned_process(self):
         self.binding.register_owned = lambda *a: (_ for _ in ()).throw(ValueError('mapping refused'))
         self.execute()

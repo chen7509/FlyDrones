@@ -152,6 +152,13 @@ def execution_contract(args, launch_environment=None):
         if not args.execution_contract or not args.runtime_binding or fault:
             raise ValueError('wire mode requires a declared bound ordinary capture')
         result['wire'] = wire_configuration_record(wire_config)
+    agent_config = getattr(args, 'agent_runtime_config', None)
+    if agent_config is not None:
+        if wire_config is None or not args.execution_contract or not args.runtime_binding or fault:
+            raise ValueError('Agent requires a declared unarmed wire capture')
+        from tools.benchmark.agent_capture_runtime import agent_runtime_record
+
+        result['agent'] = agent_runtime_record(agent_config)
     if getattr(args, 'record_depth_payload', False):
         result['record_depth_payload'] = True
     return result
@@ -194,11 +201,13 @@ def worker_options(args):
     result = []
     for field in PATH_FIELDS + PROFILE_FIELDS + SCALAR_FIELDS + (
         MOTION_INTENT_FIELD, HEALTH_PROFILE_FIELD, HEALTH_FAULT_FIELD,
-        'reference_sha256', 'execution_contract', 'runtime_binding', POLICY_FIELD, 'wire_config',
+        'reference_sha256', 'execution_contract', 'runtime_binding', POLICY_FIELD,
+        'wire_config', 'agent_runtime_config',
     ):
         value = getattr(args, field, None)
         if value is not None:
-            if field in PATH_FIELDS + ('execution_contract', 'runtime_binding', POLICY_FIELD, 'wire_config'):
+            if field in PATH_FIELDS + ('execution_contract', 'runtime_binding', POLICY_FIELD,
+                                      'wire_config', 'agent_runtime_config'):
                 value = str(Path(value).resolve())
             result += ['--' + field.replace('_', '-'), str(value)]
     if getattr(args, 'startup_preflight', False):

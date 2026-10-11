@@ -28,6 +28,28 @@ def test_declared_ordinary_limits_and_workload(tmp_path):
     assert 'record_depth_payload' not in selected
 
 
+def test_agent_requires_declared_wire_and_binds_exact_files(tmp_path, monkeypatch):
+    with pytest.raises(SystemExit):
+        args(tmp_path, '--agent-runtime-config', str(tmp_path / 'agent.json'))
+    selected = args(tmp_path)
+    selected.agent_runtime_config = tmp_path / 'agent.json'
+    selected.wire_config = tmp_path / 'wire.json'
+    selected.runtime_binding = tmp_path / 'binding.json'
+    selected.execution_contract = tmp_path / 'execution.json'
+    monkeypatch.setattr(contract, 'wire_configuration_record',
+                        lambda path: {'path': str(path), 'sha256': 'wire'})
+    from tools.benchmark import agent_capture_runtime
+    monkeypatch.setattr(agent_capture_runtime, 'agent_runtime_record',
+                        lambda path: {'declaration': str(path), 'selected_paths': ['/fixed/agent'],
+                                      'configuration': {'port': 18888}})
+    declaration = contract.execution_contract(selected)
+    assert declaration['agent']['selected_paths'] == ['/fixed/agent']
+    assert contract.worker_options(selected)[-2:] == [
+        '--agent-runtime-config', str(selected.agent_runtime_config.resolve())]
+    selected.agent_runtime_config = None
+    assert 'agent' not in contract.execution_contract(selected)
+
+
 def test_depth_payload_opt_in_is_declared_and_forwarded_only_with_bound_fanout(tmp_path):
     with pytest.raises(SystemExit):
         args(tmp_path, '--record-depth-payload')

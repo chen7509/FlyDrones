@@ -47,7 +47,8 @@ def active_resources():
             argv = (path / "cmdline").read_bytes().replace(b"\0", b" ").decode(errors="replace")
         except OSError:
             continue
-        if name in {"px4", "gz", "gzserver", "gzclient", "state_probe", "fast_probe", "online_probe"} or (
+        if name in {"px4", "gz", "gzserver", "gzclient", "state_probe", "fast_probe",
+                    "online_probe", "MicroXRCEAgent"} or (
             name.startswith("python")
             and any(s in argv for s in ["pytest", "run_episode.py", "train_", "capture_disarmed_sensors.py"])
         ):
@@ -195,6 +196,8 @@ def parse_capture_args(argv=None):
                         help="Opt-in exact depth protobuf sidecar for future nontruth EGO capture")
     parser.add_argument("--wire-config", type=Path,
                         help="Declared single-reader lifecycle and explicit remote clock mapping")
+    parser.add_argument("--agent-runtime-config", type=Path,
+                        help="Opt-in fixed Agent binary/libraries for an unarmed wire capture")
     parser.add_argument("--shadow-binary", type=Path)
     parser.add_argument("--shadow-config", type=Path)
     parser.add_argument("--reference-module", type=Path)
@@ -228,6 +231,11 @@ def parse_capture_args(argv=None):
         or args.reference_fault_profile
     ):
         parser.error("wire lifecycle requires declared runtime binding and estimator-aware source fan-out")
+    if args.agent_runtime_config and (
+        not args.wire_config or not args.execution_contract or not args.runtime_binding
+        or args.reference_fault_profile
+    ):
+        parser.error("Agent requires a declared ordinary wire capture")
     if args.simulation_seed is not None and not 1 <= args.simulation_seed < 2**32:
         parser.error("simulation seed must be in [1, 2^32)")
     if args.runtime_binding and not args.execution_contract:
@@ -437,8 +445,8 @@ def retain_supervisor_ulogs(summary, runtime, output, *, collector=collect_ulogs
 def run_capture_runtime(*, journal, output, result, errors, fixture, post_update,
                         wire_owner, source_guard, binding, owned_ready, owned_processes,
                         read_heartbeats, stop, binary, build, runtime, env, clock, writer,
-                        shadow, motion, contract, started, spawn=None, thread_factory=None,
-                        monotonic=None):
+                        shadow, motion, contract, started, agent_record=None,
+                        agent_factory=None, spawn=None, thread_factory=None, monotonic=None):
     """Production stepping/ownership path; external services may be injected.
 
     Preparation and sensor/native construction remain in main. This runner uses
@@ -477,6 +485,32 @@ def run_capture_runtime(*, journal, output, result, errors, fixture, post_update
         heartbeat_thread = thread_factory(target=read_heartbeats, daemon=True)
         heartbeat_thread.start()
         journal.cleanup("heartbeat", lambda: (stop.set(), heartbeat_thread.join(timeout=3)), priority=40)
+    agent = None
+    if agent_record is not None:
+        if wire_owner is None or (binding and 'agent' not in binding.required_owned):
+            raise ValueError('Agent requires bound wire capture and declared owned role')
+        if agent_factory is None:
+            from tools.benchmark.agent_capture_runtime import launch_capture_agent
+
+            agent_factory = launch_capture_agent
+
+        def agent_before_stop(instance):
+            if binding and owned_ready.get('agent'):
+                binding.observe_owned('agent', 'prestop')
+
+        def agent_stopped(summary):
+            result['agent'] = summary
+            if (not summary['cleanup']['graceful_group_cleanup_verified']
+                    or not summary['port_released'] or summary['errors']):
+                errors.append('owned Agent cleanup unqualified')
+
+        agent = agent_factory(agent_record, journal, output,
+                              before_stop=agent_before_stop, on_stop=agent_stopped)
+        if binding:
+            binding.register_owned('agent', agent.process, agent_record['configuration']['binary'])
+            owned_processes['agent'] = agent.process
+            binding.observe_owned('agent', 'ready')
+            owned_ready['agent'] = True
     log_path = output / "px4.log"
     log = log_path.open("x")
     journal.cleanup("log close", log.close, priority=70)
@@ -530,6 +564,8 @@ def run_capture_runtime(*, journal, output, result, errors, fixture, post_update
             wire_owner.driver.start()
     first_step_observed = False
     while clock["sim_ns"] < contract["simulation_duration_ns"]:
+        if agent is not None:
+            agent.check()
         if errors or writer.error:
             raise RuntimeError("capture callback/writer failure: " + str(errors or writer.error))
         if shadow and shadow.failure:
@@ -560,6 +596,7 @@ def main():
         binding_doc = validate_binding(read_declaration(args.runtime_binding))
     launch_environment = derive_launch_environment(binding_doc) if binding_doc and binding_doc["schema"] == "capture-resource-binding-v3" else None
     contract = validate_declaration(args, launch_environment)
+    agent_record = contract.get('agent')
     shadow_args = worker_options(args)
     if not args.worker:
         supervisor_options = {}
@@ -650,7 +687,8 @@ def main():
                 "command_policy": ("owned TIMESYNC interval query/apply/restore; no arm/offboard/setpoint/ODOMETRY"
                                    if args.wire_config else "read-only heartbeat; no arm/offboard/setpoint/ODOMETRY"),
                 "uxrce_port": 18888,
-                "uxrce_agent_launched": False,
+                "uxrce_agent_requested": agent_record is not None,
+                "uxrce_agent_launched": None if agent_record is not None else False,
             },
             f,
             indent=2,
@@ -696,6 +734,8 @@ def main():
             required += estimator_inputs(args.shadow_binary, args.shadow_config, args.reference_module)
             if args.wire_config:
                 required.append(args.wire_config.resolve(strict=True))
+            if agent_record is not None:
+                required.extend(Path(path) for path in agent_record['selected_paths'])
             required += [Path(module.__file__).resolve() for module in tuple(sys.modules.values())
                          if getattr(module, "__file__", None) and Path(module.__file__).resolve().is_relative_to(ROOT)]
             binding.start({name: runtime / name if name == "gz_env.sh" else output / name for name in GENERATED_NAMES},
@@ -917,6 +957,9 @@ def main():
         def wire_source_guard():
             if errors or writer.error or (shadow and shadow.failure):
                 raise ValueError('capture wire source failure: ' + str(errors or writer.error or shadow.failure))
+            agent_process = owned_processes.get('agent')
+            if agent_process is not None and agent_process.poll() is not None:
+                raise ValueError('owned Agent exited before wire observation')
             if source_guard:
                 source_guard.check(time.monotonic_ns())
         receiver, wire_owner = prepare_capture_receiver(
@@ -1104,6 +1147,7 @@ def main():
             read_heartbeats=read_heartbeats, stop=stop, binary=binary, build=build,
             runtime=runtime, env=env, clock=clock, writer=writer, shadow=shadow,
             motion=motion, contract=contract, started=started,
+            agent_record=agent_record,
         )
     print(json.dumps({k: v for k, v in result.items() if k != "writer"}, indent=2))
     return 0 if result["status"] == "capture_completed" else 2
