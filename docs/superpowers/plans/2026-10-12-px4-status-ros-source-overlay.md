@@ -17,6 +17,6 @@ the pinned PX4 status topic without modifying or relabeling the old ROS tree.
 4. [x] Create one real exclusive derived source tree, verify its 260-file
    manifest and exact replacement, record source-only limitations, changed
    Ruff/diff, independent review and sealed evidence with CRC/member hashes.
-5. [ ] Commit and push only to `personal`, update PR65 and the continuing
+5. [x] Commit and push only to `personal`, update PR65 and the continuing
    automation. A later build and typed status subscriber require new bounded
    execution evidence, not a relabel of this source check.
