@@ -26,7 +26,7 @@ Forbidden-option failure during enable must latch; post-receive conflict must re
 
 - [x] Allow only exact two internal profile types in openvins_datagram_receive.py; use existing raw retention and clock checks; integration RED→GREEN.
 - [x] Run new/NS/legacy/segmented/parity/session adjacent tests, changed Ruff/diff; inspect all results.
-- [ ] Independent read-only code/ABI review, fix counterexamples before further activity; seal report/evidence and commit/push personal/PR65/automation.
+- [x] Independent code/ABI review and coverage repair; no remaining findings. fb77f53 pushed only personal; PR65 and active automation updated. 57-member ZIP SHA256 a6465dfc0a74a65031c5847208706b6dd3c316410e8087249714924e4e90b537, all hashes/CRC verified. Sealed plan copy retains its pre-publication checkbox state; this bookkeeping does not rerun capability.
 
 ### Task 3: Later prospective real queue trial
 
