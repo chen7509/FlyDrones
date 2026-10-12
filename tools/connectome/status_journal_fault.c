@@ -33,6 +33,8 @@ ssize_t write(int fd, const void *buffer, size_t count) {
     }
     if (stage == 1) {
       atomic_store(&short_write_stage, 2);
+      static const char note[] = "flydrones injected write EIO\n";
+      real_write(2, note, sizeof(note) - 1);
       errno = EIO;
       return -1;
     }
@@ -44,6 +46,9 @@ int fsync(int fd) {
   int (*real_fsync)(int) = dlsym(RTLD_NEXT, "fsync");
   const char *mode = getenv("FAULT_MODE");
   if (mode != NULL && strcmp(mode, "fsync_eio") == 0 && selected_fd(fd)) {
+    ssize_t (*real_write)(int, const void *, size_t) = dlsym(RTLD_NEXT, "write");
+    static const char note[] = "flydrones injected fsync EIO\n";
+    real_write(2, note, sizeof(note) - 1);
     errno = EIO;
     return -1;
   }
@@ -56,6 +61,9 @@ int close(int fd) {
   if (mode != NULL && strcmp(mode, "close_eio") == 0 && selected_fd(fd)) {
     int result = real_close(fd);
     if (result == 0) {
+      ssize_t (*real_write)(int, const void *, size_t) = dlsym(RTLD_NEXT, "write");
+      static const char note[] = "flydrones injected close EIO\n";
+      real_write(2, note, sizeof(note) - 1);
       errno = EIO;
       return -1;
     }
