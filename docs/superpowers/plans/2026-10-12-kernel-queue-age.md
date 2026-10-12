@@ -15,4 +15,6 @@
 - [x] RED tests for interval math/queue backlog and refused bindings in tests/benchmark/test_kernel_queue_age.py; implement tools/benchmark/kernel_queue_age.py.
 - [x] RED runtime receiver fake integration for oldqueuedpacket/finaljournal/clockfault/rawretention/EAGAIN/reentry; modify tools/benchmark/openvins_datagram_receive.py with opt-in compatibility and existing eventbudget.
 - [x] Focused/affected regression, changedRuff/diff/sourcebefore-after; independent review/corrections. Verify frozen8 saved observations via declaredretrospective interval math, no fabricatedprebind or newpacket.
-- [ ] Report verified/onlyimplemented/untested/failed and source/clocklimits; seal allfailedlogs/config/versions/hash/CRC; commit/pushpersonal/PR65/automation withnext dependency. Fullgoalactive, no completeclaim.
+- [x] Report verified/onlyimplemented/untested/failed and source/clocklimits; seal allfailedlogs/config/versions/hash/CRC; commit/pushpersonal/PR65/automation withnext dependency. Fullgoalactive, no completeclaim.
+
+Publication: implementation/evidence commit8d5d2ce pushed onlypersonal; PR65 description and ACTIVE heartbeat updated after independent final51-member archive review. The immutable archive intentionally retains the pre-publication unchecked plan; this working plan records subsequent completion without rewriting evidence. Windows188/3whole-module skips plus WSL75fixture/codec checks are separate scopes. No network/physics/model qualification granted.
