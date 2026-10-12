@@ -1,5 +1,7 @@
 """Synthetic bridge/planner/server joins; never a live teacher qualification."""
 
+import hashlib
+import json
 import re
 from copy import deepcopy
 from pathlib import Path
@@ -80,6 +82,112 @@ def bundle():
 
 def reconcile(data):
     return reconcile_diagnostics(*data, run_id=RUN, session_id=SESSION)
+
+
+def cdr_bundle(tmp_path, *, duplicate_depth=False):
+    from tools.benchmark.ego_bridge_cdr_journal import BridgeCDRJournal
+
+    payloads = {"odometry": b"odom-cdr", "depth": b"depth-cdr",
+                "camera_pose": b"pose-cdr", "position_command": b"command-cdr"}
+    replacement = {original: hashlib.sha256(payloads[kind]).hexdigest()
+                   for kind, original in (("odometry", ODOM_DIGEST), ("depth", D),
+                                          ("camera_pose", P), ("position_command", C))}
+    _, planner, server = bundle()
+    for row in planner + server:
+        for key, value in row.items():
+            if value in replacement:
+                row[key] = replacement[value]
+    times = iter([1, 2, 10, 11, 12, 13, 14, 15,
+                  *([16, 17] if duplicate_depth else []), 90, 91, 92])
+    path = tmp_path / "bridge.jsonl"
+    journal = BridgeCDRJournal(path.open("x", encoding="utf-8"),
+                               run_id=RUN, session_id=SESSION, pid=10,
+                               serializer=lambda message: message,
+                               clock=lambda: next(times))
+    journal.start_reset(1)
+    journal.publish("odometry", payloads["odometry"], 1000, lambda raw: None)
+    journal.publish("depth", payloads["depth"], 1000, lambda raw: None)
+    journal.publish("camera_pose", payloads["camera_pose"], 1000, lambda raw: None)
+    if duplicate_depth:
+        journal.publish("depth", payloads["depth"], 1000, lambda raw: None)
+    sequence = journal.receive_command(payloads["position_command"])
+    journal.command_decoded(sequence, stamp_ns=9000, trajectory_id=7, ready=True)
+    journal.close()
+    rows = [json.loads(line) for line in path.read_text(encoding="utf-8").splitlines()]
+    return rows, planner, server
+
+
+def test_real_cdr_journal_projects_only_unattested_identity(tmp_path):
+    from tools.benchmark.ego_cdr_diagnostic_join import reconcile_cdr_diagnostics
+
+    match = reconcile_cdr_diagnostics(*cdr_bundle(tmp_path),
+                                      run_id=RUN, session_id=SESSION)
+    assert match["digest_identity_candidate"] is True
+    assert match["identity_match"] is False
+    assert match["cdr_journal_internal_complete"] is True
+    assert match["cdr_payload_fields_verified"] is False
+    assert match["stamp_binding_verified"] is False
+    assert match["runtime_source_verified"] is False
+    assert match["teacher_qualified"] is False
+
+
+def test_public_reconciler_cannot_skip_cdr_audit_mode():
+    with pytest.raises(TypeError, match="source_mode"):
+        reconcile_diagnostics(*bundle(), run_id=RUN, session_id=SESSION,
+                              source_mode="unattested_cdr")
+
+
+def test_cdr_join_rejects_ambiguous_repeated_depth(tmp_path):
+    from tools.benchmark.ego_cdr_diagnostic_join import reconcile_cdr_diagnostics
+
+    with pytest.raises(ValueError, match="ambiguous"):
+        reconcile_cdr_diagnostics(*cdr_bundle(tmp_path, duplicate_depth=True),
+                                  run_id=RUN, session_id=SESSION)
+
+
+def test_cdr_join_rejects_missing_publish_return_and_relabel(tmp_path):
+    from tools.benchmark.ego_cdr_diagnostic_join import reconcile_cdr_diagnostics
+
+    rows, planner, server = cdr_bundle(tmp_path)
+    missing_return = [row for row in rows if not (
+        row["phase"] == "publish_returned" and row["kind"] == "depth")]
+    with pytest.raises(ValueError, match="sequence|publish"):
+        reconcile_cdr_diagnostics(missing_return, planner, server,
+                                  run_id=RUN, session_id=SESSION)
+    rows[3]["source"] = "px4_ekf2"
+    with pytest.raises(ValueError, match="source"):
+        reconcile_cdr_diagnostics(rows, planner, server,
+                                  run_id=RUN, session_id=SESSION)
+
+
+@pytest.mark.parametrize("field,value", [("ready", False), ("trajectory_id", 8),
+                                          ("sample_ns", 9001)])
+def test_cdr_join_rejects_unbound_command_decode(tmp_path, field, value):
+    from tools.benchmark.ego_cdr_diagnostic_join import reconcile_cdr_diagnostics
+
+    rows, planner, server = cdr_bundle(tmp_path)
+    decoded = next(row for row in rows if row["phase"] == "command_decoded")
+    decoded[field] = value
+    with pytest.raises(ValueError, match="command"):
+        reconcile_cdr_diagnostics(rows, planner, server,
+                                  run_id=RUN, session_id=SESSION)
+
+
+def test_cdr_join_rejects_changed_bytes_and_cross_session(tmp_path):
+    from tools.benchmark.ego_cdr_diagnostic_join import reconcile_cdr_diagnostics
+
+    rows, planner, server = cdr_bundle(tmp_path)
+    intent = next(row for row in rows if row["phase"] == "publish_intent")
+    intent["message_cdr_b64"] = "eA=="
+    with pytest.raises(ValueError, match="digest|length"):
+        reconcile_cdr_diagnostics(rows, planner, server,
+                                  run_id=RUN, session_id=SESSION)
+    second = tmp_path / "second"
+    second.mkdir()
+    rows, planner, server = cdr_bundle(second)
+    with pytest.raises(ValueError, match="session"):
+        reconcile_cdr_diagnostics(rows, planner, server,
+                                  run_id=RUN, session_id="other-session")
 
 
 def test_exact_causal_chain_is_only_an_unqualified_identity_candidate():

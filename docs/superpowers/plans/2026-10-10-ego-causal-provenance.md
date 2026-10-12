@@ -45,6 +45,7 @@
 - [ ] Bind exact serialized bridge-published image/pose/odometry and bridge-received command bytes to planner/server records by hashes, stamps, session and process identity; reject independent sequence aliasing, cloud writes and unbound extrinsics. Preserve the conservative equal-sequence offline join until a separate history-aware contract is proven.
 - [x] Add a pure offline, fail-closed candidate reconciler and synthetic multi-plan/fault matrix for the proposed bridge/planner/server journal schema. Keep `runtime_source_verified` and `teacher_qualified` false until a real producer and patched ROS runtime are proven.
 - [x] Add opt-in exact CDR bridge journal using Humble `serialize_message`, `publish(bytes)` and `raw=True` command receipt; audit retained bytes and intent/return pairs, and test fail-closed I/O, serialization, publication, reset, and concurrency behavior without a ROS/PX4/Gazebo run. The source remains explicitly unattested.
+- [x] Offline only: audit the complete CDR journal and match its exact message digests, sample times and session to the pinned planner/server diagnostic schema without relabeling the socket as PX4 or granting teacher eligibility. The real patched ROS producer and source-attested capture remain open.
 - [ ] Build and test in a resource-controlled development environment; compare patched and unpatched plans under identical input before promoting the patched image.
 
 ## Task 3: Owned single-drone development capture

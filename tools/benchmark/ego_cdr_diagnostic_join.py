@@ -1,0 +1,68 @@
+"""Join complete bridge CDR records to pinned EGO diagnostic identities.
+
+This is an offline byte-identity check. The socket source, DDS delivery,
+planner binary, and teacher label remain unqualified.
+"""
+
+from __future__ import annotations
+
+from flydrones.benchmark.ego_diagnostic_reconcile import _reconcile_diagnostics
+from tools.benchmark.ego_bridge_cdr_audit import audit_bridge_cdr_journal
+
+_INPUT_KINDS = frozenset({"odometry", "depth", "camera_pose"})
+
+
+def reconcile_cdr_diagnostics(bridge_rows: list[dict], planner_rows: list[dict],
+                              server_rows: list[dict], *, run_id: str,
+                              session_id: str) -> dict:
+    """Match exact recorded CDR digests while retaining unknown source status."""
+    audit = audit_bridge_cdr_journal(bridge_rows)
+    if audit["run_id"] != run_id or audit["session_id"] != session_id:
+        raise ValueError("bridge run or session mismatch")
+
+    decoded = {row["message_sequence"]: row for row in bridge_rows
+               if row["phase"] == "command_decoded"}
+    projected = []
+    command_metadata = {}
+    for row in bridge_rows:
+        phase, kind = row["phase"], row["kind"]
+        if phase == "publish_intent" and kind in _INPUT_KINDS:
+            sample_ns = row["sample_ns"]
+        elif phase == "command_received":
+            metadata = decoded[row["message_sequence"]]
+            sample_ns = metadata["sample_ns"]
+            command_metadata[(row["message_sha256"], sample_ns)] = metadata
+        else:
+            continue
+        projected.append({
+            "schema": 1, "run_id": run_id, "session": session_id,
+            "pid": row["pid"], "sequence": len(projected) + 1,
+            "kind": kind, "message_sha256": row["message_sha256"],
+            "sample_ns": sample_ns, "event_steady_ns": row["event_steady_ns"],
+            "source": row["source"], "source_profile_sha256": None,
+            "truth_used": "unknown",
+        })
+
+    match = _reconcile_diagnostics(projected, planner_rows, server_rows,
+                                   run_id=run_id, session_id=session_id,
+                                   source_mode="unattested_cdr")
+    selected_commands = [row for row in server_rows
+                         if row.get("event") == "server_command_published"
+                         and row.get("command_sha256") == match["command_sha256"]]
+    if len(selected_commands) != 1:
+        raise ValueError("server command identity ambiguous")
+    command_stamp = int(selected_commands[0]["command_stamp_ns"])
+    metadata = command_metadata.get((match["command_sha256"], command_stamp))
+    if (metadata is None or metadata["ready"] is not True
+            or metadata["trajectory_id"] != match["trajectory_id"]):
+        raise ValueError("bridge command decode identity or readiness mismatch")
+    match["digest_identity_candidate"] = match["identity_match"]
+    match["recorded_order_candidate"] = match["current_observation_match"]
+    match["identity_match"] = False
+    match["current_observation_match"] = False
+    match["cdr_journal_internal_complete"] = audit["journal_complete"]
+    match["cdr_payload_fields_verified"] = False
+    match["stamp_binding_verified"] = False
+    match["source_attested"] = False
+    match["dds_delivery_verified"] = False
+    return match

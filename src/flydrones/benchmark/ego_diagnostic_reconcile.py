@@ -140,7 +140,8 @@ def _journal(rows: object, *, session_id: str, events: frozenset[str]) -> list[d
     return rows
 
 
-def _bridge(rows: object, *, run_id: str, session_id: str) -> list[dict]:
+def _bridge(rows: object, *, run_id: str, session_id: str,
+            source_mode: str) -> list[dict]:
     if type(rows) is not list or not rows:
         raise ValueError("missing bridge journal")
     pid = None
@@ -162,13 +163,21 @@ def _bridge(rows: object, *, run_id: str, session_id: str) -> list[dict]:
         if steady_ns < last_steady_ns:
             raise ValueError("bridge clock regressed")
         last_steady_ns = steady_ns
-        if (type(row["kind"]) is not str or row["kind"] not in _SOURCE
-                or row["source"] != _SOURCE[row["kind"]]):
+        if type(row["kind"]) is not str or row["kind"] not in _SOURCE:
             raise ValueError("unattested bridge source type")
-        if row["truth_used"] is not False:
-            raise ValueError("truth or unhealthy source")
+        if source_mode == "candidate":
+            if row["source"] != _SOURCE[row["kind"]] or row["truth_used"] is not False:
+                raise ValueError("truth or unhealthy source")
+            _digest(row["source_profile_sha256"], "bridge source profile")
+        elif source_mode == "unattested_cdr":
+            expected = ("unattested_ego_server" if row["kind"] == "position_command"
+                        else "unattested_socket")
+            if (row["source"] != expected or row["source_profile_sha256"] is not None
+                    or row["truth_used"] != "unknown"):
+                raise ValueError("unattested bridge source mislabeled")
+        else:
+            raise ValueError("unknown bridge source mode")
         _digest(row["message_sha256"], "bridge message digest")
-        _digest(row["source_profile_sha256"], "bridge source profile")
         _integer(row["sample_ns"], "bridge sample time")
     return rows
 
@@ -237,12 +246,14 @@ def _check_planner_counters(rows: list[dict]) -> None:
             applied_receipts.add(receive_sequence)
 
 
-def reconcile_diagnostics(bridge_events: list[dict], planner_events: list[dict],
-                          server_events: list[dict], *, run_id: str, session_id: str) -> dict:
+def _reconcile_diagnostics(bridge_events: list[dict], planner_events: list[dict],
+                           server_events: list[dict], *, run_id: str, session_id: str,
+                           source_mode: str) -> dict:
     """Match one unambiguous causal chain, with qualification hard-coded false."""
     if type(run_id) is not str or not run_id or type(session_id) is not str or not session_id:
         raise ValueError("run and session required")
-    bridge = _bridge(bridge_events, run_id=run_id, session_id=session_id)
+    bridge = _bridge(bridge_events, run_id=run_id, session_id=session_id,
+                     source_mode=source_mode)
     planner = _journal(planner_events, session_id=session_id, events=_PLANNER_EVENTS)
     server = _journal(server_events, session_id=session_id, events=_SERVER_EVENTS)
     if len({bridge[0]["pid"], planner[0]["pid"], server[0]["pid"]}) != 3:
@@ -410,3 +421,12 @@ def reconcile_diagnostics(bridge_events: list[dict], planner_events: list[dict],
         "planner_numerical_parity_verified": False,
         "teacher_qualified": False,
     }
+
+
+def reconcile_diagnostics(bridge_events: list[dict], planner_events: list[dict],
+                          server_events: list[dict], *, run_id: str,
+                          session_id: str) -> dict:
+    """Preserve the original proposed source-candidate contract."""
+    return _reconcile_diagnostics(bridge_events, planner_events, server_events,
+                                  run_id=run_id, session_id=session_id,
+                                  source_mode="candidate")
