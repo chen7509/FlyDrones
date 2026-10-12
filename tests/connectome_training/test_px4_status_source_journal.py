@@ -163,6 +163,35 @@ def test_explicit_failed_zero_sample_and_cdr_fault_journals(tmp_path):
     assert not bad.completed and bad.faults == 1
 
 
+def test_oversized_cdr_fault_retains_hash_and_length_without_unbounded_hex(tmp_path):
+    payload = b"x" * 4097
+    event = fault(payload, reason="cdr_oversize")
+    event["cdr_hex"] = ""
+    result = audit_status_source_journal(write(
+        tmp_path / "oversized.jsonl", event,
+        finish(0, status="failed", reason="cdr_oversize")))
+    assert result.faults == 1 and not result.completed
+    event["cdr_length"] = 4096
+    with pytest.raises(ValueError):
+        audit_status_source_journal(write(
+            tmp_path / "false_length.jsonl", event,
+            finish(0, status="failed", reason="cdr_oversize")))
+
+
+def test_read_io_failure_never_returns_success(tmp_path, monkeypatch):
+    path = write(tmp_path / "status.jsonl", row(), finish(1))
+    original_open = Path.open
+
+    def unavailable(self, *args, **kwargs):
+        if self == path:
+            raise OSError("injected journal read failure")
+        return original_open(self, *args, **kwargs)
+
+    monkeypatch.setattr(Path, "open", unavailable)
+    with pytest.raises(OSError, match="read failure"):
+        audit_status_source_journal(path)
+
+
 @pytest.mark.parametrize("rows", [
     (row(),), (row(), finish(2)), (row(), finish(1), row(2)),
     (fault(), finish(0)), (fault(), row(), finish(1, status="failed", reason="decode_error")),

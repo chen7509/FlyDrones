@@ -9,7 +9,7 @@ granting capture or altering PX4. Follow the [design](../specs/2026-10-12-px4-es
 2. [x] Recheck fixed PX4 message/topic generator, installed ROS Humble
    serialization APIs and existing source-journal implementation; record
    exact versions, licenses, maintenance, interface and resource costs.
-3. [ ] Specify a new status journal schema and executable without modifying
+3. [x] Specify a new status journal schema and executable without modifying
    the historical odometry collector. Write failing parser, source-identity,
    timestamp/sample-age, unavailable-innovation-ratio, CDR, terminal/I/O
    and legacy-regression tests first.
