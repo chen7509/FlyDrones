@@ -54,7 +54,14 @@ Agent/PX4 trial under the unchanged physical resource gate.
   silence, changed GID, journal I/O failure and interrupted session terminate
   with an explicit failed row. Preserve the offending CDR when safely bounded.
 - The journal uses exclusive creation, complete writes, bounded line count,
-  terminal fsync/close handling and a fail-closed Python audit. Never repair
+  terminal fsync/close handling and a fail-closed Python audit. A readable
+  `complete` terminal is only a claim: the auditor reports `completed=true`
+  solely when the caller also supplies a separately observed exit code zero
+  from the owned writer process. `fsync` or `close` failure must produce a
+  nonzero exit, and the later capture producer must bind that observed exit to
+  the owned process identity. RMW timestamp zero has no supported-time proof:
+  emit `null` with an explicit false availability bit rather than a numeric
+  zero; a change in availability ends the session. Never repair
   or overwrite a failed run. CDR-to-decoded-field parity must be checked by
   an independent deserializer in the same binary/image, not inferred from
   the subscriber's own fields.

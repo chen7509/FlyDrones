@@ -31,6 +31,8 @@ def row(seq=1, **changes):
         "rmw_implementation": "rmw_cyclonedds_cpp", "publisher_gid_hex": "ab" * 24,
         "rmw_source_timestamp_ns": 1000 * seq + 1,
         "rmw_received_timestamp_ns": 1000 * seq + 2,
+        "rmw_source_timestamp_available": True,
+        "rmw_received_timestamp_available": True,
         "rmw_publication_sequence": seq, "rmw_reception_sequence": seq,
         "callback_steady_ns": 20_000_000 * seq,
         "px4_publication_us": 10_010 * seq, "px4_sample_us": 10_000 * seq,
@@ -66,7 +68,11 @@ def write(path: Path, *rows):
 def test_complete_sample_is_offline_only_and_preserves_both_px4_times(tmp_path):
     result = audit_status_source_journal(write(
         tmp_path / "status.jsonl", row(), row(2), finish(2)))
-    assert result.completed and result.samples == 2
+    assert result.terminal_claimed_complete and not result.completed and result.samples == 2
+    exited = audit_status_source_journal(tmp_path / "status.jsonl", observed_writer_exit_code=0)
+    assert exited.completed
+    failed_exit = audit_status_source_journal(tmp_path / "status.jsonl", observed_writer_exit_code=2)
+    assert not failed_exit.completed
     assert result.first_cdr == bytes.fromhex("00010000aabbccdd")
     assert result.publisher_gid_hex == "ab" * 24
     assert result.last_publication_us == 20_020
@@ -141,9 +147,32 @@ def test_source_replacement_clock_rollback_or_reset_ends_session(tmp_path, chang
 
 def test_unsupported_rmw_metadata_is_unknown_not_zero(tmp_path):
     value = row(rmw_publication_sequence=None, rmw_reception_sequence=None,
-                rmw_source_timestamp_ns=0, rmw_received_timestamp_ns=0)
+                rmw_source_timestamp_ns=None, rmw_received_timestamp_ns=None,
+                rmw_source_timestamp_available=False, rmw_received_timestamp_available=False)
     result = audit_status_source_journal(write(tmp_path / "status.jsonl", value, finish(1)))
     assert not result.rmw_sequences_supported
+
+
+@pytest.mark.parametrize("changed", [
+    {"rmw_source_timestamp_ns": 0},
+    {"rmw_source_timestamp_ns": None},
+    {"rmw_source_timestamp_available": False},
+    {"rmw_received_timestamp_ns": 0},
+    {"rmw_received_timestamp_ns": None},
+    {"rmw_received_timestamp_available": False},
+])
+def test_rmw_timestamp_availability_mismatch_refused(tmp_path, changed):
+    with pytest.raises(ValueError):
+        audit_status_source_journal(write(tmp_path / "status.jsonl", row(**changed), finish(1)))
+
+
+def test_writer_exit_evidence_type_and_failed_terminal_must_agree(tmp_path):
+    complete = write(tmp_path / "complete.jsonl", row(), finish(1))
+    with pytest.raises(ValueError):
+        audit_status_source_journal(complete, observed_writer_exit_code=True)
+    failed = write(tmp_path / "failed.jsonl", finish(0, status="failed", reason="no_messages"))
+    with pytest.raises(ValueError):
+        audit_status_source_journal(failed, observed_writer_exit_code=0)
 
 
 def test_rmw_gap_only_records_reader_observation_not_upstream_loss(tmp_path):

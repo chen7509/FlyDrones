@@ -14,6 +14,7 @@
 #include <fstream>
 #include <iomanip>
 #include <iostream>
+#include <limits>
 #include <memory>
 #include <regex>
 #include <sstream>
@@ -77,6 +78,11 @@ std::string sequence_json(std::uint64_t value) {
   return std::to_string(value);
 }
 
+std::string timestamp_json(std::int64_t value) {
+  // RMW has no timestamp-support bit. Zero cannot establish a usable time.
+  return value > 0 ? std::to_string(value) : "null";
+}
+
 using Status = px4_msgs::msg::EstimatorStatus;
 
 std::array<std::uint8_t, 5> resets(const Status & value) {
@@ -106,6 +112,8 @@ bool valid_fields(const Status & value) {
 }
 
 void append_status_fields(std::ostringstream & line, const Status & value) {
+  // Nine significant decimal digits round-trip every finite IEEE float32.
+  line << std::setprecision(std::numeric_limits<float>::max_digits10);
   line << ",\"control_mode_flags\":" << value.control_mode_flags
        << ",\"filter_fault_flags\":" << value.filter_fault_flags
        << ",\"gps_check_fail_flags\":" << value.gps_check_fail_flags
@@ -180,8 +188,12 @@ public:
          << ",\"journal_sequence\":" << journal_sequence
          << ",\"rmw_implementation\":\"" << implementation << '"'
          << ",\"publisher_gid_hex\":\"" << gid << '"'
-         << ",\"rmw_source_timestamp_ns\":" << std::max<std::int64_t>(0, info.source_timestamp)
-         << ",\"rmw_received_timestamp_ns\":" << std::max<std::int64_t>(0, info.received_timestamp)
+         << ",\"rmw_source_timestamp_ns\":" << timestamp_json(info.source_timestamp)
+         << ",\"rmw_received_timestamp_ns\":" << timestamp_json(info.received_timestamp)
+         << ",\"rmw_source_timestamp_available\":"
+         << (info.source_timestamp > 0 ? "true" : "false")
+         << ",\"rmw_received_timestamp_available\":"
+         << (info.received_timestamp > 0 ? "true" : "false")
          << ",\"rmw_publication_sequence\":" << sequence_json(info.publication_sequence_number)
          << ",\"rmw_reception_sequence\":" << sequence_json(info.reception_sequence_number)
          << ",\"callback_steady_ns\":" << callback_ns
@@ -302,6 +314,8 @@ private:
         decoded.timestamp <= last_publication_us_ ||
         decoded.timestamp_sample - last_sample_us_ > 100'000 ||
         callback_ns <= last_callback_ns_ ||
+        (rmw.source_timestamp > 0) != (last_rmw_source_ns_ > 0) ||
+        (rmw.received_timestamp > 0) != (last_rmw_received_ns_ > 0) ||
         (rmw.source_timestamp > 0 && last_rmw_source_ns_ > 0 &&
          rmw.source_timestamp <= last_rmw_source_ns_) ||
         (rmw.received_timestamp > 0 && last_rmw_received_ns_ > 0 &&

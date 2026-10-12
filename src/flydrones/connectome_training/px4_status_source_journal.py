@@ -23,6 +23,7 @@ SAMPLE_KEYS = frozenset((
     "schema", "kind", "topic", "ros_type", "message_sha256", "run_id",
     "journal_sequence", "rmw_implementation", "publisher_gid_hex",
     "rmw_source_timestamp_ns", "rmw_received_timestamp_ns",
+    "rmw_source_timestamp_available", "rmw_received_timestamp_available",
     "rmw_publication_sequence", "rmw_reception_sequence", "callback_steady_ns",
     "px4_publication_us", "px4_sample_us", "control_mode_flags",
     "filter_fault_flags", "gps_check_fail_flags", "solution_status_flags",
@@ -50,6 +51,7 @@ class StatusSourceJournalAudit:
     run_id: str
     samples: int
     completed: bool
+    terminal_claimed_complete: bool
     publisher_gid_hex: str
     first_cdr: bytes
     journal_sha256: str
@@ -116,7 +118,13 @@ def _sample(row, previous):
     _integer(row["journal_sequence"], "journal sequence", minimum=1)
     _integer(row["callback_steady_ns"], "callback time", minimum=1)
     for name in ("rmw_source_timestamp_ns", "rmw_received_timestamp_ns"):
-        _integer(row[name], name)
+        available = row[name.replace("_ns", "_available")]
+        if type(available) is not bool:
+            raise ValueError(f"{name} availability invalid")
+        if available:
+            _integer(row[name], name, minimum=1)
+        elif row[name] is not None:
+            raise ValueError(f"unavailable {name} must be null")
     for name in ("rmw_publication_sequence", "rmw_reception_sequence"):
         if row[name] is not None:
             _integer(row[name], name, maximum=2**64 - 2)
@@ -166,7 +174,10 @@ def _sample(row, previous):
         if row["px4_sample_us"] - previous["px4_sample_us"] > MAX_SAMPLE_GAP_US:
             raise ValueError("PX4 status sample discontinuity")
         for name in ("rmw_source_timestamp_ns", "rmw_received_timestamp_ns"):
-            if row[name] and previous[name] and row[name] <= previous[name]:
+            availability = name.replace("_ns", "_available")
+            if row[availability] != previous[availability]:
+                raise ValueError(f"{name} support changed")
+            if row[name] is not None and row[name] <= previous[name]:
                 raise ValueError(f"{name} regressed")
         for name in ("rmw_publication_sequence", "rmw_reception_sequence"):
             if ((row[name] is None) != (previous[name] is None)
@@ -194,8 +205,17 @@ def _fault(row, expected_run_id):
     return reason
 
 
-def audit_status_source_journal(path: str | Path) -> StatusSourceJournalAudit:
-    """Validate bounded JSONL only; CDR parity and PX4 provenance remain unverified."""
+def audit_status_source_journal(
+    path: str | Path, *, observed_writer_exit_code: int | None = None,
+) -> StatusSourceJournalAudit:
+    """Validate JSONL; complete also requires externally observed writer exit zero.
+
+    The caller must bind an observed exit code to the owned writer process. A
+    terminal row by itself cannot prove fsync and close succeeded.
+    """
+    if (observed_writer_exit_code is not None
+            and (type(observed_writer_exit_code) is not int or not 0 <= observed_writer_exit_code <= 255)):
+        raise ValueError("writer exit evidence invalid")
     path = Path(path)
     if path.is_symlink() or not path.is_file():
         raise ValueError("status journal must be a regular file")
@@ -261,8 +281,13 @@ def audit_status_source_journal(path: str | Path) -> StatusSourceJournalAudit:
             raise ValueError("status journal changed during audit")
     if identity(path.stat()) != identity(before) or terminal is None:
         raise ValueError("status journal changed or terminal missing")
+    terminal_claimed_complete = terminal["status"] == "complete"
+    if observed_writer_exit_code == 0 and not terminal_claimed_complete:
+        raise ValueError("writer exit and terminal disagree")
     return StatusSourceJournalAudit(
-        run_id=terminal["run_id"], samples=count, completed=terminal["status"] == "complete",
+        run_id=terminal["run_id"], samples=count,
+        completed=terminal_claimed_complete and observed_writer_exit_code == 0,
+        terminal_claimed_complete=terminal_claimed_complete,
         publisher_gid_hex="" if previous is None else previous["publisher_gid_hex"],
         first_cdr=first_cdr, journal_sha256=digest.hexdigest(),
         last_publication_us=None if previous is None else previous["px4_publication_us"],
