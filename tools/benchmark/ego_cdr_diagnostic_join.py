@@ -1,7 +1,8 @@
 """Join complete bridge CDR records to pinned EGO diagnostic identities.
 
-This is an offline byte-identity check. The socket source, DDS delivery,
-planner binary, and teacher label remain unqualified.
+This is an offline byte-identity candidate. Strict field mode may compare a
+canonical command digest after separately recording the DDS raw zero padding;
+the socket source, planner binary, and teacher label remain unqualified.
 """
 
 from __future__ import annotations
@@ -15,7 +16,7 @@ _INPUT_KINDS = frozenset({"odometry", "depth", "camera_pose"})
 def reconcile_cdr_diagnostics(bridge_rows: list[dict], planner_rows: list[dict],
                               server_rows: list[dict], *, run_id: str,
                               session_id: str, verify_payload_fields: bool = False) -> dict:
-    """Match exact recorded CDR digests while retaining unknown source status."""
+    """Match raw or strictly canonicalized CDR digests without source grants."""
     audit = audit_bridge_cdr_journal(bridge_rows)
     if type(verify_payload_fields) is not bool:
         raise ValueError("verify_payload_fields must be boolean")
@@ -31,6 +32,7 @@ def reconcile_cdr_diagnostics(bridge_rows: list[dict], planner_rows: list[dict],
                if row["phase"] == "command_decoded"}
     projected = []
     command_metadata = {}
+    command_transport = {}
     for row in bridge_rows:
         phase, kind = row["phase"], row["kind"]
         if phase == "publish_intent" and kind in _INPUT_KINDS:
@@ -38,13 +40,21 @@ def reconcile_cdr_diagnostics(bridge_rows: list[dict], planner_rows: list[dict],
         elif phase == "command_received":
             metadata = decoded[row["message_sequence"]]
             sample_ns = metadata["sample_ns"]
-            command_metadata[(row["message_sha256"], sample_ns)] = metadata
+            identity = (field_audit["position_command_canonicalizations"][row["message_sequence"]]
+                        if field_audit is not None else None)
+            digest = identity["canonical_sha256"] if identity else row["message_sha256"]
+            key = (digest, sample_ns)
+            if key in command_metadata:
+                raise ValueError("ambiguous canonical command identity")
+            command_metadata[key] = metadata
+            command_transport[key] = identity
         else:
             continue
         projected.append({
             "schema": 1, "run_id": run_id, "session": session_id,
             "pid": row["pid"], "sequence": len(projected) + 1,
-            "kind": kind, "message_sha256": row["message_sha256"],
+            "kind": kind, "message_sha256": (digest if phase == "command_received"
+                                              else row["message_sha256"]),
             "sample_ns": sample_ns, "event_steady_ns": row["event_steady_ns"],
             "source": row["source"], "source_profile_sha256": None,
             "truth_used": "unknown",
@@ -63,7 +73,19 @@ def reconcile_cdr_diagnostics(bridge_rows: list[dict], planner_rows: list[dict],
     if (metadata is None or metadata["ready"] is not True
             or metadata["trajectory_id"] != match["trajectory_id"]):
         raise ValueError("bridge command decode identity or readiness mismatch")
-    match["digest_identity_candidate"] = match["identity_match"]
+    selected_transport = command_transport.get((match["command_sha256"], command_stamp))
+    match["canonical_digest_identity_candidate"] = (
+        match["identity_match"] if selected_transport is not None else False)
+    match["digest_identity_candidate"] = (
+        match["identity_match"] and (selected_transport is None
+                                      or selected_transport["padding_bytes"] == 0))
+    match["command_raw_sha256"] = (selected_transport["raw_sha256"]
+                                   if selected_transport is not None else match["command_sha256"])
+    match["command_canonical_sha256"] = match["command_sha256"]
+    match["command_transport_padding_bytes"] = (selected_transport["padding_bytes"]
+                                                 if selected_transport is not None else None)
+    match["byte_exact_command_transport_match"] = (
+        selected_transport is not None and selected_transport["padding_bytes"] == 0)
     match["recorded_order_candidate"] = match["current_observation_match"]
     match["identity_match"] = False
     match["current_observation_match"] = False

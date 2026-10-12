@@ -1,6 +1,8 @@
 """Optional independent decode of retained EGO bridge CDR fields.
 
 This is an offline format check, not ROS runtime or input-source attestation.
+The strict command path accepts only the observed DDS four-byte zero alignment
+suffix, retaining separate raw and canonical digests.
 """
 
 from __future__ import annotations
@@ -91,6 +93,7 @@ def audit_ego_cdr_fields(rows: list[dict]) -> dict:
     decoded_rows = {row["message_sequence"]: row for row in rows
                     if row["phase"] == "command_decoded"}
     counts = {kind: 0 for kind in MESSAGE_TYPES}
+    command_canonicalizations = {}
     for row in rows:
         if row["phase"] not in ("publish_intent", "command_received"):
             continue
@@ -104,10 +107,19 @@ def audit_ego_cdr_fields(rows: list[dict]) -> dict:
             canonical = bytes(store.serialize_cdr(message, msgtype))
         except Exception as exc:
             raise ValueError(f"invalid {kind} CDR") from exc
-        if canonical != raw:
+        padding = (-len(canonical)) % 4
+        if canonical != raw and not (
+                row["phase"] == "command_received" and kind == "position_command"
+                and padding > 0 and raw == canonical + b"\x00" * padding):
             raise ValueError(f"noncanonical {kind} CDR")
         stamp = _validate_message(kind, message)
         if kind == "position_command":
+            sequence = row["message_sequence"]
+            command_canonicalizations[sequence] = {
+                "raw_sha256": hashlib.sha256(raw).hexdigest(),
+                "canonical_sha256": hashlib.sha256(canonical).hexdigest(),
+                "padding_bytes": len(raw) - len(canonical),
+            }
             metadata = decoded_rows[row["message_sequence"]]
             if (stamp != metadata["sample_ns"]
                     or message.trajectory_id != metadata["trajectory_id"]
@@ -121,6 +133,7 @@ def audit_ego_cdr_fields(rows: list[dict]) -> dict:
         raise ValueError(f"missing required CDR kinds: {', '.join(missing)}")
     return {
         "message_count_by_kind": counts,
+        "position_command_canonicalizations": command_canonicalizations,
         "position_command_definition_sha256": POSITION_COMMAND_SHA256,
         "rosbags_version": ROSBAGS_VERSION,
         "cdr_payload_fields_verified": True,

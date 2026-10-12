@@ -200,6 +200,46 @@ def test_opt_in_cdr_fields_bind_actual_bytes_without_qualifying_teacher(tmp_path
     assert match["teacher_qualified"] is False
 
 
+def test_dds_command_zero_padding_keeps_raw_and_canonical_identities_distinct(tmp_path):
+    from tools.benchmark.ego_cdr_diagnostic_join import reconcile_cdr_diagnostics
+
+    payloads = _typed_cdr_payloads()
+    canonical = payloads["position_command"]
+    assert len(canonical) == 169
+    payloads["position_command"] = canonical + b"\x00" * 3
+    assert hashlib.sha256(payloads["position_command"]).hexdigest() == (
+        "2612f8666942b9414c1d2f94caea18df02864dc12438fad515e47a250f181d47")
+    rows, planner, server = cdr_bundle(tmp_path, payloads=payloads)
+    for row in server:
+        if row["event"] == "server_command_published":
+            row["command_sha256"] = hashlib.sha256(canonical).hexdigest()
+    match = reconcile_cdr_diagnostics(rows, planner, server,
+                                      run_id=RUN, session_id=SESSION,
+                                      verify_payload_fields=True)
+    assert match["cdr_payload_fields_verified"] is True
+    assert match["command_transport_padding_bytes"] == 3
+    assert match["command_raw_sha256"] == hashlib.sha256(payloads["position_command"]).hexdigest()
+    assert match["command_canonical_sha256"] == hashlib.sha256(canonical).hexdigest()
+    assert match["byte_exact_command_transport_match"] is False
+    assert match["digest_identity_candidate"] is False
+    assert match["canonical_digest_identity_candidate"] is True
+    assert match["identity_match"] is False
+    assert match["runtime_source_verified"] is False
+    assert match["teacher_qualified"] is False
+
+
+@pytest.mark.parametrize("suffix", [b"\x00", b"\x00\x00", b"\x00\x00\x01", b"\x00" * 4])
+def test_dds_command_padding_rejects_partial_nonzero_or_extra(tmp_path, suffix):
+    from tools.benchmark.ego_cdr_diagnostic_join import reconcile_cdr_diagnostics
+
+    payloads = _typed_cdr_payloads()
+    payloads["position_command"] += suffix
+    with pytest.raises(ValueError, match="CDR|canonical|padding"):
+        reconcile_cdr_diagnostics(
+            *cdr_bundle(tmp_path, payloads=payloads),
+            run_id=RUN, session_id=SESSION, verify_payload_fields=True)
+
+
 def test_opt_in_cdr_rejects_journal_metadata_and_trailing_bytes(tmp_path):
     from tools.benchmark.ego_cdr_diagnostic_join import reconcile_cdr_diagnostics
 
