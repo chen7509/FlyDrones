@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import math
 import os
 import re
 import signal
@@ -28,6 +29,31 @@ from .worlds import dynamic_center
 WORLD_CONTROL_TIMEOUT_MS = 15_000
 
 
+def _finite_scalar(value) -> float:
+    if isinstance(value, (bool, np.bool_)) or not isinstance(value, (int, float, np.integer, np.floating)):
+        raise ValueError('command values must be finite numeric scalars')
+    try:
+        result = float(value)
+    except (OverflowError, ValueError, TypeError) as exc:
+        raise ValueError('command values must be finite') from exc
+    if not math.isfinite(result):
+        raise ValueError('command values must be finite')
+    return result
+
+
+def _vector(value, length: int) -> tuple[float, ...]:
+    if type(value) not in (tuple, list) or len(value) != length:
+        raise ValueError(f'command vector must have exactly {length} values')
+    return tuple(_finite_scalar(item) for item in value)
+
+
+def _ned_command(command) -> tuple[float, ...]:
+    values = _vector(command, 4)
+    if any(abs(value) > float(np.finfo(np.float32).max) for value in values):
+        raise ValueError('LOCAL_NED values must fit finite float32')
+    return values
+
+
 def shape_command(
     requested: Command,
     previous: Command,
@@ -37,24 +63,33 @@ def shape_command(
     acceleration_max: float,
     yaw_rate_max: float,
 ) -> Command:
-    values = np.asarray((*requested.velocity_enu, requested.yaw_rate), dtype=float)
-    parameters = np.asarray((dt_s, speed_max, acceleration_max, yaw_rate_max), dtype=float)
-    if not np.all(np.isfinite(values)) or not np.all(np.isfinite(parameters)):
-        raise ValueError('command and limits must be finite')
+    if type(requested) is not Command or type(previous) is not Command:
+        raise ValueError('exact command state required')
+    desired = np.asarray(_vector(requested.velocity_enu, 3), dtype=float)
+    yaw_rate = _finite_scalar(requested.yaw_rate)
+    prior = np.asarray(_vector(previous.velocity_enu, 3), dtype=float)
+    _finite_scalar(previous.yaw_rate)
+    dt_s, speed_max, acceleration_max, yaw_rate_max = tuple(_finite_scalar(value) for value in (
+        dt_s, speed_max, acceleration_max, yaw_rate_max))
     if dt_s <= 0 or speed_max <= 0 or acceleration_max <= 0 or yaw_rate_max <= 0:
         raise ValueError('command limits must be positive')
 
-    desired = values[:3]
-    norm = float(np.linalg.norm(desired))
+    norm = math.hypot(*desired)
+    if not math.isfinite(norm) or math.hypot(*prior) > speed_max:
+        raise ValueError('command norm or previous speed outside supported limits')
     if norm > speed_max:
-        desired = desired * speed_max / norm
-    prior = np.asarray(previous.velocity_enu, dtype=float)
+        desired = desired * (speed_max / norm)
     delta = desired - prior
-    delta_norm = float(np.linalg.norm(delta))
+    delta_norm = math.hypot(*delta)
     max_delta = acceleration_max * dt_s
+    if not math.isfinite(delta_norm) or not math.isfinite(max_delta):
+        raise ValueError('command acceleration step must be finite')
     if delta_norm > max_delta:
-        desired = prior + delta * max_delta / delta_norm
-    return Command(tuple(float(v) for v in desired), float(np.clip(requested.yaw_rate, -yaw_rate_max, yaw_rate_max)))
+        desired = prior + delta * (max_delta / delta_norm)
+    output_norm = math.hypot(*desired)
+    if output_norm > speed_max:
+        desired *= math.nextafter(speed_max, 0.) / output_norm
+    return Command(tuple(float(v) for v in desired), float(np.clip(yaw_rate, -yaw_rate_max, yaw_rate_max)))
 
 
 def enu_to_ned(command: Command) -> tuple[float, float, float, float]:
@@ -129,37 +164,73 @@ class Gateway:
         self.backend = backend
         self.previous = Command((0., 0., 0.), 0.)
         self.started = False
+        self._failure = None
+        self.cleanup_errors = []
+
+    def _refuse_failed(self):
+        if self._failure is not None:
+            raise RuntimeError('benchmark gateway failure latched') from self._failure
+
+    def _fail(self, error):
+        self._failure = self._failure or error
+        self.started = False
+        try:
+            stop = getattr(self.backend, 'stop_motion', None)
+            if callable(stop):
+                stop(error)
+            elif self.backend is not None:
+                self.backend.close()
+        except BaseException as secondary:
+            self.cleanup_errors.append(repr(secondary))
 
     def start(self, world_path) -> None:
+        self._refuse_failed()
+        if self.started:
+            raise RuntimeError('benchmark gateway already started')
         if self.backend is None:
             raise RuntimeError('Gateway requires a WSL Gazebo/PX4 backend')
-        self.backend.start(world_path)
+        try:
+            self.backend.start(world_path)
+        except BaseException as exc:
+            self._fail(exc)
+            raise
         self.previous = Command((0., 0., 0.), 0.)
         self.started = True
 
     def observe(self) -> Observation:
+        self._refuse_failed()
         if not self.started:
             raise RuntimeError('Gateway has not started')
-        return self.backend.observe()
+        try:
+            return self.backend.observe()
+        except BaseException as exc:
+            self._fail(exc)
+            raise
 
     def advance(self, command: Command) -> None:
+        self._refuse_failed()
         if not self.started:
             raise RuntimeError('Gateway has not started')
-        shaped = shape_command(
-            command,
-            self.previous,
-            dt_s=self.dt_s,
-            speed_max=self.speed_max,
-            acceleration_max=self.acceleration_max,
-            yaw_rate_max=self.yaw_rate_max,
-        )
-        self.backend.advance(enu_to_ned(shaped), self.dt_s)
+        try:
+            shaped = shape_command(
+                command, self.previous, dt_s=self.dt_s, speed_max=self.speed_max,
+                acceleration_max=self.acceleration_max, yaw_rate_max=self.yaw_rate_max,
+            )
+            self.backend.advance(enu_to_ned(shaped), self.dt_s)
+        except BaseException as exc:
+            self._fail(exc)
+            raise
         self.previous = shaped
 
     def close(self) -> None:
-        if self.backend is not None:
-            self.backend.close()
-        self.started = False
+        try:
+            if self.backend is not None:
+                self.backend.close()
+        except BaseException as exc:
+            self._failure = self._failure or exc
+            raise
+        finally:
+            self.started = False
 
 
 def _yaw(quaternion: tuple[float, ...]) -> float:
@@ -254,11 +325,17 @@ class NativeGazeboPx4Backend:
         self._setpoint_ack = -1
         self._setpoint_stop = threading.Event()
         self._setpoint_thread = None
+        self._setpoint_failure = None
+        self._mavlink_lock = threading.RLock()
+        self.setpoint_failures = []
+        self._native_started = False
         self._step_count = 0
         self._contact = False
         self.contact_records = []
         self.contact_message_count = 0
         self._last_offboard_sim_ns = None
+        self._last_offboard_message = None
+        self._offboard_hook = None
         self.offboard_evidence = []
         self.control_records = []
         self.partition = None
@@ -508,6 +585,10 @@ class NativeGazeboPx4Backend:
             tree.write(world_path, encoding='utf-8', xml_declaration=True)
 
     def start(self, world_path: Path) -> None:
+        self._check_setpoints()
+        if self._native_started:
+            raise RuntimeError('native benchmark startup is single-use')
+        self._native_started = True
         from gz.msgs10.camera_info_pb2 import CameraInfo
         from gz.msgs10.contacts_pb2 import Contacts
         from gz.msgs10.image_pb2 import Image
@@ -607,6 +688,7 @@ class NativeGazeboPx4Backend:
         # PX4 heartbeat timers follow simulation time, so capture authoritative
         # OFFBOARD evidence before pausing the world.
         self._require_offboard()
+        self._install_offboard_hook()
         self._stop_startup_server()
         paused_ns = self._wait_for_stats_quiescent()
         self.control_records.append({
@@ -630,17 +712,62 @@ class NativeGazeboPx4Backend:
         self._last_score_position = tuple(current[:3])
         self._last_score_ns = int(self.stats['sim_ns'])
 
+    def _check_setpoints(self, *, require_worker=False):
+        with self._setpoint_condition:
+            if self._setpoint_failure is not None:
+                raise RuntimeError('PX4 setpoint publisher failure latched') from self._setpoint_failure
+            if self._setpoint_stop.is_set():
+                raise RuntimeError('PX4 setpoint publisher stopped')
+            if require_worker and (self._setpoint_thread is None or not self._setpoint_thread.is_alive()):
+                raise RuntimeError('PX4 setpoint publisher unavailable')
+
+    def stop_motion(self, error, phase='request'):
+        with self._setpoint_condition:
+            first = self._setpoint_failure is None
+            if first:
+                self._setpoint_failure = error
+            self._setpoint = (0., 0., 0., 0.)
+            self._setpoint_stop.set()
+            self._setpoint_condition.notify_all()
+        if not first:
+            return
+        record = {'method': 'setpoint_failure', 'phase': phase, 'error': repr(error), 'land_attempted': False,
+                  'land_call_returned': False, 'land_error': None, 'landing_confirmed': False}
+        self.setpoint_failures.append(record)
+        self.control_records.append(record)
+        with self._mavlink_lock:
+            if self.drone is not None and self.drone.flying:
+                record['land_attempted'] = True
+                try:
+                    self.drone.land()
+                    record['land_call_returned'] = True
+                except BaseException as secondary:
+                    record['land_error'] = repr(secondary)
+
     def _send_local_ned(self, command):
-        drone = self.drone
-        drone._send_gcs_heartbeat_if_due()
-        drone.m.mav.set_position_target_local_ned_send(
-            int(time.monotonic() * 1000) & 0xFFFFFFFF,
-            drone.m.target_system, drone.m.target_component,
-            drone.mavutil.mavlink.MAV_FRAME_LOCAL_NED,
-            0b0000_0101_1100_0111,
-            0, 0, 0, command[0], command[1], command[2],
-            0, 0, 0, 0, command[3],
-        )
+        try:
+            command = _ned_command(command)
+            with self._mavlink_lock:
+                self._check_setpoints()
+                drone = self.drone
+                if drone is None or drone.autopilot != 'px4':
+                    raise RuntimeError('PX4 setpoint source unavailable')
+                drone.require_position_observation()
+                self._check_setpoints()
+                drone._send_gcs_heartbeat_if_due()
+                with self._setpoint_condition:
+                    self._check_setpoints()
+                    drone.m.mav.set_position_target_local_ned_send(
+                        int(time.monotonic() * 1000) & 0xFFFFFFFF,
+                        drone.m.target_system, drone.m.target_component,
+                        drone.mavutil.mavlink.MAV_FRAME_LOCAL_NED,
+                        0b0000_0101_1100_0111,
+                        0, 0, 0, command[0], command[1], command[2],
+                        0, 0, 0, 0, command[3],
+                    )
+        except BaseException as exc:
+            self.stop_motion(exc, 'send')
+            raise
 
     def _setpoint_loop(self):
         while not self._setpoint_stop.is_set():
@@ -649,31 +776,45 @@ class NativeGazeboPx4Backend:
                 generation = self._setpoint_generation
             try:
                 self._send_local_ned(command)
-            except Exception:
-                self._setpoint_stop.set()
+            except BaseException as exc:
+                self.stop_motion(exc, 'publisher')
                 return
             with self._setpoint_condition:
+                if self._setpoint_stop.is_set() or self._setpoint_failure is not None:
+                    self._setpoint_condition.notify_all()
+                    return
                 self._setpoint_ack = max(self._setpoint_ack, generation)
                 self._setpoint_condition.notify_all()
             self._setpoint_stop.wait(.05)
 
     def _set_command(self, command):
-        with self._setpoint_condition:
-            self._setpoint = tuple(float(value) for value in command)
-            self._setpoint_generation += 1
-            generation = self._setpoint_generation
-            deadline = time.monotonic() + .5
-            while self._setpoint_ack < generation and not self._setpoint_stop.is_set():
-                remaining = deadline - time.monotonic()
-                if remaining <= 0:
-                    raise TimeoutError('PX4 setpoint keepalive did not acknowledge command')
-                self._setpoint_condition.wait(remaining)
+        try:
+            command = _ned_command(command)
+            with self._setpoint_condition:
+                self._check_setpoints(require_worker=True)
+                self._setpoint = command
+                self._setpoint_generation += 1
+                generation = self._setpoint_generation
+                deadline = time.monotonic() + .5
+                while self._setpoint_ack < generation:
+                    self._check_setpoints(require_worker=True)
+                    remaining = deadline - time.monotonic()
+                    if remaining <= 0:
+                        raise TimeoutError('PX4 setpoint keepalive did not acknowledge command')
+                    self._setpoint_condition.wait(remaining)
+                self._check_setpoints(require_worker=True)
+                if time.monotonic() >= deadline:
+                    raise TimeoutError('PX4 setpoint acknowledgement deadline expired')
+        except BaseException as exc:
+            self.stop_motion(exc, 'command')
+            raise
 
     def _require_offboard(self):
         from .clock import require_offboard
         deadline = time.monotonic() + 3
         while time.monotonic() < deadline:
-            heartbeat = self.drone.m.recv_match(type='HEARTBEAT', blocking=True, timeout=.1)
+            with self._mavlink_lock:
+                heartbeat = self.drone.m.recv_match(type='HEARTBEAT', blocking=True, timeout=.1)
             if self._record_offboard_heartbeat(heartbeat, require_offboard):
                 return
         raise TimeoutError('no PX4 OFFBOARD heartbeat')
@@ -681,10 +822,13 @@ class NativeGazeboPx4Backend:
     def _record_offboard_heartbeat(self, heartbeat, validator=None):
         if heartbeat is None or heartbeat.get_srcSystem() != self.instance + 1 or heartbeat.autopilot != 12:
             return False
+        if heartbeat is self._last_offboard_message:
+            return True  # The hook and filtered drain can observe the same decode.
         if validator is None:
             from .clock import require_offboard
             validator = require_offboard
         validator(heartbeat.custom_mode, heartbeat.base_mode)
+        self._last_offboard_message = heartbeat
         sim_ns = int(self.stats['sim_ns'])
         self._last_offboard_sim_ns = sim_ns
         self.offboard_evidence.append({
@@ -694,12 +838,27 @@ class NativeGazeboPx4Backend:
         })
         return True
 
+    def _install_offboard_hook(self):
+        # pymavlink invokes hooks before recv_match filters telemetry types.
+        with self._mavlink_lock:
+            hooks = getattr(self.drone.m, 'message_hooks', None)
+            if not isinstance(hooks, list):
+                raise RuntimeError('pymavlink decoded-message hooks unavailable')
+            if self._offboard_hook is None:
+                self._offboard_hook = self._observe_decoded_message
+                hooks.append(self._offboard_hook)
+
+    def _observe_decoded_message(self, _link, message):
+        if message.get_type() == 'HEARTBEAT':
+            self._record_offboard_heartbeat(message)
+
     def _drain_heartbeats(self):
-        while True:
-            heartbeat = self.drone.m.recv_match(type='HEARTBEAT', blocking=False)
-            if heartbeat is None:
-                return
-            self._record_offboard_heartbeat(heartbeat)
+        with self._mavlink_lock:
+            while True:
+                heartbeat = self.drone.m.recv_match(type='HEARTBEAT', blocking=False)
+                if heartbeat is None:
+                    return
+                self._record_offboard_heartbeat(heartbeat)
 
     def _current_model_pose(self):
         sim_ns = int(self.stats['sim_ns'])
@@ -756,15 +915,37 @@ class NativeGazeboPx4Backend:
         )
 
     def advance(self, local_ned_command, dt_s: float) -> None:
+        try:
+            self._advance_checked(local_ned_command, dt_s)
+        except BaseException as exc:
+            self.stop_motion(exc, 'advance')
+            raise
+
+    def _advance_checked(self, local_ned_command, dt_s: float) -> None:
+        self._check_setpoints(require_worker=True)
+        dt_s = _finite_scalar(dt_s)
+        if dt_s <= 0:
+            raise ValueError('physics dt must be positive')
         before = int(self.stats['sim_ns'])
         target = before + round(dt_s * 1_000_000_000)
         steps = round(dt_s / .001)
         if steps <= 0 or steps * 1_000_000 != round(dt_s * 1_000_000_000):
             raise ValueError('dt must be an integer number of 1 ms physics steps')
         self._set_command(local_ned_command)
+        self._check_setpoints(require_worker=True)
         self._set_dynamic_poses(target)
+        # Preparation can block in transport requests; admission follows it.
+        self._check_setpoints(require_worker=True)
         started = time.perf_counter()
-        ok = self.server.run(True, steps, False)
+        try:
+            ok = self.server.run(True, steps, False)
+        except BaseException as exc:
+            self.control_records.append({
+                'method': 'gz.sim8.Server.run', 'steps': int(steps), 'return_value': None,
+                'elapsed_wall_s': time.perf_counter() - started, 'error': repr(exc),
+                'sim_ns_before': before, 'sim_ns_after_run': self.stats['sim_ns'],
+            })
+            raise
         elapsed = time.perf_counter() - started
         self.control_records.append({
             'method': 'gz.sim8.Server.run',
@@ -773,7 +954,9 @@ class NativeGazeboPx4Backend:
             'return_value': bool(ok),
             'sim_ns_before': before,
             'sim_ns_after_run': self.stats['sim_ns'],
+            'setpoint_failure_after_run': repr(self._setpoint_failure) if self._setpoint_failure else None,
         })
+        self._check_setpoints(require_worker=True)
         if not ok:
             raise RuntimeError('embedded Gazebo server rejected fixed step')
         self._wait_for(
@@ -813,14 +996,31 @@ class NativeGazeboPx4Backend:
         self._server_startup_stop.set()
         if self._server_startup_thread is not None:
             self._server_startup_thread.join(timeout=2)
-        self._setpoint_stop.set()
+        with self._setpoint_condition:
+            self._setpoint_stop.set()
+            self._setpoint_condition.notify_all()
         if self._setpoint_thread is not None:
             self._setpoint_thread.join(timeout=2)
         if self.drone is not None:
-            try:
-                self.drone.land()
-            except Exception:
-                pass
+            record = {'method': 'cleanup_land', 'land_attempted': False,
+                      'land_call_returned': False, 'land_error': None, 'landing_confirmed': False}
+            self.control_records.append(record)
+            acquired = self._mavlink_lock.acquire(timeout=2)
+            if not acquired:
+                record['land_error'] = 'MAVLink serialization barrier unavailable'
+            else:
+                try:
+                    hooks = getattr(self.drone.m, 'message_hooks', None)
+                    if self._offboard_hook is not None and isinstance(hooks, list):
+                        hooks[:] = [hook for hook in hooks if hook is not self._offboard_hook]
+                        self._offboard_hook = None
+                    record['land_attempted'] = True
+                    self.drone.land()
+                    record['land_call_returned'] = True
+                except BaseException as exc:
+                    record['land_error'] = repr(exc)
+                finally:
+                    self._mavlink_lock.release()
         for process in reversed(self.processes):
             if process.poll() is None:
                 os.killpg(process.pid, signal.SIGTERM)
