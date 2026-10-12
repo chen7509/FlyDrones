@@ -23,7 +23,10 @@ from flydrones.connectome_training.px4_status_source_journal import (  # noqa: E
     audit_status_source_journal,
 )
 from tools.connectome.run_status_ros_type_build import (  # noqa: E402
+    _INACCESSIBLE,
+    _command_sensitive_name,
     _is_competitor,
+    _windows_process_name,
     _wsl_competitors,
 )
 
@@ -75,25 +78,46 @@ def _stage_harness() -> None:
         (target / name).write_bytes(blob)
 
 
-def _preflight() -> dict:
-    build = json.loads((BUILD / "result.json").read_text(encoding="utf-8"))
-    source = verify_source(WORKSPACE, allow_build_output=True)
-    binary = WORKSPACE / BINARY
-    message = WORKSPACE / "install/px4_msgs/share/px4_msgs/msg/EstimatorStatus.msg"
+def _host_competitors() -> tuple[list[dict], list[dict]]:
     competitors = []
     errors = []
-    for process in psutil.process_iter(["pid", "name", "cmdline"]):
+    for process in psutil.process_iter(
+            ["pid", "name", "cmdline"], ad_value=_INACCESSIBLE):
         if process.pid == os.getpid():
             continue
         try:
-            name = (process.info["name"] or "").lower()
-            command = " ".join(process.info["cmdline"] or []).lower()
+            raw_name = process.info["name"]
+            if raw_name is _INACCESSIBLE or not raw_name:
+                try:
+                    raw_name = _windows_process_name(process.pid)
+                except Exception as exc:
+                    errors.append({"pid": process.pid,
+                                   "reason": "inaccessible_process_name",
+                                   "fallback_error": repr(exc)})
+                    continue
+            name = raw_name.lower()
+            argv = process.info["cmdline"]
+            if argv is _INACCESSIBLE or not argv:
+                if _command_sensitive_name(name):
+                    errors.append({"pid": process.pid, "name": name,
+                                   "reason": "inaccessible_launcher_command"})
+                continue
+            command = " ".join(argv).lower()
             if _is_competitor(name, command):
                 competitors.append({"pid": process.pid, "name": name})
         except psutil.NoSuchProcess:
             continue
         except (psutil.AccessDenied, TypeError) as exc:
             errors.append({"pid": process.pid, "error": repr(exc)})
+    return competitors, errors
+
+
+def _preflight() -> dict:
+    build = json.loads((BUILD / "result.json").read_text(encoding="utf-8"))
+    source = verify_source(WORKSPACE, allow_build_output=True)
+    binary = WORKSPACE / BINARY
+    message = WORKSPACE / "install/px4_msgs/share/px4_msgs/msg/EstimatorStatus.msg"
+    competitors, errors = _host_competitors()
     record = {
         "free_kib": psutil.virtual_memory().available // 1024,
         "minimum_free_kib": MIN_FREE_KIB,
@@ -157,7 +181,7 @@ def _qualifies(result: dict, preflight: dict) -> bool:
     if set(cases) != {"normal", "fsync_eio", "close_eio", "partial_then_eio"}:
         return False
     normal = cases["normal"]
-    faults = [cases[name] for name in ("fsync_eio", "close_eio", "partial_then_eio")]
+    expected_fault_exits = {"fsync_eio": 2, "close_eio": 2, "partial_then_eio": 1}
     return bool(
         result.get("docker_exit") == 0 and result.get("timed_out") is False
         and result.get("launch_error") is None
@@ -171,10 +195,17 @@ def _qualifies(result: dict, preflight: dict) -> bool:
             "independent_cdr_parity": True, "samples": 3,
             "unavailable_ratios": ["vel_test_ratio"],
         }
-        and all(case.get("writer_exit") not in (None, 0)
+        and all(case.get("writer_exit") == expected_exit
                 and case.get("publisher_exit") == 0
                 and case.get("injection_marker") is True
-                and case.get("audit_completed") is not True for case in faults)
+                and case.get("audit_completed") is not True
+                for name, expected_exit in expected_fault_exits.items()
+                for case in (cases[name],))
+        and all(cases[name].get("terminal_claimed_complete") is True
+                and cases[name].get("audit_completed") is False
+                for name in ("fsync_eio", "close_eio"))
+        and isinstance(cases["partial_then_eio"].get("audit_error"), str)
+        and bool(cases["partial_then_eio"]["audit_error"])
         and all(case.get("training_eligible") is not True for case in cases.values())
     )
 

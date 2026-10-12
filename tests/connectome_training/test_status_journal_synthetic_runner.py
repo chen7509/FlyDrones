@@ -3,6 +3,7 @@
 import subprocess
 import sys
 from pathlib import Path
+from types import SimpleNamespace
 
 import pytest
 
@@ -32,11 +33,13 @@ def passing():
                        "audit_completed": True, "samples": 3, "training_eligible": False},
             "fsync_eio": {"writer_exit": 2, "publisher_exit": 0,
                           "audit_completed": False, "training_eligible": False,
+                          "terminal_claimed_complete": True,
                           "injection_marker": True},
             "close_eio": {"writer_exit": 2, "publisher_exit": 0,
                           "audit_completed": False, "training_eligible": False,
+                          "terminal_claimed_complete": True,
                           "injection_marker": True},
-            "partial_then_eio": {"writer_exit": 2, "publisher_exit": 0,
+            "partial_then_eio": {"writer_exit": 1, "publisher_exit": 0,
                                  "audit_error": "truncated", "training_eligible": False,
                                  "injection_marker": True},
         },
@@ -62,10 +65,32 @@ def test_qualification_needs_parity_exit_failure_and_owned_cleanup():
         ("fsync_eio", "writer_exit", 0), ("close_eio", "audit_completed", True),
         ("partial_then_eio", "training_eligible", True),
         ("fsync_eio", "injection_marker", False),
+        ("fsync_eio", "writer_exit", 124),
+        ("close_eio", "terminal_claimed_complete", False),
+        ("partial_then_eio", "writer_exit", 124),
+        ("partial_then_eio", "audit_error", None),
     ):
         changed, before = passing()
         changed["cases"][mode][field] = value
         assert not subject._qualifies(changed, before), (mode, field)
+
+
+def test_opaque_sensitive_host_process_refuses_preflight(monkeypatch):
+    opaque = subject._INACCESSIBLE
+    processes = [
+        SimpleNamespace(pid=1001, info={"name": "python.exe", "cmdline": opaque}),
+        SimpleNamespace(pid=1002, info={"name": "notepad.exe", "cmdline": opaque}),
+        SimpleNamespace(pid=1003, info={"name": opaque, "cmdline": ["pytest"]}),
+    ]
+    monkeypatch.setattr(subject.psutil, "process_iter", lambda *_a, **_k: processes)
+    monkeypatch.setattr(subject, "_windows_process_name",
+                        lambda _pid: (_ for _ in ()).throw(RuntimeError("inaccessible")))
+    competitors, errors = subject._host_competitors()
+    assert competitors == []
+    assert [(item["pid"], item["reason"]) for item in errors] == [
+        (1001, "inaccessible_launcher_command"),
+        (1003, "inaccessible_process_name"),
+    ]
 
 
 def test_existing_result_refuses_second_launch(tmp_path, monkeypatch):

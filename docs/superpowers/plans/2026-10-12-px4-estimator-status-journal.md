@@ -13,13 +13,13 @@ granting capture or altering PX4. Follow the [design](../specs/2026-10-12-px4-es
    the historical odometry collector. Write failing parser, source-identity,
    timestamp/sample-age, unavailable-innovation-ratio, CDR, terminal/I/O
    and legacy-regression tests first.
-4. [ ] Implement the read-only C++ collector and Python auditor. Derive a
+4. [x] Implement the read-only C++ collector and Python auditor. Derive a
    separate sealed source tree from the verified status overlay; source must
    include every changed collector file and no preexisting build output.
-5. [ ] Compile in a newly declared bounded offline container if resource and
+5. [x] Compile in a newly declared bounded offline container if resource and
    no-competition preflight pass. Preserve a failed attempt; never silently
    resume or label old build output as newly generated.
-6. [ ] Run synthetic ROS callback/CDR parity and fault matrix under the exact
+6. [x] Run synthetic ROS callback/CDR parity and fault matrix under the exact
    built binary. Preserve all sample/failure journals and independently check
    source, image, type, generated output and process cleanup.
 7. [ ] Run focused and adjacent regression, changed-file lint and independent

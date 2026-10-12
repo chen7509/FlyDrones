@@ -16,6 +16,8 @@ from dataclasses import asdict, dataclass, replace
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
 FULL_MINIMUM_BYTES = 4 * 1024**3
 
 
