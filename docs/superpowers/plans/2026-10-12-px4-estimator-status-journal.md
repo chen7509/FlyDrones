@@ -22,9 +22,12 @@ granting capture or altering PX4. Follow the [design](../specs/2026-10-12-px4-es
 6. [x] Run synthetic ROS callback/CDR parity and fault matrix under the exact
    built binary. Preserve all sample/failure journals and independently check
    source, image, type, generated output and process cleanup.
-7. [ ] Run focused and adjacent regression, changed-file lint and independent
+7. [x] Run focused and adjacent regression, changed-file lint and independent
    review. Seal member hashes/CRC, report verified/implemented/untested/
-   failed separately, commit and push only to `personal`, update PR65.
+   failed separately, commit and push only to `personal`, update PR65. The
+   offline archive SHA-256 is
+   `6fbefedf287fb6915fd208211d2f0fbd18d825a08e0c0ff30cd6158387cc9a4d`;
+   its external verification checked all 84 member hashes and ZIP CRC.
 8. [ ] Separately plan fixed-firmware one-topic build and unarmed live receipt;
    run only when the unchanged 4 GiB physical gate and load/RTF conditions
    permit. Bind GID to owned PX4/Agent/ULog, separate DDS gaps from upstream
