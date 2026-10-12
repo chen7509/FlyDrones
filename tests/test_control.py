@@ -1,4 +1,5 @@
 import json
+import math
 
 from flydrones.config import load_config
 from flydrones.drones.udp_bridge import decode_packet, encode_packet, msp_frame, msp_set_raw_rc, rc_channels
@@ -177,6 +178,70 @@ def test_brain_timeout_hovers():
     s = SafetyGovernor(load_config())
     c = s.filter(FlightCommand(throttle=0.5), Telemetry(t=0, alt_m=1, flying=True), dt=0.05, brain_age_s=2.0)
     assert c.throttle == 0 and "timeout" in c.note
+
+
+def test_safety_rejects_nonfinite_command_before_slew_or_motor_send():
+    for bad in (float("nan"), float("inf"), -float("inf"), 10**1000):
+        governor = SafetyGovernor(load_config())
+        governor.filter(FlightCommand(throttle=0.4),
+                        Telemetry(t=0, alt_m=1, flying=True), dt=1)
+        result = governor.filter(FlightCommand(forward=bad),
+                                 Telemetry(t=1, alt_m=1, flying=True), dt=0.05)
+        assert governor.land_requested
+        assert "nonfinite" in governor.events
+        assert result == FlightCommand.hover("nonfinite safety input -> land")
+        assert all(math.isfinite(getattr(result, axis))
+                   for axis in ("throttle", "yaw", "forward", "lateral"))
+
+
+def test_safety_rejects_nonfinite_telemetry_and_time_inputs():
+    cases = [
+        (Telemetry(t=float("nan"), alt_m=1, flying=True), 0.05, 0.0),
+        (Telemetry(t=0, alt_m=float("nan"), flying=True), 0.05, 0.0),
+        (Telemetry(t=0, alt_m=1, flying=True), float("inf"), 0.0),
+        (Telemetry(t=0, alt_m=1, flying=True), 0.05, float("nan")),
+    ]
+    for telemetry, dt, brain_age in cases:
+        governor = SafetyGovernor(load_config())
+        result = governor.filter(FlightCommand(throttle=0.4), telemetry, dt,
+                                 brain_age_s=brain_age)
+        assert governor.land_requested
+        assert result == FlightCommand.hover("nonfinite safety input -> land")
+
+
+def test_safety_rejects_negative_or_regressed_control_time():
+    for telemetry, dt, brain_age in (
+        (Telemetry(t=-1, alt_m=1, flying=True), 0.05, 0.0),
+        (Telemetry(t=1, alt_m=1, flying=True), -0.05, 0.0),
+        (Telemetry(t=1, alt_m=1, flying=True), 0.05, -0.1),
+    ):
+        governor = SafetyGovernor(load_config())
+        result = governor.filter(FlightCommand(forward=0.4), telemetry, dt,
+                                 brain_age_s=brain_age)
+        assert governor.land_requested
+        assert result == FlightCommand.hover("invalid safety time -> land")
+
+    governor = SafetyGovernor(load_config())
+    governor.filter(FlightCommand(), Telemetry(t=2, alt_m=1, flying=True), dt=0.05)
+    result = governor.filter(FlightCommand(forward=0.4),
+                             Telemetry(t=1, alt_m=1, flying=True), dt=0.05)
+    assert governor.land_requested
+    assert result == FlightCommand.hover("invalid safety time -> land")
+
+
+def test_safety_landing_request_never_returns_a_moving_command():
+    governor = SafetyGovernor(load_config())
+    low_battery = governor.filter(
+        FlightCommand(forward=0.4),
+        Telemetry(t=0, alt_m=1, battery_pct=1, flying=True), dt=1,
+    )
+    assert governor.land_requested
+    assert low_battery == FlightCommand.hover("landing requested")
+    after_recovery = governor.filter(
+        FlightCommand(forward=0.4),
+        Telemetry(t=1, alt_m=1, battery_pct=99, flying=True), dt=1,
+    )
+    assert after_recovery == FlightCommand.hover("landing requested")
 
 
 def test_udp_packet_roundtrip():
