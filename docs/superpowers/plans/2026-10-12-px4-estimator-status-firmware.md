@@ -49,6 +49,7 @@
 
 **Files:** Add a separate auditor, `docs/PX4_ESTIMATOR_STATUS_FIRMWARE_REPORT.md` and one-shot evidence archive.
 
+- [x] Prepare the separate read-only binary auditor with synthetic fail-closed tests and WSL missing-build refusal. Review and evidence are recorded in `docs/PX4_STATUS_FIRMWARE_BINARY_AUDITOR_REPORT.md`; no real binary has been audited.
 - [ ] Require exit 0, no owned build process left, unchanged selected source/submodules, the pinned generated header hash, compiler/dependency identity and a new binary hash from the isolated tree. Report `firmware_compiled_verified` only for that exact evidence; keep all live/fusion/capture/training flags false.
 - [ ] Run focused and adjacent regression, changed Ruff/diff checks and independent review. Seal hashes/CRC and all failed attempts; submit the report and code to draft PR65 using only `personal`.
 - [ ] If build qualification passes, write a **separate** frozen unarmed live-receipt plan. Do not call a source-only or binary-only result live PX4 evidence.
