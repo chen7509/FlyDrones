@@ -15,4 +15,6 @@ Eight packets/50ms inter-send lower bound/20ms hold/200ms poll/5s inner/20s oute
 - [x] Add RED tests in tests/benchmark/test_rx_startup_observer.py; implement tools/benchmark/observe_kernel_rx_startup.py and run fake fault/regression checks.
 - [x] Independent review and corrections, freeze selected modules/ABI/profile/spec/plan and commit before dispatch.
 - [x] One owned WSL observer run only; retain all missing/present raw records, failures and originalFD/group evidence; hash/audit without rerun.
-- [ ] Final targeted/affected checks, independent evidence review, report distinctions and seal hashes/CRC; commit/push personal, update PR65/automation. Full goal active; next actual source/clock/health and resource-gated physical/model/upstream work remains.
+- [x] Final targeted/affected checks, independent evidence review, report distinctions and seal hashes/CRC; commit/push personal, update PR65/automation. Full goal active; next actual source/clock/health and resource-gated physical/model/upstream work remains.
+
+Publication: producer2193e02 and report/seal2c64fda pushed only personal; PR65 and ACTIVE automation updated.83members allhash/CRC independently verified after seal, resolving review sequencing note. Archive preserves the pending-publication plan snapshot; this checked state is subsequent publication evidence, not capture input history.
