@@ -619,4 +619,26 @@ def test_asynchronous_two_plan_history_selects_latest_exact_command_lineage():
     assert result["trajectory_id"] == 8
     assert result["parent_trajectory_id"] == 7
     assert result["depth_sha256"] == second_depth
+    assert [row["revision"] for row in result["applied_depth_history"]] == [1, 2]
+    assert [row["bridge_depth_sequence"] for row in result["applied_depth_history"]] == [2, 6]
+    assert result["applied_depth_history_bridge_bound_candidate"] is True
     assert result["teacher_qualified"] is False
+
+    # The second plan inherits a cumulative occupancy map. Its first applied
+    # depth frame must still be bound to a bridge publication.
+    bridge_events[1]["message_sha256"] = "6" * 64
+    with pytest.raises(ValueError, match="map history"):
+        reconcile((bridge_events, planner, server))
+    bridge_events[1]["message_sha256"] = D
+    bridge_events[2]["source_profile_sha256"] = "6" * 64
+    with pytest.raises(ValueError, match="map history"):
+        reconcile((bridge_events, planner, server))
+    bridge_events[2]["source_profile_sha256"] = PROFILE
+
+    # A later applied revision cannot be omitted from the plan's snapshot.
+    followup[3].update(map_before_revision="1", map_after_revision="1",
+                       map_depth_sequence="1", map_depth_receive_sequence="1",
+                       map_image_sha256=D, map_pose_sha256=P,
+                       map_image_stamp_ns="1000", map_pose_stamp_ns="1000")
+    with pytest.raises(ValueError, match="map snapshot"):
+        reconcile((bridge_events, planner, server))

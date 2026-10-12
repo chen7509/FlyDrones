@@ -285,6 +285,12 @@ def _reconcile_diagnostics(bridge_events: list[dict], planner_events: list[dict]
         planner, "plan_published",
         lambda row: row["event"] == "plan_published"
         and row.get("bspline_sha256") == bspline.get("bspline_sha256"))
+    preceding_maps = [row for row in planner if row["event"] == "map_depth_applied"
+                      and row["sequence"] < plan["sequence"]]
+    if (not preceding_maps
+            or _field_int(preceding_maps[-1], "revision", minimum=1)
+            != _field_int(plan, "map_before_revision", minimum=1)):
+        raise ValueError("plan map snapshot is not the latest applied revision")
     applied = _one_matching(
         planner, "map_depth_applied",
         lambda row: row["event"] == "map_depth_applied"
@@ -319,6 +325,41 @@ def _reconcile_diagnostics(bridge_events: list[dict], planner_events: list[dict]
             or image_source["event_steady_ns"] > depth["event_steady_ns"]
             or pose_source["event_steady_ns"] > depth["event_steady_ns"]):
         raise ValueError("source published after diagnostic receiver")
+    # The occupancy map is cumulative. Binding only the newest applied image
+    # would leave earlier map inputs unattributed when a later plan is chosen.
+    applied_history = []
+    for prior in planner:
+        if prior["event"] != "map_depth_applied" or prior["sequence"] > applied["sequence"]:
+            continue
+        try:
+            receipt = _one_matching(
+                planner, "map history depth receipt",
+                lambda row, receive_sequence=prior["receive_sequence"]:
+                row["event"] == "depth_pose_received"
+                and row["receive_sequence"] == receive_sequence)
+            history_image = _source(
+                bridge, kind="depth", digest=_field_digest(prior, "image_sha256"),
+                sample_ns=_field_int(prior, "image_stamp_ns"))
+            history_pose = _source(
+                bridge, kind="camera_pose", digest=_field_digest(prior, "pose_sha256"),
+                sample_ns=_field_int(prior, "pose_stamp_ns"))
+        except ValueError as exc:
+            raise ValueError("map history source is missing or ambiguous") from exc
+        if (history_image["event_steady_ns"] > receipt["event_steady_ns"]
+                or history_pose["event_steady_ns"] > receipt["event_steady_ns"]
+                or history_image["source_profile_sha256"]
+                != image_source["source_profile_sha256"]
+                or history_pose["source_profile_sha256"]
+                != image_source["source_profile_sha256"]):
+            raise ValueError("map history source timing or profile mismatch")
+        applied_history.append({
+            "revision": _field_int(prior, "revision", minimum=1),
+            "receive_sequence": _field_int(prior, "receive_sequence", minimum=1),
+            "image_sha256": prior["image_sha256"],
+            "camera_pose_sha256": prior["pose_sha256"],
+            "bridge_depth_sequence": history_image["sequence"],
+            "bridge_camera_pose_sequence": history_pose["sequence"],
+        })
     odom_receive_ns = _field_int(odom, "receive_node_ns")
     depth_receive_ns = _field_int(depth, "receive_node_ns")
     map_apply_ns = _field_int(applied, "map_apply_node_ns")
@@ -410,6 +451,8 @@ def _reconcile_diagnostics(bridge_events: list[dict], planner_events: list[dict]
         "session_id": session_id,
         "trajectory_id": trajectory_id,
         "map_revision": revision,
+        "applied_depth_history": applied_history,
+        "applied_depth_history_bridge_bound_candidate": True,
         "depth_sha256": image_digest,
         "camera_pose_sha256": pose_digest,
         "available_odom_sha256": odom_digest,
