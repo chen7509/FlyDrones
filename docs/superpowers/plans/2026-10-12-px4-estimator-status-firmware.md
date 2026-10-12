@@ -13,6 +13,7 @@
 ## Global constraints
 
 - Never modify or build from the existing dirty `~/PX4-Autopilot` working tree or its September binary.
+- Use the external sibling WSL worktree `~/px4-status-worktrees/firmware-v1`; do not add `.worktrees` or change `.gitignore` in upstream PX4.
 - Exact base YAML SHA-256 `7e9c730d45b22af92acfebbb81cb5de4e4a69ac0ca46b012b71ed8fa5c89cbc0`; candidate `783247c76b0af04519681d61546756522847590f0758a675154e12bd2d332e8c`.
 - Exact generated header candidate SHA-256 `bef5afc679cb23ede466cd1ce22db270d3611492ab2326a1e41ce513cbe1c4fc`.
 - Before build, require Windows host free physical memory at least 4 GiB, WSL available memory at least 4 GiB, destination disk at least 15 GiB, no active FlyDrones PX4/Gazebo/OpenVINS/training or unrelated heavy test; one build job, a 90-minute wall limit and a verified systemd user scope with `MemoryMax=4G` and `CPUQuota=100%`. A closed or unenforceable gate produces a read-only refusal, not a build attempt.
@@ -31,7 +32,7 @@
 
 **Files:** Add a focused verifier in `src/flydrones/connectome_training/px4_status_firmware.py`, tests in `tests/connectome_training/test_px4_status_firmware.py`, and a frozen profile under `configs/px4/`.
 
-- [ ] Read the fixed PX4 commit, candidate, submodule manifest and official build rule; specify the one supported isolated worktree and build-only command.
+- [x] Read the fixed PX4 commit, candidate, submodule manifest and official build rule; specify the one supported isolated worktree and build-only command. The detached worktree exists; submodule initialization and build remain pending.
 - [ ] Write failing tests for wrong commit, dirty inherited file, wrong YAML/namespace, missing submodule, path alias and reused result path.
 - [ ] Implement source preparation without changing the original checkout. Save before-build hashes and exact toolchain/submodule provenance; rerun focused tests.
 

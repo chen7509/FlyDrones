@@ -24,7 +24,9 @@ code and build outputs are the authority for this narrow interface question.
 
 ## Isolated build contract
 
-Prepare a new detached WSL PX4 worktree at the fixed commit. Do not modify or
+Prepare a new detached WSL PX4 worktree at
+`~/px4-status-worktrees/firmware-v1` from the fixed commit. The sibling path
+avoids changing the upstream repository's unignored `.worktrees` policy. Do not modify or
 copy the existing `~/PX4-Autopilot` working tree: it has an unrelated modified
 `VehicleIMU.cpp`, and its September build cannot prove a clean candidate.
 Record pinned submodule commits and verify required submodules are present at
