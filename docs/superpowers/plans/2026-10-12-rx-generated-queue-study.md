@@ -16,4 +16,4 @@ Exact3 packets,40ms/20ms diagnostic,20s+2s wrapper,owned14548/14588; no NS coexi
 - [x] Run targeted/adjacent tests, Ruff/diff and independent read-only review; fix findings before trial.
 - [x] Freeze actual selected sources/capability/identity/command and one prospective profile into new exclusive study tree; single Ubuntu owned opaque dispatch only.
 - [x] Read/audit actual result, including missing/stopped second case/cleanup/hash/clock boundaries; no retry or reclassification.
-- [ ] Seal report/ZIP/member hashes/CRC/failures, commit/push personal, update PR65/automation; full goal remains active.
+- [x] Sealed failed result: d461a34 pushed personal, PR65 and active automation updated; 72-member ZIP SHA256 f4fe0c92902a4f2dedce0c6cf2c77a227d840f3fd3d65e8168ad33c21b10d6d9, every member/hash/CRC verified. Sealed plan retains pre-publication state. Full goal remains active; no real arrival/source proof obtained.

@@ -30,5 +30,5 @@ Forbidden-option failure during enable must latch; post-receive conflict must re
 
 ### Task 3: Later prospective real queue trial
 
-- [ ] Independently declare/freeze exact new RX ABI/code/owned endpoints/run id/timeout/cleanup; test admission and failure evidence, review.
-- [ ] Only then one new opaque generated-RX study, preserving missing/failed metadata and close/exit/source hashes. Not authorized by successful parser tests alone.
+- [x] Separate study design7c23ac0 declared/froze exact RX inputs/endpoints/timeout/cleanup, tested faults and independent review before dispatch; see rx-generated-queue-study plan/report.
+- [x] Exactly one new study attempted and failed on missing first metadata; raw byte/close/exit/hash preserved in d461a34/72-member evidence. Option-drift case was not reached; this completes an attempted study, not an arrival/source qualification. No retry.
