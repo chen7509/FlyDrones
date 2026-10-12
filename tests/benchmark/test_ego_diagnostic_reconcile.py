@@ -84,11 +84,12 @@ def reconcile(data):
     return reconcile_diagnostics(*data, run_id=RUN, session_id=SESSION)
 
 
-def cdr_bundle(tmp_path, *, duplicate_depth=False):
+def cdr_bundle(tmp_path, *, duplicate_depth=False, payloads=None):
     from tools.benchmark.ego_bridge_cdr_journal import BridgeCDRJournal
 
-    payloads = {"odometry": b"odom-cdr", "depth": b"depth-cdr",
-                "camera_pose": b"pose-cdr", "position_command": b"command-cdr"}
+    if payloads is None:
+        payloads = {"odometry": b"odom-cdr", "depth": b"depth-cdr",
+                    "camera_pose": b"pose-cdr", "position_command": b"command-cdr"}
     replacement = {original: hashlib.sha256(payloads[kind]).hexdigest()
                    for kind, original in (("odometry", ODOM_DIGEST), ("depth", D),
                                           ("camera_pose", P), ("position_command", C))}
@@ -97,15 +98,23 @@ def cdr_bundle(tmp_path, *, duplicate_depth=False):
         for key, value in row.items():
             if value in replacement:
                 row[key] = replacement[value]
-    times = iter([1, 2, 10, 11, 12, 13, 14, 15,
-                  *([16, 17] if duplicate_depth else []), 90, 91, 92])
+    if "clock" in payloads and "trigger" in payloads:
+        times = iter([1, 2, 3, 4, 10, 11, 12, 13, 14, 15, 16, 17,
+                      *([18, 19] if duplicate_depth else []), 90, 91, 92])
+    else:
+        times = iter([1, 2, 10, 11, 12, 13, 14, 15,
+                      *([16, 17] if duplicate_depth else []), 90, 91, 92])
     path = tmp_path / "bridge.jsonl"
     journal = BridgeCDRJournal(path.open("x", encoding="utf-8"),
                                run_id=RUN, session_id=SESSION, pid=10,
                                serializer=lambda message: message,
                                clock=lambda: next(times))
     journal.start_reset(1)
+    if "clock" in payloads:
+        journal.publish("clock", payloads["clock"], 1000, lambda raw: None)
     journal.publish("odometry", payloads["odometry"], 1000, lambda raw: None)
+    if "trigger" in payloads:
+        journal.publish("trigger", payloads["trigger"], 1000, lambda raw: None)
     journal.publish("depth", payloads["depth"], 1000, lambda raw: None)
     journal.publish("camera_pose", payloads["camera_pose"], 1000, lambda raw: None)
     if duplicate_depth:
@@ -129,6 +138,136 @@ def test_real_cdr_journal_projects_only_unattested_identity(tmp_path):
     assert match["stamp_binding_verified"] is False
     assert match["runtime_source_verified"] is False
     assert match["teacher_qualified"] is False
+
+
+def _typed_cdr_payloads(*, image_encoding="32FC1", command_id=7):
+    from zipfile import ZipFile
+
+    import numpy as np
+    from rosbags.typesys import Stores, get_types_from_msg, get_typestore
+
+    store = get_typestore(Stores.ROS2_HUMBLE)
+    with ZipFile("evidence/ego-causal-provenance-dev-1701.zip") as archive:
+        definition = archive.read(
+            "results/ego-causal-provenance-dev-1701/source/PositionCommand.msg")
+    store.register(get_types_from_msg(definition.decode(), "quadrotor_msgs/msg/PositionCommand"))
+    t = store.types
+    time = t["builtin_interfaces/msg/Time"](sec=0, nanosec=1000)
+    header = t["std_msgs/msg/Header"](stamp=time, frame_id="world")
+    point = t["geometry_msgs/msg/Point"](x=0., y=0., z=1.)
+    vector = t["geometry_msgs/msg/Vector3"](x=0., y=0., z=0.)
+    quat = t["geometry_msgs/msg/Quaternion"](x=0., y=0., z=0., w=1.)
+    pose = t["geometry_msgs/msg/Pose"](position=point, orientation=quat)
+    pose_stamped = t["geometry_msgs/msg/PoseStamped"](header=header, pose=pose)
+    pose_cov = t["geometry_msgs/msg/PoseWithCovariance"](pose=pose, covariance=np.zeros(36))
+    twist = t["geometry_msgs/msg/Twist"](linear=vector, angular=vector)
+    twist_cov = t["geometry_msgs/msg/TwistWithCovariance"](twist=twist, covariance=np.zeros(36))
+    odom = t["nav_msgs/msg/Odometry"](header=header, child_frame_id="base_link",
+                                       pose=pose_cov, twist=twist_cov)
+    image_header = t["std_msgs/msg/Header"](stamp=time, frame_id="camera_optical")
+    image = t["sensor_msgs/msg/Image"](
+        header=image_header, height=1, width=1, encoding=image_encoding, is_bigendian=0,
+        step=4, data=np.frombuffer(b"\x00\x00\x80?", dtype=np.uint8))
+    command_header = t["std_msgs/msg/Header"](
+        stamp=t["builtin_interfaces/msg/Time"](sec=0, nanosec=9000), frame_id="world")
+    command = t["quadrotor_msgs/msg/PositionCommand"](
+        header=command_header, position=point, velocity=vector, acceleration=vector,
+        yaw=0., yaw_dot=0., kx=np.zeros(3), kv=np.zeros(3),
+        trajectory_id=command_id, trajectory_flag=1)
+    clock = t["rosgraph_msgs/msg/Clock"](clock=time)
+    return {
+        "clock": bytes(store.serialize_cdr(clock, clock.__msgtype__)),
+        "odometry": bytes(store.serialize_cdr(odom, odom.__msgtype__)),
+        "trigger": bytes(store.serialize_cdr(pose_stamped, pose_stamped.__msgtype__)),
+        "depth": bytes(store.serialize_cdr(image, image.__msgtype__)),
+        "camera_pose": bytes(store.serialize_cdr(pose_stamped, pose_stamped.__msgtype__)),
+        "position_command": bytes(store.serialize_cdr(command, command.__msgtype__)),
+    }
+
+
+def test_opt_in_cdr_fields_bind_actual_bytes_without_qualifying_teacher(tmp_path):
+    from tools.benchmark.ego_cdr_diagnostic_join import reconcile_cdr_diagnostics
+
+    match = reconcile_cdr_diagnostics(
+        *cdr_bundle(tmp_path, payloads=_typed_cdr_payloads()),
+        run_id=RUN, session_id=SESSION, verify_payload_fields=True)
+    assert match["cdr_payload_fields_verified"] is True
+    assert match["stamp_binding_verified"] is True
+    assert match["cdr_field_audit"]["rosbags_version"] == "0.11.5"
+    assert match["ros_runtime_type_support_verified"] is False
+    assert match["identity_match"] is False
+    assert match["runtime_source_verified"] is False
+    assert match["teacher_qualified"] is False
+
+
+def test_opt_in_cdr_rejects_journal_metadata_and_trailing_bytes(tmp_path):
+    from tools.benchmark.ego_cdr_diagnostic_join import reconcile_cdr_diagnostics
+
+    payloads = _typed_cdr_payloads()
+    payloads["position_command"] += b"\x00"
+    with pytest.raises(ValueError, match="CDR|canonical"):
+        reconcile_cdr_diagnostics(
+            *cdr_bundle(tmp_path, payloads=payloads),
+            run_id=RUN, session_id=SESSION, verify_payload_fields=True)
+    second = tmp_path / "second"
+    second.mkdir()
+    rows, planner, server = cdr_bundle(second, payloads=_typed_cdr_payloads())
+    for row in rows:
+        if row["kind"] == "odometry" and row["phase"] in ("publish_intent", "publish_returned"):
+            row["sample_ns"] = 1001
+    with pytest.raises(ValueError, match="sample|stamp"):
+        reconcile_cdr_diagnostics(rows, planner, server,
+                                  run_id=RUN, session_id=SESSION, verify_payload_fields=True)
+
+
+def test_independent_cdr_audit_checks_clock_trigger_image_and_command(tmp_path):
+    from tools.benchmark.ego_bridge_cdr_journal import BridgeCDRJournal
+    from tools.benchmark.ego_cdr_field_audit import audit_ego_cdr_fields
+
+    payloads = _typed_cdr_payloads()
+    path = tmp_path / "all-kinds.jsonl"
+    journal = BridgeCDRJournal.open_new(path, run_id=RUN, session_id=SESSION,
+                                        serializer=lambda message: message)
+    journal.start_reset(1)
+    for kind in ("clock", "odometry", "trigger", "camera_pose", "depth"):
+        journal.publish(kind, payloads[kind], 1000, lambda raw: None)
+    sequence = journal.receive_command(payloads["position_command"])
+    journal.command_decoded(sequence, stamp_ns=9000, trajectory_id=7, ready=True)
+    journal.close()
+    rows = [json.loads(line) for line in path.read_text(encoding="utf-8").splitlines()]
+    result = audit_ego_cdr_fields(rows)
+    assert result["message_count_by_kind"] == dict.fromkeys(payloads, 1)
+    assert result["ros_runtime_type_support_verified"] is False
+    assert result["teacher_qualified"] is False
+
+
+def test_independent_cdr_audit_does_not_claim_stamps_without_publications(tmp_path):
+    from tools.benchmark.ego_bridge_cdr_journal import BridgeCDRJournal
+    from tools.benchmark.ego_cdr_field_audit import audit_ego_cdr_fields
+
+    path = tmp_path / "command-only.jsonl"
+    journal = BridgeCDRJournal.open_new(path, run_id=RUN, session_id=SESSION,
+                                        serializer=lambda message: message)
+    journal.start_reset(1)
+    sequence = journal.receive_command(_typed_cdr_payloads()["position_command"])
+    journal.command_decoded(sequence, stamp_ns=9000, trajectory_id=7, ready=True)
+    journal.close()
+    rows = [json.loads(line) for line in path.read_text(encoding="utf-8").splitlines()]
+    with pytest.raises(ValueError, match="missing.*CDR"):
+        audit_ego_cdr_fields(rows)
+
+
+@pytest.mark.parametrize("payloads,reason", [
+    ({"image_encoding": "mono8"}, "image geometry"),
+    ({"command_id": 8}, "trajectory"),
+])
+def test_independent_cdr_audit_refuses_valid_bytes_with_false_metadata(tmp_path, payloads, reason):
+    from tools.benchmark.ego_cdr_diagnostic_join import reconcile_cdr_diagnostics
+
+    with pytest.raises(ValueError, match=reason):
+        reconcile_cdr_diagnostics(
+            *cdr_bundle(tmp_path, payloads=_typed_cdr_payloads(**payloads)),
+            run_id=RUN, session_id=SESSION, verify_payload_fields=True)
 
 
 def test_public_reconciler_cannot_skip_cdr_audit_mode():

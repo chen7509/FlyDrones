@@ -14,9 +14,16 @@ _INPUT_KINDS = frozenset({"odometry", "depth", "camera_pose"})
 
 def reconcile_cdr_diagnostics(bridge_rows: list[dict], planner_rows: list[dict],
                               server_rows: list[dict], *, run_id: str,
-                              session_id: str) -> dict:
+                              session_id: str, verify_payload_fields: bool = False) -> dict:
     """Match exact recorded CDR digests while retaining unknown source status."""
     audit = audit_bridge_cdr_journal(bridge_rows)
+    if type(verify_payload_fields) is not bool:
+        raise ValueError("verify_payload_fields must be boolean")
+    field_audit = None
+    if verify_payload_fields:
+        from tools.benchmark.ego_cdr_field_audit import audit_ego_cdr_fields
+
+        field_audit = audit_ego_cdr_fields(bridge_rows)
     if audit["run_id"] != run_id or audit["session_id"] != session_id:
         raise ValueError("bridge run or session mismatch")
 
@@ -61,8 +68,10 @@ def reconcile_cdr_diagnostics(bridge_rows: list[dict], planner_rows: list[dict],
     match["identity_match"] = False
     match["current_observation_match"] = False
     match["cdr_journal_internal_complete"] = audit["journal_complete"]
-    match["cdr_payload_fields_verified"] = False
-    match["stamp_binding_verified"] = False
+    match["cdr_payload_fields_verified"] = field_audit is not None
+    match["stamp_binding_verified"] = field_audit is not None
+    match["cdr_field_audit"] = field_audit
+    match["ros_runtime_type_support_verified"] = False
     match["source_attested"] = False
     match["dds_delivery_verified"] = False
     return match
