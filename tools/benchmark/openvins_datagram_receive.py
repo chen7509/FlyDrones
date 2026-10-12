@@ -11,6 +11,7 @@ import socket
 from dataclasses import dataclass
 from threading import Lock
 
+from tools.benchmark.kernel_datagram_arrival import KernelTimestampNS
 from tools.benchmark.openvins_segmented_journal import SegmentedEvents, event_log, record_failure, require_capacity
 from tools.benchmark.openvins_timesync_interval import _RestorationWindow
 from tools.benchmark.owned_daemon_connection import _error
@@ -21,6 +22,7 @@ class ReceivedDatagram:
     data: bytes
     peer: tuple[str, int]
     received_ns: int
+    kernel_received_realtime_ns: int | None = None
 
 
 class DatagramReceiver:
@@ -28,10 +30,13 @@ class DatagramReceiver:
     LOCAL = ("127.0.0.1", 14548)
     PEER = ("127.0.0.1", 14588)
 
-    def __init__(self, sock, guard, now, start_ns, journal, *, retention=None):
+    def __init__(self, sock, guard, now, start_ns, journal, *, retention=None, kernel_timestamps=None):
         if (type(start_ns) is not int or not 0 <= start_ns < 2**64 - 8_000_000_000
                 or not all(callable(f) for f in (guard, now, journal))):
             raise ValueError("explicit receive clock/guard/journal required")
+        if kernel_timestamps is not None and type(kernel_timestamps) is not KernelTimestampNS:
+            raise ValueError("exact optional kernel timestamp profile required")
+        self._kernel = kernel_timestamps
         self._recv_flags = getattr(socket, "MSG_DONTWAIT", None)
         if type(self._recv_flags) not in (int, socket.MsgFlag) or self._recv_flags <= 0:
             raise ValueError("platform MSG_DONTWAIT required")
@@ -61,13 +66,17 @@ class DatagramReceiver:
 
     @property
     def evidence(self):
-        return dict(events=copy.deepcopy(self._events), failure=self._failure,
+        result = dict(events=copy.deepcopy(self._events), failure=self._failure,
                     datagram_returns=self._datagram_returns,
                     unpublished_event=copy.deepcopy(self._draft),
                     journal_errors=copy.deepcopy(self._journal_errors),
                     timestamp_basis="userspace monotonic recvmsg return, not kernel arrival",
                     sender_process_proven=False, network_authorized=False,
                     live_convergence_qualified=False, fusion_qualified=False)
+        if self._kernel is not None:
+            result['kernel_timestamps'] = self._kernel.evidence
+            result['timestamp_basis'] = 'userspace monotonic return plus separate unmapped kernel software CLOCK_REALTIME'
+        return result
 
     def _open(self):
         if self._restoration is not None:
@@ -171,6 +180,8 @@ class DatagramReceiver:
             raise ValueError("nonblocking socket required")
         if not self._address(s.getsockname(), self.LOCAL):
             raise ValueError("local endpoint changed")
+        if self._kernel is not None:
+            self._kernel.check(s)
         return self._clock()
 
     def _append(self, kind, **fields):
@@ -229,12 +240,19 @@ class DatagramReceiver:
             self._check()
             if self._datagram_returns >= 4096:
                 raise ValueError('total datagram return capacity')
-            require_capacity(self._events, self._regular_events, self.MAX_EVENTS, 2)
+            require_capacity(self._events, self._regular_events, self.MAX_EVENTS, 3 if self._kernel is not None else 2)
             self._publish(self._append("receive_attempt", last_checked_ns=self._last))
             started = self._check()
+            realtime_before = None
+            if self._kernel is not None:
+                realtime_before = self._kernel.realtime()
+                self._check()
             try:
-                result = self._sock.recvmsg(4096, 0, self._recv_flags)
+                result = self._sock.recvmsg(4096, 0 if self._kernel is None else self._kernel.ancillary_bytes,
+                                            self._recv_flags)
             except BlockingIOError:
+                if self._kernel is not None:
+                    self._kernel.realtime()
                 returned = self._check()
                 if returned - started >= 2_000_000_000:
                     raise ValueError("receive call timeout") from None
@@ -243,9 +261,22 @@ class DatagramReceiver:
             # Save actual returned bytes before any clock/guard/journal callback.
             event = self._append("receive_return", started_ns=started, received_ns=None,
                                  **self._description(result))
+            if self._kernel is not None:
+                event.update(ancillary_raw=self._kernel.describe(result[1])
+                             if type(result) is tuple and len(result) == 4 else None,
+                             kernel_realtime_before_ns=realtime_before, kernel_realtime_after_ns=None,
+                             kernel_realtime_after_raw_ns=None)
+            after_realtime_attempted = False
             try:
                 received = self._clock()
+                event["received_ns"] = received
+                if self._kernel is not None:
+                    after_realtime_attempted = True
+                    event["kernel_realtime_after_ns"] = self._kernel.realtime()
+                    event["kernel_realtime_after_raw_ns"] = self._kernel.evidence["last_realtime_read_ns"]
             except BaseException:
+                if self._kernel is not None and after_realtime_attempted:
+                    event["kernel_realtime_after_raw_ns"] = self._kernel.evidence["last_realtime_read_ns"]
                 try:
                     self._publish(event)
                 except BaseException as secondary:
@@ -260,11 +291,19 @@ class DatagramReceiver:
                 raise ValueError("recvmsg return shape")
             data, ancillary, flags, peer = result
             if (type(data) is not bytes or not 1 <= len(data) <= 4096
-                    or type(ancillary) is not list or ancillary or type(flags) is not int or flags != 0
+                    or type(ancillary) is not list or (self._kernel is None and ancillary)
+                    or type(flags) is not int or flags != 0
                     or not self._address(peer, self.PEER)):
                 raise ValueError("datagram payload/ancillary/flags/source refused")
             self._open()
-            return ReceivedDatagram(data, peer, received)
+            kernel_received = None
+            if self._kernel is not None:
+                kernel_received = self._kernel.parse(ancillary, flags, event["kernel_realtime_after_ns"])
+                self._publish(self._append("kernel_timestamp_observed", kernel_received_realtime_ns=kernel_received,
+                                           clock_domain="CLOCK_REALTIME", abi_sha256=self._kernel.evidence["abi_sha256"],
+                                           clock_mapping_qualified=False))
+                self._check()
+            return ReceivedDatagram(data, peer, received, kernel_received)
         except BaseException as exc:
             self._fail(exc)
             if not isinstance(exc, Exception):
