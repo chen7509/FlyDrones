@@ -29,9 +29,10 @@ from tools.connectome.run_status_ros_type_build import (  # noqa: E402
 
 BUILD = ROOT / "results/px4-status-journal-build-dev-1701-v2"
 WORKSPACE = BUILD / "workspace-v1"
-RESULT = ROOT / "results/px4-status-journal-synthetic-dev-1701"
+PRIOR = ROOT / "results/px4-status-journal-synthetic-dev-1701"
+RESULT = ROOT / "results/px4-status-journal-synthetic-dev-1701-v2"
 IMAGE_ID = "sha256:a4dae62b38bc01a01d084be7b68db83ec804fef7673604e1a9c986a4baa88a6a"
-CONTAINER = "flydrones-px4-status-journal-synthetic-v1"
+CONTAINER = "flydrones-px4-status-journal-synthetic-v2"
 HARNESS_COMMIT = "8becb9e71cab5a7da5a1ad98cdfed8661b43b0bc"
 HARNESS = {
     "status_synthetic_pub.py": "fc9f33c3119a217d019906ef364ed6b78717ace141d7e07e368243fcd0c2ad22",
@@ -178,12 +179,30 @@ def _qualifies(result: dict, preflight: dict) -> bool:
     )
 
 
+def _prior_preflight_refusal() -> bool:
+    """V2 is allowed only after V1 refused before Docker launch."""
+    if not PRIOR.is_dir() or {p.name for p in PRIOR.iterdir()} != {
+        "run-profile.json", "tools", "preflight.json", "result.json",
+    }:
+        raise ValueError("prior synthetic attempt was not prelaunch-only")
+    prior = json.loads((PRIOR / "result.json").read_text(encoding="utf-8"))
+    preflight = json.loads((PRIOR / "preflight.json").read_text(encoding="utf-8"))
+    if (prior != {"status": "preflight_failed", "started": False,
+                  "error": "RuntimeError('status synthetic preflight refused')"}
+            or not isinstance(preflight.get("competing_processes"), list)
+            or not preflight["competing_processes"]):
+        raise ValueError("prior refusal was not a recorded competitor")
+    return True
+
+
 def main() -> int:
     if RESULT.exists():
         raise FileExistsError("one-shot status synthetic result already exists")
+    _prior_preflight_refusal()
     RESULT.mkdir()
     _write("run-profile.json", {
-        "schema": "flydrones.px4_status_journal_synthetic.v1",
+        "schema": "flydrones.px4_status_journal_synthetic.v2",
+        "prior_prelaunch_refusal": str(PRIOR),
         "build_result": str(BUILD), "source_profile_sha256": SOURCE_PROFILE_SHA256,
         "image_id": IMAGE_ID, "harness_commit": HARNESS_COMMIT,
         "harness_sha256": HARNESS, "cpus": 1, "memory_mib": 512,

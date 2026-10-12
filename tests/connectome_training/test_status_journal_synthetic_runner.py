@@ -75,3 +75,24 @@ def test_existing_result_refuses_second_launch(tmp_path, monkeypatch):
     monkeypatch.setattr(subject.subprocess, "run", lambda *_a, **_k: pytest.fail("launched"))
     with pytest.raises(FileExistsError):
         subject.main()
+
+
+def test_v2_retry_requires_documented_prelaunch_competitor_refusal(tmp_path, monkeypatch):
+    import json
+
+    prior = tmp_path / "prior"
+    prior.mkdir()
+    (prior / "run-profile.json").write_text("{}\n")
+    (prior / "tools").mkdir()
+    (prior / "preflight.json").write_text(json.dumps({
+        "competing_processes": [{"pid": 56828, "name": "python.exe"}],
+    }))
+    (prior / "result.json").write_text(json.dumps({
+        "status": "preflight_failed", "started": False,
+        "error": "RuntimeError('status synthetic preflight refused')",
+    }))
+    monkeypatch.setattr(subject, "PRIOR", prior)
+    assert subject._prior_preflight_refusal()
+    (prior / "launch.json").write_text("{}\n")
+    with pytest.raises(ValueError):
+        subject._prior_preflight_refusal()
