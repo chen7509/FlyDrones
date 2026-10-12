@@ -48,6 +48,7 @@ class KernelTimestampNS:
     """One unbound-to-bound socket's software CLOCK_REALTIME ancillary profile."""
 
     ancillary_bytes = 32
+    _expected_abi = _ABI
 
     def __init__(self, abi_bytes: bytes, abi_sha256: str, *, realtime_ns=time.time_ns):
         if (type(abi_bytes) is not bytes or not 1 <= len(abi_bytes) <= 4096
@@ -59,8 +60,9 @@ class KernelTimestampNS:
                              parse_constant=lambda _value: (_ for _ in ()).throw(ValueError("ABI constant")))
         except (UnicodeError, json.JSONDecodeError) as exc:
             raise ValueError("kernel timestamp ABI JSON invalid") from exc
-        if (type(abi) is not dict or abi.keys() != _ABI.keys()
-                or any(type(abi[name]) is not type(value) or abi[name] != value for name, value in _ABI.items())
+        expected = type(self)._expected_abi
+        if (type(abi) is not dict or abi.keys() != expected.keys()
+                or any(type(abi[name]) is not type(value) or abi[name] != value for name, value in expected.items())
                 or not callable(realtime_ns)):
             raise ValueError("unsupported kernel timestamp ABI or realtime reader")
         self._abi = copy.deepcopy(abi)
@@ -91,6 +93,12 @@ class KernelTimestampNS:
         self._failure = self._failure or reason
         raise ValueError(reason)
 
+    def _option(self):
+        return self._abi["so_timestampns_new"], 1
+
+    def _additional_option_check(self, sock):
+        pass
+
     def enable_before_bind(self, sock):
         if not self._enable_lock.acquire(blocking=False):
             self._refuse("concurrent kernel timestamp enable")
@@ -107,11 +115,15 @@ class KernelTimestampNS:
             fd = sock.fileno()
             if type(fd) is not int or fd < 0:
                 self._refuse("invalid kernel timestamp descriptor")
-            sock.setsockopt(self._abi["sol_socket"], self._abi["so_timestampns_new"], 1)
-            enabled = sock.getsockopt(self._abi["sol_socket"], self._abi["so_timestampns_new"])
+            self._additional_option_check(sock)
+            self._open()
+            option, required = self._option()
+            sock.setsockopt(self._abi["sol_socket"], option, required)
+            enabled = sock.getsockopt(self._abi["sol_socket"], option)
+            self._additional_option_check(sock)
             self._open()
             current_fd = sock.fileno()
-            if (type(enabled) is not int or enabled != 1 or type(current_fd) is not int or current_fd != fd
+            if (type(enabled) is not int or enabled != required or type(current_fd) is not int or current_fd != fd
                     or not _unbound(sock.getsockname())):
                 self._refuse("kernel timestamp pre-bind option confirmation failed")
             self._sock, self._fd = sock, fd
@@ -122,13 +134,20 @@ class KernelTimestampNS:
             self._enable_lock.release()
 
     def check(self, sock):
-        self._open()
-        if sock is not self._sock or type(sock.fileno()) is not int or sock.fileno() != self._fd:
-            self._refuse("kernel timestamp socket/descriptor changed or not prepared")
-        enabled = sock.getsockopt(self._abi["sol_socket"], self._abi["so_timestampns_new"])
-        self._open()
-        if type(enabled) is not int or enabled != 1:
-            self._refuse("kernel timestamp option changed")
+        try:
+            self._open()
+            if sock is not self._sock or type(sock.fileno()) is not int or sock.fileno() != self._fd:
+                self._refuse("kernel timestamp socket/descriptor changed or not prepared")
+            self._additional_option_check(sock)
+            option, required = self._option()
+            enabled = sock.getsockopt(self._abi["sol_socket"], option)
+            self._additional_option_check(sock)
+            self._open()
+            if type(enabled) is not int or enabled != required:
+                self._refuse("kernel timestamp option changed")
+        except BaseException as exc:
+            self._failure = self._failure or _error(exc)
+            raise
 
     def realtime(self):
         self._last_real_read = None
@@ -175,6 +194,9 @@ class KernelTimestampNS:
                 or type(raw) is not bytes or len(raw) != self._abi["timespec_bytes"]):
             self._refuse("kernel timestamp ancillary type/ABI/length invalid")
         sec, nsec = struct.unpack("<qq", raw)
+        return self._validate_value(sec, nsec, after_realtime_ns)
+
+    def _validate_value(self, sec, nsec, after_realtime_ns):
         if sec <= 0 or not 0 <= nsec < 1_000_000_000:
             self._refuse("kernel timestamp sec/nsec invalid")
         value = sec * 1_000_000_000 + nsec

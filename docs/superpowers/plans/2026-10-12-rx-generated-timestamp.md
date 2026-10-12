@@ -18,14 +18,14 @@ Forbidden-option failure during enable must latch; post-receive conflict must re
 ### Task 1: ABI and exact RX profile
 
 - [x] Read latest worktree/resource/failure evidence and fixed official headers/API/source before design.
-- [ ] Add tests in tests/benchmark/test_kernel_rx_timestamping.py; bootstrap API failure then behavior RED as applicable.
-- [ ] Add tools/benchmark/kernel_rx_timestamping_abi.c; compile once read-only under bounded existing harness with new outputs/hash identity, freeze headers/compiler/ABI. Preserve failure.
-- [ ] Refactor only necessary hooks in kernel_datagram_arrival.py, implement kernel_rx_timestamping.py; strict triple/forbidden flags/latch tests GREEN.
+- [x] Add tests in tests/benchmark/test_kernel_rx_timestamping.py; bootstrap API failure then behavior RED as applicable.
+- [x] Add tools/benchmark/kernel_rx_timestamping_abi.c; compile once read-only under bounded existing harness with new outputs/hash identity, freeze headers/compiler/ABI. Preserve failure.
+- [x] Refactor only necessary hooks in kernel_datagram_arrival.py, implement kernel_rx_timestamping.py; strict triple/forbidden flags/latch tests GREEN.
 
 ### Task 2: Existing receiver integration and review
 
-- [ ] Allow only exact two internal profile types in openvins_datagram_receive.py; use existing raw retention and clock checks; integration RED→GREEN.
-- [ ] Run new/NS/legacy/segmented/parity/session adjacent tests, changed Ruff/diff; inspect all results.
+- [x] Allow only exact two internal profile types in openvins_datagram_receive.py; use existing raw retention and clock checks; integration RED→GREEN.
+- [x] Run new/NS/legacy/segmented/parity/session adjacent tests, changed Ruff/diff; inspect all results.
 - [ ] Independent read-only code/ABI review, fix counterexamples before further activity; seal report/evidence and commit/push personal/PR65/automation.
 
 ### Task 3: Later prospective real queue trial

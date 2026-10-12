@@ -12,6 +12,7 @@ from dataclasses import dataclass
 from threading import Lock
 
 from tools.benchmark.kernel_datagram_arrival import KernelTimestampNS
+from tools.benchmark.kernel_rx_timestamping import KernelRXTimestamping
 from tools.benchmark.openvins_segmented_journal import SegmentedEvents, event_log, record_failure, require_capacity
 from tools.benchmark.openvins_timesync_interval import _RestorationWindow
 from tools.benchmark.owned_daemon_connection import _error
@@ -34,7 +35,7 @@ class DatagramReceiver:
         if (type(start_ns) is not int or not 0 <= start_ns < 2**64 - 8_000_000_000
                 or not all(callable(f) for f in (guard, now, journal))):
             raise ValueError("explicit receive clock/guard/journal required")
-        if kernel_timestamps is not None and type(kernel_timestamps) is not KernelTimestampNS:
+        if kernel_timestamps is not None and type(kernel_timestamps) not in (KernelTimestampNS, KernelRXTimestamping):
             raise ValueError("exact optional kernel timestamp profile required")
         self._kernel = kernel_timestamps
         self._recv_flags = getattr(socket, "MSG_DONTWAIT", None)
