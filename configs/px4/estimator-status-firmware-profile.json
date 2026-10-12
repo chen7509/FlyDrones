@@ -1,0 +1,26 @@
+{
+  "schema": "flydrones.px4_estimator_status_firmware_source.v1",
+  "px4_commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+  "isolated_root": "/home/yuchen7509/px4-status-worktrees/firmware-v1",
+  "build_result_path": "/home/yuchen7509/px4-status-worktrees/status-build-v1",
+  "namespace": "",
+  "source_sha256": {
+    "src/modules/uxrce_dds_client/dds_topics.yaml": "7e9c730d45b22af92acfebbb81cb5de4e4a69ac0ca46b012b71ed8fa5c89cbc0",
+    "src/modules/uxrce_dds_client/generate_dds_topics.py": "107bc83c587dff56b5260f3f1d9ec9f2fa722629cc7155a68bb203052da77e98",
+    "src/modules/uxrce_dds_client/dds_topics.h.em": "156e9a096db3321689185a6f791a1392cca75b854bbc4f04b54f1076ced43256",
+    "msg/EstimatorStatus.msg": "44cba4424c224753b8249729e9bf7e530d0b34e04d5299fcf94f2677c8f50bd5"
+  },
+  "candidate_yaml_sha256": "783247c76b0af04519681d61546756522847590f0758a675154e12bd2d332e8c",
+  "required_sitl_submodules": {
+    "Tools/simulation/gz": "b6127f4ec20de867e215fb5f78ae88b80f371909",
+    "src/drivers/gps/devices": "0b9695881bd1e8f830ab4538ab3acc0050019eba",
+    "src/lib/events/libevents": "9ef591c447fe0386d698bf6fb9a6d27e43988ee4",
+    "src/lib/heatshrink/heatshrink": "052e6de72f67f1777198bce98f3de62f7f3c16a0",
+    "src/modules/mavlink/mavlink": "33af200d25ec6f0925b49b1ba82bbf1294ea5f72",
+    "src/modules/uxrce_dds_client/Micro-XRCE-DDS-Client": "711aef423edd1820347b866d1e4164832df35d04"
+  },
+  "required_sitl_submodule_basis": "initialized non-flightgear modules in the existing fixed-commit SITL checkout; the isolated build may reveal further dependencies and must retain such failure",
+  "firmware_compiled_verified": false,
+  "live_source_authenticated": false,
+  "training_eligible": false
+}

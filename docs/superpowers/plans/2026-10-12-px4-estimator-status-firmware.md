@@ -32,9 +32,9 @@
 
 **Files:** Add a focused verifier in `src/flydrones/connectome_training/px4_status_firmware.py`, tests in `tests/connectome_training/test_px4_status_firmware.py`, and a frozen profile under `configs/px4/`.
 
-- [x] Read the fixed PX4 commit, candidate, submodule manifest and official build rule; specify the one supported isolated worktree and build-only command. The detached worktree exists; submodule initialization and build remain pending.
-- [ ] Write failing tests for wrong commit, dirty inherited file, wrong YAML/namespace, missing submodule, path alias and reused result path.
-- [ ] Implement source preparation without changing the original checkout. Save before-build hashes and exact toolchain/submodule provenance; rerun focused tests.
+- [x] Read the fixed PX4 commit, candidate, submodule manifest and official build rule; specify the one supported isolated worktree and build-only command. The detached worktree, six declared submodules and candidate source now pass the source audit; the build remains pending.
+- [x] Write failing tests for wrong commit, dirty inherited file, wrong YAML/namespace, missing submodule, path alias and reused result path.
+- [x] Implement source preparation without changing the original checkout. Save before-build hashes and exact toolchain/submodule provenance; rerun focused tests. The six declared SITL submodules and candidate YAML are prepared in the detached worktree; build-discovered dependencies remain a separate fail-closed check.
 
 ### Task 2: Bounded one-shot build
 
