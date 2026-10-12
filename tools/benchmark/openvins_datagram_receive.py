@@ -24,6 +24,7 @@ class ReceivedDatagram:
     peer: tuple[str, int]
     received_ns: int
     kernel_received_realtime_ns: int | None = None
+    modeled_kernel_age_upper_ns: int | None = None
 
 
 class DatagramReceiver:
@@ -31,13 +32,23 @@ class DatagramReceiver:
     LOCAL = ("127.0.0.1", 14548)
     PEER = ("127.0.0.1", 14588)
 
-    def __init__(self, sock, guard, now, start_ns, journal, *, retention=None, kernel_timestamps=None):
+    def __init__(self, sock, guard, now, start_ns, journal, *, retention=None, kernel_timestamps=None,
+                 kernel_queue_age=None):
         if (type(start_ns) is not int or not 0 <= start_ns < 2**64 - 8_000_000_000
                 or not all(callable(f) for f in (guard, now, journal))):
             raise ValueError("explicit receive clock/guard/journal required")
         if kernel_timestamps is not None and type(kernel_timestamps) not in (KernelTimestampNS, KernelRXTimestamping):
             raise ValueError("exact optional kernel timestamp profile required")
+        if kernel_queue_age is not None:
+            # Existing frozen default/NS bundles gain no new import dependency.
+            from tools.benchmark.kernel_queue_age import KernelQueueAge
+            if type(kernel_queue_age) is not KernelQueueAge:
+                raise ValueError('exact optional queue-age profile required')
         self._kernel = kernel_timestamps
+        self._queue_age = kernel_queue_age
+        self._last_issued_kernel = None
+        self._last_age_check = None
+        self._issued_packet = None
         self._recv_flags = getattr(socket, "MSG_DONTWAIT", None)
         if type(self._recv_flags) not in (int, socket.MsgFlag) or self._recv_flags <= 0:
             raise ValueError("platform MSG_DONTWAIT required")
@@ -55,6 +66,8 @@ class DatagramReceiver:
         self._failure = None
         self._lock = Lock()
         try:
+            if self._queue_age is not None:
+                self._queue_age._bind(self,sock,kernel_timestamps,now,start_ns)
             self._check()
         except BaseException as exc:
             self._fail(exc)
@@ -77,6 +90,9 @@ class DatagramReceiver:
         if self._kernel is not None:
             result['kernel_timestamps'] = self._kernel.evidence
             result['timestamp_basis'] = 'userspace monotonic return plus separate unmapped kernel software CLOCK_REALTIME'
+        if self._queue_age is not None:
+            result['kernel_queue_age'] = self._queue_age.evidence
+            result['last_issued_age_check'] = copy.deepcopy(self._last_age_check)
         return result
 
     def _open(self):
@@ -96,10 +112,16 @@ class DatagramReceiver:
     def _clock(self):
         self._open()
         value = self._now()
+        return self._accept_clock(value)
+
+    def _accept_clock(self, value):
+        """Check a clock already observed by the age sampler; no callback."""
         self._open()
         if type(value) is not int or not self._last <= value < 2**64:
             raise ValueError("datagram receive clock invalid or regressed")
         self._last = value
+        if self._queue_age is not None:
+            self._queue_age._observe_mono(self,value)
         if self._restoring:
             return self._restoration.check(value)
         if value >= self._deadline:
@@ -183,6 +205,8 @@ class DatagramReceiver:
             raise ValueError("local endpoint changed")
         if self._kernel is not None:
             self._kernel.check(s)
+        if self._queue_age is not None:
+            self._queue_age._current(self)
         return self._clock()
 
     def _append(self, kind, **fields):
@@ -245,15 +269,23 @@ class DatagramReceiver:
             self._publish(self._append("receive_attempt", last_checked_ns=self._last))
             started = self._check()
             realtime_before = None
+            clock_before = None
             if self._kernel is not None:
-                realtime_before = self._kernel.realtime()
+                if self._queue_age is None:
+                    realtime_before = self._kernel.realtime()
+                else:
+                    clock_before = self._queue_age._sample(self)
+                    realtime_before = clock_before['realtime_ns']
                 self._check()
             try:
                 result = self._sock.recvmsg(4096, 0 if self._kernel is None else self._kernel.ancillary_bytes,
                                             self._recv_flags)
             except BlockingIOError:
                 if self._kernel is not None:
-                    self._kernel.realtime()
+                    if self._queue_age is None:
+                        self._kernel.realtime()
+                    else:
+                        self._queue_age._sample(self)
                 returned = self._check()
                 if returned - started >= 2_000_000_000:
                     raise ValueError("receive call timeout") from None
@@ -267,13 +299,20 @@ class DatagramReceiver:
                              if type(result) is tuple and len(result) == 4 else None,
                              kernel_realtime_before_ns=realtime_before, kernel_realtime_after_ns=None,
                              kernel_realtime_after_raw_ns=None)
+                if self._queue_age is not None:
+                    event.update(queue_clock_before=clock_before,queue_clock_after=None)
             after_realtime_attempted = False
             try:
                 received = self._clock()
                 event["received_ns"] = received
                 if self._kernel is not None:
                     after_realtime_attempted = True
-                    event["kernel_realtime_after_ns"] = self._kernel.realtime()
+                    if self._queue_age is None:
+                        event["kernel_realtime_after_ns"] = self._kernel.realtime()
+                    else:
+                        anchor = self._queue_age._sample(self)
+                        event['queue_clock_after'] = anchor
+                        event['kernel_realtime_after_ns'] = anchor['realtime_ns']
                     event["kernel_realtime_after_raw_ns"] = self._kernel.evidence["last_realtime_read_ns"]
             except BaseException:
                 if self._kernel is not None and after_realtime_attempted:
@@ -298,13 +337,25 @@ class DatagramReceiver:
                 raise ValueError("datagram payload/ancillary/flags/source refused")
             self._open()
             kernel_received = None
+            modeled_upper = None
             if self._kernel is not None:
                 kernel_received = self._kernel.parse(ancillary, flags, event["kernel_realtime_after_ns"])
+                age_fields = {}
+                if self._queue_age is not None:
+                    age_fields['modeled_age_before_journal'] = self._queue_age._assess(self,kernel_received)
                 self._publish(self._append("kernel_timestamp_observed", kernel_received_realtime_ns=kernel_received,
                                            clock_domain="CLOCK_REALTIME", abi_sha256=self._kernel.evidence["abi_sha256"],
-                                           clock_mapping_qualified=False))
+                                           clock_mapping_qualified=False,**age_fields))
                 self._check()
-            return ReceivedDatagram(data, peer, received, kernel_received)
+                if self._queue_age is not None:
+                    final_age = self._queue_age._assess(self,kernel_received)
+                    self._accept_clock(final_age['checked_monotonic_ns'])
+                    modeled_upper = final_age['modeled_age_upper_ns']
+                    self._last_issued_kernel = kernel_received
+                    self._last_age_check = final_age
+            packet = ReceivedDatagram(data, peer, received, kernel_received,modeled_upper)
+            self._issued_packet = packet
+            return packet
         except BaseException as exc:
             self._fail(exc)
             if not isinstance(exc, Exception):
@@ -313,7 +364,7 @@ class DatagramReceiver:
         finally:
             self._lock.release()
 
-    def check(self):
+    def check(self, packet=None):
         """Non-consuming revalidation, for the final send boundary."""
         self._open()
         if not self._lock.acquire(blocking=False):
@@ -321,6 +372,11 @@ class DatagramReceiver:
             raise ValueError("concurrent datagram check")
         try:
             self._check()
+            if self._queue_age is not None and (packet is not None or self._issued_packet is not None):
+                if packet is not self._issued_packet:
+                    raise ValueError('queue-age final check requires exact latest issued packet')
+                self._last_age_check = self._queue_age._assess(self,packet.kernel_received_realtime_ns)
+                self._accept_clock(self._last_age_check['checked_monotonic_ns'])
         except BaseException as exc:
             self._fail(exc)
             raise
