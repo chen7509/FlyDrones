@@ -7,4 +7,6 @@ User authorization already covers this offline work. Use the existing worktree/P
 - [x] Add behavioral mismatch REDs (15 failed/8 passed), implement every-sample JSON-to-CDR field binding and fail-closed IO/version/definition checks, then GREEN.
 - [x] Independently audit sealed normal and failed-writer records plus malformed partial-write refusal; retain every original failure and byte hash without running a source process. LF framing review repair had separate RED/GREEN; read-only final-source retained-v2 is kept alongside v1.
 - [x] Run targeted24/adjacent85 passed plus one existing symlink skip, Ruff/diff, independent review with no outstanding issues; record final import/source/dependency hashes and report for evidence sealing.
-- [ ] Commit/push only `personal`, update draft PR65 and continuing automation. Do not grant source, clock, fusion, capture/training or flight authority.
+- [x] Seal47 members with SHA/CRC and final source checks, commit/push `2a6fd2a` only to `personal`, and update draft PR65. Do not grant source, clock, fusion, capture/training or flight authority.
+
+Publication receipt: the ZIP keeps the prepublication plan; this checkbox update follows successful push/PR edit. Continuing automation resumes from source/clock/runtime provenance and resource-gated firmware/live-receipt work.
