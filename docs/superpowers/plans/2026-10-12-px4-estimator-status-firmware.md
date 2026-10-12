@@ -40,9 +40,9 @@
 
 **Files:** Add `tools/connectome/run_px4_status_firmware_build.py` and runner tests.
 
-- [ ] Write failing admission tests for Windows/WSL/disk resource limits, competing processes, command mismatch, timeout and ambiguous owned cleanup.
-- [ ] Implement a preflight that has no PX4 side effect until all checks pass. Preserve a refusal record if the current gate is closed.
-- [x] Interim read-only admission: 20 tests pass for source, resource, command, process and scope refusals; a real snapshot refused at 3.039 GiB Windows memory. No build-dispatch path exists yet. Owned cleanup and the fresh scoped dispatch remain for the full runner.
+- [x] Write failing admission tests for Windows/WSL/disk resource limits, competing processes, command mismatch, timeout and ambiguous owned cleanup. A later review also closed three missed in-flight PX4 build process forms.
+- [x] Implement a preflight with no PX4 side effect until all checks pass. Real admission observations refused below 4 GiB Windows memory and preserved the refusal evidence.
+- [x] Implement a one-shot candidate dispatcher with two fresh admissions, pinned absolute toolchain entrypoints and a post-build drift check, clean inherited environment, pre-dispatch ignored/untracked/build-tree refusal, one nonce-named 4 GiB/one-CPU scope with invocation binding, fixed one-job command, two 90-minute limits, stdout/stderr retention and narrow owned-scope cleanup. Independent review's Important issues were fixed; 74 focused/adjacent tests and harmless short-lived probes passed. No real firmware dispatch has been admitted or verified. The selected six submodules remain a provisional dependency basis, not an exhaustive offline closure.
 - [ ] Once resources are truly available, dispatch exactly one build-only `px4_sitl_default` attempt at one job under the frozen wall limit. Record stdout/stderr, process identity, exit and maximum observed resources. If the build fails, retain the exact attempt and stop; do not relabel a repair as the same attempt.
 
 ### Task 3: Binary audit and publication
