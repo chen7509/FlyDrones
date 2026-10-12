@@ -17,6 +17,7 @@ import psutil
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "src"))
+sys.path.insert(0, str(ROOT))
 from flydrones.connectome_training.px4_status_journal_source import verify_source  # noqa: E402
 from flydrones.connectome_training.px4_status_source_journal import (  # noqa: E402
     audit_status_source_journal,

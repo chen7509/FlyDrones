@@ -1,8 +1,21 @@
 """Status synthetic admission/result checks; tests never launch Docker."""
 
+import subprocess
+import sys
+from pathlib import Path
+
 import pytest
 
 from tools.connectome import run_status_journal_synthetic as subject
+
+
+def test_direct_script_imports_without_project_pythonpath():
+    root = Path(__file__).resolve().parents[2]
+    script = root / "tools/connectome/run_status_journal_synthetic.py"
+    command = [sys.executable, "-I", "-c",
+               "import runpy; runpy.run_path(" + repr(str(script)) + ", run_name='import_only')"]
+    completed = subprocess.run(command, cwd=root, capture_output=True, text=True, timeout=15)
+    assert completed.returncode == 0, completed.stderr
 
 
 def passing():
