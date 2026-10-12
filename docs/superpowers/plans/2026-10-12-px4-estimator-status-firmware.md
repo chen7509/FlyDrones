@@ -42,6 +42,7 @@
 
 - [ ] Write failing admission tests for Windows/WSL/disk resource limits, competing processes, command mismatch, timeout and ambiguous owned cleanup.
 - [ ] Implement a preflight that has no PX4 side effect until all checks pass. Preserve a refusal record if the current gate is closed.
+- [x] Interim read-only admission: 20 tests pass for source, resource, command, process and scope refusals; a real snapshot refused at 3.039 GiB Windows memory. No build-dispatch path exists yet. Owned cleanup and the fresh scoped dispatch remain for the full runner.
 - [ ] Once resources are truly available, dispatch exactly one build-only `px4_sitl_default` attempt at one job under the frozen wall limit. Record stdout/stderr, process identity, exit and maximum observed resources. If the build fails, retain the exact attempt and stop; do not relabel a repair as the same attempt.
 
 ### Task 3: Binary audit and publication
