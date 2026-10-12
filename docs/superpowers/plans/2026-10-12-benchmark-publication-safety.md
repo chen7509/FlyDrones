@@ -16,4 +16,6 @@ LOCAL_NED/mask/SI and configured limits unchanged; source policy0.5s unchanged/u
 - [x] Implement strict numeric/shaping and facade refusal; native source check/stop/condition/lock/error propagation in gateway.py; no normalized-body rerouting.
 - [x] Test valid/source/transport/cleanup/concurrency/step/regression behavior and preserve all failures; changedRuff/diff.
 - [x] Independent read-only review; fix findings with RED/GREEN, record software/physical boundaries, seal report/config/source/hash/evidence.
-- [ ] Commit/push personal and update PR65/automation; keep full goal active and source/physical/model gaps unresolved.
+- [x] Commit/push personal and update PR65/automation; keep full goal active and source/physical/model gaps unresolved.
+
+Publication: implementation/report/evidence commit3bbc491 pushed to personal; PR65 body and ACTIVE heartbeat updated. The sealed archive intentionally retains the pre-publication checkbox. Independent archive review verified38 members and final221 passed; no physical/source/flight qualification granted.
