@@ -31,7 +31,8 @@ def test_original_crlf_refusal_is_real(tmp_path):
 
 
 @pytest.mark.parametrize('added,accepted', [(b'int b = 2;\r\n', True),
-    (b'int b = 2; \r\n', False), (b'int b = 2; \n', False)])
+    (b'int b = 2; \r\n', False), (b'int b = 2; \n', False),
+    (b'int b = 2;\r\n\r\n', False), (b' \tint b = 2;\r\n', False)])
 def test_new_executable_policy_keeps_real_whitespace_refusal(tmp_path, added, accepted):
     script = (ROOT/'tools/benchmark/ego_causal_build_v3.sh').read_text()
     line = next(line for line in script.splitlines() if line.endswith('diff --check'))
