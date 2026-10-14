@@ -23,19 +23,33 @@ OPTIONAL_ENV_KEYS = ('MESA_SHADER_CACHE_DISABLE',)
 OWNED_RUNTIME_ROLES = {'px4', 'agent', 'openvins', 'openvins-restart'}
 
 
+def generated_names(doc):
+    if doc['schema'] == 'capture-resource-binding-v4':
+        return tuple(sorted(set(doc['calibration_scene']['files']) | {'gz_env.sh'}))
+    return GENERATED_NAMES
+
+
 def validate_binding(doc):
     if type(doc) is not dict:
         raise ValueError('binding declaration schema keys')
     version = doc.get('schema')
     keys = {'schema', 'inventory', 'baseline', 'environment', 'generated'}
-    if version in ('capture-resource-binding-v2', 'capture-resource-binding-v3'):
+    if version in ('capture-resource-binding-v2', 'capture-resource-binding-v3', 'capture-resource-binding-v4'):
         keys.add('graph')
-    if version == 'capture-resource-binding-v3':
+    if version in ('capture-resource-binding-v3', 'capture-resource-binding-v4'):
         keys.add('runtime_maps')
+    if version == 'capture-resource-binding-v4':
+        keys.update(('capture_profile', 'calibration_scene'))
     if set(doc) != keys:
         raise ValueError('binding declaration schema keys')
-    if version not in ('capture-resource-binding-v1', 'capture-resource-binding-v2', 'capture-resource-binding-v3'):
+    if version not in ('capture-resource-binding-v1', 'capture-resource-binding-v2', 'capture-resource-binding-v3',
+                       'capture-resource-binding-v4'):
         raise ValueError('binding schema version')
+    if version == 'capture-resource-binding-v4':
+        from tools.benchmark.calibration_capture_contract import PROFILE, scene_record
+
+        if doc['capture_profile'] != PROFILE or not _typed_equal(scene_record(doc['calibration_scene']['path']), doc['calibration_scene']):
+            raise ValueError('raw binding requires exact frozen scene selection')
     inventory = doc['inventory']
     if type(inventory) is not dict or not inventory:
         raise ValueError('binding requires explicit inventory')
@@ -62,10 +76,14 @@ def validate_binding(doc):
             or ('MESA_SHADER_CACHE_DISABLE' in env and env['MESA_SHADER_CACHE_DISABLE'] != 'true')):
         raise ValueError('binding environment must explicitly include lookup keys')
     generated = doc['generated']
-    if (type(generated) is not dict or set(generated) != set(GENERATED_NAMES)
+    if (type(generated) is not dict or set(generated) != set(generated_names(doc))
             or any(type(v) is not str or re.fullmatch('[0-9a-f]{64}', v) is None for v in generated.values())):
         raise ValueError('binding generated hashes required')
-    if version in ('capture-resource-binding-v2', 'capture-resource-binding-v3'):
+    if version == 'capture-resource-binding-v4' and any(
+        generated[name] != row['sha256'] for name,row in doc['calibration_scene']['files'].items()
+    ):
+        raise ValueError('raw generated files differ from frozen source scene')
+    if version in ('capture-resource-binding-v2', 'capture-resource-binding-v3', 'capture-resource-binding-v4'):
         graph = doc['graph']
         if (type(graph) is not dict or set(graph) != {'schema', 'cwd', 'environment', 'expected_context'}
                 or graph['schema'] != 'generated-resource-graph-v1'
@@ -77,13 +95,18 @@ def validate_binding(doc):
         for role, count in (('graph:resolver', 1), ('graph:source', 1), ('graph:dependencies', None)):
             if role not in inventory or (count is not None and len(inventory[role]) != count):
                 raise ValueError('graph resolver source/binary/dependencies must be declared')
-    if version == 'capture-resource-binding-v3':
+    if version in ('capture-resource-binding-v3', 'capture-resource-binding-v4'):
         runtime = doc['runtime_maps']
         if type(runtime) is not dict or set(runtime) != {
                 'self_phases', 'owned_roles', 'max_maps_bytes', 'max_observations'}:
             raise ValueError('runtime maps declaration schema')
         self_phases = runtime['self_phases']
         roles = runtime['owned_roles']
+        if version == 'capture-resource-binding-v4' and (
+            set(roles) != {'px4','agent'} or self_phases != ['postimports','postfinalize','postfirststep']
+            or any(phases != ['ready','prestop'] for phases in roles.values())
+        ):
+            raise ValueError('raw binding requires complete owned PX4/Agent mapping phases')
         if (type(self_phases) is not list or not self_phases
                 or type(roles) is not dict or not roles or not set(roles) <= OWNED_RUNTIME_ROLES):
             raise ValueError('runtime maps phases and roles required')
@@ -150,14 +173,15 @@ class RuntimeBinding:
             known = {p for row in baseline['files'] for p in (row['requested'], row['resolved'])}
             if not required_paths or any(str(Path(p).absolute()) not in known for p in required_paths):
                 raise ValueError('actual selected input absent from declared baseline')
-            if set(generated) != set(GENERATED_NAMES):
+            names = generated_names(self.doc)
+            if set(generated) != set(names):
                 raise ValueError('actual generated input set mismatch')
-            copies = snapshot({name: [generated[name]] for name in GENERATED_NAMES})
+            copies = snapshot({name: [generated[name]] for name in names})
             if any(row['sha256'] != self.doc['generated'][row['role']] for row in copies['files']):
                 raise ValueError('actual generated copy hash mismatch')
             self.inventory = dict(self.doc['inventory'])
             used = {os.path.normcase(str(Path(p).absolute())) for paths in self.inventory.values() for p in paths}
-            for name in GENERATED_NAMES:
+            for name in names:
                 path = str(Path(generated[name]).absolute())
                 if os.path.normcase(path) in used:
                     raise ValueError('generated path duplicates baseline')
@@ -173,7 +197,7 @@ class RuntimeBinding:
             if bootstrap:
                 self.inventory['bootstrap:selfmaps'] = bootstrap
             self.before = snapshot(self.inventory)
-            if self.doc['schema'] == 'capture-resource-binding-v3':
+            if self.doc['schema'] in ('capture-resource-binding-v3', 'capture-resource-binding-v4'):
                 known = {row['resolved']: row['identity'] for row in self.before['files']}
                 limits = self.doc['runtime_maps']
                 self.owned_maps = self.owned_factory(
@@ -191,7 +215,7 @@ class RuntimeBinding:
                                launch_environment={key: environment.get(key) for key in (
                                    'HEADLESS', 'PX4_GZ_STANDALONE', 'PX4_SYS_AUTOSTART', 'PX4_GZ_WORLD',
                                    'PX4_SIM_MODEL', 'PX4_GZ_MODEL_NAME', 'PX4_UXRCE_DDS_PORT')})
-            if self.doc['schema'] in ('capture-resource-binding-v2', 'capture-resource-binding-v3'):
+            if self.doc['schema'] in ('capture-resource-binding-v2', 'capture-resource-binding-v3', 'capture-resource-binding-v4'):
                 graph = self.doc['graph']
                 if (str(Path.cwd()) != graph['cwd']
                         or not _typed_equal({k: environment.get(k) for k in QUERY_ENV_KEYS}, graph['environment'])
@@ -311,7 +335,7 @@ class RuntimeBinding:
                 stable = self.pre_recorded
             except Exception as exc:
                 self.errors.append(repr(exc))
-        mapping_complete = (self.doc['schema'] == 'capture-resource-binding-v3'
+        mapping_complete = (self.doc['schema'] in ('capture-resource-binding-v3', 'capture-resource-binding-v4')
                             and self.completed_self == self.required_self
                             and self.completed_owned == self.required_owned)
         return dict(pre_recorded=self.pre_recorded, declared_files_stable=stable,
@@ -328,7 +352,7 @@ def attach_binding(journal, result, doc, output, *, map_reader=read_self_maps):
     def finalize():
         result['runtime_binding'] = obj.finish()
         if (result['runtime_binding']['errors'] or not result['runtime_binding']['pre_recorded']
-                or doc['schema'] == 'capture-resource-binding-v3'
+                or doc['schema'] in ('capture-resource-binding-v3', 'capture-resource-binding-v4')
                 and not result['runtime_binding']['runtime_mapping_coverage_verified']):
             result['errors'].append('runtime binding: ' + json.dumps(result['runtime_binding']['errors']))
     journal.cleanup('runtime binding post', finalize, priority=110)

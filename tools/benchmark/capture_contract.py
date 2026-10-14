@@ -37,7 +37,7 @@ def validate_launch_environment(value):
 
 
 def derive_launch_environment(binding):
-    if type(binding) is not dict or binding.get('schema') != 'capture-resource-binding-v3':
+    if type(binding) is not dict or binding.get('schema') not in ('capture-resource-binding-v3', 'capture-resource-binding-v4'):
         raise ValueError('v3 binding required for launch environment')
     declared = binding.get('environment')
     graph = binding.get('graph')
@@ -176,6 +176,16 @@ def execution_contract(args, launch_environment=None):
         result['owned_ulog_source'] = {'schema': 'capture-owned-ULog-opener-v1', **LIMITS}
     if getattr(args, 'record_depth_payload', False):
         result['record_depth_payload'] = True
+    if getattr(args, 'capture_profile', None) is not None:
+        from tools.benchmark.calibration_capture_contract import PROFILE, raw_graph
+
+        if args.capture_profile != PROFILE or launch_environment is None:
+            raise ValueError('raw capture requires explicit bound launch environment')
+        if result.get('wire', {}).get('configuration', {}).get('schema') != 'capture-wire-startup-v2':
+            raise ValueError('raw capture requires staged wire startup')
+        result['raw_measurement'] = raw_graph(args)
+    elif getattr(args, 'calibration_scene', None) is not None:
+        raise ValueError('calibration scene requires explicit raw capture profile')
     return result
 
 
@@ -218,11 +228,12 @@ def worker_options(args):
         MOTION_INTENT_FIELD, HEALTH_PROFILE_FIELD, HEALTH_FAULT_FIELD,
         'reference_sha256', 'execution_contract', 'runtime_binding', POLICY_FIELD,
         'wire_config', 'agent_runtime_config', 'logger_diagnostic_profile',
+        'capture_profile', 'calibration_scene',
     ):
         value = getattr(args, field, None)
         if value is not None:
             if field in PATH_FIELDS + ('execution_contract', 'runtime_binding', POLICY_FIELD,
-                                      'wire_config', 'agent_runtime_config'):
+                                      'wire_config', 'agent_runtime_config', 'calibration_scene'):
                 value = str(Path(value).resolve())
             result += ['--' + field.replace('_', '-'), str(value)]
     if getattr(args, 'startup_preflight', False):

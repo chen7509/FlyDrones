@@ -224,13 +224,27 @@ def parse_capture_args(argv=None):
             "native-restart-after-8s-failclosed-v2",
         ],
     )
-    parser.add_argument("--motion-profile", choices=["lateral-wrench-v1", "supported-lateral-v1", "supported-ready-v1"])
-    parser.add_argument("--physics-trace-profile", choices=["substep-lateral-v1", "substep-supported-v1", "substep-ready-v1"])
+    parser.add_argument("--motion-profile", choices=["lateral-wrench-v1", "supported-lateral-v1", "supported-ready-v1",
+                                                    "target-bearing-multiaxis-v1"])
+    parser.add_argument("--physics-trace-profile", choices=["substep-lateral-v1", "substep-supported-v1", "substep-ready-v1",
+                                                           "substep-calibration-v1"])
     parser.add_argument('--record-owned-ulog', action='store_true')
+    parser.add_argument('--capture-profile', choices=['target-bearing-raw-v1'])
+    parser.add_argument('--calibration-scene', type=Path)
     args = parser.parse_args(argv)
+    raw_capture = args.capture_profile == 'target-bearing-raw-v1'
+    if raw_capture:
+        from tools.benchmark.calibration_capture_contract import validate_raw_args
+
+        try:
+            validate_raw_args(args)
+        except ValueError as exc:
+            parser.error(str(exc))
+    elif args.calibration_scene or args.motion_profile == 'target-bearing-multiaxis-v1' or args.physics_trace_profile == 'substep-calibration-v1':
+        parser.error('calibration scene/motion requires explicit raw profile')
     if args.wire_config and (
         not args.execution_contract or not args.runtime_binding
-        or args.source_fanout_profile != "ready-shadow-heartbeat-estimator-v1"
+        or not raw_capture and args.source_fanout_profile != "ready-shadow-heartbeat-estimator-v1"
         or args.reference_fault_profile
     ):
         parser.error("wire lifecycle requires declared runtime binding and estimator-aware source fan-out")
@@ -252,13 +266,13 @@ def parse_capture_args(argv=None):
     if args.runtime_binding and not args.execution_contract:
         parser.error("runtime binding requires an execution declaration")
     if args.record_depth_payload and (
-        not args.execution_contract or not args.runtime_binding or not args.source_fanout_profile
+        not args.execution_contract or not args.runtime_binding or not (args.source_fanout_profile or raw_capture)
     ):
         parser.error("depth payload capture requires declared runtime binding and source fan-out")
     if args.trajectory_gauge_policy and (not args.runtime_binding or not args.execution_contract):
         parser.error("trajectory gauge policy requires runtime binding and execution declaration")
     if args.startup_preflight and (
-        not args.runtime_binding or not args.execution_contract or not args.trajectory_gauge_policy
+        not args.runtime_binding or not args.execution_contract or not (args.trajectory_gauge_policy or raw_capture)
     ):
         parser.error("startup preflight requires runtime binding, execution declaration and trajectory policy")
     if args.source_fanout_profile and (
@@ -305,6 +319,7 @@ def parse_capture_args(argv=None):
             "lateral-wrench-v1": "substep-lateral-v1",
             "supported-lateral-v1": "substep-supported-v1",
             "supported-ready-v1": "substep-ready-v1",
+            "target-bearing-multiaxis-v1": "substep-calibration-v1",
         }[args.motion_profile]
     ):
         parser.error("motion and trace profile mismatch")
@@ -327,6 +342,33 @@ def build_readiness(output, source_fanout_profile, *, clock=time.monotonic_ns, n
             output, source_readiness, clock=clock, session_id=native_session_id
         )
     return source_readiness, source_readiness
+
+
+def select_capture_scene(output, contract, *, legacy_archive=None):
+    if 'raw_measurement' in contract:
+        from tools.benchmark.calibration_capture_contract import copy_scene
+
+        return copy_scene(contract['raw_measurement']['scene'], output)
+    archive = legacy_archive or ROOT / 'evidence/openvins-board-pattern-dev-1701-reviewed.zip'
+    if hashlib.sha256(archive.read_bytes()).hexdigest() != '669f3646e74c4e95826f12e79b456aba861a5b4003087541ce7dc1dc8cd1f4f3':
+        raise ValueError('development scene seal changed')
+    copied = {}
+    with zipfile.ZipFile(archive) as z:
+        for name in ('world.sdf','world.json','ground_albedo.png','obstacle_albedo.png','board_albedo.png'):
+            data = z.read('results/openvins-board-pattern-dev-1701/episode-v2/'+name)
+            with (output/name).open('xb') as stream:
+                if stream.write(data) != len(data):
+                    raise OSError('short legacy scene copy')
+            copied[name] = hashlib.sha256(data).hexdigest()
+    return copied
+
+
+def raw_measurement_readiness(readiness, wire_owner, source_association):
+    if source_association is None or source_association.failure:
+        raise ValueError('raw owned ULog witness unavailable/failed')
+    if not source_association.logs or not wire_owner.health_ready():
+        return None
+    return readiness.proof()
 
 
 def prepare_capture_receiver(contract, *, journal, result, output, start_ns, source_guard,
@@ -660,8 +702,19 @@ def main():
         from tools.benchmark.runtime_resource_binding import validate_binding
 
         binding_doc = validate_binding(read_declaration(args.runtime_binding))
-    launch_environment = derive_launch_environment(binding_doc) if binding_doc and binding_doc["schema"] == "capture-resource-binding-v3" else None
+    launch_environment = derive_launch_environment(binding_doc) if binding_doc and binding_doc["schema"] in (
+        "capture-resource-binding-v3", "capture-resource-binding-v4") else None
     contract = validate_declaration(args, launch_environment)
+    raw_capture = 'raw_measurement' in contract
+    if raw_capture:
+        if binding_doc['schema'] != 'capture-resource-binding-v4' or not _typed_equal(
+            binding_doc['calibration_scene'], contract['raw_measurement']['scene']
+        ):
+            raise ValueError('raw capture requires its own exact v4 resource binding')
+        if launch_environment.get('GZ_SIM_RESOURCE_PATH') != str(args.output.resolve()/'models'):
+            raise ValueError('raw model lookup must select the copied frozen scene directory')
+    elif binding_doc and binding_doc['schema'] == 'capture-resource-binding-v4':
+        raise ValueError('raw resource binding requires explicit raw capture profile')
     agent_record = contract.get('agent')
     shadow_args = worker_options(args)
     if not args.worker:
@@ -701,10 +754,8 @@ def main():
     binary_sha = hashlib.sha256(binary.read_bytes()).hexdigest()
     if binary_sha != "e8af7cbcac255ec3c79bb5fa278459fd0b130b4b189de9269e3689cb9789f4cb":
         raise ValueError("PX4 binary differs from pinned development evidence")
-    archive = ROOT / "evidence/openvins-board-pattern-dev-1701-reviewed.zip"
-    archive_sha = hashlib.sha256(archive.read_bytes()).hexdigest()
-    if archive_sha != "669f3646e74c4e95826f12e79b456aba861a5b4003087541ce7dc1dc8cd1f4f3":
-        raise ValueError("development scene seal changed")
+    archive_sha = (contract['raw_measurement']['scene']['manifest_sha256'] if raw_capture
+                   else '669f3646e74c4e95826f12e79b456aba861a5b4003087541ce7dc1dc8cd1f4f3')
     # A point-in-time port check, not a reservation for the later receiver.
     # Startup preflight validates files only and must not create a network endpoint.
     if not args.startup_preflight:
@@ -712,13 +763,7 @@ def main():
             probe.bind(("127.0.0.1", 14548))
     if contract["schema"] == "capture-execution-v1":
         output.mkdir(parents=True, exist_ok=False)
-    input_hashes = {}
-    with zipfile.ZipFile(archive) as z:
-        for name in ["world.sdf", "world.json", "ground_albedo.png", "obstacle_albedo.png", "board_albedo.png"]:
-            data = z.read("results/openvins-board-pattern-dev-1701/episode-v2/" + name)
-            with (output / name).open("xb") as f:
-                f.write(data)
-            input_hashes[name] = hashlib.sha256(data).hexdigest()
+    input_hashes = select_capture_scene(output, contract)
     partition = "fly_disarmed_" + str(os.getpid())
     os.environ["GZ_PARTITION"] = partition
     if contract["schema"] == "capture-execution-v1":
@@ -747,7 +792,8 @@ def main():
                 "runtime": str(runtime),
                 "instance": 8,
                 "binary_sha256": binary_sha,
-                "source_archive_sha256": archive_sha,
+                "source_archive_sha256": None if raw_capture else archive_sha,
+                **({'source_scene_manifest_sha256': archive_sha} if raw_capture else {}),
                 "scene_hashes": input_hashes,
                 **{key: contract[key] for key in ("simulation_duration_ns", "physics_step_ns", "imu_hz", "rgbd_hz")},
                 "execution_contract": contract,
@@ -771,7 +817,7 @@ def main():
         "eligible_for_vio_input": False,
         "eligible_for_px4_fusion": False,
         "estimator_run": bool(args.shadow_binary) and not args.startup_preflight,
-        "capture_schema": "disarmed-sensors-v2",
+        "capture_schema": "target-bearing-raw-capture-v1" if raw_capture else "disarmed-sensors-v2",
         "physics_trace_profile": args.physics_trace_profile,
         "reference_profile": "supported-ready-native-reference-v1" if args.reference_module else None,
         "reference_fault_profile": args.reference_fault_profile,
@@ -789,7 +835,7 @@ def main():
         source_association = None
         binding = None
         if binding_doc is not None:
-            from tools.benchmark.runtime_resource_binding import GENERATED_NAMES, attach_binding, estimator_inputs
+            from tools.benchmark.runtime_resource_binding import attach_binding, estimator_inputs, generated_names
 
             if args.startup_preflight:
                 from tools.benchmark.runtime_resource_binding import RuntimeBinding
@@ -804,6 +850,11 @@ def main():
                         px4 / "Tools/simulation/gz/models/x500/model.sdf",
                         px4 / "Tools/simulation/gz/models/x500_base/model.sdf"]
             required += estimator_inputs(args.shadow_binary, args.shadow_config, args.reference_module)
+            if raw_capture:
+                scene = contract['raw_measurement']['scene']
+                required.extend(Path(scene['path'])/name for name in scene['files'])
+                required.extend((ROOT/'tools/benchmark/calibration_excitation.py',
+                                 ROOT/'tools/benchmark/calibration_capture_scene.py'))
             if args.wire_config:
                 required.append(args.wire_config.resolve(strict=True))
             if agent_record is not None:
@@ -812,7 +863,7 @@ def main():
                 required.extend(Path(path) for path in contract["logger_diagnostic"]["source_paths"])
             required += [Path(module.__file__).resolve() for module in tuple(sys.modules.values())
                          if getattr(module, "__file__", None) and Path(module.__file__).resolve().is_relative_to(ROOT)]
-            binding.start({name: runtime / name if name == "gz_env.sh" else output / name for name in GENERATED_NAMES},
+            binding.start({name: runtime / name if name == "gz_env.sh" else output / name for name in generated_names(binding_doc)},
                           env, required)
             if args.startup_preflight:
                 startup_binding = binding.finish()
@@ -973,7 +1024,7 @@ def main():
             source_guard = SourceWatchdog(startup_timeout_ns=10_000_000_000)
             journal.cleanup("source health", lambda: result.update(source_health=source_guard.snapshot()), priority=85)
         readiness = None
-        if args.motion_profile == "supported-ready-v1":
+        if args.motion_profile in ("supported-ready-v1", "target-bearing-multiaxis-v1"):
             _source_readiness, readiness = build_readiness(
                 output,
                 args.source_fanout_profile,
@@ -1020,7 +1071,7 @@ def main():
 
             journal.cleanup("source fan-out", finish_fanout, priority=84)
         writer = CaptureWriter(
-            output, sequence_records=fanout is not None,
+            output, sequence_records=fanout is not None or raw_capture,
             on_record=fanout.on_record if fanout else readiness.on_record if readiness else shadow.on_record if shadow else None,
             on_idle=fanout.on_idle if fanout else shadow.tick_idle if shadow else None,
             record_depth_payload=args.record_depth_payload,
@@ -1034,6 +1085,8 @@ def main():
             agent_process = owned_processes.get('agent')
             if agent_process is not None and agent_process.poll() is not None:
                 raise ValueError('owned Agent exited before wire observation')
+            if raw_capture and source_association.failure:
+                raise ValueError('raw owned ULog source observation failed: '+source_association.failure)
             if source_guard:
                 source_guard.check(time.monotonic_ns())
         receiver, wire_owner = prepare_capture_receiver(
@@ -1148,7 +1201,7 @@ def main():
 
                 motion_type = SupportedProbe
             extra = {}
-            if readiness:
+            if readiness and not raw_capture:
                 from tools.benchmark.readiness_anchor import AnchoredPolicy, anchored_profile, persist_anchor
 
                 if motion_intent:
@@ -1178,7 +1231,14 @@ def main():
                     ),
                     profile_data=anchored_profile(),
                 )
-            motion = motion_type(output, errors, lambda: arming["unarmed_wall_ns"], trace=trace, **extra)
+            if raw_capture:
+                from tools.benchmark.calibration_excitation import CalibrationProbe
+
+                motion = CalibrationProbe(output, errors, lambda: arming['unarmed_wall_ns'],
+                    trace=trace, scene=contract['raw_measurement']['scene'], guard=wire_source_guard,
+                    readiness=lambda: raw_measurement_readiness(readiness,wire_owner,source_association))
+            else:
+                motion = motion_type(output, errors, lambda: arming["unarmed_wall_ns"], trace=trace, **extra)
             journal.cleanup("motion fixture", lambda: result.update(motion=motion.finish()), priority=75)
             if reference:
                 if args.reference_fault_profile:
