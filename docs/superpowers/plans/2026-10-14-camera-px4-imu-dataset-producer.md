@@ -14,4 +14,11 @@
 - [x] Write missing-interface RED and meaningful numerical/PNG/CSV/raw-journal/partial-failure cases; include differing accel/gyro times, sentinel, clipping and calibration reset latch. Distinguish constructed protocol fixtures from real pyulog parsing.
 - [x] Implement bounded source reader and true dataset production. Candidate native CSV is whole-stream conditional, no failed-row filtering. Execute focused and necessary adjacent tests, Ruff/diff; retain every failure.
 - [x] Run the new exporter once on actual development27201 pixels/ULog with original hashes, explicit unqualified rig/epoch inputs, exact argv/process/exit/retained output. Do not repeat the previous pose producer or any simulator probe.
-- [ ] Independently review source/implementation/report/complete dataset evidence, repair any behavior issue with RED first, seal immutable archives/CRC/hash manifests, publish report and only personal/PR65. Record final publication separately from the sealed prepublication plan.
+- [x] Independently review source/implementation/report/complete dataset evidence, repair any behavior issue with RED first, seal immutable archives/CRC/hash manifests, publish report and only personal/PR65. Record final publication separately from the sealed prepublication plan.
+
+## Publication ledger (outside sealed prepublication plan)
+
+- 27 focused/adjacent tests passed4.82s; Ruff/diff0.
+- Real file v1/v2 retained; v2 parent7760exit0,251PNG/6123rawIMU/6123candidateCSV; all eligibilityfalse and6frames outside IMU time range.
+- Independent final code/report/1376-member archive review: no Critical/Important/Minor; CRC/size/SHA/currentbytes checked.
+- See evidence/camera-px4-imu-dataset-producer-publication.json for code commit and prepublication/current plan hashes. This file-stage is complete; original full goal remains incomplete.
