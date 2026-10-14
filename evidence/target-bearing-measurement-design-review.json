@@ -1,0 +1,29 @@
+{
+  "review_utc": "2026-10-14T16:50:42.833341+00:00",
+  "canonical_archive": "evidence/target-bearing-measurement-design-dev-1701-v2.zip",
+  "canonical_SHA256": "41532a4e5af179fb30d7e05de2ed031649b8b6fa634bb298e0ebffe59844be8e",
+  "canonical_bytes": 173693,
+  "archive_members": 32,
+  "mapped_members": 31,
+  "CRC_size_SHA_currentbyte_derivative_scope_errors": [],
+  "original_local_unpublished_SHA256": "efe78c250ad5f3c88914000fe60b2f152e3e9182aa590522231297024246eb5c",
+  "full_raw_local_SHA256": "a6c5754fe36ef9362a653d11f4123852e851a7dc700fe25b5ff5594dea944795",
+  "full_raw_rows": 161,
+  "match_terms": [
+    "kalibr",
+    "noetic"
+  ],
+  "relevant_match_count": 0,
+  "public_inventory_member_absent": true,
+  "full_image_names_and_namespaced_repositories_scanned": 164,
+  "image_ID_digest_and_prefix_tokens_scanned": 456,
+  "public_identifier_hits": [],
+  "original_shared_source_spec_plan_reference_members_unchanged": 25,
+  "report_original_bytes_preserved_before_scope_append": true,
+  "historical_archives_checked": 278,
+  "historical_bytes": 697182884,
+  "historical_matches_prior277_plus_local_draft": true,
+  "research_commands_workloads_tests_gates_rerun": false,
+  "production_implemented": false,
+  "qualification": false
+}

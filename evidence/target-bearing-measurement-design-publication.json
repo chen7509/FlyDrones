@@ -1,0 +1,58 @@
+{
+  "design_commit": "07468589417eec513122a5a5d871ce818b20e561",
+  "pr_head": "07468589417eec513122a5a5d871ce818b20e561",
+  "body_exact_CRLF_only": true,
+  "tracked_clean": true,
+  "observed_utc": "2026-10-14T16:53:39.661851+00:00",
+  "remote": "personal",
+  "native_dispatched": false,
+  "production_implemented": false,
+  "status": "research-published-production-pending",
+  "canonical_archive": {
+    "path": "evidence/target-bearing-measurement-design-dev-1701-v2.zip",
+    "sha256": "41532a4e5af179fb30d7e05de2ed031649b8b6fa634bb298e0ebffe59844be8e",
+    "bytes": 173693,
+    "members": 32,
+    "mapped": 31,
+    "crc_size_sha_currentbyte_errors": 0,
+    "historical_count": 278,
+    "historical_changed": [],
+    "production_implemented": false
+  },
+  "original_draft_local_unpublished_sha256": "efe78c250ad5f3c88914000fe60b2f152e3e9182aa590522231297024246eb5c",
+  "research_reference_files_gitblob_checked": 5,
+  "independent_findings": {
+    "Critical": 0,
+    "Important": 0,
+    "Minor": 0
+  },
+  "source_identity": {
+    "docs/TARGET_BEARING_MEASUREMENT_DESIGN_REPORT.md": {
+      "working_archive_sha256": "d74831190b736ffb906cd624880c4362f7dabef0eab4f5729fc995ef929089eb",
+      "design_commit_gitblob_sha256": "d74831190b736ffb906cd624880c4362f7dabef0eab4f5729fc995ef929089eb"
+    },
+    "docs/superpowers/specs/2026-10-15-target-bearing-measurement-capture.md": {
+      "working_archive_sha256": "2293728d25ddaee43ae6e782f979aecc9cb987f6ee067fa947382c0aa9bc8984",
+      "design_commit_gitblob_sha256": "2293728d25ddaee43ae6e782f979aecc9cb987f6ee067fa947382c0aa9bc8984"
+    },
+    "docs/superpowers/plans/2026-10-15-target-bearing-measurement-capture.md": {
+      "working_archive_sha256": "16113afd10d9f017b3a02d3695a073958123bb0f1bf4cdd6a1fc8ec8c9012582",
+      "design_commit_gitblob_sha256": "16113afd10d9f017b3a02d3695a073958123bb0f1bf4cdd6a1fc8ec8c9012582"
+    }
+  },
+  "review_working_sha256": "20a9ef30794f2320be1f6f05c2edc4253299f18b2fa8816637b99f648b81bb6e",
+  "all_production_plan_tasks_pending": true,
+  "native_PNG_study_exists": false,
+  "qualifications": {
+    "source": false,
+    "clock": false,
+    "measured_calibration": false,
+    "accuracy": false,
+    "teacher": false,
+    "fusion": false,
+    "training": false,
+    "flight": false
+  },
+  "later_publication_commit_is_after_this_observation": true,
+  "review_staged_git_blob_sha256": "2ac6f394dfca74710bd4e9d2eb4c354925d585bf193237ae44686a048fccc3ed"
+}
