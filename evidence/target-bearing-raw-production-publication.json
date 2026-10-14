@@ -1,0 +1,98 @@
+{
+  "schema": "target-bearing-raw-production-publication-v1",
+  "utc": "2026-10-14T18:19:51.713445+00:00",
+  "implementation_commit": "b5e83f9c528c5b7b3a04533be454703932226ac9",
+  "remote": "personal",
+  "pr": "https://github.com/chen7509/FlyDrones/pull/65",
+  "pr_head_verified": true,
+  "pr_body_exact_crlf_normalized": true,
+  "tracked_clean_before_ledger": true,
+  "archive": {
+    "path": "evidence/target-bearing-raw-production-dev-1701.zip",
+    "sha256": "332c941659e6f0a961314fa3f8979859ab4e9791c8d375b281ba8ecd40541889",
+    "bytes": 907757,
+    "members": 575,
+    "mapped": 574
+  },
+  "source_identity": {
+    "tools/benchmark/calibration_capture_contract.py": {
+      "working_sha256": "b98dc969ef6b929c35ca213e85517f83d911bcd21087ee428f4b9ad99de7bc60",
+      "git_blob_sha256": "b98dc969ef6b929c35ca213e85517f83d911bcd21087ee428f4b9ad99de7bc60"
+    },
+    "tools/benchmark/calibration_excitation.py": {
+      "working_sha256": "a48a688ebdeb6ec063d4dc8908306d32957c8fa652f7a34baf74229e24535971",
+      "git_blob_sha256": "a48a688ebdeb6ec063d4dc8908306d32957c8fa652f7a34baf74229e24535971"
+    },
+    "tools/benchmark/capture_contract.py": {
+      "working_sha256": "cc4c7cc51ddf6071df16c99d7f6c2c426c71b2dcb58bb4302e547d85f9bbc1c1",
+      "git_blob_sha256": "cc4c7cc51ddf6071df16c99d7f6c2c426c71b2dcb58bb4302e547d85f9bbc1c1"
+    },
+    "tools/benchmark/capture_disarmed_sensors.py": {
+      "working_sha256": "7fc79f1be01789f82599ebe0ad9b7e15eeec06850d3a57aa63816ea94bf8522b",
+      "git_blob_sha256": "7fc79f1be01789f82599ebe0ad9b7e15eeec06850d3a57aa63816ea94bf8522b"
+    },
+    "tools/benchmark/runtime_resource_binding.py": {
+      "working_sha256": "0a29c1753632d206e572379dc2951340dcaa3792960021a60d5b5c803f0cd0f0",
+      "git_blob_sha256": "2540f8e1ab5b826cce9ff9adfbdf052db8c3cd531b0458fc4cfd9e2fafb4f0a2"
+    },
+    "tests/benchmark/test_calibration_raw_capture.py": {
+      "working_sha256": "54ef30c2d252ddab93dabd7a9ff831fb131b646cf2560c2600255652b6622c87",
+      "git_blob_sha256": "54ef30c2d252ddab93dabd7a9ff831fb131b646cf2560c2600255652b6622c87"
+    },
+    "docs/TARGET_BEARING_RAW_PRODUCTION_REPORT.md": {
+      "working_sha256": "707fc5bd77f9f5fea7e97972f9297b998052344bd04993856a574786bb9e7ec2",
+      "git_blob_sha256": "707fc5bd77f9f5fea7e97972f9297b998052344bd04993856a574786bb9e7ec2"
+    },
+    "docs/superpowers/specs/2026-10-15-target-bearing-raw-production.md": {
+      "working_sha256": "92956244e0ffc32638f34efba01ece934bb6c98d890dabb809548bab2694f285",
+      "git_blob_sha256": "92956244e0ffc32638f34efba01ece934bb6c98d890dabb809548bab2694f285"
+    },
+    "docs/superpowers/plans/2026-10-15-target-bearing-measurement-capture.md": {
+      "working_sha256": "2e157d0029fe6369c400204c9d2d8ab3b479bef6406c3fbc506670c470629d0e",
+      "git_blob_sha256": "2e157d0029fe6369c400204c9d2d8ab3b479bef6406c3fbc506670c470629d0e"
+    },
+    "evidence/target-bearing-raw-production-review.json": {
+      "working_sha256": "33e0b086b12d4bfb9a3244bdc156fa80b2f459f4455bba11abcab939843d2e87",
+      "git_blob_sha256": "4f14ad591051609cb1e88e7a363453c9601d8cbe914bb516cf910331da28681c"
+    }
+  },
+  "independent_review_outside_archive": "evidence/target-bearing-raw-production-review.json",
+  "postseal_helpers_and_checks": [
+    {
+      "path": "results/target-bearing-raw-production-dev-1701/prepare-publication.py",
+      "sha256": "411dc2685e37273954580985007119dca56c53ad68dbccacc6fee065a33f3e28"
+    },
+    {
+      "path": "results/target-bearing-raw-production-dev-1701/publish-ledger.py",
+      "sha256": "38afa88425da78cd0570f58a42218cc83bd08968c975b91e044c445792f6bd86"
+    },
+    {
+      "path": "results/target-bearing-raw-production-dev-1701/verify-final-publication.py",
+      "sha256": "291d55ea751c80e362f8e04d08faeb372c016d8c6c634670b873990574123583"
+    },
+    {
+      "path": "results/target-bearing-raw-production-dev-1701/final-staged-diff/completion.json",
+      "sha256": "ccb6dd13c7de9af1412566e0961ecd4df8700f6a68f05490e97ce56378478927"
+    },
+    {
+      "path": "results/target-bearing-raw-production-dev-1701/independent-archive-review.json",
+      "sha256": "33e0b086b12d4bfb9a3244bdc156fa80b2f459f4455bba11abcab939843d2e87"
+    }
+  ],
+  "archive_prepublication_plan_sha256": "2e157d0029fe6369c400204c9d2d8ab3b479bef6406c3fbc506670c470629d0e",
+  "postpublication_plan_sha256": "29066ced410c37ab4c94b4a1a64f2401f2e59ab0c735afed3267a9cd0639d655",
+  "plan_only_change": "Task2 publication checkbox; Task1 full runtime freeze and Task3/4 remain pending",
+  "runtime_graph_frozen": false,
+  "physical_dispatch_ready": false,
+  "actual_native_physical_attempt": false,
+  "qualification": {
+    "source": false,
+    "clock": false,
+    "measured_calibration": false,
+    "accuracy": false,
+    "teacher": false,
+    "fusion": false,
+    "training": false,
+    "flight": false
+  }
+}
