@@ -186,6 +186,16 @@ def execution_contract(args, launch_environment=None):
         result['raw_measurement'] = raw_graph(args)
     elif getattr(args, 'calibration_scene', None) is not None:
         raise ValueError('calibration scene requires explicit raw capture profile')
+    binding_path = getattr(args, 'runtime_binding', None)
+    if (getattr(args, 'capture_profile', None) == 'target-bearing-raw-v1'
+            and binding_path is not None and Path(binding_path).is_file()):
+        declaration = read_declaration(binding_path)
+        if 'runtime:python-extension-context' in declaration.get('inventory', {}):
+            if getattr(args, 'capture_profile', None) != 'target-bearing-raw-v1':
+                raise ValueError('Python extension context requires explicit raw profile')
+            from tools.benchmark.native_entry_context_v3 import declared_python_context
+
+            result['python_extension_context'] = declared_python_context(declaration)
     return result
 
 

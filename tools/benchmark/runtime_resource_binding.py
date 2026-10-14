@@ -122,6 +122,10 @@ def validate_binding(doc):
                 or type(runtime['max_observations']) is not int
                 or not 0 < runtime['max_observations'] <= 16):
             raise ValueError('invalid runtime map bounds')
+    if 'runtime:python-extension-context' in inventory:
+        from tools.benchmark.native_entry_context_v3 import declared_python_context
+
+        declared_python_context(doc)
     return copy.deepcopy(doc)
 
 
@@ -159,6 +163,13 @@ class RuntimeBinding:
         self.required_owned = copy.deepcopy(self.doc.get('runtime_maps', {}).get('owned_roles', {}))
         self.completed_self = []
         self.completed_owned = {role: [] for role in self.required_owned}
+        self.python_context = None
+        if 'runtime:python-extension-context' in self.doc['inventory']:
+            from tools.benchmark.capture_contract import read_declaration
+            from tools.benchmark.native_entry_context_v3 import declared_python_context
+
+            selected = declared_python_context(self.doc)
+            self.python_context = read_declaration(selected['file']['requested'])
 
     def start(self, generated, environment, required_paths):
         if self.before is not None or self.pre_recorded or self.errors or self.closed:
@@ -279,7 +290,27 @@ class RuntimeBinding:
                 index = len(self.completed_self)
                 if index >= len(self.required_self) or phase != self.required_self[index]:
                     raise ValueError('out-of-order or undeclared self mapping phase')
-            result = self._observe(phase, self.map_reader())
+            raw = self.map_reader()
+            result = self._observe(phase, raw)
+            if getattr(self, 'python_context', None) is not None:
+                from tools.benchmark.native_entry_context_v3 import audit_python_runtime
+
+                observed = dict(phase=phase, error=None, runtime_import_verified=False)
+                primary = None
+                try:
+                    observed.update(audit_python_runtime(self.python_context, raw, phase))
+                except Exception as exc:
+                    primary = exc
+                    observed['error'] = repr(exc)
+                    observed['observed_context'] = getattr(exc, 'observed_python_context', None)
+                    raise
+                finally:
+                    try:
+                        write_manifest(self.output / ('runtime-python-context-' + phase + '.json'), observed)
+                    except Exception as exc:
+                        if primary is None:
+                            raise
+                        primary.add_note('Python phase observation persistence failure: ' + repr(exc))
             if self.required_self:
                 self.completed_self.append(phase)
             return result

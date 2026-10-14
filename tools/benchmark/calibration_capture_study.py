@@ -148,7 +148,7 @@ def verify_execution_join(args, execution, binding, require_absent):
         raise ValueError("raw study execution differs from current producer")
 
 
-def _verify_profile_study(path, sha, folder, schema, fixed, *, require_absent=True, v2=False):
+def _verify_profile_study(path, sha, folder, schema, fixed, *, require_absent=True, v2=False, v3=False):
     from tools.benchmark.runtime_resource_binding import validate_binding
 
     path = Path(path).resolve(strict=True)
@@ -194,7 +194,13 @@ def _verify_profile_study(path, sha, folder, schema, fixed, *, require_absent=Tr
         or preparation.get("execution_sha256") != actual["execution"]["sha256"]
     ):
         raise ValueError("preparation does not bind exact execution/binding")
-    if v2:
+    if v2 and v3:
+        raise ValueError('conflicting fixed study profiles')
+    if v3:
+        from tools.benchmark.calibration_capture_study_v3 import audit_v3_preparation
+
+        audit = audit_v3_preparation(binding, preparation, fixed['entry_bill'], read_declaration(fixed['entry_bill']))
+    elif v2:
         from tools.benchmark.calibration_capture_study_v2 import audit_v2_preparation
 
         audit = audit_v2_preparation(binding, preparation, fixed["entry_bill"], read_declaration(fixed["entry_bill"]))
@@ -209,7 +215,7 @@ def _verify_profile_study(path, sha, folder, schema, fixed, *, require_absent=Tr
                 "dispatcher",
                 "study_code",
                 "python",
-                *(("dependency_code", "producer_code") if v2 else ()),
+                *(("dependency_code", "producer_code") if v2 or v3 else ()),
             )
         ],
         binding["baseline"]["files"],
@@ -243,8 +249,11 @@ def study_paths(folder):
 def verify_study(path, sha, *, require_absent=True):
     # Explicit fixed registry; v1 keeps every original contract/absence gate.
     from tools.benchmark import calibration_capture_study_v2 as second
+    from tools.benchmark import calibration_capture_study_v3 as third
 
     requested = Path(path).absolute()
+    if requested == third.FOLDER / "study.json":
+        return third.verify_study_v3(requested, sha, require_absent=require_absent)
     if requested == second.FOLDER / "study.json":
         return second.verify_study_v2(requested, sha, require_absent=require_absent)
     if requested != FOLDER / "study.json":

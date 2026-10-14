@@ -8,7 +8,7 @@ Architecture: a separate v3 bill producer retains ordinary strict dependency tra
 
 Tech stack: existing Python/WSL/libsdformat/Gz SDK and pinned readelf/ldd; no new dependency installation, compiler, engine or learned model required for software implementation.
 
-Spec: docs/superpowers/specs/2026-10-15-python-extension-context-production-design.md. All tasks below are PENDING production; current research did not implement or test them. Preserve consumed-v2 original parser/coordinator/raw and observer correction. Autonomous authorization covers implementation/review/publication; no per-step approval.
+Spec: docs/superpowers/specs/2026-10-15-python-extension-context-production-design.md. Task1/Task2 software is implemented and behavior-verified in the production report; publication remains pending until its ledger. Task3/Task4 remain pending. The earlier research archive retains the original all-pending plan. Preserve consumed-v2 original parser/coordinator/raw and observer correction. Autonomous authorization covers implementation/review/publication; no per-step approval.
 
 Global constraints: no change to consumed files, v1/v2 parsers or old profiles; no guessed LD/RPATH/cap/swap; all8/readinessfalse. Static reserve1073741824B each/memory536870912B/swap0/CPU100/tasks64/210scope180inner+10kill240launcher; physical reserve4294967296B each and original workload/safety/RTF remain. Every actual marker/scope/study/command consumes a revision.
 
@@ -20,8 +20,8 @@ Files: create tools/benchmark/native_entry_context_v3.py and tests/benchmark/tes
 
 First tests call the real discover function and assert valid zero-needed module yields trace_kind/empty direct+selected/initializer/full undefined rows/raw diagnostic index while import_verified=false. Parametrized same-phrase nonPython, nonzero-needed, empty/extra output and conflicting-origin/ABI variants must raise and retain their last query. Verify these fail before implementation; run `python -m pytest tests/benchmark/test_native_entry_context_v3.py -q`, implement spec, then require all targeted cases pass. Use actual partial/timeout/output-cap protocol children only where necessary; record fixture versus Linux limits accurately. Commit reviewed Task1 source/tests with retained exact failures and results.
 
-- [ ] Implement native_entry_context_v3.py and versioned bill/auditor with explicit producer-known Python module context, ELF/type/program/dynamic/symbol metadata, diagnostic query index before parse, exact zero-needed classification; ordinary strict paths/candidates/alias/limits/renderer and Agent coverage retained.
-- [ ] Real production RED/GREEN for valid zero-context case, wrong role/nonzero/empty/extra output/initializer/ABI/origin/membership/mutation/cap/timeout/partial writer; complete raw failure evidence, necessary adjacent regressions, no fixture promotion to native result.
+- [x] Implement native_entry_context_v3.py and versioned bill/auditor with explicit producer-known Python module context, ELF/type/program/dynamic/symbol metadata, diagnostic query index before parse, exact zero-needed classification; ordinary strict paths/candidates/alias/limits/renderer and Agent coverage retained.
+- [x] Real production RED/GREEN for valid zero-context case, wrong role/nonzero/empty/extra output/initializer/ABI/origin/membership/mutation/cap/timeout/partial writer; complete raw failure evidence, necessary adjacent regressions, no fixture promotion to native result.
 
 ## Task2 — Complete new prepare/study/runtime joins
 
@@ -29,7 +29,7 @@ Files: create tools/benchmark/prepare_calibration_capture_v3.py, tools/benchmark
 
 Before implementation, tests must make real preparation/study auditors fail on an omitted zero-selection self entry, changed context digest, bill role mismatch, stale/missing same-phase module/map and replaced origin. Run `python -m pytest tests/benchmark/test_calibration_capture_study_v3.py -q`; implement joins/runtime checks then require all cases and necessary raw/shared lifecycle neighbors pass. No SDK/native run is part of those software tests. Commit only after source/test review and evidence joins, keeping every failed fixture output.
 
-- [ ] Implement literal prepare_calibration_capture_v3.py/calibration_capture_study_v3.py and explicit registry for results/target-bearing-runtime-freeze-v3-dev-1701/frozen-study-v3, reusing sealed45scene/14Agent unchanged; all bill/context/self-entry/baseline/preparation/execution/prepared-handoff hard joins and original graph/material/license/mapping contracts.
+- [x] Implement literal prepare_calibration_capture_v3.py/calibration_capture_study_v3.py and explicit registry for results/target-bearing-runtime-freeze-v3-dev-1701/frozen-study-v3, reusing sealed45scene/14Agent unchanged; all bill/context/self-entry/baseline/preparation/execution/prepared-handoff hard joins and original graph/material/license/mapping contracts.
 - [ ] Actual same-phase module-origin/mapping checks fail closed without forced imports; software RED/GREEN on missing/wrong/stale module/context/maps and joins, immutable older profile/v1/v2 and original workload/safety behavior. Independently audit/seal/onlypersonal publish software before native execution.
 
 ## Task3 — New admitted static once, only after reviewed production
@@ -45,3 +45,6 @@ Files: a new literal results/target-bearing-runtime-freeze-v3-dev-1701/run-stati
 - [ ] Only complete reviewed runtime freeze admits original fixed physical attempt at fresh dual4GiB/no competition/unchanged25s1ms250Hz10Hz160x120near.2far19.1 and4Gswap0CPU100tasks256/330scope315inner360outer/300worker/all safety/precision/speed/RTF. Truth abort/audit only; pidfd denied/unsupported refuses, no fallback/escalation. Audit all real source/clock/IMU/RGB/ULog/disarmed/motion/visibility/failure evidence without assigning calibration authority.
 
 Full Kalibr toolchain/deps/digests/transitive-license/thread/cost plus actual intrinsic/noise and solve residual/coverage/covariance/Jacobian-Schur observability need independent specifications;25s motion is not stationary Allan. Original PNG native7/dual2GiB budget unconsumed and all consumed EGO/cached/target/static attempts unchanged. All8/readiness remainfalse until genuine separate evidence; software completion alone changes none.
+
+
+Production representation ruling: the one exact resolver root retains graph:resolver because baseline inventories prohibit duplicate paths. All other entry self/selected files, especially zero-selected Python self, remain mandatory graph:dependencies. Initial fixture retention limits and true/fixture RED distinctions are documented in TARGET_BEARING_PYTHON_CONTEXT_PRODUCTION_REPORT.md. No actual v3 coordinator, scope, study or physical attempt exists.
