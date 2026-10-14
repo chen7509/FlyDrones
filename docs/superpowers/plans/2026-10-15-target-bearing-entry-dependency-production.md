@@ -68,3 +68,9 @@ This plan is prospective. Research readelf metadata/official-source observations
 - [x] Independently seal and publish this research/design evidence; this checkbox does not complete any production implementation, native trace or physical task above.
 
 Future command/scope/supervisor budgets retain local monotonic start/end/elapsed separately from UTC; no cross-host wall-clock duration or nesting assumption.
+
+## Static-v2 failed attempt publication only
+
+The literal coordinator was implemented/reviewed and dispatched once. Static-v2 is CONSUMED_FAILED at actual `_json` entry readelf/ldd classification; all partial files are immutable. Task3's complete freeze/success requirements and Task4 remain pending, never a retry instruction. See TARGET_BEARING_STATIC_V2_ATTEMPT_REPORT.md and the separate zero-NEEDED Python entry research plan before any new revision/attempt.
+
+- [ ] Independently seal and publish the actual static-v2 failure; this checkbox records evidence publication only, not complete runtime freeze or physical readiness.
