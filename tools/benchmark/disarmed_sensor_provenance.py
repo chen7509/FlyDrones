@@ -516,8 +516,12 @@ def record_supervisor_environment(output, launch_environment, execution_contract
 
 
 def supervise_worker(command, output, *, timeout_s=300, spawn=None, terminate=None,
-                     launch_environment=None, execution_contract=None):
-    if output.exists():
+                     launch_environment=None, execution_contract=None, prepared_input=None):
+    if prepared_input is not None:
+        from tools.benchmark.calibration_capture_contract import validate_prepared_scene
+
+        validate_prepared_scene(prepared_input,output)
+    elif output.exists():
         raise FileExistsError(output)
     real = spawn is None and terminate is None
     if (spawn is None) != (terminate is None):

@@ -112,7 +112,12 @@ def record_worker_environment(output, contract, contract_path, *, reader=None):
         "fusion_eligible": False,
     }
     output = Path(output)
-    output.mkdir(parents=True, exist_ok=False)
+    raw = contract.get("raw_measurement")
+    if type(raw) is dict and raw.get("prepared_input") is not None:
+        from tools.benchmark.calibration_capture_contract import validate_prepared_scene
+        validate_prepared_scene(raw["scene"], output)
+    else:
+        output.mkdir(parents=True, exist_ok=False)
     write_manifest(output / "execution-environment-worker.json", record)
     if not matches:
         raise ValueError("initial worker environment mismatch")
@@ -231,6 +236,7 @@ def parse_capture_args(argv=None):
     parser.add_argument('--record-owned-ulog', action='store_true')
     parser.add_argument('--capture-profile', choices=['target-bearing-raw-v1'])
     parser.add_argument('--calibration-scene', type=Path)
+    parser.add_argument('--prepared-scene', action='store_true')
     args = parser.parse_args(argv)
     raw_capture = args.capture_profile == 'target-bearing-raw-v1'
     if raw_capture:
@@ -240,7 +246,7 @@ def parse_capture_args(argv=None):
             validate_raw_args(args)
         except ValueError as exc:
             parser.error(str(exc))
-    elif args.calibration_scene or args.motion_profile == 'target-bearing-multiaxis-v1' or args.physics_trace_profile == 'substep-calibration-v1':
+    elif args.prepared_scene or args.calibration_scene or args.motion_profile == 'target-bearing-multiaxis-v1' or args.physics_trace_profile == 'substep-calibration-v1':
         parser.error('calibration scene/motion requires explicit raw profile')
     if args.wire_config and (
         not args.execution_contract or not args.runtime_binding
@@ -346,8 +352,10 @@ def build_readiness(output, source_fanout_profile, *, clock=time.monotonic_ns, n
 
 def select_capture_scene(output, contract, *, legacy_archive=None):
     if 'raw_measurement' in contract:
-        from tools.benchmark.calibration_capture_contract import copy_scene
+        from tools.benchmark.calibration_capture_contract import copy_scene, prepared_scene_members
 
+        if 'prepared_input' in contract['raw_measurement']:
+            return prepared_scene_members(contract['raw_measurement']['scene'],contract['raw_measurement']['prepared_input'],output)
         return copy_scene(contract['raw_measurement']['scene'], output)
     archive = legacy_archive or ROOT / 'evidence/openvins-board-pattern-dev-1701-reviewed.zip'
     if hashlib.sha256(archive.read_bytes()).hexdigest() != '669f3646e74c4e95826f12e79b456aba861a5b4003087541ce7dc1dc8cd1f4f3':
@@ -722,6 +730,8 @@ def main():
         if launch_environment is not None:
             supervisor_options.update(launch_environment=launch_environment,
                                       execution_contract=args.execution_contract)
+        if raw_capture and args.prepared_scene:
+            supervisor_options['prepared_input']=contract['raw_measurement']['scene']
         summary = supervise_worker(
             [sys.executable, str(Path(__file__).resolve()), "--worker", "--output", str(args.output.resolve())] + shadow_args,
             args.output.resolve(), timeout_s=contract["supervisor_s"], **supervisor_options,

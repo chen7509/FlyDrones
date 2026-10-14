@@ -83,7 +83,7 @@ def validate_raw_args(args):
 
 def raw_graph(args):
     validate_raw_args(args)
-    return dict(
+    result = dict(
         schema="target-bearing-raw-graph-v1",
         name=PROFILE,
         readiness=[
@@ -99,6 +99,32 @@ def raw_graph(args):
         measured_calibration_qualified=False,
         scene=scene_record(args.calibration_scene),
     )
+    if getattr(args,'prepared_scene',False):
+        result['prepared_input']=validate_prepared_scene(result['scene'],args.output)
+    return result
+
+
+def validate_prepared_scene(source,output):
+    if scene_record(source['path']) != source:
+        raise ValueError('prepared source selection changed')
+    actual=scene_record(output)
+    if {k:v for k,v in actual.items() if k!='path'} != {k:v for k,v in source.items() if k!='path'}:
+        raise ValueError('prepared input differs from sealed source scene')
+    return actual
+
+
+def prepared_scene_members(source,prepared,output):
+    if Path(prepared['path']).resolve()!=Path(output).resolve() or scene_record(source['path'])!=source:
+        raise ValueError('prepared capture input path/source changed')
+    if {k:v for k,v in prepared.items() if k!='path'} != {k:v for k,v in source.items() if k!='path'}:
+        raise ValueError('prepared input declaration changed')
+    # The worker has already exclusively written its environment record. The
+    # exact directory/member check happened in parent and worker declarations.
+    for name,row in prepared['files'].items():
+        p=Path(output)/name
+        if p.is_symlink() or p.stat().st_size!=row['bytes'] or file_sha(p)!=row['sha256']:
+            raise ValueError('prepared capture input bytes changed')
+    return {name:row['sha256'] for name,row in prepared['files'].items()}
 
 
 def copy_scene(record, output):

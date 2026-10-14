@@ -242,6 +242,8 @@ def worker_options(args):
         result.append('--record-depth-payload')
     if getattr(args, 'record_owned_ulog', False):
         result.append('--record-owned-ulog')
+    if getattr(args, 'prepared_scene', False):
+        result.append('--prepared-scene')
     return result
 
 
