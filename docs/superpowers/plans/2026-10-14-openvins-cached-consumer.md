@@ -10,7 +10,7 @@
 - [x] Implement a thin exact-unit/data-journal/PPM-bound bridge and complete frame ledger; meaningful RED/GREEN for lossless stamp conversion, rejected fractional-us and source mismatch, no favorable source filtering.
 - [x] Independently review bridge/scope helper and frozen inputs/budget; verify executable and source extracted from original archive, clean pinned library/source, all candidate input files, exact config/expected counts; reserve fresh outputs.
 - [x] Execute the real cached native once after fresh admission and nonce cgroup limits verified inside; preserve all logs/PIDs/exit/resource counter/counts/state rows/refused frames/unconsumed IMU tail. No constructor mock or new estimator build.
-- [ ] Independently audit actual artifacts/report, seal evidence/CRC/hash and publish only personal/PR65; distinguish validated actual cached consumption from untested new-C++ code, continuous source/clock/calibration/full-model/physical pending.
+- [x] Independently audit actual artifacts/report, seal evidence/CRC/hash and publish only personal/PR65; distinguish validated actual cached consumption from untested new-C++ code, continuous source/clock/calibration/full-model/physical pending.
 
 Preparation only: 12 software cases passed; pre-dispatch bridge/scope review
 has no C/I/M. Actual CLI parent23316 refused its first admission before study
@@ -29,3 +29,9 @@ Actual native milestone2026-10-14: parent42288exit0,245returnedframes,
 Original gates/config unchanged; all live/calibration/fusion/training/flight
 qualifications remain false. Cached runtime attempt is consumed, do not rerun.
 See docs/OPENVINS_CACHED_DATASET_CONSUMPTION_REPORT.md.
+
+Native-phase publication: c71099bdc9c2274acfe261b77a39ac1482134e4e was
+pushed only to personal; PR65 initial head/body exact. The566-member native
+ZIP retains the prepublication Task5pending plan. The later external
+publication ledger binds this plan change. Offline consumption tasks are
+complete; all broader qualification and new-C++ tasks remain unverified.
