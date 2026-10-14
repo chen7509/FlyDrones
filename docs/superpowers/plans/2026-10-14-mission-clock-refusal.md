@@ -1,0 +1,16 @@
+# Mission caller-clock refusal plan
+
+This bounded decision/division dependency runs inline under the user's continuing autonomous authorization. It uses the existing MissionAgent and TaskLedger; no model, optimizer, simulator or flight command is created.
+
+The caller supplies time for safety durations, local leases, completion delays and relay epochs. Both step and communication-only ingest must share one nonnegative, finite Real (excluding bool/string), nondecreasing timestamp boundary. Equal timestamps remain allowed for a communication merge and decision in one tick. A malformed or backward timestamp latches terminal emergency. The faulting step returns zero intent with no target, without merging inbound records, expiring leases, releasing a task or creating local work. Ingest silently refuses the batch and latches the same emergency. A later accepted timestamp permits normal inbound merge/expiry and the existing owned-task release, but never clears the terminal latch. Refusal does not invent a receipt time or send a falsely timed release; ownership can otherwise expire at the peer's existing lease deadline. A remotely reassigned task must never be released by the old owner.
+
+Alternatives considered: exception-only refusal leaves no stopping decision and allows later movement; rewriting backward time to the last timestamp fabricates operational timing. The chosen stop/deferred-handoff path preserves both motion safety and evidence honesty.
+
+This observes caller regressions only. It cannot detect forward jumps, a frozen caller or jump-return between calls, establish continuous clock calibration, authenticate telemetry, timestamp actual sample generation, or issue a real PX4 emergency/LAND command. Direct external mutation of the supplied TaskLedger remains outside this MissionAgent boundary. No source freshness claim or existing depth/lease/physical threshold changes.
+
+- [x] Reproduce malformed/backward step and communication-only clock bypass using actual MissionAgent/TaskLedger; baseline retained before RED,20 failing cases.
+- [x] Implement one shared admission and terminal stopping behavior; equal-time and normal monotonic behavior remain supported. Original-value comparison/storage closes a later Important float-rounding regression bypass.
+- [x] Verify deferred owned release, peer takeover, stale owner refusal and nearby regressions without stress/full-model runs; initial107 passed0.45s,precision2RED,precision109 passed0.42s,annotation-final109 passed0.39s,Ruff/diff0. First review's no-finding result and subsequent Important/Minor are all retained; originalv1ZIP is pre-correction evidence. Important independently closed; Minor declarations now Real.
+- [x] Independent code/evidence review, immutable archive, exact scope report, publication only to personal/PR65, continue low-memory work. Final39-member v2 CRC/length/hash/current-byte audit passed; correction sidecar and unchanged v1/four old archive hashes independently matched, no remaining Critical/Important/Minor.
+
+Publication ledger: v1 retains its original pre-correction plan/report/source. Final v2 retains its pre-publication Task4-pending plan. This later completion ledger does not alter either immutable archive or report/source correction binding.

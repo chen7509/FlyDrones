@@ -155,6 +155,7 @@ class MissionAgent:
         self._released_tasks: set[str] = set()
         self._last_bid_at = -math.inf
         self._last_renew_at = -math.inf
+        self._last_clock_timestamp: Real | None = None
         self._steps = 0
 
     @classmethod
@@ -182,7 +183,7 @@ class MissionAgent:
 
     def step(
         self,
-        now: float,
+        now: Real,
         state: AgentState,
         peer_tracks: list[PeerTrack] | tuple[PeerTrack, ...],
         messages: list[TaskMessage] | tuple[TaskMessage, ...],
@@ -191,11 +192,19 @@ class MissionAgent:
         bidding_enabled: bool = True,
         preferred_task_ids: tuple[str, ...] = (),
     ) -> AgentDecision:
-        timestamp = float(now)
-        if not math.isfinite(timestamp):
-            raise ValueError("now must be finite")
+        timestamp = self._admit_timestamp(now)
+        if timestamp is None:
+            self._phase = "emergency"
+            self._steps += 1
+            return AgentDecision(
+                self._phase,
+                "emergency",
+                NavigationIntent((0.0, 0.0, 0.0), None, "safety-emergency"),
+                (),
+                (),
+            )
         outbound: list[tuple[str, dict[str, object]]] = []
-        self.ingest_messages(messages, now=timestamp)
+        self._merge_messages(messages, timestamp)
         self.ledger.expire(now=timestamp)
         safety = self._apply_safety(timestamp, state)
         if safety == "nominal":
@@ -254,10 +263,26 @@ class MissionAgent:
         self,
         messages: list[TaskMessage] | tuple[TaskMessage, ...],
         *,
-        now: float,
+        now: Real,
     ) -> None:
-        """Merge validated peer records during a communication-only convergence tail."""
-        self._merge_messages(messages, float(now))
+        """Merge peer records only at an admitted caller time; clock faults latch stop."""
+        timestamp = self._admit_timestamp(now)
+        if timestamp is not None:
+            self._merge_messages(messages, timestamp)
+
+    def _admit_timestamp(self, now: Real) -> float | None:
+        try:
+            if not _finite_number(now) or now < 0.0:
+                raise ValueError("invalid caller time")
+            if self._last_clock_timestamp is not None and now < self._last_clock_timestamp:
+                raise ValueError("caller time regressed")
+            timestamp = float(now)
+        except (TypeError, ValueError, OverflowError):
+            self._terminal_safety = "emergency"
+            return None
+        # Compare original values before the conversion used by legacy timer arithmetic.
+        self._last_clock_timestamp = now
+        return timestamp
 
     def work_unit(self, task_id: str) -> WorkUnit:
         return self._work_units[task_id]

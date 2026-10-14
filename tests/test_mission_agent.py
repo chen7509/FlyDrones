@@ -4,6 +4,7 @@ import hashlib
 import math
 import subprocess
 import sys
+from fractions import Fraction
 
 import pytest
 
@@ -64,6 +65,108 @@ def healthy_state(**overrides: object) -> AgentState:
     }
     values.update(overrides)
     return AgentState(**values)  # type: ignore[arg-type]
+
+
+def clock_peer_work_message() -> TaskMessage:
+    return TaskMessage(
+        "evidence", contract().mission_id, contract().digest, 1, 1, 0.3,
+        {"work_unit": {"task_id": "confirm-clock", "kind": "confirm_detection",
+                       "center_m": [10.0, 10.0, 20.0], "payload": []}},
+    )
+
+
+@pytest.mark.parametrize("bad_time", [
+    None, "0.4", True, float("nan"), float("inf"), -0.1, 10**500, 0.2,
+])
+def test_clock_fault_step_stops_without_mutation_and_defers_owned_release(bad_time: object) -> None:
+    agent = active_agent()
+    before = agent.ledger.snapshot()
+    units = agent.work_unit_ids
+    detection = Detection("person", (10.0, 10.0, 20.0), 0.95, "b" * 64)
+    decision = agent.step(bad_time, healthy_state(), [], [clock_peer_work_message()], [detection])  # type: ignore[arg-type]
+    assert decision.safety_phase == decision.phase == "emergency"
+    assert decision.intent.velocity_mps == (0.0, 0.0, 0.0)
+    assert decision.intent.target_m is None
+    assert decision.outbound_messages == decision.released_task_ids == ()
+    assert agent.ledger.snapshot() == before
+    assert agent.work_unit_ids == units
+
+    released = agent.step(0.4, healthy_state(), [], [], [detection])
+    assert released.safety_phase == "emergency"
+    assert released.released_task_ids == ("search-0000",)
+    assert agent.work_unit_ids == units
+    assert agent.step(0.5, healthy_state(), [], [], []).outbound_messages == ()
+
+    peer = MissionAgent.for_contract(1, 10, contract())
+    peer.ledger.merge_assignment(agent.ledger.assignment("search-0000"), now=0.4)
+    peer.step(0.4, healthy_state(), [], [], [], preferred_task_ids=("search-0000",))
+    assert peer.ledger.assignment("search-0000").winner_id == 1
+
+
+@pytest.mark.parametrize("bad_time", [
+    None, "0.4", True, float("nan"), float("inf"), -0.1, 10**500, 0.2,
+])
+def test_clock_fault_communication_tail_refuses_merge_and_latches_stop(bad_time: object) -> None:
+    agent = active_agent()
+    before = agent.ledger.snapshot()
+    units = agent.work_unit_ids
+    agent.ingest_messages([clock_peer_work_message()], now=bad_time)  # type: ignore[arg-type]
+    assert agent.ledger.snapshot() == before
+    assert agent.work_unit_ids == units
+    decision = agent.step(0.4, healthy_state(), [], [], [])
+    assert decision.safety_phase == "emergency"
+    assert decision.released_task_ids == ("search-0000",)
+
+
+def test_clock_shared_boundary_includes_communication_tail_and_allows_same_tick() -> None:
+    agent = active_agent()
+    agent.ingest_messages([clock_peer_work_message()], now=0.4)
+    assert "confirm-clock" in agent.work_unit_ids
+    assert agent.step(0.4, healthy_state(), [], [], []).safety_phase == "nominal"
+    assert agent.step(0.35, healthy_state(), [], [], []).safety_phase == "emergency"
+
+
+def test_clock_fault_cannot_delay_depth_hold_into_normal_mission_work() -> None:
+    agent = active_agent()
+    assert agent.step(1.0, healthy_state(depth_age_s=0.6), [], [], []).safety_phase == "degraded"
+    fault = agent.step(0.9, healthy_state(depth_age_s=0.6), [], [], [])
+    assert fault.safety_phase == "emergency"
+    assert agent.step(1.1, healthy_state(), [], [], []).safety_phase == "emergency"
+
+
+def test_clock_fault_deferred_release_respects_remote_reassignment() -> None:
+    agent = active_agent()
+    fault = agent.step(0.2, healthy_state(), [], [], [])
+    assert fault.released_task_ids == ()
+    remote = TaskAssignment("search-0000", "claimed", 3, 9.0, 1, 7.0, None, ())
+    message = TaskMessage("award", contract().mission_id, contract().digest, 3, 2, 4.0,
+                          {"assignment": remote.__dict__})
+    stopped = agent.step(4.0, healthy_state(), [], [message], [])
+    assert stopped.safety_phase == "emergency"
+    assert stopped.released_task_ids == ()
+    assert agent.ledger.assignment("search-0000").winner_id == 3
+
+
+def test_first_clock_fault_has_no_synthetic_timestamp_or_later_motion() -> None:
+    agent = MissionAgent.for_contract(0, 10, contract())
+    stopped = agent.step(-1.0, healthy_state(), [], [], [])
+    assert stopped.safety_phase == "emergency"
+    assert stopped.outbound_messages == ()
+    assert all(item.winner_id is None for item in agent.ledger.snapshot())
+    assert agent.step(0.0, healthy_state(), [], [], []).safety_phase == "emergency"
+
+
+@pytest.mark.parametrize("first,regressed,following", [
+    (2**53 + 1, 2**53, 2**53 + 2),
+    (Fraction(1) + Fraction(1, 2**60), Fraction(1), Fraction(2)),
+])
+def test_clock_regression_cannot_hide_in_float_conversion(first: object, regressed: object, following: object) -> None:
+    agent = MissionAgent.for_contract(0, 10, contract())
+    agent.ingest_messages([], now=first)  # type: ignore[arg-type]
+    original = agent.work_unit_ids
+    agent.ingest_messages([clock_peer_work_message()], now=regressed)  # type: ignore[arg-type]
+    assert agent.work_unit_ids == original
+    assert agent.step(following, healthy_state(), [], [], []).safety_phase == "emergency"  # type: ignore[arg-type]
 
 
 @pytest.mark.parametrize("overrides", [
