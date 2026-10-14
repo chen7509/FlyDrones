@@ -26,9 +26,11 @@ Interface: make_target(output: Path)->dict; CLI --output required. No load/traje
 
 ### Task2: Evidence and publication
 - [x] Independent code review; fix any actual findings with behavior RED/GREEN.
-- [ ] Report verified asset production / implemented model / untested rendering and measured calibration; preserve all failures and source research bytes, seal ZIP with every member SHA/size/CRC; independent archive review.
-- [ ] Commit and push personal, append PR65 preserving history and verify head/body; separate publication ledger and prepublication plan. Update heartbeat prompt preserving all gates/history. Remain quiet for preparation only.
+- [x] Report verified asset production / implemented model / untested rendering and measured calibration; preserve all failures and source research bytes, seal ZIP with every member SHA/size/CRC; independent archive review.
+- [x] Commit and push personal, append PR65 preserving history and verify head/body; separate publication ledger and prepublication plan. Update heartbeat prompt preserving all gates/history. Remain quiet for preparation only.
 
 Ruling: Independent review found required COLLADA metadata missing;1actualRED then5GREEN, immutablev1 and declared correctedv2 retained. Official schema v1false/v2true. Final18passed31.86s/Ruff0. XML schema pass is not renderer acceptance.
 
 Ruling: Preserve exact upstream source/license through two exact-path .gitattributes -text/-whitespace entries, following existing pinned fixtures; product code remains checked. Preserve original staged diff exit2/raw and first draft ZIP, create canonicalv2 seal. No product or experiment bytes changed.
+
+Publication: implementation77d636f98fb6c0b628358e13737b1889e07a8e6f pushed onlypersonal; PR65head/body exact verified. Canonical95members/204318B SHAa17dc100c6c57bfd163b4a618c8b9e3d64c063ea3da2b8415da5198117faddf2 independent94mapped/allCRC zeroC/I/M. Asset preparation complete; all measurement/native/render qualifications pending and original gates unchanged.

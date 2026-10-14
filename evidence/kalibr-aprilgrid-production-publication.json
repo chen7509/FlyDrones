@@ -1,0 +1,92 @@
+{
+  "implementation_head": "77d636f98fb6c0b628358e13737b1889e07a8e6f",
+  "publication": "actual implementation personal push and PR65 exact verified; ledger commit follows",
+  "pr": {
+    "head": "77d636f98fb6c0b628358e13737b1889e07a8e6f",
+    "body_sha256_normalized": "9c44cb9a42b942d32febe1bebda96ead67378d1508e446915493b18db2fae0e5",
+    "head_exact": true,
+    "body_exact_after_CRLF_only": true,
+    "remote": "personal",
+    "base_stage": "d304f14b0e24546ba73c218cb974af8abfbce3ca"
+  },
+  "canonical_seal": {
+    "archive": "evidence\\kalibr-aprilgrid-production-dev-1701-v2.zip",
+    "sha256": "a17dc100c6c57bfd163b4a618c8b9e3d64c063ea3da2b8415da5198117faddf2",
+    "members": 95,
+    "bytes": 204318,
+    "CRC": "allpass",
+    "mapped_current_bytes": "allpass",
+    "report_sha256": "daec07bb94d66cc6a6e22c18fc174741619cdc886acf099b18f2bcfaa91331a2",
+    "independent_archive_review": "passed zeroC/I/M",
+    "final_review_sha256": "adcad24bbbd89970dd66f886c203d53da4b1ce6d9b9f237238d8df3e6f6d3f58"
+  },
+  "independent_final_review": {
+    "reviewer": "/root/review_aprilgrid_production",
+    "Critical": 0,
+    "Important": 0,
+    "Minor": 0,
+    "archive": "evidence/kalibr-aprilgrid-production-dev-1701-v2.zip",
+    "sha256": "a17dc100c6c57bfd163b4a618c8b9e3d64c063ea3da2b8415da5198117faddf2",
+    "members": 95,
+    "bytes": 204318,
+    "CRC_checks": 95,
+    "manifest_size_SHA_current_byte_comparisons": 94,
+    "errors": 0,
+    "report_sha256": "daec07bb94d66cc6a6e22c18fc174741619cdc886acf099b18f2bcfaa91331a2",
+    "two_exact_attribute_paths": "verified only existing rules unchanged/product checks active",
+    "draft_source_assets_trials": "byte identical; no removed members",
+    "273_historical_archives": "previous independent complete streaming audit all match, not repeated",
+    "all_qualifications": false,
+    "archive_plan": "prepublication"
+  },
+  "identity": {
+    ".gitattributes": {
+      "working_and_archive_sha256": "cb5fb1430718b53e02fc5b46321f32f5f2e1bc546a71689229c7b201633b7c83",
+      "git_blob_sha256": "8e2e550349b87e3cc720750a3ba32903055b9dbc295de618b988a560523d7f21",
+      "same": false
+    },
+    "tools/benchmark/make_kalibr_aprilgrid_target.py": {
+      "working_and_archive_sha256": "e1f89789d2ebe5bd8d7da57d9f8f1a4c111c5fe477712618e904779f67311b23",
+      "git_blob_sha256": "e1f89789d2ebe5bd8d7da57d9f8f1a4c111c5fe477712618e904779f67311b23",
+      "same": true
+    },
+    "tests/benchmark/test_kalibr_aprilgrid_target.py": {
+      "working_and_archive_sha256": "3dc9c525fe15022c8b81f1e93d72259b9224ec4035fadeed26819ecbc7160bf9",
+      "git_blob_sha256": "3dc9c525fe15022c8b81f1e93d72259b9224ec4035fadeed26819ecbc7160bf9",
+      "same": true
+    },
+    "tests/benchmark/fixtures/kalibr_aprilgrid_reference.py": {
+      "working_and_archive_sha256": "8d17f954afdd35a0c2a2687bbb1270d76bb4f41d1fbb3c6ab9b2d0f4dd9ed4eb",
+      "git_blob_sha256": "93799478612b9a2f2d57d9682e3a3ce941fd5e1d8f37e2dd0c9fae6b8d4d1605",
+      "same": false
+    },
+    "third_party/kalibr-aprilgrid/LICENSE": {
+      "working_and_archive_sha256": "1181b1c28fecb9348995fa731e50e36bbe6255660f7554831f8a87f65c9d5b09",
+      "git_blob_sha256": "1181b1c28fecb9348995fa731e50e36bbe6255660f7554831f8a87f65c9d5b09",
+      "same": true
+    },
+    "third_party/kalibr-aprilgrid/NOTICE.txt": {
+      "working_and_archive_sha256": "24bff479d0e51dde2537fe055cf62fc6adae9605547c4cdb880eeae99f5d80c3",
+      "git_blob_sha256": "d9268c5aabb607e5820ef2e7cde72a6c80f7881aa10d8b40140340be618f6b07",
+      "same": false
+    },
+    "docs/KALIBR_APRILGRID_PRODUCTION_REPORT.md": {
+      "working_and_archive_sha256": "daec07bb94d66cc6a6e22c18fc174741619cdc886acf099b18f2bcfaa91331a2",
+      "git_blob_sha256": "f367d3bdfd095981be0b6089309ac29eb8c2fb41e2ee540ed466208d690857fb",
+      "same": false
+    },
+    "docs/superpowers/specs/2026-10-14-kalibr-aprilgrid-production.md": {
+      "working_and_archive_sha256": "b79795a3f624d98555a889a93b17b8ead69c963888fb04271966a6c4c8b83383",
+      "git_blob_sha256": "e1bcbc8c077b6458be292da83f74e46d8af045501acdf4cb13a411ae6ba9c21c",
+      "same": false
+    }
+  },
+  "postpublication_plan_sha256": "25acb4c87bc53ab74226a2ba58ff58af2464421613d0af01626c3d527b3f4a2a",
+  "ZIP_plan": "prepublication; this ledger/postpublication plan separate",
+  "actual_asset_cli": true,
+  "native_detection": false,
+  "Gazebo_render": false,
+  "Kalibr_solve": false,
+  "measured_calibration": false,
+  "full_goal_complete": false
+}
