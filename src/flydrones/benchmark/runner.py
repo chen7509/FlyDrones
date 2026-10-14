@@ -2,12 +2,29 @@
 
 from __future__ import annotations
 
-import json
 import hashlib
-from pathlib import Path
+import json
 import shutil
+from pathlib import Path
 
 from .provenance import verify_files, verify_sealed_manifest
+
+_TERMINAL_STATUSES = frozenset({
+    'success', 'timeout', 'collision', 'out_of_bounds', 'controller_error', 'infrastructure_error',
+})
+
+
+def validate_episode_result(result: object, *, seed: int, controller: str,
+                            freeze_sha256: str) -> dict:
+    """Check declared pair/freeze/terminal identity, not runtime authenticity."""
+    if (not isinstance(result, dict) or type(seed) is not int or type(controller) is not str
+            or type(result.get('seed')) is not int or result['seed'] != seed
+            or type(result.get('controller')) is not str or result['controller'] != controller
+            or type(result.get('freeze_manifest_sha256')) is not str
+            or result['freeze_manifest_sha256'] != freeze_sha256
+            or type(result.get('status')) is not str or result['status'] not in _TERMINAL_STATUSES):
+        raise ValueError('episode result does not match requested pair, freeze or terminal status')
+    return result
 
 
 def build_jobs(seeds: list[int], controllers: list[str]) -> list[dict]:

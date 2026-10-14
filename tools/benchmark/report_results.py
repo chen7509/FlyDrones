@@ -19,7 +19,7 @@ sys.path.insert(0, str(ROOT / 'src'))
 
 from flydrones.benchmark.provenance import verify_sealed_manifest
 from flydrones.benchmark.report import path_length, summarize_controller
-from flydrones.benchmark.runner import verify_freeze_manifest
+from flydrones.benchmark.runner import validate_episode_result, verify_freeze_manifest
 from flydrones.benchmark.ulog_capture import verify_episode_ulog_evidence
 
 CONTROLLERS = ('fly_raw', 'fly_guided', 'ego')
@@ -38,9 +38,10 @@ def load_results(formal_dir: Path, freeze_path: Path):
             path = formal_dir / 'episodes' / str(item['seed']) / controller / 'result.json'
             if not path.is_file():
                 raise ValueError(f'missing formal result: {path}')
-            result = json.loads(path.read_text(encoding='utf-8'))
-            if result.get('freeze_manifest_sha256') != freeze['manifest_sha256']:
-                raise ValueError(f'wrong freeze on result: {path}')
+            result = validate_episode_result(
+                json.loads(path.read_text(encoding='utf-8')),
+                seed=item['seed'], controller=controller, freeze_sha256=freeze['manifest_sha256'],
+            )
             if result.get('odometry_source') != 'gazebo_model_truth' or result.get('camera_pose_source') != 'gazebo_model_truth':
                 raise ValueError(f'odometry provenance missing or inconsistent: {path}')
             verify_episode_ulog_evidence(path.parent, result)
