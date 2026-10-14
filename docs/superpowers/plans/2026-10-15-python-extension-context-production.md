@@ -48,3 +48,7 @@ Full Kalibr toolchain/deps/digests/transitive-license/thread/cost plus actual in
 
 
 Production representation ruling: the one exact resolver root retains graph:resolver because baseline inventories prohibit duplicate paths. All other entry self/selected files, especially zero-selected Python self, remain mandatory graph:dependencies. Initial fixture retention limits and true/fixture RED distinctions are documented in TARGET_BEARING_PYTHON_CONTEXT_PRODUCTION_REPORT.md. No actual v3 coordinator, scope, study or physical attempt exists.
+
+## Subsequent v3 failure — supersedes the preceding prospective absence statement
+
+The Task3 scope-absence software test omitted its Popen stub and actually launched v3 from inherited repository cwd with mocked admission/preidentity/release. V3 is **CONSUMED_FAILED_UNADMITTED_HARNESS_ESCAPE**. The literal frozen-study-v3 folder exists with partial inputs and64 native dependency queries; final study.json/graph/binding/execution/preparation are absent. Physical fixed attempt remains absent/unconsumed. No Task3 checkbox is completed by this failure. Current v3 coordinator/identity observer/producer/executor tests are frozen, not rerunnable; known writer/absence-returncode/lint failures remain. See TARGET_BEARING_STATIC_V3_HARNESS_FAILURE_REPORT.md and the separate2026-10-15-static-harness-containment-and-v3-failure plan. Future native revision needs independent containment and retained-loader-path research/specification; no blind directory retry. All qualification/readiness flags remainfalse.

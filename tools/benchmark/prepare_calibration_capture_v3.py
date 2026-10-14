@@ -310,6 +310,9 @@ def prepare_v3(unit):
             name = getattr(module, "__file__", None)
             if name and Path(name).is_file():
                 modules.append(str(Path(name).resolve()))
+                cached = getattr(module, "__cached__", None)
+                if cached and Path(cached).is_file():
+                    modules.append(str(Path(cached).resolve()))
                 if Path(name).suffix == ".so":
                     native.append(str(Path(name).resolve()))
         for pattern in ("gz/**/*.so", "sdformat14*.so"):
