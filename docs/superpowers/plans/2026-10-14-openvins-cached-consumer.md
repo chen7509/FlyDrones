@@ -18,3 +18,8 @@ creation or native extraction; exact first counter unknown, later547086336bytes
 not backfilled. No native runtime attempt consumed. Native tasks above remain
 open. Current CLI requires an exclusive `--admission-record` for exact future
 first facts. See `docs/OPENVINS_CANDIDATE_CONSUMER_PREPARATION_REPORT.md`.
+
+Preparation publication: implementation00b2aa17a00ff53aad7124f62ca3864948d88f68
+was pushed only to personal; PR65 initial head/body verified exactly. The151-member
+ZIP preserves the prepublication plan. External publication ledger records
+this later plan change; native tasks remain pending.
