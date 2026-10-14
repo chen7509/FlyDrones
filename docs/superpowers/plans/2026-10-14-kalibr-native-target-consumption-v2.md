@@ -17,5 +17,7 @@ Onlyoneinclude changed; cacheheader/objects binding14exact;3freshadmissions; sco
 - [x] Independent preflightreview and softwareGREEN/Ruff. Actualrun exactlyonce whenfreshgates satisfied, no oldcompilecache rerun. Followrealhandle only.
 - [x] ActualIDs/corners/ELF/libs/resources/closure audit allrows; preserve failure if any. NativeRED is v1realcompilererror, not missing-module tests.
 ### Task2 Publication
-- [ ] Independent combined v1/v2 raw/code/report/ZIP review; retain bothattempts andoldZIPs. Seal all source/cache/ELF/raw results andonlypersonal/PR65.
-- [ ] Separate prepublication plan andpostpublication ledger; updateheartbeat latestconsumedpointer; no source/calibrationqualification or overallcompletion claim.
+- [x] Independent combined v1/v2 raw/code/report/ZIP review; retain bothattempts andoldZIPs. Seal all source/cache/ELF/raw results andonlypersonal/PR65.
+- [x] Separate prepublication plan andpostpublication ledger; updateheartbeat latestconsumedpointer; no source/calibrationqualification or overallcompletion claim.
+
+Publication: d172bed0a5448ceec5f609ccdff98e1136b870b5 pushed onlypersonal, PR65head/body exact verified. Combined evidence299members681177B SHAb2ef3316e3be642da3501a20a2e460cf1cdbd6580f00ddb63138a8b49d1f7047 independent allCRC/298mapped/raw/code noC/I/M. v1failedheader andv2actualnative bothconsumed; no repeat. Native accepts generatedraster only, measurement/source/safety qualification staysfalse. Later ledger is separate from ZIPprepublication plan.

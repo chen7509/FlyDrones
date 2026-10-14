@@ -20,5 +20,7 @@ Interfaces execute_once(record:Path)->dict; fixed STUDY and SOURCE/input constan
 - [x] Implement copied immutable source/helper/wrapper and two admissions plus separate runtimeadmission; smallsoftware GREEN/Ruff/diff, independent preflightreview before actual dispatch.
 - [x] Run frozen execute-once if originaldeclared newgates fresh and no study. Followhandle only, preserve any real failure, neverblindrerun. Audit actualcompile/runtime/ELF/deps/detections/memory/release independently.
 ### Task2 evidence/publication
-- [ ] Independent code/raw/report/ZIP audit, retain all failures/old archives, stage-specific verified/implemented/untested/failed.
-- [ ] Seal and onlypersonal/PR65 publish exacthead/body; separate prepublication plan/ledger. Update heartbeat pointer, no overall completion claim.
+- [x] Independent code/raw/report/ZIP audit, retain all failures/old archives, stage-specific verified/implemented/untested/failed.
+- [x] Seal and onlypersonal/PR65 publish exacthead/body; separate prepublication plan/ledger. Update heartbeat pointer, no overall completion claim.
+
+Publication: d172bed0a5448ceec5f609ccdff98e1136b870b5 pushed onlypersonal, PR65head/body exact verified. Combined evidence299members681177B SHAb2ef3316e3be642da3501a20a2e460cf1cdbd6580f00ddb63138a8b49d1f7047 independent allCRC/298mapped/raw/code noC/I/M. v1failedheader andv2actualnative bothconsumed; no repeat. Native accepts generatedraster only, measurement/source/safety qualification staysfalse. Later ledger is separate from ZIPprepublication plan.
