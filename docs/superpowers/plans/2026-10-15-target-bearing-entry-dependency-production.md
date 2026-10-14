@@ -65,6 +65,6 @@ This plan is prospective. Research readelf metadata/official-source observations
 
 ## Research/design publication only
 
-- [ ] Independently seal and publish this research/design evidence; this checkbox does not complete any production implementation, native trace or physical task above.
+- [x] Independently seal and publish this research/design evidence; this checkbox does not complete any production implementation, native trace or physical task above.
 
 Future command/scope/supervisor budgets retain local monotonic start/end/elapsed separately from UTC; no cross-host wall-clock duration or nesting assumption.
