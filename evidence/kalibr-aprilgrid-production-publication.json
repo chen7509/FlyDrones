@@ -88,5 +88,20 @@
   "Gazebo_render": false,
   "Kalibr_solve": false,
   "measured_calibration": false,
-  "full_goal_complete": false
+  "full_goal_complete": false,
+  "exact_pinned_Git_byte_followup": {
+    "reason": "initial staging preceded -text policy; explicit exact-path renormalization fixes already cached source",
+    "working_source_and_trial_bytes_changed": false,
+    "result": {
+      "tests/benchmark/fixtures/kalibr_aprilgrid_reference.py": {
+        "index_exact_working_archive": true,
+        "sha256": "8d17f954afdd35a0c2a2687bbb1270d76bb4f41d1fbb3c6ab9b2d0f4dd9ed4eb"
+      },
+      "third_party/kalibr-aprilgrid/LICENSE": {
+        "index_exact_working_archive": true,
+        "sha256": "1181b1c28fecb9348995fa731e50e36bbe6255660f7554831f8a87f65c9d5b09"
+      }
+    },
+    "evidence": "results/aprilgrid-production-research-dev-1701/git-pinned-byte-renormalization.json"
+  }
 }
