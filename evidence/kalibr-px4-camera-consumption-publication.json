@@ -1,0 +1,48 @@
+{
+  "schema": "kalibr-camera-software-publication-v1",
+  "implementation_commit": "35759d6386ee65eb6c9ff5ff54046ed136a72a6b",
+  "pr": "https://github.com/chen7509/FlyDrones/pull/65",
+  "first_head_body_verification": {
+    "expected_head": "35759d6386ee65eb6c9ff5ff54046ed136a72a6b",
+    "observed_head": "35759d6386ee65eb6c9ff5ff54046ed136a72a6b",
+    "expected_body_sha256": "3dc8fe2f2813d11ddaeead16383d9457e25c910ddf8a937559602cbeaecb347c",
+    "observed_body_sha256": "3dc8fe2f2813d11ddaeead16383d9457e25c910ddf8a937559602cbeaecb347c",
+    "head_equal": true,
+    "body_equal_after_crlf_only": true
+  },
+  "canonical_archive": "evidence\\kalibr-px4-camera-consumption-dev-1701-v2.zip",
+  "canonical_sha256": "707afba837f62e2e55d60d80e65c6ffdcc8455a2c26087a031763b43070974f3",
+  "canonical_bytes": 407104,
+  "members": 751,
+  "canonical_report_sha256": "6e00174c303606b1e645ede46b89ad414141013ae248c8615ba8ee8a0f6e5a49",
+  "original_archive_sha256": "a6fc2f3ccfed8c2e080923990e7a9b0f97a9b654bea8bc87144e7945eb4504f5",
+  "prepublication_plan_sha256": "12f852e19869a02d95b4885795cd6325f82514e0b84e8f7922f2b5e03bbc3169",
+  "postpublication_plan_sha256": "04d3d07403874fdc433ff1b97d8e9a82e05872a3479b59ba737bd48c0451679d",
+  "state": "implemented/software-only",
+  "targeted_tests": {
+    "passed": 41,
+    "seconds": 6.46
+  },
+  "actual_calibration_artifact_measured": false,
+  "actual_ulog_parsing": false,
+  "actual_px4_native_optimizer_executed": false,
+  "source_clock_calibration_teacher_training_flight_qualified": false,
+  "pose_cli_projects_points": false,
+  "separate_projection_api_software_tested": true,
+  "source_snapshots_are_worktree_bytes_git_may_normalize_line_endings": true,
+  "all_local_work_complete": false,
+  "source_sha256": {
+    "src/flydrones/benchmark/kalibr_camera_consumption.py": {
+      "worktree_and_archive": "cc537a07f1d77319d6a4c6eb1734d5a1c240364b382027a0bb6879840cbc80f0",
+      "git_blob": "cc537a07f1d77319d6a4c6eb1734d5a1c240364b382027a0bb6879840cbc80f0"
+    },
+    "src/flydrones/benchmark/px4_camera_source.py": {
+      "worktree_and_archive": "ba081000dc5a3168bda263ec7295e1487c2e337e84f3fbfaab8651aef61a6a70",
+      "git_blob": "ba081000dc5a3168bda263ec7295e1487c2e337e84f3fbfaab8651aef61a6a70"
+    },
+    "tools/benchmark/produce_px4_camera_file.py": {
+      "worktree_and_archive": "e6dd41f1360924141addcdb05344099ee3ece27dc7ce44c181fee2fc78909a7e",
+      "git_blob": "e6dd41f1360924141addcdb05344099ee3ece27dc7ce44c181fee2fc78909a7e"
+    }
+  }
+}
