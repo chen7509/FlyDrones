@@ -1,0 +1,21 @@
+# Mission state safety and task handoff (2026-10-14)
+
+The existing mission agent now stops on malformed local state instead of treating NaN depth age as fresh data or creating local detection/relay work before safety preemption. This is a low-memory repair of the decision/division dependency in the original roadmap. It does not load a reduced fruit-fly model or replace required full MaleCNS training.
+
+`AgentState` requires tuple/list finite real position/velocity three-vectors, battery in [0,100], finite nonnegative depth age and an exact bool localization flag. Boolean or numeric-string measurements and unordered vector containers are refused. Invalid state uses the existing terminal emergency path: zero intent, no target, release only the locally owned active task once, and no new bid, lease, completion evidence, detection or relay creation. Later valid data does not clear that terminal latch. Safe inbound task merges remain before safety, so the local agent cannot release a task that has already changed ownership.
+
+Only nominal state creates local detection/relay work. Valid `localization_valid=False` still selects LAND; existing depth-age 0.5s / persistent-stale 2s, battery-return, geofence and separation thresholds are unchanged. No message schema, consensus rank, flight command or production sensor adapter was altered.
+
+## Verified
+
+The first 21 new behavior cases failed against the original agent, with assertions or exceptions exposing invalid values and unsafe task creation. The first correction passed 82 adjacent tests. Independent review identified three further defects: unordered containers accepted as vectors, overflow of squared norms turning return intent into zero, and an overflowing peer bid preventing local safety processing. Four vector/large-coordinate cases and one peer case failed first; the correction restricts vector containers, scales by the largest component before calculating the norm, and catches numeric overflow at the inbound merge boundary. The final mission-agent, task-ledger, mission-contract and task-UDP run passed **87 tests in 0.99s**. Ruff and diff checks passed. These checks use actual local MissionAgent/TaskLedger implementations and exchanged TaskMessage release records; the neighbor-takeover case shows another agent claiming the released task. The existing lightweight import check passes without importing NumPy; no full connectome, Docker, PX4 or simulator was instantiated for this selected suite.
+
+The malformed-state matrix covers NaN/infinite/negative/string/bool depth age, NaN/infinite/out-of-range/bool battery, non-bool localization, malformed/boolean/string position and nonfinite velocity. It verifies zero output, terminal recovery refusal, exactly-once release and suppression of local dynamic work. Adjacent existing cases cover stale local pointers to remotely reassigned tasks, completed tasks, normal local bidding and safety behavior.
+
+## Limits
+
+This is software validation with constructed state and peer messages, not authenticated live sensor health, actual network delivery, physical task takeover latency, PX4 emergency execution or landing. A finite value may still be stale, forged or in the wrong coordinate frame. Caller time, source identity, calibration and continuous clock/reset health remain separate required contracts. Existing local completion evidence is a synthetic mission record; this change does not qualify it as a real detector measurement.
+
+Full MaleCNS training/inference timing, trusted non-truth corpus, EGO teacher and fair physical baseline remain untested here. The recorded EGO v3 OOM failure remains failed; PX4 firmware/physical runs retain 4GiB gates. Historical five-camera 0.873RTF<0.95 and other failures remain unchanged. No full repository suite or 5/20/100-agent stress run was repeated for this bounded fix.
+
+All RED/GREEN output and exact commands are retained in `results/mission-state-safety-dev-1701`; initial command-summary transcription is corrected by a separate command ledger, without overwriting its original record. Independent code re-review closed all three Important findings and found no new Critical/Important issue. Evidence is sealed in `evidence/mission-state-safety-dev-1701.zip` with a separate SHA sidecar, member lengths/hashes and CRC verification. No old experiment archive is overwritten.

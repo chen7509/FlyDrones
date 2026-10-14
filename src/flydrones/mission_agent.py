@@ -5,6 +5,7 @@ from __future__ import annotations
 import hashlib
 import math
 from dataclasses import asdict, dataclass
+from numbers import Real
 from typing import Literal
 
 from flydrones.mission_contract import MissionContract, WorkUnit
@@ -49,16 +50,29 @@ class AgentDecision:
     central_control_commands: int = 0
 
 
+def _finite_number(value: object) -> bool:
+    try:
+        return isinstance(value, Real) and not isinstance(value, bool) and math.isfinite(value)
+    except (TypeError, ValueError, OverflowError):
+        return False
+
+
 def _finite_vector(values: tuple[float, float, float]) -> bool:
-    return len(values) == 3 and all(math.isfinite(float(value)) for value in values)
+    try:
+        return type(values) in (tuple, list) and len(values) == 3 and all(_finite_number(value) for value in values)
+    except (TypeError, ValueError):
+        return False
 
 
 def _limit(vector: tuple[float, float, float], maximum: float) -> tuple[float, float, float]:
-    magnitude = math.sqrt(sum(value * value for value in vector))
-    if magnitude <= maximum or magnitude <= 1e-12:
+    largest = max(abs(value) for value in vector)
+    if largest == 0.0:
         return vector
-    scale = maximum / magnitude
-    return tuple(value * scale for value in vector)
+    normalized = tuple(value / largest for value in vector)
+    norm = math.hypot(*normalized)
+    if largest <= maximum / norm:
+        return vector
+    return tuple(value * (maximum / norm) for value in normalized)
 
 
 def _closest_approach(
@@ -183,10 +197,10 @@ class MissionAgent:
         outbound: list[tuple[str, dict[str, object]]] = []
         self.ingest_messages(messages, now=timestamp)
         self.ledger.expire(now=timestamp)
-        self._update_detections(detections, outbound)
-        self._update_relay_task(timestamp, state, outbound)
-
         safety = self._apply_safety(timestamp, state)
+        if safety == "nominal":
+            self._update_detections(detections, outbound)
+            self._update_relay_task(timestamp, state, outbound)
         released: tuple[str, ...] = ()
         if safety in {"return", "land", "emergency"}:
             released = self._release_active_task(timestamp)
@@ -286,7 +300,7 @@ class MissionAgent:
                     unit = _work_unit_from_payload(payload["work_unit"])
                     self.ledger.add_work_unit(unit)
                     self._work_units[unit.task_id] = unit
-            except (KeyError, TypeError, ValueError):
+            except (KeyError, TypeError, ValueError, OverflowError):
                 continue
 
     def _update_detections(
@@ -354,7 +368,15 @@ class MissionAgent:
     def _apply_safety(self, now: float, state: AgentState) -> SafetyPhase:
         if self._terminal_safety is not None:
             return self._terminal_safety
-        if not _finite_vector(state.position_m) or not _finite_vector(state.velocity_mps):
+        if (
+            not _finite_vector(state.position_m)
+            or not _finite_vector(state.velocity_mps)
+            or not _finite_number(state.battery_pct)
+            or not 0.0 <= state.battery_pct <= 100.0
+            or not _finite_number(state.depth_age_s)
+            or state.depth_age_s < 0.0
+            or type(state.localization_valid) is not bool
+        ):
             self._terminal_safety = "emergency"
             return "emergency"
         if not state.localization_valid:

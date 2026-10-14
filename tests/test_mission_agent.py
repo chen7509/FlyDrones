@@ -1,8 +1,11 @@
 from __future__ import annotations
 
 import hashlib
+import math
 import subprocess
 import sys
+
+import pytest
 
 from flydrones.mission_agent import (
     AgentState,
@@ -61,6 +64,92 @@ def healthy_state(**overrides: object) -> AgentState:
     }
     values.update(overrides)
     return AgentState(**values)  # type: ignore[arg-type]
+
+
+@pytest.mark.parametrize("overrides", [
+    {"depth_age_s": float("nan")}, {"depth_age_s": float("inf")},
+    {"depth_age_s": -0.1}, {"depth_age_s": "0"}, {"depth_age_s": False},
+    {"battery_pct": float("nan")}, {"battery_pct": float("inf")},
+    {"battery_pct": -1}, {"battery_pct": 101}, {"battery_pct": True},
+    {"localization_valid": 1}, {"localization_valid": "true"},
+    {"position_m": None}, {"position_m": (True, 10, 20)},
+    {"position_m": ("10", 10, 20)}, {"position_m": (10, 20)},
+    {"velocity_mps": (0, float("nan"), 0)},
+])
+def test_invalid_local_state_stops_and_releases_once(overrides: dict[str, object]) -> None:
+    agent = active_agent()
+    task_ids = agent.work_unit_ids
+    detection = Detection("person", (10.0, 10.0, 20.0), 0.95, "a" * 64)
+    failed = agent.step(1.0, healthy_state(**overrides), [], [], [detection])
+    recovered = agent.step(1.1, healthy_state(), [], [], [detection])
+    assert failed.safety_phase == recovered.safety_phase == "emergency"
+    assert failed.intent.velocity_mps == recovered.intent.velocity_mps == (0.0, 0.0, 0.0)
+    assert failed.released_task_ids == ("search-0000",)
+    assert recovered.released_task_ids == ()
+    assert agent.work_unit_ids == task_ids
+    assert agent.ledger.assignment("search-0000").status == "open"
+    assert [kind for kind, _ in failed.outbound_messages] == ["award"]
+    assert recovered.outbound_messages == ()
+
+
+def test_invalid_state_release_allows_neighbor_to_take_over() -> None:
+    owner = active_agent()
+    peer = MissionAgent.for_contract(1, 10, contract())
+    peer.ledger.merge_assignment(owner.ledger.assignment("search-0000"), now=0.3)
+    fault = owner.step(1.0, healthy_state(depth_age_s=float("nan")), [], [], [])
+    messages = [TaskMessage(kind, contract().mission_id, contract().digest, 0, i, 1.0, payload)
+                for i, (kind, payload) in enumerate(fault.outbound_messages)]
+    takeover = peer.step(1.1, healthy_state(), [], messages, [], preferred_task_ids=("search-0000",))
+    assert fault.safety_phase == "emergency"
+    assert peer.ledger.assignment("search-0000").winner_id == 1
+    assert takeover.intent.source == "local-task-planner"
+    assert all(kind not in {"bid", "lease", "evidence"} for kind, _ in fault.outbound_messages)
+
+
+@pytest.mark.parametrize("position", [{3.0, 4.0, 5.0}, {3: 1.0, 4: 2.0, 5: 3.0}])
+def test_unordered_position_container_latches_emergency(position: object) -> None:
+    agent = active_agent()
+    decision = agent.step(1, healthy_state(position_m=position), [], [], [])
+    assert decision.safety_phase == "emergency"
+    assert decision.released_task_ids == ("search-0000",)
+    assert decision.intent.velocity_mps == (0, 0, 0)
+
+
+@pytest.mark.parametrize("position", [(1e200, 10, 20), (1.7e308, 1.7e308, 20)])
+def test_large_finite_position_has_bounded_nonzero_return_intent(position: tuple[float, float, float]) -> None:
+    agent = active_agent()
+    decision = agent.step(1, healthy_state(position_m=position), [], [], [])
+    assert decision.safety_phase == "return"
+    assert all(math.isfinite(value) for value in decision.intent.velocity_mps)
+    assert math.hypot(*decision.intent.velocity_mps) == pytest.approx(contract().safety.maximum_speed_mps)
+    assert decision.intent.velocity_mps[0] < 0
+
+
+def test_overflowing_peer_bid_does_not_interrupt_local_safety() -> None:
+    agent = active_agent()
+    message = TaskMessage("bid", contract().mission_id, contract().digest, 1, 0, 1.0, {
+        "task_id": "search-0000", "bidder_id": 1, "utility": 10**500,
+        "allocation_round": 0, "created_at": 1.0,
+    })
+    decision = agent.step(1.0, healthy_state(depth_age_s=float("nan")), [], [message], [])
+    assert decision.safety_phase == "emergency"
+    assert decision.released_task_ids == ("search-0000",)
+    assert decision.intent.velocity_mps == (0, 0, 0)
+
+
+@pytest.mark.parametrize("overrides", [
+    {"localization_valid": False}, {"battery_pct": 29}, {"depth_age_s": 0.51},
+])
+def test_safety_preemption_does_not_create_local_detection_or_relay_tasks(overrides: dict[str, object]) -> None:
+    agent = MissionAgent.for_contract(0, 10, contract())
+    initial = agent.work_unit_ids
+    agent.step(0, healthy_state(**overrides), [], [], [])
+    decision = agent.step(2.1, healthy_state(**overrides), [], [], [
+        Detection("person", (10, 10, 20), 0.9, "b" * 64),
+    ])
+    assert decision.safety_phase != "nominal"
+    assert agent.work_unit_ids == initial
+    assert all(kind not in {"bid", "lease", "evidence"} for kind, _ in decision.outbound_messages)
 
 
 def active_agent() -> MissionAgent:
