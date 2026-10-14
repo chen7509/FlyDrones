@@ -1,0 +1,15 @@
+{
+  "original_archive": "evidence/px4-camera-file-producer-dev-1701.zip",
+  "original_archive_sha256": "efe06f99532fec028551347063025591067affe6ef450533a4ce16bb20bfa895",
+  "canonical_report": "docs/PX4_CAMERA_FILE_PRODUCER_REPORT.md",
+  "canonical_report_sha256": "f4bf6e60101023e03ae9b0e804b62bb75460dc38afac925f857d497bcecf410d",
+  "changes": [
+    "pyulog parses selected topics including instances, producer then selects unique instance0",
+    "explicit original outer-tool-response archival gap, child raw console not traceback"
+  ],
+  "implementation_changed": false,
+  "experiments_rerun": false,
+  "canonical_archive": "evidence/px4-camera-file-producer-dev-1701-v2.zip",
+  "canonical_archive_sha256": "9ac9f0377ce9c71b204c37cf92b72dfe29587a7cde01fbf2fd5f5513603239de",
+  "original_archive_preserved": true
+}
