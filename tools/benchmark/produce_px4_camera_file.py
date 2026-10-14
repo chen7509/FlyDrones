@@ -42,6 +42,8 @@ def main():
         parser.add_argument('--'+name, required=True)
     parser.add_argument('--epoch-declaration-json', type=Path)
     parser.add_argument('--epoch-sha256')
+    parser.add_argument('--calibration-artifact', type=Path)
+    parser.add_argument('--calibration-sha256')
     args = parser.parse_args()
     if _linked(args.output):
         raise ValueError('linked producer result path')
@@ -77,8 +79,23 @@ def main():
             declaration = json.loads(raw_epoch, object_pairs_hook=_unique)
         binding = CameraRigBinding.load(inputs/'rig.json', args.rig_sha256,
                                         body_id=args.body_id, camera_id=args.camera_id)
+        calibration = None
+        if (args.calibration_artifact is None) != (args.calibration_sha256 is None):
+            raise ValueError('calibration artifact path/hash must be paired')
+        if args.calibration_artifact is not None:
+            from flydrones.benchmark.kalibr_camera_consumption import KalibrCameraArtifact, references
+
+            raw, doc, payload = references(args.calibration_artifact, args.calibration_sha256)
+            root = inputs/'calibration'
+            root.mkdir()
+            _write(root/'artifact.json', raw)
+            for role, data in payload.items():
+                dst = root/doc[role]['path']
+                dst.parent.mkdir(parents=True, exist_ok=True)
+                _write(dst, data)
+            calibration = KalibrCameraArtifact.load(root/'artifact.json', args.calibration_sha256, binding)
         source = Px4UlogCameraSource.from_ulog(inputs/'source.ulg', args.ulog_sha256, binding)
-        produced = source.produce(frames['frame_ns'], epoch_declaration=declaration)
+        produced = source.produce(frames['frame_ns'], epoch_declaration=declaration, calibration_artifact=calibration)
         rows = produced.pop('records')
         with (args.output/'rows.jsonl').open('x', encoding='utf-8') as stream:
             for row in rows:

@@ -212,7 +212,7 @@ class Px4UlogCameraSource:
             selected[name] = counters if index >= 0 else None
         return unresolved, selected
 
-    def produce(self, frame_ns, *, epoch_declaration=None):
+    def produce(self, frame_ns, *, epoch_declaration=None, calibration_artifact=None):
         if (type(frame_ns) is not list or not 0 < len(frame_ns) <= MAX_FRAMES
                 or any(type(t) is not int or not 0 <= t <= 2**63-1 for t in frame_ns)
                 or any(b <= a for a, b in zip(frame_ns, frame_ns[1:]))):
@@ -228,12 +228,47 @@ class Px4UlogCameraSource:
             declaration = dict(epoch_declaration)
         health = audit_shadow_frames(frame_ns, self._topics)
         timing = audit_state_sample_times(frame_ns, self._topics)
+        calibration_records = [None] * len(frame_ns)
+        if calibration_artifact is not None:
+            from .kalibr_camera_consumption import KalibrCameraArtifact
+
+            if (type(calibration_artifact) is not KalibrCameraArtifact
+                    or calibration_artifact.rig_sha256 != self.binding.sha256):
+                raise ValueError('byte-bound calibration artifact for this rig required')
+            selected = []
+            for index, stamp in enumerate(frame_ns):
+                try:
+                    selected.append((index, calibration_artifact.lookup_ns(stamp)))
+                except ValueError as error:
+                    calibration_records[index] = {'imu_lookup_ns': None, 'health': None, 'sample_timing': None,
+                                                  'reset_counters': None, 'error': str(error),
+                                                  'reasons': ['lookup_timestamp_outside_boot_range']}
+            if selected:
+                lookup = [stamp for _, stamp in selected]
+                shifted_health = audit_shadow_frames(lookup, self._topics)
+                shifted_timing = audit_state_sample_times(lookup, self._topics)
+                for (index, stamp), h, c in zip(selected, shifted_health['records'], shifted_timing['records'], strict=True):
+                    reset, counts = self._reset_at(stamp)
+                    rows = {}
+                    for name, data in self._topics.items():
+                        row_index = int(np.searchsorted(data['timestamp'], stamp//1000, side='right'))-1
+                        rows[name] = None if row_index < 0 else {
+                            'index': row_index, 'publication_us': int(data['timestamp'][row_index]),
+                            'sample_us': int(data['timestamp_sample'][row_index]) if 'timestamp_sample' in data else None}
+                    calibration_records[index] = {'imu_lookup_ns': stamp, 'health': h, 'sample_timing': c,
+                                                  'source_rows': rows, 'reset_counters': counts,
+                                                  'reasons': sorted(set(h['reasons'] + c['reasons']
+                                                                       + (['reset_epoch_unresolved'] if reset else [])))}
         records = []
-        for h, clock in zip(health['records'], timing['records'], strict=True):
+        for h, clock, calibration in zip(health['records'], timing['records'], calibration_records, strict=True):
             reset, counters = self._reset_at(h['frame_ns'])
             reasons = sorted(set(h['reasons'] + clock['reasons'] + (['reset_epoch_unresolved'] if reset else [])))
             if declaration is None:
                 reasons.append('camera_px4_epoch_unbound')
+            geometry_clock = clock
+            if calibration is not None:
+                reasons.extend('calibration_lookup:' + r for r in calibration['reasons'])
+                geometry_clock = calibration['sample_timing']
             source_rows = {}
             for name, data in self._topics.items():
                 index = int(np.searchsorted(data['timestamp'], h['frame_ns']//1000, side='right'))-1
@@ -244,15 +279,18 @@ class Px4UlogCameraSource:
             geometry = None
             raw_q = None
             if not reasons:
-                pi = clock['topics']['vehicle_local_position']['index']
-                qi = clock['topics']['vehicle_attitude']['index']
+                pi = geometry_clock['topics']['vehicle_local_position']['index']
+                qi = geometry_clock['topics']['vehicle_attitude']['index']
                 local, att = self._topics['vehicle_local_position'], self._topics['vehicle_attitude']
                 p = np.array([local[n][pi] for n in ('x', 'y', 'z')], dtype=float)
                 v = np.array([local[n][pi] for n in ('vx', 'vy', 'vz')], dtype=float)
                 raw_q = [float(att[f'q[{i}]'][qi]) for i in range(4)]
                 body = Rotation.from_quat([*raw_q[1:], raw_q[0]]).as_matrix()
                 mount = np.asarray(self.binding.body_from_optical)
-                camera_p = NED_TO_ENU @ (p + body @ np.asarray(self.binding.translation_body_m))
+                translation = np.asarray(self.binding.translation_body_m)
+                if calibration is not None:
+                    mount, translation = calibration_artifact.body_from_camera()
+                camera_p = NED_TO_ENU @ (p + body @ translation)
                 camera_q = Rotation.from_matrix(NED_TO_ENU @ body @ mount).as_quat()
                 geometry = {'position_enu_m': (NED_TO_ENU @ p).tolist(),
                             'velocity_enu_m_s': (NED_TO_ENU @ v).tolist(),
@@ -268,7 +306,10 @@ class Px4UlogCameraSource:
                             'live_source_authenticated': False, 'clock_epoch_qualified': False,
                             'camera_calibration_qualified': False, 'training_eligible': False,
                             'flight_eligible': False})
-        return {'schema': 'flydrones-px4-camera-file-production-v1', 'ulog_sha256': self.ulog_sha256,
+            if calibration is not None:
+                records[-1]['calibration_lookup'] = calibration
+                records[-1]['calibration_artifact'] = calibration_artifact.record()
+        result = {'schema': 'flydrones-px4-camera-file-production-v1', 'ulog_sha256': self.ulog_sha256,
                 'source_kind': 'bound-ULog' if self.ulog_sha256 else 'unbound-decoded-columns',
                 'body_id': self.binding.body_id, 'camera_id': self.binding.camera_id,
                 'rig_sha256': self.binding.sha256, 'rig_domain': self.binding.domain,
@@ -279,3 +320,10 @@ class Px4UlogCameraSource:
                                           'inspected_running_teacher'],
                 'live_source_authenticated': False, 'clock_epoch_qualified': False,
                 'camera_calibration_qualified': False, 'training_eligible': False, 'flight_eligible': False}
+        if calibration_artifact is not None:
+            result['calibration_artifact'] = calibration_artifact.record()
+            applied = sum(r['calibration_lookup']['imu_lookup_ns'] is not None for r in records)
+            result['calibration_artifact']['lookup_applied_frames'] = applied
+            result['calibration_artifact']['lookup_refused_frames'] = len(records)-applied
+            result['calibration_artifact']['pose_applied_frames'] = sum(r['geometry'] is not None for r in records)
+        return result
