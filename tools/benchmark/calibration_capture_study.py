@@ -74,6 +74,10 @@ def arguments(folder):
 
 
 def audit_preparation(binding, preparation):
+    return audit_preparation_at(binding, preparation, FOLDER)
+
+
+def audit_preparation_at(binding, preparation, folder):
     from tools.benchmark.audit_live_wire_resources import audit_resource_graph_records
 
     expected = {
@@ -110,12 +114,12 @@ def audit_preparation(binding, preparation):
         if not _typed_equal(row, pre.get(path)):
             raise ValueError("preparation does not cover current binding baseline")
     expected_generated = {
-        str(FOLDER / "capture-input-v1" / name): sha for name, sha in binding["generated"].items() if name != "gz_env.sh"
+        str(Path(folder) / "capture-input-v1" / name): sha for name, sha in binding["generated"].items() if name != "gz_env.sh"
     }
     for path, sha in expected_generated.items():
         if (
             pre.get(path, {}).get("sha256") != sha
-            or pre[path]["role"] != "generated:" + Path(path).relative_to(FOLDER / "capture-input-v1").as_posix()
+            or pre[path]["role"] != "generated:" + Path(path).relative_to(Path(folder) / "capture-input-v1").as_posix()
         ):
             raise ValueError("preparation generated scene differs")
     rows = preparation["pre"]["files"]
@@ -144,34 +148,22 @@ def verify_execution_join(args, execution, binding, require_absent):
         raise ValueError("raw study execution differs from current producer")
 
 
-def verify_study(path, sha, *, require_absent=True):
+def _verify_profile_study(path, sha, folder, schema, fixed, *, require_absent=True, v2=False):
     from tools.benchmark.runtime_resource_binding import validate_binding
 
     path = Path(path).resolve(strict=True)
-    if path != FOLDER / "study.json" or hashlib.sha256(path.read_bytes()).hexdigest() != sha:
+    if path != folder / "study.json" or hashlib.sha256(path.read_bytes()).hexdigest() != sha:
         raise ValueError("fixed raw study path/digest mismatch")
     doc = read_declaration(path)
     if (
         type(doc) is not dict
         or set(doc) != {"schema", "files", "qualification"}
-        or doc["schema"] != "target-bearing-frozen-raw-study-v1"
-        or set(doc["files"]) != ROLES
+        or doc["schema"] != schema
+        or set(doc["files"]) != set(fixed)
         or not _typed_equal(doc["qualification"], QUALIFICATION)
     ):
         raise ValueError("raw study shape/qualification mismatch")
     actual = verify_files(doc["files"])
-    fixed = {
-        "collector": ROOT / "tools/benchmark/capture_disarmed_sensors.py",
-        "scope": ROOT / "tools/benchmark/calibration_capture_scope.py",
-        "dispatcher": ROOT / "tools/benchmark/run_calibration_capture.py",
-        "study_code": Path(__file__),
-        "python": Path("/usr/bin/python3"),
-        "binding": FOLDER / "runtime-binding-v4.json",
-        "execution": FOLDER / "execution-contract.json",
-        "wire": FOLDER / "wire-config.json",
-        "agent": FOLDER / "agent-runtime.json",
-        "preparation": FOLDER / "preparation.json",
-    }
     if any(Path(actual[role]["requested"]) != p.absolute() for role, p in fixed.items()):
         raise ValueError("raw study selected command/input path changed")
     binding = validate_binding(read_declaration(fixed["binding"]))
@@ -181,7 +173,7 @@ def verify_study(path, sha, *, require_absent=True):
     if not _typed_equal(current["files"], binding["baseline"]["files"]):
         raise ValueError("raw study runtime baseline changed")
     execution = read_declaration(fixed["execution"])
-    args = arguments(FOLDER)
+    args = arguments(folder)
     verify_execution_join(args, execution, binding, require_absent)
     if (
         execution["wall_budget_s"],
@@ -202,9 +194,25 @@ def verify_study(path, sha, *, require_absent=True):
         or preparation.get("execution_sha256") != actual["execution"]["sha256"]
     ):
         raise ValueError("preparation does not bind exact execution/binding")
-    audit = audit_preparation(binding, preparation)
+    if v2:
+        from tools.benchmark.calibration_capture_study_v2 import audit_v2_preparation
+
+        audit = audit_v2_preparation(binding, preparation, fixed["entry_bill"], read_declaration(fixed["entry_bill"]))
+    else:
+        audit = audit_preparation_at(binding, preparation, folder)
     require_command_baseline(
-        [fixed[role] for role in ("collector", "scope", "dispatcher", "study_code", "python")], binding["baseline"]["files"]
+        [
+            fixed[role]
+            for role in (
+                "collector",
+                "scope",
+                "dispatcher",
+                "study_code",
+                "python",
+                *(("dependency_code", "producer_code") if v2 else ()),
+            )
+        ],
+        binding["baseline"]["files"],
     )
     return dict(
         study_sha256=sha,
@@ -214,6 +222,35 @@ def verify_study(path, sha, *, require_absent=True):
         command=[str(fixed["python"]), str(fixed["collector"]), "--output", str(args.output), *worker_options(args)],
         cwd=str(ROOT),
         qualification=QUALIFICATION,
+    )
+
+
+def study_paths(folder):
+    return {
+        "collector": ROOT / "tools/benchmark/capture_disarmed_sensors.py",
+        "scope": ROOT / "tools/benchmark/calibration_capture_scope.py",
+        "dispatcher": ROOT / "tools/benchmark/run_calibration_capture.py",
+        "study_code": Path(__file__),
+        "python": Path("/usr/bin/python3"),
+        "binding": folder / "runtime-binding-v4.json",
+        "execution": folder / "execution-contract.json",
+        "wire": folder / "wire-config.json",
+        "agent": folder / "agent-runtime.json",
+        "preparation": folder / "preparation.json",
+    }
+
+
+def verify_study(path, sha, *, require_absent=True):
+    # Explicit fixed registry; v1 keeps every original contract/absence gate.
+    from tools.benchmark import calibration_capture_study_v2 as second
+
+    requested = Path(path).absolute()
+    if requested == second.FOLDER / "study.json":
+        return second.verify_study_v2(requested, sha, require_absent=require_absent)
+    if requested != FOLDER / "study.json":
+        raise ValueError("fixed raw study path mismatch")
+    return _verify_profile_study(
+        requested, sha, FOLDER, "target-bearing-frozen-raw-study-v1", study_paths(FOLDER), require_absent=require_absent
     )
 
 

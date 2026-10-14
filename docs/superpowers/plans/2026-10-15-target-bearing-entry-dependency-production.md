@@ -32,9 +32,9 @@
 
 **Interfaces:** Consumes explicit producer-selected entries/candidate/Agent paths; produces `discover_entry_dependencies(entries:dict[str,list[str]], candidates:list[str], agent_paths:list[str], agent_lib:str, output:Path)->dict` schema raw-entry-dependency-bill-v1 and `audit_entry_bill(bill:dict, baseline:list[dict])->dict` using retained command bytes/current file records.
 
-- [ ] Write `test_candidate_leaf_is_preserved_without_standalone_invocation`: entry renderer has an explicit completed protocol trace selecting three named OGRE files; every leaf appears in hashed candidate bill, no independent leaf command; all8false and runtime_closurefalse. Run `python -m pytest -q tests/benchmark/test_native_entry_dependencies.py`; retain missing-interface RED as software only.
-- [ ] Implement entry selection/dedup, actual bounded tool calls/2MiB streams, pre/post tool and input pins/versions, ELF metadata/current entry trace and all candidate identity preservation. Do not pass historical dependencies as root calls.
-- [ ] Add genuine `exit0_notfound`, timeout partial-output/owncleanup, duplicate requested/alias resolved, changed tool/input, missing known OGRE entry coverage, extra bill member and candidate-only eligibility tests. Retain actual behavioral RED before fix; explicit SDK/Popen fixtures only, never fabricate native RED.
+- [x] Write `test_candidate_leaf_is_preserved_without_standalone_invocation`: entry renderer has an explicit completed protocol trace selecting three named OGRE files; every leaf appears in hashed candidate bill, no independent leaf command; all8false and runtime_closurefalse. Run `python -m pytest -q tests/benchmark/test_native_entry_dependencies.py`; retain missing-interface RED as software only.
+- [x] Implement entry selection/dedup, actual bounded tool calls/2MiB streams, pre/post tool and input pins/versions, ELF metadata/current entry trace and all candidate identity preservation. Do not pass historical dependencies as root calls.
+- [x] Add genuine `exit0_notfound`, timeout partial-output/owncleanup, duplicate requested/alias resolved, changed tool/input, missing known OGRE entry coverage, extra bill member and candidate-only eligibility tests. Retain actual behavioral RED before fix; explicit SDK/Popen fixtures only, never fabricate native RED.
 - [ ] Run targeted plus existing capture/runtime/bound-resource/owned-group/Agent neighbors and Ruff/diff; independent code/raw review. Commit onlypersonal.
 
 ## Task2: v2 full raw study integration
@@ -43,9 +43,9 @@
 
 **Interfaces:** Literal folder ROOT/results/target-bearing-runtime-freeze-v2-dev-1701/frozen-study-v2; `prepare_v2(unit:str)->dict`, `verify_study_v2(path:Path,sha:str,require_absent:bool=True)->dict`; v2 exact roles include entry_bill. Existing `execute_once`/physical ATTEMPT remain the same.
 
-- [ ] Write failing full join fixtures for v2 bill-to-binding/source/env/entry identities, complete pre membership, prepared input equality and fixed routing; retained v1 rejection/legacy guards must still pass. Use actual producer command construction, not arbitrary fixture argv as a real frozen study.
-- [ ] Implement actual SDK selection, root/leaf split, bill consumption, complete baseline/current-source/license/package records, original-byte final graph audit, new fixed study and registry. Existing45 source copies occur once solely at final SDK paths; immutable Agent cache consumed without deploying or running again.
-- [ ] Test declaration/digest/extra-member/different environment/source/tool/root and v1/prepared-output mutation refusals, source-diagnostic/ownedAgent/wire/ULog/mapping-phase mandatory guards; exact original workload preserved. No runtime result fabricated.
+- [x] Write failing full join fixtures for v2 bill-to-binding/source/env/entry identities, complete pre membership, prepared input equality and fixed routing; retained v1 rejection/legacy guards must still pass. Use actual producer command construction, not arbitrary fixture argv as a real frozen study.
+- [x] Implement actual SDK selection, root/leaf split, bill consumption, complete baseline/current-source/license/package records, original-byte final graph audit, new fixed study and registry. Existing45 source copies occur once solely at final SDK paths; immutable Agent cache consumed without deploying or running again.
+- [x] Test declaration/digest/extra-member/different environment/source/tool/root and v1/prepared-output mutation refusals, source-diagnostic/ownedAgent/wire/ULog/mapping-phase mandatory guards; exact original workload preserved. No runtime result fabricated.
 - [ ] Run necessary targeted/neighbor checks and independent review with current exact source/raw; seal current before-command recipe. Onlypersonal commit before considering actual native scope.
 
 ## Task3: one actual static v2 freeze and publication
