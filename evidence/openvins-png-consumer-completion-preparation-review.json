@@ -1,0 +1,16 @@
+{
+  "review_utc": "2026-10-14T16:08:42.538610+00:00",
+  "archive": "evidence/openvins-png-consumer-completion-preparation-dev-1701.zip",
+  "archive_sha256": "f9b373a077e28868884a61e0ceb6b754a880de1210232520172ad6b9afb508e6",
+  "archive_bytes": 536695,
+  "archive_members": 119,
+  "mapped_members": 118,
+  "full_CRC_size_SHA_current_bytes_errors": [],
+  "current_source_and_snapshot_bindings_checked": 8,
+  "historical_archives_checked": 276,
+  "historical_bytes": 696483297,
+  "historical_matches_prior_ledger_plus_latest_target_archive": true,
+  "review_ran_tests_compiler_admission_native": false,
+  "native_study_exists": false,
+  "qualification": false
+}

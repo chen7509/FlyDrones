@@ -10,7 +10,7 @@
 - [ ] Run original7actualnative reader cases plus2existingguardcases with fresh original2GiB and unchanged128MiBcompilebudget; preserve real resource rejection/failure ifgatefails, not C++RED. Inspectactualtest logs and verify pinned source/helper/data/config identity. Independent preflight beforeconsumer.
 - [ ] Ifnooriginalstudy andfresh gates, actualonecompile/nativeexecute original1GiB/512MiB budgets, followactualhandle; anyfailureconsumed, no blindretry. Ifresourcesreject, continue genuine independentwork notpolling.
 - [ ] Independently auditall251states/PGMs/6123nativeIMUcalljournal/sampleidentity/tail, originalinput/source/code/config/binaryhashes andresource/ownedclosure. No initialization/causality/calibration qualification fromrawreturns.
-- [ ] Independent code/raw/ZIP/report review; retainallfailures/oldarchives, seal andonlypersonal/PR65, prepubplan vslaterledger distinct. Actual4GiBsource/calibration remainspending.
+- [x] Software preparation independently reviewed/sealed and implementation14504b6 publishedonlypersonal/PR65 with exacthead/body verification. ZIP retains prepublicationpending state; later ledger and this postpublicationplan are separate. Native parser/runtime/audit tasks and actual4GiBsource/calibration remainpending.
 
 Admission outcome: original pytest reader verification2guardpass/7setuperrors before compiler, Win1963929600/WSL7042138112bytes. Separately declared thin coordinator calling same fixture/cases also refused before compiler, Win1956474880/WSL7046025216. Both first records retained; no native dispatch, no compiler RED/GREEN, no full-consumer study/attempt consumed. Do not repeat resource-only checks as progress.
 
