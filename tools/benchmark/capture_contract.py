@@ -168,6 +168,12 @@ def execution_contract(args, launch_environment=None):
         from tools.benchmark.px4_logger_runtime import PROFILE_RELATIVE, profile_record
 
         result['logger_diagnostic'] = profile_record(Path(__file__).resolve().parents[2] / PROFILE_RELATIVE)
+    if getattr(args, 'record_owned_ulog', False):
+        if 'logger_diagnostic' not in result:
+            raise ValueError('owned ULog source requires declared diagnostic logger')
+        from tools.benchmark.owned_ulog_source import LIMITS
+
+        result['owned_ulog_source'] = {'schema': 'capture-owned-ULog-opener-v1', **LIMITS}
     if getattr(args, 'record_depth_payload', False):
         result['record_depth_payload'] = True
     return result
@@ -223,6 +229,8 @@ def worker_options(args):
         result.append('--startup-preflight')
     if getattr(args, 'record_depth_payload', False):
         result.append('--record-depth-payload')
+    if getattr(args, 'record_owned_ulog', False):
+        result.append('--record-owned-ulog')
     return result
 
 

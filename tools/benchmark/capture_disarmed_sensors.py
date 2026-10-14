@@ -226,6 +226,7 @@ def parse_capture_args(argv=None):
     )
     parser.add_argument("--motion-profile", choices=["lateral-wrench-v1", "supported-lateral-v1", "supported-ready-v1"])
     parser.add_argument("--physics-trace-profile", choices=["substep-lateral-v1", "substep-supported-v1", "substep-ready-v1"])
+    parser.add_argument('--record-owned-ulog', action='store_true')
     args = parser.parse_args(argv)
     if args.wire_config and (
         not args.execution_contract or not args.runtime_binding
@@ -244,6 +245,8 @@ def parse_capture_args(argv=None):
         or args.reference_fault_profile
     ):
         parser.error("diagnostic logger requires declared owned Agent wire capture")
+    if args.record_owned_ulog and not args.logger_diagnostic_profile:
+        parser.error('owned ULog source requires declared diagnostic logger')
     if args.simulation_seed is not None and not 1 <= args.simulation_seed < 2**32:
         parser.error("simulation seed must be in [1, 2^32)")
     if args.runtime_binding and not args.execution_contract:
@@ -467,11 +470,31 @@ def prepare_capture_logger(contract, runtime, result, journal):
     return staged
 
 
+def prepare_owned_ulog_collection(contract, runtime, output, binary_sha, result, journal):
+    """Preserve original logs first, then write optional source association evidence."""
+    journal.cleanup('ULog collection', lambda: result.update(px4_ulogs=collect_ulogs(runtime, output)), priority=100)
+    if contract.get('owned_ulog_source') is None:
+        return None
+    from tools.benchmark.owned_ulog_source import OwnedUlogSource
+
+    observer = OwnedUlogSource(runtime, output, expected_executable_sha256=binary_sha)
+
+    def finish_source_association():
+        summary = observer.finish(result.get('px4_ulogs', []))
+        result['owned_ulog_source'] = summary
+        if summary['errors']:
+            raise ValueError('owned ULog source association refused: ' + str(summary['errors']))
+
+    journal.cleanup('owned ULog source association', finish_source_association, priority=106)
+    return observer
+
+
 def run_capture_runtime(*, journal, output, result, errors, fixture, post_update,
                         wire_owner, source_guard, binding, owned_ready, owned_processes,
                         read_heartbeats, stop, binary, build, runtime, env, clock, writer,
                         shadow, motion, contract, started, agent_record=None,
-                        agent_factory=None, spawn=None, thread_factory=None, monotonic=None):
+                        agent_factory=None, spawn=None, thread_factory=None, monotonic=None,
+                        source_association=None):
     """Production stepping/ownership path; external services may be injected.
 
     Preparation and sensor/native construction remain in main. This runner uses
@@ -480,6 +503,13 @@ def run_capture_runtime(*, journal, output, result, errors, fixture, post_update
     spawn = subprocess.Popen if spawn is None else spawn
     thread_factory = threading.Thread if thread_factory is None else thread_factory
     monotonic = time.monotonic if monotonic is None else monotonic
+    if source_association is not None:
+        from tools.benchmark.owned_ulog_source import LIMITS
+
+        expected = {'schema': 'capture-owned-ULog-opener-v1', **LIMITS}
+        if (binding is None or 'px4' not in binding.required_owned
+                or contract.get('owned_ulog_source') != expected):
+            raise ValueError('owned ULog source requires declared bound PX4 and exact limits')
     server = None
     staged_wire = (wire_owner is not None
                    and getattr(wire_owner, 'config', {}).get('schema') == 'capture-wire-startup-v2')
@@ -557,6 +587,11 @@ def run_capture_runtime(*, journal, output, result, errors, fixture, post_update
                 binding.observe_owned("px4", "prestop")
             except Exception as exc:
                 errors.append("PX4 runtime mapping: " + repr(exc))
+        if source_association is not None and process.poll() is None:
+            try:
+                source_association.observe()
+            except Exception as exc:
+                errors.append('PX4 ULog source prestop: ' + repr(exc))
         if process.poll() is None:
             process.terminate()
             try:
@@ -571,6 +606,8 @@ def run_capture_runtime(*, journal, output, result, errors, fixture, post_update
     if binding and "px4" in binding.required_owned:
         binding.register_owned("px4", process, binary)
         owned_processes["px4"] = process
+    if source_association is not None:
+        source_association.register(process, binary)
     with (output / "process.json").open("x") as f:
         json.dump({"pid": process.pid, "args": process.args, "started_wall_ns": time.time_ns()}, f, indent=2)
     if source_guard:
@@ -588,6 +625,7 @@ def run_capture_runtime(*, journal, output, result, errors, fixture, post_update
         if wire_owner.driver is not None:
             wire_owner.driver.start()
     first_step_observed = False
+    next_source_observation = 0
     while clock["sim_ns"] < contract["simulation_duration_ns"]:
         if agent is not None:
             agent.check()
@@ -604,6 +642,9 @@ def run_capture_runtime(*, journal, output, result, errors, fixture, post_update
             raise RuntimeError("Gazebo rejected simulation run")
         if staged_wire:
             wire_owner.advance_startup()
+        if source_association is not None and clock['sim_ns'] >= next_source_observation:
+            source_association.observe()
+            next_source_observation = clock['sim_ns'] + contract['owned_ulog_source']['observe_sim_period_ns']
         if binding and binding.required_self and not first_step_observed:
             binding.observe("postfirststep")
             first_step_observed = True
@@ -745,6 +786,7 @@ def main():
     started = started_ns / 1_000_000_000
     with CaptureJournal(output, result) as journal:
         prepare_capture_logger(contract, runtime, result, journal)
+        source_association = None
         binding = None
         if binding_doc is not None:
             from tools.benchmark.runtime_resource_binding import GENERATED_NAMES, attach_binding, estimator_inputs
@@ -790,7 +832,7 @@ def main():
                     flight_ready=False,
                 )
                 return 0
-        journal.cleanup("ULog collection", lambda: result.update(px4_ulogs=collect_ulogs(runtime, output)), priority=100)
+        source_association = prepare_owned_ulog_collection(contract, runtime, output, binary_sha, result, journal)
         journal.cleanup(
             "end clocks",
             lambda: result.update(end_sim_ns=clock["sim_ns"], capture_wall_s=time.monotonic() - started),
@@ -1180,6 +1222,7 @@ def main():
             runtime=runtime, env=env, clock=clock, writer=writer, shadow=shadow,
             motion=motion, contract=contract, started=started,
             agent_record=agent_record,
+            source_association=source_association,
         )
     print(json.dumps({k: v for k, v in result.items() if k != "writer"}, indent=2))
     return 0 if result["status"] == "capture_completed" else 2
