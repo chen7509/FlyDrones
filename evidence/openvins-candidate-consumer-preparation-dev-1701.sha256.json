@@ -1,0 +1,768 @@
+{
+  "schema": "flydrones-file-evidence-sha256-v1",
+  "stage": "openvins-candidate-consumer-preparation-dev-1701",
+  "archive": "evidence/openvins-candidate-consumer-preparation-dev-1701.zip",
+  "archive_sha256": "18e3198740950eb337726371b504dcb092f59d38dc9588ba3c9b716b5691ade6",
+  "archive_bytes": 2423736,
+  "member_count": 151,
+  "members": [
+    {
+      "path": "docs/OPENVINS_CANDIDATE_CONSUMER_PREPARATION_REPORT.md",
+      "bytes": 7459,
+      "sha256": "8f569c92c9783064f1a9d3f562d632d269c8e534dcd1088f99617296c4fb4749"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-10-14-openvins-cached-consumer.md",
+      "bytes": 2117,
+      "sha256": "0b8a056186ac6f73bcf6c53fb7403ddd7f93e62457e3a0d607e738fe8a024602"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-10-14-openvins-candidate-dataset-consumer.md",
+      "bytes": 2554,
+      "sha256": "c12035db15093146e648b6c4a02a0023f3696c6dae4ea44c40a3f01135428d21"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-10-14-openvins-cached-consumer.md",
+      "bytes": 3204,
+      "sha256": "9232086c2d1eb2d9cd7ef404c721d27bfddd814bd4e3dede4cbd49d2c82862c0"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-10-14-openvins-candidate-dataset-consumer.md",
+      "bytes": 3621,
+      "sha256": "125cc5b052495380c099590cc7183fb6be818cdb31bb6af2b6191a2e9eae2ff9"
+    },
+    {
+      "path": "results/openvins-cached-consumer-validation-dev-1701/actual-parent-completion.json",
+      "bytes": 85,
+      "sha256": "0db45f38a5a4453bf1d3c450345dc7ba61d803f98b79b3f584478c361a93cdcc"
+    },
+    {
+      "path": "results/openvins-cached-consumer-validation-dev-1701/actual-parent-source-reconstructed.py",
+      "bytes": 10834,
+      "sha256": "304fde04fcfbb75872a8d056a75fcaa03c19c77c914832910fa05c7debde92af"
+    },
+    {
+      "path": "results/openvins-cached-consumer-validation-dev-1701/actual-parent-start.json",
+      "bytes": 403,
+      "sha256": "7dac6f621b92ad36688b8e771b3cdb59f1401e3eb979d7c71679fa43b48eee84"
+    },
+    {
+      "path": "results/openvins-cached-consumer-validation-dev-1701/actual-parent.stderr",
+      "bytes": 573,
+      "sha256": "ce278b9e440c8039c31f56f88120d94f308d74769131533ee0a71fadfe48f848"
+    },
+    {
+      "path": "results/openvins-cached-consumer-validation-dev-1701/actual-parent.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/openvins-cached-consumer-validation-dev-1701/adjacent-final-command.json",
+      "bytes": 398,
+      "sha256": "d1428aff78d17870b6b2f21679b846fa881b4f69d6c6a0a13e94db564f36a1e1"
+    },
+    {
+      "path": "results/openvins-cached-consumer-validation-dev-1701/adjacent-final.txt",
+      "bytes": 101,
+      "sha256": "14d6ac27e13506aceeb2b4aeefc5ee26f015f5ceb621863255c1c7ca68387ad9"
+    },
+    {
+      "path": "results/openvins-cached-consumer-validation-dev-1701/admission-record-red-command.json",
+      "bytes": 226,
+      "sha256": "2643cba9329816fc4411343183df3a582d73c18dbe52ad048c08ff439c73e21b"
+    },
+    {
+      "path": "results/openvins-cached-consumer-validation-dev-1701/admission-record-red.txt",
+      "bytes": 1449,
+      "sha256": "0b53c1965856547ee7c5ae0c1c48c7b7d4b260c08883c3554797c1effec3e6c3"
+    },
+    {
+      "path": "results/openvins-cached-consumer-validation-dev-1701/diff-v1-command.json",
+      "bytes": 47,
+      "sha256": "400400653218437206c5d8a29bcbe238fcce1710da0bc9068b0e5fe29d33d96a"
+    },
+    {
+      "path": "results/openvins-cached-consumer-validation-dev-1701/diff-v1.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/openvins-cached-consumer-validation-dev-1701/final-software-command.json",
+      "bytes": 398,
+      "sha256": "83b617155da7ed8eeedd00a66821c424e5b8f2730cf17f1c3d5185b0f42bd685"
+    },
+    {
+      "path": "results/openvins-cached-consumer-validation-dev-1701/final-software.txt",
+      "bytes": 101,
+      "sha256": "3ed4430b482d5e6aeb3be142dbee117b5a97c1dcd9e028f58b1c1a50d56cf5da"
+    },
+    {
+      "path": "results/openvins-cached-consumer-validation-dev-1701/fresh-pre-review-admission.json",
+      "bytes": 80257,
+      "sha256": "fbc53198cf8460b566301b617b095c600b5dd410f70227383e0c33dcb4f19fd5"
+    },
+    {
+      "path": "results/openvins-cached-consumer-validation-dev-1701/green-v1-command.json",
+      "bytes": 191,
+      "sha256": "7320fef3ddd251d5d033347191f61067f161516faec4421c295aaf34919217d1"
+    },
+    {
+      "path": "results/openvins-cached-consumer-validation-dev-1701/green-v1.txt",
+      "bytes": 100,
+      "sha256": "514af261e53715184f246cc5bb92e66847f92beb8ff2a801d311d49e204c3cb8"
+    },
+    {
+      "path": "results/openvins-cached-consumer-validation-dev-1701/green-v2-command.json",
+      "bytes": 262,
+      "sha256": "c9b916d375e99e18fb643245ca792f8ccd49f3f88d29b15d5881e266b35ed13f"
+    },
+    {
+      "path": "results/openvins-cached-consumer-validation-dev-1701/green-v2.txt",
+      "bytes": 115,
+      "sha256": "95017e9831d122142cee04258b584dd0fa526c38f2749610c35a6217ea4a5102"
+    },
+    {
+      "path": "results/openvins-cached-consumer-validation-dev-1701/green-v3-command.json",
+      "bytes": 191,
+      "sha256": "024083892dc2ea49f02a25991b68d31ba7428805bd1fd4a27adcdcdb18e830a7"
+    },
+    {
+      "path": "results/openvins-cached-consumer-validation-dev-1701/green-v3.txt",
+      "bytes": 100,
+      "sha256": "7e9ab0216140bbed7f1132bf782674af9bc15d57c972d38e1b9141c42dd0e805"
+    },
+    {
+      "path": "results/openvins-cached-consumer-validation-dev-1701/green-v4-command.json",
+      "bytes": 191,
+      "sha256": "d1f24c124fcb6b8b75fd8c3b2d93848fa14c210e4bc8c2d2a5f2184283bec6e3"
+    },
+    {
+      "path": "results/openvins-cached-consumer-validation-dev-1701/green-v4.txt",
+      "bytes": 100,
+      "sha256": "968a89572ee8ba327e6c3b10fcdb8c307a0d9638cd29e00b52428079aea848a1"
+    },
+    {
+      "path": "results/openvins-cached-consumer-validation-dev-1701/green-v5-command.json",
+      "bytes": 191,
+      "sha256": "c33e57e0c44d75b39ac21a9ad298bf8cb2bf861d3b346379ff64b8f80ff95331"
+    },
+    {
+      "path": "results/openvins-cached-consumer-validation-dev-1701/green-v5.txt",
+      "bytes": 100,
+      "sha256": "fe40dbd33db49684a47fa76cd95a17badc7ad12d3d029f0aa530c6366d371062"
+    },
+    {
+      "path": "results/openvins-cached-consumer-validation-dev-1701/originals-after.json",
+      "bytes": 1214,
+      "sha256": "5206fd02acd1e40cf11b7a103faac8c51b892092c947fe278965b32bc48f17f4"
+    },
+    {
+      "path": "results/openvins-cached-consumer-validation-dev-1701/originals-before.json",
+      "bytes": 1214,
+      "sha256": "5206fd02acd1e40cf11b7a103faac8c51b892092c947fe278965b32bc48f17f4"
+    },
+    {
+      "path": "results/openvins-cached-consumer-validation-dev-1701/post-parent-refusal.json",
+      "bytes": 81562,
+      "sha256": "c4e0759c0db7b68e63f8c8b62ba3cd476749e4496c30cd9fbd216c30bfc5e2f5"
+    },
+    {
+      "path": "results/openvins-cached-consumer-validation-dev-1701/pre-dispatch-review-v2.txt",
+      "bytes": 3384,
+      "sha256": "a69837d48483bba1ed75e3edb7f0a2b9e16c9513b2dd1230f1b35b1ed00f6647"
+    },
+    {
+      "path": "results/openvins-cached-consumer-validation-dev-1701/pre-dispatch-review-v3.txt",
+      "bytes": 3013,
+      "sha256": "ab4538208999861825ab7b42867c5bcaa5535f3dc9925b4a0527b5dd48407d03"
+    },
+    {
+      "path": "results/openvins-cached-consumer-validation-dev-1701/pre-dispatch-review.txt",
+      "bytes": 3378,
+      "sha256": "df9685975b69694ff7d1f8673f00d393e34dad08e9ba9062e8e913991a6eb54c"
+    },
+    {
+      "path": "results/openvins-cached-consumer-validation-dev-1701/preparation-final-review.txt",
+      "bytes": 2627,
+      "sha256": "9462719e02f0840949ef07ce219617a2ca7561facf9032fc22b62d893bc44741"
+    },
+    {
+      "path": "results/openvins-cached-consumer-validation-dev-1701/prospective-cached-inputs-v2.json",
+      "bytes": 631,
+      "sha256": "830c0276d1d8d7721ad161a2a0547a16f39a148e6374b432360fabd2deea9381"
+    },
+    {
+      "path": "results/openvins-cached-consumer-validation-dev-1701/prospective-cached-inputs.json",
+      "bytes": 627,
+      "sha256": "68f125b92cce05a8cb920180f67dca2b6a607b3445d3bca9304d2c877667cc81"
+    },
+    {
+      "path": "results/openvins-cached-consumer-validation-dev-1701/pytest-adjacent-final/test_actual_sealed_file_bridge0/bridge/frame-ledger.json",
+      "bytes": 23882,
+      "sha256": "63d00b83b9101f90383250d81508bbc0e27db5fe087cfe5abc0ef8509c97aad3"
+    },
+    {
+      "path": "results/openvins-cached-consumer-validation-dev-1701/pytest-adjacent-final/test_actual_sealed_file_bridge0/bridge/frames.csv",
+      "bytes": 9386,
+      "sha256": "03d068c8bf873880938cff74342b406e5fcee9155b44f082653cd3f1b98341bf"
+    },
+    {
+      "path": "results/openvins-cached-consumer-validation-dev-1701/pytest-adjacent-final/test_actual_sealed_file_bridge0/bridge/imu.csv",
+      "bytes": 876997,
+      "sha256": "e838e48fece0d2ff00044926b6e331ae5b2f39b284201c3ee06cf18d4c94ad5e"
+    },
+    {
+      "path": "results/openvins-cached-consumer-validation-dev-1701/pytest-adjacent-final/test_changed_sealed_journal_is0/manifest.json",
+      "bytes": 2,
+      "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+    },
+    {
+      "path": "results/openvins-cached-consumer-validation-dev-1701/pytest-adjacent-final/test_scope_stop_requires_obser0/stop.json",
+      "bytes": 280,
+      "sha256": "593b56b109fbd1097bf4a5234caa710b60fdc1de029230cd035636cb8a3b5072"
+    },
+    {
+      "path": "results/openvins-cached-consumer-validation-dev-1701/pytest-adjacent-final/test_scope_stop_requires_obser1/stop.json",
+      "bytes": 212,
+      "sha256": "7a66a11aa65f877f11c9c4aac39c4197cf76ca4d1a0b39bd7a0425042e0f52f8"
+    },
+    {
+      "path": "results/openvins-cached-consumer-validation-dev-1701/pytest-adjacent-final/test_timeout_without_inside_id0/scope/launcher.json",
+      "bytes": 846,
+      "sha256": "6ef5fbeb9c9954fae9459e84fc488e9eddac5da3902148f45174b251bcaa753a"
+    },
+    {
+      "path": "results/openvins-cached-consumer-validation-dev-1701/pytest-adjacent-final/test_timeout_without_inside_id0/scope/launcher.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/openvins-cached-consumer-validation-dev-1701/pytest-adjacent-final/test_timeout_without_inside_id0/scope/launcher.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/openvins-cached-consumer-validation-dev-1701/pytest-adjacent-final/test_timeout_without_inside_id0/scope/owned-launcher-timeout-cleanup.json",
+      "bytes": 110,
+      "sha256": "51beacd4787dd89bbce54b3829ac12973973f729c4bd22621902384761bbeda7"
+    },
+    {
+      "path": "results/openvins-cached-consumer-validation-dev-1701/pytest-adjacent-final/test_timeout_without_inside_id0/scope/profile.json",
+      "bytes": 333,
+      "sha256": "70b44e3b959b911a354908535db0cf37c3265f9cc9885b2e5417ac26135b0957"
+    },
+    {
+      "path": "results/openvins-cached-consumer-validation-dev-1701/pytest-adjacent-final/test_timeout_without_inside_id0/scope/timeout-ownership-unknown.json",
+      "bytes": 236,
+      "sha256": "8deb6aafd7ccd7696c1dbf72aea0b996641d04d37b53607d2c8cb8043adfd88c"
+    },
+    {
+      "path": "results/openvins-cached-consumer-validation-dev-1701/pytest-final-software/test_actual_sealed_file_bridge0/bridge/frame-ledger.json",
+      "bytes": 23882,
+      "sha256": "63d00b83b9101f90383250d81508bbc0e27db5fe087cfe5abc0ef8509c97aad3"
+    },
+    {
+      "path": "results/openvins-cached-consumer-validation-dev-1701/pytest-final-software/test_actual_sealed_file_bridge0/bridge/frames.csv",
+      "bytes": 9386,
+      "sha256": "03d068c8bf873880938cff74342b406e5fcee9155b44f082653cd3f1b98341bf"
+    },
+    {
+      "path": "results/openvins-cached-consumer-validation-dev-1701/pytest-final-software/test_actual_sealed_file_bridge0/bridge/imu.csv",
+      "bytes": 876997,
+      "sha256": "e838e48fece0d2ff00044926b6e331ae5b2f39b284201c3ee06cf18d4c94ad5e"
+    },
+    {
+      "path": "results/openvins-cached-consumer-validation-dev-1701/pytest-final-software/test_changed_sealed_journal_is0/manifest.json",
+      "bytes": 2,
+      "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+    },
+    {
+      "path": "results/openvins-cached-consumer-validation-dev-1701/pytest-final-software/test_first_refusal_retains_exa0/fresh-admission.json",
+      "bytes": 52,
+      "sha256": "e0589786d46ca7699b1330d27912806226ec126a694c240bf869a1c3bf2d7021"
+    },
+    {
+      "path": "results/openvins-cached-consumer-validation-dev-1701/pytest-final-software/test_scope_stop_requires_obser0/stop.json",
+      "bytes": 280,
+      "sha256": "593b56b109fbd1097bf4a5234caa710b60fdc1de029230cd035636cb8a3b5072"
+    },
+    {
+      "path": "results/openvins-cached-consumer-validation-dev-1701/pytest-final-software/test_scope_stop_requires_obser1/stop.json",
+      "bytes": 212,
+      "sha256": "7a66a11aa65f877f11c9c4aac39c4197cf76ca4d1a0b39bd7a0425042e0f52f8"
+    },
+    {
+      "path": "results/openvins-cached-consumer-validation-dev-1701/pytest-final-software/test_timeout_without_inside_id0/scope/launcher.json",
+      "bytes": 846,
+      "sha256": "b501e1fb17e2015d23d219c9af1cd5a54002b5c50e195801e1b613954c8e1f5a"
+    },
+    {
+      "path": "results/openvins-cached-consumer-validation-dev-1701/pytest-final-software/test_timeout_without_inside_id0/scope/launcher.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/openvins-cached-consumer-validation-dev-1701/pytest-final-software/test_timeout_without_inside_id0/scope/launcher.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/openvins-cached-consumer-validation-dev-1701/pytest-final-software/test_timeout_without_inside_id0/scope/owned-launcher-timeout-cleanup.json",
+      "bytes": 110,
+      "sha256": "51beacd4787dd89bbce54b3829ac12973973f729c4bd22621902384761bbeda7"
+    },
+    {
+      "path": "results/openvins-cached-consumer-validation-dev-1701/pytest-final-software/test_timeout_without_inside_id0/scope/profile.json",
+      "bytes": 333,
+      "sha256": "3174115b36bc3da480e4b15571667d7fca2d706e4fc2e7fba94dffb1e4286b6b"
+    },
+    {
+      "path": "results/openvins-cached-consumer-validation-dev-1701/pytest-final-software/test_timeout_without_inside_id0/scope/timeout-ownership-unknown.json",
+      "bytes": 236,
+      "sha256": "5efd70b73499dcbbb7b3c5b644cf92a1687201eff5efbf6324ce53ab1958f4b7"
+    },
+    {
+      "path": "results/openvins-cached-consumer-validation-dev-1701/pytest-green-v2/test_actual_sealed_file_bridge0/bridge/frame-ledger.json",
+      "bytes": 23882,
+      "sha256": "63d00b83b9101f90383250d81508bbc0e27db5fe087cfe5abc0ef8509c97aad3"
+    },
+    {
+      "path": "results/openvins-cached-consumer-validation-dev-1701/pytest-green-v2/test_actual_sealed_file_bridge0/bridge/frames.csv",
+      "bytes": 9386,
+      "sha256": "03d068c8bf873880938cff74342b406e5fcee9155b44f082653cd3f1b98341bf"
+    },
+    {
+      "path": "results/openvins-cached-consumer-validation-dev-1701/pytest-green-v2/test_actual_sealed_file_bridge0/bridge/imu.csv",
+      "bytes": 876997,
+      "sha256": "e838e48fece0d2ff00044926b6e331ae5b2f39b284201c3ee06cf18d4c94ad5e"
+    },
+    {
+      "path": "results/openvins-cached-consumer-validation-dev-1701/pytest-green-v2/test_changed_sealed_journal_is0/manifest.json",
+      "bytes": 2,
+      "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+    },
+    {
+      "path": "results/openvins-cached-consumer-validation-dev-1701/pytest-green-v3/test_actual_sealed_file_bridge0/bridge/frame-ledger.json",
+      "bytes": 23882,
+      "sha256": "63d00b83b9101f90383250d81508bbc0e27db5fe087cfe5abc0ef8509c97aad3"
+    },
+    {
+      "path": "results/openvins-cached-consumer-validation-dev-1701/pytest-green-v3/test_actual_sealed_file_bridge0/bridge/frames.csv",
+      "bytes": 9386,
+      "sha256": "03d068c8bf873880938cff74342b406e5fcee9155b44f082653cd3f1b98341bf"
+    },
+    {
+      "path": "results/openvins-cached-consumer-validation-dev-1701/pytest-green-v3/test_actual_sealed_file_bridge0/bridge/imu.csv",
+      "bytes": 876997,
+      "sha256": "e838e48fece0d2ff00044926b6e331ae5b2f39b284201c3ee06cf18d4c94ad5e"
+    },
+    {
+      "path": "results/openvins-cached-consumer-validation-dev-1701/pytest-green-v3/test_changed_sealed_journal_is0/manifest.json",
+      "bytes": 2,
+      "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+    },
+    {
+      "path": "results/openvins-cached-consumer-validation-dev-1701/pytest-green-v4/test_actual_sealed_file_bridge0/bridge/frame-ledger.json",
+      "bytes": 23882,
+      "sha256": "63d00b83b9101f90383250d81508bbc0e27db5fe087cfe5abc0ef8509c97aad3"
+    },
+    {
+      "path": "results/openvins-cached-consumer-validation-dev-1701/pytest-green-v4/test_actual_sealed_file_bridge0/bridge/frames.csv",
+      "bytes": 9386,
+      "sha256": "03d068c8bf873880938cff74342b406e5fcee9155b44f082653cd3f1b98341bf"
+    },
+    {
+      "path": "results/openvins-cached-consumer-validation-dev-1701/pytest-green-v4/test_actual_sealed_file_bridge0/bridge/imu.csv",
+      "bytes": 876997,
+      "sha256": "e838e48fece0d2ff00044926b6e331ae5b2f39b284201c3ee06cf18d4c94ad5e"
+    },
+    {
+      "path": "results/openvins-cached-consumer-validation-dev-1701/pytest-green-v4/test_changed_sealed_journal_is0/manifest.json",
+      "bytes": 2,
+      "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+    },
+    {
+      "path": "results/openvins-cached-consumer-validation-dev-1701/pytest-green-v4/test_scope_stop_requires_obser0/stop.json",
+      "bytes": 280,
+      "sha256": "593b56b109fbd1097bf4a5234caa710b60fdc1de029230cd035636cb8a3b5072"
+    },
+    {
+      "path": "results/openvins-cached-consumer-validation-dev-1701/pytest-green-v4/test_scope_stop_requires_obser1/stop.json",
+      "bytes": 212,
+      "sha256": "7a66a11aa65f877f11c9c4aac39c4197cf76ca4d1a0b39bd7a0425042e0f52f8"
+    },
+    {
+      "path": "results/openvins-cached-consumer-validation-dev-1701/pytest-green-v4/test_timeout_without_inside_id0/scope/launcher.json",
+      "bytes": 840,
+      "sha256": "b02ad454c62e770cd740f99d1dd4296033a9b9eeeb4cc86c2259259dfc470c18"
+    },
+    {
+      "path": "results/openvins-cached-consumer-validation-dev-1701/pytest-green-v4/test_timeout_without_inside_id0/scope/launcher.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/openvins-cached-consumer-validation-dev-1701/pytest-green-v4/test_timeout_without_inside_id0/scope/launcher.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/openvins-cached-consumer-validation-dev-1701/pytest-green-v4/test_timeout_without_inside_id0/scope/profile.json",
+      "bytes": 327,
+      "sha256": "85080996556875085dce1ae45b9c509e02d6451e1c62c113e5fbfcf8919e23f1"
+    },
+    {
+      "path": "results/openvins-cached-consumer-validation-dev-1701/pytest-green-v4/test_timeout_without_inside_id0/scope/timeout-ownership-unknown.json",
+      "bytes": 236,
+      "sha256": "0596f87e80bfa93a7c71b40e12e027932a273ea66ac3c2435ece173c685e146b"
+    },
+    {
+      "path": "results/openvins-cached-consumer-validation-dev-1701/pytest-green-v5/test_actual_sealed_file_bridge0/bridge/frame-ledger.json",
+      "bytes": 23882,
+      "sha256": "63d00b83b9101f90383250d81508bbc0e27db5fe087cfe5abc0ef8509c97aad3"
+    },
+    {
+      "path": "results/openvins-cached-consumer-validation-dev-1701/pytest-green-v5/test_actual_sealed_file_bridge0/bridge/frames.csv",
+      "bytes": 9386,
+      "sha256": "03d068c8bf873880938cff74342b406e5fcee9155b44f082653cd3f1b98341bf"
+    },
+    {
+      "path": "results/openvins-cached-consumer-validation-dev-1701/pytest-green-v5/test_actual_sealed_file_bridge0/bridge/imu.csv",
+      "bytes": 876997,
+      "sha256": "e838e48fece0d2ff00044926b6e331ae5b2f39b284201c3ee06cf18d4c94ad5e"
+    },
+    {
+      "path": "results/openvins-cached-consumer-validation-dev-1701/pytest-green-v5/test_changed_sealed_journal_is0/manifest.json",
+      "bytes": 2,
+      "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+    },
+    {
+      "path": "results/openvins-cached-consumer-validation-dev-1701/pytest-green-v5/test_scope_stop_requires_obser0/stop.json",
+      "bytes": 280,
+      "sha256": "593b56b109fbd1097bf4a5234caa710b60fdc1de029230cd035636cb8a3b5072"
+    },
+    {
+      "path": "results/openvins-cached-consumer-validation-dev-1701/pytest-green-v5/test_scope_stop_requires_obser1/stop.json",
+      "bytes": 212,
+      "sha256": "7a66a11aa65f877f11c9c4aac39c4197cf76ca4d1a0b39bd7a0425042e0f52f8"
+    },
+    {
+      "path": "results/openvins-cached-consumer-validation-dev-1701/pytest-green-v5/test_timeout_without_inside_id0/scope/launcher.json",
+      "bytes": 840,
+      "sha256": "77052fa8295ed64b1fee923a6480e218271369536b5b5c5e0c19ccbe8e7c3de8"
+    },
+    {
+      "path": "results/openvins-cached-consumer-validation-dev-1701/pytest-green-v5/test_timeout_without_inside_id0/scope/launcher.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/openvins-cached-consumer-validation-dev-1701/pytest-green-v5/test_timeout_without_inside_id0/scope/launcher.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/openvins-cached-consumer-validation-dev-1701/pytest-green-v5/test_timeout_without_inside_id0/scope/owned-launcher-timeout-cleanup.json",
+      "bytes": 110,
+      "sha256": "51beacd4787dd89bbce54b3829ac12973973f729c4bd22621902384761bbeda7"
+    },
+    {
+      "path": "results/openvins-cached-consumer-validation-dev-1701/pytest-green-v5/test_timeout_without_inside_id0/scope/profile.json",
+      "bytes": 327,
+      "sha256": "010b4e0e28efa044b59b6fb866606484f197040faffd901325566b4afeb99675"
+    },
+    {
+      "path": "results/openvins-cached-consumer-validation-dev-1701/pytest-green-v5/test_timeout_without_inside_id0/scope/timeout-ownership-unknown.json",
+      "bytes": 236,
+      "sha256": "260091ecd32eeaef9ef3fce65419e73ab5d91a7df5ae4d892bc6146aa6e19381"
+    },
+    {
+      "path": "results/openvins-cached-consumer-validation-dev-1701/pytest-review-red/test_timeout_without_inside_id0/scope/launcher.json",
+      "bytes": 842,
+      "sha256": "7acffc0fa949735062d5cadcc0c8b374246571ee6e3bc9998ca34d22665c21e4"
+    },
+    {
+      "path": "results/openvins-cached-consumer-validation-dev-1701/pytest-review-red/test_timeout_without_inside_id0/scope/launcher.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/openvins-cached-consumer-validation-dev-1701/pytest-review-red/test_timeout_without_inside_id0/scope/launcher.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/openvins-cached-consumer-validation-dev-1701/pytest-review-red/test_timeout_without_inside_id0/scope/profile.json",
+      "bytes": 329,
+      "sha256": "d4f93b301d4ff2a6a83afd33ea6c903472203c3ec70bd8c577e88c48d47f23bb"
+    },
+    {
+      "path": "results/openvins-cached-consumer-validation-dev-1701/pytest-review2-red/test_timeout_without_inside_id0/scope/launcher.json",
+      "bytes": 843,
+      "sha256": "9b7bc81abe20bea8956506d3c5c6b8ad1722913a1a37aa456e622d647234d5c8"
+    },
+    {
+      "path": "results/openvins-cached-consumer-validation-dev-1701/pytest-review2-red/test_timeout_without_inside_id0/scope/launcher.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/openvins-cached-consumer-validation-dev-1701/pytest-review2-red/test_timeout_without_inside_id0/scope/launcher.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/openvins-cached-consumer-validation-dev-1701/pytest-review2-red/test_timeout_without_inside_id0/scope/profile.json",
+      "bytes": 330,
+      "sha256": "48d25428ecdcf3f343834dcebd73b24ae1b51b28cc5fa7ff0b23339d059eb76a"
+    },
+    {
+      "path": "results/openvins-cached-consumer-validation-dev-1701/pytest-review2-red/test_timeout_without_inside_id0/scope/timeout-ownership-unknown.json",
+      "bytes": 236,
+      "sha256": "013f2847a1c47afbb02f6c52a220dc2146a991c38e40da43b41af22ada9b0e63"
+    },
+    {
+      "path": "results/openvins-cached-consumer-validation-dev-1701/read-only-after-software-final.json",
+      "bytes": 81389,
+      "sha256": "62fd4866ee86bd1e85a3dedd27bbac93185661d69597d9c2c5c3c9ec2c158039"
+    },
+    {
+      "path": "results/openvins-cached-consumer-validation-dev-1701/red-command.json",
+      "bytes": 333,
+      "sha256": "0a13353373e907035ef8260d7e119b5368ee16b4ee439e9ecafba0575dcab305"
+    },
+    {
+      "path": "results/openvins-cached-consumer-validation-dev-1701/red.txt",
+      "bytes": 4536,
+      "sha256": "5001293cfba0f0446f938995c138f72c178e6d446e77dce651be9efc5803db8d"
+    },
+    {
+      "path": "results/openvins-cached-consumer-validation-dev-1701/review-red-command.json",
+      "bytes": 226,
+      "sha256": "4de7cdf41d1dc69742b62a3b9912ae7e76a75f45e9769b7edce9e822141f917a"
+    },
+    {
+      "path": "results/openvins-cached-consumer-validation-dev-1701/review-red.txt",
+      "bytes": 4716,
+      "sha256": "b0c837a4f8716d9524e68bf53b99d5286271756d8df1e9f77fcb9055151d1f04"
+    },
+    {
+      "path": "results/openvins-cached-consumer-validation-dev-1701/review2-red-command.json",
+      "bytes": 212,
+      "sha256": "88c661aeffbd028c1fa87c633da204ee146018281abbbaac78c5f72b975b2b1f"
+    },
+    {
+      "path": "results/openvins-cached-consumer-validation-dev-1701/review2-red.txt",
+      "bytes": 2425,
+      "sha256": "e9defe8a3a508b16835002f9206fa0410e49b1e38a1c8defb3892d12e8b8d801"
+    },
+    {
+      "path": "results/openvins-cached-consumer-validation-dev-1701/ruff-final-command.json",
+      "bytes": 296,
+      "sha256": "5bd596e0bb5ba91b24784c1487caea675a464a2f139283b10076323cb746cdd2"
+    },
+    {
+      "path": "results/openvins-cached-consumer-validation-dev-1701/ruff-final.txt",
+      "bytes": 19,
+      "sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18"
+    },
+    {
+      "path": "results/openvins-cached-consumer-validation-dev-1701/ruff-v1-command.json",
+      "bytes": 296,
+      "sha256": "bf357f40f6ede50d189dbbe05a71a6e5348158a419fef7449c3c7b471bd0de6d"
+    },
+    {
+      "path": "results/openvins-cached-consumer-validation-dev-1701/ruff-v1.txt",
+      "bytes": 830,
+      "sha256": "b71a204e554ad8cda3f53bc429db3e64ce4e25257c28338fd9b2006c9540ede2"
+    },
+    {
+      "path": "results/openvins-cached-consumer-validation-dev-1701/ruff-v2-command.json",
+      "bytes": 296,
+      "sha256": "5bd596e0bb5ba91b24784c1487caea675a464a2f139283b10076323cb746cdd2"
+    },
+    {
+      "path": "results/openvins-cached-consumer-validation-dev-1701/ruff-v2.txt",
+      "bytes": 19,
+      "sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18"
+    },
+    {
+      "path": "results/openvins-cached-consumer-validation-dev-1701/ruff-v3-command.json",
+      "bytes": 296,
+      "sha256": "5bd596e0bb5ba91b24784c1487caea675a464a2f139283b10076323cb746cdd2"
+    },
+    {
+      "path": "results/openvins-cached-consumer-validation-dev-1701/ruff-v3.txt",
+      "bytes": 19,
+      "sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18"
+    },
+    {
+      "path": "results/openvins-cached-consumer-validation-dev-1701/source-reconstruction.json",
+      "bytes": 265,
+      "sha256": "1b47c24bed01e87b58c72d612b004c4a1d0d8b3692773f3fd4b9c4dbbd28ac3d"
+    },
+    {
+      "path": "results/openvins-cached-consumer-validation-dev-1701/staged-diff-final-command.json",
+      "bytes": 59,
+      "sha256": "fb0b524681435dbd49466a3c1888705e9ec92c5cfff6e4383848074945d1c878"
+    },
+    {
+      "path": "results/openvins-cached-consumer-validation-dev-1701/staged-diff-final.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/openvins-candidate-dataset-consumer-research-dev-1701/LICENSE",
+      "bytes": 35149,
+      "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986"
+    },
+    {
+      "path": "results/openvins-candidate-dataset-consumer-research-dev-1701/LICENSE.stderr",
+      "bytes": 132,
+      "sha256": "b280c454d6f559e56eb3f5ed39f3ba084b8d1744a3ff7fe016b21ff86dea1aca"
+    },
+    {
+      "path": "results/openvins-candidate-dataset-consumer-research-dev-1701/VioManager.h",
+      "bytes": 8661,
+      "sha256": "7afa93033a85656f16a32bba9324887bfdc4a1272c3fe53567d16bd28da4c1e2"
+    },
+    {
+      "path": "results/openvins-candidate-dataset-consumer-research-dev-1701/VioManager.h.stderr",
+      "bytes": 132,
+      "sha256": "b280c454d6f559e56eb3f5ed39f3ba084b8d1744a3ff7fe016b21ff86dea1aca"
+    },
+    {
+      "path": "results/openvins-candidate-dataset-consumer-research-dev-1701/VioManagerOptions.h",
+      "bytes": 27326,
+      "sha256": "68ceb7fbf67d52e24eab4552ac202ab0299e6dad9cfbcc497a5d4752e13e4aac"
+    },
+    {
+      "path": "results/openvins-candidate-dataset-consumer-research-dev-1701/VioManagerOptions.h.stderr",
+      "bytes": 132,
+      "sha256": "b280c454d6f559e56eb3f5ed39f3ba084b8d1744a3ff7fe016b21ff86dea1aca"
+    },
+    {
+      "path": "results/openvins-candidate-dataset-consumer-research-dev-1701/inventory.stderr",
+      "bytes": 132,
+      "sha256": "b280c454d6f559e56eb3f5ed39f3ba084b8d1744a3ff7fe016b21ff86dea1aca"
+    },
+    {
+      "path": "results/openvins-candidate-dataset-consumer-research-dev-1701/openvins-offline-1701/config-v1/estimator_config.yaml",
+      "bytes": 6071,
+      "sha256": "81d0014ecfa30c4bdfbbf0f0bb4217d0702f37067909f9ed36df5162cea693eb"
+    },
+    {
+      "path": "results/openvins-candidate-dataset-consumer-research-dev-1701/openvins-offline-1701/config-v1/generate-config.py",
+      "bytes": 1583,
+      "sha256": "9ebbc2bca297605101b8affac6d10f3150bfbbb16c5ec10de5b8aa822699688f"
+    },
+    {
+      "path": "results/openvins-candidate-dataset-consumer-research-dev-1701/openvins-offline-1701/config-v1/kalibr_imu_chain.yaml",
+      "bytes": 1364,
+      "sha256": "6accf2467907df4723419a8f82e772b537b699bbb67a9a9f69097286e1e8b114"
+    },
+    {
+      "path": "results/openvins-candidate-dataset-consumer-research-dev-1701/openvins-offline-1701/config-v1/kalibr_imucam_chain.yaml",
+      "bytes": 544,
+      "sha256": "120fb34ae45fec5d0c3cf838d053e7b0b79808c64b3fdb89923c4df09ec1a0cf"
+    },
+    {
+      "path": "results/openvins-candidate-dataset-consumer-research-dev-1701/openvins-offline-1701/runner-v3/offline_probe.cpp",
+      "bytes": 6034,
+      "sha256": "ed966a7d15a345f85e814e8a0bdbd3f2cfbf0a0f10bcbf789de9cbba2b06e70a"
+    },
+    {
+      "path": "results/openvins-candidate-dataset-consumer-research-dev-1701/sensor_data.h",
+      "bytes": 2503,
+      "sha256": "5eee5beaddc13647630c61e2b4304785f228373f10dbbce7e9fe8e2dfe40f7b7"
+    },
+    {
+      "path": "results/openvins-candidate-dataset-consumer-research-dev-1701/sensor_data.h.stderr",
+      "bytes": 132,
+      "sha256": "b280c454d6f559e56eb3f5ed39f3ba084b8d1744a3ff7fe016b21ff86dea1aca"
+    },
+    {
+      "path": "results/openvins-candidate-dataset-consumer-research-dev-1701/source-declaration.json",
+      "bytes": 676,
+      "sha256": "5c3fc26c6ded1b1e7f50a29b2652bc6f3a9ba66ada26a1cf01c1225f067aaafc"
+    },
+    {
+      "path": "results/openvins-candidate-dataset-consumer-research-dev-1701/tree.stderr",
+      "bytes": 132,
+      "sha256": "b280c454d6f559e56eb3f5ed39f3ba084b8d1744a3ff7fe016b21ff86dea1aca"
+    },
+    {
+      "path": "results/openvins-candidate-dataset-consumer-research-dev-1701/upstream-runtime-inventory.txt",
+      "bytes": 398,
+      "sha256": "a787f47605e9331664588d7f2fe23998e041403610f0d0dc79a03208ee17fa1f"
+    },
+    {
+      "path": "results/openvins-candidate-dataset-consumer-research-dev-1701/upstream-tree.txt",
+      "bytes": 14626,
+      "sha256": "b8779edb37cffb4388d0079953e7d5da3d9c254eba6f7572e1b9ea11976a3616"
+    },
+    {
+      "path": "results/openvins-candidate-dataset-consumer-validation-dev-1701/admission-diagnosis.json",
+      "bytes": 71784,
+      "sha256": "f0508ed2f7ea8fb74d0318b246b1edb8681056bf89458ecbc7a85e466224c1cb"
+    },
+    {
+      "path": "results/openvins-candidate-dataset-consumer-validation-dev-1701/interface-red-command.json",
+      "bytes": 583,
+      "sha256": "9625e8899678ac6494d11a3cb272391795d95077615a6c710978928e7f63c4f9"
+    },
+    {
+      "path": "results/openvins-candidate-dataset-consumer-validation-dev-1701/interface-red.txt",
+      "bytes": 1147,
+      "sha256": "034aab6902c40bd820fb90be54d929cf1e4897a4798434c4d96d53afd412dc2b"
+    },
+    {
+      "path": "tests/benchmark/native_dataset_reader.cpp",
+      "bytes": 561,
+      "sha256": "808c439572803a33b6b127940a853dae3720238e6ecb8964002a172eee86345b"
+    },
+    {
+      "path": "tests/benchmark/test_openvins_cached_bridge.py",
+      "bytes": 5487,
+      "sha256": "3d97800beb8508680b987e22777d427a57170545135d60ee5aa4cb9f1ae319ce"
+    },
+    {
+      "path": "tests/benchmark/test_openvins_dataset_native.py",
+      "bytes": 3566,
+      "sha256": "97628ec5afc667733f34c886cae36f71253c604a0f52969cf5db62585100cad5"
+    },
+    {
+      "path": "tools/benchmark/gpl/README.md",
+      "bytes": 1386,
+      "sha256": "73b1bf62d59013943cd072d0509e8f6f957f7fdd81fcf5a31953f3ebb560fd58"
+    },
+    {
+      "path": "tools/benchmark/gpl/openvins_dataset_consumer.cpp",
+      "bytes": 4939,
+      "sha256": "b97e51cb685bc563f4ee320149790a6d27b36c121d7575014fa2ee54abeebfed"
+    },
+    {
+      "path": "tools/benchmark/gpl/openvins_dataset_io.h",
+      "bytes": 3313,
+      "sha256": "175226bd06b37d5236a891efec3c1871e4b2949b12425f5cd1d37c1122429e74"
+    },
+    {
+      "path": "tools/benchmark/native_consumer_scope.py",
+      "bytes": 2772,
+      "sha256": "5f1ef5c972d1719654a8c284462ede7467f9b1c8c033c40703fce18734206034"
+    },
+    {
+      "path": "tools/benchmark/openvins_cached_bridge.py",
+      "bytes": 11118,
+      "sha256": "5dd6c758275373d4b21d9741db5f870af1f2e23041b20064a427791511456c7e"
+    },
+    {
+      "path": "tools/benchmark/run_openvins_dataset_consumer.py",
+      "bytes": 15940,
+      "sha256": "f3720395751ab5ab0aade300687d1c451e930e7127ddfb1379b33e6414094aa7"
+    }
+  ],
+  "native_consumer_executed": false,
+  "cpp_compiled": false,
+  "qualifications": false
+}

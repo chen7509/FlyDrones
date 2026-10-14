@@ -1,0 +1,38 @@
+{
+  "stage": "openvins-candidate-consumer-preparation-dev-1701",
+  "review_scope": "Independent read-only final archive and report audit; no tests, compiler, native consumer, or simulator executed",
+  "disposition": "No Critical, Important, or Minor findings in the sealed preparation evidence",
+  "archive": {
+    "path": "evidence/openvins-candidate-consumer-preparation-dev-1701.zip",
+    "sha256": "18e3198740950eb337726371b504dcb092f59d38dc9588ba3c9b716b5691ade6",
+    "bytes": 2423736,
+    "members": 151,
+    "crc_errors": 0,
+    "member_length_or_sha256_errors": 0,
+    "missing_or_duplicate_members": 0,
+    "current_byte_differences": 0
+  },
+  "historical_archives": {
+    "count": 10,
+    "before_after_manifest_equal": true,
+    "current_sha256_mismatches": 0
+  },
+  "source_reconstruction": {
+    "file": "results/openvins-cached-consumer-validation-dev-1701/actual-parent-source-reconstructed.py",
+    "sha256": "304fde04fcfbb75872a8d056a75fcaa03c19c77c914832910fa05c7debde92af",
+    "matches_actual_parent_start_record": true,
+    "qualification": "Post-run reconstruction, not a pre-dispatch snapshot"
+  },
+  "report_and_evidence": {
+    "actual_cli_parent_pid": 23316,
+    "actual_cli_exit_code": 1,
+    "first_dispatch_counter": "unknown; later observation is not backfilled",
+    "native_study_created": false,
+    "native_consumer_executed": false,
+    "cpp_compiled": false,
+    "final_focused_software_result": "12 passed in 1.43s",
+    "pending": "Original 2 GiB C++ design and separate 1 GiB cached native runtime both remain unexecuted",
+    "research_material": "GPL-3.0 license, primary API headers, pinned source declaration, archived runner source, YAML config and raw stderr records are present",
+    "qualification_claims": "No VIO initialization, live source, measured calibration, full model, or physical qualification claimed"
+  }
+}
