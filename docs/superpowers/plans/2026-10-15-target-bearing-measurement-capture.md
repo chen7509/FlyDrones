@@ -13,10 +13,12 @@ Original25s/1ms/250Hz/RGBD10Hz160x120/near0.2far19.1 and each4GiB physical reser
 
 ## Task1: complete scene/motion/load design
 
-- [ ] Read pinned model SDF frames/inertias and current target9files; resolve complete merged semantic poses and aggregate inertia including camera/rotors. Capture exact source hashes and assumptions in the new development study bill.
-- [ ] Create `tools/benchmark/calibration_capture_scene.py` as the source-stage scene materializer, binding the already produced target assets without regenerating/exporting a new board. Freeze absolute target/model poses, lighting/collisions/frame conventions,25s schedule and force/torque/angular/target-clearance ceilings.
-- [ ] Evaluate full designed corner visibility/collision bounds for startup/lift/six pulses/rest; no renderer/projection result is called detection or measurement. Reject an incomplete design before physical dispatch. Finalize coefficients and torque scales; no base-inertia-only shortcut.
+- [x] Read pinned model SDF frames/inertias and current target9files; resolve complete merged semantic poses and aggregate inertia including camera/rotors. Exact source bill and instantaneous frozen-rotor coefficient limitation are retained in source-stage v3.
+- [x] Create `tools/benchmark/calibration_capture_scene.py` as the source-stage scene materializer, binding the already produced target assets without regenerating/exporting a new board. Source-stage absolute target/model poses, lighting/collisions/frame conventions,25s schedule and force/torque/angular/target-clearance ceilings are frozen in v3; runtime graph/full physical study identity remains pending Task2.
+- [x] Evaluate full requested corner visibility/collision bounds for startup/lift/six pulses/rest, including conservative1ms intersample bounds. No ideal renderer/projection result is called detection or measurement. Reject airborne nominal startup and incomplete designs before dispatch; all6-link inertia and per-link force requests are retained. Actual contact/dynamics/anchor deviations remain pending.
 - [ ] Independent design review verifies no old scene edits/profile masquerading and all physical safety ceilings. Only then freeze the new full load/study, including exact bill and expected raw outcomes; no whole-goal qualification.
+
+Source-stage production details: docs/TARGET_BEARING_SCENE_LOAD_PRODUCTION_REPORT.md and docs/superpowers/specs/2026-10-15-target-bearing-scene-load.md. The source-stage reviewer confirmed the v2 airborne-start defect and the new nominal-contact placement; full runtime study freeze is deliberately still pending. This checkbox is not a demand for new scene/export/validator work: next execute Task2 shared production graph and actual callback/readiness/owned-source integration.
 
 ## Task2: integrate actual raw measurement production
 
