@@ -16,6 +16,7 @@ import psutil
 ROOT = Path(__file__).resolve().parents[2]
 DATASET = ROOT/'results/camera-px4-imu-dataset-producer-dev-1701/real-export-v2'
 MANIFEST = ROOT/'evidence/camera-px4-imu-dataset-producer-dev-1701.sha256.json'
+MANIFEST_SHA = '1f7ab4c651e505a51a2317e477ff019128523976a6e8ccd22f01568986fb1e3f'
 SOURCE = '/home/yuchen7509/flydrones-upstream/open_vins'
 PIN = '69488123ed9362dd44b6f28e7f4680abbff1442b'
 LIBRARY = SOURCE+'/ov_msckf/build/libov_msckf_lib.so'
@@ -23,6 +24,11 @@ LIB_SHA = 'ef649cc55d9d4471dbf9e549561a877752a48ae08d568a3433e157cb8e747b45'
 MIN_MEMORY = 2*1024**3
 STUDY = ROOT/'results/openvins-candidate-dataset-consumer-dev-1701'
 CONFIG_SOURCE = ROOT/'results/openvins-candidate-dataset-consumer-research-dev-1701/openvins-offline-1701/config-v1'
+CONFIG_HASHES = {
+    'estimator_config.yaml': '81d0014ecfa30c4bdfbbf0f0bb4217d0702f37067909f9ed36df5162cea693eb',
+    'kalibr_imu_chain.yaml': '6accf2467907df4723419a8f82e772b537b699bbb67a9a9f69097286e1e8b114',
+    'kalibr_imucam_chain.yaml': '120fb34ae45fec5d0c3cf838d053e7b0b79808c64b3fdb89923c4df09ec1a0cf',
+}
 
 
 def digest(path):
@@ -96,7 +102,10 @@ print(json.dumps({'available':int(mem['MemAvailable'].split()[0])*1024,'processe
 
 
 def verify_input():
-    manifest = json.loads(MANIFEST.read_text(encoding='utf8'))
+    sealed = MANIFEST.read_bytes()
+    if hashlib.sha256(sealed).hexdigest() != MANIFEST_SHA:
+        raise ValueError('sealed manifest changed')
+    manifest = json.loads(sealed)
     prefix = DATASET.relative_to(ROOT).as_posix()+'/'
     members = [x for x in manifest['members'] if x['path'].startswith(prefix)]
     if not members:
@@ -117,6 +126,13 @@ def verify_input():
         raise ValueError('pinned clean source/library mismatch')
     return {'members': len(members), 'source_pin': pin, 'source_status': status.decode(),
             'library_sha256': sha, 'source_clock_calibration_teacher_training_flight_qualified': False}
+
+
+def verify_configs(folder):
+    actual = {name: digest(folder/name) for name in CONFIG_HASHES}
+    if actual != CONFIG_HASHES:
+        raise ValueError('frozen configuration changed')
+    return actual
 
 
 def scoped(output, argv, *, label, memory, seconds, outer_seconds=None):
@@ -222,19 +238,22 @@ def stop_owned(output, unit, inside, name):
         raise RuntimeError('owned scope stop failed; residual unknown')
 
 
-def execute():
+def execute(admission_record):
     if STUDY.exists():
         raise FileExistsError('one-shot consumer study already exists')
     first = admission()
+    write(Path(admission_record), first)
     if not first['admitted']:
         raise RuntimeError('fresh resource/process admission refused; no build dispatch')
     inputs = verify_input()
+    config_hashes = verify_configs(CONFIG_SOURCE)
     STUDY.mkdir()
-    write(STUDY/'preflight.json', {'first': first, 'input': inputs})
+    write(STUDY/'preflight.json', {'first': first, 'input': inputs, 'frozen_configs': config_hashes})
     code = STUDY/'code'
     code.mkdir()
     sources = [ROOT/'tools/benchmark/gpl/openvins_dataset_consumer.cpp',
                ROOT/'tools/benchmark/gpl/openvins_dataset_io.h',
+               ROOT/'tools/benchmark/openvins_native_identity.py',
                ROOT/'tools/benchmark/native_consumer_scope.py', Path(__file__)]
     for p in sources:
         (code/p.name).write_bytes(p.read_bytes())
@@ -246,9 +265,13 @@ def execute():
     config.mkdir()
     for name in ('estimator_config.yaml', 'kalibr_imu_chain.yaml', 'kalibr_imucam_chain.yaml'):
         (config/name).write_bytes((CONFIG_SOURCE/name).read_bytes())
-    write(STUDY/'config-before.json', {p.name: digest(p) for p in config.iterdir()})
+    write(STUDY/'config-before.json', verify_configs(config))
     src = code
     flags = shlex.split(wsl('pkg-config', '--cflags', '--libs', 'opencv4').stdout.decode())
+    compiler = wsl('readlink', '-f', '/usr/bin/g++').stdout.decode().strip()
+    compiler_sha = wsl('sha256sum', compiler).stdout.decode().split()[0]
+    write(STUDY/'compiler-before.json', {'requested': '/usr/bin/g++', 'resolved': compiler,
+          'sha256': compiler_sha, 'version': wsl('/usr/bin/g++', '--version').stdout.decode()})
     binary = STUDY/'openvins_dataset_consumer'
     command = ['/usr/bin/g++', '-std=c++17', '-O2', '-DROS_AVAILABLE=0', '-DENABLE_ARUCO_TAGS=0',
                '-I'+linux(src), '-I'+SOURCE+'/ov_msckf/src', '-I'+SOURCE+'/ov_core/src',
@@ -265,13 +288,20 @@ def execute():
     if not runtime['admitted']:
         raise RuntimeError('fresh consumer admission refused; binary retained, no runtime dispatch')
     verify_input()
-    write(STUDY/'binary-before.json', {'sha256': digest(binary)})
-    scoped(STUDY/'run', [linux(binary), linux(config/'estimator_config.yaml'), linux(DATASET),
+    verify_configs(config)
+    binary_sha = digest(binary)
+    write(STUDY/'binary-before.json', {'sha256': binary_sha})
+    scoped(STUDY/'run', ['/usr/bin/python3', linux(code/'openvins_native_identity.py'),
+                         '--executable-sha', binary_sha, '--library', LIBRARY, '--library-sha', LIB_SHA,
+                         linux(binary), linux(config/'estimator_config.yaml'), linux(DATASET),
                          linux(STUDY/'states.csv')], label='consume', memory=512*1024**2, seconds=120)
     code_after = {p.name: digest(p) for p in code.iterdir()}
     config_after = {p.name: digest(p) for p in config.iterdir()}
     if (any(code_after[k] != v['snapshot'] for k, v in hashes.items())
-            or config_after != json.loads((STUDY/'config-before.json').read_text(encoding='utf8'))):
+            or config_after != CONFIG_HASHES
+            or digest(binary) != binary_sha
+            or wsl('readlink', '-f', '/usr/bin/g++').stdout.decode().strip() != compiler
+            or wsl('sha256sum', compiler).stdout.decode().split()[0] != compiler_sha):
         raise RuntimeError('execution snapshots changed')
     write(STUDY/'completion.json', {'status': 'offline-native-consumer-returned',
           'binary_sha256_after': digest(binary), 'input_after': verify_input(),
@@ -283,5 +313,6 @@ def execute():
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--execute-once', action='store_true', required=True)
-    parser.parse_args()
-    execute()
+    parser.add_argument('--admission-record', required=True, type=Path)
+    args = parser.parse_args()
+    execute(args.admission_record)

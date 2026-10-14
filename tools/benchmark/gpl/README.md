@@ -21,3 +21,9 @@ build-free study uses the byte-exact GPL runner/source already archived in
 `evidence/openvins-offline-1701.zip`, launched out of process. It consumes PPM
 decoded to grayscale, not the prospective adapter's PNG interface. The pinned
 upstream license is preserved with the study evidence.
+
+The PNG adapter's current dispatch preparation additionally requires an exclusive
+first-admission record and a pre-feed owned-native executable/library observation
+through `openvins_native_identity.py`. Its C++ barrier and checked camera/IMU
+journals remain uncompiled and untested. Python protocol fixtures do not establish
+Linux procfs behavior, native consumption, or source/calibration qualification.

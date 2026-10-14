@@ -15,7 +15,7 @@
 #include "utils/sensor_data.h"
 
 int main(int argc,char **argv) {
-  if (argc!=4) return 2;
+  if (argc!=5 || std::string(argv[4])!="--identity-barrier") return 2;
   try {
     const std::string config=argv[1], root=argv[2], output=argv[3];
     auto frames=recorded_dataset::frames(root+"/cam0/data.csv");
@@ -27,12 +27,15 @@ int main(int argc,char **argv) {
     std::ofstream states(output,std::ios::out);
     states << "frame_ns,status,imu_fed_total,boundary_imu_ns,public_initialized,state_reference_s,qualification\n";
     states.flush();
+    if (!states) throw std::runtime_error("state journal header failure");
     std::string imu_path=output+".imu-fed.csv";
     int imu_fd=::open(imu_path.c_str(),O_WRONLY|O_CREAT|O_EXCL,0600);
     if (imu_fd<0) throw std::runtime_error("exclusive IMU journal unavailable");
     ::close(imu_fd);
     std::ofstream imu_journal(imu_path);
-    imu_journal << "source_index,sample_ns,call_status,qualification\n";
+    imu_journal << "source_index,sample_ns,call_status,public_initialized,state_reference_s,qualification\n";
+    imu_journal.flush();
+    if (!imu_journal) throw std::runtime_error("IMU journal header failure");
     ov_core::Printer::setPrintLevel("DEBUG");
     auto parser=std::make_shared<ov_core::YamlParser>(config);
     ov_msckf::VioManagerOptions options;
@@ -42,6 +45,17 @@ int main(int argc,char **argv) {
     options.use_multi_threading_subs=false;
     if (!parser->successful()) throw std::runtime_error("upstream configuration rejected");
     ov_msckf::VioManager manager(options);
+    // The owned supervisor observes this actual ELF and its loaded library before any feed.
+    std::string marker=output+".identity-ready";
+    int marker_fd=::open(marker.c_str(),O_WRONLY|O_CREAT|O_EXCL,0600);
+    if (marker_fd<0) throw std::runtime_error("exclusive identity marker unavailable");
+    std::string pid=std::to_string(::getpid())+"\n";
+    ssize_t written=::write(marker_fd,pid.data(),pid.size());
+    ::close(marker_fd);
+    if (written!=static_cast<ssize_t>(pid.size())) throw std::runtime_error("identity marker write failure");
+    char release=0;
+    if (::read(STDIN_FILENO,&release,1)!=1 || release!='1')
+      throw std::runtime_error("pre-feed identity barrier refused");
     size_t next=0, calls=0, initialized=0, refused=0;
     auto feed=[&](size_t index) {
       ov_core::ImuData sample;
@@ -49,7 +63,11 @@ int main(int argc,char **argv) {
       sample.wm=Eigen::Vector3d(imu[index].value[0],imu[index].value[1],imu[index].value[2]);
       sample.am=Eigen::Vector3d(imu[index].value[3],imu[index].value[4],imu[index].value[5]);
       manager.feed_measurement_imu(sample);
-      imu_journal << index << ',' << imu[index].ns << ",native_returned,unqualified\n";
+      imu_journal << index << ',' << imu[index].ns << ",native_returned,"
+                  << (manager.initialized()?1:0) << ',' << std::setprecision(17)
+                  << manager.get_state()->_timestamp << ",unqualified\n";
+      imu_journal.flush();
+      if (!imu_journal) throw std::runtime_error("returned IMU journal write failure");
     };
     for (const auto &frame:frames) {
       cv::Mat image=cv::imread(root+"/cam0/data/"+frame.name,cv::IMREAD_GRAYSCALE);
@@ -69,6 +87,7 @@ int main(int argc,char **argv) {
         ++refused;
         states << frame.ns << ",imu_range_refused," << next << ",,,,unqualified\n";
         states.flush();
+        if (!states) throw std::runtime_error("refused camera journal write failure");
         continue;
       }
       // Offline look-ahead, explicitly not a source arrival/causality assertion.
@@ -83,6 +102,7 @@ int main(int argc,char **argv) {
       states << frame.ns << ",native_returned," << next << ',' << imu[next-1].ns << ','
              << (ready?1:0) << ',' << std::setprecision(17) << manager.get_state()->_timestamp << ",unqualified\n";
       states.flush();
+      if (!states) throw std::runtime_error("returned camera journal write failure");
     }
     while (next<imu.size()) { feed(next); ++next; }
     states.close();

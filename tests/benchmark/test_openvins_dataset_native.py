@@ -1,5 +1,6 @@
 """Actual native CSV reader tests; never instantiate an estimator here."""
 
+import hashlib
 import importlib.util
 import subprocess
 from pathlib import Path
@@ -18,11 +19,20 @@ IMU_HEADER = ('#timestamp [ns],w_RS_S_x [rad s^-1],w_RS_S_y [rad s^-1],w_RS_S_z 
 def native(tmp_path_factory):
     root = tmp_path_factory.mktemp('native-reader')
     facts = executor.admission()
+    executor.write(root/'first-admission.json', facts)
     assert facts['admitted'], 'test resource/process gate failed, no compilation'
+    code = root/'code'
+    code.mkdir()
+    for path in [ROOT/'tools/benchmark/gpl/openvins_dataset_io.h',
+                 ROOT/'tests/benchmark/native_dataset_reader.cpp',
+                 ROOT/'tools/benchmark/native_consumer_scope.py']:
+        (code/path.name).write_bytes(path.read_bytes())
+    executor.write(root/'sources-before.json', {p.name: hashlib.sha256(p.read_bytes()).hexdigest()
+                                               for p in code.iterdir()})
     binary = root/'reader'
     executor.scoped(root/'compile', ['/usr/bin/g++', '-std=c++17', '-O2',
-                    '-I'+executor.linux(ROOT/'tools/benchmark/gpl'),
-                    executor.linux(ROOT/'tests/benchmark/native_dataset_reader.cpp'), '-o', executor.linux(binary)],
+                    '-I'+executor.linux(code),
+                    executor.linux(code/'native_dataset_reader.cpp'), '-o', executor.linux(binary)],
                     label='test-reader', memory=128*1024**2, seconds=30, outer_seconds=45)
     return binary
 
@@ -31,8 +41,13 @@ def run_reader(native, tmp_path, *, camera='1000000000,1000000000.png\n', imu='1
     cam, inertial = tmp_path/'cam.csv', tmp_path/'imu.csv'
     cam.write_text('#timestamp [ns],filename\n'+camera, encoding='utf8', newline='\n')
     inertial.write_text(IMU_HEADER+'\n'+imu, encoding='utf8', newline='\n')
-    return subprocess.run(['wsl', '-d', 'Ubuntu', '--', executor.linux(native),
-                           executor.linux(cam), executor.linux(inertial)], capture_output=True)
+    command = ['wsl', '-d', 'Ubuntu', '--', executor.linux(native),
+               executor.linux(cam), executor.linux(inertial)]
+    result = subprocess.run(command, capture_output=True)
+    (tmp_path/'stdout.bin').write_bytes(result.stdout)
+    (tmp_path/'stderr.bin').write_bytes(result.stderr)
+    executor.write(tmp_path/'command.json', {'argv': command, 'exit_code': result.returncode})
+    return result
 
 
 def test_actual_native_preserves_integer_nanoseconds(native, tmp_path):
@@ -60,7 +75,7 @@ def test_one_shot_existing_study_never_dispatches(tmp_path, monkeypatch):
     monkeypatch.setattr(executor, 'STUDY', tmp_path)
     monkeypatch.setattr(executor, 'admission', lambda: pytest.fail('existing result attempted admission/dispatch'))
     with pytest.raises(FileExistsError):
-        executor.execute()
+        executor.execute(tmp_path/'first.json')
 
 
 def test_refused_admission_never_creates_or_dispatches(tmp_path, monkeypatch):
@@ -69,5 +84,5 @@ def test_refused_admission_never_creates_or_dispatches(tmp_path, monkeypatch):
     monkeypatch.setattr(executor, 'admission', lambda: {'admitted': False})
     monkeypatch.setattr(executor, 'verify_input', lambda: pytest.fail('refused resource gate read/dispatched'))
     with pytest.raises(RuntimeError, match='admission refused'):
-        executor.execute()
+        executor.execute(tmp_path/'first.json')
     assert not root.exists()
