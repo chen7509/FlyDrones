@@ -30,7 +30,7 @@ Files: create tools/benchmark/prepare_calibration_capture_v3.py, tools/benchmark
 Before implementation, tests must make real preparation/study auditors fail on an omitted zero-selection self entry, changed context digest, bill role mismatch, stale/missing same-phase module/map and replaced origin. Run `python -m pytest tests/benchmark/test_calibration_capture_study_v3.py -q`; implement joins/runtime checks then require all cases and necessary raw/shared lifecycle neighbors pass. No SDK/native run is part of those software tests. Commit only after source/test review and evidence joins, keeping every failed fixture output.
 
 - [x] Implement literal prepare_calibration_capture_v3.py/calibration_capture_study_v3.py and explicit registry for results/target-bearing-runtime-freeze-v3-dev-1701/frozen-study-v3, reusing sealed45scene/14Agent unchanged; all bill/context/self-entry/baseline/preparation/execution/prepared-handoff hard joins and original graph/material/license/mapping contracts.
-- [ ] Actual same-phase module-origin/mapping checks fail closed without forced imports; software RED/GREEN on missing/wrong/stale module/context/maps and joins, immutable older profile/v1/v2 and original workload/safety behavior. Independently audit/seal/onlypersonal publish software before native execution.
+- [x] Actual same-phase module-origin/mapping checks fail closed without forced imports; software RED/GREEN on missing/wrong/stale module/context/maps and joins, immutable older profile/v1/v2 and original workload/safety behavior. Independently audit/seal/onlypersonal publish software before native execution.
 
 ## Task3 — New admitted static once, only after reviewed production
 
