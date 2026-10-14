@@ -1,0 +1,336 @@
+{
+  "schema": "sealed-working-byte-map-v1",
+  "scope": "read-only failure research and prospective production design; no implementation/native entry trace/capture",
+  "members": [
+    {
+      "path": "docs/superpowers/plans/2026-10-15-target-bearing-entry-dependency-production.md",
+      "bytes": 8701,
+      "sha256": "80a84f49cc9948e61b25cf52b02025bcbccfca62d19129e5d0fd08ebdf5c56a0"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-10-15-target-bearing-entry-dependency-production-design.md",
+      "bytes": 10599,
+      "sha256": "0e9b567934b625d359dbda567d455c8dee7c12664902c59703a69a8704be5dbd"
+    },
+    {
+      "path": "docs/TARGET_BEARING_LOADER_CONTEXT_RESEARCH_REPORT.md",
+      "bytes": 8634,
+      "sha256": "560acd2355cde04d9b89941cb2b191f310de5a3905013e217995f4fe7f97e958"
+    },
+    {
+      "path": "evidence/flydrones-history-through-admitted-executor-dev-1701.json",
+      "bytes": 89359,
+      "sha256": "c88840b6f58dea4e7e4931683c4993b4fc3b8eb55887807994b6381ef6c2b989"
+    },
+    {
+      "path": "results/target-bearing-loader-context-research-dev-1701/clock-domain-review-response.json",
+      "bytes": 804,
+      "sha256": "7ceeb7c0325978eda54778969853e0fc2a37f32cddae8ecaa827ca4fa2c64aad"
+    },
+    {
+      "path": "results/target-bearing-loader-context-research-dev-1701/design-decision.json",
+      "bytes": 526,
+      "sha256": "06b681a16ee472a790385583d56751e9f9c23b2d63b5609a0e55a6234db9850a"
+    },
+    {
+      "path": "results/target-bearing-loader-context-research-dev-1701/elf-metadata-command.json",
+      "bytes": 476,
+      "sha256": "5dcb17428e798ae84fd5e7ef30b3e3fa5c35f11a7dbce10d8cc1f654b6219c5c"
+    },
+    {
+      "path": "results/target-bearing-loader-context-research-dev-1701/elf-metadata-return.json",
+      "bytes": 634,
+      "sha256": "8b3b5f66cd0808ec1d65675c5c4b9f05382decbc7eedb475ca84980cc36326c1"
+    },
+    {
+      "path": "results/target-bearing-loader-context-research-dev-1701/elf-metadata.json",
+      "bytes": 33784,
+      "sha256": "40b4e3f61ff60a018ad7994bdf5f7492ec5ead24af5ec6e7ccf9b21dfb18500a"
+    },
+    {
+      "path": "results/target-bearing-loader-context-research-dev-1701/elf-metadata.stderr",
+      "bytes": 132,
+      "sha256": "b280c454d6f559e56eb3f5ed39f3ba084b8d1744a3ff7fe016b21ff86dea1aca"
+    },
+    {
+      "path": "results/target-bearing-loader-context-research-dev-1701/elf-metadata.stdout",
+      "bytes": 31849,
+      "sha256": "c1acfafc003e259cc69fd283f31a4086c3ae2f9a2326c783bc2cb2f22e3b1278"
+    },
+    {
+      "path": "results/target-bearing-loader-context-research-dev-1701/fetch-upstream.py",
+      "bytes": 2706,
+      "sha256": "5da662599143e0726c752ec0abae6374d90ab49babe916b77f170db2e37fbe86"
+    },
+    {
+      "path": "results/target-bearing-loader-context-research-dev-1701/historical-archives-before-seal.json",
+      "bytes": 49587,
+      "sha256": "ff017859e2840b5d536ee7c70f1b1c9757a41f08b662b136ab7b5266a85a8b5e"
+    },
+    {
+      "path": "results/target-bearing-loader-context-research-dev-1701/independent-design-followup.json",
+      "bytes": 5007,
+      "sha256": "0399c2b7a7b10490020b5048d9621b52f980fe37f4aaafb42b78d6c955cfe408"
+    },
+    {
+      "path": "results/target-bearing-loader-context-research-dev-1701/independent-design-followup.md",
+      "bytes": 2930,
+      "sha256": "fcb709c984b8dbc7428bf99c8d23f6a43baf24b071fae311fd5e48ee847e2577"
+    },
+    {
+      "path": "results/target-bearing-loader-context-research-dev-1701/independent-design-review.json",
+      "bytes": 19404,
+      "sha256": "f46fedb06cdde1f552d6698735841a91f3df33489ac270d3a33cfe26b899d1d4"
+    },
+    {
+      "path": "results/target-bearing-loader-context-research-dev-1701/independent-design-review.md",
+      "bytes": 5944,
+      "sha256": "5698bdfe52b0f96bcd81b1eab9031cde88d31c536f585dcb7e8ccbb9d8ff3627"
+    },
+    {
+      "path": "results/target-bearing-loader-context-research-dev-1701/initial-admission-classified-derivative.json",
+      "bytes": 839,
+      "sha256": "eeb6702c9f0a8020c078a939029d58b27c53e4d57028a6946b1bed391c0abd81"
+    },
+    {
+      "path": "results/target-bearing-loader-context-research-dev-1701/installed-license/binutils.copyright",
+      "bytes": 1795,
+      "sha256": "a81bdd422c2c015deca84bf6ad249bf0d7d19885fc01d1894463291b0b7313e1"
+    },
+    {
+      "path": "results/target-bearing-loader-context-research-dev-1701/installed-license/libc6.copyright",
+      "bytes": 26462,
+      "sha256": "d3c95b56fa33e28b57860580f0baf4e4f4de2a268a2b80f1d031a5191bade265"
+    },
+    {
+      "path": "results/target-bearing-loader-context-research-dev-1701/installed-license/libgz-plugin2.copyright",
+      "bytes": 2227,
+      "sha256": "882596b82d66f2d20657bf02aee30bec1c27aa2cf2e55268495caa04a010f7d4"
+    },
+    {
+      "path": "results/target-bearing-loader-context-research-dev-1701/installed-license/libgz-rendering8-ogre2.copyright",
+      "bytes": 316,
+      "sha256": "cba3a010a09ab08bab4d855bcce31d7775127fe5ed862be37c991d3e9e35d8c7"
+    },
+    {
+      "path": "results/target-bearing-loader-context-research-dev-1701/installed-license/libogre-next-2.3.0.copyright",
+      "bytes": 20369,
+      "sha256": "7e702e26313f6101c888bfee010e8a683cbf488897463126c7f1e23d27a2fd8e"
+    },
+    {
+      "path": "results/target-bearing-loader-context-research-dev-1701/metadata-scope-addendum.json",
+      "bytes": 653,
+      "sha256": "47392ffb29cb5b0e4864b4044b436c40f1c51768744aaab6d09d423b4cc457d4"
+    },
+    {
+      "path": "results/target-bearing-loader-context-research-dev-1701/observe-elf-metadata.py",
+      "bytes": 1858,
+      "sha256": "aa8952e9cd9c8a750bebc07f27419914e27287d52c3b77814a2a8471e2f09210"
+    },
+    {
+      "path": "results/target-bearing-loader-context-research-dev-1701/ogre-license-followup.json",
+      "bytes": 322,
+      "sha256": "a8ebb2db2b9ed51dbbfac4e3c29b033ac135d19fd7d6c687734fe811281c53aa"
+    },
+    {
+      "path": "results/target-bearing-loader-context-research-dev-1701/ownership-tool-post-command.json",
+      "bytes": 1170,
+      "sha256": "1197fdf28cf08dc10488bd9e47547c9ac8db273ce78781cebe69c2dbc7e80718"
+    },
+    {
+      "path": "results/target-bearing-loader-context-research-dev-1701/ownership-tool-post-return.json",
+      "bytes": 5079,
+      "sha256": "bd66967ff63e7b08a138c04b327e1833700222933f3d38d6575a25c31ee662a5"
+    },
+    {
+      "path": "results/target-bearing-loader-context-research-dev-1701/ownership-tool-post.json",
+      "bytes": 2607,
+      "sha256": "39461bafa34474fdebfeaf7733ab1858d55c090d206471ac91d95337c8ee17f0"
+    },
+    {
+      "path": "results/target-bearing-loader-context-research-dev-1701/package-license-post-command.json",
+      "bytes": 1390,
+      "sha256": "bdf93e47bffb3e588bced006f31e06661dbf5049ab7bc38cfb14f0a5c96b467a"
+    },
+    {
+      "path": "results/target-bearing-loader-context-research-dev-1701/package-license-post-return.json",
+      "bytes": 208571,
+      "sha256": "568f6f3d48f7f1f7ba153cd5aed4389579c78fb892716e6d7d30635cc8569c38"
+    },
+    {
+      "path": "results/target-bearing-loader-context-research-dev-1701/package-license-post.json",
+      "bytes": 104505,
+      "sha256": "36b87943c5ac8e7f0968fa81c1d8ab41515cac696ef3241e7b59e67c092fc053"
+    },
+    {
+      "path": "results/target-bearing-loader-context-research-dev-1701/preseal-git-verification.json",
+      "bytes": 336,
+      "sha256": "b4e52ee410936eec2bb87d0e383ffddb4b901ceac1916c90cfac62b3b6b46bb3"
+    },
+    {
+      "path": "results/target-bearing-loader-context-research-dev-1701/product-source-current-audit.json",
+      "bytes": 219665,
+      "sha256": "0da9bcf123f61773a101b838d48b912998893f9aaefb333959171eacd2b47aef"
+    },
+    {
+      "path": "results/target-bearing-loader-context-research-dev-1701/RESEARCH_SCOPE.md",
+      "bytes": 1263,
+      "sha256": "dbca13f50e5e3403d1516fe7e665baa8b22d96033fb2b4a4ec9c29426032fec4"
+    },
+    {
+      "path": "results/target-bearing-loader-context-research-dev-1701/seal-research.py",
+      "bytes": 2796,
+      "sha256": "e205e6ac645b646ca75757e26f23faf2271be736cba569abd371c9bc754892bf"
+    },
+    {
+      "path": "results/target-bearing-loader-context-research-dev-1701/upstream/bminor__glibc/COPYING",
+      "bytes": 18092,
+      "sha256": "8177f97513213526df2cf6184d8ff986c675afb514d4e68a404010521b880643"
+    },
+    {
+      "path": "results/target-bearing-loader-context-research-dev-1701/upstream/bminor__glibc/COPYING.LIB",
+      "bytes": 26530,
+      "sha256": "dc626520dcd53a22f727af3ee42c770e56c97a64fe3adb063799d8ab032fe551"
+    },
+    {
+      "path": "results/target-bearing-loader-context-research-dev-1701/upstream/bminor__glibc/elf/dl-deps.c",
+      "bytes": 17592,
+      "sha256": "47a1cb0f16d2073e2992af1a17c5aa269ffdd08b606a5a7e627bbfe6988d8fb1"
+    },
+    {
+      "path": "results/target-bearing-loader-context-research-dev-1701/upstream/bminor__glibc/elf/dl-load.c",
+      "bytes": 70348,
+      "sha256": "26345f234ef918c866e40bb86524bdfd4c3beac487af81b3f51668379e671ae0"
+    },
+    {
+      "path": "results/target-bearing-loader-context-research-dev-1701/upstream/bminor__glibc/official-commit.json",
+      "bytes": 2498,
+      "sha256": "5a8a682431d66d8f34780e56299a48aa6cb60e22d998b8e7ec44ecdaea98b8e4"
+    },
+    {
+      "path": "results/target-bearing-loader-context-research-dev-1701/upstream/bminor__glibc/official-ref.json",
+      "bytes": 339,
+      "sha256": "efc56fb51944628ab2e682d0f2ef424adf04173c0e45c127292a000d79e87884"
+    },
+    {
+      "path": "results/target-bearing-loader-context-research-dev-1701/upstream/bminor__glibc/official-tree.json",
+      "bytes": 4739949,
+      "sha256": "149fc06a0b8ab4078602d023b30de77b6936f759861cd9475eeec48b2c5c65ea"
+    },
+    {
+      "path": "results/target-bearing-loader-context-research-dev-1701/upstream/gazebosim__gz-plugin/LICENSE",
+      "bytes": 10175,
+      "sha256": "e1925845017bf307c7d465af432e8bb20cbb6ce17b10cd323af59da717753075"
+    },
+    {
+      "path": "results/target-bearing-loader-context-research-dev-1701/upstream/gazebosim__gz-plugin/loader/src/Loader.cc",
+      "bytes": 25978,
+      "sha256": "45c364d209a40865f3b5f59734af1ffd77aa33950a95c328d5cd6a781daa2224"
+    },
+    {
+      "path": "results/target-bearing-loader-context-research-dev-1701/upstream/gazebosim__gz-plugin/official-commit.json",
+      "bytes": 2312,
+      "sha256": "b973fd1eaa15eb7f7d938976201e466bc225e0dd4dbb092e43fd643e67e9ef3d"
+    },
+    {
+      "path": "results/target-bearing-loader-context-research-dev-1701/upstream/gazebosim__gz-plugin/official-ref.json",
+      "bytes": 379,
+      "sha256": "1c2e290a7d4d622a049d0b1704ed7a60debb12d5588fa0ed9e5d271f852a1229"
+    },
+    {
+      "path": "results/target-bearing-loader-context-research-dev-1701/upstream/gazebosim__gz-plugin/official-tree.json",
+      "bytes": 59197,
+      "sha256": "38f6eb8844e282b2eb5f8ae7ff8c30c578423f0b43a33f713b110b5c7643999a"
+    },
+    {
+      "path": "results/target-bearing-loader-context-research-dev-1701/upstream/gazebosim__gz-rendering/LICENSE",
+      "bytes": 10175,
+      "sha256": "e1925845017bf307c7d465af432e8bb20cbb6ce17b10cd323af59da717753075"
+    },
+    {
+      "path": "results/target-bearing-loader-context-research-dev-1701/upstream/gazebosim__gz-rendering/official-commit.json",
+      "bytes": 2305,
+      "sha256": "7015d9d7ee46575ea9a467f6e9f516f5e676a3ccd05a07b1e135a5615167140a"
+    },
+    {
+      "path": "results/target-bearing-loader-context-research-dev-1701/upstream/gazebosim__gz-rendering/official-ref.json",
+      "bytes": 395,
+      "sha256": "1b757903654d811ea3d4251e6302e2e173d243ffe25f9b852699f90b16890833"
+    },
+    {
+      "path": "results/target-bearing-loader-context-research-dev-1701/upstream/gazebosim__gz-rendering/official-tree.json",
+      "bytes": 375271,
+      "sha256": "67c0d9408ae392bffcf4615a0ecee63e3e491fcb049cd8595f6cac7c123fde6d"
+    },
+    {
+      "path": "results/target-bearing-loader-context-research-dev-1701/upstream/gazebosim__gz-rendering/ogre2/src/CMakeLists.txt",
+      "bytes": 4059,
+      "sha256": "2974bae2ee8f358742a4e7cb01855b570e36c26aa0fb99295228654f24c2ad03"
+    },
+    {
+      "path": "results/target-bearing-loader-context-research-dev-1701/upstream/gazebosim__gz-rendering/ogre2/src/Ogre2RenderEngine.cc",
+      "bytes": 44566,
+      "sha256": "9267cdf04892209deb2a7f3814867aa817eddb4f6e6e4107c01ef37c692c17c3"
+    },
+    {
+      "path": "results/target-bearing-loader-context-research-dev-1701/upstream/gazebosim__gz-rendering/src/RenderEngineManager.cc",
+      "bytes": 19342,
+      "sha256": "14bb0cd7a9f9bc74c19a51251b9dd42dab969bbe89cde01617f28f234507fac7"
+    },
+    {
+      "path": "results/target-bearing-loader-context-research-dev-1701/upstream/OGRECave__ogre-next/COPYING",
+      "bytes": 1135,
+      "sha256": "df6294031f26c4401ce713be0b0b3c5da27c2f1b7278a0d9833d111273174183"
+    },
+    {
+      "path": "results/target-bearing-loader-context-research-dev-1701/upstream/OGRECave__ogre-next/official-commit.json",
+      "bytes": 1125,
+      "sha256": "2b87b6cd8c8c0e2ef3b850e020fce1f15e6e81c4ebf2408cf0331afe588a8222"
+    },
+    {
+      "path": "results/target-bearing-loader-context-research-dev-1701/upstream/OGRECave__ogre-next/official-ref.json",
+      "bytes": 345,
+      "sha256": "9c5c725f227e1b5084902fadb98e5aabee2d23cbea10a87ce7d42bbefee36aad"
+    },
+    {
+      "path": "results/target-bearing-loader-context-research-dev-1701/upstream/OGRECave__ogre-next/official-tree.json",
+      "bytes": 1561584,
+      "sha256": "7cd3f70ffc4faffaa6fb4bdcc922f844e1cf62ba647d29c36ce008195c6ff060"
+    },
+    {
+      "path": "results/target-bearing-loader-context-research-dev-1701/upstream/OGRECave__ogre-next/OgreMain/src/OgreDynLib.cpp",
+      "bytes": 7551,
+      "sha256": "a362298c3aa82e2bb260c345155c0487f503d9ddf34e6573c8f07562a1347281"
+    },
+    {
+      "path": "results/target-bearing-loader-context-research-dev-1701/upstream/OGRECave__ogre-next/OgreMain/src/OgreRoot.cpp",
+      "bytes": 61981,
+      "sha256": "848fc06b0af844c471a9b0a9775d1c1a5e8f737e992765f9a2e47553a26f83c8"
+    },
+    {
+      "path": "results/target-bearing-loader-context-research-dev-1701/upstream-fetch-records.json",
+      "bytes": 38726,
+      "sha256": "b99972284527020a671f93ec5845662dbe89aaa83bd33000ad77c899f7887828"
+    },
+    {
+      "path": "results/target-bearing-loader-context-research-dev-1701/write-design.py",
+      "bytes": 27295,
+      "sha256": "a3ff4ca51f007f09e42108a5a14c2c0f39be7b6a783b46baf4df8d69ef0c87e4"
+    }
+  ],
+  "private_original": {
+    "path": "results/target-bearing-loader-context-research-dev-1701/initial-admission-observation.json",
+    "sha256": "efc60e05bcb96cfa5083d31000253faec4309b643f43fd8152f0b42b54f45d9e",
+    "publication": "LOCAL_UNPUBLISHED"
+  },
+  "qualification": {
+    "source": false,
+    "clock": false,
+    "measured_calibration": false,
+    "accuracy": false,
+    "teacher": false,
+    "fusion": false,
+    "training": false,
+    "flight": false
+  }
+}
