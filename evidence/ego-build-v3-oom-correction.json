@@ -1,0 +1,10 @@
+{
+  "archive_sha256": "28400eb8776984a10530e0f6fa5835938c68fa77bc21da306b7340fc3394a3bb",
+  "archive_members": 40,
+  "original_report_retained_in_archive": true,
+  "correction": "Retained stats file is 99.94%; 99.92% was an earlier distinct tool response. No raw evidence or experiment changed.",
+  "canonical_report": "docs/EGO_BUILD_V3_OOM_REPORT.md",
+  "canonical_report_sha256": "46f633e2454c25c0175427d90c6568a39c900aeaec1587c85dc6a0c453be34bc",
+  "raw_stats": "results/ego-patched-build-dev-1701-v3/admission-v2/container-stats-observed.txt",
+  "raw_stats_sha256": "24755f1537690f88d2fc271ec953d478d570abc3faccb7e14c1b30b1ce198904"
+}
