@@ -73,4 +73,4 @@ Future command/scope/supervisor budgets retain local monotonic start/end/elapsed
 
 The literal coordinator was implemented/reviewed and dispatched once. Static-v2 is CONSUMED_FAILED at actual `_json` entry readelf/ldd classification; all partial files are immutable. Task3's complete freeze/success requirements and Task4 remain pending, never a retry instruction. See TARGET_BEARING_STATIC_V2_ATTEMPT_REPORT.md and the separate zero-NEEDED Python entry research plan before any new revision/attempt.
 
-- [ ] Independently seal and publish the actual static-v2 failure; this checkbox records evidence publication only, not complete runtime freeze or physical readiness.
+- [x] Independently seal and publish the actual static-v2 failure; this checkbox records evidence publication only, not complete runtime freeze or physical readiness.
