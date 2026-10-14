@@ -1,0 +1,8 @@
+This product includes software developed by the Autonomous Systems Lab and Skybotix AG.
+Nine tag36h11 codes and the test-only AprilTag drawing reference originate from
+ethz-asl/kalibr at 1f60227442d25e36365ef5f72cd80b9666d73467.
+https://github.com/ethz-asl/kalibr/tree/1f60227442d25e36365ef5f72cd80b9666d73467
+Upstream Tag36h11.h SHA256 8f7cc32171bb4c4e48e894590d868da07b9d613bc66ca866eec679abffafbb11.
+Upstream kalibr_create_target_pdf SHA256 37b7a6c837faea2593652fc3df9979c1ef4eae6d19262a829fb6d77ccf6b76c5.
+Full upstream custom BSD4 conditions retained in LICENSE. No endorsement.
+Generated dimensions are design values, not measured physical target dimensions.

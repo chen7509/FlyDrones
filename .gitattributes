@@ -60,3 +60,6 @@ config/px4/source-diagnostic-v1/logger_topics.txt text eol=lf
 tests/fixtures/px4_status_transport/*.msg -text -whitespace
 tests/fixtures/px4_status_transport/*.yaml text eol=lf -whitespace
 configs/px4/estimator-status-dds-candidate.yaml text eol=lf -whitespace
+# Exact pinned upstream reference/license bytes; product code uses normal checks.
+tests/benchmark/fixtures/kalibr_aprilgrid_reference.py -text -whitespace
+third_party/kalibr-aprilgrid/LICENSE -text -whitespace

@@ -1,0 +1,19 @@
+{
+  "reviewer": "/root/review_aprilgrid_production",
+  "Critical": 0,
+  "Important": 0,
+  "Minor": 0,
+  "archive": "evidence/kalibr-aprilgrid-production-dev-1701-v2.zip",
+  "sha256": "a17dc100c6c57bfd163b4a618c8b9e3d64c063ea3da2b8415da5198117faddf2",
+  "members": 95,
+  "bytes": 204318,
+  "CRC_checks": 95,
+  "manifest_size_SHA_current_byte_comparisons": 94,
+  "errors": 0,
+  "report_sha256": "daec07bb94d66cc6a6e22c18fc174741619cdc886acf099b18f2bcfaa91331a2",
+  "two_exact_attribute_paths": "verified only existing rules unchanged/product checks active",
+  "draft_source_assets_trials": "byte identical; no removed members",
+  "273_historical_archives": "previous independent complete streaming audit all match, not repeated",
+  "all_qualifications": false,
+  "archive_plan": "prepublication"
+}
