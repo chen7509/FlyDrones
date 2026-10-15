@@ -12,7 +12,7 @@ from tools.benchmark.audit_live_wire_study import _equal, _integer, _shape
 from tools.benchmark.openvins_causal_input import raw_profile
 
 
-def audit_resource_graph_records(*, declaration, pre, after_queries, graph, context, queries, documents):
+def audit_resource_graph_records(*, declaration, pre, after_queries, graph, context, queries, documents, path_factory=Path):
     """Re-run the production XML traversal against retained native replies only.
 
     Does not query today's SDK or search filesystem. Declared snapshots/mappings
@@ -101,7 +101,7 @@ def audit_resource_graph_records(*, declaration, pre, after_queries, graph, cont
             if len(outputs["stdout"]) + len(outputs["stderr"]) > 1024 * 1024:
                 raise ValueError("retained native output exceeded bound")
             answer = json.loads(outputs["stdout"], object_pairs_hook=_unique_pairs, parse_constant=_reject_constant)
-            return validate_response(answer, args, Path(selection["cwd"]), selection["environment"])
+            return validate_response(answer, args, path_factory(selection["cwd"]), selection["environment"])
 
     client = RecordedClient()
     _equal(client.query("context"), context, "original SDK context reply")
@@ -113,7 +113,7 @@ def audit_resource_graph_records(*, declaration, pre, after_queries, graph, cont
         consumed.add(path)
         return documents[path]
 
-    rebuilt = _build_graph(roots[0]["requested"], client, pre["files"], read_source, recorded.append)
+    rebuilt = _build_graph(roots[0]["requested"], client, pre["files"], read_source, recorded.append,path_factory=path_factory)
     _equal(rebuilt, graph, "original-byte graph traversal")
     _equal(recorded, [graph], "single completed graph")
     _equal(client.count, len(queries), "all retained queries consumed")

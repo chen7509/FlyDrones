@@ -97,25 +97,29 @@ def _environment(value):
         text.encode("utf-8", errors="strict")
 
 
-def _retained_query(reference):
+def _retained_query(reference, artifact_reader=None):
     # Artifact is a declared host pathname, separate from POSIX selected spelling.
     artifact = reference["query_path"]
     _require(
         type(artifact) is str and os.path.isabs(artifact) and ".." not in re.split(r"[/\\]", artifact),
         "absolute non-traversing retained query path required",
     )
-    with open(artifact, "rb") as stream:
-        data = stream.read(_MAX_QUERY_BYTES + 1)
+    if artifact_reader is None:
+        with open(artifact, "rb") as stream:
+            data = stream.read(_MAX_QUERY_BYTES + 1)
+    else:
+        data = artifact_reader(reference, _MAX_QUERY_BYTES)
+    _require(type(data) is bytes, "retained artifact bytes required")
     _require(len(data) <= _MAX_QUERY_BYTES, "retained query byte bound")
     _require(hashlib.sha256(data).hexdigest() == reference["query_sha256"], "retained query SHA mismatch")
     return json.loads(data.decode("utf-8", errors="strict"), object_pairs_hook=_json_object)
 
 
-def _version(reference, tool):
+def _version(reference, tool, artifact_reader=None):
     _require(
         type(reference) is dict and set(reference) == {"query_path", "query_sha256"}, "retained tool version reference required"
     )
-    version = _retained_query(reference)
+    version = _retained_query(reference, artifact_reader)
     _require(
         version["schema"] == "native-tool-version-query-v4"
         and version["kind"] == "version"
@@ -154,7 +158,7 @@ def _outcome(query):
     )
 
 
-def _trace(raw_path, origin):
+def _trace(raw_path, origin, artifact_reader=None):
     """Rederive a token from the retained complete query, never a caller label."""
     _require(
         type(origin) is dict
@@ -162,7 +166,7 @@ def _trace(raw_path, origin):
         "exact trace origin required",
     )
     _require(origin["schema"] == "native-loader-trace-origin-v4", "trace origin schema")
-    query = _retained_query(origin)
+    query = _retained_query(origin, artifact_reader)
     _require(query["schema"] == "native-entry-query-v4" and query["kind"] == "ldd", "complete ldd query required")
     _require(
         type(query["index"]) is int and query["index"] > 0 and query["index"] == origin["query_index"], "query index mismatch"
@@ -178,7 +182,7 @@ def _trace(raw_path, origin):
     _require(query["argv"] == [query["tool_before"]["requested"], query["entry"]["requested"]], "query argv/input mismatch")
     _environment(query["env"])
     _outcome(query)
-    version = _version(query["tool_version"], query["tool_before"])
+    version = _version(query["tool_version"], query["tool_before"], artifact_reader)
     stdout = bytes.fromhex(query["stdout_hex"])
     stderr = bytes.fromhex(query["stderr_hex"])
     _require(0 < len(stdout) <= _LIMITS["stream_bytes"] and not stderr, "empty, oversized or error trace")
@@ -411,7 +415,7 @@ class _ReplayFilesystem:
         return self._next("readlink", path)["target"]
 
 
-def audit_selected_path(record: dict, *, trace_origin: dict, baseline_files: dict) -> None:
+def audit_selected_path(record: dict, *, trace_origin: dict, baseline_files: dict, artifact_reader=None) -> None:
     _require(
         record["schema"] == "native-loader-selected-path-v4"
         and record["complete"] is True
@@ -423,7 +427,7 @@ def audit_selected_path(record: dict, *, trace_origin: dict, baseline_files: dic
     )
     raw = record["raw_path"]
     _require(_spelling(raw).hex() == record["raw_utf8_hex"], "raw spelling mismatch")
-    _require(_trace(raw, trace_origin) == record["trace"], "trace/record mismatch")
+    _require(_trace(raw, trace_origin, artifact_reader) == record["trace"], "trace/record mismatch")
     _require(
         type(record["started_monotonic_ns"]) is int
         and type(record["ended_monotonic_ns"]) is int

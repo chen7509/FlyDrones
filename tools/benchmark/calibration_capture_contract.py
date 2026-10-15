@@ -83,6 +83,14 @@ def validate_raw_args(args):
 
 def raw_graph(args):
     validate_raw_args(args)
+    source = scene_record(args.calibration_scene)
+    prepared = validate_prepared_scene(source,args.output) if getattr(args,'prepared_scene',False) else None
+    return raw_graph_records(args, source, prepared)
+
+
+def raw_graph_records(args, source, prepared=None):
+    """Pure assembly also used for retained, separately validated scene bytes."""
+    validate_raw_args(args)
     result = dict(
         schema="target-bearing-raw-graph-v1",
         name=PROFILE,
@@ -97,10 +105,12 @@ def raw_graph(args):
         ],
         estimator_required=False,
         measured_calibration_qualified=False,
-        scene=scene_record(args.calibration_scene),
+        scene=source,
     )
     if getattr(args,'prepared_scene',False):
-        result['prepared_input']=validate_prepared_scene(result['scene'],args.output)
+        if prepared is None:
+            raise ValueError('prepared scene record required')
+        result['prepared_input']=prepared
     return result
 
 

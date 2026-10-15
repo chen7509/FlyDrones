@@ -122,7 +122,10 @@ def validate_binding(doc):
                 or type(runtime['max_observations']) is not int
                 or not 0 < runtime['max_observations'] <= 16):
             raise ValueError('invalid runtime map bounds')
-    if 'runtime:python-extension-context' in inventory:
+    if 'graph:loader-selected-paths' in inventory:
+        from tools.benchmark.calibration_capture_pipeline_v4 import validate_binding_v4
+        validate_binding_v4(doc)
+    elif 'runtime:python-extension-context' in inventory:
         from tools.benchmark.native_entry_context_v3 import declared_python_context
 
         declared_python_context(doc)
@@ -164,7 +167,14 @@ class RuntimeBinding:
         self.completed_self = []
         self.completed_owned = {role: [] for role in self.required_owned}
         self.python_context = None
-        if 'runtime:python-extension-context' in self.doc['inventory']:
+        self.python_loader_table = None
+        if 'graph:loader-selected-paths' in self.doc['inventory']:
+            from tools.benchmark.calibration_capture_pipeline_v4 import declared_context
+            from tools.benchmark.capture_contract import read_declaration
+            selected=declared_context(self.doc)
+            self.python_context=read_declaration(selected['file']['requested'])
+            self.python_loader_table=read_declaration(selected['evidence']['table'])
+        elif 'runtime:python-extension-context' in self.doc['inventory']:
             from tools.benchmark.capture_contract import read_declaration
             from tools.benchmark.native_entry_context_v3 import declared_python_context
 
@@ -263,6 +273,12 @@ class RuntimeBinding:
                 raise OSError('short maps write')
             stream.flush()
         known = {row['resolved']: row['identity'] for row in self.before['files']}
+        if getattr(self,'python_loader_table',None) is not None:
+            for selected in self.python_loader_table['paths']:
+                canonical=known.get(selected['canonical_path'])
+                if canonical != selected['fd_before']:
+                    raise ValueError('v4 alias canonical baseline differs')
+                known[selected['raw_path']]=canonical
         unknown, mismatched, parse_error = [], [], None
         try:
             for row in parse_maps(raw):
@@ -293,12 +309,15 @@ class RuntimeBinding:
             raw = self.map_reader()
             result = self._observe(phase, raw)
             if getattr(self, 'python_context', None) is not None:
-                from tools.benchmark.native_entry_context_v3 import audit_python_runtime
-
                 observed = dict(phase=phase, error=None, runtime_import_verified=False)
                 primary = None
                 try:
-                    observed.update(audit_python_runtime(self.python_context, raw, phase))
+                    if getattr(self,'python_loader_table',None) is not None:
+                        from tools.benchmark.calibration_capture_pipeline_v4 import audit_python_runtime
+                        observed.update(audit_python_runtime(self.python_context,raw,phase,table=self.python_loader_table))
+                    else:
+                        from tools.benchmark.native_entry_context_v3 import audit_python_runtime
+                        observed.update(audit_python_runtime(self.python_context,raw,phase))
                 except Exception as exc:
                     primary = exc
                     observed['error'] = repr(exc)

@@ -90,6 +90,14 @@ def wire_configuration_record(path):
     """Freeze an explicit clock mapping; no implicit origin or live authority."""
     before = _file_identity(path)
     value = read_declaration(path)
+    validate_wire_configuration(value)
+    if before != _file_identity(path):
+        raise ValueError('wire configuration changed during validation')
+    return dict(before, configuration=value)
+
+
+def validate_wire_configuration(value):
+    """Pure wire semantics shared by native and transported record auditing."""
     staged = type(value) is dict and value.get('schema') == 'capture-wire-startup-v2'
     keys = {'schema', 'session_id', 'sim_origin_ns', 'remote_origin_ns'}
     if staged:
@@ -105,12 +113,11 @@ def wire_configuration_record(path):
             or staged and (type(value['startup_max_wall_ns']) is not int
                            or not 0 < value['startup_max_wall_ns'] <= 60_000_000_000)):
         raise ValueError('invalid capture wire clock configuration')
-    if before != _file_identity(path):
-        raise ValueError('wire configuration changed during validation')
-    return dict(before, configuration=value)
 
 
-def execution_contract(args, launch_environment=None):
+def execution_contract(args, launch_environment=None, *, record_provider=None):
+    if record_provider is not None and getattr(args,'capture_profile',None)!='target-bearing-raw-v1':
+        raise ValueError('retained record provider requires explicit raw profile')
     fault = args.reference_fault_profile
     if fault not in (None, 'native-pre-epoch-v1'):
         raise ValueError('unknown reference fault profile')
@@ -126,7 +133,9 @@ def execution_contract(args, launch_environment=None):
         physics_step_ns=1_000_000, imu_hz=250, rgbd_hz=10, rgbd_size=[160, 120],
         estimator_run=bool(args.shadow_binary),
         profiles={name: getattr(args, name) for name in PROFILE_FIELDS},
-        inputs={name: str(getattr(args, name).resolve()) if getattr(args, name) else None for name in PATH_FIELDS},
+        inputs={name: (str(getattr(args, name).resolve()) if record_provider is None
+                       else record_provider.input_path(getattr(args, name))) if getattr(args, name) else None
+                for name in PATH_FIELDS},
         reference_sha256=args.reference_sha256,
     )
     if launch_environment is not None:
@@ -151,14 +160,16 @@ def execution_contract(args, launch_environment=None):
     if wire_config is not None:
         if not args.execution_contract or not args.runtime_binding or fault:
             raise ValueError('wire mode requires a declared bound ordinary capture')
-        result['wire'] = wire_configuration_record(wire_config)
+        result['wire'] = (wire_configuration_record(wire_config) if record_provider is None
+                          else record_provider.wire_configuration_record(wire_config))
     agent_config = getattr(args, 'agent_runtime_config', None)
     if agent_config is not None:
         if wire_config is None or not args.execution_contract or not args.runtime_binding or fault:
             raise ValueError('Agent requires a declared unarmed wire capture')
         from tools.benchmark.agent_capture_runtime import agent_runtime_record
 
-        result['agent'] = agent_runtime_record(agent_config)
+        result['agent'] = (agent_runtime_record(agent_config) if record_provider is None
+                           else record_provider.agent_runtime_record(agent_config))
     logger_diagnostic = getattr(args, 'logger_diagnostic_profile', None)
     if logger_diagnostic is not None:
         if (logger_diagnostic != 'source-diagnostic-v1' or agent_config is None
@@ -167,7 +178,8 @@ def execution_contract(args, launch_environment=None):
             raise ValueError('diagnostic logger requires declared owned Agent wire capture')
         from tools.benchmark.px4_logger_runtime import PROFILE_RELATIVE, profile_record
 
-        result['logger_diagnostic'] = profile_record(Path(__file__).resolve().parents[2] / PROFILE_RELATIVE)
+        result['logger_diagnostic'] = (profile_record(Path(__file__).resolve().parents[2] / PROFILE_RELATIVE)
+                                      if record_provider is None else record_provider.logger_profile_record())
     if getattr(args, 'record_owned_ulog', False):
         if 'logger_diagnostic' not in result:
             raise ValueError('owned ULog source requires declared diagnostic logger')
@@ -183,14 +195,18 @@ def execution_contract(args, launch_environment=None):
             raise ValueError('raw capture requires explicit bound launch environment')
         if result.get('wire', {}).get('configuration', {}).get('schema') != 'capture-wire-startup-v2':
             raise ValueError('raw capture requires staged wire startup')
-        result['raw_measurement'] = raw_graph(args)
+        result['raw_measurement'] = raw_graph(args) if record_provider is None else record_provider.raw_graph(args)
     elif getattr(args, 'calibration_scene', None) is not None:
         raise ValueError('calibration scene requires explicit raw capture profile')
     binding_path = getattr(args, 'runtime_binding', None)
     if (getattr(args, 'capture_profile', None) == 'target-bearing-raw-v1'
-            and binding_path is not None and Path(binding_path).is_file()):
-        declaration = read_declaration(binding_path)
-        if 'runtime:python-extension-context' in declaration.get('inventory', {}):
+            and binding_path is not None and (record_provider is not None or Path(binding_path).is_file())):
+        declaration = read_declaration(binding_path) if record_provider is None else record_provider.binding
+        if 'graph:loader-selected-paths' in declaration.get('inventory', {}):
+            from tools.benchmark.calibration_capture_pipeline_v4 import declared_context
+            result['python_extension_context']=(declared_context(declaration) if record_provider is None
+                                                 else record_provider.declared_context())
+        elif 'runtime:python-extension-context' in declaration.get('inventory', {}):
             if getattr(args, 'capture_profile', None) != 'target-bearing-raw-v1':
                 raise ValueError('Python extension context requires explicit raw profile')
             from tools.benchmark.native_entry_context_v3 import declared_python_context

@@ -148,7 +148,7 @@ def verify_execution_join(args, execution, binding, require_absent):
         raise ValueError("raw study execution differs from current producer")
 
 
-def _verify_profile_study(path, sha, folder, schema, fixed, *, require_absent=True, v2=False, v3=False):
+def _verify_profile_study(path, sha, folder, schema, fixed, *, require_absent=True, v2=False, v3=False, v4=False):
     from tools.benchmark.runtime_resource_binding import validate_binding
 
     path = Path(path).resolve(strict=True)
@@ -194,9 +194,12 @@ def _verify_profile_study(path, sha, folder, schema, fixed, *, require_absent=Tr
         or preparation.get("execution_sha256") != actual["execution"]["sha256"]
     ):
         raise ValueError("preparation does not bind exact execution/binding")
-    if v2 and v3:
+    if sum((v2,v3,v4))>1:
         raise ValueError('conflicting fixed study profiles')
-    if v3:
+    if v4:
+        from tools.benchmark.calibration_capture_study_v4 import audit_v4_preparation
+        audit=audit_v4_preparation(binding,preparation,fixed['entry_bill'],read_declaration(fixed['entry_bill']))
+    elif v3:
         from tools.benchmark.calibration_capture_study_v3 import audit_v3_preparation
 
         audit = audit_v3_preparation(binding, preparation, fixed['entry_bill'], read_declaration(fixed['entry_bill']))
@@ -215,7 +218,8 @@ def _verify_profile_study(path, sha, folder, schema, fixed, *, require_absent=Tr
                 "dispatcher",
                 "study_code",
                 "python",
-                *(("dependency_code", "producer_code") if v2 or v3 else ()),
+                *(("dependency_code", "producer_code") if v2 or v3 or v4 else ()),
+                *(("pipeline_code", "paths_code") if v4 else ()),
             )
         ],
         binding["baseline"]["files"],
@@ -248,6 +252,9 @@ def study_paths(folder):
 
 def verify_study(path, sha, *, require_absent=True):
     # Explicit fixed registry; v1 keeps every original contract/absence gate.
+    if Path(path).absolute()==ROOT/'results/target-bearing-runtime-freeze-v4-dev-1701/frozen-study-v4/study.json':
+        from tools.benchmark.calibration_capture_study_v4 import verify_study_v4
+        return verify_study_v4(path,sha,require_absent=require_absent)
     from tools.benchmark import calibration_capture_study_v2 as second
     from tools.benchmark import calibration_capture_study_v3 as third
 

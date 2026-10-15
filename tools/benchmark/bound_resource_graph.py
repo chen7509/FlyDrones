@@ -19,7 +19,7 @@ def build_graph(world, client, known_rows, output):
                         lambda result: write_manifest(Path(output) / 'resource-graph.json', result))
 
 
-def _build_graph(world, client, known_rows, read_source, record_result):
+def _build_graph(world, client, known_rows, read_source, record_result, *, path_factory=Path):
     """Shared traversal; production and offline audit supply distinct I/O owners."""
     known = {p: row for row in known_rows if not row['role'].startswith('bootstrap:') for p in (row['requested'], row['resolved'])}
     result = dict(schema='bound-local-resource-graph-v1', documents=[], edges=[], errors=[],
@@ -29,7 +29,7 @@ def _build_graph(world, client, known_rows, read_source, record_result):
     installation = None
 
     def declared(path):
-        if type(path) is not str or not Path(path).is_absolute() or '..' in Path(path).parts or path not in known:
+        if type(path) is not str or not path_factory(path).is_absolute() or '..' in path_factory(path).parts or path not in known:
             raise ValueError('selected resource absent from declared baseline: ' + str(path))
         return known[path]
 
@@ -95,7 +95,7 @@ def _build_graph(world, client, known_rows, read_source, record_result):
                 if kind == 'include':
                     visit(reply['lookup_selected'], 'sdf', ancestors + (identity,))
                 elif kind == 'mesh':
-                    suffix = Path(target).suffix.lower()
+                    suffix = path_factory(target).suffix.lower()
                     if suffix == '.dae':
                         visit(reply['lookup_selected'], 'dae', ancestors + (identity,))
                     elif suffix != '.stl':

@@ -546,29 +546,53 @@ def _publish_completion(prepared, final):
     os.link(prepared, final, follow_symlinks=False)
 
 
-def audit_entry_context_bill_v4(bill, *, baseline_files, python_context):
-    _audit_content_v4(bill, baseline_files=baseline_files, python_context=python_context)
-    aggregate = Path(bill["aggregate_path"])
-    final = Path(bill["completion_path"])
-    _require(
-        aggregate.is_absolute()
-        and aggregate.name == "entry-bill.json"
-        and final == aggregate.with_name("entry-bill-terminal.json"),
-        "fixed sibling terminal/aggregate references required",
-    )
+def audit_entry_context_bill_v4(bill, *, baseline_files, python_context, artifact_reader=None):
+    _audit_content_v4(bill, baseline_files=baseline_files, python_context=python_context, artifact_reader=artifact_reader)
+    aggregate_text = bill["aggregate_path"]
+    final_text = bill["completion_path"]
+    aggregate = Path(aggregate_text)
+    final = Path(final_text)
+    if artifact_reader is None:
+        valid = (
+            aggregate.is_absolute()
+            and aggregate.name == "entry-bill.json"
+            and final == aggregate.with_name("entry-bill-terminal.json")
+        )
+    else:
+        valid = (
+            type(aggregate_text) is str
+            and type(final_text) is str
+            and (aggregate_text.startswith("/") or os.path.isabs(aggregate_text))
+            and ".." not in re.split(r"[/\\]", aggregate_text)
+            and re.split(r"[/\\]", aggregate_text)[-1] == "entry-bill.json"
+            and final_text == aggregate_text[: -len("entry-bill.json")] + "entry-bill-terminal.json"
+        )
+    _require(valid, "fixed sibling terminal/aggregate references required")
     expected = _bytes(bill)
     receipt = dict(
         schema="native-entry-context-terminal-v4",
-        aggregate_path=str(aggregate),
+        aggregate_path=aggregate_text,
         aggregate_bytes=len(expected),
         aggregate_sha256=hashlib.sha256(expected).hexdigest(),
     )
     try:
-        with final.open("rb") as stream:
-            actual_receipt = stream.read(16385)
+        if artifact_reader is None:
+            with final.open("rb") as stream:
+                actual_receipt = stream.read(16385)
+        else:
+            receipt_bytes = _bytes(receipt)
+            actual_receipt = artifact_reader(
+                dict(query_path=final_text, query_sha256=hashlib.sha256(receipt_bytes).hexdigest()), 16384
+            )
         _require(actual_receipt == _bytes(receipt), "terminal receipt missing/malformed/different")
-        with aggregate.open("rb") as stream:
-            _require(stream.read(len(expected) + 1) == expected, "terminal aggregate bytes differ")
+        if artifact_reader is None:
+            with aggregate.open("rb") as stream:
+                actual = stream.read(len(expected) + 1)
+        else:
+            actual = artifact_reader(
+                dict(query_path=aggregate_text, query_sha256=hashlib.sha256(expected).hexdigest()), len(expected)
+            )
+        _require(actual == expected, "terminal aggregate bytes differ")
     except OSError as exc:
         raise ValueError("committed terminal evidence unavailable") from exc
 
@@ -1143,7 +1167,7 @@ def discover_entry_context_v4(entries, candidates, python_context, agent_paths, 
     return bill
 
 
-def _audit_content_v4(bill, *, baseline_files, python_context):
+def _audit_content_v4(bill, *, baseline_files, python_context, artifact_reader=None):
     expected_keys = {
         "schema",
         "aggregate_path",
@@ -1385,7 +1409,7 @@ def _audit_content_v4(bill, *, baseline_files, python_context):
                     line_span=token["line_span"],
                     token_span=token["token_span"],
                 )
-                paths.audit_selected_path(record, trace_origin=origin, baseline_files=files)
+                paths.audit_selected_path(record, trace_origin=origin, baseline_files=files, artifact_reader=artifact_reader)
                 used_declared.add(record["canonical_path"])
                 first_seen.setdefault(record["canonical_path"], ldd_index)
     _require(len(used_paths) == len(bill["selected_paths"]), "extra/missing selected aliases")
@@ -1405,7 +1429,7 @@ def _audit_content_v4(bill, *, baseline_files, python_context):
         q = wrapper["record"]
         kind, argv, env, entry, role, name = call
         _require(wrapper["journal_error"] is None and wrapper["artifact"] is not None, "query journal failed")
-        raw = paths._retained_query(wrapper["artifact"])
+        raw = paths._retained_query(wrapper["artifact"], artifact_reader)
         _require(_same(q, raw), "bill/query artifact byte join mismatch")
         _successful(q)
         _require(
@@ -1449,7 +1473,7 @@ def _audit_content_v4(bill, *, baseline_files, python_context):
     _require(len(bill["selected_paths_after"]) == len(bill["selected_paths"]), "selected final inventory missing")
     for before, after in zip(bill["selected_paths"], bill["selected_paths_after"], strict=True):
         origin = before["trace"]["origin"]
-        paths.audit_selected_path(after, trace_origin=origin, baseline_files=files)
+        paths.audit_selected_path(after, trace_origin=origin, baseline_files=files, artifact_reader=artifact_reader)
         _require(
             all(
                 _same(before[k], after[k])
