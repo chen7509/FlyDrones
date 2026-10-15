@@ -15,7 +15,14 @@ from .checkpoint import load_checkpoint
 from .features import feature_profile_for_names
 from .model import ConnectomeConstrainedCore
 from .parameters import FULL_CONNECTIONS, FULL_NEURONS, load_parameter_set, parameter_mapping_digest
-from .training_roles import configure_learning_roles, learning_identity_suffix, learning_parameters, validate_learning_state
+from .training_roles import (
+    capture_learning_initialization,
+    configure_learning_roles,
+    initialization_identity_suffix,
+    learning_identity_suffix,
+    learning_parameters,
+    validate_learning_state,
+)
 
 OUTPUT_NAMES = ("vx", "vy", "vz", "yaw_rate")
 
@@ -108,9 +115,15 @@ def load_inference_core(
     # the parameter identity. No checkpoint can provide these fixed buffers.
     core = ConnectomeConstrainedCore(Connectome.load(source), parameters)
     roles = None
+    initialization = None
     if learning_profile is not None:
         roles = configure_learning_roles(core, learning_profile)
         model_identity += learning_identity_suffix(roles)
+        if "learning_initialization" in checkpoint["metadata"]:
+            initialization = capture_learning_initialization(core)
+            if checkpoint["metadata"]["learning_initialization"] != initialization:
+                raise ValueError("checkpoint metadata mismatch: learning_initialization")
+            model_identity += initialization_identity_suffix(initialization)
         for key, value in {"model_identity": model_identity, "learning_roles": roles}.items():
             if checkpoint["metadata"].get(key) != value:
                 raise ValueError(f"checkpoint metadata mismatch: {key}")
@@ -165,6 +178,8 @@ def load_inference_core(
             if roles is not None
             else ("legacy-unspecified" if checkpoint is not None else None),
             "learning_roles": roles,
+            "learning_initialization": initialization,
+            "validation_baseline_verified": False,  # Offline coefficient loading has no validation dataset.
             "checkpoint_sha256": before.get("checkpoint"),
             "files": {role: {"path": str(path.resolve()), "sha256": before[role]} for role, path in files.items()},
             "files_stable": True,

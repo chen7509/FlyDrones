@@ -67,6 +67,19 @@ def learning_identity_suffix(contract: dict) -> str:
     return f":learning={contract['profile']}:{digest}"
 
 
+def capture_learning_initialization(model) -> dict:
+    """Capture actual initialized coefficients once, before any update."""
+    return dict(
+        schema="connectome-learning-initialization-v1",
+        parameter_initial_sha256={name: _tensor_digest(value) for name, value in _named(model).items()},
+    )
+
+
+def initialization_identity_suffix(initialization: dict) -> str:
+    digest = sha256(json.dumps(initialization, sort_keys=True, separators=(",", ":"), allow_nan=False).encode()).hexdigest()
+    return f":initialization={digest}"
+
+
 def validate_learning_state(model, state: dict, contract: dict) -> None:
     if _record(model, contract["profile"]) != contract:
         raise ValueError("learning frozen initialization contract changed")

@@ -5,6 +5,7 @@ import os
 import random
 import time
 from collections import Counter
+from dataclasses import asdict
 from hashlib import sha256
 from pathlib import Path
 
@@ -37,7 +38,9 @@ from .parameters import (
 from .trainer import evaluate_sequences, train_epoch
 from .training_roles import (
     DEFAULT_LEARNING_PROFILE,
+    capture_learning_initialization,
     configure_learning_roles,
+    initialization_identity_suffix,
     learning_identity_suffix,
     learning_parameters,
     validate_learning_optimizer_state,
@@ -295,6 +298,8 @@ class ConnectomeCurriculumSession:
         self.device = resolve_device(device or config.profile.device)
         self.model = ConnectomeConstrainedCore(connectome, parameters).to(self.device)
         self.learning_roles = configure_learning_roles(self.model, learning_profile)
+        self.learning_initialization = capture_learning_initialization(self.model)
+        self._initialization_json = json.dumps(self.learning_initialization, sort_keys=True, allow_nan=False)
         named = dict(self.model.named_parameters())
         self.optimizer = torch.optim.Adam([named[name] for name in self.learning_roles["trainable"]], lr=learning_rate)
         self.truncate_steps = truncate_steps
@@ -302,10 +307,14 @@ class ConnectomeCurriculumSession:
         self.dataset_sha256 = _dataset_digest(datasets, self.feature_profile)
         self.mapping_sha256 = parameter_mapping_digest(parameters)
         self.model_identity = (
-            f"{config.profile.model_mode}:{parameters.identity.model_sha256}:"
-            f"{parameters.identity.topology_sha256}:"
-            f"{self.mapping_sha256}:device={self.device.type}"
-        ) + learning_identity_suffix(self.learning_roles)
+            (
+                f"{config.profile.model_mode}:{parameters.identity.model_sha256}:"
+                f"{parameters.identity.topology_sha256}:"
+                f"{self.mapping_sha256}:device={self.device.type}"
+            )
+            + learning_identity_suffix(self.learning_roles)
+            + initialization_identity_suffix(self.learning_initialization)
+        )
         self.initial_losses = {
             stage.id: evaluate_sequences(
                 self.model,
@@ -315,8 +324,29 @@ class ConnectomeCurriculumSession:
             )["total"]
             for stage in config.stages
         }
+        self._validation_baseline_json = self._baseline_json()
+
+    def _baseline_json(self) -> str:
+        return json.dumps(
+            dict(
+                schema="connectome-validation-baseline-v1",
+                initial_losses=self.initial_losses,
+                truncate_steps=self.truncate_steps,
+                loss_weights=asdict(self.loss_weights),
+            ),
+            sort_keys=True,
+            allow_nan=False,
+        )
+
+    def _validate_baseline(self) -> None:
+        if (
+            self._baseline_json() != self._validation_baseline_json
+            or json.dumps(self.learning_initialization, sort_keys=True, allow_nan=False) != self._initialization_json
+        ):
+            raise ValueError("learning initialization/validation baseline changed")
 
     def train_batch(self, stage: CurriculumStage, seed: int) -> dict[str, object]:
+        self._validate_baseline()
         validate_learning_setup(self.model, self.optimizer, self.learning_roles)
         random.seed(seed)
         np.random.seed(seed)
@@ -357,6 +387,7 @@ class ConnectomeCurriculumSession:
         }
 
     def evaluate(self, stage: CurriculumStage) -> dict[str, float | bool]:
+        self._validate_baseline()
         result = evaluate_sequences(
             self.model,
             self.datasets[stage.id][1],
@@ -371,6 +402,7 @@ class ConnectomeCurriculumSession:
         }
 
     def save_checkpoint(self, path: Path, metadata: dict) -> None:
+        self._validate_baseline()
         validate_learning_setup(self.model, self.optimizer, self.learning_roles)
         validate_learning_optimizer_state(self.model, self.optimizer, self.optimizer.state_dict(), self.learning_roles)
         enriched = {
@@ -380,6 +412,8 @@ class ConnectomeCurriculumSession:
             "topology_sha256": self.parameters.identity.topology_sha256,
             "parameter_mapping_sha256": self.mapping_sha256,
             "learning_roles": self.learning_roles,
+            "learning_initialization": json.loads(self._initialization_json),
+            "validation_baseline": json.loads(self._validation_baseline_json),
         }
         trainable = {name: parameter.detach().cpu().clone() for name, parameter in self.model.named_parameters()}
         save_checkpoint(
@@ -390,6 +424,7 @@ class ConnectomeCurriculumSession:
         )
 
     def restore_checkpoint(self, path: Path) -> None:
+        self._validate_baseline()
         validate_learning_setup(self.model, self.optimizer, self.learning_roles)
         payload = load_checkpoint(
             path,
@@ -400,6 +435,8 @@ class ConnectomeCurriculumSession:
                 "topology_sha256": self.parameters.identity.topology_sha256,
                 "parameter_mapping_sha256": self.mapping_sha256,
                 "learning_roles": self.learning_roles,
+                "learning_initialization": json.loads(self._initialization_json),
+                "validation_baseline": json.loads(self._validation_baseline_json),
             },
         )
         named = dict(self.model.named_parameters())
