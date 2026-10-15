@@ -65,6 +65,22 @@ class RecurrentState:
         return RecurrentState(self.voltage.detach())
 
 
+TOPOLOGY_FORMATS = ("coo_reference", "csr_compact_v1")
+
+
+def topology_identity_suffix(topology_format: str) -> str:
+    if type(topology_format) is not str or topology_format not in TOPOLOGY_FORMATS:
+        raise ValueError("unsupported topology format")
+    return "" if topology_format == "coo_reference" else f":topology={topology_format}"
+
+
+def validate_topology_backend(model, topology_format: str) -> None:
+    topology_identity_suffix(topology_format)
+    expected_layout = torch.sparse_coo if topology_format == "coo_reference" else torch.sparse_csr
+    if model.topology_format != topology_format or model.fixed_topology.layout != expected_layout:
+        raise ValueError("actual topology format/layout changed")
+
+
 class ConnectomeConstrainedCore(nn.Module):
     def __init__(
         self,
@@ -74,11 +90,9 @@ class ConnectomeConstrainedCore(nn.Module):
         topology_format: str = "coo_reference",
     ):
         super().__init__()
-        if topology_format not in {"coo_reference", "csr_compact_v1"}:
-            raise ValueError("unsupported topology format")
-        expected = build_structure_identity(
-            connectome, parameter_set.identity.model_sha256
-        )
+        topology_identity_suffix(topology_format)
+        self.topology_format = topology_format
+        expected = build_structure_identity(connectome, parameter_set.identity.model_sha256)
         actual = parameter_set.identity
         if (
             expected.topology_sha256 != actual.topology_sha256
@@ -94,9 +108,7 @@ class ConnectomeConstrainedCore(nn.Module):
 
         cell_types = parameter_set.identity.cell_types
         type_lookup = {name: index for index, name in enumerate(cell_types)}
-        mapped_types = [
-            type_lookup.get(str(value) or "__unknown__") for value in connectome.types
-        ]
+        mapped_types = [type_lookup.get(str(value) or "__unknown__") for value in connectome.types]
         if any(value is None for value in mapped_types):
             raise ValueError("connectome contains a cell type absent from parameters")
         type_index = np.asarray(mapped_types, np.int64)
@@ -128,22 +140,16 @@ class ConnectomeConstrainedCore(nn.Module):
             self.register_buffer("edge_magnitude", torch.tensor(magnitudes, dtype=torch.float32))
         self.register_buffer("fixed_topology", fixed_topology)
         self.register_buffer("type_index", torch.tensor(type_index, dtype=torch.long))
-        self.register_buffer(
-            "input_feature_index", torch.tensor(input_features, dtype=torch.long)
-        )
+        self.register_buffer("input_feature_index", torch.tensor(input_features, dtype=torch.long))
         self.register_buffer("input_neuron_index", torch.tensor(inputs, dtype=torch.long))
         self.register_buffer("output_neuron_index", torch.tensor(outputs, dtype=torch.long))
 
         input_gain = torch.tensor(parameter_set.input_gain, dtype=torch.float32)
         tau_offset = torch.tensor(parameter_set.tau_m_ms - 1.0, dtype=torch.float32)
         self.raw_input_gain = nn.Parameter(_inverse_softplus(input_gain))
-        self.type_bias_mv = nn.Parameter(
-            torch.tensor(parameter_set.type_bias_mv, dtype=torch.float32)
-        )
+        self.type_bias_mv = nn.Parameter(torch.tensor(parameter_set.type_bias_mv, dtype=torch.float32))
         self.raw_tau_m = nn.Parameter(_inverse_softplus(tau_offset))
-        self.readout = nn.Parameter(
-            torch.tensor(parameter_set.readout, dtype=torch.float32)
-        )
+        self.readout = nn.Parameter(torch.tensor(parameter_set.readout, dtype=torch.float32))
         self.n_neurons = int(connectome.n)
         self.input_features = tuple(parameter_set.input_features)
         self.n_features = len(parameter_set.input_features)
@@ -190,22 +196,15 @@ class ConnectomeConstrainedCore(nn.Module):
             raise ValueError("features contain non-finite values")
         if not np.isfinite(dt_s) or dt_s <= 0:
             raise ValueError("dt_s must be positive and finite")
-        drive = self.type_bias_mv[self.type_index].expand(
-            features.shape[0], -1
-        ).clone()
+        drive = self.type_bias_mv[self.type_index].expand(features.shape[0], -1).clone()
         drive.index_add_(
             1,
             self.input_neuron_index,
-            features[:, self.input_feature_index]
-            * self.input_gain[self.input_feature_index],
+            features[:, self.input_feature_index] * self.input_gain[self.input_feature_index],
         )
-        recurrent = torch.sparse.mm(
-            self.fixed_topology, torch.sigmoid(state.voltage).T
-        ).T
+        recurrent = torch.sparse.mm(self.fixed_topology, torch.sigmoid(state.voltage).T).T
         alpha = torch.clamp(dt_s * 1000.0 / self.tau_m_ms, 0.0, 1.0)
-        voltage = state.voltage + alpha * (
-            -state.voltage + drive + recurrent
-        )
+        voltage = state.voltage + alpha * (-state.voltage + drive + recurrent)
         rates = torch.sigmoid(voltage)
         command = torch.tanh(rates[:, self.output_neuron_index] @ self.readout.T)
         return command, RecurrentState(voltage)
@@ -226,18 +225,11 @@ class ConnectomeConstrainedCore(nn.Module):
             raise ValueError("truncate_steps must be positive")
         if not torch.isfinite(features).all():
             raise ValueError("features contain non-finite values")
-        current = state or self.initial_state(
-            features.shape[0], device=features.device, dtype=features.dtype
-        )
+        current = state or self.initial_state(features.shape[0], device=features.device, dtype=features.dtype)
         commands = []
         for index in range(features.shape[1]):
-            command, current = self.forward_step(
-                features[:, index], current, dt_s
-            )
+            command, current = self.forward_step(features[:, index], current, dt_s)
             commands.append(command)
-            if (
-                (index + 1) % truncate_steps == 0
-                and index + 1 < features.shape[1]
-            ):
+            if (index + 1) % truncate_steps == 0 and index + 1 < features.shape[1]:
                 current = current.detached()
         return torch.stack(commands, dim=1), current

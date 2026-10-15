@@ -13,7 +13,7 @@ from flydrones.brain.connectome import Connectome
 
 from .checkpoint import load_checkpoint
 from .features import feature_profile_for_names
-from .model import ConnectomeConstrainedCore
+from .model import ConnectomeConstrainedCore, topology_identity_suffix, validate_topology_backend
 from .parameters import FULL_CONNECTIONS, FULL_NEURONS, load_parameter_set, parameter_mapping_digest
 from .training_roles import (
     capture_learning_initialization,
@@ -53,12 +53,14 @@ def load_inference_core(
     checkpoint_path: str | Path | None = None,
     checkpoint_identity: CheckpointIdentity | None = None,
     learning_profile: str | None = None,
+    topology_format: str = "coo_reference",
 ) -> LoadedInferenceCore:
     """Ordinary file-drift detection, not hostile-concurrent-mutation protection.
 
     Returned model/provenance are owned by one offline caller, not a security
     boundary against a caller mutating Python objects after loading.
     """
+    topology_suffix = topology_identity_suffix(topology_format)
     if mode not in {"full-male-cns", "tiny-fixture"}:
         raise ValueError("unsupported inference mode")
     if learning_profile is not None:
@@ -93,7 +95,7 @@ def load_inference_core(
     feature_profile = feature_profile_for_names(parameters.input_features)
     mapping = parameter_mapping_digest(parameters)
     model_mode = "full-male-cns" if mode == "full-male-cns" else "tiny-connectome"
-    model_identity = f"{model_mode}:{identity.model_sha256}:{identity.topology_sha256}:{mapping}:device=cpu"
+    model_identity = f"{model_mode}:{identity.model_sha256}:{identity.topology_sha256}:{mapping}:device=cpu" + topology_suffix
     checkpoint = None
     if checkpoint_identity is not None:
         if before["checkpoint"] != checkpoint_identity.checkpoint_sha256:
@@ -103,17 +105,22 @@ def load_inference_core(
             "dataset_sha256": checkpoint_identity.dataset_sha256,
             "topology_sha256": identity.topology_sha256,
             "parameter_mapping_sha256": mapping,
+            **({"topology_format": topology_format} if topology_format != "coo_reference" else {}),
         }
         if learning_profile is None:
             expected_metadata["model_identity"] = model_identity
         checkpoint = load_checkpoint(checkpoint_path, expected_metadata=expected_metadata)
+        if checkpoint["metadata"].get("topology_format", "coo_reference") != topology_format:
+            raise ValueError("checkpoint metadata mismatch: topology_format")
         if learning_profile is not None:
             declared = checkpoint["metadata"].get("learning_roles")
             if not isinstance(declared, dict) or declared.get("profile") != learning_profile:
                 raise ValueError("checkpoint metadata mismatch: learning_roles")
     # Construction verifies the signed topology and neuron type order against
     # the parameter identity. No checkpoint can provide these fixed buffers.
-    core = ConnectomeConstrainedCore(Connectome.load(source), parameters)
+    backend = {} if topology_format == "coo_reference" else {"topology_format": topology_format}
+    core = ConnectomeConstrainedCore(Connectome.load(source), parameters, **backend)
+    validate_topology_backend(core, topology_format)
     roles = None
     initialization = None
     if learning_profile is not None:
@@ -165,6 +172,7 @@ def load_inference_core(
         {
             "core_kind": "connectome-constrained-rate-core",
             "mode": mode,
+            "topology_format": topology_format,
             "model_identity": model_identity,
             "neurons": identity.neurons,
             "connections": identity.connections,

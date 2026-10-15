@@ -29,7 +29,7 @@ from .dataset import (
 from .features import FEATURE_NAMES, feature_profile_for_names, sequence_tensors
 from .governance import validate_dataset_partitions
 from .losses import LossWeights
-from .model import ConnectomeConstrainedCore
+from .model import ConnectomeConstrainedCore, topology_identity_suffix, validate_topology_backend
 from .parameters import (
     ParameterSet,
     build_structure_identity,
@@ -281,8 +281,11 @@ class ConnectomeCurriculumSession:
         connectome_path: str | Path = "data/malecns_full.npz",
         parameters_path: str | Path = "results/connectome-training/stage-b/full-initialization",
         learning_profile: str = DEFAULT_LEARNING_PROFILE,
+        topology_format: str = "coo_reference",
     ):
         learning_parameters(learning_profile)
+        topology_suffix = topology_identity_suffix(topology_format)
+        self._topology_format = topology_format
         if learning_rate <= 0 or truncate_steps < 1:
             raise ValueError("learning rate and truncate steps must be positive")
         if config.profile.data_mode == "synthetic-smoke":
@@ -299,7 +302,8 @@ class ConnectomeCurriculumSession:
         self.parameters = parameters
         self.feature_profile = feature_profile_for_names(parameters.input_features)
         self.device = resolve_device(device or config.profile.device)
-        self.model = ConnectomeConstrainedCore(connectome, parameters).to(self.device)
+        backend = {} if topology_format == "coo_reference" else {"topology_format": topology_format}
+        self.model = ConnectomeConstrainedCore(connectome, parameters, **backend).to(self.device)
         self.learning_roles = configure_learning_roles(self.model, learning_profile)
         self.learning_initialization = capture_learning_initialization(self.model)
         self._initialization_json = json.dumps(self.learning_initialization, sort_keys=True, allow_nan=False)
@@ -315,6 +319,7 @@ class ConnectomeCurriculumSession:
                 f"{parameters.identity.topology_sha256}:"
                 f"{self.mapping_sha256}:device={self.device.type}"
             )
+            + topology_suffix
             + learning_identity_suffix(self.learning_roles)
             + initialization_identity_suffix(self.learning_initialization)
         )
@@ -342,6 +347,7 @@ class ConnectomeCurriculumSession:
         )
 
     def _validate_baseline(self) -> None:
+        validate_topology_backend(self.model, self._topology_format)
         if (
             self._baseline_json() != self._validation_baseline_json
             or json.dumps(self.learning_initialization, sort_keys=True, allow_nan=False) != self._initialization_json
@@ -412,6 +418,7 @@ class ConnectomeCurriculumSession:
             "learning_roles": self.learning_roles,
             "learning_initialization": json.loads(self._initialization_json),
             "validation_baseline": json.loads(self._validation_baseline_json),
+            **({"topology_format": self._topology_format} if self._topology_format != "coo_reference" else {}),
         }
         trainable = {name: parameter.detach().cpu().clone() for name, parameter in self.model.named_parameters()}
         save_checkpoint(
@@ -435,8 +442,11 @@ class ConnectomeCurriculumSession:
                 "learning_roles": self.learning_roles,
                 "learning_initialization": json.loads(self._initialization_json),
                 "validation_baseline": json.loads(self._validation_baseline_json),
+                **({"topology_format": self._topology_format} if self._topology_format != "coo_reference" else {}),
             },
         )
+        if payload["metadata"].get("topology_format", "coo_reference") != self._topology_format:
+            raise ValueError("checkpoint metadata mismatch: topology_format")
         named = dict(self.model.named_parameters())
         validate_learning_state(self.model, payload["model_state"], self.learning_roles)
         validate_learning_optimizer_state(self.model, self.optimizer, payload["optimizer_state"], self.learning_roles)

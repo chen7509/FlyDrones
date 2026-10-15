@@ -11,6 +11,7 @@ from flydrones.connectome_training.curriculum_config import load_curriculum_conf
 from flydrones.connectome_training.curriculum_session import (
     ConnectomeCurriculumSession,
 )
+from flydrones.connectome_training.model import TOPOLOGY_FORMATS
 from flydrones.connectome_training.training_roles import DEFAULT_LEARNING_PROFILE, ROLE_PROFILES
 
 
@@ -31,6 +32,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--restart", action="store_true")
     parser.add_argument("--learning-rate", type=float, default=0.03)
     parser.add_argument("--learning-profile", choices=tuple(ROLE_PROFILES), default=DEFAULT_LEARNING_PROFILE)
+    parser.add_argument("--topology-format", choices=TOPOLOGY_FORMATS, default="coo_reference")
     parser.add_argument("--truncate-steps", type=_positive_int, default=4)
     parser.add_argument("--connectome", default="data/malecns_full.npz")
     parser.add_argument(
@@ -105,6 +107,7 @@ def main() -> None:
         device=args.device,
         learning_rate=args.learning_rate,
         learning_profile=args.learning_profile,
+        topology_format=getattr(args, "topology_format", "coo_reference"),
         truncate_steps=args.truncate_steps,
         connectome_path=args.connectome,
         parameters_path=args.parameters,
