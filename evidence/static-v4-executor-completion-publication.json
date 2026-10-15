@@ -1,0 +1,162 @@
+{
+  "schema": "static-v4-executor-completion-publication-v1",
+  "software_commit": "f58ebe734300da5de0ec5e7f71404988ac6b3bd1",
+  "archive": {
+    "archive": "evidence/static-v4-executor-completion-dev-1701.zip",
+    "bytes": 4923342,
+    "sha256": "0b537fde25153f704efb39a7283a4836b8e699c493009ccfe14255156cbf28de",
+    "members": 1448,
+    "mapped_members": 1447,
+    "uncompressed_bytes": 17470922,
+    "manifest_sha256": "3bff545ab2648508b1eb3365b8f5cc91e957eebf0e2a2785a9465ba7ab1756a7",
+    "scope": "Task4 software/publication pending;Task5 actual pending;release/receipt/archiveaudit/stage/publication/PR/automation helpers outside canonical set"
+  },
+  "archive_plan_sha256": "fbc79a1cfeb85f682bcd54ebe8733da34253b9532eb67475e9393e93f0b3a5df",
+  "postpublication_plan_sha256": "d6519db5258628a202b79eae153da316cb53b8eb21f53a6c202de67b5a2b58ea",
+  "plan_changed_byte_offsets": [
+    14030
+  ],
+  "plan_change": "Only completed Task4 software publication checkbox;three Task4 software criteria done beforeseal;all3 Task5 actual criteria pending",
+  "reviewed_recipe_sha256": "546c9ae91346ea647591fe04c5f8568bc64b2b3eb6636334bf8909b50ae442a2",
+  "reviewed_recipe_bytes": 232184,
+  "reviewed_source_count": 382,
+  "working_vs_git_normalized": [
+    {
+      "path": "tools/benchmark/static_v4_identity.py",
+      "working_archive_sha256": "826c2ddf6723e438ffd81a8640f0ca726452cc12a44771b23d1accb473de99b6",
+      "git_normalized_blob_sha256": "f1e374a26bfd81806cd8d643778c0f78ddf6e6c273d6caa5ac042dc8c1aad525",
+      "bytes": 87986
+    },
+    {
+      "path": "tools/benchmark/static_v4_bootstrap.py",
+      "working_archive_sha256": "259f6bca262522846b039079c5ef2362e1d60f9b6e8763e1b6e0ceaf769756e2",
+      "git_normalized_blob_sha256": "259f6bca262522846b039079c5ef2362e1d60f9b6e8763e1b6e0ceaf769756e2",
+      "bytes": 96192
+    },
+    {
+      "path": "tools/benchmark/static_v4_executor.py",
+      "working_archive_sha256": "88104dea544c301f1bc2e98425bfcf0cef5f0eb291c9c9a0042d3c8ae55b1d86",
+      "git_normalized_blob_sha256": "4a08c65bd2fd6558702ae25e6f7dc28cabd52810cc3a4f0c8ec6e8d25d29400c",
+      "bytes": 34044
+    },
+    {
+      "path": "tools/benchmark/static_v4_recipe.py",
+      "working_archive_sha256": "3276bb38b8b3f466b67a79a55d3fa45b130b1bcb979f123be9f1579b95224ffa",
+      "git_normalized_blob_sha256": "3276bb38b8b3f466b67a79a55d3fa45b130b1bcb979f123be9f1579b95224ffa",
+      "bytes": 10469
+    },
+    {
+      "path": "tests/benchmark/test_calibration_static_v4_executor.py",
+      "working_archive_sha256": "0bb92aae0a23e9298b340e3f5b32755bde33234019dc73fddcf5a4dd33750572",
+      "git_normalized_blob_sha256": "0271c1067e49d35a52199bde03c94ff21e23b1124a522240d7a2a2c6e44ac13a",
+      "bytes": 75260
+    },
+    {
+      "path": "docs/TARGET_BEARING_STATIC_V4_EXECUTOR_COMPLETION_REPORT.md",
+      "working_archive_sha256": "654ca735fc135a2079b32cc87bb5647e20f2bca4b7ae5a5c37fd2a89e837b693",
+      "git_normalized_blob_sha256": "654ca735fc135a2079b32cc87bb5647e20f2bca4b7ae5a5c37fd2a89e837b693",
+      "bytes": 13430
+    },
+    {
+      "path": "docs/superpowers/plans/2026-10-15-loader-selected-path-production.md",
+      "working_archive_sha256": "fbc79a1cfeb85f682bcd54ebe8733da34253b9532eb67475e9393e93f0b3a5df",
+      "git_normalized_blob_sha256": "fbc79a1cfeb85f682bcd54ebe8733da34253b9532eb67475e9393e93f0b3a5df",
+      "bytes": 14353
+    },
+    {
+      "path": "evidence/static-v4-executor-completion-dev-1701.zip",
+      "working_archive_sha256": "0b537fde25153f704efb39a7283a4836b8e699c493009ccfe14255156cbf28de",
+      "git_normalized_blob_sha256": "0b537fde25153f704efb39a7283a4836b8e699c493009ccfe14255156cbf28de",
+      "bytes": 4923342
+    },
+    {
+      "path": "evidence/static-v4-executor-completion-dev-1701.sha256.json",
+      "working_archive_sha256": "3bff545ab2648508b1eb3365b8f5cc91e957eebf0e2a2785a9465ba7ab1756a7",
+      "git_normalized_blob_sha256": "3bff545ab2648508b1eb3365b8f5cc91e957eebf0e2a2785a9465ba7ab1756a7",
+      "bytes": 393677
+    },
+    {
+      "path": "evidence/static-v4-executor-completion-release.frame",
+      "working_archive_sha256": "f7ce10ba80d5554aadd16dd29b8bb1ae8aea8e811ce0bd2d5a9b01cf711f72cc",
+      "git_normalized_blob_sha256": "f7ce10ba80d5554aadd16dd29b8bb1ae8aea8e811ce0bd2d5a9b01cf711f72cc",
+      "bytes": 44826
+    }
+  ],
+  "independent_initial_review": {
+    "C": 0,
+    "I": 5,
+    "M": 1,
+    "path": "results/static-v4-executor-completion-dev-1701/independent-review.md",
+    "sha256": "1f5486e7bac33185c79698c140328f2d974f173782534547a3a45533ba0e5fec",
+    "approval": "initial changes required;original unchanged"
+  },
+  "executor_fix_pass": {
+    "single_pass": true,
+    "whole_code_review_repeated": false,
+    "red": "9 genuine behavior failures+1 missing collector interface;10failed6passed",
+    "focused": "14pass2NameError then16pass;original errors retained",
+    "integration": "7direct coverage passes;not RED/native proof",
+    "final": "146passed30.65s after format;Ruff0;diffcheck dedicated additivePOSTseal exit0",
+    "note_sha256": "7c35c4c6cfca5def55cc83d629b7057a95eb2e023de4b528bb57ec472af9022f",
+    "remaining_native": "All Linux/current metadata/FDexec/atomic/crosshost/runtime cost untested;no final independent C0I0 codeapproval claimed"
+  },
+  "independent_archive_audit": {
+    "path": "results/static-v4-executor-completion-dev-1701/independent-completion-archive-audit.md",
+    "sha256": "2d75db695e3fdb7ae0caf68138ab8f9c34e8bab9b46a383521ae4f818f799f8c",
+    "text": "# Independent completion archive and delivery audit\n\n**PASS — archive/delivery findings: C0 / I0 / M0.** This is an independent audit of completion-phase evidence integrity and delivery honesty. It is not another whole-code review, a replacement source approval, Linux/SDK acceptance, or native dispatch approval. The original source review remains **C0 / I5 / M1, changes required**, followed by the executor's single fix pass; the report does not claim a second independent C0/I0 code approval.\n\nOnly Windows file/data/hash/ZIP and limited source-AST reads were used. No tests, project-module imports, target/Linux/SDK/native observer/child/control/permission/network probes or Git commands were run by this auditor. Only new audit helper/results were created; all original reports, reviews, fixtures, raw results, requests and canonical evidence were preserved.\n\nThe canonical `evidence/static-v4-executor-completion-dev-1701.zip` is **4,923,342 bytes**, SHA256 `0b537fde25153f704efb39a7283a4836b8e699c493009ccfe14255156cbf28de`. Its **1,447 mapped files plus manifest = 1,448 members** exactly match the receipt's preseal membership, without duplicate, missing, extra or unsafe paths. Complete ZIP reads and explicit CRC, size and SHA256 checks passed for **17,470,922 mapped uncompressed bytes**. Every mapped current working file matches its archived bytes. Manifest bytes match both the archive copy and receipt SHA256 `3bff545ab2648508b1eb3365b8f5cc91e957eebf0e2a2785a9465ba7ab1756a7`. Later helper/receipt/audit/publication and additive verification data are outside this set; none was backfilled into the ZIP.\n\nThe sole private exclusion is the original completion-phase `initial-resource-private.json`: **68,506 bytes**, SHA256 `cdc81a144923c6d1669a14a935ec91086233a129009e0b147b8497749843e488`. Its current bytes join the manifest exclusion record and public derivative. Independent scan derived **186 distinct nonempty argv hashes** from **449 private identity rows**, and inspected **332 parseable mapped JSON files** for matching `(pid, name, argv_sha256)` triples. Zero hashes or identity triples leaked into mapped evidence. Initial public JSON equals parsed initial readonly stdout and contains the derived counters/size/hash, with zero classified competitors and false dispatch/gate-poll flags. The original private inventory remains LOCAL_UNPUBLISHED; no private identity was emitted in this audit. This checks the requested disclosure boundary, not general secret detection.\n\nAll **293 historical ZIPs / 870,220,988 bytes** were independently streamed against the preservation ledger and match. The evidence ZIP directory contains exactly those historical ZIPs plus this canonical ZIP. Comparing **819 old product files**, the changed set is exactly the three current static-v4 identity/bootstrap/executor modules and their executor test; the other **815** remain byte-identical. `static_v4_recipe.py` is the declared new source. No consumed version-specific product changed. Both full-history files also match their exact earlier component-archive map rows and current bytes. These are POSTsoftware preservation observations, not native prepins.\n\nThe original independent-review Markdown hashes to the original review JSON, with C0/I5/M1 and no native approval. Every original review source/request pin is still represented by an unchanged current file or retained canonical source snapshot. The report/fix note accurately retain **10 failed / 6 passed** reviewfix RED: nine behavior failures and one missing collector interface. They distinguish the first **14 pass / 2 NameError** attempt from GREEN, retain the later **16-pass** focused result, label the first affected **138 pass / one fixture error** honestly, and describe seven additional coverage cases as direct passes rather than invented REDs. The raw summaries corroborate these descriptions.\n\nFinal affected evidence is **146 passed in 30.65s**, exit zero, after the formatting fixes. Final Ruff record exits **0**, and the separate required Task3 import/main/invalid-ticket neighbors record **10 passed in 0.30s**. All **61 recorder runs** currently present, including one additive postseal check, have intact start records, before-source snapshots and ordered monotonic intervals. Existing-file pin sets progress from eight to nine; formatter/lint mutation runs retain their changed before/after facts. The final 146-test run has equal before/after pins, all matching the current sealed source. None of these tests was rerun by this auditor.\n\nThe original preseal `diff0` is an executor/report assertion from the tool console, with no dedicated command receipt in the canonical ZIP. A newly retained **POSTseal** `postseal-diffcheck.json/stdout/stderr` independently exposes `git diff --check`, exit **0**, empty stdout, stable nine source pins and CRLF conversion warnings. This audit inspected that supplied receipt without running Git. The later check is explicitly outside the canonical ZIP and is not represented as the original preseal observation. Working-file SHA identities are distinct from unqueried Git normalized blobs/HEAD/tree identities.\n\nThe reviewed request is **232,184 bytes**, SHA256 `546c9ae91346ea647591fe04c5f8568bc64b2b3eb6636334bf8909b50ae442a2`. Its bytes equal prospective v2 and an independently encoded canonical primitive serialization of the retained v2 JSON, without importing project codecs. The **382** source-map keys exactly match the current three Python source trees plus literal coordinator; all source hashes match current bytes and final recorded source pins. The original v1 frame/JSON/summary remain unchanged with frame SHA256 `87871c1215508cc356c885924a533a0115d57bd5b8306ef75d5839b2232703d5`; its successful frame/JSON write and failed original summary-key stage remain disclosed. A reviewed Windows request is not a native materialized recipe or prepin.\n\nThe report candidly distinguishes receiver transport lifecycle fixtures, which stub native journal/SDK/graph protocols, from separate real semantic auditors. Added external-origin/cache tests use the real materializer with an inert installed-inventory protocol and real claim/finished semantic auditors; they do not establish complete actual observer/SDK/graph integration. Linux descriptor execution, current installed membership, runtime cost within unchanged limits, actual SDK startup, atomicity and cross-host behavior remain untested. No successful runtime graph, source measurement, calibration or qualification is inferred from software GREEN.\n\nAt this audit time the software release is **absent**. The literal v4 parent contains exactly **`run-static-preparation-v4.py` source only**; no other file or directory entry exists there. The physical-attempt directory is absent. Limited AST inspection confirms the coordinator calls the software-release check before constructing/using its native backend; the disclosed primitive boundary also requires its release. No boundary API or process/scope probe was executed. This source-only state is unconsumed and is not an escaped-process absence proof.\n\nThe three Task4 criteria are marked done as **software** criteria; independent completed-publication remains pending in the sealed plan. All **three Task5 criteria remain unchecked**. All eight qualifications and runtime/physical readiness remain false. The delivery audit supports publication of this software evidence; it grants no Linux/native/atomic/cross-host/runtime or physical approval.\n\nMachine-readable evidence: `independent-completion-archive-audit.json`. New retained helper: `independent_completion_archive_audit.py`, **18,987 bytes**, SHA256 `758a699159fe865b43431aa5633dc3a88068d2682c792e3ca889d02630f32909`. These audit files were created after sealing and are outside the canonical set.\n"
+  },
+  "software_release": {
+    "path": "evidence/static-v4-executor-completion-release.frame",
+    "bytes": 44826,
+    "sha256": "f7ce10ba80d5554aadd16dd29b8bb1ae8aea8e811ce0bd2d5a9b01cf711f72cc",
+    "archive_audit_sha256": "7fdb334a0df9a4ea3237cfac879614a5fec92561ada5192f9ce06588c6977400",
+    "windows_release_readback": true,
+    "production_backend_constructed": false,
+    "actual_native_dispatch": false,
+    "scope": "postseal reviewed software release;not Linux prepin/qualification or native admission"
+  },
+  "old_zip_count": 293,
+  "old_zip_bytes": 870220988,
+  "old_zip_SHA_unchanged": true,
+  "old_product_count": 819,
+  "changed_old_product": [
+    "tests/benchmark/test_calibration_static_v4_executor.py",
+    "tools/benchmark/static_v4_bootstrap.py",
+    "tools/benchmark/static_v4_executor.py",
+    "tools/benchmark/static_v4_identity.py"
+  ],
+  "new_product": "tools/benchmark/static_v4_recipe.py",
+  "preservation_boundary": "POSTsoftware not native prepins",
+  "recorder_scope": "exact9declared paths including self;recipe absent initial pins retained;argv/environment/exclusivefixtures/source beforeafter;no backfill",
+  "privacy": {
+    "local_unpublished": "results/static-v4-executor-completion-dev-1701/initial-resource-private.json",
+    "bytes": 68506,
+    "sha256": "cdc81a144923c6d1669a14a935ec91086233a129009e0b147b8497749843e488",
+    "public": "derived counter/hash/size only;one initial snapshot;no classified row disclosure this phase"
+  },
+  "v4_parent": {
+    "exists": true,
+    "only_source": "run-static-preparation-v4.py",
+    "firstfacts_claim_sdk_start_scope_study_command": false,
+    "attempt_consumed": false
+  },
+  "physical_attempt": false,
+  "consumed_v3_status": "CONSUMED_FAILED_UNADMITTED_HARNESS_ESCAPE",
+  "escaped_closure": "UNKNOWN",
+  "v4_native_dispatch": false,
+  "Task4_software_complete": true,
+  "Task5_started": false,
+  "qualification": {
+    "source": false,
+    "clock": false,
+    "measured_calibration": false,
+    "accuracy": false,
+    "teacher": false,
+    "fusion": false,
+    "training": false,
+    "flight": false
+  },
+  "runtime_graph_frozen": false,
+  "physical_dispatch_ready": false,
+  "postseal_boundary": "release/receipt/archiveaudits/diffcheck/stage/publication/PR/automation/NEXT_PHASE helpers outside canonical presealset"
+}
