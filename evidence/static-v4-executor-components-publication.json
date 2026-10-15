@@ -1,0 +1,131 @@
+{
+  "schema": "static-v4-executor-components-publication-v1",
+  "software_commit": "abcc4c4a50500720e3da6bafc5a422debebc158d",
+  "archive": {
+    "archive": "evidence/static-v4-executor-components-dev-1701.zip",
+    "bytes": 1405412,
+    "sha256": "55d2101315cf87f9da4aaa082d9cfd653214d804129949656707dfa39916335c",
+    "members": 553,
+    "mapped_members": 552,
+    "uncompressed_bytes": 4178000,
+    "manifest_sha256": "acc6987423d5ef9fb188f8dcd308536ac2c0c8f3760d9c9a35deb710d5b387fd",
+    "scope": "partial software publication checkboxpending;Task4/5pending;postseal helpers/receipt/audits/publication/PR/automation outside"
+  },
+  "archive_plan_sha256": "94522f2d6d6b0c6f55939ac3824a11823fb7076ab9fb6aa07601b06dcea9e584",
+  "postpublication_plan_sha256": "868dd6a7889b7eab4102b6c65ab7227ca8e54971ca96e293976b4507add4d9f8",
+  "plan_changed_byte_offsets": [
+    12882
+  ],
+  "plan_change": "Only partial component software publication checkbox;all3 Task4 and3 Task5 criteria remain unchecked",
+  "working_vs_git_normalized": [
+    {
+      "path": "tools/benchmark/static_v4_identity.py",
+      "working_archive_sha256": "7f68ef2b3dd150a92ded634958d9952e4802fc7c3b239a442196bb8c12ca1b6b",
+      "git_normalized_blob_sha256": "7f68ef2b3dd150a92ded634958d9952e4802fc7c3b239a442196bb8c12ca1b6b",
+      "bytes": 37646
+    },
+    {
+      "path": "tools/benchmark/static_v4_bootstrap.py",
+      "working_archive_sha256": "75edc3c9a214a395bfaaf160c462b7c42fe404aa05c046bdc5e1d59115f376fe",
+      "git_normalized_blob_sha256": "75edc3c9a214a395bfaaf160c462b7c42fe404aa05c046bdc5e1d59115f376fe",
+      "bytes": 44564
+    },
+    {
+      "path": "tools/benchmark/static_v4_executor.py",
+      "working_archive_sha256": "f6b9307f0acc48dac979694256c249d64461f337684d5ff85ca1a063d85f1afb",
+      "git_normalized_blob_sha256": "f6b9307f0acc48dac979694256c249d64461f337684d5ff85ca1a063d85f1afb",
+      "bytes": 17418
+    },
+    {
+      "path": "results/target-bearing-runtime-freeze-v4-dev-1701/run-static-preparation-v4.py",
+      "working_archive_sha256": "f1fe1fa93399d3ac20663d4362ceab5389fc21e02f12d7f3e7c76a6b79023d6a",
+      "git_normalized_blob_sha256": "f1fe1fa93399d3ac20663d4362ceab5389fc21e02f12d7f3e7c76a6b79023d6a",
+      "bytes": 596
+    },
+    {
+      "path": "tests/benchmark/test_calibration_static_v4_executor.py",
+      "working_archive_sha256": "4d59d55542d1b361f5e54e46d1bba17c23b209ec506ab394fcf23d696a6c394d",
+      "git_normalized_blob_sha256": "4d59d55542d1b361f5e54e46d1bba17c23b209ec506ab394fcf23d696a6c394d",
+      "bytes": 24953
+    },
+    {
+      "path": "docs/TARGET_BEARING_STATIC_V4_EXECUTOR_COMPONENT_REPORT.md",
+      "working_archive_sha256": "8aac5f515322908d526cf0a6139c3e3e9179dcbf13e314b3fe3e87c46bbb838a",
+      "git_normalized_blob_sha256": "8aac5f515322908d526cf0a6139c3e3e9179dcbf13e314b3fe3e87c46bbb838a",
+      "bytes": 8310
+    },
+    {
+      "path": "docs/superpowers/plans/2026-10-15-loader-selected-path-production.md",
+      "working_archive_sha256": "94522f2d6d6b0c6f55939ac3824a11823fb7076ab9fb6aa07601b06dcea9e584",
+      "git_normalized_blob_sha256": "94522f2d6d6b0c6f55939ac3824a11823fb7076ab9fb6aa07601b06dcea9e584",
+      "bytes": 13172
+    },
+    {
+      "path": "evidence/static-v4-executor-components-dev-1701.zip",
+      "working_archive_sha256": "55d2101315cf87f9da4aaa082d9cfd653214d804129949656707dfa39916335c",
+      "git_normalized_blob_sha256": "55d2101315cf87f9da4aaa082d9cfd653214d804129949656707dfa39916335c",
+      "bytes": 1405412
+    },
+    {
+      "path": "evidence/static-v4-executor-components-dev-1701.sha256.json",
+      "working_archive_sha256": "acc6987423d5ef9fb188f8dcd308536ac2c0c8f3760d9c9a35deb710d5b387fd",
+      "git_normalized_blob_sha256": "acc6987423d5ef9fb188f8dcd308536ac2c0c8f3760d9c9a35deb710d5b387fd",
+      "bytes": 147104
+    }
+  ],
+  "independent_initial_review": {
+    "C": 0,
+    "I": 4,
+    "M": 0,
+    "path": "results/static-v4-executor-production-dev-1701/independent-review.md",
+    "sha256": "bff2516f07b544ec6d26bfca020f40409335bb3854899b61ef88f05db954921a"
+  },
+  "executor_fix_pass": {
+    "single_pass": true,
+    "whole_code_review_repeated": false,
+    "red": "6 genuine behavior failures+1 missing-interface;all7 retained",
+    "green": "7 focused;7 actual receiver/coordinator/Task3 join inert observer+semantic callback coverage",
+    "final": "68passed2.33s after format;Ruff0;diff0",
+    "scope": "No Linux/SDK/control/crosshost/atomic/fullgraph acceptance",
+    "note_sha256": "1c69b8ee7394e1a4c82918c5f9f4a120b04b5da94cdfdf1bb9d6b8765e25c195"
+  },
+  "independent_archive_audit": {
+    "path": "results/static-v4-executor-production-dev-1701/independent-archive-audit.md",
+    "sha256": "a86fb3da771ae223fe91ffec92d9e1161c6f18981cfc3502d36facace94b0586",
+    "text": "# Independent archive/delivery audit — partial Task4 components\n\n**PASS: no archive-integrity or delivery-honesty finding in this scope.** This audit covers the new partial Task4 milestone only. It does not renew whole-code review, approve the fixes as a second source reviewer, complete Task4, or approve native execution. No tests, project-module imports, target/Linux/SDK/observer/child/control/permission commands or Git operations were performed. Only new audit helper/results were written; original report/review/raw/archives and the earlier Task3 audit remain unchanged.\n\nCanonical archive `evidence/static-v4-executor-components-dev-1701.zip` is **1,405,412 bytes**, SHA256 `55d2101315cf87f9da4aaa082d9cfd653214d804129949656707dfa39916335c`. Its **552 mapped files plus manifest = 553 exact members** match the seal receipt's ordered preseal set. Complete ZIP reads and explicit CRC/size/SHA checks passed for **4,178,000 mapped uncompressed bytes**; every mapped current working file matches its archived bytes. The manifest's current bytes equal its ZIP copy and receipt SHA256 `acc6987423d5ef9fb188f8dcd308536ac2c0c8f3760d9c9a35deb710d5b387fd`. No duplicate, extra, missing or unsafe member was found. Postseal receipt/audit/helper/publication data are outside this exact set.\n\nAll **three** `initial-resource-derived.json` LOCAL_UNPUBLISHED originals are excluded: the full private inventory, the original initial-public JSON and initial readonly stdout. Their current sizes/hashes match the derivative's exclusion records and the canonical manifest; the originals have not been rewritten. The private/derived resource counters join, including one classified competitor and false dispatch admission. Archive scanning checked **201 distinct nonempty private argv hashes**, all **475 private identity rows** for exact `(pid, name, argv_sha256)` triples, and **127 parseable mapped JSON files**: zero hash or triple leaks. No private identities are emitted into these audit files. This is the requested hash/triple disclosure check, not a general secret scan.\n\nThe report is candid that the reused initial recorder emitted the classified row to the tool console and its initial-public/stdout files. Excluding those two retained files now does not erase that earlier disclosure, and the report does not claim that the original console bytes were absent. The additive derivative contains counters/hash/size only. This audit did not refresh the resource snapshot, inspect a competitor, or treat the recorded memory figures as admission.\n\nIndependently streamed **292 historical ZIPs / 868,815,576 bytes** match all preserved sizes/SHA256 values. The evidence ZIP inventory is exactly those historical ZIPs plus this new canonical archive. All **815 old product files** match `product-before.json` byte-for-byte; no old or consumed product mutation was found. These are POSTsoftware preservation checks, not fresh native prepins. Archive identity concerns actual working bytes: Git normalized blobs, HEAD/tree identities and later publication are not inferred or independently certified here. The supplied final diff record exits zero while retaining an LF-to-CRLF warning; zero is not an empty-output assertion.\n\nRead the component report, original independent review, single executor fix-pass record and relevant archived execution summaries. The original source review remains **C0/I4/M0**. The supplied fix history distinguishes **six behavior failures plus one missing-interface failure**, focused **7 GREEN**, then **7 receiver/coordinator/Task3 join cases GREEN**. The Windows long-path fixture failures and malformed-index KeyError remain available as fixture errors rather than being relabeled behavior RED. The final supplied affected-suite record is **68 passed in 2.33s**, followed by **Ruff exit 0** and **diff exit 0**. These are verified retained records, not rerun tests.\n\nAll **27 recorder runs** have intact start-record joins, source snapshots and ordered monotonic intervals. Formatter/lint-fix source mutations are retained in their own before/after pins. The initial interface run used the previous 15-path recorder configuration, which omitted the new identity source/test as disclosed. The next recorder declares eight paths but initially snapshots six existing files; final coverage has all eight. The original early evidence is preserved rather than backfilled. Final 68-test before/after pins are stable and match the current sealed bytes.\n\nThe receiver join explicitly uses an **inert observer and semantic-audit callback**. That callback is not the full finished graph auditor. Source/protocol tests and the reported fixes supply no Linux descriptor, SDK, atomic filesystem, actual cross-host, process-authentication or native acceptance claim. Remaining recipe/package/license/input coverage, native I/O/control/owned-handle integration, claim-before-marker validation and primitive observer writer fallback are explicitly pending in the report. This audit is not a second approval of those implementations.\n\nThe literal v4 parent contains exactly **`run-static-preparation-v4.py` source only**, with no firstfacts, claim, marker, receipt, study or other directory entry. The physical-attempt directory is absent. Limited parsing of the disclosed public boundary functions confirms an unconditional pending `ValueError` in identity/bootstrap observer boundaries and coordinator `execute_once`; SDK entry/reference paths reach the bootstrap boundary through `current_receipts`. No API was executed. This source-only observation is not a live scope/escaped-process probe and does not consume the v4 attempt. All **three Task4 criteria** and **three Task5 criteria** remain unchecked, as does the prepublication partial-milestone checkbox. All eight qualifications/readiness remain false. The deliverable is accurately labeled partial software, not dispatchable production or native approval.\n\nMachine-readable details: `independent-archive-audit.json`. Retained stdlib-only helper: `independent_archive_audit.py`, **12,748 bytes**, SHA256 `365887d7dca8b4765f953c9bd35c5017266967a582f433fc12c84658dcc291d8`. These audit files were created after sealing and are not retroactively included in the canonical archive.\n"
+  },
+  "old_zip_count": 292,
+  "old_zip_bytes": 868815576,
+  "old_zip_SHA_unchanged": true,
+  "old_product_count": 815,
+  "all_old_product_byte_same": true,
+  "preservation_boundary": "POSTsoftware not native prepin",
+  "recorder_scope": "initial rewrite error retained prior-phase source path list;subsequent exact8paths/current recorderSHA;no backfill",
+  "privacy_scope": "Initial classified row was disclosed to tool console;full private inventory and original classified public/stdout files remain LOCAL_UNPUBLISHED;three exclusions exact. No full unclassified inventory disclosure claim.",
+  "remaining_task4": "Complete exact reviewed recipe/45scene14Agentbundle/tools/interpreter/loader/resolver/plugin/package/license/current fullsource;ownedhandle acquisition failure;observer independent writer fallback;lowlevel tool/stream/clock/control;claim gate before SDKmarker effects;fresh completed-scope review. Public pending refusals remain unconditional.",
+  "v4_parent": {
+    "exists": true,
+    "only_source": "run-static-preparation-v4.py",
+    "firstfacts_claim_sdk_start_scope_study_command": false,
+    "attempt_consumed": false
+  },
+  "physical_attempt": false,
+  "consumed_v3_status": "CONSUMED_FAILED_UNADMITTED_HARNESS_ESCAPE",
+  "escaped_closure": "UNKNOWN",
+  "v4_native_dispatch": false,
+  "Task4_complete": false,
+  "Task5_started": false,
+  "qualification": {
+    "source": false,
+    "clock": false,
+    "measured_calibration": false,
+    "accuracy": false,
+    "teacher": false,
+    "fusion": false,
+    "training": false,
+    "flight": false
+  },
+  "runtime_graph_frozen": false,
+  "physical_dispatch_ready": false,
+  "postseal_boundary": "seal receipt/archiveaudits/stage/publication/PR/automation/NEXT_PHASE helpers outside immutable canonical presealset"
+}

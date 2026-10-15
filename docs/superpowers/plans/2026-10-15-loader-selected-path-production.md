@@ -73,4 +73,4 @@ Interfaces: `observe(request: str, output: str) -> None` emits audited primitive
 
 Primitive identity/bootstrap and Windows lifecycle components are implemented with unconditional pending production refusal. Exact reviewed recipe/full package/license/input coverage and remaining native I/O/control/owned-handle integration still require completion. The literal v4 parent contains only coordinator source; no claim/firstfacts/SDK-start/study/actual scope or command has been created. All three Task4 criteria above and Task5 remain unchecked.
 
-- [ ] Seal/publish the partial component software evidence, original C0/I4/M0 source review and single executor fix pass, retained failures and explicit remaining work. This checkbox records software publication only and grants no dispatch, runtime graph, physical or qualification authority.
+- [x] Seal/publish the partial component software evidence, original C0/I4/M0 source review and single executor fix pass, retained failures and explicit remaining work. This checkbox records software publication only and grants no dispatch, runtime graph, physical or qualification authority.
