@@ -1,0 +1,2251 @@
+{
+  "schema": "windowed-training-production-map-v1",
+  "members": [
+    {
+      "path": "docs/superpowers/plans/2026-10-15-windowed-training-backward.md",
+      "bytes": 2614,
+      "sha256": "c3a6965bdf78a711d6177b7f10c8a0aafe77b19f40339538d27a9da1232d733f"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-10-15-windowed-training-backward-design.md",
+      "bytes": 3654,
+      "sha256": "bc110fe982f3c8d708f01c7a8aaaa3fccbbf3a8cc0a44ebe5ba6883c2433a868"
+    },
+    {
+      "path": "docs/WINDOWED_TRAINING_BACKWARD_PRODUCTION_REPORT.md",
+      "bytes": 8785,
+      "sha256": "4d9037a4ef7bcfa19872faa2010cee9bf362889a607cd3ac56b08b8ea0403483"
+    },
+    {
+      "path": "evidence/flydrones-history-through-admitted-executor-dev-1701.json",
+      "bytes": 89359,
+      "sha256": "c88840b6f58dea4e7e4931683c4993b4fc3b8eb55887807994b6381ef6c2b989"
+    },
+    {
+      "path": "evidence/flydrones-history-through-loader-path-research-dev-1701.json",
+      "bytes": 80946,
+      "sha256": "80dfb89ed0e51e639bd6b24b115cbcd3c444b967614e2e8334d55962c262b824"
+    },
+    {
+      "path": "evidence/flydrones-pr65-history-through-linear-sequence-dev-1701.md",
+      "bytes": 65389,
+      "sha256": "06cff545124b5a19439799eca0d1385a7ad7113a19bf55014ab717bd8a121836"
+    },
+    {
+      "path": "evidence/static-v4-executor-completion-release.frame",
+      "bytes": 44826,
+      "sha256": "f7ce10ba80d5554aadd16dd29b8bb1ae8aea8e811ce0bd2d5a9b01cf711f72cc"
+    },
+    {
+      "path": "evidence/static-v4-refusal-linear-sequence-publication.json",
+      "bytes": 93623,
+      "sha256": "c219a84d3497d037055595cb24a6a7e6f0c3351d2403cb0af838ce2e0085d640"
+    },
+    {
+      "path": "results/static-v4-attempt-dev-1701/admission-refusal-audit.json",
+      "bytes": 1663,
+      "sha256": "ff9bad5dd8becd238aa68fbe4932eee5c54ca0b2d370d39296e3cab3f415a3de"
+    },
+    {
+      "path": "results/static-v4-attempt-dev-1701/cli-completion.json",
+      "bytes": 71560,
+      "sha256": "3edd8d4bd81ff9c16ccb00ac2ee21096e468cbc0ca5c6a2f773cbf48a64498a9"
+    },
+    {
+      "path": "results/static-v4-attempt-dev-1701/preflight.json",
+      "bytes": 71874,
+      "sha256": "a90540488ff3205c3a67586b5b1ba9e8b8719a8553b7a50642fdec53d48a7733"
+    },
+    {
+      "path": "results/target-bearing-runtime-freeze-v4-dev-1701/completion.json",
+      "bytes": 115,
+      "sha256": "1f58f0f9b5398c2a604c7635249facb7b20bbbb509e4fac366ff83f684f5d29f"
+    },
+    {
+      "path": "results/target-bearing-runtime-freeze-v4-dev-1701/firstfacts.json",
+      "bytes": 593,
+      "sha256": "c494bdb5090fde372bb4047198dfe59777d2f32901671af9018b53eabd5f4bd9"
+    },
+    {
+      "path": "results/target-bearing-runtime-freeze-v4-dev-1701/run-static-preparation-v4.py",
+      "bytes": 596,
+      "sha256": "f1fe1fa93399d3ac20663d4362ceab5389fc21e02f12d7f3e7c76a6b79023d6a"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/context-readback.json",
+      "bytes": 3425,
+      "sha256": "b3a2d5b4a49c45c506f5db82790e31392a4640f635dae4e94190b172f125a525"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/executor-fix-pass.md",
+      "bytes": 1986,
+      "sha256": "687e35addc39e90753367eb71dec5bb337e62c34cd93fa607df7ab5f32caaf4e"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/historical-archives-postsoftware.json",
+      "bytes": 55139,
+      "sha256": "6dea621d1f242559d827100cd1e6d98e2991f445b1ad53c4921e5b1a25b4d322"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/independent-window-review.json",
+      "bytes": 6306,
+      "sha256": "c2d09e3e12cb9fce5b85317326bee647bf947e909d35761fa1ec629eca38bbf4"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/independent-window-review.md",
+      "bytes": 5409,
+      "sha256": "80836305e905e564a80c85308526769d56645adf78357831392ce11403dfc8af"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/pr-history-externalization.json",
+      "bytes": 380,
+      "sha256": "1d3ce55215f92eca4d984826a72a9ed9e444a5c40bc7e118b397a701d6be0357"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/prepare.py",
+      "bytes": 2030,
+      "sha256": "2a3689c77f018d870a9cd39be0f961a0e5922a54c061fc0f53ec4d183c3cd167"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/preserve.py",
+      "bytes": 4405,
+      "sha256": "29711f518fa87499c9262498ddef06f504a872c81c886890ca3471736a67f215"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/product-before.json",
+      "bytes": 140151,
+      "sha256": "2a44e2789c02626e8140acf5434a5367424fc4a623ae7c86609df51fcdec5488"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/product-preservation-postsoftware.json",
+      "bytes": 264,
+      "sha256": "e8a5eb7506afc585e16ce3a95fd0428dbf52106264f494f8d84e259c3c0f20fc"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/progress.md",
+      "bytes": 4027,
+      "sha256": "d761a2c986d8cb681627abe97f6aa06ad032bd667b9f56cf39ce53049956960b"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/refused-attempt-preservation.json",
+      "bytes": 1564,
+      "sha256": "e1efde64bbe8a4f0f97020488fe5bc3cc70809f88274bf3c07bc3f7b7f9bb0dd"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/seal.py",
+      "bytes": 4400,
+      "sha256": "e58fe07e5df87ddbf41d319ab3b5ee85eba7c257f29181ac779b54e7f4d2d2e7"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/verify.py",
+      "bytes": 2438,
+      "sha256": "7e7c287cd8cf465220a6d038c285c31f21ac17ca947b608df30f64ead6a718a2"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-behavior-red-after-source/results/windowed-training-production-dev-1701/verify.py",
+      "bytes": 2438,
+      "sha256": "7e7c287cd8cf465220a6d038c285c31f21ac17ca947b608df30f64ead6a718a2"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-behavior-red-after-source/src/flydrones/connectome_training/dataset.py",
+      "bytes": 11618,
+      "sha256": "c8a1d338d31fa2690d710b724e5a7f5ece6bd08861032b8218fbbe0174d53021"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-behavior-red-after-source/src/flydrones/connectome_training/features.py",
+      "bytes": 5625,
+      "sha256": "6c1881e9ff5a060d9af842f7c60601b62e22576ca16c61baf0545cd9ff6dd6f1"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-behavior-red-after-source/src/flydrones/connectome_training/losses.py",
+      "bytes": 1957,
+      "sha256": "d46724e8750efdc8d86afaf164c304485111d09ab461a6ecd53bc390c0789eaa"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-behavior-red-after-source/src/flydrones/connectome_training/model.py",
+      "bytes": 10265,
+      "sha256": "81b2c4cfbc947d239794b3d3b8ed1e1c3f4d473cec2c82a6ad5e15561f63265c"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-behavior-red-after-source/src/flydrones/connectome_training/trainer.py",
+      "bytes": 3349,
+      "sha256": "3d4e52ff04471bed19219ae6dd3ed400a2dd8ea988a24ad8e4601a8a4843ef77"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-behavior-red-after-source/tests/connectome_training/conftest.py",
+      "bytes": 1260,
+      "sha256": "6a163e598e4011dd4efac9b8c896e5bafda4244112deaf7467125be479844ae1"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-behavior-red-after-source/tests/connectome_training/test_trainer.py",
+      "bytes": 4412,
+      "sha256": "4e872ec9b6b711be6be53b12206415797112419f711a22de9f79b955feab9861"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-behavior-red-after-source/tests/connectome_training/test_windowed_training.py",
+      "bytes": 8057,
+      "sha256": "58e72d389dd8032373c987d367b0b8f8d478939627ab41549497ff60e211ba75"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-behavior-red-after-source/tools/benchmark/software_process_boundary.py",
+      "bytes": 1737,
+      "sha256": "1aced69a1cd810728c0bf557cc272a5bd43a94ababc31bb6ba33de791fd139a1"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-behavior-red-source/results/windowed-training-production-dev-1701/verify.py",
+      "bytes": 2438,
+      "sha256": "7e7c287cd8cf465220a6d038c285c31f21ac17ca947b608df30f64ead6a718a2"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-behavior-red-source/src/flydrones/connectome_training/dataset.py",
+      "bytes": 11618,
+      "sha256": "c8a1d338d31fa2690d710b724e5a7f5ece6bd08861032b8218fbbe0174d53021"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-behavior-red-source/src/flydrones/connectome_training/features.py",
+      "bytes": 5625,
+      "sha256": "6c1881e9ff5a060d9af842f7c60601b62e22576ca16c61baf0545cd9ff6dd6f1"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-behavior-red-source/src/flydrones/connectome_training/losses.py",
+      "bytes": 1957,
+      "sha256": "d46724e8750efdc8d86afaf164c304485111d09ab461a6ecd53bc390c0789eaa"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-behavior-red-source/src/flydrones/connectome_training/model.py",
+      "bytes": 10265,
+      "sha256": "81b2c4cfbc947d239794b3d3b8ed1e1c3f4d473cec2c82a6ad5e15561f63265c"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-behavior-red-source/src/flydrones/connectome_training/trainer.py",
+      "bytes": 3349,
+      "sha256": "3d4e52ff04471bed19219ae6dd3ed400a2dd8ea988a24ad8e4601a8a4843ef77"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-behavior-red-source/tests/connectome_training/conftest.py",
+      "bytes": 1260,
+      "sha256": "6a163e598e4011dd4efac9b8c896e5bafda4244112deaf7467125be479844ae1"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-behavior-red-source/tests/connectome_training/test_trainer.py",
+      "bytes": 4412,
+      "sha256": "4e872ec9b6b711be6be53b12206415797112419f711a22de9f79b955feab9861"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-behavior-red-source/tests/connectome_training/test_windowed_training.py",
+      "bytes": 8057,
+      "sha256": "58e72d389dd8032373c987d367b0b8f8d478939627ab41549497ff60e211ba75"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-behavior-red-source/tools/benchmark/software_process_boundary.py",
+      "bytes": 1737,
+      "sha256": "1aced69a1cd810728c0bf557cc272a5bd43a94ababc31bb6ba33de791fd139a1"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-behavior-red-start.json",
+      "bytes": 4734,
+      "sha256": "e42ead8c2cc29ebf95aa426d524223dfe08b606fcd3e66c7793d6e641f21a3a5"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-behavior-red.json",
+      "bytes": 6806,
+      "sha256": "a20cbcb3e1729932a1222e769a4b2582e56d48bbed73b4631db64464c17c4ac5"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-behavior-red.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-behavior-red.stdout",
+      "bytes": 3778,
+      "sha256": "00e98a506a1cdd5aec0526c3881a99957a3a4e3b15aa474add827d7c9cf9477e"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-diffcheck-after-source/results/windowed-training-production-dev-1701/verify.py",
+      "bytes": 2438,
+      "sha256": "7e7c287cd8cf465220a6d038c285c31f21ac17ca947b608df30f64ead6a718a2"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-diffcheck-after-source/src/flydrones/connectome_training/dataset.py",
+      "bytes": 11618,
+      "sha256": "c8a1d338d31fa2690d710b724e5a7f5ece6bd08861032b8218fbbe0174d53021"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-diffcheck-after-source/src/flydrones/connectome_training/features.py",
+      "bytes": 5625,
+      "sha256": "6c1881e9ff5a060d9af842f7c60601b62e22576ca16c61baf0545cd9ff6dd6f1"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-diffcheck-after-source/src/flydrones/connectome_training/losses.py",
+      "bytes": 1957,
+      "sha256": "d46724e8750efdc8d86afaf164c304485111d09ab461a6ecd53bc390c0789eaa"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-diffcheck-after-source/src/flydrones/connectome_training/model.py",
+      "bytes": 10265,
+      "sha256": "81b2c4cfbc947d239794b3d3b8ed1e1c3f4d473cec2c82a6ad5e15561f63265c"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-diffcheck-after-source/src/flydrones/connectome_training/trainer.py",
+      "bytes": 5946,
+      "sha256": "4e06e4c7ec4280ecb53af47284b8714f2e6a1a667f254fc124daab9c1179b870"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-diffcheck-after-source/tests/connectome_training/conftest.py",
+      "bytes": 1260,
+      "sha256": "6a163e598e4011dd4efac9b8c896e5bafda4244112deaf7467125be479844ae1"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-diffcheck-after-source/tests/connectome_training/test_trainer.py",
+      "bytes": 4412,
+      "sha256": "4e872ec9b6b711be6be53b12206415797112419f711a22de9f79b955feab9861"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-diffcheck-after-source/tests/connectome_training/test_windowed_training.py",
+      "bytes": 9229,
+      "sha256": "51456afef1145003e75637e628d7bda18c420282a21f4e58db93225a817e402a"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-diffcheck-after-source/tools/benchmark/software_process_boundary.py",
+      "bytes": 1737,
+      "sha256": "1aced69a1cd810728c0bf557cc272a5bd43a94ababc31bb6ba33de791fd139a1"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-diffcheck-source/results/windowed-training-production-dev-1701/verify.py",
+      "bytes": 2438,
+      "sha256": "7e7c287cd8cf465220a6d038c285c31f21ac17ca947b608df30f64ead6a718a2"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-diffcheck-source/src/flydrones/connectome_training/dataset.py",
+      "bytes": 11618,
+      "sha256": "c8a1d338d31fa2690d710b724e5a7f5ece6bd08861032b8218fbbe0174d53021"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-diffcheck-source/src/flydrones/connectome_training/features.py",
+      "bytes": 5625,
+      "sha256": "6c1881e9ff5a060d9af842f7c60601b62e22576ca16c61baf0545cd9ff6dd6f1"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-diffcheck-source/src/flydrones/connectome_training/losses.py",
+      "bytes": 1957,
+      "sha256": "d46724e8750efdc8d86afaf164c304485111d09ab461a6ecd53bc390c0789eaa"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-diffcheck-source/src/flydrones/connectome_training/model.py",
+      "bytes": 10265,
+      "sha256": "81b2c4cfbc947d239794b3d3b8ed1e1c3f4d473cec2c82a6ad5e15561f63265c"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-diffcheck-source/src/flydrones/connectome_training/trainer.py",
+      "bytes": 5946,
+      "sha256": "4e06e4c7ec4280ecb53af47284b8714f2e6a1a667f254fc124daab9c1179b870"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-diffcheck-source/tests/connectome_training/conftest.py",
+      "bytes": 1260,
+      "sha256": "6a163e598e4011dd4efac9b8c896e5bafda4244112deaf7467125be479844ae1"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-diffcheck-source/tests/connectome_training/test_trainer.py",
+      "bytes": 4412,
+      "sha256": "4e872ec9b6b711be6be53b12206415797112419f711a22de9f79b955feab9861"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-diffcheck-source/tests/connectome_training/test_windowed_training.py",
+      "bytes": 9229,
+      "sha256": "51456afef1145003e75637e628d7bda18c420282a21f4e58db93225a817e402a"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-diffcheck-source/tools/benchmark/software_process_boundary.py",
+      "bytes": 1737,
+      "sha256": "1aced69a1cd810728c0bf557cc272a5bd43a94ababc31bb6ba33de791fd139a1"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-diffcheck-start.json",
+      "bytes": 4565,
+      "sha256": "ccbe72a8405fa83d03ba0fa923c3833bcda87ae63e0167af16852d31a9057a4e"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-diffcheck.json",
+      "bytes": 6637,
+      "sha256": "d73ab4c93c53444dfdd9df3be7be7769ca95dad237d9ff3cacf860bac8f2c760"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-diffcheck.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-diffcheck.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-final-lint-after-source/results/windowed-training-production-dev-1701/verify.py",
+      "bytes": 2438,
+      "sha256": "7e7c287cd8cf465220a6d038c285c31f21ac17ca947b608df30f64ead6a718a2"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-final-lint-after-source/src/flydrones/connectome_training/dataset.py",
+      "bytes": 11618,
+      "sha256": "c8a1d338d31fa2690d710b724e5a7f5ece6bd08861032b8218fbbe0174d53021"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-final-lint-after-source/src/flydrones/connectome_training/features.py",
+      "bytes": 5625,
+      "sha256": "6c1881e9ff5a060d9af842f7c60601b62e22576ca16c61baf0545cd9ff6dd6f1"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-final-lint-after-source/src/flydrones/connectome_training/losses.py",
+      "bytes": 1957,
+      "sha256": "d46724e8750efdc8d86afaf164c304485111d09ab461a6ecd53bc390c0789eaa"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-final-lint-after-source/src/flydrones/connectome_training/model.py",
+      "bytes": 10265,
+      "sha256": "81b2c4cfbc947d239794b3d3b8ed1e1c3f4d473cec2c82a6ad5e15561f63265c"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-final-lint-after-source/src/flydrones/connectome_training/trainer.py",
+      "bytes": 5946,
+      "sha256": "4e06e4c7ec4280ecb53af47284b8714f2e6a1a667f254fc124daab9c1179b870"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-final-lint-after-source/tests/connectome_training/conftest.py",
+      "bytes": 1260,
+      "sha256": "6a163e598e4011dd4efac9b8c896e5bafda4244112deaf7467125be479844ae1"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-final-lint-after-source/tests/connectome_training/test_trainer.py",
+      "bytes": 4412,
+      "sha256": "4e872ec9b6b711be6be53b12206415797112419f711a22de9f79b955feab9861"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-final-lint-after-source/tests/connectome_training/test_windowed_training.py",
+      "bytes": 9229,
+      "sha256": "51456afef1145003e75637e628d7bda18c420282a21f4e58db93225a817e402a"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-final-lint-after-source/tools/benchmark/software_process_boundary.py",
+      "bytes": 1737,
+      "sha256": "1aced69a1cd810728c0bf557cc272a5bd43a94ababc31bb6ba33de791fd139a1"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-final-lint-source/results/windowed-training-production-dev-1701/verify.py",
+      "bytes": 2438,
+      "sha256": "7e7c287cd8cf465220a6d038c285c31f21ac17ca947b608df30f64ead6a718a2"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-final-lint-source/src/flydrones/connectome_training/dataset.py",
+      "bytes": 11618,
+      "sha256": "c8a1d338d31fa2690d710b724e5a7f5ece6bd08861032b8218fbbe0174d53021"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-final-lint-source/src/flydrones/connectome_training/features.py",
+      "bytes": 5625,
+      "sha256": "6c1881e9ff5a060d9af842f7c60601b62e22576ca16c61baf0545cd9ff6dd6f1"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-final-lint-source/src/flydrones/connectome_training/losses.py",
+      "bytes": 1957,
+      "sha256": "d46724e8750efdc8d86afaf164c304485111d09ab461a6ecd53bc390c0789eaa"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-final-lint-source/src/flydrones/connectome_training/model.py",
+      "bytes": 10265,
+      "sha256": "81b2c4cfbc947d239794b3d3b8ed1e1c3f4d473cec2c82a6ad5e15561f63265c"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-final-lint-source/src/flydrones/connectome_training/trainer.py",
+      "bytes": 5946,
+      "sha256": "4e06e4c7ec4280ecb53af47284b8714f2e6a1a667f254fc124daab9c1179b870"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-final-lint-source/tests/connectome_training/conftest.py",
+      "bytes": 1260,
+      "sha256": "6a163e598e4011dd4efac9b8c896e5bafda4244112deaf7467125be479844ae1"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-final-lint-source/tests/connectome_training/test_trainer.py",
+      "bytes": 4412,
+      "sha256": "4e872ec9b6b711be6be53b12206415797112419f711a22de9f79b955feab9861"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-final-lint-source/tests/connectome_training/test_windowed_training.py",
+      "bytes": 9229,
+      "sha256": "51456afef1145003e75637e628d7bda18c420282a21f4e58db93225a817e402a"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-final-lint-source/tools/benchmark/software_process_boundary.py",
+      "bytes": 1737,
+      "sha256": "1aced69a1cd810728c0bf557cc272a5bd43a94ababc31bb6ba33de791fd139a1"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-final-lint-start.json",
+      "bytes": 4687,
+      "sha256": "acff472bd06470fa193e5411588f9bbd5f201071714e9d500d84676c98549d4a"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-final-lint.json",
+      "bytes": 6759,
+      "sha256": "0fdd085dbc1044658a49680ba2cd8dc1f3e6a442946d42a0a14cc8bdf18f64f8"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-final-lint.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-final-lint.stdout",
+      "bytes": 19,
+      "sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-format-after-source/results/windowed-training-production-dev-1701/verify.py",
+      "bytes": 2438,
+      "sha256": "7e7c287cd8cf465220a6d038c285c31f21ac17ca947b608df30f64ead6a718a2"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-format-after-source/src/flydrones/connectome_training/dataset.py",
+      "bytes": 11618,
+      "sha256": "c8a1d338d31fa2690d710b724e5a7f5ece6bd08861032b8218fbbe0174d53021"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-format-after-source/src/flydrones/connectome_training/features.py",
+      "bytes": 5625,
+      "sha256": "6c1881e9ff5a060d9af842f7c60601b62e22576ca16c61baf0545cd9ff6dd6f1"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-format-after-source/src/flydrones/connectome_training/losses.py",
+      "bytes": 1957,
+      "sha256": "d46724e8750efdc8d86afaf164c304485111d09ab461a6ecd53bc390c0789eaa"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-format-after-source/src/flydrones/connectome_training/model.py",
+      "bytes": 10265,
+      "sha256": "81b2c4cfbc947d239794b3d3b8ed1e1c3f4d473cec2c82a6ad5e15561f63265c"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-format-after-source/src/flydrones/connectome_training/trainer.py",
+      "bytes": 5946,
+      "sha256": "4e06e4c7ec4280ecb53af47284b8714f2e6a1a667f254fc124daab9c1179b870"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-format-after-source/tests/connectome_training/conftest.py",
+      "bytes": 1260,
+      "sha256": "6a163e598e4011dd4efac9b8c896e5bafda4244112deaf7467125be479844ae1"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-format-after-source/tests/connectome_training/test_trainer.py",
+      "bytes": 4412,
+      "sha256": "4e872ec9b6b711be6be53b12206415797112419f711a22de9f79b955feab9861"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-format-after-source/tests/connectome_training/test_windowed_training.py",
+      "bytes": 9229,
+      "sha256": "51456afef1145003e75637e628d7bda18c420282a21f4e58db93225a817e402a"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-format-after-source/tools/benchmark/software_process_boundary.py",
+      "bytes": 1737,
+      "sha256": "1aced69a1cd810728c0bf557cc272a5bd43a94ababc31bb6ba33de791fd139a1"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-format-source/results/windowed-training-production-dev-1701/verify.py",
+      "bytes": 2438,
+      "sha256": "7e7c287cd8cf465220a6d038c285c31f21ac17ca947b608df30f64ead6a718a2"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-format-source/src/flydrones/connectome_training/dataset.py",
+      "bytes": 11618,
+      "sha256": "c8a1d338d31fa2690d710b724e5a7f5ece6bd08861032b8218fbbe0174d53021"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-format-source/src/flydrones/connectome_training/features.py",
+      "bytes": 5625,
+      "sha256": "6c1881e9ff5a060d9af842f7c60601b62e22576ca16c61baf0545cd9ff6dd6f1"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-format-source/src/flydrones/connectome_training/losses.py",
+      "bytes": 1957,
+      "sha256": "d46724e8750efdc8d86afaf164c304485111d09ab461a6ecd53bc390c0789eaa"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-format-source/src/flydrones/connectome_training/model.py",
+      "bytes": 10265,
+      "sha256": "81b2c4cfbc947d239794b3d3b8ed1e1c3f4d473cec2c82a6ad5e15561f63265c"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-format-source/src/flydrones/connectome_training/trainer.py",
+      "bytes": 6200,
+      "sha256": "4452d10b06327daf466acadcc8b5d3cd112b1d9748b2b2e911e263384c67b160"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-format-source/tests/connectome_training/conftest.py",
+      "bytes": 1260,
+      "sha256": "6a163e598e4011dd4efac9b8c896e5bafda4244112deaf7467125be479844ae1"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-format-source/tests/connectome_training/test_trainer.py",
+      "bytes": 4412,
+      "sha256": "4e872ec9b6b711be6be53b12206415797112419f711a22de9f79b955feab9861"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-format-source/tests/connectome_training/test_windowed_training.py",
+      "bytes": 9188,
+      "sha256": "d18ca116e30bbe7d01aa943966324da722230fc9cd962b808067f80de530ab0b"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-format-source/tools/benchmark/software_process_boundary.py",
+      "bytes": 1737,
+      "sha256": "1aced69a1cd810728c0bf557cc272a5bd43a94ababc31bb6ba33de791fd139a1"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-format-start.json",
+      "bytes": 4688,
+      "sha256": "1bedcd98e43c1314dcbbd3c440c2201e4180d8e71d0b31be2aabf0304ae4964f"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-format.json",
+      "bytes": 6760,
+      "sha256": "7289bfb97bdffdf33badc80c28724df97f7b0626ea745fee8e9244a46c0dce33"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-format.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-format.stdout",
+      "bytes": 20,
+      "sha256": "96a977f329ec3c59092d40e041a019b49dcf03ca04055e177aa0ccb8c27234df"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-green-after-source/results/windowed-training-production-dev-1701/verify.py",
+      "bytes": 2438,
+      "sha256": "7e7c287cd8cf465220a6d038c285c31f21ac17ca947b608df30f64ead6a718a2"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-green-after-source/src/flydrones/connectome_training/dataset.py",
+      "bytes": 11618,
+      "sha256": "c8a1d338d31fa2690d710b724e5a7f5ece6bd08861032b8218fbbe0174d53021"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-green-after-source/src/flydrones/connectome_training/features.py",
+      "bytes": 5625,
+      "sha256": "6c1881e9ff5a060d9af842f7c60601b62e22576ca16c61baf0545cd9ff6dd6f1"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-green-after-source/src/flydrones/connectome_training/losses.py",
+      "bytes": 1957,
+      "sha256": "d46724e8750efdc8d86afaf164c304485111d09ab461a6ecd53bc390c0789eaa"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-green-after-source/src/flydrones/connectome_training/model.py",
+      "bytes": 10265,
+      "sha256": "81b2c4cfbc947d239794b3d3b8ed1e1c3f4d473cec2c82a6ad5e15561f63265c"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-green-after-source/src/flydrones/connectome_training/trainer.py",
+      "bytes": 6200,
+      "sha256": "4452d10b06327daf466acadcc8b5d3cd112b1d9748b2b2e911e263384c67b160"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-green-after-source/tests/connectome_training/conftest.py",
+      "bytes": 1260,
+      "sha256": "6a163e598e4011dd4efac9b8c896e5bafda4244112deaf7467125be479844ae1"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-green-after-source/tests/connectome_training/test_trainer.py",
+      "bytes": 4412,
+      "sha256": "4e872ec9b6b711be6be53b12206415797112419f711a22de9f79b955feab9861"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-green-after-source/tests/connectome_training/test_windowed_training.py",
+      "bytes": 8057,
+      "sha256": "58e72d389dd8032373c987d367b0b8f8d478939627ab41549497ff60e211ba75"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-green-after-source/tools/benchmark/software_process_boundary.py",
+      "bytes": 1737,
+      "sha256": "1aced69a1cd810728c0bf557cc272a5bd43a94ababc31bb6ba33de791fd139a1"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-green-source/results/windowed-training-production-dev-1701/verify.py",
+      "bytes": 2438,
+      "sha256": "7e7c287cd8cf465220a6d038c285c31f21ac17ca947b608df30f64ead6a718a2"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-green-source/src/flydrones/connectome_training/dataset.py",
+      "bytes": 11618,
+      "sha256": "c8a1d338d31fa2690d710b724e5a7f5ece6bd08861032b8218fbbe0174d53021"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-green-source/src/flydrones/connectome_training/features.py",
+      "bytes": 5625,
+      "sha256": "6c1881e9ff5a060d9af842f7c60601b62e22576ca16c61baf0545cd9ff6dd6f1"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-green-source/src/flydrones/connectome_training/losses.py",
+      "bytes": 1957,
+      "sha256": "d46724e8750efdc8d86afaf164c304485111d09ab461a6ecd53bc390c0789eaa"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-green-source/src/flydrones/connectome_training/model.py",
+      "bytes": 10265,
+      "sha256": "81b2c4cfbc947d239794b3d3b8ed1e1c3f4d473cec2c82a6ad5e15561f63265c"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-green-source/src/flydrones/connectome_training/trainer.py",
+      "bytes": 6200,
+      "sha256": "4452d10b06327daf466acadcc8b5d3cd112b1d9748b2b2e911e263384c67b160"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-green-source/tests/connectome_training/conftest.py",
+      "bytes": 1260,
+      "sha256": "6a163e598e4011dd4efac9b8c896e5bafda4244112deaf7467125be479844ae1"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-green-source/tests/connectome_training/test_trainer.py",
+      "bytes": 4412,
+      "sha256": "4e872ec9b6b711be6be53b12206415797112419f711a22de9f79b955feab9861"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-green-source/tests/connectome_training/test_windowed_training.py",
+      "bytes": 8057,
+      "sha256": "58e72d389dd8032373c987d367b0b8f8d478939627ab41549497ff60e211ba75"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-green-source/tools/benchmark/software_process_boundary.py",
+      "bytes": 1737,
+      "sha256": "1aced69a1cd810728c0bf557cc272a5bd43a94ababc31bb6ba33de791fd139a1"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-green-start.json",
+      "bytes": 4727,
+      "sha256": "a533fd9468a446a85ebcac3e0fe4f57da2eb9d580f1f079cb88d3122940e4974"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-green.json",
+      "bytes": 6799,
+      "sha256": "004747cce4eb97cc7c9076b84af3b32b49a96fe79ea773db7041d6084f1a8fcd"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-green.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-green.stdout",
+      "bytes": 101,
+      "sha256": "cbdfc3e453053db37af1abf8ce93b07d60184b3726aa7d83156cbbd0e3934860"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-lint-initial-after-source/results/windowed-training-production-dev-1701/verify.py",
+      "bytes": 2438,
+      "sha256": "7e7c287cd8cf465220a6d038c285c31f21ac17ca947b608df30f64ead6a718a2"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-lint-initial-after-source/src/flydrones/connectome_training/dataset.py",
+      "bytes": 11618,
+      "sha256": "c8a1d338d31fa2690d710b724e5a7f5ece6bd08861032b8218fbbe0174d53021"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-lint-initial-after-source/src/flydrones/connectome_training/features.py",
+      "bytes": 5625,
+      "sha256": "6c1881e9ff5a060d9af842f7c60601b62e22576ca16c61baf0545cd9ff6dd6f1"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-lint-initial-after-source/src/flydrones/connectome_training/losses.py",
+      "bytes": 1957,
+      "sha256": "d46724e8750efdc8d86afaf164c304485111d09ab461a6ecd53bc390c0789eaa"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-lint-initial-after-source/src/flydrones/connectome_training/model.py",
+      "bytes": 10265,
+      "sha256": "81b2c4cfbc947d239794b3d3b8ed1e1c3f4d473cec2c82a6ad5e15561f63265c"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-lint-initial-after-source/src/flydrones/connectome_training/trainer.py",
+      "bytes": 6200,
+      "sha256": "4452d10b06327daf466acadcc8b5d3cd112b1d9748b2b2e911e263384c67b160"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-lint-initial-after-source/tests/connectome_training/conftest.py",
+      "bytes": 1260,
+      "sha256": "6a163e598e4011dd4efac9b8c896e5bafda4244112deaf7467125be479844ae1"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-lint-initial-after-source/tests/connectome_training/test_trainer.py",
+      "bytes": 4412,
+      "sha256": "4e872ec9b6b711be6be53b12206415797112419f711a22de9f79b955feab9861"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-lint-initial-after-source/tests/connectome_training/test_windowed_training.py",
+      "bytes": 9188,
+      "sha256": "d18ca116e30bbe7d01aa943966324da722230fc9cd962b808067f80de530ab0b"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-lint-initial-after-source/tools/benchmark/software_process_boundary.py",
+      "bytes": 1737,
+      "sha256": "1aced69a1cd810728c0bf557cc272a5bd43a94ababc31bb6ba33de791fd139a1"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-lint-initial-source/results/windowed-training-production-dev-1701/verify.py",
+      "bytes": 2438,
+      "sha256": "7e7c287cd8cf465220a6d038c285c31f21ac17ca947b608df30f64ead6a718a2"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-lint-initial-source/src/flydrones/connectome_training/dataset.py",
+      "bytes": 11618,
+      "sha256": "c8a1d338d31fa2690d710b724e5a7f5ece6bd08861032b8218fbbe0174d53021"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-lint-initial-source/src/flydrones/connectome_training/features.py",
+      "bytes": 5625,
+      "sha256": "6c1881e9ff5a060d9af842f7c60601b62e22576ca16c61baf0545cd9ff6dd6f1"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-lint-initial-source/src/flydrones/connectome_training/losses.py",
+      "bytes": 1957,
+      "sha256": "d46724e8750efdc8d86afaf164c304485111d09ab461a6ecd53bc390c0789eaa"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-lint-initial-source/src/flydrones/connectome_training/model.py",
+      "bytes": 10265,
+      "sha256": "81b2c4cfbc947d239794b3d3b8ed1e1c3f4d473cec2c82a6ad5e15561f63265c"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-lint-initial-source/src/flydrones/connectome_training/trainer.py",
+      "bytes": 6200,
+      "sha256": "4452d10b06327daf466acadcc8b5d3cd112b1d9748b2b2e911e263384c67b160"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-lint-initial-source/tests/connectome_training/conftest.py",
+      "bytes": 1260,
+      "sha256": "6a163e598e4011dd4efac9b8c896e5bafda4244112deaf7467125be479844ae1"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-lint-initial-source/tests/connectome_training/test_trainer.py",
+      "bytes": 4412,
+      "sha256": "4e872ec9b6b711be6be53b12206415797112419f711a22de9f79b955feab9861"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-lint-initial-source/tests/connectome_training/test_windowed_training.py",
+      "bytes": 9188,
+      "sha256": "d18ca116e30bbe7d01aa943966324da722230fc9cd962b808067f80de530ab0b"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-lint-initial-source/tools/benchmark/software_process_boundary.py",
+      "bytes": 1737,
+      "sha256": "1aced69a1cd810728c0bf557cc272a5bd43a94ababc31bb6ba33de791fd139a1"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-lint-initial-start.json",
+      "bytes": 4687,
+      "sha256": "9bbeea62e310f5e7aa061d97d46a53dac549e5faa43eb7dd1e759eb372220a9f"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-lint-initial.json",
+      "bytes": 6759,
+      "sha256": "18a291f211ee5aeea6bae8826f2a62da1a79963272b1e5d64b56e977cbfb6325"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-lint-initial.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-lint-initial.stdout",
+      "bytes": 19,
+      "sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-neighbors-after-source/results/windowed-training-production-dev-1701/verify.py",
+      "bytes": 2438,
+      "sha256": "7e7c287cd8cf465220a6d038c285c31f21ac17ca947b608df30f64ead6a718a2"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-neighbors-after-source/src/flydrones/connectome_training/dataset.py",
+      "bytes": 11618,
+      "sha256": "c8a1d338d31fa2690d710b724e5a7f5ece6bd08861032b8218fbbe0174d53021"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-neighbors-after-source/src/flydrones/connectome_training/features.py",
+      "bytes": 5625,
+      "sha256": "6c1881e9ff5a060d9af842f7c60601b62e22576ca16c61baf0545cd9ff6dd6f1"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-neighbors-after-source/src/flydrones/connectome_training/losses.py",
+      "bytes": 1957,
+      "sha256": "d46724e8750efdc8d86afaf164c304485111d09ab461a6ecd53bc390c0789eaa"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-neighbors-after-source/src/flydrones/connectome_training/model.py",
+      "bytes": 10265,
+      "sha256": "81b2c4cfbc947d239794b3d3b8ed1e1c3f4d473cec2c82a6ad5e15561f63265c"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-neighbors-after-source/src/flydrones/connectome_training/trainer.py",
+      "bytes": 5946,
+      "sha256": "4e06e4c7ec4280ecb53af47284b8714f2e6a1a667f254fc124daab9c1179b870"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-neighbors-after-source/tests/connectome_training/conftest.py",
+      "bytes": 1260,
+      "sha256": "6a163e598e4011dd4efac9b8c896e5bafda4244112deaf7467125be479844ae1"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-neighbors-after-source/tests/connectome_training/test_trainer.py",
+      "bytes": 4412,
+      "sha256": "4e872ec9b6b711be6be53b12206415797112419f711a22de9f79b955feab9861"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-neighbors-after-source/tests/connectome_training/test_windowed_training.py",
+      "bytes": 9229,
+      "sha256": "51456afef1145003e75637e628d7bda18c420282a21f4e58db93225a817e402a"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-neighbors-after-source/tools/benchmark/software_process_boundary.py",
+      "bytes": 1737,
+      "sha256": "1aced69a1cd810728c0bf557cc272a5bd43a94ababc31bb6ba33de791fd139a1"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-neighbors-fixtures/test_actual_tiny_connectome_ma0/parameters/manifest.json",
+      "bytes": 795,
+      "sha256": "7b01d0a92adc6ad818ad2ee1a2e62d7615dec1d7ff7eadd4c9a78d3b73cb5840"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-neighbors-fixtures/test_actual_tiny_connectome_ma0/parameters/parameters.npz",
+      "bytes": 1520,
+      "sha256": "6c5e0d2f7edad337dd9f34a135392ec534732d6f8b7c1cdfba0be15918782337"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-neighbors-fixtures/test_actual_tiny_connectome_ma0/tiny.npz",
+      "bytes": 1956,
+      "sha256": "7243ecb8e7a39c9d02032d9df3a365bb5d82f03cc393a80177e89731c7fa4261"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-neighbors-fixtures/test_actual_tiny_connectome_ma1/parameters/manifest.json",
+      "bytes": 795,
+      "sha256": "7b01d0a92adc6ad818ad2ee1a2e62d7615dec1d7ff7eadd4c9a78d3b73cb5840"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-neighbors-fixtures/test_actual_tiny_connectome_ma1/parameters/parameters.npz",
+      "bytes": 1520,
+      "sha256": "6c5e0d2f7edad337dd9f34a135392ec534732d6f8b7c1cdfba0be15918782337"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-neighbors-fixtures/test_actual_tiny_connectome_ma1/tiny.npz",
+      "bytes": 1956,
+      "sha256": "7243ecb8e7a39c9d02032d9df3a365bb5d82f03cc393a80177e89731c7fa4261"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-neighbors-fixtures/test_actual_tiny_connectome_ma2/parameters/manifest.json",
+      "bytes": 795,
+      "sha256": "7b01d0a92adc6ad818ad2ee1a2e62d7615dec1d7ff7eadd4c9a78d3b73cb5840"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-neighbors-fixtures/test_actual_tiny_connectome_ma2/parameters/parameters.npz",
+      "bytes": 1520,
+      "sha256": "6c5e0d2f7edad337dd9f34a135392ec534732d6f8b7c1cdfba0be15918782337"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-neighbors-fixtures/test_actual_tiny_connectome_ma2/tiny.npz",
+      "bytes": 1956,
+      "sha256": "7243ecb8e7a39c9d02032d9df3a365bb5d82f03cc393a80177e89731c7fa4261"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-neighbors-fixtures/test_maximum_batches_marks_sta0/checkpoints/stage-000-stability-batch-000-attempt-000/session.json",
+      "bytes": 282,
+      "sha256": "724eb4e476e61cbb29d021a8fab9e6523a240cbca527233af0e67aa86258a643"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-neighbors-fixtures/test_maximum_batches_marks_sta0/reports/stage-000-stability-batch-000-attempt-000.json",
+      "bytes": 793,
+      "sha256": "8af5c62cd48be85b9c86a7a7ac5d151daef7876685e832558480c08f2310fa4f"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-neighbors-fixtures/test_maximum_batches_marks_sta0/state.json",
+      "bytes": 646,
+      "sha256": "82422c48a1a4d13a5ce0586735b45acc46df0d7257063fa7d12dc29a7ed0c05f"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-neighbors-fixtures/test_nonfinite_current_stage_r0/checkpoints/stage-000-stability-batch-000-attempt-000/session.json",
+      "bytes": 282,
+      "sha256": "e50e1d71aca6089a2693b12b266f3e6d01d0b459b488e71b4fb6d645d94da576"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-neighbors-fixtures/test_nonfinite_current_stage_r0/checkpoints/stage-001-looming-batch-000-attempt-000/session.json",
+      "bytes": 280,
+      "sha256": "b0770bbf835ddbfb974002e021d23071caee9293f8a193dc392df96e71732ffa"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-neighbors-fixtures/test_nonfinite_current_stage_r0/checkpoints/stage-001-looming-batch-001-attempt-000/session.json",
+      "bytes": 280,
+      "sha256": "bb7b28fe53cfb6f132278fc07a14b83228195335bff2ac7111f607416f330423"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-neighbors-fixtures/test_nonfinite_current_stage_r0/reports/stage-000-stability-batch-000-attempt-000.json",
+      "bytes": 730,
+      "sha256": "4741d947e82f924069bd25116b32e32711f2e0d9acd9bcea767b8eda1f4d79bf"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-neighbors-fixtures/test_nonfinite_current_stage_r0/reports/stage-001-looming-batch-000-attempt-000.json",
+      "bytes": 758,
+      "sha256": "284a963c6bfb0c866fd350c556a8d9356456b8572b89013a5b4965e919c1aa89"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-neighbors-fixtures/test_nonfinite_current_stage_r0/reports/stage-001-looming-batch-001-attempt-000.json",
+      "bytes": 758,
+      "sha256": "8a53deb1d672fdefb21ad62fcb4de993f4674e33d8072f2c3dfe4ee4ffe5d098"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-neighbors-fixtures/test_nonfinite_current_stage_r0/state.json",
+      "bytes": 743,
+      "sha256": "cf8768880aaab1bd7b04707f4bf1abe666b70363c9a647d6a086cd3fec2fef5c"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-neighbors-fixtures/test_nonfinite_initial_model_c0/checkpoints/stage-000-stability-batch-000-attempt-000/session.json",
+      "bytes": 282,
+      "sha256": "616d8e6a47b3889aad78f784b65a6d0d40fac55d1fa02e6e15e9a4ac3e736042"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-neighbors-fixtures/test_nonfinite_initial_model_c0/reports/stage-000-stability-batch-000-attempt-000.json",
+      "bytes": 761,
+      "sha256": "45258ab390836d93e5bce7e558bb938c82e0204af3f8f416498c3fa92e985ece"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-neighbors-fixtures/test_nonfinite_initial_model_c0/state.json",
+      "bytes": 595,
+      "sha256": "a23af9f1fb79e9208e5f36ed377c485a00fbef6bfe83d58a90c0fe1d05f377a1"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-neighbors-fixtures/test_regression_failure_rolls_0/checkpoints/stage-000-stability-batch-000-attempt-000/session.json",
+      "bytes": 282,
+      "sha256": "dbac9f3ad266981749b5b96f5dc3f6e54ec1fbf2bd633dbd0f4c1356ac64ec2e"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-neighbors-fixtures/test_regression_failure_rolls_0/checkpoints/stage-001-looming-batch-000-attempt-000/session.json",
+      "bytes": 280,
+      "sha256": "1f25f04442702222897b3d353006ee24dea679f00be4f829a41c7fb46c423c07"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-neighbors-fixtures/test_regression_failure_rolls_0/reports/stage-000-stability-batch-000-attempt-000.json",
+      "bytes": 730,
+      "sha256": "251ea0ad2a8f92dbfdf37cfef34093b0322c09bb656bfa012e30c569141cacf8"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-neighbors-fixtures/test_regression_failure_rolls_0/reports/stage-001-looming-batch-000-attempt-000.json",
+      "bytes": 883,
+      "sha256": "ae943c5862806bc9c8d576b1d490efab076c71d7b405a4ae5af0e8ed1862bdd7"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-neighbors-fixtures/test_regression_failure_rolls_0/state.json",
+      "bytes": 746,
+      "sha256": "f95d78fd781c2c8dce610e668f6e3fb537851e4e74ee72b69791c05cdaffbb1a"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-neighbors-fixtures/test_regression_nonfinite_para0/checkpoints/stage-000-stability-batch-000-attempt-000/session.json",
+      "bytes": 282,
+      "sha256": "3dd28813744c331cbb648586e206d58378e832bddb44dac09efa2f0e2a326e0b"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-neighbors-fixtures/test_regression_nonfinite_para0/checkpoints/stage-001-looming-batch-000-attempt-000/session.json",
+      "bytes": 280,
+      "sha256": "30d01b099b02d43ba9ae2080724c7477464937ed4798abfca87d5efca036a977"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-neighbors-fixtures/test_regression_nonfinite_para0/reports/stage-000-stability-batch-000-attempt-000.json",
+      "bytes": 730,
+      "sha256": "7fd5ca0a948d1ba5bf76f93153547de74f7fe2ff6329dc23e1e048995ca7a31c"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-neighbors-fixtures/test_regression_nonfinite_para0/reports/stage-001-looming-batch-000-attempt-000.json",
+      "bytes": 884,
+      "sha256": "a608e8eec7031a469187ab6467a1efe8b82425b1f0258325fac00af891fa0d91"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-neighbors-fixtures/test_regression_nonfinite_para0/state.json",
+      "bytes": 743,
+      "sha256": "b8c93c81243b280c40e1ac248325f15f691abbe1ca00bd1f71813b227109b8d1"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-neighbors-fixtures/test_resume_restores_checkpoin0/checkpoints/stage-000-stability-batch-000-attempt-000/session.json",
+      "bytes": 282,
+      "sha256": "0bf359c532895913534508eeae7350772f40f4a5f767077e52a72e025aaaa78c"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-neighbors-fixtures/test_resume_restores_checkpoin0/checkpoints/stage-001-looming-batch-000-attempt-000/session.json",
+      "bytes": 280,
+      "sha256": "2d27acd5e3ad67ed2e18b94302f17fa1c71ee29fc890097e8d43dc437f6825d9"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-neighbors-fixtures/test_resume_restores_checkpoin0/reports/stage-000-stability-batch-000-attempt-000.json",
+      "bytes": 730,
+      "sha256": "43804f748996be4834a77c4d6d196abc2afa2028267dd5c8d52cbe9a3842dda4"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-neighbors-fixtures/test_resume_restores_checkpoin0/reports/stage-001-looming-batch-000-attempt-000.json",
+      "bytes": 861,
+      "sha256": "f3734852e80cbc9705594363efa1b8fb2c18afd3bf5ee893a750204935dbd228"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-neighbors-fixtures/test_resume_restores_checkpoin0/state.json",
+      "bytes": 780,
+      "sha256": "a2eb1c2811de3c661b865b92366f6caf603fe21a104e3733ba1ee296afee73b6"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-neighbors-fixtures/test_two_stage_curriculum_prom0/checkpoints/stage-000-stability-batch-000-attempt-000/session.json",
+      "bytes": 282,
+      "sha256": "b2e07a5c669f69e0820b1399a7777039a1fd9836b0b7aa780c46b29e520641f3"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-neighbors-fixtures/test_two_stage_curriculum_prom0/checkpoints/stage-001-looming-batch-000-attempt-000/session.json",
+      "bytes": 280,
+      "sha256": "d67a1f3cc4a6403ffe34ef6e32ff83d9265616f7e39706ae503bedd786829c83"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-neighbors-fixtures/test_two_stage_curriculum_prom0/reports/stage-000-stability-batch-000-attempt-000.json",
+      "bytes": 730,
+      "sha256": "1bbb27588017a9760856ee973030a5ea586a6ebd05b6dba41c45a0376b8193f3"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-neighbors-fixtures/test_two_stage_curriculum_prom0/reports/stage-001-looming-batch-000-attempt-000.json",
+      "bytes": 861,
+      "sha256": "5c4efa18296e9537c916b5eeadb81bcbc0bbc090f3bb2cf03dba2cbacb05c4f9"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-neighbors-fixtures/test_two_stage_curriculum_prom0/state.json",
+      "bytes": 780,
+      "sha256": "d2d2deee686048d326f2f24b98fdd4b9e45b034009ebaab913aeb8ea50642bc6"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-neighbors-fixtures/test_valid_false_current_param0/checkpoints/stage-000-stability-batch-000-attempt-000/session.json",
+      "bytes": 282,
+      "sha256": "dd45883cd7d4ce4a5873ae799998231331caf31952a69e1bbfe1026e84d21f3c"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-neighbors-fixtures/test_valid_false_current_param0/reports/stage-000-stability-batch-000-attempt-000.json",
+      "bytes": 761,
+      "sha256": "d2cdeac59ad95f49ce641b25ac9237f503e663a0db275559baaa1d6a23fac575"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-neighbors-fixtures/test_valid_false_current_param0/state.json",
+      "bytes": 595,
+      "sha256": "07c9182a3531f5660b37127abbdce440bee44b1ad3be44d4b838cb766c38782d"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-neighbors-source/results/windowed-training-production-dev-1701/verify.py",
+      "bytes": 2438,
+      "sha256": "7e7c287cd8cf465220a6d038c285c31f21ac17ca947b608df30f64ead6a718a2"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-neighbors-source/src/flydrones/connectome_training/dataset.py",
+      "bytes": 11618,
+      "sha256": "c8a1d338d31fa2690d710b724e5a7f5ece6bd08861032b8218fbbe0174d53021"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-neighbors-source/src/flydrones/connectome_training/features.py",
+      "bytes": 5625,
+      "sha256": "6c1881e9ff5a060d9af842f7c60601b62e22576ca16c61baf0545cd9ff6dd6f1"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-neighbors-source/src/flydrones/connectome_training/losses.py",
+      "bytes": 1957,
+      "sha256": "d46724e8750efdc8d86afaf164c304485111d09ab461a6ecd53bc390c0789eaa"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-neighbors-source/src/flydrones/connectome_training/model.py",
+      "bytes": 10265,
+      "sha256": "81b2c4cfbc947d239794b3d3b8ed1e1c3f4d473cec2c82a6ad5e15561f63265c"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-neighbors-source/src/flydrones/connectome_training/trainer.py",
+      "bytes": 5946,
+      "sha256": "4e06e4c7ec4280ecb53af47284b8714f2e6a1a667f254fc124daab9c1179b870"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-neighbors-source/tests/connectome_training/conftest.py",
+      "bytes": 1260,
+      "sha256": "6a163e598e4011dd4efac9b8c896e5bafda4244112deaf7467125be479844ae1"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-neighbors-source/tests/connectome_training/test_trainer.py",
+      "bytes": 4412,
+      "sha256": "4e872ec9b6b711be6be53b12206415797112419f711a22de9f79b955feab9861"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-neighbors-source/tests/connectome_training/test_windowed_training.py",
+      "bytes": 9229,
+      "sha256": "51456afef1145003e75637e628d7bda18c420282a21f4e58db93225a817e402a"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-neighbors-source/tools/benchmark/software_process_boundary.py",
+      "bytes": 1737,
+      "sha256": "1aced69a1cd810728c0bf557cc272a5bd43a94ababc31bb6ba33de791fd139a1"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-neighbors-start.json",
+      "bytes": 4879,
+      "sha256": "94575b241e92c9c0f5c0280e75280e92688f30f847ed2ed7c5b004d0685a33b4"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-neighbors.json",
+      "bytes": 6951,
+      "sha256": "8649c370371dd402cd55ff1924acfbe714a085439e06a460c616b22af6eeebd1"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-neighbors.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-neighbors.stdout",
+      "bytes": 831,
+      "sha256": "7c4d4e09e90dd3606e3b84a5501885863130cbdad9ec448466cd7c9faadc4c07"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-red-after-source/results/windowed-training-production-dev-1701/verify.py",
+      "bytes": 2438,
+      "sha256": "7e7c287cd8cf465220a6d038c285c31f21ac17ca947b608df30f64ead6a718a2"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-red-after-source/src/flydrones/connectome_training/dataset.py",
+      "bytes": 11618,
+      "sha256": "c8a1d338d31fa2690d710b724e5a7f5ece6bd08861032b8218fbbe0174d53021"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-red-after-source/src/flydrones/connectome_training/features.py",
+      "bytes": 5625,
+      "sha256": "6c1881e9ff5a060d9af842f7c60601b62e22576ca16c61baf0545cd9ff6dd6f1"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-red-after-source/src/flydrones/connectome_training/losses.py",
+      "bytes": 1957,
+      "sha256": "d46724e8750efdc8d86afaf164c304485111d09ab461a6ecd53bc390c0789eaa"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-red-after-source/src/flydrones/connectome_training/model.py",
+      "bytes": 10265,
+      "sha256": "81b2c4cfbc947d239794b3d3b8ed1e1c3f4d473cec2c82a6ad5e15561f63265c"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-red-after-source/src/flydrones/connectome_training/trainer.py",
+      "bytes": 3349,
+      "sha256": "3d4e52ff04471bed19219ae6dd3ed400a2dd8ea988a24ad8e4601a8a4843ef77"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-red-after-source/tests/connectome_training/conftest.py",
+      "bytes": 1260,
+      "sha256": "6a163e598e4011dd4efac9b8c896e5bafda4244112deaf7467125be479844ae1"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-red-after-source/tests/connectome_training/test_trainer.py",
+      "bytes": 4412,
+      "sha256": "4e872ec9b6b711be6be53b12206415797112419f711a22de9f79b955feab9861"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-red-after-source/tests/connectome_training/test_windowed_training.py",
+      "bytes": 8109,
+      "sha256": "ee21a2295a5d6bf21852abd2447c382c7de77b18e78b3ce1d868e203e22f93e1"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-red-after-source/tools/benchmark/software_process_boundary.py",
+      "bytes": 1737,
+      "sha256": "1aced69a1cd810728c0bf557cc272a5bd43a94ababc31bb6ba33de791fd139a1"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-red-source/results/windowed-training-production-dev-1701/verify.py",
+      "bytes": 2438,
+      "sha256": "7e7c287cd8cf465220a6d038c285c31f21ac17ca947b608df30f64ead6a718a2"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-red-source/src/flydrones/connectome_training/dataset.py",
+      "bytes": 11618,
+      "sha256": "c8a1d338d31fa2690d710b724e5a7f5ece6bd08861032b8218fbbe0174d53021"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-red-source/src/flydrones/connectome_training/features.py",
+      "bytes": 5625,
+      "sha256": "6c1881e9ff5a060d9af842f7c60601b62e22576ca16c61baf0545cd9ff6dd6f1"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-red-source/src/flydrones/connectome_training/losses.py",
+      "bytes": 1957,
+      "sha256": "d46724e8750efdc8d86afaf164c304485111d09ab461a6ecd53bc390c0789eaa"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-red-source/src/flydrones/connectome_training/model.py",
+      "bytes": 10265,
+      "sha256": "81b2c4cfbc947d239794b3d3b8ed1e1c3f4d473cec2c82a6ad5e15561f63265c"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-red-source/src/flydrones/connectome_training/trainer.py",
+      "bytes": 3349,
+      "sha256": "3d4e52ff04471bed19219ae6dd3ed400a2dd8ea988a24ad8e4601a8a4843ef77"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-red-source/tests/connectome_training/conftest.py",
+      "bytes": 1260,
+      "sha256": "6a163e598e4011dd4efac9b8c896e5bafda4244112deaf7467125be479844ae1"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-red-source/tests/connectome_training/test_trainer.py",
+      "bytes": 4412,
+      "sha256": "4e872ec9b6b711be6be53b12206415797112419f711a22de9f79b955feab9861"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-red-source/tests/connectome_training/test_windowed_training.py",
+      "bytes": 8109,
+      "sha256": "ee21a2295a5d6bf21852abd2447c382c7de77b18e78b3ce1d868e203e22f93e1"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-red-source/tools/benchmark/software_process_boundary.py",
+      "bytes": 1737,
+      "sha256": "1aced69a1cd810728c0bf557cc272a5bd43a94ababc31bb6ba33de791fd139a1"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-red-start.json",
+      "bytes": 4725,
+      "sha256": "e077109eb99e65adf91887ddc6bc68130b94cbf7bd1aa3a1702c2e4aaa667afb"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-red.json",
+      "bytes": 6797,
+      "sha256": "fe763e5a6d1f5bf5a9595b516f84ae46caf7dadfcd455879c579448e612ea2ec"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-red.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-red.stdout",
+      "bytes": 1261,
+      "sha256": "891d7e12eb8fa9e9bcf668587cd490110d852b2633ab956a320dbde7d8ed75e8"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-review-final-after-source/results/windowed-training-production-dev-1701/verify.py",
+      "bytes": 2438,
+      "sha256": "7e7c287cd8cf465220a6d038c285c31f21ac17ca947b608df30f64ead6a718a2"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-review-final-after-source/src/flydrones/connectome_training/dataset.py",
+      "bytes": 11618,
+      "sha256": "c8a1d338d31fa2690d710b724e5a7f5ece6bd08861032b8218fbbe0174d53021"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-review-final-after-source/src/flydrones/connectome_training/features.py",
+      "bytes": 5625,
+      "sha256": "6c1881e9ff5a060d9af842f7c60601b62e22576ca16c61baf0545cd9ff6dd6f1"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-review-final-after-source/src/flydrones/connectome_training/losses.py",
+      "bytes": 1957,
+      "sha256": "d46724e8750efdc8d86afaf164c304485111d09ab461a6ecd53bc390c0789eaa"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-review-final-after-source/src/flydrones/connectome_training/model.py",
+      "bytes": 10265,
+      "sha256": "81b2c4cfbc947d239794b3d3b8ed1e1c3f4d473cec2c82a6ad5e15561f63265c"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-review-final-after-source/src/flydrones/connectome_training/trainer.py",
+      "bytes": 6002,
+      "sha256": "6c90c2bc7796bc06c848f01f0ab00e424e6c77f69f209900dbef709e43e42820"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-review-final-after-source/tests/connectome_training/conftest.py",
+      "bytes": 1260,
+      "sha256": "6a163e598e4011dd4efac9b8c896e5bafda4244112deaf7467125be479844ae1"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-review-final-after-source/tests/connectome_training/test_trainer.py",
+      "bytes": 4412,
+      "sha256": "4e872ec9b6b711be6be53b12206415797112419f711a22de9f79b955feab9861"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-review-final-after-source/tests/connectome_training/test_windowed_training.py",
+      "bytes": 11239,
+      "sha256": "5a753c9914c0b54e75d020036fe1c241bac40f9b182c6600e4a8759290356bbc"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-review-final-after-source/tools/benchmark/software_process_boundary.py",
+      "bytes": 1737,
+      "sha256": "1aced69a1cd810728c0bf557cc272a5bd43a94ababc31bb6ba33de791fd139a1"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-review-final-fixtures/test_actual_tiny_connectome_ma0/parameters/manifest.json",
+      "bytes": 795,
+      "sha256": "7b01d0a92adc6ad818ad2ee1a2e62d7615dec1d7ff7eadd4c9a78d3b73cb5840"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-review-final-fixtures/test_actual_tiny_connectome_ma0/parameters/parameters.npz",
+      "bytes": 1520,
+      "sha256": "6c5e0d2f7edad337dd9f34a135392ec534732d6f8b7c1cdfba0be15918782337"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-review-final-fixtures/test_actual_tiny_connectome_ma0/tiny.npz",
+      "bytes": 1956,
+      "sha256": "7243ecb8e7a39c9d02032d9df3a365bb5d82f03cc393a80177e89731c7fa4261"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-review-final-fixtures/test_actual_tiny_connectome_ma1/parameters/manifest.json",
+      "bytes": 795,
+      "sha256": "7b01d0a92adc6ad818ad2ee1a2e62d7615dec1d7ff7eadd4c9a78d3b73cb5840"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-review-final-fixtures/test_actual_tiny_connectome_ma1/parameters/parameters.npz",
+      "bytes": 1520,
+      "sha256": "6c5e0d2f7edad337dd9f34a135392ec534732d6f8b7c1cdfba0be15918782337"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-review-final-fixtures/test_actual_tiny_connectome_ma1/tiny.npz",
+      "bytes": 1956,
+      "sha256": "7243ecb8e7a39c9d02032d9df3a365bb5d82f03cc393a80177e89731c7fa4261"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-review-final-fixtures/test_actual_tiny_connectome_ma2/parameters/manifest.json",
+      "bytes": 795,
+      "sha256": "7b01d0a92adc6ad818ad2ee1a2e62d7615dec1d7ff7eadd4c9a78d3b73cb5840"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-review-final-fixtures/test_actual_tiny_connectome_ma2/parameters/parameters.npz",
+      "bytes": 1520,
+      "sha256": "6c5e0d2f7edad337dd9f34a135392ec534732d6f8b7c1cdfba0be15918782337"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-review-final-fixtures/test_actual_tiny_connectome_ma2/tiny.npz",
+      "bytes": 1956,
+      "sha256": "7243ecb8e7a39c9d02032d9df3a365bb5d82f03cc393a80177e89731c7fa4261"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-review-final-fixtures/test_maximum_batches_marks_sta0/checkpoints/stage-000-stability-batch-000-attempt-000/session.json",
+      "bytes": 282,
+      "sha256": "9496ec8b4e1f67df61326ec63f4cd0dc15f48d9cefddda1dd555e0b91f50399a"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-review-final-fixtures/test_maximum_batches_marks_sta0/reports/stage-000-stability-batch-000-attempt-000.json",
+      "bytes": 793,
+      "sha256": "897afc417a1774b60cbbfe66252b263a6eefe96b96e305ba353ed38f98fba3be"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-review-final-fixtures/test_maximum_batches_marks_sta0/state.json",
+      "bytes": 646,
+      "sha256": "a1be77d715b6e40821d59ef7beba132b5b2d3e9298b7c817c29e1d045df19daf"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-review-final-fixtures/test_nonfinite_current_stage_r0/checkpoints/stage-000-stability-batch-000-attempt-000/session.json",
+      "bytes": 282,
+      "sha256": "49142fc09c4814b149e2c8ac12d2ec7f802f5bb480789940435c118ee59e75e0"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-review-final-fixtures/test_nonfinite_current_stage_r0/checkpoints/stage-001-looming-batch-000-attempt-000/session.json",
+      "bytes": 280,
+      "sha256": "723a4368240981f1921b75ff3fa4e64df406505951cb3423d08b72fec3f0c856"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-review-final-fixtures/test_nonfinite_current_stage_r0/checkpoints/stage-001-looming-batch-001-attempt-000/session.json",
+      "bytes": 280,
+      "sha256": "53b5b2e589138151cf42f7df38f20bf380f4a4eb8aa444605ea4ea902855698e"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-review-final-fixtures/test_nonfinite_current_stage_r0/reports/stage-000-stability-batch-000-attempt-000.json",
+      "bytes": 730,
+      "sha256": "a960c9c7b706f2c73d6079f5df85c2a0a353e11019ae194f4115b0ed9192415f"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-review-final-fixtures/test_nonfinite_current_stage_r0/reports/stage-001-looming-batch-000-attempt-000.json",
+      "bytes": 758,
+      "sha256": "5f4502ea710c014c6a341e462d585d949e9c6687ffeda11040c087b795ec125d"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-review-final-fixtures/test_nonfinite_current_stage_r0/reports/stage-001-looming-batch-001-attempt-000.json",
+      "bytes": 758,
+      "sha256": "71672af97ac256b76438893d00fe02f7cfc767143c6bf53353ab48c9d24f58a0"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-review-final-fixtures/test_nonfinite_current_stage_r0/state.json",
+      "bytes": 743,
+      "sha256": "f37f29ba321a5dc1178b3a5a72d44915ec925262261486c74489537401caa50e"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-review-final-fixtures/test_nonfinite_initial_model_c0/checkpoints/stage-000-stability-batch-000-attempt-000/session.json",
+      "bytes": 282,
+      "sha256": "9504e3027180e5aed3f7e393de19f137fd15d6507fbd483514d71852bb15aab8"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-review-final-fixtures/test_nonfinite_initial_model_c0/reports/stage-000-stability-batch-000-attempt-000.json",
+      "bytes": 761,
+      "sha256": "1c64fdd5206b7c297b453f9d63a68c190aae5c30390652dd48bf5ef76270f883"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-review-final-fixtures/test_nonfinite_initial_model_c0/state.json",
+      "bytes": 595,
+      "sha256": "2df598417fa852130e3e0e07213b83cff6355b07bc072baaaba89172f2552e31"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-review-final-fixtures/test_regression_failure_rolls_0/checkpoints/stage-000-stability-batch-000-attempt-000/session.json",
+      "bytes": 282,
+      "sha256": "a0e65031a3bb0fba38858d2884fa1bc491611e1e5748e12913b0f2670516d3be"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-review-final-fixtures/test_regression_failure_rolls_0/checkpoints/stage-001-looming-batch-000-attempt-000/session.json",
+      "bytes": 280,
+      "sha256": "6f3ff8c10b859b4243b52d13728939989c9a7bc4c86a9c7a7b3818beeeccf89d"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-review-final-fixtures/test_regression_failure_rolls_0/reports/stage-000-stability-batch-000-attempt-000.json",
+      "bytes": 730,
+      "sha256": "d7b181c0b58c010c3d1d72dceab56543933413e5188b747deea2b8ee7ee47fc1"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-review-final-fixtures/test_regression_failure_rolls_0/reports/stage-001-looming-batch-000-attempt-000.json",
+      "bytes": 883,
+      "sha256": "378e9a935216537f439b25067af22e13ec7598548e70c27c259179d54e26aae5"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-review-final-fixtures/test_regression_failure_rolls_0/state.json",
+      "bytes": 746,
+      "sha256": "0d07fac6d24fe84ee3af1ab4efcb912f250980f07842e01b4f3bc1d622f50542"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-review-final-fixtures/test_regression_nonfinite_para0/checkpoints/stage-000-stability-batch-000-attempt-000/session.json",
+      "bytes": 282,
+      "sha256": "5a224ec2ee25a721a62b0fd0ec2569a086f43823833b231351a2a9857ba89e6a"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-review-final-fixtures/test_regression_nonfinite_para0/checkpoints/stage-001-looming-batch-000-attempt-000/session.json",
+      "bytes": 280,
+      "sha256": "8d0d08d806006e86b42024b69083f4e2d262e04ad910f58e74a672c9654360ea"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-review-final-fixtures/test_regression_nonfinite_para0/reports/stage-000-stability-batch-000-attempt-000.json",
+      "bytes": 730,
+      "sha256": "dfd65137ae54f471639f91d67ab33af4f1c2e3a5a160467bad156e89e8097f39"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-review-final-fixtures/test_regression_nonfinite_para0/reports/stage-001-looming-batch-000-attempt-000.json",
+      "bytes": 884,
+      "sha256": "f77d1b3bbd40ac7d339a6b2dc45adbaa581504d6718e12713d3fe5c54fd3ceda"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-review-final-fixtures/test_regression_nonfinite_para0/state.json",
+      "bytes": 743,
+      "sha256": "5c22e5c4a25afbf654fa0bcab3516703fa7a0ef7ed78216b7ec0c505f0f54a1e"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-review-final-fixtures/test_resume_restores_checkpoin0/checkpoints/stage-000-stability-batch-000-attempt-000/session.json",
+      "bytes": 282,
+      "sha256": "715d3e5ba4902e511d01e4acd7f9792770fa6eb8fba31091753e608af019390f"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-review-final-fixtures/test_resume_restores_checkpoin0/checkpoints/stage-001-looming-batch-000-attempt-000/session.json",
+      "bytes": 280,
+      "sha256": "16ce311ca6c736da4d350d8c05087c50d0559c74157577f82f19759d699e6106"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-review-final-fixtures/test_resume_restores_checkpoin0/reports/stage-000-stability-batch-000-attempt-000.json",
+      "bytes": 730,
+      "sha256": "8327959940c38a48c898aefd988ffc34e130461aef468b1c4160c51c6486a5f8"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-review-final-fixtures/test_resume_restores_checkpoin0/reports/stage-001-looming-batch-000-attempt-000.json",
+      "bytes": 861,
+      "sha256": "eb8ee128ca0fba24231f8a4cf0df737d21825ce74b1b0db310fcf8b3810bcb72"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-review-final-fixtures/test_resume_restores_checkpoin0/state.json",
+      "bytes": 780,
+      "sha256": "4778eae721b52bd159a6ae10de11c01533fddb82655e51e84742d5a3191c4e4f"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-review-final-fixtures/test_two_stage_curriculum_prom0/checkpoints/stage-000-stability-batch-000-attempt-000/session.json",
+      "bytes": 282,
+      "sha256": "6c3608890c247ca179a4f9b4c9ce912dd85b8f3392036f031fbe9d239c170637"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-review-final-fixtures/test_two_stage_curriculum_prom0/checkpoints/stage-001-looming-batch-000-attempt-000/session.json",
+      "bytes": 280,
+      "sha256": "a9b52055a7458e6e1903967a8d1eb38cb9c7d2d58a56d74606c110d1d1112228"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-review-final-fixtures/test_two_stage_curriculum_prom0/reports/stage-000-stability-batch-000-attempt-000.json",
+      "bytes": 730,
+      "sha256": "79fc5a432715d3516d675f3cf7c2cec1130cfae031ace8ceb94e0ae41a230206"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-review-final-fixtures/test_two_stage_curriculum_prom0/reports/stage-001-looming-batch-000-attempt-000.json",
+      "bytes": 861,
+      "sha256": "380b5522f991c524b3dc8ebc51006961eca25bd52fc6a83d148505634301fa7f"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-review-final-fixtures/test_two_stage_curriculum_prom0/state.json",
+      "bytes": 780,
+      "sha256": "70876d03f05158a24414119b16aab037bf365f5a4961e3bd6325e6e5cb15e051"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-review-final-fixtures/test_valid_false_current_param0/checkpoints/stage-000-stability-batch-000-attempt-000/session.json",
+      "bytes": 282,
+      "sha256": "b8b6217769f159aee0c3dc415c5546d88d41cda1242e2f2a3b6f33eb53057af7"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-review-final-fixtures/test_valid_false_current_param0/reports/stage-000-stability-batch-000-attempt-000.json",
+      "bytes": 761,
+      "sha256": "4c8958025b468d10b9ed57ace584c53d27289f268232e6fda2b240de0db476cb"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-review-final-fixtures/test_valid_false_current_param0/state.json",
+      "bytes": 595,
+      "sha256": "312178847dcb2829f402c1b1c6307bdde23194c66fed1ebd0686c7233986190d"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-review-final-source/results/windowed-training-production-dev-1701/verify.py",
+      "bytes": 2438,
+      "sha256": "7e7c287cd8cf465220a6d038c285c31f21ac17ca947b608df30f64ead6a718a2"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-review-final-source/src/flydrones/connectome_training/dataset.py",
+      "bytes": 11618,
+      "sha256": "c8a1d338d31fa2690d710b724e5a7f5ece6bd08861032b8218fbbe0174d53021"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-review-final-source/src/flydrones/connectome_training/features.py",
+      "bytes": 5625,
+      "sha256": "6c1881e9ff5a060d9af842f7c60601b62e22576ca16c61baf0545cd9ff6dd6f1"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-review-final-source/src/flydrones/connectome_training/losses.py",
+      "bytes": 1957,
+      "sha256": "d46724e8750efdc8d86afaf164c304485111d09ab461a6ecd53bc390c0789eaa"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-review-final-source/src/flydrones/connectome_training/model.py",
+      "bytes": 10265,
+      "sha256": "81b2c4cfbc947d239794b3d3b8ed1e1c3f4d473cec2c82a6ad5e15561f63265c"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-review-final-source/src/flydrones/connectome_training/trainer.py",
+      "bytes": 6002,
+      "sha256": "6c90c2bc7796bc06c848f01f0ab00e424e6c77f69f209900dbef709e43e42820"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-review-final-source/tests/connectome_training/conftest.py",
+      "bytes": 1260,
+      "sha256": "6a163e598e4011dd4efac9b8c896e5bafda4244112deaf7467125be479844ae1"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-review-final-source/tests/connectome_training/test_trainer.py",
+      "bytes": 4412,
+      "sha256": "4e872ec9b6b711be6be53b12206415797112419f711a22de9f79b955feab9861"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-review-final-source/tests/connectome_training/test_windowed_training.py",
+      "bytes": 11239,
+      "sha256": "5a753c9914c0b54e75d020036fe1c241bac40f9b182c6600e4a8759290356bbc"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-review-final-source/tools/benchmark/software_process_boundary.py",
+      "bytes": 1737,
+      "sha256": "1aced69a1cd810728c0bf557cc272a5bd43a94ababc31bb6ba33de791fd139a1"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-review-final-start.json",
+      "bytes": 4883,
+      "sha256": "88658ff45aacd5ae815b7f8338287bc3d9b9297fa19b46938b1dc0dc5b8ad470"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-review-final.json",
+      "bytes": 6956,
+      "sha256": "79cac15844d4ed86b56162492dfb594e910373ed96da36c2071f9fbf379d7fe9"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-review-final.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-review-final.stdout",
+      "bytes": 831,
+      "sha256": "b69f8528a6a8d396e1c877bbb41b5f3b82f8ef5e6eefaaf3dab2f507aa3434a2"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-review-format-after-source/results/windowed-training-production-dev-1701/verify.py",
+      "bytes": 2438,
+      "sha256": "7e7c287cd8cf465220a6d038c285c31f21ac17ca947b608df30f64ead6a718a2"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-review-format-after-source/src/flydrones/connectome_training/dataset.py",
+      "bytes": 11618,
+      "sha256": "c8a1d338d31fa2690d710b724e5a7f5ece6bd08861032b8218fbbe0174d53021"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-review-format-after-source/src/flydrones/connectome_training/features.py",
+      "bytes": 5625,
+      "sha256": "6c1881e9ff5a060d9af842f7c60601b62e22576ca16c61baf0545cd9ff6dd6f1"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-review-format-after-source/src/flydrones/connectome_training/losses.py",
+      "bytes": 1957,
+      "sha256": "d46724e8750efdc8d86afaf164c304485111d09ab461a6ecd53bc390c0789eaa"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-review-format-after-source/src/flydrones/connectome_training/model.py",
+      "bytes": 10265,
+      "sha256": "81b2c4cfbc947d239794b3d3b8ed1e1c3f4d473cec2c82a6ad5e15561f63265c"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-review-format-after-source/src/flydrones/connectome_training/trainer.py",
+      "bytes": 6002,
+      "sha256": "6c90c2bc7796bc06c848f01f0ab00e424e6c77f69f209900dbef709e43e42820"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-review-format-after-source/tests/connectome_training/conftest.py",
+      "bytes": 1260,
+      "sha256": "6a163e598e4011dd4efac9b8c896e5bafda4244112deaf7467125be479844ae1"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-review-format-after-source/tests/connectome_training/test_trainer.py",
+      "bytes": 4412,
+      "sha256": "4e872ec9b6b711be6be53b12206415797112419f711a22de9f79b955feab9861"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-review-format-after-source/tests/connectome_training/test_windowed_training.py",
+      "bytes": 11239,
+      "sha256": "5a753c9914c0b54e75d020036fe1c241bac40f9b182c6600e4a8759290356bbc"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-review-format-after-source/tools/benchmark/software_process_boundary.py",
+      "bytes": 1737,
+      "sha256": "1aced69a1cd810728c0bf557cc272a5bd43a94ababc31bb6ba33de791fd139a1"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-review-format-source/results/windowed-training-production-dev-1701/verify.py",
+      "bytes": 2438,
+      "sha256": "7e7c287cd8cf465220a6d038c285c31f21ac17ca947b608df30f64ead6a718a2"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-review-format-source/src/flydrones/connectome_training/dataset.py",
+      "bytes": 11618,
+      "sha256": "c8a1d338d31fa2690d710b724e5a7f5ece6bd08861032b8218fbbe0174d53021"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-review-format-source/src/flydrones/connectome_training/features.py",
+      "bytes": 5625,
+      "sha256": "6c1881e9ff5a060d9af842f7c60601b62e22576ca16c61baf0545cd9ff6dd6f1"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-review-format-source/src/flydrones/connectome_training/losses.py",
+      "bytes": 1957,
+      "sha256": "d46724e8750efdc8d86afaf164c304485111d09ab461a6ecd53bc390c0789eaa"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-review-format-source/src/flydrones/connectome_training/model.py",
+      "bytes": 10265,
+      "sha256": "81b2c4cfbc947d239794b3d3b8ed1e1c3f4d473cec2c82a6ad5e15561f63265c"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-review-format-source/src/flydrones/connectome_training/trainer.py",
+      "bytes": 5980,
+      "sha256": "83862b7fda98b3bd0fa4aec4a7715694d25d20437f9beae6f681c91844614e61"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-review-format-source/tests/connectome_training/conftest.py",
+      "bytes": 1260,
+      "sha256": "6a163e598e4011dd4efac9b8c896e5bafda4244112deaf7467125be479844ae1"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-review-format-source/tests/connectome_training/test_trainer.py",
+      "bytes": 4412,
+      "sha256": "4e872ec9b6b711be6be53b12206415797112419f711a22de9f79b955feab9861"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-review-format-source/tests/connectome_training/test_windowed_training.py",
+      "bytes": 11222,
+      "sha256": "74a2ea795905ea1834443b6e182616b97049ac2022eca1929ff5ae09a8dbec30"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-review-format-source/tools/benchmark/software_process_boundary.py",
+      "bytes": 1737,
+      "sha256": "1aced69a1cd810728c0bf557cc272a5bd43a94ababc31bb6ba33de791fd139a1"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-review-format-start.json",
+      "bytes": 4689,
+      "sha256": "15519d7733b141c913d8e814d1e88ec89f41803ec16c9857c21e955d575bd32e"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-review-format.json",
+      "bytes": 6762,
+      "sha256": "e4d992651a813079bf94c5033484be55b4b1f65f726fad98c2541a71a4f3af9d"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-review-format.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-review-format.stdout",
+      "bytes": 20,
+      "sha256": "96a977f329ec3c59092d40e041a019b49dcf03ca04055e177aa0ccb8c27234df"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-review-red-after-source/results/windowed-training-production-dev-1701/verify.py",
+      "bytes": 2438,
+      "sha256": "7e7c287cd8cf465220a6d038c285c31f21ac17ca947b608df30f64ead6a718a2"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-review-red-after-source/src/flydrones/connectome_training/dataset.py",
+      "bytes": 11618,
+      "sha256": "c8a1d338d31fa2690d710b724e5a7f5ece6bd08861032b8218fbbe0174d53021"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-review-red-after-source/src/flydrones/connectome_training/features.py",
+      "bytes": 5625,
+      "sha256": "6c1881e9ff5a060d9af842f7c60601b62e22576ca16c61baf0545cd9ff6dd6f1"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-review-red-after-source/src/flydrones/connectome_training/losses.py",
+      "bytes": 1957,
+      "sha256": "d46724e8750efdc8d86afaf164c304485111d09ab461a6ecd53bc390c0789eaa"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-review-red-after-source/src/flydrones/connectome_training/model.py",
+      "bytes": 10265,
+      "sha256": "81b2c4cfbc947d239794b3d3b8ed1e1c3f4d473cec2c82a6ad5e15561f63265c"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-review-red-after-source/src/flydrones/connectome_training/trainer.py",
+      "bytes": 5946,
+      "sha256": "4e06e4c7ec4280ecb53af47284b8714f2e6a1a667f254fc124daab9c1179b870"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-review-red-after-source/tests/connectome_training/conftest.py",
+      "bytes": 1260,
+      "sha256": "6a163e598e4011dd4efac9b8c896e5bafda4244112deaf7467125be479844ae1"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-review-red-after-source/tests/connectome_training/test_trainer.py",
+      "bytes": 4412,
+      "sha256": "4e872ec9b6b711be6be53b12206415797112419f711a22de9f79b955feab9861"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-review-red-after-source/tests/connectome_training/test_windowed_training.py",
+      "bytes": 11222,
+      "sha256": "74a2ea795905ea1834443b6e182616b97049ac2022eca1929ff5ae09a8dbec30"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-review-red-after-source/tools/benchmark/software_process_boundary.py",
+      "bytes": 1737,
+      "sha256": "1aced69a1cd810728c0bf557cc272a5bd43a94ababc31bb6ba33de791fd139a1"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-review-red-source/results/windowed-training-production-dev-1701/verify.py",
+      "bytes": 2438,
+      "sha256": "7e7c287cd8cf465220a6d038c285c31f21ac17ca947b608df30f64ead6a718a2"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-review-red-source/src/flydrones/connectome_training/dataset.py",
+      "bytes": 11618,
+      "sha256": "c8a1d338d31fa2690d710b724e5a7f5ece6bd08861032b8218fbbe0174d53021"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-review-red-source/src/flydrones/connectome_training/features.py",
+      "bytes": 5625,
+      "sha256": "6c1881e9ff5a060d9af842f7c60601b62e22576ca16c61baf0545cd9ff6dd6f1"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-review-red-source/src/flydrones/connectome_training/losses.py",
+      "bytes": 1957,
+      "sha256": "d46724e8750efdc8d86afaf164c304485111d09ab461a6ecd53bc390c0789eaa"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-review-red-source/src/flydrones/connectome_training/model.py",
+      "bytes": 10265,
+      "sha256": "81b2c4cfbc947d239794b3d3b8ed1e1c3f4d473cec2c82a6ad5e15561f63265c"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-review-red-source/src/flydrones/connectome_training/trainer.py",
+      "bytes": 5946,
+      "sha256": "4e06e4c7ec4280ecb53af47284b8714f2e6a1a667f254fc124daab9c1179b870"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-review-red-source/tests/connectome_training/conftest.py",
+      "bytes": 1260,
+      "sha256": "6a163e598e4011dd4efac9b8c896e5bafda4244112deaf7467125be479844ae1"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-review-red-source/tests/connectome_training/test_trainer.py",
+      "bytes": 4412,
+      "sha256": "4e872ec9b6b711be6be53b12206415797112419f711a22de9f79b955feab9861"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-review-red-source/tests/connectome_training/test_windowed_training.py",
+      "bytes": 11222,
+      "sha256": "74a2ea795905ea1834443b6e182616b97049ac2022eca1929ff5ae09a8dbec30"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-review-red-source/tools/benchmark/software_process_boundary.py",
+      "bytes": 1737,
+      "sha256": "1aced69a1cd810728c0bf557cc272a5bd43a94ababc31bb6ba33de791fd139a1"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-review-red-start.json",
+      "bytes": 4780,
+      "sha256": "c429962918795569e9f5de87f47dff91bc0d1c2c5f14cd25f1792ff56bd606f2"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-review-red.json",
+      "bytes": 6853,
+      "sha256": "056112a6094060fe9b131855b43414c645e01d81c4b00648d849338b47522a15"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-review-red.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-review-red.stdout",
+      "bytes": 3349,
+      "sha256": "64fe8186cc9e3e7687795fa872c184c19bec0f87df38efacf636e75098de08ae"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-sealed-diffcheck-after-source/results/windowed-training-production-dev-1701/verify.py",
+      "bytes": 2438,
+      "sha256": "7e7c287cd8cf465220a6d038c285c31f21ac17ca947b608df30f64ead6a718a2"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-sealed-diffcheck-after-source/src/flydrones/connectome_training/dataset.py",
+      "bytes": 11618,
+      "sha256": "c8a1d338d31fa2690d710b724e5a7f5ece6bd08861032b8218fbbe0174d53021"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-sealed-diffcheck-after-source/src/flydrones/connectome_training/features.py",
+      "bytes": 5625,
+      "sha256": "6c1881e9ff5a060d9af842f7c60601b62e22576ca16c61baf0545cd9ff6dd6f1"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-sealed-diffcheck-after-source/src/flydrones/connectome_training/losses.py",
+      "bytes": 1957,
+      "sha256": "d46724e8750efdc8d86afaf164c304485111d09ab461a6ecd53bc390c0789eaa"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-sealed-diffcheck-after-source/src/flydrones/connectome_training/model.py",
+      "bytes": 10265,
+      "sha256": "81b2c4cfbc947d239794b3d3b8ed1e1c3f4d473cec2c82a6ad5e15561f63265c"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-sealed-diffcheck-after-source/src/flydrones/connectome_training/trainer.py",
+      "bytes": 6002,
+      "sha256": "6c90c2bc7796bc06c848f01f0ab00e424e6c77f69f209900dbef709e43e42820"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-sealed-diffcheck-after-source/tests/connectome_training/conftest.py",
+      "bytes": 1260,
+      "sha256": "6a163e598e4011dd4efac9b8c896e5bafda4244112deaf7467125be479844ae1"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-sealed-diffcheck-after-source/tests/connectome_training/test_trainer.py",
+      "bytes": 4412,
+      "sha256": "4e872ec9b6b711be6be53b12206415797112419f711a22de9f79b955feab9861"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-sealed-diffcheck-after-source/tests/connectome_training/test_windowed_training.py",
+      "bytes": 11239,
+      "sha256": "5a753c9914c0b54e75d020036fe1c241bac40f9b182c6600e4a8759290356bbc"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-sealed-diffcheck-after-source/tools/benchmark/software_process_boundary.py",
+      "bytes": 1737,
+      "sha256": "1aced69a1cd810728c0bf557cc272a5bd43a94ababc31bb6ba33de791fd139a1"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-sealed-diffcheck-source/results/windowed-training-production-dev-1701/verify.py",
+      "bytes": 2438,
+      "sha256": "7e7c287cd8cf465220a6d038c285c31f21ac17ca947b608df30f64ead6a718a2"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-sealed-diffcheck-source/src/flydrones/connectome_training/dataset.py",
+      "bytes": 11618,
+      "sha256": "c8a1d338d31fa2690d710b724e5a7f5ece6bd08861032b8218fbbe0174d53021"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-sealed-diffcheck-source/src/flydrones/connectome_training/features.py",
+      "bytes": 5625,
+      "sha256": "6c1881e9ff5a060d9af842f7c60601b62e22576ca16c61baf0545cd9ff6dd6f1"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-sealed-diffcheck-source/src/flydrones/connectome_training/losses.py",
+      "bytes": 1957,
+      "sha256": "d46724e8750efdc8d86afaf164c304485111d09ab461a6ecd53bc390c0789eaa"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-sealed-diffcheck-source/src/flydrones/connectome_training/model.py",
+      "bytes": 10265,
+      "sha256": "81b2c4cfbc947d239794b3d3b8ed1e1c3f4d473cec2c82a6ad5e15561f63265c"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-sealed-diffcheck-source/src/flydrones/connectome_training/trainer.py",
+      "bytes": 6002,
+      "sha256": "6c90c2bc7796bc06c848f01f0ab00e424e6c77f69f209900dbef709e43e42820"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-sealed-diffcheck-source/tests/connectome_training/conftest.py",
+      "bytes": 1260,
+      "sha256": "6a163e598e4011dd4efac9b8c896e5bafda4244112deaf7467125be479844ae1"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-sealed-diffcheck-source/tests/connectome_training/test_trainer.py",
+      "bytes": 4412,
+      "sha256": "4e872ec9b6b711be6be53b12206415797112419f711a22de9f79b955feab9861"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-sealed-diffcheck-source/tests/connectome_training/test_windowed_training.py",
+      "bytes": 11239,
+      "sha256": "5a753c9914c0b54e75d020036fe1c241bac40f9b182c6600e4a8759290356bbc"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-sealed-diffcheck-source/tools/benchmark/software_process_boundary.py",
+      "bytes": 1737,
+      "sha256": "1aced69a1cd810728c0bf557cc272a5bd43a94ababc31bb6ba33de791fd139a1"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-sealed-diffcheck-start.json",
+      "bytes": 4566,
+      "sha256": "0df2ac067f0dea5836e21b1efacb8667695f7a33b21d83aa153fa8fe8ed8cc27"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-sealed-diffcheck.json",
+      "bytes": 6639,
+      "sha256": "f23f5926dc5a571b4f9bd91874196fa7bf0b9143ba55ccb746c4b3975a45d0bc"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-sealed-diffcheck.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-sealed-diffcheck.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-sealed-lint-after-source/results/windowed-training-production-dev-1701/verify.py",
+      "bytes": 2438,
+      "sha256": "7e7c287cd8cf465220a6d038c285c31f21ac17ca947b608df30f64ead6a718a2"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-sealed-lint-after-source/src/flydrones/connectome_training/dataset.py",
+      "bytes": 11618,
+      "sha256": "c8a1d338d31fa2690d710b724e5a7f5ece6bd08861032b8218fbbe0174d53021"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-sealed-lint-after-source/src/flydrones/connectome_training/features.py",
+      "bytes": 5625,
+      "sha256": "6c1881e9ff5a060d9af842f7c60601b62e22576ca16c61baf0545cd9ff6dd6f1"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-sealed-lint-after-source/src/flydrones/connectome_training/losses.py",
+      "bytes": 1957,
+      "sha256": "d46724e8750efdc8d86afaf164c304485111d09ab461a6ecd53bc390c0789eaa"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-sealed-lint-after-source/src/flydrones/connectome_training/model.py",
+      "bytes": 10265,
+      "sha256": "81b2c4cfbc947d239794b3d3b8ed1e1c3f4d473cec2c82a6ad5e15561f63265c"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-sealed-lint-after-source/src/flydrones/connectome_training/trainer.py",
+      "bytes": 6002,
+      "sha256": "6c90c2bc7796bc06c848f01f0ab00e424e6c77f69f209900dbef709e43e42820"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-sealed-lint-after-source/tests/connectome_training/conftest.py",
+      "bytes": 1260,
+      "sha256": "6a163e598e4011dd4efac9b8c896e5bafda4244112deaf7467125be479844ae1"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-sealed-lint-after-source/tests/connectome_training/test_trainer.py",
+      "bytes": 4412,
+      "sha256": "4e872ec9b6b711be6be53b12206415797112419f711a22de9f79b955feab9861"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-sealed-lint-after-source/tests/connectome_training/test_windowed_training.py",
+      "bytes": 11239,
+      "sha256": "5a753c9914c0b54e75d020036fe1c241bac40f9b182c6600e4a8759290356bbc"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-sealed-lint-after-source/tools/benchmark/software_process_boundary.py",
+      "bytes": 1737,
+      "sha256": "1aced69a1cd810728c0bf557cc272a5bd43a94ababc31bb6ba33de791fd139a1"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-sealed-lint-source/results/windowed-training-production-dev-1701/verify.py",
+      "bytes": 2438,
+      "sha256": "7e7c287cd8cf465220a6d038c285c31f21ac17ca947b608df30f64ead6a718a2"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-sealed-lint-source/src/flydrones/connectome_training/dataset.py",
+      "bytes": 11618,
+      "sha256": "c8a1d338d31fa2690d710b724e5a7f5ece6bd08861032b8218fbbe0174d53021"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-sealed-lint-source/src/flydrones/connectome_training/features.py",
+      "bytes": 5625,
+      "sha256": "6c1881e9ff5a060d9af842f7c60601b62e22576ca16c61baf0545cd9ff6dd6f1"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-sealed-lint-source/src/flydrones/connectome_training/losses.py",
+      "bytes": 1957,
+      "sha256": "d46724e8750efdc8d86afaf164c304485111d09ab461a6ecd53bc390c0789eaa"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-sealed-lint-source/src/flydrones/connectome_training/model.py",
+      "bytes": 10265,
+      "sha256": "81b2c4cfbc947d239794b3d3b8ed1e1c3f4d473cec2c82a6ad5e15561f63265c"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-sealed-lint-source/src/flydrones/connectome_training/trainer.py",
+      "bytes": 6002,
+      "sha256": "6c90c2bc7796bc06c848f01f0ab00e424e6c77f69f209900dbef709e43e42820"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-sealed-lint-source/tests/connectome_training/conftest.py",
+      "bytes": 1260,
+      "sha256": "6a163e598e4011dd4efac9b8c896e5bafda4244112deaf7467125be479844ae1"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-sealed-lint-source/tests/connectome_training/test_trainer.py",
+      "bytes": 4412,
+      "sha256": "4e872ec9b6b711be6be53b12206415797112419f711a22de9f79b955feab9861"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-sealed-lint-source/tests/connectome_training/test_windowed_training.py",
+      "bytes": 11239,
+      "sha256": "5a753c9914c0b54e75d020036fe1c241bac40f9b182c6600e4a8759290356bbc"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-sealed-lint-source/tools/benchmark/software_process_boundary.py",
+      "bytes": 1737,
+      "sha256": "1aced69a1cd810728c0bf557cc272a5bd43a94ababc31bb6ba33de791fd139a1"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-sealed-lint-start.json",
+      "bytes": 4688,
+      "sha256": "e06ac28043f43c816d33f9618866048b351e4cede6b5cdb58780c094047d1db8"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-sealed-lint.json",
+      "bytes": 6761,
+      "sha256": "2548ee8ddaa38effb90c0fd775d4bdd99d3b32026bda8f48f0b244534cfce823"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-sealed-lint.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/windowed-training-production-dev-1701/window-sealed-lint.stdout",
+      "bytes": 19,
+      "sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18"
+    },
+    {
+      "path": "src/flydrones/connectome_training/__init__.py",
+      "bytes": 2171,
+      "sha256": "2a910032a820d4fc5d66049ac33f4b8521d60bc65603a1e35583106e518133e6"
+    },
+    {
+      "path": "src/flydrones/connectome_training/curriculum.py",
+      "bytes": 10762,
+      "sha256": "28e5cc446dc82923e9c2050a3c5b867fdab2d939253c6f7d378e925e1258368d"
+    },
+    {
+      "path": "src/flydrones/connectome_training/curriculum_session.py",
+      "bytes": 16234,
+      "sha256": "493816d42d6e74ed90d9e2da7aa618a806e7717203d4cb152592043370cc3cdf"
+    },
+    {
+      "path": "src/flydrones/connectome_training/dataset.py",
+      "bytes": 11618,
+      "sha256": "c8a1d338d31fa2690d710b724e5a7f5ece6bd08861032b8218fbbe0174d53021"
+    },
+    {
+      "path": "src/flydrones/connectome_training/features.py",
+      "bytes": 5625,
+      "sha256": "6c1881e9ff5a060d9af842f7c60601b62e22576ca16c61baf0545cd9ff6dd6f1"
+    },
+    {
+      "path": "src/flydrones/connectome_training/losses.py",
+      "bytes": 1957,
+      "sha256": "d46724e8750efdc8d86afaf164c304485111d09ab461a6ecd53bc390c0789eaa"
+    },
+    {
+      "path": "src/flydrones/connectome_training/model.py",
+      "bytes": 10265,
+      "sha256": "81b2c4cfbc947d239794b3d3b8ed1e1c3f4d473cec2c82a6ad5e15561f63265c"
+    },
+    {
+      "path": "src/flydrones/connectome_training/parameters.py",
+      "bytes": 12411,
+      "sha256": "5c0c7e7c1f21103b0c338d2e74022667235517c8aa91e14bfc4079528e31cb83"
+    },
+    {
+      "path": "src/flydrones/connectome_training/trainer.py",
+      "bytes": 6002,
+      "sha256": "6c90c2bc7796bc06c848f01f0ab00e424e6c77f69f209900dbef709e43e42820"
+    },
+    {
+      "path": "tests/connectome_training/conftest.py",
+      "bytes": 1260,
+      "sha256": "6a163e598e4011dd4efac9b8c896e5bafda4244112deaf7467125be479844ae1"
+    },
+    {
+      "path": "tests/connectome_training/test_curriculum.py",
+      "bytes": 9480,
+      "sha256": "7d115a49a9cd331d459051e1178e2627cbc99de860eeb8cc893e9055e9136776"
+    },
+    {
+      "path": "tests/connectome_training/test_model.py",
+      "bytes": 7380,
+      "sha256": "f7479bf3585b43cb38928679d1dd02ec42d669021b4268c2ef2c27f5258a8662"
+    },
+    {
+      "path": "tests/connectome_training/test_trainer.py",
+      "bytes": 4412,
+      "sha256": "4e872ec9b6b711be6be53b12206415797112419f711a22de9f79b955feab9861"
+    },
+    {
+      "path": "tests/connectome_training/test_windowed_training.py",
+      "bytes": 11239,
+      "sha256": "5a753c9914c0b54e75d020036fe1c241bac40f9b182c6600e4a8759290356bbc"
+    },
+    {
+      "path": "tools/benchmark/software_process_boundary.py",
+      "bytes": 1737,
+      "sha256": "1aced69a1cd810728c0bf557cc272a5bd43a94ababc31bb6ba33de791fd139a1"
+    }
+  ],
+  "private_excluded": [
+    {
+      "path": "results/target-bearing-runtime-freeze-v4-dev-1701/LOCAL_UNPUBLISHED-admission-1.json",
+      "bytes": 152997,
+      "sha256": "ae6abb38478faf18008b753546dd6adfb9f788381963e1af2e0b0968747ee55c"
+    },
+    {
+      "path": "results/target-bearing-runtime-freeze-v4-dev-1701/LOCAL_UNPUBLISHED-metadata-001.json",
+      "bytes": 15954,
+      "sha256": "bd08a89786f0b9fb0fc9be86c80f90cf92853ffd23d497a0244a5cff692e9d43"
+    },
+    {
+      "path": "results/target-bearing-runtime-freeze-v4-dev-1701/LOCAL_UNPUBLISHED-metadata-002.json",
+      "bytes": 542,
+      "sha256": "12ff95b516c87fa508336fc3757a76bc4dabeb74cebfdc6d9e30bc8dedbccd44"
+    }
+  ],
+  "nonempty_private_argv_hashes": 202,
+  "private_allrow_triples": 475,
+  "json_scanned": 119,
+  "scope": "TinyCPU backwardproduction/software only;no fullMaleCNS/targetnative/resources;publicationpending"
+}
