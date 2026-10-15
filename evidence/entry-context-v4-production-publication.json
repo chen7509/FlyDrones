@@ -1,0 +1,108 @@
+{
+  "schema": "entry-context-v4-production-publication-v1",
+  "software_commit": "72558a3075c994d839a8b227315bf38165c3d327",
+  "archive": {
+    "archive": "evidence/entry-context-v4-production-dev-1701.zip",
+    "bytes": 19800282,
+    "sha256": "9606665a8713c056b85682b37d47e19e0a75dc4f6d96e3fb8d402015e7385b60",
+    "members": 3898,
+    "mapped_members": 3897,
+    "manifest_sha256": "d079875929ccfb1f7bad4973325bbcd10a363aa273b83f8bb39caf908081eeb3",
+    "scope": "Task2 first2software boxesdone,lastpublicationpending;Task3..5pending;receipt/audit/publication/helpers outside sealed set"
+  },
+  "archive_plan_sha256": "27cdf147503229988af357fc6e68b35925dbd44a446ccb9df5650c4b670d2833",
+  "postpublication_plan_sha256": "71b31d4af525b38d272b97502449f74d89b0a15c7308b7f4d14da3379bf9f3d2",
+  "plan_changed_byte_offsets": [
+    5904
+  ],
+  "plan_change": "Task2 software review/seal/publication only;Task3..5 all pending;no runtime freeze or native dispatch",
+  "working_vs_git_normalized": [
+    {
+      "path": "tools/benchmark/native_entry_context_v4.py",
+      "working_archive_sha256": "e84a4e9258b0d159b9c47b2fe98d3ce9c5d0cabc600cea2d745c1cdc72d184f2",
+      "git_normalized_blob_sha256": "e84a4e9258b0d159b9c47b2fe98d3ce9c5d0cabc600cea2d745c1cdc72d184f2",
+      "bytes": 60969
+    },
+    {
+      "path": "tests/benchmark/test_native_entry_context_v4.py",
+      "working_archive_sha256": "528c7bed4e19be6bfc60b0a2f22f13d307c5afc96542274a9ea39ed1616f701c",
+      "git_normalized_blob_sha256": "528c7bed4e19be6bfc60b0a2f22f13d307c5afc96542274a9ea39ed1616f701c",
+      "bytes": 37720
+    },
+    {
+      "path": "docs/TARGET_BEARING_ENTRY_CONTEXT_V4_PRODUCTION_REPORT.md",
+      "working_archive_sha256": "65bf5348ea2e2a46b0bbae14c61548881ddc0a9749e026185fed2fa8c96b53bd",
+      "git_normalized_blob_sha256": "65bf5348ea2e2a46b0bbae14c61548881ddc0a9749e026185fed2fa8c96b53bd",
+      "bytes": 9958
+    },
+    {
+      "path": "docs/superpowers/plans/2026-10-15-loader-selected-path-production.md",
+      "working_archive_sha256": "27cdf147503229988af357fc6e68b35925dbd44a446ccb9df5650c4b670d2833",
+      "git_normalized_blob_sha256": "27cdf147503229988af357fc6e68b35925dbd44a446ccb9df5650c4b670d2833",
+      "bytes": 12349
+    },
+    {
+      "path": "evidence/entry-context-v4-production-dev-1701.zip",
+      "working_archive_sha256": "9606665a8713c056b85682b37d47e19e0a75dc4f6d96e3fb8d402015e7385b60",
+      "git_normalized_blob_sha256": "9606665a8713c056b85682b37d47e19e0a75dc4f6d96e3fb8d402015e7385b60",
+      "bytes": 19800282
+    },
+    {
+      "path": "evidence/entry-context-v4-production-dev-1701.sha256.json",
+      "working_archive_sha256": "d079875929ccfb1f7bad4973325bbcd10a363aa273b83f8bb39caf908081eeb3",
+      "git_normalized_blob_sha256": "d079875929ccfb1f7bad4973325bbcd10a363aa273b83f8bb39caf908081eeb3",
+      "bytes": 992020
+    }
+  ],
+  "initial_independent_review": {
+    "C": 0,
+    "I": 4,
+    "M": 1,
+    "path": "results/entry-context-v4-production-dev-1701/independent-review.md",
+    "sha256": "215c96de2753eab2eccd2228a7809b5a3b3ab69a65d4576d61dd75a3944dcd91"
+  },
+  "executor_fix_pass": {
+    "single_pass": true,
+    "lifecycle_minor_treated_required": true,
+    "initial_review_red": "5fail1pass writer masked by serialized-order issue",
+    "roundtrip_red": "1fail",
+    "unmasked_writer_red": "1fail3pass",
+    "witness_interface": "5missinginterface",
+    "witness_typo": "3UnboundLocalError5pass",
+    "prepared_terminal_red": "1DIDNOTRAISE7pass",
+    "final": "77passed57.23s before2fileformat;postformatRuff0",
+    "neighbor": "13pass2WindowsPOSIXskip.28s",
+    "whole_code_review_repeated": false
+  },
+  "independent_deliverable_audit": {
+    "path": "results/entry-context-v4-production-dev-1701/independent-archive-audit.md",
+    "sha256": "50f13ec6c68dd9f48c74588e33c41bb89fcefd2599b2f7bef5010002b6ace675",
+    "text": "# Independent Task2 deliverable and archive audit\n\nVerdict: **C0 / I0 / M0 within the deliverable/archive scope.** No deliverable correction is requested. This verdict does not replace the original code review, independently close its implementation findings, or approve a native dispatcher.\n\nAuditor: `/root/review_entry_context_v4`. Reviewed the canonical production report before checking the archive, then the approved plan, retained initial review, fix-pass scope, seal receipt, manifest, retained run records and output. Executed only a new host-local archive/hash verifier using standard-library file reads. No tests, product imports, Linux/WSL commands, target metadata/control commands, SDK execution, source changes, index changes, or archive rewriting were performed. The verifier and this audit's JSON/report are separate postseal artifacts.\n\n## Archive and exact membership\n\n- Archive: `evidence/entry-context-v4-production-dev-1701.zip`, **19,800,282 bytes**, SHA256 **9606665a8713c056b85682b37d47e19e0a75dc4f6d96e3fb8d402015e7385b60**.\n- Manifest: `evidence/entry-context-v4-production-dev-1701.sha256.json`, **992,020 bytes**, SHA256 **d079875929ccfb1f7bad4973325bbcd10a363aa273b83f8bb39caf908081eeb3**.\n- All **3,898 unique ZIP members** were decompressed and streamed through independent CRC32, byte-count and SHA256 checks. Every member matched ZIP metadata, the external manifest (or the manifest's independently checked identity), and current file bytes.\n- The **3,897 unique mapped members** exactly match `seal-receipt.json`'s preseal set. The ZIP adds exactly the manifest itself. No duplicate or traversing mapped paths were accepted.\n- The audit recorded postseal receipt/publication/staging/helper files separately; these are not silently added to the immutable preseal set. The per-member observed CRC/size/hash/current-byte results are in `independent-archive-audit.json`.\n\n## Private exclusion and preservation\n\nThe local private inventory remains **70,702 bytes**, SHA256 **9baec756322d76fc394b2d1c8039e1eb96fe37405cc1a51a0be5f03b216f23c3**, matching the public derivative and manifest exclusion. Its pathname is absent from both mapped and ZIP members. Every ZIP member was scanned for the **204 distinct nonempty private argv hashes**; no match was found. Parsed JSON members were recursively checked against **464 distinct private PID/name/argv-hash triples**; no match was found. **3,568 JSON members** parsed successfully for that structural check. Private inventory records, identities and hash needles were not emitted into the audit outputs. These are the specified exclusion checks, not a claim of universal privacy detection.\n\nAll **809 listed preexisting product files** still match their retained SHA256 values. All **290 listed historical ZIPs**, totaling **825,381,846 bytes**, still match their retained sizes and SHA256 values. This is a new **POSTsoftware preservation check**, not retroactive pre-dispatch pinning or a new inventory of every untracked historical partial. The sealed source/raw/result/fixture files were verified as current-byte matches, without modifying them.\n\n## Evidence and reporting honesty\n\nThe canonical report and fix-pass note retain the original **C0/I4/M1** review and describe one executor fix pass. They explicitly decline a second whole-code review and native approval. The retained evidence supports the reported sequence:\n\n- Initial review regressions: **5 failed / 1 passed**. The writer negative's initial pass was masked by serialized ordering, and is not represented as a genuine writer refusal.\n- Dedicated serialized roundtrip: **1 failed**. Subsequently unmasked aggregate writer: **1 failed / 3 passed**, with `DID NOT RAISE` retained.\n- Prefix helper interface: **5 failed**. The implementation typo: **3 failed / 5 passed**, with `UnboundLocalError` retained. Subsequently unmasked prepared-terminal writer: **1 failed / 7 passed**, with `DID NOT RAISE` retained.\n- Focused fix checks: **13 passed**. Full affected suite: **77 passed in 57.23s**. The latter occurred **before** formatting the two new files; the report discloses that boundary.\n- Postformat Ruff: **exit 0, All checks passed**. Necessary strict-file neighbor: **13 passed / 2 skipped in 0.28s** on Windows; the source's skip branches concern unavailable symlink operations. The terse retained output does not print their individual exception text.\n- Tracked diff check: **exit 0**, with the retained LF/CRLF advisory preserved. Fix-pass **47 lint errors**, initial interface errors, earlier lint errors, and intermediate failures remain archived.\n\nFor the thirteen inspected fix-pass/verification runs, the archived source snapshots match the recorded before-pins. The before/after pins remain equal for nonmutating checks; the formatter records its changes separately. Exact run argv, times, exit status and output excerpts are included in the audit JSON. The plan keeps Task2's final publication/review checkbox pending and Tasks3–5 pending; no completed runtime freeze or physical qualification is asserted.\n\n## Scope retained for later work\n\nThe prefix/full-SHA connection remains procedural evidence from an observer, not a mathematical prefix-to-digest proof or source authentication. Pending Task3 must independently observe and bind the baseline witness artifact and its provenance; copying a bill witness does not establish independence. Cross-host query/terminal artifact transport remains pending. Terminal publication is software metadata commitment, not Task4 SDK admission, durability certification or hostile-race protection; uncertain publication outcomes require actual terminal evidence.\n\nDeclined to judge: fixed implementation correctness after the executor pass; actual Linux loader/path/import/relocation/render/Agent behavior; cold-import/FFI containment; native resource observations or admission; bootstrap/receipt integration; full runtime closure; physical dispatch and all eight qualification flags. No Linux acceptance is inferred from inert Windows protocols, fixture identities, host software test success, or archive integrity.\n\nMachine evidence: `independent-archive-audit.json`; verifier: `independent_archive_audit.py` (SHA256 **0f4523801d1d9d0a4fc470d733d4f05cc383f6c5f8e29380d9ece4d139a20787**). The machine audit reported **zero verification errors**. These new audit artifacts are outside the original sealed ZIP.\n"
+  },
+  "historical_zip_count": 290,
+  "historical_zip_bytes": 825381846,
+  "historical_sha_unchanged": true,
+  "historical_audit_scope": "POSTsoftware,not prepin",
+  "old_product_count": 809,
+  "all_old_product_byte_same": true,
+  "baseline_witness_scope": "Task3 must independently observe and bind byte-witness baseline artifact digest/provenance;not bill-derived independence or cryptographic prefix proof",
+  "terminal_scope": "closed/readback staged receipt then exclusive atomic link metadata commit;not SDK admission;actual Linux primitive untested;uncertain publish requires actual audit",
+  "consumed_v3_status": "CONSUMED_FAILED_UNADMITTED_HARNESS_ESCAPE",
+  "escaped_closure": "UNKNOWN",
+  "v4_native_dispatch": false,
+  "v4_fixed_study_claim_scope": false,
+  "physical_fixed_attempt": false,
+  "qualification": {
+    "source": false,
+    "clock": false,
+    "measured_calibration": false,
+    "accuracy": false,
+    "teacher": false,
+    "fusion": false,
+    "training": false,
+    "flight": false
+  },
+  "runtime_graph_frozen": false,
+  "physical_dispatch_ready": false,
+  "postseal_boundary": "receipt/archiveaudit/stage/publication/PR/automation/NEXT_PHASE helpers separate from immutable canonicalZIP"
+}

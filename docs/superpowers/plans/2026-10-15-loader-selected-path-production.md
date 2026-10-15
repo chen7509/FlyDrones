@@ -40,7 +40,7 @@ Interfaces: `discover_entry_context_v4(entries: dict, candidates: list, python_c
 
 - [x] Write real producer tests: retained NumPy query63/64 text with typed identity backend retains three raw `..` spellings/all ten file lines; missing/error/extra/partial output refuses. Assert candidate has no ldd call, all aliases retained, only identical explicit invocation/context shares one query, hardlink/origin conflict refuses before call, and selected inode/hash alone does not qualify runtime.
 - [x] Add zero-needed valid/invalid role/ABI/origin/program/symbol/phrase and self-entry membership cases; renderer current Main/Pbs/Planar and Agent loader context remain required. Test timeout/cap/mutation/writer/context-after/final-tool/file observation failures retain primary and partial raw, complete=false with honest unavailable facts. All child protocols inert.
-- [ ] Record RED, implement independently with original256/4096/2MiB/10+5+5 limits, query index before parse and Task1 provenance. Run new file only, then necessary specific contract neighbors; independently review full bill/query/file/context/path joins before committing.
+- [x] Record RED, implement independently with original256/4096/2MiB/10+5+5 limits, query index before parse and Task1 provenance. Run new file only, then necessary specific contract neighbors; independently review full bill/query/file/context/path joins before committing.
 
 ## Task3 — Explicit v4 prepare/study/runtime integration
 
