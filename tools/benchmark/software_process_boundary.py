@@ -18,6 +18,12 @@ def guard_required(path):
     name = Path(path).name
     return (
         name == "test_static_harness_containment.py"
+        or name
+        in {
+            "test_native_loader_paths_v4.py",
+            "test_native_entry_context_v4.py",
+            "test_calibration_capture_study_v4.py",
+        }
         or re.fullmatch(r"test_calibration_static_v[0-9]+_executor\.py", name) is not None
     )
 
