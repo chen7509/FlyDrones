@@ -24,4 +24,4 @@ Files: create src/flydrones/connectome_training/training_roles.py; modify curric
 
 - [x] Write tiny behavior tests for actual active/frozen updates, checkpoint/inference/CLI role binding and drift. Run and retain genuine missing-interface/behavior failures; no real child or target run to demonstrate RED.
 - [x] Implement supported role configuration, frozen tensor identities, actual optimizer checks, new session identity/checkpoint joins, explicit inference/legacy distinction and CLI routing. Run affected tests and required tiny checkpoint/inference/curriculum neighbors, Ruff/diffcheck; no full repository/CLI/native suite.
-- [ ] One independent source review, one bounded executor fix pass, honest report/canonical seal/independent delivery audit, onlypersonal commit/push/PR exact readback, automationACTIVE/full history preserved.
+- [x] One independent source review, one bounded executor fix pass, honest report/canonical seal/independent delivery audit, onlypersonal commit/push/PR exact readback, automationACTIVE/full history preserved.
