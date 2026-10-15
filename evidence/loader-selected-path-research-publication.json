@@ -1,0 +1,330 @@
+{
+  "schema": "loader-selected-path-research-publication-v1",
+  "research_commit": "dab64d367b7ace1b5e97e048bf51db36a480ca42",
+  "archive": {
+    "archive": "evidence/loader-selected-path-research-dev-1701.zip",
+    "sha256": "58e21898abd5de662fe17e1aba2a1c803551ff38ad2ceefcc458306997ae9a0b",
+    "bytes": 1376904,
+    "members": 123,
+    "mapped_members": 122,
+    "manifest_sha256": "bf5089d3a9b3b5062a49467317a4361e81cf3eb5649459c1478d518cae79b5a5",
+    "nonempty_private_argv_hashes": 190,
+    "scope": "prepublication research/design; new production all pending, all qualification/readiness false"
+  },
+  "archive_plan_sha256": "378fd7f8ac1055eaf9d2a1d109d1eeb1652a071a681a7a50baa0555836594294",
+  "postpublication_plan_sha256": "6b57870c103870b5e38e2cdb9e0280f496f1ca9fc12538db7b3b77cd8d5dac87",
+  "plan_changed_byte_offsets": [
+    852
+  ],
+  "plan_change": "Only previous containment-plan Task3 retained-path research/design publication complete; all16 new production checkboxes and full runtime freeze/physical remain pending",
+  "working_vs_git_normalized": [
+    {
+      "path": "docs/TARGET_BEARING_LOADER_SELECTED_PATH_RESEARCH_REPORT.md",
+      "working_archive_sha256": "74fee8958e2805685edce7c6ff3526d9efa47661a591a2971282e0786ab4b567",
+      "git_normalized_blob_sha256": "74fee8958e2805685edce7c6ff3526d9efa47661a591a2971282e0786ab4b567"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-10-15-loader-selected-path-production.md",
+      "working_archive_sha256": "b0ea3219a61b898668486ab5804f3b9fb191e1c0dc4ee582a0d942978db92908",
+      "git_normalized_blob_sha256": "b0ea3219a61b898668486ab5804f3b9fb191e1c0dc4ee582a0d942978db92908"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-10-15-loader-selected-path-production-design.md",
+      "working_archive_sha256": "299d953edcd6f86bc634dd3ad53e85c66c3518455e8aa186680640b9ec232e86",
+      "git_normalized_blob_sha256": "299d953edcd6f86bc634dd3ad53e85c66c3518455e8aa186680640b9ec232e86"
+    },
+    {
+      "path": "evidence/loader-selected-path-research-dev-1701.sha256.json",
+      "working_archive_sha256": "bf5089d3a9b3b5062a49467317a4361e81cf3eb5649459c1478d518cae79b5a5",
+      "git_normalized_blob_sha256": "bf5089d3a9b3b5062a49467317a4361e81cf3eb5649459c1478d518cae79b5a5"
+    },
+    {
+      "path": "evidence/loader-selected-path-research-dev-1701.zip",
+      "working_archive_sha256": "58e21898abd5de662fe17e1aba2a1c803551ff38ad2ceefcc458306997ae9a0b",
+      "git_normalized_blob_sha256": "58e21898abd5de662fe17e1aba2a1c803551ff38ad2ceefcc458306997ae9a0b"
+    }
+  ],
+  "postseal_reviews": [
+    {
+      "path": "results/loader-selected-path-research-dev-1701/independent-review.json",
+      "sha256": "b9fe43dcd51f1f63c426c801c235bcb782242d7795d3e88f59d4623a7e016472",
+      "bytes": 5465,
+      "retained_content": {
+        "schema": "loader-selected-path-independent-research-review-v1",
+        "scope": "Read-only research/design review only; no implementation, native dispatch, target identity, source/runtime qualification, or archive seal approval",
+        "base_head": "14437b39a25473e7661f649aac6eedd94a6721da",
+        "verdict": "changes_requested",
+        "initial_counts": {
+          "minor": 1,
+          "critical": 0,
+          "important": 1
+        },
+        "findings": [
+          {
+            "detail": "The spec places before-project/JSON/SDK validation in static_v4_bootstrap, while Task3 only requires a validated ticket before real preparation effects and exposes prepare_v4(ticket). Direct python -m preparation or ordinary import executes module top-level code before that callable can validate a ticket. The no-generic-CLI-bypass statement does not specify an inert module top level, an audited pre-import guard on direct routes, or a test that direct -m/import refuses before JSON/SDK imports and output. Thus an implementation can satisfy the listed callable tests yet retain the earlier import-before-admission route.",
+            "severity": "Important",
+            "requested_change": "Specify and test an inert preauthorization top level for preparation and any effectful study entry; direct CLI/import must fail or remain inert before JSON/project/SDK imports, output, or child/query effects. Define how the primitive validated ticket is bound to the later callable, without a truthy/caller-made dict serving as authorization. Add direct-route before-import/effect refusal coverage with inert protocols.",
+            "file": "docs/superpowers/plans/2026-10-15-loader-selected-path-production.md",
+            "title": "Require the before-import authorization boundary on every preparation entry route",
+            "id": "I1",
+            "line": 49
+          },
+          {
+            "detail": "candidate_inputs is null although the retained bill has145 input_candidates. audit-retained-trace.py line31 reads bill.inputs.candidates conditionally, a schema path absent from this bill. The report count145 itself is correct.",
+            "severity": "Minor",
+            "requested_change": "Preserve this initial null audit/helper as historical research output and add a correction deriving145 from bill.input_candidates; bind the correction to the same bill/query/archive SHA. Do not replay consumed producers.",
+            "file": "results/loader-selected-path-research-dev-1701/retained-trace-audit.json",
+            "title": "Retained audit loses the candidate-input count",
+            "id": "M1",
+            "line": 429
+          }
+        ],
+        "checks": {
+          "bill_complete": false,
+          "upstream_tree_sha": "c4dee33796321547167f05c82b550f7cded262b1",
+          "archive_sha256": "9368f59c76e9fde2833b693321d2f91896e8ff6d7dc5387679296135c64df7b5",
+          "upstream_tree_truncated": false,
+          "source_semantics_reviewed": [
+            "_dl_dst_substitute ordinary-copy and conditional secure normalization",
+            "open_path/open_verify requested spelling and CLOEXEC read-only open",
+            "dl-object absolute shared-object origin spelling",
+            "rtld trace l_name",
+            "POSIX fileid fstat dev/inode",
+            "canonicalize symlink target insertion before suffix and directory requirements"
+          ],
+          "product_before_rows": 807,
+          "embedded_raw_query_joins_match": true,
+          "embedded_raw_query_count": 64,
+          "retained_current_archive_members": 70,
+          "product_before_current_matches": true,
+          "bill_file_count": 463,
+          "upstream_all_size_sha256_gitblob_tree_matches": true,
+          "retained_all_size_sha256_matches": true,
+          "candidate_input_count": 145,
+          "upstream_tree_members": 20266,
+          "upstream_file_count": 10
+        },
+        "invariants": {
+          "physical_dispatch_ready": false,
+          "escaped_closure": "UNKNOWN",
+          "production_implemented": false,
+          "v3": "CONSUMED_FAILED_UNADMITTED_HARNESS_ESCAPE",
+          "all_qualifications": false,
+          "runtime_graph_frozen": false
+        },
+        "operations": "Only local file/source/JSON/ZIP reads and local hashes; no tests, target imports, WSL, resource/process/permission/network probes, target native metadata or consumers; no product/doc/raw-actual mutations",
+        "reviewed_files": [
+          {
+            "sha256": "77511965a9697888c6c800ed3220da1e24f5c4107fa86ec9883c8f89ea3338b7",
+            "path": "docs/TARGET_BEARING_LOADER_SELECTED_PATH_RESEARCH_REPORT.md"
+          },
+          {
+            "sha256": "fa4313f7c826b406f1d82455047a53cb78f428097469ebfe38f5527323fadfc1",
+            "path": "docs/superpowers/specs/2026-10-15-loader-selected-path-production-design.md"
+          },
+          {
+            "sha256": "59839cba363b3449b3a7daf7c96c0b4fdd5bbd3898237c0316888b812be1b2db",
+            "path": "docs/superpowers/plans/2026-10-15-loader-selected-path-production.md"
+          },
+          {
+            "sha256": "2c120e9e512562296abdb73bc4df57ba45a43158cdc0d10ab18663901904c493",
+            "path": "results/loader-selected-path-research-dev-1701/RESEARCH_SCOPE.md"
+          },
+          {
+            "sha256": "b5c1c7251d327a1fa522c576421142b44d3aa1ea81c595fc0ee22bdaeacdf347",
+            "path": "results/loader-selected-path-research-dev-1701/primary-source-audit.json"
+          },
+          {
+            "sha256": "9de2a1daada3d83e812ca43c810302d5ad2b8d21fcf13fcf2f92cb988b334c18",
+            "path": "results/loader-selected-path-research-dev-1701/retained-trace-audit.json"
+          },
+          {
+            "sha256": "01c94ca3f0d1466f4260c526ba4649daf0508225c1c7d7457a7ab1748deda039",
+            "path": "results/loader-selected-path-research-dev-1701/product-before.json"
+          }
+        ]
+      }
+    },
+    {
+      "path": "results/loader-selected-path-research-dev-1701/followup-review.json",
+      "sha256": "78ca7e867a8ae7838f4faf9ec93fe4fc32e3bb2ddda40c4e670e8e3ff5978cc4",
+      "bytes": 3557,
+      "retained_content": {
+        "schema": "loader-selected-path-independent-followup-review-v1",
+        "scope": "Research/design/data followup only; not implementation, source/runtime qualification, native dispatch approval or archive seal approval",
+        "verdict": "research_design_findings_addressed",
+        "initial_findings_preserved": {
+          "minor": 1,
+          "important": 1,
+          "json_sha256": "b9fe43dcd51f1f63c426c801c235bcb782242d7795d3e88f59d4623a7e016472",
+          "md_sha256": "2dfb67a560c2e5d05558d018d7fdfdbef034c07d3ca06a0fa34cefc6daef73b1",
+          "critical": 0
+        },
+        "current_counts": {
+          "minor": 0,
+          "important": 0,
+          "critical": 0
+        },
+        "resolution": [
+          {
+            "id": "I1",
+            "evidence": "Explicit primitive-only inert prepare/study top levels, direct __main__ refusal, deferred imports after literal-receipt/current-own-scope/PID ticket-reference validation, same SDK PID preparation/publication, direct-route inert import/file/process-trap coverage, and pre-gate primitive firstfacts/control. No callable dict authenticity or arbitrary Python sandbox claim.",
+            "status": "addressed in specification/plan only"
+          },
+          {
+            "id": "M1",
+            "evidence": "Correction audit SHA equals original retained audit and its initial-review pin; correction bill SHA equals retained bill; input_candidates count145 matches. Original audit candidate_inputs=null and helper are retained.",
+            "status": "addressed by additive correction"
+          }
+        ],
+        "checks": {
+          "product_before_rows_rechecked": 807,
+          "source_sha_pins_rechecked": 10,
+          "original_audit_unchanged": true,
+          "correction_count_matches": true,
+          "correction_bill_sha_match": true,
+          "source_sha_pin_mismatches": 0,
+          "product_changes": 0,
+          "candidate_count": 145,
+          "correction_original_audit_sha_match": true
+        },
+        "reasoning": "The specified guards are feasible using audited primitive code/definitions and sys inspection before deferred serializers/project/SDK. Exact receipt/current-scope/PID joins make caller shape alone insufficient within the stated controlled-directory model; dictionary creation history is not asserted. Source semantics were reviewed in the initial independent review and source SHA pins remain identical. All production protections and software/native acceptance remain pending.",
+        "invariants": {
+          "production_implemented": false,
+          "v3": "CONSUMED_FAILED_UNADMITTED_HARNESS_ESCAPE",
+          "runtime_graph_frozen": false,
+          "escaped_closure": "UNKNOWN",
+          "all_qualifications": false,
+          "physical_dispatch_ready": false
+        },
+        "operations": "Only local text/JSON reads and local SHA256; no tests, selected imports, WSL/resource/process/permission/network/target-native commands; additive followup pair only",
+        "reviewed_files": [
+          {
+            "path": "docs/TARGET_BEARING_LOADER_SELECTED_PATH_RESEARCH_REPORT.md",
+            "sha256": "74fee8958e2805685edce7c6ff3526d9efa47661a591a2971282e0786ab4b567"
+          },
+          {
+            "path": "docs/superpowers/specs/2026-10-15-loader-selected-path-production-design.md",
+            "sha256": "299d953edcd6f86bc634dd3ad53e85c66c3518455e8aa186680640b9ec232e86"
+          },
+          {
+            "path": "docs/superpowers/plans/2026-10-15-loader-selected-path-production.md",
+            "sha256": "b0ea3219a61b898668486ab5804f3b9fb191e1c0dc4ee582a0d942978db92908"
+          },
+          {
+            "path": "results/loader-selected-path-research-dev-1701/retained-trace-audit-correction.json",
+            "sha256": "831ba277f3bc7c47ecdf790c55d63ee29e15fcb0a00f5d160799bc0871b4a80f"
+          }
+        ]
+      }
+    },
+    {
+      "path": "results/loader-selected-path-research-dev-1701/independent-archive-audit.json",
+      "sha256": "46ed73762c6167e81503b7c57f76daf20328cd75b7147200b88726b8898aadee",
+      "bytes": 3916,
+      "retained_content": {
+        "schema": "independent-loader-path-research-archive-audit-v1",
+        "scope": "Canonical research/design archive integrity and preservation only; no product implementation, source/runtime/native qualification or dispatch approval",
+        "verdict": "bounded_archive_checks_pass",
+        "findings": {
+          "important": 0,
+          "minor": 0,
+          "critical": 0
+        },
+        "archive": {
+          "path": "evidence/loader-selected-path-research-dev-1701.zip",
+          "sha256": "58e21898abd5de662fe17e1aba2a1c803551ff38ad2ceefcc458306997ae9a0b",
+          "receipt_sha256": "4198de092612614542f6c5002b9620274d1f97d44c3a58a706e564dafe976883",
+          "uncompressed_bytes": 8076606,
+          "bytes": 1376904,
+          "mapped_members": 122,
+          "members": 123,
+          "manifest_sha256": "bf5089d3a9b3b5062a49467317a4361e81cf3eb5649459c1478d518cae79b5a5"
+        },
+        "integrity": {
+          "member_current_byte_failures_at_audit": 0,
+          "crc_failures": 0,
+          "regular_unix_file_attribute_members": 123,
+          "unsafe_name_or_scope_violations": 0,
+          "member_sha256_map_failures": 0,
+          "manifest_current_zip_receipt_sha_match": true,
+          "crc_checked_members": 123,
+          "decompressed_size_failures": 0,
+          "special_symlink_entries": 0,
+          "preseal_exact_set_map_diff": 0,
+          "missing_extra_duplicate_names": 0
+        },
+        "privacy": {
+          "scope": "Exact retained identity/hash/triple checks only; not a universal privacy proof",
+          "json_members_scanned": 91,
+          "excluded_path": "results/loader-selected-path-research-dev-1701/initial-resource-private.json",
+          "private_path_or_payload_in_zip": false,
+          "unique_nonempty_argv_hash_needles": 190,
+          "excluded_sha256": "276092312da81066f0ef32c0b1029b6316c095543d986589267f1be37865e9a0",
+          "argv_hash_hits": 0,
+          "identity_matches_manifest": true,
+          "private_rows": 446,
+          "excluded_bytes": 68090,
+          "pid_name_argv_compound_hits": 0
+        },
+        "preservation": {
+          "original_independent_review_and_followup_in_archive": true,
+          "zip_containment_research_checkbox_pending": true,
+          "historical_exact_set_diff_excluding_new_research_zip": 0,
+          "historical_archive_bytes": 822394659,
+          "original_null_audit_and_additive_correction_in_archive": true,
+          "prior_postfailure_archives": 287,
+          "zip_production_checked_boxes": 0,
+          "zip_production_pending_boxes": 16,
+          "product_before_after_exact": true,
+          "historical_current_hash_size_failures": 0,
+          "historical_archives": 288,
+          "prior_plus_failure_join_failures": 0,
+          "product_current_hash_size_failures": 0,
+          "product_before_after_rows": 807
+        },
+        "tool_only_observations": [
+          "An initial reflection CRC helper rejected zero-length initial-readonly.stderr and left a spurious check result. The corrected audit treats empty CRC as0 and rechecked every123 member successfully; no archive bytes changed.",
+          "An initial unsigned cast of signed ZIP ExternalAttributes produced conversion errors. A corrected signed-shift/bitmask checked all123 entries as regular-file type32768 with zero special/symlink entries. These are audit-tool errors, not archive/native failures."
+        ],
+        "boundary": "Postseal receipt, independent archive audit, publication helpers/staging/PR/automation outputs are outside the canonical prepublication ZIP by design. Later research-publication checkbox or ledger changes require a separate recorded publication boundary; no ZIP/source rewrite is authorized.",
+        "operations": "Read-only local file/JSON/ZIP/hash and attribute arithmetic only; no tests, target imports, WSL/process/resource/permission/network/native consumer commands. Only this additive archive-audit pair was written.",
+        "invariants": {
+          "all_qualifications": false,
+          "runtime_graph_frozen": false,
+          "new_production": "pending",
+          "v3": "CONSUMED_FAILED_UNADMITTED_HARNESS_ESCAPE",
+          "physical_dispatch_ready": false,
+          "escaped_closure": "UNKNOWN"
+        }
+      }
+    }
+  ],
+  "old_archives": {
+    "count": 288,
+    "bytes": 822394659,
+    "all_sha_unchanged": true,
+    "scope": "POSTresearch preservation, not prepin"
+  },
+  "product_source_unchanged": 807,
+  "consumed_v3_status": "CONSUMED_FAILED_UNADMITTED_HARNESS_ESCAPE",
+  "escaped_closure": "unknown",
+  "research_only": true,
+  "product_implementation": false,
+  "tests_run": 0,
+  "new_native_target_commands": 0,
+  "new_v4_study_claim_scope": false,
+  "qualification": {
+    "source": false,
+    "clock": false,
+    "measured_calibration": false,
+    "accuracy": false,
+    "teacher": false,
+    "fusion": false,
+    "training": false,
+    "flight": false
+  },
+  "runtime_graph_frozen": false,
+  "physical_dispatch_ready": false,
+  "postseal_boundary": "receipt/readback/archive review/stage/publication/PR/automation helpers are outside canonical prepublication ZIP; original helper/null count/source/raw/canonical files unchanged except separately recorded plan checkbox"
+}
