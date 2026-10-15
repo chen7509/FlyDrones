@@ -236,36 +236,46 @@ def load_sequence(path: str | Path) -> TrainingSequence:
         required.add("teacher_horizon_valid")
     if manifest["schema"] == SCHEMA_V3:
         required.add("depth_valid")
-    with np.load(samples, allow_pickle=False) as arrays:
-        if set(arrays.files) != required:
+    with np.load(samples, allow_pickle=False) as compressed:
+        if set(compressed.files) != required:
             raise ValueError("samples.npz keys do not match the student/teacher contract")
-        sample_count = int(arrays["sim_ns"].shape[0])
+        times = compressed["sim_ns"]
+        sample_count = int(times.shape[0])
         if manifest["samples"] != sample_count:
             raise ValueError("sequence sample count mismatch")
+        # NpzFile does not cache decoded members: per-frame indexing would
+        # decompress a complete image stack once for every frame. Decode each
+        # member once, retain owned rows, then release its full stack before
+        # decoding the next member. This still materializes the whole sequence.
+        arrays = {"sim_ns": times}
+        for name in sorted(required - {"sim_ns"}):
+            values = compressed[name]
+            arrays[name] = [row.copy() for row in values]
+            del values
         frames = [
             SequenceFrame(
                 int(arrays["sim_ns"][i]),
                 int(arrays["frame_ns"][i]),
-                arrays["rgb"][i].copy(),
-                arrays["depth_m"][i].copy(),
-                arrays["position_enu"][i].copy(),
-                arrays["velocity_enu"][i].copy(),
+                arrays["rgb"][i],
+                arrays["depth_m"][i],
+                arrays["position_enu"][i],
+                arrays["velocity_enu"][i],
                 float(arrays["yaw"][i]),
                 float(arrays["yaw_rate"][i]),
-                arrays["goal_enu"][i].copy(),
-                (arrays["depth_valid"][i].copy()
+                arrays["goal_enu"][i],
+                (arrays["depth_valid"][i]
                  if manifest["schema"] == SCHEMA_V3 else None),
             )
             for i in range(sample_count)
         ]
         targets = [
             TeacherTarget(
-                arrays["teacher_velocity_enu"][i].copy(),
+                arrays["teacher_velocity_enu"][i],
                 float(arrays["teacher_yaw_rate"][i]),
-                arrays["teacher_horizon_enu"][i].copy(),
+                arrays["teacher_horizon_enu"][i],
                 float(arrays["teacher_minimum_clearance_m"][i]),
                 bool(arrays["teacher_terminal"][i]),
-                (arrays["teacher_horizon_valid"][i].copy()
+                (arrays["teacher_horizon_valid"][i]
                  if manifest["schema"] in (SCHEMA_V2, SCHEMA_V3) else
                  np.ones(arrays["teacher_horizon_enu"][i].shape[0], np.bool_)),
             )
