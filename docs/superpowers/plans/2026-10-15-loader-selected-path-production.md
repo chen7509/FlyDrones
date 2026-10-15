@@ -30,7 +30,7 @@ Interfaces: `record_selected_path(raw_path: str, *, trace_origin: dict) -> dict`
 
 - [x] Add new filenames to guarded unit policy before any new RED. Write inert backend assertions that omitted subprocess/os stubs cannot reach a backend; no-call inspection verifies autouse installation. Audit module collection imports separately.
 - [x] Write tests for `/fixture/link/../lib` with link→`/other/nested`, asserting physical result `/other/lib`, raw unchanged, exact link/component events and original-spelling open; regular-file/`..` refuses with no canonical success. Add relative/empty/control/leading-double-slash, dangling/loop/>40link/>4096event/>4095byte, nonregular, mutation/hash/path-fd disagreement and missing/token-mismatched TraceOrigin cases. Platform fixtures/skip must be explicit; no target-system filesystem probe.
-- [ ] Run only `python -m pytest tests/benchmark/test_native_loader_paths_v4.py -q` with exact recorder source/env/argv/exclusive fixtures; retain genuine interface/behavior failures. Implement ordered traversal, original-spelling owned descriptor,64KiB streaming, repeated identity observations and auditor. Require targeted GREEN/Ruff/diff and independent review, then commit onlypersonal.
+- [x] Run only `python -m pytest tests/benchmark/test_native_loader_paths_v4.py -q` with exact recorder source/env/argv/exclusive fixtures; retain genuine interface/behavior failures. Implement ordered traversal, original-spelling owned descriptor,64KiB streaming, repeated identity observations and auditor. Require targeted GREEN/Ruff/diff and independent review, then commit onlypersonal.
 
 ## Task2 — Independent complete entry/context/path bill
 
