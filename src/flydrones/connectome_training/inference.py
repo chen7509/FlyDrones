@@ -158,6 +158,7 @@ class ConnectomeInferenceController:
                 "parameter_origin": self.provenance["parameter_origin"],
                 "learning_profile": self.provenance.get("learning_profile"),
                 "topology_format": self.provenance.get("topology_format"),
+                "dynamics_format": self.provenance.get("dynamics_format"),
                 "full_topology": self.provenance["full_topology"],
                 "model_identity": self.provenance["model_identity"],
                 "feature_profile": self.provenance["feature_profile"],

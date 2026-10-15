@@ -13,7 +13,13 @@ from flydrones.brain.connectome import Connectome
 
 from .checkpoint import load_checkpoint
 from .features import feature_profile_for_names
-from .model import ConnectomeConstrainedCore, topology_identity_suffix, validate_topology_backend
+from .model import (
+    ConnectomeConstrainedCore,
+    dynamics_identity_suffix,
+    topology_identity_suffix,
+    validate_dynamics_backend,
+    validate_topology_backend,
+)
 from .parameters import FULL_CONNECTIONS, FULL_NEURONS, load_parameter_set, parameter_mapping_digest
 from .training_roles import (
     capture_learning_initialization,
@@ -54,6 +60,7 @@ def load_inference_core(
     checkpoint_identity: CheckpointIdentity | None = None,
     learning_profile: str | None = None,
     topology_format: str = "coo_reference",
+    dynamics_format: str = "clipped-euler-v1",
 ) -> LoadedInferenceCore:
     """Ordinary file-drift detection, not hostile-concurrent-mutation protection.
 
@@ -61,6 +68,7 @@ def load_inference_core(
     boundary against a caller mutating Python objects after loading.
     """
     topology_suffix = topology_identity_suffix(topology_format)
+    dynamics_suffix = dynamics_identity_suffix(dynamics_format)
     if mode not in {"full-male-cns", "tiny-fixture"}:
         raise ValueError("unsupported inference mode")
     if learning_profile is not None:
@@ -95,7 +103,11 @@ def load_inference_core(
     feature_profile = feature_profile_for_names(parameters.input_features)
     mapping = parameter_mapping_digest(parameters)
     model_mode = "full-male-cns" if mode == "full-male-cns" else "tiny-connectome"
-    model_identity = f"{model_mode}:{identity.model_sha256}:{identity.topology_sha256}:{mapping}:device=cpu" + topology_suffix
+    model_identity = (
+        f"{model_mode}:{identity.model_sha256}:{identity.topology_sha256}:{mapping}:device=cpu"
+        + topology_suffix
+        + dynamics_suffix
+    )
     checkpoint = None
     if checkpoint_identity is not None:
         if before["checkpoint"] != checkpoint_identity.checkpoint_sha256:
@@ -106,12 +118,15 @@ def load_inference_core(
             "topology_sha256": identity.topology_sha256,
             "parameter_mapping_sha256": mapping,
             **({"topology_format": topology_format} if topology_format != "coo_reference" else {}),
+            **({"dynamics_format": dynamics_format} if dynamics_format != "clipped-euler-v1" else {}),
         }
         if learning_profile is None:
             expected_metadata["model_identity"] = model_identity
         checkpoint = load_checkpoint(checkpoint_path, expected_metadata=expected_metadata)
         if checkpoint["metadata"].get("topology_format", "coo_reference") != topology_format:
             raise ValueError("checkpoint metadata mismatch: topology_format")
+        if checkpoint["metadata"].get("dynamics_format", "clipped-euler-v1") != dynamics_format:
+            raise ValueError("checkpoint metadata mismatch: dynamics_format")
         if learning_profile is not None:
             declared = checkpoint["metadata"].get("learning_roles")
             if not isinstance(declared, dict) or declared.get("profile") != learning_profile:
@@ -119,8 +134,11 @@ def load_inference_core(
     # Construction verifies the signed topology and neuron type order against
     # the parameter identity. No checkpoint can provide these fixed buffers.
     backend = {} if topology_format == "coo_reference" else {"topology_format": topology_format}
+    if dynamics_format != "clipped-euler-v1":
+        backend["dynamics_format"] = dynamics_format
     core = ConnectomeConstrainedCore(Connectome.load(source), parameters, **backend)
     validate_topology_backend(core, topology_format)
+    validate_dynamics_backend(core, dynamics_format)
     roles = None
     initialization = None
     if learning_profile is not None:
@@ -173,6 +191,7 @@ def load_inference_core(
             "core_kind": "connectome-constrained-rate-core",
             "mode": mode,
             "topology_format": topology_format,
+            "dynamics_format": dynamics_format,
             "model_identity": model_identity,
             "neurons": identity.neurons,
             "connections": identity.connections,

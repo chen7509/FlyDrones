@@ -66,6 +66,19 @@ class RecurrentState:
 
 
 TOPOLOGY_FORMATS = ("coo_reference", "csr_compact_v1")
+DYNAMICS_FORMATS = ("clipped-euler-v1", "frozen-drive-exponential-v1")
+
+
+def dynamics_identity_suffix(dynamics_format: str) -> str:
+    if type(dynamics_format) is not str or dynamics_format not in DYNAMICS_FORMATS:
+        raise ValueError("unsupported dynamics format")
+    return "" if dynamics_format == "clipped-euler-v1" else f":dynamics={dynamics_format}"
+
+
+def validate_dynamics_backend(model, dynamics_format: str) -> None:
+    dynamics_identity_suffix(dynamics_format)
+    if model.dynamics_format != dynamics_format:
+        raise ValueError("actual dynamics format changed")
 
 
 def topology_identity_suffix(topology_format: str) -> str:
@@ -88,10 +101,13 @@ class ConnectomeConstrainedCore(nn.Module):
         parameter_set: ParameterSet,
         *,
         topology_format: str = "coo_reference",
+        dynamics_format: str = "clipped-euler-v1",
     ):
         super().__init__()
         topology_identity_suffix(topology_format)
         self.topology_format = topology_format
+        dynamics_identity_suffix(dynamics_format)
+        self.dynamics_format = dynamics_format
         expected = build_structure_identity(connectome, parameter_set.identity.model_sha256)
         actual = parameter_set.identity
         if (
@@ -203,7 +219,14 @@ class ConnectomeConstrainedCore(nn.Module):
             features[:, self.input_feature_index] * self.input_gain[self.input_feature_index],
         )
         recurrent = torch.sparse.mm(self.fixed_topology, torch.sigmoid(state.voltage).T).T
-        alpha = torch.clamp(dt_s * 1000.0 / self.tau_m_ms, 0.0, 1.0)
+        if self.dynamics_format == "frozen-drive-exponential-v1":
+            # Exact leak for drive/recurrent input held at this interval's start.
+            # This is not exact integration of the continuously coupled network.
+            alpha = -torch.expm1(-dt_s * 1000.0 / self.tau_m_ms)
+        elif self.dynamics_format == "clipped-euler-v1":
+            alpha = torch.clamp(dt_s * 1000.0 / self.tau_m_ms, 0.0, 1.0)
+        else:
+            raise ValueError("unsupported dynamics format")
         voltage = state.voltage + alpha * (-state.voltage + drive + recurrent)
         rates = torch.sigmoid(voltage)
         command = torch.tanh(rates[:, self.output_neuron_index] @ self.readout.T)

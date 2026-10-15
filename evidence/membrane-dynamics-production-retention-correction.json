@@ -1,0 +1,160 @@
+{
+  "schema": "membrane-dynamics-production-retention-correction-v1",
+  "original_archive": "evidence/membrane-dynamics-production-dev-1701.zip",
+  "original_archive_sha256": "586fc3d3366aeb550af275c18297488f7691c3dfc5a25d709b5a9bcf2161c34f",
+  "original_report": "docs/MEMBRANE_DYNAMICS_PRODUCTION_REPORT.md",
+  "original_report_sha256": "287863edc51f1c11480ecad46990f50a645c6f5a7c7d949487dac4c6140ed220",
+  "superseded_claim": "exclusivefixtures in the sealed report/phase prose must not imply retained/pinned fixture payloads",
+  "actual_boundary": "Pytest supplied unique per-test tmp_path directories in the default user temp tree. Recorder passed argv unchanged without explicit --basetemp and retained argv/environment/source-before-after/stdout/stderr/clocks, not fixture directory payloads. This package does not establish retained exclusive fixture payloads or complete reconstruction from them.",
+  "fixture_payloads_retained": false,
+  "explicit_owned_basetemp": false,
+  "temporary_directories_harvested": false,
+  "missing_payloads_reconstructed": false,
+  "tests_rerun_for_correction": false,
+  "original_archive_report_or_raw_rewritten": false,
+  "executor_logs_are_real_but_not_fixture_archive": true,
+  "pytest_records": [
+    {
+      "record": "results/membrane-dynamics-production-dev-1701/dynamics-final-green-start.json",
+      "record_sha256": "db054e6bb10e3580e516b3832449942c0effb9f07cba360d195fbb40ee44f091",
+      "argv": [
+        "python",
+        "-m",
+        "pytest",
+        "tests/connectome_training/test_membrane_dynamics.py",
+        "tests/connectome_training/test_curriculum_state.py",
+        "-q",
+        "-p",
+        "results.membrane-dynamics-production-dev-1701.inert_test_plugin"
+      ],
+      "explicit_basetemp": false
+    },
+    {
+      "record": "results/membrane-dynamics-production-dev-1701/dynamics-final-start.json",
+      "record_sha256": "b4b9aafe9dde7b4cbc933baab32761ee7c7af09df7e3d50c4439fad57dc8f89f",
+      "argv": [
+        "python",
+        "-m",
+        "pytest",
+        "tests/connectome_training/test_membrane_dynamics.py",
+        "tests/connectome_training/test_curriculum_state.py",
+        "-q",
+        "-p",
+        "results.membrane-dynamics-production-dev-1701.inert_test_plugin"
+      ],
+      "explicit_basetemp": false
+    },
+    {
+      "record": "results/membrane-dynamics-production-dev-1701/dynamics-green-start.json",
+      "record_sha256": "15af84716bd20ea2ab51e18a3536066b15ee5eb1f92d22e57a7250b47fa386ec",
+      "argv": [
+        "python",
+        "-m",
+        "pytest",
+        "tests/connectome_training/test_membrane_dynamics.py",
+        "-q"
+      ],
+      "explicit_basetemp": false
+    },
+    {
+      "record": "results/membrane-dynamics-production-dev-1701/dynamics-metadata-red-start.json",
+      "record_sha256": "b03b10ee9cec2fc8eef92983ad547c5bfd37d1fcbc17457f9338d54e45cfe09f",
+      "argv": [
+        "python",
+        "-m",
+        "pytest",
+        "tests/connectome_training/test_membrane_dynamics.py",
+        "-q",
+        "-k",
+        "conflicting_legacy"
+      ],
+      "explicit_basetemp": false
+    },
+    {
+      "record": "results/membrane-dynamics-production-dev-1701/dynamics-neighbors-start.json",
+      "record_sha256": "fdbc8832fbcd3d11fa7289a119a29a9c887332a393bdb948e1777cb90a98b2e4",
+      "argv": [
+        "python",
+        "-m",
+        "pytest",
+        "tests/connectome_training/test_membrane_dynamics.py",
+        "tests/connectome_training/test_csr_runtime.py",
+        "tests/connectome_training/test_model.py",
+        "tests/connectome_training/test_inference_artifact.py",
+        "tests/connectome_training/test_inference.py",
+        "tests/connectome_training/test_curriculum_state.py",
+        "tests/connectome_training/test_curriculum.py",
+        "-q",
+        "-p",
+        "results.membrane-dynamics-production-dev-1701.inert_test_plugin"
+      ],
+      "explicit_basetemp": false
+    },
+    {
+      "record": "results/membrane-dynamics-production-dev-1701/dynamics-production-green-start.json",
+      "record_sha256": "72b31a23caba73633beba67f00d1fa906d07542c3dd61b6e8af5f23d60f17a16",
+      "argv": [
+        "python",
+        "-m",
+        "pytest",
+        "tests/connectome_training/test_membrane_dynamics.py",
+        "-q"
+      ],
+      "explicit_basetemp": false
+    },
+    {
+      "record": "results/membrane-dynamics-production-dev-1701/dynamics-red-start.json",
+      "record_sha256": "77c9c422ad515b6f14391b1f47360b5cbd1f52092026c0bfd29ed6fc244f84ef",
+      "argv": [
+        "python",
+        "-m",
+        "pytest",
+        "tests/connectome_training/test_membrane_dynamics.py",
+        "-q"
+      ],
+      "explicit_basetemp": false
+    },
+    {
+      "record": "results/membrane-dynamics-production-dev-1701/dynamics-reviewfix-red-start.json",
+      "record_sha256": "3beb385b814036488f91ea4798815005f32d1eff05adaad097b3966e87c4502e",
+      "argv": [
+        "python",
+        "-m",
+        "pytest",
+        "tests/connectome_training/test_membrane_dynamics.py",
+        "-q",
+        "-k",
+        "save_rejects_foreign or matching_mode_metadata"
+      ],
+      "explicit_basetemp": false
+    },
+    {
+      "record": "results/membrane-dynamics-production-dev-1701/dynamics-scalar-green-start.json",
+      "record_sha256": "88c811271f78f8fa5846b031bde1956ce6f3f9f4b0e12c5d8eda33aaf92b7add",
+      "argv": [
+        "python",
+        "-m",
+        "pytest",
+        "tests/connectome_training/test_membrane_dynamics.py",
+        "-q"
+      ],
+      "explicit_basetemp": false
+    },
+    {
+      "record": "results/membrane-dynamics-production-dev-1701/dynamics-signed-coverage-start.json",
+      "record_sha256": "7ffc637d86185f623a66940ef9e9c728a7ef63a65f0d31ff3a5235237d60a01e",
+      "argv": [
+        "python",
+        "-m",
+        "pytest",
+        "tests/connectome_training/test_membrane_dynamics.py",
+        "-q",
+        "-k",
+        "signed_sparse"
+      ],
+      "explicit_basetemp": false
+    }
+  ],
+  "future_requirement": "A new prospective recorder revision must explicitly own and retain each invocation fixture directory and record effective argv before claiming retained fixtures. Do not modify this sealed recorder, recover old temp trees, backfill missing payloads or rerun old tests as retrospective proof.",
+  "scope": "Additive POSTseal delivery honesty correction,not new code/native review or source qualification;original review/raw/ZIP/history bytes remain unchanged;no inference that all older phases retain or lack fixtures without separate evidence"
+}
