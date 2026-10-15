@@ -82,7 +82,7 @@ class ConnectomeInferenceController:
         if type(seed) is not int or seed < 0:
             raise ValueError("reset seed must be a nonnegative integer")
         self._state = self._core.initial_state(1)
-        self._previous = Command((0., 0., 0.), 0.)
+        self._previous = Command((0.0, 0.0, 0.0), 0.0)
         self.last_sim_ns = None
         self.last_frame_ns = None
         self._last_image_digest = None
@@ -110,8 +110,14 @@ class ConnectomeInferenceController:
             if self.last_frame_ns is not None and frame_ns < self.last_frame_ns:
                 raise ValueError("camera timestamp regressed")
             rgb, depth = np.asarray(frame.rgb), np.asarray(frame.depth_m)
-            if (rgb.dtype != np.uint8 or rgb.ndim != 3 or rgb.shape[2] != 3
-                    or rgb.shape[0] < 1 or rgb.shape[1] < 3 or depth.shape != rgb.shape[:2]):
+            if (
+                rgb.dtype != np.uint8
+                or rgb.ndim != 3
+                or rgb.shape[2] != 3
+                or rgb.shape[0] < 1
+                or rgb.shape[1] < 3
+                or depth.shape != rgb.shape[:2]
+            ):
                 raise ValueError("nonempty uint8 RGB and matching depth required")
             features = frame_features(frame, profile=self.provenance["feature_profile"])
             if not np.isfinite(features).all():
@@ -125,16 +131,24 @@ class ConnectomeInferenceController:
             core_started = time.perf_counter_ns()
             with torch.inference_mode():
                 raw, next_state = self._core.forward_step(
-                    torch.from_numpy(features)[None, :], self._state, DT_NS / 1e9,
+                    torch.from_numpy(features)[None, :],
+                    self._state,
+                    DT_NS / 1e9,
                 )
-                if (raw.shape != (1, 4) or next_state.voltage.shape != (1, self._core.n_neurons)
-                        or not torch.isfinite(raw).all() or not torch.isfinite(next_state.voltage).all()):
+                if (
+                    raw.shape != (1, 4)
+                    or next_state.voltage.shape != (1, self._core.n_neurons)
+                    or not torch.isfinite(raw).all()
+                    or not torch.isfinite(next_state.voltage).all()
+                ):
                     raise ValueError("core returned invalid output or state")
                 raw_values = raw[0].tolist()
             core_wall_s = (time.perf_counter_ns() - core_started) / 1e9
             requested = Command(tuple(raw_values[:3]), raw_values[3])
             shaped = shape_command(
-                requested, self._previous, dt_s=DT_NS / 1e9,
+                requested,
+                self._previous,
+                dt_s=DT_NS / 1e9,
                 speed_max=self.limits.speed_max_mps,
                 acceleration_max=self.limits.acceleration_max_mps2,
                 yaw_rate_max=self.limits.yaw_rate_max_radps,
@@ -142,15 +156,22 @@ class ConnectomeInferenceController:
             evidence = {
                 "core_kind": self.provenance["core_kind"],
                 "parameter_origin": self.provenance["parameter_origin"],
+                "learning_profile": self.provenance.get("learning_profile"),
                 "full_topology": self.provenance["full_topology"],
                 "model_identity": self.provenance["model_identity"],
                 "feature_profile": self.provenance["feature_profile"],
                 "checkpoint_sha256": self.provenance["checkpoint_sha256"],
-                "training_success_verified": False, "flight_eligible": False,
-                "raw_command": raw_values, "brain_wall_s": core_wall_s,
-                "sim_ns": sim_ns, "frame_ns": frame_ns, "frame_age_ns": sim_ns - frame_ns,
-                "camera_reused": reused, "image_sha256": image_digest,
-                "call_index": self.call_index + 1, "session_index": self.session_index,
+                "training_success_verified": False,
+                "flight_eligible": False,
+                "raw_command": raw_values,
+                "brain_wall_s": core_wall_s,
+                "sim_ns": sim_ns,
+                "frame_ns": frame_ns,
+                "frame_age_ns": sim_ns - frame_ns,
+                "camera_reused": reused,
+                "image_sha256": image_digest,
+                "call_index": self.call_index + 1,
+                "session_index": self.session_index,
                 "reset_seed": self.reset_seed,
             }
             decision = Decision(shaped, (time.perf_counter_ns() - started) / 1e9, evidence)

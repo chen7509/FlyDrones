@@ -35,6 +35,15 @@ from .parameters import (
     parameter_mapping_digest,
 )
 from .trainer import evaluate_sequences, train_epoch
+from .training_roles import (
+    DEFAULT_LEARNING_PROFILE,
+    configure_learning_roles,
+    learning_identity_suffix,
+    learning_parameters,
+    validate_learning_optimizer_state,
+    validate_learning_setup,
+    validate_learning_state,
+)
 
 OUTPUT_NAMES = ("vx", "vy", "vz", "yaw_rate")
 
@@ -81,9 +90,7 @@ def _peak_process_memory_bytes() -> int:
         ]
         get_memory.restype = wintypes.BOOL
         process = get_current_process()
-        if not get_memory(
-            process, ctypes.byref(counters), counters.cb
-        ):
+        if not get_memory(process, ctypes.byref(counters), counters.cb):
             raise OSError("GetProcessMemoryInfo failed")
         return int(counters.PeakWorkingSetSize)
     import resource
@@ -198,10 +205,7 @@ def _smoke_components(
     datasets = {
         stage.id: (
             [_synthetic_sequence(stage, "train", seed) for seed in stage.train_seeds],
-            [
-                _synthetic_sequence(stage, "val", seed)
-                for seed in stage.validation_seeds
-            ],
+            [_synthetic_sequence(stage, "val", seed) for seed in stage.validation_seeds],
         )
         for stage in config.stages
     }
@@ -217,9 +221,7 @@ def _sequence_directories(paths: tuple[str, ...]) -> list[TrainingSequence]:
         if (path / "manifest.json").is_file():
             sequence_paths.append(path)
         elif path.is_dir():
-            sequence_paths.extend(
-                sorted(item.parent for item in path.rglob("manifest.json"))
-            )
+            sequence_paths.extend(sorted(item.parent for item in path.rglob("manifest.json")))
     if not sequence_paths:
         raise ValueError("sequence evidence paths contain no sequence manifests")
     selected: set[Path] = set()
@@ -272,15 +274,15 @@ class ConnectomeCurriculumSession:
         truncate_steps: int = 4,
         connectome_path: str | Path = "data/malecns_full.npz",
         parameters_path: str | Path = "results/connectome-training/stage-b/full-initialization",
+        learning_profile: str = DEFAULT_LEARNING_PROFILE,
     ):
+        learning_parameters(learning_profile)
         if learning_rate <= 0 or truncate_steps < 1:
             raise ValueError("learning rate and truncate steps must be positive")
         if config.profile.data_mode == "synthetic-smoke":
             connectome, parameters, datasets = _smoke_components(config)
         else:
-            connectome, parameters, datasets = _full_components(
-                config, Path(connectome_path), Path(parameters_path)
-            )
+            connectome, parameters, datasets = _full_components(config, Path(connectome_path), Path(parameters_path))
         for train, validation in datasets.values():
             validate_dataset_partitions(
                 [item.provenance for item in train],
@@ -292,7 +294,9 @@ class ConnectomeCurriculumSession:
         self.feature_profile = feature_profile_for_names(parameters.input_features)
         self.device = resolve_device(device or config.profile.device)
         self.model = ConnectomeConstrainedCore(connectome, parameters).to(self.device)
-        self.optimizer = torch.optim.Adam(self.model.parameters(), lr=learning_rate)
+        self.learning_roles = configure_learning_roles(self.model, learning_profile)
+        named = dict(self.model.named_parameters())
+        self.optimizer = torch.optim.Adam([named[name] for name in self.learning_roles["trainable"]], lr=learning_rate)
         self.truncate_steps = truncate_steps
         self.loss_weights = LossWeights()
         self.dataset_sha256 = _dataset_digest(datasets, self.feature_profile)
@@ -301,7 +305,7 @@ class ConnectomeCurriculumSession:
             f"{config.profile.model_mode}:{parameters.identity.model_sha256}:"
             f"{parameters.identity.topology_sha256}:"
             f"{self.mapping_sha256}:device={self.device.type}"
-        )
+        ) + learning_identity_suffix(self.learning_roles)
         self.initial_losses = {
             stage.id: evaluate_sequences(
                 self.model,
@@ -313,6 +317,7 @@ class ConnectomeCurriculumSession:
         }
 
     def train_batch(self, stage: CurriculumStage, seed: int) -> dict[str, object]:
+        validate_learning_setup(self.model, self.optimizer, self.learning_roles)
         random.seed(seed)
         np.random.seed(seed)
         torch.manual_seed(seed)
@@ -338,17 +343,15 @@ class ConnectomeCurriculumSession:
                 weights=self.loss_weights,
             )
         frames = sum(len(sequence.frames) for sequence in train)
+        validate_learning_setup(self.model, self.optimizer, self.learning_roles)
         return {
+            "learning_roles": self.learning_roles,
             "updates": stage.epochs_per_batch,
             "environment_steps": frames * stage.epochs_per_batch,
             "train_loss": float(metrics["total"]),
             "elapsed_wall_s": time.perf_counter() - started,
             "peak_process_memory_bytes": _peak_process_memory_bytes(),
-            "peak_cuda_memory_bytes": (
-                int(torch.cuda.max_memory_allocated(self.device))
-                if self.device.type == "cuda"
-                else 0
-            ),
+            "peak_cuda_memory_bytes": (int(torch.cuda.max_memory_allocated(self.device)) if self.device.type == "cuda" else 0),
             "device": self.device.type,
             "torch_version": torch.__version__,
         }
@@ -360,10 +363,7 @@ class ConnectomeCurriculumSession:
             self.truncate_steps,
             weights=self.loss_weights,
         )
-        finite = all(
-            torch.isfinite(parameter).all().item()
-            for parameter in self.model.parameters()
-        )
+        finite = all(torch.isfinite(parameter).all().item() for parameter in self.model.parameters())
         return {
             "validation_loss": float(result["total"]),
             "initial_validation_loss": float(self.initial_losses[stage.id]),
@@ -371,19 +371,17 @@ class ConnectomeCurriculumSession:
         }
 
     def save_checkpoint(self, path: Path, metadata: dict) -> None:
+        validate_learning_setup(self.model, self.optimizer, self.learning_roles)
+        validate_learning_optimizer_state(self.model, self.optimizer, self.optimizer.state_dict(), self.learning_roles)
         enriched = {
             **metadata,
-            "epoch": int(metadata["stage_index"]) * 100_000
-            + int(metadata["batch_index"])
-            + 1,
+            "epoch": int(metadata["stage_index"]) * 100_000 + int(metadata["batch_index"]) + 1,
             "dataset_sha256": self.dataset_sha256,
             "topology_sha256": self.parameters.identity.topology_sha256,
             "parameter_mapping_sha256": self.mapping_sha256,
+            "learning_roles": self.learning_roles,
         }
-        trainable = {
-            name: parameter.detach().cpu().clone()
-            for name, parameter in self.model.named_parameters()
-        }
+        trainable = {name: parameter.detach().cpu().clone() for name, parameter in self.model.named_parameters()}
         save_checkpoint(
             path,
             model_state=trainable,
@@ -392,6 +390,7 @@ class ConnectomeCurriculumSession:
         )
 
     def restore_checkpoint(self, path: Path) -> None:
+        validate_learning_setup(self.model, self.optimizer, self.learning_roles)
         payload = load_checkpoint(
             path,
             expected_metadata={
@@ -400,9 +399,12 @@ class ConnectomeCurriculumSession:
                 "dataset_sha256": self.dataset_sha256,
                 "topology_sha256": self.parameters.identity.topology_sha256,
                 "parameter_mapping_sha256": self.mapping_sha256,
+                "learning_roles": self.learning_roles,
             },
         )
         named = dict(self.model.named_parameters())
+        validate_learning_state(self.model, payload["model_state"], self.learning_roles)
+        validate_learning_optimizer_state(self.model, self.optimizer, payload["optimizer_state"], self.learning_roles)
         if set(payload["model_state"]) != set(named):
             raise ValueError("checkpoint trainable parameter names do not match model")
         with torch.no_grad():

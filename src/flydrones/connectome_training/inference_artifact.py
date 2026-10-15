@@ -15,6 +15,7 @@ from .checkpoint import load_checkpoint
 from .features import feature_profile_for_names
 from .model import ConnectomeConstrainedCore
 from .parameters import FULL_CONNECTIONS, FULL_NEURONS, load_parameter_set, parameter_mapping_digest
+from .training_roles import configure_learning_roles, learning_identity_suffix, learning_parameters, validate_learning_state
 
 OUTPUT_NAMES = ("vx", "vy", "vz", "yaw_rate")
 
@@ -44,6 +45,7 @@ def load_inference_core(
     mode: str = "full-male-cns",
     checkpoint_path: str | Path | None = None,
     checkpoint_identity: CheckpointIdentity | None = None,
+    learning_profile: str | None = None,
 ) -> LoadedInferenceCore:
     """Ordinary file-drift detection, not hostile-concurrent-mutation protection.
 
@@ -52,25 +54,30 @@ def load_inference_core(
     """
     if mode not in {"full-male-cns", "tiny-fixture"}:
         raise ValueError("unsupported inference mode")
+    if learning_profile is not None:
+        learning_parameters(learning_profile)
+        if checkpoint_path is None:
+            raise ValueError("learning profile requires a role-bound checkpoint")
     if (checkpoint_path is None) != (checkpoint_identity is None):
         raise ValueError("checkpoint path and identity must be supplied together")
     if checkpoint_identity is not None and not isinstance(checkpoint_identity, CheckpointIdentity):
         raise ValueError("checkpoint identity must be CheckpointIdentity")
     source, parameters_path = Path(model_path), Path(parameters_path)
-    files = {"source": source, "parameters": parameters_path / "parameters.npz",
-             "parameter_manifest": parameters_path / "manifest.json"}
+    files = {
+        "source": source,
+        "parameters": parameters_path / "parameters.npz",
+        "parameter_manifest": parameters_path / "manifest.json",
+    }
     if checkpoint_path is not None:
         checkpoint_path = Path(checkpoint_path)
-        files.update(checkpoint=checkpoint_path / "checkpoint.pt",
-                     checkpoint_manifest=checkpoint_path / "manifest.json")
+        files.update(checkpoint=checkpoint_path / "checkpoint.pt", checkpoint_manifest=checkpoint_path / "manifest.json")
     before = {role: sha256_file(path) for role, path in files.items()}
     parameters = load_parameter_set(parameters_path)
     identity = parameters.identity
     if before["source"] != identity.model_sha256:
         raise ValueError("source hash does not match parameter identity")
     if mode == "full-male-cns":
-        if (identity.label != "full-male-cns" or identity.neurons != FULL_NEURONS
-                or identity.connections != FULL_CONNECTIONS):
+        if identity.label != "full-male-cns" or identity.neurons != FULL_NEURONS or identity.connections != FULL_CONNECTIONS:
             raise ValueError("full MaleCNS identity required")
     elif identity.label == "full-male-cns" or identity.neurons > 1024:
         raise ValueError("tiny fixture requires a non-full model of at most 1024 neurons")
@@ -84,50 +91,85 @@ def load_inference_core(
     if checkpoint_identity is not None:
         if before["checkpoint"] != checkpoint_identity.checkpoint_sha256:
             raise ValueError("checkpoint hash does not match pinned identity")
-        checkpoint = load_checkpoint(checkpoint_path, expected_metadata={
+        expected_metadata = {
             "config_digest": checkpoint_identity.config_digest,
             "dataset_sha256": checkpoint_identity.dataset_sha256,
-            "model_identity": model_identity,
             "topology_sha256": identity.topology_sha256,
             "parameter_mapping_sha256": mapping,
-        })
+        }
+        if learning_profile is None:
+            expected_metadata["model_identity"] = model_identity
+        checkpoint = load_checkpoint(checkpoint_path, expected_metadata=expected_metadata)
+        if learning_profile is not None:
+            declared = checkpoint["metadata"].get("learning_roles")
+            if not isinstance(declared, dict) or declared.get("profile") != learning_profile:
+                raise ValueError("checkpoint metadata mismatch: learning_roles")
     # Construction verifies the signed topology and neuron type order against
     # the parameter identity. No checkpoint can provide these fixed buffers.
     core = ConnectomeConstrainedCore(Connectome.load(source), parameters)
+    roles = None
+    if learning_profile is not None:
+        roles = configure_learning_roles(core, learning_profile)
+        model_identity += learning_identity_suffix(roles)
+        for key, value in {"model_identity": model_identity, "learning_roles": roles}.items():
+            if checkpoint["metadata"].get(key) != value:
+                raise ValueError(f"checkpoint metadata mismatch: {key}")
     named = dict(core.named_parameters())
     if checkpoint is not None:
         values = checkpoint["model_state"]
+        if roles is not None:
+            validate_learning_state(core, values, roles)
         if not isinstance(values, dict) or set(values) != set(named):
             raise ValueError("checkpoint parameter names do not match core")
         for name, value in values.items():
-            if (not isinstance(value, torch.Tensor) or value.device.type != "cpu"
-                    or value.layout != torch.strided or value.dtype != named[name].dtype
-                    or value.shape != named[name].shape or not torch.isfinite(value).all()):
+            if (
+                not isinstance(value, torch.Tensor)
+                or value.device.type != "cpu"
+                or value.layout != torch.strided
+                or value.dtype != named[name].dtype
+                or value.shape != named[name].shape
+                or not torch.isfinite(value).all()
+            ):
                 raise ValueError(f"checkpoint parameter invalid: {name}")
         with torch.no_grad():
             for name, value in values.items():
                 named[name].copy_(value)
-    if (not all(torch.isfinite(value).all().item() for value in core.parameters())
-            or not torch.isfinite(core.input_gain).all() or not torch.all(core.input_gain > 0)
-            or not torch.isfinite(core.tau_m_ms).all() or not torch.all(core.tau_m_ms > 1)):
+    if (
+        not all(torch.isfinite(value).all().item() for value in core.parameters())
+        or not torch.isfinite(core.input_gain).all()
+        or not torch.all(core.input_gain > 0)
+        or not torch.isfinite(core.tau_m_ms).all()
+        or not torch.all(core.tau_m_ms > 1)
+    ):
         raise ValueError("effective core parameters are invalid")
     core.eval()
     core.requires_grad_(False)
     after = {role: sha256_file(path) for role, path in files.items()}
     if after != before:
         raise ValueError("inference input files changed while loading")
-    return LoadedInferenceCore(core, {
-        "core_kind": "connectome-constrained-rate-core",
-        "mode": mode, "model_identity": model_identity,
-        "neurons": identity.neurons, "connections": identity.connections,
-        "model_sha256": identity.model_sha256,
-        "topology_sha256": identity.topology_sha256,
-        "parameter_mapping_sha256": mapping,
-        "feature_profile": feature_profile,
-        "full_topology": mode == "full-male-cns",
-        "parameter_origin": "checkpoint-parameters" if checkpoint is not None else "initialization-only",
-        "checkpoint_sha256": before.get("checkpoint"),
-        "files": {role: {"path": str(path.resolve()), "sha256": before[role]} for role, path in files.items()},
-        "files_stable": True, "training_success_verified": False,
-        "flight_eligible": False, "torch_version": torch.__version__,
-    })
+    return LoadedInferenceCore(
+        core,
+        {
+            "core_kind": "connectome-constrained-rate-core",
+            "mode": mode,
+            "model_identity": model_identity,
+            "neurons": identity.neurons,
+            "connections": identity.connections,
+            "model_sha256": identity.model_sha256,
+            "topology_sha256": identity.topology_sha256,
+            "parameter_mapping_sha256": mapping,
+            "feature_profile": feature_profile,
+            "full_topology": mode == "full-male-cns",
+            "parameter_origin": "checkpoint-parameters" if checkpoint is not None else "initialization-only",
+            "learning_profile": learning_profile
+            if roles is not None
+            else ("legacy-unspecified" if checkpoint is not None else None),
+            "learning_roles": roles,
+            "checkpoint_sha256": before.get("checkpoint"),
+            "files": {role: {"path": str(path.resolve()), "sha256": before[role]} for role, path in files.items()},
+            "files_stable": True,
+            "training_success_verified": False,
+            "flight_eligible": False,
+            "torch_version": torch.__version__,
+        },
+    )

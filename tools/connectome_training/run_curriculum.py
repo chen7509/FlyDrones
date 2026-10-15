@@ -1,16 +1,17 @@
 from __future__ import annotations
 
 import argparse
-from dataclasses import asdict
 import json
-from pathlib import Path
 import shutil
+from dataclasses import asdict
+from pathlib import Path
 
 from flydrones.connectome_training.curriculum import run_curriculum
 from flydrones.connectome_training.curriculum_config import load_curriculum_config
 from flydrones.connectome_training.curriculum_session import (
     ConnectomeCurriculumSession,
 )
+from flydrones.connectome_training.training_roles import DEFAULT_LEARNING_PROFILE, ROLE_PROFILES
 
 
 def _positive_int(value: str) -> int:
@@ -21,18 +22,15 @@ def _positive_int(value: str) -> int:
 
 
 def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(
-        description="Run a resumable offline connectome curriculum."
-    )
-    parser.add_argument(
-        "--config", default="configs/connectome_curriculum_v1.yaml"
-    )
+    parser = argparse.ArgumentParser(description="Run a resumable offline connectome curriculum.")
+    parser.add_argument("--config", default="configs/connectome_curriculum_v1.yaml")
     parser.add_argument("--profile", choices=("smoke", "desktop", "full"), default="smoke")
     parser.add_argument("--output", default="results/connectome-curriculum-smoke")
     parser.add_argument("--device", choices=("auto", "cpu", "cuda"))
     parser.add_argument("--max-batches", type=_positive_int)
     parser.add_argument("--restart", action="store_true")
     parser.add_argument("--learning-rate", type=float, default=0.03)
+    parser.add_argument("--learning-profile", choices=tuple(ROLE_PROFILES), default=DEFAULT_LEARNING_PROFILE)
     parser.add_argument("--truncate-steps", type=_positive_int, default=4)
     parser.add_argument("--connectome", default="data/malecns_full.npz")
     parser.add_argument(
@@ -61,10 +59,7 @@ def _restart(output: Path) -> None:
 
 
 def _write_summary(output: Path, state, evidence_class: str) -> None:
-    reports = [
-        json.loads(path.read_text(encoding="utf-8"))
-        for path in sorted((output / "reports").glob("*.json"))
-    ]
+    reports = [json.loads(path.read_text(encoding="utf-8")) for path in sorted((output / "reports").glob("*.json"))]
     stage_results = {
         report["stage_id"]: {
             "validation_loss": report["current_metrics"]["validation_loss"],
@@ -79,21 +74,13 @@ def _write_summary(output: Path, state, evidence_class: str) -> None:
         "evidence_class": evidence_class,
         "repository_artifact_scope": "summary-only",
         "measured_batches": len(reports),
-        "total_training_wall_s": sum(
-            float(report["train_metrics"]["elapsed_wall_s"]) for report in reports
-        ),
+        "total_training_wall_s": sum(float(report["train_metrics"]["elapsed_wall_s"]) for report in reports),
         "peak_process_memory_bytes": max(
-            (
-                int(report["train_metrics"]["peak_process_memory_bytes"])
-                for report in reports
-            ),
+            (int(report["train_metrics"]["peak_process_memory_bytes"]) for report in reports),
             default=0,
         ),
         "peak_cuda_memory_bytes": max(
-            (
-                int(report["train_metrics"]["peak_cuda_memory_bytes"])
-                for report in reports
-            ),
+            (int(report["train_metrics"]["peak_cuda_memory_bytes"]) for report in reports),
             default=0,
         ),
         "stage_results": stage_results,
@@ -117,6 +104,7 @@ def main() -> None:
         config,
         device=args.device,
         learning_rate=args.learning_rate,
+        learning_profile=args.learning_profile,
         truncate_steps=args.truncate_steps,
         connectome_path=args.connectome,
         parameters_path=args.parameters,
