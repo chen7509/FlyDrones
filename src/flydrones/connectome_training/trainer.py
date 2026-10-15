@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from collections.abc import Iterable
+from dataclasses import asdict, dataclass
 
 import torch
 
@@ -8,6 +9,28 @@ from .dataset import TrainingSequence
 from .features import feature_profile_for_names, sequence_tensors
 from .losses import LossWeights, sequence_loss
 from .model import ConnectomeConstrainedCore
+
+
+@dataclass
+class TrainingEffort:
+    """Software call counts for one live session, never checkpoint state."""
+
+    epoch_calls_started: int = 0
+    epoch_calls_returned: int = 0
+    sequence_calls_started: int = 0
+    backward_sequences_returned: int = 0
+    backward_frames_returned: int = 0
+    optimizer_step_calls_started: int = 0
+    optimizer_step_calls_returned: int = 0
+    optimizer_step_calls_raised: int = 0
+    frames_at_returned_optimizer_steps: int = 0
+
+    def snapshot(self) -> dict:
+        return {
+            "schema": "connectome-training-effort-lifetime-v1",
+            "counts": asdict(self),
+            "scope": "This live session only; not restored or rewound by checkpoints. Returning optimizer calls do not prove parameter changes; raised calls may mutate. Backward frames count only whole returned sequence passes, omitting partial work. Initialization/evaluation and other processes excluded. Not authenticated total compute, equal-effort or fair-upstream qualification.",
+        }
 
 
 def _mean_metrics(totals: dict[str, float]) -> dict[str, float]:
@@ -112,21 +135,43 @@ def train_epoch(
     *,
     weights: LossWeights | None = None,
     gradient_clip_norm: float = 5.0,
+    effort: TrainingEffort | None = None,
 ) -> dict[str, float]:
     if gradient_clip_norm <= 0:
         raise ValueError("gradient_clip_norm must be positive")
+    if effort is not None:
+        effort.epoch_calls_started += 1
     model.train()
     totals = _empty_totals()
     loss_weights = weights or LossWeights()
     for sequence in sequences:
+        if effort is not None:
+            effort.sequence_calls_started += 1
         features, target, clearance = _on_model_device(model, sequence)
         optimizer.zero_grad(set_to_none=True)
         metrics = _sequence_pass(model, features, target, clearance, truncate_steps, loss_weights, backward=True)
+        frames = features.shape[0] * features.shape[1]
+        if effort is not None:
+            effort.backward_sequences_returned += 1
+            effort.backward_frames_returned += frames
         torch.nn.utils.clip_grad_norm_(model.parameters(), gradient_clip_norm)
-        optimizer.step()
+        if effort is not None:
+            effort.optimizer_step_calls_started += 1
+        try:
+            optimizer.step()
+        except BaseException:
+            if effort is not None:
+                effort.optimizer_step_calls_raised += 1
+            raise
+        if effort is not None:
+            effort.optimizer_step_calls_returned += 1
+            effort.frames_at_returned_optimizer_steps += frames
         _accumulate_metrics(totals, metrics, features.shape[1])
         del sequence, features, target, clearance
-    return _mean_metrics(totals)
+    result = _mean_metrics(totals)
+    if effort is not None:
+        effort.epoch_calls_returned += 1
+    return result
 
 
 def evaluate_sequences(

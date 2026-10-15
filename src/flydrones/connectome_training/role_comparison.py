@@ -135,9 +135,11 @@ def run_role_comparison(
                     state=asdict(state),
                     committed_batches=len(list((variant_root / "reports").glob("*.json"))),
                     final_validation={stage.id: dict(current.evaluate(stage)) for stage in config.stages},
+                    training_effort_lifetime=current.training_effort,
                 )
                 _write(root, result)
             finally:
+                row["training_effort_lifetime"] = current.training_effort
                 del current
         result["status"] = "FINISHED"
         result["all_curricula_complete"] = all(row["state"]["status"] == "COMPLETE" for row in result["variants"])

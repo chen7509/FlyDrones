@@ -44,7 +44,7 @@ from .parameters import (
     parameter_mapping_digest,
 )
 from .sequence_corpus import FileSequenceCorpus
-from .trainer import evaluate_sequences, train_epoch
+from .trainer import TrainingEffort, evaluate_sequences, train_epoch
 from .training_roles import (
     DEFAULT_LEARNING_PROFILE,
     capture_learning_initialization,
@@ -345,6 +345,11 @@ class ConnectomeCurriculumSession:
             for stage in config.stages
         }
         self._validation_baseline_json = self._baseline_json()
+        self._training_effort = TrainingEffort()
+
+    @property
+    def training_effort(self) -> dict:
+        return self._training_effort.snapshot()
 
     def _baseline_json(self) -> str:
         return json.dumps(
@@ -388,11 +393,13 @@ class ConnectomeCurriculumSession:
                 self.optimizer,
                 self.truncate_steps,
                 weights=self.loss_weights,
+                effort=self._training_effort,
             )
         frames = sum(_frame_count(partition) for partition in partitions)
         validate_learning_setup(self.model, self.optimizer, self.learning_roles)
         return {
             "learning_roles": self.learning_roles,
+            "training_effort_lifetime": self.training_effort,
             "updates": stage.epochs_per_batch,
             "environment_steps": frames * stage.epochs_per_batch,
             "train_loss": float(metrics["total"]),
