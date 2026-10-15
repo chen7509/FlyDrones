@@ -24,4 +24,4 @@ Files: modify src/flydrones/connectome_training/trainer.py; create tests/connect
 
 - [x] Write and run tests against current production: activation lifetime and maximum forward length fail, independent full-reference gradient/update/metrics controls pass. Add unit/unequal/oversize windows, batching/reset, singleton, late invalid and forward failure tests.
 - [x] Implement two-window backward and shared evaluation; run new tests plus required trainer/loss/tiny curriculum neighbors and Ruff/diffcheck. Compare all parameter gradients/updates, not just decreasing loss. Keep synthetic/tiny scope explicit.
-- [ ] One independent source review, one executor fix pass if needed, honest report/canonical byte seal/independent delivery audit, onlypersonal commit/push, PR65 exact readback, automation ACTIVE/full history preserved.
+- [x] One independent source review, one executor fix pass if needed, honest report/canonical byte seal/independent delivery audit, onlypersonal commit/push, PR65 exact readback, automation ACTIVE/full history preserved.
