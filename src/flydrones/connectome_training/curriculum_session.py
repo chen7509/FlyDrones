@@ -5,8 +5,10 @@ import os
 import random
 import time
 from collections import Counter
+from collections.abc import Iterable
 from dataclasses import asdict
 from hashlib import sha256
+from itertools import chain
 from pathlib import Path
 
 import numpy as np
@@ -35,6 +37,7 @@ from .parameters import (
     load_parameter_set,
     parameter_mapping_digest,
 )
+from .sequence_corpus import FileSequenceCorpus
 from .trainer import evaluate_sequences, train_epoch
 from .training_roles import (
     DEFAULT_LEARNING_PROFILE,
@@ -113,7 +116,7 @@ def resolve_device(requested: str) -> torch.device:
 
 
 def _dataset_digest(
-    datasets: dict[str, tuple[list[TrainingSequence], list[TrainingSequence]]],
+    datasets: dict[str, tuple[Iterable[TrainingSequence], Iterable[TrainingSequence]]],
     profile: str,
 ) -> str:
     digest = sha256()
@@ -134,15 +137,17 @@ def _dataset_digest(
                 )
                 for tensor in sequence_tensors(sequence, profile=profile):
                     digest.update(np.ascontiguousarray(tensor.numpy()).tobytes())
+                del sequence, tensor
     return digest.hexdigest()
 
 
-def _validate_profile_sequences(sequences: list[TrainingSequence], profile: str) -> None:
+def _validate_profile_sequences(sequences: Iterable[TrainingSequence], profile: str) -> None:
     for sequence in sequences:
         try:
             sequence_tensors(sequence, profile=profile)
         except ValueError as exc:
             raise ValueError(f"{profile} sequence feature contract invalid") from exc
+        del sequence
 
 
 def _synthetic_sequence(stage: CurriculumStage, split: str, seed: int) -> TrainingSequence:
@@ -215,43 +220,41 @@ def _smoke_components(
     return connectome, parameters, datasets
 
 
-def _sequence_directories(paths: tuple[str, ...]) -> list[TrainingSequence]:
-    sequence_paths: list[Path] = []
-    for raw in paths:
-        path = Path(raw)
-        if not path.exists():
-            raise FileNotFoundError(f"sequence evidence path does not exist: {path}")
-        if (path / "manifest.json").is_file():
-            sequence_paths.append(path)
-        elif path.is_dir():
-            sequence_paths.extend(sorted(item.parent for item in path.rglob("manifest.json")))
-    if not sequence_paths:
-        raise ValueError("sequence evidence paths contain no sequence manifests")
-    selected: set[Path] = set()
-    for path in sequence_paths:
-        identity = path.resolve(strict=True)
-        if identity in selected:
-            raise ValueError(f"duplicate sequence directory: {path}")
-        selected.add(identity)
-    return [load_sequence(path) for path in sequence_paths]
+def _sequence_directories(paths: tuple[str, ...]) -> FileSequenceCorpus:
+    return FileSequenceCorpus(paths, loader=load_sequence)
+
+
+def _provenances(partition):
+    if isinstance(partition, FileSequenceCorpus):
+        return [row.provenance for row in partition.summaries]
+    return [sequence.provenance for sequence in partition]
+
+
+def _frame_count(partition):
+    if isinstance(partition, FileSequenceCorpus):
+        return partition.frame_count
+    # Other reiterable protocols are used only by explicit software fixtures.
+    if hasattr(partition, "frame_count"):
+        return partition.frame_count
+    return sum(len(sequence.frames) for sequence in partition)
 
 
 def _full_components(
     config: CurriculumConfig,
     connectome_path: Path,
     parameters_path: Path,
-) -> tuple[Connectome, ParameterSet, dict[str, tuple[list[TrainingSequence], list[TrainingSequence]]]]:
+) -> tuple[Connectome, ParameterSet, dict[str, tuple[FileSequenceCorpus, FileSequenceCorpus]]]:
     datasets = {}
     for stage in config.stages:
         train = _sequence_directories(stage.train_paths)
         validation = _sequence_directories(stage.validation_paths)
-        if Counter(item.provenance.seed for item in train) != Counter(stage.train_seeds):
+        if Counter(item.seed for item in _provenances(train)) != Counter(stage.train_seeds):
             raise ValueError(f"stage {stage.id} requires exactly one sequence per training seed")
-        if Counter(item.provenance.seed for item in validation) != Counter(stage.validation_seeds):
+        if Counter(item.seed for item in _provenances(validation)) != Counter(stage.validation_seeds):
             raise ValueError(f"stage {stage.id} requires exactly one sequence per validation seed")
         validate_dataset_partitions(
-            [item.provenance for item in train],
-            [item.provenance for item in validation],
+            _provenances(train),
+            _provenances(validation),
         )
         datasets[stage.id] = (train, validation)
     if not connectome_path.is_file():
@@ -261,7 +264,7 @@ def _full_components(
         raise ValueError("complete curriculum requires a full-male-cns parameter artifact")
     profile = feature_profile_for_names(parameters.input_features)
     for train, validation in datasets.values():
-        _validate_profile_sequences(train + validation, profile)
+        _validate_profile_sequences(chain(train, validation), profile)
     verify_source_digest(connectome_path, parameters.identity.model_sha256)
     connectome = Connectome.load(connectome_path)
     return connectome, parameters, datasets
@@ -288,8 +291,8 @@ class ConnectomeCurriculumSession:
             connectome, parameters, datasets = _full_components(config, Path(connectome_path), Path(parameters_path))
         for train, validation in datasets.values():
             validate_dataset_partitions(
-                [item.provenance for item in train],
-                [item.provenance for item in validation],
+                _provenances(train),
+                _provenances(validation),
             )
         self.config = config
         self.datasets = datasets
@@ -357,22 +360,17 @@ class ConnectomeCurriculumSession:
         started = time.perf_counter()
         # Rehearse every completed skill while learning the current one. The
         # coordinator still evaluates and gates each stage independently.
-        train = [
-            sequence
-            for configured in self.config.stages
-            if configured.order <= stage.order
-            for sequence in self.datasets[configured.id][0]
-        ]
+        partitions = [self.datasets[configured.id][0] for configured in self.config.stages if configured.order <= stage.order]
         metrics = {}
         for _ in range(stage.epochs_per_batch):
             metrics = train_epoch(
                 self.model,
-                train,
+                chain.from_iterable(partitions),
                 self.optimizer,
                 self.truncate_steps,
                 weights=self.loss_weights,
             )
-        frames = sum(len(sequence.frames) for sequence in train)
+        frames = sum(_frame_count(partition) for partition in partitions)
         validate_learning_setup(self.model, self.optimizer, self.learning_roles)
         return {
             "learning_roles": self.learning_roles,

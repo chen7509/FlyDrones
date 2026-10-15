@@ -125,6 +125,7 @@ def train_epoch(
         torch.nn.utils.clip_grad_norm_(model.parameters(), gradient_clip_norm)
         optimizer.step()
         _accumulate_metrics(totals, metrics, features.shape[1])
+        del sequence, features, target, clearance
     return _mean_metrics(totals)
 
 
@@ -143,4 +144,5 @@ def evaluate_sequences(
             features, target, clearance = _on_model_device(model, sequence)
             metrics = _sequence_pass(model, features, target, clearance, truncate_steps, loss_weights, backward=False)
             _accumulate_metrics(totals, metrics, features.shape[1])
+            del sequence, features, target, clearance
     return _mean_metrics(totals)
