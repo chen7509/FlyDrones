@@ -185,6 +185,7 @@ def load_inference_core(
     after = {role: sha256_file(path) for role, path in files.items()}
     if after != before:
         raise ValueError("inference input files changed while loading")
+    frozen_coefficients_prepared = core.prepare_frozen_inference()
     return LoadedInferenceCore(
         core,
         {
@@ -210,6 +211,7 @@ def load_inference_core(
             "checkpoint_sha256": before.get("checkpoint"),
             "files": {role: {"path": str(path.resolve()), "sha256": before[role]} for role, path in files.items()},
             "files_stable": True,
+            "frozen_coefficients_prepared": frozen_coefficients_prepared,
             "training_success_verified": False,
             "flight_eligible": False,
             "torch_version": torch.__version__,

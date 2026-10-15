@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from weakref import ref
 
 import numpy as np
 import torch
@@ -170,6 +171,82 @@ class ConnectomeConstrainedCore(nn.Module):
         self.input_features = tuple(parameter_set.input_features)
         self.n_features = len(parameter_set.input_features)
         self.n_outputs = len(parameter_set.outputs)
+        # Derived constants belong only to this owned frozen inference object.
+        # They are never a checkpoint/model-identity parameter or training graph.
+        for name in ("_inference_bias", "_inference_gain", "_inference_tau", "_inference_alpha"):
+            self.register_buffer(name, None, persistent=False)
+        self._inference_enabled = False
+        self._inference_signature = None
+        self._inference_interval = None
+
+    def clear_frozen_inference(self) -> None:
+        self._inference_enabled = False
+        self._inference_signature = None
+        self._inference_interval = None
+        self._inference_bias = self._inference_gain = self._inference_tau = self._inference_alpha = None
+
+    def __getstate__(self):
+        # Whole-module pickle/deepcopy must not serialize weak references or
+        # derived constants, and must not alter the live caller's cache.
+        state = super().__getstate__()
+        state["_inference_enabled"] = False
+        state["_inference_signature"] = None
+        state["_inference_interval"] = None
+        state["_buffers"] = dict(state["_buffers"])
+        for name in ("_inference_bias", "_inference_gain", "_inference_tau", "_inference_alpha"):
+            state["_buffers"][name] = None
+        return state
+
+    @property
+    def frozen_inference_prepared(self) -> bool:
+        return (
+            self._inference_enabled
+            and self._inference_signature is not None
+            and not self.training
+            and all(not parameter.requires_grad for parameter in self.parameters())
+        )
+
+    def _coefficient_signature(self):
+        dependencies = (self.raw_input_gain, self.type_bias_mv, self.raw_tau_m, self.type_index, self.input_feature_index)
+        try:
+            return tuple((ref(value), value._version, value.dtype, value.device, tuple(value.shape)) for value in dependencies)
+        except RuntimeError:
+            # Inference-mode tensors may have no version counter. Do not assume
+            # they cannot change: keep the original uncached arithmetic instead.
+            return None
+
+    def _frozen_coefficients(self) -> bool:
+        if not self._inference_enabled:
+            return False
+        if self.training or any(parameter.requires_grad for parameter in self.parameters()):
+            self.clear_frozen_inference()
+            return False
+        signature = self._coefficient_signature()
+        if signature is None:
+            self.clear_frozen_inference()
+            return False
+        previous = self._inference_signature
+        same = previous is not None and all(old[0]() is new[0]() and old[1:] == new[1:] for old, new in zip(previous, signature))
+        if not same:
+            with torch.no_grad():
+                self._inference_bias = self.type_bias_mv[self.type_index].detach()
+                self._inference_gain = self.input_gain[self.input_feature_index].detach()
+                self._inference_tau = self.tau_m_ms.detach()
+            self._inference_signature = signature
+            self._inference_interval = None
+            self._inference_alpha = None
+        return True
+
+    def prepare_frozen_inference(self) -> bool:
+        """Prepare constant coefficients; ordinary tensor versions track drift.
+
+        This is not protection against `.data`/hostile or concurrent mutation.
+        Training and tensors without version counters use the original path.
+        """
+        if self.training or any(parameter.requires_grad for parameter in self.parameters()):
+            raise ValueError("coefficient preparation requires a frozen eval model")
+        self._inference_enabled = True
+        return self._frozen_coefficients()
 
     @property
     def input_gain(self) -> torch.Tensor:
@@ -212,21 +289,36 @@ class ConnectomeConstrainedCore(nn.Module):
             raise ValueError("features contain non-finite values")
         if not np.isfinite(dt_s) or dt_s <= 0:
             raise ValueError("dt_s must be positive and finite")
-        drive = self.type_bias_mv[self.type_index].expand(features.shape[0], -1).clone()
+        if self._inference_enabled and (features.requires_grad or state.voltage.requires_grad):
+            self.clear_frozen_inference()
+        cached = self._frozen_coefficients()
+        bias = self._inference_bias if cached else self.type_bias_mv[self.type_index]
+        gain = self._inference_gain if cached else self.input_gain[self.input_feature_index]
+        drive = bias.expand(features.shape[0], -1).clone()
         drive.index_add_(
             1,
             self.input_neuron_index,
-            features[:, self.input_feature_index] * self.input_gain[self.input_feature_index],
+            features[:, self.input_feature_index] * gain,
         )
         recurrent = torch.sparse.mm(self.fixed_topology, torch.sigmoid(state.voltage).T).T
-        if self.dynamics_format == "frozen-drive-exponential-v1":
+        interval = (
+            (self.dynamics_format, type(dt_s), dt_s)
+            if cached and isinstance(dt_s, (int, float, np.integer, np.floating))
+            else None
+        )
+        if cached and interval is not None and interval == self._inference_interval:
+            alpha = self._inference_alpha
+        elif self.dynamics_format == "frozen-drive-exponential-v1":
             # Exact leak for drive/recurrent input held at this interval's start.
             # This is not exact integration of the continuously coupled network.
-            alpha = -torch.expm1(-dt_s * 1000.0 / self.tau_m_ms)
+            alpha = -torch.expm1(-dt_s * 1000.0 / (self._inference_tau if cached else self.tau_m_ms))
         elif self.dynamics_format == "clipped-euler-v1":
-            alpha = torch.clamp(dt_s * 1000.0 / self.tau_m_ms, 0.0, 1.0)
+            alpha = torch.clamp(dt_s * 1000.0 / (self._inference_tau if cached else self.tau_m_ms), 0.0, 1.0)
         else:
             raise ValueError("unsupported dynamics format")
+        if cached:
+            self._inference_interval = interval
+            self._inference_alpha = alpha if interval is not None else None
         voltage = state.voltage + alpha * (-state.voltage + drive + recurrent)
         rates = torch.sigmoid(voltage)
         command = torch.tanh(rates[:, self.output_neuron_index] @ self.readout.T)
