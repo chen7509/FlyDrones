@@ -1,0 +1,2126 @@
+{
+  "schema": "static-v4-refusal-linear-sequence-publication-v1",
+  "software_commit": "2c4789c9d35178fc58bd762fdfdc6ab7bd3c0177",
+  "archive": {
+    "archive": "evidence/static-v4-refusal-linear-sequence-dev-1701.zip",
+    "bytes": 2495407,
+    "sha256": "1260d2abdcc507cf36b64235a6b3e63e618c38dc7a3717a6c3b4c74645bf1c35",
+    "members": 1544,
+    "mapped_members": 1543,
+    "uncompressed_bytes": 6613282,
+    "manifest_sha256": "5cd327a0cd4fad8303723161225013a394a6890f1407ac70005529765c38042b",
+    "scope": "Linear production plan first2done/publicationpending;staticTask5allpending;rawWindowsAV+softwaretimeoutgap retained;postsealreceipt/delivery/stage/publication/PR/automation outside"
+  },
+  "archive_plan_sha256": "a87e3100ed9aa3de64f567e18e770b4256686e53731b5b2e2146c622dd6fc95d",
+  "postpublication_plan_sha256": "7df9124162c9c95476dc2776aa36fde1b3844d8031011ef0b31004bd68d87c24",
+  "plan_changed_byte_offsets": [
+    953
+  ],
+  "plan_change": "Only linear-loader software publication;original staticTask5 allunchecked;actual first decision refused unconsumed",
+  "working_vs_git_normalized": [
+    {
+      "path": "src/flydrones/connectome_training/dataset.py",
+      "bytes": 11618,
+      "working_archive_sha256": "c8a1d338d31fa2690d710b724e5a7f5ece6bd08861032b8218fbbe0174d53021",
+      "git_normalized_blob_sha256": "2f71e5c6c7e8fe158e2d2d60bd6e71368709f4fb187e48b0c371c17f465a7315"
+    },
+    {
+      "path": "tests/connectome_training/test_sequence_decode_once.py",
+      "bytes": 5761,
+      "working_archive_sha256": "419c7aa5ee7c12e3966e863607866017893d63f4ed6dfa7f3fe91fc675760681",
+      "git_normalized_blob_sha256": "d460c8464924bc7587c9016a3a3a4b5743fed1db56600d680d07067c00f735ec"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-10-15-linear-sequence-decode-design.md",
+      "bytes": 3063,
+      "working_archive_sha256": "7d3647a5383593058045079869849dfbbfb4c3d1affd1bd2c5051f59ddf8e511",
+      "git_normalized_blob_sha256": "7d3647a5383593058045079869849dfbbfb4c3d1affd1bd2c5051f59ddf8e511"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-10-15-linear-sequence-decode.md",
+      "bytes": 1733,
+      "working_archive_sha256": "a87e3100ed9aa3de64f567e18e770b4256686e53731b5b2e2146c622dd6fc95d",
+      "git_normalized_blob_sha256": "a87e3100ed9aa3de64f567e18e770b4256686e53731b5b2e2146c622dd6fc95d"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-10-15-loader-selected-path-production.md",
+      "bytes": 15305,
+      "working_archive_sha256": "4384c41b6ea3267c1fd57fb8fa3dd3f167c372db9a6e4dee1c1bbac268372fe9",
+      "git_normalized_blob_sha256": "48ea5d8aaaef6236b2bf0e65db382973412b1c81d14ed75b90440def50a2ab61"
+    },
+    {
+      "path": "docs/STATIC_V4_ADMISSION_AND_SEQUENCE_DECODE_REPORT.md",
+      "bytes": 9805,
+      "working_archive_sha256": "0589e4e9d24a0c7fd93f163b5c111a5c913e50308632a0eda6332dcbcd7c0a0a",
+      "git_normalized_blob_sha256": "0589e4e9d24a0c7fd93f163b5c111a5c913e50308632a0eda6332dcbcd7c0a0a"
+    },
+    {
+      "path": "evidence/static-v4-refusal-linear-sequence-dev-1701.zip",
+      "bytes": 2495407,
+      "working_archive_sha256": "1260d2abdcc507cf36b64235a6b3e63e618c38dc7a3717a6c3b4c74645bf1c35",
+      "git_normalized_blob_sha256": "1260d2abdcc507cf36b64235a6b3e63e618c38dc7a3717a6c3b4c74645bf1c35"
+    },
+    {
+      "path": "evidence/static-v4-refusal-linear-sequence-dev-1701.sha256.json",
+      "bytes": 373064,
+      "working_archive_sha256": "5cd327a0cd4fad8303723161225013a394a6890f1407ac70005529765c38042b",
+      "git_normalized_blob_sha256": "5cd327a0cd4fad8303723161225013a394a6890f1407ac70005529765c38042b"
+    }
+  ],
+  "actual_admission": {
+    "state": "REFUSED_UNCONSUMED",
+    "windows_available": 1620271104,
+    "wsl_available": 6851129344,
+    "dual1GiB_memory_pass": true,
+    "classified_competitor_count": 1,
+    "docker_exit": 0,
+    "docker_empty": true,
+    "private_excluded": [
+      {
+        "path": "results/target-bearing-runtime-freeze-v4-dev-1701/LOCAL_UNPUBLISHED-admission-1.json",
+        "bytes": 152997,
+        "sha256": "ae6abb38478faf18008b753546dd6adfb9f788381963e1af2e0b0968747ee55c"
+      },
+      {
+        "path": "results/target-bearing-runtime-freeze-v4-dev-1701/LOCAL_UNPUBLISHED-metadata-001.json",
+        "bytes": 15954,
+        "sha256": "bd08a89786f0b9fb0fc9be86c80f90cf92853ffd23d497a0244a5cff692e9d43"
+      },
+      {
+        "path": "results/target-bearing-runtime-freeze-v4-dev-1701/LOCAL_UNPUBLISHED-metadata-002.json",
+        "bytes": 542,
+        "sha256": "12ff95b516c87fa508336fc3757a76bc4dabeb74cebfdc6d9e30bc8dedbccd44"
+      }
+    ],
+    "private_total_rows": 475,
+    "windows_clock": {
+      "start": 2218541859000000,
+      "end": 2218541859000000,
+      "utc": "2026-10-15T13:07:21.074209+00:00"
+    },
+    "linux_clock": {
+      "started_monotonic_ns": 238773904668458,
+      "memory_monotonic_ns": 238773904756327,
+      "ended_monotonic_ns": 238773906546828,
+      "utc": "2026-10-15T13:07:20Z"
+    },
+    "own_CLI_waited": true,
+    "metadata_or_SDK_attempt": false,
+    "physical_attempt": false,
+    "native_runtime_graph_frozen": false,
+    "resource_snapshot_count": 1,
+    "gate_rerun": false,
+    "scope": "actual first coordinator resource refusal;only own resource/Docker host queries;no selected target metadata,source,clock or calibration qualification;clocks separate"
+  },
+  "actual_CLI": {
+    "argv": [
+      "C:\\Users\\yuche\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+      "C:\\Users\\yuche\\.codex\\worktrees\\FlyDrones\\track-eligibility\\results\\target-bearing-runtime-freeze-v4-dev-1701\\run-static-preparation-v4.py",
+      "--execute-once"
+    ],
+    "cwd": "C:\\Users\\yuche\\.codex\\worktrees\\FlyDrones\\track-eligibility",
+    "recorder_sha256": "d93a5d986082fc7ce1acb89fd67f3eb6287cc8fd9ff5cdbb0652d21d8d4b7586",
+    "source_count": 382,
+    "literal_sha256": "f1fe1fa93399d3ac20663d4362ceab5389fc21e02f12d7f3e7c76a6b79023d6a",
+    "environment_subset": {
+      "PATH": "C:\\Users\\yuche\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\native\\powershell;C:\\Users\\yuche\\.codex\\tmp\\arg0\\codex-arg0ubRK3Z;C:\\Users\\yuche\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\native\\libheif\\libheif\\bin;C:\\Users\\yuche\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\native\\jxrlib\\jxrlib\\bin;C:\\Users\\yuche\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\native\\poppler\\Library\\bin;C:\\Users\\yuche\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\bin\\override;C:\\Windows\\system32;C:\\Windows;C:\\Windows\\System32\\Wbem;C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\;C:\\Windows\\System32\\OpenSSH\\;C:\\Program Files (x86)\\NVIDIA Corporation\\PhysX\\Common;C:\\WINDOWS\\system32;C:\\WINDOWS;C:\\WINDOWS\\System32\\Wbem;C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\;C:\\WINDOWS\\System32\\OpenSSH\\;C:\\Program Files\\nodejs\\;C:\\Program Files\\Docker\\Docker\\resources\\bin;C:\\Program Files\\NVIDIA Corporation\\NVIDIA App\\NvDLISR;C:\\Program Files\\GitHub CLI\\;C:\\Program Files\\Git\\cmd;C:\\Users\\yuche\\AppData\\Local\\Programs\\Python\\Python312\\Scripts\\;C:\\Users\\yuche\\AppData\\Local\\Programs\\Python\\Python312\\;C:\\Users\\yuche\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\native\\powershell;C:\\Users\\yuche\\AppData\\Local\\Microsoft\\WindowsApps;C:\\Program Files\\JetBrains\\PyCharm 2023.2.5\\bin;C:\\Users\\yuche\\AppData\\Local\\Programs\\Microsoft VS Code\\bin;C:\\Users\\yuche\\AppData\\Roaming\\npm;C:\\Users\\yuche\\AppData\\Local\\Programs\\cursor\\resources\\app\\bin;C:\\Users\\yuche\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\bin\\fallback;C:\\Users\\yuche\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\node\\bin;C:\\Users\\yuche\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\native\\git\\cmd;C:\\Users\\yuche\\AppData\\Local\\OpenAI\\Codex\\bin\\9a7ba4b9ea0c44a3;C:\\Users\\yuche\\AppData\\Local\\OpenAI\\Codex\\bin\\2e5e00daee91c61d",
+      "PYTHONPATH": null,
+      "VIRTUAL_ENV": null,
+      "PYTHONHOME": null
+    },
+    "started_utc": "2026-10-15T13:07:19.066325+00:00",
+    "started_monotonic_ns": 2218539859000000,
+    "scope": "Actual standalone Windows coordinator;its first resource refusal is not a native attempt",
+    "exit": 0,
+    "waited": true,
+    "ended_utc": "2026-10-15T13:07:21.504334+00:00",
+    "ended_monotonic_ns": 2218542296000000,
+    "source_after": [
+      {
+        "path": "results/target-bearing-runtime-freeze-v4-dev-1701/run-static-preparation-v4.py",
+        "bytes": 596,
+        "sha256": "f1fe1fa93399d3ac20663d4362ceab5389fc21e02f12d7f3e7c76a6b79023d6a"
+      },
+      {
+        "path": "src/flydrones/__init__.py",
+        "bytes": 84,
+        "sha256": "d727a1daa671c586aa3a87acd741a509521f8707d9d811ccffb4a713a8895285"
+      },
+      {
+        "path": "src/flydrones/__main__.py",
+        "bytes": 51,
+        "sha256": "482b8693e2fe6dbd732e3d7961e03827d3efa187bad11d29da188be580ebbeea"
+      },
+      {
+        "path": "src/flydrones/autonomy.py",
+        "bytes": 12118,
+        "sha256": "5cea43c1f700becf8198bd87358311e9890a1898455e0664f8762477dd25bdc2"
+      },
+      {
+        "path": "src/flydrones/benchmark/__init__.py",
+        "bytes": 64,
+        "sha256": "87f71597fc29585ef2a2243393caae34935e692b15df1dc6e66f9a00568290ff"
+      },
+      {
+        "path": "src/flydrones/benchmark/camera_imu_dataset.py",
+        "bytes": 12803,
+        "sha256": "06f261c95cf5a79b89117285e5fc989acc2ffa96c79102bd4f21ca274ee33426"
+      },
+      {
+        "path": "src/flydrones/benchmark/camera_info_capture.py",
+        "bytes": 4539,
+        "sha256": "005c180b94938d8aa90b73c9555d87bdea4ca4bcdc6173bee613056e11635edf"
+      },
+      {
+        "path": "src/flydrones/benchmark/clock.py",
+        "bytes": 1051,
+        "sha256": "fef2652f9d4d33cd12c7e207bebf3ca3ca0521ec37445123f0e32d2856978d35"
+      },
+      {
+        "path": "src/flydrones/benchmark/contract.py",
+        "bytes": 978,
+        "sha256": "a81f751070ea0e2aa65a76a37d86a52b49fc24edb9bae5f7bbb104c1455cedc1"
+      },
+      {
+        "path": "src/flydrones/benchmark/dynamic_camera_imu.py",
+        "bytes": 3051,
+        "sha256": "22c59ffecbc66466f2703f5a6847c2a22da88e10ce11eeeaef0edcf29e6ddf5c"
+      },
+      {
+        "path": "src/flydrones/benchmark/ego.py",
+        "bytes": 5035,
+        "sha256": "106156a3d343d9fe88b5641f0613ae2bbc37e392e918414f641d0f5b5d654802"
+      },
+      {
+        "path": "src/flydrones/benchmark/ego_causal_join.py",
+        "bytes": 10070,
+        "sha256": "20af01c91d0154e7804c7dd3305da9e4ca10445d1353b9378df74fc27eb7f6a8"
+      },
+      {
+        "path": "src/flydrones/benchmark/ego_diagnostic_reconcile.py",
+        "bytes": 24430,
+        "sha256": "6fb8c710be9b166574199102cc8064cffb9ee932d42a2db42c78972a530417cf"
+      },
+      {
+        "path": "src/flydrones/benchmark/ekf2_shadow.py",
+        "bytes": 14458,
+        "sha256": "689af9da42e65b29e06a8416927f0e13faec7508c95b682ca903ff428a95d101"
+      },
+      {
+        "path": "src/flydrones/benchmark/fly.py",
+        "bytes": 3823,
+        "sha256": "da3636f6d37c1f6e686dfb7a8d9a782053c5358349f8229cc5f0d2dae8a0f9ed"
+      },
+      {
+        "path": "src/flydrones/benchmark/gateway.py",
+        "bytes": 46631,
+        "sha256": "ebf6d917c0dff6bd2c83f27236cb56073293fbb38d686cf8ee7192d0e47a499c"
+      },
+      {
+        "path": "src/flydrones/benchmark/geometry.py",
+        "bytes": 2443,
+        "sha256": "b15887f873aec2f6342e76c75a018ad9c95c1ec17c236cea3b32284990560432"
+      },
+      {
+        "path": "src/flydrones/benchmark/kalibr_camera_consumption.py",
+        "bytes": 8581,
+        "sha256": "cc537a07f1d77319d6a4c6eb1734d5a1c240364b382027a0bb6879840cbc80f0"
+      },
+      {
+        "path": "src/flydrones/benchmark/optical_fixture.py",
+        "bytes": 3748,
+        "sha256": "ec0d19c0266683f6304cc947a35f5c168d7f30aae25c4b33e1decb2e099ffa2f"
+      },
+      {
+        "path": "src/flydrones/benchmark/provenance.py",
+        "bytes": 3993,
+        "sha256": "928eb71ff01466f96091c32f4daf360bc1d96b9662709e9d114ca720e0eea94e"
+      },
+      {
+        "path": "src/flydrones/benchmark/px4_camera_source.py",
+        "bytes": 18189,
+        "sha256": "ba081000dc5a3168bda263ec7295e1487c2e337e84f3fbfaab8651aef61a6a70"
+      },
+      {
+        "path": "src/flydrones/benchmark/report.py",
+        "bytes": 1882,
+        "sha256": "f80d9d72e6515c1595489fdcd04caa3a81b23144d01a33d7e5ae3b9a1703c4d2"
+      },
+      {
+        "path": "src/flydrones/benchmark/rgb_capture.py",
+        "bytes": 3851,
+        "sha256": "d1d0fe92b9bcf13bcb6d4f75f2445cfe3903752bbd68279a9c07bec7503be4dc"
+      },
+      {
+        "path": "src/flydrones/benchmark/rgb_imu_timing.py",
+        "bytes": 5030,
+        "sha256": "faa612f76dd7bda90e7048a9b3bc27eb4d590459f6dd607e439c3ebd5deb0147"
+      },
+      {
+        "path": "src/flydrones/benchmark/runner.py",
+        "bytes": 4146,
+        "sha256": "a65288c0e4646b14ce7a7e4d4478a2c0579b83c2c1e5a7846ff5c4e3afae15d3"
+      },
+      {
+        "path": "src/flydrones/benchmark/score.py",
+        "bytes": 4381,
+        "sha256": "9981e1a3e2134e06f195caefb31d88447cff9822e3321d99f4c5dee7309b9dc8"
+      },
+      {
+        "path": "src/flydrones/benchmark/sensors.py",
+        "bytes": 8017,
+        "sha256": "8e23d0da1ad58e766f3784de90fece7c48c34b02f8cda9acc3f46084308d9390"
+      },
+      {
+        "path": "src/flydrones/benchmark/ulog_capture.py",
+        "bytes": 3961,
+        "sha256": "dbce660942b708f8f36eb1fbcfe95469170b6a4bd697ac9e1305a88b2c350aac"
+      },
+      {
+        "path": "src/flydrones/benchmark/ulog_health.py",
+        "bytes": 2972,
+        "sha256": "17c53e0557c6a453d9ca2aae636c25943c66a32e0d938d31e7d1a74324d8f8c9"
+      },
+      {
+        "path": "src/flydrones/benchmark/worlds.py",
+        "bytes": 11569,
+        "sha256": "063515ad32d57d4ab8a8007375acf557140338a7dbe520386d2685cc123a9e88"
+      },
+      {
+        "path": "src/flydrones/brain/__init__.py",
+        "bytes": 357,
+        "sha256": "585718f1563003e45d8d8d098adcdabed45dfe3905a41671012495eef0198470"
+      },
+      {
+        "path": "src/flydrones/brain/brain.py",
+        "bytes": 4917,
+        "sha256": "0167cefb110014f4dca05b4dbe4bbcb24a88e243db7f79f4098ed8362f7f40c1"
+      },
+      {
+        "path": "src/flydrones/brain/connectome.py",
+        "bytes": 14063,
+        "sha256": "f831de068d6039e8edba20a90353d75012ef3f40a42198b140589b77e4351270"
+      },
+      {
+        "path": "src/flydrones/brain/lif.py",
+        "bytes": 10698,
+        "sha256": "98a6d46e241613cd434b7a103334e8d0e5cfa0a22f8ff3e726921a254868ca39"
+      },
+      {
+        "path": "src/flydrones/brain/synthetic.py",
+        "bytes": 6175,
+        "sha256": "b3004ab2ce7e37d4541af4e6f68edfcbe386eafcab8729dc1f13d10bd47d6506"
+      },
+      {
+        "path": "src/flydrones/calibrate.py",
+        "bytes": 4067,
+        "sha256": "cf2d5732aacc3df6ea74f1aff161dfee501a4f98452aae3627d60bce7815855d"
+      },
+      {
+        "path": "src/flydrones/cli.py",
+        "bytes": 13578,
+        "sha256": "da0002f25996e194be66d6c510a6d6da57addfa956156db604e920d79a3f968b"
+      },
+      {
+        "path": "src/flydrones/config.py",
+        "bytes": 1029,
+        "sha256": "3a6738411cd784ff97c909cebfd790f236875e66dc5cfa186142b9e00fc4d329"
+      },
+      {
+        "path": "src/flydrones/connectome_training/__init__.py",
+        "bytes": 2171,
+        "sha256": "2a910032a820d4fc5d66049ac33f4b8521d60bc65603a1e35583106e518133e6"
+      },
+      {
+        "path": "src/flydrones/connectome_training/benchmark_adapter.py",
+        "bytes": 3374,
+        "sha256": "74e79e73dfe3d8f8b8d0a4dc1fe4eaecbb120b6dbf54d6a6a085bc4fe8688d38"
+      },
+      {
+        "path": "src/flydrones/connectome_training/capture_input.py",
+        "bytes": 7102,
+        "sha256": "7e21f31dafd485985e7e43de28e2daabefb5e630b99726df71d124d8c23720f8"
+      },
+      {
+        "path": "src/flydrones/connectome_training/checkpoint.py",
+        "bytes": 4775,
+        "sha256": "52ae0c2a4f385c576b70b0c4605c53df01064620e66a5f62306e256b21f98b1f"
+      },
+      {
+        "path": "src/flydrones/connectome_training/corpus_config.py",
+        "bytes": 9440,
+        "sha256": "e6d5665e26353eae3a5fcd5ead36368ca6f090d5ba0753b92660cbcfda7f6109"
+      },
+      {
+        "path": "src/flydrones/connectome_training/corpus_index.py",
+        "bytes": 12955,
+        "sha256": "803cae7c8601b17f077bad5fb92b395f93b29bbea5e0e42485fcc1e2c640f18a"
+      },
+      {
+        "path": "src/flydrones/connectome_training/corpus_worlds.py",
+        "bytes": 5076,
+        "sha256": "97adada27e1d18809745d3c4747fa39a7bce14aa3ed29e2f597f6adfbb5274c9"
+      },
+      {
+        "path": "src/flydrones/connectome_training/curriculum.py",
+        "bytes": 10762,
+        "sha256": "28e5cc446dc82923e9c2050a3c5b867fdab2d939253c6f7d378e925e1258368d"
+      },
+      {
+        "path": "src/flydrones/connectome_training/curriculum_config.py",
+        "bytes": 7997,
+        "sha256": "e2567c6c6b3877c93afac0ee32f94c15dc61e7f025db194a340f409ecdf6b5bb"
+      },
+      {
+        "path": "src/flydrones/connectome_training/curriculum_session.py",
+        "bytes": 16234,
+        "sha256": "493816d42d6e74ed90d9e2da7aa618a806e7717203d4cb152592043370cc3cdf"
+      },
+      {
+        "path": "src/flydrones/connectome_training/curriculum_state.py",
+        "bytes": 6411,
+        "sha256": "a141c980deef1351a3d1eb8e502470932fa90843055cb91123de9f3e2f1cb997"
+      },
+      {
+        "path": "src/flydrones/connectome_training/dataset.py",
+        "bytes": 10844,
+        "sha256": "efd5f5fc36a07a99d793d1f53f75764d42d996cf78a2578e43514f7bd2c11bb8"
+      },
+      {
+        "path": "src/flydrones/connectome_training/features.py",
+        "bytes": 5625,
+        "sha256": "6c1881e9ff5a060d9af842f7c60601b62e22576ca16c61baf0545cd9ff6dd6f1"
+      },
+      {
+        "path": "src/flydrones/connectome_training/governance.py",
+        "bytes": 2717,
+        "sha256": "840a7f7cbb5c851e545ef015e225823f24911048b7e883dcd94df91c829c9cb3"
+      },
+      {
+        "path": "src/flydrones/connectome_training/inference.py",
+        "bytes": 7825,
+        "sha256": "ddf31bf7b33e66158b855391ad058a079661f5d5cd6305cb77cb55128ababc3d"
+      },
+      {
+        "path": "src/flydrones/connectome_training/inference_artifact.py",
+        "bytes": 6626,
+        "sha256": "7127bd031bbe9dd4197674a39dd47c576fa937238fee14e74b67a876c909821d"
+      },
+      {
+        "path": "src/flydrones/connectome_training/losses.py",
+        "bytes": 1957,
+        "sha256": "d46724e8750efdc8d86afaf164c304485111d09ab461a6ecd53bc390c0789eaa"
+      },
+      {
+        "path": "src/flydrones/connectome_training/masked_full_initialization.py",
+        "bytes": 3822,
+        "sha256": "79b80376d238865c773b7703e68a513ac808172bcc0e76f6d6bd57ee6384b838"
+      },
+      {
+        "path": "src/flydrones/connectome_training/model.py",
+        "bytes": 10265,
+        "sha256": "81b2c4cfbc947d239794b3d3b8ed1e1c3f4d473cec2c82a6ad5e15561f63265c"
+      },
+      {
+        "path": "src/flydrones/connectome_training/parameters.py",
+        "bytes": 12411,
+        "sha256": "5c0c7e7c1f21103b0c338d2e74022667235517c8aa91e14bfc4079528e31cb83"
+      },
+      {
+        "path": "src/flydrones/connectome_training/profiling.py",
+        "bytes": 3284,
+        "sha256": "a331f63eb28f49417e7bc10badcdba21e2deb789db8d0acce07e3b7ce0583d02"
+      },
+      {
+        "path": "src/flydrones/connectome_training/px4_logger_diagnostic_profile.py",
+        "bytes": 2952,
+        "sha256": "cd96b124a1fa355afb5529ed49469a47a16118f69e8c5988a5a474e19eb411ea"
+      },
+      {
+        "path": "src/flydrones/connectome_training/px4_odometry_adapter.py",
+        "bytes": 10474,
+        "sha256": "3a655b81b937a3af141b5f4aa4fd8842f1aa070757849a88fb3e2bfef4e2f53c"
+      },
+      {
+        "path": "src/flydrones/connectome_training/px4_reset_epoch.py",
+        "bytes": 5343,
+        "sha256": "9ca137bd6e6bbddde1344a5fe1a4406901d3ad87d434effb68627772b90856d8"
+      },
+      {
+        "path": "src/flydrones/connectome_training/px4_ros2_build_source.py",
+        "bytes": 20701,
+        "sha256": "952b47af9309b818d3ca9a833270882fe5c91c1678e6e8863507e4dafd665370"
+      },
+      {
+        "path": "src/flydrones/connectome_training/px4_ros2_source_journal.py",
+        "bytes": 19780,
+        "sha256": "c1e2df6765ded3e09f22609504b4f1354d6cd7a9ae12733102edf57e1868331b"
+      },
+      {
+        "path": "src/flydrones/connectome_training/px4_status_cdr_fields.py",
+        "bytes": 5857,
+        "sha256": "10c479d3a5f3707d824530af01cf8ec713fcbc012ceec6c28833521e95c16e19"
+      },
+      {
+        "path": "src/flydrones/connectome_training/px4_status_firmware.py",
+        "bytes": 8454,
+        "sha256": "badbab9a9eb877e6447bddd35c9624af86d9fb60b7a07798bc58d6c5b514ce94"
+      },
+      {
+        "path": "src/flydrones/connectome_training/px4_status_journal_source.py",
+        "bytes": 8524,
+        "sha256": "266143c9c2bf71a41e79ecfd2c0c4735e5ad8aab1ab1c040ee2c946e99d24c16"
+      },
+      {
+        "path": "src/flydrones/connectome_training/px4_status_source_journal.py",
+        "bytes": 14932,
+        "sha256": "2c2568f8508201da15a2fd3f9ff73a8c0945d5aad4de0c9dbf479919cd28d51b"
+      },
+      {
+        "path": "src/flydrones/connectome_training/px4_status_transport.py",
+        "bytes": 6198,
+        "sha256": "d68c79dfc2d6a87b3bfb94e872775a1edc9191adfe703d1d889b05c1b1b49376"
+      },
+      {
+        "path": "src/flydrones/connectome_training/px4_ulog_odometry_crosscheck.py",
+        "bytes": 7620,
+        "sha256": "edccf2b716e82b18b53ea1819fd86e704e350b0d43d7f18d0586deed58c23341"
+      },
+      {
+        "path": "src/flydrones/connectome_training/px4_ulog_odometry_preflight.py",
+        "bytes": 3513,
+        "sha256": "72af20ce031d0355b4b8eaea7d9e34ae1d139d8cef33017a409f40014a6630da"
+      },
+      {
+        "path": "src/flydrones/connectome_training/recorder.py",
+        "bytes": 9802,
+        "sha256": "606f8bd9f06163c13fba9e95dfa11e36836d5c475f1d9022c21d3662bdec58bb"
+      },
+      {
+        "path": "src/flydrones/connectome_training/teacher_image.py",
+        "bytes": 15042,
+        "sha256": "9bfa65344d7993e633e57f3345c11ab4ae760a23b2c826c22538685555e0fe1b"
+      },
+      {
+        "path": "src/flydrones/connectome_training/trainer.py",
+        "bytes": 3349,
+        "sha256": "3d4e52ff04471bed19219ae6dd3ed400a2dd8ea988a24ad8e4601a8a4843ef77"
+      },
+      {
+        "path": "src/flydrones/data.py",
+        "bytes": 1903,
+        "sha256": "df255d3cdc891b01a071aa34e510aefdde780453ef646a3a62dc923eba37d467"
+      },
+      {
+        "path": "src/flydrones/distill.py",
+        "bytes": 5017,
+        "sha256": "7f3af2da427983277706ed2edc033239b2f2a789f67edfff25ef5391ea3dbcdf"
+      },
+      {
+        "path": "src/flydrones/distributed_px4.py",
+        "bytes": 23341,
+        "sha256": "c0322b919bad60eb4894883ee7100e10bdeffc242f4ab2271542386f363e8bf1"
+      },
+      {
+        "path": "src/flydrones/distributed_stress.py",
+        "bytes": 18064,
+        "sha256": "10093c070e47d87c4d30a9597f0c8df694bf27d8dff62a04a0d14611ff736504"
+      },
+      {
+        "path": "src/flydrones/drones/__init__.py",
+        "bytes": 795,
+        "sha256": "8d2369e6b950b195e4bf71cc1c2f839a258acc1f2c084c5f74864a02da974247"
+      },
+      {
+        "path": "src/flydrones/drones/base.py",
+        "bytes": 2051,
+        "sha256": "30c08931aa8cb77f8b41e33ce1e424e95cb7bdabc836b34e1f4fc40106d01e86"
+      },
+      {
+        "path": "src/flydrones/drones/crazyflie.py",
+        "bytes": 4239,
+        "sha256": "8ded30ec845093815f0ca81eaf7a35f681d7a17f4ddb7c74a09473490d02c0f2"
+      },
+      {
+        "path": "src/flydrones/drones/mavlink.py",
+        "bytes": 13154,
+        "sha256": "36a07db1b48e0d90ad74ce00c3a76cee27859b7b344dda95a0696626ee5e0f13"
+      },
+      {
+        "path": "src/flydrones/drones/sim.py",
+        "bytes": 9259,
+        "sha256": "89ef7a67f2d0a5f70cf8fc15ffa08caf355157fcbfc715298ceb6136fddb740d"
+      },
+      {
+        "path": "src/flydrones/drones/tello.py",
+        "bytes": 3005,
+        "sha256": "2a783177b0b2b7206a92ceafc431b1876ffbc7bb2b9fd2f72544e28ba19887ab"
+      },
+      {
+        "path": "src/flydrones/drones/udp_bridge.py",
+        "bytes": 4518,
+        "sha256": "d83ba1e2cb5b07e5727c6e8d5b0a09367acf8a6e4d815c00934bdd9adfb238c7"
+      },
+      {
+        "path": "src/flydrones/forest_sequences.py",
+        "bytes": 2560,
+        "sha256": "26f8044e523dce7f26a1b5cd5f83e24055931fa425b242e34acfe6b19fdef5a0"
+      },
+      {
+        "path": "src/flydrones/gazebo_depth.py",
+        "bytes": 6688,
+        "sha256": "ac3e2a3d123578d23d0d6cfca94071c44a7497e6f3c1d091dc685f36813e2563"
+      },
+      {
+        "path": "src/flydrones/high_speed_swarm.py",
+        "bytes": 31159,
+        "sha256": "9871040073c8c44621b02bac7b64d211c7ffc22c7bd01ee71af6ae3be7ca5c02"
+      },
+      {
+        "path": "src/flydrones/hybrid_agent.py",
+        "bytes": 12791,
+        "sha256": "89b3705827cc0c21aefe3297ec6124b69bb58172c04af1bcb71a324ff78802da"
+      },
+      {
+        "path": "src/flydrones/local_planner.py",
+        "bytes": 26700,
+        "sha256": "dced20421baa99641cc7b8dda048d2da2268bb8f8e995937c7d634d0f06998fb"
+      },
+      {
+        "path": "src/flydrones/local_planner_stress.py",
+        "bytes": 11453,
+        "sha256": "2e3f4ab4f7c33f96b507d89013358c1a7c5e9cc3fb3888269cd7140f6b592606"
+      },
+      {
+        "path": "src/flydrones/mission_agent.py",
+        "bytes": 27692,
+        "sha256": "45da7e7857afe1524a882dccfe754d4b9bd3a2d23292c53426ef91768ba9b5aa"
+      },
+      {
+        "path": "src/flydrones/mission_contract.py",
+        "bytes": 10477,
+        "sha256": "89e01f9777950a111f613524d0cb4e8e542914619544cda9cb8c34aff2d1da67"
+      },
+      {
+        "path": "src/flydrones/mission_stress.py",
+        "bytes": 37528,
+        "sha256": "d86dc73cc5ef22b090f724119e545018e2452cf16ed54a703d6919cb9f84d915"
+      },
+      {
+        "path": "src/flydrones/motor/__init__.py",
+        "bytes": 118,
+        "sha256": "d5757bcb834ea819f9fc97720dc99a3c610cadd741708bd5c249c6aacba067b1"
+      },
+      {
+        "path": "src/flydrones/motor/command.py",
+        "bytes": 949,
+        "sha256": "febc2273083733e80ab814718391925950508189671be60f4c7cd956f06e358a"
+      },
+      {
+        "path": "src/flydrones/motor/decoder.py",
+        "bytes": 7230,
+        "sha256": "12b8a5d2220d44c18b25dffca118f0e5499295a3cc58b36820237e30cd0085f7"
+      },
+      {
+        "path": "src/flydrones/numpy_policy.py",
+        "bytes": 1932,
+        "sha256": "e084adb37a3bd823eae965ab34a4f2ab6ffdddef20f26325288327b67318d930"
+      },
+      {
+        "path": "src/flydrones/peer_udp.py",
+        "bytes": 9308,
+        "sha256": "c8a8a14b2b3e24b7a7c1b219bc85de1085b275a4276fc4235483aa58da0c8284"
+      },
+      {
+        "path": "src/flydrones/px4_repeatability.py",
+        "bytes": 4625,
+        "sha256": "97ea055c93b4183f4342f7b6dde49e977415f5b14a4afc8d327dc9fd3de7985c"
+      },
+      {
+        "path": "src/flydrones/reflex_training.py",
+        "bytes": 22507,
+        "sha256": "39a58b1e6eb1ce19af428b658ba06084f7e9563237bec06a6d87f38211854dec"
+      },
+      {
+        "path": "src/flydrones/runtime.py",
+        "bytes": 6556,
+        "sha256": "293ef343dda46df81853d2cbc01a26eb8edff6482374fdc70a81ce96182a11ea"
+      },
+      {
+        "path": "src/flydrones/safety.py",
+        "bytes": 7517,
+        "sha256": "8fe14304c64a3d6b3aa7281034bbf028aee78b166f73b9241c7ebe52a75bd695"
+      },
+      {
+        "path": "src/flydrones/senses/__init__.py",
+        "bytes": 333,
+        "sha256": "3d8305c76e44a11e63158bc12f7c41f2526a3924104626a310ae55dbe6a5fcae"
+      },
+      {
+        "path": "src/flydrones/senses/encoder.py",
+        "bytes": 2369,
+        "sha256": "f5e7a1351c297157ba45d2166937f96442053f19236dcdd511cd9c3edfbde3bf"
+      },
+      {
+        "path": "src/flydrones/senses/gestures.py",
+        "bytes": 9310,
+        "sha256": "911e8dc7f0c2c50b9d76d1e7874b41154f1d0d25913009f96f81f6033efb5693"
+      },
+      {
+        "path": "src/flydrones/senses/retina.py",
+        "bytes": 7881,
+        "sha256": "ed34e1e1e8c7ef839a3a874cf34574746438efe65f5bddac45c2c4ff34c6e11e"
+      },
+      {
+        "path": "src/flydrones/senses/webcam.py",
+        "bytes": 1003,
+        "sha256": "f9c0cbc7c2d19acac17a292a54ae00601106f3053713bda3b093272e3758b68f"
+      },
+      {
+        "path": "src/flydrones/sitl.py",
+        "bytes": 4749,
+        "sha256": "bf01f1c558a7b453d2039b81f4638bbe6baaf7cbc15f68d77d7075f01d1524d2"
+      },
+      {
+        "path": "src/flydrones/sitl_swarm.py",
+        "bytes": 47038,
+        "sha256": "a767f3b912b34e6886cf40bd08f09ddf7ac7132e5918cad6fb1ad95cf066ec04"
+      },
+      {
+        "path": "src/flydrones/task_consensus.py",
+        "bytes": 19457,
+        "sha256": "fe18ef4dcf123ce58d9eaa302c67e331cfc659525682ad0212f2d2eda6fee70c"
+      },
+      {
+        "path": "src/flydrones/task_udp.py",
+        "bytes": 18341,
+        "sha256": "33c5e4c632ebd63fc238928cbe5a683ee31b6afc06cc8e975f60cc41aed56bb4"
+      },
+      {
+        "path": "src/flydrones/training.py",
+        "bytes": 4547,
+        "sha256": "31cfab524650fd926030e767944f7e3a6dbf8946c19e387c9a2420c236a1d3ce"
+      },
+      {
+        "path": "src/flydrones/viz/__init__.py",
+        "bytes": 109,
+        "sha256": "5c9417b6f5520194dcbe9edb2c5d66afb34bc490c1354044efe585e638c0c0f2"
+      },
+      {
+        "path": "src/flydrones/viz/dashboard.py",
+        "bytes": 10154,
+        "sha256": "d963ff48b521befad310b3df01fe3dc6cfd239b23e4ec17011eec02cf1642944"
+      },
+      {
+        "path": "tools/benchmark/agent_capture_runtime.py",
+        "bytes": 13456,
+        "sha256": "da6de0ab42c999a27884ea3401ea0c268bd5f03d27fd596ab440e8278a736a35"
+      },
+      {
+        "path": "tools/benchmark/agent_owned_listener.py",
+        "bytes": 6555,
+        "sha256": "296c2fe8cca95657e183f15a08dd74983e895f87ea8bbf25b84260fbf3949d10"
+      },
+      {
+        "path": "tools/benchmark/analyze_dynamic_camera_imu.py",
+        "bytes": 5893,
+        "sha256": "0c0d2bf57e7eec2a76d30dba3f1d45dc0e55ef2b03d9bad95f185379adb5f8e2"
+      },
+      {
+        "path": "tools/benchmark/analyze_openvins_trajectory.py",
+        "bytes": 6694,
+        "sha256": "5e36fb13516ca5d551b12fe0b7be9e2637bba10fe36700b56fe39b91fcea5d18"
+      },
+      {
+        "path": "tools/benchmark/analyze_optical_fixture.py",
+        "bytes": 4425,
+        "sha256": "d18f2e867d2b18308a14e58cda9cbacdea2339bae3933acee646d7c3b83fa0c0"
+      },
+      {
+        "path": "tools/benchmark/analyze_rgb_imu.py",
+        "bytes": 3113,
+        "sha256": "683c13d978fca4b2f7adfe6e094d7a974045bff1b42a19fa4d60659dcf940341"
+      },
+      {
+        "path": "tools/benchmark/audit_archive.py",
+        "bytes": 8456,
+        "sha256": "724b7459a2452c0213cc9b47d1e77f3594c7de3e99becf7592b2135c7531133c"
+      },
+      {
+        "path": "tools/benchmark/audit_capture_startup_preflight.py",
+        "bytes": 6730,
+        "sha256": "feb1e04ad648122be6525e64937444615d36129b65201e2d08ac18279602ed6c"
+      },
+      {
+        "path": "tools/benchmark/audit_causal_deadline_retry_preflight.py",
+        "bytes": 4705,
+        "sha256": "3a885e392e5c14516ecdee062471f4c444de1d6ddbfc66f453536832874799d0"
+      },
+      {
+        "path": "tools/benchmark/audit_causal_pair_retry_preflight.py",
+        "bytes": 5576,
+        "sha256": "69559237367be638f54eee60b42b054f03491459f44babc4ecb22851b03e4497"
+      },
+      {
+        "path": "tools/benchmark/audit_causal_pair_sim_time_physical_attempt.py",
+        "bytes": 7042,
+        "sha256": "209e4d0e62ea5d61d0b0807fee32097327e327f45db16d59ae39bd8e63dd62f3"
+      },
+      {
+        "path": "tools/benchmark/audit_causal_pair_sim_time_physical_boundary.py",
+        "bytes": 2611,
+        "sha256": "4d5b9e78474a0efc2d68540474e64795e92d6f7cb342be071c5a5b9776758cce"
+      },
+      {
+        "path": "tools/benchmark/audit_causal_pair_sim_time_retry_preflight.py",
+        "bytes": 5782,
+        "sha256": "4a38fd5095997a9df6ff0d9852b89666046f29c1674ba30805e380ab443c879c"
+      },
+      {
+        "path": "tools/benchmark/audit_causal_pair_stage.py",
+        "bytes": 6403,
+        "sha256": "9fcbb3a520f1b69f933e499941e9daeb002ce333c5a6f178345e95daa35a88e6"
+      },
+      {
+        "path": "tools/benchmark/audit_declared_launch_environment.py",
+        "bytes": 6866,
+        "sha256": "b95623bc9617fe4637a7da0469a393c539ab912d160e9281a914512ed797469c"
+      },
+      {
+        "path": "tools/benchmark/audit_disarmed_sensors.py",
+        "bytes": 6827,
+        "sha256": "3521adf808d3dba0f11cc6d861aac8e6ccc7d10bf696b91dffe1d7be0a5806b9"
+      },
+      {
+        "path": "tools/benchmark/audit_ekf2_shadow.py",
+        "bytes": 9917,
+        "sha256": "1ba38b2f3bea9623099618329915741212ab9b2207b9ea710861572e7c4b2004"
+      },
+      {
+        "path": "tools/benchmark/audit_estimator_aware_readiness_preflight.py",
+        "bytes": 7843,
+        "sha256": "137a106a8d02be55a8e7b7dcd9877e84fe03a17df7fd3640425197c55b812ff6"
+      },
+      {
+        "path": "tools/benchmark/audit_estimator_handoff_physical_attempt.py",
+        "bytes": 8191,
+        "sha256": "2aacd2e978d769707211fd4e99ca8b98712d2dafe1f7d23b644ebe7644f25148"
+      },
+      {
+        "path": "tools/benchmark/audit_estimator_heartbeat_retry_preflight.py",
+        "bytes": 5751,
+        "sha256": "aafe0416c1fb4e644bbe4acc8f850f639d9d55308439e7cd32c0bea5e621efa9"
+      },
+      {
+        "path": "tools/benchmark/audit_estimator_heartbeat_routing.py",
+        "bytes": 4668,
+        "sha256": "06aab4cf80a5e500099baaf70f876d2156a6fb03c93850006d4d2bfcdcf590a8"
+      },
+      {
+        "path": "tools/benchmark/audit_estimator_physical_attempt.py",
+        "bytes": 7791,
+        "sha256": "32339cf403611d4d4c918c690ec501bb3eb07663ff5165980a4639b11dca3609"
+      },
+      {
+        "path": "tools/benchmark/audit_estimator_physical_refusal_preflight.py",
+        "bytes": 7449,
+        "sha256": "a471317f3dcc99a2cd0f676745f667b3d3265142c9f5d6c54fac65e5eb4ab0cd"
+      },
+      {
+        "path": "tools/benchmark/audit_full_load_runtime_mapping.py",
+        "bytes": 7983,
+        "sha256": "68a5fcbc5effeae1c3d67152bdacff764243cf08ff89bc1c98bb194af24f2773"
+      },
+      {
+        "path": "tools/benchmark/audit_heartbeat_commit_order.py",
+        "bytes": 6080,
+        "sha256": "8e14312cdca9aeedf92918321f9765dae0e7d6c16020dce3efc9a4fb697102e6"
+      },
+      {
+        "path": "tools/benchmark/audit_heartbeat_commit_order_physical_attempt.py",
+        "bytes": 14643,
+        "sha256": "486f59bd43bec0580864fbf12b3c2eed8edc19ffc6f661a91d80c0749af5fe70"
+      },
+      {
+        "path": "tools/benchmark/audit_heartbeat_commit_order_physical_boundary.py",
+        "bytes": 2600,
+        "sha256": "32baa7cd837ef0e9a20fb888c986dae701c07e6ce92060556ee87d5955d858ee"
+      },
+      {
+        "path": "tools/benchmark/audit_heartbeat_commit_order_retry_preflight.py",
+        "bytes": 6172,
+        "sha256": "92d3f2c2e8c220059a51efe0659b8acb833c29cc39e788dc33d7428b1256747a"
+      },
+      {
+        "path": "tools/benchmark/audit_heartbeat_sim_time_readiness.py",
+        "bytes": 3960,
+        "sha256": "8006deb2cb2824a31acf961c6b2402185df5946bb76acd092e4f8b88fed3c892"
+      },
+      {
+        "path": "tools/benchmark/audit_heartbeat_sim_time_retry_preflight.py",
+        "bytes": 4958,
+        "sha256": "0fd0627a2b11a01f972b0910cd871605e93487bf43b08ce9bbf4e0289d624006"
+      },
+      {
+        "path": "tools/benchmark/audit_inertial_consistency.py",
+        "bytes": 6353,
+        "sha256": "0dc25f4bc055aa32af0c626d8e1931c5b0bf366531403cfa1e4f602bbd87bcea"
+      },
+      {
+        "path": "tools/benchmark/audit_live_wire_coverage.py",
+        "bytes": 15636,
+        "sha256": "e587ecfd943bc39afb1be3e5f808e8a20e3a02702f8cce30057ad4befa984e4b"
+      },
+      {
+        "path": "tools/benchmark/audit_live_wire_resources.py",
+        "bytes": 10464,
+        "sha256": "4813a6587750dd7bc4eb0b5386057c0aee3afb9b96b395e24f7be86fb14d7fb2"
+      },
+      {
+        "path": "tools/benchmark/audit_live_wire_runtime.py",
+        "bytes": 13383,
+        "sha256": "e2e5ee6bf5955edb1f03fca8310cbe7df6a69260eafeac3d4035bfea6c5b6bd8"
+      },
+      {
+        "path": "tools/benchmark/audit_live_wire_safety.py",
+        "bytes": 23455,
+        "sha256": "2d66a18626a47c94fca792a0639181e3823551414b76fc9b24f70bc4904a40e5"
+      },
+      {
+        "path": "tools/benchmark/audit_live_wire_study.py",
+        "bytes": 76478,
+        "sha256": "079386b27cee32ed20990bba30d3ae4857b351336c915ebc80eaea896041e65c"
+      },
+      {
+        "path": "tools/benchmark/audit_live_wire_ulog.py",
+        "bytes": 4235,
+        "sha256": "4bc86de845a6099a9374a54a2555ee5c5e0d3eeaa6a52815ef93f3fd876d2274"
+      },
+      {
+        "path": "tools/benchmark/audit_live_wire_workload.py",
+        "bytes": 11779,
+        "sha256": "6b14b7fb3011fb956d4bdac7cf459e3445b3a062d4f0564394c800d5fa9e79a2"
+      },
+      {
+        "path": "tools/benchmark/audit_openvins_clone_motion.py",
+        "bytes": 14570,
+        "sha256": "3a5a5f3d3503d81f35ed3acb74f49cab3816b894e46d47535aa4459068b1bb44"
+      },
+      {
+        "path": "tools/benchmark/audit_openvins_detection_pruning.py",
+        "bytes": 5213,
+        "sha256": "7eac80571d8273b90ea3b3e85ea5bbbc0b40398500086676025a10aa6c70a491"
+      },
+      {
+        "path": "tools/benchmark/audit_openvins_ekf2_task3.py",
+        "bytes": 7095,
+        "sha256": "5829e56b0c667965e3af43b13765c8a25ed42964ad80d6c0333d2d48a9868c4f"
+      },
+      {
+        "path": "tools/benchmark/audit_openvins_fast_propagation.py",
+        "bytes": 6821,
+        "sha256": "d4fe9f942bb94b6e3ed919a795a321b22af2282d9ecc04d85cb3176943edf1e3"
+      },
+      {
+        "path": "tools/benchmark/audit_openvins_feature_trace.py",
+        "bytes": 1125,
+        "sha256": "44a34f07da8ea42b600ff306b34e3645b69ff452803ab64fa961e6071ae282a1"
+      },
+      {
+        "path": "tools/benchmark/audit_openvins_handoff_physical_attempt.py",
+        "bytes": 10810,
+        "sha256": "76d298645e7e8da379dabd9b1c10e21b9dd3f66afecdcace8e53ddf7a3f266ad"
+      },
+      {
+        "path": "tools/benchmark/audit_openvins_handoff_retry_preflight.py",
+        "bytes": 6007,
+        "sha256": "84cf95802c159cdd3dc14c94dfd9d550f55175dc6205fdf779e0337cae970a12"
+      },
+      {
+        "path": "tools/benchmark/audit_openvins_health_cohort.py",
+        "bytes": 11569,
+        "sha256": "24ca73dd74fa9754cf799f5726f9d047dae90d850abaac171652635f53ef7a15"
+      },
+      {
+        "path": "tools/benchmark/audit_openvins_health_physical_faults.py",
+        "bytes": 11461,
+        "sha256": "ad418245a858f8118cccd4146af975d50c082d72a3c283e4a10b3bcd9425681a"
+      },
+      {
+        "path": "tools/benchmark/audit_openvins_imu_init.py",
+        "bytes": 11468,
+        "sha256": "95642c07cfb96f812ecc7fa26e3325029a33b7cf3d0d94a53ab9177fa1d40924"
+      },
+      {
+        "path": "tools/benchmark/audit_openvins_init_feature_trace.py",
+        "bytes": 9820,
+        "sha256": "fe09e9db1903149af94beb75856b9164a40f90c2748768eb994a5388cf30ed4c"
+      },
+      {
+        "path": "tools/benchmark/audit_openvins_interior_candidates.py",
+        "bytes": 4193,
+        "sha256": "3218aed11c8d1c2416a80c7c3fa91c8c20cc047e6d847299c8956f0a1da9bf30"
+      },
+      {
+        "path": "tools/benchmark/audit_openvins_lazy_runtime_closure.py",
+        "bytes": 12682,
+        "sha256": "b18b489e4c0a96c6d275d3629f1a240f60762c4215dfce5e0774daf5da84bbfc"
+      },
+      {
+        "path": "tools/benchmark/audit_openvins_lazy_runtime_prepare.py",
+        "bytes": 7407,
+        "sha256": "1b58740975b029251a26a86298d6ec8d688c224cf2be356f1ea82960aaba5a64"
+      },
+      {
+        "path": "tools/benchmark/audit_openvins_motion_intent_replay.py",
+        "bytes": 6281,
+        "sha256": "e23278e1e907ec783148ce29fd00a69c1e8a15f3eb99cd08902ffa389c5dbbfd"
+      },
+      {
+        "path": "tools/benchmark/audit_openvins_native_moments.py",
+        "bytes": 6974,
+        "sha256": "85e4d5c713a760667e4652dc4b422e2bded0f406fa7e2bc1dec7afdc81c047e0"
+      },
+      {
+        "path": "tools/benchmark/audit_openvins_receiver_parity.py",
+        "bytes": 3210,
+        "sha256": "51f6e3936701b5f3b9f590199932e18cd8dced7ede68832b8e0e2b7dbfd42352"
+      },
+      {
+        "path": "tools/benchmark/audit_openvins_rejections.py",
+        "bytes": 6704,
+        "sha256": "417f692fc5c95684700d16d3f6e61bb8a8710bea93193320a6036c20ee6e435f"
+      },
+      {
+        "path": "tools/benchmark/audit_openvins_state_diagnostics.py",
+        "bytes": 8451,
+        "sha256": "1a9d7b5cc43feee95954620f91ebb8c5b135fb3fa45003937a4f63d9848084ed"
+      },
+      {
+        "path": "tools/benchmark/audit_openvins_track_eligibility.py",
+        "bytes": 5717,
+        "sha256": "000551eff6a2c82b9a216bb2db2a71ed7ba342b455e45aa00a38f7cfbc69a43b"
+      },
+      {
+        "path": "tools/benchmark/audit_openvins_track_geometry.py",
+        "bytes": 18951,
+        "sha256": "e185857b3dfc6c711c892e35d56a8ef365b3d8c515ac89aceb139712f52cf62b"
+      },
+      {
+        "path": "tools/benchmark/audit_openvins_track_lifetime.py",
+        "bytes": 6946,
+        "sha256": "9c1f7a876acae95c6a4cfa9036722398e67dc5565c367d8b120518444a292f4c"
+      },
+      {
+        "path": "tools/benchmark/audit_owned_runtime_maps.py",
+        "bytes": 3865,
+        "sha256": "2ad39636c53b7fba112cfa8ed2f3d0ce2ead62f9d752ba2ea3600c43e0826270"
+      },
+      {
+        "path": "tools/benchmark/audit_physical_retry_preflight.py",
+        "bytes": 4529,
+        "sha256": "c1c7f7e498663155768881951301b07772e0838e349877fe125732220219ed89"
+      },
+      {
+        "path": "tools/benchmark/audit_prearm_static.py",
+        "bytes": 7130,
+        "sha256": "3b0e4c7010e5e913351babb1acc9bd42173f02f8cbb9e9d345a548162a6150fb"
+      },
+      {
+        "path": "tools/benchmark/audit_renderer_first_step_probe.py",
+        "bytes": 7450,
+        "sha256": "8bd663667e29ad4d6ca5b44062c8aecd34d2d3f15ad5e1b6eb118d2c6281d3d7"
+      },
+      {
+        "path": "tools/benchmark/audit_source_watchdog_physical_boundary.py",
+        "bytes": 2579,
+        "sha256": "4774ed3d42d21377ad50535c7d177998222d6973f541528574a89aa105bd63bc"
+      },
+      {
+        "path": "tools/benchmark/audit_source_watchdog_retry_preflight.py",
+        "bytes": 5953,
+        "sha256": "1db60155ddb6f3ca7dc164fd44988a85661009bdf90e3e29fe7409455070e403"
+      },
+      {
+        "path": "tools/benchmark/audit_source_watchdog_startup_cohort.py",
+        "bytes": 6167,
+        "sha256": "ffd5ded456c2b8fe3a12b4cf79f7da2dd73c9605055ed27c3ffc002f1aa5f619"
+      },
+      {
+        "path": "tools/benchmark/audit_source_watchdog_startup_preflight.py",
+        "bytes": 5223,
+        "sha256": "66c78a239852c3ef11ebb77db6179496a3ecf99a836d0c07a79d15d66e113786"
+      },
+      {
+        "path": "tools/benchmark/audit_stationary_prelude.py",
+        "bytes": 6710,
+        "sha256": "4b48958cb63bf8c6d82652933d2210f1e4eeb41a004ab3118734b525a60fb2ff"
+      },
+      {
+        "path": "tools/benchmark/audit_supported_heartbeat_gauge_preflight.py",
+        "bytes": 6961,
+        "sha256": "a567e4a48dea0d3801b0e0eed8279fccbc5add76100f049bdb1a7d94305012e7"
+      },
+      {
+        "path": "tools/benchmark/audit_vio_fusion_readiness.py",
+        "bytes": 6661,
+        "sha256": "47cc6b90098a070c50a0ab04cbbce9c8573da6a9862cca107bf1f1efba3b4ec7"
+      },
+      {
+        "path": "tools/benchmark/bound_resource_graph.py",
+        "bytes": 5683,
+        "sha256": "5093af9baa63daee6945b76b70690d4dbeedefcaf4ed09d4db353af7b96c7fda"
+      },
+      {
+        "path": "tools/benchmark/build_native_reference.py",
+        "bytes": 1453,
+        "sha256": "5b6bca7c44a7452d70d57c00ad11101b9c8d8c99f5c13689e7b1e3373bd289d5"
+      },
+      {
+        "path": "tools/benchmark/build_openvins_ekf2_fast_file_candidates.py",
+        "bytes": 8192,
+        "sha256": "64c41f53eb10314a31786e673de11b114e5a52b84c9b7e7f1b3f6e77b5e225d0"
+      },
+      {
+        "path": "tools/benchmark/build_openvins_ekf2_fast_run_evidence.py",
+        "bytes": 7157,
+        "sha256": "00edf7aec7354c7033cda46f68631d2ae27787dc6edee28e5852217d0d5a6895"
+      },
+      {
+        "path": "tools/benchmark/build_openvins_health_run_evidence.py",
+        "bytes": 7849,
+        "sha256": "a1e98fb59fc523524da893b285ca096e437e7cad27f5662f51d4e497755a1b0c"
+      },
+      {
+        "path": "tools/benchmark/calibration_capture_contract.py",
+        "bytes": 6160,
+        "sha256": "c64d9363624551406414e9b21e6747724ee2f60380f124d9be8cc8ca44ef3fef"
+      },
+      {
+        "path": "tools/benchmark/calibration_capture_pipeline_v4.py",
+        "bytes": 76710,
+        "sha256": "58a7ace9f5a4ee74f1a9e4bd5be7a0c681b303acb1469bcf135a971e1eebc7f0"
+      },
+      {
+        "path": "tools/benchmark/calibration_capture_scene.py",
+        "bytes": 23878,
+        "sha256": "68f091481b2f737f4667c233f1e653b937a39df3b6f8ebd02f566ca96bffd2c3"
+      },
+      {
+        "path": "tools/benchmark/calibration_capture_scope.py",
+        "bytes": 5467,
+        "sha256": "5bbd5055425f2b95385abbb50a903e9affc48d36054bcd11c04caef14550fcec"
+      },
+      {
+        "path": "tools/benchmark/calibration_capture_study.py",
+        "bytes": 13436,
+        "sha256": "19b38cb6401979a01f4e0015422260184f13757cbf47b09b3de567ced0545e44"
+      },
+      {
+        "path": "tools/benchmark/calibration_capture_study_v2.py",
+        "bytes": 5887,
+        "sha256": "00cd4c5890a6833af8f3656d8665a2888614f37bcb40dffef534474125202fc2"
+      },
+      {
+        "path": "tools/benchmark/calibration_capture_study_v3.py",
+        "bytes": 8092,
+        "sha256": "9195373b2a015d6ddbe12375aa8c9b10a76fa77607d42e76c925fe2fe3e2a3e0"
+      },
+      {
+        "path": "tools/benchmark/calibration_capture_study_v4.py",
+        "bytes": 2041,
+        "sha256": "5b95260be5c5a3cc6df9f611bdda276863277ae7f70d3f9503b38120baf7b61d"
+      },
+      {
+        "path": "tools/benchmark/calibration_excitation.py",
+        "bytes": 15131,
+        "sha256": "a48a688ebdeb6ec063d4dc8908306d32957c8fa652f7a34baf74229e24535971"
+      },
+      {
+        "path": "tools/benchmark/capture_contract.py",
+        "bytes": 14585,
+        "sha256": "18d95975bf9676554d65aa4d7b30591fa43c68e7198ecff24a5808ef709c4883"
+      },
+      {
+        "path": "tools/benchmark/capture_disarmed_sensors.py",
+        "bytes": 64954,
+        "sha256": "917089fe23870c081de2a17cc3a9ee386bbbb78c00036cfd9a0acf039b847347"
+      },
+      {
+        "path": "tools/benchmark/capture_wire_lifecycle.py",
+        "bytes": 29530,
+        "sha256": "e0c58a9b4db8c8e508c09df118b424ebbf9aeefd7e016f847ddbc9ff15bab555"
+      },
+      {
+        "path": "tools/benchmark/causal_deadline_retry_preflight.py",
+        "bytes": 8548,
+        "sha256": "d21238ceafbb33371900233513f1d083fddc6a11dd867e4046b1ae2bcff2c55e"
+      },
+      {
+        "path": "tools/benchmark/causal_pair_retry_preflight.py",
+        "bytes": 11643,
+        "sha256": "205cd24d25fedd98c9192cdff52c9bc98b00e722d1a124c4afa981d299d535d1"
+      },
+      {
+        "path": "tools/benchmark/causal_pair_sim_time_physical_boundary.py",
+        "bytes": 10091,
+        "sha256": "045a1bf7239e9420079b22234a707bc50afd41bdd844ab6d7e619eb6fa238258"
+      },
+      {
+        "path": "tools/benchmark/causal_pair_sim_time_retry_preflight.py",
+        "bytes": 12852,
+        "sha256": "9295770bbb7c6b3498b06c5269debc681c0cafa5c69fea5bc5f6e78ec3f0a90d"
+      },
+      {
+        "path": "tools/benchmark/check_native_setup_cleanup.py",
+        "bytes": 2892,
+        "sha256": "211c4c6631bd235c64d35a8b78e169e09087ce3bc27e4fa0a93b8c7a8424781e"
+      },
+      {
+        "path": "tools/benchmark/check_online_native_protocol.py",
+        "bytes": 4983,
+        "sha256": "f3af8c30bb05fee3dc5bff0dabd67d980fe38e3d877dc5f7b344281c413b9363"
+      },
+      {
+        "path": "tools/benchmark/check_openvins_causal_input.py",
+        "bytes": 7248,
+        "sha256": "ca9eefed2cc6baca72c2faf7675514b775acded74f697c23576e35f2dc44ea77"
+      },
+      {
+        "path": "tools/benchmark/declared_launch_environment_harness.py",
+        "bytes": 4778,
+        "sha256": "ed57e52a7d769b0b777af7bbd3851d2cbec3a8049c952d1bb41850597cfdd20b"
+      },
+      {
+        "path": "tools/benchmark/declared_runtime_snapshot.py",
+        "bytes": 5442,
+        "sha256": "b0d9eb7611fc6505827c7fd4279a3b6aae5ae0add9e25011da6e69badfea115f"
+      },
+      {
+        "path": "tools/benchmark/diagnose_openvins_zupt_bias.py",
+        "bytes": 9633,
+        "sha256": "668ce37c23f6892033fff8847d3e2f9a0ffd8b5af4d5a8203e6932944718da6f"
+      },
+      {
+        "path": "tools/benchmark/diagnose_visual_feature_starvation.py",
+        "bytes": 8652,
+        "sha256": "b0373533b77233082d9b10fccd80ae66ab1ef632ecd3a5eb5e0f60075990304d"
+      },
+      {
+        "path": "tools/benchmark/diagnostic_reference_freshness.py",
+        "bytes": 4811,
+        "sha256": "ff56f0c45064366d693048c3fadc75c8778788a22b053a0a7a1bd05834cecc90"
+      },
+      {
+        "path": "tools/benchmark/disarmed_motion_probe.py",
+        "bytes": 9881,
+        "sha256": "f397625c4191f25d74cc487a49ea290d3e00400b99d363e2a6d0fe9ca8564e23"
+      },
+      {
+        "path": "tools/benchmark/disarmed_sensor_provenance.py",
+        "bytes": 27794,
+        "sha256": "2c71b1203a254377844b14465a12a8c8b1ea64e99f151f2a76a21376adb70a6d"
+      },
+      {
+        "path": "tools/benchmark/ego.launch.py",
+        "bytes": 4263,
+        "sha256": "f6f42e06a1198c21bb357ed1cc9ad48dc91db33f7db98cfe0d3e1ecfcc823440"
+      },
+      {
+        "path": "tools/benchmark/ego_bridge_cdr_audit.py",
+        "bytes": 7529,
+        "sha256": "8e9dcb7ef4aad53f88153930e09e8b3ff063cb3bf9b4bd2727f285b76907f820"
+      },
+      {
+        "path": "tools/benchmark/ego_bridge_cdr_journal.py",
+        "bytes": 9520,
+        "sha256": "943156a6b7edf3d124ff6befeb0eba16209a8f647c89f74eb22b365a664e3033"
+      },
+      {
+        "path": "tools/benchmark/ego_bspline_observation.py",
+        "bytes": 17983,
+        "sha256": "b462fe968ff62afafe91a58da73dea2ce2358ac978f2853463264a5fccd75ae4"
+      },
+      {
+        "path": "tools/benchmark/ego_cdr_diagnostic_join.py",
+        "bytes": 5304,
+        "sha256": "474cee940ab9b69c26fe4ac90bff576f5107f5701eb465457255c695e7ca347b"
+      },
+      {
+        "path": "tools/benchmark/ego_cdr_field_audit.py",
+        "bytes": 6569,
+        "sha256": "b0a0a6421f06688fc79c69660be12cf4469994089ed0e8ba5faad6a37d0e145c"
+      },
+      {
+        "path": "tools/benchmark/ego_node.py",
+        "bytes": 12601,
+        "sha256": "b1f4f108f9bf8bc35f04ed42eb4a63db5ef79dd1b70f0e0f8901b2c20f2d2d88"
+      },
+      {
+        "path": "tools/benchmark/ego_wire_observation.py",
+        "bytes": 5369,
+        "sha256": "4d2d783f11632c91b7cf0978fc217b36ad19a172a698dc345fe56b44737f2c29"
+      },
+      {
+        "path": "tools/benchmark/estimator_aware_readiness.py",
+        "bytes": 17368,
+        "sha256": "be471045e808a46b44dd36f3a87a5c25b95889c393246aa0b99d090f3d62de2f"
+      },
+      {
+        "path": "tools/benchmark/estimator_aware_readiness_preflight.py",
+        "bytes": 11679,
+        "sha256": "d4fee0ed12a9c223bea29a19c06e9d49785f095c6aa7e802589318bf4837c887"
+      },
+      {
+        "path": "tools/benchmark/estimator_heartbeat_retry_preflight.py",
+        "bytes": 12967,
+        "sha256": "6a1698dd0d016211228383692c3a452e0f8f99ae24e873e85bafbeee174950e4"
+      },
+      {
+        "path": "tools/benchmark/estimator_physical_refusal_preflight.py",
+        "bytes": 11416,
+        "sha256": "efc02c9ecc48a43d9000802b3b5ecbec1914fbc186b1ad62da3849e5546cd72d"
+      },
+      {
+        "path": "tools/benchmark/execute_causal_pair_sim_time_physical_boundary.py",
+        "bytes": 3317,
+        "sha256": "c6233d89b305a7a38b15e023daa650fd3bb2c922c5209292c94df1a5d66164d6"
+      },
+      {
+        "path": "tools/benchmark/execute_heartbeat_commit_order_physical_boundary.py",
+        "bytes": 3288,
+        "sha256": "1aeb2a29635dda2f1492950bf0cdc0d9e2c9b491564c3ccdd545c2acca354ba4"
+      },
+      {
+        "path": "tools/benchmark/execute_heartbeat_commit_order_startup_preflight.py",
+        "bytes": 5114,
+        "sha256": "f5648bb5e4e1261dbc4d50fb5c07e87d664282f643fb0e68d3ff6ac2649ff774"
+      },
+      {
+        "path": "tools/benchmark/execute_live_wire_startup_diagnostic.py",
+        "bytes": 6909,
+        "sha256": "214e37c80280edc5c128d22383fe9b8e0b0add7fca8e95ede52b39da8a26c357"
+      },
+      {
+        "path": "tools/benchmark/execute_openvins_health_physical_fault.py",
+        "bytes": 5168,
+        "sha256": "e06a1c6b2b0ba906696f2e7a7f95cd92b2b7845510f2fff065436b4c1431b2f5"
+      },
+      {
+        "path": "tools/benchmark/execute_openvins_health_physical_run.py",
+        "bytes": 14998,
+        "sha256": "d1f9bb4b92e99cb4f0c302edac26894706395ae4612a316ed864b7873421fc83"
+      },
+      {
+        "path": "tools/benchmark/execute_source_watchdog_physical_boundary.py",
+        "bytes": 3290,
+        "sha256": "3140a475afd187ea77736ba5470a0d6a12712f391539e8a0821060786ec3553f"
+      },
+      {
+        "path": "tools/benchmark/export_camera_px4_imu_dataset.py",
+        "bytes": 3124,
+        "sha256": "59805f8215ebf569943014126806fde479b057bba0e7d47dfc83d100b14da65a"
+      },
+      {
+        "path": "tools/benchmark/extract_px4_ulog_parameter_baseline.py",
+        "bytes": 2026,
+        "sha256": "b66e6f727797f7043aa012d306c08dbc95cbb2613850fd202e1625dc7b0060b0"
+      },
+      {
+        "path": "tools/benchmark/freeze_benchmark.py",
+        "bytes": 7323,
+        "sha256": "c09fd666ba5dccee20048cc3a8305bfa66a36606226145fd8b5eae22ee9eac29"
+      },
+      {
+        "path": "tools/benchmark/full_load_runtime_mapping.py",
+        "bytes": 17970,
+        "sha256": "e44daea3c7c59e9f39228af3b45548e500bfb4595a63286794df6f25d6f2a7dc"
+      },
+      {
+        "path": "tools/benchmark/generate_formal.py",
+        "bytes": 3099,
+        "sha256": "c6cd2a4f9c6166ea464b8ba30a741dd2eb1d6d62fe4a43368e91397dcaedc7b5"
+      },
+      {
+        "path": "tools/benchmark/heartbeat_commit_order_physical_boundary.py",
+        "bytes": 13161,
+        "sha256": "a5fb11eb8c9d8f5cc72244ffffcd63f5a4075e6d1cc84bb43c132403e1146ed9"
+      },
+      {
+        "path": "tools/benchmark/heartbeat_commit_order_retry_preflight.py",
+        "bytes": 13241,
+        "sha256": "ec8decf1fd8a0ee60c6616ab9dddd47944cd8d52ce98cf0b2b18366e1709f1d6"
+      },
+      {
+        "path": "tools/benchmark/heartbeat_sim_time_retry_preflight.py",
+        "bytes": 10957,
+        "sha256": "ae485e533f7d1dfa1fff7d89c9ae75dbc2c560c00f5c3e9173b50480afc7e550"
+      },
+      {
+        "path": "tools/benchmark/isolated_namespace.py",
+        "bytes": 16061,
+        "sha256": "a700ef60a30b8b95284af4262f811c94aed5bf0fa0785ad8826b03147e55a81f"
+      },
+      {
+        "path": "tools/benchmark/journaled_heartbeat_lane.py",
+        "bytes": 8305,
+        "sha256": "af0cfa376e0093049a2ddbee8b93728d04c3793a4dc7d30091d5fd89fd2a6202"
+      },
+      {
+        "path": "tools/benchmark/kernel_datagram_arrival.py",
+        "bytes": 9352,
+        "sha256": "38df5d7f1879b9ff90efb0a9a4134d31b225063c1a647588d9e28e0dc57bb987"
+      },
+      {
+        "path": "tools/benchmark/kernel_queue_age.py",
+        "bytes": 9546,
+        "sha256": "e15ef42b23d39666e0eb5ae80922a6cdc19d531db8cda731ed9cd1ea14986405"
+      },
+      {
+        "path": "tools/benchmark/kernel_rx_timestamping.py",
+        "bytes": 2411,
+        "sha256": "350eed6f06d5693589a7200da7751e162e303833ed1324309ed5af26fcb3a9ea"
+      },
+      {
+        "path": "tools/benchmark/live_wire_startup_runner.py",
+        "bytes": 4910,
+        "sha256": "5b38182275eee4e309ccd1f737c95114846e697d05116b9103c0a236d217e8b1"
+      },
+      {
+        "path": "tools/benchmark/live_wire_study.py",
+        "bytes": 21360,
+        "sha256": "c94fffd0127475e0eea1dd29768a2205eea38b3254c7f6cb73d17aced4488d9c"
+      },
+      {
+        "path": "tools/benchmark/make_kalibr_aprilgrid_target.py",
+        "bytes": 7164,
+        "sha256": "e1f89789d2ebe5bd8d7da57d9f8f1a4c111c5fe477712618e904779f67311b23"
+      },
+      {
+        "path": "tools/benchmark/make_optical_fixture.py",
+        "bytes": 3136,
+        "sha256": "7180126a0a6caea5b1fdffc0bb9b9e0f92d75973db19615ba3cba865adaae88a"
+      },
+      {
+        "path": "tools/benchmark/make_prearm_board_fixture.py",
+        "bytes": 6052,
+        "sha256": "293edd4dfb759d2b37eec9bc00d34e15903c1ed52a044635a131ddc43b6c350f"
+      },
+      {
+        "path": "tools/benchmark/make_prearm_pattern_fixture.py",
+        "bytes": 6163,
+        "sha256": "430fd322f6ca762fe3b101c84040c3eae3b3f4c1ad589f3506f4aafa5e0f4bfb"
+      },
+      {
+        "path": "tools/benchmark/make_vio_texture_fixture.py",
+        "bytes": 4926,
+        "sha256": "0d9686f0d2053543f6f8f0a61d8f679dade92bda87ebc74b5120905ca31848f3"
+      },
+      {
+        "path": "tools/benchmark/motion_intent_gate.py",
+        "bytes": 12307,
+        "sha256": "e006e263d33b2674a128b693c65faeea38b0767903704ce6183bdc7c15688f9d"
+      },
+      {
+        "path": "tools/benchmark/motion_intent_physical.py",
+        "bytes": 1608,
+        "sha256": "0ce6cf0d9d46a9cdab9b2cb35dd0a87521941473930e04e42bdb8f339afa9d40"
+      },
+      {
+        "path": "tools/benchmark/native_consumer_scope.py",
+        "bytes": 2772,
+        "sha256": "5f1ef5c972d1719654a8c284462ede7467f9b1c8c033c40703fce18734206034"
+      },
+      {
+        "path": "tools/benchmark/native_entry_context_v3.py",
+        "bytes": 42894,
+        "sha256": "7521236a5129182a637b3f2b0298993be60c7a97bc197e1d636bdf98c57af802"
+      },
+      {
+        "path": "tools/benchmark/native_entry_context_v4.py",
+        "bytes": 62213,
+        "sha256": "c049a19de0abdc850af49357d910c000b8e4b13b9785a9fd5f40b5fb187b530e"
+      },
+      {
+        "path": "tools/benchmark/native_entry_dependencies.py",
+        "bytes": 22425,
+        "sha256": "38bdb30431abb6d399f0a79c20671c7a7d75ecf444436b7a0d956f08bed988ea"
+      },
+      {
+        "path": "tools/benchmark/native_loader_paths_v4.py",
+        "bytes": 18423,
+        "sha256": "9f90f5db8daa4aef4dd24429d6086015273ea8f7ffd045b7de03d30b2978f3dc"
+      },
+      {
+        "path": "tools/benchmark/native_query_process.py",
+        "bytes": 2368,
+        "sha256": "ceb01f99258c1cff424ecc08ed107945eb279d5cf49e4e030f079a0bc930f3cf"
+      },
+      {
+        "path": "tools/benchmark/native_reference_probe.py",
+        "bytes": 5356,
+        "sha256": "bc36572cf4c532d3e1aadef19a41e31c70f8d5eb6549e3f738c9dfd585c39328"
+      },
+      {
+        "path": "tools/benchmark/native_resource_client.py",
+        "bytes": 10312,
+        "sha256": "ec68d50758f5352727cb79b252597aae2f61f2006da8435f47f4d1ffacaa744e"
+      },
+      {
+        "path": "tools/benchmark/native_runtime_refusal.py",
+        "bytes": 5835,
+        "sha256": "16b4063adb1e5835ecc9ae899587ea1b6d1860596c63e606d5dcb17b0a3b4f8f"
+      },
+      {
+        "path": "tools/benchmark/native_supervisor_integration.py",
+        "bytes": 11019,
+        "sha256": "20e35ff52a930df4a33b758d79e4768e9a8c599ca8eb660ec558286a86eaf581"
+      },
+      {
+        "path": "tools/benchmark/observe_kernel_rx_startup.py",
+        "bytes": 14965,
+        "sha256": "3a99e94b3f75e6f957d72e3cfd9d5613300adf762552738cfd3530633ef26177"
+      },
+      {
+        "path": "tools/benchmark/observe_px4_startup.py",
+        "bytes": 6904,
+        "sha256": "9f2d910af7415af8b4b09f98a9c6cba83ff3e1d1a72a8936447942868e70c803"
+      },
+      {
+        "path": "tools/benchmark/openvins_cached_bridge.py",
+        "bytes": 11118,
+        "sha256": "5dd6c758275373d4b21d9741db5f870af1f2e23041b20064a427791511456c7e"
+      },
+      {
+        "path": "tools/benchmark/openvins_causal_input.py",
+        "bytes": 12017,
+        "sha256": "cb188d29b5fdc70fc1282a9653dd8fc7338884fa63b2d53416cddb18f204d115"
+      },
+      {
+        "path": "tools/benchmark/openvins_datagram_receive.py",
+        "bytes": 18613,
+        "sha256": "69d3561d90460afea1ddc3bf061dbccd721e2d309433a7b2ca30e4173015fed3"
+      },
+      {
+        "path": "tools/benchmark/openvins_ekf2_disarmed_preflight.py",
+        "bytes": 24405,
+        "sha256": "feca7b24b136153783388861135c5d8cd1be9393488e3b03fdb8e5d6d7b84960"
+      },
+      {
+        "path": "tools/benchmark/openvins_ekf2_fast_contract.py",
+        "bytes": 10254,
+        "sha256": "4cf4431c83976e6b8ac1cde719547a2aa9a97196ed98d2542b73e55c6644924f"
+      },
+      {
+        "path": "tools/benchmark/openvins_ekf2_file_shadow.py",
+        "bytes": 11126,
+        "sha256": "0f633cd3ee0b0558cb82339f0335403966f38ec7772f3cdfa7e7af141520d92d"
+      },
+      {
+        "path": "tools/benchmark/openvins_ekf2_integration.py",
+        "bytes": 19590,
+        "sha256": "a985686438d26769575eb1c20ec2739505d5f24c18bd94bbe310f71c8388fa3e"
+      },
+      {
+        "path": "tools/benchmark/openvins_ekf2_transform.py",
+        "bytes": 4225,
+        "sha256": "aa95f772ec3340a93031850df27b5f29cc41ae6c1c63e1aa0a6507d7890801c3"
+      },
+      {
+        "path": "tools/benchmark/openvins_feature_trace.py",
+        "bytes": 25505,
+        "sha256": "b99eb9ddd322e6d4cb3b13b0eb6aa05ba56cb4321b281475d9ec7ddfc46a309e"
+      },
+      {
+        "path": "tools/benchmark/openvins_handoff_retry_preflight.py",
+        "bytes": 15188,
+        "sha256": "6ad1f6985e71621a79311addf7d33af74d860d52457e5629f5e90bc6dac6fad4"
+      },
+      {
+        "path": "tools/benchmark/openvins_health_contract.py",
+        "bytes": 10430,
+        "sha256": "be44d975ac7698b86af6b4347e8d81da4c33b65cb4ae8be85d48e39478dd2eee"
+      },
+      {
+        "path": "tools/benchmark/openvins_health_fault_physical_preflight.py",
+        "bytes": 7104,
+        "sha256": "7d7fc149270e620dffa6128cfc057cf78cfa653d632626c1669e333db91ec5d4"
+      },
+      {
+        "path": "tools/benchmark/openvins_health_physical_faults.py",
+        "bytes": 11095,
+        "sha256": "774de064bdac365089c65246da0332597c76a5c06033d50c48e945845e30a2d6"
+      },
+      {
+        "path": "tools/benchmark/openvins_health_physical_preflight.py",
+        "bytes": 9777,
+        "sha256": "2b0c132ebb9d2c3a5adb38d4a1487d0f1bd80bfe556b70f83fcbfe38271ba299"
+      },
+      {
+        "path": "tools/benchmark/openvins_lazy_runtime_closure.py",
+        "bytes": 22807,
+        "sha256": "4542821e2c724f10001474bcfcc622af9826f4783bdbbc678fd35abe32185fba"
+      },
+      {
+        "path": "tools/benchmark/openvins_lazy_runtime_prepare.py",
+        "bytes": 14272,
+        "sha256": "92905cd5ca7638d3030c70f72f4ee0281f290a2f4eee24454f4f2e6bb489c01c"
+      },
+      {
+        "path": "tools/benchmark/openvins_listener_transport.py",
+        "bytes": 16578,
+        "sha256": "afbbadb73d1bca95b8941cd1f747d4201d39bb7773aed1f8dc12bbe8b88e5ed9"
+      },
+      {
+        "path": "tools/benchmark/openvins_native_identity.py",
+        "bytes": 5950,
+        "sha256": "8489d2d06a931832fe2ace305b9a283e9d83899a8835381cf673222d34417439"
+      },
+      {
+        "path": "tools/benchmark/openvins_observed_wire_session.py",
+        "bytes": 23844,
+        "sha256": "0452b98cb3eb679a7546d2d720f673cfd8006b7afae86074ca4faf300aed4ab8"
+      },
+      {
+        "path": "tools/benchmark/openvins_odometry_contract.py",
+        "bytes": 9528,
+        "sha256": "912acd47b2d5d8618d977ce9b26604c4e047bb4ad4ed36fd7c98d3eeb8ae319f"
+      },
+      {
+        "path": "tools/benchmark/openvins_online_shadow.py",
+        "bytes": 29922,
+        "sha256": "99651fd531cf4c915feeff71987a1d8347dc0da10e842209105b9002d4fbf4aa"
+      },
+      {
+        "path": "tools/benchmark/openvins_owned_bootstrap.py",
+        "bytes": 16020,
+        "sha256": "617b95805aa18c5f533621c46b44205d33e291e3a98fa5411f358f2e59122bde"
+      },
+      {
+        "path": "tools/benchmark/openvins_receiver_parity.py",
+        "bytes": 14707,
+        "sha256": "8cc4b4b753bd1daaa90d5028680d50974ad8df6cc230c42b73a500590633cf1a"
+      },
+      {
+        "path": "tools/benchmark/openvins_segmented_journal.py",
+        "bytes": 11740,
+        "sha256": "a07c73553aa34bdb5299028454a6c22f73f057e6bc18aed612614143f5acb3e2"
+      },
+      {
+        "path": "tools/benchmark/openvins_simulation_clock.py",
+        "bytes": 10597,
+        "sha256": "65ea9a3f5811d329436a13b358d744e20fada36f79a31c829e51638ae1b0bdf7"
+      },
+      {
+        "path": "tools/benchmark/openvins_timesync_bootstrap.py",
+        "bytes": 13938,
+        "sha256": "5dd859e4ca09ca74b0bf899c13595b0aa7e8906ff99b18e87f8e14cf821637ea"
+      },
+      {
+        "path": "tools/benchmark/openvins_timesync_interval.py",
+        "bytes": 23186,
+        "sha256": "c614bb8857eee1168572078244dd506483293a3ad2f6cd1fad5bc4e7034d6b6d"
+      },
+      {
+        "path": "tools/benchmark/openvins_timesync_listener.py",
+        "bytes": 6885,
+        "sha256": "29ee45a446fd4a00b15383efc532530e998608be65cc4b69e08eb24d83218e0b"
+      },
+      {
+        "path": "tools/benchmark/openvins_timesync_maintenance.py",
+        "bytes": 10650,
+        "sha256": "b6037bb0045d6f2ad71b50c01a94fcec22a3fdb917c430c7a867197838c00eb3"
+      },
+      {
+        "path": "tools/benchmark/openvins_timesync_observer.py",
+        "bytes": 5712,
+        "sha256": "5bfb1e27e77b360575416027400cbb664c487b2cbe5660c8817fbcd5c43f75b7"
+      },
+      {
+        "path": "tools/benchmark/openvins_timesync_wire.py",
+        "bytes": 33786,
+        "sha256": "6d9f2afc1f29580e1eaf8253e8418a159cb4c1f3f7434ce22efb3c91f191fd52"
+      },
+      {
+        "path": "tools/benchmark/openvins_wire_bootstrap.py",
+        "bytes": 9498,
+        "sha256": "c9d44715b132182d9848bbc3251a8d0d392066daa1e583036700038723036ef8"
+      },
+      {
+        "path": "tools/benchmark/owned_daemon_connection.py",
+        "bytes": 8625,
+        "sha256": "d69d39580b2e1e5f344c1004fae3981a3e82f22af586d6c45843318cc611dc53"
+      },
+      {
+        "path": "tools/benchmark/owned_group_evidence.py",
+        "bytes": 10831,
+        "sha256": "f5b50e1aefb93050a9a0c90cce93dbc0ea22440185489f726b760458640a502a"
+      },
+      {
+        "path": "tools/benchmark/owned_runtime_maps.py",
+        "bytes": 6837,
+        "sha256": "aca43b67ad2c7b530c09191979cf77f78699c1a2dcfcb4dfd355404150c84e04"
+      },
+      {
+        "path": "tools/benchmark/owned_ulog_source.py",
+        "bytes": 12282,
+        "sha256": "dbee899fd676a3b7b77d51f7fe50f79c055492542e454b0ff4b7976af5f3d198"
+      },
+      {
+        "path": "tools/benchmark/physical_retry_preflight.py",
+        "bytes": 7141,
+        "sha256": "66940d05a922162056de301f9dd9778c713a21c6bed5491b4ff88b393dd6952d"
+      },
+      {
+        "path": "tools/benchmark/physics_substep_trace.py",
+        "bytes": 8791,
+        "sha256": "0d9716a788ee33d1b8aeff7f627becaa8a9563e260baf3a4d04c00a63fb55aea"
+      },
+      {
+        "path": "tools/benchmark/prepare_calibration_capture.py",
+        "bytes": 21380,
+        "sha256": "9113bd1148c9e529de2f0ab1a97b818f86766ba5e44a5d0c94133f0cb8f8c68d"
+      },
+      {
+        "path": "tools/benchmark/prepare_calibration_capture_v2.py",
+        "bytes": 22016,
+        "sha256": "068f52eac326024a72cba0c06bf8fcca2bddc71536c5f279880540afc48cb7c0"
+      },
+      {
+        "path": "tools/benchmark/prepare_calibration_capture_v3.py",
+        "bytes": 23558,
+        "sha256": "a063e57bfbe834ff4aabe8a9c43edcb3bd0aa88b7821276ab7104f670bc35baf"
+      },
+      {
+        "path": "tools/benchmark/prepare_calibration_capture_v4.py",
+        "bytes": 1795,
+        "sha256": "ffc035c1ce61b2f3419364a5ff7618fe3843c29ed8f7a712cef7f767956db874"
+      },
+      {
+        "path": "tools/benchmark/prepare_depth_physical_development.py",
+        "bytes": 7334,
+        "sha256": "5d89f3b3edc0f0acfcbf0c0914cfb514461445dd4311a4539c5712146de9d893"
+      },
+      {
+        "path": "tools/benchmark/prepare_openvins_delayed_feed.py",
+        "bytes": 8220,
+        "sha256": "4c7603706be8c99ba483f262f831e55627ec3e98ea13f321d3359497e9681694"
+      },
+      {
+        "path": "tools/benchmark/prepare_openvins_ekf2_disarmed_preflight.py",
+        "bytes": 2344,
+        "sha256": "0d08c926cf310bc6ac4bffe18da10762fb5bdce98a5244b26230153da1130efe"
+      },
+      {
+        "path": "tools/benchmark/prepare_openvins_offline.py",
+        "bytes": 5262,
+        "sha256": "00c240bf857e5fc83c803d735f4e5f9cf32b2856f260d370f7928577b9d019ad"
+      },
+      {
+        "path": "tools/benchmark/probe_camera_frames.py",
+        "bytes": 6731,
+        "sha256": "d861cdd2169dbe56c2cfd76d27fca3bb78b83817870a19d4e01d6839475aaf96"
+      },
+      {
+        "path": "tools/benchmark/probe_clock.py",
+        "bytes": 8178,
+        "sha256": "b15c57f0d1e51694c5ace60fd2f73da0c4fc870099d58022fc787c0104df164c"
+      },
+      {
+        "path": "tools/benchmark/probe_dynamic_camera_imu.py",
+        "bytes": 7315,
+        "sha256": "30ee95280af5063367d0e9f1ec2e0d035a42065458cf29ebf42758d041c557cb"
+      },
+      {
+        "path": "tools/benchmark/probe_ekf2_heading.py",
+        "bytes": 29617,
+        "sha256": "b49639347acd7ad2ceacb4379eff9b3f770d2c360f2ae525caebc0669747dfb7"
+      },
+      {
+        "path": "tools/benchmark/probe_full_fly.py",
+        "bytes": 2198,
+        "sha256": "9221d1e1fb4990cc2c5942d03b5b0802f58a4979f34d8d2598bf740da78fde35"
+      },
+      {
+        "path": "tools/benchmark/probe_kernel_datagram_arrival.py",
+        "bytes": 14419,
+        "sha256": "42ed3f51983fe446a0675cd4ea793410aa7d0b5847ed7899bc292d6130b507d7"
+      },
+      {
+        "path": "tools/benchmark/probe_kernel_rx_timestamping.py",
+        "bytes": 13036,
+        "sha256": "38b242462b8a96cd6fa23f8437c5f1b827117dcdcf6a92ec1c30bc4af86b9bf1"
+      },
+      {
+        "path": "tools/benchmark/produce_px4_camera_file.py",
+        "bytes": 6111,
+        "sha256": "e6dd41f1360924141addcdb05344099ee3ece27dc7ce44c181fee2fc78909a7e"
+      },
+      {
+        "path": "tools/benchmark/px4_logger_runtime.py",
+        "bytes": 5578,
+        "sha256": "c0d5fdef6488a34807c37568367e6e836064ab1f07cf7db837c7e9117fae78c0"
+      },
+      {
+        "path": "tools/benchmark/px4_mavlink_startup_status.py",
+        "bytes": 2989,
+        "sha256": "2ce8d4c2ae5e4123456b233e61d07e0bdd2b88fd6977420ffe1cedc0f77a4476"
+      },
+      {
+        "path": "tools/benchmark/px4_owned_startup_probe.py",
+        "bytes": 9389,
+        "sha256": "8206fde1c76baa87965a22707c2285da884db6cb15b193e00040498e85443eca"
+      },
+      {
+        "path": "tools/benchmark/px4_startup_phase_gate.py",
+        "bytes": 12169,
+        "sha256": "5fa60f9c8bbdbf72740bc3013e8002c9c1d287efbf0c707c3e2ac5886d4057f6"
+      },
+      {
+        "path": "tools/benchmark/readiness_anchor.py",
+        "bytes": 10058,
+        "sha256": "b3c07aca65b5df5e25f860d79a09ec2d376602944107d432da6cba4452cce51f"
+      },
+      {
+        "path": "tools/benchmark/ready_shadow_fanout.py",
+        "bytes": 12827,
+        "sha256": "0ea1eca8a7ae00ddc05275da581cb18e12f3dc8e670a4ce009e8cc8a939df624"
+      },
+      {
+        "path": "tools/benchmark/reconstruct_evidence_parts.py",
+        "bytes": 3313,
+        "sha256": "2fbcc7662ffa6ba606b0b4ed53edfa462d175cc59580974db7925ab1be95f384"
+      },
+      {
+        "path": "tools/benchmark/renderer_first_step_probe.py",
+        "bytes": 13907,
+        "sha256": "872e5cbd28dc7ae9649f85b05d6626e0155b64f7fdf96900bb63dfc195b63d52"
+      },
+      {
+        "path": "tools/benchmark/renderer_first_step_study.py",
+        "bytes": 4321,
+        "sha256": "8614a29f1558d7b098236a3ba73d6d6b9771e8f33eee4259938bdb59f71c031b"
+      },
+      {
+        "path": "tools/benchmark/replay_causal_pair_stage.py",
+        "bytes": 5031,
+        "sha256": "c320a88f002abf4ef64328e42b17d7cbbfa5129e121fb7c9d06753a913c97759"
+      },
+      {
+        "path": "tools/benchmark/replay_openvins_ekf2_file_shadow.py",
+        "bytes": 13300,
+        "sha256": "0c2c2e9fe572146e6efdeeb1d0d133c3ca1b59437e8171c5b1b1875cb379df64"
+      },
+      {
+        "path": "tools/benchmark/replay_openvins_health_contract.py",
+        "bytes": 21673,
+        "sha256": "8808e2ca43815f22c6c9b77c83969ebe144b847cc71bab372fcb872c3c65bbd7"
+      },
+      {
+        "path": "tools/benchmark/replay_openvins_motion_intent.py",
+        "bytes": 14383,
+        "sha256": "d39620f187ed9715e5650637b07c0d65b1f116f42d7aa81a0f588565169c996c"
+      },
+      {
+        "path": "tools/benchmark/report_results.py",
+        "bytes": 11172,
+        "sha256": "9a29fde0143308ea1b1bd0e01a8e674557cd17030d39309c9a5f678029f711fd"
+      },
+      {
+        "path": "tools/benchmark/repository_python_sources.py",
+        "bytes": 5652,
+        "sha256": "373c137bd788781a43fe22089fdafb29226bd9284e28f515f6d02ebb44dd7e69"
+      },
+      {
+        "path": "tools/benchmark/run_batch.py",
+        "bytes": 7723,
+        "sha256": "717156898ea80c2094511d186944c2a3e48c7438bfdf68ef9b29a908f8fb7857"
+      },
+      {
+        "path": "tools/benchmark/run_calibration_capture.py",
+        "bytes": 11018,
+        "sha256": "124edd13db846751c100c5b755c2e3b42b3e34a7fa831d8f9159b8b84b798041"
+      },
+      {
+        "path": "tools/benchmark/run_episode.py",
+        "bytes": 15223,
+        "sha256": "bc765ed828cb5aa5d715369fcf8238fbab451f3e761a078d5464a59af3fa6d13"
+      },
+      {
+        "path": "tools/benchmark/run_kalibr_target_detector.py",
+        "bytes": 7164,
+        "sha256": "e5dfbf302cae8beb475aba2e7e7292c039ea83b9ba6194134c9fbd285d973be5"
+      },
+      {
+        "path": "tools/benchmark/run_kalibr_target_detector_v2.py",
+        "bytes": 6247,
+        "sha256": "72a8b899222e72520428d4bdfe562e888329aa4713feed89f577f17c5f10d5a9"
+      },
+      {
+        "path": "tools/benchmark/run_openvins_dataset_consumer.py",
+        "bytes": 17691,
+        "sha256": "f93c19ed132281339202f63172089711ee348697bedf8edee31a7d8ab32bf09a"
+      },
+      {
+        "path": "tools/benchmark/runtime_resource_binding.py",
+        "bytes": 24118,
+        "sha256": "745fdb329bfa14ad322672f273778386df561331bb8f2fda4305fc52fbe991dd"
+      },
+      {
+        "path": "tools/benchmark/selected_resource_graph.py",
+        "bytes": 3503,
+        "sha256": "30b0de50251daf1025a204b2992a727c192f8094188247440f4752cb35c8852f"
+      },
+      {
+        "path": "tools/benchmark/software_process_boundary.py",
+        "bytes": 1737,
+        "sha256": "1aced69a1cd810728c0bf557cc272a5bd43a94ababc31bb6ba33de791fd139a1"
+      },
+      {
+        "path": "tools/benchmark/source_watchdog_physical_boundary.py",
+        "bytes": 12717,
+        "sha256": "efa19a828c41660c39d29ce2c6d88ab22e460a5877dbd459d766916b259c2024"
+      },
+      {
+        "path": "tools/benchmark/source_watchdog_retry_preflight.py",
+        "bytes": 12718,
+        "sha256": "79ee2921ea41747148d1db0dd073a56de6773034c14619335c94c033ee25c84e"
+      },
+      {
+        "path": "tools/benchmark/split_evidence_for_upload.py",
+        "bytes": 3240,
+        "sha256": "5a7fda847669fb573d8b1d9195dfa369a7df9330b288197070331305d8b5bf3b"
+      },
+      {
+        "path": "tools/benchmark/static_v3_identity.py",
+        "bytes": 10500,
+        "sha256": "9e4f8813557e5668ee04429711190255f0ab07824dd98b469fb1c6c6eefe73f8"
+      },
+      {
+        "path": "tools/benchmark/static_v4_bootstrap.py",
+        "bytes": 96192,
+        "sha256": "259f6bca262522846b039079c5ef2362e1d60f9b6e8763e1b6e0ceaf769756e2"
+      },
+      {
+        "path": "tools/benchmark/static_v4_executor.py",
+        "bytes": 34044,
+        "sha256": "88104dea544c301f1bc2e98425bfcf0cef5f0eb291c9c9a0042d3c8ae55b1d86"
+      },
+      {
+        "path": "tools/benchmark/static_v4_identity.py",
+        "bytes": 87986,
+        "sha256": "826c2ddf6723e438ffd81a8640f0ca726452cc12a44771b23d1accb473de99b6"
+      },
+      {
+        "path": "tools/benchmark/static_v4_recipe.py",
+        "bytes": 10469,
+        "sha256": "3276bb38b8b3f466b67a79a55d3fa45b130b1bcb979f123be9f1579b95224ffa"
+      },
+      {
+        "path": "tools/benchmark/summarize_ulog.py",
+        "bytes": 1362,
+        "sha256": "45ac51a10a2dd0e762510b711e16f185faeebc027ae396fa3ae5087052b4017b"
+      },
+      {
+        "path": "tools/benchmark/supported_excitation.py",
+        "bytes": 10720,
+        "sha256": "d340ab48d328be8af50418472d620ab904de456e013f9dc02eb24714556756ea"
+      },
+      {
+        "path": "tools/benchmark/supported_heartbeat_gauge_preflight.py",
+        "bytes": 8241,
+        "sha256": "9ed48d8c4c756fd04450b3093da5bb82ad5cb2f03aa230ba5854da83e628db89"
+      },
+      {
+        "path": "tools/benchmark/supported_vio_metrics.py",
+        "bytes": 2442,
+        "sha256": "c2cebd1ea7b2cf0c2be70b8839341d87e460271ad4d419b6d763c071fd81b148"
+      },
+      {
+        "path": "tools/benchmark/trajectory_gauge_contract.py",
+        "bytes": 25695,
+        "sha256": "42d7e1d410b0078e37e248edbb72cdd6ac94fe30ad8481068e8f59bf41150005"
+      },
+      {
+        "path": "tools/connectome/audit_agent_dependency_objects.py",
+        "bytes": 7464,
+        "sha256": "6b79dabfd8b3680a5e35a4053f3032c1890e5dae79cb217cfbe53aaecb901dd3"
+      },
+      {
+        "path": "tools/connectome/audit_fastdds_gitlink_objects.py",
+        "bytes": 11145,
+        "sha256": "df43d9cbe8e5d24113ec6fc4ad130ff59a28e0a5ba5ee641f645d0fa0e65d522"
+      },
+      {
+        "path": "tools/connectome/audit_px4_logger_diagnostic.py",
+        "bytes": 3568,
+        "sha256": "64c5e2e2ba3b3493987552d43adae131b56c8ae4b84ba83af483e584087e9904"
+      },
+      {
+        "path": "tools/connectome/audit_px4_status_firmware_binary.py",
+        "bytes": 18444,
+        "sha256": "8b9afb9735e0c55f1360ef216eddd4d0dbe145a9d99c38a90c0a752f417c3b48"
+      },
+      {
+        "path": "tools/connectome/audit_px4_ulog_odometry.py",
+        "bytes": 2693,
+        "sha256": "64bc5dbcfa77f1f3f345098c6fde165665cf1275594cc7705d7c80a03ea7b141"
+      },
+      {
+        "path": "tools/connectome/check_full_odometry_cdr_parity.py",
+        "bytes": 3060,
+        "sha256": "f15af88112a550119c9a37f277a9b95e1ee19de119ca591a01a39c76855d5e35"
+      },
+      {
+        "path": "tools/connectome/prepare_pinned_xrce_agent.py",
+        "bytes": 9485,
+        "sha256": "00dbbcc8c02fecdfd39c38f8648c40593bd91796bec3f84bd3c3d725c84d5cb6"
+      },
+      {
+        "path": "tools/connectome/run_byte_bound_ros_build.py",
+        "bytes": 11828,
+        "sha256": "968a128a1b0762657b0974546f20f91128f583824279f2dc8d6e9fa22637b16f"
+      },
+      {
+        "path": "tools/connectome/run_full_odometry_ros_build.py",
+        "bytes": 8102,
+        "sha256": "7b455e1ef132cb45bd6026c94bb82da36f36157fbb9b4596a25f8a50a4985dfc"
+      },
+      {
+        "path": "tools/connectome/run_full_odometry_synthetic.py",
+        "bytes": 12784,
+        "sha256": "7806fc3898cd4958d027babff2a901c8871f1b51fb9eb98e35ae4b56b40c8a97"
+      },
+      {
+        "path": "tools/connectome/run_px4_status_firmware_build.py",
+        "bytes": 39007,
+        "sha256": "c6540f67935cbb8c21a8f4832ce497326611074d45b3708d92bbe1d30e914660"
+      },
+      {
+        "path": "tools/connectome/run_status_journal_build.py",
+        "bytes": 11927,
+        "sha256": "b4eb3def98ba40da931cb770439170eaec1ba42417341d3b28906f54818c9b78"
+      },
+      {
+        "path": "tools/connectome/run_status_journal_synthetic.py",
+        "bytes": 14161,
+        "sha256": "8ad7e8ec563db3f4e82489d761d569a19afff5c63c516b6368483b467dfda6b2"
+      },
+      {
+        "path": "tools/connectome/run_status_ros_type_build.py",
+        "bytes": 16314,
+        "sha256": "affce099bfe97cf3ab750a46b8fa4dec14ec1b00176dcae2c28532c278dab9f7"
+      },
+      {
+        "path": "tools/connectome/seal_status_journal_evidence.py",
+        "bytes": 12183,
+        "sha256": "e96a721385e2a5d8e354696912f659ce9729c51d1e352154ac0ca794266dfbf1"
+      },
+      {
+        "path": "tools/connectome/status_synthetic_cdr_check.py",
+        "bytes": 2487,
+        "sha256": "e62b73b179ca665a9afad34ffe6290e3e05a00edd49ea36465029e244d364698"
+      },
+      {
+        "path": "tools/connectome/status_synthetic_pub.py",
+        "bytes": 2117,
+        "sha256": "fc9f33c3119a217d019906ef364ed6b78717ace141d7e07e368243fcd0c2ad22"
+      },
+      {
+        "path": "tools/connectome/xrce_typed_probe/audit.py",
+        "bytes": 10755,
+        "sha256": "7576e02ebce1afa0e03737963ea7bf5215d35243d13f0b433c105648d2f63157"
+      },
+      {
+        "path": "tools/connectome/xrce_typed_probe/daemon_identity.py",
+        "bytes": 5782,
+        "sha256": "377671d5a116e7496e849f2689d4d68074fed81d87cd9354574e5c1713abfce5"
+      },
+      {
+        "path": "tools/connectome/xrce_typed_probe/frozen_cdr.py",
+        "bytes": 3305,
+        "sha256": "ec362126eda7bdafcfb8d2306c91299abc22b395bbcdd96135ba6b82ec9cff3c"
+      },
+      {
+        "path": "tools/connectome/xrce_typed_probe/graph_wait.py",
+        "bytes": 4490,
+        "sha256": "82fdc9a843d992f0d6c185f031145027280f1a6436823997c31d12a7a99ebcc7"
+      }
+    ]
+  },
+  "source_evolution": {
+    "original382_dispatch_snapshot_unchanged": true,
+    "current_changed_source": [
+      {
+        "path": "src/flydrones/connectome_training/dataset.py",
+        "dispatch_sha256": "efd5f5fc36a07a99d793d1f53f75764d42d996cf78a2578e43514f7bd2c11bb8",
+        "current_sha256": "c8a1d338d31fa2690d710b724e5a7f5ece6bd08861032b8218fbbe0174d53021"
+      }
+    ],
+    "old_release_preserved_sha256": "f7ce10ba80d5554aadd16dd29b8bb1ae8aea8e811ce0bd2d5a9b01cf711f72cc",
+    "old_release_current_source_compatible": false,
+    "v4_decision": "REFUSED_UNCONSUMED;no rerun/poll/delete/rename;future routing needs independent source/receipt design"
+  },
+  "initial_source_review": {
+    "C": 0,
+    "I": 1,
+    "M": 0,
+    "path": "results/static-v4-attempt-dev-1701/independent-sequence-review.md",
+    "sha256": "8232d07c66db685b3234b35ffbed7d282839a84e4170b7d9d18b22faaffe9d96",
+    "finding": "Unsafe destructor-reachable test close spy;no product loader defect",
+    "bounded_delta_source_resolution": "Accepted by same reviewer;no second wholeproduct review"
+  },
+  "executor_fix_pass": {
+    "note_sha256": "7c31d8c0553f680a44f9ae8ad01644e58d442cb623b582fac0b184e21b5b667d",
+    "initial_red": "3genuine decode-count failures1controlpass",
+    "green": "4pass.23s then expanded testfixtureAV3221225477",
+    "host_access_violation": "Actual failed run;stack closing/__del__/monkeypatch.undo;exact native cause UNKNOWN;notSDK/OOMcause",
+    "bounded_fix": "Context proxy/actual archive exit/scalar state;6pass.28s;productunchanged",
+    "timeout_gap": {
+      "schema": "software-recorder-timeout-retention-gap-v1",
+      "label": "sequence-neighbors-corrected",
+      "retained_start": "sequence-neighbors-corrected-start.json",
+      "retained_source": "sequence-neighbors-corrected-source",
+      "observed_parent_exit": 1,
+      "observed_exception": "subprocess.TimeoutExpired after120s",
+      "child_exit": null,
+      "completion_record_exists": false,
+      "partial_stdout_retained": false,
+      "partial_stderr_retained": false,
+      "scope": "Original subprocess.run timeout escaped recorder;tool traceback retained in conversation only. No lost stdout/stderr reconstructed. Exclusive partial fixtures/source/argv/env/start retained. Not GREEN or target-native failure. New recorder will persist future timeout exception streams.",
+      "native_SDK_or_scope": false
+    },
+    "final": "45corepass.85s;2narrow54jobindexpass104.96s;Ruff0/dedicateddiff0",
+    "model_optimizer_execution": false,
+    "whole_code_review_repeated": false
+  },
+  "archive_audit": {
+    "path": "results/static-v4-attempt-dev-1701/independent-refusal-archive-audit.md",
+    "sha256": "40e4187655f604a9154e3968fddce9466d5201a2f0672a063c2fa7d8692206c4",
+    "text": "# Independent refusal and linear-sequence archive/delivery audit\n\n**PASS — delivery findings C0 / I0 / M0.** This audit checks archive integrity, retained facts and report honesty. It is not a whole-code re-review, replacement product approval, native/static/physical approval, or eligibility decision. The original source review remains **C0/I1/M0**: one unsafe fixture lifetime issue, no production-loader defect, followed by one bounded source-delta check and executor validation.\n\nOnly Windows file/data/hash/ZIP and limited source-AST reads were used. The saved pure classifier function was evaluated only against saved rows, with no project-module import or process API. No tests, live resource/process lookups, target/Linux/SDK/native/network/control/permission probes or Git commands were run by this auditor. Only new audit helper/results were written; canonical evidence and original raw/review/failure records remain unchanged.\n\nCanonical `evidence/static-v4-refusal-linear-sequence-dev-1701.zip` is **2,495,407 bytes**, SHA256 `1260d2abdcc507cf36b64235a6b3e63e618c38dc7a3717a6c3b4c74645bf1c35`. Its **1,543 mapped files plus manifest = 1,544 members** exactly match the receipt's preseal set, without duplicate, extra, missing or unsafe paths. Complete ZIP reads and explicit CRC, size and SHA256 checks passed for **6,613,282 mapped uncompressed bytes**; every mapped current working file matches its archived bytes. Manifest bytes match its archive copy and receipt SHA256 `5cd327a0cd4fad8303723161225013a394a6890f1407ac70005529765c38042b`. Later audits/helpers/publication remain outside this set.\n\nAll **three** literal-parent LOCAL_UNPUBLISHED raw files are excluded and retain exact current sizes/hashes: combined admission **152,997 bytes**/SHA256 `ae6abb38478faf18008b753546dd6adfb9f788381963e1af2e0b0968747ee55c`; metadata001 **15,954 bytes**; metadata002 **542 bytes**. Firstfacts joins the combined hash/size. Saved Linux primitive stdout equals the combined inventory's Linux portion, with its recorded successful waited/complete metadata receipt. No raw private identity is reproduced here.\n\nThe manifest's `private_triples=300` describes **nonempty-command rows only**; this audit does not backfill or relabel that original count. Independently audited all **475 private rows**, including **175 empty-command rows**, for both `(pid,name,argv_sha256)` and `(pid,name,cmdline)` identity matches in the public ZIP, including the manifest. All **202 distinct nonempty argv hashes** were also scanned. No nonempty hash or full-row identity leak was found. The universally known SHA256 of empty bytes occurs in the manifest's generic empty-file metadata; that occurrence is not a private identity disclosure. Empty-command rows were still checked with their full identity triples and produced zero matches. The scan covered the **419 parseable mapped JSON files** plus manifest. It verifies this disclosure boundary rather than general secret detection.\n\nThe actual literal CLI record is **REFUSED_UNCONSUMED**, exit **0**, waited, **2,437,000,000 ns** on the Windows clock. The 382 preCLI source rows exactly equal CLI after rows and all actual Windows source copies remain hash-correct. Zero exit means controlled refusal, not a static freeze. Windows **1,620,271,104 bytes** and WSL **6,851,129,344 bytes** passed the declared dual-1GiB memory condition, but saved classifier AST plus saved rows independently reproduce **one** competitor; Docker is recorded exit0/empty. No process lookup, competitor probe, termination, resource refresh, poll or retry was used for this audit.\n\nThe recorded Windows resource interval is exactly zero at that host clock resolution, and Linux has its own retained local interval. No cross-host time ordering or system peak/minimum need is inferred. The literal completion is consumed=false, child_exit=null, escaped_closure=UNKNOWN. The parent contains exactly runner source, firstfacts, completion and the three excluded private files, with no preidentity-attempt/recipe/claim/SDK-start/study/other entry. Physical attempt is absent. These retained files and own Windows CLI wait are distinct from a live escaped-process/scope absence proof. Actual resource/Docker host programs ran in the original decision; no selected-target metadata, SDK, sensor, optimizer or physical execution is asserted.\n\nAll **294 historical ZIPs / 875,144,330 bytes** were independently streamed and match the preservation ledger. The evidence directory is exactly those ZIPs plus this new canonical ZIP. Reconstructed the prior product baseline from original completion-phase identities: of **820 old product files**, only `src/flydrones/connectome_training/dataset.py` changed; the other **819** remain byte-identical. The decode-once test is the declared new file. Consumed version-specific product sources and both full-history files retain their prior canonical identities. Preservation is POSTrefusal/software evidence, not native prepins or Git normalized-object verification.\n\nThe original **382** dispatch source copies retain the old request's exact map, and CLI before/after equality proves that set was stable for the decision. Dataset evolution happened afterward: its old SHA256 is `efd5f5fc36a07a99d793d1f53f75764d42d996cf78a2578e43514f7bd2c11bb8`, current SHA256 `c8a1d338d31fa2690d710b724e5a7f5ece6bd08861032b8218fbbe0174d53021`. This is the sole current difference from that dispatch map and exactly matches source-evolution-after-refusal.json. The old release remains byte-identical to preflight's release hash. Its current source join is now **stale**, as the report states. No receipt was rewritten or old coordinator rerun to hide that evolution.\n\nRetained software evidence supports **three genuine behavior failures plus one passing control → four passes**, followed by the fixture issue. The adjacent original run is genuinely **FAILED**, exit **3221225477**, six stdout dots, with stderr through `closing`, `NpzFile.__del__` and `monkeypatch.undo`. The exact native crash cause remains UNKNOWN; it is not established as SDK, OOM, NumPy or production-loader failure. The original C0/I1/M0 review and accepted bounded context-manager-proxy delta are preserved; current corrected test bytes match the fixed review pin. Executor verification records **six passed in 0.28s**. This delivery audit did not renew the source review or execute the fixture.\n\nThe later broad software run hit the old recorder's **120-second timeout**. Its start/source/exclusive-fixture artifacts exist; completion, child-exit and partial stdout/stderr remain unavailable and have not been reconstructed. The gap JSON explicitly states this. The original four-path recorder survives. The new recorder retains future timeout exception streams and declares 12 paths; this does not repair the earlier missing evidence. There is no claim that that timed-out suite passed or that a native budget changed.\n\nAll **13 completed software recorder runs** have intact start records, source snapshots and local clock order. The timeout-only start/source was checked separately. Final narrowed current-source results are **45 core tests passed in 0.85s**, **two synthetic 54-job/index checks passed in 104.96s** with 23 deselected, Ruff exit **0** and dedicated diffcheck exit **0**. Their 12-pin before/after sets are stable and match current bytes. All are retained historical runs, not auditor reruns. Synthetic index integrity does not confer source, training, teacher or fairness eligibility.\n\nThe retained installed-host NumPy **2.3.4** `__getitem__` excerpt matches its own 1,216-byte/hash record, and the full **46,841-byte LICENSE.txt** matches its notice record. The original notice-path assertion helper and additive v2 are both retained; no experiment is represented as replayed by that notice correction. These are copied Windows software/version/notice records, not Linux build or transitive-license certification. The report openly states that ordinary package initialization imports host NumPy/SciPy/Torch; no no-import claim or model/optimizer/full-neural-network run is asserted. Whole-sequence materialization remains eager, so this is not a measured streaming-corpus or full-model memory qualification.\n\nThe new linear plan has **two completed steps and publication pending**. Original static Task5 still has **three unchecked criteria**, with the actual refusal appended. All eight qualifications, runtime graph and physical readiness remain false. Actual source/calibration/training/fair-baseline eligibility is not supplied by this software fix. Future static routing/source work must preserve the first refusal and stale-release facts; this audit provides no retry or native/physical authorization.\n\nMachine evidence: `independent-refusal-archive-audit.json`. Retained new stdlib-only helper: `independent_refusal_archive_audit.py`, **21,237 bytes**, SHA256 `d94fe7f1be34be22060167cb19e5f11094cae2307ac6051adf1641737eca5cd1`. These files are postseal additions, not canonical ZIP members.\n"
+  },
+  "old_zip_count": 294,
+  "old_zip_bytes": 875144330,
+  "old_zip_SHA_unchanged": true,
+  "old_product_count": 820,
+  "old_product_changed": [
+    "src/flydrones/connectome_training/dataset.py"
+  ],
+  "all_consumed_versions_byte_same": true,
+  "host_decoder": "WindowsNumPy2.3.4 implementationexcerpt/fullinstalledLICENSE;ordinarypackage eagerly importsNumPy/SciPy/Torch;no fullNNoroptimizer",
+  "v4_state": "ADMISSION_REFUSED_UNCONSUMED;oldCLI notrunnable again;no preidentity/nativeSDK;oldrelease stale after actual sourceevolution",
+  "physical_attempt": false,
+  "qualification": {
+    "source": false,
+    "clock": false,
+    "measured_calibration": false,
+    "accuracy": false,
+    "teacher": false,
+    "fusion": false,
+    "training": false,
+    "flight": false
+  },
+  "runtime_graph_frozen": false,
+  "physical_dispatch_ready": false,
+  "postseal_boundary": "receipt/independentdelivery/stage/pub/PR/automation/NEXT_PHASE distinct;raw/source/ZIP not rewritten"
+}
