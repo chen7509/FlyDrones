@@ -1,0 +1,3517 @@
+{
+  "schema": "px4-firmware-scope-entry-map-v1",
+  "members": [
+    {
+      "path": "configs/px4/estimator-status-dds-candidate.yaml",
+      "bytes": 6347,
+      "sha256": "783247c76b0af04519681d61546756522847590f0758a675154e12bd2d332e8c"
+    },
+    {
+      "path": "configs/px4/estimator-status-firmware-build-profile.json",
+      "bytes": 1015,
+      "sha256": "12990af3daa437772aae3d6440a3f209ab6c4b0c1af4bad8a6e85a5adf9bee3a"
+    },
+    {
+      "path": "configs/px4/estimator-status-firmware-profile.json",
+      "bytes": 1709,
+      "sha256": "13fd3306e2cd19254cafba28f9dc21463173aa4b8dc43f9e0927b8cbb26a6b88"
+    },
+    {
+      "path": "docs/FROZEN_INFERENCE_COEFFICIENTS_PRODUCTION_REPORT.md",
+      "bytes": 11061,
+      "sha256": "67ff71b05366c26cad9db107b8029bf65449ee49563fafc31933513d04869c10"
+    },
+    {
+      "path": "docs/MEMBRANE_DYNAMICS_PRODUCTION_REPORT.md",
+      "bytes": 7963,
+      "sha256": "287863edc51f1c11480ecad46990f50a645c6f5a7c7d949487dac4c6140ed220"
+    },
+    {
+      "path": "docs/PX4_FIRMWARE_SCOPE_ENTRY_PRODUCTION_REPORT.md",
+      "bytes": 10302,
+      "sha256": "037a7341ada84b412e693e711dba9f5ed6c309e009cee08c98f6e61e58b7be34"
+    },
+    {
+      "path": "docs/ROLE_COMPARISON_PRODUCTION_REPORT.md",
+      "bytes": 10429,
+      "sha256": "cf0b329dbce7352fefd0a6ce17deaeb23d6aab58f72265bfa247f3666b452937"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-10-12-px4-estimator-status-firmware.md",
+      "bytes": 6388,
+      "sha256": "78182afcde877379694600beb46473f67bc71e65e59d8e07e6cde1e8209c71c5"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-10-16-px4-firmware-scope-entry.md",
+      "bytes": 2467,
+      "sha256": "f2928f12089ad095075276c4f1822d276d07cb7a7dee16c6b1bab71cbd492f3e"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-10-16-px4-firmware-scope-entry-design.md",
+      "bytes": 3273,
+      "sha256": "d70e7b7c5309f2f3742b0b837af6f778e7bcededfe0e7bc69768bc7d7bbda291"
+    },
+    {
+      "path": "docs/TRAINING_EFFORT_PRODUCTION_REPORT.md",
+      "bytes": 8667,
+      "sha256": "f154dc092f6afe15239016ad3aea04827f4bb279c0ae782c8ddc8d856bc072ee"
+    },
+    {
+      "path": "evidence/flydrones-history-through-admitted-executor-dev-1701.json",
+      "bytes": 89359,
+      "sha256": "c88840b6f58dea4e7e4931683c4993b4fc3b8eb55887807994b6381ef6c2b989"
+    },
+    {
+      "path": "evidence/flydrones-history-through-initialized-baseline-dev-1701.json",
+      "bytes": 81675,
+      "sha256": "df122e1bc9d3b051b4b7606d2263d991b822a587c49758184b13449e4e5a97eb"
+    },
+    {
+      "path": "evidence/flydrones-history-through-loader-path-research-dev-1701.json",
+      "bytes": 80946,
+      "sha256": "80dfb89ed0e51e639bd6b24b115cbcd3c444b967614e2e8334d55962c262b824"
+    },
+    {
+      "path": "evidence/flydrones-pr65-history-through-linear-sequence-dev-1701.md",
+      "bytes": 65389,
+      "sha256": "06cff545124b5a19439799eca0d1385a7ad7113a19bf55014ab717bd8a121836"
+    },
+    {
+      "path": "evidence/frozen-inference-coefficients-publication.json",
+      "bytes": 277231,
+      "sha256": "0e84a4d16cc172d4996522bc852c91a2626d7a651ecd8067641b76fdbec9d572"
+    },
+    {
+      "path": "evidence/membrane-dynamics-production-publication.json",
+      "bytes": 142464,
+      "sha256": "785a67eee2713aea839f8306f6cd19095fdbaaa5b7f377389fea076efeba0f93"
+    },
+    {
+      "path": "evidence/membrane-dynamics-production-retention-correction.json",
+      "bytes": 6546,
+      "sha256": "802f6402c44f72b4b565e8cff5ef31a1525c027da0edb9877502161db99e0152"
+    },
+    {
+      "path": "evidence/role-comparison-production-postseal-progress-correction.json",
+      "bytes": 1053,
+      "sha256": "d9334ebe173e58f3c69c7d045dbb37a69e8c77e87245504fa417b71616caabf7"
+    },
+    {
+      "path": "evidence/role-comparison-production-publication.json",
+      "bytes": 195930,
+      "sha256": "1b78f4f9c30d04a91da725495222d7c69a241c41e9f77220963515aee586e49f"
+    },
+    {
+      "path": "evidence/static-v4-executor-completion-release.frame",
+      "bytes": 44826,
+      "sha256": "f7ce10ba80d5554aadd16dd29b8bb1ae8aea8e811ce0bd2d5a9b01cf711f72cc"
+    },
+    {
+      "path": "evidence/training-effort-production-publication.json",
+      "bytes": 141553,
+      "sha256": "077cff7c4172ff89dffd6bdd3c1163b6f925b69a5ba6c684e0ab589f6ea10327"
+    },
+    {
+      "path": "results/frozen-inference-coefficients-dev-1701/independent-frozen-coefficients-archive-audit-v2.json",
+      "bytes": 23265,
+      "sha256": "ea0c1556d30d3c730e46a3b1e5b969ebc0c29a41db1e57ed90818e82060d9b5d"
+    },
+    {
+      "path": "results/frozen-inference-coefficients-dev-1701/independent-frozen-coefficients-archive-audit.json",
+      "bytes": 21833,
+      "sha256": "3caca597a2a55b8afcc314017d4e760f756d7037895881c0a6ad9fa5df7e4203"
+    },
+    {
+      "path": "results/frozen-inference-coefficients-dev-1701/independent-frozen-coefficients-final-publication-audit.json",
+      "bytes": 36652,
+      "sha256": "7a5c46f1ae8415adc56c9eb69ee18822b95c9bc28c2c8e95e84dba8efb671714"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/automation-before.toml",
+      "bytes": 60932,
+      "sha256": "a480d6f528a8ec0ca4a76677946ece4712ddbf2ebfd65a107b6fa631b557d577"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/before-review-after-source/configs/px4/estimator-status-firmware-build-profile.json",
+      "bytes": 1015,
+      "sha256": "12990af3daa437772aae3d6440a3f209ab6c4b0c1af4bad8a6e85a5adf9bee3a"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/before-review-after-source/configs/px4/estimator-status-firmware-profile.json",
+      "bytes": 1709,
+      "sha256": "13fd3306e2cd19254cafba28f9dc21463173aa4b8dc43f9e0927b8cbb26a6b88"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/before-review-after-source/results/px4-firmware-scope-entry-dev-1701/verify.py",
+      "bytes": 3838,
+      "sha256": "e447fbafb8447131cfdd9a98e6adabfc312057c20403b785687439cfbe675c8d"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/before-review-after-source/src/flydrones/connectome_training/px4_status_firmware.py",
+      "bytes": 8454,
+      "sha256": "badbab9a9eb877e6447bddd35c9624af86d9fb60b7a07798bc58d6c5b514ce94"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/before-review-after-source/tests/connectome_training/conftest.py",
+      "bytes": 1260,
+      "sha256": "6a163e598e4011dd4efac9b8c896e5bafda4244112deaf7467125be479844ae1"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/before-review-after-source/tests/connectome_training/test_px4_firmware_scope_entry_v2.py",
+      "bytes": 15459,
+      "sha256": "0bcbcf3dcdeaf69ef56776df5c9582b80ac78a5469c469b79a2fab6784bf150d"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/before-review-after-source/tests/connectome_training/test_px4_status_firmware_build.py",
+      "bytes": 28312,
+      "sha256": "1a8521d8ef1e56b7834a860eb7a4269ae1746e7fe3a06a948db9403f5f0a7900"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/before-review-after-source/tools/benchmark/software_process_boundary.py",
+      "bytes": 1737,
+      "sha256": "1aced69a1cd810728c0bf557cc272a5bd43a94ababc31bb6ba33de791fd139a1"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/before-review-after-source/tools/connectome/px4_firmware_scope_entry_v2.py",
+      "bytes": 4184,
+      "sha256": "4517fa60e7d37584754bbfb8f4179b8039a378d39e4b96c9a2e60d9ef6c50042"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/before-review-after-source/tools/connectome/run_px4_status_firmware_build.py",
+      "bytes": 39007,
+      "sha256": "c6540f67935cbb8c21a8f4832ce497326611074d45b3708d92bbe1d30e914660"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/before-review-after-source/tools/connectome/run_px4_status_firmware_build_v2.py",
+      "bytes": 42881,
+      "sha256": "eb19c1b9b77f8b7cc7c8680ef676f7f82415bbbb32884c1c47f3338b44536fe6"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/before-review-fixtures.json",
+      "bytes": 4604,
+      "sha256": "1d1b04fbc315a6beb0a0b9b0063c6fb79f4ebd2aa4fc1c0056d91037fa41b0c3"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/before-review-source/configs/px4/estimator-status-firmware-build-profile.json",
+      "bytes": 1015,
+      "sha256": "12990af3daa437772aae3d6440a3f209ab6c4b0c1af4bad8a6e85a5adf9bee3a"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/before-review-source/configs/px4/estimator-status-firmware-profile.json",
+      "bytes": 1709,
+      "sha256": "13fd3306e2cd19254cafba28f9dc21463173aa4b8dc43f9e0927b8cbb26a6b88"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/before-review-source/results/px4-firmware-scope-entry-dev-1701/verify.py",
+      "bytes": 3838,
+      "sha256": "e447fbafb8447131cfdd9a98e6adabfc312057c20403b785687439cfbe675c8d"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/before-review-source/src/flydrones/connectome_training/px4_status_firmware.py",
+      "bytes": 8454,
+      "sha256": "badbab9a9eb877e6447bddd35c9624af86d9fb60b7a07798bc58d6c5b514ce94"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/before-review-source/tests/connectome_training/conftest.py",
+      "bytes": 1260,
+      "sha256": "6a163e598e4011dd4efac9b8c896e5bafda4244112deaf7467125be479844ae1"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/before-review-source/tests/connectome_training/test_px4_firmware_scope_entry_v2.py",
+      "bytes": 15459,
+      "sha256": "0bcbcf3dcdeaf69ef56776df5c9582b80ac78a5469c469b79a2fab6784bf150d"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/before-review-source/tests/connectome_training/test_px4_status_firmware_build.py",
+      "bytes": 28312,
+      "sha256": "1a8521d8ef1e56b7834a860eb7a4269ae1746e7fe3a06a948db9403f5f0a7900"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/before-review-source/tools/benchmark/software_process_boundary.py",
+      "bytes": 1737,
+      "sha256": "1aced69a1cd810728c0bf557cc272a5bd43a94ababc31bb6ba33de791fd139a1"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/before-review-source/tools/connectome/px4_firmware_scope_entry_v2.py",
+      "bytes": 4184,
+      "sha256": "4517fa60e7d37584754bbfb8f4179b8039a378d39e4b96c9a2e60d9ef6c50042"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/before-review-source/tools/connectome/run_px4_status_firmware_build.py",
+      "bytes": 39007,
+      "sha256": "c6540f67935cbb8c21a8f4832ce497326611074d45b3708d92bbe1d30e914660"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/before-review-source/tools/connectome/run_px4_status_firmware_build_v2.py",
+      "bytes": 42881,
+      "sha256": "eb19c1b9b77f8b7cc7c8680ef676f7f82415bbbb32884c1c47f3338b44536fe6"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/before-review-start.json",
+      "bytes": 5400,
+      "sha256": "168d4ad782807a13954066b79d8b512bdf943ebba2accc97dc64ffb13ccb6f0c"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/before-review.json",
+      "bytes": 7764,
+      "sha256": "827d5294472dec924ab41421c11fda389d3ff1b98742faad68ab83339637352e"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/before-review.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/before-review.stdout",
+      "bytes": 101,
+      "sha256": "af083c5c02d2745da6738c4295ea6ab65aa49fb76b51e66335d14cee4c3ff315"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/context-readback.json",
+      "bytes": 3596,
+      "sha256": "1e8f03ada12e7b14af1737bc937c1c3dee5525ac56b61f66f171a4ddd1844902"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/diff-final-after-source/configs/px4/estimator-status-firmware-build-profile.json",
+      "bytes": 1015,
+      "sha256": "12990af3daa437772aae3d6440a3f209ab6c4b0c1af4bad8a6e85a5adf9bee3a"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/diff-final-after-source/configs/px4/estimator-status-firmware-profile.json",
+      "bytes": 1709,
+      "sha256": "13fd3306e2cd19254cafba28f9dc21463173aa4b8dc43f9e0927b8cbb26a6b88"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/diff-final-after-source/results/px4-firmware-scope-entry-dev-1701/verify.py",
+      "bytes": 3838,
+      "sha256": "e447fbafb8447131cfdd9a98e6adabfc312057c20403b785687439cfbe675c8d"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/diff-final-after-source/src/flydrones/connectome_training/px4_status_firmware.py",
+      "bytes": 8454,
+      "sha256": "badbab9a9eb877e6447bddd35c9624af86d9fb60b7a07798bc58d6c5b514ce94"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/diff-final-after-source/tests/connectome_training/conftest.py",
+      "bytes": 1260,
+      "sha256": "6a163e598e4011dd4efac9b8c896e5bafda4244112deaf7467125be479844ae1"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/diff-final-after-source/tests/connectome_training/test_px4_firmware_scope_entry_v2.py",
+      "bytes": 20423,
+      "sha256": "5f72afb983c6d75000bd0e1b58127f2f87fb0b5977b56654d322bf69d0dd9e03"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/diff-final-after-source/tests/connectome_training/test_px4_status_firmware_build.py",
+      "bytes": 28312,
+      "sha256": "1a8521d8ef1e56b7834a860eb7a4269ae1746e7fe3a06a948db9403f5f0a7900"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/diff-final-after-source/tools/benchmark/software_process_boundary.py",
+      "bytes": 1737,
+      "sha256": "1aced69a1cd810728c0bf557cc272a5bd43a94ababc31bb6ba33de791fd139a1"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/diff-final-after-source/tools/connectome/px4_firmware_scope_entry_v2.py",
+      "bytes": 4184,
+      "sha256": "4517fa60e7d37584754bbfb8f4179b8039a378d39e4b96c9a2e60d9ef6c50042"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/diff-final-after-source/tools/connectome/run_px4_status_firmware_build.py",
+      "bytes": 39007,
+      "sha256": "c6540f67935cbb8c21a8f4832ce497326611074d45b3708d92bbe1d30e914660"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/diff-final-after-source/tools/connectome/run_px4_status_firmware_build_v2.py",
+      "bytes": 43896,
+      "sha256": "acf987c9c9a8bc09c6d37932151c17693ff5f22086dab709b062fe9b39a97f33"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/diff-final-fixtures.json",
+      "bytes": 174,
+      "sha256": "fdfdbd35b7a951818355e9901706dea1ceb2cff83a5c30202124bb3ad228b50f"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/diff-final-source/configs/px4/estimator-status-firmware-build-profile.json",
+      "bytes": 1015,
+      "sha256": "12990af3daa437772aae3d6440a3f209ab6c4b0c1af4bad8a6e85a5adf9bee3a"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/diff-final-source/configs/px4/estimator-status-firmware-profile.json",
+      "bytes": 1709,
+      "sha256": "13fd3306e2cd19254cafba28f9dc21463173aa4b8dc43f9e0927b8cbb26a6b88"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/diff-final-source/results/px4-firmware-scope-entry-dev-1701/verify.py",
+      "bytes": 3838,
+      "sha256": "e447fbafb8447131cfdd9a98e6adabfc312057c20403b785687439cfbe675c8d"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/diff-final-source/src/flydrones/connectome_training/px4_status_firmware.py",
+      "bytes": 8454,
+      "sha256": "badbab9a9eb877e6447bddd35c9624af86d9fb60b7a07798bc58d6c5b514ce94"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/diff-final-source/tests/connectome_training/conftest.py",
+      "bytes": 1260,
+      "sha256": "6a163e598e4011dd4efac9b8c896e5bafda4244112deaf7467125be479844ae1"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/diff-final-source/tests/connectome_training/test_px4_firmware_scope_entry_v2.py",
+      "bytes": 20423,
+      "sha256": "5f72afb983c6d75000bd0e1b58127f2f87fb0b5977b56654d322bf69d0dd9e03"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/diff-final-source/tests/connectome_training/test_px4_status_firmware_build.py",
+      "bytes": 28312,
+      "sha256": "1a8521d8ef1e56b7834a860eb7a4269ae1746e7fe3a06a948db9403f5f0a7900"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/diff-final-source/tools/benchmark/software_process_boundary.py",
+      "bytes": 1737,
+      "sha256": "1aced69a1cd810728c0bf557cc272a5bd43a94ababc31bb6ba33de791fd139a1"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/diff-final-source/tools/connectome/px4_firmware_scope_entry_v2.py",
+      "bytes": 4184,
+      "sha256": "4517fa60e7d37584754bbfb8f4179b8039a378d39e4b96c9a2e60d9ef6c50042"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/diff-final-source/tools/connectome/run_px4_status_firmware_build.py",
+      "bytes": 39007,
+      "sha256": "c6540f67935cbb8c21a8f4832ce497326611074d45b3708d92bbe1d30e914660"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/diff-final-source/tools/connectome/run_px4_status_firmware_build_v2.py",
+      "bytes": 43896,
+      "sha256": "acf987c9c9a8bc09c6d37932151c17693ff5f22086dab709b062fe9b39a97f33"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/diff-final-start.json",
+      "bytes": 5324,
+      "sha256": "09b417045c444e15b78806c7fb8788440432c2314b4f56aff08a42efb951df52"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/diff-final.json",
+      "bytes": 7688,
+      "sha256": "5852c5875a1329d6dbaf107adce4d331e3673ddbc71f80f9f9acd70ff7d3f1b6"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/diff-final.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/diff-final.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/dispatch-behavior-red-after-source/configs/px4/estimator-status-firmware-build-profile.json",
+      "bytes": 1015,
+      "sha256": "12990af3daa437772aae3d6440a3f209ab6c4b0c1af4bad8a6e85a5adf9bee3a"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/dispatch-behavior-red-after-source/configs/px4/estimator-status-firmware-profile.json",
+      "bytes": 1709,
+      "sha256": "13fd3306e2cd19254cafba28f9dc21463173aa4b8dc43f9e0927b8cbb26a6b88"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/dispatch-behavior-red-after-source/results/px4-firmware-scope-entry-dev-1701/verify.py",
+      "bytes": 3838,
+      "sha256": "e447fbafb8447131cfdd9a98e6adabfc312057c20403b785687439cfbe675c8d"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/dispatch-behavior-red-after-source/src/flydrones/connectome_training/px4_status_firmware.py",
+      "bytes": 8454,
+      "sha256": "badbab9a9eb877e6447bddd35c9624af86d9fb60b7a07798bc58d6c5b514ce94"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/dispatch-behavior-red-after-source/tests/connectome_training/conftest.py",
+      "bytes": 1260,
+      "sha256": "6a163e598e4011dd4efac9b8c896e5bafda4244112deaf7467125be479844ae1"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/dispatch-behavior-red-after-source/tests/connectome_training/test_px4_firmware_scope_entry_v2.py",
+      "bytes": 4861,
+      "sha256": "982877726aeef986b4a903a599d0a01aac0c4bd4f88627ecb5e6a3cd210a3971"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/dispatch-behavior-red-after-source/tests/connectome_training/test_px4_status_firmware_build.py",
+      "bytes": 28312,
+      "sha256": "1a8521d8ef1e56b7834a860eb7a4269ae1746e7fe3a06a948db9403f5f0a7900"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/dispatch-behavior-red-after-source/tools/benchmark/software_process_boundary.py",
+      "bytes": 1737,
+      "sha256": "1aced69a1cd810728c0bf557cc272a5bd43a94ababc31bb6ba33de791fd139a1"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/dispatch-behavior-red-after-source/tools/connectome/run_px4_status_firmware_build.py",
+      "bytes": 39007,
+      "sha256": "c6540f67935cbb8c21a8f4832ce497326611074d45b3708d92bbe1d30e914660"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/dispatch-behavior-red-after-source/tools/connectome/run_px4_status_firmware_build_v2.py",
+      "bytes": 39007,
+      "sha256": "c6540f67935cbb8c21a8f4832ce497326611074d45b3708d92bbe1d30e914660"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/dispatch-behavior-red-fixtures.json",
+      "bytes": 321,
+      "sha256": "de393e2c71f7178757d6361b712cf295e84f6b361304f7b12fc37bae68fce981"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/dispatch-behavior-red-source/configs/px4/estimator-status-firmware-build-profile.json",
+      "bytes": 1015,
+      "sha256": "12990af3daa437772aae3d6440a3f209ab6c4b0c1af4bad8a6e85a5adf9bee3a"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/dispatch-behavior-red-source/configs/px4/estimator-status-firmware-profile.json",
+      "bytes": 1709,
+      "sha256": "13fd3306e2cd19254cafba28f9dc21463173aa4b8dc43f9e0927b8cbb26a6b88"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/dispatch-behavior-red-source/results/px4-firmware-scope-entry-dev-1701/verify.py",
+      "bytes": 3838,
+      "sha256": "e447fbafb8447131cfdd9a98e6adabfc312057c20403b785687439cfbe675c8d"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/dispatch-behavior-red-source/src/flydrones/connectome_training/px4_status_firmware.py",
+      "bytes": 8454,
+      "sha256": "badbab9a9eb877e6447bddd35c9624af86d9fb60b7a07798bc58d6c5b514ce94"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/dispatch-behavior-red-source/tests/connectome_training/conftest.py",
+      "bytes": 1260,
+      "sha256": "6a163e598e4011dd4efac9b8c896e5bafda4244112deaf7467125be479844ae1"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/dispatch-behavior-red-source/tests/connectome_training/test_px4_firmware_scope_entry_v2.py",
+      "bytes": 4861,
+      "sha256": "982877726aeef986b4a903a599d0a01aac0c4bd4f88627ecb5e6a3cd210a3971"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/dispatch-behavior-red-source/tests/connectome_training/test_px4_status_firmware_build.py",
+      "bytes": 28312,
+      "sha256": "1a8521d8ef1e56b7834a860eb7a4269ae1746e7fe3a06a948db9403f5f0a7900"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/dispatch-behavior-red-source/tools/benchmark/software_process_boundary.py",
+      "bytes": 1737,
+      "sha256": "1aced69a1cd810728c0bf557cc272a5bd43a94ababc31bb6ba33de791fd139a1"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/dispatch-behavior-red-source/tools/connectome/run_px4_status_firmware_build.py",
+      "bytes": 39007,
+      "sha256": "c6540f67935cbb8c21a8f4832ce497326611074d45b3708d92bbe1d30e914660"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/dispatch-behavior-red-source/tools/connectome/run_px4_status_firmware_build_v2.py",
+      "bytes": 39007,
+      "sha256": "c6540f67935cbb8c21a8f4832ce497326611074d45b3708d92bbe1d30e914660"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/dispatch-behavior-red-start.json",
+      "bytes": 5414,
+      "sha256": "db8b377848661ecd6a89b78624645e2c1d332a5042eeddc5d6fd35a52d630e69"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/dispatch-behavior-red.json",
+      "bytes": 7694,
+      "sha256": "7f60cdef5434af21922e07d21ea377c87bcb9f069dd7c7b38aa90eec6ed33491"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/dispatch-behavior-red.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/dispatch-behavior-red.stdout",
+      "bytes": 966,
+      "sha256": "ddb9d5fbad257072975e06758493e83a8fafcef04de74976acbc13c2cb13cdb7"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/entry-coverage-after-source/configs/px4/estimator-status-firmware-build-profile.json",
+      "bytes": 1015,
+      "sha256": "12990af3daa437772aae3d6440a3f209ab6c4b0c1af4bad8a6e85a5adf9bee3a"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/entry-coverage-after-source/configs/px4/estimator-status-firmware-profile.json",
+      "bytes": 1709,
+      "sha256": "13fd3306e2cd19254cafba28f9dc21463173aa4b8dc43f9e0927b8cbb26a6b88"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/entry-coverage-after-source/results/px4-firmware-scope-entry-dev-1701/verify.py",
+      "bytes": 3838,
+      "sha256": "e447fbafb8447131cfdd9a98e6adabfc312057c20403b785687439cfbe675c8d"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/entry-coverage-after-source/src/flydrones/connectome_training/px4_status_firmware.py",
+      "bytes": 8454,
+      "sha256": "badbab9a9eb877e6447bddd35c9624af86d9fb60b7a07798bc58d6c5b514ce94"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/entry-coverage-after-source/tests/connectome_training/conftest.py",
+      "bytes": 1260,
+      "sha256": "6a163e598e4011dd4efac9b8c896e5bafda4244112deaf7467125be479844ae1"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/entry-coverage-after-source/tests/connectome_training/test_px4_firmware_scope_entry_v2.py",
+      "bytes": 12638,
+      "sha256": "79d22dc2033eab114cd1055222efeaae3849bfcd8678c87e5e3ca56686b94c69"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/entry-coverage-after-source/tests/connectome_training/test_px4_status_firmware_build.py",
+      "bytes": 28312,
+      "sha256": "1a8521d8ef1e56b7834a860eb7a4269ae1746e7fe3a06a948db9403f5f0a7900"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/entry-coverage-after-source/tools/benchmark/software_process_boundary.py",
+      "bytes": 1737,
+      "sha256": "1aced69a1cd810728c0bf557cc272a5bd43a94ababc31bb6ba33de791fd139a1"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/entry-coverage-after-source/tools/connectome/px4_firmware_scope_entry_v2.py",
+      "bytes": 4196,
+      "sha256": "d3647537bbbf21c229e7dbce647a0575fbb6dc53f3cdb61178c35dd83029dc93"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/entry-coverage-after-source/tools/connectome/run_px4_status_firmware_build.py",
+      "bytes": 39007,
+      "sha256": "c6540f67935cbb8c21a8f4832ce497326611074d45b3708d92bbe1d30e914660"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/entry-coverage-after-source/tools/connectome/run_px4_status_firmware_build_v2.py",
+      "bytes": 41622,
+      "sha256": "330f4a732c5ad8f5418ce48c012c797c644b28a8bb4ef0d919803983151e7ab1"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/entry-coverage-fixed-fixture-after-source/configs/px4/estimator-status-firmware-build-profile.json",
+      "bytes": 1015,
+      "sha256": "12990af3daa437772aae3d6440a3f209ab6c4b0c1af4bad8a6e85a5adf9bee3a"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/entry-coverage-fixed-fixture-after-source/configs/px4/estimator-status-firmware-profile.json",
+      "bytes": 1709,
+      "sha256": "13fd3306e2cd19254cafba28f9dc21463173aa4b8dc43f9e0927b8cbb26a6b88"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/entry-coverage-fixed-fixture-after-source/results/px4-firmware-scope-entry-dev-1701/verify.py",
+      "bytes": 3838,
+      "sha256": "e447fbafb8447131cfdd9a98e6adabfc312057c20403b785687439cfbe675c8d"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/entry-coverage-fixed-fixture-after-source/src/flydrones/connectome_training/px4_status_firmware.py",
+      "bytes": 8454,
+      "sha256": "badbab9a9eb877e6447bddd35c9624af86d9fb60b7a07798bc58d6c5b514ce94"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/entry-coverage-fixed-fixture-after-source/tests/connectome_training/conftest.py",
+      "bytes": 1260,
+      "sha256": "6a163e598e4011dd4efac9b8c896e5bafda4244112deaf7467125be479844ae1"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/entry-coverage-fixed-fixture-after-source/tests/connectome_training/test_px4_firmware_scope_entry_v2.py",
+      "bytes": 12794,
+      "sha256": "450afaf698bc17ce2ab6700e4c095d58cd5099b1aba41b7159a4efd128a0e4d4"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/entry-coverage-fixed-fixture-after-source/tests/connectome_training/test_px4_status_firmware_build.py",
+      "bytes": 28312,
+      "sha256": "1a8521d8ef1e56b7834a860eb7a4269ae1746e7fe3a06a948db9403f5f0a7900"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/entry-coverage-fixed-fixture-after-source/tools/benchmark/software_process_boundary.py",
+      "bytes": 1737,
+      "sha256": "1aced69a1cd810728c0bf557cc272a5bd43a94ababc31bb6ba33de791fd139a1"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/entry-coverage-fixed-fixture-after-source/tools/connectome/px4_firmware_scope_entry_v2.py",
+      "bytes": 4196,
+      "sha256": "d3647537bbbf21c229e7dbce647a0575fbb6dc53f3cdb61178c35dd83029dc93"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/entry-coverage-fixed-fixture-after-source/tools/connectome/run_px4_status_firmware_build.py",
+      "bytes": 39007,
+      "sha256": "c6540f67935cbb8c21a8f4832ce497326611074d45b3708d92bbe1d30e914660"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/entry-coverage-fixed-fixture-after-source/tools/connectome/run_px4_status_firmware_build_v2.py",
+      "bytes": 41622,
+      "sha256": "330f4a732c5ad8f5418ce48c012c797c644b28a8bb4ef0d919803983151e7ab1"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/entry-coverage-fixed-fixture-fixtures.json",
+      "bytes": 4874,
+      "sha256": "70c72b225debb2f867f3ed37087abebb8f2eeb17afda0b307135d9a8824d5e1b"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/entry-coverage-fixed-fixture-source/configs/px4/estimator-status-firmware-build-profile.json",
+      "bytes": 1015,
+      "sha256": "12990af3daa437772aae3d6440a3f209ab6c4b0c1af4bad8a6e85a5adf9bee3a"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/entry-coverage-fixed-fixture-source/configs/px4/estimator-status-firmware-profile.json",
+      "bytes": 1709,
+      "sha256": "13fd3306e2cd19254cafba28f9dc21463173aa4b8dc43f9e0927b8cbb26a6b88"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/entry-coverage-fixed-fixture-source/results/px4-firmware-scope-entry-dev-1701/verify.py",
+      "bytes": 3838,
+      "sha256": "e447fbafb8447131cfdd9a98e6adabfc312057c20403b785687439cfbe675c8d"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/entry-coverage-fixed-fixture-source/src/flydrones/connectome_training/px4_status_firmware.py",
+      "bytes": 8454,
+      "sha256": "badbab9a9eb877e6447bddd35c9624af86d9fb60b7a07798bc58d6c5b514ce94"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/entry-coverage-fixed-fixture-source/tests/connectome_training/conftest.py",
+      "bytes": 1260,
+      "sha256": "6a163e598e4011dd4efac9b8c896e5bafda4244112deaf7467125be479844ae1"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/entry-coverage-fixed-fixture-source/tests/connectome_training/test_px4_firmware_scope_entry_v2.py",
+      "bytes": 12794,
+      "sha256": "450afaf698bc17ce2ab6700e4c095d58cd5099b1aba41b7159a4efd128a0e4d4"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/entry-coverage-fixed-fixture-source/tests/connectome_training/test_px4_status_firmware_build.py",
+      "bytes": 28312,
+      "sha256": "1a8521d8ef1e56b7834a860eb7a4269ae1746e7fe3a06a948db9403f5f0a7900"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/entry-coverage-fixed-fixture-source/tools/benchmark/software_process_boundary.py",
+      "bytes": 1737,
+      "sha256": "1aced69a1cd810728c0bf557cc272a5bd43a94ababc31bb6ba33de791fd139a1"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/entry-coverage-fixed-fixture-source/tools/connectome/px4_firmware_scope_entry_v2.py",
+      "bytes": 4196,
+      "sha256": "d3647537bbbf21c229e7dbce647a0575fbb6dc53f3cdb61178c35dd83029dc93"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/entry-coverage-fixed-fixture-source/tools/connectome/run_px4_status_firmware_build.py",
+      "bytes": 39007,
+      "sha256": "c6540f67935cbb8c21a8f4832ce497326611074d45b3708d92bbe1d30e914660"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/entry-coverage-fixed-fixture-source/tools/connectome/run_px4_status_firmware_build_v2.py",
+      "bytes": 41622,
+      "sha256": "330f4a732c5ad8f5418ce48c012c797c644b28a8bb4ef0d919803983151e7ab1"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/entry-coverage-fixed-fixture-start.json",
+      "bytes": 5430,
+      "sha256": "5e0387e5fed9ca04ce227d97d8c2f22804c03024f5ea04ac50730112a71a159c"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/entry-coverage-fixed-fixture.json",
+      "bytes": 7794,
+      "sha256": "608c08cf3837791b61b3c066dbc7463db0fa04be2f2b1cbc275bcb65830be945"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/entry-coverage-fixed-fixture.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/entry-coverage-fixed-fixture.stdout",
+      "bytes": 101,
+      "sha256": "efad574005e1de38c00549158d980240a6be86067fa2760c546d6588c6be808f"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/entry-coverage-fixtures.json",
+      "bytes": 4622,
+      "sha256": "3c748deefb249d1d52033ae35b804112ee134b8f062e5ef2ca31ea48ac190a55"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/entry-coverage-source/configs/px4/estimator-status-firmware-build-profile.json",
+      "bytes": 1015,
+      "sha256": "12990af3daa437772aae3d6440a3f209ab6c4b0c1af4bad8a6e85a5adf9bee3a"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/entry-coverage-source/configs/px4/estimator-status-firmware-profile.json",
+      "bytes": 1709,
+      "sha256": "13fd3306e2cd19254cafba28f9dc21463173aa4b8dc43f9e0927b8cbb26a6b88"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/entry-coverage-source/results/px4-firmware-scope-entry-dev-1701/verify.py",
+      "bytes": 3838,
+      "sha256": "e447fbafb8447131cfdd9a98e6adabfc312057c20403b785687439cfbe675c8d"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/entry-coverage-source/src/flydrones/connectome_training/px4_status_firmware.py",
+      "bytes": 8454,
+      "sha256": "badbab9a9eb877e6447bddd35c9624af86d9fb60b7a07798bc58d6c5b514ce94"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/entry-coverage-source/tests/connectome_training/conftest.py",
+      "bytes": 1260,
+      "sha256": "6a163e598e4011dd4efac9b8c896e5bafda4244112deaf7467125be479844ae1"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/entry-coverage-source/tests/connectome_training/test_px4_firmware_scope_entry_v2.py",
+      "bytes": 12638,
+      "sha256": "79d22dc2033eab114cd1055222efeaae3849bfcd8678c87e5e3ca56686b94c69"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/entry-coverage-source/tests/connectome_training/test_px4_status_firmware_build.py",
+      "bytes": 28312,
+      "sha256": "1a8521d8ef1e56b7834a860eb7a4269ae1746e7fe3a06a948db9403f5f0a7900"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/entry-coverage-source/tools/benchmark/software_process_boundary.py",
+      "bytes": 1737,
+      "sha256": "1aced69a1cd810728c0bf557cc272a5bd43a94ababc31bb6ba33de791fd139a1"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/entry-coverage-source/tools/connectome/px4_firmware_scope_entry_v2.py",
+      "bytes": 4196,
+      "sha256": "d3647537bbbf21c229e7dbce647a0575fbb6dc53f3cdb61178c35dd83029dc93"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/entry-coverage-source/tools/connectome/run_px4_status_firmware_build.py",
+      "bytes": 39007,
+      "sha256": "c6540f67935cbb8c21a8f4832ce497326611074d45b3708d92bbe1d30e914660"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/entry-coverage-source/tools/connectome/run_px4_status_firmware_build_v2.py",
+      "bytes": 41622,
+      "sha256": "330f4a732c5ad8f5418ce48c012c797c644b28a8bb4ef0d919803983151e7ab1"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/entry-coverage-start.json",
+      "bytes": 5402,
+      "sha256": "f1f1f9c961f478057806ffe2ea82db9caf8ec3735471218a74016db104707231"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/entry-coverage.json",
+      "bytes": 7766,
+      "sha256": "88447fc6e84b39b19a98a39cdf2076c1623e0dd3edb1c85d242b5e6a0319c2e5"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/entry-coverage.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/entry-coverage.stdout",
+      "bytes": 3427,
+      "sha256": "d425cb202d73cd570ada49d241bf3f1786945e6a637760d6fa258c0f6a66c3e7"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/entry-final-after-source/configs/px4/estimator-status-firmware-build-profile.json",
+      "bytes": 1015,
+      "sha256": "12990af3daa437772aae3d6440a3f209ab6c4b0c1af4bad8a6e85a5adf9bee3a"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/entry-final-after-source/configs/px4/estimator-status-firmware-profile.json",
+      "bytes": 1709,
+      "sha256": "13fd3306e2cd19254cafba28f9dc21463173aa4b8dc43f9e0927b8cbb26a6b88"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/entry-final-after-source/results/px4-firmware-scope-entry-dev-1701/verify.py",
+      "bytes": 3838,
+      "sha256": "e447fbafb8447131cfdd9a98e6adabfc312057c20403b785687439cfbe675c8d"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/entry-final-after-source/src/flydrones/connectome_training/px4_status_firmware.py",
+      "bytes": 8454,
+      "sha256": "badbab9a9eb877e6447bddd35c9624af86d9fb60b7a07798bc58d6c5b514ce94"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/entry-final-after-source/tests/connectome_training/conftest.py",
+      "bytes": 1260,
+      "sha256": "6a163e598e4011dd4efac9b8c896e5bafda4244112deaf7467125be479844ae1"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/entry-final-after-source/tests/connectome_training/test_px4_firmware_scope_entry_v2.py",
+      "bytes": 20423,
+      "sha256": "5f72afb983c6d75000bd0e1b58127f2f87fb0b5977b56654d322bf69d0dd9e03"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/entry-final-after-source/tests/connectome_training/test_px4_status_firmware_build.py",
+      "bytes": 28312,
+      "sha256": "1a8521d8ef1e56b7834a860eb7a4269ae1746e7fe3a06a948db9403f5f0a7900"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/entry-final-after-source/tools/benchmark/software_process_boundary.py",
+      "bytes": 1737,
+      "sha256": "1aced69a1cd810728c0bf557cc272a5bd43a94ababc31bb6ba33de791fd139a1"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/entry-final-after-source/tools/connectome/px4_firmware_scope_entry_v2.py",
+      "bytes": 4184,
+      "sha256": "4517fa60e7d37584754bbfb8f4179b8039a378d39e4b96c9a2e60d9ef6c50042"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/entry-final-after-source/tools/connectome/run_px4_status_firmware_build.py",
+      "bytes": 39007,
+      "sha256": "c6540f67935cbb8c21a8f4832ce497326611074d45b3708d92bbe1d30e914660"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/entry-final-after-source/tools/connectome/run_px4_status_firmware_build_v2.py",
+      "bytes": 43896,
+      "sha256": "acf987c9c9a8bc09c6d37932151c17693ff5f22086dab709b062fe9b39a97f33"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/entry-final-fixtures.json",
+      "bytes": 9545,
+      "sha256": "a59e0531a2418035240535cbf2971d0fc8c4bc63c57c0bc20711fdcd452a4f1d"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/entry-final-source/configs/px4/estimator-status-firmware-build-profile.json",
+      "bytes": 1015,
+      "sha256": "12990af3daa437772aae3d6440a3f209ab6c4b0c1af4bad8a6e85a5adf9bee3a"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/entry-final-source/configs/px4/estimator-status-firmware-profile.json",
+      "bytes": 1709,
+      "sha256": "13fd3306e2cd19254cafba28f9dc21463173aa4b8dc43f9e0927b8cbb26a6b88"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/entry-final-source/results/px4-firmware-scope-entry-dev-1701/verify.py",
+      "bytes": 3838,
+      "sha256": "e447fbafb8447131cfdd9a98e6adabfc312057c20403b785687439cfbe675c8d"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/entry-final-source/src/flydrones/connectome_training/px4_status_firmware.py",
+      "bytes": 8454,
+      "sha256": "badbab9a9eb877e6447bddd35c9624af86d9fb60b7a07798bc58d6c5b514ce94"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/entry-final-source/tests/connectome_training/conftest.py",
+      "bytes": 1260,
+      "sha256": "6a163e598e4011dd4efac9b8c896e5bafda4244112deaf7467125be479844ae1"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/entry-final-source/tests/connectome_training/test_px4_firmware_scope_entry_v2.py",
+      "bytes": 20423,
+      "sha256": "5f72afb983c6d75000bd0e1b58127f2f87fb0b5977b56654d322bf69d0dd9e03"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/entry-final-source/tests/connectome_training/test_px4_status_firmware_build.py",
+      "bytes": 28312,
+      "sha256": "1a8521d8ef1e56b7834a860eb7a4269ae1746e7fe3a06a948db9403f5f0a7900"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/entry-final-source/tools/benchmark/software_process_boundary.py",
+      "bytes": 1737,
+      "sha256": "1aced69a1cd810728c0bf557cc272a5bd43a94ababc31bb6ba33de791fd139a1"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/entry-final-source/tools/connectome/px4_firmware_scope_entry_v2.py",
+      "bytes": 4184,
+      "sha256": "4517fa60e7d37584754bbfb8f4179b8039a378d39e4b96c9a2e60d9ef6c50042"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/entry-final-source/tools/connectome/run_px4_status_firmware_build.py",
+      "bytes": 39007,
+      "sha256": "c6540f67935cbb8c21a8f4832ce497326611074d45b3708d92bbe1d30e914660"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/entry-final-source/tools/connectome/run_px4_status_firmware_build_v2.py",
+      "bytes": 43896,
+      "sha256": "acf987c9c9a8bc09c6d37932151c17693ff5f22086dab709b062fe9b39a97f33"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/entry-final-start.json",
+      "bytes": 5396,
+      "sha256": "bf1a0e41e02f5652f51b7645522216850a4c2f9ce1bc16d89d8184845075d907"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/entry-final.json",
+      "bytes": 7760,
+      "sha256": "19ef924dabdc91e7828e976448c5e74370f0b521ed3d8e846e54c4f2cf78a7f9"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/entry-final.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/entry-final.stdout",
+      "bytes": 101,
+      "sha256": "a19a02dbd708daecb1eb3d745465c03a51b77cadf384c6e9da8d9186fb8d998a"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/entry-green-after-source/configs/px4/estimator-status-firmware-build-profile.json",
+      "bytes": 1015,
+      "sha256": "12990af3daa437772aae3d6440a3f209ab6c4b0c1af4bad8a6e85a5adf9bee3a"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/entry-green-after-source/configs/px4/estimator-status-firmware-profile.json",
+      "bytes": 1709,
+      "sha256": "13fd3306e2cd19254cafba28f9dc21463173aa4b8dc43f9e0927b8cbb26a6b88"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/entry-green-after-source/results/px4-firmware-scope-entry-dev-1701/verify.py",
+      "bytes": 3838,
+      "sha256": "e447fbafb8447131cfdd9a98e6adabfc312057c20403b785687439cfbe675c8d"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/entry-green-after-source/src/flydrones/connectome_training/px4_status_firmware.py",
+      "bytes": 8454,
+      "sha256": "badbab9a9eb877e6447bddd35c9624af86d9fb60b7a07798bc58d6c5b514ce94"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/entry-green-after-source/tests/connectome_training/conftest.py",
+      "bytes": 1260,
+      "sha256": "6a163e598e4011dd4efac9b8c896e5bafda4244112deaf7467125be479844ae1"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/entry-green-after-source/tests/connectome_training/test_px4_firmware_scope_entry_v2.py",
+      "bytes": 4861,
+      "sha256": "982877726aeef986b4a903a599d0a01aac0c4bd4f88627ecb5e6a3cd210a3971"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/entry-green-after-source/tests/connectome_training/test_px4_status_firmware_build.py",
+      "bytes": 28312,
+      "sha256": "1a8521d8ef1e56b7834a860eb7a4269ae1746e7fe3a06a948db9403f5f0a7900"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/entry-green-after-source/tools/benchmark/software_process_boundary.py",
+      "bytes": 1737,
+      "sha256": "1aced69a1cd810728c0bf557cc272a5bd43a94ababc31bb6ba33de791fd139a1"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/entry-green-after-source/tools/connectome/px4_firmware_scope_entry_v2.py",
+      "bytes": 3958,
+      "sha256": "c7d22e6c3f8f0b5d30377f8458cceec35578b21999b2307f76b457133a685ebb"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/entry-green-after-source/tools/connectome/run_px4_status_firmware_build.py",
+      "bytes": 39007,
+      "sha256": "c6540f67935cbb8c21a8f4832ce497326611074d45b3708d92bbe1d30e914660"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/entry-green-after-source/tools/connectome/run_px4_status_firmware_build_v2.py",
+      "bytes": 41622,
+      "sha256": "5f7f71566677873d9575e104486383622854e9ef5a66cba01236aff37c2fa26b"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/entry-green-fixtures.json",
+      "bytes": 311,
+      "sha256": "4f64b129bff9b9ab2d7efa4705e9ce4d0ce7a6200d21e995627c9933cbec917d"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/entry-green-source/configs/px4/estimator-status-firmware-build-profile.json",
+      "bytes": 1015,
+      "sha256": "12990af3daa437772aae3d6440a3f209ab6c4b0c1af4bad8a6e85a5adf9bee3a"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/entry-green-source/configs/px4/estimator-status-firmware-profile.json",
+      "bytes": 1709,
+      "sha256": "13fd3306e2cd19254cafba28f9dc21463173aa4b8dc43f9e0927b8cbb26a6b88"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/entry-green-source/results/px4-firmware-scope-entry-dev-1701/verify.py",
+      "bytes": 3838,
+      "sha256": "e447fbafb8447131cfdd9a98e6adabfc312057c20403b785687439cfbe675c8d"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/entry-green-source/src/flydrones/connectome_training/px4_status_firmware.py",
+      "bytes": 8454,
+      "sha256": "badbab9a9eb877e6447bddd35c9624af86d9fb60b7a07798bc58d6c5b514ce94"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/entry-green-source/tests/connectome_training/conftest.py",
+      "bytes": 1260,
+      "sha256": "6a163e598e4011dd4efac9b8c896e5bafda4244112deaf7467125be479844ae1"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/entry-green-source/tests/connectome_training/test_px4_firmware_scope_entry_v2.py",
+      "bytes": 4861,
+      "sha256": "982877726aeef986b4a903a599d0a01aac0c4bd4f88627ecb5e6a3cd210a3971"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/entry-green-source/tests/connectome_training/test_px4_status_firmware_build.py",
+      "bytes": 28312,
+      "sha256": "1a8521d8ef1e56b7834a860eb7a4269ae1746e7fe3a06a948db9403f5f0a7900"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/entry-green-source/tools/benchmark/software_process_boundary.py",
+      "bytes": 1737,
+      "sha256": "1aced69a1cd810728c0bf557cc272a5bd43a94ababc31bb6ba33de791fd139a1"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/entry-green-source/tools/connectome/px4_firmware_scope_entry_v2.py",
+      "bytes": 3958,
+      "sha256": "c7d22e6c3f8f0b5d30377f8458cceec35578b21999b2307f76b457133a685ebb"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/entry-green-source/tools/connectome/run_px4_status_firmware_build.py",
+      "bytes": 39007,
+      "sha256": "c6540f67935cbb8c21a8f4832ce497326611074d45b3708d92bbe1d30e914660"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/entry-green-source/tools/connectome/run_px4_status_firmware_build_v2.py",
+      "bytes": 41622,
+      "sha256": "5f7f71566677873d9575e104486383622854e9ef5a66cba01236aff37c2fa26b"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/entry-green-start.json",
+      "bytes": 5395,
+      "sha256": "88b28fa9cfb75027e993a1949773472ae640e3f2900391af940b69234259870b"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/entry-green.json",
+      "bytes": 7758,
+      "sha256": "5212507ae90a05127131773006ce2b66def606ceb678510fd132cc3b8c5313a7"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/entry-green.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/entry-green.stdout",
+      "bytes": 101,
+      "sha256": "8f1ff792a2c9bc7162e674735d2f2e7bf3dcb1770292f4a22dc5cc21ea12d7e8"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/entry-interface-red-after-source/configs/px4/estimator-status-firmware-build-profile.json",
+      "bytes": 1015,
+      "sha256": "12990af3daa437772aae3d6440a3f209ab6c4b0c1af4bad8a6e85a5adf9bee3a"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/entry-interface-red-after-source/configs/px4/estimator-status-firmware-profile.json",
+      "bytes": 1709,
+      "sha256": "13fd3306e2cd19254cafba28f9dc21463173aa4b8dc43f9e0927b8cbb26a6b88"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/entry-interface-red-after-source/results/px4-firmware-scope-entry-dev-1701/verify.py",
+      "bytes": 3838,
+      "sha256": "e447fbafb8447131cfdd9a98e6adabfc312057c20403b785687439cfbe675c8d"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/entry-interface-red-after-source/src/flydrones/connectome_training/px4_status_firmware.py",
+      "bytes": 8454,
+      "sha256": "badbab9a9eb877e6447bddd35c9624af86d9fb60b7a07798bc58d6c5b514ce94"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/entry-interface-red-after-source/tests/connectome_training/conftest.py",
+      "bytes": 1260,
+      "sha256": "6a163e598e4011dd4efac9b8c896e5bafda4244112deaf7467125be479844ae1"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/entry-interface-red-after-source/tests/connectome_training/test_px4_firmware_scope_entry_v2.py",
+      "bytes": 4861,
+      "sha256": "982877726aeef986b4a903a599d0a01aac0c4bd4f88627ecb5e6a3cd210a3971"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/entry-interface-red-after-source/tests/connectome_training/test_px4_status_firmware_build.py",
+      "bytes": 28312,
+      "sha256": "1a8521d8ef1e56b7834a860eb7a4269ae1746e7fe3a06a948db9403f5f0a7900"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/entry-interface-red-after-source/tools/benchmark/software_process_boundary.py",
+      "bytes": 1737,
+      "sha256": "1aced69a1cd810728c0bf557cc272a5bd43a94ababc31bb6ba33de791fd139a1"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/entry-interface-red-after-source/tools/connectome/run_px4_status_firmware_build.py",
+      "bytes": 39007,
+      "sha256": "c6540f67935cbb8c21a8f4832ce497326611074d45b3708d92bbe1d30e914660"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/entry-interface-red-fixtures.json",
+      "bytes": 319,
+      "sha256": "5eef69633b5a54c0ec1092251533249955afb575d7a33a2d719cb6c86ad3ad04"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/entry-interface-red-source/configs/px4/estimator-status-firmware-build-profile.json",
+      "bytes": 1015,
+      "sha256": "12990af3daa437772aae3d6440a3f209ab6c4b0c1af4bad8a6e85a5adf9bee3a"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/entry-interface-red-source/configs/px4/estimator-status-firmware-profile.json",
+      "bytes": 1709,
+      "sha256": "13fd3306e2cd19254cafba28f9dc21463173aa4b8dc43f9e0927b8cbb26a6b88"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/entry-interface-red-source/results/px4-firmware-scope-entry-dev-1701/verify.py",
+      "bytes": 3838,
+      "sha256": "e447fbafb8447131cfdd9a98e6adabfc312057c20403b785687439cfbe675c8d"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/entry-interface-red-source/src/flydrones/connectome_training/px4_status_firmware.py",
+      "bytes": 8454,
+      "sha256": "badbab9a9eb877e6447bddd35c9624af86d9fb60b7a07798bc58d6c5b514ce94"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/entry-interface-red-source/tests/connectome_training/conftest.py",
+      "bytes": 1260,
+      "sha256": "6a163e598e4011dd4efac9b8c896e5bafda4244112deaf7467125be479844ae1"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/entry-interface-red-source/tests/connectome_training/test_px4_firmware_scope_entry_v2.py",
+      "bytes": 4861,
+      "sha256": "982877726aeef986b4a903a599d0a01aac0c4bd4f88627ecb5e6a3cd210a3971"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/entry-interface-red-source/tests/connectome_training/test_px4_status_firmware_build.py",
+      "bytes": 28312,
+      "sha256": "1a8521d8ef1e56b7834a860eb7a4269ae1746e7fe3a06a948db9403f5f0a7900"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/entry-interface-red-source/tools/benchmark/software_process_boundary.py",
+      "bytes": 1737,
+      "sha256": "1aced69a1cd810728c0bf557cc272a5bd43a94ababc31bb6ba33de791fd139a1"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/entry-interface-red-source/tools/connectome/run_px4_status_firmware_build.py",
+      "bytes": 39007,
+      "sha256": "c6540f67935cbb8c21a8f4832ce497326611074d45b3708d92bbe1d30e914660"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/entry-interface-red-start.json",
+      "bytes": 5244,
+      "sha256": "a188b03a50a85435ced289ad550112c7521eaf54f4cb79a532bd4e2e32866913"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/entry-interface-red.json",
+      "bytes": 7440,
+      "sha256": "a9297f4213ce728eca386a477cbee6bf8e3dc5f7e37bd3d6fbd69b8f1a466e0e"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/entry-interface-red.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/entry-interface-red.stdout",
+      "bytes": 26350,
+      "sha256": "62439b64018fd3f04d71489a22b2c681119edac8af3693a714ba63230fb4c11b"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/executor-fix-pass.md",
+      "bytes": 8089,
+      "sha256": "ab97e2bd4c1c996d7f09bc725818aeae566531ff78627a3e34629dd122bd9290"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/executor-rulings.json",
+      "bytes": 7737,
+      "sha256": "fe681bfc3703e01baf1ed02d8c7f4a7b06b919b85a66ec5fb24f8eec3fcb5819"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/before-review/test_actual_dispatch_persists_0/entry.py",
+      "bytes": 4184,
+      "sha256": "4517fa60e7d37584754bbfb8f4179b8039a378d39e4b96c9a2e60d9ef6c50042"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/before-review/test_actual_dispatch_persists_0/evidence/dispatch-result.json",
+      "bytes": 2564,
+      "sha256": "f1dc398dd8f4e54b06fef6da3163e575a6233ed6001fa83516fc7dcc9da24014"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/before-review/test_actual_dispatch_persists_0/evidence/launch.json",
+      "bytes": 1246,
+      "sha256": "8b47f6e3df8972f8ad252698d3193a69a60a79ca41b8ea8630afd60e555e71f0"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/before-review/test_actual_dispatch_persists_0/evidence/preflight.json",
+      "bytes": 8981,
+      "sha256": "9041ffb5c916c7b4698091763e77567bb76df97ec8edfa3db066ba42e83a60c8"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/before-review/test_actual_dispatch_persists_0/evidence/scope-samples.jsonl",
+      "bytes": 530,
+      "sha256": "6ec32a934de43fab278301876eec661b3aa7dcb0e68fab4f44f3e82f5d5dcf29"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/before-review/test_actual_dispatch_persists_0/evidence/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/before-review/test_actual_dispatch_persists_0/evidence/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/before-review/test_actual_dispatch_persists_0/evidence/wsl-result-created.json",
+      "bytes": 106,
+      "sha256": "d27b91b0f37df8434d4124bd5f760a46e2ab8b665a0e04a33a7c5b4516b2cb8b"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/before-review/test_actual_dispatch_persists_1/entry.py",
+      "bytes": 4216,
+      "sha256": "5585147f4d9cd4774d529b149eddf81b860bd57e28cec1f85c526438e964743a"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/before-review/test_actual_dispatch_persists_1/evidence/dispatch-result.json",
+      "bytes": 2203,
+      "sha256": "46c2672b6ef7b043db9724eb211cbe311c285ce27f9cb9421337a20097af3d68"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/before-review/test_actual_dispatch_persists_1/evidence/launch.json",
+      "bytes": 1246,
+      "sha256": "d2d2ec1035bde9fbdc9ea8c38f72dc1b52a02c5908f4f442f0c126e9aa794173"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/before-review/test_actual_dispatch_persists_1/evidence/preflight.json",
+      "bytes": 8981,
+      "sha256": "3de1ec55953a9c8c36555cd131de21654f4bcfd888877bc8f42b69af6a684e2b"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/before-review/test_actual_dispatch_persists_1/evidence/scope-samples.jsonl",
+      "bytes": 530,
+      "sha256": "6ec32a934de43fab278301876eec661b3aa7dcb0e68fab4f44f3e82f5d5dcf29"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/before-review/test_actual_dispatch_persists_1/evidence/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/before-review/test_actual_dispatch_persists_1/evidence/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/before-review/test_actual_dispatch_persists_1/evidence/wsl-result-created.json",
+      "bytes": 106,
+      "sha256": "d27b91b0f37df8434d4124bd5f760a46e2ab8b665a0e04a33a7c5b4516b2cb8b"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/before-review/test_changed_entry_bytes_refus0/entry.py",
+      "bytes": 7,
+      "sha256": "d67e2e944994496c8d8ec76eed0cf9f09679448d584b532bebf941852a37f5ed"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/entry-coverage/test_actual_dispatch_persists_0/entry.py",
+      "bytes": 4196,
+      "sha256": "d3647537bbbf21c229e7dbce647a0575fbb6dc53f3cdb61178c35dd83029dc93"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/entry-coverage/test_actual_dispatch_persists_0/evidence/dispatch-result.json",
+      "bytes": 2566,
+      "sha256": "1fcea86936a5c08a91400a788f0a784074ad99dc7ff32f19374f89d7518b0072"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/entry-coverage/test_actual_dispatch_persists_0/evidence/launch.json",
+      "bytes": 1246,
+      "sha256": "64ec7477413025feae974628ddd22c3934869c6fe2ab2c2a26aab9ab4d392697"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/entry-coverage/test_actual_dispatch_persists_0/evidence/preflight.json",
+      "bytes": 8982,
+      "sha256": "c758c95443451356b8befc77b5b6bfacae797ba41019f52b2930c68f123d6562"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/entry-coverage/test_actual_dispatch_persists_0/evidence/scope-samples.jsonl",
+      "bytes": 530,
+      "sha256": "bd588d1c0af26b66a8344ac72cb2d2f1f511dd338607d2dd312778890799c5ae"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/entry-coverage/test_actual_dispatch_persists_0/evidence/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/entry-coverage/test_actual_dispatch_persists_0/evidence/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/entry-coverage/test_actual_dispatch_persists_0/evidence/wsl-result-created.json",
+      "bytes": 106,
+      "sha256": "d27b91b0f37df8434d4124bd5f760a46e2ab8b665a0e04a33a7c5b4516b2cb8b"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/entry-coverage/test_actual_dispatch_persists_1/entry.py",
+      "bytes": 4228,
+      "sha256": "b9c97ccaf182f75f1a8acf42e353fe68f6c77c01a2c9ed8494921d5992a7007d"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/entry-coverage/test_actual_dispatch_persists_1/evidence/dispatch-result.json",
+      "bytes": 2220,
+      "sha256": "48313bfb0e6673787f5ad1ce51e285234d2894f0b4f3facd1d145b0c11f60efb"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/entry-coverage/test_actual_dispatch_persists_1/evidence/launch.json",
+      "bytes": 1246,
+      "sha256": "4e90ceed55c6314b21f25d6d39ae73b23405d9dad8331933fec80e4c83dd4ce7"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/entry-coverage/test_actual_dispatch_persists_1/evidence/preflight.json",
+      "bytes": 8982,
+      "sha256": "f29dac25d9eb2f98260757c74a0dc801ad431490fa2c076fd4bd5e4d66e93cc0"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/entry-coverage/test_actual_dispatch_persists_1/evidence/scope-samples.jsonl",
+      "bytes": 546,
+      "sha256": "22ccacd827867b20353a6c621bb28acce5ec822d80c7142106b062cf52298c3e"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/entry-coverage/test_actual_dispatch_persists_1/evidence/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/entry-coverage/test_actual_dispatch_persists_1/evidence/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/entry-coverage/test_actual_dispatch_persists_1/evidence/wsl-result-created.json",
+      "bytes": 106,
+      "sha256": "d27b91b0f37df8434d4124bd5f760a46e2ab8b665a0e04a33a7c5b4516b2cb8b"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/entry-coverage/test_changed_entry_bytes_refus0/entry.py",
+      "bytes": 7,
+      "sha256": "d67e2e944994496c8d8ec76eed0cf9f09679448d584b532bebf941852a37f5ed"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/entry-coverage-fixed-fixture/test_actual_dispatch_persists_0/entry.py",
+      "bytes": 4196,
+      "sha256": "d3647537bbbf21c229e7dbce647a0575fbb6dc53f3cdb61178c35dd83029dc93"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/entry-coverage-fixed-fixture/test_actual_dispatch_persists_0/evidence/dispatch-result.json",
+      "bytes": 2594,
+      "sha256": "a902bcb3c8fc64becc03b5b0a722f877421e0d6f364c79165552ef6bd9e73907"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/entry-coverage-fixed-fixture/test_actual_dispatch_persists_0/evidence/launch.json",
+      "bytes": 1246,
+      "sha256": "bfc3a5accc7fada2a1329ea4bcb0f920dcef2e89ead85f0e132dca5f0358a549"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/entry-coverage-fixed-fixture/test_actual_dispatch_persists_0/evidence/preflight.json",
+      "bytes": 8996,
+      "sha256": "0633d7e6b8bec49de6db9714651514e2183c4a4b98eff5b2010e4aa1770d3d1b"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/entry-coverage-fixed-fixture/test_actual_dispatch_persists_0/evidence/scope-samples.jsonl",
+      "bytes": 530,
+      "sha256": "208132dc6bb07ed395efdd4df357372d45ef4177912846218eaf150097d0460c"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/entry-coverage-fixed-fixture/test_actual_dispatch_persists_0/evidence/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/entry-coverage-fixed-fixture/test_actual_dispatch_persists_0/evidence/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/entry-coverage-fixed-fixture/test_actual_dispatch_persists_0/evidence/wsl-result-created.json",
+      "bytes": 106,
+      "sha256": "d27b91b0f37df8434d4124bd5f760a46e2ab8b665a0e04a33a7c5b4516b2cb8b"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/entry-coverage-fixed-fixture/test_actual_dispatch_persists_1/entry.py",
+      "bytes": 4228,
+      "sha256": "b9c97ccaf182f75f1a8acf42e353fe68f6c77c01a2c9ed8494921d5992a7007d"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/entry-coverage-fixed-fixture/test_actual_dispatch_persists_1/evidence/dispatch-result.json",
+      "bytes": 2218,
+      "sha256": "68dd329f21dab3eea38583c0ea6dc6b3591500633af9ba1ec72b430331c6c736"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/entry-coverage-fixed-fixture/test_actual_dispatch_persists_1/evidence/launch.json",
+      "bytes": 1246,
+      "sha256": "569b3cc4f4c2bf94f06fc0919f018d68cf8361d110c48ea2f99b16703ff849e7"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/entry-coverage-fixed-fixture/test_actual_dispatch_persists_1/evidence/preflight.json",
+      "bytes": 8996,
+      "sha256": "c9a035a206e06916005ee98a6cb11eed16abf1dcdfc5b445a5781f27ce84a215"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/entry-coverage-fixed-fixture/test_actual_dispatch_persists_1/evidence/scope-samples.jsonl",
+      "bytes": 530,
+      "sha256": "208132dc6bb07ed395efdd4df357372d45ef4177912846218eaf150097d0460c"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/entry-coverage-fixed-fixture/test_actual_dispatch_persists_1/evidence/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/entry-coverage-fixed-fixture/test_actual_dispatch_persists_1/evidence/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/entry-coverage-fixed-fixture/test_actual_dispatch_persists_1/evidence/wsl-result-created.json",
+      "bytes": 106,
+      "sha256": "d27b91b0f37df8434d4124bd5f760a46e2ab8b665a0e04a33a7c5b4516b2cb8b"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/entry-coverage-fixed-fixture/test_changed_entry_bytes_refus0/entry.py",
+      "bytes": 7,
+      "sha256": "d67e2e944994496c8d8ec76eed0cf9f09679448d584b532bebf941852a37f5ed"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/entry-final/test_active_monitor_passes_one0/entry.py",
+      "bytes": 4184,
+      "sha256": "4517fa60e7d37584754bbfb8f4179b8039a378d39e4b96c9a2e60d9ef6c50042"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/entry-final/test_active_monitor_passes_one0/evidence/dispatch-result.json",
+      "bytes": 2560,
+      "sha256": "69eb49c813f571822d220c2e5157916a8fcd7452de9f15ab1dad1de2d2dfc02f"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/entry-final/test_active_monitor_passes_one0/evidence/launch.json",
+      "bytes": 1246,
+      "sha256": "6902b43b4231fede98c7ca4a1e107b59c7a7d97e9d5db5ceba8c0b694db9a221"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/entry-final/test_active_monitor_passes_one0/evidence/preflight.json",
+      "bytes": 8979,
+      "sha256": "55cead97fefb48cd63792a8cc0adbd9de617baee29127499cca1248e7555f71c"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/entry-final/test_active_monitor_passes_one0/evidence/scope-samples.jsonl",
+      "bytes": 530,
+      "sha256": "077e9fd7ea2bb1a03eb7da858684397bb35d4965d3fac7c94c5a2382ea8f6339"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/entry-final/test_active_monitor_passes_one0/evidence/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/entry-final/test_active_monitor_passes_one0/evidence/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/entry-final/test_active_monitor_passes_one0/evidence/wsl-result-created.json",
+      "bytes": 106,
+      "sha256": "d27b91b0f37df8434d4124bd5f760a46e2ab8b665a0e04a33a7c5b4516b2cb8b"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/entry-final/test_active_monitor_sleep_is_c0/entry.py",
+      "bytes": 4184,
+      "sha256": "4517fa60e7d37584754bbfb8f4179b8039a378d39e4b96c9a2e60d9ef6c50042"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/entry-final/test_active_monitor_sleep_is_c0/evidence/dispatch-result.json",
+      "bytes": 2563,
+      "sha256": "06e52fcef01766f4420e27a5b4a273180179f863d2da265452a6e9c019b8736e"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/entry-final/test_active_monitor_sleep_is_c0/evidence/launch.json",
+      "bytes": 1238,
+      "sha256": "ca39da1a7a0e6f7ee66181a430dac2b92b1027767c6818a5981ad3877fab9495"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/entry-final/test_active_monitor_sleep_is_c0/evidence/preflight.json",
+      "bytes": 8979,
+      "sha256": "480becf0fd00b16727c7c655443c1b30a0c3c77b8e40d92ec0126e27faede871"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/entry-final/test_active_monitor_sleep_is_c0/evidence/scope-samples.jsonl",
+      "bytes": 530,
+      "sha256": "077e9fd7ea2bb1a03eb7da858684397bb35d4965d3fac7c94c5a2382ea8f6339"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/entry-final/test_active_monitor_sleep_is_c0/evidence/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/entry-final/test_active_monitor_sleep_is_c0/evidence/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/entry-final/test_active_monitor_sleep_is_c0/evidence/wsl-result-created.json",
+      "bytes": 106,
+      "sha256": "d27b91b0f37df8434d4124bd5f760a46e2ab8b665a0e04a33a7c5b4516b2cb8b"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/entry-final/test_actual_dispatch_persists_0/entry.py",
+      "bytes": 4184,
+      "sha256": "4517fa60e7d37584754bbfb8f4179b8039a378d39e4b96c9a2e60d9ef6c50042"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/entry-final/test_actual_dispatch_persists_0/evidence/dispatch-result.json",
+      "bytes": 2560,
+      "sha256": "6444cb467da020bc7ed700b2c2d0ec046f36fddbefcb5342fd7ea80f02ff53d6"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/entry-final/test_actual_dispatch_persists_0/evidence/launch.json",
+      "bytes": 1245,
+      "sha256": "b5026b50c9213825772959b61c57fe4cd6cc8d618a449e75a85b4c975520ada5"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/entry-final/test_actual_dispatch_persists_0/evidence/preflight.json",
+      "bytes": 8979,
+      "sha256": "45e6031aa608cffab57a1b0bb744438bd446962b1a4e9511f7eb845496398a90"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/entry-final/test_actual_dispatch_persists_0/evidence/scope-samples.jsonl",
+      "bytes": 530,
+      "sha256": "077e9fd7ea2bb1a03eb7da858684397bb35d4965d3fac7c94c5a2382ea8f6339"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/entry-final/test_actual_dispatch_persists_0/evidence/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/entry-final/test_actual_dispatch_persists_0/evidence/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/entry-final/test_actual_dispatch_persists_0/evidence/wsl-result-created.json",
+      "bytes": 106,
+      "sha256": "d27b91b0f37df8434d4124bd5f760a46e2ab8b665a0e04a33a7c5b4516b2cb8b"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/entry-final/test_actual_dispatch_persists_1/entry.py",
+      "bytes": 4216,
+      "sha256": "5585147f4d9cd4774d529b149eddf81b860bd57e28cec1f85c526438e964743a"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/entry-final/test_actual_dispatch_persists_1/evidence/dispatch-result.json",
+      "bytes": 2201,
+      "sha256": "ffff7f0c4f5e9d484498d2186ed50c35312978208ce001c0d7951b81af5591c3"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/entry-final/test_actual_dispatch_persists_1/evidence/launch.json",
+      "bytes": 1246,
+      "sha256": "44ec0fda3e02e0d848466134c510082df5f04a40f820b2dc254e1bd096a5052c"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/entry-final/test_actual_dispatch_persists_1/evidence/preflight.json",
+      "bytes": 8979,
+      "sha256": "eed3e9d0b00d16da80502200b0ee09879165737bce64103843877d1ac78fbcdd"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/entry-final/test_actual_dispatch_persists_1/evidence/scope-samples.jsonl",
+      "bytes": 530,
+      "sha256": "077e9fd7ea2bb1a03eb7da858684397bb35d4965d3fac7c94c5a2382ea8f6339"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/entry-final/test_actual_dispatch_persists_1/evidence/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/entry-final/test_actual_dispatch_persists_1/evidence/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/entry-final/test_actual_dispatch_persists_1/evidence/wsl-result-created.json",
+      "bytes": 106,
+      "sha256": "d27b91b0f37df8434d4124bd5f760a46e2ab8b665a0e04a33a7c5b4516b2cb8b"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/entry-final/test_changed_entry_bytes_refus0/entry.py",
+      "bytes": 7,
+      "sha256": "d67e2e944994496c8d8ec76eed0cf9f09679448d584b532bebf941852a37f5ed"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/entry-final/test_dangling_legacy_evidence_0/entry.py",
+      "bytes": 4184,
+      "sha256": "4517fa60e7d37584754bbfb8f4179b8039a378d39e4b96c9a2e60d9ef6c50042"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/entry-final/test_launcher_fallback_read_is0/stderr.bin",
+      "bytes": 1048577,
+      "sha256": "154b8ed3c2383ce429058768595935faf7851b5c38db2b1732594be1d88bc05a"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/entry-final/test_prior_v1_evidence_consump0/entry.py",
+      "bytes": 4184,
+      "sha256": "4517fa60e7d37584754bbfb8f4179b8039a378d39e4b96c9a2e60d9ef6c50042"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/entry-final/test_prior_v1_evidence_consump1/entry.py",
+      "bytes": 4184,
+      "sha256": "4517fa60e7d37584754bbfb8f4179b8039a378d39e4b96c9a2e60d9ef6c50042"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/review-fix-green/test_active_monitor_passes_one0/entry.py",
+      "bytes": 4184,
+      "sha256": "4517fa60e7d37584754bbfb8f4179b8039a378d39e4b96c9a2e60d9ef6c50042"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/review-fix-green/test_active_monitor_passes_one0/evidence/dispatch-result.json",
+      "bytes": 2570,
+      "sha256": "be8a089465b006063f6760e4f9d8ba23fde4400269b1793df8dfaaf2d63fbf35"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/review-fix-green/test_active_monitor_passes_one0/evidence/launch.json",
+      "bytes": 1246,
+      "sha256": "7d40838ad6975ea6f00e4fb12a88f6dc7d4c4c3f2d3fa18a0dd0b2d964439ee7"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/review-fix-green/test_active_monitor_passes_one0/evidence/preflight.json",
+      "bytes": 8984,
+      "sha256": "04087a92be991a43cc0ec222b850af325674dd2095981a8aed1db6176ef3a654"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/review-fix-green/test_active_monitor_passes_one0/evidence/scope-samples.jsonl",
+      "bytes": 530,
+      "sha256": "c0270552829080ee043c57d3c652446ddeba28c65694acbe3210106cdf52eb8d"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/review-fix-green/test_active_monitor_passes_one0/evidence/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/review-fix-green/test_active_monitor_passes_one0/evidence/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/review-fix-green/test_active_monitor_passes_one0/evidence/wsl-result-created.json",
+      "bytes": 106,
+      "sha256": "d27b91b0f37df8434d4124bd5f760a46e2ab8b665a0e04a33a7c5b4516b2cb8b"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/review-fix-green/test_actual_dispatch_persists_0/entry.py",
+      "bytes": 4184,
+      "sha256": "4517fa60e7d37584754bbfb8f4179b8039a378d39e4b96c9a2e60d9ef6c50042"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/review-fix-green/test_actual_dispatch_persists_0/evidence/dispatch-result.json",
+      "bytes": 2570,
+      "sha256": "cecbf79ad046742c04ce6cc92c45bde65a2966240110e4a358d8864a2c535c8a"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/review-fix-green/test_actual_dispatch_persists_0/evidence/launch.json",
+      "bytes": 1246,
+      "sha256": "a77b65dce0077b5d16c33da29ead1402cdfc9fefd5e6b0ac7e7d31d2e8671976"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/review-fix-green/test_actual_dispatch_persists_0/evidence/preflight.json",
+      "bytes": 8984,
+      "sha256": "95a0983791cc070d55dec60a0bcf64ef1692b4cfd1fbbfb0e2f67f81a46f0151"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/review-fix-green/test_actual_dispatch_persists_0/evidence/scope-samples.jsonl",
+      "bytes": 530,
+      "sha256": "c0270552829080ee043c57d3c652446ddeba28c65694acbe3210106cdf52eb8d"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/review-fix-green/test_actual_dispatch_persists_0/evidence/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/review-fix-green/test_actual_dispatch_persists_0/evidence/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/review-fix-green/test_actual_dispatch_persists_0/evidence/wsl-result-created.json",
+      "bytes": 106,
+      "sha256": "d27b91b0f37df8434d4124bd5f760a46e2ab8b665a0e04a33a7c5b4516b2cb8b"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/review-fix-green/test_actual_dispatch_persists_1/entry.py",
+      "bytes": 4216,
+      "sha256": "5585147f4d9cd4774d529b149eddf81b860bd57e28cec1f85c526438e964743a"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/review-fix-green/test_actual_dispatch_persists_1/evidence/dispatch-result.json",
+      "bytes": 2206,
+      "sha256": "2f355e47d07bc652bc36b32b9aed858de144974c4c5d861e0e317f85bce3e8de"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/review-fix-green/test_actual_dispatch_persists_1/evidence/launch.json",
+      "bytes": 1246,
+      "sha256": "84c79d53981086b633a21fb88ab80a2cf256e453f86997930b4b9c1ed3aa7f1b"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/review-fix-green/test_actual_dispatch_persists_1/evidence/preflight.json",
+      "bytes": 8984,
+      "sha256": "799dde01917b800282281350560c86964b72f332e71906dedec06673b8aa01ba"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/review-fix-green/test_actual_dispatch_persists_1/evidence/scope-samples.jsonl",
+      "bytes": 530,
+      "sha256": "c0270552829080ee043c57d3c652446ddeba28c65694acbe3210106cdf52eb8d"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/review-fix-green/test_actual_dispatch_persists_1/evidence/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/review-fix-green/test_actual_dispatch_persists_1/evidence/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/review-fix-green/test_actual_dispatch_persists_1/evidence/wsl-result-created.json",
+      "bytes": 106,
+      "sha256": "d27b91b0f37df8434d4124bd5f760a46e2ab8b665a0e04a33a7c5b4516b2cb8b"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/review-fix-green/test_changed_entry_bytes_refus0/entry.py",
+      "bytes": 7,
+      "sha256": "d67e2e944994496c8d8ec76eed0cf9f09679448d584b532bebf941852a37f5ed"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/review-fix-green/test_launcher_fallback_read_is0/stderr.bin",
+      "bytes": 1048577,
+      "sha256": "154b8ed3c2383ce429058768595935faf7851b5c38db2b1732594be1d88bc05a"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/review-fix-green/test_prior_v1_evidence_consump0/entry.py",
+      "bytes": 4184,
+      "sha256": "4517fa60e7d37584754bbfb8f4179b8039a378d39e4b96c9a2e60d9ef6c50042"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/review-fix-green/test_prior_v1_evidence_consump1/entry.py",
+      "bytes": 4184,
+      "sha256": "4517fa60e7d37584754bbfb8f4179b8039a378d39e4b96c9a2e60d9ef6c50042"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/review-fix-red/test_active_monitor_passes_one0/entry.py",
+      "bytes": 4184,
+      "sha256": "4517fa60e7d37584754bbfb8f4179b8039a378d39e4b96c9a2e60d9ef6c50042"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/review-fix-red/test_active_monitor_passes_one0/evidence/dispatch-result.json",
+      "bytes": 2566,
+      "sha256": "e466c612a2157f98f598597812b3b6f98cce3cd70764c29fdb2a3d73c88de3e0"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/review-fix-red/test_active_monitor_passes_one0/evidence/launch.json",
+      "bytes": 1246,
+      "sha256": "f82f6c7e06f156daf48d429549c33aef2f5985cc47777b5e230f5d09d08b04f9"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/review-fix-red/test_active_monitor_passes_one0/evidence/preflight.json",
+      "bytes": 8982,
+      "sha256": "cf91b027d8ae2ba5258bffcce6716501dbdec9da7e04b7c3a74de6fb9346f3c0"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/review-fix-red/test_active_monitor_passes_one0/evidence/scope-samples.jsonl",
+      "bytes": 530,
+      "sha256": "7e31b50d590bfda082ac954ae8c9bc4bda8fd7696adae604d2cda020a6a8cf70"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/review-fix-red/test_active_monitor_passes_one0/evidence/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/review-fix-red/test_active_monitor_passes_one0/evidence/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/review-fix-red/test_active_monitor_passes_one0/evidence/wsl-result-created.json",
+      "bytes": 106,
+      "sha256": "d27b91b0f37df8434d4124bd5f760a46e2ab8b665a0e04a33a7c5b4516b2cb8b"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/review-fix-red/test_launcher_fallback_read_is0/stderr.bin",
+      "bytes": 1048577,
+      "sha256": "154b8ed3c2383ce429058768595935faf7851b5c38db2b1732594be1d88bc05a"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/review-fix-red/test_prior_v1_evidence_consump0/entry.py",
+      "bytes": 4184,
+      "sha256": "4517fa60e7d37584754bbfb8f4179b8039a378d39e4b96c9a2e60d9ef6c50042"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/review-fix-red/test_prior_v1_evidence_consump0/evidence/dispatch-result.json",
+      "bytes": 2566,
+      "sha256": "13acab769e8b938d2db75a66dfedf8a0399cb1d5dafacf196e60a7077b341fd5"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/review-fix-red/test_prior_v1_evidence_consump0/evidence/launch.json",
+      "bytes": 1245,
+      "sha256": "3768ad158abb0f917a9f3cf6f77cf0ff6a84df466d551632a1f0e970507bc109"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/review-fix-red/test_prior_v1_evidence_consump0/evidence/preflight.json",
+      "bytes": 8982,
+      "sha256": "96f898286810cafbb297de9499849e8cf17f44d31bbd2111e5587fc11a2836a1"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/review-fix-red/test_prior_v1_evidence_consump0/evidence/scope-samples.jsonl",
+      "bytes": 530,
+      "sha256": "7e31b50d590bfda082ac954ae8c9bc4bda8fd7696adae604d2cda020a6a8cf70"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/review-fix-red/test_prior_v1_evidence_consump0/evidence/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/review-fix-red/test_prior_v1_evidence_consump0/evidence/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/review-fix-red/test_prior_v1_evidence_consump0/evidence/wsl-result-created.json",
+      "bytes": 106,
+      "sha256": "d27b91b0f37df8434d4124bd5f760a46e2ab8b665a0e04a33a7c5b4516b2cb8b"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/fixtures/review-fix-red/test_prior_v1_evidence_consump1/entry.py",
+      "bytes": 4184,
+      "sha256": "4517fa60e7d37584754bbfb8f4179b8039a378d39e4b96c9a2e60d9ef6c50042"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/format-coverage-after-source/configs/px4/estimator-status-firmware-build-profile.json",
+      "bytes": 1015,
+      "sha256": "12990af3daa437772aae3d6440a3f209ab6c4b0c1af4bad8a6e85a5adf9bee3a"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/format-coverage-after-source/configs/px4/estimator-status-firmware-profile.json",
+      "bytes": 1709,
+      "sha256": "13fd3306e2cd19254cafba28f9dc21463173aa4b8dc43f9e0927b8cbb26a6b88"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/format-coverage-after-source/results/px4-firmware-scope-entry-dev-1701/verify.py",
+      "bytes": 3838,
+      "sha256": "e447fbafb8447131cfdd9a98e6adabfc312057c20403b785687439cfbe675c8d"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/format-coverage-after-source/src/flydrones/connectome_training/px4_status_firmware.py",
+      "bytes": 8454,
+      "sha256": "badbab9a9eb877e6447bddd35c9624af86d9fb60b7a07798bc58d6c5b514ce94"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/format-coverage-after-source/tests/connectome_training/conftest.py",
+      "bytes": 1260,
+      "sha256": "6a163e598e4011dd4efac9b8c896e5bafda4244112deaf7467125be479844ae1"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/format-coverage-after-source/tests/connectome_training/test_px4_firmware_scope_entry_v2.py",
+      "bytes": 15459,
+      "sha256": "0bcbcf3dcdeaf69ef56776df5c9582b80ac78a5469c469b79a2fab6784bf150d"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/format-coverage-after-source/tests/connectome_training/test_px4_status_firmware_build.py",
+      "bytes": 28312,
+      "sha256": "1a8521d8ef1e56b7834a860eb7a4269ae1746e7fe3a06a948db9403f5f0a7900"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/format-coverage-after-source/tools/benchmark/software_process_boundary.py",
+      "bytes": 1737,
+      "sha256": "1aced69a1cd810728c0bf557cc272a5bd43a94ababc31bb6ba33de791fd139a1"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/format-coverage-after-source/tools/connectome/px4_firmware_scope_entry_v2.py",
+      "bytes": 4184,
+      "sha256": "4517fa60e7d37584754bbfb8f4179b8039a378d39e4b96c9a2e60d9ef6c50042"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/format-coverage-after-source/tools/connectome/run_px4_status_firmware_build.py",
+      "bytes": 39007,
+      "sha256": "c6540f67935cbb8c21a8f4832ce497326611074d45b3708d92bbe1d30e914660"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/format-coverage-after-source/tools/connectome/run_px4_status_firmware_build_v2.py",
+      "bytes": 42881,
+      "sha256": "eb19c1b9b77f8b7cc7c8680ef676f7f82415bbbb32884c1c47f3338b44536fe6"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/format-coverage-fixtures.json",
+      "bytes": 174,
+      "sha256": "fdfdbd35b7a951818355e9901706dea1ceb2cff83a5c30202124bb3ad228b50f"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/format-coverage-source/configs/px4/estimator-status-firmware-build-profile.json",
+      "bytes": 1015,
+      "sha256": "12990af3daa437772aae3d6440a3f209ab6c4b0c1af4bad8a6e85a5adf9bee3a"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/format-coverage-source/configs/px4/estimator-status-firmware-profile.json",
+      "bytes": 1709,
+      "sha256": "13fd3306e2cd19254cafba28f9dc21463173aa4b8dc43f9e0927b8cbb26a6b88"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/format-coverage-source/results/px4-firmware-scope-entry-dev-1701/verify.py",
+      "bytes": 3838,
+      "sha256": "e447fbafb8447131cfdd9a98e6adabfc312057c20403b785687439cfbe675c8d"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/format-coverage-source/src/flydrones/connectome_training/px4_status_firmware.py",
+      "bytes": 8454,
+      "sha256": "badbab9a9eb877e6447bddd35c9624af86d9fb60b7a07798bc58d6c5b514ce94"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/format-coverage-source/tests/connectome_training/conftest.py",
+      "bytes": 1260,
+      "sha256": "6a163e598e4011dd4efac9b8c896e5bafda4244112deaf7467125be479844ae1"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/format-coverage-source/tests/connectome_training/test_px4_firmware_scope_entry_v2.py",
+      "bytes": 15403,
+      "sha256": "51813d1b4044b0c29fd8db15e9ce6a4a70004acbf875228afb9229837314227c"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/format-coverage-source/tests/connectome_training/test_px4_status_firmware_build.py",
+      "bytes": 28312,
+      "sha256": "1a8521d8ef1e56b7834a860eb7a4269ae1746e7fe3a06a948db9403f5f0a7900"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/format-coverage-source/tools/benchmark/software_process_boundary.py",
+      "bytes": 1737,
+      "sha256": "1aced69a1cd810728c0bf557cc272a5bd43a94ababc31bb6ba33de791fd139a1"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/format-coverage-source/tools/connectome/px4_firmware_scope_entry_v2.py",
+      "bytes": 4184,
+      "sha256": "4517fa60e7d37584754bbfb8f4179b8039a378d39e4b96c9a2e60d9ef6c50042"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/format-coverage-source/tools/connectome/run_px4_status_firmware_build.py",
+      "bytes": 39007,
+      "sha256": "c6540f67935cbb8c21a8f4832ce497326611074d45b3708d92bbe1d30e914660"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/format-coverage-source/tools/connectome/run_px4_status_firmware_build_v2.py",
+      "bytes": 42881,
+      "sha256": "eb19c1b9b77f8b7cc7c8680ef676f7f82415bbbb32884c1c47f3338b44536fe6"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/format-coverage-start.json",
+      "bytes": 5098,
+      "sha256": "1b9b564a131f6b8422895ba78eb425dc2c236c013de94833f8812d79ccbed9fe"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/format-coverage.json",
+      "bytes": 7462,
+      "sha256": "b345710d5559975ca353d8f6f5a811c576302cb805029cd94897dc95c1d4e323"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/format-coverage.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/format-coverage.stdout",
+      "bytes": 19,
+      "sha256": "413a709001976657cb743636fd34e48fc41d8d302d665460d3f874b3313da127"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/format-final-after-source/configs/px4/estimator-status-firmware-build-profile.json",
+      "bytes": 1015,
+      "sha256": "12990af3daa437772aae3d6440a3f209ab6c4b0c1af4bad8a6e85a5adf9bee3a"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/format-final-after-source/configs/px4/estimator-status-firmware-profile.json",
+      "bytes": 1709,
+      "sha256": "13fd3306e2cd19254cafba28f9dc21463173aa4b8dc43f9e0927b8cbb26a6b88"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/format-final-after-source/results/px4-firmware-scope-entry-dev-1701/verify.py",
+      "bytes": 3838,
+      "sha256": "e447fbafb8447131cfdd9a98e6adabfc312057c20403b785687439cfbe675c8d"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/format-final-after-source/src/flydrones/connectome_training/px4_status_firmware.py",
+      "bytes": 8454,
+      "sha256": "badbab9a9eb877e6447bddd35c9624af86d9fb60b7a07798bc58d6c5b514ce94"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/format-final-after-source/tests/connectome_training/conftest.py",
+      "bytes": 1260,
+      "sha256": "6a163e598e4011dd4efac9b8c896e5bafda4244112deaf7467125be479844ae1"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/format-final-after-source/tests/connectome_training/test_px4_firmware_scope_entry_v2.py",
+      "bytes": 20423,
+      "sha256": "5f72afb983c6d75000bd0e1b58127f2f87fb0b5977b56654d322bf69d0dd9e03"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/format-final-after-source/tests/connectome_training/test_px4_status_firmware_build.py",
+      "bytes": 28312,
+      "sha256": "1a8521d8ef1e56b7834a860eb7a4269ae1746e7fe3a06a948db9403f5f0a7900"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/format-final-after-source/tools/benchmark/software_process_boundary.py",
+      "bytes": 1737,
+      "sha256": "1aced69a1cd810728c0bf557cc272a5bd43a94ababc31bb6ba33de791fd139a1"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/format-final-after-source/tools/connectome/px4_firmware_scope_entry_v2.py",
+      "bytes": 4184,
+      "sha256": "4517fa60e7d37584754bbfb8f4179b8039a378d39e4b96c9a2e60d9ef6c50042"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/format-final-after-source/tools/connectome/run_px4_status_firmware_build.py",
+      "bytes": 39007,
+      "sha256": "c6540f67935cbb8c21a8f4832ce497326611074d45b3708d92bbe1d30e914660"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/format-final-after-source/tools/connectome/run_px4_status_firmware_build_v2.py",
+      "bytes": 43896,
+      "sha256": "acf987c9c9a8bc09c6d37932151c17693ff5f22086dab709b062fe9b39a97f33"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/format-final-fixtures.json",
+      "bytes": 174,
+      "sha256": "fdfdbd35b7a951818355e9901706dea1ceb2cff83a5c30202124bb3ad228b50f"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/format-final-source/configs/px4/estimator-status-firmware-build-profile.json",
+      "bytes": 1015,
+      "sha256": "12990af3daa437772aae3d6440a3f209ab6c4b0c1af4bad8a6e85a5adf9bee3a"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/format-final-source/configs/px4/estimator-status-firmware-profile.json",
+      "bytes": 1709,
+      "sha256": "13fd3306e2cd19254cafba28f9dc21463173aa4b8dc43f9e0927b8cbb26a6b88"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/format-final-source/results/px4-firmware-scope-entry-dev-1701/verify.py",
+      "bytes": 3838,
+      "sha256": "e447fbafb8447131cfdd9a98e6adabfc312057c20403b785687439cfbe675c8d"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/format-final-source/src/flydrones/connectome_training/px4_status_firmware.py",
+      "bytes": 8454,
+      "sha256": "badbab9a9eb877e6447bddd35c9624af86d9fb60b7a07798bc58d6c5b514ce94"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/format-final-source/tests/connectome_training/conftest.py",
+      "bytes": 1260,
+      "sha256": "6a163e598e4011dd4efac9b8c896e5bafda4244112deaf7467125be479844ae1"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/format-final-source/tests/connectome_training/test_px4_firmware_scope_entry_v2.py",
+      "bytes": 20397,
+      "sha256": "b8df43693f855e7d24f74878532d4de5ff0e678eed52b79f1753da9f5e451105"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/format-final-source/tests/connectome_training/test_px4_status_firmware_build.py",
+      "bytes": 28312,
+      "sha256": "1a8521d8ef1e56b7834a860eb7a4269ae1746e7fe3a06a948db9403f5f0a7900"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/format-final-source/tools/benchmark/software_process_boundary.py",
+      "bytes": 1737,
+      "sha256": "1aced69a1cd810728c0bf557cc272a5bd43a94ababc31bb6ba33de791fd139a1"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/format-final-source/tools/connectome/px4_firmware_scope_entry_v2.py",
+      "bytes": 4184,
+      "sha256": "4517fa60e7d37584754bbfb8f4179b8039a378d39e4b96c9a2e60d9ef6c50042"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/format-final-source/tools/connectome/run_px4_status_firmware_build.py",
+      "bytes": 39007,
+      "sha256": "c6540f67935cbb8c21a8f4832ce497326611074d45b3708d92bbe1d30e914660"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/format-final-source/tools/connectome/run_px4_status_firmware_build_v2.py",
+      "bytes": 43896,
+      "sha256": "acf987c9c9a8bc09c6d37932151c17693ff5f22086dab709b062fe9b39a97f33"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/format-final-start.json",
+      "bytes": 5328,
+      "sha256": "f67935d0c93c8e30d704bade04e4f3f909990b59e7d5b2d956e8bd923516fd17"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/format-final.json",
+      "bytes": 7692,
+      "sha256": "f90ee333d4729af2ee0abdc832aff612b2f122b87df01249d15e9e2db128e47d"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/format-final.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/format-final.stdout",
+      "bytes": 43,
+      "sha256": "44b7183e1f210a4817679f52d6f965f5de6331fb1c9174e863b4b0fc479a3e24"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/format-initial-after-source/configs/px4/estimator-status-firmware-build-profile.json",
+      "bytes": 1015,
+      "sha256": "12990af3daa437772aae3d6440a3f209ab6c4b0c1af4bad8a6e85a5adf9bee3a"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/format-initial-after-source/configs/px4/estimator-status-firmware-profile.json",
+      "bytes": 1709,
+      "sha256": "13fd3306e2cd19254cafba28f9dc21463173aa4b8dc43f9e0927b8cbb26a6b88"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/format-initial-after-source/results/px4-firmware-scope-entry-dev-1701/verify.py",
+      "bytes": 3838,
+      "sha256": "e447fbafb8447131cfdd9a98e6adabfc312057c20403b785687439cfbe675c8d"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/format-initial-after-source/src/flydrones/connectome_training/px4_status_firmware.py",
+      "bytes": 8454,
+      "sha256": "badbab9a9eb877e6447bddd35c9624af86d9fb60b7a07798bc58d6c5b514ce94"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/format-initial-after-source/tests/connectome_training/conftest.py",
+      "bytes": 1260,
+      "sha256": "6a163e598e4011dd4efac9b8c896e5bafda4244112deaf7467125be479844ae1"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/format-initial-after-source/tests/connectome_training/test_px4_firmware_scope_entry_v2.py",
+      "bytes": 13900,
+      "sha256": "5596f8e88a3ad5fa398f14e0368b80f82ea22266bfd0189a3b9e7bc7917ffd2e"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/format-initial-after-source/tests/connectome_training/test_px4_status_firmware_build.py",
+      "bytes": 28312,
+      "sha256": "1a8521d8ef1e56b7834a860eb7a4269ae1746e7fe3a06a948db9403f5f0a7900"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/format-initial-after-source/tools/benchmark/software_process_boundary.py",
+      "bytes": 1737,
+      "sha256": "1aced69a1cd810728c0bf557cc272a5bd43a94ababc31bb6ba33de791fd139a1"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/format-initial-after-source/tools/connectome/px4_firmware_scope_entry_v2.py",
+      "bytes": 4184,
+      "sha256": "4517fa60e7d37584754bbfb8f4179b8039a378d39e4b96c9a2e60d9ef6c50042"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/format-initial-after-source/tools/connectome/run_px4_status_firmware_build.py",
+      "bytes": 39007,
+      "sha256": "c6540f67935cbb8c21a8f4832ce497326611074d45b3708d92bbe1d30e914660"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/format-initial-after-source/tools/connectome/run_px4_status_firmware_build_v2.py",
+      "bytes": 42881,
+      "sha256": "6ea63aefc5351cec55991ab9dccd93d464bb8533fcc6a1ed362eedd20befa09a"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/format-initial-fixtures.json",
+      "bytes": 174,
+      "sha256": "fdfdbd35b7a951818355e9901706dea1ceb2cff83a5c30202124bb3ad228b50f"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/format-initial-source/configs/px4/estimator-status-firmware-build-profile.json",
+      "bytes": 1015,
+      "sha256": "12990af3daa437772aae3d6440a3f209ab6c4b0c1af4bad8a6e85a5adf9bee3a"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/format-initial-source/configs/px4/estimator-status-firmware-profile.json",
+      "bytes": 1709,
+      "sha256": "13fd3306e2cd19254cafba28f9dc21463173aa4b8dc43f9e0927b8cbb26a6b88"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/format-initial-source/results/px4-firmware-scope-entry-dev-1701/verify.py",
+      "bytes": 3838,
+      "sha256": "e447fbafb8447131cfdd9a98e6adabfc312057c20403b785687439cfbe675c8d"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/format-initial-source/src/flydrones/connectome_training/px4_status_firmware.py",
+      "bytes": 8454,
+      "sha256": "badbab9a9eb877e6447bddd35c9624af86d9fb60b7a07798bc58d6c5b514ce94"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/format-initial-source/tests/connectome_training/conftest.py",
+      "bytes": 1260,
+      "sha256": "6a163e598e4011dd4efac9b8c896e5bafda4244112deaf7467125be479844ae1"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/format-initial-source/tests/connectome_training/test_px4_firmware_scope_entry_v2.py",
+      "bytes": 12794,
+      "sha256": "450afaf698bc17ce2ab6700e4c095d58cd5099b1aba41b7159a4efd128a0e4d4"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/format-initial-source/tests/connectome_training/test_px4_status_firmware_build.py",
+      "bytes": 28312,
+      "sha256": "1a8521d8ef1e56b7834a860eb7a4269ae1746e7fe3a06a948db9403f5f0a7900"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/format-initial-source/tools/benchmark/software_process_boundary.py",
+      "bytes": 1737,
+      "sha256": "1aced69a1cd810728c0bf557cc272a5bd43a94ababc31bb6ba33de791fd139a1"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/format-initial-source/tools/connectome/px4_firmware_scope_entry_v2.py",
+      "bytes": 4196,
+      "sha256": "d3647537bbbf21c229e7dbce647a0575fbb6dc53f3cdb61178c35dd83029dc93"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/format-initial-source/tools/connectome/run_px4_status_firmware_build.py",
+      "bytes": 39007,
+      "sha256": "c6540f67935cbb8c21a8f4832ce497326611074d45b3708d92bbe1d30e914660"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/format-initial-source/tools/connectome/run_px4_status_firmware_build_v2.py",
+      "bytes": 41622,
+      "sha256": "330f4a732c5ad8f5418ce48c012c797c644b28a8bb4ef0d919803983151e7ab1"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/format-initial-start.json",
+      "bytes": 5328,
+      "sha256": "0d8561328fe042d1e6a5ef76e6bcea4e65ac716e11d353dd6a489a4163daab4e"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/format-initial.json",
+      "bytes": 7692,
+      "sha256": "69d244300358c4aa4de2f975d9b1310ebe0f279d8ea9d87828dee348da7375a5"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/format-initial.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/format-initial.stdout",
+      "bytes": 20,
+      "sha256": "878d50bf4ab752ab41ae942ac518b87e744d994b21bb15dca142ed7a470b3b3a"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/freeze-review.py",
+      "bytes": 1096,
+      "sha256": "f77ffc0cfec243c1bbe25932b04e109d8adf8014e4cced6fdc91dc44a258aece"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/historical-archives-postsoftware.json",
+      "bytes": 56830,
+      "sha256": "1263c3c37a771c740d3253ad56c89ecdae1ec01024cffe16cc4ba67a67fa1c4b"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/implement-v2.py",
+      "bytes": 4407,
+      "sha256": "c9175220bdea696eb4062c7f5ede298acc764fe50838a075ae40f6d4a5f373d9"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/independent-px4-scope-entry-review.json",
+      "bytes": 17917,
+      "sha256": "536ef22d4147b9c8c36caade51a198e602c362f21607effb3427dd1da10d9a63"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/independent-px4-scope-entry-review.md",
+      "bytes": 14135,
+      "sha256": "a38d8a4c3ceb1c451910cbf91cf4f790fb1862475a84bd0ff78ff30c9b40afd2"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/pr-before-after-source/configs/px4/estimator-status-firmware-build-profile.json",
+      "bytes": 1015,
+      "sha256": "12990af3daa437772aae3d6440a3f209ab6c4b0c1af4bad8a6e85a5adf9bee3a"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/pr-before-after-source/configs/px4/estimator-status-firmware-profile.json",
+      "bytes": 1709,
+      "sha256": "13fd3306e2cd19254cafba28f9dc21463173aa4b8dc43f9e0927b8cbb26a6b88"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/pr-before-after-source/results/px4-firmware-scope-entry-dev-1701/verify.py",
+      "bytes": 3838,
+      "sha256": "e447fbafb8447131cfdd9a98e6adabfc312057c20403b785687439cfbe675c8d"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/pr-before-after-source/src/flydrones/connectome_training/px4_status_firmware.py",
+      "bytes": 8454,
+      "sha256": "badbab9a9eb877e6447bddd35c9624af86d9fb60b7a07798bc58d6c5b514ce94"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/pr-before-after-source/tests/connectome_training/conftest.py",
+      "bytes": 1260,
+      "sha256": "6a163e598e4011dd4efac9b8c896e5bafda4244112deaf7467125be479844ae1"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/pr-before-after-source/tests/connectome_training/test_px4_firmware_scope_entry_v2.py",
+      "bytes": 15459,
+      "sha256": "0bcbcf3dcdeaf69ef56776df5c9582b80ac78a5469c469b79a2fab6784bf150d"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/pr-before-after-source/tests/connectome_training/test_px4_status_firmware_build.py",
+      "bytes": 28312,
+      "sha256": "1a8521d8ef1e56b7834a860eb7a4269ae1746e7fe3a06a948db9403f5f0a7900"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/pr-before-after-source/tools/benchmark/software_process_boundary.py",
+      "bytes": 1737,
+      "sha256": "1aced69a1cd810728c0bf557cc272a5bd43a94ababc31bb6ba33de791fd139a1"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/pr-before-after-source/tools/connectome/px4_firmware_scope_entry_v2.py",
+      "bytes": 4184,
+      "sha256": "4517fa60e7d37584754bbfb8f4179b8039a378d39e4b96c9a2e60d9ef6c50042"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/pr-before-after-source/tools/connectome/run_px4_status_firmware_build.py",
+      "bytes": 39007,
+      "sha256": "c6540f67935cbb8c21a8f4832ce497326611074d45b3708d92bbe1d30e914660"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/pr-before-after-source/tools/connectome/run_px4_status_firmware_build_v2.py",
+      "bytes": 42881,
+      "sha256": "eb19c1b9b77f8b7cc7c8680ef676f7f82415bbbb32884c1c47f3338b44536fe6"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/pr-before-fixtures.json",
+      "bytes": 174,
+      "sha256": "fdfdbd35b7a951818355e9901706dea1ceb2cff83a5c30202124bb3ad228b50f"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/pr-before-source/configs/px4/estimator-status-firmware-build-profile.json",
+      "bytes": 1015,
+      "sha256": "12990af3daa437772aae3d6440a3f209ab6c4b0c1af4bad8a6e85a5adf9bee3a"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/pr-before-source/configs/px4/estimator-status-firmware-profile.json",
+      "bytes": 1709,
+      "sha256": "13fd3306e2cd19254cafba28f9dc21463173aa4b8dc43f9e0927b8cbb26a6b88"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/pr-before-source/results/px4-firmware-scope-entry-dev-1701/verify.py",
+      "bytes": 3838,
+      "sha256": "e447fbafb8447131cfdd9a98e6adabfc312057c20403b785687439cfbe675c8d"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/pr-before-source/src/flydrones/connectome_training/px4_status_firmware.py",
+      "bytes": 8454,
+      "sha256": "badbab9a9eb877e6447bddd35c9624af86d9fb60b7a07798bc58d6c5b514ce94"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/pr-before-source/tests/connectome_training/conftest.py",
+      "bytes": 1260,
+      "sha256": "6a163e598e4011dd4efac9b8c896e5bafda4244112deaf7467125be479844ae1"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/pr-before-source/tests/connectome_training/test_px4_firmware_scope_entry_v2.py",
+      "bytes": 15459,
+      "sha256": "0bcbcf3dcdeaf69ef56776df5c9582b80ac78a5469c469b79a2fab6784bf150d"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/pr-before-source/tests/connectome_training/test_px4_status_firmware_build.py",
+      "bytes": 28312,
+      "sha256": "1a8521d8ef1e56b7834a860eb7a4269ae1746e7fe3a06a948db9403f5f0a7900"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/pr-before-source/tools/benchmark/software_process_boundary.py",
+      "bytes": 1737,
+      "sha256": "1aced69a1cd810728c0bf557cc272a5bd43a94ababc31bb6ba33de791fd139a1"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/pr-before-source/tools/connectome/px4_firmware_scope_entry_v2.py",
+      "bytes": 4184,
+      "sha256": "4517fa60e7d37584754bbfb8f4179b8039a378d39e4b96c9a2e60d9ef6c50042"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/pr-before-source/tools/connectome/run_px4_status_firmware_build.py",
+      "bytes": 39007,
+      "sha256": "c6540f67935cbb8c21a8f4832ce497326611074d45b3708d92bbe1d30e914660"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/pr-before-source/tools/connectome/run_px4_status_firmware_build_v2.py",
+      "bytes": 42881,
+      "sha256": "eb19c1b9b77f8b7cc7c8680ef676f7f82415bbbb32884c1c47f3338b44536fe6"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/pr-before-start.json",
+      "bytes": 5122,
+      "sha256": "34c2305513b13895b82c288b864c80101a2e5cfca1336348ff56af3ee977fed9"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/pr-before.json",
+      "bytes": 7486,
+      "sha256": "e56f68f33d42becf8fa9660128835d69b4b600bc005ffac3dfedcfaaae31a95d"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/pr-before.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/pr-before.stdout",
+      "bytes": 30987,
+      "sha256": "cd1ee0855a35eea733334655df6e45fadc31aa33aaf60276cd0ad6f250a14b90"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/prepare-seal.py",
+      "bytes": 4265,
+      "sha256": "69fd3a7dc535a9415bbb8d7ee0414702310009184d3d5941fe6c86fc75742db2"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/prepare.py",
+      "bytes": 3988,
+      "sha256": "655b99a95d38c50d929fda1c3a7df8b4bf1d613a4674a441265329540638e778"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/preserve.py",
+      "bytes": 3347,
+      "sha256": "0c05665099ad913d27b678134d93a7e4c787137f6736a1c6cfd36d6228078da0"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/previous-automation-prompt.txt",
+      "bytes": 60542,
+      "sha256": "97b0deeeadc864f00dbfee869fdd035fa0a2f6cb78d701f620de5bd3a872bf94"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/previous-pr-body-join.json",
+      "bytes": 227,
+      "sha256": "77662d234dcbc52c8faf44e78149bdeec08c3ec210064317a6e619c51dfb5895"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/previous-pr-body.md",
+      "bytes": 30747,
+      "sha256": "f9c3c1bbc9e2b01fe2fa4175b6468a575b6f24cd4040b360227207b6926eab7f"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/primary-error-red-after-source/configs/px4/estimator-status-firmware-build-profile.json",
+      "bytes": 1015,
+      "sha256": "12990af3daa437772aae3d6440a3f209ab6c4b0c1af4bad8a6e85a5adf9bee3a"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/primary-error-red-after-source/configs/px4/estimator-status-firmware-profile.json",
+      "bytes": 1709,
+      "sha256": "13fd3306e2cd19254cafba28f9dc21463173aa4b8dc43f9e0927b8cbb26a6b88"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/primary-error-red-after-source/results/px4-firmware-scope-entry-dev-1701/verify.py",
+      "bytes": 3838,
+      "sha256": "e447fbafb8447131cfdd9a98e6adabfc312057c20403b785687439cfbe675c8d"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/primary-error-red-after-source/src/flydrones/connectome_training/px4_status_firmware.py",
+      "bytes": 8454,
+      "sha256": "badbab9a9eb877e6447bddd35c9624af86d9fb60b7a07798bc58d6c5b514ce94"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/primary-error-red-after-source/tests/connectome_training/conftest.py",
+      "bytes": 1260,
+      "sha256": "6a163e598e4011dd4efac9b8c896e5bafda4244112deaf7467125be479844ae1"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/primary-error-red-after-source/tests/connectome_training/test_px4_firmware_scope_entry_v2.py",
+      "bytes": 12638,
+      "sha256": "79d22dc2033eab114cd1055222efeaae3849bfcd8678c87e5e3ca56686b94c69"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/primary-error-red-after-source/tests/connectome_training/test_px4_status_firmware_build.py",
+      "bytes": 28312,
+      "sha256": "1a8521d8ef1e56b7834a860eb7a4269ae1746e7fe3a06a948db9403f5f0a7900"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/primary-error-red-after-source/tools/benchmark/software_process_boundary.py",
+      "bytes": 1737,
+      "sha256": "1aced69a1cd810728c0bf557cc272a5bd43a94ababc31bb6ba33de791fd139a1"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/primary-error-red-after-source/tools/connectome/px4_firmware_scope_entry_v2.py",
+      "bytes": 3958,
+      "sha256": "c7d22e6c3f8f0b5d30377f8458cceec35578b21999b2307f76b457133a685ebb"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/primary-error-red-after-source/tools/connectome/run_px4_status_firmware_build.py",
+      "bytes": 39007,
+      "sha256": "c6540f67935cbb8c21a8f4832ce497326611074d45b3708d92bbe1d30e914660"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/primary-error-red-after-source/tools/connectome/run_px4_status_firmware_build_v2.py",
+      "bytes": 41622,
+      "sha256": "5f7f71566677873d9575e104486383622854e9ef5a66cba01236aff37c2fa26b"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/primary-error-red-fixtures.json",
+      "bytes": 317,
+      "sha256": "28bf62f4f9385ad2781925c5d6810118a421aa697349b447f222baac52c0255b"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/primary-error-red-source/configs/px4/estimator-status-firmware-build-profile.json",
+      "bytes": 1015,
+      "sha256": "12990af3daa437772aae3d6440a3f209ab6c4b0c1af4bad8a6e85a5adf9bee3a"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/primary-error-red-source/configs/px4/estimator-status-firmware-profile.json",
+      "bytes": 1709,
+      "sha256": "13fd3306e2cd19254cafba28f9dc21463173aa4b8dc43f9e0927b8cbb26a6b88"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/primary-error-red-source/results/px4-firmware-scope-entry-dev-1701/verify.py",
+      "bytes": 3838,
+      "sha256": "e447fbafb8447131cfdd9a98e6adabfc312057c20403b785687439cfbe675c8d"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/primary-error-red-source/src/flydrones/connectome_training/px4_status_firmware.py",
+      "bytes": 8454,
+      "sha256": "badbab9a9eb877e6447bddd35c9624af86d9fb60b7a07798bc58d6c5b514ce94"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/primary-error-red-source/tests/connectome_training/conftest.py",
+      "bytes": 1260,
+      "sha256": "6a163e598e4011dd4efac9b8c896e5bafda4244112deaf7467125be479844ae1"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/primary-error-red-source/tests/connectome_training/test_px4_firmware_scope_entry_v2.py",
+      "bytes": 12638,
+      "sha256": "79d22dc2033eab114cd1055222efeaae3849bfcd8678c87e5e3ca56686b94c69"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/primary-error-red-source/tests/connectome_training/test_px4_status_firmware_build.py",
+      "bytes": 28312,
+      "sha256": "1a8521d8ef1e56b7834a860eb7a4269ae1746e7fe3a06a948db9403f5f0a7900"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/primary-error-red-source/tools/benchmark/software_process_boundary.py",
+      "bytes": 1737,
+      "sha256": "1aced69a1cd810728c0bf557cc272a5bd43a94ababc31bb6ba33de791fd139a1"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/primary-error-red-source/tools/connectome/px4_firmware_scope_entry_v2.py",
+      "bytes": 3958,
+      "sha256": "c7d22e6c3f8f0b5d30377f8458cceec35578b21999b2307f76b457133a685ebb"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/primary-error-red-source/tools/connectome/run_px4_status_firmware_build.py",
+      "bytes": 39007,
+      "sha256": "c6540f67935cbb8c21a8f4832ce497326611074d45b3708d92bbe1d30e914660"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/primary-error-red-source/tools/connectome/run_px4_status_firmware_build_v2.py",
+      "bytes": 41622,
+      "sha256": "5f7f71566677873d9575e104486383622854e9ef5a66cba01236aff37c2fa26b"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/primary-error-red-start.json",
+      "bytes": 5470,
+      "sha256": "4ea7007e9aabc20243b19f9f14a6ce54a81021ef94dc3c370f2e5439fd403e2d"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/primary-error-red.json",
+      "bytes": 7834,
+      "sha256": "d8fbadd837cc461279602a51f83c2e42678c42a02648e1a439ac899853f4a95d"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/primary-error-red.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/primary-error-red.stdout",
+      "bytes": 2081,
+      "sha256": "cc853b1ae9970dd80ccd1ef34b3c0680f042cfeb28c6ef4e5747f8fd4b76d8d1"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/product-before.json",
+      "bytes": 146434,
+      "sha256": "0faf111e4192b88a8562d7ce5a1d3ad0e2f22af9531c0a75e6184d04541e8b72"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/product-preservation-postsoftware.json",
+      "bytes": 329,
+      "sha256": "17fb251e0553c3627bb37db3aad1b3574cd20ae4fb1f278ac14f276da7cd67b2"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/progress.md",
+      "bytes": 805,
+      "sha256": "acfe947ee8be8bb2b5bae45cfeec363926ef3b5bf26bac4d9cf977ece8d576ab"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/publish.py",
+      "bytes": 9357,
+      "sha256": "d73c95d1a9077a6d6f5651b4d1aea34684c9c0fc90957660dd03602452057342"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/refused-attempt-preservation.json",
+      "bytes": 2806,
+      "sha256": "e1d2b8ef7ca0dcf44220b7c7d7509b3468f66c866387550de6b76e70c89e8714"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/report.py",
+      "bytes": 14457,
+      "sha256": "5780524bfb592bf636a4d12fc76d2101ffc0519d9de9e835f774cde4ff8d48b4"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/review-fix-delta.json",
+      "bytes": 769,
+      "sha256": "39d3001c76f35b43954735d9b30005a6b03d4aac8470b9daf7ad2a2e229ec73c"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/review-fix-green-after-source/configs/px4/estimator-status-firmware-build-profile.json",
+      "bytes": 1015,
+      "sha256": "12990af3daa437772aae3d6440a3f209ab6c4b0c1af4bad8a6e85a5adf9bee3a"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/review-fix-green-after-source/configs/px4/estimator-status-firmware-profile.json",
+      "bytes": 1709,
+      "sha256": "13fd3306e2cd19254cafba28f9dc21463173aa4b8dc43f9e0927b8cbb26a6b88"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/review-fix-green-after-source/results/px4-firmware-scope-entry-dev-1701/verify.py",
+      "bytes": 3838,
+      "sha256": "e447fbafb8447131cfdd9a98e6adabfc312057c20403b785687439cfbe675c8d"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/review-fix-green-after-source/src/flydrones/connectome_training/px4_status_firmware.py",
+      "bytes": 8454,
+      "sha256": "badbab9a9eb877e6447bddd35c9624af86d9fb60b7a07798bc58d6c5b514ce94"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/review-fix-green-after-source/tests/connectome_training/conftest.py",
+      "bytes": 1260,
+      "sha256": "6a163e598e4011dd4efac9b8c896e5bafda4244112deaf7467125be479844ae1"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/review-fix-green-after-source/tests/connectome_training/test_px4_firmware_scope_entry_v2.py",
+      "bytes": 18541,
+      "sha256": "1726d294846dc0c76012730e3445d75436c6cd9b38844f8c66073ead041a2c97"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/review-fix-green-after-source/tests/connectome_training/test_px4_status_firmware_build.py",
+      "bytes": 28312,
+      "sha256": "1a8521d8ef1e56b7834a860eb7a4269ae1746e7fe3a06a948db9403f5f0a7900"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/review-fix-green-after-source/tools/benchmark/software_process_boundary.py",
+      "bytes": 1737,
+      "sha256": "1aced69a1cd810728c0bf557cc272a5bd43a94ababc31bb6ba33de791fd139a1"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/review-fix-green-after-source/tools/connectome/px4_firmware_scope_entry_v2.py",
+      "bytes": 4184,
+      "sha256": "4517fa60e7d37584754bbfb8f4179b8039a378d39e4b96c9a2e60d9ef6c50042"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/review-fix-green-after-source/tools/connectome/run_px4_status_firmware_build.py",
+      "bytes": 39007,
+      "sha256": "c6540f67935cbb8c21a8f4832ce497326611074d45b3708d92bbe1d30e914660"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/review-fix-green-after-source/tools/connectome/run_px4_status_firmware_build_v2.py",
+      "bytes": 43896,
+      "sha256": "acf987c9c9a8bc09c6d37932151c17693ff5f22086dab709b062fe9b39a97f33"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/review-fix-green-fixtures.json",
+      "bytes": 7442,
+      "sha256": "1cfbd15ea2709b46a4d315c61c2f5f35a46f72801ea22d8ce9ce4c33c39f4ac7"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/review-fix-green-source/configs/px4/estimator-status-firmware-build-profile.json",
+      "bytes": 1015,
+      "sha256": "12990af3daa437772aae3d6440a3f209ab6c4b0c1af4bad8a6e85a5adf9bee3a"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/review-fix-green-source/configs/px4/estimator-status-firmware-profile.json",
+      "bytes": 1709,
+      "sha256": "13fd3306e2cd19254cafba28f9dc21463173aa4b8dc43f9e0927b8cbb26a6b88"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/review-fix-green-source/results/px4-firmware-scope-entry-dev-1701/verify.py",
+      "bytes": 3838,
+      "sha256": "e447fbafb8447131cfdd9a98e6adabfc312057c20403b785687439cfbe675c8d"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/review-fix-green-source/src/flydrones/connectome_training/px4_status_firmware.py",
+      "bytes": 8454,
+      "sha256": "badbab9a9eb877e6447bddd35c9624af86d9fb60b7a07798bc58d6c5b514ce94"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/review-fix-green-source/tests/connectome_training/conftest.py",
+      "bytes": 1260,
+      "sha256": "6a163e598e4011dd4efac9b8c896e5bafda4244112deaf7467125be479844ae1"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/review-fix-green-source/tests/connectome_training/test_px4_firmware_scope_entry_v2.py",
+      "bytes": 18541,
+      "sha256": "1726d294846dc0c76012730e3445d75436c6cd9b38844f8c66073ead041a2c97"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/review-fix-green-source/tests/connectome_training/test_px4_status_firmware_build.py",
+      "bytes": 28312,
+      "sha256": "1a8521d8ef1e56b7834a860eb7a4269ae1746e7fe3a06a948db9403f5f0a7900"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/review-fix-green-source/tools/benchmark/software_process_boundary.py",
+      "bytes": 1737,
+      "sha256": "1aced69a1cd810728c0bf557cc272a5bd43a94ababc31bb6ba33de791fd139a1"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/review-fix-green-source/tools/connectome/px4_firmware_scope_entry_v2.py",
+      "bytes": 4184,
+      "sha256": "4517fa60e7d37584754bbfb8f4179b8039a378d39e4b96c9a2e60d9ef6c50042"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/review-fix-green-source/tools/connectome/run_px4_status_firmware_build.py",
+      "bytes": 39007,
+      "sha256": "c6540f67935cbb8c21a8f4832ce497326611074d45b3708d92bbe1d30e914660"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/review-fix-green-source/tools/connectome/run_px4_status_firmware_build_v2.py",
+      "bytes": 43896,
+      "sha256": "acf987c9c9a8bc09c6d37932151c17693ff5f22086dab709b062fe9b39a97f33"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/review-fix-green-start.json",
+      "bytes": 5406,
+      "sha256": "e4b415ef5ad74901b01be0f2758e862da4a08e772659e29c8640f295d553a4a1"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/review-fix-green.json",
+      "bytes": 7770,
+      "sha256": "b89a9cf7bfec7160a7c8764e2a40c9252ed7d91d673c5cbe34d63c5a1df598e5"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/review-fix-green.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/review-fix-green.stdout",
+      "bytes": 101,
+      "sha256": "61c568ea33d5f9b14327ce093c640c8d08419f6a5e121155e1b94ded00bac6b4"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/review-fix-red-after-source/configs/px4/estimator-status-firmware-build-profile.json",
+      "bytes": 1015,
+      "sha256": "12990af3daa437772aae3d6440a3f209ab6c4b0c1af4bad8a6e85a5adf9bee3a"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/review-fix-red-after-source/configs/px4/estimator-status-firmware-profile.json",
+      "bytes": 1709,
+      "sha256": "13fd3306e2cd19254cafba28f9dc21463173aa4b8dc43f9e0927b8cbb26a6b88"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/review-fix-red-after-source/results/px4-firmware-scope-entry-dev-1701/verify.py",
+      "bytes": 3838,
+      "sha256": "e447fbafb8447131cfdd9a98e6adabfc312057c20403b785687439cfbe675c8d"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/review-fix-red-after-source/src/flydrones/connectome_training/px4_status_firmware.py",
+      "bytes": 8454,
+      "sha256": "badbab9a9eb877e6447bddd35c9624af86d9fb60b7a07798bc58d6c5b514ce94"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/review-fix-red-after-source/tests/connectome_training/conftest.py",
+      "bytes": 1260,
+      "sha256": "6a163e598e4011dd4efac9b8c896e5bafda4244112deaf7467125be479844ae1"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/review-fix-red-after-source/tests/connectome_training/test_px4_firmware_scope_entry_v2.py",
+      "bytes": 17947,
+      "sha256": "a9b8905f37edbe1b7e4a9c9d4489260652401df6c2acea65f4a50e215e2acd09"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/review-fix-red-after-source/tests/connectome_training/test_px4_status_firmware_build.py",
+      "bytes": 28312,
+      "sha256": "1a8521d8ef1e56b7834a860eb7a4269ae1746e7fe3a06a948db9403f5f0a7900"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/review-fix-red-after-source/tools/benchmark/software_process_boundary.py",
+      "bytes": 1737,
+      "sha256": "1aced69a1cd810728c0bf557cc272a5bd43a94ababc31bb6ba33de791fd139a1"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/review-fix-red-after-source/tools/connectome/px4_firmware_scope_entry_v2.py",
+      "bytes": 4184,
+      "sha256": "4517fa60e7d37584754bbfb8f4179b8039a378d39e4b96c9a2e60d9ef6c50042"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/review-fix-red-after-source/tools/connectome/run_px4_status_firmware_build.py",
+      "bytes": 39007,
+      "sha256": "c6540f67935cbb8c21a8f4832ce497326611074d45b3708d92bbe1d30e914660"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/review-fix-red-after-source/tools/connectome/run_px4_status_firmware_build_v2.py",
+      "bytes": 42881,
+      "sha256": "eb19c1b9b77f8b7cc7c8680ef676f7f82415bbbb32884c1c47f3338b44536fe6"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/review-fix-red-fixtures.json",
+      "bytes": 4871,
+      "sha256": "6e67b5ac7e3c89b8ecaab98085652147f0b6651127f8c0b3e2f2fb34e9447840"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/review-fix-red-source/configs/px4/estimator-status-firmware-build-profile.json",
+      "bytes": 1015,
+      "sha256": "12990af3daa437772aae3d6440a3f209ab6c4b0c1af4bad8a6e85a5adf9bee3a"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/review-fix-red-source/configs/px4/estimator-status-firmware-profile.json",
+      "bytes": 1709,
+      "sha256": "13fd3306e2cd19254cafba28f9dc21463173aa4b8dc43f9e0927b8cbb26a6b88"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/review-fix-red-source/results/px4-firmware-scope-entry-dev-1701/verify.py",
+      "bytes": 3838,
+      "sha256": "e447fbafb8447131cfdd9a98e6adabfc312057c20403b785687439cfbe675c8d"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/review-fix-red-source/src/flydrones/connectome_training/px4_status_firmware.py",
+      "bytes": 8454,
+      "sha256": "badbab9a9eb877e6447bddd35c9624af86d9fb60b7a07798bc58d6c5b514ce94"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/review-fix-red-source/tests/connectome_training/conftest.py",
+      "bytes": 1260,
+      "sha256": "6a163e598e4011dd4efac9b8c896e5bafda4244112deaf7467125be479844ae1"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/review-fix-red-source/tests/connectome_training/test_px4_firmware_scope_entry_v2.py",
+      "bytes": 17947,
+      "sha256": "a9b8905f37edbe1b7e4a9c9d4489260652401df6c2acea65f4a50e215e2acd09"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/review-fix-red-source/tests/connectome_training/test_px4_status_firmware_build.py",
+      "bytes": 28312,
+      "sha256": "1a8521d8ef1e56b7834a860eb7a4269ae1746e7fe3a06a948db9403f5f0a7900"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/review-fix-red-source/tools/benchmark/software_process_boundary.py",
+      "bytes": 1737,
+      "sha256": "1aced69a1cd810728c0bf557cc272a5bd43a94ababc31bb6ba33de791fd139a1"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/review-fix-red-source/tools/connectome/px4_firmware_scope_entry_v2.py",
+      "bytes": 4184,
+      "sha256": "4517fa60e7d37584754bbfb8f4179b8039a378d39e4b96c9a2e60d9ef6c50042"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/review-fix-red-source/tools/connectome/run_px4_status_firmware_build.py",
+      "bytes": 39007,
+      "sha256": "c6540f67935cbb8c21a8f4832ce497326611074d45b3708d92bbe1d30e914660"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/review-fix-red-source/tools/connectome/run_px4_status_firmware_build_v2.py",
+      "bytes": 42881,
+      "sha256": "eb19c1b9b77f8b7cc7c8680ef676f7f82415bbbb32884c1c47f3338b44536fe6"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/review-fix-red-start.json",
+      "bytes": 5524,
+      "sha256": "dcf02b81ae9323dd4de1d2b3d2ff7c5c78f338543e9ec93063e5f58ddde6e77e"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/review-fix-red.json",
+      "bytes": 7888,
+      "sha256": "44605d7beda7316d1a274c873eea3261ca917ce63aaa82cfe6c855650c09e5b0"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/review-fix-red.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/review-fix-red.stdout",
+      "bytes": 6360,
+      "sha256": "e2108d24d9ee563b3a3742a68d0def7869ccc33b2630e766bc1843a05388bf6e"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/review-fix.py",
+      "bytes": 4372,
+      "sha256": "1b084a12711a20ea7d0ddfd82aa0b2409f87825fcd99bc07af24847c56dc92a7"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/review-plan-seal-join.json",
+      "bytes": 308,
+      "sha256": "994b679c0b54ea786d038d44e2ebd215334ecaeee0cc9e195cc146a911ef7b6c"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/review-source/configs/px4/estimator-status-firmware-build-profile.json",
+      "bytes": 1015,
+      "sha256": "12990af3daa437772aae3d6440a3f209ab6c4b0c1af4bad8a6e85a5adf9bee3a"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/review-source/configs/px4/estimator-status-firmware-profile.json",
+      "bytes": 1709,
+      "sha256": "13fd3306e2cd19254cafba28f9dc21463173aa4b8dc43f9e0927b8cbb26a6b88"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/review-source/docs/superpowers/plans/2026-10-16-px4-firmware-scope-entry.md",
+      "bytes": 2467,
+      "sha256": "668a492b60bb682e29163e5de86db7200cb087cba49b61852e902be48b1876d2"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/review-source/docs/superpowers/specs/2026-10-16-px4-firmware-scope-entry-design.md",
+      "bytes": 3273,
+      "sha256": "d70e7b7c5309f2f3742b0b837af6f778e7bcededfe0e7bc69768bc7d7bbda291"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/review-source/results/px4-firmware-scope-entry-dev-1701/verify.py",
+      "bytes": 3838,
+      "sha256": "e447fbafb8447131cfdd9a98e6adabfc312057c20403b785687439cfbe675c8d"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/review-source/src/flydrones/connectome_training/px4_status_firmware.py",
+      "bytes": 8454,
+      "sha256": "badbab9a9eb877e6447bddd35c9624af86d9fb60b7a07798bc58d6c5b514ce94"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/review-source/tests/connectome_training/test_px4_firmware_scope_entry_v2.py",
+      "bytes": 15459,
+      "sha256": "0bcbcf3dcdeaf69ef56776df5c9582b80ac78a5469c469b79a2fab6784bf150d"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/review-source/tools/benchmark/software_process_boundary.py",
+      "bytes": 1737,
+      "sha256": "1aced69a1cd810728c0bf557cc272a5bd43a94ababc31bb6ba33de791fd139a1"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/review-source/tools/connectome/px4_firmware_scope_entry_v2.py",
+      "bytes": 4184,
+      "sha256": "4517fa60e7d37584754bbfb8f4179b8039a378d39e4b96c9a2e60d9ef6c50042"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/review-source/tools/connectome/run_px4_status_firmware_build.py",
+      "bytes": 39007,
+      "sha256": "c6540f67935cbb8c21a8f4832ce497326611074d45b3708d92bbe1d30e914660"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/review-source/tools/connectome/run_px4_status_firmware_build_v2.py",
+      "bytes": 42881,
+      "sha256": "eb19c1b9b77f8b7cc7c8680ef676f7f82415bbbb32884c1c47f3338b44536fe6"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/review-source-map.json",
+      "bytes": 2031,
+      "sha256": "5eff8e2c9047d628b4b6ed75eb1ccc1fddb0ac667f71be966f2eee25374919ac"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/ruff-final-after-source/configs/px4/estimator-status-firmware-build-profile.json",
+      "bytes": 1015,
+      "sha256": "12990af3daa437772aae3d6440a3f209ab6c4b0c1af4bad8a6e85a5adf9bee3a"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/ruff-final-after-source/configs/px4/estimator-status-firmware-profile.json",
+      "bytes": 1709,
+      "sha256": "13fd3306e2cd19254cafba28f9dc21463173aa4b8dc43f9e0927b8cbb26a6b88"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/ruff-final-after-source/results/px4-firmware-scope-entry-dev-1701/verify.py",
+      "bytes": 3838,
+      "sha256": "e447fbafb8447131cfdd9a98e6adabfc312057c20403b785687439cfbe675c8d"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/ruff-final-after-source/src/flydrones/connectome_training/px4_status_firmware.py",
+      "bytes": 8454,
+      "sha256": "badbab9a9eb877e6447bddd35c9624af86d9fb60b7a07798bc58d6c5b514ce94"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/ruff-final-after-source/tests/connectome_training/conftest.py",
+      "bytes": 1260,
+      "sha256": "6a163e598e4011dd4efac9b8c896e5bafda4244112deaf7467125be479844ae1"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/ruff-final-after-source/tests/connectome_training/test_px4_firmware_scope_entry_v2.py",
+      "bytes": 20423,
+      "sha256": "5f72afb983c6d75000bd0e1b58127f2f87fb0b5977b56654d322bf69d0dd9e03"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/ruff-final-after-source/tests/connectome_training/test_px4_status_firmware_build.py",
+      "bytes": 28312,
+      "sha256": "1a8521d8ef1e56b7834a860eb7a4269ae1746e7fe3a06a948db9403f5f0a7900"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/ruff-final-after-source/tools/benchmark/software_process_boundary.py",
+      "bytes": 1737,
+      "sha256": "1aced69a1cd810728c0bf557cc272a5bd43a94ababc31bb6ba33de791fd139a1"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/ruff-final-after-source/tools/connectome/px4_firmware_scope_entry_v2.py",
+      "bytes": 4184,
+      "sha256": "4517fa60e7d37584754bbfb8f4179b8039a378d39e4b96c9a2e60d9ef6c50042"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/ruff-final-after-source/tools/connectome/run_px4_status_firmware_build.py",
+      "bytes": 39007,
+      "sha256": "c6540f67935cbb8c21a8f4832ce497326611074d45b3708d92bbe1d30e914660"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/ruff-final-after-source/tools/connectome/run_px4_status_firmware_build_v2.py",
+      "bytes": 43896,
+      "sha256": "acf987c9c9a8bc09c6d37932151c17693ff5f22086dab709b062fe9b39a97f33"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/ruff-final-fixtures.json",
+      "bytes": 174,
+      "sha256": "fdfdbd35b7a951818355e9901706dea1ceb2cff83a5c30202124bb3ad228b50f"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/ruff-final-source/configs/px4/estimator-status-firmware-build-profile.json",
+      "bytes": 1015,
+      "sha256": "12990af3daa437772aae3d6440a3f209ab6c4b0c1af4bad8a6e85a5adf9bee3a"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/ruff-final-source/configs/px4/estimator-status-firmware-profile.json",
+      "bytes": 1709,
+      "sha256": "13fd3306e2cd19254cafba28f9dc21463173aa4b8dc43f9e0927b8cbb26a6b88"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/ruff-final-source/results/px4-firmware-scope-entry-dev-1701/verify.py",
+      "bytes": 3838,
+      "sha256": "e447fbafb8447131cfdd9a98e6adabfc312057c20403b785687439cfbe675c8d"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/ruff-final-source/src/flydrones/connectome_training/px4_status_firmware.py",
+      "bytes": 8454,
+      "sha256": "badbab9a9eb877e6447bddd35c9624af86d9fb60b7a07798bc58d6c5b514ce94"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/ruff-final-source/tests/connectome_training/conftest.py",
+      "bytes": 1260,
+      "sha256": "6a163e598e4011dd4efac9b8c896e5bafda4244112deaf7467125be479844ae1"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/ruff-final-source/tests/connectome_training/test_px4_firmware_scope_entry_v2.py",
+      "bytes": 20423,
+      "sha256": "5f72afb983c6d75000bd0e1b58127f2f87fb0b5977b56654d322bf69d0dd9e03"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/ruff-final-source/tests/connectome_training/test_px4_status_firmware_build.py",
+      "bytes": 28312,
+      "sha256": "1a8521d8ef1e56b7834a860eb7a4269ae1746e7fe3a06a948db9403f5f0a7900"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/ruff-final-source/tools/benchmark/software_process_boundary.py",
+      "bytes": 1737,
+      "sha256": "1aced69a1cd810728c0bf557cc272a5bd43a94ababc31bb6ba33de791fd139a1"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/ruff-final-source/tools/connectome/px4_firmware_scope_entry_v2.py",
+      "bytes": 4184,
+      "sha256": "4517fa60e7d37584754bbfb8f4179b8039a378d39e4b96c9a2e60d9ef6c50042"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/ruff-final-source/tools/connectome/run_px4_status_firmware_build.py",
+      "bytes": 39007,
+      "sha256": "c6540f67935cbb8c21a8f4832ce497326611074d45b3708d92bbe1d30e914660"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/ruff-final-source/tools/connectome/run_px4_status_firmware_build_v2.py",
+      "bytes": 43896,
+      "sha256": "acf987c9c9a8bc09c6d37932151c17693ff5f22086dab709b062fe9b39a97f33"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/ruff-final-start.json",
+      "bytes": 5326,
+      "sha256": "307d1eb81bf762d1abee615edb5117e88cf96916ed37247cb91d1f8592a5758b"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/ruff-final.json",
+      "bytes": 7690,
+      "sha256": "0d2d5a13f1c08426dec50732dede7d502ec4671cf74214a17f954495ae2264ce"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/ruff-final.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/ruff-final.stdout",
+      "bytes": 19,
+      "sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/ruff-formatted-after-source/configs/px4/estimator-status-firmware-build-profile.json",
+      "bytes": 1015,
+      "sha256": "12990af3daa437772aae3d6440a3f209ab6c4b0c1af4bad8a6e85a5adf9bee3a"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/ruff-formatted-after-source/configs/px4/estimator-status-firmware-profile.json",
+      "bytes": 1709,
+      "sha256": "13fd3306e2cd19254cafba28f9dc21463173aa4b8dc43f9e0927b8cbb26a6b88"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/ruff-formatted-after-source/results/px4-firmware-scope-entry-dev-1701/verify.py",
+      "bytes": 3838,
+      "sha256": "e447fbafb8447131cfdd9a98e6adabfc312057c20403b785687439cfbe675c8d"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/ruff-formatted-after-source/src/flydrones/connectome_training/px4_status_firmware.py",
+      "bytes": 8454,
+      "sha256": "badbab9a9eb877e6447bddd35c9624af86d9fb60b7a07798bc58d6c5b514ce94"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/ruff-formatted-after-source/tests/connectome_training/conftest.py",
+      "bytes": 1260,
+      "sha256": "6a163e598e4011dd4efac9b8c896e5bafda4244112deaf7467125be479844ae1"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/ruff-formatted-after-source/tests/connectome_training/test_px4_firmware_scope_entry_v2.py",
+      "bytes": 13900,
+      "sha256": "5596f8e88a3ad5fa398f14e0368b80f82ea22266bfd0189a3b9e7bc7917ffd2e"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/ruff-formatted-after-source/tests/connectome_training/test_px4_status_firmware_build.py",
+      "bytes": 28312,
+      "sha256": "1a8521d8ef1e56b7834a860eb7a4269ae1746e7fe3a06a948db9403f5f0a7900"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/ruff-formatted-after-source/tools/benchmark/software_process_boundary.py",
+      "bytes": 1737,
+      "sha256": "1aced69a1cd810728c0bf557cc272a5bd43a94ababc31bb6ba33de791fd139a1"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/ruff-formatted-after-source/tools/connectome/px4_firmware_scope_entry_v2.py",
+      "bytes": 4184,
+      "sha256": "4517fa60e7d37584754bbfb8f4179b8039a378d39e4b96c9a2e60d9ef6c50042"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/ruff-formatted-after-source/tools/connectome/run_px4_status_firmware_build.py",
+      "bytes": 39007,
+      "sha256": "c6540f67935cbb8c21a8f4832ce497326611074d45b3708d92bbe1d30e914660"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/ruff-formatted-after-source/tools/connectome/run_px4_status_firmware_build_v2.py",
+      "bytes": 42881,
+      "sha256": "eb19c1b9b77f8b7cc7c8680ef676f7f82415bbbb32884c1c47f3338b44536fe6"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/ruff-formatted-fixtures.json",
+      "bytes": 174,
+      "sha256": "fdfdbd35b7a951818355e9901706dea1ceb2cff83a5c30202124bb3ad228b50f"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/ruff-formatted-source/configs/px4/estimator-status-firmware-build-profile.json",
+      "bytes": 1015,
+      "sha256": "12990af3daa437772aae3d6440a3f209ab6c4b0c1af4bad8a6e85a5adf9bee3a"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/ruff-formatted-source/configs/px4/estimator-status-firmware-profile.json",
+      "bytes": 1709,
+      "sha256": "13fd3306e2cd19254cafba28f9dc21463173aa4b8dc43f9e0927b8cbb26a6b88"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/ruff-formatted-source/results/px4-firmware-scope-entry-dev-1701/verify.py",
+      "bytes": 3838,
+      "sha256": "e447fbafb8447131cfdd9a98e6adabfc312057c20403b785687439cfbe675c8d"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/ruff-formatted-source/src/flydrones/connectome_training/px4_status_firmware.py",
+      "bytes": 8454,
+      "sha256": "badbab9a9eb877e6447bddd35c9624af86d9fb60b7a07798bc58d6c5b514ce94"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/ruff-formatted-source/tests/connectome_training/conftest.py",
+      "bytes": 1260,
+      "sha256": "6a163e598e4011dd4efac9b8c896e5bafda4244112deaf7467125be479844ae1"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/ruff-formatted-source/tests/connectome_training/test_px4_firmware_scope_entry_v2.py",
+      "bytes": 13900,
+      "sha256": "5596f8e88a3ad5fa398f14e0368b80f82ea22266bfd0189a3b9e7bc7917ffd2e"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/ruff-formatted-source/tests/connectome_training/test_px4_status_firmware_build.py",
+      "bytes": 28312,
+      "sha256": "1a8521d8ef1e56b7834a860eb7a4269ae1746e7fe3a06a948db9403f5f0a7900"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/ruff-formatted-source/tools/benchmark/software_process_boundary.py",
+      "bytes": 1737,
+      "sha256": "1aced69a1cd810728c0bf557cc272a5bd43a94ababc31bb6ba33de791fd139a1"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/ruff-formatted-source/tools/connectome/px4_firmware_scope_entry_v2.py",
+      "bytes": 4184,
+      "sha256": "4517fa60e7d37584754bbfb8f4179b8039a378d39e4b96c9a2e60d9ef6c50042"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/ruff-formatted-source/tools/connectome/run_px4_status_firmware_build.py",
+      "bytes": 39007,
+      "sha256": "c6540f67935cbb8c21a8f4832ce497326611074d45b3708d92bbe1d30e914660"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/ruff-formatted-source/tools/connectome/run_px4_status_firmware_build_v2.py",
+      "bytes": 42881,
+      "sha256": "eb19c1b9b77f8b7cc7c8680ef676f7f82415bbbb32884c1c47f3338b44536fe6"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/ruff-formatted-start.json",
+      "bytes": 5326,
+      "sha256": "0f95caee2242728abf76fd36541d7b8fcae3a43f8bfa208870e5686b01042b77"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/ruff-formatted.json",
+      "bytes": 7690,
+      "sha256": "0b0c888a8f79eed5ba21ea5ed2f5921973e7da10d2876a6c023a449bb114aa3a"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/ruff-formatted.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/ruff-formatted.stdout",
+      "bytes": 19,
+      "sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/ruff-initial-after-source/configs/px4/estimator-status-firmware-build-profile.json",
+      "bytes": 1015,
+      "sha256": "12990af3daa437772aae3d6440a3f209ab6c4b0c1af4bad8a6e85a5adf9bee3a"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/ruff-initial-after-source/configs/px4/estimator-status-firmware-profile.json",
+      "bytes": 1709,
+      "sha256": "13fd3306e2cd19254cafba28f9dc21463173aa4b8dc43f9e0927b8cbb26a6b88"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/ruff-initial-after-source/results/px4-firmware-scope-entry-dev-1701/verify.py",
+      "bytes": 3838,
+      "sha256": "e447fbafb8447131cfdd9a98e6adabfc312057c20403b785687439cfbe675c8d"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/ruff-initial-after-source/src/flydrones/connectome_training/px4_status_firmware.py",
+      "bytes": 8454,
+      "sha256": "badbab9a9eb877e6447bddd35c9624af86d9fb60b7a07798bc58d6c5b514ce94"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/ruff-initial-after-source/tests/connectome_training/conftest.py",
+      "bytes": 1260,
+      "sha256": "6a163e598e4011dd4efac9b8c896e5bafda4244112deaf7467125be479844ae1"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/ruff-initial-after-source/tests/connectome_training/test_px4_firmware_scope_entry_v2.py",
+      "bytes": 12794,
+      "sha256": "450afaf698bc17ce2ab6700e4c095d58cd5099b1aba41b7159a4efd128a0e4d4"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/ruff-initial-after-source/tests/connectome_training/test_px4_status_firmware_build.py",
+      "bytes": 28312,
+      "sha256": "1a8521d8ef1e56b7834a860eb7a4269ae1746e7fe3a06a948db9403f5f0a7900"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/ruff-initial-after-source/tools/benchmark/software_process_boundary.py",
+      "bytes": 1737,
+      "sha256": "1aced69a1cd810728c0bf557cc272a5bd43a94ababc31bb6ba33de791fd139a1"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/ruff-initial-after-source/tools/connectome/px4_firmware_scope_entry_v2.py",
+      "bytes": 4196,
+      "sha256": "d3647537bbbf21c229e7dbce647a0575fbb6dc53f3cdb61178c35dd83029dc93"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/ruff-initial-after-source/tools/connectome/run_px4_status_firmware_build.py",
+      "bytes": 39007,
+      "sha256": "c6540f67935cbb8c21a8f4832ce497326611074d45b3708d92bbe1d30e914660"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/ruff-initial-after-source/tools/connectome/run_px4_status_firmware_build_v2.py",
+      "bytes": 41622,
+      "sha256": "330f4a732c5ad8f5418ce48c012c797c644b28a8bb4ef0d919803983151e7ab1"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/ruff-initial-fixtures.json",
+      "bytes": 174,
+      "sha256": "fdfdbd35b7a951818355e9901706dea1ceb2cff83a5c30202124bb3ad228b50f"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/ruff-initial-source/configs/px4/estimator-status-firmware-build-profile.json",
+      "bytes": 1015,
+      "sha256": "12990af3daa437772aae3d6440a3f209ab6c4b0c1af4bad8a6e85a5adf9bee3a"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/ruff-initial-source/configs/px4/estimator-status-firmware-profile.json",
+      "bytes": 1709,
+      "sha256": "13fd3306e2cd19254cafba28f9dc21463173aa4b8dc43f9e0927b8cbb26a6b88"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/ruff-initial-source/results/px4-firmware-scope-entry-dev-1701/verify.py",
+      "bytes": 3838,
+      "sha256": "e447fbafb8447131cfdd9a98e6adabfc312057c20403b785687439cfbe675c8d"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/ruff-initial-source/src/flydrones/connectome_training/px4_status_firmware.py",
+      "bytes": 8454,
+      "sha256": "badbab9a9eb877e6447bddd35c9624af86d9fb60b7a07798bc58d6c5b514ce94"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/ruff-initial-source/tests/connectome_training/conftest.py",
+      "bytes": 1260,
+      "sha256": "6a163e598e4011dd4efac9b8c896e5bafda4244112deaf7467125be479844ae1"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/ruff-initial-source/tests/connectome_training/test_px4_firmware_scope_entry_v2.py",
+      "bytes": 12794,
+      "sha256": "450afaf698bc17ce2ab6700e4c095d58cd5099b1aba41b7159a4efd128a0e4d4"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/ruff-initial-source/tests/connectome_training/test_px4_status_firmware_build.py",
+      "bytes": 28312,
+      "sha256": "1a8521d8ef1e56b7834a860eb7a4269ae1746e7fe3a06a948db9403f5f0a7900"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/ruff-initial-source/tools/benchmark/software_process_boundary.py",
+      "bytes": 1737,
+      "sha256": "1aced69a1cd810728c0bf557cc272a5bd43a94ababc31bb6ba33de791fd139a1"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/ruff-initial-source/tools/connectome/px4_firmware_scope_entry_v2.py",
+      "bytes": 4196,
+      "sha256": "d3647537bbbf21c229e7dbce647a0575fbb6dc53f3cdb61178c35dd83029dc93"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/ruff-initial-source/tools/connectome/run_px4_status_firmware_build.py",
+      "bytes": 39007,
+      "sha256": "c6540f67935cbb8c21a8f4832ce497326611074d45b3708d92bbe1d30e914660"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/ruff-initial-source/tools/connectome/run_px4_status_firmware_build_v2.py",
+      "bytes": 41622,
+      "sha256": "330f4a732c5ad8f5418ce48c012c797c644b28a8bb4ef0d919803983151e7ab1"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/ruff-initial-start.json",
+      "bytes": 5326,
+      "sha256": "88008a904804da09bb3599b6bfe68d3acbbde9ffbdff6ae8ffd707fd9a20445f"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/ruff-initial.json",
+      "bytes": 7690,
+      "sha256": "f0be7ba0d439409d297d8fc7453d57579af42e23a5244827847d9275220daa1f"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/ruff-initial.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/ruff-initial.stdout",
+      "bytes": 14667,
+      "sha256": "969265e2d10c599ec82c4f8b9e0eaa5e7340977561fd714f6602fcbe45c09257"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/seal-initial-helper-failure.json",
+      "bytes": 426,
+      "sha256": "d3b6c9102d6ab3ec09cf50f74e7c333dcc667c095bd20aa3f6e4608460013f0c"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/seal-v2.py",
+      "bytes": 6115,
+      "sha256": "2de2c0be03a2b6e93921b0d79eef1c9af69bc4e0cbb625332bd68761e4ddaa3b"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/seal.py",
+      "bytes": 6071,
+      "sha256": "c29eecd588d07b3d3b33c944a3b0f041fdc2a0236002227c8cc77a3e3505a5fd"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/summarize.py",
+      "bytes": 1288,
+      "sha256": "812cb0d514eb63b4f0c1fbbe97401a3064059c7e323d5e6449833746bed4df1b"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/update-entry-pin.py",
+      "bytes": 358,
+      "sha256": "84b324fc1c911bf1f616ade1cb3b95f68ad724ece41abfda345a110f9c07d108"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/verify.py",
+      "bytes": 3838,
+      "sha256": "e447fbafb8447131cfdd9a98e6adabfc312057c20403b785687439cfbe675c8d"
+    },
+    {
+      "path": "results/static-v4-attempt-dev-1701/admission-refusal-audit.json",
+      "bytes": 1663,
+      "sha256": "ff9bad5dd8becd238aa68fbe4932eee5c54ca0b2d370d39296e3cab3f415a3de"
+    },
+    {
+      "path": "results/static-v4-attempt-dev-1701/cli-completion.json",
+      "bytes": 71560,
+      "sha256": "3edd8d4bd81ff9c16ccb00ac2ee21096e468cbc0ca5c6a2f773cbf48a64498a9"
+    },
+    {
+      "path": "results/static-v4-attempt-dev-1701/preflight.json",
+      "bytes": 71874,
+      "sha256": "a90540488ff3205c3a67586b5b1ba9e8b8719a8553b7a50642fdec53d48a7733"
+    },
+    {
+      "path": "results/target-bearing-runtime-freeze-v4-dev-1701/completion.json",
+      "bytes": 115,
+      "sha256": "1f58f0f9b5398c2a604c7635249facb7b20bbbb509e4fac366ff83f684f5d29f"
+    },
+    {
+      "path": "results/target-bearing-runtime-freeze-v4-dev-1701/firstfacts.json",
+      "bytes": 593,
+      "sha256": "c494bdb5090fde372bb4047198dfe59777d2f32901671af9018b53eabd5f4bd9"
+    },
+    {
+      "path": "results/target-bearing-runtime-freeze-v4-dev-1701/run-static-preparation-v4.py",
+      "bytes": 596,
+      "sha256": "f1fe1fa93399d3ac20663d4362ceab5389fc21e02f12d7f3e7c76a6b79023d6a"
+    },
+    {
+      "path": "results/training-effort-production-dev-1701/independent-training-effort-archive-audit-v2.json",
+      "bytes": 15618,
+      "sha256": "210d52c997de8b0cee72c168ed1018e3a5cfa9f879d8d09204c5c98ab2b2af3e"
+    },
+    {
+      "path": "results/training-effort-production-dev-1701/independent-training-effort-archive-audit.json",
+      "bytes": 14744,
+      "sha256": "631b8811d6d8d16dc5ffc0928a3cd7a87e6b5dcaf461c381bb2e57439e8f8dda"
+    },
+    {
+      "path": "results/training-effort-production-dev-1701/independent-training-effort-final-publication-audit.json",
+      "bytes": 35666,
+      "sha256": "c4c4f44dd3c2e9d976916fecd642bf98b768bb2774ea4e422b411464fbba9723"
+    },
+    {
+      "path": "results/training-effort-production-dev-1701/NEXT_PHASE.md",
+      "bytes": 8972,
+      "sha256": "8e2cb51d2fd261ac6df5df4b9d295d56c1d5f7de1ed6c190bc54102371d2af7c"
+    },
+    {
+      "path": "src/flydrones/connectome_training/px4_status_firmware.py",
+      "bytes": 8454,
+      "sha256": "badbab9a9eb877e6447bddd35c9624af86d9fb60b7a07798bc58d6c5b514ce94"
+    },
+    {
+      "path": "tests/connectome_training/test_px4_firmware_scope_entry_v2.py",
+      "bytes": 20423,
+      "sha256": "5f72afb983c6d75000bd0e1b58127f2f87fb0b5977b56654d322bf69d0dd9e03"
+    },
+    {
+      "path": "tools/benchmark/software_process_boundary.py",
+      "bytes": 1737,
+      "sha256": "1aced69a1cd810728c0bf557cc272a5bd43a94ababc31bb6ba33de791fd139a1"
+    },
+    {
+      "path": "tools/connectome/audit_px4_status_firmware_binary.py",
+      "bytes": 18444,
+      "sha256": "8b9afb9735e0c55f1360ef216eddd4d0dbe145a9d99c38a90c0a752f417c3b48"
+    },
+    {
+      "path": "tools/connectome/px4_firmware_scope_entry_v2.py",
+      "bytes": 4184,
+      "sha256": "4517fa60e7d37584754bbfb8f4179b8039a378d39e4b96c9a2e60d9ef6c50042"
+    },
+    {
+      "path": "tools/connectome/run_px4_status_firmware_build.py",
+      "bytes": 39007,
+      "sha256": "c6540f67935cbb8c21a8f4832ce497326611074d45b3708d92bbe1d30e914660"
+    },
+    {
+      "path": "tools/connectome/run_px4_status_firmware_build_v2.py",
+      "bytes": 43896,
+      "sha256": "acf987c9c9a8bc09c6d37932151c17693ff5f22086dab709b062fe9b39a97f33"
+    }
+  ],
+  "private_excluded": [
+    {
+      "path": "results/target-bearing-runtime-freeze-v4-dev-1701/LOCAL_UNPUBLISHED-admission-1.json",
+      "bytes": 152997,
+      "sha256": "ae6abb38478faf18008b753546dd6adfb9f788381963e1af2e0b0968747ee55c"
+    },
+    {
+      "path": "results/target-bearing-runtime-freeze-v4-dev-1701/LOCAL_UNPUBLISHED-metadata-001.json",
+      "bytes": 15954,
+      "sha256": "bd08a89786f0b9fb0fc9be86c80f90cf92853ffd23d497a0244a5cff692e9d43"
+    },
+    {
+      "path": "results/target-bearing-runtime-freeze-v4-dev-1701/LOCAL_UNPUBLISHED-metadata-002.json",
+      "bytes": 542,
+      "sha256": "12ff95b516c87fa508336fc3757a76bc4dabeb74cebfdc6d9e30bc8dedbccd44"
+    }
+  ],
+  "nonempty_private_argv_hashes": 202,
+  "private_allrow_triples": 475,
+  "json_scanned": 238,
+  "retained_symlinks": [],
+  "scope": "Pre-make current process/cgroup software entry;explicit inert OS/file protocols;not actual kernel/make/firmware/source qualification;no resource queries;publicationpending"
+}
