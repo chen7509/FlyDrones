@@ -1,0 +1,12 @@
+{
+  "schema": "single-aircraft-automation-history-externalization-v1",
+  "history_path": "evidence/flydrones-history-through-single-aircraft-input-20261017.json",
+  "history_bytes": 84322,
+  "history_sha256": "156bb26a8c46081c1704f6a024fb26d5aa5407636e0a533429766910eefc6426",
+  "prompt_chars": 63952,
+  "prompt_utf8_sha256": "ad0ddf627a5666f3d8d48e149118ba9b2d463b8fb6cda9a88b8936bfe7ef8a1b",
+  "software_head": "4ea8c9c8610028c94130e12c20a28271394eb02e",
+  "publication_head": "c340b02ca96ff383da654e5fe34dfb369d3bc49d",
+  "boundary": "postseal full prompt saved before replacing active prompt; no source/test/report/raw/ZIP changes, no renewed source/native authority",
+  "retained_failure": "local prefix-length AssertionError before tool call; all previous histories remain byte-preserved"
+}
