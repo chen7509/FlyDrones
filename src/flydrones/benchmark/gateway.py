@@ -18,7 +18,7 @@ from pathlib import Path
 import numpy as np
 
 from .camera_info_capture import CameraInfoRecorder, camera_info_fields
-from .contract import Command, Observation
+from .contract import Command, EstimatedControllerState, Observation
 from .geometry import segment_box_clearance, segment_cylinder_clearance
 from .rgb_capture import RgbFrameRecorder
 from .score import ScoreSample
@@ -269,7 +269,27 @@ class NativeGazeboPx4Backend:
     def __init__(self, root: Path, run_dir: Path, world: dict, *, instance: int = 8,
                  record_rgb: bool = False, record_camera_info: bool = False,
                  takeoff_alt_m: float = 1.26, takeoff_timeout_s: float = 35.,
-                 development_prearm_stationary_s: float = 0.):
+                 development_prearm_stationary_s: float = 0.,
+                 estimated_state_source=None, goal_in_estimator_frame=None):
+        if estimated_state_source is None:
+            if goal_in_estimator_frame is not None:
+                raise ValueError('estimator-frame goal requires an estimated state source')
+            goal = tuple(world['goal'])
+        else:
+            if goal_in_estimator_frame is None:
+                raise ValueError('estimated input requires an explicit estimator-frame goal')
+            goal = _vector(goal_in_estimator_frame, 3)
+            if (not callable(getattr(estimated_state_source, 'require_ready', None))
+                    or not callable(getattr(estimated_state_source, 'snapshot', None))):
+                raise ValueError('estimated source requires readiness and snapshot interfaces')
+        self._estimated_state_source = estimated_state_source
+        self._estimate_lock = threading.RLock()
+        self._estimate_identity = None
+        self._estimate_last_sample_ns = None
+        self._estimate_last_check_ns = None
+        self._estimate_failure = None
+        if estimated_state_source is not None:
+            self.odometry_source = self.camera_pose_source = 'supplied_estimator_unverified'
         if (type(takeoff_alt_m) not in (int, float)
                 or not np.isfinite(takeoff_alt_m)
                 or not .5 <= takeoff_alt_m <= 3.5):
@@ -290,7 +310,7 @@ class NativeGazeboPx4Backend:
         self.run_dir = Path(run_dir).resolve()
         self.world = world
         self.instance = int(instance)
-        self.goal = tuple(world['goal'])
+        self.goal = goal
         self.vehicle_name = f'x500_benchmark_{self.instance}'
         self.processes: list[subprocess.Popen] = []
         self.log_handles = []
@@ -668,6 +688,7 @@ class NativeGazeboPx4Backend:
             connection=f'udpin:0.0.0.0:{14540 + self.instance}',
             autopilot='px4', takeoff_alt=self.takeoff_alt_m,
             takeoff_timeout=self.takeoff_timeout_s,
+            **({'flight_readiness_check': self._check_estimated_input} if self._estimated_state_source is not None else {}),
         )
         self.drone.connect()
         for _ in range(240):
@@ -675,12 +696,7 @@ class NativeGazeboPx4Backend:
             self.drone.telemetry()
             time.sleep(.05)
         self._hold_prearm_stationary(FlightCommand.hover('development prearm static window'))
-        try:
-            self.drone.takeoff()
-        except TimeoutError as exc:
-            if 'did not arm' not in str(exc):
-                raise
-            self.drone.takeoff()
+        self._takeoff_with_estimated_input()
         for _ in range(30):
             self.drone.send(FlightCommand.hover('benchmark hover'))
             time.sleep(.05)
@@ -754,9 +770,11 @@ class NativeGazeboPx4Backend:
                     raise RuntimeError('PX4 setpoint source unavailable')
                 drone.require_position_observation()
                 self._check_setpoints()
+                self._check_estimated_input()
                 drone._send_gcs_heartbeat_if_due()
                 with self._setpoint_condition:
                     self._check_setpoints()
+                    self._check_estimated_input()
                     drone.m.mav.set_position_target_local_ned_send(
                         int(time.monotonic() * 1000) & 0xFFFFFFFF,
                         drone.m.target_system, drone.m.target_component,
@@ -886,6 +904,19 @@ class NativeGazeboPx4Backend:
         return tuple(float(value) for value in velocity), float(yaw_rate)
 
     def observe(self) -> Observation:
+        if self._estimated_state_source is not None:
+            sim_ns = int(self.stats['sim_ns'])
+            frame_ns = self._latest_rgbd_frame(sim_ns)
+            state = self._check_estimated_input(frame_ns=frame_ns)
+            self.frame_cache.add(
+                frame_ns, self.frames['rgb'][frame_ns], self.frames['depth'][frame_ns], state.camera_pose,
+            )
+            return Observation(
+                sim_ns=sim_ns, frame_ns=frame_ns,
+                rgb=self.frame_cache.rgb.copy(), depth_m=self.frame_cache.depth_m.copy(),
+                camera_pose=state.camera_pose, position=state.position, velocity=state.velocity,
+                yaw=state.yaw, yaw_rate=state.yaw_rate, goal=self.goal,
+            )
         model_pose, sim_ns = self._current_model_pose()
         common = sorted(set(self.frames['rgb']).intersection(self.frames['depth']))
         eligible = [frame_ns for frame_ns in common if frame_ns <= sim_ns]
@@ -914,6 +945,88 @@ class NativeGazeboPx4Backend:
             goal=self.goal,
         )
 
+    def _latest_rgbd_frame(self, sim_ns):
+        common = set(self.frames['rgb']).intersection(self.frames['depth'])
+        eligible = [stamp for stamp in common if stamp <= sim_ns]
+        if not eligible or sim_ns - max(eligible) > 100_000_000:
+            raise RuntimeError('estimated input has no fresh synchronized RGB-D frame')
+        return max(eligible)
+
+    def _check_estimated_input(self, *, frame_ns=None):
+        """Check the supplied source; this is not a runtime qualification grant."""
+        source = self._estimated_state_source
+        if source is None:
+            return None
+        try:
+            with self._estimate_lock:
+                try:
+                    return self._read_estimated_input_locked(source, frame_ns)
+                except BaseException as exc:
+                    # Publish the first fault before another reader can acquire this lock.
+                    self._estimate_failure = self._estimate_failure or exc
+                    raise
+        except BaseException as exc:
+            # Do not hold estimate_lock while stop_motion takes the MAVLink lock.
+            self.stop_motion(exc, 'estimated_input')
+            raise
+
+    def _read_estimated_input_locked(self, source, frame_ns):
+        if self._estimate_failure is not None:
+            raise RuntimeError('estimated input failure latched') from self._estimate_failure
+        sim_ns = int(self.stats['sim_ns'])
+        if self._estimate_last_check_ns is not None and sim_ns < self._estimate_last_check_ns:
+            raise ValueError('estimated observation time regressed')
+        frame_ns = self._latest_rgbd_frame(sim_ns) if frame_ns is None else frame_ns
+        if frame_ns < self.frame_cache.frame_ns:
+            raise ValueError('estimated input camera frame regressed')
+        source.require_ready(sim_ns)
+        state = source.snapshot(sim_ns, frame_ns)
+        if type(state) is not EstimatedControllerState:
+            raise ValueError('estimated source returned an invalid state')
+        now_sim_ns = int(self.stats['sim_ns'])
+        if (type(state.sample_ns) is not int or not 0 <= state.sample_ns <= sim_ns <= now_sim_ns
+                or now_sim_ns - state.sample_ns > 100_000_000
+                or type(state.camera_frame_ns) is not int or state.camera_frame_ns != frame_ns
+                or now_sim_ns - frame_ns > 100_000_000):
+            raise ValueError('estimated state or camera time invalid/stale')
+        if (type(state.session_id) is not str or not state.session_id or len(state.session_id) > 128
+                or type(state.reset_counter) is not int or not 0 <= state.reset_counter <= 255):
+            raise ValueError('estimated session/reset invalid')
+        identity = (state.session_id, state.reset_counter)
+        if self._estimate_identity is not None and identity != self._estimate_identity:
+            raise ValueError('estimated session/reset changed; goal frame unresolved')
+        if self._estimate_last_sample_ns is not None and state.sample_ns < self._estimate_last_sample_ns:
+            raise ValueError('estimated sample time regressed')
+        for values, size in ((state.position, 3), (state.velocity, 3), (state.camera_pose, 7)):
+            if type(values) is not tuple:
+                raise ValueError('estimated state vectors must be immutable tuples')
+            _vector(values, size)
+        _finite_scalar(state.yaw)
+        _finite_scalar(state.yaw_rate)
+        if abs(math.hypot(*state.camera_pose[3:]) - 1.) > 1e-5:
+            raise ValueError('estimated camera quaternion is not unit length')
+        source.require_ready(now_sim_ns)
+        final_sim_ns = int(self.stats['sim_ns'])
+        if (final_sim_ns < now_sim_ns or final_sim_ns - state.sample_ns > 100_000_000
+                or final_sim_ns - frame_ns > 100_000_000):
+            raise ValueError('estimated state or camera time expired/regressed during readiness check')
+        if self._estimate_failure is not None:
+            raise RuntimeError('estimated input failure latched') from self._estimate_failure
+        self._estimate_identity = identity
+        self._estimate_last_sample_ns = state.sample_ns
+        self._estimate_last_check_ns = final_sim_ns
+        return state
+
+    def _takeoff_with_estimated_input(self):
+        self._check_estimated_input()
+        try:
+            self.drone.takeoff()
+        except TimeoutError as exc:
+            if 'did not arm' not in str(exc):
+                raise
+            self._check_estimated_input()
+            self.drone.takeoff()
+
     def advance(self, local_ned_command, dt_s: float) -> None:
         try:
             self._advance_checked(local_ned_command, dt_s)
@@ -923,6 +1036,7 @@ class NativeGazeboPx4Backend:
 
     def _advance_checked(self, local_ned_command, dt_s: float) -> None:
         self._check_setpoints(require_worker=True)
+        self._check_estimated_input()
         dt_s = _finite_scalar(dt_s)
         if dt_s <= 0:
             raise ValueError('physics dt must be positive')
@@ -937,6 +1051,7 @@ class NativeGazeboPx4Backend:
         # Preparation can block in transport requests; admission follows it.
         self._check_setpoints(require_worker=True)
         started = time.perf_counter()
+        self._check_estimated_input()
         try:
             ok = self.server.run(True, steps, False)
         except BaseException as exc:

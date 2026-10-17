@@ -38,7 +38,11 @@ class MavlinkDrone(Drone):
     def __init__(self, connection: str | None = None, autopilot: str = "ardupilot", v_max: float = 1.0,
                  vz_max: float = 0.5, yaw_rate_max_dps: float = 45.0, takeoff_alt: float = 1.5,
                  takeoff_timeout: float = 20.0, offboard_rate_hz: float = 20.0, mavutil_module=None,
-                 time_fn=None, sleep_fn=None, position_timeout_s: float = 0.5):
+                 time_fn=None, sleep_fn=None, position_timeout_s: float = 0.5, flight_readiness_check=None):
+        if flight_readiness_check is not None and not callable(flight_readiness_check):
+            raise ValueError("flight_readiness_check must be callable")
+        self._flight_readiness_check = flight_readiness_check
+        self._arming_pending = False
         if mavutil_module is None:
             try:
                 from pymavlink import mavutil
@@ -67,7 +71,7 @@ class MavlinkDrone(Drone):
         self._position_failure: str | None = None
 
     def connect(self) -> None:
-        if self.autopilot == "px4" and self.flying:
+        if self.autopilot == "px4" and (self.flying or self._arming_pending):
             raise RuntimeError("cannot replace PX4 position session during active flight")
         self.close()
         if "," in self.conn_str:
@@ -119,6 +123,8 @@ class MavlinkDrone(Drone):
 
     def _send_velocity(self, vx: float, vy: float, vz: float, yaw_rate: float) -> None:
         self._send_gcs_heartbeat_if_due()
+        if self._flight_readiness_check is not None and (self.flying or self._arming_pending or any((vx, vy, vz, yaw_rate))):
+            self._flight_readiness_check()
         self.m.mav.set_position_target_local_ned_send(
             int(self._time() * 1000) & 0xFFFFFFFF,
             self.m.target_system, self.m.target_component, self.mavutil.mavlink.MAV_FRAME_BODY_NED,
@@ -170,7 +176,10 @@ class MavlinkDrone(Drone):
         self._prime_px4_offboard()
         self._require_px4_position()
         self.m.set_mode("OFFBOARD")
+        self._arming_pending = True
         try:
+            if self._flight_readiness_check is not None:
+                self._flight_readiness_check()
             self.m.arducopter_arm()
             self._wait_armed(timeout=10)
             self.flying = True
@@ -192,6 +201,8 @@ class MavlinkDrone(Drone):
             except Exception as exc:
                 print(f"PX4 takeoff cleanup LAND failed: {exc}")
             raise
+        finally:
+            self._arming_pending = False
 
     def takeoff(self) -> None:
         m = self.m
