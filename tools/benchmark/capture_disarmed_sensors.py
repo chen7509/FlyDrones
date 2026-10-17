@@ -207,6 +207,8 @@ def parse_capture_args(argv=None):
                         help="Opt-in changed-load PX4 odometry logger for a new diagnostic study")
     parser.add_argument("--shadow-binary", type=Path)
     parser.add_argument("--shadow-config", type=Path)
+    parser.add_argument("--online-estimate-feed", action="store_true",
+                        help="Consume fresh native fast predictions online; disarmed and unqualified")
     parser.add_argument("--reference-module", type=Path)
     parser.add_argument("--reference-sha256")
     parser.add_argument("--reference-fault-profile", choices=["native-pre-epoch-v1"])
@@ -238,6 +240,11 @@ def parse_capture_args(argv=None):
     parser.add_argument('--calibration-scene', type=Path)
     parser.add_argument('--prepared-scene', action='store_true')
     args = parser.parse_args(argv)
+    if args.online_estimate_feed and (
+        not args.shadow_binary or not args.shadow_config or not args.execution_contract
+        or not args.runtime_binding or args.health_fault_profile or args.reference_fault_profile
+    ):
+        parser.error("online estimate feed requires declared bound native capture without fault/restart")
     raw_capture = args.capture_profile == 'target-bearing-raw-v1'
     if raw_capture:
         from tools.benchmark.calibration_capture_contract import validate_raw_args
@@ -703,6 +710,21 @@ def run_capture_runtime(*, journal, output, result, errors, fixture, post_update
     result["status"] = "capture_completed"
 
 
+def make_capture_native_client(args, session_dir, *, on_first_ack):
+    """Select the live output consumer inside the actual capture lifecycle."""
+    from tools.benchmark.openvins_online_shadow import NativeClient
+
+    client_type = NativeClient
+    if getattr(args, "online_estimate_feed", False):
+        from tools.benchmark.capture_online_estimates import LiveEstimateNativeClient
+
+        client_type = LiveEstimateNativeClient
+    return client_type(
+        [str(args.shadow_binary.resolve()), str(args.shadow_config.resolve()),
+         str(session_dir / "states.jsonl"), str(session_dir / "fast.jsonl")],
+        session_dir, on_first_ack=on_first_ack)
+
+
 def main():
     args = parse_capture_args()
     binding_doc = None
@@ -860,6 +882,8 @@ def main():
                         px4 / "Tools/simulation/gz/models/x500/model.sdf",
                         px4 / "Tools/simulation/gz/models/x500_base/model.sdf"]
             required += estimator_inputs(args.shadow_binary, args.shadow_config, args.reference_module)
+            if args.online_estimate_feed:
+                required.append(ROOT / "tools/benchmark/capture_online_estimates.py")
             if raw_capture:
                 scene = contract['raw_measurement']['scene']
                 required.extend(Path(scene['path'])/name for name in scene['files'])
@@ -917,7 +941,6 @@ def main():
         source_guard = None
         if args.shadow_binary:
             from tools.benchmark.openvins_online_shadow import (
-                NativeClient,
                 OnlineHealthEvidence,
                 ShadowInput,
                 SourceWatchdog,
@@ -939,16 +962,7 @@ def main():
                         binding.observe_owned(role, "ready")
                         owned_ready[role] = True
 
-                native = NativeClient(
-                    [
-                        str(args.shadow_binary.resolve()),
-                        str(args.shadow_config.resolve()),
-                        str(session_dir / "states.jsonl"),
-                        str(session_dir / "fast.jsonl"),
-                    ],
-                    session_dir,
-                    on_first_ack=openvins_ready,
-                )
+                native = make_capture_native_client(args, session_dir, on_first_ack=openvins_ready)
                 if binding and role in binding.required_owned:
                     binding.register_owned(role, native.process, args.shadow_binary)
                     owned_processes[role] = native.process

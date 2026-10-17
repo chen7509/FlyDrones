@@ -149,6 +149,14 @@ def execution_contract(args, launch_environment=None, *, record_provider=None):
     health_fault = getattr(args, HEALTH_FAULT_FIELD, None)
     if health_fault is not None:
         result['profiles'][HEALTH_FAULT_FIELD] = health_fault
+    if getattr(args, 'online_estimate_feed', False):
+        if (not args.shadow_binary or not args.shadow_config or not args.execution_contract
+                or not getattr(args, 'runtime_binding', None) or health_fault or fault):
+            raise ValueError('online estimate feed requires declared bound native capture without fault/restart')
+        result['online_estimate_feed'] = {
+            'profile': 'native-ack-fast-output-v1', 'period_ns': 20_000_000,
+            'max_bytes_per_ack': 16_384, 'fusion_eligible': False, 'controller_ready': False,
+        }
     if policy_path is not None:
         result['trajectory_gauge_policy'] = trajectory_gauge_policy_record(policy_path)
     simulation_seed = getattr(args, 'simulation_seed', None)
@@ -270,6 +278,8 @@ def worker_options(args):
         result.append('--record-owned-ulog')
     if getattr(args, 'prepared_scene', False):
         result.append('--prepared-scene')
+    if getattr(args, 'online_estimate_feed', False):
+        result.append('--online-estimate-feed')
     return result
 
 
