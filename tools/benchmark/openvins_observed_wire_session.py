@@ -38,6 +38,7 @@ class ObservedWireSession:
         self._journal, self._descriptor_guard = journal, descriptor_guard
         self._heartbeat_sink = heartbeat_sink
         self._estimate_receiver = estimate_receiver
+        self._estimate_sending_state = None
         # The existing segmented profile has a closed channel namespace. Keep
         # this new diagnostic's bounded derived records in final session evidence;
         # raw native/receive bytes retain their existing journals. Not crash-safe.
@@ -106,7 +107,10 @@ class ObservedWireSession:
                     estimate_receiver=None if self._estimate_receiver is None else dict(
                         events=copy.deepcopy(self._estimate_events),
                         send_events=copy.deepcopy(self._estimate_receiver.send_events),
-                        response_ns=self._estimate_receiver.response_ns, fusion_verified=False, odometry_sent=False),
+                        response_ns=self._estimate_receiver.response_ns,
+                        **(self._estimate_receiver.transport_summary()
+                           if getattr(self._estimate_receiver, "ODOMETRY_TRANSPORT", False)
+                           else dict(fusion_verified=False, odometry_sent=False))),
                     refusal_journal_error=self._refusal_journal_error)
 
     def _clock_signature(self):
@@ -190,6 +194,15 @@ class ObservedWireSession:
         self._final_boundary()
         return self._sock.sendto(raw, self._flags, peer)
 
+    def _send_odometry(self, raw, peer, state):
+        self._estimate_sending_state = state
+        try:
+            self._receiver.check()
+            self._final_boundary()
+            return self._sock.sendto(raw,self._flags,peer)
+        finally:
+            self._estimate_sending_state = None
+
     def _dispatch_heartbeat(self, event):
         self._receiver.check()
         self._final_boundary()
@@ -207,7 +220,18 @@ class ObservedWireSession:
         """
         self._open()
         lane = self._lane.progress
+        odometry = self._estimate_sending_state
+        if odometry is not None:
+            self._estimate_receiver.source.validate_wire_selection(odometry)
         now = self._backend.clock()
+        if odometry is not None:
+            wire = self._core._wire
+            observer = self._estimate_receiver
+            if (wire._last_unarmed is None or not 0 <= now-wire._last_unarmed < 2_000_000_000
+                    or observer.response_ns is None or not 0 <= now-observer.response_ns < 2_000_000_000
+                    or not 0 <= now-odometry['receipt_ns'] <= 100_000_000
+                    or observer.source._failure or observer.source.lifecycle.failure):
+                raise ValueError('ODOMETRY final disarmed/disabled-EV/native freshness boundary')
         terminal = self._complete and self._maintenance is None and not self._transitioning
         if self._failure or lane['failure'] or self._remote.failure or self._closed or self._closing or terminal:
             raise ValueError('observed boundary dependency failed or closed')
@@ -332,9 +356,23 @@ class ObservedWireSession:
                 observer.check(self._clock(), disarmed=True)
                 # Obtain the same clock selection as normal receive; no invented epoch.
                 selection = self._lane.snapshot(self._clock())
-                state = observer.diagnostic(selection.observation.sim_ns)
-                if state is not None:
-                    self._record_estimate(dict(event='managed_state_blocked', **state))
+                if getattr(observer,'ODOMETRY_TRANSPORT',False):
+                    raw = observer.odometry(wire._codec,self._remote,wire._sequence,self._clock(),
+                                             selection.observation.sim_ns,disarmed=True)
+                    if raw is not None:
+                        state = observer.selected_state
+                        self._record_estimate(dict(event='odometry_attempt',attempt=observer.send_events[-1]))
+                        count = self._send_odometry(raw,wire._peer,state)
+                        observer.send_events[-1]['bytes_returned'] = count
+                        wire._sequence = (wire._sequence+1) % 256
+                        self._record_estimate(dict(event='odometry_return',bytes_returned=count,
+                                                   sample_ns=state['sample_ns'],fusion_verified=False))
+                        if type(count) is not int or count != len(raw):
+                            raise ValueError('short ODOMETRY send')
+                else:
+                    state = observer.diagnostic(selection.observation.sim_ns)
+                    if state is not None:
+                        self._record_estimate(dict(event='managed_state_blocked', **state))
         return self._operation(action, lambda _: None)
 
     def _record_estimate(self, event):

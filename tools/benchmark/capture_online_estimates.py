@@ -119,14 +119,13 @@ class LiveEstimateNativeClient(NativeClient):
             or row.get("last_camera_ns") != self._last_camera
             or row.get("fusion_eligible") is not False
             or row.get("quality") is not None
-            or row.get("reset_counter") is not None
             or row.get("filter_unchanged") is not True
             or type(row.get("success")) is not bool
             or type(row.get("internal_initialized")) is not bool
             or type(row.get("public_initialized")) is not bool
-            or row.get("camera_imu_offset_s") != 0.0
         ):
             raise ValueError("native prediction identity/state mismatch")
+        self._validate_native_contract(row, ack)
         begin, end = row.get("native_begin_ns"), row.get("native_end_ns")
         if type(begin) is not int or type(end) is not int or not ack["start_ns"] <= begin <= end <= ack["end_ns"]:
             raise ValueError("native prediction call clocks mismatch")
@@ -161,6 +160,7 @@ class LiveEstimateNativeClient(NativeClient):
             self._last_ack = ack
             if type(ack.get("sample_ns")) is not int or ack["sample_ns"] != sample:
                 raise ValueError("native acknowledgement sample differs from source action")
+            self._validate_ack_contract(ack)
             if self.process.poll() is not None:
                 raise RuntimeError("owned native process exited")
             if self._next_target is None:
@@ -200,6 +200,13 @@ class LiveEstimateNativeClient(NativeClient):
             except BaseException:
                 pass  # Preserve primary failure; outer recorder retains missing journal boundary.
             raise
+
+    def _validate_ack_contract(self, ack):
+        pass  # Legacy acknowledgement semantics remain in NativeClient/readiness.
+
+    def _validate_native_contract(self, row, ack):
+        if row.get('reset_counter') is not None or row.get('camera_imu_offset_s') != 0.0:
+            raise ValueError('legacy native offset/reset contract mismatch')
 
     def finish(self):
         if self._feed_closed:

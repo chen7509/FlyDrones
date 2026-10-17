@@ -43,7 +43,7 @@ def _yaml(raw):
     return result
 
 
-def load_managed_configuration(path, digest, native_config, *, _records=None):
+def load_managed_configuration(path, digest, native_config, *, _records=None, native_profile=None):
     """Bind all selected files before Popen; loaded values are not measurements."""
     path = Path(path)
     doc = json.loads(_bound_bytes(path, digest, MAX_DOCUMENT), object_pairs_hook=_unique)
@@ -149,7 +149,16 @@ def load_managed_configuration(path, digest, native_config, *, _records=None):
         or camera["timeshift_cam_imu"] != float(artifact.timeshift_decimal_s)
     ):
         raise ValueError("actual native camera calibration differs from artifact")
-    if float(artifact.timeshift_decimal_s) != 0.0:
+    if native_profile not in (None, 'offset-reset-v2'):
+        raise ValueError('unknown managed native consumer profile')
+    if native_profile == 'offset-reset-v2' and artifact.timeshift_rounding_error_ns != '0':
+        raise ValueError('native v2 requires an integral nanosecond calibration offset')
+    if native_profile == 'offset-reset-v2' and (
+        [rig.width,rig.height] != [160,120] or config.get('calib_imu_intrinsics',False) is not False
+        or config.get('calib_imu_g_sensitivity',False) is not False
+    ):
+        raise ValueError('native v2 requires original160x120 sensor and fixed IMU calibration')
+    if native_profile is None and float(artifact.timeshift_decimal_s) != 0.0:
         raise ValueError("native fast consumer does not support nonzero offset")
     if len(set(selected)) != len(selected):
         raise ValueError("managed source files must be distinct")
@@ -162,9 +171,9 @@ def load_managed_configuration(path, digest, native_config, *, _records=None):
     return artifact, tuple(selected)
 
 
-def configuration_record(path, digest, native_config):
+def configuration_record(path, digest, native_config, *, native_profile=None):
     records = []
-    artifact, _ = load_managed_configuration(path, digest, native_config, _records=records)
+    artifact, _ = load_managed_configuration(path, digest, native_config, _records=records, native_profile=native_profile)
     return dict(
         profile="calibrated-managed-capture-v1",
         configuration_sha256=digest,
@@ -178,10 +187,12 @@ def configuration_record(path, digest, native_config):
 class ManagedCaptureSource:
     """Bounded native state owner. An unqualified diagnostic is never controller input."""
 
+    OFFSET_RESET_V2 = False
+
     def __init__(self, artifact, *, now=time.monotonic_ns, session_id=None):
         if type(artifact) is not KalibrCameraArtifact or artifact.imu_contract != RAW_IMU_CONTRACT:
             raise ValueError("raw IMU calibration contract required")
-        if float(artifact.timeshift_decimal_s) != 0:
+        if not self.OFFSET_RESET_V2 and float(artifact.timeshift_decimal_s) != 0:
             raise ValueError("native fast consumer does not support nonzero offset")
         self.artifact, self._now = artifact, now
         self.session_id = session_id
@@ -250,6 +261,7 @@ class ManagedCaptureSource:
 
     def accept_camera(self, ack, process, *, deadline_ns=None):
         with self._access(process, deadline_ns=deadline_ns):
+            self._accept_native_camera(ack)
             receipt = self._receipt(ack)
             stamp = ack.get("sample_ns")
             if type(stamp) is not int or stamp <= self._last_camera:
@@ -272,14 +284,14 @@ class ManagedCaptureSource:
         with self._access(process, deadline_ns=deadline_ns):
             receipt = self._receipt(ack)
             target = prediction.get("target_ns")
-            if type(target) is not int or target <= self._last_target or prediction.get("camera_imu_offset_s") != 0:
+            if (type(target) is not int or target <= self._last_target
+                    or prediction.get("camera_imu_offset_s") != float(self.artifact.timeshift_decimal_s)):
                 raise ValueError("managed propagation sample/offset mismatch")
             self._last_target = target
             self._fast = None
             if not all(prediction.get(key) is True for key in ("success", "internal_initialized", "public_initialized")):
                 return
-            if prediction.get("reset_counter") is not None:
-                raise ValueError("native reset lifecycle unavailable in this source version")
+            reset = self._native_reset(prediction)
             state, rotation = self._state(prediction.get("state13"), 13)
             axis = rotation[:, 0]
             derivative = rotation @ np.cross(state[10:13], [1.0, 0.0, 0.0])
@@ -296,13 +308,25 @@ class ManagedCaptureSource:
                 velocity=(rotation @ state[7:10]).tolist(),
                 yaw=math.atan2(axis[1], axis[0]),
                 yaw_rate=float((axis[0] * derivative[1] - axis[1] * derivative[0]) / denominator),
-                reset_counter=None,
+                reset_counter=reset,
                 quality=None,
                 controller_ready=False,
                 fusion_eligible=False,
                 frame="openvins-unregistered-gravity-local",
                 calibration=self.artifact.record(),
+                **self._native_fast_fields(prediction),
             )
+
+    def _accept_native_camera(self, ack):
+        pass
+
+    def _native_reset(self, prediction):
+        if prediction.get('reset_counter') is not None:
+            raise ValueError('native reset lifecycle unavailable in this source version')
+        return None
+
+    def _native_fast_fields(self, prediction):
+        return {}
 
     def diagnostic_snapshot(self, sample_ns, camera_ns):
         with self._access():
@@ -323,7 +347,7 @@ class ManagedCaptureSource:
         if (
             camera is None
             or state["last_camera_ns"] != camera_ns
-            or not 0 <= sample_ns - camera_ns <= 100_000_000
+            or not 0 <= sample_ns - self.artifact.lookup_ns(camera_ns) <= 100_000_000
             or not 0 <= now - camera[1] < 2_000_000_000
         ):
             raise ValueError("exact image-time camera pose missing/stale/future")

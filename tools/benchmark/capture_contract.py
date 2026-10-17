@@ -163,8 +163,17 @@ def execution_contract(args, launch_environment=None, *, record_provider=None):
             raise ValueError('managed source requires explicit bound online feed and sole wire')
         from tools.benchmark.managed_capture_source import configuration_record
 
-        result['managed_source'] = configuration_record(
-            args.managed_source_config, args.managed_source_sha256, args.shadow_config)
+        result['managed_source'] = configuration_record(args.managed_source_config, args.managed_source_sha256,
+            args.shadow_config,native_profile=getattr(args,'native_estimate_profile',None))
+    if getattr(args,'native_estimate_profile',None) is not None or getattr(args,'disarmed_odometry',False):
+        if (getattr(args,'native_estimate_profile',None) != 'offset-reset-v2'
+                or not getattr(args,'disarmed_odometry',False) or 'managed_source' not in result
+                or health_profile or health_fault or fault or motion_intent):
+            raise ValueError('v2 ODOMETRY requires declared managed source without legacy health/motion/fault')
+        result['native_estimate_profile'] = dict(profile='offset-reset-v2',disarmed_odometry=True,
+            physical_target_period_ns=20_000_000,cache_policy='invalidate-before-each-physical-IMU-target',
+            reset_policy='native-single-manager-lifecycle-discontinuity-aborts',fusion_verified=False,
+            controller_ready=False,parameter_writes=False)
     if policy_path is not None:
         result['trajectory_gauge_policy'] = trajectory_gauge_policy_record(policy_path)
     simulation_seed = getattr(args, 'simulation_seed', None)
@@ -270,7 +279,7 @@ def worker_options(args):
         MOTION_INTENT_FIELD, HEALTH_PROFILE_FIELD, HEALTH_FAULT_FIELD,
         'reference_sha256', 'execution_contract', 'runtime_binding', POLICY_FIELD,
         'wire_config', 'agent_runtime_config', 'logger_diagnostic_profile',
-        'capture_profile', 'calibration_scene', 'managed_source_config', 'managed_source_sha256',
+        'capture_profile', 'calibration_scene', 'managed_source_config', 'managed_source_sha256', 'native_estimate_profile',
     ):
         value = getattr(args, field, None)
         if value is not None:
@@ -288,6 +297,8 @@ def worker_options(args):
         result.append('--prepared-scene')
     if getattr(args, 'online_estimate_feed', False):
         result.append('--online-estimate-feed')
+    if getattr(args,'disarmed_odometry',False):
+        result.append('--disarmed-odometry')
     return result
 
 

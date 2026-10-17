@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""One sensor-only Gazebo/PX4 development capture. Never arms or publishes controls/VIO."""
+"""Disarmed development capture; explicit v2 receiver-only ODOMETRY, never ARM/control."""
 
 from __future__ import annotations
 
@@ -212,6 +212,9 @@ def parse_capture_args(argv=None):
     parser.add_argument("--managed-source-config", type=Path,
                         help="Explicit bound calibration consumer for owned online capture")
     parser.add_argument("--managed-source-sha256")
+    parser.add_argument("--native-estimate-profile", choices=['offset-reset-v2'])
+    parser.add_argument("--disarmed-odometry", action='store_true',
+                        help='Explicit receiver-only ODOMETRY; requires disabled EV and fresh disarmed PX4')
     parser.add_argument("--reference-module", type=Path)
     parser.add_argument("--reference-sha256")
     parser.add_argument("--reference-fault-profile", choices=["native-pre-epoch-v1"])
@@ -243,6 +246,12 @@ def parse_capture_args(argv=None):
     parser.add_argument('--calibration-scene', type=Path)
     parser.add_argument('--prepared-scene', action='store_true')
     args = parser.parse_args(argv)
+    if args.native_estimate_profile is not None or args.disarmed_odometry:
+        if (args.native_estimate_profile != 'offset-reset-v2' or not args.disarmed_odometry
+                or not args.managed_source_config or not args.online_estimate_feed or not args.wire_config
+                or args.health_profile or args.health_fault_profile or args.motion_intent_profile
+                or args.reference_fault_profile):
+            parser.error('v2 ODOMETRY requires declared managed/online/wire source, no legacy health/motion/fault profile')
     if args.managed_source_config is not None or args.managed_source_sha256 is not None:
         if (not args.managed_source_config or not args.managed_source_sha256
                 or not args.online_estimate_feed or not args.wire_config):
@@ -723,6 +732,7 @@ def make_capture_native_client(args, session_dir, *, on_first_ack, session_id=No
 
     client_type = NativeClient
     options = {}
+    extra_native_args = []
     if getattr(args, "online_estimate_feed", False):
         from tools.benchmark.capture_online_estimates import LiveEstimateNativeClient
 
@@ -734,13 +744,27 @@ def make_capture_native_client(args, session_dir, *, on_first_ack, session_id=No
             load_managed_configuration,
         )
 
-        artifact, _ = load_managed_configuration(
-            args.managed_source_config, args.managed_source_sha256, args.shadow_config)
-        options['source'] = ManagedCaptureSource(artifact, session_id=session_id)
-        client_type = ManagedEstimateNativeClient
+        native_profile = getattr(args, 'native_estimate_profile', None)
+        if native_profile is None:
+            artifact, _ = load_managed_configuration(args.managed_source_config,args.managed_source_sha256,args.shadow_config)
+        else:
+            artifact, _ = load_managed_configuration(args.managed_source_config,args.managed_source_sha256,
+                                                     args.shadow_config,native_profile=native_profile)
+        if native_profile == 'offset-reset-v2':
+            import secrets
+
+            from tools.benchmark.offset_reset_native_source import OffsetResetNativeClient, OffsetResetSource
+
+            native_session = secrets.token_hex(32)
+            options['source'] = OffsetResetSource(artifact, native_session=native_session, session_id=session_id)
+            extra_native_args = [native_session, str(artifact.timeshift_ns)]
+            client_type = OffsetResetNativeClient
+        else:
+            options['source'] = ManagedCaptureSource(artifact, session_id=session_id)
+            client_type = ManagedEstimateNativeClient
     return client_type(
         [str(args.shadow_binary.resolve()), str(args.shadow_config.resolve()),
-         str(session_dir / "states.jsonl"), str(session_dir / "fast.jsonl")],
+         str(session_dir / "states.jsonl"), str(session_dir / "fast.jsonl"), *extra_native_args],
         session_dir, on_first_ack=on_first_ack, **options)
 
 
@@ -849,8 +873,10 @@ def main():
                 **{key: contract[key] for key in ("simulation_duration_ns", "physics_step_ns", "imu_hz", "rgbd_hz")},
                 "execution_contract": contract,
                 "prospective_declaration_verified": args.execution_contract is not None,
-                "command_policy": ("owned TIMESYNC interval query/apply/restore; no arm/offboard/setpoint/ODOMETRY"
-                                   if args.wire_config else "read-only heartbeat; no arm/offboard/setpoint/ODOMETRY"),
+                "command_policy": ("owned TIMESYNC/interval and disabled-EV disarmed ODOMETRY; no ARM/offboard/setpoint/PARAM_SET"
+                                   if args.disarmed_odometry else
+                                   ("owned TIMESYNC interval query/apply/restore; no arm/offboard/setpoint/ODOMETRY"
+                                    if args.wire_config else "read-only heartbeat; no arm/offboard/setpoint/ODOMETRY")),
                 "uxrce_port": 18888,
                 "uxrce_agent_requested": agent_record is not None,
                 "uxrce_agent_launched": None if agent_record is not None else False,
@@ -907,10 +933,17 @@ def main():
                 from tools.benchmark.managed_capture_source import load_managed_configuration
 
                 _, managed_inputs = load_managed_configuration(
-                    args.managed_source_config, args.managed_source_sha256, args.shadow_config)
+                    args.managed_source_config, args.managed_source_sha256, args.shadow_config,
+                    native_profile=args.native_estimate_profile)
                 required.extend(managed_inputs)
                 required.extend((ROOT / "tools/benchmark/managed_capture_source.py",
                                  ROOT / "tools/benchmark/disarmed_estimate_receiver.py"))
+                if args.native_estimate_profile == 'offset-reset-v2':
+                    required.extend(ROOT/'tools/benchmark'/name for name in (
+                        'offset_reset_native_source.py','disarmed_odometry_receiver.py',
+                        'openvins_online_probe_v2.cpp','openvins_fast_probe_v2.h','exclusive_probe_output.h',
+                        'openvins_causal_input.py','estimator_aware_readiness.py','openvins_odometry_contract.py',
+                        'native_offset_reset_v2/CMakeLists.txt'))
             if raw_capture:
                 scene = contract['raw_measurement']['scene']
                 required.extend(Path(scene['path'])/name for name in scene['files'])
@@ -990,9 +1023,19 @@ def main():
                         owned_ready[role] = True
 
                 native = make_capture_native_client(args, session_dir, on_first_ack=openvins_ready, session_id=session_id)
-                if binding and role in binding.required_owned:
-                    binding.register_owned(role, native.process, args.shadow_binary)
-                    owned_processes[role] = native.process
+                try:
+                    if binding and role in binding.required_owned:
+                        binding.register_owned(role, native.process, args.shadow_binary)
+                        owned_processes[role] = native.process
+                except BaseException as primary:
+                    if args.native_estimate_profile == 'offset-reset-v2':
+                        from tools.benchmark.capture_online_estimates import _secondary
+
+                        try:
+                            native.finish()
+                        except BaseException as cleanup:
+                            _secondary(primary,[cleanup])
+                    raise
                 client_roles[id(native)] = role
                 return native
 
@@ -1033,6 +1076,10 @@ def main():
             else:
                 native_session_id = "online-native-pending"
                 client = create_client(0, native_session_id, shadow_dir)
+                def finish_native():
+                    result["native"] = finish_client(client)
+
+                journal.cleanup("native consumer", finish_native, priority=95)
                 native_session_id = "online-native-" + str(client.process.pid)
                 if args.managed_source_config:
                     client.managed_source.bind_capture_session(native_session_id)
@@ -1045,11 +1092,11 @@ def main():
                         profile=CovarianceProfile(sim_domain_qualified=False, name=args.health_profile),
                     )
                 shadow = ShadowInput(client, shadow_dir, session_id=native_session_id, health=health)
+                if args.native_estimate_profile == 'offset-reset-v2':
+                    from tools.benchmark.offset_reset_native_source import install_offset_causal
 
-                def finish_native():
-                    result["native"] = finish_client(client)
+                    install_offset_causal(shadow,client.managed_source)
 
-                journal.cleanup("native consumer", finish_native, priority=95)
 
             def finish_shadow():
                 result["shadow"] = shadow.finish()
@@ -1150,6 +1197,10 @@ def main():
             legacy_factory=lambda: mavutil.mavlink_connection('udpin:127.0.0.1:14548', source_system=254))
         if args.managed_source_config:
             wire_owner.attach_managed_source(client.managed_source)
+            if args.disarmed_odometry:
+                from tools.benchmark.disarmed_odometry_receiver import DisarmedOdometryReceiver
+
+                wire_owner.estimate_receiver = DisarmedOdometryReceiver(client.managed_source)
 
         def submit(kind, message):
             arrival = time.monotonic_ns()

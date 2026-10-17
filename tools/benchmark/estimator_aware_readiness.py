@@ -68,6 +68,11 @@ def _validate_common_ack(value, now):
     if type(value) is not dict or value.get("kind") not in {"I", "C"}:
         raise ValueError("invalid native acknowledgement")
     expected = CAMERA_ACK_KEYS if value["kind"] == "C" else COMMON_ACK_KEYS
+    v2 = value.get('native_profile') == 'offset-reset-v2'
+    if v2:
+        from tools.benchmark.offset_reset_native_source import LIFECYCLE_FIELDS
+
+        expected = expected | LIFECYCLE_FIELDS
     if set(value) != expected:
         raise ValueError("native acknowledgement schema")
     sequence = _integer(value["sequence"], "native sequence")
@@ -82,7 +87,18 @@ def _validate_common_ack(value, now):
         raise ValueError("native acknowledgement clock order")
     if type(value["gray_first"]) is not int or not -1 <= value["gray_first"] <= 255:
         raise ValueError("invalid native gray value")
-    if value["fusion_eligible"] is not False or value["quality"] is not None or value["reset_counter"] is not None:
+    if v2:
+        if (type(value['reset_counter']) is not int or value['reset_counter'] != 0
+                or type(value['reset_total']) is not int or value['reset_total'] != 0
+                or value['native_lifecycle_known'] is not True
+                or type(value['native_pid']) is not int or value['native_pid'] <= 0
+                or type(value['native_session']) is not str or len(value['native_session']) != 64
+                or any(c not in '0123456789abcdef' for c in value['native_session'])
+                or type(value['camera_imu_offset_ns']) is not int
+                or not -1_000_000_000 <= value['camera_imu_offset_ns'] <= 1_000_000_000):
+            raise ValueError('native v2 lifecycle invalid; concrete client separately checks PID/session binding')
+    if (value["fusion_eligible"] is not False or value["quality"] is not None
+            or not v2 and value["reset_counter"] is not None):
         raise ValueError("unexpected native health claim")
     return sequence, sample, acknowledged
 
