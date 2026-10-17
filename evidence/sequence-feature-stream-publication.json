@@ -1,0 +1,305 @@
+{
+  "schema": "sequence-feature-stream-publication-v1",
+  "software_commit": "6c3700af7e91ade14361e6afb18922c522302be8",
+  "archive": {
+    "archive": "evidence/sequence-feature-stream-dev-1701.zip",
+    "bytes": 3178396,
+    "sha256": "1bbb3e8e622a3cb95f2238004fd2caabd8342ad782cbcece4d31ddce5cac6b01",
+    "members": 1721,
+    "mapped_members": 1720,
+    "uncompressed_bytes": 9568401,
+    "mapped_payload_bytes": 9568401,
+    "manifest_bytes": 424363,
+    "manifest_sha256": "a600adf2f08acaa1abcaf5fb7cab061b90619de85dddd8fcdad00d3fb77a5bf6",
+    "zip_expanded_bytes": 9992764,
+    "scope": "uncompressed_bytes is mapped-only alias; whole expanded includes manifest. All mapped bytes immutable after seal except separately ledgered one final plan checkbox byte. Postseal receipt/audits/stage/publication/PR/automation/NEXT_PHASE remain outside."
+  },
+  "software_identities": [
+    {
+      "path": "src/flydrones/connectome_training/feature_sequence.py",
+      "working_bytes": 10980,
+      "working_sha256": "0e11131a6b41184dae172c494e4f34a78e64781c08c0ed6f4d0e5dd8df8acf5b",
+      "git_normalized_bytes": 10980,
+      "git_normalized_sha256": "0e11131a6b41184dae172c494e4f34a78e64781c08c0ed6f4d0e5dd8df8acf5b"
+    },
+    {
+      "path": "tests/connectome_training/test_sequence_feature_stream.py",
+      "working_bytes": 22506,
+      "working_sha256": "2d2f43fe2c4721fb799532761623d47779c640eab1b351af354c0a4dd1438454",
+      "git_normalized_bytes": 22506,
+      "git_normalized_sha256": "2d2f43fe2c4721fb799532761623d47779c640eab1b351af354c0a4dd1438454"
+    },
+    {
+      "path": "src/flydrones/connectome_training/features.py",
+      "working_bytes": 7069,
+      "working_sha256": "a57f1b3e956ea77a8e03ce5f8e4bb9875c876be38860320b27a4a167d887c1d5",
+      "git_normalized_bytes": 7069,
+      "git_normalized_sha256": "a57f1b3e956ea77a8e03ce5f8e4bb9875c876be38860320b27a4a167d887c1d5"
+    },
+    {
+      "path": "src/flydrones/connectome_training/sequence_corpus.py",
+      "working_bytes": 3482,
+      "working_sha256": "6e73c4aed6e3a2801b5dc83e68156865dd4df9cda5f91b3cfd13288436a6ab24",
+      "git_normalized_bytes": 3482,
+      "git_normalized_sha256": "6e73c4aed6e3a2801b5dc83e68156865dd4df9cda5f91b3cfd13288436a6ab24"
+    },
+    {
+      "path": "src/flydrones/connectome_training/curriculum_session.py",
+      "working_bytes": 21342,
+      "working_sha256": "62c818ba10ce7d06cbaf17ee301892f26e850738d46588b2fff1f9b66a1e8542",
+      "git_normalized_bytes": 21342,
+      "git_normalized_sha256": "62c818ba10ce7d06cbaf17ee301892f26e850738d46588b2fff1f9b66a1e8542"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-10-17-sequence-feature-stream-design.md",
+      "working_bytes": 3827,
+      "working_sha256": "2cbc0c348168ece2c63ddde05472b5e23284e7ef18b005eceee6dd23694c2f51",
+      "git_normalized_bytes": 3827,
+      "git_normalized_sha256": "2cbc0c348168ece2c63ddde05472b5e23284e7ef18b005eceee6dd23694c2f51"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-10-17-sequence-feature-stream.md",
+      "working_bytes": 2745,
+      "working_sha256": "cc58708f87dd1dd291fe541408873dddebfd9eee9e753ce35ba89afd5bda5d7a",
+      "git_normalized_bytes": 2745,
+      "git_normalized_sha256": "cc58708f87dd1dd291fe541408873dddebfd9eee9e753ce35ba89afd5bda5d7a"
+    },
+    {
+      "path": "docs/SEQUENCE_FEATURE_STREAM_PRODUCTION_REPORT.md",
+      "working_bytes": 9911,
+      "working_sha256": "18b2e5e2648dd4330966eaa8f61c52573bb0634230b2439aaebc13cef933c3e2",
+      "git_normalized_bytes": 9911,
+      "git_normalized_sha256": "18b2e5e2648dd4330966eaa8f61c52573bb0634230b2439aaebc13cef933c3e2"
+    }
+  ],
+  "publication_delta": {
+    "path": "docs/superpowers/plans/2026-10-17-sequence-feature-stream.md",
+    "offsets": [
+      2440
+    ],
+    "before_sha256": "b74916da7d9fc439fb9146821b17c510d880079f592456a8274a27007397e673",
+    "after_sha256": "cc58708f87dd1dd291fe541408873dddebfd9eee9e753ce35ba89afd5bda5d7a",
+    "before_byte": 32,
+    "after_byte": 120,
+    "only_change": "one final publication checkbox; archived plan2done remains in ZIP"
+  },
+  "source_review": {
+    "original_grade": "C0/I3/M1",
+    "executor_gate_grade": "C0/I4/M0",
+    "original_json_sha256": "49e653045bb66151171a22642982332c69219011f919cafc5b33dc9f24b28d85",
+    "original_md_sha256": "f851701784e70be5a19c1fccd32c168500c553b6b338bd0401616028d983f12c",
+    "executor_sha256": "b46afd1af13aa0c1f7af36536314bef2c0cdda106cd6e5809f592c4a814e7902",
+    "single_bounded_fix": true,
+    "no_second_source_review": true
+  },
+  "delivery_audits": [
+    {
+      "path": "results/sequence-feature-stream-dev-1701/independent-sequence-feature-stream-archive-audit.json",
+      "bytes": 30053,
+      "sha256": "57bf9d84c3a7f1cde194dcf4c09eafd6c22013c1f1dc62c0c560933233433ba2"
+    },
+    {
+      "path": "results/sequence-feature-stream-dev-1701/independent-sequence-feature-stream-archive-audit.md",
+      "bytes": 5853,
+      "sha256": "0cabffb59e225d3fba800d88b1cef63609006390f695d727abff14dbe4df832d"
+    },
+    {
+      "path": "results/sequence-feature-stream-dev-1701/independent-sequence-feature-stream-archive-audit-v2.json",
+      "bytes": 33052,
+      "sha256": "b29b85e69eb0fb1cdd711dbe3801055103f787c572f03829dac2d017b142dab4"
+    },
+    {
+      "path": "results/sequence-feature-stream-dev-1701/independent-sequence-feature-stream-archive-audit-v2.md",
+      "bytes": 4642,
+      "sha256": "abd66e4568659d685b7efc6ec07b8ea716a9b50371288f741422a7f6adcb24be"
+    }
+  ],
+  "historical_archives": {
+    "count": 305,
+    "bytes": 904870846,
+    "ledger_sha256": "12960510083f909882391317ba6cea07c43d12d6599e9eee7590569e65ef2353",
+    "scope": "POSTsoftware not native prepin; initial281trackedZIPbaseline distinguished"
+  },
+  "old_products": {
+    "count": 836,
+    "changed": [
+      "src/flydrones/connectome_training/curriculum_session.py",
+      "src/flydrones/connectome_training/features.py",
+      "src/flydrones/connectome_training/sequence_corpus.py"
+    ],
+    "unchanged": 833,
+    "new_product": [
+      "src/flydrones/connectome_training/feature_sequence.py",
+      "tests/connectome_training/test_sequence_feature_stream.py"
+    ],
+    "all_consumed_version_sources_byte_same": true,
+    "scope": "Original consumed source modules unchanged; only three current curriculum software modules evolved. No target attempt."
+  },
+  "original382": {
+    "copies_unchanged": true,
+    "prior_six_historical": [
+      "src/flydrones/connectome_training/curriculum_session.py",
+      "src/flydrones/connectome_training/dataset.py",
+      "src/flydrones/connectome_training/inference.py",
+      "src/flydrones/connectome_training/inference_artifact.py",
+      "src/flydrones/connectome_training/model.py",
+      "src/flydrones/connectome_training/trainer.py"
+    ],
+    "current_seven_evolved": [
+      "src/flydrones/connectome_training/curriculum_session.py",
+      "src/flydrones/connectome_training/dataset.py",
+      "src/flydrones/connectome_training/features.py",
+      "src/flydrones/connectome_training/inference.py",
+      "src/flydrones/connectome_training/inference_artifact.py",
+      "src/flydrones/connectome_training/model.py",
+      "src/flydrones/connectome_training/trainer.py"
+    ],
+    "request_release_stale": true,
+    "no_missing_prepin_fabrication": true
+  },
+  "history_pins": [
+    {
+      "path": "results/static-v4-executor-completion-dev-1701/reviewed-recipe.frame",
+      "bytes": 232184,
+      "sha256": "546c9ae91346ea647591fe04c5f8568bc64b2b3eb6636334bf8909b50ae442a2"
+    },
+    {
+      "path": "evidence/flydrones-pr65-history-through-linear-sequence-dev-1701.md",
+      "bytes": 65389,
+      "sha256": "06cff545124b5a19439799eca0d1385a7ad7113a19bf55014ab717bd8a121836"
+    },
+    {
+      "path": "evidence/membrane-dynamics-production-retention-correction.json",
+      "bytes": 6546,
+      "sha256": "802f6402c44f72b4b565e8cff5ef31a1525c027da0edb9877502161db99e0152"
+    },
+    {
+      "path": "evidence/role-comparison-production-postseal-progress-correction.json",
+      "bytes": 1053,
+      "sha256": "d9334ebe173e58f3c69c7d045dbb37a69e8c77e87245504fa417b71616caabf7"
+    },
+    {
+      "path": "evidence/px4-firmware-scope-entry-review-count-correction.json",
+      "bytes": 1829,
+      "sha256": "90ed8b5c2667badcd8e60c6ae94f9be31eedd33dcf5368f5ac2022d6d2537208"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/independent-px4-scope-entry-final-publication-audit.json",
+      "bytes": 39954,
+      "sha256": "347f4f43be535e417d5b045aa79bde707854fa3535c6ce470351da84df4413fc"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/NEXT_PHASE.md",
+      "bytes": 2973,
+      "sha256": "a26e54604e1cab314b324cf39f8a8bef5d598a848cc07edf6dd3bb1a5ac2056d"
+    },
+    {
+      "path": "docs/PX4_FIRMWARE_SCOPE_ENTRY_PRODUCTION_REPORT.md",
+      "bytes": 10302,
+      "sha256": "037a7341ada84b412e693e711dba9f5ed6c309e009cee08c98f6e61e58b7be34"
+    },
+    {
+      "path": "evidence/px4-firmware-scope-entry-publication.json",
+      "bytes": 91817,
+      "sha256": "510046964703e4bdfdfac192ec923e0cec30ee1f06cf73cc1f9796441ac2f5fe"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/independent-px4-scope-entry-review.json",
+      "bytes": 17917,
+      "sha256": "536ef22d4147b9c8c36caade51a198e602c362f21607effb3427dd1da10d9a63"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/executor-fix-pass.md",
+      "bytes": 8089,
+      "sha256": "ab97e2bd4c1c996d7f09bc725818aeae566531ff78627a3e34629dd122bd9290"
+    },
+    {
+      "path": "docs/TARGET_BEARING_STATIC_V3_HARNESS_FAILURE_REPORT.md",
+      "bytes": 11143,
+      "sha256": "fba96c9e2ba958a5bf55e09b0498c3bccb3e53417ffd6c34a7238d2522a949e7"
+    },
+    {
+      "path": "docs/TARGET_BEARING_STATIC_V4_EXECUTOR_COMPLETION_REPORT.md",
+      "bytes": 13430,
+      "sha256": "654ca735fc135a2079b32cc87bb5647e20f2bca4b7ae5a5c37fd2a89e837b693"
+    },
+    {
+      "path": "evidence/flydrones-history-through-initialized-baseline-dev-1701.json",
+      "bytes": 81675,
+      "sha256": "df122e1bc9d3b051b4b7606d2263d991b822a587c49758184b13449e4e5a97eb"
+    },
+    {
+      "path": "evidence/flydrones-history-through-loader-path-research-dev-1701.json",
+      "bytes": 80946,
+      "sha256": "80dfb89ed0e51e639bd6b24b115cbcd3c444b967614e2e8334d55962c262b824"
+    },
+    {
+      "path": "evidence/flydrones-history-through-admitted-executor-dev-1701.json",
+      "bytes": 89359,
+      "sha256": "c88840b6f58dea4e7e4931683c4993b4fc3b8eb55887807994b6381ef6c2b989"
+    }
+  ],
+  "qualifications": {
+    "source": false,
+    "clock": false,
+    "measured_calibration": false,
+    "accuracy": false,
+    "teacher": false,
+    "fusion": false,
+    "training_success": false,
+    "flight": false
+  },
+  "runtime_graph_frozen": false,
+  "physical_dispatch_ready": false,
+  "goal_status": "blocked_read_only",
+  "automation_status": "ACTIVE",
+  "publication_remote": "personal_only",
+  "draft_PR": 65,
+  "prior_PR_body": {
+    "characters": 34478,
+    "sha256": "5d8ed30c79c3cfca9aa2dd105470f1370cf59b9b50f391fe1295acd06031ae4c"
+  },
+  "inherited_limitations": [
+    "membrane10pytestpayload6546B802f6402...missing, no repair",
+    "rolecomparisonDL-M1postsealappend/restoration1053Bd9334ebe...",
+    "PX4-DL-M1countcorrection1829B90ed8b5c...",
+    "originalhelperfailures/additivecorrections/pointintimeboundaries",
+    "AV3221225477causeUNKNOWN/120srecordergap"
+  ],
+  "scope": "8software identities working/Gitnormalized; ledger separate. ZIP/report/raw/source immutable afterseal; subsequent publication artifacts outside. No native/fullmodel/scientificfair/flight qualification.",
+  "postseal_delivery_notes": {
+    "publication-helper-syntax-failure.json": {
+      "bytes": 660,
+      "sha256": "61951b6549738b085514fc1dd8a61cb17f8c4eeb3cca3788c91a4c6c42403851"
+    },
+    "publication.py": {
+      "bytes": 12201,
+      "sha256": "f1e7deea5cafb96e0a696edb15ca9aaedcbc0f03e402d1b2b593e3da0c4bc168"
+    },
+    "publication-v2.py": {
+      "bytes": 12200,
+      "sha256": "a2440996f4aa6f4d29c771f23dd21994e5f041a0d0ddbb39dfd53ece29002b8d"
+    },
+    "publication-v3.py": {
+      "bytes": 13403,
+      "sha256": "f2db9e175b9cb47320c1debdb3ffee660f2fab144a8eb613663b6b199d7285ed"
+    },
+    "publication-effective-audit-adaptation.json": {
+      "bytes": 673,
+      "sha256": "a783a046aca31dbb471705e8c43f29bc5319965a1265b5ab7f05188a780122d4"
+    },
+    "publication-v4.py": {
+      "bytes": 13938,
+      "sha256": "46774e165f1e9ca8c8b9fc99a940182474742faeda595b556e669273889f900c"
+    },
+    "software-publication-collision.json": {
+      "bytes": 884,
+      "sha256": "3ed53cd806ed45c617731e1f5c9ad657ffed7866ccc760e7607fee6e1b3af591"
+    },
+    "software-commit-receipt.json": {
+      "bytes": 1129,
+      "sha256": "c5bdf17030ca55c512e5841d21243f58f50393ab5ca18393195765e368c4cc64"
+    }
+  },
+  "postseal_delivery_scope": "Original syntax helper failure before execution retained, additive v2 single-parenthesis repair; v3 software Git commit succeeded but receipt filename collided with existing command metadata; original files kept, read-only Git head/parent/members/clean proof derives distinct receipt, v4 selects it without rerunning stage/commit; additive v3 selects effective audit PASS and ledger pins original+effective results. Original delivery FINDINGS was overstrict re-archive-all-preservation-pins predicate; recipe bytes/hash and original historical archive member verified by effective v2. No product/sealed source/raw/report/ZIP mutation, no second source/native review."
+}
