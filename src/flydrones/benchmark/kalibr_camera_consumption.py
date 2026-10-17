@@ -14,6 +14,7 @@ import yaml
 from .px4_camera_source import MAX_DOCUMENT, _array, _bound_bytes, _unique
 
 IMU_CONTRACT = "px4-d6f12ad-sensor-combined-frd-interval-mean-v1"
+RAW_IMU_CONTRACT = "gazebo-raw-frd-imu-sample-v1"
 
 
 def references(path, digest):
@@ -88,6 +89,7 @@ def chain(raw):
 
 @dataclass(frozen=True, init=False)
 class KalibrCameraArtifact:
+    imu_contract: str
     bundle_sha256: str
     rig_sha256: str
     intrinsics: tuple
@@ -99,13 +101,15 @@ class KalibrCameraArtifact:
     evidence: tuple
 
     @classmethod
-    def load(cls, path, digest, binding):
+    def load(cls, path, digest, binding, *, imu_contract=IMU_CONTRACT):
+        if imu_contract not in (IMU_CONTRACT, RAW_IMU_CONTRACT):
+            raise ValueError("unsupported IMU coordinate contract")
         _, doc, payload = references(path, digest)
         if (
             doc["rig_sha256"] != binding.sha256
             or doc["body_id"] != binding.body_id
             or doc["camera_id"] != binding.camera_id
-            or doc["imu_contract"] != IMU_CONTRACT
+            or doc["imu_contract"] != imu_contract
         ):
             raise ValueError("calibration rig/IMU coordinate contract mismatch")
         cameras = chain(payload["camchain"])
@@ -138,6 +142,7 @@ class KalibrCameraArtifact:
             error = "0" if rounded == exact else str((rounded - exact).normalize())
         obj = cls()
         for name, result in dict(
+            imu_contract=imu_contract,
             bundle_sha256=digest,
             rig_sha256=binding.sha256,
             intrinsics=tuple(intrinsic),
@@ -183,6 +188,7 @@ class KalibrCameraArtifact:
 
     def record(self):
         return {
+            "imu_contract": self.imu_contract,
             "bundle_sha256": self.bundle_sha256,
             "rig_sha256": self.rig_sha256,
             "artifact_sha256": dict(self.evidence),

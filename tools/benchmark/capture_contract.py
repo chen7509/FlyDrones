@@ -157,6 +157,14 @@ def execution_contract(args, launch_environment=None, *, record_provider=None):
             'profile': 'native-ack-fast-output-v1', 'period_ns': 20_000_000,
             'max_bytes_per_ack': 16_384, 'fusion_eligible': False, 'controller_ready': False,
         }
+    if getattr(args, 'managed_source_config', None) is not None or getattr(args, 'managed_source_sha256', None) is not None:
+        if ('online_estimate_feed' not in result or not getattr(args, 'wire_config', None)
+                or not getattr(args, 'managed_source_config', None) or not getattr(args, 'managed_source_sha256', None)):
+            raise ValueError('managed source requires explicit bound online feed and sole wire')
+        from tools.benchmark.managed_capture_source import configuration_record
+
+        result['managed_source'] = configuration_record(
+            args.managed_source_config, args.managed_source_sha256, args.shadow_config)
     if policy_path is not None:
         result['trajectory_gauge_policy'] = trajectory_gauge_policy_record(policy_path)
     simulation_seed = getattr(args, 'simulation_seed', None)
@@ -262,12 +270,12 @@ def worker_options(args):
         MOTION_INTENT_FIELD, HEALTH_PROFILE_FIELD, HEALTH_FAULT_FIELD,
         'reference_sha256', 'execution_contract', 'runtime_binding', POLICY_FIELD,
         'wire_config', 'agent_runtime_config', 'logger_diagnostic_profile',
-        'capture_profile', 'calibration_scene',
+        'capture_profile', 'calibration_scene', 'managed_source_config', 'managed_source_sha256',
     ):
         value = getattr(args, field, None)
         if value is not None:
             if field in PATH_FIELDS + ('execution_contract', 'runtime_binding', POLICY_FIELD,
-                                      'wire_config', 'agent_runtime_config', 'calibration_scene'):
+                                      'wire_config', 'agent_runtime_config', 'calibration_scene', 'managed_source_config'):
                 value = str(Path(value).resolve())
             result += ['--' + field.replace('_', '-'), str(value)]
     if getattr(args, 'startup_preflight', False):

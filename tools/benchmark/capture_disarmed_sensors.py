@@ -209,6 +209,9 @@ def parse_capture_args(argv=None):
     parser.add_argument("--shadow-config", type=Path)
     parser.add_argument("--online-estimate-feed", action="store_true",
                         help="Consume fresh native fast predictions online; disarmed and unqualified")
+    parser.add_argument("--managed-source-config", type=Path,
+                        help="Explicit bound calibration consumer for owned online capture")
+    parser.add_argument("--managed-source-sha256")
     parser.add_argument("--reference-module", type=Path)
     parser.add_argument("--reference-sha256")
     parser.add_argument("--reference-fault-profile", choices=["native-pre-epoch-v1"])
@@ -240,6 +243,10 @@ def parse_capture_args(argv=None):
     parser.add_argument('--calibration-scene', type=Path)
     parser.add_argument('--prepared-scene', action='store_true')
     args = parser.parse_args(argv)
+    if args.managed_source_config is not None or args.managed_source_sha256 is not None:
+        if (not args.managed_source_config or not args.managed_source_sha256
+                or not args.online_estimate_feed or not args.wire_config):
+            parser.error("managed source requires config/SHA, online feed and sole owned wire")
     if args.online_estimate_feed and (
         not args.shadow_binary or not args.shadow_config or not args.execution_contract
         or not args.runtime_binding or args.health_fault_profile or args.reference_fault_profile
@@ -710,19 +717,31 @@ def run_capture_runtime(*, journal, output, result, errors, fixture, post_update
     result["status"] = "capture_completed"
 
 
-def make_capture_native_client(args, session_dir, *, on_first_ack):
+def make_capture_native_client(args, session_dir, *, on_first_ack, session_id=None):
     """Select the live output consumer inside the actual capture lifecycle."""
     from tools.benchmark.openvins_online_shadow import NativeClient
 
     client_type = NativeClient
+    options = {}
     if getattr(args, "online_estimate_feed", False):
         from tools.benchmark.capture_online_estimates import LiveEstimateNativeClient
 
         client_type = LiveEstimateNativeClient
+    if getattr(args, "managed_source_config", None) is not None:
+        from tools.benchmark.managed_capture_source import (
+            ManagedCaptureSource,
+            ManagedEstimateNativeClient,
+            load_managed_configuration,
+        )
+
+        artifact, _ = load_managed_configuration(
+            args.managed_source_config, args.managed_source_sha256, args.shadow_config)
+        options['source'] = ManagedCaptureSource(artifact, session_id=session_id)
+        client_type = ManagedEstimateNativeClient
     return client_type(
         [str(args.shadow_binary.resolve()), str(args.shadow_config.resolve()),
          str(session_dir / "states.jsonl"), str(session_dir / "fast.jsonl")],
-        session_dir, on_first_ack=on_first_ack)
+        session_dir, on_first_ack=on_first_ack, **options)
 
 
 def main():
@@ -884,6 +903,14 @@ def main():
             required += estimator_inputs(args.shadow_binary, args.shadow_config, args.reference_module)
             if args.online_estimate_feed:
                 required.append(ROOT / "tools/benchmark/capture_online_estimates.py")
+            if args.managed_source_config:
+                from tools.benchmark.managed_capture_source import load_managed_configuration
+
+                _, managed_inputs = load_managed_configuration(
+                    args.managed_source_config, args.managed_source_sha256, args.shadow_config)
+                required.extend(managed_inputs)
+                required.extend((ROOT / "tools/benchmark/managed_capture_source.py",
+                                 ROOT / "tools/benchmark/disarmed_estimate_receiver.py"))
             if raw_capture:
                 scene = contract['raw_measurement']['scene']
                 required.extend(Path(scene['path'])/name for name in scene['files'])
@@ -962,7 +989,7 @@ def main():
                         binding.observe_owned(role, "ready")
                         owned_ready[role] = True
 
-                native = make_capture_native_client(args, session_dir, on_first_ack=openvins_ready)
+                native = make_capture_native_client(args, session_dir, on_first_ack=openvins_ready, session_id=session_id)
                 if binding and role in binding.required_owned:
                     binding.register_owned(role, native.process, args.shadow_binary)
                     owned_processes[role] = native.process
@@ -1007,6 +1034,8 @@ def main():
                 native_session_id = "online-native-pending"
                 client = create_client(0, native_session_id, shadow_dir)
                 native_session_id = "online-native-" + str(client.process.pid)
+                if args.managed_source_config:
+                    client.managed_source.bind_capture_session(native_session_id)
                 if args.health_profile:
                     from tools.benchmark.openvins_health_contract import CovarianceProfile
 
@@ -1119,6 +1148,8 @@ def main():
             heartbeat_sink=lambda event: dispatch_capture_heartbeat(
                 event, writer, fanout, arming, binding, owned_ready, owned_processes),
             legacy_factory=lambda: mavutil.mavlink_connection('udpin:127.0.0.1:14548', source_system=254))
+        if args.managed_source_config:
+            wire_owner.attach_managed_source(client.managed_source)
 
         def submit(kind, message):
             arrival = time.monotonic_ns()

@@ -25,7 +25,7 @@ class ObservedWireSession:
 
     def __init__(self, process, expected, path, remote_clock, clock_lane, sock, start_ns,
                  journal, descriptor_guard, *, backend=None, heartbeat_sink=None, retention=None,
-                 interval_transaction=False):
+                 interval_transaction=False, estimate_receiver=None):
         if (type(remote_clock) is not RemoteMonotonicClock or type(clock_lane) is not JournaledSimulationClock
                 or not callable(journal) or not callable(descriptor_guard)
                 or type(start_ns) is not int or not 0 <= start_ns < 2**64 - 8_000_000_000
@@ -37,6 +37,11 @@ class ObservedWireSession:
         self._backend = backend or LinuxBackend()
         self._journal, self._descriptor_guard = journal, descriptor_guard
         self._heartbeat_sink = heartbeat_sink
+        self._estimate_receiver = estimate_receiver
+        # The existing segmented profile has a closed channel namespace. Keep
+        # this new diagnostic's bounded derived records in final session evidence;
+        # raw native/receive bytes retain their existing journals. Not crash-safe.
+        self._estimate_events = []
         self._interval_enabled = interval_transaction
         self._start = self._last_now = start_ns
         self._deadline = start_ns + 8_000_000_000
@@ -98,6 +103,10 @@ class ObservedWireSession:
                     receiver=None if self._receiver is None else self._receiver.evidence,
                     core=None if self._core is None else self._core.evidence,
                     cleanup_errors=copy.deepcopy(self._cleanup_errors),
+                    estimate_receiver=None if self._estimate_receiver is None else dict(
+                        events=copy.deepcopy(self._estimate_events),
+                        send_events=copy.deepcopy(self._estimate_receiver.send_events),
+                        response_ns=self._estimate_receiver.response_ns, fusion_verified=False, odometry_sent=False),
                     refusal_journal_error=self._refusal_journal_error)
 
     def _clock_signature(self):
@@ -289,8 +298,50 @@ class ObservedWireSession:
             selected = dict(session_id=self._signature[0], **asdict(self._selection))
             self._selections.append(copy.deepcopy(selected))
             self._forward('selection', selected)
-            return self._core.receive(packet.data, packet.peer, packet.received_ns, self._selection.observation.sim_ns)
+            result = self._core.receive(packet.data, packet.peer, packet.received_ns, self._selection.observation.sim_ns)
+            if self._estimate_receiver is not None:
+                self._estimate_receiver.receive(self._core._wire._codec.decode_datagram(packet.data), packet.received_ns)
+            return result
         return self._operation(action, lambda _: None)
+
+    def poll_estimate_receiver(self):
+        """Same polling thread, socket, sequence, ownership and deadline as TIMESYNC."""
+        if self._estimate_receiver is None:
+            return
+        def action():
+            self._context()
+            if self._maintenance is None:
+                raise ValueError('managed receiver requires completed wire bootstrap')
+            wire = self._core._wire
+            self._core._owned.check(allow_completed=True)
+            now = self._clock()
+            if wire._last_unarmed is None or not 0 <= now-wire._last_unarmed < 2_000_000_000:
+                raise ValueError('managed receiver requires fresh disarmed PX4')
+            observer = self._estimate_receiver
+            if observer.due(now):
+                raw = observer.request(wire._codec, wire._sequence, now)
+                self._record_estimate(dict(event='parameter_read_attempt', raw_hex=raw.hex()))
+                count = self._send_interval(raw, wire._peer)
+                # Retain the actual OS return before post-send/source checks.
+                observer.send_events[-1]['bytes_returned'] = count
+                wire._sequence = (wire._sequence+1) % 256
+                self._record_estimate(dict(event='parameter_read_return', bytes_returned=count))
+                if type(count) is not int or count != len(raw):
+                    raise ValueError('short parameter read send')
+            if observer.response_ns is not None:
+                observer.check(self._clock(), disarmed=True)
+                # Obtain the same clock selection as normal receive; no invented epoch.
+                selection = self._lane.snapshot(self._clock())
+                state = observer.diagnostic(selection.observation.sim_ns)
+                if state is not None:
+                    self._record_estimate(dict(event='managed_state_blocked', **state))
+        return self._operation(action, lambda _: None)
+
+    def _record_estimate(self, event):
+        if len(self._estimate_events) >= 4096:
+            raise ValueError('managed receiver event capacity')
+        self._estimate_events.append(copy.deepcopy(event))
+        self._forward('estimate_receiver', event)
 
     def poll_listener(self):
         def commit(result):

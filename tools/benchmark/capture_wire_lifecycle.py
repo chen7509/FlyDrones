@@ -220,6 +220,8 @@ class CaptureWireDriver:
                              or state['phase'] in ('first_ready', 'stream_ready', 'done'))):
                     self.session.poll_interval()
                 self._handoff()
+                if self.phase == 'maintenance':
+                    self.session.poll_estimate_receiver()
                 with self._health_lock:
                     self._last_poll_ns = self.session._backend.clock()
             except BaseException as exc:
@@ -365,6 +367,7 @@ class CaptureWireOwner:
         self.source_guard = source_guard
         self.finished = False
         self.failure = None
+        self.estimate_receiver = None
         journal.cleanup('capture wire owner', self.finish, priority=15)
         try:
             self.sock = socket_factory(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
@@ -387,6 +390,13 @@ class CaptureWireOwner:
         entry = 'capture wire owner: ' + _error(exc)
         if entry not in self.result['errors']:
             self.result['errors'].append(entry)
+
+    def attach_managed_source(self, source):
+        from tools.benchmark.disarmed_estimate_receiver import DisarmedEstimateReceiver
+
+        if self.driver is not None or self.estimate_receiver is not None or self.finished or self.failure:
+            raise ValueError('managed source must attach before wire session construction')
+        self.estimate_receiver = DisarmedEstimateReceiver(source)
 
     def _clock_record(self, row):
         encoded = json.dumps(row, allow_nan=False) + '\n'
@@ -511,7 +521,7 @@ class CaptureWireOwner:
                 self.remote, self.lane, self.sock, start_ns,
                 lambda _: None, self._descriptor_guard, backend=self.backend,
                 heartbeat_sink=self.heartbeat_sink, retention=self.store,
-                interval_transaction=True)
+                interval_transaction=True, estimate_receiver=self.estimate_receiver)
             self.driver = bind_capture_wire(
                 None, self.journal, self.result, session, lambda *_: None,
                 total_deadline_ns=self.deadline, register_cleanup=False,
@@ -545,7 +555,7 @@ class CaptureWireOwner:
                                            self.lane, self.sock, self.start_ns, lambda _: None,
                                            self._descriptor_guard, backend=self.backend,
                                            heartbeat_sink=self.heartbeat_sink, retention=self.store,
-                                           interval_transaction=True)
+                                           interval_transaction=True, estimate_receiver=self.estimate_receiver)
             self.driver = bind_capture_wire(fixture, self.journal, self.result, session, original_post,
                                             total_deadline_ns=self.deadline, register_cleanup=False)
             return self.driver

@@ -230,9 +230,10 @@ class Px4UlogCameraSource:
         timing = audit_state_sample_times(frame_ns, self._topics)
         calibration_records = [None] * len(frame_ns)
         if calibration_artifact is not None:
-            from .kalibr_camera_consumption import KalibrCameraArtifact
+            from .kalibr_camera_consumption import IMU_CONTRACT, KalibrCameraArtifact
 
             if (type(calibration_artifact) is not KalibrCameraArtifact
+                    or calibration_artifact.imu_contract != IMU_CONTRACT
                     or calibration_artifact.rig_sha256 != self.binding.sha256):
                 raise ValueError('byte-bound calibration artifact for this rig required')
             selected = []
