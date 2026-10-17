@@ -32,4 +32,4 @@ Consumes: NativeClient.send(action,pixels) acknowledgements and fresh flushed fa
 - [x] Record new tests RED; distinguish missing API from genuine behavior failures. Implement minimal live client and actual capture selection/worker/declaration forwarding.
 - [x] Verify new tests and necessary capture-contract neighbors with retained basetemp; Ruff/dedicated diff. No whole old suite/native execution.
 - [x] One fresh source review, retain original grades; executor rules every exclusion and performs one bounded fix pass with genuine RED→GREEN where required.
-- [ ] Report exact scope/failures, preserve current source/native boundaries, publish only personal/PR65 and carry next real-source dependencies forward.
+- [x] Report exact scope/failures, preserve current source/native boundaries, publish only personal/PR65 and carry next real-source dependencies forward.

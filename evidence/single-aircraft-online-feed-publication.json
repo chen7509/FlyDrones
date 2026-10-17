@@ -1,0 +1,78 @@
+{
+  "schema": "single-aircraft-online-feed-publication-v1",
+  "software_head": "c5af26f1dd5958de131335e0c5cf7386f9602f6c",
+  "software_identities": [
+    {
+      "path": "tools/benchmark/capture_online_estimates.py",
+      "working_archive_sha256": "498e5607c15e8f17f7a1bf980f6d0057399c03e8c02fab17bb618518d4ccf33f",
+      "working_bytes": 10468,
+      "git_blob_sha256": "498e5607c15e8f17f7a1bf980f6d0057399c03e8c02fab17bb618518d4ccf33f",
+      "git_blob_bytes": 10468
+    },
+    {
+      "path": "tools/benchmark/capture_disarmed_sensors.py",
+      "working_archive_sha256": "aeea2e4b7f5ea37ed56aced18f449979caf5ad47de46725c8fc4c8e831331e7d",
+      "working_bytes": 65910,
+      "git_blob_sha256": "aeea2e4b7f5ea37ed56aced18f449979caf5ad47de46725c8fc4c8e831331e7d",
+      "git_blob_bytes": 65910
+    },
+    {
+      "path": "tools/benchmark/capture_contract.py",
+      "working_archive_sha256": "5ed057b25344c283e2fdba25e3bc05e3ca85413df055b23946fab041a3a1ad53",
+      "working_bytes": 15268,
+      "git_blob_sha256": "3bf8a37c34c4062fb0de2116dd40f7dc11bacbae3fe3b388ccc8366524e83cd1",
+      "git_blob_bytes": 14977
+    },
+    {
+      "path": "tests/benchmark/test_capture_online_estimates.py",
+      "working_archive_sha256": "3a5e5cff91d603ec07d56b4c4e0ab9941b11aa4399f3097656041be6a1bd59f8",
+      "working_bytes": 15591,
+      "git_blob_sha256": "3a5e5cff91d603ec07d56b4c4e0ab9941b11aa4399f3097656041be6a1bd59f8",
+      "git_blob_bytes": 15591
+    },
+    {
+      "path": "docs/superpowers/specs/2026-10-17-capture-online-estimates-design.md",
+      "working_archive_sha256": "39dc089c8f2e496cd925c1f9df2d453f18fa9b932ff99c26cf026392f079bb20",
+      "working_bytes": 3415,
+      "git_blob_sha256": "39dc089c8f2e496cd925c1f9df2d453f18fa9b932ff99c26cf026392f079bb20",
+      "git_blob_bytes": 3415
+    },
+    {
+      "path": "docs/superpowers/plans/2026-10-17-capture-online-estimates.md",
+      "working_archive_sha256": "500cc823f5ebfbe9935a9ed03d7adde4f8533ced6e9b58ec65ef3dfbeef81360",
+      "working_bytes": 3036,
+      "git_blob_sha256": "0547bd6fb28dbbb8f1e48ed1d3122a13e688a4ddeaceff7387c7e5a0b9bbb7a2",
+      "git_blob_bytes": 3001
+    },
+    {
+      "path": "docs/SINGLE_AIRCRAFT_ONLINE_FEED_PROGRESS.md",
+      "working_archive_sha256": "77085d44f178a0b307dd1d87f82d37990daac1bc5a689084e64fbdf75a5c612c",
+      "working_bytes": 7480,
+      "git_blob_sha256": "02adce312da987dbfbf0af7a884df88fdd95fc3674a95b1a2116bfe796a26509",
+      "git_blob_bytes": 7453
+    }
+  ],
+  "archive": {
+    "archive": "evidence/single-aircraft-online-feed-20261017.zip",
+    "bytes": 1941515,
+    "sha256": "749169fb954b1899d27c78333d19b49e3965c2bc0b31ae94af912da59aff23c7",
+    "members": 748,
+    "mapped_members": 747,
+    "mapped_payload_bytes": 6767598,
+    "manifest_bytes": 181569,
+    "manifest_sha256": "59ec542581cfbb00e90c3b0a3f5e268a60e5979d87d1ad3e1debfcb6e5c7fd8f",
+    "whole_expanded_bytes": 6949167,
+    "scope": "Executor CRC/member/hash verification only, not independent source/native/archive reapproval; no old global scan"
+  },
+  "sole_publication_plan_change": {
+    "path": "docs/superpowers/plans/2026-10-17-capture-online-estimates.md",
+    "offset": 2884,
+    "before": 32,
+    "after": 120,
+    "before_sha256": "500cc823f5ebfbe9935a9ed03d7adde4f8533ced6e9b58ec65ef3dfbeef81360",
+    "after_sha256": "27ca9ba4541a4a9cd184d0ed77bca5ece0e85b0a8d7b5edb6719df34ebbd2ad5"
+  },
+  "original_review_sha256": "bd0cf6dc66263ac0028164d4a4e61e9c105b9d5b27b1a5048b7b0babc6f2c688",
+  "executor_disposition_sha256": "1fa8316ef486a164b18d1eef9f22e8339fabc92294d3efe505da4f551fedb157",
+  "scope": "Postseal software publication only; no second review/native approval or whole old archive/private inventory scan. Original report/raw/ZIP/map unchanged; receipts/PR/automation/handoff outside archive."
+}
