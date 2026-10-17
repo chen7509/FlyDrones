@@ -37,7 +37,7 @@
 - [x] Implement the opt-in routing/checks in the existing backend, source labels in the existing result writer, and immutable state contract. Keep default legacy math unchanged.
 - [x] Verify new tests plus necessary gateway publication/stationary/RGB neighbors, Ruff and dedicated diff checks. Record actual failures without rewriting logs.
 - [x] One independent source review C0/I3/M0, one bounded repair pass; final114passed2.00s/Ruff0/diff0. All13 exclusions ruled individually; no second review/native grant.
-- [ ] Publish only actual scope/results to personal PR65; do not claim flight completion.
+- [x] Publish only actual scope/results to personal PR65; do not claim flight completion.
 
 ### Downstream, still pending
 
