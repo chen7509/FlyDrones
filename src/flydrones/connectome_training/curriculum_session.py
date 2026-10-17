@@ -7,6 +7,7 @@ import time
 from collections import Counter
 from collections.abc import Iterable
 from dataclasses import asdict
+from functools import partial
 from hashlib import sha256
 from itertools import chain
 from pathlib import Path
@@ -26,6 +27,7 @@ from .dataset import (
     TrainingSequence,
     load_sequence,
 )
+from .feature_sequence import load_feature_sequence
 from .features import FEATURE_NAMES, feature_profile_for_names, sequence_tensors
 from .governance import validate_dataset_partitions
 from .losses import LossWeights
@@ -226,8 +228,9 @@ def _smoke_components(
     return connectome, parameters, datasets
 
 
-def _sequence_directories(paths: tuple[str, ...]) -> FileSequenceCorpus:
-    return FileSequenceCorpus(paths, loader=load_sequence)
+def _sequence_directories(paths: tuple[str, ...], *, profile: str | None = None) -> FileSequenceCorpus:
+    loader = load_sequence if profile is None else partial(load_feature_sequence, profile=profile)
+    return FileSequenceCorpus(paths, loader=loader)
 
 
 def _provenances(partition):
@@ -250,10 +253,16 @@ def _full_components(
     connectome_path: Path,
     parameters_path: Path,
 ) -> tuple[Connectome, ParameterSet, dict[str, tuple[FileSequenceCorpus, FileSequenceCorpus]]]:
+    if not connectome_path.is_file():
+        raise FileNotFoundError(f"connectome source does not exist: {connectome_path}")
+    parameters = load_parameter_set(parameters_path)
+    if parameters.identity.label != "full-male-cns":
+        raise ValueError("complete curriculum requires a full-male-cns parameter artifact")
+    profile = feature_profile_for_names(parameters.input_features)
     datasets = {}
     for stage in config.stages:
-        train = _sequence_directories(stage.train_paths)
-        validation = _sequence_directories(stage.validation_paths)
+        train = _sequence_directories(stage.train_paths, profile=profile)
+        validation = _sequence_directories(stage.validation_paths, profile=profile)
         if Counter(item.seed for item in _provenances(train)) != Counter(stage.train_seeds):
             raise ValueError(f"stage {stage.id} requires exactly one sequence per training seed")
         if Counter(item.seed for item in _provenances(validation)) != Counter(stage.validation_seeds):
@@ -263,12 +272,6 @@ def _full_components(
             _provenances(validation),
         )
         datasets[stage.id] = (train, validation)
-    if not connectome_path.is_file():
-        raise FileNotFoundError(f"connectome source does not exist: {connectome_path}")
-    parameters = load_parameter_set(parameters_path)
-    if parameters.identity.label != "full-male-cns":
-        raise ValueError("complete curriculum requires a full-male-cns parameter artifact")
-    profile = feature_profile_for_names(parameters.input_features)
     for train, validation in datasets.values():
         _validate_profile_sequences(chain(train, validation), profile)
     verify_source_digest(connectome_path, parameters.identity.model_sha256)

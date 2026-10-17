@@ -1,11 +1,12 @@
 from __future__ import annotations
 
 import math
+from dataclasses import dataclass
 
 import numpy as np
 import torch
 
-from .dataset import SequenceFrame, TrainingSequence
+from .dataset import SequenceFrame, SequenceProvenance, TrainingSequence
 
 FEATURE_NAMES = (
     "depth_left",
@@ -45,9 +46,7 @@ def frame_features(frame: SequenceFrame, *, profile: str = "legacy-v1") -> np.nd
         raise ValueError("masked depth feature profile not implemented")
     if profile == "depth-mask-v3" and frame.depth_valid is None:
         raise ValueError("depth-mask-v3 requires depth_valid")
-    if profile == "depth-mask-v3" and (
-            not isinstance(frame.depth_m, np.ndarray)
-            or frame.depth_m.dtype != np.float32):
+    if profile == "depth-mask-v3" and (not isinstance(frame.depth_m, np.ndarray) or frame.depth_m.dtype != np.float32):
         raise ValueError("masked depth_m requires a float32 array")
     depth = np.asarray(frame.depth_m, np.float32)
     rgb = np.asarray(frame.rgb)
@@ -58,10 +57,14 @@ def frame_features(frame: SequenceFrame, *, profile: str = "legacy-v1") -> np.nd
     coverage = []
     if profile == "depth-mask-v3":
         mask = np.asarray(frame.depth_valid)
-        if (mask.dtype != np.bool_ or mask.shape != depth.shape
-                or np.any(np.isinf(depth)) or np.any(depth <= 0)
-                or not np.array_equal(mask, np.isfinite(depth) & (depth > 0))
-                or rgb.dtype != np.uint8):
+        if (
+            mask.dtype != np.bool_
+            or mask.shape != depth.shape
+            or np.any(np.isinf(depth))
+            or np.any(depth <= 0)
+            or not np.array_equal(mask, np.isfinite(depth) & (depth > 0))
+            or rgb.dtype != np.uint8
+        ):
             raise ValueError("masked depth_m or depth_valid mask invalid")
         if not np.any(mask):
             raise ValueError("masked depth has no valid pixel")
@@ -80,16 +83,12 @@ def frame_features(frame: SequenceFrame, *, profile: str = "legacy-v1") -> np.nd
     if profile == "depth-mask-v3":
         mask_sectors = np.array_split(mask, 3, axis=1)
         inverse_depth = [
-            (float(np.clip(1.0 / np.median(sector[valid]), 0.0, 1.0))
-             if np.any(valid) else 0.0)
+            (float(np.clip(1.0 / np.median(sector[valid]), 0.0, 1.0)) if np.any(valid) else 0.0)
             for sector, valid in zip(depth_sectors, mask_sectors, strict=True)
         ]
         coverage = [float(np.mean(valid)) for valid in mask_sectors]
     else:
-        inverse_depth = [
-            float(np.clip(1.0 / np.median(sector), 0.0, 1.0))
-            for sector in depth_sectors
-        ]
+        inverse_depth = [float(np.clip(1.0 / np.median(sector), 0.0, 1.0)) for sector in depth_sectors]
     luminance = float(np.asarray(rgb, np.float32).mean() / 255.0)
     velocity_scaled = np.clip(velocity / 5.0, -1.0, 1.0)
     yaw_rate = float(np.clip(frame.yaw_rate / math.pi, -1.0, 1.0))
@@ -117,25 +116,46 @@ def frame_features(frame: SequenceFrame, *, profile: str = "legacy-v1") -> np.nd
     )
 
 
+@dataclass(frozen=True)
+class SequenceFeatures:
+    """Reduced CPU sequence, without retained image frames; not an authenticated artifact."""
+
+    provenance: SequenceProvenance
+    profile: str
+    features: torch.Tensor
+    commands: torch.Tensor
+    clearance: torch.Tensor
+
+    @property
+    def sample_count(self) -> int:
+        return self.features.shape[1]
+
+
 def sequence_tensors(
-    sequence: TrainingSequence,
+    sequence: TrainingSequence | SequenceFeatures,
     *,
     profile: str = "legacy-v1",
 ) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
+    if isinstance(sequence, SequenceFeatures):
+        width = {"legacy-v1": len(FEATURE_NAMES), "depth-mask-v3": len(MASKED_FEATURE_NAMES)}.get(profile)
+        if width is None or profile != sequence.profile:
+            raise ValueError("prepared sequence feature profile mismatch")
+        tensors = sequence.features, sequence.commands, sequence.clearance
+        if any(value.dtype != torch.float32 or value.device.type != "cpu" or value.layout != torch.strided for value in tensors):
+            raise ValueError("prepared sequence requires dense CPU float32 tensors")
+        if sequence.features.ndim != 3 or sequence.features.shape[0] != 1 or sequence.features.shape[2] != width:
+            raise ValueError("prepared sequence features shape invalid")
+        n = sequence.sample_count
+        if n < 1 or sequence.commands.shape != (1, n, 4) or sequence.clearance.shape != (1, n):
+            raise ValueError("prepared sequence labels shape invalid")
+        if any(not torch.isfinite(value).all() for value in tensors):
+            raise ValueError("prepared sequence contains non-finite values")
+        return tensors
     if not sequence.frames or len(sequence.frames) != len(sequence.targets):
         raise ValueError("sequence frames and targets must have the same non-zero length")
     features = np.stack([frame_features(frame, profile=profile) for frame in sequence.frames])
-    commands = np.stack(
-        [
-            np.asarray(
-                [*target.velocity_enu, target.yaw_rate], dtype=np.float32
-            )
-            for target in sequence.targets
-        ]
-    )
-    clearance = np.asarray(
-        [target.minimum_clearance_m for target in sequence.targets], np.float32
-    )
+    commands = np.stack([np.asarray([*target.velocity_enu, target.yaw_rate], dtype=np.float32) for target in sequence.targets])
+    clearance = np.asarray([target.minimum_clearance_m for target in sequence.targets], np.float32)
     if commands.shape != (len(sequence.targets), 4):
         raise ValueError("teacher commands must contain velocity_enu and yaw_rate")
     if not np.isfinite(commands).all() or not np.isfinite(clearance).all():

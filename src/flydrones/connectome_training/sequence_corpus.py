@@ -8,6 +8,11 @@ from hashlib import sha256
 from pathlib import Path
 
 from .dataset import SequenceProvenance, load_sequence
+from .features import SequenceFeatures
+
+
+def _sample_count(sequence):
+    return sequence.sample_count if isinstance(sequence, SequenceFeatures) else len(sequence.frames)
 
 
 def _discover(roots):
@@ -58,8 +63,8 @@ class SequenceSummary:
 class FileSequenceCorpus:
     """Owned file catalog, ordinary drift checks, not hostile filesystem proof.
 
-    One complete sequence is still decoded eagerly. A caller retaining yielded
-    objects is outside the catalog's reference lifetime bound.
+    The default loader decodes a whole sequence; the full curriculum selects
+    a row-reducing loader. Caller-retained objects are outside the lifetime bound.
     """
 
     def __init__(self, roots, *, loader=load_sequence):
@@ -72,7 +77,7 @@ class FileSequenceCorpus:
             sequence = loader(path)
             if _pins(path) != before:
                 raise ValueError("sequence corpus file changed during catalog decode")
-            summaries.append(SequenceSummary(path, sequence.provenance, len(sequence.frames), before))
+            summaries.append(SequenceSummary(path, sequence.provenance, _sample_count(sequence), before))
             del sequence
         self.summaries = tuple(summaries)
         self.frame_count = sum(row.frames for row in self.summaries)
@@ -84,7 +89,7 @@ class FileSequenceCorpus:
             if _pins(row.path) != row.pins:
                 raise ValueError("sequence corpus file identity changed")
             sequence = self._loader(row.path)
-            if _pins(row.path) != row.pins or sequence.provenance != row.provenance or len(sequence.frames) != row.frames:
+            if _pins(row.path) != row.pins or sequence.provenance != row.provenance or _sample_count(sequence) != row.frames:
                 raise ValueError("sequence corpus file/summary changed during decode")
             try:
                 yield sequence
