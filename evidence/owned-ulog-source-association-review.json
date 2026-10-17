@@ -1,0 +1,20 @@
+{
+  "reviewer": "/root/executor_review",
+  "review_scope": "Independent read-only code/report and final archive audit; no tests or processes dispatched in final review",
+  "critical": [], "important": [], "minor": [],
+  "archive": {
+    "path": "evidence/owned-ulog-source-association-dev-1701.zip",
+    "sha256": "d7c022cf53d1a5347b798b18c152647d59c2835a7e50f7649bb00880cdc804d1",
+    "bytes": 400490, "members": 695, "mapped_members": 694,
+    "crc_errors": 0, "duplicate_members": 0, "missing_or_unlisted_members": 0,
+    "size_or_sha256_errors": 0, "current_byte_differences": 0,
+    "previous_archive_hashes_verified": 12
+  },
+  "software_fixture_members": {"final-fixtures": 247, "final-v2-fixtures": 262},
+  "targeted_checks": {"passed": 177, "skipped": 2, "seconds": 5.44, "tests_exit": 0, "ruff_exit": 0, "diff_exit": 0},
+  "actual_pidfd_getfd_execution": false, "actual_px4_source_execution": false,
+  "source_clock_calibration_fusion_training_flight_qualified": false,
+  "prepublication_plan_task5_pending": true,
+  "declined_to_judge": ["Actual Linux pidfd permission/usability", "Real PX4 source/capture, sensor generation, continuous clock or measured spatial/time calibration", "Physical/full-model/flight qualification"],
+  "executor_disposition": "All declined real-runtime claims remain pending; no authority promoted and no obsolete run repeated"
+}

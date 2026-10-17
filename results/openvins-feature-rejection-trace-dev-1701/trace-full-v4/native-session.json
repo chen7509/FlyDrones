@@ -1,0 +1,13 @@
+{
+  "pid": 430,
+  "command": [
+    "results/openvins-feature-rejection-trace-dev-1701/online_probe_trace",
+    "results/openvins-online-shadow-dev-1701/raw-model-zero-bias-diffusion-v1/estimator_config.yaml",
+    "results/openvins-feature-rejection-trace-dev-1701/trace-full-v4/states.jsonl",
+    "results/openvins-feature-rejection-trace-dev-1701/trace-full-v4/fast.jsonl"
+  ],
+  "started_monotonic_ns": 420928723345,
+  "reset_counter": null,
+  "quality": null,
+  "fusion_eligible": false
+}

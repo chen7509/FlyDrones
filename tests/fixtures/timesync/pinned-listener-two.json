@@ -1,0 +1,23 @@
+{
+  "px4_commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+  "source_url": "https://raw.githubusercontent.com/PX4/PX4-Autopilot/d6f12ad1c4f70ad3230afd7d86e971421e02fef4/src/systemcmds/topic_listener/listener_main.cpp",
+  "license": "BSD-3-Clause",
+  "source_sha256": "a33b4bfcefaf836ee8595d3f7ba4cac12c383a27866f6722eaa31314701a5f83",
+  "fixture_sha256": "e3b3453862a2a4e219f3c5b96c717a82e5de37e9bd0df7f452764ac64cc854f9",
+  "fixture_bytes": 484,
+  "native_record": "results/openvins-listener-wire-format-dev-1701/native-v1",
+  "reused_archive_sha256": "999eef9ccca35343fcec547a6e0fbefe70401221846eadc62bc9cd2dbae3dc40",
+  "reused_member": "results/openvins-timesync-listener-dev-1701/reused/src/systemcmds/topic_listener/listener_main.cpp",
+  "stubbed": [
+    "uORB",
+    "field printer",
+    "subscription readiness",
+    "unbuffered stdout selection"
+  ],
+  "unchanged": [
+    "listener_main.cpp control-prefix and record-header branches"
+  ],
+  "actual_px4": false,
+  "live_listener_qualified": false,
+  "fusion_qualified": false
+}

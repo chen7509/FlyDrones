@@ -1,0 +1,300 @@
+{
+  "summary": {
+    "sha256": "ee9e98f6424d8cfa45bbb388346d0de36577251537f40c4b6d0345168af889ed",
+    "bytes": 59615,
+    "members": 57,
+    "crc_and_members_verified": true
+  },
+  "manifest": {
+    "schema": "curriculum-selection-evidence-v1",
+    "base": "5ac5b94",
+    "fix_commit": "64c804f",
+    "historical_source_recovery": "git 5ac5b94 blob with recorded working-tree newline conversion; exact prior audit hash matched, not a pre-run source copy",
+    "model_loaded": false,
+    "training_campaign": false,
+    "physical_run": false,
+    "v2_corpus_qualified": false,
+    "members": [
+      {
+        "path": "configs/connectome_corpus_v2.yaml",
+        "bytes": 1467,
+        "sha256": "2be987f74316533b77760e7ac1da4695353240d7bcd9db814cefdd878aff6c9f"
+      },
+      {
+        "path": "configs/connectome_curriculum_v1.yaml",
+        "bytes": 2836,
+        "sha256": "c5cb46f3f24217cb07a0e8b273974980af5b18280966cf8833dee6da10b9ed4e"
+      },
+      {
+        "path": "docs/CURRICULUM_CORPUS_BINDING_AUDIT_REPORT.md",
+        "bytes": 5751,
+        "sha256": "b378ad7fd4d8adaabbc84eadd5f5eadfad53b86267729cd285a3fe707f462867"
+      },
+      {
+        "path": "results/curriculum-corpus-binding-audit-dev-1701/audit-output.txt",
+        "bytes": 1383,
+        "sha256": "0ce07ccae018d383fd0dc0c96801bcaad7151d6a505254eac97144deaa1f9c2b"
+      },
+      {
+        "path": "results/curriculum-corpus-binding-audit-dev-1701/audit.json",
+        "bytes": 15932,
+        "sha256": "5ae324ef6ef482646348158f0411051474937fef91b9cdf3ca680f6982c50603"
+      },
+      {
+        "path": "results/curriculum-corpus-binding-audit-dev-1701/audit.py",
+        "bytes": 6894,
+        "sha256": "708f9bbc9e2a6c9403637048f63d802276fdefe7df0f5d6216329e1e862af094"
+      },
+      {
+        "path": "results/curriculum-corpus-binding-audit-dev-1701/connectome-green.txt",
+        "bytes": 978,
+        "sha256": "919064b424a40d5ddbaa87cc46c15779de4cfeea1da3719a88a9f38ab30fa4bc"
+      },
+      {
+        "path": "results/curriculum-corpus-binding-audit-dev-1701/diff-check.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "results/curriculum-corpus-binding-audit-dev-1701/fixed-output.txt",
+        "bytes": 653,
+        "sha256": "8f70ea2ea941b2dd522bf4a3cfe1aa805b547a2d9142c6fb7beb09d0e60cdad1"
+      },
+      {
+        "path": "results/curriculum-corpus-binding-audit-dev-1701/fixed-selection.json",
+        "bytes": 686,
+        "sha256": "a335a45200c54dfd09d02b2c8b876d911eac85ee6d1a61dc13893f7a286bf8cd"
+      },
+      {
+        "path": "results/curriculum-corpus-binding-audit-dev-1701/pre-fix-curriculum-session.py",
+        "bytes": 15262,
+        "sha256": "c9fccfce098835c0a0b2a74c59449322af803914a6ae186f8d8ab432e6023e27"
+      },
+      {
+        "path": "results/curriculum-corpus-binding-audit-dev-1701/review.txt",
+        "bytes": 743,
+        "sha256": "dbdde580c944fba0fe1f9d98ae807db28c5237a3d3e88709252bdb2ad50b0831"
+      },
+      {
+        "path": "results/curriculum-corpus-binding-audit-dev-1701/ruff.txt",
+        "bytes": 20,
+        "sha256": "a4443afdcfb6d7363adb285762515ccf7cf50473b1a05c20c1a50f6bed4d26b0"
+      },
+      {
+        "path": "results/curriculum-corpus-binding-audit-dev-1701/seal.py",
+        "bytes": 2952,
+        "sha256": "cd4eaaee44765a4f02613b4e8561ce18d58781113a9decdf2b47886860604654"
+      },
+      {
+        "path": "results/curriculum-corpus-binding-audit-dev-1701/selection-red.txt",
+        "bytes": 3590,
+        "sha256": "c51a916297adcc3a0d1a3d1337677b6b8b1fe5d32bb0e31c043c35def5647318"
+      },
+      {
+        "path": "results/curriculum-corpus-binding-audit-dev-1701/synthetic-duplicate-selection.yaml",
+        "bytes": 10462,
+        "sha256": "0b3c7e50964b4115f7cbe68208b1fa7339b2a5a202db8b84d5e3fe5916e326d2"
+      },
+      {
+        "path": "results/curriculum-corpus-binding-audit-dev-1701/synthetic-fixtures/corridor/train/1301/manifest.json",
+        "bytes": 504,
+        "sha256": "e88e08c67e0c561778d228746082a63f2bc478fc1e6dfe41b86be6d0739555f3"
+      },
+      {
+        "path": "results/curriculum-corpus-binding-audit-dev-1701/synthetic-fixtures/corridor/train/1301/samples.npz",
+        "bytes": 3048,
+        "sha256": "71c21e10208e1ccff9398ec706afbbacd9dca4bb46e83b27d89f1d9eb5ba4743"
+      },
+      {
+        "path": "results/curriculum-corpus-binding-audit-dev-1701/synthetic-fixtures/corridor/train/1302/manifest.json",
+        "bytes": 504,
+        "sha256": "fa0c3cddc2f213cafab035655c8997b4115539de14dab7221adb9624ec695153"
+      },
+      {
+        "path": "results/curriculum-corpus-binding-audit-dev-1701/synthetic-fixtures/corridor/train/1302/samples.npz",
+        "bytes": 3048,
+        "sha256": "71c21e10208e1ccff9398ec706afbbacd9dca4bb46e83b27d89f1d9eb5ba4743"
+      },
+      {
+        "path": "results/curriculum-corpus-binding-audit-dev-1701/synthetic-fixtures/corridor/val/9301/manifest.json",
+        "bytes": 502,
+        "sha256": "080d4fc770d4f99b479ab934c34e2b252149e88ad1d5e29ca9acc5f756404764"
+      },
+      {
+        "path": "results/curriculum-corpus-binding-audit-dev-1701/synthetic-fixtures/corridor/val/9301/samples.npz",
+        "bytes": 3048,
+        "sha256": "71c21e10208e1ccff9398ec706afbbacd9dca4bb46e83b27d89f1d9eb5ba4743"
+      },
+      {
+        "path": "results/curriculum-corpus-binding-audit-dev-1701/synthetic-fixtures/disturbance/train/1601/manifest.json",
+        "bytes": 504,
+        "sha256": "9284d563eb9e3fe4f5133df29344aafe7007f82a4795decf99e40e416b02ba7f"
+      },
+      {
+        "path": "results/curriculum-corpus-binding-audit-dev-1701/synthetic-fixtures/disturbance/train/1601/samples.npz",
+        "bytes": 3048,
+        "sha256": "71c21e10208e1ccff9398ec706afbbacd9dca4bb46e83b27d89f1d9eb5ba4743"
+      },
+      {
+        "path": "results/curriculum-corpus-binding-audit-dev-1701/synthetic-fixtures/disturbance/train/1602/manifest.json",
+        "bytes": 504,
+        "sha256": "a0e0307d4fc404d82df964da3df0b130cbcdd4cb5962c57aa4ad1a5583b0bb5b"
+      },
+      {
+        "path": "results/curriculum-corpus-binding-audit-dev-1701/synthetic-fixtures/disturbance/train/1602/samples.npz",
+        "bytes": 3048,
+        "sha256": "71c21e10208e1ccff9398ec706afbbacd9dca4bb46e83b27d89f1d9eb5ba4743"
+      },
+      {
+        "path": "results/curriculum-corpus-binding-audit-dev-1701/synthetic-fixtures/disturbance/val/9601/manifest.json",
+        "bytes": 502,
+        "sha256": "5d5859014ac44cc72fb8b52e7261a22b3673f76bc0fa60127b51b699f63d1232"
+      },
+      {
+        "path": "results/curriculum-corpus-binding-audit-dev-1701/synthetic-fixtures/disturbance/val/9601/samples.npz",
+        "bytes": 3048,
+        "sha256": "71c21e10208e1ccff9398ec706afbbacd9dca4bb46e83b27d89f1d9eb5ba4743"
+      },
+      {
+        "path": "results/curriculum-corpus-binding-audit-dev-1701/synthetic-fixtures/dynamic/train/1501/manifest.json",
+        "bytes": 504,
+        "sha256": "7877eae1e0787fd1ada304a10de32b374f08d75d8764d92d8911345b9bedf9dd"
+      },
+      {
+        "path": "results/curriculum-corpus-binding-audit-dev-1701/synthetic-fixtures/dynamic/train/1501/samples.npz",
+        "bytes": 3048,
+        "sha256": "71c21e10208e1ccff9398ec706afbbacd9dca4bb46e83b27d89f1d9eb5ba4743"
+      },
+      {
+        "path": "results/curriculum-corpus-binding-audit-dev-1701/synthetic-fixtures/dynamic/train/1502/manifest.json",
+        "bytes": 504,
+        "sha256": "9dc697474065a455e05121538009eee4f5bca54f6d1c7d7947732a352e55a3c0"
+      },
+      {
+        "path": "results/curriculum-corpus-binding-audit-dev-1701/synthetic-fixtures/dynamic/train/1502/samples.npz",
+        "bytes": 3048,
+        "sha256": "71c21e10208e1ccff9398ec706afbbacd9dca4bb46e83b27d89f1d9eb5ba4743"
+      },
+      {
+        "path": "results/curriculum-corpus-binding-audit-dev-1701/synthetic-fixtures/dynamic/val/9501/manifest.json",
+        "bytes": 502,
+        "sha256": "d34822493e30cf6d60556fac25233f01cdb1288a736cd66f2ce2906f3df2f6a8"
+      },
+      {
+        "path": "results/curriculum-corpus-binding-audit-dev-1701/synthetic-fixtures/dynamic/val/9501/samples.npz",
+        "bytes": 3048,
+        "sha256": "71c21e10208e1ccff9398ec706afbbacd9dca4bb46e83b27d89f1d9eb5ba4743"
+      },
+      {
+        "path": "results/curriculum-corpus-binding-audit-dev-1701/synthetic-fixtures/forest/train/1401/manifest.json",
+        "bytes": 504,
+        "sha256": "d08dda887d7c3a8330cd9ba56ed3f3841f83892d7774ba87bf76dee0c3442399"
+      },
+      {
+        "path": "results/curriculum-corpus-binding-audit-dev-1701/synthetic-fixtures/forest/train/1401/samples.npz",
+        "bytes": 3048,
+        "sha256": "71c21e10208e1ccff9398ec706afbbacd9dca4bb46e83b27d89f1d9eb5ba4743"
+      },
+      {
+        "path": "results/curriculum-corpus-binding-audit-dev-1701/synthetic-fixtures/forest/train/1402/manifest.json",
+        "bytes": 504,
+        "sha256": "1b4687c39063b0599f4b27c32beed57aeac3cf6216ad80724eb413e8a6e44bde"
+      },
+      {
+        "path": "results/curriculum-corpus-binding-audit-dev-1701/synthetic-fixtures/forest/train/1402/samples.npz",
+        "bytes": 3048,
+        "sha256": "71c21e10208e1ccff9398ec706afbbacd9dca4bb46e83b27d89f1d9eb5ba4743"
+      },
+      {
+        "path": "results/curriculum-corpus-binding-audit-dev-1701/synthetic-fixtures/forest/val/9401/manifest.json",
+        "bytes": 502,
+        "sha256": "fe2e83efbcd9252c94194ff3c26b8088737f0585bf391f511add0b9c3111966a"
+      },
+      {
+        "path": "results/curriculum-corpus-binding-audit-dev-1701/synthetic-fixtures/forest/val/9401/samples.npz",
+        "bytes": 3048,
+        "sha256": "71c21e10208e1ccff9398ec706afbbacd9dca4bb46e83b27d89f1d9eb5ba4743"
+      },
+      {
+        "path": "results/curriculum-corpus-binding-audit-dev-1701/synthetic-fixtures/looming/train/1201/manifest.json",
+        "bytes": 504,
+        "sha256": "83f4d4d41ae9ff98aa56c0fdf9089993010577d7e565d15047cf3763bc2ff1d8"
+      },
+      {
+        "path": "results/curriculum-corpus-binding-audit-dev-1701/synthetic-fixtures/looming/train/1201/samples.npz",
+        "bytes": 3048,
+        "sha256": "71c21e10208e1ccff9398ec706afbbacd9dca4bb46e83b27d89f1d9eb5ba4743"
+      },
+      {
+        "path": "results/curriculum-corpus-binding-audit-dev-1701/synthetic-fixtures/looming/train/1202/manifest.json",
+        "bytes": 504,
+        "sha256": "e053c76180abc4598337cc351f1af3d94ef8381f20e040cb21fb81f40442c273"
+      },
+      {
+        "path": "results/curriculum-corpus-binding-audit-dev-1701/synthetic-fixtures/looming/train/1202/samples.npz",
+        "bytes": 3048,
+        "sha256": "71c21e10208e1ccff9398ec706afbbacd9dca4bb46e83b27d89f1d9eb5ba4743"
+      },
+      {
+        "path": "results/curriculum-corpus-binding-audit-dev-1701/synthetic-fixtures/looming/val/9201/manifest.json",
+        "bytes": 502,
+        "sha256": "b7865aea1401c7ea0eccdca5c28e2771caaf1c36871d4b74c8061d9b40497925"
+      },
+      {
+        "path": "results/curriculum-corpus-binding-audit-dev-1701/synthetic-fixtures/looming/val/9201/samples.npz",
+        "bytes": 3048,
+        "sha256": "71c21e10208e1ccff9398ec706afbbacd9dca4bb46e83b27d89f1d9eb5ba4743"
+      },
+      {
+        "path": "results/curriculum-corpus-binding-audit-dev-1701/synthetic-fixtures/stability/train/1101/manifest.json",
+        "bytes": 504,
+        "sha256": "5197099505957cbbbf8c72a0b62e527ebc73af753a98cd249be531e4b0e5e092"
+      },
+      {
+        "path": "results/curriculum-corpus-binding-audit-dev-1701/synthetic-fixtures/stability/train/1101/samples.npz",
+        "bytes": 3048,
+        "sha256": "71c21e10208e1ccff9398ec706afbbacd9dca4bb46e83b27d89f1d9eb5ba4743"
+      },
+      {
+        "path": "results/curriculum-corpus-binding-audit-dev-1701/synthetic-fixtures/stability/train/1102/manifest.json",
+        "bytes": 504,
+        "sha256": "cca0a33749df6e5a99af5f04bc20e1c82c2bc785082ca576e5cc12a66e5d863b"
+      },
+      {
+        "path": "results/curriculum-corpus-binding-audit-dev-1701/synthetic-fixtures/stability/train/1102/samples.npz",
+        "bytes": 3048,
+        "sha256": "71c21e10208e1ccff9398ec706afbbacd9dca4bb46e83b27d89f1d9eb5ba4743"
+      },
+      {
+        "path": "results/curriculum-corpus-binding-audit-dev-1701/synthetic-fixtures/stability/val/9101/manifest.json",
+        "bytes": 502,
+        "sha256": "08cda1398c02e6dbca2ae32a16c39b733ebf7f1cb21b176624983b6c14c8adab"
+      },
+      {
+        "path": "results/curriculum-corpus-binding-audit-dev-1701/synthetic-fixtures/stability/val/9101/samples.npz",
+        "bytes": 3048,
+        "sha256": "71c21e10208e1ccff9398ec706afbbacd9dca4bb46e83b27d89f1d9eb5ba4743"
+      },
+      {
+        "path": "results/curriculum-corpus-binding-audit-dev-1701/verify_fixed_selection.py",
+        "bytes": 2635,
+        "sha256": "ddbffbf0b8dde399a213064233afe95f7a81905670e4daac0933f2bad55f8023"
+      },
+      {
+        "path": "results/curriculum-corpus-binding-audit-dev-1701/wire-package-status.json",
+        "bytes": 432,
+        "sha256": "15a7c7ff7e1e50febacc60f613934ad6d2088a317c6119c49a263b814933dc46"
+      },
+      {
+        "path": "src/flydrones/connectome_training/curriculum_session.py",
+        "bytes": 15505,
+        "sha256": "523581b3489bb1e8b4bff4d10c17ef53617fe1d84a299f1b80e2d690d07c7653"
+      },
+      {
+        "path": "tests/connectome_training/test_curriculum_sequence_selection.py",
+        "bytes": 2517,
+        "sha256": "6ce4928e3c654c41d7c2db3d291cea29af02e7cb3ecd99af34791911fecccde2"
+      }
+    ]
+  }
+}

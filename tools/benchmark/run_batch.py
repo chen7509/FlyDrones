@@ -16,7 +16,7 @@ ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / 'src'))
 
 from flydrones.benchmark.provenance import sha256_file, verify_sealed_manifest
-from flydrones.benchmark.runner import verify_freeze_manifest
+from flydrones.benchmark.runner import validate_episode_result, verify_freeze_manifest
 
 
 def atomic_json(path: Path, payload) -> None:
@@ -78,6 +78,14 @@ def main() -> int:
     if sha256_file(jobs_path) != seed_manifest['jobs_sha256']:
         raise ValueError('formal jobs changed')
     jobs = json.loads(jobs_path.read_text(encoding='utf-8'))
+    # Inspect every existing attempt before a pending job can launch a backend.
+    for job in jobs:
+        result_path = args.formal_dir / 'episodes' / str(job['seed']) / job['controller'] / 'result.json'
+        if result_path.exists():
+            validate_episode_result(
+                json.loads(result_path.read_text(encoding='utf-8')),
+                seed=job['seed'], controller=job['controller'], freeze_sha256=freeze['manifest_sha256'],
+            )
     records = []
     state_path = args.formal_dir / 'batch_state.json'
     for job in jobs:
@@ -87,7 +95,10 @@ def main() -> int:
         log_dir = args.formal_dir / 'runner_logs' / str(job['seed']) / job['controller']
         result_path = episode_dir / 'result.json'
         if result_path.exists():
-            result = json.loads(result_path.read_text(encoding='utf-8'))
+            result = validate_episode_result(
+                json.loads(result_path.read_text(encoding='utf-8')),
+                seed=job['seed'], controller=job['controller'], freeze_sha256=freeze['manifest_sha256'],
+            )
             records.append({'job': job, 'status': result['status'],
                             'ulog_capture_accepted': result.get('px4_ulog_capture_accepted') is True,
                             'result': str(result_path.relative_to(ROOT)).replace('\\', '/')})
@@ -113,7 +124,10 @@ def main() -> int:
                 stop_ego(container_name, log_dir)
         if not result_path.exists():
             raise RuntimeError(f'episode produced no result: {job["job_id"]}')
-        result = json.loads(result_path.read_text(encoding='utf-8'))
+        result = validate_episode_result(
+            json.loads(result_path.read_text(encoding='utf-8')),
+            seed=job['seed'], controller=job['controller'], freeze_sha256=freeze['manifest_sha256'],
+        )
         records.append({
             'job': job,
             'returncode': completed.returncode,
@@ -129,6 +143,14 @@ def main() -> int:
             'records': records,
         })
         print(json.dumps({'completed': len(records), 'total': len(jobs), 'job': job['job_id'], 'status': result['status']}), flush=True)
+    # Resumed records at the tail (or an entirely resumed batch) also belong in the ledger.
+    atomic_json(state_path, {
+        'freeze_manifest_sha256': freeze['manifest_sha256'],
+        'updated_utc': datetime.now(timezone.utc).isoformat(),
+        'completed': len(records),
+        'total': len(jobs),
+        'records': records,
+    })
     return 0
 
 

@@ -1,0 +1,7 @@
+{"event": "ownership", "owner": {"pid": 475, "state": "R", "pgrp": 475, "session": 475, "start_ticks": 760}, "unreaped_until_cleanup": true, "monotonic_s": 7.605315413}
+{"event": "leader_exit_unreaped", "pid": 475, "code": 1, "status": 0, "monotonic_s": 29.291773811}
+{"event": "snapshot", "label": "before_signals", "observation": {"members": [{"pid": 475, "state": "Z", "pgrp": 475, "session": 475, "start_ticks": 760}], "executing": [], "errors": [], "vanished": []}, "monotonic_s": 29.293816819}
+{"event": "snapshot", "label": "confirm_drained", "observation": {"members": [{"pid": 475, "state": "Z", "pgrp": 475, "session": 475, "start_ticks": 760}], "executing": [], "errors": [], "vanished": []}, "monotonic_s": 29.29498518}
+{"event": "snapshot", "label": "after_signals", "observation": {"members": [{"pid": 475, "state": "Z", "pgrp": 475, "session": 475, "start_ticks": 760}], "executing": [], "errors": [], "vanished": []}, "monotonic_s": 29.298614574}
+{"event": "leader_reaped", "returncode": 0, "monotonic_s": 29.29924745}
+{"event": "snapshot", "label": "after_leader_reap", "observation": {"members": [], "executing": [], "errors": [], "vanished": []}, "monotonic_s": 29.300248134}

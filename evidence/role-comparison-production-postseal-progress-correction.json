@@ -1,0 +1,9 @@
+{
+  "scope": "Postseal documentation append accidentally touched mapped progress.md, not product/test/raw execution streams. Complete appended bytes retained separately, original mapped progress restored exactly from unchanged sealed ZIP; no hidden append or scientific backfill.",
+  "path": "results/role-comparison-production-dev-1701/progress.md",
+  "sealed_sha256": "9281e19bc13ad8c480b9e21cc4011f40cb873587ad20c48abe2d4449fc78e0c2",
+  "accidental_appended_sha256": "bc13ad763cdb7e5d5083b4c61d4c3ebe992a9821702d30ec686cca004d8ae088",
+  "restored_sha256": "9281e19bc13ad8c480b9e21cc4011f40cb873587ad20c48abe2d4449fc78e0c2",
+  "append_utf8": "\r\nPostseal integration ruling: existing user authorization selects personal-only existing draftPR65 publication and preserved worktree; no menu/newchat/origin/merge. Full repository/consumed/native tests forbidden; current-scope36final+25necessaryneighbors cover integration. SealedZIP/report remain unchanged; this append and publication helpers are outsideZIP.\r\n",
+  "archive_unchanged": true
+}

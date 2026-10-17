@@ -1,0 +1,71 @@
+F..........                                                              [100%]
+================================== FAILURES ===================================
+____________ test_frozen_source_and_correction_match_current_bytes ____________
+
+    def test_frozen_source_and_correction_match_current_bytes():
+>       source, manifest, audit = validate_source(SOURCE, AUDIT, COMPLETION)
+                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\benchmark\test_causal_pair_sim_time_retry_preflight.py:26: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+source = WindowsPath('C:/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/estimator-physical-refusal-diagnosis-dev-1701/study-v16')
+source_audit = WindowsPath('C:/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/causal-pair-sim-time-dev-1701/study-v16-audit.json')
+completion = WindowsPath('C:/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/estimator-physical-refusal-diagnosis-dev-1701/physical-run-v8-completion.json')
+
+    def validate_source(source, source_audit, completion):
+        source = Path(source).resolve(strict=True)
+        if {path.name for path in source.iterdir() if path.is_file()} != SOURCE_FILES:
+            raise ValueError("source files differ")
+        if {path.name for path in source.iterdir() if path.is_dir()} != {"capture-v1", "startup-preflight-v1"}:
+            raise ValueError("source directories differ")
+        manifest = read_declaration(source / "study-manifest.json")
+        audit = read_declaration(source_audit)
+        completed = read_declaration(completion)
+        result = read_declaration(source / "capture-v1/result.json")
+        shadow = result.get("shadow", {})
+        motion = result.get("motion", {})
+        if (
+            manifest.get("schema") != "heartbeat-simulation-time-physical-retry-preflight-v1"
+            or manifest.get("prepare_only") is not True
+            or Path(manifest.get("future_destination", "")).resolve() != (source / "capture-v1").resolve()
+            or audit.get("schema") != "causal-pair-simulation-time-physical-attempt-audit-v1"
+            or audit.get("failures") != []
+            or audit.get("failure_evidence_qualified") is not True
+            or audit.get("classification") != "camera-pair-wall-age-slow-simulation-refusal"
+            or audit.get("pair_wall_age_ns") != 355_099_344
+            or audit.get("idle_wall_age_ns") != 294_079_878
+            or audit.get("pair_sim_age_ns") != 0
+            or audit.get("fixed_replay_camera_released") is not True
+            or audit.get("simulation_silence_refused") is not True
+            or audit.get("physical_retry_performed") is not True
+            or audit.get("fruit_fly_policy_failure") is not False
+            or completed.get("physical_run") is not True
+            or completed.get("returncode") != 2
+            or completed.get("destination_exists") is not True
+            or completed.get("resources_after") != []
+            or Path(completed.get("destination", "")).resolve() != (source / "capture-v1").resolve()
+            or result.get("status") != "capture_failed"
+            or result.get("end_sim_ns") != 10_000_000
+            or shadow.get("failure") != "ValueError('pending input exceeded wall wait')"
+            or motion.get("anchor_ns") is not None
+            or motion.get("support_steps") != 0
+            or motion.get("recorded_commands") != 0
+            or result.get("px4_ulogs") != []
+            or result.get("eligible_for_px4_fusion") is not False
+            or any(manifest.get(key) is not False for key in FALSE_CLAIMS)
+            or audit.get("complete_physical_execution_qualified") is not False
+            or audit.get("runtime_mapping_coverage_verified") is not False
+            or audit.get("runtime_closure_qualified") is not False
+            or audit.get("vio_accuracy_qualified") is not False
+            or audit.get("estimator_health_qualified") is not False
+            or audit.get("fusion_eligible") is not False
+            or audit.get("flight_ready") is not False
+        ):
+>           raise ValueError("source failure is not qualified")
+E           ValueError: source failure is not qualified
+
+tools\benchmark\causal_pair_sim_time_retry_preflight.py:116: ValueError
+=========================== short test summary info ===========================
+FAILED tests/benchmark/test_causal_pair_sim_time_retry_preflight.py::test_frozen_source_and_correction_match_current_bytes
+1 failed, 10 passed in 1.54s

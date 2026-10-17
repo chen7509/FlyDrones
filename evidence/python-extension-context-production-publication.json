@@ -1,0 +1,103 @@
+{
+  "schema": "python-extension-context-software-publication-v1",
+  "utc": "2026-10-14T23:17:15.136616+00:00",
+  "software_commit": "bfde6cd23d5739dd325ee5fba5880d80e982242f",
+  "archive": {
+    "path": "evidence/python-extension-context-production-dev-1701.zip",
+    "bytes": 6320732,
+    "members": 4700,
+    "mapped_members": 4699,
+    "sha256": "ce7f5c1cf00ff02223a55b18bd133ecb95213b5e173a4ca5d2f65bf049fb244b",
+    "private_excluded": true,
+    "nonempty_private_hash_needles": 189
+  },
+  "archive_plan_sha256": "ee6d881fadfd76e041579bc88071991ff3c8f742b4cd703a0e72f45adf45713d",
+  "postpublication_plan_sha256": "1530f717a441c511ff3b2f04c64d895239b419250a1b66a28b21b99363dfc6b9",
+  "plan_changed_byte_offsets": [
+    5833
+  ],
+  "change": "Only Task2 software review/seal/publish checkbox; Task1/Task2 software now done, Task3 static coordinator/full actual freeze and Task4 physical remain pending",
+  "working_vs_git_normalized": [
+    {
+      "path": "tools/benchmark/native_entry_context_v3.py",
+      "working_archive_sha256": "7521236a5129182a637b3f2b0298993be60c7a97bc197e1d636bdf98c57af802",
+      "git_normalized_blob_sha256": "ebd90763049adc50e7f4d090395b7fe4401bb4cbc1b9232dd8e0b4a659031c78"
+    },
+    {
+      "path": "tools/benchmark/prepare_calibration_capture_v3.py",
+      "working_archive_sha256": "f2e704cd75b3b7f62d4554cee8943bc4bc0709c37ba9ef1d316ab48a8eff2333",
+      "git_normalized_blob_sha256": "f2e704cd75b3b7f62d4554cee8943bc4bc0709c37ba9ef1d316ab48a8eff2333"
+    },
+    {
+      "path": "tools/benchmark/calibration_capture_study_v3.py",
+      "working_archive_sha256": "9195373b2a015d6ddbe12375aa8c9b10a76fa77607d42e76c925fe2fe3e2a3e0",
+      "git_normalized_blob_sha256": "2167707c4df887070c6f40020b44256f3441aeaa1771d19f51dd173dd5047744"
+    },
+    {
+      "path": "tools/benchmark/calibration_capture_study.py",
+      "working_archive_sha256": "e192da39f3f162c72d4e51e14f60d2f14de866afb38b856d78a33063415c622c",
+      "git_normalized_blob_sha256": "e192da39f3f162c72d4e51e14f60d2f14de866afb38b856d78a33063415c622c"
+    },
+    {
+      "path": "tools/benchmark/capture_contract.py",
+      "working_archive_sha256": "915e771f319128b384d6c7e92119b8fb281a88e5f57fb229d101957e8ed2d1b0",
+      "git_normalized_blob_sha256": "3e8bfeb142d0303a22dfb4be7788f483336dde9d66afd51fe16721b1b5623291"
+    },
+    {
+      "path": "tools/benchmark/runtime_resource_binding.py",
+      "working_archive_sha256": "5c0fc906432a57d12771e74f192ff7d3008b15b9ac425305c646bb9b357295b8",
+      "git_normalized_blob_sha256": "cedf9b92d257e938e3195e8e79eaabfb714e954e8aadcc6641de02bbfa4996d5"
+    },
+    {
+      "path": "tests/benchmark/test_native_entry_context_v3.py",
+      "working_archive_sha256": "56300cdb5fef515bf3a6d91171c0a33ed68345d81ac872fde841f53b9d3bc6a5",
+      "git_normalized_blob_sha256": "0c52d893c6dfa60e528cba9fe9173e42bde14dfad9e9a9251b10afca5c039aee"
+    },
+    {
+      "path": "tests/benchmark/test_calibration_capture_study_v3.py",
+      "working_archive_sha256": "ba8a2e6cb3d24ab116b3d4463b5722f095309f19717e73d085ea7a8134a88d47",
+      "git_normalized_blob_sha256": "2924e087b95632997fb05756e1e422f65192243eb85e0c6d74a413e66834600a"
+    },
+    {
+      "path": "docs/TARGET_BEARING_PYTHON_CONTEXT_PRODUCTION_REPORT.md",
+      "working_archive_sha256": "1fd2d307292ccd1160a1bed1c471abed5d3be531fd2f5ab1c77f83ba9ddd9757",
+      "git_normalized_blob_sha256": "d750703125e427114fb3a0cb599d1a92036339ff0ae142688613609282941be0"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-10-15-python-extension-context-production-design.md",
+      "working_archive_sha256": "59f8923d9d9f66acbcd51a46c1f576e61d1a973ce07225c6192f5f6d4a0562fa",
+      "git_normalized_blob_sha256": "59f8923d9d9f66acbcd51a46c1f576e61d1a973ce07225c6192f5f6d4a0562fa"
+    }
+  ],
+  "prepublication_archive": true,
+  "postseal_scope": "independent-archive-review and archive receipt plus publish/postpublication/PR/stage/automation helpers and final reviews are outside immutable ZIP",
+  "historical_archives": {
+    "count": 286,
+    "bytes": 797310146,
+    "unchanged": true
+  },
+  "old_static_v1_v2": "CONSUMED_FAILED",
+  "observer_metadata": "CONSUMED_SCOPE_VIOLATED; actual import origin/result/maps UNKNOWN; no rerun",
+  "static_v3_attempt_consumed": false,
+  "physical_attempt_consumed": false,
+  "runtime_graph_frozen": false,
+  "physical_dispatch_ready": false,
+  "qualification": {
+    "source": false,
+    "clock": false,
+    "measured_calibration": false,
+    "accuracy": false,
+    "teacher": false,
+    "fusion": false,
+    "training": false,
+    "flight": false
+  },
+  "early_fixture_retention": "eight of ten referenced initial temp roots unavailable; later explicitbasetemp retained, no reconstruction",
+  "verification": {
+    "affected": "42passed21.21s",
+    "neighbor": "195passed35.91s before final header-only change",
+    "ruff_exit": 0
+  },
+  "goal": "blocked; no fabricated active/complete",
+  "automation": "ACTIVE"
+}

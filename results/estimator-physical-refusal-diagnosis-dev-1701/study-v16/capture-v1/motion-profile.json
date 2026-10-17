@@ -1,0 +1,37 @@
+{
+  "name": "supported-ready-v1",
+  "cycle_ns": 800000000,
+  "force_world_y_n": 26.0,
+  "physics_step_ns": 1000000,
+  "heartbeat_max_age_ns": 2000000000,
+  "max_displacement_m": 1.0,
+  "max_speed_m_s": 3.0,
+  "max_roll_pitch_rad": 0.7853981633974483,
+  "sensor_hz": {
+    "imu": 250,
+    "rgbd": 10
+  },
+  "eligible_for_px4_fusion": false,
+  "scope": "external disarmed fixture; truth only in isolated abort/audit monitor",
+  "lateral_active_steps": 1600,
+  "fixed_masses_kg": {
+    "base_link": 2.0,
+    "rotor_0": 0.016076923076923075,
+    "rotor_1": 0.016076923076923075,
+    "rotor_2": 0.016076923076923075,
+    "rotor_3": 0.016076923076923075,
+    "camera_link": 0.061
+  },
+  "gravity_m_s2": 9.81,
+  "lift_height_m": 0.4,
+  "minimum_ground_clearance_m": 0.1,
+  "max_total_force_n": 40.0,
+  "force_distribution": "each link COM proportional to static mass",
+  "truth_feedback": false,
+  "startup_deadline_ns": 8000000000,
+  "anchor_delay_ns": 200000000,
+  "lift_duration_ns": 2000000000,
+  "lateral_start_after_anchor_ns": 3000000000,
+  "lateral_end_after_anchor_ns": 4600000000,
+  "total_duration_ns": 25000000000
+}

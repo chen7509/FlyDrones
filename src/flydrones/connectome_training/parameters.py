@@ -1,14 +1,16 @@
 from __future__ import annotations
 
+import json
+import struct
 from dataclasses import asdict, dataclass, replace
 from hashlib import sha256
-import json
 from pathlib import Path
-import struct
 
 import numpy as np
 
 from flydrones.brain.connectome import Connectome
+
+from .features import MASKED_FEATURE_NAMES
 
 SCHEMA = "flydrones-connectome-parameters-v1"
 ARRAY_KEYS = (
@@ -46,6 +48,22 @@ class ParameterSet:
     type_bias_mv: np.ndarray
     tau_m_ms: float
     readout: np.ndarray
+
+
+def parameter_mapping_digest(parameters: ParameterSet) -> str:
+    """Preserve legacy identity while binding the ordered v3 feature profile."""
+    digest = sha256()
+    if parameters.input_features == MASKED_FEATURE_NAMES:
+        digest.update(b"flydrones-feature-profile:depth-mask-v3\0")
+        digest.update(json.dumps(MASKED_FEATURE_NAMES, separators=(",", ":")).encode("utf-8"))
+    for value in (
+        parameters.input_feature_index,
+        parameters.input_neuron_index,
+        parameters.output_neuron_index,
+    ):
+        array = np.ascontiguousarray(value, dtype="<i8")
+        digest.update(array.tobytes())
+    return digest.hexdigest()
 
 
 def _file_digest(path: Path) -> str:
@@ -149,6 +167,9 @@ def _validate(parameters: ParameterSet) -> None:
         input_feature_index >= len(parameters.input_features)
     ):
         raise ValueError("input feature index is out of range")
+    if (parameters.input_features == MASKED_FEATURE_NAMES
+            and set(input_feature_index.tolist()) != set(range(len(MASKED_FEATURE_NAMES)))):
+        raise ValueError("masked input feature coverage incomplete")
     if np.any(input_neuron_index < 0) or np.any(input_neuron_index >= identity.neurons):
         raise ValueError("input neuron index is out of range")
     if len(np.unique(input_neuron_index)) != len(input_neuron_index):

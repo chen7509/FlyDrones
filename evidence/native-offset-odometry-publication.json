@@ -1,0 +1,118 @@
+{
+  "schema": "native-offset-odometry-publication-v1",
+  "software_head": "a517ad3503dc695dfc7ddfb5381e1780b43956f4",
+  "identities": {
+    "tools/benchmark/capture_disarmed_sensors.py": {
+      "working_bytes": 72594,
+      "working_sha256": "176fb752eb838524cca303f3e27db3a2970de09ee989dd114603de6ae3fbf530",
+      "software_git_bytes": 71196,
+      "software_git_sha256": "f142e42d18ae2e8e64caad0b75e0a5f09eb40079aa0960a192becd798e865e0d"
+    },
+    "tools/benchmark/capture_contract.py": {
+      "working_bytes": 17044,
+      "working_sha256": "6c9535f9a34bb9066cae9cc7611b27afcda0c3b0dedc187718a043ee4a0b5029",
+      "software_git_bytes": 16734,
+      "software_git_sha256": "5089f5a0beaf95058c765f366c192def7a3661f8d8d78edc298dbfbfc4db7695"
+    },
+    "tools/benchmark/capture_online_estimates.py": {
+      "working_bytes": 10803,
+      "working_sha256": "af8a88e6806d36344d04e2f68b2d6cd7cfbf5c89c8c455272862d5b3e03aa78f",
+      "software_git_bytes": 10803,
+      "software_git_sha256": "af8a88e6806d36344d04e2f68b2d6cd7cfbf5c89c8c455272862d5b3e03aa78f"
+    },
+    "tools/benchmark/managed_capture_source.py": {
+      "working_bytes": 19826,
+      "working_sha256": "d6300ea0f57de75d45e65caf46cccdcc5e682f643e25cbd74d16ae42d7d63f8e",
+      "software_git_bytes": 19826,
+      "software_git_sha256": "d6300ea0f57de75d45e65caf46cccdcc5e682f643e25cbd74d16ae42d7d63f8e"
+    },
+    "tools/benchmark/openvins_observed_wire_session.py": {
+      "working_bytes": 29838,
+      "working_sha256": "25a244286f1f1e3f3173db079cd441866597ebe9abb5f6ab49fa37880655aeeb",
+      "software_git_bytes": 29281,
+      "software_git_sha256": "c5d08cfa9c160a4d7691fdeb1c2a86463e8909b16d68c2d3c348faa795de94bc"
+    },
+    "tools/benchmark/estimator_aware_readiness.py": {
+      "working_bytes": 18371,
+      "working_sha256": "f2f17c494aceaa1e6ccde9a25af08d6ebf0977615131ead30dada79b07613cb9",
+      "software_git_bytes": 18371,
+      "software_git_sha256": "f2f17c494aceaa1e6ccde9a25af08d6ebf0977615131ead30dada79b07613cb9"
+    },
+    "tools/benchmark/offset_reset_native_source.py": {
+      "working_bytes": 7493,
+      "working_sha256": "c9578295624e79e9faa20d387acfc5d0ff225e61ff74af4ea1232729429d82c1",
+      "software_git_bytes": 7493,
+      "software_git_sha256": "c9578295624e79e9faa20d387acfc5d0ff225e61ff74af4ea1232729429d82c1"
+    },
+    "tools/benchmark/disarmed_odometry_receiver.py": {
+      "working_bytes": 4493,
+      "working_sha256": "fe934acb9a34fa5a621c926cc046196a9874f72f854d9c03c89957591b22251e",
+      "software_git_bytes": 4392,
+      "software_git_sha256": "ab85738d874287240239cd4beb28c1419d44a5462dc4792ea11b0dbde9689d2a"
+    },
+    "tools/benchmark/openvins_online_probe_v2.cpp": {
+      "working_bytes": 11772,
+      "working_sha256": "4216b2bd294744914a8a4a783f0aa23d22dfc14793ea5da5f9a2f1f3dece22a9",
+      "software_git_bytes": 11519,
+      "software_git_sha256": "2d8b08f106e56713a7796db4c655d0f87c77024a7ec45d7bccb565390c574d0c"
+    },
+    "tools/benchmark/openvins_fast_probe_v2.h": {
+      "working_bytes": 3483,
+      "working_sha256": "3494318e1718407ec815345ca464c3277b93ae675e5296e73e20f4daaced6c21",
+      "software_git_bytes": 3417,
+      "software_git_sha256": "46cb7be0f60f8843a8c15e8f70f3ecd639afddcc648364afe041f257104e8e39"
+    },
+    "tools/benchmark/native_offset_reset_v2/CMakeLists.txt": {
+      "working_bytes": 1419,
+      "working_sha256": "842c991962499b3d97cba1ab4b9a93ce1cf62f4f8789a3e883b10768d24b979a",
+      "software_git_bytes": 1419,
+      "software_git_sha256": "842c991962499b3d97cba1ab4b9a93ce1cf62f4f8789a3e883b10768d24b979a"
+    },
+    "tests/benchmark/test_native_offset_odometry.py": {
+      "working_bytes": 26343,
+      "working_sha256": "38e6950956606bae1ca03d8406d6d6e9fad1a0a3743750052da286e939767858",
+      "software_git_bytes": 25736,
+      "software_git_sha256": "298c2dac4c638b27e0d300ddd8f9f274cf27ba1d62248101ee6c04e771dd3d09"
+    },
+    "docs/NATIVE_OFFSET_ODOMETRY_PROGRESS.md": {
+      "working_bytes": 11695,
+      "working_sha256": "b978148cca434188efb81f99b33ad91d8877c43f3ca2260d2ff1112cf8cc4a1f",
+      "software_git_bytes": 11648,
+      "software_git_sha256": "c1581185fc98ac92a7e17cd3652af821a4b6e786668ff75d6728e63f56f095be"
+    },
+    "docs/superpowers/specs/2026-10-17-native-offset-odometry.md": {
+      "working_bytes": 2772,
+      "working_sha256": "41de279b55e39a82b6b310fcf8cf0ce8a8c9fac3d7a13795351388abd5a4c684",
+      "software_git_bytes": 2763,
+      "software_git_sha256": "0cae50fa00607b9ba440a723772d4fc35f7383f8b22953becea804e1fb883941"
+    },
+    "docs/superpowers/plans/2026-10-17-native-offset-odometry.md": {
+      "working_bytes": 951,
+      "working_sha256": "cdddba6fbe0b7203af9ae4fe5a5ce9a5a494ebb97201d11b6618d5673967f391",
+      "software_git_bytes": 942,
+      "software_git_sha256": "69c75dbf67dfa51b41881d3f84e40924ff6bac45498c54cbd1d1d755860c61bc"
+    },
+    "evidence/native-offset-odometry-20261017.zip": {
+      "working_bytes": 9718942,
+      "working_sha256": "0fd9f3a91141b1d86ad69f1ed77f9ecd7e53fabb097cb4584d6fe4a3fda3ebb6",
+      "software_git_bytes": 9718942,
+      "software_git_sha256": "0fd9f3a91141b1d86ad69f1ed77f9ecd7e53fabb097cb4584d6fe4a3fda3ebb6"
+    },
+    "evidence/native-offset-odometry-20261017.sha256.json": {
+      "working_bytes": 539500,
+      "working_sha256": "0754f263dc5d64ee55d554fdf1c1f6bfb2abf8c11a3a0353f75c56d50c8a83c3",
+      "software_git_bytes": 532098,
+      "software_git_sha256": "de80a8fc2838fbd3bbcefb96f9921b752d78da21c94edb99d7df7ea58f5d71a8"
+    }
+  },
+  "plan": {
+    "path": "docs/superpowers/plans/2026-10-17-native-offset-odometry.md",
+    "byte_offset": 843,
+    "before_sha256": "75421abaa06bd2eabff93829bf22c75e0d9703dee9e67ac9d4de3abd8b0c2996",
+    "after_sha256": "cdddba6fbe0b7203af9ae4fe5a5ce9a5a494ebb97201d11b6618d5673967f391"
+  },
+  "scope": "software-only, original review and inherited limitations preserved; no native/flight approval",
+  "all_qualifications": false,
+  "runtime_graph_frozen": false,
+  "physical_dispatch_ready": false
+}

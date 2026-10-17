@@ -1,0 +1,13 @@
+{
+  "archive": "evidence/openvins-ekf2-file-shadow-dev-1701.zip",
+  "archive_bytes": 23589918,
+  "archive_sha256": "d834874a46f8eedb6c2a0518036aa08dbe26a92ceeeacc8c1a8a9730bb77bdae",
+  "crc_check": null,
+  "embedded_member_count": 247,
+  "flight_ready": false,
+  "fusion_eligible": false,
+  "head": "fb7d9ac41f33cf9c3c13168556f2944bfebb7e7c",
+  "member_count": 248,
+  "network_odometry": false,
+  "schema": "openvins-ekf2-file-shadow-archive-v1"
+}

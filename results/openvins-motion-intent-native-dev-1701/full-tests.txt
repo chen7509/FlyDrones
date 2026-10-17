@@ -1,0 +1,95 @@
+........................................................................ [  4%]
+........................................................................ [  8%]
+........................................................................ [ 12%]
+........................................................................ [ 16%]
+...............................ss....................................... [ 20%]
+........................................................................ [ 24%]
+........................................................................ [ 28%]
+................................s....................................... [ 32%]
+........................................................................ [ 36%]
+........................................................................ [ 41%]
+........................................................................ [ 45%]
+........................................................................ [ 49%]
+........................................................................ [ 53%]
+........................................................................ [ 57%]
+........................................................................ [ 61%]
+........................................................................ [ 65%]
+........................................................................ [ 69%]
+........................................................................ [ 73%]
+...........................F............................................ [ 77%]
+........................................................................ [ 82%]
+........................................................................ [ 86%]
+........................................................................ [ 90%]
+........................................................................ [ 94%]
+........................................................................ [ 98%]
+............................                                             [100%]
+================================== FAILURES ===================================
+___________ test_frozen_failure_and_correction_match_current_bytes ____________
+
+    def test_frozen_failure_and_correction_match_current_bytes():
+        source, manifest, audit = validate_source(SOURCE, AUDIT, COMPLETION, BOUNDARY_AUDIT)
+>       correction = validate_correction(AUDIT, ARCHIVE, IMPLEMENTATION)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\benchmark\test_source_watchdog_retry_preflight.py:32:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+correction_audit = WindowsPath('C:/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/causal-pair-sim-time-physical-boundary-dev-1701/startup-cohort-audit.json')
+correction_archive = WindowsPath('C:/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/evidence/source-watchdog-startup-cohort-dev-1701.zip')
+implementation = WindowsPath('C:/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/openvins_online_shadow.py')
+
+    def validate_correction(correction_audit, correction_archive, implementation):
+        audit_path = Path(correction_audit).resolve(strict=True)
+        archive = Path(correction_archive).resolve(strict=True)
+        implementation = Path(implementation).resolve(strict=True)
+        if archive.name != ARCHIVE_NAME or hashlib.sha256(archive.read_bytes()).hexdigest() != ARCHIVE_SHA256:
+            raise ValueError("correction archive identity")
+        audit = read_declaration(audit_path)
+        if (
+            audit.get("schema") != "source-watchdog-startup-cohort-audit-v1"
+            or audit.get("failures") != []
+            or audit.get("failure_evidence_qualified") is not True
+            or audit.get("classification") != "startup-readiness-before-fresh-source-cohort"
+            or audit.get("candidate_fresh_cohort_qualified") is not True
+            or audit.get("fruit_fly_policy_failure") is not False
+            or audit.get("fusion_eligible") is not False
+        ):
+            raise ValueError("correction audit")
+        try:
+            with zipfile.ZipFile(archive) as package:
+                names = package.namelist()
+                if package.testzip() is not None or len(names) != len(set(names)):
+                    raise ValueError("correction archive integrity")
+                manifest = json.loads(package.read(ARCHIVE_MANIFEST))
+                members = manifest.get("members")
+                if (
+                    manifest.get("schema") != "source-watchdog-startup-cohort-evidence-v1"
+                    or not isinstance(members, list)
+                    or manifest.get("member_count_without_manifest") != len(members)
+                    or set(names) != {item.get("path") for item in members} | {ARCHIVE_MANIFEST}
+                ):
+                    raise ValueError("correction archive manifest")
+                for item in members:
+                    data = package.read(item["path"])
+                    if len(data) != item.get("bytes") or hashlib.sha256(data).hexdigest() != item.get("sha256"):
+                        raise ValueError("correction archive member")
+                if package.read(ARCHIVE_AUDIT) != audit_path.read_bytes():
+                    raise ValueError("correction audit bytes")
+                if package.read(ARCHIVE_IMPLEMENTATION) != implementation.read_bytes():
+>                   raise ValueError("correction implementation bytes")
+E                   ValueError: correction implementation bytes
+
+tools\benchmark\source_watchdog_retry_preflight.py:159: ValueError
+============================== warnings summary ===============================
+tests/benchmark/test_ekf2_shadow_cli.py::test_unsafe_or_duplicate_member_rejected[extra1]
+  C:\Users\yuche\AppData\Local\Programs\Python\Python312\Lib\zipfile\__init__.py:1611: UserWarning: Duplicate name: 'openvins-texture-dev/episode-v1/result.json'
+    return self._open_to_write(zinfo, force_zip64=force_zip64)
+
+tests/test_malecns_loader.py::test_build_malecns
+  C:\Users\yuche\.codex\worktrees\FlyDrones\track-eligibility\tests\test_malecns_loader.py:44: UserWarning: groups with no matching neurons in malecns-v1.0: R16_L, R16_R, T4a_L, T4a_R, T4b_L, T4b_R, T4c_L, T4c_R, T4d_L, T4d_R, LC4_L, LC4_R, HAL_L, HAL_R, DNp03_L, DNp03_R, DNp01_R
+    b = Brain(c, load_config())
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ===========================
+FAILED tests/benchmark/test_source_watchdog_retry_preflight.py::test_frozen_failure_and_correction_match_current_bytes
+1 failed, 1752 passed, 3 skipped, 2 warnings in 266.12s (0:04:26)

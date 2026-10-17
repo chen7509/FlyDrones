@@ -1,0 +1,5 @@
+ed82c4a test: qualify heartbeat sim-time startup preflight
+6ff8241 test: seal heartbeat sim-time retry preflight
+ebb9b1d fix: use simulation time for PX4 heartbeat readiness
+ec90fca docs: complete OpenVINS handoff physical attempt
+a11107d test: audit OpenVINS heartbeat wall-age refusal

@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import math
 import socket
 import struct
 import time
@@ -11,7 +12,6 @@ import numpy as np
 
 from .contract import Command, Decision, Observation
 from .sensors import encode_observation
-
 
 REFERENCE_FIELDS = {'sim_ns', 'upstream_stamp_ns', 'position_ref', 'velocity_ref', 'yaw_rate'}
 
@@ -29,10 +29,10 @@ def track_reference(position_ref: tuple, velocity_ref: tuple, position: tuple, y
 def validate_reference(message: dict, *, observation_sim_ns: int, max_age_ns: int) -> dict:
     if not isinstance(message, dict) or set(message) != REFERENCE_FIELDS:
         raise ValueError('unexpected EGO reference fields')
-    if type(message['sim_ns']) is not int:
-        raise ValueError('reference timestamp must be integer nanoseconds')
-    if type(message['upstream_stamp_ns']) is not int:
-        raise ValueError('upstream timestamp must be integer nanoseconds')
+    if type(message['sim_ns']) is not int or message['sim_ns'] < 0:
+        raise ValueError('reference timestamp must be nonnegative integer nanoseconds')
+    if type(message['upstream_stamp_ns']) is not int or message['upstream_stamp_ns'] < 0:
+        raise ValueError('upstream reference timestamp must be nonnegative integer nanoseconds')
     age = observation_sim_ns - message['sim_ns']
     if age < 0:
         raise ValueError('future EGO reference')
@@ -41,8 +41,14 @@ def validate_reference(message: dict, *, observation_sim_ns: int, max_age_ns: in
     for field in ('position_ref', 'velocity_ref'):
         if not isinstance(message[field], list) or len(message[field]) != 3:
             raise ValueError(f'invalid {field}')
-    numeric = np.asarray((*message['position_ref'], *message['velocity_ref'], message['yaw_rate']), dtype=float)
-    if not np.all(np.isfinite(numeric)):
+    numeric = (*message['position_ref'], *message['velocity_ref'], message['yaw_rate'])
+    if any(type(value) not in (int, float) for value in numeric):
+        raise ValueError('reference numeric fields must be JSON numbers')
+    try:
+        finite = all(math.isfinite(value) for value in numeric)
+    except OverflowError:
+        finite = False
+    if not finite:
         raise ValueError('reference values must be finite')
     return message
 

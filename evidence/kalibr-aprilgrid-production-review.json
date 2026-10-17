@@ -1,0 +1,30 @@
+{
+  "reviewer": "/root/review_aprilgrid_production",
+  "stage": "corrected current code/report review",
+  "Critical": 0,
+  "Important": 0,
+  "Minor": 0,
+  "initial_findings": [
+    "Important: missing COLLADA created/modified",
+    "Minor: test semicolon (subsequently fresh read corrected)"
+  ],
+  "verification": [
+    "official full schema v1false/v2true",
+    "v1 snapshot/currentv2 producer byte match",
+    "all921600pixels reference match",
+    "onlyDAE+manifest changed",
+    "18passed31.86s/Ruff0"
+  ],
+  "archive_review": "canonical v2 pending",
+  "draft_archive_review": {
+    "Critical": 0,
+    "Important": 0,
+    "Minor": 0,
+    "members": 85,
+    "mapped_members": 84,
+    "all_crc_sha_current_bytes": "passed before later publication-policy addendum",
+    "old_archives": 273,
+    "old_bytes": 695399214,
+    "sha": "58d44fec33332afe65327605c2b76826fe63df3edb1baf0ade4a754d3c854e40"
+  }
+}

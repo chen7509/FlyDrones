@@ -1,0 +1,208 @@
+{
+  "archive": "openvins-wire-fanout-dev-1701.zip",
+  "bytes": 71365,
+  "sha256": "fd427229720d5e25e3ea099f028c4c1dced3d79ea872a1c6a452c484c07304ac",
+  "members": {
+    "docs/OPENVINS_WIRE_FANOUT_REPORT.md": {
+      "bytes": 4243,
+      "sha256": "0cb3c0c8ce9eff49042e2390d452cf68835998190b887e057e3d6dbf29fd3b43"
+    },
+    "results/openvins-wire-fanout-dev-1701/changed-ruff.txt": {
+      "bytes": 20,
+      "sha256": "a4443afdcfb6d7363adb285762515ccf7cf50473b1a05c20c1a50f6bed4d26b0"
+    },
+    "results/openvins-wire-fanout-dev-1701/export.py": {
+      "bytes": 2369,
+      "sha256": "beeed2e96437921a8a74b5a2cf77c7a2873cbf466e23d49c1d3e815495ef8cda"
+    },
+    "results/openvins-wire-fanout-dev-1701/export.txt": {
+      "bytes": 229,
+      "sha256": "792d413aeda9513660a008735c4b3e6468ab43bee42089203f40fb2757daa274"
+    },
+    "results/openvins-wire-fanout-dev-1701/exports-v1/after.json": {
+      "bytes": 893,
+      "sha256": "93aca10350ad5f94abeeccc03c3ea215f0e162479fd8a2787359961ce4180095"
+    },
+    "results/openvins-wire-fanout-dev-1701/exports-v1/declaration.json": {
+      "bytes": 1197,
+      "sha256": "d94378c96fd3ff163b90d5492b965047de7bb5bbebc753e38d79edbd7174480f"
+    },
+    "results/openvins-wire-fanout-dev-1701/exports-v1/test_actual_estimator_fanout_journal_queue_and_reconcile/camera-info.json": {
+      "bytes": 192,
+      "sha256": "347b66f28c8b12271612dcef4f9f17c399fbb25fc0adc1be7286d92f3e8a3746"
+    },
+    "results/openvins-wire-fanout-dev-1701/exports-v1/test_actual_estimator_fanout_journal_queue_and_reconcile/estimator-readiness.jsonl": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "results/openvins-wire-fanout-dev-1701/exports-v1/test_actual_estimator_fanout_journal_queue_and_reconcile/events.jsonl": {
+      "bytes": 430,
+      "sha256": "a68ee85c7b350c2e768ccf0788127c0a99fcf4f47c7d36816ff6388a457600d0"
+    },
+    "results/openvins-wire-fanout-dev-1701/exports-v1/test_actual_estimator_fanout_journal_queue_and_reconcile/heartbeat-observations.jsonl": {
+      "bytes": 1048,
+      "sha256": "9dd23c59f70cc7eb5d0990c76554982a4d676f7461a92e1d842e7bebdad99e70"
+    },
+    "results/openvins-wire-fanout-dev-1701/exports-v1/test_actual_estimator_fanout_journal_queue_and_reconcile/outcome.json": {
+      "bytes": 1804,
+      "sha256": "8bdc812cd777154985b5d030e9b5341b550c829610f80c30fbe9b1340822ecff"
+    },
+    "results/openvins-wire-fanout-dev-1701/exports-v1/test_actual_estimator_fanout_journal_queue_and_reconcile/rgb-capture-manifest.json": {
+      "bytes": 86,
+      "sha256": "a41b197f0843fc8f261546ce080490545601137ac8523f6f3c711ed0252da68d"
+    },
+    "results/openvins-wire-fanout-dev-1701/exports-v1/test_actual_estimator_fanout_journal_queue_and_reconcile/shadow-failures.jsonl": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "results/openvins-wire-fanout-dev-1701/exports-v1/test_actual_estimator_fanout_journal_queue_and_reconcile/shadow-input-result.json": {
+      "bytes": 297,
+      "sha256": "2b7b050a57640c7398f62772fce77ef106eb343b000110caaf51a5f7f8ad9358"
+    },
+    "results/openvins-wire-fanout-dev-1701/exports-v1/test_actual_estimator_fanout_journal_queue_and_reconcile/source-fanout.jsonl": {
+      "bytes": 1354,
+      "sha256": "8ea4089db320fa3b76d4a820c2b5fe8124c1939a5a7c7051dd18f99db6257925"
+    },
+    "results/openvins-wire-fanout-dev-1701/exports-v1/test_actual_estimator_fanout_journal_queue_and_reconcile/wire.json": {
+      "bytes": 60235,
+      "sha256": "fc1dbe35ad39400d6f3aa3800ba7d2d6919b2692f318b186f9deb2cfd9879f79"
+    },
+    "results/openvins-wire-fanout-dev-1701/exports-v1/test_queue_full_retains_observation_but_refuses_mixed_reply/camera-info.json": {
+      "bytes": 192,
+      "sha256": "347b66f28c8b12271612dcef4f9f17c399fbb25fc0adc1be7286d92f3e8a3746"
+    },
+    "results/openvins-wire-fanout-dev-1701/exports-v1/test_queue_full_retains_observation_but_refuses_mixed_reply/estimator-readiness.jsonl": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "results/openvins-wire-fanout-dev-1701/exports-v1/test_queue_full_retains_observation_but_refuses_mixed_reply/events.jsonl": {
+      "bytes": 215,
+      "sha256": "54f8daaaf9d5f57701eb67bf147504aafeab692b7686e25f5a2889dd80e1dff5"
+    },
+    "results/openvins-wire-fanout-dev-1701/exports-v1/test_queue_full_retains_observation_but_refuses_mixed_reply/heartbeat-observations.jsonl": {
+      "bytes": 670,
+      "sha256": "3bb7c46977d62aac3ce7a0e40095c3b8e064d8eb6a9e436bbe989f187d980220"
+    },
+    "results/openvins-wire-fanout-dev-1701/exports-v1/test_queue_full_retains_observation_but_refuses_mixed_reply/outcome.json": {
+      "bytes": 2660,
+      "sha256": "d0e214b972f3b9be0e985697f41914e924a604f50353dc4579d31e7e8e5d029a"
+    },
+    "results/openvins-wire-fanout-dev-1701/exports-v1/test_queue_full_retains_observation_but_refuses_mixed_reply/rgb-capture-manifest.json": {
+      "bytes": 86,
+      "sha256": "a41b197f0843fc8f261546ce080490545601137ac8523f6f3c711ed0252da68d"
+    },
+    "results/openvins-wire-fanout-dev-1701/exports-v1/test_queue_full_retains_observation_but_refuses_mixed_reply/shadow-failures.jsonl": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "results/openvins-wire-fanout-dev-1701/exports-v1/test_queue_full_retains_observation_but_refuses_mixed_reply/shadow-input-result.json": {
+      "bytes": 297,
+      "sha256": "2b7b050a57640c7398f62772fce77ef106eb343b000110caaf51a5f7f8ad9358"
+    },
+    "results/openvins-wire-fanout-dev-1701/exports-v1/test_queue_full_retains_observation_but_refuses_mixed_reply/source-fanout.jsonl": {
+      "bytes": 313,
+      "sha256": "f416826ccef3efdde5eb9fc1a2e9dc963bf95e9b045d836d8f9ef0e8d5a89871"
+    },
+    "results/openvins-wire-fanout-dev-1701/exports-v1/test_queue_full_retains_observation_but_refuses_mixed_reply/wire.json": {
+      "bytes": 60872,
+      "sha256": "aac7946af2aeb1030263308a0e6ebd9a516690dd3dae58410762a017fa2b40e2"
+    },
+    "results/openvins-wire-fanout-dev-1701/exports-v1/test_reconcile_tamper_latches_and_next_wire_operation_refuses/camera-info.json": {
+      "bytes": 192,
+      "sha256": "347b66f28c8b12271612dcef4f9f17c399fbb25fc0adc1be7286d92f3e8a3746"
+    },
+    "results/openvins-wire-fanout-dev-1701/exports-v1/test_reconcile_tamper_latches_and_next_wire_operation_refuses/estimator-readiness.jsonl": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "results/openvins-wire-fanout-dev-1701/exports-v1/test_reconcile_tamper_latches_and_next_wire_operation_refuses/events.jsonl": {
+      "bytes": 215,
+      "sha256": "75a2afa9114b263ed75a86435c64a3e0b8dc1c37940e61f7135c4b811881f1eb"
+    },
+    "results/openvins-wire-fanout-dev-1701/exports-v1/test_reconcile_tamper_latches_and_next_wire_operation_refuses/heartbeat-observations.jsonl": {
+      "bytes": 335,
+      "sha256": "68f9fcae834379807ba0f3869dcd3f4c87973c606a0653da3302b3ab0c2557b2"
+    },
+    "results/openvins-wire-fanout-dev-1701/exports-v1/test_reconcile_tamper_latches_and_next_wire_operation_refuses/outcome.json": {
+      "bytes": 2372,
+      "sha256": "e0a2203580e6606d0f978e60b14adfb5d9bd4142baa1b0ec5ae5be9935e4a7c0"
+    },
+    "results/openvins-wire-fanout-dev-1701/exports-v1/test_reconcile_tamper_latches_and_next_wire_operation_refuses/rgb-capture-manifest.json": {
+      "bytes": 86,
+      "sha256": "a41b197f0843fc8f261546ce080490545601137ac8523f6f3c711ed0252da68d"
+    },
+    "results/openvins-wire-fanout-dev-1701/exports-v1/test_reconcile_tamper_latches_and_next_wire_operation_refuses/shadow-failures.jsonl": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "results/openvins-wire-fanout-dev-1701/exports-v1/test_reconcile_tamper_latches_and_next_wire_operation_refuses/shadow-input-result.json": {
+      "bytes": 297,
+      "sha256": "2b7b050a57640c7398f62772fce77ef106eb343b000110caaf51a5f7f8ad9358"
+    },
+    "results/openvins-wire-fanout-dev-1701/exports-v1/test_reconcile_tamper_latches_and_next_wire_operation_refuses/source-fanout.jsonl": {
+      "bytes": 708,
+      "sha256": "a255f81fb39ce08ec10bf0a5662abe2fa51488c4d712c5edebfd06cd20feafed"
+    },
+    "results/openvins-wire-fanout-dev-1701/exports-v1/test_reconcile_tamper_latches_and_next_wire_operation_refuses/wire.json": {
+      "bytes": 58417,
+      "sha256": "4e45081814b9b44ceef22e87e41a44737082e11384238c1d5b0b44a7dffc8636"
+    },
+    "results/openvins-wire-fanout-dev-1701/integration-final.txt": {
+      "bytes": 253,
+      "sha256": "cfe1042e7657a7ef34c7b2a95ff01b444a4d6a657b033d3791021750bb1bb80a"
+    },
+    "results/openvins-wire-fanout-dev-1701/integration-first.txt": {
+      "bytes": 252,
+      "sha256": "51c2b870f6b74a44b77f6eb634a636049ab955f1e552511b9463df6da87ffd68"
+    },
+    "results/openvins-wire-fanout-dev-1701/references.json": {
+      "bytes": 124,
+      "sha256": "05a0b846407c6aa5fcd4c96c810bf47a7a84220bbd2e9b8d78679c7e0641e38c"
+    },
+    "results/openvins-wire-fanout-dev-1701/related-regression.txt": {
+      "bytes": 101,
+      "sha256": "2feedd28d9adf8552475d88d602a61a122fa9cb9c682e17af3ed940286296701"
+    },
+    "results/openvins-wire-fanout-dev-1701/review.md": {
+      "bytes": 852,
+      "sha256": "e9421306cb456e4891029446d2e5cab99161a503b3a272ebb650e155f3b1ee71"
+    },
+    "results/openvins-wire-fanout-dev-1701/seal.py": {
+      "bytes": 2014,
+      "sha256": "5569c345cb295070915a4e246c2d4a571b629eaf6c97816e2db86d8da4d37648"
+    },
+    "tests/benchmark/test_openvins_wire_fanout_integration.py": {
+      "bytes": 8729,
+      "sha256": "f5175ce5b7f8b7317d8f300547bf5e0b579b31e64cc8b17a2d677b471f0b369c"
+    },
+    "tests/benchmark/test_openvins_wire_heartbeat.py": {
+      "bytes": 8228,
+      "sha256": "4769ae9df0987f5968486ac2c7c2d68f53b58753ca1cfd9add82cfedf9616f88"
+    },
+    "tools/benchmark/capture_disarmed_sensors.py": {
+      "bytes": 47451,
+      "sha256": "c0f2455d70b5a9a2da3665695d0e7143020934f582f219a3a2ad2d80f16bcc13"
+    },
+    "tools/benchmark/disarmed_sensor_provenance.py": {
+      "bytes": 19389,
+      "sha256": "5976bc3473dc278f109d6ac57e26c76f6c9ffc931da538dfebe1b732dad5dd7e"
+    },
+    "tools/benchmark/estimator_aware_readiness.py": {
+      "bytes": 17368,
+      "sha256": "be471045e808a46b44dd36f3a87a5c25b95889c393246aa0b99d090f3d62de2f"
+    },
+    "tools/benchmark/journaled_heartbeat_lane.py": {
+      "bytes": 8305,
+      "sha256": "af0cfa376e0093049a2ddbee8b93728d04c3793a4dc7d30091d5fd89fd2a6202"
+    },
+    "tools/benchmark/openvins_online_shadow.py": {
+      "bytes": 29922,
+      "sha256": "99651fd531cf4c915feeff71987a1d8347dc0da10e842209105b9002d4fbf4aa"
+    }
+  },
+  "test_commit": "bd04203",
+  "source_copy_basis": "post-test copies; export selected pre/post hashes retained separately",
+  "actual_transport": false,
+  "physical": false,
+  "fusion": false
+}

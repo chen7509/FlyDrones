@@ -1,0 +1,60 @@
+{
+  "schema": "target-bearing-scene-source-stage-publication-v1",
+  "utc": "2026-10-14T17:37:48.343798+00:00",
+  "implementation_commit": "3e75867555197bbca4410efd75581cb3be675f4f",
+  "remote": "personal",
+  "pr": "https://github.com/chen7509/FlyDrones/pull/65",
+  "pr_head_verified": true,
+  "pr_body_exact_crlf_normalized": true,
+  "tracked_clean_before_ledger": true,
+  "archive": {
+    "path": "evidence/target-bearing-scene-load-production-dev-1701.zip",
+    "sha256": "10b81b9b6cc67479581535d1cd59e0ea4fdf533f4cba787b5cf9180316cfabd4",
+    "bytes": 40704575,
+    "members": 257,
+    "mapped": 256
+  },
+  "source_identity": {
+    "tools/benchmark/calibration_capture_scene.py": {
+      "working_sha256": "68f091481b2f737f4667c233f1e653b937a39df3b6f8ebd02f566ca96bffd2c3",
+      "git_blob_sha256": "68f091481b2f737f4667c233f1e653b937a39df3b6f8ebd02f566ca96bffd2c3"
+    },
+    "tests/benchmark/test_calibration_capture_scene.py": {
+      "working_sha256": "175753a9c7633e3739d519e40d85522137da0de7eee574cf805343a2c58f2c6d",
+      "git_blob_sha256": "175753a9c7633e3739d519e40d85522137da0de7eee574cf805343a2c58f2c6d"
+    },
+    "docs/TARGET_BEARING_SCENE_LOAD_PRODUCTION_REPORT.md": {
+      "working_sha256": "f3b431d0791e84015235f1b8ed1cfe1e38c7458b95f9cb2198f7867af1e11df8",
+      "git_blob_sha256": "f3b431d0791e84015235f1b8ed1cfe1e38c7458b95f9cb2198f7867af1e11df8"
+    },
+    "docs/superpowers/specs/2026-10-15-target-bearing-scene-load.md": {
+      "working_sha256": "ae79c512468071fb33789bdf899512bd11fe5be2e647bee5613374463fd9bbed",
+      "git_blob_sha256": "ae79c512468071fb33789bdf899512bd11fe5be2e647bee5613374463fd9bbed"
+    },
+    "docs/superpowers/plans/2026-10-15-target-bearing-measurement-capture.md": {
+      "working_sha256": "49becbf8f1c179fc0609d6692b7cc7c3febaa546c161c0844ba51ea0206472ff",
+      "git_blob_sha256": "49becbf8f1c179fc0609d6692b7cc7c3febaa546c161c0844ba51ea0206472ff"
+    },
+    "evidence/target-bearing-scene-load-production-review.json": {
+      "working_sha256": "516e03bd564e62e4c9d078af1e21fe134ac17863c2ff683366f62ba3ec054adb",
+      "git_blob_sha256": "4e6244b0a258b9e101830ffd026aaa9f90ef93c57af402cf20ec506cf16c31d3"
+    }
+  },
+  "actual_v3_producer_sha256": "104261ca43c4531f5519bf5ac4cbf90785cbb22b9ae110c24574b6748f625eef",
+  "current_guarded_producer_sha256": "68f091481b2f737f4667c233f1e653b937a39df3b6f8ebd02f566ca96bffd2c3",
+  "current_guard_only_fix_not_materialized": true,
+  "plan_state": "source-stage3checkboxesdone; fullruntimefreeze andTask2..4pending; no postseal checkbox change",
+  "archive_prepublication_plan_sha256": "49becbf8f1c179fc0609d6692b7cc7c3febaa546c161c0844ba51ea0206472ff",
+  "full_runtime_graph_frozen": false,
+  "physical_dispatch_ready": false,
+  "qualification": {
+    "source": false,
+    "clock": false,
+    "measured_calibration": false,
+    "accuracy": false,
+    "teacher": false,
+    "fusion": false,
+    "training": false,
+    "flight": false
+  }
+}

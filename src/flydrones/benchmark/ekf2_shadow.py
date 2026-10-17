@@ -26,6 +26,106 @@ _TIME_NAMES = {
 }
 
 
+def audit_state_sample_times(frame_ns: list[int], topics: dict) -> dict:
+    """Separate publication from state sample age under an unqualified epoch.
+
+    A publication timestamp is only an earliest-availability bound, not host
+    receipt evidence. This diagnostic never grants capture/flight eligibility.
+    A timing discontinuity poisons subsequent samples in that topic: callers
+    need a separately evidenced new session, not implicit clock recovery.
+    """
+    max_ns = np.iinfo(np.int64).max
+    if (not isinstance(frame_ns, list) or not frame_ns
+            or any(type(t) is not int or not 0 <= t <= max_ns for t in frame_ns)
+            or any(b <= a for a, b in zip(frame_ns, frame_ns[1:]))):
+        raise ValueError("frame timestamps must be bounded, strictly increasing integers")
+    if not isinstance(topics, dict):
+        raise ValueError("topics must be a mapping")
+    verified = {}
+    coverage = {}
+    for name in ("vehicle_local_position", "vehicle_attitude"):
+        data = topics.get(name)
+        arrays = {}
+        for field in ("timestamp", "timestamp_sample"):
+            if not isinstance(data, dict) or field not in data:
+                raise ValueError(f"{name} {field} missing")
+            values = np.asarray(data[field])
+            if (values.ndim != 1 or not np.issubdtype(values.dtype, np.integer)
+                    or np.any(values < 0) or np.any(values > max_ns // 1000)):
+                raise ValueError(f"{name} {field} invalid")
+            arrays[field] = values.astype(np.int64) * 1000
+        pub, sample = arrays["timestamp"], arrays["timestamp_sample"]
+        if np.any(np.diff(pub) <= 0):
+            raise ValueError(f"{name} timestamp nonincreasing")
+        if pub.shape != sample.shape:
+            raise ValueError(f"{name} timestamp_sample length mismatch")
+        faults = {
+            "sample_zero": sample == 0,
+            "sample_after_publication": sample > pub,
+            "sample_nonincreasing": np.r_[False, np.diff(sample) <= 0]
+            if len(sample) else np.array([], dtype=bool),
+        }
+        bad = np.zeros(len(pub), dtype=bool)
+        for mask in faults.values():
+            bad |= mask
+        invalid_history = np.maximum.accumulate(bad)
+        verified[name] = pub, sample, faults, invalid_history
+        coverage[name] = {"samples": len(pub), "fault_counts": {
+            reason: int(np.count_nonzero(mask)) for reason, mask in faults.items()}}
+
+    records = []
+    false_fresh_count = 0
+    usable_count = 0
+    for frame in frame_ns:
+        selected = {}
+        reasons = []
+        publication_timely = True
+        sample_times = []
+        for name, (pub, sample, faults, history) in verified.items():
+            index = int(np.searchsorted(pub, frame, side="right")) - 1
+            if index < 0:
+                selected[name] = None
+                publication_timely = False
+                reasons.append(f"{name}_missing")
+                continue
+            p, s = int(pub[index]), int(sample[index])
+            selected[name] = {
+                "index": index, "publication_ns": p, "sample_ns": s,
+                "publication_age_ns": frame - p, "sample_age_ns": frame - s,
+                "publication_minus_sample_ns": p - s,
+            }
+            sample_times.append(s)
+            if frame - p > _FAST_MAX_AGE_NS:
+                publication_timely = False
+                reasons.append(f"{name}_publication_stale")
+            if frame - s > _FAST_MAX_AGE_NS:
+                reasons.append(f"{name}_sample_stale")
+            for reason, mask in faults.items():
+                if mask[index]:
+                    reasons.append(f"{name}_{reason}")
+            if history[index]:
+                reasons.append(f"{name}_sample_history_invalid")
+        skew = abs(sample_times[0] - sample_times[1]) if len(sample_times) == 2 else None
+        if skew is not None and skew > 50_000_000:
+            reasons.append("state_sample_skew")
+        usable = not reasons
+        false_fresh_count += int(publication_timely and not usable)
+        usable_count += int(usable)
+        records.append({"frame_ns": frame, "topics": selected,
+                        "publication_timely": publication_timely,
+                        "sample_timing_usable": usable, "sample_skew_ns": skew,
+                        "reasons": sorted(reasons)})
+    return {
+        "schema": "flydrones-ekf2-state-sample-time-v1", "frame_count": len(frame_ns),
+        "records": records, "topic_coverage": coverage,
+        "sample_timing_usable_count": usable_count,
+        "publication_only_false_fresh_count": false_fresh_count,
+        "thresholds_ns": {"estimate": _FAST_MAX_AGE_NS, "state_sample_skew": 50_000_000},
+        "time_epoch_assumption": "Gazebo frame_ns and PX4 timestamps share simulated epoch; uncalibrated",
+        "clock_epoch_qualified": False, "eligible_for_live_capture": False,
+    }
+
+
 def _validated_topics(topics: dict) -> dict[str, tuple[dict, np.ndarray]]:
     if not isinstance(topics, dict):
         raise ValueError("topics must be a mapping")

@@ -1,0 +1,10 @@
+{
+  "all_member_hashes_verified": true,
+  "archive_sha256": "0b87812d0dca6c1dfbb01ffeb732046040c668ff8d3fd6e6438325fa8de2689f",
+  "crc_verified": true,
+  "failed_preparations_retained": 2,
+  "live_qualified": false,
+  "members": 193,
+  "physical_run": false,
+  "schema": "live-wire-agent-v12-publication-v1"
+}

@@ -91,3 +91,20 @@ def test_non_finite_depth_names_the_field(tmp_path):
         write_sequence(
             tmp_path / "episode", TrainingSequence(provenance(), [bad], [target()])
         )
+
+
+@pytest.mark.parametrize("field", ["goal", "yaw", "clearance"])
+def test_float32_archive_rejects_unrepresentable_finite_inputs(tmp_path, field):
+    sample = frame(50)
+    teacher = target()
+    if field == "goal":
+        sample.goal_enu = np.array([1e40, 0, 1], np.float64)
+    elif field == "yaw":
+        sample.yaw = 1e40
+    else:
+        teacher.minimum_clearance_m = 1e40
+    with pytest.raises(ValueError, match="non-finite|float32"):
+        write_sequence(
+            tmp_path / "episode", TrainingSequence(provenance(), [sample], [teacher])
+        )
+    assert not (tmp_path / "episode").exists()

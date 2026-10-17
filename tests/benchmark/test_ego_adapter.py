@@ -1,12 +1,9 @@
-import json
 from pathlib import Path
 
 import numpy as np
 import pytest
 
-from flydrones.benchmark.contract import Observation
 from flydrones.benchmark.ego import track_reference, validate_reference
-
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 
@@ -31,6 +28,24 @@ def test_future_reference_is_rejected():
     message = {'sim_ns': 101, 'upstream_stamp_ns': 123456, 'position_ref': [1., 0., 1.5], 'velocity_ref': [.2, 0., 0.], 'yaw_rate': 0.}
     with pytest.raises(ValueError, match='future'):
         validate_reference(message, observation_sim_ns=100, max_age_ns=50)
+
+
+@pytest.mark.parametrize('change', [
+    {'sim_ns': -1},
+    {'upstream_stamp_ns': -1},
+    {'position_ref': [True, 0., 1.5]},
+    {'velocity_ref': ['0.2', 0., 0.]},
+    {'yaw_rate': False},
+])
+def test_reference_rejects_coerced_or_negative_json_values(change):
+    message = {
+        'sim_ns': 100, 'upstream_stamp_ns': 123456,
+        'position_ref': [1., 0., 1.5], 'velocity_ref': [.2, 0., 0.],
+        'yaw_rate': 0.,
+    }
+    message.update(change)
+    with pytest.raises(ValueError, match='reference'):
+        validate_reference(message, observation_sim_ns=100, max_age_ns=200)
 
 
 def test_ros_adapter_uses_depth_only_and_launches_no_truth_map_nodes():

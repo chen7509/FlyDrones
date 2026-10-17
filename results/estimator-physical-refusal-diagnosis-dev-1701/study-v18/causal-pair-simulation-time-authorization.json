@@ -1,0 +1,134 @@
+{
+  "schema": "causal-pair-simulation-time-authorization-v1",
+  "source_manifest": {
+    "requested": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/study-manifest.json",
+    "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/study-manifest.json",
+    "links": [],
+    "identity": {
+      "device": 68,
+      "inode": 20547673301421578,
+      "mode": 33279,
+      "size": 8969,
+      "mtime_ns": 1791323429731964600,
+      "ctime_ns": 1791323429731964600
+    },
+    "path_identity": {
+      "device": 68,
+      "inode": 20547673301421578,
+      "mode": 33279,
+      "size": 8969,
+      "mtime_ns": 1791323429731964600,
+      "ctime_ns": 1791323429731964600
+    },
+    "bytes": 8969,
+    "sha256": "643e1f67cbf2b931c24f3d2bd85a35a3f933de02e38a9e51e4103bbf445a8bf1"
+  },
+  "source_audit": {
+    "requested": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/causal-pair-sim-time-dev-1701/study-v16-audit.json",
+    "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/causal-pair-sim-time-dev-1701/study-v16-audit.json",
+    "links": [],
+    "identity": {
+      "device": 68,
+      "inode": 16325548649956595,
+      "mode": 33279,
+      "size": 698,
+      "mtime_ns": 1791324435826050500,
+      "ctime_ns": 1791324435826050500
+    },
+    "path_identity": {
+      "device": 68,
+      "inode": 16325548649956595,
+      "mode": 33279,
+      "size": 698,
+      "mtime_ns": 1791324435826050500,
+      "ctime_ns": 1791324435826050500
+    },
+    "bytes": 698,
+    "sha256": "af3ef400a2254759b90aeaf9e68ab1b7a3c431180d9e912cc42c1036ee134ff6"
+  },
+  "completion": {
+    "requested": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/estimator-physical-refusal-diagnosis-dev-1701/physical-run-v8-completion.json",
+    "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/estimator-physical-refusal-diagnosis-dev-1701/physical-run-v8-completion.json",
+    "links": [],
+    "identity": {
+      "device": 68,
+      "inode": 16325548650768235,
+      "mode": 33279,
+      "size": 352,
+      "mtime_ns": 1791323853251723600,
+      "ctime_ns": 1791323853251723600
+    },
+    "path_identity": {
+      "device": 68,
+      "inode": 16325548650768235,
+      "mode": 33279,
+      "size": 352,
+      "mtime_ns": 1791323853251723600,
+      "ctime_ns": 1791323853251723600
+    },
+    "bytes": 352,
+    "sha256": "7a70339164af657a159971d9e2643c52a99c9b0611286d3387e74de9251777d3"
+  },
+  "correction_audit": {
+    "requested": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/causal-pair-sim-time-dev-1701/study-v16-audit.json",
+    "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/causal-pair-sim-time-dev-1701/study-v16-audit.json",
+    "links": [],
+    "identity": {
+      "device": 68,
+      "inode": 16325548649956595,
+      "mode": 33279,
+      "size": 698,
+      "mtime_ns": 1791324435826050500,
+      "ctime_ns": 1791324435826050500
+    },
+    "path_identity": {
+      "device": 68,
+      "inode": 16325548649956595,
+      "mode": 33279,
+      "size": 698,
+      "mtime_ns": 1791324435826050500,
+      "ctime_ns": 1791324435826050500
+    },
+    "bytes": 698,
+    "sha256": "af3ef400a2254759b90aeaf9e68ab1b7a3c431180d9e912cc42c1036ee134ff6"
+  },
+  "correction_archive": {
+    "requested": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/evidence/causal-pair-sim-time-dev-1701.zip",
+    "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/evidence/causal-pair-sim-time-dev-1701.zip",
+    "links": [],
+    "identity": {
+      "device": 68,
+      "inode": 8162774325348303,
+      "mode": 33279,
+      "size": 1411776,
+      "mtime_ns": 1791324993833665100,
+      "ctime_ns": 1791324993833665100
+    },
+    "path_identity": {
+      "device": 68,
+      "inode": 8162774325348303,
+      "mode": 33279,
+      "size": 1411776,
+      "mtime_ns": 1791324993833665100,
+      "ctime_ns": 1791324993833665100
+    },
+    "bytes": 1411776,
+    "sha256": "1b063c7e502670f646984fa3dd64b963a4a77e1d46686f269e9bf353fcc15ef9"
+  },
+  "pair_wall_age_ns": 355099344,
+  "idle_wall_age_ns": 294079878,
+  "pair_sim_age_ns": 0,
+  "fixed_replay_camera_released": true,
+  "simulation_silence_refused": true,
+  "pair_sim_wait_ns": 250000000,
+  "timeout_increased": false,
+  "old_frame_repeated": false,
+  "physical_run": false,
+  "physical_execution_qualified": false,
+  "runtime_mapping_coverage_verified": false,
+  "runtime_closure_qualified": false,
+  "vio_accuracy_qualified": false,
+  "estimator_health_qualified": false,
+  "fusion_eligible": false,
+  "flight_ready": false
+}

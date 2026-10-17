@@ -1,0 +1,14 @@
+{
+  "schema": "heartbeat-simulation-time-research-v1",
+  "retrieved_utc": "2026-10-07T00:00:00Z",
+  "decision": "Use simulation-domain heartbeat age referenced to the latest wall-fresh journaled IMU; retain wall deadlines for high-rate sources, queues, native work and supervision.",
+  "rejected": ["increase the 2 s wall timeout", "derive a dynamic timeout from observed real-time factor"],
+  "sources": [
+    {"title":"PX4 ROS 2 User Guide", "url":"https://github.com/PX4/PX4-Autopilot/blob/main/docs/en/ros2/user_guide.md", "finding":"GZBridge updates PX4 time from Gazebo each simulation step; OS time is only suitable when real-time factor is close to one."},
+    {"title":"PX4 Gazebo Sim documentation", "url":"https://docs.px4.io/v1.17/en/sim_gazebo_gz/index", "finding":"PX4 and Gazebo run in lockstep and simulation may run slower or faster than real time."},
+    {"title":"MAVLink Heartbeat Protocol", "url":"https://mavlink.io/en/services/heartbeat.html", "finding":"Heartbeat rate and disconnect timeout are channel-specific policy."},
+    {"title":"MAVSDK Heartbeat Watchdog", "url":"https://mavsdk.mavlink.io/main/en/cpp/guide/heartbeat_watchdog.html", "finding":"A watchdog fed exactly at its timeout is sensitive to scheduling jitter; configured timeout needs margin."}
+  ],
+  "licenses": {"PX4-Autopilot":"BSD-3-Clause", "MAVLink documentation":"repository terms retained; documentation consulted only"},
+  "resource_cost": "fixed JSON replay and unit tests only; no PX4, Gazebo, OpenVINS or training process"
+}

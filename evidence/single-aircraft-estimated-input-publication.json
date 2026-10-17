@@ -1,0 +1,84 @@
+{
+  "schema": "single-aircraft-estimated-input-publication-v1",
+  "software_commit": "4ea8c9c8610028c94130e12c20a28271394eb02e",
+  "base": "1de044650aa590e9457652df50a0f6a574c48b40",
+  "archive": "evidence/single-aircraft-estimated-input-20261017.zip",
+  "archive_sha256": "3f12c9f2c5338ea2f209108cadeb0785b867ebf10bc0ac07346859d004f15ccb",
+  "archive_bytes": 2142274,
+  "software_files": [
+    {
+      "path": "src/flydrones/benchmark/contract.py",
+      "archived_working_sha256": "44145adb507d671a66191aadc654461a75ba6424ad65f7c6cbd75abcde4d258f",
+      "software_commit_blob_sha256": "44145adb507d671a66191aadc654461a75ba6424ad65f7c6cbd75abcde4d258f",
+      "postpublication_working_sha256": "44145adb507d671a66191aadc654461a75ba6424ad65f7c6cbd75abcde4d258f"
+    },
+    {
+      "path": "src/flydrones/benchmark/gateway.py",
+      "archived_working_sha256": "1e5502a8765769146db120bf9343394f4fabcefc4c28b93e6113f1ecc9a9e740",
+      "software_commit_blob_sha256": "1e5502a8765769146db120bf9343394f4fabcefc4c28b93e6113f1ecc9a9e740",
+      "postpublication_working_sha256": "1e5502a8765769146db120bf9343394f4fabcefc4c28b93e6113f1ecc9a9e740"
+    },
+    {
+      "path": "src/flydrones/drones/mavlink.py",
+      "archived_working_sha256": "4d49427fcfabd9588da8bb877d48e0f4578f52349a002c704a1821948eb88066",
+      "software_commit_blob_sha256": "4d49427fcfabd9588da8bb877d48e0f4578f52349a002c704a1821948eb88066",
+      "postpublication_working_sha256": "4d49427fcfabd9588da8bb877d48e0f4578f52349a002c704a1821948eb88066"
+    },
+    {
+      "path": "tools/benchmark/run_episode.py",
+      "archived_working_sha256": "86730dafc09a110b9a7c3d70b3c1e97ef57c33a82e6af1215a8bab0d0f615ccc",
+      "software_commit_blob_sha256": "86730dafc09a110b9a7c3d70b3c1e97ef57c33a82e6af1215a8bab0d0f615ccc",
+      "postpublication_working_sha256": "86730dafc09a110b9a7c3d70b3c1e97ef57c33a82e6af1215a8bab0d0f615ccc"
+    },
+    {
+      "path": "tests/benchmark/test_estimated_controller_input.py",
+      "archived_working_sha256": "d5f3c3a7f3abb29342f605547746772e3f9da2ffccfec60f4d68a563d4540bcb",
+      "software_commit_blob_sha256": "d5f3c3a7f3abb29342f605547746772e3f9da2ffccfec60f4d68a563d4540bcb",
+      "postpublication_working_sha256": "d5f3c3a7f3abb29342f605547746772e3f9da2ffccfec60f4d68a563d4540bcb"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-10-17-single-aircraft-estimated-input-design.md",
+      "archived_working_sha256": "17fd1aab32d68fda5d282cdef8b44f6a535ed518c54c02c8960f43a258d3e18a",
+      "software_commit_blob_sha256": "17fd1aab32d68fda5d282cdef8b44f6a535ed518c54c02c8960f43a258d3e18a",
+      "postpublication_working_sha256": "17fd1aab32d68fda5d282cdef8b44f6a535ed518c54c02c8960f43a258d3e18a"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-10-17-single-aircraft-estimated-input.md",
+      "archived_working_sha256": "02955a1f94d1088acecb9670783ff5be1b1808981269c81ac0f64c8160703291",
+      "software_commit_blob_sha256": "02955a1f94d1088acecb9670783ff5be1b1808981269c81ac0f64c8160703291",
+      "postpublication_working_sha256": "3ed93451873ec8be3e0df9af916fe91e08374d189a1fbfe0e2d0c85fc48477e7"
+    },
+    {
+      "path": "docs/SINGLE_AIRCRAFT_CLOSED_LOOP_PROGRESS.md",
+      "archived_working_sha256": "810625ccc54c316cb891ee9227366b1382309dbbfb0bf1bdd11255afab190ea4",
+      "software_commit_blob_sha256": "810625ccc54c316cb891ee9227366b1382309dbbfb0bf1bdd11255afab190ea4",
+      "postpublication_working_sha256": "810625ccc54c316cb891ee9227366b1382309dbbfb0bf1bdd11255afab190ea4"
+    }
+  ],
+  "sole_postseal_plan_byte": 3262,
+  "postplan_sha256": "3ed93451873ec8be3e0df9af916fe91e08374d189a1fbfe0e2d0c85fc48477e7",
+  "source_review_counts_original": {
+    "critical": 0,
+    "important": 3,
+    "minor": 0
+  },
+  "executor": "one bounded pass; four genuine software REDs; final114pass2.00s; all13declined ruled; no second review",
+  "PR": {
+    "url": "https://github.com/chen7509/FlyDrones/pull/65",
+    "draft": true,
+    "body_chars": 40834,
+    "previous_suffix_chars": 37886,
+    "exact_corrected_readback": true
+  },
+  "retained_postseal_failure": "Original PR edit read UTF-8 gh JSON via cp1252 and altered old text; original request/readback/metadata remain; additive v2 restored exact original suffix. Product/test/report/archive unchanged.",
+  "no_qualification": [
+    "source",
+    "clock",
+    "measured_calibration",
+    "fusion",
+    "training",
+    "flight"
+  ],
+  "known_current_original382_evolved_count": 11,
+  "boundary": "targeted joins, not new whole history scan or native prepin; raw postseal publication metadata outside immutable ZIP; no pristine delivery claim"
+}

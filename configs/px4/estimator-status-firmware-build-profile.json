@@ -1,0 +1,22 @@
+{
+  "schema": "flydrones.px4_status_firmware_build_admission.v1",
+  "source_profile_sha256": "13fd3306e2cd19254cafba28f9dc21463173aa4b8dc43f9e0927b8cbb26a6b88",
+  "source_auditor_sha256": "badbab9a9eb877e6447bddd35c9624af86d9fb60b7a07798bc58d6c5b514ce94",
+  "prepared_source_audit_sha256": "ca2cb14a192bac354d457ce9e58b684f7b0421c70f096ebf3ed21be2f6b50251",
+  "isolated_root": "/home/yuchen7509/px4-status-worktrees/firmware-v1",
+  "build_result_path": "/home/yuchen7509/px4-status-worktrees/status-build-v1",
+  "wsl_distro": "Ubuntu",
+  "command": ["make", "-j1", "px4_sitl_default"],
+  "minimum_windows_available_bytes": 4294967296,
+  "minimum_wsl_available_bytes": 4294967296,
+  "minimum_disk_free_bytes": 16106127360,
+  "scope_memory_max_bytes": 4294967296,
+  "scope_cpu_max": "100000 100000",
+  "timeout_seconds": 5400,
+  "run_count_limit": 1,
+  "build_dispatched": false,
+  "firmware_compiled_verified": false,
+  "live_source_authenticated": false,
+  "fusion_qualified": false,
+  "training_eligible": false
+}

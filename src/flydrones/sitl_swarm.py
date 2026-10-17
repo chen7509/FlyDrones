@@ -612,6 +612,9 @@ def run_px4_swarm_trial(
             sleep(period)
 
         for drone in drones:
+            drone.require_position_observation()
+
+        for drone in drones:
             drone.m.set_mode("OFFBOARD")
             drone.m.arducopter_arm()
             drone.flying = True

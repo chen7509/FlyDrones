@@ -1,0 +1,112 @@
+{
+  "schema": "managed-capture-source-publication-v1",
+  "software_head": "df969bda4b2c4eca942a4456bc60eac705e77025",
+  "identities": {
+    "src/flydrones/benchmark/kalibr_camera_consumption.py": {
+      "working_bytes": 8902,
+      "working_sha256": "40c2715ce9fa86a712b02de36502c681c603a2e3d1f523e4728d16989bbb4cae",
+      "software_git_bytes": 8902,
+      "software_git_sha256": "40c2715ce9fa86a712b02de36502c681c603a2e3d1f523e4728d16989bbb4cae"
+    },
+    "src/flydrones/benchmark/px4_camera_source.py": {
+      "working_bytes": 18276,
+      "working_sha256": "9e23b8c6f0cca9e80bb393bd7f8bc4e8d591e1b99944516241faa86c37c05b63",
+      "software_git_bytes": 18276,
+      "software_git_sha256": "9e23b8c6f0cca9e80bb393bd7f8bc4e8d591e1b99944516241faa86c37c05b63"
+    },
+    "tools/benchmark/capture_contract.py": {
+      "working_bytes": 16012,
+      "working_sha256": "b1266563d6d6a3e3882d37e8ffb6ed9dc42b2236444a0248fa3116c7360bae29",
+      "software_git_bytes": 15713,
+      "software_git_sha256": "041aa44ff31bb2458dda0a76b6ac79ea64658e762259b43a45128115602de5a1"
+    },
+    "tools/benchmark/capture_disarmed_sensors.py": {
+      "working_bytes": 67800,
+      "working_sha256": "5e538c945657dac161a2a15a39f6f66b309ec1fe99128d31602c184fd710136b",
+      "software_git_bytes": 67800,
+      "software_git_sha256": "5e538c945657dac161a2a15a39f6f66b309ec1fe99128d31602c184fd710136b"
+    },
+    "tools/benchmark/capture_wire_lifecycle.py": {
+      "working_bytes": 30158,
+      "working_sha256": "17d5e072e70d8e9faba3903300b237e033fbe1448bc23329149cb438bf7a39c0",
+      "software_git_bytes": 30158,
+      "software_git_sha256": "17d5e072e70d8e9faba3903300b237e033fbe1448bc23329149cb438bf7a39c0"
+    },
+    "tools/benchmark/openvins_observed_wire_session.py": {
+      "working_bytes": 26952,
+      "working_sha256": "ea088bd31ba5c31a233cf48530c9fd52f20b1acf53937fe7a561a06000fc77da",
+      "software_git_bytes": 26952,
+      "software_git_sha256": "ea088bd31ba5c31a233cf48530c9fd52f20b1acf53937fe7a561a06000fc77da"
+    },
+    "tools/benchmark/managed_capture_source.py": {
+      "working_bytes": 18625,
+      "working_sha256": "ae9a3f4d67585c01642bc21872f540b4ae4223ae53ad9cffc8f9cba54a2cf28d",
+      "software_git_bytes": 18625,
+      "software_git_sha256": "ae9a3f4d67585c01642bc21872f540b4ae4223ae53ad9cffc8f9cba54a2cf28d"
+    },
+    "tools/benchmark/disarmed_estimate_receiver.py": {
+      "working_bytes": 3389,
+      "working_sha256": "4767502c586ff79a83ac63a4681034b53342518e0a8460bcc1446c41d0b8a2fe",
+      "software_git_bytes": 3389,
+      "software_git_sha256": "4767502c586ff79a83ac63a4681034b53342518e0a8460bcc1446c41d0b8a2fe"
+    },
+    "tests/benchmark/test_managed_capture_source.py": {
+      "working_bytes": 21848,
+      "working_sha256": "6af2a41216bb5857f3f52a03839a1f7f792904c6480f23ac7242e3e68d7c9ca3",
+      "software_git_bytes": 21848,
+      "software_git_sha256": "6af2a41216bb5857f3f52a03839a1f7f792904c6480f23ac7242e3e68d7c9ca3"
+    },
+    "tests/benchmark/test_disarmed_estimate_receiver.py": {
+      "working_bytes": 3981,
+      "working_sha256": "99b10dd72ccdd9cdbdbb2a00c06c3f89ee2afbd895e69eecc49a75658f2121b1",
+      "software_git_bytes": 3981,
+      "software_git_sha256": "99b10dd72ccdd9cdbdbb2a00c06c3f89ee2afbd895e69eecc49a75658f2121b1"
+    },
+    "tests/benchmark/managed_capture_software_plugin.py": {
+      "working_bytes": 573,
+      "working_sha256": "7ab6c990f4bd85b651947c96c21352be075800cab171fa4b456165a64eb9cbf6",
+      "software_git_bytes": 573,
+      "software_git_sha256": "7ab6c990f4bd85b651947c96c21352be075800cab171fa4b456165a64eb9cbf6"
+    },
+    "docs/superpowers/specs/2026-10-17-managed-capture-source-design.md": {
+      "working_bytes": 2608,
+      "working_sha256": "7033d604216b3d9b8763a39891211082f9c73b0def1feadb8c8f08f4be8a3fd5",
+      "software_git_bytes": 2608,
+      "software_git_sha256": "7033d604216b3d9b8763a39891211082f9c73b0def1feadb8c8f08f4be8a3fd5"
+    },
+    "docs/superpowers/plans/2026-10-17-managed-capture-source.md": {
+      "working_bytes": 3287,
+      "working_sha256": "3d93fcae3d12c66dcb32d256b7025bb9ceb572c143c5ba0130a11c252214ec2f",
+      "software_git_bytes": 3287,
+      "software_git_sha256": "79eb7f777abc6fdd11237b0109a9ff33d6b1abc9daac00ae1af06c59501415a2"
+    },
+    "docs/SINGLE_AIRCRAFT_MANAGED_SOURCE_PROGRESS.md": {
+      "working_bytes": 8186,
+      "working_sha256": "f2ce3b98bf497442a433cea67ebd397e45d543d8e83941f7f49704a6acc756d1",
+      "software_git_bytes": 8154,
+      "software_git_sha256": "20cc414283d7f669902c5bade8b30ae460b30bbb93a2c492cf42dabd0827e537"
+    },
+    "evidence/single-aircraft-managed-source-20261017.zip": {
+      "working_bytes": 7900893,
+      "working_sha256": "a338371bb515b439164837ef84f693fd32a5f431a0fd3025ddd93138a84d699b",
+      "software_git_bytes": 7900893,
+      "software_git_sha256": "a338371bb515b439164837ef84f693fd32a5f431a0fd3025ddd93138a84d699b"
+    },
+    "evidence/single-aircraft-managed-source-20261017.sha256.json": {
+      "working_bytes": 898021,
+      "working_sha256": "87ada3ae1c57c71824fa3fccef2f1697a22a50651f2f088c4ac3661e49c7a149",
+      "software_git_bytes": 886329,
+      "software_git_sha256": "050d204ebbd6405b9feb16a7b0b972b627484b37704c6cab66e2ab5916a73df3"
+    }
+  },
+  "plan": {
+    "path": "docs/superpowers/plans/2026-10-17-managed-capture-source.md",
+    "byte_offset": 3096,
+    "before_sha256": "79eb7f777abc6fdd11237b0109a9ff33d6b1abc9daac00ae1af06c59501415a2",
+    "after_sha256": "3d93fcae3d12c66dcb32d256b7025bb9ceb572c143c5ba0130a11c252214ec2f"
+  },
+  "scope": "software-only, original review and inherited limitations preserved; no native/flight approval",
+  "all_qualifications": false,
+  "runtime_graph_frozen": false,
+  "physical_dispatch_ready": false
+}

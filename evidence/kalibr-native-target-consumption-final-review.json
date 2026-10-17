@@ -1,0 +1,22 @@
+{
+  "reviewer": "/root/review_kalibr_native_detector",
+  "Critical": 0,
+  "Important": 0,
+  "Minor": 0,
+  "archive_sha256": "b2ef3316e3be642da3501a20a2e460cf1cdbd6580f00ddb63138a8b49d1f7047",
+  "members": 299,
+  "bytes": 681177,
+  "mapped_all_SHA_size_CRC_currentbytes": 298,
+  "errors": 0,
+  "both_studies_complete_and_retained": true,
+  "report_sha256": "d20701d84479160fda83e2e391c107ba5bca05c34951f09977ccb7e7e6068e2b",
+  "historical_archives_count": 275,
+  "historical_archives_bytes": 695802120,
+  "historical_hashes_all_match": true,
+  "native_rows": 9,
+  "finite_corners": 36,
+  "max_ordered_error_px": 0.8293274054026185,
+  "both_attempts_consumed": true,
+  "qualification": false,
+  "ZIP_plan": "prepublication"
+}

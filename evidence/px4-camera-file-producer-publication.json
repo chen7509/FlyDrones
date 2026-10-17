@@ -1,0 +1,17 @@
+{
+  "schema": "flydrones-stage-publication-v1",
+  "stage": "px4-camera-file-producer-dev-1701",
+  "implementation_commit": "c4dce2a52da16bfa41a9393ddb3bf84d8916fdd5",
+  "canonical_archive_sha256": "9ac9f0377ce9c71b204c37cf92b72dfe29587a7cde01fbf2fd5f5513603239de",
+  "prepublication_plan_sha256": "4722d50378dcc605972666f0bd0e2b7050a40381c432ce2d4d8b8d9e65904f21",
+  "current_publication_plan_sha256": "0a7f879ec20de4e69db8d4ccba15cc7d7edcf563cea03964c1979d8819ead620",
+  "plan_change": "last publication checkbox and appended ledger only; ZIP prepublication plan unchanged",
+  "focused_test_result": "29passed4.13s; Ruff/diff0",
+  "independent_final_review": "no Critical/Important/Minor;186members allCRC/size/SHA/currentbyte at seal",
+  "real_file_result": "parent48268 exit0;251 refusal rows;0geometry",
+  "calibration_association": "same-capture CameraInfo exists and matches selected historical-copy bytes; measured spatial-temporal/runtime association unqualified",
+  "source_clock_calibration_training_flight_qualified": false,
+  "source_bytes": "archive retains tested working-tree bytes; Git text newline normalization is distinct",
+  "remote_policy": "only personal; never origin",
+  "publication_pr": "https://github.com/chen7509/FlyDrones/pull/65"
+}

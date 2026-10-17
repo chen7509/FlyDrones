@@ -18,10 +18,14 @@ def integer(value):
 
 
 class JournaledReadiness:
+    WALL_FRESHNESS_NS = 2_000_000_000
+    HEARTBEAT_SIM_FRESHNESS_NS = 2_000_000_000
+
     def __init__(self, *, clock=time.monotonic_ns):
         self.clock = clock
         self.lock = threading.Lock()
         self.records = {}
+        self.heartbeat_history = []
         self.failure = None
         self.clock_high_water_ns = None
 
@@ -51,6 +55,12 @@ class JournaledReadiness:
                 prepared = integer(row["recorded_monotonic_ns"])
                 if not arrival <= prepared <= now:
                     raise ValueError("future/reversed readiness receipt")
+                observed_sim = None
+                if row["kind"] in ("imu", "heartbeat"):
+                    try:
+                        observed_sim = integer(row["observed_sim_ns"])
+                    except Exception as exc:
+                        raise ValueError(f"invalid {row['kind']} simulation clock") from exc
                 if row["kind"] == "heartbeat" and (
                     type(row["system_id"]) is not int
                     or row["system_id"] != 9
@@ -61,7 +71,17 @@ class JournaledReadiness:
                 old = self.records.get(row["kind"])
                 if old and arrival <= old["arrival_monotonic_ns"]:
                     raise ValueError("repeated/regressed readiness receipt")
-                self.records[row["kind"]] = dict(copy.deepcopy(row), journal_ack_monotonic_ns=now)
+                if (
+                    row["kind"] == "heartbeat"
+                    and old
+                    and observed_sim < old["observed_sim_ns"]
+                ):
+                    raise ValueError("repeated/regressed heartbeat simulation clock")
+                saved = dict(copy.deepcopy(row), journal_ack_monotonic_ns=now)
+                self.records[row["kind"]] = saved
+                if row["kind"] == "heartbeat":
+                    self.heartbeat_history.append(copy.deepcopy(saved))
+                    self.heartbeat_history = self.heartbeat_history[-32:]
             except Exception as exc:
                 self.failure = self.failure or repr(exc)
                 raise ValueError(self.failure) from exc
@@ -74,15 +94,53 @@ class JournaledReadiness:
             if any(now < r["journal_ack_monotonic_ns"] for r in self.records.values()):
                 self.failure = "regressed readiness clock"
                 raise ValueError(self.failure)
-            if len(self.records) != 4 or any(now - r["arrival_monotonic_ns"] > 2_000_000_000 for r in self.records.values()):
+            if len(self.records) != 4 or not self.heartbeat_history:
                 return None
+            if any(
+                now - self.records[kind]["arrival_monotonic_ns"] > self.WALL_FRESHNESS_NS
+                for kind in ("imu", "rgb", "info")
+            ):
+                return None
+            current_sim = self.records["imu"]["observed_sim_ns"]
+            eligible = [
+                row
+                for row in self.heartbeat_history
+                if row["observed_sim_ns"] <= current_sim
+            ]
+            if not eligible:
+                return None
+            heartbeat = eligible[-1]
+            heartbeat_sim = heartbeat["observed_sim_ns"]
+            heartbeat_sim_age = current_sim - heartbeat_sim
+            if heartbeat_sim_age > self.HEARTBEAT_SIM_FRESHNESS_NS:
+                return None
+            selected_records = copy.deepcopy(self.records)
+            selected_records["heartbeat"] = copy.deepcopy(heartbeat)
             return dict(
-                checked_wall_ns=now, records=copy.deepcopy(self.records), scope="successful write and flush; not fsync durability"
+                checked_wall_ns=now,
+                records=selected_records,
+                freshness=dict(
+                    high_rate_wall_limit_ns=self.WALL_FRESHNESS_NS,
+                    heartbeat_sim_limit_ns=self.HEARTBEAT_SIM_FRESHNESS_NS,
+                    heartbeat_wall_age_ns=now - heartbeat["arrival_monotonic_ns"],
+                    heartbeat_sim_age_ns=heartbeat_sim_age,
+                    latest_heartbeat_ahead_ns=max(
+                        0,
+                        self.records["heartbeat"]["observed_sim_ns"] - current_sim,
+                    ),
+                    simulation_reference="latest wall-fresh journaled IMU observed_sim_ns",
+                ),
+                scope="successful write and flush; not fsync durability",
             )
 
     def snapshot(self):
         with self.lock:
-            return dict(records=copy.deepcopy(self.records), failure=self.failure, clock_high_water_ns=self.clock_high_water_ns)
+            return dict(
+                records=copy.deepcopy(self.records),
+                heartbeat_history=copy.deepcopy(self.heartbeat_history),
+                failure=self.failure,
+                clock_high_water_ns=self.clock_high_water_ns,
+            )
 
 
 def anchored_profile():

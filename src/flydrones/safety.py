@@ -14,6 +14,15 @@ from dataclasses import dataclass, field
 from .motor.command import AXES, FlightCommand
 
 
+def _finite_number(value: object) -> bool:
+    if type(value) not in (int, float):
+        return False
+    try:
+        return math.isfinite(value)
+    except OverflowError:
+        return False
+
+
 @dataclass
 class Telemetry:
     t: float = field(default_factory=time.monotonic)
@@ -73,6 +82,7 @@ class SafetyGovernor:
         self.max_flight = float(s.get("max_flight_s", 180))
         self._prev = FlightCommand()
         self._start = None
+        self._last_t = None
         self.land_requested = False
         self.kill = False
         self._floor_recovering = False
@@ -83,12 +93,34 @@ class SafetyGovernor:
             self.events.append(msg)
 
     def filter(self, cmd: FlightCommand, tel: Telemetry, dt: float, brain_age_s: float = 0.0) -> FlightCommand:
+        numeric = [getattr(cmd, axis) for axis in AXES]
+        numeric.extend((tel.t, tel.yaw_rate_dps, dt, brain_age_s))
+        numeric.extend(getattr(tel, key) for key in (
+            "alt_m", "vz_mps", "yaw_deg", "x_m", "y_m", "battery_pct"
+        ) if getattr(tel, key) is not None)
+        if any(not _finite_number(value) for value in numeric):
+            self.land_requested = True
+            self._floor_recovering = False
+            self._prev = FlightCommand.hover("nonfinite safety input -> land")
+            self._event("nonfinite")
+            return self._prev
+        if (tel.t < 0 or dt < 0 or brain_age_s < 0
+                or (self._last_t is not None and tel.t < self._last_t)):
+            self.land_requested = True
+            self._floor_recovering = False
+            self._prev = FlightCommand.hover("invalid safety time -> land")
+            self._event("invalid safety time")
+            return self._prev
+        self._last_t = tel.t
         now = tel.t
         if self._start is None:
             self._start = now
         notes = []
         if self.kill:
             return FlightCommand.hover("KILL")
+        if self.land_requested:
+            self._prev = FlightCommand.hover("landing requested")
+            return self._prev
         if brain_age_s > self.brain_timeout:
             cmd = FlightCommand.hover("brain timeout -> hover")
             self._event("brain timeout")
@@ -123,6 +155,11 @@ class SafetyGovernor:
         if now - self._start > self.max_flight:
             self.land_requested = True
             notes.append("max flight time -> land")
+        if self.land_requested:
+            for note in notes:
+                self._event(note)
+            self._prev = FlightCommand.hover("landing requested")
+            return self._prev
 
         # slew-rate limit, but always allow moving toward zero instantly
         max_step = self.slew * max(dt, 1e-3)

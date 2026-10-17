@@ -31,7 +31,79 @@ def test_journaled_freshness_and_source_completeness():
     gate.on_record(row("heartbeat"), None)
     assert gate.proof()["records"]["heartbeat"]["base_mode"] == 29
     now[0] = 2000000101
+    for kind in ["imu", "rgb", "info"]:
+        fresh = row(kind, now[0] - 1)
+        gate.on_record(fresh, None)
+    proof = gate.proof()
+    assert proof is not None
+    assert proof["freshness"]["heartbeat_wall_age_ns"] == 2_000_000_001
+    assert proof["freshness"]["heartbeat_sim_age_ns"] == 0
+
+
+def test_heartbeat_uses_simulation_age_while_high_rate_sources_use_wall_age():
+    now = [10_000_000_000]
+    gate = JournaledReadiness(clock=lambda: now[0])
+    for kind in ["imu", "rgb", "info", "heartbeat"]:
+        initial = row(kind, now[0] - 1)
+        if kind == "heartbeat":
+            initial["observed_sim_ns"] = 3_679_000_000
+        gate.on_record(initial, None)
+
+    # Host time can exceed the heartbeat limit while slow lockstep simulation
+    # has not advanced far enough to owe another 1 Hz heartbeat.
+    now[0] += 2_000_000_001
+    for kind in ["imu", "rgb", "info"]:
+        fresh = row(kind, now[0] - 1)
+        fresh["observed_sim_ns"] = 4_647_000_000
+        gate.on_record(fresh, None)
+    proof = gate.proof()
+    assert proof["freshness"]["heartbeat_wall_age_ns"] == 2_000_000_002
+    assert proof["freshness"]["heartbeat_sim_age_ns"] == 968_000_000
+
+    # A real heartbeat silence while fresh IMU simulation time advances still
+    # fails at the unchanged two-second bound.
+    now[0] += 1
+    imu = row("imu", now[0] - 1)
+    imu["observed_sim_ns"] = 5_679_000_001
+    gate.on_record(imu, None)
     assert gate.proof() is None
+
+
+def test_stale_high_rate_source_is_not_hidden_by_simulation_heartbeat_clock():
+    now = [10_000_000_000]
+    gate = JournaledReadiness(clock=lambda: now[0])
+    for kind in ["imu", "rgb", "info", "heartbeat"]:
+        gate.on_record(row(kind, now[0] - 1), None)
+    now[0] += 2_000_000_001
+    for kind in ["imu", "info"]:
+        fresh = row(kind, now[0] - 1)
+        fresh["observed_sim_ns"] = 1_500_000_000
+        gate.on_record(fresh, None)
+    assert gate.proof() is None
+
+
+@pytest.mark.parametrize("fault", ["future", "regressed", "bool"])
+def test_bad_heartbeat_simulation_clock_latches(fault):
+    now = [10_000_000_000]
+    gate = JournaledReadiness(clock=lambda: now[0])
+    gate.on_record(row("heartbeat", now[0] - 1), None)
+    now[0] += 1
+    later = row("heartbeat", now[0] - 1)
+    later["observed_sim_ns"] = {"future": 2_000_000, "regressed": 999_999, "bool": True}[fault]
+    if fault == "future":
+        gate.on_record(later, None)
+        imu = row("imu", now[0] - 1)
+        imu["observed_sim_ns"] = 1_500_000
+        gate.on_record(imu, None)
+        for kind in ["rgb", "info"]:
+            gate.on_record(row(kind, now[0] - 1), None)
+        proof = gate.proof()
+        assert proof["records"]["heartbeat"]["observed_sim_ns"] == 1_000_000
+        assert proof["freshness"]["latest_heartbeat_ahead_ns"] == 500_000
+        assert gate.snapshot()["failure"] is None
+    else:
+        with pytest.raises(ValueError, match="heartbeat simulation clock"):
+            gate.on_record(later, None)
 
 
 @pytest.mark.parametrize("fault", ["future", "bool", "armed", "identity", "reversed", "huge"])
@@ -151,3 +223,38 @@ def test_clock_high_water_refusal_is_latched(entry):
     with pytest.raises(ValueError):
         gate.proof()
     assert gate.snapshot()["failure"]
+
+
+def test_anchored_policy_applies_motion_intent_before_first_force():
+    from tools.benchmark.motion_intent_physical import MotionIntentAnchoredPolicy
+
+    events = []
+
+    def prepare(anchor_ns, proof):
+        events.append(("intent", anchor_ns, proof))
+
+    policy = MotionIntentAnchoredPolicy(
+        lambda: {"ready": True},
+        lambda row: events.append(("anchor", row)),
+        prepare_motion=prepare,
+    )
+    for ns in range(1_000_000, 202_000_000, 1_000_000):
+        force = policy.step(ns, 1_000_000, unarmed_wall_ns=1, wall_ns=2)
+
+    assert events[0][0] == "anchor"
+    assert events[1] == ("intent", 201_000_000, {"ready": True})
+    assert force != [0.0, 0.0, 0.0]
+
+
+def test_anchored_policy_refuses_failed_motion_intent():
+    from tools.benchmark.motion_intent_physical import MotionIntentAnchoredPolicy
+
+    def prepare(_anchor_ns, _proof):
+        raise RuntimeError("native intent refusal")
+
+    policy = MotionIntentAnchoredPolicy(
+        lambda: {"ready": True}, lambda _row: None, prepare_motion=prepare
+    )
+    with pytest.raises(ValueError, match="intent refusal"):
+        policy.step(1_000_000, 1_000_000, unarmed_wall_ns=1, wall_ns=2)
+    assert policy.anchor_ns == 201_000_000 and policy.support_steps == 0

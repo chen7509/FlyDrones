@@ -1,0 +1,1 @@
+{"event": {"kind": "source_idle_tick", "wall_monotonic_ns": 76822710787}, "input_sequence": 2, "released_unacknowledged": [], "failure": "ValueError('pending input exceeded wall wait')", "wall_ns": 76822710787, "input_refusal": null}

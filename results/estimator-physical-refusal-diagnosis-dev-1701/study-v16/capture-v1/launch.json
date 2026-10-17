@@ -1,0 +1,77 @@
+{
+  "partition": "fly_disarmed_505",
+  "runtime": "/home/yuchen7509/fly-ego-benchmark/runtime/fly-disarmed-q9bcxpfa",
+  "instance": 8,
+  "binary_sha256": "e8af7cbcac255ec3c79bb5fa278459fd0b130b4b189de9269e3689cb9789f4cb",
+  "source_archive_sha256": "669f3646e74c4e95826f12e79b456aba861a5b4003087541ce7dc1dc8cd1f4f3",
+  "scene_hashes": {
+    "world.sdf": "b42bd639080c967ceb84edc7bbf023b064dbd4fc610ccb81a1eaceb5fb373c1e",
+    "world.json": "e783db3dbbebf1142ba4bae7f09f5133d474f21415bd3843427598c6c3f58f51",
+    "ground_albedo.png": "5e62827968eeabb55285bba85276518b6d8fb1441f0bf9659caa52a48ed48593",
+    "obstacle_albedo.png": "28f87e79cc5cd767b029a4c7b00b165e1aad9f2cbb998be1a161e3ff5d121c3f",
+    "board_albedo.png": "5d24a1d96cccf2f81046dbfa6afe57b4760038a8714da5059d6258fc34166945"
+  },
+  "simulation_duration_ns": 25000000000,
+  "physics_step_ns": 1000000,
+  "imu_hz": 250,
+  "rgbd_hz": 10,
+  "execution_contract": {
+    "schema": "capture-execution-v3",
+    "wall_budget_s": 300,
+    "supervisor_s": 300,
+    "simulation_duration_ns": 25000000000,
+    "physics_step_ns": 1000000,
+    "imu_hz": 250,
+    "rgbd_hz": 10,
+    "rgbd_size": [
+      160,
+      120
+    ],
+    "estimator_run": true,
+    "profiles": {
+      "motion_profile": "supported-ready-v1",
+      "physics_trace_profile": "substep-ready-v1",
+      "reference_fault_profile": null,
+      "source_fanout_profile": "ready-shadow-heartbeat-estimator-v1"
+    },
+    "inputs": {
+      "shadow_binary": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/openvins-online-shadow-dev-1701/online_probe",
+      "shadow_config": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/openvins-online-shadow-dev-1701/raw-model-zero-bias-diffusion-v1/estimator_config.yaml",
+      "reference_module": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/native-reference-probe-dev-1701/production-build/_fly_native_reference.cpython-312-x86_64-linux-gnu.so"
+    },
+    "reference_sha256": "303b575e29d44bf50850ad03e3d3b865207a225e366418ec5733ed5292cc18ce",
+    "launch_environment": {
+      "GZ_FILE_PATH": "",
+      "GZ_HOMEDIR": null,
+      "GZ_LOG_PATH": null,
+      "GZ_MESH_FORCE_ASSIMP": null,
+      "GZ_PLUGIN_PATH": "",
+      "GZ_SIM_RESOURCE_PATH": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/assets/gazebo/models:/home/yuchen7509/PX4-Autopilot/Tools/simulation/gz/models:",
+      "GZ_SIM_SERVER_CONFIG_PATH": null,
+      "GZ_SIM_SYSTEM_PLUGIN_PATH": "",
+      "HOME": "/home/yuchen7509",
+      "IGN_FILE_PATH": "",
+      "IGN_GAZEBO_RESOURCE_PATH": "",
+      "IGN_GAZEBO_SYSTEM_PLUGIN_PATH": "",
+      "IGN_LOG_PATH": null,
+      "IGN_PLUGIN_PATH": "",
+      "LANG": "C.UTF-8",
+      "LD_LIBRARY_PATH": null,
+      "MESA_SHADER_CACHE_DISABLE": "true",
+      "PATH": "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/usr/lib/wsl/lib:/mnt/c/Users/yuche/.cache/codex-runtimes/codex-primary-runtime/dependencies/native/powershell:/mnt/c/Users/yuche/.codex/tmp/arg0/codex-arg0VXmCbp:/mnt/c/Users/yuche/.cache/codex-runtimes/codex-primary-runtime/dependencies/native/libheif/libheif/bin:/mnt/c/Users/yuche/.cache/codex-runtimes/codex-primary-runtime/dependencies/native/jxrlib/jxrlib/bin:/mnt/c/Users/yuche/.cache/codex-runtimes/codex-primary-runtime/dependencies/native/poppler/Library/bin:/mnt/c/Users/yuche/.cache/codex-runtimes/codex-primary-runtime/dependencies/bin/override:/mnt/c/Windows/system32:/mnt/c/Windows:/mnt/c/Windows/System32/Wbem:/mnt/c/Windows/System32/WindowsPowerShell/v1.0/:/mnt/c/Windows/System32/OpenSSH/:/mnt/c/Program Files (x86)/NVIDIA Corporation/PhysX/Common:/mnt/c/WINDOWS/system32:/mnt/c/WINDOWS:/mnt/c/WINDOWS/System32/Wbem:/mnt/c/WINDOWS/System32/WindowsPowerShell/v1.0/:/mnt/c/WINDOWS/System32/OpenSSH/:/mnt/c/Program Files/nodejs/:/mnt/c/Program Files/Docker/Docker/resources/bin:/mnt/c/Program Files/NVIDIA Corporation/NVIDIA App/NvDLISR:/mnt/c/Program Files/GitHub CLI/:/mnt/c/Program Files/Git/cmd:/mnt/c/Users/yuche/AppData/Local/Programs/Python/Python312/Scripts/:/mnt/c/Users/yuche/AppData/Local/Programs/Python/Python312/:/mnt/c/Users/yuche/.cache/codex-runtimes/codex-primary-runtime/dependencies/native/powershell:/mnt/c/Users/yuche/AppData/Local/Microsoft/WindowsApps:/mnt/c/Program Files/JetBrains/PyCharm 2023.2.5/bin:/mnt/c/Users/yuche/AppData/Local/Programs/Microsoft VS Code/bin:/mnt/c/Users/yuche/AppData/Roaming/npm:/mnt/c/Users/yuche/AppData/Local/Programs/cursor/resources/app/bin:/mnt/c/Users/yuche/.cache/codex-runtimes/codex-primary-runtime/dependencies/bin/fallback:/mnt/c/Users/yuche/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin:/mnt/c/Users/yuche/.cache/codex-runtimes/codex-primary-runtime/dependencies/native/git/cmd:/mnt/c/Users/yuche/AppData/Local/OpenAI/Codex/bin/681770561a4656a5:/mnt/c/Users/yuche/AppData/Local/OpenAI/Codex/bin/d375f7df50d3b421",
+      "PYTHONPATH": null,
+      "SDF_PATH": ""
+    },
+    "trajectory_gauge_policy": {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/trajectory-gauge-policy.json",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/trajectory-gauge-policy.json",
+      "bytes": 1031,
+      "sha256": "a97bc126e90e0bfb88cc995f782904a7a842e460854dbd71cec977cd98800463",
+      "schema": "trajectory-gauge-policy-v1"
+    }
+  },
+  "prospective_declaration_verified": true,
+  "command_policy": "read-only heartbeat; no arm/offboard/setpoint/ODOMETRY",
+  "uxrce_port": 18888,
+  "uxrce_agent_launched": false
+}

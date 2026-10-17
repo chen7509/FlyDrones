@@ -1,0 +1,13 @@
+{
+  "archive": "openvins-ekf2-composition-dev-1701.zip",
+  "bytes": 41541,
+  "crc_pass": true,
+  "ekf2_fusion": false,
+  "manifest_sha256": "0e39dc6fb8b455c08d1f00b33eb326b818c495c15269d4965fc901c05a274744",
+  "member_count": 21,
+  "network_odometry": false,
+  "physics": false,
+  "px4_parameter_changes": false,
+  "schema": "openvins-ekf2-offline-composition-publication-v1",
+  "sha256": "35e7c08b42d801171b84fc4d243130da448a1b5514c6991f300a09de1b91a272"
+}

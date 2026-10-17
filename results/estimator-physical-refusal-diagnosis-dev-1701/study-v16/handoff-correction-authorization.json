@@ -1,0 +1,129 @@
+{
+  "schema": "openvins-initializer-handoff-authorization-v1",
+  "source_manifest": {
+    "requested": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/estimator-physical-refusal-diagnosis-dev-1701/study-v13/study-manifest.json",
+    "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/estimator-physical-refusal-diagnosis-dev-1701/study-v13/study-manifest.json",
+    "links": [],
+    "identity": {
+      "device": 68,
+      "inode": 1970324837526616,
+      "mode": 33279,
+      "size": 8955,
+      "mtime_ns": 1791317047730061500,
+      "ctime_ns": 1791317047730061500
+    },
+    "path_identity": {
+      "device": 68,
+      "inode": 1970324837526616,
+      "mode": 33279,
+      "size": 8955,
+      "mtime_ns": 1791317047730061500,
+      "ctime_ns": 1791317047730061500
+    },
+    "bytes": 8955,
+    "sha256": "ffc08159bb79a138cf9776c6b80a8f21ccf0ebfab68176969082f923efb9118e"
+  },
+  "failed_result": {
+    "requested": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/estimator-physical-refusal-diagnosis-dev-1701/study-v13/capture-v1/result.json",
+    "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/estimator-physical-refusal-diagnosis-dev-1701/study-v13/capture-v1/result.json",
+    "links": [],
+    "identity": {
+      "device": 68,
+      "inode": 7881299349787693,
+      "mode": 33279,
+      "size": 18993,
+      "mtime_ns": 1791317985698421500,
+      "ctime_ns": 1791317985698421500
+    },
+    "path_identity": {
+      "device": 68,
+      "inode": 7881299349787693,
+      "mode": 33279,
+      "size": 18993,
+      "mtime_ns": 1791317985698421500,
+      "ctime_ns": 1791317985698421500
+    },
+    "bytes": 18993,
+    "sha256": "9126daa22a6cfe6926e06aa2e3db3b8486ae456cc1083b226f2723ecb3f99354"
+  },
+  "attempt_audit": {
+    "requested": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/openvins-initializer-handoff-contract-dev-1701/physical-attempt-audit.json",
+    "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/openvins-initializer-handoff-contract-dev-1701/physical-attempt-audit.json",
+    "links": [],
+    "identity": {
+      "device": 68,
+      "inode": 14355223812943795,
+      "mode": 33279,
+      "size": 950,
+      "mtime_ns": 1791318471557371400,
+      "ctime_ns": 1791318471557371400
+    },
+    "path_identity": {
+      "device": 68,
+      "inode": 14355223812943795,
+      "mode": 33279,
+      "size": 950,
+      "mtime_ns": 1791318471557371400,
+      "ctime_ns": 1791318471557371400
+    },
+    "bytes": 950,
+    "sha256": "e15fcc35fbcbf88ddef70682cbb1b3a633d7c2d7c18e04c4604789d802c12db5"
+  },
+  "completion": {
+    "requested": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/estimator-physical-refusal-diagnosis-dev-1701/physical-run-v6-completion.json",
+    "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/estimator-physical-refusal-diagnosis-dev-1701/physical-run-v6-completion.json",
+    "links": [],
+    "identity": {
+      "device": 68,
+      "inode": 7881299349787697,
+      "mode": 33279,
+      "size": 352,
+      "mtime_ns": 1791317986414905200,
+      "ctime_ns": 1791317986414905200
+    },
+    "path_identity": {
+      "device": 68,
+      "inode": 7881299349787697,
+      "mode": 33279,
+      "size": 352,
+      "mtime_ns": 1791317986414905200,
+      "ctime_ns": 1791317986414905200
+    },
+    "bytes": 352,
+    "sha256": "4877effbd583988ab05f8325157178fff29ccea4881954437f5bafff6bf48b95"
+  },
+  "correction_archive": {
+    "requested": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/evidence/openvins-initializer-handoff-contract-dev-1701.zip",
+    "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/evidence/openvins-initializer-handoff-contract-dev-1701.zip",
+    "links": [],
+    "identity": {
+      "device": 68,
+      "inode": 17732923534660211,
+      "mode": 33279,
+      "size": 2702459,
+      "mtime_ns": 1791319064693520600,
+      "ctime_ns": 1791319064693520600
+    },
+    "path_identity": {
+      "device": 68,
+      "inode": 17732923534660211,
+      "mode": 33279,
+      "size": 2702459,
+      "mtime_ns": 1791319064693520600,
+      "ctime_ns": 1791319064693520600
+    },
+    "bytes": 2702459,
+    "sha256": "7807e049a298de58c82e9073d73a8ded9fccdcaf35b5eba0527ded8f549dd5b9"
+  },
+  "failure_classification_qualified": true,
+  "heartbeat_correction_physically_verified": true,
+  "source_runtime_mapping_coverage_verified": true,
+  "physical_run": false,
+  "physical_execution_qualified": false,
+  "runtime_mapping_coverage_verified": false,
+  "runtime_closure_qualified": false,
+  "vio_accuracy_qualified": false,
+  "estimator_health_qualified": false,
+  "fusion_eligible": false,
+  "flight_ready": false
+}

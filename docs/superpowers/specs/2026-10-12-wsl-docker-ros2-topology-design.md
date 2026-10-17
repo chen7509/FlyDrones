@@ -1,0 +1,7 @@
+# WSL–Docker ROS 2 source topology diagnostic
+
+The current unarmed capture owns a pinned XRCE Agent in WSL. The typed, read-only `VehicleOdometry` collector has only run in a pinned ROS 2 Docker image with a synthetic publisher. Before combining them in a new physical study, determine whether the two environments share loopback or have an explicitly routable UDP path. A successful UDP datagram is only a transport observation; it does not prove DDS discovery, an XRCE session, PX4 publisher identity, CDR/ULog parity, VIO, or fusion.
+
+Use a fresh non-production UDP port, one short-lived WSL Python listener and one bounded Docker sender at a time. Check the exact pinned image, no competing container, and host memory before starting. Probe Docker `--network host` to WSL loopback and separately to the WSL interface address. Record commands, addresses, sender exit, receiver bytes or timeout, container cleanup, and port release. Do not run PX4, Gazebo, OpenVINS, Agent, ROS 2 publisher, training, or any physical simulation. Do not alter production port 18888 or the frozen v12 study.
+
+Even if the routed datagram arrives, DDS cross-namespace discovery and source authentication remain untested. A later study needs a prospectively declared collector placement and DDS discovery configuration, exact Agent/PX4/collector process binding, independent CDR and ULog evidence, and the original memory and physical safety gates.

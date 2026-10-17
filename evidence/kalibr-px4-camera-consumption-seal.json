@@ -1,0 +1,10 @@
+{
+  "archive": "evidence/kalibr-px4-camera-consumption-dev-1701.zip",
+  "sha256": "a6fc2f3ccfed8c2e080923990e7a9b0f97a9b654bea8bc87144e7945eb4504f5",
+  "bytes": 407064,
+  "members": 751,
+  "report_sha256": "b15c9ef30ec5ef6b50cd736ccf81d53521af6d988f145c6087d1957d52e24ef4",
+  "prepublication_plan_sha256": "12f852e19869a02d95b4885795cd6325f82514e0b84e8f7922f2b5e03bbc3169",
+  "genuine_measured_calibration": false,
+  "actual_px4_native_optimizer_execution": false
+}

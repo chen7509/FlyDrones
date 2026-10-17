@@ -1,0 +1,17 @@
+{
+  "reviewer": "/root/review_kalibr_native_detector",
+  "Critical": 0,
+  "Important": 0,
+  "Minor": 0,
+  "preflight_missed_include_order_preserved": true,
+  "v1_failed_native_RED": true,
+  "v2_actual_native": true,
+  "IDs": 9,
+  "finite_corners": 36,
+  "max_ordered_error_px": 0.8293274054026185,
+  "v2_snapshot_comparisons": 62,
+  "ELF": "magic+SHA verified",
+  "resources_and_owned_release": "raw consistent",
+  "both_consumed": true,
+  "archive_review": "pending"
+}

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from weakref import ref
 
 import numpy as np
 import torch
@@ -18,6 +19,45 @@ def _inverse_softplus(value: torch.Tensor) -> torch.Tensor:
     return value + torch.log(-torch.expm1(-value))
 
 
+def _compact_csr_topology(connectome: Connectome, expected_connections: int) -> torch.Tensor:
+    """Build the fixed, row-normalized graph without per-edge metadata buffers."""
+    limit = np.iinfo(np.int32).max
+    if connectome.n > limit or expected_connections > limit:
+        raise ValueError("compact CSR topology exceeds int32 index range")
+    # The COO reference normalizes raw edges before coalescing duplicates.
+    # In particular, +2 and -1 at one coordinate contribute 3, not 1, to
+    # the incoming absolute-weight denominator.
+    raw = connectome.weights.astype(np.float32, copy=True)
+    if not np.isfinite(raw.data).all():
+        raise ValueError("connectome weights contain non-finite values")
+    incoming = np.zeros(connectome.n, dtype=np.float64)
+    chunk_size = 1_000_000
+    for start in range(0, raw.nnz, chunk_size):
+        end = min(start + chunk_size, raw.nnz)
+        incoming += np.bincount(
+            raw.indices[start:end],
+            weights=np.abs(raw.data[start:end]),
+            minlength=connectome.n,
+        )
+    for start in range(0, raw.nnz, chunk_size):
+        end = min(start + chunk_size, raw.nnz)
+        raw.data[start:end] /= np.maximum(1.0, incoming[raw.indices[start:end]])
+
+    weights = raw.tocsr()
+    weights.sum_duplicates()
+    weights.eliminate_zeros()
+    weights.sort_indices()
+    if weights.nnz != expected_connections:
+        raise ValueError("compact CSR topology does not match parameter identity")
+    return torch.sparse_csr_tensor(
+        torch.from_numpy(weights.indptr.astype(np.int32, copy=False)),
+        torch.from_numpy(weights.indices.astype(np.int32, copy=False)),
+        torch.from_numpy(weights.data),
+        size=(connectome.n, connectome.n),
+        check_invariants=True,
+    )
+
+
 @dataclass(frozen=True)
 class RecurrentState:
     voltage: torch.Tensor
@@ -26,16 +66,50 @@ class RecurrentState:
         return RecurrentState(self.voltage.detach())
 
 
+TOPOLOGY_FORMATS = ("coo_reference", "csr_compact_v1")
+DYNAMICS_FORMATS = ("clipped-euler-v1", "frozen-drive-exponential-v1")
+
+
+def dynamics_identity_suffix(dynamics_format: str) -> str:
+    if type(dynamics_format) is not str or dynamics_format not in DYNAMICS_FORMATS:
+        raise ValueError("unsupported dynamics format")
+    return "" if dynamics_format == "clipped-euler-v1" else f":dynamics={dynamics_format}"
+
+
+def validate_dynamics_backend(model, dynamics_format: str) -> None:
+    dynamics_identity_suffix(dynamics_format)
+    if model.dynamics_format != dynamics_format:
+        raise ValueError("actual dynamics format changed")
+
+
+def topology_identity_suffix(topology_format: str) -> str:
+    if type(topology_format) is not str or topology_format not in TOPOLOGY_FORMATS:
+        raise ValueError("unsupported topology format")
+    return "" if topology_format == "coo_reference" else f":topology={topology_format}"
+
+
+def validate_topology_backend(model, topology_format: str) -> None:
+    topology_identity_suffix(topology_format)
+    expected_layout = torch.sparse_coo if topology_format == "coo_reference" else torch.sparse_csr
+    if model.topology_format != topology_format or model.fixed_topology.layout != expected_layout:
+        raise ValueError("actual topology format/layout changed")
+
+
 class ConnectomeConstrainedCore(nn.Module):
     def __init__(
         self,
         connectome: Connectome,
         parameter_set: ParameterSet,
+        *,
+        topology_format: str = "coo_reference",
+        dynamics_format: str = "clipped-euler-v1",
     ):
         super().__init__()
-        expected = build_structure_identity(
-            connectome, parameter_set.identity.model_sha256
-        )
+        topology_identity_suffix(topology_format)
+        self.topology_format = topology_format
+        dynamics_identity_suffix(dynamics_format)
+        self.dynamics_format = dynamics_format
+        expected = build_structure_identity(connectome, parameter_set.identity.model_sha256)
         actual = parameter_set.identity
         if (
             expected.topology_sha256 != actual.topology_sha256
@@ -45,64 +119,134 @@ class ConnectomeConstrainedCore(nn.Module):
         ):
             raise ValueError("parameter identity does not match connectome topology")
 
-        weights = connectome.weights.tocoo().astype(np.float32)
-        order = np.lexsort((weights.col, weights.row))
-        rows = np.asarray(weights.row[order], np.int64)
-        columns = np.asarray(weights.col[order], np.int64)
-        values = np.asarray(weights.data[order], np.float32)
-        if not np.isfinite(values).all():
-            raise ValueError("connectome weights contain non-finite values")
-
         input_features = np.asarray(parameter_set.input_feature_index, np.int64)
         inputs = np.asarray(parameter_set.input_neuron_index, np.int64)
         outputs = np.asarray(parameter_set.output_neuron_index, np.int64)
 
         cell_types = parameter_set.identity.cell_types
         type_lookup = {name: index for index, name in enumerate(cell_types)}
-        mapped_types = [
-            type_lookup.get(str(value) or "__unknown__") for value in connectome.types
-        ]
+        mapped_types = [type_lookup.get(str(value) or "__unknown__") for value in connectome.types]
         if any(value is None for value in mapped_types):
             raise ValueError("connectome contains a cell type absent from parameters")
         type_index = np.asarray(mapped_types, np.int64)
 
-        magnitudes = np.abs(values)
-        incoming = np.bincount(rows, weights=magnitudes, minlength=connectome.n)
-        normalized = magnitudes / np.maximum(1.0, incoming[rows])
-        edge_indices = torch.tensor(np.vstack([rows, columns]), dtype=torch.long)
-        edge_values = torch.tensor(np.sign(values) * normalized, dtype=torch.float32)
-        fixed_topology = torch.sparse_coo_tensor(
-            edge_indices,
-            edge_values,
-            (connectome.n, connectome.n),
-            check_invariants=True,
-        ).coalesce()
-
-        self.register_buffer("edge_row", torch.tensor(rows, dtype=torch.long))
-        self.register_buffer("edge_column", torch.tensor(columns, dtype=torch.long))
-        self.register_buffer("edge_sign", torch.tensor(np.sign(values), dtype=torch.float32))
-        self.register_buffer("edge_magnitude", torch.tensor(magnitudes, dtype=torch.float32))
+        if topology_format == "csr_compact_v1":
+            fixed_topology = _compact_csr_topology(connectome, actual.connections)
+        else:
+            weights = connectome.weights.tocoo().astype(np.float32)
+            order = np.lexsort((weights.col, weights.row))
+            rows = np.asarray(weights.row[order], np.int64)
+            columns = np.asarray(weights.col[order], np.int64)
+            values = np.asarray(weights.data[order], np.float32)
+            if not np.isfinite(values).all():
+                raise ValueError("connectome weights contain non-finite values")
+            magnitudes = np.abs(values)
+            incoming = np.bincount(rows, weights=magnitudes, minlength=connectome.n)
+            normalized = magnitudes / np.maximum(1.0, incoming[rows])
+            edge_indices = torch.tensor(np.vstack([rows, columns]), dtype=torch.long)
+            edge_values = torch.tensor(np.sign(values) * normalized, dtype=torch.float32)
+            fixed_topology = torch.sparse_coo_tensor(
+                edge_indices,
+                edge_values,
+                (connectome.n, connectome.n),
+                check_invariants=True,
+            ).coalesce()
+            self.register_buffer("edge_row", torch.tensor(rows, dtype=torch.long))
+            self.register_buffer("edge_column", torch.tensor(columns, dtype=torch.long))
+            self.register_buffer("edge_sign", torch.tensor(np.sign(values), dtype=torch.float32))
+            self.register_buffer("edge_magnitude", torch.tensor(magnitudes, dtype=torch.float32))
         self.register_buffer("fixed_topology", fixed_topology)
         self.register_buffer("type_index", torch.tensor(type_index, dtype=torch.long))
-        self.register_buffer(
-            "input_feature_index", torch.tensor(input_features, dtype=torch.long)
-        )
+        self.register_buffer("input_feature_index", torch.tensor(input_features, dtype=torch.long))
         self.register_buffer("input_neuron_index", torch.tensor(inputs, dtype=torch.long))
         self.register_buffer("output_neuron_index", torch.tensor(outputs, dtype=torch.long))
 
         input_gain = torch.tensor(parameter_set.input_gain, dtype=torch.float32)
         tau_offset = torch.tensor(parameter_set.tau_m_ms - 1.0, dtype=torch.float32)
         self.raw_input_gain = nn.Parameter(_inverse_softplus(input_gain))
-        self.type_bias_mv = nn.Parameter(
-            torch.tensor(parameter_set.type_bias_mv, dtype=torch.float32)
-        )
+        self.type_bias_mv = nn.Parameter(torch.tensor(parameter_set.type_bias_mv, dtype=torch.float32))
         self.raw_tau_m = nn.Parameter(_inverse_softplus(tau_offset))
-        self.readout = nn.Parameter(
-            torch.tensor(parameter_set.readout, dtype=torch.float32)
-        )
+        self.readout = nn.Parameter(torch.tensor(parameter_set.readout, dtype=torch.float32))
         self.n_neurons = int(connectome.n)
+        self.input_features = tuple(parameter_set.input_features)
         self.n_features = len(parameter_set.input_features)
         self.n_outputs = len(parameter_set.outputs)
+        # Derived constants belong only to this owned frozen inference object.
+        # They are never a checkpoint/model-identity parameter or training graph.
+        for name in ("_inference_bias", "_inference_gain", "_inference_tau", "_inference_alpha"):
+            self.register_buffer(name, None, persistent=False)
+        self._inference_enabled = False
+        self._inference_signature = None
+        self._inference_interval = None
+
+    def clear_frozen_inference(self) -> None:
+        self._inference_enabled = False
+        self._inference_signature = None
+        self._inference_interval = None
+        self._inference_bias = self._inference_gain = self._inference_tau = self._inference_alpha = None
+
+    def __getstate__(self):
+        # Whole-module pickle/deepcopy must not serialize weak references or
+        # derived constants, and must not alter the live caller's cache.
+        state = super().__getstate__()
+        state["_inference_enabled"] = False
+        state["_inference_signature"] = None
+        state["_inference_interval"] = None
+        state["_buffers"] = dict(state["_buffers"])
+        for name in ("_inference_bias", "_inference_gain", "_inference_tau", "_inference_alpha"):
+            state["_buffers"][name] = None
+        return state
+
+    @property
+    def frozen_inference_prepared(self) -> bool:
+        return (
+            self._inference_enabled
+            and self._inference_signature is not None
+            and not self.training
+            and all(not parameter.requires_grad for parameter in self.parameters())
+        )
+
+    def _coefficient_signature(self):
+        dependencies = (self.raw_input_gain, self.type_bias_mv, self.raw_tau_m, self.type_index, self.input_feature_index)
+        try:
+            return tuple((ref(value), value._version, value.dtype, value.device, tuple(value.shape)) for value in dependencies)
+        except RuntimeError:
+            # Inference-mode tensors may have no version counter. Do not assume
+            # they cannot change: keep the original uncached arithmetic instead.
+            return None
+
+    def _frozen_coefficients(self) -> bool:
+        if not self._inference_enabled:
+            return False
+        if self.training or any(parameter.requires_grad for parameter in self.parameters()):
+            self.clear_frozen_inference()
+            return False
+        signature = self._coefficient_signature()
+        if signature is None:
+            self.clear_frozen_inference()
+            return False
+        previous = self._inference_signature
+        same = previous is not None and all(old[0]() is new[0]() and old[1:] == new[1:] for old, new in zip(previous, signature))
+        if not same:
+            with torch.no_grad():
+                self._inference_bias = self.type_bias_mv[self.type_index].detach()
+                self._inference_gain = self.input_gain[self.input_feature_index].detach()
+                self._inference_tau = self.tau_m_ms.detach()
+            self._inference_signature = signature
+            self._inference_interval = None
+            self._inference_alpha = None
+        return True
+
+    def prepare_frozen_inference(self) -> bool:
+        """Prepare constant coefficients; ordinary tensor versions track drift.
+
+        This is not protection against `.data`/hostile or concurrent mutation.
+        Training and tensors without version counters use the original path.
+        """
+        if self.training or any(parameter.requires_grad for parameter in self.parameters()):
+            raise ValueError("coefficient preparation requires a frozen eval model")
+        self._inference_enabled = True
+        return self._frozen_coefficients()
 
     @property
     def input_gain(self) -> torch.Tensor:
@@ -145,22 +289,37 @@ class ConnectomeConstrainedCore(nn.Module):
             raise ValueError("features contain non-finite values")
         if not np.isfinite(dt_s) or dt_s <= 0:
             raise ValueError("dt_s must be positive and finite")
-        drive = self.type_bias_mv[self.type_index].expand(
-            features.shape[0], -1
-        ).clone()
+        if self._inference_enabled and (features.requires_grad or state.voltage.requires_grad):
+            self.clear_frozen_inference()
+        cached = self._frozen_coefficients()
+        bias = self._inference_bias if cached else self.type_bias_mv[self.type_index]
+        gain = self._inference_gain if cached else self.input_gain[self.input_feature_index]
+        drive = bias.expand(features.shape[0], -1).clone()
         drive.index_add_(
             1,
             self.input_neuron_index,
-            features[:, self.input_feature_index]
-            * self.input_gain[self.input_feature_index],
+            features[:, self.input_feature_index] * gain,
         )
-        recurrent = torch.sparse.mm(
-            self.fixed_topology, torch.sigmoid(state.voltage).T
-        ).T
-        alpha = torch.clamp(dt_s * 1000.0 / self.tau_m_ms, 0.0, 1.0)
-        voltage = state.voltage + alpha * (
-            -state.voltage + drive + recurrent
+        recurrent = torch.sparse.mm(self.fixed_topology, torch.sigmoid(state.voltage).T).T
+        interval = (
+            (self.dynamics_format, type(dt_s), dt_s)
+            if cached and isinstance(dt_s, (int, float, np.integer, np.floating))
+            else None
         )
+        if cached and interval is not None and interval == self._inference_interval:
+            alpha = self._inference_alpha
+        elif self.dynamics_format == "frozen-drive-exponential-v1":
+            # Exact leak for drive/recurrent input held at this interval's start.
+            # This is not exact integration of the continuously coupled network.
+            alpha = -torch.expm1(-dt_s * 1000.0 / (self._inference_tau if cached else self.tau_m_ms))
+        elif self.dynamics_format == "clipped-euler-v1":
+            alpha = torch.clamp(dt_s * 1000.0 / (self._inference_tau if cached else self.tau_m_ms), 0.0, 1.0)
+        else:
+            raise ValueError("unsupported dynamics format")
+        if cached:
+            self._inference_interval = interval
+            self._inference_alpha = alpha if interval is not None else None
+        voltage = state.voltage + alpha * (-state.voltage + drive + recurrent)
         rates = torch.sigmoid(voltage)
         command = torch.tanh(rates[:, self.output_neuron_index] @ self.readout.T)
         return command, RecurrentState(voltage)
@@ -181,18 +340,11 @@ class ConnectomeConstrainedCore(nn.Module):
             raise ValueError("truncate_steps must be positive")
         if not torch.isfinite(features).all():
             raise ValueError("features contain non-finite values")
-        current = state or self.initial_state(
-            features.shape[0], device=features.device, dtype=features.dtype
-        )
+        current = state or self.initial_state(features.shape[0], device=features.device, dtype=features.dtype)
         commands = []
         for index in range(features.shape[1]):
-            command, current = self.forward_step(
-                features[:, index], current, dt_s
-            )
+            command, current = self.forward_step(features[:, index], current, dt_s)
             commands.append(command)
-            if (
-                (index + 1) % truncate_steps == 0
-                and index + 1 < features.shape[1]
-            ):
+            if (index + 1) % truncate_steps == 0 and index + 1 < features.shape[1]:
                 current = current.detached()
         return torch.stack(commands, dim=1), current

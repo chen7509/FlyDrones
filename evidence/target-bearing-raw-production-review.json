@@ -1,0 +1,463 @@
+{
+  "schema": "target-bearing-raw-independent-archive-audit-v1",
+  "utc": "2026-10-14T18:18:34.473419+00:00",
+  "archive": {
+    "path": "evidence/target-bearing-raw-production-dev-1701.zip",
+    "sha256": "332c941659e6f0a961314fa3f8979859ab4e9791c8d375b281ba8ecd40541889",
+    "bytes": 907757,
+    "members": 575,
+    "mapped_members": 574
+  },
+  "integrity": {
+    "crc_error": null,
+    "duplicate_count": 0,
+    "size_sha_currentbyte_member_set_errors": []
+  },
+  "assessment": "pass",
+  "counts": {
+    "critical": 0,
+    "important": 0,
+    "minor": 0
+  },
+  "findings": [],
+  "trials": [
+    {
+      "trial": "clean-ruff",
+      "exit": 1,
+      "argv": [
+        "python",
+        "-m",
+        "ruff",
+        "check",
+        "tools/benchmark/calibration_capture_contract.py",
+        "tools/benchmark/calibration_excitation.py",
+        "tools/benchmark/capture_contract.py",
+        "tools/benchmark/capture_disarmed_sensors.py",
+        "tools/benchmark/runtime_resource_binding.py",
+        "tests/benchmark/test_calibration_raw_capture.py"
+      ],
+      "stdout_last_lines": [
+        "Found 2 errors.",
+        "[*] 2 fixable with the `--fix` option."
+      ],
+      "stderr_bytes": 0,
+      "source_snapshot_verified": true
+    },
+    {
+      "trial": "final-import-order-confirmation",
+      "exit": 0,
+      "argv": [
+        "python",
+        "-m",
+        "pytest",
+        "tests/benchmark/test_calibration_raw_capture.py",
+        "--basetemp",
+        "results/target-bearing-raw-production-dev-1701/retained-final-raw-fixtures",
+        "-q"
+      ],
+      "stdout_last_lines": [
+        ".......................                                                  [100%]",
+        "23 passed in 1.32s"
+      ],
+      "stderr_bytes": 0,
+      "source_snapshot_verified": true
+    },
+    {
+      "trial": "final-retained-regression",
+      "exit": 0,
+      "argv": [
+        "python",
+        "-m",
+        "pytest",
+        "tests/benchmark/test_calibration_raw_capture.py",
+        "tests/benchmark/test_capture_contract.py",
+        "tests/benchmark/test_runtime_resource_binding.py",
+        "tests/benchmark/test_readiness_anchor.py",
+        "tests/benchmark/test_owned_ulog_source.py",
+        "tests/benchmark/test_agent_capture_runtime.py",
+        "tests/benchmark/test_owned_ulog_capture_integration.py",
+        "tests/benchmark/test_capture_wire_hooks.py",
+        "--basetemp",
+        "results/target-bearing-raw-production-dev-1701/retained-fixtures",
+        "-q"
+      ],
+      "stdout_last_lines": [
+        "..........s......................                                        [100%]",
+        "176 passed, 1 skipped in 6.13s"
+      ],
+      "stderr_bytes": 0,
+      "source_snapshot_verified": true
+    },
+    {
+      "trial": "final-ruff",
+      "exit": 1,
+      "argv": [
+        "python",
+        "-m",
+        "ruff",
+        "check",
+        "tools/benchmark/calibration_capture_contract.py",
+        "tools/benchmark/calibration_excitation.py",
+        "tools/benchmark/capture_contract.py",
+        "tools/benchmark/capture_disarmed_sensors.py",
+        "tools/benchmark/runtime_resource_binding.py",
+        "tests/benchmark/test_calibration_raw_capture.py"
+      ],
+      "stdout_last_lines": [
+        "Found 1 error.",
+        "[*] 1 fixable with the `--fix` option."
+      ],
+      "stderr_bytes": 0,
+      "source_snapshot_verified": true
+    },
+    {
+      "trial": "final-ruff-clean",
+      "exit": 0,
+      "argv": [
+        "python",
+        "-m",
+        "ruff",
+        "check",
+        "tools/benchmark/calibration_capture_contract.py",
+        "tools/benchmark/calibration_excitation.py",
+        "tools/benchmark/capture_contract.py",
+        "tools/benchmark/capture_disarmed_sensors.py",
+        "tools/benchmark/runtime_resource_binding.py",
+        "tests/benchmark/test_calibration_raw_capture.py"
+      ],
+      "stdout_last_lines": [
+        "All checks passed!"
+      ],
+      "stderr_bytes": 0,
+      "source_snapshot_verified": true
+    },
+    {
+      "trial": "final-working-diff",
+      "exit": 0,
+      "argv": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "stdout_last_lines": [],
+      "stderr_bytes": 136,
+      "source_snapshot_verified": true
+    },
+    {
+      "trial": "first-policy-green",
+      "exit": 0,
+      "argv": [
+        "python",
+        "-m",
+        "pytest",
+        "tests/benchmark/test_calibration_raw_capture.py",
+        "-q"
+      ],
+      "stdout_last_lines": [
+        "..............                                                           [100%]",
+        "14 passed in 1.35s"
+      ],
+      "stderr_bytes": 0,
+      "source_snapshot_verified": true
+    },
+    {
+      "trial": "first-ruff",
+      "exit": 1,
+      "argv": [
+        "python",
+        "-m",
+        "ruff",
+        "check",
+        "tools/benchmark/calibration_capture_contract.py",
+        "tools/benchmark/calibration_excitation.py",
+        "tools/benchmark/capture_contract.py",
+        "tools/benchmark/capture_disarmed_sensors.py",
+        "tests/benchmark/test_calibration_raw_capture.py"
+      ],
+      "stdout_last_lines": [
+        "Found 10 errors.",
+        "[*] 2 fixable with the `--fix` option."
+      ],
+      "stderr_bytes": 0,
+      "source_snapshot_verified": true
+    },
+    {
+      "trial": "full-software-verification",
+      "exit": 0,
+      "argv": [
+        "python",
+        "-m",
+        "pytest",
+        "tests/benchmark/test_calibration_raw_capture.py",
+        "tests/benchmark/test_capture_contract.py",
+        "tests/benchmark/test_runtime_resource_binding.py",
+        "tests/benchmark/test_readiness_anchor.py",
+        "tests/benchmark/test_owned_ulog_source.py",
+        "tests/benchmark/test_agent_capture_runtime.py",
+        "tests/benchmark/test_owned_ulog_capture_integration.py",
+        "tests/benchmark/test_capture_wire_hooks.py",
+        "-q"
+      ],
+      "stdout_last_lines": [
+        ".......s......................                                           [100%]",
+        "173 passed, 1 skipped in 6.57s"
+      ],
+      "stderr_bytes": 0,
+      "source_snapshot_verified": true
+    },
+    {
+      "trial": "integration-green",
+      "exit": 0,
+      "argv": [
+        "python",
+        "-m",
+        "pytest",
+        "tests/benchmark/test_calibration_raw_capture.py",
+        "-q"
+      ],
+      "stdout_last_lines": [
+        "..................                                                       [100%]",
+        "18 passed in 1.52s"
+      ],
+      "stderr_bytes": 0,
+      "source_snapshot_verified": true
+    },
+    {
+      "trial": "integration-red",
+      "exit": 1,
+      "argv": [
+        "python",
+        "-m",
+        "pytest",
+        "tests/benchmark/test_calibration_raw_capture.py",
+        "-k",
+        "selector or generated or witness_and",
+        "-q"
+      ],
+      "stdout_last_lines": [
+        "FAILED tests/benchmark/test_calibration_raw_capture.py::test_raw_readiness_requires_owned_witness_and_wire_health",
+        "3 failed, 14 deselected in 1.87s"
+      ],
+      "stderr_bytes": 0,
+      "source_snapshot_verified": true
+    },
+    {
+      "trial": "invalid-collision-independent-red",
+      "exit": 1,
+      "argv": [
+        "python",
+        "-m",
+        "pytest",
+        "tests/benchmark/test_calibration_raw_capture.py",
+        "-q",
+        "-k",
+        "invalid_collision"
+      ],
+      "stdout_last_lines": [
+        "FAILED tests/benchmark/test_calibration_raw_capture.py::test_callback_guard_trace_application_and_latched_failure[invalid_collision]",
+        "1 failed, 22 deselected in 1.97s"
+      ],
+      "stderr_bytes": 0,
+      "source_snapshot_verified": true
+    },
+    {
+      "trial": "neighbors-first",
+      "exit": 0,
+      "argv": [
+        "python",
+        "-m",
+        "pytest",
+        "tests/benchmark/test_calibration_raw_capture.py",
+        "tests/benchmark/test_capture_contract.py",
+        "tests/benchmark/test_runtime_resource_binding.py",
+        "tests/benchmark/test_readiness_anchor.py",
+        "tests/benchmark/test_owned_ulog_source.py",
+        "tests/benchmark/test_agent_capture_runtime.py",
+        "-q"
+      ],
+      "stdout_last_lines": [
+        ".....s...                                                                [100%]",
+        "152 passed, 1 skipped in 6.81s"
+      ],
+      "stderr_bytes": 0,
+      "source_snapshot_verified": true
+    },
+    {
+      "trial": "review-three-green",
+      "exit": 0,
+      "argv": [
+        "python",
+        "-m",
+        "pytest",
+        "tests/benchmark/test_calibration_raw_capture.py",
+        "-q"
+      ],
+      "stdout_last_lines": [
+        ".......................                                                  [100%]",
+        "23 passed in 1.57s"
+      ],
+      "stderr_bytes": 0,
+      "source_snapshot_verified": true
+    },
+    {
+      "trial": "review-three-red",
+      "exit": 1,
+      "argv": [
+        "python",
+        "-m",
+        "pytest",
+        "tests/benchmark/test_calibration_raw_capture.py",
+        "-q",
+        "-k",
+        "callback_guard or execution_contract"
+      ],
+      "stdout_last_lines": [
+        "FAILED tests/benchmark/test_calibration_raw_capture.py::test_raw_execution_contract_declares_source_graph_and_codes[capture-wire-v1]",
+        "3 failed, 2 passed, 18 deselected in 2.21s"
+      ],
+      "stderr_bytes": 0,
+      "source_snapshot_verified": true
+    },
+    {
+      "trial": "ruff-after-integration",
+      "exit": 1,
+      "argv": [
+        "python",
+        "-m",
+        "ruff",
+        "check",
+        "tools/benchmark/calibration_capture_contract.py",
+        "tools/benchmark/calibration_excitation.py",
+        "tools/benchmark/capture_contract.py",
+        "tools/benchmark/capture_disarmed_sensors.py",
+        "tools/benchmark/runtime_resource_binding.py",
+        "tests/benchmark/test_calibration_raw_capture.py"
+      ],
+      "stdout_last_lines": [
+        "Found 1 error.",
+        "[*] 1 fixable with the `--fix` option."
+      ],
+      "stderr_bytes": 0,
+      "source_snapshot_verified": true
+    }
+  ],
+  "retained_actual_Python_fixture_outputs": [
+    {
+      "path": "results/target-bearing-raw-production-dev-1701/retained-final-raw-fixtures/test_callback_guard_trace_appl0/",
+      "scenario": "guard",
+      "audit_rows": 404,
+      "call_journal_rows": 204,
+      "failure": "ValueError('injected writer/witness failure')",
+      "full_profile_requested": false,
+      "qualification": false
+    },
+    {
+      "path": "results/target-bearing-raw-production-dev-1701/retained-final-raw-fixtures/test_callback_guard_trace_appl1/",
+      "scenario": "partial_call",
+      "audit_rows": 402,
+      "call_journal_rows": 202,
+      "failure": "RuntimeError('injected SDK call refusal')",
+      "full_profile_requested": false,
+      "qualification": false
+    },
+    {
+      "path": "results/target-bearing-raw-production-dev-1701/retained-final-raw-fixtures/test_callback_guard_trace_appl2/",
+      "scenario": "invalid_collision",
+      "audit_rows": 2,
+      "call_journal_rows": 0,
+      "failure": "invalid calibration collision envelope",
+      "full_profile_requested": false,
+      "qualification": false
+    },
+    {
+      "path": "results/target-bearing-raw-production-dev-1701/retained-fixtures/test_callback_guard_trace_appl0/",
+      "scenario": "guard",
+      "audit_rows": 404,
+      "call_journal_rows": 204,
+      "failure": "ValueError('injected writer/witness failure')",
+      "full_profile_requested": false,
+      "qualification": false
+    },
+    {
+      "path": "results/target-bearing-raw-production-dev-1701/retained-fixtures/test_callback_guard_trace_appl1/",
+      "scenario": "partial_call",
+      "audit_rows": 402,
+      "call_journal_rows": 202,
+      "failure": "RuntimeError('injected SDK call refusal')",
+      "full_profile_requested": false,
+      "qualification": false
+    },
+    {
+      "path": "results/target-bearing-raw-production-dev-1701/retained-fixtures/test_callback_guard_trace_appl2/",
+      "scenario": "invalid_collision",
+      "audit_rows": 2,
+      "call_journal_rows": 0,
+      "failure": "invalid calibration collision envelope",
+      "full_profile_requested": false,
+      "qualification": false
+    }
+  ],
+  "historical_archives": {
+    "count": 280,
+    "bytes": 738061152,
+    "all_independently_rehashed": true,
+    "changed": []
+  },
+  "scene": {
+    "members": 45,
+    "all_sizes_SHA_currentbytes_checked": true,
+    "changed": [],
+    "manifest_sha256": "0a66c427e1d9d7d9de1557d46bfb12a04398e27b467e4acc246240f5d06c6da4",
+    "copied_or_materialized": false
+  },
+  "docker_privacy": {
+    "initial_exit": 0,
+    "running_empty": true,
+    "unrelated_container_image_inventory_names_ids_detected": false,
+    "note": "Resource observation retains OS process executable names/PIDs and argv hashes, including Docker Desktop processes; no container/image inventory or names/IDs detected."
+  },
+  "final_boundaries": {
+    "production_matches_final176_trial": true,
+    "test_AST_unchanged_after_import_sort": true,
+    "initial_RED_precise_exit_unknown": true,
+    "initial_four_unknown_argument_passes_not_guard_evidence": true,
+    "runtime_graph_frozen": false,
+    "physical_dispatch_ready": false,
+    "whole_runtime_freeze_and_once_executor_pending": true,
+    "qualification": {
+      "source": false,
+      "clock": false,
+      "measured_calibration": false,
+      "accuracy": false,
+      "teacher": false,
+      "fusion": false,
+      "training": false,
+      "flight": false
+    },
+    "native_physical_tests_resources_materializer_executed_by_audit": false
+  },
+  "outside_frozen_zip": {
+    "files": [
+      "results/target-bearing-raw-production-dev-1701/final-staged-diff/command.json",
+      "results/target-bearing-raw-production-dev-1701/final-staged-diff/completion.json",
+      "results/target-bearing-raw-production-dev-1701/final-staged-diff/source/tests/benchmark/test_calibration_raw_capture.py",
+      "results/target-bearing-raw-production-dev-1701/final-staged-diff/source/tools/benchmark/calibration_capture_contract.py",
+      "results/target-bearing-raw-production-dev-1701/final-staged-diff/source/tools/benchmark/calibration_excitation.py",
+      "results/target-bearing-raw-production-dev-1701/final-staged-diff/source/tools/benchmark/capture_contract.py",
+      "results/target-bearing-raw-production-dev-1701/final-staged-diff/source/tools/benchmark/capture_disarmed_sensors.py",
+      "results/target-bearing-raw-production-dev-1701/final-staged-diff/source/tools/benchmark/runtime_resource_binding.py",
+      "results/target-bearing-raw-production-dev-1701/final-staged-diff/stderr.bin",
+      "results/target-bearing-raw-production-dev-1701/final-staged-diff/stdout.bin",
+      "results/target-bearing-raw-production-dev-1701/independent-archive-review-helper.py",
+      "results/target-bearing-raw-production-dev-1701/independent-archive-review.json",
+      "results/target-bearing-raw-production-dev-1701/pr-before.json",
+      "results/target-bearing-raw-production-dev-1701/pr-body.md",
+      "results/target-bearing-raw-production-dev-1701/prepare-publication.py",
+      "results/target-bearing-raw-production-dev-1701/publish-ledger.py",
+      "results/target-bearing-raw-production-dev-1701/seal-result.json",
+      "results/target-bearing-raw-production-dev-1701/verify-final-publication.py"
+    ],
+    "note": "seal-result and this additive audit/helper are outside the frozen ZIP; their existence does not alter its exact manifest member set. Additive audit output is written after this inventory.",
+    "this_audit_output": "results/target-bearing-raw-production-dev-1701/independent-archive-review.json"
+  }
+}

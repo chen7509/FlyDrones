@@ -1,0 +1,19 @@
+# Kalibr AprilGrid production asset design
+
+User intent: advance actual measurement production dependencies under low memory, without reopening completed exports, cached consumption or numeric validators. This architectural stage produces an upstream-compatible target asset for subsequent target-bearing camera/IMU capture. Existing sealed worlds and capture execution remain unchanged.
+
+## Choice and research
+AprilGrid is selected over checkerboard (partial visibility / pose flips) and the old FAST corner texture (no calibration identity). Kalibr recommends AprilGrid: https://github.com/ethz-asl/kalibr/wiki/calibration-targets . Pinned Kalibr 1f60227442d25e36365ef5f72cd80b9666d73467 uses Tag36h11.h, NOT Tag36h11_other.h, blackTagBorder=2, and PDF generation rotation=2. IDs increase in x then y from bottom-left. Its official generator adds black corner symmetry squares. Generic OpenCV AprilTag border=1 is incompatible with this pinned default; no dependency installation or detector substitution.
+
+## Production deliverable
+New tools/benchmark/make_kalibr_aprilgrid_target.py produces an exclusive self-contained target directory: lossless monochrome PNG, target.yaml, explicit metric corner layout JSON, Collada UV mesh, static Gazebo model.sdf with collision slab, model.config, source notices, and hash manifest. Fixed 3x3 IDs0..8; tagSize=0.12m, gap/tagSize=0.25; 6x6 data plus TWO black border modules per side. 16px/module yields 160px tag,40px gap. Grid span: 3*160+2*40=560px=0.42m. Outer margin200px=0.15m (one tag+gap grid element); full960px=0.72m. Corner symmetry squares40px per official PDF. Bit=1 is white; row-major PDF matrix rotated180 degrees then raster top-to-bottom; tag0 lower-left.
+
+Target frame is x right/y up/z out of printed face; first tag bottom-left is (0,0,0). Mesh spans [-0.15,0.57]m in x/y, visual face z=0; collision centered (0.21,0.21,-0.01), dimensions0.72/0.72/0.02m. Explicit UV spans[0,1] without mirroring; Gazebo actual texture orientation/visibility remains untested until original4GiB new frozen capture study. Standalone model placement is deliberately not a guessed target-bearing multiaxis trajectory. All source/clock/measured calibration/training/flight qualifiers false.
+
+## Interface and bounds
+make_target(output: Path) -> dict; no tuning arguments, existing path/symlink refused, exclusive files. Cap960x960 fixed texture, nine tags, generated directory size expected below128KiB compressed assets. Do not alter existing capture hardcoded archive, camera load, sensor physics, simulation speed, thresholds or paths. Failures keep partial directory plus INCOMPLETE.json, no retry overwrite. Controlled static output paths do not defend hostile concurrent ancestor replacement. Fixed metric design is not physically measured print size, no physical rigidity/flatness/excitation assertion.
+
+## Verification and license
+Behavior RED before implementation. Independent pinned official generateAprilTag function runs under a recording canvas in tests; compare every raster pixel (all9 tags, borders, gap symmetry, margins). Validate target YAML and full metric layout against pinned grid formula, mesh UV / slab / SDF references / asset manifest, directory refusal and CLI real production. No native detector / Gazebo / Kalibr solve dispatched. Retain complete upstream custom BSD4 license and attribution: This product includes software developed by the Autonomous Systems Lab and Skybotix AG. Include provenance for nine code constants and upstream test reference. Independent code and archive review before onlypersonal publication. Generated target is a production preparation, not measured artifact or calibration milestone.
+
+Ruling: COLLADA metadata uses fixed valid design timestamps2026-10-14T00:00:00Z, not runtime generation claims; official full XSD audit requires v1 false / correctedv2 true. Both actual outputs retained.

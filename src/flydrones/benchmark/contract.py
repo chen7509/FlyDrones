@@ -1,7 +1,8 @@
 """Shared SI-unit controller boundary (ENU, counterclockwise yaw).
 
 The current backend supplies model-truth-derived odometry and camera pose.
-This interface must not be described as a real VIO estimate.
+The opt-in supplied-estimator backend path has a separate typed state contract.
+Neither interface authenticates a caller or qualifies VIO/fusion/flight.
 """
 
 from dataclasses import dataclass
@@ -22,6 +23,25 @@ class Observation:
     yaw: float
     yaw_rate: float
     goal: tuple[float, float, float]
+
+
+@dataclass(frozen=True)
+class EstimatedControllerState:
+    """Source-supplied local ENU state and exact image-time optical pose.
+
+    Readiness/calibration/clock/fusion admission belongs to the supplied source;
+    constructing this value grants none of those qualifications.
+    """
+
+    session_id: str
+    reset_counter: int
+    sample_ns: int
+    camera_frame_ns: int
+    position: tuple[float, float, float]
+    velocity: tuple[float, float, float]
+    yaw: float
+    yaw_rate: float
+    camera_pose: tuple[float, ...]
 
 
 @dataclass(frozen=True)

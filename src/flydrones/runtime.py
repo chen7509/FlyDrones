@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import sys
 import time
 from dataclasses import dataclass, field
 
@@ -120,8 +121,10 @@ def run_realtime(pilot: Pilot, seconds: float | None = None, hz: float = 20.0, o
     """Fly real hardware. Ctrl+C lands."""
     dt_target = 1.0 / hz
     d = pilot.drone
-    d.connect()
+    connected = False
     try:
+        d.connect()
+        connected = True
         print(f"warming up the brain for {pilot.decoder.settle_s:.1f} s (drone stays on the ground)...")
         pilot.warmup(pilot.decoder.settle_s + 0.1, dt_target)
         if pilot.cfg.get("control", {}).get("takeoff", True):
@@ -145,6 +148,16 @@ def run_realtime(pilot: Pilot, seconds: float | None = None, hz: float = 20.0, o
     except KeyboardInterrupt:
         print("\nCtrl+C -> landing")
     finally:
-        d.send(FlightCommand.hover("stop"))
-        d.land()
-        d.close()
+        primary_error = sys.exc_info()[1]
+        cleanup_errors = []
+        actions = [("close", d.close)]
+        if connected:
+            actions = [("stop", lambda: d.send(FlightCommand.hover("stop"))), ("land", d.land)] + actions
+        for name, action in actions:
+            try:
+                action()
+            except BaseException as exc:
+                cleanup_errors.append(exc)
+                print(f"cleanup {name} failed: {type(exc).__name__}: {exc}")
+        if primary_error is None and cleanup_errors:
+            raise cleanup_errors[0]

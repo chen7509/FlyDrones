@@ -1,0 +1,1131 @@
+{
+  "schema": "causal-pair-simulation-time-evidence-v1",
+  "member_count_without_manifest": 225,
+  "members": [
+    {
+      "path": "docs/ESTIMATOR_PHYSICAL_REFUSAL_DIAGNOSIS_REPORT.md",
+      "bytes": 58312,
+      "sha256": "f71c9c6526c0aec09d0140a947e0c1fefacf806033189a422b5ebdefb89bf099"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-10-07-heartbeat-sim-time-physical-retry.md",
+      "bytes": 1492,
+      "sha256": "7f5aa3c5fd6c8e7e4a26920ace99877e713ee3dc1b30d3ae695a9e7d8baa7982"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-10-07-heartbeat-sim-time-physical-retry-design.md",
+      "bytes": 2767,
+      "sha256": "a808d85a2a2cee6fb60223f4e20878648b977513851db61b7605c2553a6371ae"
+    },
+    {
+      "path": "evidence/heartbeat-simulation-time-readiness-dev-1701.zip",
+      "bytes": 40666,
+      "sha256": "955c914bdc55884a804e532f839d369ee41a195ec3411cbd2a272ad359b27f9b"
+    },
+    {
+      "path": "results/causal-pair-sim-time-dev-1701/audit-output.txt",
+      "bytes": 718,
+      "sha256": "23a1c146e145d9097d56ee49602e4f5605c93d5fa58be083f2e84d5791663a2f"
+    },
+    {
+      "path": "results/causal-pair-sim-time-dev-1701/commits.txt",
+      "bytes": 292,
+      "sha256": "3eec9d30b7c8961ae45029ef04cb3c325bcad35a30a46735228711cf46a2e937"
+    },
+    {
+      "path": "results/causal-pair-sim-time-dev-1701/diff-check.txt",
+      "bytes": 164,
+      "sha256": "0d9e0f291ba85bf9baa116841801894c225a8403924a1799759602acb316264d"
+    },
+    {
+      "path": "results/causal-pair-sim-time-dev-1701/diff-stat.txt",
+      "bytes": 564,
+      "sha256": "b7a8e9dd984a249d9c3ed974e477ea56892c257ba4e634d0f6ca9589e2ef904c"
+    },
+    {
+      "path": "results/causal-pair-sim-time-dev-1701/full-tests.txt",
+      "bytes": 2761,
+      "sha256": "a2a3f9b075dc99d63800e3c01ccaa4a6d8cec5c25b35d620e5eff0411a954655"
+    },
+    {
+      "path": "results/causal-pair-sim-time-dev-1701/green-v1.txt",
+      "bytes": 9753,
+      "sha256": "fe679c1dc85933cbfdc1e82cb5bfaa34a212723b2113fa05dbeff00baa143fdf"
+    },
+    {
+      "path": "results/causal-pair-sim-time-dev-1701/green-v2.txt",
+      "bytes": 799,
+      "sha256": "0f816dcef3fea27f41b3d94dd0aa8b104bab18d1b50f82129d6b4bb90067e9ac"
+    },
+    {
+      "path": "results/causal-pair-sim-time-dev-1701/green-v3.txt",
+      "bytes": 101,
+      "sha256": "2c05535f670bf041c1ed7d35d529e191c28eec7a93a33f42c7c943ee894cb38b"
+    },
+    {
+      "path": "results/causal-pair-sim-time-dev-1701/red.txt",
+      "bytes": 14648,
+      "sha256": "7ec062112850d14f67fb6cdb6c0c856f62db3d4042fa1a2ec6caf6370e61c324"
+    },
+    {
+      "path": "results/causal-pair-sim-time-dev-1701/ruff.txt",
+      "bytes": 20,
+      "sha256": "a4443afdcfb6d7363adb285762515ccf7cf50473b1a05c20c1a50f6bed4d26b0"
+    },
+    {
+      "path": "results/causal-pair-sim-time-dev-1701/study-v16-audit.json",
+      "bytes": 698,
+      "sha256": "af3ef400a2254759b90aeaf9e68ab1b7a3c431180d9e912cc42c1036ee134ff6"
+    },
+    {
+      "path": "results/causal-pair-sim-time-dev-1701/targeted-v1.txt",
+      "bytes": 111,
+      "sha256": "e08461903757b994bb8a99da663994e5cc20a6f4a422ab5d0940d558b4e0b395"
+    },
+    {
+      "path": "results/causal-pair-sim-time-dev-1701/targeted-v2.txt",
+      "bytes": 2704,
+      "sha256": "d6858492ed4bcecfcf4acc3281b14ed5cad234c278a1c06cdcaab21ff494a846"
+    },
+    {
+      "path": "results/causal-pair-sim-time-dev-1701/targeted-v3.txt",
+      "bytes": 182,
+      "sha256": "6c574ce5b21a54cd0db687a5740aa2298a5f1835e9e51ac1502faa34a1bc55b2"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/current-head-for-physical-v8.txt",
+      "bytes": 40,
+      "sha256": "8b1f78abc7899f9a0b1b0616d6492eed8e5b77a37f3bb516e4e5d789fb673569"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/physical-run-v8-completion.json",
+      "bytes": 352,
+      "sha256": "7a70339164af657a159971d9e2643c52a99c9b0611286d3387e74de9251777d3"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/physical-run-v8-dispatch.json",
+      "bytes": 2986,
+      "sha256": "f6e07597c5fb978ee70444b5ebcc7b07fa609d87862ee36b38733a856c0a5151"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/physical-run-v8-launcher.py",
+      "bytes": 4356,
+      "sha256": "94ceb90edee783d97a1eaa37072dc7f52b33680eb063a2da65f2997ef42bdade"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/physical-run-v8-output.txt",
+      "bytes": 11986,
+      "sha256": "76093d040714b13733167c6769f881240bed4c49adc3a8b63fd56b0365c70e2c"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/capture-v1.supervisor-environment.json",
+      "bytes": 5972,
+      "sha256": "858cd089801edb93497b07646d15e53ce61b49d59578862a5f0496283e32d32b"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/capture-v1.supervisor-events.jsonl",
+      "bytes": 1202,
+      "sha256": "1d8a13402f27f41b80af70280a4c1405f5507fa87904918debf84787f4d5fc16"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/capture-v1/backend-loaded.json",
+      "bytes": 1131,
+      "sha256": "d9f1588cf1c9875bc6b770634ceec16f4123362a11b3af1e56a928d3e526c2c6"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/capture-v1/board_albedo.png",
+      "bytes": 1970,
+      "sha256": "5d24a1d96cccf2f81046dbfa6afe57b4760038a8714da5059d6258fc34166945"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/capture-v1/camera-info-messages/2000000.pb",
+      "bytes": 332,
+      "sha256": "6d2ed00a687f29103f8c48e5f49fedd4b0b903852682cc2c8b6592eb6e3b1437"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/capture-v1/camera-info.json",
+      "bytes": 783,
+      "sha256": "a940f6297082c674010692c31076a7197e413911713f90163a3ee12135de6d85"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/capture-v1/camera-info.pb",
+      "bytes": 332,
+      "sha256": "6d2ed00a687f29103f8c48e5f49fedd4b0b903852682cc2c8b6592eb6e3b1437"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/capture-v1/estimator-readiness.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/capture-v1/events.jsonl",
+      "bytes": 2970,
+      "sha256": "72220e1965ebfac2e2bebf2db332e83c8695b10e53991ea599a3232ba7c6ed85"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/capture-v1/execution-environment-worker.json",
+      "bytes": 8601,
+      "sha256": "99e5a116c73af92547dc1b9c312af9df5ca46c65ae65d2e83a30ad06411807b0"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/capture-v1/ground_albedo.png",
+      "bytes": 154343,
+      "sha256": "5e62827968eeabb55285bba85276518b6d8fb1441f0bf9659caa52a48ed48593"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/capture-v1/heartbeat-observations.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/capture-v1/launch.json",
+      "bytes": 5698,
+      "sha256": "120ba10ac0d30fb73460630fae278f6dc4734d1a45785a21a9ec721c250760b2"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/capture-v1/motion-force.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/capture-v1/motion-ground-truth.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/capture-v1/motion-profile.json",
+      "bytes": 1120,
+      "sha256": "84dc2e89e665dd9d5d94dc7db9a9f754f32ea62c2016e0bbd381605d9fb487df"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/capture-v1/native-reference-binary.json",
+      "bytes": 292,
+      "sha256": "ffe1655f4f0a3f2f46d051d1f14bf6b6573710394749c15da19d0ae6a0d210a3"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/capture-v1/native-reference.jsonl",
+      "bytes": 1595,
+      "sha256": "886cb8d734972dd5d6e6ced668e3f2638e0af3631270515abb24c95168b72af3"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/capture-v1/obstacle_albedo.png",
+      "bytes": 52690,
+      "sha256": "28f87e79cc5cd767b029a4c7b00b165e1aad9f2cbb998be1a161e3ff5d121c3f"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/capture-v1/physics-substeps.jsonl",
+      "bytes": 2803,
+      "sha256": "8c31d5246554147484c0f151750c6a01512a5c3792898e1f94fc0e186496ca95"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/capture-v1/process.json",
+      "bytes": 237,
+      "sha256": "d973ff48d77aa480ee033ffb349617a931b91cf3fa0f22c34079a3ec93d22b5a"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/capture-v1/px4-ulog-manifest.json",
+      "bytes": 62,
+      "sha256": "1eb05351f3a79fc846481a63c9a243b856a5055e549fb8d759e8bb8140caf5ca"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/capture-v1/px4.log",
+      "bytes": 1437,
+      "sha256": "1329bc5d35ccaf4d059c659593f72185534179258e52eeeace7d69714266daab"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/capture-v1/resource-graph.json",
+      "bytes": 148617,
+      "sha256": "6460091d9cd50a17fb17c92d99105b7c00bd50b9dabdd7de34b00e1f51981704"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/capture-v1/resource-query-0000.json",
+      "bytes": 9173,
+      "sha256": "5aeed4db40d0fe4bc39c9b19097985a3a51ed92dcbbe163f38cf39c08528c4bc"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/capture-v1/resource-query-0001.json",
+      "bytes": 11261,
+      "sha256": "e34a77f4c5912b69a0d8b489178a7326c5c578e1a72910ac732f3ae2c697af24"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/capture-v1/resource-query-0002.json",
+      "bytes": 11897,
+      "sha256": "b88fd0d69d1136bcb861a4a0b8834e24d403d41918707a48109ecfcecfa22645"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/capture-v1/resource-query-0003.json",
+      "bytes": 12321,
+      "sha256": "aa0fe689a6c8052003a5538eeeae78d7ce55659998be16f47c72936cb79f4492"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/capture-v1/resource-query-0004.json",
+      "bytes": 11261,
+      "sha256": "61865b90627fe0e5adbe47b0ebd335a83ae2b869b344b9c140c56ab99b2d6fed"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/capture-v1/resource-query-0005.json",
+      "bytes": 10837,
+      "sha256": "a47c6aec781705846162fd847412545ffe5199f948f24243e658692d456bc8dd"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/capture-v1/resource-query-0006.json",
+      "bytes": 11155,
+      "sha256": "32d42685ef64cc4f9a69227d477e39442f63ccee1f3770d9d7e22460cc4213c3"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/capture-v1/resource-query-0007.json",
+      "bytes": 11791,
+      "sha256": "6c89ca1e03eab09d121a3d5b32f0533d320b633d9e9606daaf5f5ac741cb7c2f"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/capture-v1/resource-query-0008.json",
+      "bytes": 11791,
+      "sha256": "55e136145b32d05dacb0b13ebf944d426470b53d2bf5792af7727743df9c379f"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/capture-v1/resource-query-0009.json",
+      "bytes": 11261,
+      "sha256": "28ae573bac7534a6764678a5780f65a8b07d040f6bfe0b1aa5614e47500cb1ec"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/capture-v1/resource-query-0010.json",
+      "bytes": 11685,
+      "sha256": "ce90a395e2b23811e3387c76ae9cb0acf5f1de2c6ffd9dbaabe4d848b052b4d8"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/capture-v1/resource-query-0011.json",
+      "bytes": 11666,
+      "sha256": "da09facb5e25657132233a9af2ce9547bfd6db3afacb6f856e1d70c2ed1c68a9"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/capture-v1/resource-query-0012.json",
+      "bytes": 11666,
+      "sha256": "c88f97e95c1a812c13e3a94782e73e933eabe08ac01d1d020b7b5c9c5a558534"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/capture-v1/resource-query-0013.json",
+      "bytes": 11723,
+      "sha256": "e18d6d0a0edeaf137f4d9970750bcd07442642e791591eabde90ce7c1986a4ef"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/capture-v1/resource-query-0014.json",
+      "bytes": 12246,
+      "sha256": "7ee260ac5632b87bfe38b51a6973e4067264ff814628adec8f9aa3b732502dd3"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/capture-v1/resource-query-0015.json",
+      "bytes": 11169,
+      "sha256": "f7ec2e7c9c4c3a5f8cda7414381d7a16b9ef1d31221258edbd5619b4b13ac7a9"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/capture-v1/resource-query-0016.json",
+      "bytes": 11307,
+      "sha256": "9c2070dade28e9751d3e0d8d3852b8deafa192a7cc4190b556a2f953dd4e9ff9"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/capture-v1/resource-query-0017.json",
+      "bytes": 11104,
+      "sha256": "57e02baf4c6b5ad8d893f5f223881e70731c00804f2d21287fdb16f6eaf0b466"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/capture-v1/resource-query-0018.json",
+      "bytes": 11627,
+      "sha256": "326cd889639a47af2517e8337bf57894d7358be834f74e9e9b9e7d05d7c5ab61"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/capture-v1/resource-query-0019.json",
+      "bytes": 11046,
+      "sha256": "feac43b939efdadd1cf5091dbaa947b4ff77394ef828eec69d3684475298a436"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/capture-v1/resource-query-0020.json",
+      "bytes": 11047,
+      "sha256": "cfe124380e67a559aa37ea236e377b33ee571fceac9451605d2ec2c8dadee311"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/capture-v1/resource-query-0021.json",
+      "bytes": 11048,
+      "sha256": "5a5da4984ef051f163f070fa7c54556375a5f916150442f4dae030cb11ecf74f"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/capture-v1/resource-query-0022.json",
+      "bytes": 11047,
+      "sha256": "28b9882978d805bc8116f0183dd8ea0a21e48a29584389915ad51dddd8d5baf2"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/capture-v1/resource-query-0023.json",
+      "bytes": 11236,
+      "sha256": "7696732251bee26fe3d0970d95e332711e37b710a4d2ae7e402f5c278a5381dc"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/capture-v1/resource-query-0024.json",
+      "bytes": 11236,
+      "sha256": "b482b0747b4725c48c30a29187702d1c6501151088be6dd9963d6afc76dc2fc9"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/capture-v1/resource-query-0025.json",
+      "bytes": 11206,
+      "sha256": "ce97eb11ecb735f9247f05f6faf3cad4d8363f2de217343d568ec13646100ba9"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/capture-v1/resource-query-0026.json",
+      "bytes": 11188,
+      "sha256": "5aa6bb80ae2a2f0f8ace126dd6e1e0d329eb94303fb925fc46229740fbbe5ef1"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/capture-v1/resource-query-0027.json",
+      "bytes": 3738,
+      "sha256": "7a60f01f111473f4ba01cae7ed377ef67cdc5dcbce76c68d59aeb88c131d91a6"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/capture-v1/resource-query-0028.json",
+      "bytes": 11048,
+      "sha256": "60d7ce50a7e4c1a2cede31353471163b3fd20892c68d369297aa833362be977c"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/capture-v1/resource-query-0029.json",
+      "bytes": 11188,
+      "sha256": "787a5ab34222d7839b65aedc8a25896b95460b0d01b6be24186eec588f11426a"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/capture-v1/resource-query-0030.json",
+      "bytes": 11048,
+      "sha256": "412dec4473d8fce9493dca9a41c0b6f9e18faeff3b5f41716d2a248244d48c65"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/capture-v1/resource-query-0031.json",
+      "bytes": 11160,
+      "sha256": "02ab1009d4e41d54d7f6b7d66e9ba692058d6fe337e9583c37753366365a9c14"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/capture-v1/resource-query-0032.json",
+      "bytes": 11048,
+      "sha256": "60640d9faa36c6c16a71c5c2a1f87441bc4efe1467ce6ead5350bfe910329a52"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/capture-v1/resource-query-0033.json",
+      "bytes": 11160,
+      "sha256": "37d077aec4f22d747b0fe791a3bd141775c3efee6598ddd531f7f14eb1ac1e69"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/capture-v1/resource-query-0034.json",
+      "bytes": 11046,
+      "sha256": "7df58c3caf8cd762b4a8668598abb69f483f32dd1ada27bc059a293a7152cc5a"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/capture-v1/resource-query-0035.json",
+      "bytes": 12957,
+      "sha256": "05a4415dc52c3d88cf632dc15a7dcaa1943859860b6debc216bf789ed19ae352"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/capture-v1/resource-query-0036.json",
+      "bytes": 12957,
+      "sha256": "ece4fc6ddeb3e76bce2868d21b6f107864c1a6bb36fe7144c107bcd62e2334c1"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/capture-v1/resource-query-0037.json",
+      "bytes": 12956,
+      "sha256": "ed419e6fea89b9e285523c31bca4f6045da96b3c35daae1f262a9282b5981ef4"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/capture-v1/resource-query-0038.json",
+      "bytes": 12957,
+      "sha256": "ea5bde25770a2aeb1444cd0aa696eafa755a0e19095c84ae80cfb72e6a696c10"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/capture-v1/resource-query-0039.json",
+      "bytes": 12090,
+      "sha256": "03cfd5343a2c209fd5c166045ad6f736fdc484a2e1cca577e29864b0d9095b81"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/capture-v1/resource-search-context.json",
+      "bytes": 2192,
+      "sha256": "2ff1fe4d23a4b4a5d758720853a7eb0237b50ec42d498ab9d8f9c44d5ab477bc"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/capture-v1/result.json",
+      "bytes": 11828,
+      "sha256": "dce272f226b948b1e3a0c90d68ab99c656aeed9288fc619be2088fb1aa18d71f"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/capture-v1/rgb-capture-manifest.json",
+      "bytes": 292,
+      "sha256": "1613ba8b68dfd333eb48d62a7c238d864c72c12803296045d0edd895ed6d5744"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/capture-v1/rgb-frames/2000000.ppm",
+      "bytes": 57615,
+      "sha256": "c4b606ca3921dc574cdd9673fcb3434a461539292584639ab72f581f8b6b7132"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/capture-v1/runtime-binding-after-queries.json",
+      "bytes": 495436,
+      "sha256": "2338d693bf3e1a8b6e7f8a1d47368a315b141b7e380c2181f85084b11352ff37"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/capture-v1/runtime-binding-post.json",
+      "bytes": 495436,
+      "sha256": "dfc6c66164e68d0bb99ac3a30c6e828cd17af5d46264dcf23f52cd6cb48efb5c"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/capture-v1/runtime-binding-pre.json",
+      "bytes": 1262935,
+      "sha256": "f16c141f5a68a378a5e8896bd78d32b07bd11e07a3d75f01829deff218780319"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/capture-v1/runtime-maps-bootstrap.json",
+      "bytes": 159,
+      "sha256": "f593aa6afcb78d71a30862a6e2518ce1cd5995beb8e0c2ae96b95474301f4c0c"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/capture-v1/runtime-maps-bootstrap.txt",
+      "bytes": 95049,
+      "sha256": "42697b6fc81d3aabd84e391c8f6e6b4574c1a9ae249dbcb486758cb4b4be473c"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/capture-v1/runtime-maps-openvins-prestop.json",
+      "bytes": 655,
+      "sha256": "a187c3ccc77b0afed5ec7e57e560408efe6a10f86d77dccbe432065b97a5194e"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/capture-v1/runtime-maps-openvins-prestop.txt",
+      "bytes": 96651,
+      "sha256": "b13f2b32645e2c25a9be1a3470d149728f65fcde211367a24b4402ba7980e1e2"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/capture-v1/runtime-maps-openvins-ready.json",
+      "bytes": 653,
+      "sha256": "ac74a29d6fd8d4db6ada83157a7b2b1f8513ce076dc08f71535742c59685ad89"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/capture-v1/runtime-maps-openvins-ready.txt",
+      "bytes": 96651,
+      "sha256": "b13f2b32645e2c25a9be1a3470d149728f65fcde211367a24b4402ba7980e1e2"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/capture-v1/runtime-maps-postfinalize.json",
+      "bytes": 162,
+      "sha256": "4045ccf457672c6630ffdd99fce7bf78c9318379e953f1374eee544ae29a58e9"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/capture-v1/runtime-maps-postfinalize.txt",
+      "bytes": 216953,
+      "sha256": "e7128f42ddebcfb13d3d147eab4490063f083c8f27ec4cbd5e68ba58686253a5"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/capture-v1/runtime-maps-postfirststep.json",
+      "bytes": 163,
+      "sha256": "e8ae7b17239d0b56d2180fa4ba7db528a71cb5f30234f47580ab3e81fdd84919"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/capture-v1/runtime-maps-postfirststep.txt",
+      "bytes": 262827,
+      "sha256": "93f53874435637a02b45862a341b5a161891d5b364d464a23cc8aa8bf357a78c"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/capture-v1/runtime-maps-postgraph.json",
+      "bytes": 159,
+      "sha256": "7387a46d42c663552aee14a8effbfdf933e172e9a66bc3162501deda58e5a540"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/capture-v1/runtime-maps-postgraph.txt",
+      "bytes": 95441,
+      "sha256": "980b6c3f3348bd7aaf74910275b03910d103b286622acfbb410bd3a9093f4a2d"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/capture-v1/runtime-maps-postimports.json",
+      "bytes": 161,
+      "sha256": "a5868274d650df06a128838ad88c85d200b5d717096674b130171272b434623c"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/capture-v1/runtime-maps-postimports.txt",
+      "bytes": 151373,
+      "sha256": "741b7ed75adb8049d2ea6ecea48d839e97b0bf4b162d9ae8e8e9160978bcf4e5"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/capture-v1/runtime-owner-openvins.json",
+      "bytes": 246,
+      "sha256": "c0216327c3644ece43f9788b545503adb7a90f15e63dfc7d4174e67675789323"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/capture-v1/runtime-owner-px4.json",
+      "bytes": 186,
+      "sha256": "4cd9148188afc5fb4bc87e4812f4a307b514cb1fadb8fb761bec2cacf81d5a5e"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/capture-v1/shadow/fast.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/capture-v1/shadow/native-acks.jsonl",
+      "bytes": 304,
+      "sha256": "c42d1996b4cc5d9bf92080fcb92f1fbb9afbb4d666c0475a874a5ead0fbfff56"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/capture-v1/shadow/native-requests.jsonl",
+      "bytes": 598,
+      "sha256": "07580724f51a17d5320fb6704bc52f28bf4eaab006b5cbe63d75c4318560e691"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/capture-v1/shadow/native-session.json",
+      "bytes": 766,
+      "sha256": "dc8aaa3438494b882edfb658dc4d1386f210038739d354c03747666c9b698c5c"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/capture-v1/shadow/native.log",
+      "bytes": 14782,
+      "sha256": "8b1013103dd1d27c38181e2394528ee017452b76be56e7a51fa2255a1f9b65f0"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/capture-v1/shadow/shadow-failures.jsonl",
+      "bytes": 234,
+      "sha256": "d4eaf358fdb22790df18c9a1383ed2c212b95cd0101d5ae20b3c2ae1c55b1de1"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/capture-v1/shadow/shadow-input-result.json",
+      "bytes": 506,
+      "sha256": "1ab6efdfd714be49e31e4bb9d2b02ac8587f589d7f022877c05e9096cdc41777"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/capture-v1/shadow/states.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/capture-v1/source-fanout.jsonl",
+      "bytes": 3399,
+      "sha256": "94d7152e84431f20b778a5def72c5e94379a0fa5ebf4ec41c8899e5121e95c68"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/capture-v1/supervisor.json",
+      "bytes": 2891,
+      "sha256": "84d708b57fd6aefc6576aec9d833fecafc83f6ea99d7e044cdb9b5d63cda046f"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/capture-v1/support-clearance.jsonl",
+      "bytes": 3198,
+      "sha256": "885aaca0c43187fc19729ab7eb3ade7ef3bbb7772c25a4c9be4e78bc6938c9fc"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/capture-v1/support-links.json",
+      "bytes": 1375,
+      "sha256": "58450fe560adadaa69036ee87e21162b6c889240153ec25df11a39fea8bfa404"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/capture-v1/trajectory-gauge-policy-worker.json",
+      "bytes": 600,
+      "sha256": "8e8bebdd578145e2d0f32ddaf411f9b98e0bcb713e45598d32265a8a77478a57"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/capture-v1/watchdog-retained-ulogs.json",
+      "bytes": 166,
+      "sha256": "9e98c0a5dc77397249f681650876f7f4f8a806611e198cd70d32c0e5bfcde032"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/capture-v1/world.json",
+      "bytes": 910,
+      "sha256": "e783db3dbbebf1142ba4bae7f09f5133d474f21415bd3843427598c6c3f58f51"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/capture-v1/world.sdf",
+      "bytes": 5844,
+      "sha256": "b42bd639080c967ceb84edc7bbf023b064dbd4fc610ccb81a1eaceb5fb373c1e"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/deadline-correction-authorization.json",
+      "bytes": 6366,
+      "sha256": "3305268de81094ffc8ae0e3cf4c870866fc167d4c038af2fd454541b70313fb9"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/estimator-readiness-contract.json",
+      "bytes": 7705,
+      "sha256": "7fc0d8de6860f3b179c0e929568eed96be5db8c6c6bb17bfae89e0d3b30a8448"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/execution-contract.json",
+      "bytes": 4490,
+      "sha256": "e656febd3e544dc7c9d6acc5207cf673b1bc8c328a0fa55fd07483921ce9fa72"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/handoff-correction-authorization.json",
+      "bytes": 4838,
+      "sha256": "8e09581f819fe4b2c97af3f0e6d6ca1a88ba7527da8541fca4ea463da74b6aca"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/heartbeat-routing-authorization.json",
+      "bytes": 6389,
+      "sha256": "5751773cbb95d12e0712f7954e9e2a410b95528b7d8f179343628fdc488329f5"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/heartbeat-simulation-time-authorization.json",
+      "bytes": 4816,
+      "sha256": "d2f78494935d8b29cfd169073ec731292d7ae36af50674a62235bcbee2343dfa"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/lazy-runtime-contract.json",
+      "bytes": 21086,
+      "sha256": "caa64813b32cc19967e9c12365bcccbe4c62edbe065ae2a2538db4909a79b233"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/pair-correction-authorization.json",
+      "bytes": 6361,
+      "sha256": "b42d3552fd12c7d725ede1fb2bbea71f02fec093260c279252e13030ef5afcbf"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/physical-refusal-contract.json",
+      "bytes": 11240,
+      "sha256": "e0dd3d8866ecd2319bf4b1676617d25ecd9e752d399cd57efe35a7645f2bebec"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/runtime-binding-v3.json",
+      "bytes": 571019,
+      "sha256": "edeaadc3a73f79a4f73193ffa9d9eaee1735917ec3bcb08da75d0c54d9160c61"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/startup-authorization-contract.json",
+      "bytes": 3904,
+      "sha256": "9d9913b8fe64eb0e452762960b947a8776e3c348d3dbc8a0cd0740d5d297112c"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/startup-preflight-v1.supervisor-environment.json",
+      "bytes": 5972,
+      "sha256": "858cd089801edb93497b07646d15e53ce61b49d59578862a5f0496283e32d32b"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/startup-preflight-v1.supervisor-events.jsonl",
+      "bytes": 1201,
+      "sha256": "95252e202365cc555a167cb88dde06f67b5dc46db7c8637a17d5a25b609b5d81"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/startup-preflight-v1/board_albedo.png",
+      "bytes": 1970,
+      "sha256": "5d24a1d96cccf2f81046dbfa6afe57b4760038a8714da5059d6258fc34166945"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/startup-preflight-v1/execution-environment-worker.json",
+      "bytes": 8601,
+      "sha256": "99e5a116c73af92547dc1b9c312af9df5ca46c65ae65d2e83a30ad06411807b0"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/startup-preflight-v1/ground_albedo.png",
+      "bytes": 154343,
+      "sha256": "5e62827968eeabb55285bba85276518b6d8fb1441f0bf9659caa52a48ed48593"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/startup-preflight-v1/launch.json",
+      "bytes": 5698,
+      "sha256": "74970d938ab93a91b960872d848d73da81313a1f5bc3b0fa72934733c65e36a8"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/startup-preflight-v1/obstacle_albedo.png",
+      "bytes": 52690,
+      "sha256": "28f87e79cc5cd767b029a4c7b00b165e1aad9f2cbb998be1a161e3ff5d121c3f"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/startup-preflight-v1/resource-graph.json",
+      "bytes": 149067,
+      "sha256": "85d7043371542de794eb1de8e8f13a7322da6d041482897d30964f2af43fb99a"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/startup-preflight-v1/resource-query-0000.json",
+      "bytes": 9172,
+      "sha256": "bcda1534b90e961268915695a621aa0a9c894ee1ba39bbbafaa6c9b5aaace5a4"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/startup-preflight-v1/resource-query-0001.json",
+      "bytes": 11261,
+      "sha256": "e1163f06530fe4e42fceb6d2d0fe9c58bd8ed8140c986fe8bc280c1edafbc47f"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/startup-preflight-v1/resource-query-0002.json",
+      "bytes": 11896,
+      "sha256": "797a52b07799256ccf6a8c4e869b508e25371b14e4c1f6fc2a9bbf5dc61b9359"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/startup-preflight-v1/resource-query-0003.json",
+      "bytes": 12321,
+      "sha256": "8a158f434c8da3bf81551077bac46f0872e75a9524fee322eb2258ca9fd3eb76"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/startup-preflight-v1/resource-query-0004.json",
+      "bytes": 11261,
+      "sha256": "0ebc02a9efde617cb2271a35df8d43a4938b745afb37bea6ed4d6dc9c8e5902d"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/startup-preflight-v1/resource-query-0005.json",
+      "bytes": 10837,
+      "sha256": "c0820ab3063229ac2441bea0ab71c875fa714a5d7af52be20ce8fdee6d2ff7f8"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/startup-preflight-v1/resource-query-0006.json",
+      "bytes": 11155,
+      "sha256": "c32bc57b9773dc9784c6f2917723be60f29b10f5996ae2c1f2512c8395ec5e00"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/startup-preflight-v1/resource-query-0007.json",
+      "bytes": 11791,
+      "sha256": "ef2798b08292203c58dfa9d92de50d6b1130140914219932b9135a90d7e35602"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/startup-preflight-v1/resource-query-0008.json",
+      "bytes": 11791,
+      "sha256": "a8d5b6c3e830962a871b08e0bc1df7f00383a486608bde92315a53fc003a2e2f"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/startup-preflight-v1/resource-query-0009.json",
+      "bytes": 11260,
+      "sha256": "8052f59793a4cc67bfb3c81c74e039b830baaeaee9345eeb43034b66adc8d4b2"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/startup-preflight-v1/resource-query-0010.json",
+      "bytes": 11875,
+      "sha256": "1b6ae712c02cd1fe796366f4c37a84f16e89952234cdad8318901ba47d929011"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/startup-preflight-v1/resource-query-0011.json",
+      "bytes": 11856,
+      "sha256": "7a266ec080815cc2daeb21e1bcc53f60f0cafcaa916df9eed5372b611a7aa14a"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/startup-preflight-v1/resource-query-0012.json",
+      "bytes": 11856,
+      "sha256": "a13f85ed10f472f4623fd50dce96e7bbb60cdda3e0980d1b770d6f27a230fe2c"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/startup-preflight-v1/resource-query-0013.json",
+      "bytes": 11913,
+      "sha256": "e2fad8181528c8e88904b4a3386916cf5f213a4e5ca809063bd35bbf5af03ea5"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/startup-preflight-v1/resource-query-0014.json",
+      "bytes": 12286,
+      "sha256": "76c14397ef4f74f4868771944935017bd7873583e12f5869ed4374aa01798cfa"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/startup-preflight-v1/resource-query-0015.json",
+      "bytes": 11168,
+      "sha256": "17dc6a824b19634b63444be3918b617076303109725cf1a08cfb9f0a9b90f679"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/startup-preflight-v1/resource-query-0016.json",
+      "bytes": 11307,
+      "sha256": "cf45901e8bae890187e4b5e42d598383ddaaa61fe7f5c06a934b48da4a69423b"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/startup-preflight-v1/resource-query-0017.json",
+      "bytes": 11104,
+      "sha256": "0cc14427ab580661397948efd1d70530bbf3e1c7c23837ef2267aa30f9efa8ae"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/startup-preflight-v1/resource-query-0018.json",
+      "bytes": 11627,
+      "sha256": "09cc10cab6f2e08799b8d5d6318eaee5ea099373aaa0e3d4266bc1037fa3bb0f"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/startup-preflight-v1/resource-query-0019.json",
+      "bytes": 11047,
+      "sha256": "0ccc0b4f262b2e7f5e959e438a916eb04d6622f2da4291b713711d5ac1e5da0f"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/startup-preflight-v1/resource-query-0020.json",
+      "bytes": 11048,
+      "sha256": "822a12420160cc0e622748ebd1be006dc34f249496a4a2639c9fb2967ea8e784"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/startup-preflight-v1/resource-query-0021.json",
+      "bytes": 11048,
+      "sha256": "0e1bcebf85aceefe19784c9f04e3ef78e3ff7254609ae636471a6fa20528be93"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/startup-preflight-v1/resource-query-0022.json",
+      "bytes": 11048,
+      "sha256": "c5c8baf7e93e53f8bacdcb29febee20e39105361845cbe12d47330d740962367"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/startup-preflight-v1/resource-query-0023.json",
+      "bytes": 11235,
+      "sha256": "6d0a376d590502e5b04f6cfc882eeae94d6532ce84019b7d34248af863c836c2"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/startup-preflight-v1/resource-query-0024.json",
+      "bytes": 11236,
+      "sha256": "2829e1c85d5e32b3463a33e612e14c893431760207d1e2acae550e15b460e061"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/startup-preflight-v1/resource-query-0025.json",
+      "bytes": 11208,
+      "sha256": "eb1113035725f9aa0c473a08de8e61ccb9f0f6e97795e9b4443f28dad2b593b3"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/startup-preflight-v1/resource-query-0026.json",
+      "bytes": 11188,
+      "sha256": "c2620c1bd1feaf6211659c7b612b0c1e5cf437d2abfb121951ebae947fee4b1c"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/startup-preflight-v1/resource-query-0027.json",
+      "bytes": 3736,
+      "sha256": "7c54a77ee87758821abf64a5c44a74e81964401456af405298317769cb89e9a4"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/startup-preflight-v1/resource-query-0028.json",
+      "bytes": 11048,
+      "sha256": "4bc1871c0125bde304bcd49643c828e04f83aca85e947efe8583c3f9513aabb5"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/startup-preflight-v1/resource-query-0029.json",
+      "bytes": 11188,
+      "sha256": "0a5746f97f08ebe2eb3ec236e99b33cfb70160104b1146502b4a3bba40738399"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/startup-preflight-v1/resource-query-0030.json",
+      "bytes": 11048,
+      "sha256": "64616a5f1f9110afa99ca57309ac2aa4f2b7f1bd91a77741287549e58a5acff9"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/startup-preflight-v1/resource-query-0031.json",
+      "bytes": 11160,
+      "sha256": "ec207426769cbc1c37174b3701e2ebf46736dcfa8aac139fc8bbb5f5dafbcea9"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/startup-preflight-v1/resource-query-0032.json",
+      "bytes": 11048,
+      "sha256": "26bce05978b2907b61204f7c2a93d5f46352750c0c167b9f177ad7ff7a6225a2"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/startup-preflight-v1/resource-query-0033.json",
+      "bytes": 11159,
+      "sha256": "f6844d4f7b5c54258664bb0a3b7d6a0e13ce7deb7d00875ad550e0405f2e74ba"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/startup-preflight-v1/resource-query-0034.json",
+      "bytes": 11048,
+      "sha256": "48d74d145e732d1734a7771fc08b2faf0e954d3dc2cef31b0dfa74448761edaa"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/startup-preflight-v1/resource-query-0035.json",
+      "bytes": 12957,
+      "sha256": "6e0d43396507b0808dcc73ab20e53d7637308d4dea2296530f2706ca4fbc1314"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/startup-preflight-v1/resource-query-0036.json",
+      "bytes": 12956,
+      "sha256": "a52e9d29426de24eb3e6a11e488777242a8e670ed1d00af9e37f6bcbe8fa175a"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/startup-preflight-v1/resource-query-0037.json",
+      "bytes": 12957,
+      "sha256": "f1e2e67fbe84bf12c6616253e84a9f2f8d13e0e2f721cbe1a31517474f818101"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/startup-preflight-v1/resource-query-0038.json",
+      "bytes": 12957,
+      "sha256": "9737a2f5641c7961b04baf55e7b892faedbbba1c4e8b624a8d751302d854fef5"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/startup-preflight-v1/resource-query-0039.json",
+      "bytes": 12090,
+      "sha256": "97674895c78820476a4c63557eeacf3aefb3481d565405ba7f93b0bca0017419"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/startup-preflight-v1/resource-search-context.json",
+      "bytes": 2192,
+      "sha256": "2ff1fe4d23a4b4a5d758720853a7eb0237b50ec42d498ab9d8f9c44d5ab477bc"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/startup-preflight-v1/result.json",
+      "bytes": 1093,
+      "sha256": "f00863c87986074b2191949bf0f12b4766dc38ec05b48c25773f07ac4cb64e55"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/startup-preflight-v1/runtime-binding-after-queries.json",
+      "bytes": 495536,
+      "sha256": "c0eed980b0811d7e08eb2fc719bb7c211701598bf12b6d08400ed9b5a9b0e07e"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/startup-preflight-v1/runtime-binding-post.json",
+      "bytes": 495536,
+      "sha256": "149902e83d42086cbc55c687ab1586340c1d75cbcd63bec6949d40eb8bbf28a1"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/startup-preflight-v1/runtime-binding-pre.json",
+      "bytes": 1263585,
+      "sha256": "f1cedf3a7a553131adda62d5131a594fb2e11433486f9ed94bcfa908c7fd9d1c"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/startup-preflight-v1/runtime-maps-bootstrap.json",
+      "bytes": 159,
+      "sha256": "f593aa6afcb78d71a30862a6e2518ce1cd5995beb8e0c2ae96b95474301f4c0c"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/startup-preflight-v1/runtime-maps-bootstrap.txt",
+      "bytes": 95098,
+      "sha256": "41c785c58e8ef5bc33d158eaafde71c93bad472cb95dd0281fd196e74fad21fd"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/startup-preflight-v1/runtime-maps-postgraph.json",
+      "bytes": 159,
+      "sha256": "7387a46d42c663552aee14a8effbfdf933e172e9a66bc3162501deda58e5a540"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/startup-preflight-v1/runtime-maps-postgraph.txt",
+      "bytes": 95490,
+      "sha256": "71256e7848c1c58ce7e830dec1f45d766766d0da37109465c2552f400cf4c10a"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/startup-preflight-v1/supervisor.json",
+      "bytes": 2903,
+      "sha256": "7329c432b078b3510d03442dedb86f81f86ce3f6e6b56c3293f4c8871e974b7b"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/startup-preflight-v1/trajectory-gauge-policy-worker.json",
+      "bytes": 600,
+      "sha256": "8e8bebdd578145e2d0f32ddaf411f9b98e0bcb713e45598d32265a8a77478a57"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/startup-preflight-v1/world.json",
+      "bytes": 910,
+      "sha256": "e783db3dbbebf1142ba4bae7f09f5133d474f21415bd3843427598c6c3f58f51"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/startup-preflight-v1/world.sdf",
+      "bytes": 5844,
+      "sha256": "b42bd639080c967ceb84edc7bbf023b064dbd4fc610ccb81a1eaceb5fb373c1e"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/study-manifest.json",
+      "bytes": 8969,
+      "sha256": "643e1f67cbf2b931c24f3d2bd85a35a3f933de02e38a9e51e4103bbf445a8bf1"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/trajectory-gauge-policy.json",
+      "bytes": 1031,
+      "sha256": "a97bc126e90e0bfb88cc995f782904a7a842e460854dbd71cec977cd98800463"
+    },
+    {
+      "path": "results/heartbeat-sim-time-retry-preflight-dev-1701/audit-output-v1.txt",
+      "bytes": 532,
+      "sha256": "668908e2318729f306aaf2745f47bda206c5f78c76532626a447e840999fc8a2"
+    },
+    {
+      "path": "results/heartbeat-sim-time-retry-preflight-dev-1701/audit-output-v2-committed.txt",
+      "bytes": 532,
+      "sha256": "668908e2318729f306aaf2745f47bda206c5f78c76532626a447e840999fc8a2"
+    },
+    {
+      "path": "results/heartbeat-sim-time-retry-preflight-dev-1701/audit-output-v3-after-startup.txt",
+      "bytes": 532,
+      "sha256": "668908e2318729f306aaf2745f47bda206c5f78c76532626a447e840999fc8a2"
+    },
+    {
+      "path": "results/heartbeat-sim-time-retry-preflight-dev-1701/audit-output-v4-physical-boundary.txt",
+      "bytes": 532,
+      "sha256": "668908e2318729f306aaf2745f47bda206c5f78c76532626a447e840999fc8a2"
+    },
+    {
+      "path": "results/heartbeat-sim-time-retry-preflight-dev-1701/diff-check-v1.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/heartbeat-sim-time-retry-preflight-dev-1701/green-v1.txt",
+      "bytes": 100,
+      "sha256": "d7acffab30a73a9f8fe103faa887547ee50449cd1bbd2a3d5c09e56f94d62d86"
+    },
+    {
+      "path": "results/heartbeat-sim-time-retry-preflight-dev-1701/physical-v8-check.txt",
+      "bytes": 552,
+      "sha256": "f9a8b3dfce33c6c550ab156afaacc57d184715f1ad0ec146461d1ea7012f087b"
+    },
+    {
+      "path": "results/heartbeat-sim-time-retry-preflight-dev-1701/prepare-output-v1.txt",
+      "bytes": 9263,
+      "sha256": "b12ada4b36830f99d831c81611001d88c724a937c3723fc5d5cd2fb5947b7c32"
+    },
+    {
+      "path": "results/heartbeat-sim-time-retry-preflight-dev-1701/ruff-v1.txt",
+      "bytes": 1744,
+      "sha256": "44f804db3a9d17434bd49b0b16a1809f79e7d582cf05496010e16e351e318220"
+    },
+    {
+      "path": "results/heartbeat-sim-time-retry-preflight-dev-1701/ruff-v2.txt",
+      "bytes": 20,
+      "sha256": "a4443afdcfb6d7363adb285762515ccf7cf50473b1a05c20c1a50f6bed4d26b0"
+    },
+    {
+      "path": "results/heartbeat-sim-time-retry-preflight-dev-1701/startup-audit-output-v1.txt",
+      "bytes": 1150,
+      "sha256": "7ba2b0a9023937925b50b086b608ddc29f29925b612b88ffbfc6a130fe679772"
+    },
+    {
+      "path": "results/heartbeat-sim-time-retry-preflight-dev-1701/study-v16-audit-v1.json",
+      "bytes": 367,
+      "sha256": "6e48d972d7ce0cacd3675a335c9425ba7c669b901044680e2b02b62b9f2ef8bf"
+    },
+    {
+      "path": "results/heartbeat-sim-time-retry-preflight-dev-1701/study-v16-audit-v2-committed.json",
+      "bytes": 367,
+      "sha256": "6e48d972d7ce0cacd3675a335c9425ba7c669b901044680e2b02b62b9f2ef8bf"
+    },
+    {
+      "path": "results/heartbeat-sim-time-retry-preflight-dev-1701/study-v16-audit-v3-after-startup.json",
+      "bytes": 367,
+      "sha256": "6e48d972d7ce0cacd3675a335c9425ba7c669b901044680e2b02b62b9f2ef8bf"
+    },
+    {
+      "path": "results/heartbeat-sim-time-retry-preflight-dev-1701/study-v16-audit-v4-physical-boundary.json",
+      "bytes": 367,
+      "sha256": "6e48d972d7ce0cacd3675a335c9425ba7c669b901044680e2b02b62b9f2ef8bf"
+    },
+    {
+      "path": "results/heartbeat-sim-time-retry-preflight-dev-1701/study-v16-startup-audit-v1.json",
+      "bytes": 971,
+      "sha256": "af8bcad60416ab0e97fe3eeb9b00294f2f9c0f79923e9287bfc47321e8d45dc3"
+    },
+    {
+      "path": "results/heartbeat-sim-time-retry-preflight-dev-1701/targeted-v1.txt",
+      "bytes": 101,
+      "sha256": "42822473748636fc15ce42160536e17c0afd3facdd17f7fd9398ee83da913cda"
+    },
+    {
+      "path": "tests/benchmark/test_audit_causal_pair_sim_time_physical_attempt.py",
+      "bytes": 1547,
+      "sha256": "9f582907425a0195ea1b6dd67fbd0ed61201f3678d2ce2a8622a267463bbdaea"
+    },
+    {
+      "path": "tests/benchmark/test_heartbeat_sim_time_retry_preflight.py",
+      "bytes": 2167,
+      "sha256": "525ae108f44ac850556352e5d119a63efb3974349cffc9db56e307d1a736a0de"
+    },
+    {
+      "path": "tests/benchmark/test_openvins_causal_input.py",
+      "bytes": 10202,
+      "sha256": "5ed60a8e50d29e3eb75a3aa8fb775601f46cbfb5575720581407b21613418119"
+    },
+    {
+      "path": "tests/benchmark/test_openvins_online_shadow.py",
+      "bytes": 13174,
+      "sha256": "2bd0ee5639439dfee690bf9937f84b2a9d80c02e2c8efd5356b986b9d3dc34b1"
+    },
+    {
+      "path": "tools/benchmark/audit_causal_pair_sim_time_physical_attempt.py",
+      "bytes": 7042,
+      "sha256": "209e4d0e62ea5d61d0b0807fee32097327e327f45db16d59ae39bd8e63dd62f3"
+    },
+    {
+      "path": "tools/benchmark/audit_heartbeat_sim_time_retry_preflight.py",
+      "bytes": 4958,
+      "sha256": "0fd0627a2b11a01f972b0910cd871605e93487bf43b08ce9bbf4e0289d624006"
+    },
+    {
+      "path": "tools/benchmark/heartbeat_sim_time_retry_preflight.py",
+      "bytes": 10957,
+      "sha256": "ae485e533f7d1dfa1fff7d89c9ae75dbc2c560c00f5c3e9173b50480afc7e550"
+    },
+    {
+      "path": "tools/benchmark/openvins_causal_input.py",
+      "bytes": 12017,
+      "sha256": "cb188d29b5fdc70fc1282a9653dd8fc7338884fa63b2d53416cddb18f204d115"
+    }
+  ]
+}

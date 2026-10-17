@@ -1,0 +1,52 @@
+{
+  "archive": "evidence/owned-ulog-source-association-dev-1701.zip",
+  "sha256": "d7c022cf53d1a5347b798b18c152647d59c2835a7e50f7649bb00880cdc804d1",
+  "bytes": 400490,
+  "members": 695,
+  "report_sha256": "f5808432798e9080e32bb7721733812ca4daaa303072317a9fe96e1cbcf5f7ef",
+  "prepublication_plan_sha256": "d2ff421a103c223abf961e98c09baea400fc7261c5144be02de3651bedb9a01e",
+  "actual_px4_source_execution": false,
+  "actual_pidfd_duplication_executed": false,
+  "schema": "owned-ULog-association-software-publication-v1",
+  "implementation_commit": "462a5b6ee1b40d80f918f5bc65311d93278aba83",
+  "pr": "https://github.com/chen7509/FlyDrones/pull/65",
+  "publication_verification": {
+    "expected_head": "462a5b6ee1b40d80f918f5bc65311d93278aba83",
+    "observed_head": "462a5b6ee1b40d80f918f5bc65311d93278aba83",
+    "expected_body_sha256": "65edc4804fcfa0781693b07352c185b0bfddacc43110dc9edcc2c52ddba6a648",
+    "observed_body_sha256": "65edc4804fcfa0781693b07352c185b0bfddacc43110dc9edcc2c52ddba6a648",
+    "head_equal": true,
+    "body_equal_after_crlf_only": true
+  },
+  "postpublication_plan_sha256": "89276e14c58235085837ef141efb1ebcda3aff4acb5d61447597bdb01f7102de",
+  "targeted_tests": {
+    "passed": 177,
+    "skipped": 2,
+    "seconds": 5.44
+  },
+  "state": "implemented/software-only",
+  "measured_calibration_consumed": false,
+  "source_clock_fusion_training_flight_qualified": false,
+  "repeat_consumed_cached_native_forbidden": true,
+  "repeat_ego_v3_forbidden": true,
+  "all_local_work_complete": false,
+  "source_bytes": {
+    "tools/benchmark/owned_ulog_source.py": {
+      "working_and_archive_sha256": "dbee899fd676a3b7b77d51f7fe50f79c055492542e454b0ff4b7976af5f3d198",
+      "git_blob_sha256": "dbee899fd676a3b7b77d51f7fe50f79c055492542e454b0ff4b7976af5f3d198"
+    },
+    "tools/benchmark/capture_contract.py": {
+      "working_and_archive_sha256": "10dcca8a1109fda75426b36b0d9a27a864c35e26a0c30dcbe5815468a24e480c",
+      "git_blob_sha256": "10dcca8a1109fda75426b36b0d9a27a864c35e26a0c30dcbe5815468a24e480c"
+    },
+    "tools/benchmark/capture_disarmed_sensors.py": {
+      "working_and_archive_sha256": "458415fe0e9921f7e2236832d65081c35ae0177355c0e11c905a1afb31d456a0",
+      "git_blob_sha256": "458415fe0e9921f7e2236832d65081c35ae0177355c0e11c905a1afb31d456a0"
+    },
+    "docs/OWNED_ULOG_SOURCE_ASSOCIATION_REPORT.md": {
+      "working_and_archive_sha256": "f5808432798e9080e32bb7721733812ca4daaa303072317a9fe96e1cbcf5f7ef",
+      "git_blob_sha256": "f5808432798e9080e32bb7721733812ca4daaa303072317a9fe96e1cbcf5f7ef"
+    }
+  },
+  "archive_snapshots_are_worktree_bytes_git_may_normalize_line_endings": true
+}

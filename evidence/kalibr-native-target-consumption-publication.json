@@ -1,0 +1,91 @@
+{
+  "implementation_head": "d172bed0a5448ceec5f609ccdff98e1136b870b5",
+  "actual_PR_personal_verified": {
+    "head": "d172bed0a5448ceec5f609ccdff98e1136b870b5",
+    "body_sha256_afterCRLF_only": "c47870268f456508fbeb989992808286bf4a05731602e970e74580f63c12deb8",
+    "head_exact": true,
+    "body_exact": true,
+    "remote": "personal"
+  },
+  "seal": {
+    "archive": "evidence/kalibr-native-target-consumption-dev-1701.zip",
+    "sha256": "b2ef3316e3be642da3501a20a2e460cf1cdbd6580f00ddb63138a8b49d1f7047",
+    "members": 299,
+    "bytes": 681177,
+    "allCRC_SHA_size_currentbytes": true,
+    "report_sha256": "d20701d84479160fda83e2e391c107ba5bca05c34951f09977ccb7e7e6068e2b",
+    "independent_ZIP_review": "passed zeroC/I/M"
+  },
+  "final_independent_review": {
+    "reviewer": "/root/review_kalibr_native_detector",
+    "Critical": 0,
+    "Important": 0,
+    "Minor": 0,
+    "archive_sha256": "b2ef3316e3be642da3501a20a2e460cf1cdbd6580f00ddb63138a8b49d1f7047",
+    "members": 299,
+    "bytes": 681177,
+    "mapped_all_SHA_size_CRC_currentbytes": 298,
+    "errors": 0,
+    "both_studies_complete_and_retained": true,
+    "report_sha256": "d20701d84479160fda83e2e391c107ba5bca05c34951f09977ccb7e7e6068e2b",
+    "historical_archives_count": 275,
+    "historical_archives_bytes": 695802120,
+    "historical_hashes_all_match": true,
+    "native_rows": 9,
+    "finite_corners": 36,
+    "max_ordered_error_px": 0.8293274054026185,
+    "both_attempts_consumed": true,
+    "qualification": false,
+    "ZIP_plan": "prepublication"
+  },
+  "identity": {
+    "tools/benchmark/run_kalibr_target_detector.py": {
+      "working_archive_sha256": "e5dfbf302cae8beb475aba2e7e7292c039ea83b9ba6194134c9fbd285d973be5",
+      "git_blob_sha256": "20a389378b15c01769e697938ab6e61243de7fa481f1e314df445565f2438b3c",
+      "same": false
+    },
+    "tools/benchmark/run_kalibr_target_detector_v2.py": {
+      "working_archive_sha256": "72a8b899222e72520428d4bdfe562e888329aa4713feed89f577f17c5f10d5a9",
+      "git_blob_sha256": "9fe770eed9f071123600b8f06d4b4825839d584808b0d0d6b6982c4ca2d87342",
+      "same": false
+    },
+    "tools/benchmark/native/kalibr_target_detector.cpp": {
+      "working_archive_sha256": "80c481e6b058251fb1fb71758395cd34b0e38ab184fe2db091c6273bd97076e2",
+      "git_blob_sha256": "80c481e6b058251fb1fb71758395cd34b0e38ab184fe2db091c6273bd97076e2",
+      "same": true
+    },
+    "tools/benchmark/native/kalibr_target_detector_v2.cpp": {
+      "working_archive_sha256": "033186fbdc26b42bb652c87781fd533075cf06a8893d668643cba5d0d3909ba1",
+      "git_blob_sha256": "033186fbdc26b42bb652c87781fd533075cf06a8893d668643cba5d0d3909ba1",
+      "same": true
+    },
+    "tests/benchmark/test_kalibr_target_detector.py": {
+      "working_archive_sha256": "a2fac89a3c37180b91d14a5e0fbaae8449f79d3816ee3b9e6fdf7eef27743378",
+      "git_blob_sha256": "c5aaf86c2b099b82d7bbba76e1e83eae81636eb0364e9e786485cf9d8bac8ebe",
+      "same": false
+    },
+    "tests/benchmark/test_kalibr_target_detector_v2.py": {
+      "working_archive_sha256": "634a7e1af5df9e771658ecea5b9dd906dba2cdd0b6b0c12571639d5bd87b60d9",
+      "git_blob_sha256": "634a7e1af5df9e771658ecea5b9dd906dba2cdd0b6b0c12571639d5bd87b60d9",
+      "same": true
+    },
+    "docs/KALIBR_NATIVE_TARGET_CONSUMPTION_REPORT.md": {
+      "working_archive_sha256": "d20701d84479160fda83e2e391c107ba5bca05c34951f09977ccb7e7e6068e2b",
+      "git_blob_sha256": "5b4301d30e58f6022d6876e291c97635ebc12bb4c5ae1fcc0eb4da8746ae0d6a",
+      "same": false
+    }
+  },
+  "postpublication_plan_sha256": {
+    "docs\\superpowers\\plans\\2026-10-14-kalibr-native-target-consumption.md": "82dd7300540e7cd14412694b395a42cce97db581eefe6d78f1b204abcbe56fc2",
+    "docs\\superpowers\\plans\\2026-10-14-kalibr-native-target-consumption-v2.md": "ff5ad7324e58af8e343078fe160ee8342e0695958e2461960e4e44f0d64942b8"
+  },
+  "ZIPplans": "prepublication; currentplans/ledger separate",
+  "v1_attempt": "consumed failure, no rerun",
+  "v2_attempt": "consumed native success, no rerun",
+  "actual_native_generated_target_acceptance": true,
+  "actual_camera_observation": false,
+  "measured_spatial_time_calibration": false,
+  "source_clock_accuracy_teacher_fusion_training_flight": false,
+  "overall_goal_complete": false,
+  "ledger_commit": "follows actual implementation publication; finalhead verify separate"
+}

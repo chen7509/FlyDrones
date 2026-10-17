@@ -1,4 +1,4 @@
-"""Offline acceptance of the explicitly failed native-epoch physical study.
+"""Offline acceptance of recorded native-epoch fault or normal capture cleanup.
 
 This does not control processes or certify descendants outside the owned group.
 """
@@ -25,17 +25,21 @@ def identity(row, pid):
     require(row.get("state") in set("RSDZTtWXxKPI"), "leader state")
 
 
-def audit_supervisor(summary, journal):
+def audit_supervisor(summary, journal, *, profile="native-epoch-fault-v1"):
     """Raise ValueError for insufficient evidence; never infer exit from a signal."""
+    profiles = {"native-epoch-fault-v1": ("capture_failed", 2, 90),
+                "normal-capture-v1": ("capture_completed", 0, 300)}
+    if type(profile) is not str or profile not in profiles:
+        raise ValueError("unsupported supervisor audit profile")
     try:
-        return _audit(summary, journal)
+        return _audit(summary, journal, *profiles[profile])
     except (KeyError, TypeError, IndexError, OverflowError) as exc:
         raise ValueError("malformed supervisor integration evidence") from exc
 
 
-def _audit(s, journal):
-    require(s["status"] == "worker_exited" and s["capture_status"] == "capture_failed", "capture status")
-    require(integer(s["worker_exit"], 2) and integer(s["timeout_s"], 90), "exit/timeout")
+def _audit(s, journal, capture_status, worker_exit, timeout_s):
+    require(s["status"] == "worker_exited" and s["capture_status"] == capture_status, "capture status")
+    require(integer(s["worker_exit"], worker_exit) and integer(s["timeout_s"], timeout_s), "exit/timeout")
     require(s["errors"] == [], "supervisor errors")
     pid = s["worker_pid"]
     require(integer(pid) and pid > 1, "worker PID")
@@ -70,7 +74,7 @@ def _audit(s, journal):
             require(i == 0, "duplicate ownership")
         elif kind == "leader_exit_unreaped":
             require(wait_index is None and reap_index is None and i == 1, "unreaped order")
-            require(integer(e["pid"], pid) and integer(e["code"], 1) and integer(e["status"], 2), "waitid outcome")
+            require(integer(e["pid"], pid) and integer(e["code"], 1) and integer(e["status"], worker_exit), "waitid outcome")
             wait_index = i
         elif kind == "snapshot":
             require(wait_index is not None, "snapshot before wait")
@@ -127,7 +131,7 @@ def _audit(s, journal):
                 signals.append(dict(signal=15, outcome=e["outcome"], pgid=pid))
                 pending = None
         elif kind == "leader_reaped":
-            require(reap_index is None and wait_index is not None and integer(e["returncode"], 2) and
+            require(reap_index is None and wait_index is not None and integer(e["returncode"], worker_exit) and
                     labels[-1:] == ["after_signals"], "reap ordering/outcome")
             reap_index = i
         else:
@@ -140,7 +144,7 @@ def _audit(s, journal):
     return dict(qualified=True, scope="recorded supervisor original owned group only",
                 owner=c["owner"], signals=signals, journal_events=len(events),
                 supervisor_sigkill_dispatched=False, no_executing_members=True, group_absent=True,
-                all_descendant_cleanup_qualified=False, capture_status_retained="capture_failed")
+                all_descendant_cleanup_qualified=False, capture_status_retained=capture_status)
 
 
 def audit_snapshots(before, after):

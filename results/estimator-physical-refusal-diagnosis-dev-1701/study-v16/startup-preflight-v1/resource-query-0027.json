@@ -1,0 +1,36 @@
+{
+  "command": [
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/collada-ordered-candidates-dev-1701/build-v1/resource_resolver",
+    "installation"
+  ],
+  "cwd": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility",
+  "environment": {
+    "GZ_SIM_RESOURCE_PATH": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/assets/gazebo/models:/home/yuchen7509/PX4-Autopilot/Tools/simulation/gz/models:",
+    "SDF_PATH": "",
+    "GZ_FILE_PATH": "",
+    "GZ_PLUGIN_PATH": "",
+    "GZ_SIM_SYSTEM_PLUGIN_PATH": "",
+    "HOME": "/home/yuchen7509",
+    "GZ_HOMEDIR": null,
+    "GZ_MESH_FORCE_ASSIMP": null,
+    "IGN_PLUGIN_PATH": "",
+    "IGN_FILE_PATH": "",
+    "IGN_GAZEBO_RESOURCE_PATH": "",
+    "IGN_GAZEBO_SYSTEM_PLUGIN_PATH": "",
+    "GZ_LOG_PATH": null,
+    "IGN_LOG_PATH": null,
+    "LD_LIBRARY_PATH": null,
+    "PATH": "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/usr/lib/wsl/lib:/mnt/c/Users/yuche/.cache/codex-runtimes/codex-primary-runtime/dependencies/native/powershell:/mnt/c/Users/yuche/.codex/tmp/arg0/codex-arg0VXmCbp:/mnt/c/Users/yuche/.cache/codex-runtimes/codex-primary-runtime/dependencies/native/libheif/libheif/bin:/mnt/c/Users/yuche/.cache/codex-runtimes/codex-primary-runtime/dependencies/native/jxrlib/jxrlib/bin:/mnt/c/Users/yuche/.cache/codex-runtimes/codex-primary-runtime/dependencies/native/poppler/Library/bin:/mnt/c/Users/yuche/.cache/codex-runtimes/codex-primary-runtime/dependencies/bin/override:/mnt/c/Windows/system32:/mnt/c/Windows:/mnt/c/Windows/System32/Wbem:/mnt/c/Windows/System32/WindowsPowerShell/v1.0/:/mnt/c/Windows/System32/OpenSSH/:/mnt/c/Program Files (x86)/NVIDIA Corporation/PhysX/Common:/mnt/c/WINDOWS/system32:/mnt/c/WINDOWS:/mnt/c/WINDOWS/System32/Wbem:/mnt/c/WINDOWS/System32/WindowsPowerShell/v1.0/:/mnt/c/WINDOWS/System32/OpenSSH/:/mnt/c/Program Files/nodejs/:/mnt/c/Program Files/Docker/Docker/resources/bin:/mnt/c/Program Files/NVIDIA Corporation/NVIDIA App/NvDLISR:/mnt/c/Program Files/GitHub CLI/:/mnt/c/Program Files/Git/cmd:/mnt/c/Users/yuche/AppData/Local/Programs/Python/Python312/Scripts/:/mnt/c/Users/yuche/AppData/Local/Programs/Python/Python312/:/mnt/c/Users/yuche/.cache/codex-runtimes/codex-primary-runtime/dependencies/native/powershell:/mnt/c/Users/yuche/AppData/Local/Microsoft/WindowsApps:/mnt/c/Program Files/JetBrains/PyCharm 2023.2.5/bin:/mnt/c/Users/yuche/AppData/Local/Programs/Microsoft VS Code/bin:/mnt/c/Users/yuche/AppData/Roaming/npm:/mnt/c/Users/yuche/AppData/Local/Programs/cursor/resources/app/bin:/mnt/c/Users/yuche/.cache/codex-runtimes/codex-primary-runtime/dependencies/bin/fallback:/mnt/c/Users/yuche/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin:/mnt/c/Users/yuche/.cache/codex-runtimes/codex-primary-runtime/dependencies/native/git/cmd:/mnt/c/Users/yuche/AppData/Local/OpenAI/Codex/bin/681770561a4656a5:/mnt/c/Users/yuche/AppData/Local/OpenAI/Codex/bin/d375f7df50d3b421",
+    "LANG": "C.UTF-8"
+  },
+  "started_monotonic": 89.697420061,
+  "stdout": "{\"media\":\"/usr/share/gz/gz-sim8/media\",\"plugins\":\"/usr/lib/x86_64-linux-gnu/gz-sim-8/plugins\",\"classic_material\":\"/usr/share/gz/gz-sim8/media/gazebo.material\"}\n",
+  "stderr": "",
+  "returncode": 0,
+  "error": null,
+  "stdout_hex": "7b226d65646961223a222f7573722f73686172652f677a2f677a2d73696d382f6d65646961222c22706c7567696e73223a222f7573722f6c69622f7838365f36342d6c696e75782d676e752f677a2d73696d2d382f706c7567696e73222c22636c61737369635f6d6174657269616c223a222f7573722f73686172652f677a2f677a2d73696d382f6d656469612f67617a65626f2e6d6174657269616c227d0a",
+  "stderr_hex": "",
+  "output_limit_exceeded": false,
+  "collection_errors": [],
+  "ended_monotonic": 89.7339183
+}

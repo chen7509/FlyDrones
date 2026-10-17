@@ -1,8 +1,12 @@
 from __future__ import annotations
 
 import hashlib
+import math
 import subprocess
 import sys
+from fractions import Fraction
+
+import pytest
 
 from flydrones.mission_agent import (
     AgentState,
@@ -61,6 +65,194 @@ def healthy_state(**overrides: object) -> AgentState:
     }
     values.update(overrides)
     return AgentState(**values)  # type: ignore[arg-type]
+
+
+def clock_peer_work_message() -> TaskMessage:
+    return TaskMessage(
+        "evidence", contract().mission_id, contract().digest, 1, 1, 0.3,
+        {"work_unit": {"task_id": "confirm-clock", "kind": "confirm_detection",
+                       "center_m": [10.0, 10.0, 20.0], "payload": []}},
+    )
+
+
+@pytest.mark.parametrize("bad_time", [
+    None, "0.4", True, float("nan"), float("inf"), -0.1, 10**500, 0.2,
+])
+def test_clock_fault_step_stops_without_mutation_and_defers_owned_release(bad_time: object) -> None:
+    agent = active_agent()
+    before = agent.ledger.snapshot()
+    units = agent.work_unit_ids
+    detection = Detection("person", (10.0, 10.0, 20.0), 0.95, "b" * 64)
+    decision = agent.step(bad_time, healthy_state(), [], [clock_peer_work_message()], [detection])  # type: ignore[arg-type]
+    assert decision.safety_phase == decision.phase == "emergency"
+    assert decision.intent.velocity_mps == (0.0, 0.0, 0.0)
+    assert decision.intent.target_m is None
+    assert decision.outbound_messages == decision.released_task_ids == ()
+    assert agent.ledger.snapshot() == before
+    assert agent.work_unit_ids == units
+
+    released = agent.step(0.4, healthy_state(), [], [], [detection])
+    assert released.safety_phase == "emergency"
+    assert released.released_task_ids == ("search-0000",)
+    assert agent.work_unit_ids == units
+    assert agent.step(0.5, healthy_state(), [], [], []).outbound_messages == ()
+
+    peer = MissionAgent.for_contract(1, 10, contract())
+    peer.ledger.merge_assignment(agent.ledger.assignment("search-0000"), now=0.4)
+    peer.step(0.4, healthy_state(), [], [], [], preferred_task_ids=("search-0000",))
+    assert peer.ledger.assignment("search-0000").winner_id == 1
+
+
+@pytest.mark.parametrize("bad_time", [
+    None, "0.4", True, float("nan"), float("inf"), -0.1, 10**500, 0.2,
+])
+def test_clock_fault_communication_tail_refuses_merge_and_latches_stop(bad_time: object) -> None:
+    agent = active_agent()
+    before = agent.ledger.snapshot()
+    units = agent.work_unit_ids
+    agent.ingest_messages([clock_peer_work_message()], now=bad_time)  # type: ignore[arg-type]
+    assert agent.ledger.snapshot() == before
+    assert agent.work_unit_ids == units
+    decision = agent.step(0.4, healthy_state(), [], [], [])
+    assert decision.safety_phase == "emergency"
+    assert decision.released_task_ids == ("search-0000",)
+
+
+def test_clock_shared_boundary_includes_communication_tail_and_allows_same_tick() -> None:
+    agent = active_agent()
+    agent.ingest_messages([clock_peer_work_message()], now=0.4)
+    assert "confirm-clock" in agent.work_unit_ids
+    assert agent.step(0.4, healthy_state(), [], [], []).safety_phase == "nominal"
+    assert agent.step(0.35, healthy_state(), [], [], []).safety_phase == "emergency"
+
+
+def test_clock_fault_cannot_delay_depth_hold_into_normal_mission_work() -> None:
+    agent = active_agent()
+    assert agent.step(1.0, healthy_state(depth_age_s=0.6), [], [], []).safety_phase == "degraded"
+    fault = agent.step(0.9, healthy_state(depth_age_s=0.6), [], [], [])
+    assert fault.safety_phase == "emergency"
+    assert agent.step(1.1, healthy_state(), [], [], []).safety_phase == "emergency"
+
+
+def test_clock_fault_deferred_release_respects_remote_reassignment() -> None:
+    agent = active_agent()
+    fault = agent.step(0.2, healthy_state(), [], [], [])
+    assert fault.released_task_ids == ()
+    remote = TaskAssignment("search-0000", "claimed", 3, 9.0, 1, 7.0, None, ())
+    message = TaskMessage("award", contract().mission_id, contract().digest, 3, 2, 4.0,
+                          {"assignment": remote.__dict__})
+    stopped = agent.step(4.0, healthy_state(), [], [message], [])
+    assert stopped.safety_phase == "emergency"
+    assert stopped.released_task_ids == ()
+    assert agent.ledger.assignment("search-0000").winner_id == 3
+
+
+def test_first_clock_fault_has_no_synthetic_timestamp_or_later_motion() -> None:
+    agent = MissionAgent.for_contract(0, 10, contract())
+    stopped = agent.step(-1.0, healthy_state(), [], [], [])
+    assert stopped.safety_phase == "emergency"
+    assert stopped.outbound_messages == ()
+    assert all(item.winner_id is None for item in agent.ledger.snapshot())
+    assert agent.step(0.0, healthy_state(), [], [], []).safety_phase == "emergency"
+
+
+@pytest.mark.parametrize("first,regressed,following", [
+    (2**53 + 1, 2**53, 2**53 + 2),
+    (Fraction(1) + Fraction(1, 2**60), Fraction(1), Fraction(2)),
+])
+def test_clock_regression_cannot_hide_in_float_conversion(first: object, regressed: object, following: object) -> None:
+    agent = MissionAgent.for_contract(0, 10, contract())
+    agent.ingest_messages([], now=first)  # type: ignore[arg-type]
+    original = agent.work_unit_ids
+    agent.ingest_messages([clock_peer_work_message()], now=regressed)  # type: ignore[arg-type]
+    assert agent.work_unit_ids == original
+    assert agent.step(following, healthy_state(), [], [], []).safety_phase == "emergency"  # type: ignore[arg-type]
+
+
+@pytest.mark.parametrize("overrides", [
+    {"depth_age_s": float("nan")}, {"depth_age_s": float("inf")},
+    {"depth_age_s": -0.1}, {"depth_age_s": "0"}, {"depth_age_s": False},
+    {"battery_pct": float("nan")}, {"battery_pct": float("inf")},
+    {"battery_pct": -1}, {"battery_pct": 101}, {"battery_pct": True},
+    {"localization_valid": 1}, {"localization_valid": "true"},
+    {"position_m": None}, {"position_m": (True, 10, 20)},
+    {"position_m": ("10", 10, 20)}, {"position_m": (10, 20)},
+    {"velocity_mps": (0, float("nan"), 0)},
+])
+def test_invalid_local_state_stops_and_releases_once(overrides: dict[str, object]) -> None:
+    agent = active_agent()
+    task_ids = agent.work_unit_ids
+    detection = Detection("person", (10.0, 10.0, 20.0), 0.95, "a" * 64)
+    failed = agent.step(1.0, healthy_state(**overrides), [], [], [detection])
+    recovered = agent.step(1.1, healthy_state(), [], [], [detection])
+    assert failed.safety_phase == recovered.safety_phase == "emergency"
+    assert failed.intent.velocity_mps == recovered.intent.velocity_mps == (0.0, 0.0, 0.0)
+    assert failed.released_task_ids == ("search-0000",)
+    assert recovered.released_task_ids == ()
+    assert agent.work_unit_ids == task_ids
+    assert agent.ledger.assignment("search-0000").status == "open"
+    assert [kind for kind, _ in failed.outbound_messages] == ["award"]
+    assert recovered.outbound_messages == ()
+
+
+def test_invalid_state_release_allows_neighbor_to_take_over() -> None:
+    owner = active_agent()
+    peer = MissionAgent.for_contract(1, 10, contract())
+    peer.ledger.merge_assignment(owner.ledger.assignment("search-0000"), now=0.3)
+    fault = owner.step(1.0, healthy_state(depth_age_s=float("nan")), [], [], [])
+    messages = [TaskMessage(kind, contract().mission_id, contract().digest, 0, i, 1.0, payload)
+                for i, (kind, payload) in enumerate(fault.outbound_messages)]
+    takeover = peer.step(1.1, healthy_state(), [], messages, [], preferred_task_ids=("search-0000",))
+    assert fault.safety_phase == "emergency"
+    assert peer.ledger.assignment("search-0000").winner_id == 1
+    assert takeover.intent.source == "local-task-planner"
+    assert all(kind not in {"bid", "lease", "evidence"} for kind, _ in fault.outbound_messages)
+
+
+@pytest.mark.parametrize("position", [{3.0, 4.0, 5.0}, {3: 1.0, 4: 2.0, 5: 3.0}])
+def test_unordered_position_container_latches_emergency(position: object) -> None:
+    agent = active_agent()
+    decision = agent.step(1, healthy_state(position_m=position), [], [], [])
+    assert decision.safety_phase == "emergency"
+    assert decision.released_task_ids == ("search-0000",)
+    assert decision.intent.velocity_mps == (0, 0, 0)
+
+
+@pytest.mark.parametrize("position", [(1e200, 10, 20), (1.7e308, 1.7e308, 20)])
+def test_large_finite_position_has_bounded_nonzero_return_intent(position: tuple[float, float, float]) -> None:
+    agent = active_agent()
+    decision = agent.step(1, healthy_state(position_m=position), [], [], [])
+    assert decision.safety_phase == "return"
+    assert all(math.isfinite(value) for value in decision.intent.velocity_mps)
+    assert math.hypot(*decision.intent.velocity_mps) == pytest.approx(contract().safety.maximum_speed_mps)
+    assert decision.intent.velocity_mps[0] < 0
+
+
+def test_overflowing_peer_bid_does_not_interrupt_local_safety() -> None:
+    agent = active_agent()
+    message = TaskMessage("bid", contract().mission_id, contract().digest, 1, 0, 1.0, {
+        "task_id": "search-0000", "bidder_id": 1, "utility": 10**500,
+        "allocation_round": 0, "created_at": 1.0,
+    })
+    decision = agent.step(1.0, healthy_state(depth_age_s=float("nan")), [], [message], [])
+    assert decision.safety_phase == "emergency"
+    assert decision.released_task_ids == ("search-0000",)
+    assert decision.intent.velocity_mps == (0, 0, 0)
+
+
+@pytest.mark.parametrize("overrides", [
+    {"localization_valid": False}, {"battery_pct": 29}, {"depth_age_s": 0.51},
+])
+def test_safety_preemption_does_not_create_local_detection_or_relay_tasks(overrides: dict[str, object]) -> None:
+    agent = MissionAgent.for_contract(0, 10, contract())
+    initial = agent.work_unit_ids
+    agent.step(0, healthy_state(**overrides), [], [], [])
+    decision = agent.step(2.1, healthy_state(**overrides), [], [], [
+        Detection("person", (10, 10, 20), 0.9, "b" * 64),
+    ])
+    assert decision.safety_phase != "nominal"
+    assert agent.work_unit_ids == initial
+    assert all(kind not in {"bid", "lease", "evidence"} for kind, _ in decision.outbound_messages)
 
 
 def active_agent() -> MissionAgent:

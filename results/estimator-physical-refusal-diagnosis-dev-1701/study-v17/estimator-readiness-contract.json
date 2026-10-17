@@ -1,0 +1,215 @@
+{
+  "schema": "estimator-aware-readiness-contract-v1",
+  "profile": "ready-shadow-heartbeat-estimator-v1",
+  "source_profile": "ready-shadow-heartbeat-v1",
+  "source_package": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/openvins-lazy-runtime-prepare-dev-1701/study-v1",
+  "source_audit": {
+    "requested": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/openvins-lazy-runtime-prepare-dev-1701/audit-v1.json",
+    "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/openvins-lazy-runtime-prepare-dev-1701/audit-v1.json",
+    "links": [],
+    "identity": {
+      "device": 68,
+      "inode": 11821949023345770,
+      "mode": 33279,
+      "size": 356,
+      "mtime_ns": 1791289780812865800,
+      "ctime_ns": 1791289780812865800
+    },
+    "path_identity": {
+      "device": 68,
+      "inode": 11821949023345770,
+      "mode": 33279,
+      "size": 356,
+      "mtime_ns": 1791289780812865800,
+      "ctime_ns": 1791289780812865800
+    },
+    "bytes": 356,
+    "sha256": "d7f019992d9560c27b0a5d6e6a4ae782c18fbf15a8c27e9cb4390c96d31856bf"
+  },
+  "source_archive": {
+    "requested": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/evidence/openvins-lazy-runtime-prepare-dev-1701.zip",
+    "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/evidence/openvins-lazy-runtime-prepare-dev-1701.zip",
+    "links": [],
+    "identity": {
+      "device": 68,
+      "inode": 24488322975327403,
+      "mode": 33279,
+      "size": 245723,
+      "mtime_ns": 1791292843651201800,
+      "ctime_ns": 1791292843651201800
+    },
+    "path_identity": {
+      "device": 68,
+      "inode": 24488322975327403,
+      "mode": 33279,
+      "size": 245723,
+      "mtime_ns": 1791292843651201800,
+      "ctime_ns": 1791292843651201800
+    },
+    "bytes": 245723,
+    "sha256": "21f8f908549d6dc52c8717e9f6266fd43eca62787a90d2614986f6e5a34392bb"
+  },
+  "source_historical_audit_archived": true,
+  "source_baseline_current": false,
+  "code_records": [
+    {
+      "requested": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/capture_disarmed_sensors.py",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/capture_disarmed_sensors.py",
+      "links": [],
+      "identity": {
+        "device": 68,
+        "inode": 8725724278232735,
+        "mode": 33279,
+        "size": 36873,
+        "mtime_ns": 1791295733332740900,
+        "ctime_ns": 1791295733332740900
+      },
+      "path_identity": {
+        "device": 68,
+        "inode": 8725724278232735,
+        "mode": 33279,
+        "size": 36873,
+        "mtime_ns": 1791295733332740900,
+        "ctime_ns": 1791295733332740900
+      },
+      "bytes": 36873,
+      "sha256": "43d28cd7c44ca236487264f0e3e97f6c919b39463d5334bfa8003f79cbccb87e"
+    },
+    {
+      "requested": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/estimator_aware_readiness.py",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/estimator_aware_readiness.py",
+      "links": [],
+      "identity": {
+        "device": 68,
+        "inode": 844424932484058,
+        "mode": 33279,
+        "size": 12653,
+        "mtime_ns": 1791298379551906800,
+        "ctime_ns": 1791298379551906800
+      },
+      "path_identity": {
+        "device": 68,
+        "inode": 844424932484058,
+        "mode": 33279,
+        "size": 12653,
+        "mtime_ns": 1791298379551906800,
+        "ctime_ns": 1791298379551906800
+      },
+      "bytes": 12653,
+      "sha256": "9c8182c9f8c3126273826886ab30f801176b3c1fa45e082e134fe4aa72d6a578"
+    },
+    {
+      "requested": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/journaled_heartbeat_lane.py",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/journaled_heartbeat_lane.py",
+      "links": [],
+      "identity": {
+        "device": 68,
+        "inode": 18577348464403588,
+        "mode": 33279,
+        "size": 8305,
+        "mtime_ns": 1791244284901819100,
+        "ctime_ns": 1791244284901819100
+      },
+      "path_identity": {
+        "device": 68,
+        "inode": 18577348464403588,
+        "mode": 33279,
+        "size": 8305,
+        "mtime_ns": 1791244284901819100,
+        "ctime_ns": 1791244284901819100
+      },
+      "bytes": 8305,
+      "sha256": "af0cfa376e0093049a2ddbee8b93728d04c3793a4dc7d30091d5fd89fd2a6202"
+    },
+    {
+      "requested": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/openvins_online_shadow.py",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/openvins_online_shadow.py",
+      "links": [],
+      "identity": {
+        "device": 68,
+        "inode": 3940649675434797,
+        "mode": 33279,
+        "size": 16137,
+        "mtime_ns": 1791294684070835300,
+        "ctime_ns": 1791294684070835300
+      },
+      "path_identity": {
+        "device": 68,
+        "inode": 3940649675434797,
+        "mode": 33279,
+        "size": 16137,
+        "mtime_ns": 1791294684070835300,
+        "ctime_ns": 1791294684070835300
+      },
+      "bytes": 16137,
+      "sha256": "cb5587ba1456cc32647b4c019ecd4a895d927b64d12e432a878010c5014fe7ab"
+    },
+    {
+      "requested": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/readiness_anchor.py",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/readiness_anchor.py",
+      "links": [],
+      "identity": {
+        "device": 68,
+        "inode": 11258999069327321,
+        "mode": 33279,
+        "size": 7538,
+        "mtime_ns": 1791232905854089900,
+        "ctime_ns": 1791232905854089900
+      },
+      "path_identity": {
+        "device": 68,
+        "inode": 11258999069327321,
+        "mode": 33279,
+        "size": 7538,
+        "mtime_ns": 1791232905854089900,
+        "ctime_ns": 1791232905854089900
+      },
+      "bytes": 7538,
+      "sha256": "67345da1059a4f41b2c9f27fdb60939b83d8aedd853459a742a41519b3142d85"
+    },
+    {
+      "requested": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/ready_shadow_fanout.py",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/ready_shadow_fanout.py",
+      "links": [],
+      "identity": {
+        "device": 68,
+        "inode": 5910974512419630,
+        "mode": 33279,
+        "size": 11555,
+        "mtime_ns": 1791295157342820800,
+        "ctime_ns": 1791295157342820800
+      },
+      "path_identity": {
+        "device": 68,
+        "inode": 5910974512419630,
+        "mode": 33279,
+        "size": 11555,
+        "mtime_ns": 1791295157342820800,
+        "ctime_ns": 1791295157342820800
+      },
+      "bytes": 11555,
+      "sha256": "5966dfa5bc5d6b1606823c34a04d781e204dd5e25abfa12dcbf14eccaaeac55a"
+    }
+  ],
+  "eligibility": {
+    "source_readiness_required": true,
+    "native_camera_ack_required": true,
+    "internal_initialized_required": true,
+    "ack_freshness_ns": 2000000000,
+    "future_anchor_offset_ns": 200000000,
+    "startup_deadline_ns": 8000000000,
+    "first_evidence_immutable": true,
+    "latest_evidence_refreshable": true
+  },
+  "truth_used": false,
+  "public_initialized_is_accuracy": false,
+  "internal_initialized_is_accuracy": false,
+  "quality_available": false,
+  "reset_counter_available": false,
+  "physical_execution_qualified": false,
+  "runtime_closure_qualified": false,
+  "vio_accuracy_qualified": false,
+  "estimator_health_qualified": false,
+  "fusion_eligible": false,
+  "flight_ready": false
+}

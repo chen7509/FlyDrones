@@ -1,0 +1,6 @@
+{
+  "errors": [
+    "ValueError('missing validated PX4 ULog capture')"
+  ],
+  "runtime_retained": "/home/yuchen7509/fly-ego-benchmark/runtime/fly-disarmed-q9bcxpfa"
+}

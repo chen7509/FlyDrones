@@ -1,0 +1,322 @@
+diff --git a/ov_core/src/track/TrackKLT.cpp b/ov_core/src/track/TrackKLT.cpp
+index d2fe388..e29be4b 100644
+--- a/ov_core/src/track/TrackKLT.cpp
++++ b/ov_core/src/track/TrackKLT.cpp
+@@ -112,6 +112,8 @@ void TrackKLT::feed_monocular(const CameraData &message, size_t msg_id) {
+     std::vector<cv::KeyPoint> good_left;
+     std::vector<size_t> good_ids_left;
+     perform_detection_monocular(imgpyr, mask, good_left, good_ids_left);
++    PRINT_INFO("FD_TRACK t=%.9f cam=%zu initial=1 previous=0 topped=%zu klt_or_ransac=0 out_of_bounds=0 masked=0 accepted=%zu reset=0\n",
++               message.timestamp, cam_id, good_left.size(), good_left.size());
+     // Save the current image and pyramid
+     std::lock_guard<std::mutex> lckv(mtx_last_vars);
+     img_last[cam_id] = img;
+@@ -128,6 +130,7 @@ void TrackKLT::feed_monocular(const CameraData &message, size_t msg_id) {
+   auto pts_left_old = pts_last[cam_id];
+   auto ids_left_old = ids_last[cam_id];
+   perform_detection_monocular(img_pyramid_last[cam_id], img_mask_last[cam_id], pts_left_old, ids_left_old);
++  const size_t pts_after_detect = pts_left_old.size();
+   rT3 = boost::posix_time::microsec_clock::local_time();
+ 
+   // Our return success masks, and predicted new features
+@@ -148,30 +151,45 @@ void TrackKLT::feed_monocular(const CameraData &message, size_t msg_id) {
+     pts_last[cam_id].clear();
+     ids_last[cam_id].clear();
+     PRINT_ERROR(RED "[KLT-EXTRACTOR]: Failed to get enough points to do RANSAC, resetting.....\n" RESET);
++    PRINT_INFO("FD_TRACK t=%.9f cam=%zu initial=0 previous=%d topped=%zu klt_or_ransac=%zu out_of_bounds=0 masked=0 accepted=0 reset=1\n",
++               message.timestamp, cam_id, pts_before_detect, pts_after_detect, pts_after_detect);
+     return;
+   }
+ 
+   // Get our "good tracks"
+   std::vector<cv::KeyPoint> good_left;
+   std::vector<size_t> good_ids_left;
++  size_t rejected_ransac = 0;
++  size_t rejected_bounds = 0;
++  size_t rejected_mask = 0;
+ 
+   // Loop through all left points
+   for (size_t i = 0; i < pts_left_new.size(); i++) {
+     // Ensure we do not have any bad KLT tracks (i.e., points are negative)
+     if (pts_left_new.at(i).pt.x < 0 || pts_left_new.at(i).pt.y < 0 || (int)pts_left_new.at(i).pt.x >= img.cols ||
+-        (int)pts_left_new.at(i).pt.y >= img.rows)
++        (int)pts_left_new.at(i).pt.y >= img.rows) {
++      rejected_bounds++;
+       continue;
++    }
+     // Check if it is in the mask
+     // NOTE: mask has max value of 255 (white) if it should be
+-    if ((int)message.masks.at(msg_id).at<uint8_t>((int)pts_left_new.at(i).pt.y, (int)pts_left_new.at(i).pt.x) > 127)
++    if ((int)message.masks.at(msg_id).at<uint8_t>((int)pts_left_new.at(i).pt.y, (int)pts_left_new.at(i).pt.x) > 127) {
++      rejected_mask++;
+       continue;
++    }
+     // If it is a good track, and also tracked from left to right
+     if (mask_ll[i]) {
+       good_left.push_back(pts_left_new[i]);
+       good_ids_left.push_back(ids_left_old[i]);
++    } else {
++      rejected_ransac++;
+     }
+   }
+ 
++  PRINT_INFO("FD_TRACK t=%.9f cam=%zu initial=0 previous=%d topped=%zu klt_or_ransac=%zu out_of_bounds=%zu masked=%zu accepted=%zu reset=0\n",
++             message.timestamp, cam_id, pts_before_detect, pts_after_detect, rejected_ransac, rejected_bounds, rejected_mask,
++             good_left.size());
++
+   // Update our feature database, with theses new observations
+   for (size_t i = 0; i < good_left.size(); i++) {
+     cv::Point2f npt_l = camera_calib.at(cam_id)->undistort_cv(good_left.at(i).pt);
+diff --git a/ov_init/src/init/InertialInitializer.cpp b/ov_init/src/init/InertialInitializer.cpp
+index 5f9efeb..eb5edc7 100644
+--- a/ov_init/src/init/InertialInitializer.cpp
++++ b/ov_init/src/init/InertialInitializer.cpp
+@@ -90,6 +90,8 @@ bool InertialInitializer::initialize(double &timestamp, Eigen::MatrixXd &covaria
+   }
+   double oldest_time = newest_cam_time - params.init_window_time - 0.10;
+   if (newest_cam_time < 0 || oldest_time < 0) {
++    PRINT_INFO("FD_INIT_DISP newest=%.9f old=0 new=0 stage=%s\n", newest_cam_time,
++               newest_cam_time < 0 ? "no_feature_time" : "insufficient_time");
+     return false;
+   }
+ 
+@@ -116,6 +118,8 @@ bool InertialInitializer::initialize(double &timestamp, Eigen::MatrixXd &covaria
+     double var_disp0, var_disp1;
+     FeatureHelper::compute_disparity(_db, avg_disp0, var_disp0, num_features0, newest_time_allowed);
+     FeatureHelper::compute_disparity(_db, avg_disp1, var_disp1, num_features1, newest_cam_time, newest_time_allowed);
++    PRINT_INFO("FD_INIT_DISP newest=%.9f old=%d new=%d stage=%s\n", newest_cam_time, num_features0,
++               num_features1, num_features0 < 15 || num_features1 < 15 ? "insufficient_features" : "ready");
+ 
+     // Return if we can't compute the disparity
+     int feat_thresh = 15;
+diff --git a/ov_msckf/src/core/VioManager.cpp b/ov_msckf/src/core/VioManager.cpp
+index 6a0d7b9..f5dd317 100644
+--- a/ov_msckf/src/core/VioManager.cpp
++++ b/ov_msckf/src/core/VioManager.cpp
+@@ -522,7 +522,15 @@ void VioManager::do_feature_propagate_update(const ov_core::CameraData &message)
+   // NOTE: this should only really be used if you want to track a lot of features, or have limited computational resources
+   if ((int)featsup_MSCKF.size() > state->_options.max_msckf_in_update)
+     featsup_MSCKF.erase(featsup_MSCKF.begin(), featsup_MSCKF.end() - state->_options.max_msckf_in_update);
++  const size_t trace_db = trackFEATS->get_feature_database()->get_internal_data().size();
++  const size_t trace_lost = feats_lost.size();
++  const size_t trace_marg = feats_marg.size();
++  const size_t trace_maxtracks = feats_maxtracks.size();
++  const size_t trace_msckf_selected = featsup_MSCKF.size();
++  const size_t trace_slam_delayed = feats_slam_DELAYED.size();
++  const size_t trace_slam_update = feats_slam_UPDATE.size();
+   updaterMSCKF->update(state, featsup_MSCKF);
++  const size_t trace_msckf_accepted = featsup_MSCKF.size();
+   propagator->invalidate_cache();
+   rT4 = boost::posix_time::microsec_clock::local_time();
+ 
+@@ -543,10 +551,17 @@ void VioManager::do_feature_propagate_update(const ov_core::CameraData &message)
+     propagator->invalidate_cache();
+   }
+   feats_slam_UPDATE = feats_slam_UPDATE_TEMP;
++  const size_t trace_slam_update_accepted = feats_slam_UPDATE.size();
+   rT5 = boost::posix_time::microsec_clock::local_time();
+   updaterSLAM->delayed_init(state, feats_slam_DELAYED);
++  const size_t trace_slam_delayed_accepted = feats_slam_DELAYED.size();
+   rT6 = boost::posix_time::microsec_clock::local_time();
+ 
++  PRINT_INFO("FD_PIPE t=%.9f db=%zu lost=%zu marg=%zu maxtracks=%zu msckf_selected=%zu msckf_accepted=%zu slam_delayed=%zu slam_delayed_accepted=%zu slam_update=%zu slam_update_accepted=%zu\n",
++             message.timestamp, trace_db, trace_lost, trace_marg, trace_maxtracks, trace_msckf_selected,
++             trace_msckf_accepted, trace_slam_delayed, trace_slam_delayed_accepted, trace_slam_update,
++             trace_slam_update_accepted);
++
+   //===================================================================================
+   // Update our visualization feature set, and clean up the old features
+   //===================================================================================
+diff --git a/ov_msckf/src/core/VioManagerHelper.cpp b/ov_msckf/src/core/VioManagerHelper.cpp
+index 48198bc..2871564 100644
+--- a/ov_msckf/src/core/VioManagerHelper.cpp
++++ b/ov_msckf/src/core/VioManagerHelper.cpp
+@@ -99,6 +99,8 @@ bool VioManager::try_to_initialize(const ov_core::CameraData &message) {
+     Eigen::MatrixXd covariance;
+     std::vector<std::shared_ptr<ov_type::Type>> order;
+     auto init_rT1 = boost::posix_time::microsec_clock::local_time();
++    PRINT_INFO("FD_INIT_FRAME t=%.9f db=%zu\n", message.timestamp,
++               trackFEATS->get_feature_database()->get_internal_data().size());
+ 
+     // Try to initialize the system
+     // We will wait for a jerk if we do not have the zero velocity update enabled
+diff --git a/ov_msckf/src/update/UpdaterMSCKF.cpp b/ov_msckf/src/update/UpdaterMSCKF.cpp
+index 9a00ade..9030156 100644
+--- a/ov_msckf/src/update/UpdaterMSCKF.cpp
++++ b/ov_msckf/src/update/UpdaterMSCKF.cpp
+@@ -57,9 +57,17 @@ UpdaterMSCKF::UpdaterMSCKF(UpdaterOptions &options, ov_core::FeatureInitializerO
+ 
+ void UpdaterMSCKF::update(std::shared_ptr<State> state, std::vector<std::shared_ptr<Feature>> &feature_vec) {
+ 
++  const size_t trace_input = feature_vec.size();
++  size_t trace_insufficient = 0;
++  size_t trace_triangulation = 0;
++  size_t trace_refinement = 0;
++  size_t trace_chi2 = 0;
++
+   // Return if no features
+-  if (feature_vec.empty())
++  if (feature_vec.empty()) {
++    PRINT_INFO("FD_MSCKF t=%.9f input=0 insufficient=0 triangulation=0 refinement=0 chi2=0 accepted=0\n", state->_timestamp);
+     return;
++  }
+ 
+   // Start timing
+   boost::posix_time::ptime rT0, rT1, rT2, rT3, rT4, rT5;
+@@ -86,6 +94,7 @@ void UpdaterMSCKF::update(std::shared_ptr<State> state, std::vector<std::shared_
+ 
+     // Remove if we don't have enough
+     if (ct_meas < 2) {
++      trace_insufficient++;
+       (*it0)->to_delete = true;
+       it0 = feature_vec.erase(it0);
+     } else {
+@@ -134,6 +143,10 @@ void UpdaterMSCKF::update(std::shared_ptr<State> state, std::vector<std::shared_
+ 
+     // Remove the feature if not a success
+     if (!success_tri || !success_refine) {
++      if (!success_tri)
++        trace_triangulation++;
++      else
++        trace_refinement++;
+       (*it1)->to_delete = true;
+       it1 = feature_vec.erase(it1);
+       continue;
+@@ -223,6 +236,7 @@ void UpdaterMSCKF::update(std::shared_ptr<State> state, std::vector<std::shared_
+ 
+     // Check if we should delete or not
+     if (chi2 > _options.chi2_multipler * chi2_check) {
++      trace_chi2++;
+       (*it2)->to_delete = true;
+       it2 = feature_vec.erase(it2);
+       // PRINT_DEBUG("featid = %d\n", feat.featid);
+@@ -256,6 +270,10 @@ void UpdaterMSCKF::update(std::shared_ptr<State> state, std::vector<std::shared_
+   }
+   rT3 = boost::posix_time::microsec_clock::local_time();
+ 
++  PRINT_INFO("FD_MSCKF t=%.9f input=%zu insufficient=%zu triangulation=%zu refinement=%zu chi2=%zu accepted=%zu\n",
++             state->_timestamp, trace_input, trace_insufficient, trace_triangulation, trace_refinement, trace_chi2,
++             feature_vec.size());
++
+   // We have appended all features to our Hx_big, res_big
+   // Delete it so we do not reuse information
+   for (size_t f = 0; f < feature_vec.size(); f++) {
+diff --git a/ov_msckf/src/update/UpdaterSLAM.cpp b/ov_msckf/src/update/UpdaterSLAM.cpp
+index a769d01..6268c7b 100644
+--- a/ov_msckf/src/update/UpdaterSLAM.cpp
++++ b/ov_msckf/src/update/UpdaterSLAM.cpp
+@@ -64,6 +64,13 @@ void UpdaterSLAM::delayed_init(std::shared_ptr<State> state, std::vector<std::sh
+   if (feature_vec.empty())
+     return;
+ 
++  const size_t fd_input = feature_vec.size();
++  size_t fd_insufficient = 0;
++  size_t fd_triangulation = 0;
++  size_t fd_refinement = 0;
++  size_t fd_initialization = 0;
++  size_t fd_accepted = 0;
++
+   // Start timing
+   boost::posix_time::ptime rT0, rT1, rT2, rT3;
+   rT0 = boost::posix_time::microsec_clock::local_time();
+@@ -89,6 +96,7 @@ void UpdaterSLAM::delayed_init(std::shared_ptr<State> state, std::vector<std::sh
+ 
+     // Remove if we don't have enough
+     if (ct_meas < 2) {
++      fd_insufficient++;
+       (*it0)->to_delete = true;
+       it0 = feature_vec.erase(it0);
+     } else {
+@@ -137,6 +145,11 @@ void UpdaterSLAM::delayed_init(std::shared_ptr<State> state, std::vector<std::sh
+ 
+     // Remove the feature if not a success
+     if (!success_tri || !success_refine) {
++      if (!success_tri) {
++        fd_triangulation++;
++      } else {
++        fd_refinement++;
++      }
+       (*it1)->to_delete = true;
+       it1 = feature_vec.erase(it1);
+       continue;
+@@ -231,15 +244,19 @@ void UpdaterSLAM::delayed_init(std::shared_ptr<State> state, std::vector<std::sh
+     double chi2_multipler =
+         ((int)feat.featid < state->_options.max_aruco_features) ? _options_aruco.chi2_multipler : _options_slam.chi2_multipler;
+     if (StateHelper::initialize(state, landmark, Hx_order, H_x, H_f, R, res, chi2_multipler)) {
++      fd_accepted++;
+       state->_features_SLAM.insert({(*it2)->featid, landmark});
+       (*it2)->to_delete = true;
+       it2++;
+     } else {
++      fd_initialization++;
+       (*it2)->to_delete = true;
+       it2 = feature_vec.erase(it2);
+     }
+   }
+   rT3 = boost::posix_time::microsec_clock::local_time();
++  PRINT_INFO("FD_SLAM_DELAY t=%.9f input=%zu insufficient=%zu triangulation=%zu refinement=%zu initialization=%zu accepted=%zu\n",
++            state->_timestamp, fd_input, fd_insufficient, fd_triangulation, fd_refinement, fd_initialization, fd_accepted);
+ 
+   // Debug print timing information
+   if (!feature_vec.empty()) {
+@@ -256,6 +273,16 @@ void UpdaterSLAM::update(std::shared_ptr<State> state, std::vector<std::shared_p
+   if (feature_vec.empty())
+     return;
+ 
++  const size_t fd_input = feature_vec.size();
++  size_t fd_no_measurements = 0;
++  size_t fd_representation_insufficient = 0;
++  size_t fd_chi2 = 0;
++  size_t fd_accepted = 0;
++  auto fd_print = [&]() {
++    PRINT_INFO("FD_SLAM_UPDATE t=%.9f input=%zu no_measurements=%zu representation_insufficient=%zu chi2=%zu accepted=%zu\n",
++              state->_timestamp, fd_input, fd_no_measurements, fd_representation_insufficient, fd_chi2, fd_accepted);
++  };
++
+   // Start timing
+   boost::posix_time::ptime rT0, rT1, rT2, rT3;
+   rT0 = boost::posix_time::microsec_clock::local_time();
+@@ -287,9 +314,11 @@ void UpdaterSLAM::update(std::shared_ptr<State> state, std::vector<std::shared_p
+ 
+     // Remove if we don't have enough
+     if (ct_meas < 1) {
++      fd_no_measurements++;
+       (*it0)->to_delete = true;
+       it0 = feature_vec.erase(it0);
+     } else if (ct_meas < required_meas) {
++      fd_representation_insufficient++;
+       it0 = feature_vec.erase(it0);
+     } else {
+       it0++;
+@@ -408,6 +437,7 @@ void UpdaterSLAM::update(std::shared_ptr<State> state, std::vector<std::shared_p
+     double chi2_multipler =
+         ((int)feat.featid < state->_options.max_aruco_features) ? _options_aruco.chi2_multipler : _options_slam.chi2_multipler;
+     if (chi2 > chi2_multipler * chi2_check) {
++      fd_chi2++;
+       if ((int)feat.featid < state->_options.max_aruco_features) {
+         PRINT_WARNING(YELLOW "[SLAM-UP]: rejecting aruco tag %d for chi2 thresh (%.3f > %.3f)\n" RESET, (int)feat.featid, chi2,
+                       chi2_multipler * chi2_check);
+@@ -446,6 +476,7 @@ void UpdaterSLAM::update(std::shared_ptr<State> state, std::vector<std::shared_p
+     // Append our residual and move forward
+     res_big.block(ct_meas, 0, res.rows(), 1) = res;
+     ct_meas += res.rows();
++    fd_accepted++;
+     it2++;
+   }
+   rT2 = boost::posix_time::microsec_clock::local_time();
+@@ -458,6 +489,7 @@ void UpdaterSLAM::update(std::shared_ptr<State> state, std::vector<std::shared_p
+ 
+   // Return if we don't have anything and resize our matrices
+   if (ct_meas < 1) {
++    fd_print();
+     return;
+   }
+   assert(ct_meas <= max_meas_size);
+@@ -469,6 +501,7 @@ void UpdaterSLAM::update(std::shared_ptr<State> state, std::vector<std::shared_p
+   // 5. With all good SLAM features update the state
+   StateHelper::EKFUpdate(state, Hx_order_big, Hx_big, res_big, R_big);
+   rT3 = boost::posix_time::microsec_clock::local_time();
++  fd_print();
+ 
+   // Debug print timing information
+   PRINT_ALL("[SLAM-UP]: %.4f seconds to clean\n", (rT1 - rT0).total_microseconds() * 1e-6);

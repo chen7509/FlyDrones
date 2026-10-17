@@ -1,0 +1,173 @@
+{
+  "schema": "estimator-heartbeat-routing-authorization-v1",
+  "source_manifest": {
+    "requested": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/estimator-physical-refusal-diagnosis-dev-1701/study-v11/study-manifest.json",
+    "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/estimator-physical-refusal-diagnosis-dev-1701/study-v11/study-manifest.json",
+    "links": [],
+    "identity": {
+      "device": 68,
+      "inode": 7036874419054202,
+      "mode": 33279,
+      "size": 8937,
+      "mtime_ns": 1791315206373476800,
+      "ctime_ns": 1791315206373476800
+    },
+    "path_identity": {
+      "device": 68,
+      "inode": 7036874419054202,
+      "mode": 33279,
+      "size": 8937,
+      "mtime_ns": 1791315206373476800,
+      "ctime_ns": 1791315206373476800
+    },
+    "bytes": 8937,
+    "sha256": "9f4318050d91159ca352938769a5b9ef3e1d50abccc440b96f743f04c7fbd4d3"
+  },
+  "source_audit": {
+    "requested": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/estimator-physical-refusal-diagnosis-dev-1701/study-v11-audit-v2.json",
+    "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/estimator-physical-refusal-diagnosis-dev-1701/study-v11-audit-v2.json",
+    "links": [],
+    "identity": {
+      "device": 68,
+      "inode": 9851624186243779,
+      "mode": 33279,
+      "size": 353,
+      "mtime_ns": 1791315325262047200,
+      "ctime_ns": 1791315325262047200
+    },
+    "path_identity": {
+      "device": 68,
+      "inode": 9851624186243779,
+      "mode": 33279,
+      "size": 353,
+      "mtime_ns": 1791315325262047200,
+      "ctime_ns": 1791315325262047200
+    },
+    "bytes": 353,
+    "sha256": "28ff57c9b07a8f1f7dd234b7173da144c3445a652b8383294f4b97450bbdb3c9"
+  },
+  "failed_result": {
+    "requested": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/estimator-physical-refusal-diagnosis-dev-1701/study-v11/capture-v1/result.json",
+    "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/estimator-physical-refusal-diagnosis-dev-1701/study-v11/capture-v1/result.json",
+    "links": [],
+    "identity": {
+      "device": 68,
+      "inode": 16044073674071261,
+      "mode": 33279,
+      "size": 16244,
+      "mtime_ns": 1791315424979191300,
+      "ctime_ns": 1791315424979191300
+    },
+    "path_identity": {
+      "device": 68,
+      "inode": 16044073674071261,
+      "mode": 33279,
+      "size": 16244,
+      "mtime_ns": 1791315424979191300,
+      "ctime_ns": 1791315424979191300
+    },
+    "bytes": 16244,
+    "sha256": "e7870cf9ee52905598e11af579102bb578b3dea1e8228cfd2135bb870d8b8bd3"
+  },
+  "attempt_audit": {
+    "requested": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/estimator-heartbeat-routing-dev-1701/study-v11-audit.json",
+    "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/estimator-heartbeat-routing-dev-1701/study-v11-audit.json",
+    "links": [],
+    "identity": {
+      "device": 68,
+      "inode": 18295873487708512,
+      "mode": 33279,
+      "size": 1116,
+      "mtime_ns": 1791315846571235400,
+      "ctime_ns": 1791315846571235400
+    },
+    "path_identity": {
+      "device": 68,
+      "inode": 18295873487708512,
+      "mode": 33279,
+      "size": 1116,
+      "mtime_ns": 1791315846571235400,
+      "ctime_ns": 1791315846571235400
+    },
+    "bytes": 1116,
+    "sha256": "d1f4de1348d532c6dbb0ffa8ca1220aabffedcd6943fdd0bedc3a16f31db7821"
+  },
+  "completion": {
+    "requested": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/estimator-physical-refusal-diagnosis-dev-1701/physical-run-v5-completion.json",
+    "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/estimator-physical-refusal-diagnosis-dev-1701/physical-run-v5-completion.json",
+    "links": [],
+    "identity": {
+      "device": 68,
+      "inode": 13510798883675392,
+      "mode": 33279,
+      "size": 352,
+      "mtime_ns": 1791315425407328000,
+      "ctime_ns": 1791315425407328000
+    },
+    "path_identity": {
+      "device": 68,
+      "inode": 13510798883675392,
+      "mode": 33279,
+      "size": 352,
+      "mtime_ns": 1791315425407328000,
+      "ctime_ns": 1791315425407328000
+    },
+    "bytes": 352,
+    "sha256": "293072d9ba2dd04a780c6081d25df9dc405020aacdadb706d9da494cc6b630ed"
+  },
+  "correction_audit": {
+    "requested": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/estimator-heartbeat-routing-dev-1701/study-v11-audit.json",
+    "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/estimator-heartbeat-routing-dev-1701/study-v11-audit.json",
+    "links": [],
+    "identity": {
+      "device": 68,
+      "inode": 18295873487708512,
+      "mode": 33279,
+      "size": 1116,
+      "mtime_ns": 1791315846571235400,
+      "ctime_ns": 1791315846571235400
+    },
+    "path_identity": {
+      "device": 68,
+      "inode": 18295873487708512,
+      "mode": 33279,
+      "size": 1116,
+      "mtime_ns": 1791315846571235400,
+      "ctime_ns": 1791315846571235400
+    },
+    "bytes": 1116,
+    "sha256": "d1f4de1348d532c6dbb0ffa8ca1220aabffedcd6943fdd0bedc3a16f31db7821"
+  },
+  "correction_archive": {
+    "requested": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/evidence/estimator-heartbeat-routing-dev-1701.zip",
+    "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/evidence/estimator-heartbeat-routing-dev-1701.zip",
+    "links": [],
+    "identity": {
+      "device": 68,
+      "inode": 22799473115096270,
+      "mode": 33279,
+      "size": 5576226,
+      "mtime_ns": 1791316251209559400,
+      "ctime_ns": 1791316251209559400
+    },
+    "path_identity": {
+      "device": 68,
+      "inode": 22799473115096270,
+      "mode": 33279,
+      "size": 5576226,
+      "mtime_ns": 1791316251209559400,
+      "ctime_ns": 1791316251209559400
+    },
+    "bytes": 5576226,
+    "sha256": "e3a339d93bf7864919bd2733a890669ff85288d05941e6eb56ea2b3b50320017"
+  },
+  "failure_classification_qualified": true,
+  "physical_run": false,
+  "physical_execution_qualified": false,
+  "runtime_mapping_coverage_verified": false,
+  "runtime_closure_qualified": false,
+  "vio_accuracy_qualified": false,
+  "estimator_health_qualified": false,
+  "fusion_eligible": false,
+  "flight_ready": false
+}

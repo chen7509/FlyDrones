@@ -1,0 +1,13 @@
+{
+  "pid": 457,
+  "command": [
+    "results/openvins-feature-rejection-trace-dev-1701/online_probe_trace",
+    "results/openvins-online-shadow-dev-1701/raw-model-zero-bias-diffusion-v1/estimator_config.yaml",
+    "results/openvins-feature-rejection-trace-dev-1701/duplicate-refusal-v3/states.jsonl",
+    "results/openvins-feature-rejection-trace-dev-1701/duplicate-refusal-v3/fast.jsonl"
+  ],
+  "started_monotonic_ns": 115383298554,
+  "reset_counter": null,
+  "quality": null,
+  "fusion_eligible": false
+}

@@ -80,6 +80,105 @@ class DeterministicSession:
         ]
 
 
+class AlteredMetricsSession(DeterministicSession):
+    def __init__(self, *, override=None, counter_override=None, regression_fault=False):
+        super().__init__({(1, "stability"): 0.1, (2, "looming"): 0.05, (2, "stability"): 0.1})
+        self.override = override or {}
+        self.counter_override = counter_override or {}
+        self.regression_fault = regression_fault
+
+    def train_batch(self, stage, seed):
+        return {**super().train_batch(stage, seed), **self.counter_override}
+
+    def evaluate(self, stage):
+        result = {**super().evaluate(stage), **self.override}
+        if self.regression_fault and self.step == 2 and stage.id == "stability":
+            result["parameters_finite"] = False
+        return result
+
+
+@pytest.mark.parametrize("override", [
+    {"parameters_finite": "false"}, {"parameters_finite": 1}, {"parameters_finite": None},
+    {"validation_loss": False}, {"validation_loss": "0.1"}, {"initial_validation_loss": True},
+])
+def test_malformed_evaluation_cannot_publish_candidate_or_promote(tmp_path, override):
+    with pytest.raises(ValueError):
+        run_curriculum(config(stage("stability", 0)), tmp_path, AlteredMetricsSession(override=override))
+    assert StateStore(tmp_path, "a" * 64).load() is None
+    assert not (tmp_path / "checkpoints").exists()
+
+
+@pytest.mark.parametrize("counter_override", [
+    {"updates": 1.5}, {"updates": True}, {"updates": "1"}, {"environment_steps": 8.5},
+])
+def test_coercive_counters_cannot_be_committed(tmp_path, counter_override):
+    with pytest.raises(ValueError):
+        run_curriculum(config(stage("stability", 0)), tmp_path,
+                       AlteredMetricsSession(counter_override=counter_override))
+    assert StateStore(tmp_path, "a" * 64).load() is None
+
+
+def test_regression_nonfinite_parameters_roll_back_and_retain_failed_candidate(tmp_path):
+    session = AlteredMetricsSession(regression_fault=True)
+    state = run_curriculum(config(stage("stability", 0), stage("looming", 1, max_batches=1)), tmp_path, session)
+    assert state.status == "FAILED"
+    assert state.completed_stages == ("stability",)
+    assert state.latest_checkpoint == state.best_checkpoint
+    assert state.failed_attempts == 1
+    assert session.step == 1
+    reports = sorted((tmp_path / "reports").glob("*.json"))
+    failed = json.loads(reports[-1].read_text())
+    assert failed["promoted"] is False
+    assert failed["regression_failures"] == ["stability"]
+    assert failed["regression_metrics"]["stability"]["parameters_finite"] is False
+    assert (tmp_path / failed["candidate_checkpoint"]).is_dir()
+
+
+def test_valid_false_current_parameters_retains_failed_report(tmp_path):
+    state = run_curriculum(config(stage("stability", 0, max_batches=1)), tmp_path,
+                           AlteredMetricsSession(override={"parameters_finite": False}))
+    assert state.status == "FAILED"
+    report = json.loads(next((tmp_path / "reports").glob("*.json")).read_text())
+    assert report["gate_failures"] == ["parameters_finite"]
+    assert report["promoted"] is False
+    assert (tmp_path / report["candidate_checkpoint"]).is_dir()
+
+
+def test_nonfinite_initial_model_cannot_become_a_resume_checkpoint(tmp_path):
+    session = AlteredMetricsSession(override={"parameters_finite": False})
+    state = run_curriculum(config(stage("stability", 0, max_batches=2)), tmp_path, session)
+    assert state.status == "FAILED"
+    assert state.latest_checkpoint is None
+    assert len(session.train_calls) == 1
+    assert len(list((tmp_path / "reports").glob("*.json"))) == 1
+
+
+def test_nonfinite_current_stage_resumes_only_from_previous_valid_checkpoint(tmp_path):
+    class CurrentFaultSession(AlteredMetricsSession):
+        def evaluate(self, stage):
+            result = super().evaluate(stage)
+            if stage.id == "looming":
+                result["parameters_finite"] = False
+            return result
+
+    settings = config(stage("stability", 0), stage("looming", 1, max_batches=2))
+    session = CurrentFaultSession()
+    partial = run_curriculum(settings, tmp_path, session, max_batches=2)
+    assert partial.status == "COMMITTED"
+    assert partial.latest_checkpoint == partial.best_checkpoint
+    assert session.step == 1
+    resumed = CurrentFaultSession()
+    final = run_curriculum(settings, tmp_path, resumed)
+    assert final.status == "FAILED"
+    assert final.latest_checkpoint == partial.best_checkpoint
+    assert resumed.step == 1
+    assert resumed.train_calls == [("looming", 11)]
+    failed = [json.loads(path.read_text()) for path in (tmp_path / "reports").glob("*.json")]
+    failed = [report for report in failed if report["promoted"] is False]
+    assert len(failed) == 2
+    assert all((tmp_path / report["candidate_checkpoint"]).is_dir() for report in failed)
+
+
 def test_two_stage_curriculum_promotes_and_completes(tmp_path):
     stages = (stage("stability", 0), stage("looming", 1))
     session = DeterministicSession(

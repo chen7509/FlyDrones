@@ -1,0 +1,9 @@
+{
+  "original_archive": "evidence/mission-clock-refusal-dev-1701.zip",
+  "original_archive_sha256": "16edeb07b102fd8dbb8b7a57c6482e27707f5e55634cef6e77da2a9cfcb35def",
+  "reason": "Original v1 float-conversion regression bypass and no-Important claim superseded; original archive unchanged. Exact observed Real compared/stored before conversion; two RED then109GREEN; declaration Minor closed.",
+  "canonical_report": "docs/MISSION_CLOCK_REFUSAL_REPORT.md",
+  "canonical_report_sha256": "10b0be35a5ced6c3af70e27329d56e0f84624f899c7ddc84236577e578d5555e",
+  "corrected_source_sha256": "45da7e7857afe1524a882dccfe754d4b9bd3a2d23292c53426ef91768ba9b5aa",
+  "final_archive": "evidence/mission-clock-refusal-dev-1701-v2.zip"
+}

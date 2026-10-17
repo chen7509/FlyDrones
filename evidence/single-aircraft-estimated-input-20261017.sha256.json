@@ -1,0 +1,3342 @@
+{
+  "archive": "evidence/single-aircraft-estimated-input-20261017.zip",
+  "bytes": 2142274,
+  "sha256": "3f12c9f2c5338ea2f209108cadeb0785b867ebf10bc0ac07346859d004f15ccb",
+  "mapped_members": 665,
+  "whole_members": 666,
+  "mapped_uncompressed_bytes": 7044348,
+  "manifest_bytes": 156574,
+  "whole_expanded_bytes": 7200922,
+  "manifest_sha256": "41b3aa7fe8a63148bb8be5a0ea887dc2e89ce53a8dbc8a03f70a92ad364e1374",
+  "members": [
+    {
+      "path": "docs/SINGLE_AIRCRAFT_CLOSED_LOOP_PROGRESS.md",
+      "bytes": 10210,
+      "sha256": "810625ccc54c316cb891ee9227366b1382309dbbfb0bf1bdd11255afab190ea4"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-10-17-single-aircraft-estimated-input.md",
+      "bytes": 3804,
+      "sha256": "02955a1f94d1088acecb9670783ff5be1b1808981269c81ac0f64c8160703291"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-10-17-single-aircraft-estimated-input-design.md",
+      "bytes": 6199,
+      "sha256": "17fd1aab32d68fda5d282cdef8b44f6a535ed518c54c02c8960f43a258d3e18a"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/active-send-behavior-red/after/results/single-aircraft-closed-loop-20261017/record.py",
+      "bytes": 3647,
+      "sha256": "5f243c3669d03fbb9fb9c985f37dc33541e847cd3eb29e779508fc07a5dde509"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/active-send-behavior-red/after/src/flydrones/benchmark/contract.py",
+      "bytes": 1597,
+      "sha256": "44145adb507d671a66191aadc654461a75ba6424ad65f7c6cbd75abcde4d258f"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/active-send-behavior-red/after/src/flydrones/benchmark/gateway.py",
+      "bytes": 52658,
+      "sha256": "cc129a2fc0e7bac82b7b162bd22c9679e880a02c00b8312eb668cf47376a5234"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/active-send-behavior-red/after/src/flydrones/drones/mavlink.py",
+      "bytes": 13515,
+      "sha256": "06300d0259e966a8a360409e5a8e156f94ebf76dabaa6b3ab3022e68527fe0cb"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/active-send-behavior-red/after/tests/benchmark/test_camera_info_capture.py",
+      "bytes": 3427,
+      "sha256": "dcbbb0d40f2e0dad892c7943521a2a892a19b517bb47e3acb41de71b9c72c877"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/active-send-behavior-red/after/tests/benchmark/test_estimated_controller_input.py",
+      "bytes": 10788,
+      "sha256": "0b6e6a6942d7d3781a3654216d109f138e65f59afc25fec5bff8d46a0245dca4"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/active-send-behavior-red/after/tests/benchmark/test_publication_safety.py",
+      "bytes": 15862,
+      "sha256": "866eb988342e442027e06070146460e01e1054d89f27aaf8cc75908b62ff5e14"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/active-send-behavior-red/after/tests/benchmark/test_rgb_capture.py",
+      "bytes": 3233,
+      "sha256": "28450c33629a6169e75c9acda625e24a15a38736c5e8a99f0ab1d5bf4d90d32b"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/active-send-behavior-red/after/tests/benchmark/test_stationary_prelude.py",
+      "bytes": 9067,
+      "sha256": "c27ec3fb7988a7499c0f6e37c9ba9a7fb328d3ba6a18fdf0a6af2aec58dddd27"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/active-send-behavior-red/after/tools/benchmark/run_episode.py",
+      "bytes": 15232,
+      "sha256": "86730dafc09a110b9a7c3d70b3c1e97ef57c33a82e6af1215a8bab0d0f615ccc"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/active-send-behavior-red/before/results/single-aircraft-closed-loop-20261017/record.py",
+      "bytes": 3647,
+      "sha256": "5f243c3669d03fbb9fb9c985f37dc33541e847cd3eb29e779508fc07a5dde509"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/active-send-behavior-red/before/src/flydrones/benchmark/contract.py",
+      "bytes": 1597,
+      "sha256": "44145adb507d671a66191aadc654461a75ba6424ad65f7c6cbd75abcde4d258f"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/active-send-behavior-red/before/src/flydrones/benchmark/gateway.py",
+      "bytes": 52658,
+      "sha256": "cc129a2fc0e7bac82b7b162bd22c9679e880a02c00b8312eb668cf47376a5234"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/active-send-behavior-red/before/src/flydrones/drones/mavlink.py",
+      "bytes": 13515,
+      "sha256": "06300d0259e966a8a360409e5a8e156f94ebf76dabaa6b3ab3022e68527fe0cb"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/active-send-behavior-red/before/tests/benchmark/test_camera_info_capture.py",
+      "bytes": 3427,
+      "sha256": "dcbbb0d40f2e0dad892c7943521a2a892a19b517bb47e3acb41de71b9c72c877"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/active-send-behavior-red/before/tests/benchmark/test_estimated_controller_input.py",
+      "bytes": 10788,
+      "sha256": "0b6e6a6942d7d3781a3654216d109f138e65f59afc25fec5bff8d46a0245dca4"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/active-send-behavior-red/before/tests/benchmark/test_publication_safety.py",
+      "bytes": 15862,
+      "sha256": "866eb988342e442027e06070146460e01e1054d89f27aaf8cc75908b62ff5e14"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/active-send-behavior-red/before/tests/benchmark/test_rgb_capture.py",
+      "bytes": 3233,
+      "sha256": "28450c33629a6169e75c9acda625e24a15a38736c5e8a99f0ab1d5bf4d90d32b"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/active-send-behavior-red/before/tests/benchmark/test_stationary_prelude.py",
+      "bytes": 9067,
+      "sha256": "c27ec3fb7988a7499c0f6e37c9ba9a7fb328d3ba6a18fdf0a6af2aec58dddd27"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/active-send-behavior-red/before/tools/benchmark/run_episode.py",
+      "bytes": 15232,
+      "sha256": "86730dafc09a110b9a7c3d70b3c1e97ef57c33a82e6af1215a8bab0d0f615ccc"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/active-send-behavior-red/completion.json",
+      "bytes": 4456,
+      "sha256": "fda22aeb2693af3799416adfc8f96d040aa3bdbaed773228d7ad82e9e7438305"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/active-send-behavior-red/start.json",
+      "bytes": 2640,
+      "sha256": "5c758393cb931582b61bb610ea7516117bde6f33f81192791c0aa06fb9682832"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/active-send-behavior-red/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/active-send-behavior-red/stdout",
+      "bytes": 1755,
+      "sha256": "316f3143800d441b098cd917bcd1875a9dea85383430d3a65630ab49bfcfc753"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/active-send-green/after/results/single-aircraft-closed-loop-20261017/record.py",
+      "bytes": 3647,
+      "sha256": "5f243c3669d03fbb9fb9c985f37dc33541e847cd3eb29e779508fc07a5dde509"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/active-send-green/after/src/flydrones/benchmark/contract.py",
+      "bytes": 1597,
+      "sha256": "44145adb507d671a66191aadc654461a75ba6424ad65f7c6cbd75abcde4d258f"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/active-send-green/after/src/flydrones/benchmark/gateway.py",
+      "bytes": 52658,
+      "sha256": "cc129a2fc0e7bac82b7b162bd22c9679e880a02c00b8312eb668cf47376a5234"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/active-send-green/after/src/flydrones/drones/mavlink.py",
+      "bytes": 13662,
+      "sha256": "d1593c42d477ef3b4481c486202201bdc2318e893b672f3631cb8b6ad6277f31"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/active-send-green/after/tests/benchmark/test_camera_info_capture.py",
+      "bytes": 3427,
+      "sha256": "dcbbb0d40f2e0dad892c7943521a2a892a19b517bb47e3acb41de71b9c72c877"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/active-send-green/after/tests/benchmark/test_estimated_controller_input.py",
+      "bytes": 10788,
+      "sha256": "0b6e6a6942d7d3781a3654216d109f138e65f59afc25fec5bff8d46a0245dca4"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/active-send-green/after/tests/benchmark/test_publication_safety.py",
+      "bytes": 15862,
+      "sha256": "866eb988342e442027e06070146460e01e1054d89f27aaf8cc75908b62ff5e14"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/active-send-green/after/tests/benchmark/test_rgb_capture.py",
+      "bytes": 3233,
+      "sha256": "28450c33629a6169e75c9acda625e24a15a38736c5e8a99f0ab1d5bf4d90d32b"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/active-send-green/after/tests/benchmark/test_stationary_prelude.py",
+      "bytes": 9067,
+      "sha256": "c27ec3fb7988a7499c0f6e37c9ba9a7fb328d3ba6a18fdf0a6af2aec58dddd27"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/active-send-green/after/tools/benchmark/run_episode.py",
+      "bytes": 15232,
+      "sha256": "86730dafc09a110b9a7c3d70b3c1e97ef57c33a82e6af1215a8bab0d0f615ccc"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/active-send-green/before/results/single-aircraft-closed-loop-20261017/record.py",
+      "bytes": 3647,
+      "sha256": "5f243c3669d03fbb9fb9c985f37dc33541e847cd3eb29e779508fc07a5dde509"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/active-send-green/before/src/flydrones/benchmark/contract.py",
+      "bytes": 1597,
+      "sha256": "44145adb507d671a66191aadc654461a75ba6424ad65f7c6cbd75abcde4d258f"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/active-send-green/before/src/flydrones/benchmark/gateway.py",
+      "bytes": 52658,
+      "sha256": "cc129a2fc0e7bac82b7b162bd22c9679e880a02c00b8312eb668cf47376a5234"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/active-send-green/before/src/flydrones/drones/mavlink.py",
+      "bytes": 13662,
+      "sha256": "d1593c42d477ef3b4481c486202201bdc2318e893b672f3631cb8b6ad6277f31"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/active-send-green/before/tests/benchmark/test_camera_info_capture.py",
+      "bytes": 3427,
+      "sha256": "dcbbb0d40f2e0dad892c7943521a2a892a19b517bb47e3acb41de71b9c72c877"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/active-send-green/before/tests/benchmark/test_estimated_controller_input.py",
+      "bytes": 10788,
+      "sha256": "0b6e6a6942d7d3781a3654216d109f138e65f59afc25fec5bff8d46a0245dca4"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/active-send-green/before/tests/benchmark/test_publication_safety.py",
+      "bytes": 15862,
+      "sha256": "866eb988342e442027e06070146460e01e1054d89f27aaf8cc75908b62ff5e14"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/active-send-green/before/tests/benchmark/test_rgb_capture.py",
+      "bytes": 3233,
+      "sha256": "28450c33629a6169e75c9acda625e24a15a38736c5e8a99f0ab1d5bf4d90d32b"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/active-send-green/before/tests/benchmark/test_stationary_prelude.py",
+      "bytes": 9067,
+      "sha256": "c27ec3fb7988a7499c0f6e37c9ba9a7fb328d3ba6a18fdf0a6af2aec58dddd27"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/active-send-green/before/tools/benchmark/run_episode.py",
+      "bytes": 15232,
+      "sha256": "86730dafc09a110b9a7c3d70b3c1e97ef57c33a82e6af1215a8bab0d0f615ccc"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/active-send-green/completion.json",
+      "bytes": 4395,
+      "sha256": "88766472af792a47cd00ee42dea01ebdc465267a58176b0b3ede4374e12ea063"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/active-send-green/start.json",
+      "bytes": 2592,
+      "sha256": "b81c0b25b49571d25861d375af0e1e27e2d302fba336fd66fbddb60139e0a82e"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/active-send-green/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/active-send-green/stdout",
+      "bytes": 101,
+      "sha256": "04b26c7f356e6c9c1b393be0934054df17fca767c99b2b6669d9347fd377d257"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/active-send-red/after/results/single-aircraft-closed-loop-20261017/record.py",
+      "bytes": 3647,
+      "sha256": "5f243c3669d03fbb9fb9c985f37dc33541e847cd3eb29e779508fc07a5dde509"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/active-send-red/after/src/flydrones/benchmark/contract.py",
+      "bytes": 1597,
+      "sha256": "44145adb507d671a66191aadc654461a75ba6424ad65f7c6cbd75abcde4d258f"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/active-send-red/after/src/flydrones/benchmark/gateway.py",
+      "bytes": 52646,
+      "sha256": "320a8524374d95cdb21ce9c307b0ccd6413e6aaffb828a34ab68f9c52662872d"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/active-send-red/after/src/flydrones/drones/mavlink.py",
+      "bytes": 13419,
+      "sha256": "522791106efaa9fd9fc349c4abc114b77f57b3510322ea8add6d701194f061ac"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/active-send-red/after/tests/benchmark/test_camera_info_capture.py",
+      "bytes": 3427,
+      "sha256": "dcbbb0d40f2e0dad892c7943521a2a892a19b517bb47e3acb41de71b9c72c877"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/active-send-red/after/tests/benchmark/test_estimated_controller_input.py",
+      "bytes": 10743,
+      "sha256": "b749349fa1467b7120f74ecd5ec8e23e89f7f488e4a52267dda2f494e378df70"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/active-send-red/after/tests/benchmark/test_publication_safety.py",
+      "bytes": 15862,
+      "sha256": "866eb988342e442027e06070146460e01e1054d89f27aaf8cc75908b62ff5e14"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/active-send-red/after/tests/benchmark/test_rgb_capture.py",
+      "bytes": 3233,
+      "sha256": "28450c33629a6169e75c9acda625e24a15a38736c5e8a99f0ab1d5bf4d90d32b"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/active-send-red/after/tests/benchmark/test_stationary_prelude.py",
+      "bytes": 9067,
+      "sha256": "c27ec3fb7988a7499c0f6e37c9ba9a7fb328d3ba6a18fdf0a6af2aec58dddd27"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/active-send-red/after/tools/benchmark/run_episode.py",
+      "bytes": 15232,
+      "sha256": "86730dafc09a110b9a7c3d70b3c1e97ef57c33a82e6af1215a8bab0d0f615ccc"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/active-send-red/before/results/single-aircraft-closed-loop-20261017/record.py",
+      "bytes": 3647,
+      "sha256": "5f243c3669d03fbb9fb9c985f37dc33541e847cd3eb29e779508fc07a5dde509"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/active-send-red/before/src/flydrones/benchmark/contract.py",
+      "bytes": 1597,
+      "sha256": "44145adb507d671a66191aadc654461a75ba6424ad65f7c6cbd75abcde4d258f"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/active-send-red/before/src/flydrones/benchmark/gateway.py",
+      "bytes": 52646,
+      "sha256": "320a8524374d95cdb21ce9c307b0ccd6413e6aaffb828a34ab68f9c52662872d"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/active-send-red/before/src/flydrones/drones/mavlink.py",
+      "bytes": 13419,
+      "sha256": "522791106efaa9fd9fc349c4abc114b77f57b3510322ea8add6d701194f061ac"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/active-send-red/before/tests/benchmark/test_camera_info_capture.py",
+      "bytes": 3427,
+      "sha256": "dcbbb0d40f2e0dad892c7943521a2a892a19b517bb47e3acb41de71b9c72c877"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/active-send-red/before/tests/benchmark/test_estimated_controller_input.py",
+      "bytes": 10743,
+      "sha256": "b749349fa1467b7120f74ecd5ec8e23e89f7f488e4a52267dda2f494e378df70"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/active-send-red/before/tests/benchmark/test_publication_safety.py",
+      "bytes": 15862,
+      "sha256": "866eb988342e442027e06070146460e01e1054d89f27aaf8cc75908b62ff5e14"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/active-send-red/before/tests/benchmark/test_rgb_capture.py",
+      "bytes": 3233,
+      "sha256": "28450c33629a6169e75c9acda625e24a15a38736c5e8a99f0ab1d5bf4d90d32b"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/active-send-red/before/tests/benchmark/test_stationary_prelude.py",
+      "bytes": 9067,
+      "sha256": "c27ec3fb7988a7499c0f6e37c9ba9a7fb328d3ba6a18fdf0a6af2aec58dddd27"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/active-send-red/before/tools/benchmark/run_episode.py",
+      "bytes": 15232,
+      "sha256": "86730dafc09a110b9a7c3d70b3c1e97ef57c33a82e6af1215a8bab0d0f615ccc"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/active-send-red/completion.json",
+      "bytes": 4432,
+      "sha256": "c16b2c6a28065c13254c2a77ca191013f469ba0f3aafaf9b51e759b611b996c3"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/active-send-red/start.json",
+      "bytes": 2631,
+      "sha256": "fd8f254e16804d15547e1a00e65688a75369787140c74f81f4fc0a3d15e33b8b"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/active-send-red/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/active-send-red/stdout",
+      "bytes": 1190,
+      "sha256": "74c124bf70ab902cff2c4998ea0907ca28186ad8441e75fbd8eaa4de51c1984c"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/affected/after/results/single-aircraft-closed-loop-20261017/record.py",
+      "bytes": 3647,
+      "sha256": "5f243c3669d03fbb9fb9c985f37dc33541e847cd3eb29e779508fc07a5dde509"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/affected/after/src/flydrones/benchmark/contract.py",
+      "bytes": 1597,
+      "sha256": "44145adb507d671a66191aadc654461a75ba6424ad65f7c6cbd75abcde4d258f"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/affected/after/src/flydrones/benchmark/gateway.py",
+      "bytes": 52646,
+      "sha256": "320a8524374d95cdb21ce9c307b0ccd6413e6aaffb828a34ab68f9c52662872d"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/affected/after/src/flydrones/drones/mavlink.py",
+      "bytes": 13419,
+      "sha256": "522791106efaa9fd9fc349c4abc114b77f57b3510322ea8add6d701194f061ac"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/affected/after/tests/benchmark/test_camera_info_capture.py",
+      "bytes": 3427,
+      "sha256": "dcbbb0d40f2e0dad892c7943521a2a892a19b517bb47e3acb41de71b9c72c877"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/affected/after/tests/benchmark/test_estimated_controller_input.py",
+      "bytes": 9908,
+      "sha256": "5a385253b6a63a00c8eeae6f8b886d5e9f3c986c6d845a3165b4654ca2f752f1"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/affected/after/tests/benchmark/test_publication_safety.py",
+      "bytes": 15862,
+      "sha256": "866eb988342e442027e06070146460e01e1054d89f27aaf8cc75908b62ff5e14"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/affected/after/tests/benchmark/test_rgb_capture.py",
+      "bytes": 3233,
+      "sha256": "28450c33629a6169e75c9acda625e24a15a38736c5e8a99f0ab1d5bf4d90d32b"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/affected/after/tests/benchmark/test_stationary_prelude.py",
+      "bytes": 9067,
+      "sha256": "c27ec3fb7988a7499c0f6e37c9ba9a7fb328d3ba6a18fdf0a6af2aec58dddd27"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/affected/after/tools/benchmark/run_episode.py",
+      "bytes": 15232,
+      "sha256": "86730dafc09a110b9a7c3d70b3c1e97ef57c33a82e6af1215a8bab0d0f615ccc"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/affected/before/results/single-aircraft-closed-loop-20261017/record.py",
+      "bytes": 3647,
+      "sha256": "5f243c3669d03fbb9fb9c985f37dc33541e847cd3eb29e779508fc07a5dde509"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/affected/before/src/flydrones/benchmark/contract.py",
+      "bytes": 1597,
+      "sha256": "44145adb507d671a66191aadc654461a75ba6424ad65f7c6cbd75abcde4d258f"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/affected/before/src/flydrones/benchmark/gateway.py",
+      "bytes": 52646,
+      "sha256": "320a8524374d95cdb21ce9c307b0ccd6413e6aaffb828a34ab68f9c52662872d"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/affected/before/src/flydrones/drones/mavlink.py",
+      "bytes": 13419,
+      "sha256": "522791106efaa9fd9fc349c4abc114b77f57b3510322ea8add6d701194f061ac"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/affected/before/tests/benchmark/test_camera_info_capture.py",
+      "bytes": 3427,
+      "sha256": "dcbbb0d40f2e0dad892c7943521a2a892a19b517bb47e3acb41de71b9c72c877"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/affected/before/tests/benchmark/test_estimated_controller_input.py",
+      "bytes": 9908,
+      "sha256": "5a385253b6a63a00c8eeae6f8b886d5e9f3c986c6d845a3165b4654ca2f752f1"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/affected/before/tests/benchmark/test_publication_safety.py",
+      "bytes": 15862,
+      "sha256": "866eb988342e442027e06070146460e01e1054d89f27aaf8cc75908b62ff5e14"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/affected/before/tests/benchmark/test_rgb_capture.py",
+      "bytes": 3233,
+      "sha256": "28450c33629a6169e75c9acda625e24a15a38736c5e8a99f0ab1d5bf4d90d32b"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/affected/before/tests/benchmark/test_stationary_prelude.py",
+      "bytes": 9067,
+      "sha256": "c27ec3fb7988a7499c0f6e37c9ba9a7fb328d3ba6a18fdf0a6af2aec58dddd27"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/affected/before/tools/benchmark/run_episode.py",
+      "bytes": 15232,
+      "sha256": "86730dafc09a110b9a7c3d70b3c1e97ef57c33a82e6af1215a8bab0d0f615ccc"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/affected/completion.json",
+      "bytes": 9324,
+      "sha256": "b15ddc66fd688f0faa1d5bb2c43744233c42d1a4ad3c636061e05d6e906da053"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/affected/fixtures/test_backend_opt_in_records_ca0/episode/rgb-capture-manifest.json",
+      "bytes": 307,
+      "sha256": "671925b43c81e1e28a7b710ded0c17f93c21c67c17054065a497c259cf66a607"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/affected/fixtures/test_backend_opt_in_records_ca0/episode/rgb-frames/2000000005.ppm",
+      "bytes": 17,
+      "sha256": "3d95bc7cbad6b55a54cef70147d5b6738687bfd7f15eb2d83025f4de601fce35"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/affected/fixtures/test_backend_records_gazebo_ca0/episode/camera-info.json",
+      "bytes": 673,
+      "sha256": "963ef599e1875c533c0fe3e45b9ad5a4ba1eb1346743d4d65031c8b57dfa886d"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/affected/fixtures/test_backend_records_gazebo_ca0/episode/camera-info.pb",
+      "bytes": 15,
+      "sha256": "f85eb3c993caa6708b433498476faca08d23bdabb178acb1185443b6f157a278"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/affected/fixtures/test_camera_info_capture_fails0/changed/camera-info.json",
+      "bytes": 658,
+      "sha256": "9c2cdb317e533432b09f7a2303aceb8fad86625f78da0f60182b9e65e0d442cf"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/affected/fixtures/test_camera_info_capture_fails0/changed/camera-info.pb",
+      "bytes": 9,
+      "sha256": "3dbb3963d11aa418de8b61f846c3dbd5af43b40d252842adb823f90936fe6920"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/affected/fixtures/test_camera_info_capture_fails0/empty/camera-info.json",
+      "bytes": 185,
+      "sha256": "e22c713ff7b1b5ec4e4807a00a8ab4185e61f3f2f63384973002b8bcccb8d665"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/affected/fixtures/test_camera_info_recorder_pres0/camera-info.json",
+      "bytes": 673,
+      "sha256": "77fe3d1f0e4150b4831fbbc611ee209aec5cbbeec4198c976f2056e287a342ef"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/affected/fixtures/test_camera_info_recorder_pres0/camera-info.pb",
+      "bytes": 10,
+      "sha256": "1cf58e6ecb8b6882e6f1be7179f76bfd0b629a93a491330dadef630dda6347d8"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/affected/fixtures/test_dev_texture_copy_requires0/output/ground_albedo.png",
+      "bytes": 6,
+      "sha256": "dbb3b50e59c7326b2ff7d6619430257b9188cf3c0b8d778f7275ffd3bf4998a2"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/affected/fixtures/test_dev_texture_copy_requires0/output/obstacle_albedo.png",
+      "bytes": 8,
+      "sha256": "b42a5cb0b08bd6351b3b51d80aeec455183cea4a80d4bb18b38959d472408e84"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/affected/fixtures/test_dev_texture_copy_requires0/output/texture_input_manifest.json",
+      "bytes": 507,
+      "sha256": "a62c5b73a999d6065997613024fb5c60463a09c4c757e9e5bfa8c20e06180032"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/affected/fixtures/test_dev_texture_copy_requires0/texture-source/ground_albedo.png",
+      "bytes": 6,
+      "sha256": "dbb3b50e59c7326b2ff7d6619430257b9188cf3c0b8d778f7275ffd3bf4998a2"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/affected/fixtures/test_dev_texture_copy_requires0/texture-source/obstacle_albedo.png",
+      "bytes": 8,
+      "sha256": "b42a5cb0b08bd6351b3b51d80aeec455183cea4a80d4bb18b38959d472408e84"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/affected/fixtures/test_episode_output_rejects_an0/episode/started.json",
+      "bytes": 20,
+      "sha256": "ffaf36aa91269855595ffbf45270aef130cfd54abb727449891e80c1e24c0246"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/affected/fixtures/test_rgb_manifest_rechecks_sav0/rgb-capture-manifest.json",
+      "bytes": 291,
+      "sha256": "b938d4c9c380bf288bfb68f9bfd8c5630cd5a338e02bd6fc4cd9e45ec4bf1c3b"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/affected/fixtures/test_rgb_manifest_rechecks_sav0/rgb-frames/10.ppm",
+      "bytes": 7,
+      "sha256": "d67e2e944994496c8d8ec76eed0cf9f09679448d584b532bebf941852a37f5ed"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/affected/fixtures/test_rgb_recorder_counts_repea0/rgb-capture-manifest.json",
+      "bytes": 293,
+      "sha256": "fd741026ac20000635b672f44beab78a190d4e3ac4c96a4e0e4a2a88c3e722bb"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/affected/fixtures/test_rgb_recorder_counts_repea0/rgb-frames/100.ppm",
+      "bytes": 14,
+      "sha256": "3ff6c5463ace13c0f26a735ac1af2bb96ab8a9ba1cb4398359cf2466f63a4d1b"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/affected/fixtures/test_rgb_recorder_preserves_ra0/rgb-capture-manifest.json",
+      "bytes": 307,
+      "sha256": "888f699c1cbeff2b4f22390b7b8082b8ec53fe8c5ce833f98a8c0f056842442a"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/affected/fixtures/test_rgb_recorder_preserves_ra0/rgb-frames/1000000000.ppm",
+      "bytes": 17,
+      "sha256": "3d95bc7cbad6b55a54cef70147d5b6738687bfd7f15eb2d83025f4de601fce35"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/affected/fixtures/test_rgb_recorder_rejects_inva0/rgb-capture-manifest.json",
+      "bytes": 289,
+      "sha256": "3deef6dcc62355920658e110b9690f663b60b35711658059de41084533b8fc74"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/affected/fixtures/test_rgb_recorder_rejects_inva0/rgb-frames/1.ppm",
+      "bytes": 14,
+      "sha256": "3ff6c5463ace13c0f26a735ac1af2bb96ab8a9ba1cb4398359cf2466f63a4d1b"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/affected/start.json",
+      "bytes": 2829,
+      "sha256": "5569b0286c9e299d219b05a82ad36add24d6e3ab844251d56534c38fba88922d"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/affected/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/affected/stdout",
+      "bytes": 183,
+      "sha256": "6216bfc81be4ceb84c7c56b0387e90ab6551a712f3f0865b4fb7e16b5068b5f4"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/arm-frame-green/after/results/single-aircraft-closed-loop-20261017/record.py",
+      "bytes": 3647,
+      "sha256": "5f243c3669d03fbb9fb9c985f37dc33541e847cd3eb29e779508fc07a5dde509"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/arm-frame-green/after/src/flydrones/benchmark/contract.py",
+      "bytes": 1597,
+      "sha256": "44145adb507d671a66191aadc654461a75ba6424ad65f7c6cbd75abcde4d258f"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/arm-frame-green/after/src/flydrones/benchmark/gateway.py",
+      "bytes": 52646,
+      "sha256": "320a8524374d95cdb21ce9c307b0ccd6413e6aaffb828a34ab68f9c52662872d"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/arm-frame-green/after/src/flydrones/drones/mavlink.py",
+      "bytes": 13419,
+      "sha256": "522791106efaa9fd9fc349c4abc114b77f57b3510322ea8add6d701194f061ac"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/arm-frame-green/after/tests/benchmark/test_camera_info_capture.py",
+      "bytes": 3427,
+      "sha256": "dcbbb0d40f2e0dad892c7943521a2a892a19b517bb47e3acb41de71b9c72c877"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/arm-frame-green/after/tests/benchmark/test_estimated_controller_input.py",
+      "bytes": 9908,
+      "sha256": "5a385253b6a63a00c8eeae6f8b886d5e9f3c986c6d845a3165b4654ca2f752f1"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/arm-frame-green/after/tests/benchmark/test_publication_safety.py",
+      "bytes": 15862,
+      "sha256": "866eb988342e442027e06070146460e01e1054d89f27aaf8cc75908b62ff5e14"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/arm-frame-green/after/tests/benchmark/test_rgb_capture.py",
+      "bytes": 3233,
+      "sha256": "28450c33629a6169e75c9acda625e24a15a38736c5e8a99f0ab1d5bf4d90d32b"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/arm-frame-green/after/tests/benchmark/test_stationary_prelude.py",
+      "bytes": 9067,
+      "sha256": "c27ec3fb7988a7499c0f6e37c9ba9a7fb328d3ba6a18fdf0a6af2aec58dddd27"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/arm-frame-green/after/tools/benchmark/run_episode.py",
+      "bytes": 15232,
+      "sha256": "86730dafc09a110b9a7c3d70b3c1e97ef57c33a82e6af1215a8bab0d0f615ccc"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/arm-frame-green/before/results/single-aircraft-closed-loop-20261017/record.py",
+      "bytes": 3647,
+      "sha256": "5f243c3669d03fbb9fb9c985f37dc33541e847cd3eb29e779508fc07a5dde509"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/arm-frame-green/before/src/flydrones/benchmark/contract.py",
+      "bytes": 1597,
+      "sha256": "44145adb507d671a66191aadc654461a75ba6424ad65f7c6cbd75abcde4d258f"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/arm-frame-green/before/src/flydrones/benchmark/gateway.py",
+      "bytes": 52646,
+      "sha256": "320a8524374d95cdb21ce9c307b0ccd6413e6aaffb828a34ab68f9c52662872d"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/arm-frame-green/before/src/flydrones/drones/mavlink.py",
+      "bytes": 13419,
+      "sha256": "522791106efaa9fd9fc349c4abc114b77f57b3510322ea8add6d701194f061ac"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/arm-frame-green/before/tests/benchmark/test_camera_info_capture.py",
+      "bytes": 3427,
+      "sha256": "dcbbb0d40f2e0dad892c7943521a2a892a19b517bb47e3acb41de71b9c72c877"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/arm-frame-green/before/tests/benchmark/test_estimated_controller_input.py",
+      "bytes": 9908,
+      "sha256": "5a385253b6a63a00c8eeae6f8b886d5e9f3c986c6d845a3165b4654ca2f752f1"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/arm-frame-green/before/tests/benchmark/test_publication_safety.py",
+      "bytes": 15862,
+      "sha256": "866eb988342e442027e06070146460e01e1054d89f27aaf8cc75908b62ff5e14"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/arm-frame-green/before/tests/benchmark/test_rgb_capture.py",
+      "bytes": 3233,
+      "sha256": "28450c33629a6169e75c9acda625e24a15a38736c5e8a99f0ab1d5bf4d90d32b"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/arm-frame-green/before/tests/benchmark/test_stationary_prelude.py",
+      "bytes": 9067,
+      "sha256": "c27ec3fb7988a7499c0f6e37c9ba9a7fb328d3ba6a18fdf0a6af2aec58dddd27"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/arm-frame-green/before/tools/benchmark/run_episode.py",
+      "bytes": 15232,
+      "sha256": "86730dafc09a110b9a7c3d70b3c1e97ef57c33a82e6af1215a8bab0d0f615ccc"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/arm-frame-green/completion.json",
+      "bytes": 4404,
+      "sha256": "ad691db35342641635f4a7f09ed0fd5e96fcfa5587fac605c547d73e89963cce"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/arm-frame-green/start.json",
+      "bytes": 2589,
+      "sha256": "e47a11170f66997120102a0ea5012f7a0370bf0c1dc0f410657a91e6b7e18fc9"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/arm-frame-green/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/arm-frame-green/stdout",
+      "bytes": 101,
+      "sha256": "d4773768a67e7894822b3698572d421cd0dbefe97ed981a37fa487ed1d360745"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/arm-frame-red/after/results/single-aircraft-closed-loop-20261017/record.py",
+      "bytes": 3608,
+      "sha256": "cdde37c5698262749023758152ed2f14292c1a974494e498f13efeb49797b0e9"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/arm-frame-red/after/src/flydrones/benchmark/contract.py",
+      "bytes": 1597,
+      "sha256": "44145adb507d671a66191aadc654461a75ba6424ad65f7c6cbd75abcde4d258f"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/arm-frame-red/after/src/flydrones/benchmark/gateway.py",
+      "bytes": 52397,
+      "sha256": "2366fa70a16680bd0e760f8e1670bd2f8169741ecf05555821f094170e31df4e"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/arm-frame-red/after/tests/benchmark/test_camera_info_capture.py",
+      "bytes": 3427,
+      "sha256": "dcbbb0d40f2e0dad892c7943521a2a892a19b517bb47e3acb41de71b9c72c877"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/arm-frame-red/after/tests/benchmark/test_estimated_controller_input.py",
+      "bytes": 9908,
+      "sha256": "5a385253b6a63a00c8eeae6f8b886d5e9f3c986c6d845a3165b4654ca2f752f1"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/arm-frame-red/after/tests/benchmark/test_publication_safety.py",
+      "bytes": 15862,
+      "sha256": "866eb988342e442027e06070146460e01e1054d89f27aaf8cc75908b62ff5e14"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/arm-frame-red/after/tests/benchmark/test_rgb_capture.py",
+      "bytes": 3233,
+      "sha256": "28450c33629a6169e75c9acda625e24a15a38736c5e8a99f0ab1d5bf4d90d32b"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/arm-frame-red/after/tests/benchmark/test_stationary_prelude.py",
+      "bytes": 9067,
+      "sha256": "c27ec3fb7988a7499c0f6e37c9ba9a7fb328d3ba6a18fdf0a6af2aec58dddd27"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/arm-frame-red/after/tools/benchmark/run_episode.py",
+      "bytes": 15232,
+      "sha256": "86730dafc09a110b9a7c3d70b3c1e97ef57c33a82e6af1215a8bab0d0f615ccc"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/arm-frame-red/before/results/single-aircraft-closed-loop-20261017/record.py",
+      "bytes": 3608,
+      "sha256": "cdde37c5698262749023758152ed2f14292c1a974494e498f13efeb49797b0e9"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/arm-frame-red/before/src/flydrones/benchmark/contract.py",
+      "bytes": 1597,
+      "sha256": "44145adb507d671a66191aadc654461a75ba6424ad65f7c6cbd75abcde4d258f"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/arm-frame-red/before/src/flydrones/benchmark/gateway.py",
+      "bytes": 52397,
+      "sha256": "2366fa70a16680bd0e760f8e1670bd2f8169741ecf05555821f094170e31df4e"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/arm-frame-red/before/tests/benchmark/test_camera_info_capture.py",
+      "bytes": 3427,
+      "sha256": "dcbbb0d40f2e0dad892c7943521a2a892a19b517bb47e3acb41de71b9c72c877"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/arm-frame-red/before/tests/benchmark/test_estimated_controller_input.py",
+      "bytes": 9908,
+      "sha256": "5a385253b6a63a00c8eeae6f8b886d5e9f3c986c6d845a3165b4654ca2f752f1"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/arm-frame-red/before/tests/benchmark/test_publication_safety.py",
+      "bytes": 15862,
+      "sha256": "866eb988342e442027e06070146460e01e1054d89f27aaf8cc75908b62ff5e14"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/arm-frame-red/before/tests/benchmark/test_rgb_capture.py",
+      "bytes": 3233,
+      "sha256": "28450c33629a6169e75c9acda625e24a15a38736c5e8a99f0ab1d5bf4d90d32b"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/arm-frame-red/before/tests/benchmark/test_stationary_prelude.py",
+      "bytes": 9067,
+      "sha256": "c27ec3fb7988a7499c0f6e37c9ba9a7fb328d3ba6a18fdf0a6af2aec58dddd27"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/arm-frame-red/before/tools/benchmark/run_episode.py",
+      "bytes": 15232,
+      "sha256": "86730dafc09a110b9a7c3d70b3c1e97ef57c33a82e6af1215a8bab0d0f615ccc"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/arm-frame-red/completion.json",
+      "bytes": 4156,
+      "sha256": "6eca4e79d42fe9d4acd6dc8dbc86b3998c5df969ec030bbdd88eae768a2ca349"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/arm-frame-red/start.json",
+      "bytes": 2498,
+      "sha256": "e3220aa5e23428dbbfe62de975ff7d4e1d0dac5d7338aaad10c1dec01d1e64dc"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/arm-frame-red/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/arm-frame-red/stdout",
+      "bytes": 2257,
+      "sha256": "98c9194b22a3d64b6ec54c1b40c9d92e0b18d8d7220a155d68e92e66f2a1f5df"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/automation-after-software-handoff.toml",
+      "bytes": 82374,
+      "sha256": "2fd6714533abd044a06062d50e8540d25bc66167bef83985a563c6f802ff3dae"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/automation-after.toml",
+      "bytes": 79988,
+      "sha256": "34e8dbb5663466f8fe0088f1a5946b752063c9e054e0cfb5d40154c6801e70a2"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/automation-before-software-handoff.toml",
+      "bytes": 79988,
+      "sha256": "34e8dbb5663466f8fe0088f1a5946b752063c9e054e0cfb5d40154c6801e70a2"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/automation-before.toml",
+      "bytes": 77509,
+      "sha256": "f8f4dd9d1060bbf5d6cdb68cb9023094731914c3f325759e5331b8d007281917"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/automation-join.json",
+      "bytes": 233,
+      "sha256": "40049b8082cbe6cd220f3edbdb1db11753674dc0fb4ce89ee21cdc4cdf34b33f"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/automation-software-handoff-args.json",
+      "bytes": 82338,
+      "sha256": "b0ff2d091ab67935d2cbfd7feabd16c291e1df96a3ec91770291952e1a0f00b3"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/automation-software-handoff-join.json",
+      "bytes": 261,
+      "sha256": "d9dcb2850cf614d02e56e05c5223753ae440168583813bf1d853db37f8de0457"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/automation-update-args.json",
+      "bytes": 79979,
+      "sha256": "a58c64a6dfd3a59285a7d722081e754b1c4543e3d798a032354200dedcc8b9ca"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/changed-line-endings.json",
+      "bytes": 466,
+      "sha256": "ae85552f66b1f84f808148a6f3c788231511aef353f864470c6ccbf4f982566a"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/current-source-evolution.json",
+      "bytes": 3035,
+      "sha256": "3281dfb91908c58d3de16c28e2696ffefe204f3306116e0bd9e38efca58b0387"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/diff-before/after/results/single-aircraft-closed-loop-20261017/record.py",
+      "bytes": 3647,
+      "sha256": "5f243c3669d03fbb9fb9c985f37dc33541e847cd3eb29e779508fc07a5dde509"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/diff-before/after/src/flydrones/benchmark/contract.py",
+      "bytes": 1597,
+      "sha256": "44145adb507d671a66191aadc654461a75ba6424ad65f7c6cbd75abcde4d258f"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/diff-before/after/src/flydrones/benchmark/gateway.py",
+      "bytes": 52658,
+      "sha256": "cc129a2fc0e7bac82b7b162bd22c9679e880a02c00b8312eb668cf47376a5234"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/diff-before/after/src/flydrones/drones/mavlink.py",
+      "bytes": 13662,
+      "sha256": "d1593c42d477ef3b4481c486202201bdc2318e893b672f3631cb8b6ad6277f31"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/diff-before/after/tests/benchmark/test_camera_info_capture.py",
+      "bytes": 3427,
+      "sha256": "dcbbb0d40f2e0dad892c7943521a2a892a19b517bb47e3acb41de71b9c72c877"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/diff-before/after/tests/benchmark/test_estimated_controller_input.py",
+      "bytes": 10788,
+      "sha256": "0b6e6a6942d7d3781a3654216d109f138e65f59afc25fec5bff8d46a0245dca4"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/diff-before/after/tests/benchmark/test_publication_safety.py",
+      "bytes": 15862,
+      "sha256": "866eb988342e442027e06070146460e01e1054d89f27aaf8cc75908b62ff5e14"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/diff-before/after/tests/benchmark/test_rgb_capture.py",
+      "bytes": 3233,
+      "sha256": "28450c33629a6169e75c9acda625e24a15a38736c5e8a99f0ab1d5bf4d90d32b"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/diff-before/after/tests/benchmark/test_stationary_prelude.py",
+      "bytes": 9067,
+      "sha256": "c27ec3fb7988a7499c0f6e37c9ba9a7fb328d3ba6a18fdf0a6af2aec58dddd27"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/diff-before/after/tools/benchmark/run_episode.py",
+      "bytes": 15232,
+      "sha256": "86730dafc09a110b9a7c3d70b3c1e97ef57c33a82e6af1215a8bab0d0f615ccc"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/diff-before/before/results/single-aircraft-closed-loop-20261017/record.py",
+      "bytes": 3647,
+      "sha256": "5f243c3669d03fbb9fb9c985f37dc33541e847cd3eb29e779508fc07a5dde509"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/diff-before/before/src/flydrones/benchmark/contract.py",
+      "bytes": 1597,
+      "sha256": "44145adb507d671a66191aadc654461a75ba6424ad65f7c6cbd75abcde4d258f"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/diff-before/before/src/flydrones/benchmark/gateway.py",
+      "bytes": 52658,
+      "sha256": "cc129a2fc0e7bac82b7b162bd22c9679e880a02c00b8312eb668cf47376a5234"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/diff-before/before/src/flydrones/drones/mavlink.py",
+      "bytes": 13662,
+      "sha256": "d1593c42d477ef3b4481c486202201bdc2318e893b672f3631cb8b6ad6277f31"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/diff-before/before/tests/benchmark/test_camera_info_capture.py",
+      "bytes": 3427,
+      "sha256": "dcbbb0d40f2e0dad892c7943521a2a892a19b517bb47e3acb41de71b9c72c877"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/diff-before/before/tests/benchmark/test_estimated_controller_input.py",
+      "bytes": 10788,
+      "sha256": "0b6e6a6942d7d3781a3654216d109f138e65f59afc25fec5bff8d46a0245dca4"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/diff-before/before/tests/benchmark/test_publication_safety.py",
+      "bytes": 15862,
+      "sha256": "866eb988342e442027e06070146460e01e1054d89f27aaf8cc75908b62ff5e14"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/diff-before/before/tests/benchmark/test_rgb_capture.py",
+      "bytes": 3233,
+      "sha256": "28450c33629a6169e75c9acda625e24a15a38736c5e8a99f0ab1d5bf4d90d32b"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/diff-before/before/tests/benchmark/test_stationary_prelude.py",
+      "bytes": 9067,
+      "sha256": "c27ec3fb7988a7499c0f6e37c9ba9a7fb328d3ba6a18fdf0a6af2aec58dddd27"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/diff-before/before/tools/benchmark/run_episode.py",
+      "bytes": 15232,
+      "sha256": "86730dafc09a110b9a7c3d70b3c1e97ef57c33a82e6af1215a8bab0d0f615ccc"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/diff-before/completion.json",
+      "bytes": 4252,
+      "sha256": "52a11b0e00a33c5ce9e1b586ba3b5ac71ecff63eef8e906072477f428f1a19cf"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/diff-before/start.json",
+      "bytes": 2436,
+      "sha256": "aef4793f4cafa5efaad9c0023191516e471c0a7da6dee940154aa01dea533b65"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/diff-before/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/diff-before/stdout",
+      "bytes": 1056,
+      "sha256": "361b7ee5e1160cf16ea4f1b6ff0f1488772bce688a27df7a2d87de0e387a3b15"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/estimated-green/after/results/single-aircraft-closed-loop-20261017/record.py",
+      "bytes": 3608,
+      "sha256": "cdde37c5698262749023758152ed2f14292c1a974494e498f13efeb49797b0e9"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/estimated-green/after/src/flydrones/benchmark/contract.py",
+      "bytes": 1597,
+      "sha256": "44145adb507d671a66191aadc654461a75ba6424ad65f7c6cbd75abcde4d258f"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/estimated-green/after/src/flydrones/benchmark/gateway.py",
+      "bytes": 52397,
+      "sha256": "2366fa70a16680bd0e760f8e1670bd2f8169741ecf05555821f094170e31df4e"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/estimated-green/after/tests/benchmark/test_camera_info_capture.py",
+      "bytes": 3427,
+      "sha256": "dcbbb0d40f2e0dad892c7943521a2a892a19b517bb47e3acb41de71b9c72c877"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/estimated-green/after/tests/benchmark/test_estimated_controller_input.py",
+      "bytes": 7961,
+      "sha256": "567d33810ca4efef6f1777b1bb279ac2f1dadb7a1725fecb1416ffcfb4a2ba92"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/estimated-green/after/tests/benchmark/test_publication_safety.py",
+      "bytes": 15862,
+      "sha256": "866eb988342e442027e06070146460e01e1054d89f27aaf8cc75908b62ff5e14"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/estimated-green/after/tests/benchmark/test_rgb_capture.py",
+      "bytes": 3233,
+      "sha256": "28450c33629a6169e75c9acda625e24a15a38736c5e8a99f0ab1d5bf4d90d32b"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/estimated-green/after/tests/benchmark/test_stationary_prelude.py",
+      "bytes": 9067,
+      "sha256": "c27ec3fb7988a7499c0f6e37c9ba9a7fb328d3ba6a18fdf0a6af2aec58dddd27"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/estimated-green/after/tools/benchmark/run_episode.py",
+      "bytes": 15232,
+      "sha256": "86730dafc09a110b9a7c3d70b3c1e97ef57c33a82e6af1215a8bab0d0f615ccc"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/estimated-green/before/results/single-aircraft-closed-loop-20261017/record.py",
+      "bytes": 3608,
+      "sha256": "cdde37c5698262749023758152ed2f14292c1a974494e498f13efeb49797b0e9"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/estimated-green/before/src/flydrones/benchmark/contract.py",
+      "bytes": 1597,
+      "sha256": "44145adb507d671a66191aadc654461a75ba6424ad65f7c6cbd75abcde4d258f"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/estimated-green/before/src/flydrones/benchmark/gateway.py",
+      "bytes": 52397,
+      "sha256": "2366fa70a16680bd0e760f8e1670bd2f8169741ecf05555821f094170e31df4e"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/estimated-green/before/tests/benchmark/test_camera_info_capture.py",
+      "bytes": 3427,
+      "sha256": "dcbbb0d40f2e0dad892c7943521a2a892a19b517bb47e3acb41de71b9c72c877"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/estimated-green/before/tests/benchmark/test_estimated_controller_input.py",
+      "bytes": 7961,
+      "sha256": "567d33810ca4efef6f1777b1bb279ac2f1dadb7a1725fecb1416ffcfb4a2ba92"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/estimated-green/before/tests/benchmark/test_publication_safety.py",
+      "bytes": 15862,
+      "sha256": "866eb988342e442027e06070146460e01e1054d89f27aaf8cc75908b62ff5e14"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/estimated-green/before/tests/benchmark/test_rgb_capture.py",
+      "bytes": 3233,
+      "sha256": "28450c33629a6169e75c9acda625e24a15a38736c5e8a99f0ab1d5bf4d90d32b"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/estimated-green/before/tests/benchmark/test_stationary_prelude.py",
+      "bytes": 9067,
+      "sha256": "c27ec3fb7988a7499c0f6e37c9ba9a7fb328d3ba6a18fdf0a6af2aec58dddd27"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/estimated-green/before/tools/benchmark/run_episode.py",
+      "bytes": 15232,
+      "sha256": "86730dafc09a110b9a7c3d70b3c1e97ef57c33a82e6af1215a8bab0d0f615ccc"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/estimated-green/completion.json",
+      "bytes": 4090,
+      "sha256": "0c5bd82796a49d819bdc1f892c056fda8918543ac49b983e824f7a22a2e3c94f"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/estimated-green/start.json",
+      "bytes": 2432,
+      "sha256": "b356bee68ab704a252bc238e222d48cb7f269cbbf24fb1c2b62143c189c3924f"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/estimated-green/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/estimated-green/stdout",
+      "bytes": 101,
+      "sha256": "696bf4f6c01e030fb89479f6ea4a734b4390057893d21ff457a7bc32d779e4a4"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/estimated-red/after/results/single-aircraft-closed-loop-20261017/record.py",
+      "bytes": 3608,
+      "sha256": "cdde37c5698262749023758152ed2f14292c1a974494e498f13efeb49797b0e9"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/estimated-red/after/src/flydrones/benchmark/contract.py",
+      "bytes": 978,
+      "sha256": "a81f751070ea0e2aa65a76a37d86a52b49fc24edb9bae5f7bbb104c1455cedc1"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/estimated-red/after/src/flydrones/benchmark/gateway.py",
+      "bytes": 46631,
+      "sha256": "ebf6d917c0dff6bd2c83f27236cb56073293fbb38d686cf8ee7192d0e47a499c"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/estimated-red/after/tests/benchmark/test_camera_info_capture.py",
+      "bytes": 3427,
+      "sha256": "dcbbb0d40f2e0dad892c7943521a2a892a19b517bb47e3acb41de71b9c72c877"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/estimated-red/after/tests/benchmark/test_estimated_controller_input.py",
+      "bytes": 7961,
+      "sha256": "567d33810ca4efef6f1777b1bb279ac2f1dadb7a1725fecb1416ffcfb4a2ba92"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/estimated-red/after/tests/benchmark/test_publication_safety.py",
+      "bytes": 15862,
+      "sha256": "866eb988342e442027e06070146460e01e1054d89f27aaf8cc75908b62ff5e14"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/estimated-red/after/tests/benchmark/test_rgb_capture.py",
+      "bytes": 3233,
+      "sha256": "28450c33629a6169e75c9acda625e24a15a38736c5e8a99f0ab1d5bf4d90d32b"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/estimated-red/after/tests/benchmark/test_stationary_prelude.py",
+      "bytes": 9067,
+      "sha256": "c27ec3fb7988a7499c0f6e37c9ba9a7fb328d3ba6a18fdf0a6af2aec58dddd27"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/estimated-red/after/tools/benchmark/run_episode.py",
+      "bytes": 15223,
+      "sha256": "bc765ed828cb5aa5d715369fcf8238fbab451f3e761a078d5464a59af3fa6d13"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/estimated-red/before/results/single-aircraft-closed-loop-20261017/record.py",
+      "bytes": 3608,
+      "sha256": "cdde37c5698262749023758152ed2f14292c1a974494e498f13efeb49797b0e9"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/estimated-red/before/src/flydrones/benchmark/contract.py",
+      "bytes": 978,
+      "sha256": "a81f751070ea0e2aa65a76a37d86a52b49fc24edb9bae5f7bbb104c1455cedc1"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/estimated-red/before/src/flydrones/benchmark/gateway.py",
+      "bytes": 46631,
+      "sha256": "ebf6d917c0dff6bd2c83f27236cb56073293fbb38d686cf8ee7192d0e47a499c"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/estimated-red/before/tests/benchmark/test_camera_info_capture.py",
+      "bytes": 3427,
+      "sha256": "dcbbb0d40f2e0dad892c7943521a2a892a19b517bb47e3acb41de71b9c72c877"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/estimated-red/before/tests/benchmark/test_estimated_controller_input.py",
+      "bytes": 7961,
+      "sha256": "567d33810ca4efef6f1777b1bb279ac2f1dadb7a1725fecb1416ffcfb4a2ba92"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/estimated-red/before/tests/benchmark/test_publication_safety.py",
+      "bytes": 15862,
+      "sha256": "866eb988342e442027e06070146460e01e1054d89f27aaf8cc75908b62ff5e14"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/estimated-red/before/tests/benchmark/test_rgb_capture.py",
+      "bytes": 3233,
+      "sha256": "28450c33629a6169e75c9acda625e24a15a38736c5e8a99f0ab1d5bf4d90d32b"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/estimated-red/before/tests/benchmark/test_stationary_prelude.py",
+      "bytes": 9067,
+      "sha256": "c27ec3fb7988a7499c0f6e37c9ba9a7fb328d3ba6a18fdf0a6af2aec58dddd27"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/estimated-red/before/tools/benchmark/run_episode.py",
+      "bytes": 15223,
+      "sha256": "bc765ed828cb5aa5d715369fcf8238fbab451f3e761a078d5464a59af3fa6d13"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/estimated-red/completion.json",
+      "bytes": 4085,
+      "sha256": "94fa841a321c3b10d4e554ba54fd34cf49a0582a3923495bdfb4f19e2c842e7a"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/estimated-red/start.json",
+      "bytes": 2429,
+      "sha256": "98172f6b4746f34b04439b7976f3424d4bc5a912f7f280b26f2a5b33f08227c3"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/estimated-red/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/estimated-red/stdout",
+      "bytes": 32718,
+      "sha256": "d4f912c002af445311526f29c1b0203de32065e2cf19fcc1d0257487580b3b40"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/execution-ledger.md",
+      "bytes": 6358,
+      "sha256": "f1c302f5b68ee81b8c4a20f4639759ee94ff3efd0e107b4e575bd655f92a50f0"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/executor-disposition.json",
+      "bytes": 7451,
+      "sha256": "492fc5cd80ed3189f1b6ccbe540bc362de235987476a23c58473f0098a21a048"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/executor-disposition.md",
+      "bytes": 4158,
+      "sha256": "3bfe55835036a1629a25afeaeb333a34bc60ef11c63d88a6b8495bf97e037f7d"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/final-affected/after/results/single-aircraft-closed-loop-20261017/record.py",
+      "bytes": 3647,
+      "sha256": "5f243c3669d03fbb9fb9c985f37dc33541e847cd3eb29e779508fc07a5dde509"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/final-affected/after/src/flydrones/benchmark/contract.py",
+      "bytes": 1597,
+      "sha256": "44145adb507d671a66191aadc654461a75ba6424ad65f7c6cbd75abcde4d258f"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/final-affected/after/src/flydrones/benchmark/gateway.py",
+      "bytes": 52658,
+      "sha256": "cc129a2fc0e7bac82b7b162bd22c9679e880a02c00b8312eb668cf47376a5234"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/final-affected/after/src/flydrones/drones/mavlink.py",
+      "bytes": 13654,
+      "sha256": "d01071eda975fa239fe76e4a6840e56c70a4be2545793e858de9fe41cc3483b6"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/final-affected/after/tests/benchmark/test_camera_info_capture.py",
+      "bytes": 3427,
+      "sha256": "dcbbb0d40f2e0dad892c7943521a2a892a19b517bb47e3acb41de71b9c72c877"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/final-affected/after/tests/benchmark/test_estimated_controller_input.py",
+      "bytes": 11051,
+      "sha256": "edf1a6882d24f06fd78aadcf949eca7a77738c81e638b3d1026ff60ec66294c0"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/final-affected/after/tests/benchmark/test_publication_safety.py",
+      "bytes": 15862,
+      "sha256": "866eb988342e442027e06070146460e01e1054d89f27aaf8cc75908b62ff5e14"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/final-affected/after/tests/benchmark/test_rgb_capture.py",
+      "bytes": 3233,
+      "sha256": "28450c33629a6169e75c9acda625e24a15a38736c5e8a99f0ab1d5bf4d90d32b"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/final-affected/after/tests/benchmark/test_stationary_prelude.py",
+      "bytes": 9067,
+      "sha256": "c27ec3fb7988a7499c0f6e37c9ba9a7fb328d3ba6a18fdf0a6af2aec58dddd27"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/final-affected/after/tools/benchmark/run_episode.py",
+      "bytes": 15232,
+      "sha256": "86730dafc09a110b9a7c3d70b3c1e97ef57c33a82e6af1215a8bab0d0f615ccc"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/final-affected/before/results/single-aircraft-closed-loop-20261017/record.py",
+      "bytes": 3647,
+      "sha256": "5f243c3669d03fbb9fb9c985f37dc33541e847cd3eb29e779508fc07a5dde509"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/final-affected/before/src/flydrones/benchmark/contract.py",
+      "bytes": 1597,
+      "sha256": "44145adb507d671a66191aadc654461a75ba6424ad65f7c6cbd75abcde4d258f"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/final-affected/before/src/flydrones/benchmark/gateway.py",
+      "bytes": 52658,
+      "sha256": "cc129a2fc0e7bac82b7b162bd22c9679e880a02c00b8312eb668cf47376a5234"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/final-affected/before/src/flydrones/drones/mavlink.py",
+      "bytes": 13654,
+      "sha256": "d01071eda975fa239fe76e4a6840e56c70a4be2545793e858de9fe41cc3483b6"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/final-affected/before/tests/benchmark/test_camera_info_capture.py",
+      "bytes": 3427,
+      "sha256": "dcbbb0d40f2e0dad892c7943521a2a892a19b517bb47e3acb41de71b9c72c877"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/final-affected/before/tests/benchmark/test_estimated_controller_input.py",
+      "bytes": 11051,
+      "sha256": "edf1a6882d24f06fd78aadcf949eca7a77738c81e638b3d1026ff60ec66294c0"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/final-affected/before/tests/benchmark/test_publication_safety.py",
+      "bytes": 15862,
+      "sha256": "866eb988342e442027e06070146460e01e1054d89f27aaf8cc75908b62ff5e14"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/final-affected/before/tests/benchmark/test_rgb_capture.py",
+      "bytes": 3233,
+      "sha256": "28450c33629a6169e75c9acda625e24a15a38736c5e8a99f0ab1d5bf4d90d32b"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/final-affected/before/tests/benchmark/test_stationary_prelude.py",
+      "bytes": 9067,
+      "sha256": "c27ec3fb7988a7499c0f6e37c9ba9a7fb328d3ba6a18fdf0a6af2aec58dddd27"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/final-affected/before/tools/benchmark/run_episode.py",
+      "bytes": 15232,
+      "sha256": "86730dafc09a110b9a7c3d70b3c1e97ef57c33a82e6af1215a8bab0d0f615ccc"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/final-affected/completion.json",
+      "bytes": 9331,
+      "sha256": "31786ca5b5e5ac8b742b3f2d08d2af01700dd306c0b2361eff55e998f67b3d04"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/final-affected/fixtures/test_backend_opt_in_records_ca0/episode/rgb-capture-manifest.json",
+      "bytes": 307,
+      "sha256": "671925b43c81e1e28a7b710ded0c17f93c21c67c17054065a497c259cf66a607"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/final-affected/fixtures/test_backend_opt_in_records_ca0/episode/rgb-frames/2000000005.ppm",
+      "bytes": 17,
+      "sha256": "3d95bc7cbad6b55a54cef70147d5b6738687bfd7f15eb2d83025f4de601fce35"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/final-affected/fixtures/test_backend_records_gazebo_ca0/episode/camera-info.json",
+      "bytes": 673,
+      "sha256": "963ef599e1875c533c0fe3e45b9ad5a4ba1eb1346743d4d65031c8b57dfa886d"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/final-affected/fixtures/test_backend_records_gazebo_ca0/episode/camera-info.pb",
+      "bytes": 15,
+      "sha256": "f85eb3c993caa6708b433498476faca08d23bdabb178acb1185443b6f157a278"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/final-affected/fixtures/test_camera_info_capture_fails0/changed/camera-info.json",
+      "bytes": 658,
+      "sha256": "9c2cdb317e533432b09f7a2303aceb8fad86625f78da0f60182b9e65e0d442cf"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/final-affected/fixtures/test_camera_info_capture_fails0/changed/camera-info.pb",
+      "bytes": 9,
+      "sha256": "3dbb3963d11aa418de8b61f846c3dbd5af43b40d252842adb823f90936fe6920"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/final-affected/fixtures/test_camera_info_capture_fails0/empty/camera-info.json",
+      "bytes": 185,
+      "sha256": "e22c713ff7b1b5ec4e4807a00a8ab4185e61f3f2f63384973002b8bcccb8d665"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/final-affected/fixtures/test_camera_info_recorder_pres0/camera-info.json",
+      "bytes": 673,
+      "sha256": "77fe3d1f0e4150b4831fbbc611ee209aec5cbbeec4198c976f2056e287a342ef"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/final-affected/fixtures/test_camera_info_recorder_pres0/camera-info.pb",
+      "bytes": 10,
+      "sha256": "1cf58e6ecb8b6882e6f1be7179f76bfd0b629a93a491330dadef630dda6347d8"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/final-affected/fixtures/test_dev_texture_copy_requires0/output/ground_albedo.png",
+      "bytes": 6,
+      "sha256": "dbb3b50e59c7326b2ff7d6619430257b9188cf3c0b8d778f7275ffd3bf4998a2"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/final-affected/fixtures/test_dev_texture_copy_requires0/output/obstacle_albedo.png",
+      "bytes": 8,
+      "sha256": "b42a5cb0b08bd6351b3b51d80aeec455183cea4a80d4bb18b38959d472408e84"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/final-affected/fixtures/test_dev_texture_copy_requires0/output/texture_input_manifest.json",
+      "bytes": 513,
+      "sha256": "ea3b3d0f71ebbc8d4f6b167d8fca4235ccfd424a5204186fe45eec8b62e99212"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/final-affected/fixtures/test_dev_texture_copy_requires0/texture-source/ground_albedo.png",
+      "bytes": 6,
+      "sha256": "dbb3b50e59c7326b2ff7d6619430257b9188cf3c0b8d778f7275ffd3bf4998a2"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/final-affected/fixtures/test_dev_texture_copy_requires0/texture-source/obstacle_albedo.png",
+      "bytes": 8,
+      "sha256": "b42a5cb0b08bd6351b3b51d80aeec455183cea4a80d4bb18b38959d472408e84"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/final-affected/fixtures/test_episode_output_rejects_an0/episode/started.json",
+      "bytes": 20,
+      "sha256": "ffaf36aa91269855595ffbf45270aef130cfd54abb727449891e80c1e24c0246"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/final-affected/fixtures/test_rgb_manifest_rechecks_sav0/rgb-capture-manifest.json",
+      "bytes": 291,
+      "sha256": "b938d4c9c380bf288bfb68f9bfd8c5630cd5a338e02bd6fc4cd9e45ec4bf1c3b"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/final-affected/fixtures/test_rgb_manifest_rechecks_sav0/rgb-frames/10.ppm",
+      "bytes": 7,
+      "sha256": "d67e2e944994496c8d8ec76eed0cf9f09679448d584b532bebf941852a37f5ed"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/final-affected/fixtures/test_rgb_recorder_counts_repea0/rgb-capture-manifest.json",
+      "bytes": 293,
+      "sha256": "fd741026ac20000635b672f44beab78a190d4e3ac4c96a4e0e4a2a88c3e722bb"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/final-affected/fixtures/test_rgb_recorder_counts_repea0/rgb-frames/100.ppm",
+      "bytes": 14,
+      "sha256": "3ff6c5463ace13c0f26a735ac1af2bb96ab8a9ba1cb4398359cf2466f63a4d1b"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/final-affected/fixtures/test_rgb_recorder_preserves_ra0/rgb-capture-manifest.json",
+      "bytes": 307,
+      "sha256": "888f699c1cbeff2b4f22390b7b8082b8ec53fe8c5ce833f98a8c0f056842442a"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/final-affected/fixtures/test_rgb_recorder_preserves_ra0/rgb-frames/1000000000.ppm",
+      "bytes": 17,
+      "sha256": "3d95bc7cbad6b55a54cef70147d5b6738687bfd7f15eb2d83025f4de601fce35"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/final-affected/fixtures/test_rgb_recorder_rejects_inva0/rgb-capture-manifest.json",
+      "bytes": 289,
+      "sha256": "3deef6dcc62355920658e110b9690f663b60b35711658059de41084533b8fc74"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/final-affected/fixtures/test_rgb_recorder_rejects_inva0/rgb-frames/1.ppm",
+      "bytes": 14,
+      "sha256": "3ff6c5463ace13c0f26a735ac1af2bb96ab8a9ba1cb4398359cf2466f63a4d1b"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/final-affected/start.json",
+      "bytes": 2836,
+      "sha256": "c83fe49d03d73df9d73ed316e22e62ba9f9a1e927ad3a882a07680c3d0685545"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/final-affected/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/final-affected/stdout",
+      "bytes": 183,
+      "sha256": "0736984b911b7e2df7cae428d2ca1249e6cab7a7df24c6dd12b4986d712d0370"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/final-diff/after/results/single-aircraft-closed-loop-20261017/record.py",
+      "bytes": 3647,
+      "sha256": "5f243c3669d03fbb9fb9c985f37dc33541e847cd3eb29e779508fc07a5dde509"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/final-diff/after/src/flydrones/benchmark/contract.py",
+      "bytes": 1597,
+      "sha256": "44145adb507d671a66191aadc654461a75ba6424ad65f7c6cbd75abcde4d258f"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/final-diff/after/src/flydrones/benchmark/gateway.py",
+      "bytes": 52658,
+      "sha256": "cc129a2fc0e7bac82b7b162bd22c9679e880a02c00b8312eb668cf47376a5234"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/final-diff/after/src/flydrones/drones/mavlink.py",
+      "bytes": 13654,
+      "sha256": "d01071eda975fa239fe76e4a6840e56c70a4be2545793e858de9fe41cc3483b6"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/final-diff/after/tests/benchmark/test_camera_info_capture.py",
+      "bytes": 3427,
+      "sha256": "dcbbb0d40f2e0dad892c7943521a2a892a19b517bb47e3acb41de71b9c72c877"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/final-diff/after/tests/benchmark/test_estimated_controller_input.py",
+      "bytes": 11051,
+      "sha256": "edf1a6882d24f06fd78aadcf949eca7a77738c81e638b3d1026ff60ec66294c0"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/final-diff/after/tests/benchmark/test_publication_safety.py",
+      "bytes": 15862,
+      "sha256": "866eb988342e442027e06070146460e01e1054d89f27aaf8cc75908b62ff5e14"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/final-diff/after/tests/benchmark/test_rgb_capture.py",
+      "bytes": 3233,
+      "sha256": "28450c33629a6169e75c9acda625e24a15a38736c5e8a99f0ab1d5bf4d90d32b"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/final-diff/after/tests/benchmark/test_stationary_prelude.py",
+      "bytes": 9067,
+      "sha256": "c27ec3fb7988a7499c0f6e37c9ba9a7fb328d3ba6a18fdf0a6af2aec58dddd27"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/final-diff/after/tools/benchmark/run_episode.py",
+      "bytes": 15232,
+      "sha256": "86730dafc09a110b9a7c3d70b3c1e97ef57c33a82e6af1215a8bab0d0f615ccc"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/final-diff/before/results/single-aircraft-closed-loop-20261017/record.py",
+      "bytes": 3647,
+      "sha256": "5f243c3669d03fbb9fb9c985f37dc33541e847cd3eb29e779508fc07a5dde509"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/final-diff/before/src/flydrones/benchmark/contract.py",
+      "bytes": 1597,
+      "sha256": "44145adb507d671a66191aadc654461a75ba6424ad65f7c6cbd75abcde4d258f"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/final-diff/before/src/flydrones/benchmark/gateway.py",
+      "bytes": 52658,
+      "sha256": "cc129a2fc0e7bac82b7b162bd22c9679e880a02c00b8312eb668cf47376a5234"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/final-diff/before/src/flydrones/drones/mavlink.py",
+      "bytes": 13654,
+      "sha256": "d01071eda975fa239fe76e4a6840e56c70a4be2545793e858de9fe41cc3483b6"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/final-diff/before/tests/benchmark/test_camera_info_capture.py",
+      "bytes": 3427,
+      "sha256": "dcbbb0d40f2e0dad892c7943521a2a892a19b517bb47e3acb41de71b9c72c877"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/final-diff/before/tests/benchmark/test_estimated_controller_input.py",
+      "bytes": 11051,
+      "sha256": "edf1a6882d24f06fd78aadcf949eca7a77738c81e638b3d1026ff60ec66294c0"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/final-diff/before/tests/benchmark/test_publication_safety.py",
+      "bytes": 15862,
+      "sha256": "866eb988342e442027e06070146460e01e1054d89f27aaf8cc75908b62ff5e14"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/final-diff/before/tests/benchmark/test_rgb_capture.py",
+      "bytes": 3233,
+      "sha256": "28450c33629a6169e75c9acda625e24a15a38736c5e8a99f0ab1d5bf4d90d32b"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/final-diff/before/tests/benchmark/test_stationary_prelude.py",
+      "bytes": 9067,
+      "sha256": "c27ec3fb7988a7499c0f6e37c9ba9a7fb328d3ba6a18fdf0a6af2aec58dddd27"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/final-diff/before/tools/benchmark/run_episode.py",
+      "bytes": 15232,
+      "sha256": "86730dafc09a110b9a7c3d70b3c1e97ef57c33a82e6af1215a8bab0d0f615ccc"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/final-diff/completion.json",
+      "bytes": 4239,
+      "sha256": "a46bec56896511e0aef0682d9a6085ecf39dc1a128429eca97d867f335b49a59"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/final-diff/start.json",
+      "bytes": 2436,
+      "sha256": "5551329d5081c97707c711e3b22f95bae69a0604abf463e3f8a80019196dc09a"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/final-diff/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/final-diff/stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/final-lint/after/results/single-aircraft-closed-loop-20261017/record.py",
+      "bytes": 3647,
+      "sha256": "5f243c3669d03fbb9fb9c985f37dc33541e847cd3eb29e779508fc07a5dde509"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/final-lint/after/src/flydrones/benchmark/contract.py",
+      "bytes": 1597,
+      "sha256": "44145adb507d671a66191aadc654461a75ba6424ad65f7c6cbd75abcde4d258f"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/final-lint/after/src/flydrones/benchmark/gateway.py",
+      "bytes": 52658,
+      "sha256": "cc129a2fc0e7bac82b7b162bd22c9679e880a02c00b8312eb668cf47376a5234"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/final-lint/after/src/flydrones/drones/mavlink.py",
+      "bytes": 13654,
+      "sha256": "d01071eda975fa239fe76e4a6840e56c70a4be2545793e858de9fe41cc3483b6"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/final-lint/after/tests/benchmark/test_camera_info_capture.py",
+      "bytes": 3427,
+      "sha256": "dcbbb0d40f2e0dad892c7943521a2a892a19b517bb47e3acb41de71b9c72c877"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/final-lint/after/tests/benchmark/test_estimated_controller_input.py",
+      "bytes": 11051,
+      "sha256": "edf1a6882d24f06fd78aadcf949eca7a77738c81e638b3d1026ff60ec66294c0"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/final-lint/after/tests/benchmark/test_publication_safety.py",
+      "bytes": 15862,
+      "sha256": "866eb988342e442027e06070146460e01e1054d89f27aaf8cc75908b62ff5e14"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/final-lint/after/tests/benchmark/test_rgb_capture.py",
+      "bytes": 3233,
+      "sha256": "28450c33629a6169e75c9acda625e24a15a38736c5e8a99f0ab1d5bf4d90d32b"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/final-lint/after/tests/benchmark/test_stationary_prelude.py",
+      "bytes": 9067,
+      "sha256": "c27ec3fb7988a7499c0f6e37c9ba9a7fb328d3ba6a18fdf0a6af2aec58dddd27"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/final-lint/after/tools/benchmark/run_episode.py",
+      "bytes": 15232,
+      "sha256": "86730dafc09a110b9a7c3d70b3c1e97ef57c33a82e6af1215a8bab0d0f615ccc"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/final-lint/before/results/single-aircraft-closed-loop-20261017/record.py",
+      "bytes": 3647,
+      "sha256": "5f243c3669d03fbb9fb9c985f37dc33541e847cd3eb29e779508fc07a5dde509"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/final-lint/before/src/flydrones/benchmark/contract.py",
+      "bytes": 1597,
+      "sha256": "44145adb507d671a66191aadc654461a75ba6424ad65f7c6cbd75abcde4d258f"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/final-lint/before/src/flydrones/benchmark/gateway.py",
+      "bytes": 52658,
+      "sha256": "cc129a2fc0e7bac82b7b162bd22c9679e880a02c00b8312eb668cf47376a5234"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/final-lint/before/src/flydrones/drones/mavlink.py",
+      "bytes": 13654,
+      "sha256": "d01071eda975fa239fe76e4a6840e56c70a4be2545793e858de9fe41cc3483b6"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/final-lint/before/tests/benchmark/test_camera_info_capture.py",
+      "bytes": 3427,
+      "sha256": "dcbbb0d40f2e0dad892c7943521a2a892a19b517bb47e3acb41de71b9c72c877"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/final-lint/before/tests/benchmark/test_estimated_controller_input.py",
+      "bytes": 11051,
+      "sha256": "edf1a6882d24f06fd78aadcf949eca7a77738c81e638b3d1026ff60ec66294c0"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/final-lint/before/tests/benchmark/test_publication_safety.py",
+      "bytes": 15862,
+      "sha256": "866eb988342e442027e06070146460e01e1054d89f27aaf8cc75908b62ff5e14"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/final-lint/before/tests/benchmark/test_rgb_capture.py",
+      "bytes": 3233,
+      "sha256": "28450c33629a6169e75c9acda625e24a15a38736c5e8a99f0ab1d5bf4d90d32b"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/final-lint/before/tests/benchmark/test_stationary_prelude.py",
+      "bytes": 9067,
+      "sha256": "c27ec3fb7988a7499c0f6e37c9ba9a7fb328d3ba6a18fdf0a6af2aec58dddd27"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/final-lint/before/tools/benchmark/run_episode.py",
+      "bytes": 15232,
+      "sha256": "86730dafc09a110b9a7c3d70b3c1e97ef57c33a82e6af1215a8bab0d0f615ccc"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/final-lint/completion.json",
+      "bytes": 4408,
+      "sha256": "b3ed068dbdc6942a1c7fdbf1654e091504ff04464af659372c9b81616ed70836"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/final-lint/start.json",
+      "bytes": 2591,
+      "sha256": "314e888594f8917d4531f92fba11e9b83ce0f441fb018df887c947d6ecdaefb1"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/final-lint/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/final-lint/stdout",
+      "bytes": 19,
+      "sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fix-changed-line-endings.json",
+      "bytes": 250,
+      "sha256": "c1c6e3545af5b9fb1f63def2122e943cfaac71785e8a22ebb05b70115280e7fa"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fix-format/after/results/single-aircraft-closed-loop-20261017/record.py",
+      "bytes": 3647,
+      "sha256": "5f243c3669d03fbb9fb9c985f37dc33541e847cd3eb29e779508fc07a5dde509"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fix-format/after/src/flydrones/benchmark/contract.py",
+      "bytes": 1597,
+      "sha256": "44145adb507d671a66191aadc654461a75ba6424ad65f7c6cbd75abcde4d258f"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fix-format/after/src/flydrones/benchmark/gateway.py",
+      "bytes": 53284,
+      "sha256": "1e5502a8765769146db120bf9343394f4fabcefc4c28b93e6113f1ecc9a9e740"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fix-format/after/src/flydrones/drones/mavlink.py",
+      "bytes": 13835,
+      "sha256": "4d49427fcfabd9588da8bb877d48e0f4578f52349a002c704a1821948eb88066"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fix-format/after/tests/benchmark/test_camera_info_capture.py",
+      "bytes": 3427,
+      "sha256": "dcbbb0d40f2e0dad892c7943521a2a892a19b517bb47e3acb41de71b9c72c877"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fix-format/after/tests/benchmark/test_estimated_controller_input.py",
+      "bytes": 14826,
+      "sha256": "d5f3c3a7f3abb29342f605547746772e3f9da2ffccfec60f4d68a563d4540bcb"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fix-format/after/tests/benchmark/test_publication_safety.py",
+      "bytes": 15862,
+      "sha256": "866eb988342e442027e06070146460e01e1054d89f27aaf8cc75908b62ff5e14"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fix-format/after/tests/benchmark/test_rgb_capture.py",
+      "bytes": 3233,
+      "sha256": "28450c33629a6169e75c9acda625e24a15a38736c5e8a99f0ab1d5bf4d90d32b"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fix-format/after/tests/benchmark/test_stationary_prelude.py",
+      "bytes": 9067,
+      "sha256": "c27ec3fb7988a7499c0f6e37c9ba9a7fb328d3ba6a18fdf0a6af2aec58dddd27"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fix-format/after/tools/benchmark/run_episode.py",
+      "bytes": 15232,
+      "sha256": "86730dafc09a110b9a7c3d70b3c1e97ef57c33a82e6af1215a8bab0d0f615ccc"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fix-format/before/results/single-aircraft-closed-loop-20261017/record.py",
+      "bytes": 3647,
+      "sha256": "5f243c3669d03fbb9fb9c985f37dc33541e847cd3eb29e779508fc07a5dde509"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fix-format/before/src/flydrones/benchmark/contract.py",
+      "bytes": 1597,
+      "sha256": "44145adb507d671a66191aadc654461a75ba6424ad65f7c6cbd75abcde4d258f"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fix-format/before/src/flydrones/benchmark/gateway.py",
+      "bytes": 53284,
+      "sha256": "1e5502a8765769146db120bf9343394f4fabcefc4c28b93e6113f1ecc9a9e740"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fix-format/before/src/flydrones/drones/mavlink.py",
+      "bytes": 13835,
+      "sha256": "4d49427fcfabd9588da8bb877d48e0f4578f52349a002c704a1821948eb88066"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fix-format/before/tests/benchmark/test_camera_info_capture.py",
+      "bytes": 3427,
+      "sha256": "dcbbb0d40f2e0dad892c7943521a2a892a19b517bb47e3acb41de71b9c72c877"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fix-format/before/tests/benchmark/test_estimated_controller_input.py",
+      "bytes": 14727,
+      "sha256": "cfbd20e6115fb143e00ebe52be4ada5eddd0be5b302502c75cbb942ee94b7d42"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fix-format/before/tests/benchmark/test_publication_safety.py",
+      "bytes": 15862,
+      "sha256": "866eb988342e442027e06070146460e01e1054d89f27aaf8cc75908b62ff5e14"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fix-format/before/tests/benchmark/test_rgb_capture.py",
+      "bytes": 3233,
+      "sha256": "28450c33629a6169e75c9acda625e24a15a38736c5e8a99f0ab1d5bf4d90d32b"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fix-format/before/tests/benchmark/test_stationary_prelude.py",
+      "bytes": 9067,
+      "sha256": "c27ec3fb7988a7499c0f6e37c9ba9a7fb328d3ba6a18fdf0a6af2aec58dddd27"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fix-format/before/tools/benchmark/run_episode.py",
+      "bytes": 15232,
+      "sha256": "86730dafc09a110b9a7c3d70b3c1e97ef57c33a82e6af1215a8bab0d0f615ccc"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fix-format/completion.json",
+      "bytes": 4242,
+      "sha256": "102910679a0dd748623e3f33db8d2dd20c391fa744b5646c2b680b4e2224f72e"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fix-format/start.json",
+      "bytes": 2426,
+      "sha256": "2b862dbd726a81fb7f153a98d587c010056422a4d4037ef3fec3cbefb713706d"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fix-format/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fix-format/stdout",
+      "bytes": 19,
+      "sha256": "413a709001976657cb743636fd34e48fc41d8d302d665460d3f874b3313da127"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-diff-before-eol/after/results/single-aircraft-closed-loop-20261017/record.py",
+      "bytes": 3647,
+      "sha256": "5f243c3669d03fbb9fb9c985f37dc33541e847cd3eb29e779508fc07a5dde509"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-diff-before-eol/after/src/flydrones/benchmark/contract.py",
+      "bytes": 1597,
+      "sha256": "44145adb507d671a66191aadc654461a75ba6424ad65f7c6cbd75abcde4d258f"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-diff-before-eol/after/src/flydrones/benchmark/gateway.py",
+      "bytes": 53284,
+      "sha256": "1e5502a8765769146db120bf9343394f4fabcefc4c28b93e6113f1ecc9a9e740"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-diff-before-eol/after/src/flydrones/drones/mavlink.py",
+      "bytes": 13841,
+      "sha256": "3851cf9e05ae05b30886d2da5edbba6cd4293eb15a98abf284f8182aed042d51"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-diff-before-eol/after/tests/benchmark/test_camera_info_capture.py",
+      "bytes": 3427,
+      "sha256": "dcbbb0d40f2e0dad892c7943521a2a892a19b517bb47e3acb41de71b9c72c877"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-diff-before-eol/after/tests/benchmark/test_estimated_controller_input.py",
+      "bytes": 14297,
+      "sha256": "a0f9b60c67d15ced0b0792f257e502499a09fe2ba0457ba227cf2bf5b0d8f93c"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-diff-before-eol/after/tests/benchmark/test_publication_safety.py",
+      "bytes": 15862,
+      "sha256": "866eb988342e442027e06070146460e01e1054d89f27aaf8cc75908b62ff5e14"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-diff-before-eol/after/tests/benchmark/test_rgb_capture.py",
+      "bytes": 3233,
+      "sha256": "28450c33629a6169e75c9acda625e24a15a38736c5e8a99f0ab1d5bf4d90d32b"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-diff-before-eol/after/tests/benchmark/test_stationary_prelude.py",
+      "bytes": 9067,
+      "sha256": "c27ec3fb7988a7499c0f6e37c9ba9a7fb328d3ba6a18fdf0a6af2aec58dddd27"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-diff-before-eol/after/tools/benchmark/run_episode.py",
+      "bytes": 15232,
+      "sha256": "86730dafc09a110b9a7c3d70b3c1e97ef57c33a82e6af1215a8bab0d0f615ccc"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-diff-before-eol/before/results/single-aircraft-closed-loop-20261017/record.py",
+      "bytes": 3647,
+      "sha256": "5f243c3669d03fbb9fb9c985f37dc33541e847cd3eb29e779508fc07a5dde509"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-diff-before-eol/before/src/flydrones/benchmark/contract.py",
+      "bytes": 1597,
+      "sha256": "44145adb507d671a66191aadc654461a75ba6424ad65f7c6cbd75abcde4d258f"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-diff-before-eol/before/src/flydrones/benchmark/gateway.py",
+      "bytes": 53284,
+      "sha256": "1e5502a8765769146db120bf9343394f4fabcefc4c28b93e6113f1ecc9a9e740"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-diff-before-eol/before/src/flydrones/drones/mavlink.py",
+      "bytes": 13841,
+      "sha256": "3851cf9e05ae05b30886d2da5edbba6cd4293eb15a98abf284f8182aed042d51"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-diff-before-eol/before/tests/benchmark/test_camera_info_capture.py",
+      "bytes": 3427,
+      "sha256": "dcbbb0d40f2e0dad892c7943521a2a892a19b517bb47e3acb41de71b9c72c877"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-diff-before-eol/before/tests/benchmark/test_estimated_controller_input.py",
+      "bytes": 14297,
+      "sha256": "a0f9b60c67d15ced0b0792f257e502499a09fe2ba0457ba227cf2bf5b0d8f93c"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-diff-before-eol/before/tests/benchmark/test_publication_safety.py",
+      "bytes": 15862,
+      "sha256": "866eb988342e442027e06070146460e01e1054d89f27aaf8cc75908b62ff5e14"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-diff-before-eol/before/tests/benchmark/test_rgb_capture.py",
+      "bytes": 3233,
+      "sha256": "28450c33629a6169e75c9acda625e24a15a38736c5e8a99f0ab1d5bf4d90d32b"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-diff-before-eol/before/tests/benchmark/test_stationary_prelude.py",
+      "bytes": 9067,
+      "sha256": "c27ec3fb7988a7499c0f6e37c9ba9a7fb328d3ba6a18fdf0a6af2aec58dddd27"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-diff-before-eol/before/tools/benchmark/run_episode.py",
+      "bytes": 15232,
+      "sha256": "86730dafc09a110b9a7c3d70b3c1e97ef57c33a82e6af1215a8bab0d0f615ccc"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-diff-before-eol/completion.json",
+      "bytes": 4253,
+      "sha256": "aedee1a18ba24b563aa1d57c124366f78fa6f2cceb6df3e6791ed06d190161fc"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-diff-before-eol/start.json",
+      "bytes": 2436,
+      "sha256": "427058ed91a556db96d026cfbc5eed8b90ec83b7210a0c543d02d7ea9e8cd963"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-diff-before-eol/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-diff-before-eol/stdout",
+      "bytes": 693,
+      "sha256": "0516d5193bd3d0c698fa7c098eb39b8e7b0bceafc61d988d15152a6229a2f232"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-final/after/results/single-aircraft-closed-loop-20261017/record.py",
+      "bytes": 3647,
+      "sha256": "5f243c3669d03fbb9fb9c985f37dc33541e847cd3eb29e779508fc07a5dde509"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-final/after/src/flydrones/benchmark/contract.py",
+      "bytes": 1597,
+      "sha256": "44145adb507d671a66191aadc654461a75ba6424ad65f7c6cbd75abcde4d258f"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-final/after/src/flydrones/benchmark/gateway.py",
+      "bytes": 53284,
+      "sha256": "1e5502a8765769146db120bf9343394f4fabcefc4c28b93e6113f1ecc9a9e740"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-final/after/src/flydrones/drones/mavlink.py",
+      "bytes": 13835,
+      "sha256": "4d49427fcfabd9588da8bb877d48e0f4578f52349a002c704a1821948eb88066"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-final/after/tests/benchmark/test_camera_info_capture.py",
+      "bytes": 3427,
+      "sha256": "dcbbb0d40f2e0dad892c7943521a2a892a19b517bb47e3acb41de71b9c72c877"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-final/after/tests/benchmark/test_estimated_controller_input.py",
+      "bytes": 14826,
+      "sha256": "d5f3c3a7f3abb29342f605547746772e3f9da2ffccfec60f4d68a563d4540bcb"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-final/after/tests/benchmark/test_publication_safety.py",
+      "bytes": 15862,
+      "sha256": "866eb988342e442027e06070146460e01e1054d89f27aaf8cc75908b62ff5e14"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-final/after/tests/benchmark/test_rgb_capture.py",
+      "bytes": 3233,
+      "sha256": "28450c33629a6169e75c9acda625e24a15a38736c5e8a99f0ab1d5bf4d90d32b"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-final/after/tests/benchmark/test_stationary_prelude.py",
+      "bytes": 9067,
+      "sha256": "c27ec3fb7988a7499c0f6e37c9ba9a7fb328d3ba6a18fdf0a6af2aec58dddd27"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-final/after/tools/benchmark/run_episode.py",
+      "bytes": 15232,
+      "sha256": "86730dafc09a110b9a7c3d70b3c1e97ef57c33a82e6af1215a8bab0d0f615ccc"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-final/before/results/single-aircraft-closed-loop-20261017/record.py",
+      "bytes": 3647,
+      "sha256": "5f243c3669d03fbb9fb9c985f37dc33541e847cd3eb29e779508fc07a5dde509"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-final/before/src/flydrones/benchmark/contract.py",
+      "bytes": 1597,
+      "sha256": "44145adb507d671a66191aadc654461a75ba6424ad65f7c6cbd75abcde4d258f"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-final/before/src/flydrones/benchmark/gateway.py",
+      "bytes": 53284,
+      "sha256": "1e5502a8765769146db120bf9343394f4fabcefc4c28b93e6113f1ecc9a9e740"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-final/before/src/flydrones/drones/mavlink.py",
+      "bytes": 13835,
+      "sha256": "4d49427fcfabd9588da8bb877d48e0f4578f52349a002c704a1821948eb88066"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-final/before/tests/benchmark/test_camera_info_capture.py",
+      "bytes": 3427,
+      "sha256": "dcbbb0d40f2e0dad892c7943521a2a892a19b517bb47e3acb41de71b9c72c877"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-final/before/tests/benchmark/test_estimated_controller_input.py",
+      "bytes": 14826,
+      "sha256": "d5f3c3a7f3abb29342f605547746772e3f9da2ffccfec60f4d68a563d4540bcb"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-final/before/tests/benchmark/test_publication_safety.py",
+      "bytes": 15862,
+      "sha256": "866eb988342e442027e06070146460e01e1054d89f27aaf8cc75908b62ff5e14"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-final/before/tests/benchmark/test_rgb_capture.py",
+      "bytes": 3233,
+      "sha256": "28450c33629a6169e75c9acda625e24a15a38736c5e8a99f0ab1d5bf4d90d32b"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-final/before/tests/benchmark/test_stationary_prelude.py",
+      "bytes": 9067,
+      "sha256": "c27ec3fb7988a7499c0f6e37c9ba9a7fb328d3ba6a18fdf0a6af2aec58dddd27"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-final/before/tools/benchmark/run_episode.py",
+      "bytes": 15232,
+      "sha256": "86730dafc09a110b9a7c3d70b3c1e97ef57c33a82e6af1215a8bab0d0f615ccc"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-final/completion.json",
+      "bytes": 9328,
+      "sha256": "4c361de00cef65b241a3b0a7fb82a8192a074e22aad48a5810d2f34a80cee364"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-final/fixtures/test_backend_opt_in_records_ca0/episode/rgb-capture-manifest.json",
+      "bytes": 307,
+      "sha256": "671925b43c81e1e28a7b710ded0c17f93c21c67c17054065a497c259cf66a607"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-final/fixtures/test_backend_opt_in_records_ca0/episode/rgb-frames/2000000005.ppm",
+      "bytes": 17,
+      "sha256": "3d95bc7cbad6b55a54cef70147d5b6738687bfd7f15eb2d83025f4de601fce35"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-final/fixtures/test_backend_records_gazebo_ca0/episode/camera-info.json",
+      "bytes": 673,
+      "sha256": "963ef599e1875c533c0fe3e45b9ad5a4ba1eb1346743d4d65031c8b57dfa886d"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-final/fixtures/test_backend_records_gazebo_ca0/episode/camera-info.pb",
+      "bytes": 15,
+      "sha256": "f85eb3c993caa6708b433498476faca08d23bdabb178acb1185443b6f157a278"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-final/fixtures/test_camera_info_capture_fails0/changed/camera-info.json",
+      "bytes": 658,
+      "sha256": "9c2cdb317e533432b09f7a2303aceb8fad86625f78da0f60182b9e65e0d442cf"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-final/fixtures/test_camera_info_capture_fails0/changed/camera-info.pb",
+      "bytes": 9,
+      "sha256": "3dbb3963d11aa418de8b61f846c3dbd5af43b40d252842adb823f90936fe6920"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-final/fixtures/test_camera_info_capture_fails0/empty/camera-info.json",
+      "bytes": 185,
+      "sha256": "e22c713ff7b1b5ec4e4807a00a8ab4185e61f3f2f63384973002b8bcccb8d665"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-final/fixtures/test_camera_info_recorder_pres0/camera-info.json",
+      "bytes": 673,
+      "sha256": "77fe3d1f0e4150b4831fbbc611ee209aec5cbbeec4198c976f2056e287a342ef"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-final/fixtures/test_camera_info_recorder_pres0/camera-info.pb",
+      "bytes": 10,
+      "sha256": "1cf58e6ecb8b6882e6f1be7179f76bfd0b629a93a491330dadef630dda6347d8"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-final/fixtures/test_dev_texture_copy_requires0/output/ground_albedo.png",
+      "bytes": 6,
+      "sha256": "dbb3b50e59c7326b2ff7d6619430257b9188cf3c0b8d778f7275ffd3bf4998a2"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-final/fixtures/test_dev_texture_copy_requires0/output/obstacle_albedo.png",
+      "bytes": 8,
+      "sha256": "b42a5cb0b08bd6351b3b51d80aeec455183cea4a80d4bb18b38959d472408e84"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-final/fixtures/test_dev_texture_copy_requires0/output/texture_input_manifest.json",
+      "bytes": 510,
+      "sha256": "441e61a8f592f80f53aab05a2ef45955fbf2f4fd9d8c0cf9f80c44fcfca4a42f"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-final/fixtures/test_dev_texture_copy_requires0/texture-source/ground_albedo.png",
+      "bytes": 6,
+      "sha256": "dbb3b50e59c7326b2ff7d6619430257b9188cf3c0b8d778f7275ffd3bf4998a2"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-final/fixtures/test_dev_texture_copy_requires0/texture-source/obstacle_albedo.png",
+      "bytes": 8,
+      "sha256": "b42a5cb0b08bd6351b3b51d80aeec455183cea4a80d4bb18b38959d472408e84"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-final/fixtures/test_episode_output_rejects_an0/episode/started.json",
+      "bytes": 20,
+      "sha256": "ffaf36aa91269855595ffbf45270aef130cfd54abb727449891e80c1e24c0246"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-final/fixtures/test_rgb_manifest_rechecks_sav0/rgb-capture-manifest.json",
+      "bytes": 291,
+      "sha256": "b938d4c9c380bf288bfb68f9bfd8c5630cd5a338e02bd6fc4cd9e45ec4bf1c3b"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-final/fixtures/test_rgb_manifest_rechecks_sav0/rgb-frames/10.ppm",
+      "bytes": 7,
+      "sha256": "d67e2e944994496c8d8ec76eed0cf9f09679448d584b532bebf941852a37f5ed"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-final/fixtures/test_rgb_recorder_counts_repea0/rgb-capture-manifest.json",
+      "bytes": 293,
+      "sha256": "fd741026ac20000635b672f44beab78a190d4e3ac4c96a4e0e4a2a88c3e722bb"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-final/fixtures/test_rgb_recorder_counts_repea0/rgb-frames/100.ppm",
+      "bytes": 14,
+      "sha256": "3ff6c5463ace13c0f26a735ac1af2bb96ab8a9ba1cb4398359cf2466f63a4d1b"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-final/fixtures/test_rgb_recorder_preserves_ra0/rgb-capture-manifest.json",
+      "bytes": 307,
+      "sha256": "888f699c1cbeff2b4f22390b7b8082b8ec53fe8c5ce833f98a8c0f056842442a"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-final/fixtures/test_rgb_recorder_preserves_ra0/rgb-frames/1000000000.ppm",
+      "bytes": 17,
+      "sha256": "3d95bc7cbad6b55a54cef70147d5b6738687bfd7f15eb2d83025f4de601fce35"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-final/fixtures/test_rgb_recorder_rejects_inva0/rgb-capture-manifest.json",
+      "bytes": 289,
+      "sha256": "3deef6dcc62355920658e110b9690f663b60b35711658059de41084533b8fc74"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-final/fixtures/test_rgb_recorder_rejects_inva0/rgb-frames/1.ppm",
+      "bytes": 14,
+      "sha256": "3ff6c5463ace13c0f26a735ac1af2bb96ab8a9ba1cb4398359cf2466f63a4d1b"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-final/start.json",
+      "bytes": 2833,
+      "sha256": "ed425d0b93166e131ca36b88b01f4672d66519b0faea7a3aa267ffbc72cec219"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-final/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-final/stdout",
+      "bytes": 183,
+      "sha256": "a0b1e1e7eb53965a269e334549907baee2851a95c67a84c8406a84e30a4e95d6"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-final-diff/after/results/single-aircraft-closed-loop-20261017/record.py",
+      "bytes": 3647,
+      "sha256": "5f243c3669d03fbb9fb9c985f37dc33541e847cd3eb29e779508fc07a5dde509"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-final-diff/after/src/flydrones/benchmark/contract.py",
+      "bytes": 1597,
+      "sha256": "44145adb507d671a66191aadc654461a75ba6424ad65f7c6cbd75abcde4d258f"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-final-diff/after/src/flydrones/benchmark/gateway.py",
+      "bytes": 53284,
+      "sha256": "1e5502a8765769146db120bf9343394f4fabcefc4c28b93e6113f1ecc9a9e740"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-final-diff/after/src/flydrones/drones/mavlink.py",
+      "bytes": 13835,
+      "sha256": "4d49427fcfabd9588da8bb877d48e0f4578f52349a002c704a1821948eb88066"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-final-diff/after/tests/benchmark/test_camera_info_capture.py",
+      "bytes": 3427,
+      "sha256": "dcbbb0d40f2e0dad892c7943521a2a892a19b517bb47e3acb41de71b9c72c877"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-final-diff/after/tests/benchmark/test_estimated_controller_input.py",
+      "bytes": 14826,
+      "sha256": "d5f3c3a7f3abb29342f605547746772e3f9da2ffccfec60f4d68a563d4540bcb"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-final-diff/after/tests/benchmark/test_publication_safety.py",
+      "bytes": 15862,
+      "sha256": "866eb988342e442027e06070146460e01e1054d89f27aaf8cc75908b62ff5e14"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-final-diff/after/tests/benchmark/test_rgb_capture.py",
+      "bytes": 3233,
+      "sha256": "28450c33629a6169e75c9acda625e24a15a38736c5e8a99f0ab1d5bf4d90d32b"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-final-diff/after/tests/benchmark/test_stationary_prelude.py",
+      "bytes": 9067,
+      "sha256": "c27ec3fb7988a7499c0f6e37c9ba9a7fb328d3ba6a18fdf0a6af2aec58dddd27"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-final-diff/after/tools/benchmark/run_episode.py",
+      "bytes": 15232,
+      "sha256": "86730dafc09a110b9a7c3d70b3c1e97ef57c33a82e6af1215a8bab0d0f615ccc"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-final-diff/before/results/single-aircraft-closed-loop-20261017/record.py",
+      "bytes": 3647,
+      "sha256": "5f243c3669d03fbb9fb9c985f37dc33541e847cd3eb29e779508fc07a5dde509"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-final-diff/before/src/flydrones/benchmark/contract.py",
+      "bytes": 1597,
+      "sha256": "44145adb507d671a66191aadc654461a75ba6424ad65f7c6cbd75abcde4d258f"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-final-diff/before/src/flydrones/benchmark/gateway.py",
+      "bytes": 53284,
+      "sha256": "1e5502a8765769146db120bf9343394f4fabcefc4c28b93e6113f1ecc9a9e740"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-final-diff/before/src/flydrones/drones/mavlink.py",
+      "bytes": 13835,
+      "sha256": "4d49427fcfabd9588da8bb877d48e0f4578f52349a002c704a1821948eb88066"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-final-diff/before/tests/benchmark/test_camera_info_capture.py",
+      "bytes": 3427,
+      "sha256": "dcbbb0d40f2e0dad892c7943521a2a892a19b517bb47e3acb41de71b9c72c877"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-final-diff/before/tests/benchmark/test_estimated_controller_input.py",
+      "bytes": 14826,
+      "sha256": "d5f3c3a7f3abb29342f605547746772e3f9da2ffccfec60f4d68a563d4540bcb"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-final-diff/before/tests/benchmark/test_publication_safety.py",
+      "bytes": 15862,
+      "sha256": "866eb988342e442027e06070146460e01e1054d89f27aaf8cc75908b62ff5e14"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-final-diff/before/tests/benchmark/test_rgb_capture.py",
+      "bytes": 3233,
+      "sha256": "28450c33629a6169e75c9acda625e24a15a38736c5e8a99f0ab1d5bf4d90d32b"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-final-diff/before/tests/benchmark/test_stationary_prelude.py",
+      "bytes": 9067,
+      "sha256": "c27ec3fb7988a7499c0f6e37c9ba9a7fb328d3ba6a18fdf0a6af2aec58dddd27"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-final-diff/before/tools/benchmark/run_episode.py",
+      "bytes": 15232,
+      "sha256": "86730dafc09a110b9a7c3d70b3c1e97ef57c33a82e6af1215a8bab0d0f615ccc"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-final-diff/completion.json",
+      "bytes": 4252,
+      "sha256": "9e803a09ce5e4b485c63c3e9b1398c8e9a92002eb8d7540bcad9386590b4d720"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-final-diff/start.json",
+      "bytes": 2436,
+      "sha256": "9b8f21cc97d4c7ca1b079096f47164af37adbf6779336291e05592a18ccf9fcb"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-final-diff/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-final-diff/stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-final-lint/after/results/single-aircraft-closed-loop-20261017/record.py",
+      "bytes": 3647,
+      "sha256": "5f243c3669d03fbb9fb9c985f37dc33541e847cd3eb29e779508fc07a5dde509"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-final-lint/after/src/flydrones/benchmark/contract.py",
+      "bytes": 1597,
+      "sha256": "44145adb507d671a66191aadc654461a75ba6424ad65f7c6cbd75abcde4d258f"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-final-lint/after/src/flydrones/benchmark/gateway.py",
+      "bytes": 53284,
+      "sha256": "1e5502a8765769146db120bf9343394f4fabcefc4c28b93e6113f1ecc9a9e740"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-final-lint/after/src/flydrones/drones/mavlink.py",
+      "bytes": 13835,
+      "sha256": "4d49427fcfabd9588da8bb877d48e0f4578f52349a002c704a1821948eb88066"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-final-lint/after/tests/benchmark/test_camera_info_capture.py",
+      "bytes": 3427,
+      "sha256": "dcbbb0d40f2e0dad892c7943521a2a892a19b517bb47e3acb41de71b9c72c877"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-final-lint/after/tests/benchmark/test_estimated_controller_input.py",
+      "bytes": 14826,
+      "sha256": "d5f3c3a7f3abb29342f605547746772e3f9da2ffccfec60f4d68a563d4540bcb"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-final-lint/after/tests/benchmark/test_publication_safety.py",
+      "bytes": 15862,
+      "sha256": "866eb988342e442027e06070146460e01e1054d89f27aaf8cc75908b62ff5e14"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-final-lint/after/tests/benchmark/test_rgb_capture.py",
+      "bytes": 3233,
+      "sha256": "28450c33629a6169e75c9acda625e24a15a38736c5e8a99f0ab1d5bf4d90d32b"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-final-lint/after/tests/benchmark/test_stationary_prelude.py",
+      "bytes": 9067,
+      "sha256": "c27ec3fb7988a7499c0f6e37c9ba9a7fb328d3ba6a18fdf0a6af2aec58dddd27"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-final-lint/after/tools/benchmark/run_episode.py",
+      "bytes": 15232,
+      "sha256": "86730dafc09a110b9a7c3d70b3c1e97ef57c33a82e6af1215a8bab0d0f615ccc"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-final-lint/before/results/single-aircraft-closed-loop-20261017/record.py",
+      "bytes": 3647,
+      "sha256": "5f243c3669d03fbb9fb9c985f37dc33541e847cd3eb29e779508fc07a5dde509"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-final-lint/before/src/flydrones/benchmark/contract.py",
+      "bytes": 1597,
+      "sha256": "44145adb507d671a66191aadc654461a75ba6424ad65f7c6cbd75abcde4d258f"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-final-lint/before/src/flydrones/benchmark/gateway.py",
+      "bytes": 53284,
+      "sha256": "1e5502a8765769146db120bf9343394f4fabcefc4c28b93e6113f1ecc9a9e740"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-final-lint/before/src/flydrones/drones/mavlink.py",
+      "bytes": 13835,
+      "sha256": "4d49427fcfabd9588da8bb877d48e0f4578f52349a002c704a1821948eb88066"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-final-lint/before/tests/benchmark/test_camera_info_capture.py",
+      "bytes": 3427,
+      "sha256": "dcbbb0d40f2e0dad892c7943521a2a892a19b517bb47e3acb41de71b9c72c877"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-final-lint/before/tests/benchmark/test_estimated_controller_input.py",
+      "bytes": 14826,
+      "sha256": "d5f3c3a7f3abb29342f605547746772e3f9da2ffccfec60f4d68a563d4540bcb"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-final-lint/before/tests/benchmark/test_publication_safety.py",
+      "bytes": 15862,
+      "sha256": "866eb988342e442027e06070146460e01e1054d89f27aaf8cc75908b62ff5e14"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-final-lint/before/tests/benchmark/test_rgb_capture.py",
+      "bytes": 3233,
+      "sha256": "28450c33629a6169e75c9acda625e24a15a38736c5e8a99f0ab1d5bf4d90d32b"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-final-lint/before/tests/benchmark/test_stationary_prelude.py",
+      "bytes": 9067,
+      "sha256": "c27ec3fb7988a7499c0f6e37c9ba9a7fb328d3ba6a18fdf0a6af2aec58dddd27"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-final-lint/before/tools/benchmark/run_episode.py",
+      "bytes": 15232,
+      "sha256": "86730dafc09a110b9a7c3d70b3c1e97ef57c33a82e6af1215a8bab0d0f615ccc"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-final-lint/completion.json",
+      "bytes": 4407,
+      "sha256": "c39bce176244485430c9e02e6de7300b5f50a1aa63644504ac00245ed9f41286"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-final-lint/start.json",
+      "bytes": 2591,
+      "sha256": "739859b113821fa3474bc8105fd0e0afcb127c5bd7d190b0d5794d30346f10c9"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-final-lint/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-final-lint/stdout",
+      "bytes": 19,
+      "sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-lint/after/results/single-aircraft-closed-loop-20261017/record.py",
+      "bytes": 3647,
+      "sha256": "5f243c3669d03fbb9fb9c985f37dc33541e847cd3eb29e779508fc07a5dde509"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-lint/after/src/flydrones/benchmark/contract.py",
+      "bytes": 1597,
+      "sha256": "44145adb507d671a66191aadc654461a75ba6424ad65f7c6cbd75abcde4d258f"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-lint/after/src/flydrones/benchmark/gateway.py",
+      "bytes": 53284,
+      "sha256": "1e5502a8765769146db120bf9343394f4fabcefc4c28b93e6113f1ecc9a9e740"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-lint/after/src/flydrones/drones/mavlink.py",
+      "bytes": 13841,
+      "sha256": "3851cf9e05ae05b30886d2da5edbba6cd4293eb15a98abf284f8182aed042d51"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-lint/after/tests/benchmark/test_camera_info_capture.py",
+      "bytes": 3427,
+      "sha256": "dcbbb0d40f2e0dad892c7943521a2a892a19b517bb47e3acb41de71b9c72c877"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-lint/after/tests/benchmark/test_estimated_controller_input.py",
+      "bytes": 14297,
+      "sha256": "a0f9b60c67d15ced0b0792f257e502499a09fe2ba0457ba227cf2bf5b0d8f93c"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-lint/after/tests/benchmark/test_publication_safety.py",
+      "bytes": 15862,
+      "sha256": "866eb988342e442027e06070146460e01e1054d89f27aaf8cc75908b62ff5e14"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-lint/after/tests/benchmark/test_rgb_capture.py",
+      "bytes": 3233,
+      "sha256": "28450c33629a6169e75c9acda625e24a15a38736c5e8a99f0ab1d5bf4d90d32b"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-lint/after/tests/benchmark/test_stationary_prelude.py",
+      "bytes": 9067,
+      "sha256": "c27ec3fb7988a7499c0f6e37c9ba9a7fb328d3ba6a18fdf0a6af2aec58dddd27"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-lint/after/tools/benchmark/run_episode.py",
+      "bytes": 15232,
+      "sha256": "86730dafc09a110b9a7c3d70b3c1e97ef57c33a82e6af1215a8bab0d0f615ccc"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-lint/before/results/single-aircraft-closed-loop-20261017/record.py",
+      "bytes": 3647,
+      "sha256": "5f243c3669d03fbb9fb9c985f37dc33541e847cd3eb29e779508fc07a5dde509"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-lint/before/src/flydrones/benchmark/contract.py",
+      "bytes": 1597,
+      "sha256": "44145adb507d671a66191aadc654461a75ba6424ad65f7c6cbd75abcde4d258f"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-lint/before/src/flydrones/benchmark/gateway.py",
+      "bytes": 53284,
+      "sha256": "1e5502a8765769146db120bf9343394f4fabcefc4c28b93e6113f1ecc9a9e740"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-lint/before/src/flydrones/drones/mavlink.py",
+      "bytes": 13841,
+      "sha256": "3851cf9e05ae05b30886d2da5edbba6cd4293eb15a98abf284f8182aed042d51"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-lint/before/tests/benchmark/test_camera_info_capture.py",
+      "bytes": 3427,
+      "sha256": "dcbbb0d40f2e0dad892c7943521a2a892a19b517bb47e3acb41de71b9c72c877"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-lint/before/tests/benchmark/test_estimated_controller_input.py",
+      "bytes": 14297,
+      "sha256": "a0f9b60c67d15ced0b0792f257e502499a09fe2ba0457ba227cf2bf5b0d8f93c"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-lint/before/tests/benchmark/test_publication_safety.py",
+      "bytes": 15862,
+      "sha256": "866eb988342e442027e06070146460e01e1054d89f27aaf8cc75908b62ff5e14"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-lint/before/tests/benchmark/test_rgb_capture.py",
+      "bytes": 3233,
+      "sha256": "28450c33629a6169e75c9acda625e24a15a38736c5e8a99f0ab1d5bf4d90d32b"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-lint/before/tests/benchmark/test_stationary_prelude.py",
+      "bytes": 9067,
+      "sha256": "c27ec3fb7988a7499c0f6e37c9ba9a7fb328d3ba6a18fdf0a6af2aec58dddd27"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-lint/before/tools/benchmark/run_episode.py",
+      "bytes": 15232,
+      "sha256": "86730dafc09a110b9a7c3d70b3c1e97ef57c33a82e6af1215a8bab0d0f615ccc"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-lint/completion.json",
+      "bytes": 4408,
+      "sha256": "a3068cf8249b43a6cc7c2826dc8b651e61e052b9474f5ef33624a60f401f9941"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-lint/start.json",
+      "bytes": 2591,
+      "sha256": "ff95d32677f19594bf4ee054cbe78c3b0d538c99d9affd0b4e0b42e6a696c490"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-lint/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/fixed-lint/stdout",
+      "bytes": 19,
+      "sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/format-new-test/after/results/single-aircraft-closed-loop-20261017/record.py",
+      "bytes": 3647,
+      "sha256": "5f243c3669d03fbb9fb9c985f37dc33541e847cd3eb29e779508fc07a5dde509"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/format-new-test/after/src/flydrones/benchmark/contract.py",
+      "bytes": 1597,
+      "sha256": "44145adb507d671a66191aadc654461a75ba6424ad65f7c6cbd75abcde4d258f"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/format-new-test/after/src/flydrones/benchmark/gateway.py",
+      "bytes": 52658,
+      "sha256": "cc129a2fc0e7bac82b7b162bd22c9679e880a02c00b8312eb668cf47376a5234"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/format-new-test/after/src/flydrones/drones/mavlink.py",
+      "bytes": 13654,
+      "sha256": "d01071eda975fa239fe76e4a6840e56c70a4be2545793e858de9fe41cc3483b6"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/format-new-test/after/tests/benchmark/test_camera_info_capture.py",
+      "bytes": 3427,
+      "sha256": "dcbbb0d40f2e0dad892c7943521a2a892a19b517bb47e3acb41de71b9c72c877"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/format-new-test/after/tests/benchmark/test_estimated_controller_input.py",
+      "bytes": 11051,
+      "sha256": "edf1a6882d24f06fd78aadcf949eca7a77738c81e638b3d1026ff60ec66294c0"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/format-new-test/after/tests/benchmark/test_publication_safety.py",
+      "bytes": 15862,
+      "sha256": "866eb988342e442027e06070146460e01e1054d89f27aaf8cc75908b62ff5e14"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/format-new-test/after/tests/benchmark/test_rgb_capture.py",
+      "bytes": 3233,
+      "sha256": "28450c33629a6169e75c9acda625e24a15a38736c5e8a99f0ab1d5bf4d90d32b"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/format-new-test/after/tests/benchmark/test_stationary_prelude.py",
+      "bytes": 9067,
+      "sha256": "c27ec3fb7988a7499c0f6e37c9ba9a7fb328d3ba6a18fdf0a6af2aec58dddd27"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/format-new-test/after/tools/benchmark/run_episode.py",
+      "bytes": 15232,
+      "sha256": "86730dafc09a110b9a7c3d70b3c1e97ef57c33a82e6af1215a8bab0d0f615ccc"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/format-new-test/before/results/single-aircraft-closed-loop-20261017/record.py",
+      "bytes": 3647,
+      "sha256": "5f243c3669d03fbb9fb9c985f37dc33541e847cd3eb29e779508fc07a5dde509"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/format-new-test/before/src/flydrones/benchmark/contract.py",
+      "bytes": 1597,
+      "sha256": "44145adb507d671a66191aadc654461a75ba6424ad65f7c6cbd75abcde4d258f"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/format-new-test/before/src/flydrones/benchmark/gateway.py",
+      "bytes": 52658,
+      "sha256": "cc129a2fc0e7bac82b7b162bd22c9679e880a02c00b8312eb668cf47376a5234"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/format-new-test/before/src/flydrones/drones/mavlink.py",
+      "bytes": 13654,
+      "sha256": "d01071eda975fa239fe76e4a6840e56c70a4be2545793e858de9fe41cc3483b6"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/format-new-test/before/tests/benchmark/test_camera_info_capture.py",
+      "bytes": 3427,
+      "sha256": "dcbbb0d40f2e0dad892c7943521a2a892a19b517bb47e3acb41de71b9c72c877"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/format-new-test/before/tests/benchmark/test_estimated_controller_input.py",
+      "bytes": 10788,
+      "sha256": "0b6e6a6942d7d3781a3654216d109f138e65f59afc25fec5bff8d46a0245dca4"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/format-new-test/before/tests/benchmark/test_publication_safety.py",
+      "bytes": 15862,
+      "sha256": "866eb988342e442027e06070146460e01e1054d89f27aaf8cc75908b62ff5e14"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/format-new-test/before/tests/benchmark/test_rgb_capture.py",
+      "bytes": 3233,
+      "sha256": "28450c33629a6169e75c9acda625e24a15a38736c5e8a99f0ab1d5bf4d90d32b"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/format-new-test/before/tests/benchmark/test_stationary_prelude.py",
+      "bytes": 9067,
+      "sha256": "c27ec3fb7988a7499c0f6e37c9ba9a7fb328d3ba6a18fdf0a6af2aec58dddd27"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/format-new-test/before/tools/benchmark/run_episode.py",
+      "bytes": 15232,
+      "sha256": "86730dafc09a110b9a7c3d70b3c1e97ef57c33a82e6af1215a8bab0d0f615ccc"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/format-new-test/completion.json",
+      "bytes": 4243,
+      "sha256": "0bf945f08ce95211bb42144bf52ce94d2d38bd54d755f4fcf57b909665c81a61"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/format-new-test/start.json",
+      "bytes": 2426,
+      "sha256": "30c3512b0b55abb171925c0362f79a14fc0752aef3e491f5f0707d54b2432979"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/format-new-test/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/format-new-test/stdout",
+      "bytes": 19,
+      "sha256": "413a709001976657cb743636fd34e48fc41d8d302d665460d3f874b3313da127"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/installed-snapshot-command.json",
+      "bytes": 2390,
+      "sha256": "8ad85e8c49438b4866fe053e00b07703403ba9193e15a97078f8c8561618f18d"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/installed-snapshot.stderr",
+      "bytes": 132,
+      "sha256": "b280c454d6f559e56eb3f5ed39f3ba084b8d1744a3ff7fe016b21ff86dea1aca"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/lint-after/after/results/single-aircraft-closed-loop-20261017/record.py",
+      "bytes": 3647,
+      "sha256": "5f243c3669d03fbb9fb9c985f37dc33541e847cd3eb29e779508fc07a5dde509"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/lint-after/after/src/flydrones/benchmark/contract.py",
+      "bytes": 1597,
+      "sha256": "44145adb507d671a66191aadc654461a75ba6424ad65f7c6cbd75abcde4d258f"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/lint-after/after/src/flydrones/benchmark/gateway.py",
+      "bytes": 52658,
+      "sha256": "cc129a2fc0e7bac82b7b162bd22c9679e880a02c00b8312eb668cf47376a5234"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/lint-after/after/src/flydrones/drones/mavlink.py",
+      "bytes": 13662,
+      "sha256": "d1593c42d477ef3b4481c486202201bdc2318e893b672f3631cb8b6ad6277f31"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/lint-after/after/tests/benchmark/test_camera_info_capture.py",
+      "bytes": 3427,
+      "sha256": "dcbbb0d40f2e0dad892c7943521a2a892a19b517bb47e3acb41de71b9c72c877"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/lint-after/after/tests/benchmark/test_estimated_controller_input.py",
+      "bytes": 10788,
+      "sha256": "0b6e6a6942d7d3781a3654216d109f138e65f59afc25fec5bff8d46a0245dca4"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/lint-after/after/tests/benchmark/test_publication_safety.py",
+      "bytes": 15862,
+      "sha256": "866eb988342e442027e06070146460e01e1054d89f27aaf8cc75908b62ff5e14"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/lint-after/after/tests/benchmark/test_rgb_capture.py",
+      "bytes": 3233,
+      "sha256": "28450c33629a6169e75c9acda625e24a15a38736c5e8a99f0ab1d5bf4d90d32b"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/lint-after/after/tests/benchmark/test_stationary_prelude.py",
+      "bytes": 9067,
+      "sha256": "c27ec3fb7988a7499c0f6e37c9ba9a7fb328d3ba6a18fdf0a6af2aec58dddd27"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/lint-after/after/tools/benchmark/run_episode.py",
+      "bytes": 15232,
+      "sha256": "86730dafc09a110b9a7c3d70b3c1e97ef57c33a82e6af1215a8bab0d0f615ccc"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/lint-after/before/results/single-aircraft-closed-loop-20261017/record.py",
+      "bytes": 3647,
+      "sha256": "5f243c3669d03fbb9fb9c985f37dc33541e847cd3eb29e779508fc07a5dde509"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/lint-after/before/src/flydrones/benchmark/contract.py",
+      "bytes": 1597,
+      "sha256": "44145adb507d671a66191aadc654461a75ba6424ad65f7c6cbd75abcde4d258f"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/lint-after/before/src/flydrones/benchmark/gateway.py",
+      "bytes": 52658,
+      "sha256": "cc129a2fc0e7bac82b7b162bd22c9679e880a02c00b8312eb668cf47376a5234"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/lint-after/before/src/flydrones/drones/mavlink.py",
+      "bytes": 13662,
+      "sha256": "d1593c42d477ef3b4481c486202201bdc2318e893b672f3631cb8b6ad6277f31"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/lint-after/before/tests/benchmark/test_camera_info_capture.py",
+      "bytes": 3427,
+      "sha256": "dcbbb0d40f2e0dad892c7943521a2a892a19b517bb47e3acb41de71b9c72c877"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/lint-after/before/tests/benchmark/test_estimated_controller_input.py",
+      "bytes": 10788,
+      "sha256": "0b6e6a6942d7d3781a3654216d109f138e65f59afc25fec5bff8d46a0245dca4"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/lint-after/before/tests/benchmark/test_publication_safety.py",
+      "bytes": 15862,
+      "sha256": "866eb988342e442027e06070146460e01e1054d89f27aaf8cc75908b62ff5e14"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/lint-after/before/tests/benchmark/test_rgb_capture.py",
+      "bytes": 3233,
+      "sha256": "28450c33629a6169e75c9acda625e24a15a38736c5e8a99f0ab1d5bf4d90d32b"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/lint-after/before/tests/benchmark/test_stationary_prelude.py",
+      "bytes": 9067,
+      "sha256": "c27ec3fb7988a7499c0f6e37c9ba9a7fb328d3ba6a18fdf0a6af2aec58dddd27"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/lint-after/before/tools/benchmark/run_episode.py",
+      "bytes": 15232,
+      "sha256": "86730dafc09a110b9a7c3d70b3c1e97ef57c33a82e6af1215a8bab0d0f615ccc"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/lint-after/completion.json",
+      "bytes": 4408,
+      "sha256": "049a2b2e4c94778cb9b4a5b509d7ffa0d0f1b1d4ce98473117b947f09e4fc686"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/lint-after/start.json",
+      "bytes": 2591,
+      "sha256": "a08686af7431804a1d5eaaf2be6dbe89cde143ae2a79eebe8ef33ac9453857dc"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/lint-after/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/lint-after/stdout",
+      "bytes": 19,
+      "sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/lint-before/after/results/single-aircraft-closed-loop-20261017/record.py",
+      "bytes": 3647,
+      "sha256": "5f243c3669d03fbb9fb9c985f37dc33541e847cd3eb29e779508fc07a5dde509"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/lint-before/after/src/flydrones/benchmark/contract.py",
+      "bytes": 1597,
+      "sha256": "44145adb507d671a66191aadc654461a75ba6424ad65f7c6cbd75abcde4d258f"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/lint-before/after/src/flydrones/benchmark/gateway.py",
+      "bytes": 52646,
+      "sha256": "320a8524374d95cdb21ce9c307b0ccd6413e6aaffb828a34ab68f9c52662872d"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/lint-before/after/src/flydrones/drones/mavlink.py",
+      "bytes": 13419,
+      "sha256": "522791106efaa9fd9fc349c4abc114b77f57b3510322ea8add6d701194f061ac"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/lint-before/after/tests/benchmark/test_camera_info_capture.py",
+      "bytes": 3427,
+      "sha256": "dcbbb0d40f2e0dad892c7943521a2a892a19b517bb47e3acb41de71b9c72c877"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/lint-before/after/tests/benchmark/test_estimated_controller_input.py",
+      "bytes": 9908,
+      "sha256": "5a385253b6a63a00c8eeae6f8b886d5e9f3c986c6d845a3165b4654ca2f752f1"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/lint-before/after/tests/benchmark/test_publication_safety.py",
+      "bytes": 15862,
+      "sha256": "866eb988342e442027e06070146460e01e1054d89f27aaf8cc75908b62ff5e14"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/lint-before/after/tests/benchmark/test_rgb_capture.py",
+      "bytes": 3233,
+      "sha256": "28450c33629a6169e75c9acda625e24a15a38736c5e8a99f0ab1d5bf4d90d32b"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/lint-before/after/tests/benchmark/test_stationary_prelude.py",
+      "bytes": 9067,
+      "sha256": "c27ec3fb7988a7499c0f6e37c9ba9a7fb328d3ba6a18fdf0a6af2aec58dddd27"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/lint-before/after/tools/benchmark/run_episode.py",
+      "bytes": 15232,
+      "sha256": "86730dafc09a110b9a7c3d70b3c1e97ef57c33a82e6af1215a8bab0d0f615ccc"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/lint-before/before/results/single-aircraft-closed-loop-20261017/record.py",
+      "bytes": 3647,
+      "sha256": "5f243c3669d03fbb9fb9c985f37dc33541e847cd3eb29e779508fc07a5dde509"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/lint-before/before/src/flydrones/benchmark/contract.py",
+      "bytes": 1597,
+      "sha256": "44145adb507d671a66191aadc654461a75ba6424ad65f7c6cbd75abcde4d258f"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/lint-before/before/src/flydrones/benchmark/gateway.py",
+      "bytes": 52646,
+      "sha256": "320a8524374d95cdb21ce9c307b0ccd6413e6aaffb828a34ab68f9c52662872d"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/lint-before/before/src/flydrones/drones/mavlink.py",
+      "bytes": 13419,
+      "sha256": "522791106efaa9fd9fc349c4abc114b77f57b3510322ea8add6d701194f061ac"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/lint-before/before/tests/benchmark/test_camera_info_capture.py",
+      "bytes": 3427,
+      "sha256": "dcbbb0d40f2e0dad892c7943521a2a892a19b517bb47e3acb41de71b9c72c877"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/lint-before/before/tests/benchmark/test_estimated_controller_input.py",
+      "bytes": 9908,
+      "sha256": "5a385253b6a63a00c8eeae6f8b886d5e9f3c986c6d845a3165b4654ca2f752f1"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/lint-before/before/tests/benchmark/test_publication_safety.py",
+      "bytes": 15862,
+      "sha256": "866eb988342e442027e06070146460e01e1054d89f27aaf8cc75908b62ff5e14"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/lint-before/before/tests/benchmark/test_rgb_capture.py",
+      "bytes": 3233,
+      "sha256": "28450c33629a6169e75c9acda625e24a15a38736c5e8a99f0ab1d5bf4d90d32b"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/lint-before/before/tests/benchmark/test_stationary_prelude.py",
+      "bytes": 9067,
+      "sha256": "c27ec3fb7988a7499c0f6e37c9ba9a7fb328d3ba6a18fdf0a6af2aec58dddd27"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/lint-before/before/tools/benchmark/run_episode.py",
+      "bytes": 15232,
+      "sha256": "86730dafc09a110b9a7c3d70b3c1e97ef57c33a82e6af1215a8bab0d0f615ccc"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/lint-before/completion.json",
+      "bytes": 4405,
+      "sha256": "267889b27b612f3c2cbd7bf418d9c68df688b08e9f4439197f2262b0cb77492a"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/lint-before/start.json",
+      "bytes": 2590,
+      "sha256": "e291821f8ef5462175929e8c54944533750d8e981ad111952a687e0abb1f5064"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/lint-before/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/lint-before/stdout",
+      "bytes": 549,
+      "sha256": "e217693ad68717edd870d08ce3c862dc6050508a025316049037db72d344e256"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/mavlink-before-first-change.py",
+      "bytes": 13154,
+      "sha256": "36a07db1b48e0d90ad74ce00c3a76cee27859b7b344dda95a0696626ee5e0f13"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/mavlink-source-declaration-extension.json",
+      "bytes": 247,
+      "sha256": "f14dbff939e86257d7c2c618ff2aea1a85c635a2b46f10466a0a2be667bc3ef9"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/mission-target.json",
+      "bytes": 2556,
+      "sha256": "2dc2e965c2c880b1577b6c7f252604ac3d47cffdb50bece345007114c30f7bcb"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/old382-membership-only.json",
+      "bytes": 533,
+      "sha256": "821a838a7a0edc290e44b275d0ee87b89399acfb90b93292228fa1d8c9a76c9c"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/pr-before-command.json",
+      "bytes": 281,
+      "sha256": "02d1055906e43778cd2123cfd46e3c2cec8e031d7d99f2bfc138609e0bedfaa4"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/pr-before.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/pr-before.stdout",
+      "bytes": 38326,
+      "sha256": "a53c5dd65a002412a5189d6f5e6343a7163f2f1f5870df0cdd08e895492f7eea"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/previous-prompt.txt",
+      "bytes": 77081,
+      "sha256": "4273967aec8aa4830b423d71e4ffd8868a5cd4f78b4e0d25f21d2e41f9398d92"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/priority-request.txt",
+      "bytes": 2479,
+      "sha256": "8d6b019a8810b169fc171a9f6ad266735d71cabcabdcfa3411b323ee3818129b"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/record.py",
+      "bytes": 3647,
+      "sha256": "5f243c3669d03fbb9fb9c985f37dc33541e847cd3eb29e779508fc07a5dde509"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/review-green/after/results/single-aircraft-closed-loop-20261017/record.py",
+      "bytes": 3647,
+      "sha256": "5f243c3669d03fbb9fb9c985f37dc33541e847cd3eb29e779508fc07a5dde509"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/review-green/after/src/flydrones/benchmark/contract.py",
+      "bytes": 1597,
+      "sha256": "44145adb507d671a66191aadc654461a75ba6424ad65f7c6cbd75abcde4d258f"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/review-green/after/src/flydrones/benchmark/gateway.py",
+      "bytes": 53284,
+      "sha256": "1e5502a8765769146db120bf9343394f4fabcefc4c28b93e6113f1ecc9a9e740"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/review-green/after/src/flydrones/drones/mavlink.py",
+      "bytes": 13841,
+      "sha256": "3851cf9e05ae05b30886d2da5edbba6cd4293eb15a98abf284f8182aed042d51"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/review-green/after/tests/benchmark/test_camera_info_capture.py",
+      "bytes": 3427,
+      "sha256": "dcbbb0d40f2e0dad892c7943521a2a892a19b517bb47e3acb41de71b9c72c877"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/review-green/after/tests/benchmark/test_estimated_controller_input.py",
+      "bytes": 14297,
+      "sha256": "a0f9b60c67d15ced0b0792f257e502499a09fe2ba0457ba227cf2bf5b0d8f93c"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/review-green/after/tests/benchmark/test_publication_safety.py",
+      "bytes": 15862,
+      "sha256": "866eb988342e442027e06070146460e01e1054d89f27aaf8cc75908b62ff5e14"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/review-green/after/tests/benchmark/test_rgb_capture.py",
+      "bytes": 3233,
+      "sha256": "28450c33629a6169e75c9acda625e24a15a38736c5e8a99f0ab1d5bf4d90d32b"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/review-green/after/tests/benchmark/test_stationary_prelude.py",
+      "bytes": 9067,
+      "sha256": "c27ec3fb7988a7499c0f6e37c9ba9a7fb328d3ba6a18fdf0a6af2aec58dddd27"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/review-green/after/tools/benchmark/run_episode.py",
+      "bytes": 15232,
+      "sha256": "86730dafc09a110b9a7c3d70b3c1e97ef57c33a82e6af1215a8bab0d0f615ccc"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/review-green/before/results/single-aircraft-closed-loop-20261017/record.py",
+      "bytes": 3647,
+      "sha256": "5f243c3669d03fbb9fb9c985f37dc33541e847cd3eb29e779508fc07a5dde509"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/review-green/before/src/flydrones/benchmark/contract.py",
+      "bytes": 1597,
+      "sha256": "44145adb507d671a66191aadc654461a75ba6424ad65f7c6cbd75abcde4d258f"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/review-green/before/src/flydrones/benchmark/gateway.py",
+      "bytes": 53284,
+      "sha256": "1e5502a8765769146db120bf9343394f4fabcefc4c28b93e6113f1ecc9a9e740"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/review-green/before/src/flydrones/drones/mavlink.py",
+      "bytes": 13841,
+      "sha256": "3851cf9e05ae05b30886d2da5edbba6cd4293eb15a98abf284f8182aed042d51"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/review-green/before/tests/benchmark/test_camera_info_capture.py",
+      "bytes": 3427,
+      "sha256": "dcbbb0d40f2e0dad892c7943521a2a892a19b517bb47e3acb41de71b9c72c877"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/review-green/before/tests/benchmark/test_estimated_controller_input.py",
+      "bytes": 14297,
+      "sha256": "a0f9b60c67d15ced0b0792f257e502499a09fe2ba0457ba227cf2bf5b0d8f93c"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/review-green/before/tests/benchmark/test_publication_safety.py",
+      "bytes": 15862,
+      "sha256": "866eb988342e442027e06070146460e01e1054d89f27aaf8cc75908b62ff5e14"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/review-green/before/tests/benchmark/test_rgb_capture.py",
+      "bytes": 3233,
+      "sha256": "28450c33629a6169e75c9acda625e24a15a38736c5e8a99f0ab1d5bf4d90d32b"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/review-green/before/tests/benchmark/test_stationary_prelude.py",
+      "bytes": 9067,
+      "sha256": "c27ec3fb7988a7499c0f6e37c9ba9a7fb328d3ba6a18fdf0a6af2aec58dddd27"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/review-green/before/tools/benchmark/run_episode.py",
+      "bytes": 15232,
+      "sha256": "86730dafc09a110b9a7c3d70b3c1e97ef57c33a82e6af1215a8bab0d0f615ccc"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/review-green/completion.json",
+      "bytes": 4403,
+      "sha256": "c48b69e58458ee19afea92aa04b13287998b5695421ba55aa64cb7b28e1a9238"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/review-green/start.json",
+      "bytes": 2587,
+      "sha256": "6157b2badecfe04b7528b12a50a54362e9756ebe8027767d3d07553a60ebdd5f"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/review-green/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/review-green/stdout",
+      "bytes": 101,
+      "sha256": "77f65392e134558d980d73e2380195bb8e0b23c2fb6f64decb21488124b6e466"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/review-package.json",
+      "bytes": 1552,
+      "sha256": "9c0b16c4960c2f8c826913a77f17fe91681a42aec01bf64ee12a15011b9720e7"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/review-red/after/results/single-aircraft-closed-loop-20261017/record.py",
+      "bytes": 3647,
+      "sha256": "5f243c3669d03fbb9fb9c985f37dc33541e847cd3eb29e779508fc07a5dde509"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/review-red/after/src/flydrones/benchmark/contract.py",
+      "bytes": 1597,
+      "sha256": "44145adb507d671a66191aadc654461a75ba6424ad65f7c6cbd75abcde4d258f"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/review-red/after/src/flydrones/benchmark/gateway.py",
+      "bytes": 52658,
+      "sha256": "cc129a2fc0e7bac82b7b162bd22c9679e880a02c00b8312eb668cf47376a5234"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/review-red/after/src/flydrones/drones/mavlink.py",
+      "bytes": 13654,
+      "sha256": "d01071eda975fa239fe76e4a6840e56c70a4be2545793e858de9fe41cc3483b6"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/review-red/after/tests/benchmark/test_camera_info_capture.py",
+      "bytes": 3427,
+      "sha256": "dcbbb0d40f2e0dad892c7943521a2a892a19b517bb47e3acb41de71b9c72c877"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/review-red/after/tests/benchmark/test_estimated_controller_input.py",
+      "bytes": 14297,
+      "sha256": "a0f9b60c67d15ced0b0792f257e502499a09fe2ba0457ba227cf2bf5b0d8f93c"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/review-red/after/tests/benchmark/test_publication_safety.py",
+      "bytes": 15862,
+      "sha256": "866eb988342e442027e06070146460e01e1054d89f27aaf8cc75908b62ff5e14"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/review-red/after/tests/benchmark/test_rgb_capture.py",
+      "bytes": 3233,
+      "sha256": "28450c33629a6169e75c9acda625e24a15a38736c5e8a99f0ab1d5bf4d90d32b"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/review-red/after/tests/benchmark/test_stationary_prelude.py",
+      "bytes": 9067,
+      "sha256": "c27ec3fb7988a7499c0f6e37c9ba9a7fb328d3ba6a18fdf0a6af2aec58dddd27"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/review-red/after/tools/benchmark/run_episode.py",
+      "bytes": 15232,
+      "sha256": "86730dafc09a110b9a7c3d70b3c1e97ef57c33a82e6af1215a8bab0d0f615ccc"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/review-red/before/results/single-aircraft-closed-loop-20261017/record.py",
+      "bytes": 3647,
+      "sha256": "5f243c3669d03fbb9fb9c985f37dc33541e847cd3eb29e779508fc07a5dde509"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/review-red/before/src/flydrones/benchmark/contract.py",
+      "bytes": 1597,
+      "sha256": "44145adb507d671a66191aadc654461a75ba6424ad65f7c6cbd75abcde4d258f"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/review-red/before/src/flydrones/benchmark/gateway.py",
+      "bytes": 52658,
+      "sha256": "cc129a2fc0e7bac82b7b162bd22c9679e880a02c00b8312eb668cf47376a5234"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/review-red/before/src/flydrones/drones/mavlink.py",
+      "bytes": 13654,
+      "sha256": "d01071eda975fa239fe76e4a6840e56c70a4be2545793e858de9fe41cc3483b6"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/review-red/before/tests/benchmark/test_camera_info_capture.py",
+      "bytes": 3427,
+      "sha256": "dcbbb0d40f2e0dad892c7943521a2a892a19b517bb47e3acb41de71b9c72c877"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/review-red/before/tests/benchmark/test_estimated_controller_input.py",
+      "bytes": 14297,
+      "sha256": "a0f9b60c67d15ced0b0792f257e502499a09fe2ba0457ba227cf2bf5b0d8f93c"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/review-red/before/tests/benchmark/test_publication_safety.py",
+      "bytes": 15862,
+      "sha256": "866eb988342e442027e06070146460e01e1054d89f27aaf8cc75908b62ff5e14"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/review-red/before/tests/benchmark/test_rgb_capture.py",
+      "bytes": 3233,
+      "sha256": "28450c33629a6169e75c9acda625e24a15a38736c5e8a99f0ab1d5bf4d90d32b"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/review-red/before/tests/benchmark/test_stationary_prelude.py",
+      "bytes": 9067,
+      "sha256": "c27ec3fb7988a7499c0f6e37c9ba9a7fb328d3ba6a18fdf0a6af2aec58dddd27"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/review-red/before/tools/benchmark/run_episode.py",
+      "bytes": 15232,
+      "sha256": "86730dafc09a110b9a7c3d70b3c1e97ef57c33a82e6af1215a8bab0d0f615ccc"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/review-red/completion.json",
+      "bytes": 4479,
+      "sha256": "7ec687eca4473ef4f67f676d99db3267082afd579d1db245ebc790d1e0cd1dcd"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/review-red/start.json",
+      "bytes": 2664,
+      "sha256": "4f280331a4490ee658491ed1eace96dd5f9f542ebd0cca067e6c918a3468db64"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/review-red/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/review-red/stdout",
+      "bytes": 6964,
+      "sha256": "9d125711e2311003970eb6f91ccd36d86e192e7b5127bdf00fe752570be351a2"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/review-source/docs/superpowers/plans/2026-10-17-single-aircraft-estimated-input.md",
+      "bytes": 3715,
+      "sha256": "8b29fd7ea4e1ed2388cea5d07479c0f8619c37207396c3d385ce622d01cbd3da"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/review-source/docs/superpowers/specs/2026-10-17-single-aircraft-estimated-input-design.md",
+      "bytes": 6199,
+      "sha256": "17fd1aab32d68fda5d282cdef8b44f6a535ed518c54c02c8960f43a258d3e18a"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/review-source/src/flydrones/benchmark/contract.py",
+      "bytes": 1597,
+      "sha256": "44145adb507d671a66191aadc654461a75ba6424ad65f7c6cbd75abcde4d258f"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/review-source/src/flydrones/benchmark/gateway.py",
+      "bytes": 52658,
+      "sha256": "cc129a2fc0e7bac82b7b162bd22c9679e880a02c00b8312eb668cf47376a5234"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/review-source/src/flydrones/drones/mavlink.py",
+      "bytes": 13654,
+      "sha256": "d01071eda975fa239fe76e4a6840e56c70a4be2545793e858de9fe41cc3483b6"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/review-source/tests/benchmark/test_estimated_controller_input.py",
+      "bytes": 11051,
+      "sha256": "edf1a6882d24f06fd78aadcf949eca7a77738c81e638b3d1026ff60ec66294c0"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/review-source/tools/benchmark/run_episode.py",
+      "bytes": 15232,
+      "sha256": "86730dafc09a110b9a7c3d70b3c1e97ef57c33a82e6af1215a8bab0d0f615ccc"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/review-working.diff",
+      "bytes": 14572,
+      "sha256": "f85eee11a309157c883c48e903dd3ef37ac3ea03a2562830fbd766acfc0558db"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/review.json",
+      "bytes": 6788,
+      "sha256": "4bd80a20eaaccf3d31409e1d018b1d166a6c355d1df4b43c465d49661ed9e523"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/review.md",
+      "bytes": 8990,
+      "sha256": "831e38c9800f3803c061b8b5ba976243f1fcbd22abdffb4f4dd4222dced85208"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/scoped-installed-baseline.json",
+      "bytes": 4468,
+      "sha256": "a4b7af7bb0d278d9ec421f90c762bbe2d10c09614bd41f20481415ca6871bbf3"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/targeted-upstream-command.json",
+      "bytes": 1677,
+      "sha256": "904236234f10262e938b50ee7915df5ac312a2c2ec98cbed40a45e7f138b8346"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/targeted-upstream.stderr",
+      "bytes": 132,
+      "sha256": "b280c454d6f559e56eb3f5ed39f3ba084b8d1744a3ff7fe016b21ff86dea1aca"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/targeted-upstream.stdout",
+      "bytes": 5056,
+      "sha256": "b72d61bd2b630e372623fc04fcaa1cf4c51c9e6c536e1c28d7fe3a89d5b0464b"
+    },
+    {
+      "path": "results/single-aircraft-closed-loop-20261017/user-software-choice.txt",
+      "bytes": 150,
+      "sha256": "57dd859915e68c98ce61bf7a8be5b40b99c6c593422165356d590676a86d3025"
+    },
+    {
+      "path": "src/flydrones/benchmark/contract.py",
+      "bytes": 1597,
+      "sha256": "44145adb507d671a66191aadc654461a75ba6424ad65f7c6cbd75abcde4d258f"
+    },
+    {
+      "path": "src/flydrones/benchmark/gateway.py",
+      "bytes": 53284,
+      "sha256": "1e5502a8765769146db120bf9343394f4fabcefc4c28b93e6113f1ecc9a9e740"
+    },
+    {
+      "path": "src/flydrones/drones/mavlink.py",
+      "bytes": 13835,
+      "sha256": "4d49427fcfabd9588da8bb877d48e0f4578f52349a002c704a1821948eb88066"
+    },
+    {
+      "path": "tests/benchmark/test_estimated_controller_input.py",
+      "bytes": 14826,
+      "sha256": "d5f3c3a7f3abb29342f605547746772e3f9da2ffccfec60f4d68a563d4540bcb"
+    },
+    {
+      "path": "tools/benchmark/run_episode.py",
+      "bytes": 15232,
+      "sha256": "86730dafc09a110b9a7c3d70b3c1e97ef57c33a82e6af1215a8bab0d0f615ccc"
+    }
+  ],
+  "scope": "software and prospective mission evidence only; no native/flight or whole-history qualification",
+  "excluded_local_raw": [
+    "results/single-aircraft-closed-loop-20261017/installed-snapshot.stdout: broad home-directory listing retained locally, scoped excerpt published with raw SHA"
+  ]
+}

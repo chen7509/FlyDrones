@@ -1,0 +1,7 @@
+# Agent-inclusive unarmed live-wire study declaration
+
+The existing v11 declaration is immutable evidence from a run without an owned XRCE Agent. A later physical attempt needs a new study ID and seed with an exact Agent runtime selection before any process starts. Preparation alone grants no live, DDS provenance, VIO, fusion, or flight qualification.
+
+Add a narrow v2 study schema that requires the existing 25 s, 1 ms physics, 250 Hz raw IMU, 10 Hz 160×120 RGB-D, estimator, startup wire profile, safety limits and endpoint. It additionally requires the owned `agent` runtime map role at `ready` and `prestop`, the fixed Agent declaration and all 16 selected paths in the pre-run inventory, exact `--agent-runtime-config` in the command, and the Agent record produced by the capture execution contract. The new study uses development seed 27602; v1 continues to require 27601 and no Agent. Every selected file is rechecked by the existing file adapter. An Agent socket does not prove PX4 XRCE/DDS messages.
+
+Prepare a distinct v12 directory from sealed v11 inputs only after checking changed tracked sources against a committed producer and preserving any external-file drift as a refusal. Store exact selected source, Agent file, binding, command, negative cases, and preparation result. No output may be overwritten. Because current host free memory is below the existing 4 GiB gate, preparation must not invoke PX4, Gazebo, OpenVINS or physical execution. A later run needs a separate resource check and one-shot selection; all failures remain retained.

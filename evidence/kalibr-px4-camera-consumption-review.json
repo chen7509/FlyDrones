@@ -1,0 +1,29 @@
+{
+  "reviewer": "/root/executor_review",
+  "mode": "Independent read-only code/report/raw/archive audit",
+  "critical": [], "important": [], "minor": [],
+  "closed_findings": {
+    "shifted_boot_boundary_dropped_batch": "2 saved behavioral REDs, then per-row refusal/original-frame preservation",
+    "loaded_versus_applied_and_projection_scope": "Parameters-loaded and lookup/pose application counts; point projection is separate API, never pose-CLI projection",
+    "prospective_archive_audit_wording": "Conditional wording; original ZIP retained and report-only canonical v2 correction"
+  },
+  "archive": {
+    "path": "evidence/kalibr-px4-camera-consumption-dev-1701-v2.zip",
+    "sha256": "707afba837f62e2e55d60d80e65c6ffdcc8455a2c26087a031763b43070974f3",
+    "bytes": 407104, "members": 751, "mapped_members": 750,
+    "crc_errors": 0, "size_or_hash_errors": 0, "duplicate_missing_unlisted_members": 0,
+    "current_byte_differences": 0, "prior_archives_verified": 13
+  },
+  "original_archive": {
+    "path": "evidence/kalibr-px4-camera-consumption-dev-1701.zip",
+    "sha256": "a6fc2f3ccfed8c2e080923990e7a9b0f97a9b654bea8bc87144e7945eb4504f5",
+    "bytes": 407064, "members": 751,
+    "only_changed_member_besides_manifest": "docs/KALIBR_PX4_CAMERA_CONSUMPTION_REPORT.md"
+  },
+  "report": {"bytes": 8308, "sha256": "6e00174c303606b1e645ede46b89ad414141013ae248c8615ba8ee8a0f6e5a49"},
+  "targeted_checks": {"passed": 41, "seconds": 6.46, "tests_exit": 0, "ruff_exit": 0, "diff_exit": 0, "source_before_sha_current_matches": 4},
+  "prepublication_plan_task5_pending": true,
+  "reviewer_dispatched_tests_producers_native_or_probes": false,
+  "declined_to_judge": ["Genuine own-rig Kalibr measurement/quality", "Actual ULog parse, Linux/native/PX4 or physical capture", "Continuous clock, source authentication, optimizer or flight eligibility"],
+  "executor_disposition": "All real measurement/runtime qualification remains pending and false"
+}

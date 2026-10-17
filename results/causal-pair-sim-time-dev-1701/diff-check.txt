@@ -1,0 +1,1 @@
+warning: in the working copy of 'docs/superpowers/plans/2026-10-07-heartbeat-sim-time-physical-retry.md', LF will be replaced by CRLF the next time Git touches it
