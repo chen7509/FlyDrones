@@ -1,0 +1,226 @@
+{
+  "schema": "openvins-stored-build-log-observations-v1",
+  "files": {
+    "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/CMakeConfigureLog.yaml": {
+      "file": {
+        "linux_path": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/CMakeConfigureLog.yaml",
+        "observed_status": "observed",
+        "bytes": 69245,
+        "sha256": "e1a68246788a4c178c3a9c0b699bdc356b28144065593ec342d4992e87b00846",
+        "saved_blob": "results/openvins-build-provenance-20261018/blobs/e1a68246788a4c178c3a9c0b699bdc356b28144065593ec342d4992e87b00846",
+        "observation_only": true,
+        "build_time_input_digest_proven": false
+      },
+      "authenticated_execution_log": false,
+      "kind": "stored CMake configure/probe log, not main library compilation/link transcript",
+      "line_count": 751,
+      "event_kinds": {
+        "message-v1": 7,
+        "try_compile-v1": 8
+      },
+      "library_target_name_occurrences": 0,
+      "compiler_version_lines": [
+        {
+          "line": 88,
+          "text": "gcc version 13.3.0 (Ubuntu 13.3.0-6ubuntu2~24.04.1)"
+        },
+        {
+          "line": 91,
+          "text": "GNU C17 (Ubuntu 13.3.0-6ubuntu2~24.04.1) version 13.3.0 (x86_64-linux-gnu)"
+        },
+        {
+          "line": 125,
+          "text": "gcc version 13.3.0 (Ubuntu 13.3.0-6ubuntu2~24.04.1)"
+        },
+        {
+          "line": 180,
+          "text": "ignore line: [gcc version 13.3.0 (Ubuntu 13.3.0-6ubuntu2~24.04.1) ]"
+        },
+        {
+          "line": 183,
+          "text": "ignore line: [GNU C17 (Ubuntu 13.3.0-6ubuntu2~24.04.1) version 13.3.0 (x86_64-linux-gnu)]"
+        },
+        {
+          "line": 217,
+          "text": "ignore line: [gcc version 13.3.0 (Ubuntu 13.3.0-6ubuntu2~24.04.1) ]"
+        },
+        {
+          "line": 321,
+          "text": "gcc version 13.3.0 (Ubuntu 13.3.0-6ubuntu2~24.04.1)"
+        },
+        {
+          "line": 324,
+          "text": "GNU C++17 (Ubuntu 13.3.0-6ubuntu2~24.04.1) version 13.3.0 (x86_64-linux-gnu)"
+        },
+        {
+          "line": 362,
+          "text": "gcc version 13.3.0 (Ubuntu 13.3.0-6ubuntu2~24.04.1)"
+        },
+        {
+          "line": 423,
+          "text": "ignore line: [gcc version 13.3.0 (Ubuntu 13.3.0-6ubuntu2~24.04.1) ]"
+        },
+        {
+          "line": 426,
+          "text": "ignore line: [GNU C++17 (Ubuntu 13.3.0-6ubuntu2~24.04.1) version 13.3.0 (x86_64-linux-gnu)]"
+        },
+        {
+          "line": 464,
+          "text": "ignore line: [gcc version 13.3.0 (Ubuntu 13.3.0-6ubuntu2~24.04.1) ]"
+        }
+      ],
+      "recorded_exit_codes": [
+        {
+          "line": 133,
+          "text": "exitCode: 0"
+        },
+        {
+          "line": 370,
+          "text": "exitCode: 0"
+        },
+        {
+          "line": 570,
+          "text": "exitCode: 0"
+        },
+        {
+          "line": 609,
+          "text": "exitCode: 2"
+        },
+        {
+          "line": 643,
+          "text": "exitCode: 0"
+        },
+        {
+          "line": 682,
+          "text": "exitCode: 2"
+        },
+        {
+          "line": 716,
+          "text": "exitCode: 0"
+        },
+        {
+          "line": 750,
+          "text": "exitCode: 0"
+        }
+      ],
+      "current_compiler_alias_identity_proven": false,
+      "main_target_build_proven": false
+    },
+    "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/CMakeOutput.log": {
+      "file": {
+        "linux_path": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/CMakeOutput.log",
+        "observed_status": "unavailable",
+        "bytes": null,
+        "sha256": null,
+        "saved_blob": null,
+        "observation_only": true,
+        "build_time_input_digest_proven": false
+      },
+      "authenticated_execution_log": false
+    },
+    "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/CMakeError.log": {
+      "file": {
+        "linux_path": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/CMakeError.log",
+        "observed_status": "unavailable",
+        "bytes": null,
+        "sha256": null,
+        "saved_blob": null,
+        "observation_only": true,
+        "build_time_input_digest_proven": false
+      },
+      "authenticated_execution_log": false
+    },
+    "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/build.log": {
+      "file": {
+        "linux_path": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/build.log",
+        "observed_status": "unavailable",
+        "bytes": null,
+        "sha256": null,
+        "saved_blob": null,
+        "observation_only": true,
+        "build_time_input_digest_proven": false
+      },
+      "authenticated_execution_log": false
+    },
+    "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/configure.log": {
+      "file": {
+        "linux_path": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/configure.log",
+        "observed_status": "unavailable",
+        "bytes": null,
+        "sha256": null,
+        "saved_blob": null,
+        "observation_only": true,
+        "build_time_input_digest_proven": false
+      },
+      "authenticated_execution_log": false
+    },
+    "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/compile.log": {
+      "file": {
+        "linux_path": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/compile.log",
+        "observed_status": "unavailable",
+        "bytes": null,
+        "sha256": null,
+        "saved_blob": null,
+        "observation_only": true,
+        "build_time_input_digest_proven": false
+      },
+      "authenticated_execution_log": false
+    },
+    "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/link.log": {
+      "file": {
+        "linux_path": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/link.log",
+        "observed_status": "unavailable",
+        "bytes": null,
+        "sha256": null,
+        "saved_blob": null,
+        "observation_only": true,
+        "build_time_input_digest_proven": false
+      },
+      "authenticated_execution_log": false
+    },
+    "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/compiler_depend.internal": {
+      "file": {
+        "linux_path": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/compiler_depend.internal",
+        "observed_status": "unavailable",
+        "bytes": null,
+        "sha256": null,
+        "saved_blob": null,
+        "observation_only": true,
+        "build_time_input_digest_proven": false
+      },
+      "authenticated_execution_log": false
+    },
+    "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/compiler_depend.ts": {
+      "file": {
+        "linux_path": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/compiler_depend.ts",
+        "observed_status": "observed",
+        "bytes": 119,
+        "sha256": "8fa8adea6a569ee1aa26e00aac69723489074c7252ca6ce36a95f6d097d2d055",
+        "saved_blob": "results/openvins-build-provenance-20261018/blobs/8fa8adea6a569ee1aa26e00aac69723489074c7252ca6ce36a95f6d097d2d055",
+        "observation_only": true,
+        "build_time_input_digest_proven": false
+      },
+      "authenticated_execution_log": false,
+      "kind": "CMake dependency timestamp marker",
+      "retained_text": "# CMAKE generated file: DO NOT EDIT!\n# Timestamp file for compiler generated dependencies management for ov_msckf_lib.\n"
+    },
+    "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/Testing/Temporary/LastTest.log": {
+      "file": {
+        "linux_path": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/Testing/Temporary/LastTest.log",
+        "observed_status": "observed",
+        "bytes": 121,
+        "sha256": "2386f93e9d1e91a491acc2fbca73085e0f961878c2aee765b16aacbf1ae7b503",
+        "saved_blob": "results/openvins-build-provenance-20261018/blobs/2386f93e9d1e91a491acc2fbca73085e0f961878c2aee765b16aacbf1ae7b503",
+        "observation_only": true,
+        "build_time_input_digest_proven": false
+      },
+      "authenticated_execution_log": false,
+      "kind": "stored CTest log",
+      "retained_text": "Start testing: Oct 02 11:43 CST\n----------------------------------------------------------\nEnd testing: Oct 02 11:43 CST\n",
+      "test_case_results_present": false,
+      "current_tests_executed": false,
+      "note": "Contains start/end only; no test case pass or historical target execution inference."
+    }
+  },
+  "no_commands_in_logs_were_executed_this_phase": true
+}
