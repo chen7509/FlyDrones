@@ -15,6 +15,8 @@ from tools.connectome.audit_px4_logger_diagnostic import profile
 
 PROFILE_NAME = "source-diagnostic-v1"
 PROFILE_RELATIVE = Path("config/px4/source-diagnostic-v1")
+RECEIPT_PROFILE = "disarmed-receipt-v2"
+RECEIPT_TOPICS = b'vehicle_odometry 0 0\nvehicle_status 100 0\nvehicle_attitude 20 0\nvehicle_local_position 20 0\nestimator_status 20 0\nestimator_selector_status 100 0\nsensor_combined 0 0\ntimesync_status 1000 0\nlogger_status 100 0\nfailsafe_flags 100 0\nvehicle_visual_odometry 0 0\nactuator_armed 100 0\nestimator_status_flags 20 0\nestimator_aid_src_ev_pos 0 0\nestimator_aid_src_ev_vel 0 0\nestimator_aid_src_ev_hgt 0 0\n'
 COPIED_RELATIVE = Path("etc/logging/logger_topics.txt")
 
 
@@ -44,12 +46,22 @@ def profile_record(source: Path) -> dict:
     declaration = read_declaration(declaration_path)
     if declaration_bytes != _stable_bytes(declaration_path, 4096):
         raise ValueError("logger declaration changed during parse")
-    audit = profile.audit_profile(topics, declaration)
-    if not audit.logger_file_candidate:
-        raise ValueError("logger profile refused: " + audit.reason)
+    selected = PROFILE_NAME
+    if declaration.get("profile_id") == RECEIPT_PROFILE:
+        expected = dict(schema="flydrones.px4_logger_disarmed_receipt.v2", profile_id=RECEIPT_PROFILE,
+                        px4_commit="d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+                        logger_source_sha256="33c1cd7c55dc81d4fa53153b7f269401b67c7f6edc929707ec536203096bcfe5",
+                        sdlog_profile=0,diagnostic_only=True,topics_sha256=hashlib.sha256(RECEIPT_TOPICS).hexdigest())
+        if declaration != expected or topics != RECEIPT_TOPICS:
+            raise ValueError("disarmed receipt logger exact profile mismatch")
+        selected = RECEIPT_PROFILE
+    else:
+        audit = profile.audit_profile(topics, declaration)
+        if not audit.logger_file_candidate:
+            raise ValueError("logger profile refused: " + audit.reason)
     return {
         "schema": "capture-px4-logger-profile-v1",
-        "profile_id": PROFILE_NAME,
+        "profile_id": selected,
         "source_paths": [str(topics_path), str(declaration_path)],
         "topics_sha256": hashlib.sha256(topics).hexdigest(),
         "declaration_sha256": hashlib.sha256(declaration_bytes).hexdigest(),

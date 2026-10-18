@@ -197,14 +197,22 @@ def execution_contract(args, launch_environment=None, *, record_provider=None):
                            else record_provider.agent_runtime_record(agent_config))
     logger_diagnostic = getattr(args, 'logger_diagnostic_profile', None)
     if logger_diagnostic is not None:
-        if (logger_diagnostic != 'source-diagnostic-v1' or agent_config is None
+        if (logger_diagnostic not in ('source-diagnostic-v1','disarmed-receipt-v2') or agent_config is None
                 or wire_config is None or not args.execution_contract
                 or not args.runtime_binding or fault):
             raise ValueError('diagnostic logger requires declared owned Agent wire capture')
         from tools.benchmark.px4_logger_runtime import PROFILE_RELATIVE, profile_record
 
-        result['logger_diagnostic'] = (profile_record(Path(__file__).resolve().parents[2] / PROFILE_RELATIVE)
+        result['logger_diagnostic'] = (profile_record(Path(__file__).resolve().parents[2] / (PROFILE_RELATIVE if logger_diagnostic == "source-diagnostic-v1" else Path("config/px4/disarmed-receipt-v2")))
                                       if record_provider is None else record_provider.logger_profile_record())
+    if getattr(args, 'consume_disarmed_odometry_evidence', False):
+        if (not getattr(args,'disarmed_odometry',False) or not getattr(args,'record_owned_ulog',False)
+                or logger_diagnostic != 'disarmed-receipt-v2'
+                or result['logger_diagnostic']['profile_id'] != 'disarmed-receipt-v2'):
+            raise ValueError('receipt evidence requires v2 ODOMETRY/owned ULog and exact receipt logger')
+        result['disarmed_receipt_evidence'] = dict(profile='disarmed-receipt-v2',
+            parser_version='1.2.4',max_total_log_bytes=64*1024**2,max_sends=4096,
+            receiver_only=True,fusion_verified=False,parameter_writes=False)
     if getattr(args, 'record_owned_ulog', False):
         if 'logger_diagnostic' not in result:
             raise ValueError('owned ULog source requires declared diagnostic logger')
@@ -297,6 +305,8 @@ def worker_options(args):
         result.append('--prepared-scene')
     if getattr(args, 'online_estimate_feed', False):
         result.append('--online-estimate-feed')
+    if getattr(args,'consume_disarmed_odometry_evidence',False):
+        result.append('--consume-disarmed-odometry-evidence')
     if getattr(args,'disarmed_odometry',False):
         result.append('--disarmed-odometry')
     return result

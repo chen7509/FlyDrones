@@ -203,7 +203,7 @@ def parse_capture_args(argv=None):
                         help="Declared single-reader lifecycle and explicit remote clock mapping")
     parser.add_argument("--agent-runtime-config", type=Path,
                         help="Opt-in fixed Agent binary/libraries for an unarmed wire capture")
-    parser.add_argument("--logger-diagnostic-profile", choices=["source-diagnostic-v1"],
+    parser.add_argument("--logger-diagnostic-profile", choices=["source-diagnostic-v1", "disarmed-receipt-v2"],
                         help="Opt-in changed-load PX4 odometry logger for a new diagnostic study")
     parser.add_argument("--shadow-binary", type=Path)
     parser.add_argument("--shadow-config", type=Path)
@@ -242,6 +242,7 @@ def parse_capture_args(argv=None):
     parser.add_argument("--physics-trace-profile", choices=["substep-lateral-v1", "substep-supported-v1", "substep-ready-v1",
                                                            "substep-calibration-v1"])
     parser.add_argument('--record-owned-ulog', action='store_true')
+    parser.add_argument('--consume-disarmed-odometry-evidence', action='store_true')
     parser.add_argument('--capture-profile', choices=['target-bearing-raw-v1'])
     parser.add_argument('--calibration-scene', type=Path)
     parser.add_argument('--prepared-scene', action='store_true')
@@ -288,6 +289,9 @@ def parse_capture_args(argv=None):
         or args.reference_fault_profile
     ):
         parser.error("diagnostic logger requires declared owned Agent wire capture")
+    if args.consume_disarmed_odometry_evidence and (not args.disarmed_odometry or not args.record_owned_ulog
+            or args.logger_diagnostic_profile != 'disarmed-receipt-v2'):
+        parser.error('receipt evidence requires v2 ODOMETRY/owned ULog and receipt logger')
     if args.record_owned_ulog and not args.logger_diagnostic_profile:
         parser.error('owned ULog source requires declared diagnostic logger')
     if args.simulation_seed is not None and not 1 <= args.simulation_seed < 2**32:
@@ -543,7 +547,7 @@ def prepare_capture_logger(contract, runtime, result, journal):
     return staged
 
 
-def prepare_owned_ulog_collection(contract, runtime, output, binary_sha, result, journal):
+def prepare_owned_ulog_collection(contract, runtime, output, binary_sha, result, journal, *, deadline_ns=None):
     """Preserve original logs first, then write optional source association evidence."""
     journal.cleanup('ULog collection', lambda: result.update(px4_ulogs=collect_ulogs(runtime, output)), priority=100)
     if contract.get('owned_ulog_source') is None:
@@ -559,6 +563,16 @@ def prepare_owned_ulog_collection(contract, runtime, output, binary_sha, result,
             raise ValueError('owned ULog source association refused: ' + str(summary['errors']))
 
     journal.cleanup('owned ULog source association', finish_source_association, priority=106)
+    if contract.get('disarmed_receipt_evidence') is not None:
+        from tools.benchmark.px4_disarmed_receipts import consume_capture
+
+        def finish_receipt_evidence():
+            summary = consume_capture(output,result,deadline_ns=deadline_ns)
+            result['disarmed_receipt_evidence'] = summary
+            if summary['errors']:
+                raise ValueError('PX4 disarmed receipt evidence incomplete: '+str(summary['errors']))
+
+        journal.cleanup('PX4 disarmed receipt evidence',finish_receipt_evidence,priority=110)
     return observer
 
 
@@ -953,6 +967,11 @@ def main():
                 required.append(args.wire_config.resolve(strict=True))
             if agent_record is not None:
                 required.extend(Path(path) for path in agent_record['selected_paths'])
+            if contract.get('disarmed_receipt_evidence') is not None:
+                required.append(ROOT/'tools/benchmark/px4_disarmed_receipts.py')
+                from tools.benchmark.px4_disarmed_receipts import parser_inputs
+
+                required.extend(parser_inputs())
             if contract.get("logger_diagnostic") is not None:
                 required.extend(Path(path) for path in contract["logger_diagnostic"]["source_paths"])
             required += [Path(module.__file__).resolve() for module in tuple(sys.modules.values())
@@ -977,7 +996,8 @@ def main():
                     flight_ready=False,
                 )
                 return 0
-        source_association = prepare_owned_ulog_collection(contract, runtime, output, binary_sha, result, journal)
+        source_association = prepare_owned_ulog_collection(contract, runtime, output, binary_sha, result, journal,
+                                                           deadline_ns=started_ns+300_000_000_000)
         journal.cleanup(
             "end clocks",
             lambda: result.update(end_sim_ns=clock["sim_ns"], capture_wall_s=time.monotonic() - started),
