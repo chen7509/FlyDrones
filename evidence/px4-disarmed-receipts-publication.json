@@ -1,0 +1,88 @@
+{
+  "schema": "px4-disarmed-receipts-publication-v1",
+  "software_head": "56e3867b9fdd2ce5f603459faf53a57df8468e29",
+  "identities": {
+    "tools/benchmark/px4_disarmed_receipts.py": {
+      "working_bytes": 18238,
+      "working_sha256": "c56340c95db86f6c8b00ddc2600a58ca1cd0fd5d356872b72d4e5d0c2801e51b",
+      "software_git_bytes": 17853,
+      "software_git_sha256": "8a98d443475df121f1c90c642e11c345fc8da7f61fbe505e4564797f68ef2184"
+    },
+    "tools/benchmark/px4_logger_runtime.py": {
+      "working_bytes": 6876,
+      "working_sha256": "6f6b55ce0adc4d2a75419d763d8914bcc7f2ae2f03a5378b273052245423dbda",
+      "software_git_bytes": 6744,
+      "software_git_sha256": "9bc024d570cb528e251429e430af8cdda428a3587e2372ee6cd2b9283d74e3da"
+    },
+    "tools/benchmark/capture_contract.py": {
+      "working_bytes": 17969,
+      "working_sha256": "e2612a86cbeb5ded26553e84026c41853479906a027a17064d24925f8b084afd",
+      "software_git_bytes": 17649,
+      "software_git_sha256": "b9795761e9b8d2595f0d2265bae36336e575c556666bb13a01df71d3c8b40c3a"
+    },
+    "tools/benchmark/capture_disarmed_sensors.py": {
+      "working_bytes": 73939,
+      "working_sha256": "7e173e1610b9d60ebc3870535e9d0a5197a457c561df557e9aed484cbdb4ac5f",
+      "software_git_bytes": 72521,
+      "software_git_sha256": "f9ad67bda04b0132c50ee4e0c7356ded34e8f8f50ce4532264cc52c6f2220994"
+    },
+    "tests/benchmark/test_px4_disarmed_receipts.py": {
+      "working_bytes": 19510,
+      "working_sha256": "eb1f2d394869fcfd9358853e9b45b3244e91c9ad6293839d8811d81d8f3688ec",
+      "software_git_bytes": 19074,
+      "software_git_sha256": "0c6673bd3637b6498afce192d10591cf1d5ca5c10bb988e9152dd6af996d66f6"
+    },
+    "config/px4/disarmed-receipt-v2/logger_topics.txt": {
+      "working_bytes": 394,
+      "working_sha256": "b55d52ad2446c11d6ee912ef3413f0fd06a0312268ca1ad7dfe0c8fbec29d384",
+      "software_git_bytes": 394,
+      "software_git_sha256": "b55d52ad2446c11d6ee912ef3413f0fd06a0312268ca1ad7dfe0c8fbec29d384"
+    },
+    "config/px4/disarmed-receipt-v2/profile.json": {
+      "working_bytes": 397,
+      "working_sha256": "7194b723c289e949777d595237465496c84ec3a703ed18096a0db836a6f1d0ca",
+      "software_git_bytes": 388,
+      "software_git_sha256": "d52f01472414848a5e32f406e2e279f5f78743fbcc9ebb4b395cba2beaf92963"
+    },
+    "docs/PX4_DISARMED_RECEIPTS_PROGRESS.md": {
+      "working_bytes": 8096,
+      "working_sha256": "a80ad7cb5def30aeddcdb48e8bdd648dec0058386e2c4b3c00e72ffbeaa8de47",
+      "software_git_bytes": 8079,
+      "software_git_sha256": "3fe0c9a78415fd4537be3f0ac73c2f2d97d3d5470222b3444c9d488247126fe9"
+    },
+    "docs/superpowers/specs/2026-10-18-px4-disarmed-receipts.md": {
+      "working_bytes": 2459,
+      "working_sha256": "0b726425b007cd865e2fb0c00c28931909c7dca14439b4c9837c59e058e03e3a",
+      "software_git_bytes": 2450,
+      "software_git_sha256": "d00c00bf4d19c9273ea77f08163b24b9870356af8f3aeda6844c16e1b8258642"
+    },
+    "docs/superpowers/plans/2026-10-18-px4-disarmed-receipts.md": {
+      "working_bytes": 884,
+      "working_sha256": "3d6ed498d095b506f4d4794a117c88783710f3ad24f9f4269e661865c14bec7a",
+      "software_git_bytes": 875,
+      "software_git_sha256": "e81dc2c906c760b57d8af998b6555cc9e538d0c6ab9b11c897444591cd90657b"
+    },
+    "evidence/px4-disarmed-receipts-20261018.zip": {
+      "working_bytes": 3190822,
+      "working_sha256": "16a5c19c308ca06acdb019ee4d6554c62fbe68072fa20f779fc11fee69e50fa3",
+      "software_git_bytes": 3190822,
+      "software_git_sha256": "16a5c19c308ca06acdb019ee4d6554c62fbe68072fa20f779fc11fee69e50fa3"
+    },
+    "evidence/px4-disarmed-receipts-20261018.sha256.json": {
+      "working_bytes": 358789,
+      "working_sha256": "53ceba816c44cd2d3f21b8242c7fe7d6f3253c0cc945e0656a4f96f9163d6c55",
+      "software_git_bytes": 353887,
+      "software_git_sha256": "72e906fbfe03a0dfbffaafdbec71124a211d2c9a30927d3b82f2ec94b8f28503"
+    }
+  },
+  "plan": {
+    "path": "docs/superpowers/plans/2026-10-18-px4-disarmed-receipts.md",
+    "byte_offset": 797,
+    "before_sha256": "1f4e735cb737741edc06a0499d5af8a23f568077a65734a9729c001f730c90fc",
+    "after_sha256": "3d6ed498d095b506f4d4794a117c88783710f3ad24f9f4269e661865c14bec7a"
+  },
+  "scope": "software-only, original review and inherited limitations preserved; no native/flight approval",
+  "all_qualifications": false,
+  "runtime_graph_frozen": false,
+  "physical_dispatch_ready": false
+}
