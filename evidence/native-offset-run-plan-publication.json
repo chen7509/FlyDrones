@@ -1,0 +1,48 @@
+{
+  "schema": "native-offset-run-plan-publication-v1",
+  "base": "ddcf0a5c1ce56f88eac312190d3c91205c2a9278",
+  "plan_head": "8b3ad54709d984011db1b402083dc3ddc1b57867",
+  "files": {
+    "tools/benchmark/native_offset_reset_v2/CMakeLists.txt": {
+      "working_bytes": 1494,
+      "working_sha256": "0d8bd0b33617dca93d71f983506497b5b228efd4a14b34d2b5e5e42a5b629472",
+      "git_bytes": 1494,
+      "git_sha256": "0d8bd0b33617dca93d71f983506497b5b228efd4a14b34d2b5e5e42a5b629472"
+    },
+    "docs/superpowers/specs/2026-10-18-native-offset-once-plan.md": {
+      "working_bytes": 1392,
+      "working_sha256": "a578528bf55beea1b01b5a6fc3714dde962c3caa230a623d94627f0ecde6f08b",
+      "git_bytes": 1392,
+      "git_sha256": "a578528bf55beea1b01b5a6fc3714dde962c3caa230a623d94627f0ecde6f08b"
+    },
+    "docs/superpowers/plans/2026-10-18-native-offset-once-plan.md": {
+      "working_bytes": 18175,
+      "working_sha256": "80aeb828cd954a1e97ef82430f39f2b15aec8eed7d6c9b74a5b2746d9d726352",
+      "git_bytes": 18175,
+      "git_sha256": "80aeb828cd954a1e97ef82430f39f2b15aec8eed7d6c9b74a5b2746d9d726352"
+    },
+    "docs/NATIVE_OFFSET_RUN_PLAN_PROGRESS.md": {
+      "working_bytes": 3412,
+      "working_sha256": "e5daa526cb3cd551cb4b8f1fb40df35affd6cca6d6b4f7ddcdd4fca1ebe99dbe",
+      "git_bytes": 3412,
+      "git_sha256": "e5daa526cb3cd551cb4b8f1fb40df35affd6cca6d6b4f7ddcdd4fca1ebe99dbe"
+    },
+    "evidence/native-offset-run-plan-20261018.zip": {
+      "working_bytes": 1455009,
+      "working_sha256": "e056d26cb6ffa1f40fa685ce31f5bc5f25db9e5b0bda343bfba6dfb94788ca13",
+      "git_bytes": 1455009,
+      "git_sha256": "e056d26cb6ffa1f40fa685ce31f5bc5f25db9e5b0bda343bfba6dfb94788ca13"
+    },
+    "evidence/native-offset-run-plan-20261018.sha256.json": {
+      "working_bytes": 142637,
+      "working_sha256": "c436ca2be32adb5edc9d9f50284e1ca91018bb19a6890bd01d6981e21e2a0069",
+      "git_bytes": 139988,
+      "git_sha256": "6825a1bd6bf8cf2fd7f7ef11f844adb6a8174c1cb2a42ac03889170366444a71"
+    }
+  },
+  "scope": "Source preparation/non-dispatch once plan. C++17 recipe correction is uncompiled. No admission/native/resource/old-test operation.",
+  "dispatchable": false,
+  "native_admission_review_performed": false,
+  "all_qualifications": false,
+  "future_checkboxes": "Intentionally pending real software entrypoints/receipts/admission; no publication byte masquerades as execution."
+}
