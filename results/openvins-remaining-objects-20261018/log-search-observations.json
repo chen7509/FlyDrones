@@ -1,0 +1,258 @@
+{
+  "schema": "openvins-bounded-log-search-observations-v1",
+  "search_roots": [
+    {
+      "path": "/home/yuchen7509/flydrones-upstream/open_vins",
+      "policy": "project"
+    },
+    {
+      "path": "/home/yuchen7509/flydrones-upstream/open_vins/ov_core",
+      "policy": "project"
+    },
+    {
+      "path": "/home/yuchen7509/flydrones-upstream/open_vins/ov_init",
+      "policy": "project"
+    },
+    {
+      "path": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf",
+      "policy": "project"
+    },
+    {
+      "path": "/home/yuchen7509/flydrones-upstream",
+      "policy": "external-top"
+    },
+    {
+      "path": "/tmp",
+      "policy": "external-top"
+    }
+  ],
+  "name_policy": "project: build/compile/link/configure/cmake/make/ninja + .log/.out/.err/.txt/.stdout/.stderr/.yaml; external-top: also explicit OpenVINS name; no .git/history/other projects",
+  "max_depth": 4,
+  "directory_observations": {
+    "/home/yuchen7509/flydrones-upstream/open_vins": {
+      "complete": true,
+      "entries": 5,
+      "selected_logs": [],
+      "before": {
+        "mode": 16895,
+        "size": 0,
+        "ino": 14072,
+        "dev": 0,
+        "mtime_ns": 1790912207783710400,
+        "ctime_ns": 1790912207783710400,
+        "attributes": 16,
+        "reparse_tag": 0
+      },
+      "after": {
+        "mode": 16895,
+        "size": 0,
+        "ino": 14072,
+        "dev": 0,
+        "mtime_ns": 1790912207783710400,
+        "ctime_ns": 1790912207783710400,
+        "attributes": 16,
+        "reparse_tag": 0
+      },
+      "error": null
+    },
+    "/home/yuchen7509/flydrones-upstream/open_vins/ov_core": {
+      "complete": true,
+      "entries": 5,
+      "selected_logs": [],
+      "before": {
+        "mode": 16895,
+        "size": 0,
+        "ino": 260184,
+        "dev": 0,
+        "mtime_ns": 1790912207779772900,
+        "ctime_ns": 1790912207779772900,
+        "attributes": 16,
+        "reparse_tag": 0
+      },
+      "after": {
+        "mode": 16895,
+        "size": 0,
+        "ino": 260184,
+        "dev": 0,
+        "mtime_ns": 1790912207779772900,
+        "ctime_ns": 1790912207779772900,
+        "attributes": 16,
+        "reparse_tag": 0
+      },
+      "error": null
+    },
+    "/home/yuchen7509/flydrones-upstream/open_vins/ov_init": {
+      "complete": true,
+      "entries": 6,
+      "selected_logs": [],
+      "before": {
+        "mode": 16895,
+        "size": 0,
+        "ino": 260256,
+        "dev": 0,
+        "mtime_ns": 1790912207783710400,
+        "ctime_ns": 1790912207783710400,
+        "attributes": 16,
+        "reparse_tag": 0
+      },
+      "after": {
+        "mode": 16895,
+        "size": 0,
+        "ino": 260256,
+        "dev": 0,
+        "mtime_ns": 1790912207783710400,
+        "ctime_ns": 1790912207783710400,
+        "attributes": 16,
+        "reparse_tag": 0
+      },
+      "error": null
+    },
+    "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf": {
+      "complete": true,
+      "entries": 8,
+      "selected_logs": [],
+      "before": {
+        "mode": 16895,
+        "size": 0,
+        "ino": 259656,
+        "dev": 0,
+        "mtime_ns": 1790912220469182500,
+        "ctime_ns": 1790912220469182500,
+        "attributes": 16,
+        "reparse_tag": 0
+      },
+      "after": {
+        "mode": 16895,
+        "size": 0,
+        "ino": 259656,
+        "dev": 0,
+        "mtime_ns": 1790912220469182500,
+        "ctime_ns": 1790912220469182500,
+        "attributes": 16,
+        "reparse_tag": 0
+      },
+      "error": null
+    },
+    "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build": {
+      "complete": true,
+      "entries": 9,
+      "selected_logs": [],
+      "before": {
+        "mode": 16895,
+        "size": 0,
+        "ino": 259663,
+        "dev": 0,
+        "mtime_ns": 1790912619206965000,
+        "ctime_ns": 1790912619206965000,
+        "attributes": 16,
+        "reparse_tag": 0
+      },
+      "after": {
+        "mode": 16895,
+        "size": 0,
+        "ino": 259663,
+        "dev": 0,
+        "mtime_ns": 1790912619206965000,
+        "ctime_ns": 1790912619206965000,
+        "attributes": 16,
+        "reparse_tag": 0
+      },
+      "error": null
+    },
+    "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles": {
+      "complete": true,
+      "entries": 14,
+      "selected_logs": [],
+      "before": {
+        "mode": 16895,
+        "size": 0,
+        "ino": 259672,
+        "dev": 0,
+        "mtime_ns": 1790912608417719600,
+        "ctime_ns": 1790912608417719600,
+        "attributes": 16,
+        "reparse_tag": 0
+      },
+      "after": {
+        "mode": 16895,
+        "size": 0,
+        "ino": 259672,
+        "dev": 0,
+        "mtime_ns": 1790912608417719600,
+        "ctime_ns": 1790912608417719600,
+        "attributes": 16,
+        "reparse_tag": 0
+      },
+      "error": null
+    },
+    "/home/yuchen7509/flydrones-upstream": {
+      "complete": true,
+      "entries": 9,
+      "selected_logs": [],
+      "before": {
+        "mode": 16895,
+        "size": 0,
+        "ino": 14069,
+        "dev": 0,
+        "mtime_ns": 1791361044436724900,
+        "ctime_ns": 1791361044436724900,
+        "attributes": 16,
+        "reparse_tag": 0
+      },
+      "after": {
+        "mode": 16895,
+        "size": 0,
+        "ino": 14069,
+        "dev": 0,
+        "mtime_ns": 1791361044436724900,
+        "ctime_ns": 1791361044436724900,
+        "attributes": 16,
+        "reparse_tag": 0
+      },
+      "error": null
+    },
+    "/tmp": {
+      "complete": false,
+      "entries": 695,
+      "selected_logs": [],
+      "before": {
+        "mode": 16895,
+        "size": 0,
+        "ino": 73729,
+        "dev": 0,
+        "mtime_ns": 1792323757737073000,
+        "ctime_ns": 1792315654709486100,
+        "attributes": 16,
+        "reparse_tag": 0
+      },
+      "after": {
+        "mode": 16895,
+        "size": 0,
+        "ino": 73729,
+        "dev": 0,
+        "mtime_ns": 1792323757737073000,
+        "ctime_ns": 1792323757737073000,
+        "attributes": 16,
+        "reparse_tag": 0
+      },
+      "error": null
+    }
+  },
+  "selected_new_log_candidates": [],
+  "previously_acquired_or_searched_skipped": [
+    "/home/yuchen7509/flydrones-upstream/open_vins/ov_core/CMakeLists.txt",
+    "/home/yuchen7509/flydrones-upstream/open_vins/ov_init/CMakeLists.txt",
+    "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/CMakeLists.txt",
+    "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeCache.txt",
+    "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/CMakeConfigureLog.yaml"
+  ],
+  "all_original_logs_absent_proven": false,
+  "logs_elsewhere_not_searched": true,
+  "limitations": [
+    "Names only for nonmatching entries; no shell history/.git/unrelated project contents read.",
+    "Search filter/depth and selected roots are not global absence proof.",
+    "Changed directory metadata cannot establish complete stable membership; observations not atomic.",
+    "No new build log payload collected; prior configure probe log does not prove main target compile/link."
+  ],
+  "no_new_matching_candidate_in_observed_names": true
+}

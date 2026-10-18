@@ -1,0 +1,38 @@
+{
+  "schema": "openvins-remaining-summary-v1",
+  "selected_paths": 12,
+  "status_counts": {
+    "observed": 10,
+    "file_cap": 1,
+    "aggregate_cap": 1
+  },
+  "new_objects_observed": 10,
+  "deduplicated_blobs": 10,
+  "new_observed_payload_bytes": 201271200,
+  "actual_payload_bytes_read": 201271200,
+  "new_previous_acquired_path_overlap": 0,
+  "prior_acquired_exclusion_paths": 971,
+  "new_static_rel_x86_64": 10,
+  "object_parse_errors": {},
+  "total_declared_objects": 34,
+  "total_objects_with_retained_bytes": 25,
+  "objects_remaining_unknown": 9,
+  "new_log_payloads": 0,
+  "new_log_candidates": 0,
+  "searched_directories": 8,
+  "stable_search_directories": 7,
+  "unstable_or_failed_search_directories": [
+    "/tmp"
+  ],
+  "acquisition_complete": false,
+  "stop_reason": "AggregateCap('192MiB payload cap; stop, no fit-to-budget selection')",
+  "current_library_sha256": null,
+  "source_to_object_proven": false,
+  "source_to_existing_library_proven": false,
+  "native_admission": false,
+  "all_qualifications": false,
+  "native_commands": false,
+  "resource_queries": false,
+  "tests_run": false,
+  "linux_writes": false
+}
