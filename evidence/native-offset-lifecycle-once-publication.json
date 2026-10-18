@@ -1,0 +1,119 @@
+{
+  "publication_checkbox": {
+    "before_sha256": "f68c097866b47e9b4182b3a4060ee1045bf8c15ec4c33e80b714b9ef7cea9963",
+    "after_sha256": "84dd7a3f8acc78167649b02e1c24d39c1ea987c265c48b354be85d0cba174be8",
+    "one_byte": true
+  },
+  "schema": "native-offset-lifecycle-once-publication-v1",
+  "base": "7bc35af0c04142dc1cb73e29174d6dea3d8f31a8",
+  "plan_head": "ee39edf6bb7a210528fe65c9f7382030a505bde8",
+  "files": {
+    "tools/benchmark/offset_reset_native_source.py": {
+      "working_bytes": 11973,
+      "working_sha256": "c71c12515071ae8aecffefe704296357bb20f8c65476261b93829f895ec19b1a",
+      "git_bytes": 11973,
+      "git_sha256": "c71c12515071ae8aecffefe704296357bb20f8c65476261b93829f895ec19b1a"
+    },
+    "tools/benchmark/openvins_online_probe_v2.cpp": {
+      "working_bytes": 12656,
+      "working_sha256": "bb7664e157f2e07f75ada49df6946b6791d8c46b8dcf4f509b781deed802efe8",
+      "git_bytes": 12386,
+      "git_sha256": "c4a2703cc055492991efc09fe1638833f41add7c0041bb2ede2c0cc4a75ef945"
+    },
+    "tools/benchmark/capture_disarmed_sensors.py": {
+      "working_bytes": 74603,
+      "working_sha256": "5fd2c9794c38de025cb55266d614f166f32924151861ecb0db170adcd7c878cd",
+      "git_bytes": 73171,
+      "git_sha256": "21ec952618b596d911a71503a997f155822f8989da0ffbbc172d216fcd10dcc1"
+    },
+    "tools/benchmark/capture_contract.py": {
+      "working_bytes": 18066,
+      "working_sha256": "b8fadeb6218319738b0df3d10f3f71c519b8373f64373a2db39178c53bdd1007",
+      "git_bytes": 17745,
+      "git_sha256": "5dcf87d26dedb9c8f7af064dc6eaa63cef88514369163f913dc4d8084d3b4e3f"
+    },
+    "tools/benchmark/native_offset_once.py": {
+      "working_bytes": 23626,
+      "working_sha256": "b3f950439a7aa0c7fc187a0cecfb8633cdb6d3f70d3237d95c3dec6bb002faea",
+      "git_bytes": 23110,
+      "git_sha256": "24333ef78022632e9e9698b666eefb8064427d1a1210bfc705f5e953deafe1ae"
+    },
+    "tools/benchmark/native_offset_once_scope.py": {
+      "working_bytes": 20244,
+      "working_sha256": "fd17a6b7ebd0cc314d19ed18615afc28d3dee860831cecc89d237ccf21d9a854",
+      "git_bytes": 19784,
+      "git_sha256": "632ec33f420f0586805167f90a35e5bdb1e09531d6c75f80f7b9db21fc95684e"
+    },
+    "tools/benchmark/native_offset_build_receipt.py": {
+      "working_bytes": 13654,
+      "working_sha256": "a06b4d0d22d7aed264b24d1fdb2c202feca608f558907eb044b6310ffe1bde18",
+      "git_bytes": 13349,
+      "git_sha256": "2f2084f661ba20e9cd70d7ccd6ebeb8108c4c296093ac4c05f05870a215f876a"
+    },
+    "tests/benchmark/test_native_offset_prefeed_once.py": {
+      "working_bytes": 6609,
+      "working_sha256": "20a66ca62b5d1664ae43ea1e8027ed343b5432520c19ce8e26f8fffd0417f216",
+      "git_bytes": 6609,
+      "git_sha256": "20a66ca62b5d1664ae43ea1e8027ed343b5432520c19ce8e26f8fffd0417f216"
+    },
+    "tests/benchmark/test_native_offset_coordinator.py": {
+      "working_bytes": 28260,
+      "working_sha256": "4e70206d0ecaffdbf8042ee91392143ba6ccc84e284e6104050908b1b2f33bfb",
+      "git_bytes": 27552,
+      "git_sha256": "86a5235f45ae27a533a9e4e5bc17c351c59de01b2252f1dbe4d4479fcedef426"
+    },
+    "docs/NATIVE_OFFSET_LIFECYCLE_ONCE_PROGRESS.md": {
+      "working_bytes": 5796,
+      "working_sha256": "2387895a2c1c29cf82a4ee01dff64e9206cfb2effd04a4337f7eb4939c64fa20",
+      "git_bytes": 5776,
+      "git_sha256": "4e5c56334d44f9db651d582297fe6593f9e9f44eaafee839ec83b14fe8e870af"
+    },
+    "docs/superpowers/specs/2026-10-18-native-offset-lifecycle-once.md": {
+      "working_bytes": 2216,
+      "working_sha256": "ff7312d88ee7a6de21f0240479c8ff9c917bbbab244ea876f31267e6bb527bd2",
+      "git_bytes": 2216,
+      "git_sha256": "ff7312d88ee7a6de21f0240479c8ff9c917bbbab244ea876f31267e6bb527bd2"
+    },
+    "docs/superpowers/plans/2026-10-18-native-offset-lifecycle-once.md": {
+      "working_bytes": 985,
+      "working_sha256": "f68c097866b47e9b4182b3a4060ee1045bf8c15ec4c33e80b714b9ef7cea9963",
+      "git_bytes": 976,
+      "git_sha256": "37805aa281c90570afec23307670aa751ac8ca362fe1b999695d4b58689b22a3"
+    },
+    "results/native-offset-lifecycle-once-20261018/request-template.json": {
+      "working_bytes": 1941,
+      "working_sha256": "d5347d0cd2fc650de85cd89d0f697efe3a9f1d80825f7e4f8a1182d939460ade",
+      "git_bytes": 1881,
+      "git_sha256": "255693020af463fc37ff7076460107419599ef983a300c866002a5fe01beb6d4"
+    },
+    "results/native-offset-lifecycle-once-20261018/admission-template.json": {
+      "working_bytes": 323,
+      "working_sha256": "d7d99eaec273ff3f947c835fa6b1bedfff517e4abd7241cb93d92d64468088b0",
+      "git_bytes": 307,
+      "git_sha256": "88b1ddc68c6593a2a34c5c08dd690bdda53ff6936789d54e81776775e47401d5"
+    },
+    "results/native-offset-lifecycle-once-20261018/REQUEST_CONTRACT.md": {
+      "working_bytes": 4196,
+      "working_sha256": "916721c87324d3dda60e4d2194775890e3acdb4f2a85294f626e460a54a0a47f",
+      "git_bytes": 4196,
+      "git_sha256": "916721c87324d3dda60e4d2194775890e3acdb4f2a85294f626e460a54a0a47f"
+    },
+    "evidence/native-offset-lifecycle-once-20261018.zip": {
+      "working_bytes": 4917367,
+      "working_sha256": "6921091b79a5922971898cbe0e1ad6cbee2b7280f99a511085bec4ebf72b8c52",
+      "git_bytes": 4917367,
+      "git_sha256": "6921091b79a5922971898cbe0e1ad6cbee2b7280f99a511085bec4ebf72b8c52"
+    },
+    "evidence/native-offset-lifecycle-once-20261018.sha256.json": {
+      "working_bytes": 1144130,
+      "working_sha256": "1c35b2997befe9b591e9133a4028d1760a2a92815d6fb509480d7dddd729b7e0",
+      "git_bytes": 1126214,
+      "git_sha256": "edbc4d6d1c080a0645bf3bb65a0e0b76ae5d01c77e780a8a820e19470ea2d667"
+    }
+  },
+  "scope": "Production lifecycle software with new targeted modeled tests only. No configure/compiler/native/resource/old-test operation or native admission.",
+  "dispatchable": false,
+  "native_admission_review_performed": false,
+  "all_qualifications": false,
+  "future_checkboxes": "Software publication only; actual current Linux tools/library/ABI/measured inputs/resources/native admission remain absent."
+}
