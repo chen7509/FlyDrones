@@ -1,0 +1,108 @@
+{
+  "schema": "openvins-two-object-static-v1",
+  "objects": {
+    "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/src/update/UpdaterSLAM.cpp.o": {
+      "elf_class": 64,
+      "little_endian": true,
+      "e_type": 1,
+      "machine": 62,
+      "section_count": 2444,
+      "selected_sections": {
+        ".text": {
+          "offset": 9616,
+          "bytes": 150154,
+          "flags": 6
+        },
+        ".debug_info": {
+          "offset": 397432,
+          "bytes": 7027101,
+          "flags": 0
+        },
+        ".debug_str": {
+          "offset": 10924162,
+          "bytes": 20094847,
+          "flags": 48
+        },
+        ".debug_line_str": {
+          "offset": 31019009,
+          "bytes": 27149,
+          "flags": 48
+        },
+        ".comment": {
+          "offset": 31046176,
+          "bytes": 46,
+          "flags": 48
+        },
+        ".symtab": {
+          "offset": 31058440,
+          "bytes": 57216,
+          "flags": 0
+        }
+      },
+      "executed_or_loaded": false,
+      "source_to_object_proven": false,
+      "object_to_library_proven": false,
+      "comment_strings": [
+        "GCC: (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0"
+      ],
+      "debug_line_string_observations": {
+        "exact_source_path_present": true,
+        "source_basename_present": true,
+        "build_path_present": true,
+        "note": "String-table occurrences only; not DWARF DIE/path/relocation attribution or source digest."
+      }
+    },
+    "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/src/update/UpdaterZeroVelocity.cpp.o": {
+      "elf_class": 64,
+      "little_endian": true,
+      "e_type": 1,
+      "machine": 62,
+      "section_count": 2075,
+      "selected_sections": {
+        ".text": {
+          "offset": 8128,
+          "bytes": 62425,
+          "flags": 6
+        },
+        ".debug_info": {
+          "offset": 201168,
+          "bytes": 4640899,
+          "flags": 0
+        },
+        ".debug_str": {
+          "offset": 6394032,
+          "bytes": 15336283,
+          "flags": 48
+        },
+        ".debug_line_str": {
+          "offset": 21730315,
+          "bytes": 27259,
+          "flags": 48
+        },
+        ".comment": {
+          "offset": 21757592,
+          "bytes": 46,
+          "flags": 48
+        },
+        ".symtab": {
+          "offset": 21764168,
+          "bytes": 48336,
+          "flags": 0
+        }
+      },
+      "executed_or_loaded": false,
+      "source_to_object_proven": false,
+      "object_to_library_proven": false,
+      "comment_strings": [
+        "GCC: (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0"
+      ],
+      "debug_line_string_observations": {
+        "exact_source_path_present": true,
+        "source_basename_present": true,
+        "build_path_present": true,
+        "note": "String-table occurrences only; not DWARF DIE/path/relocation attribution or source digest."
+      }
+    }
+  },
+  "note": "ELF and strings from actual retained objects only. No load/execution, ABI, compiler identity or historical source content proof."
+}
