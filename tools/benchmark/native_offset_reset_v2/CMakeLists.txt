@@ -1,7 +1,8 @@
 # New target only. Configuration/build requires a separately admitted source/tool closure.
 cmake_minimum_required(VERSION 3.20)
 project(flydrones_openvins_offset_reset_v2 LANGUAGES CXX)
-set(CMAKE_CXX_STANDARD 14)
+# exclusive_probe_output.h uses std::filesystem; this adapter needs C++17.
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 if(NOT IS_ABSOLUTE "${OPENVINS_SOURCE_DIR}" OR NOT IS_ABSOLUTE "${OPENVINS_LIBRARY_DIR}")
