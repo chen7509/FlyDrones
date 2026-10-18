@@ -771,7 +771,7 @@ def make_capture_native_client(args, session_dir, *, on_first_ack, session_id=No
 
             native_session = secrets.token_hex(32)
             options['source'] = OffsetResetSource(artifact, native_session=native_session, session_id=session_id)
-            extra_native_args = [native_session, str(artifact.timeshift_ns)]
+            extra_native_args = [native_session, str(artifact.timeshift_ns), 'prefeed-v1']
             client_type = OffsetResetNativeClient
         else:
             options['source'] = ManagedCaptureSource(artifact, session_id=session_id)
@@ -782,6 +782,28 @@ def make_capture_native_client(args, session_dir, *, on_first_ack, session_id=No
         session_dir, on_first_ack=on_first_ack, **options)
 
 
+def start_bound_native_client(args, session_dir, binding, role, on_first_ack, session_id):
+    v2 = args.native_estimate_profile == 'offset-reset-v2'
+    if v2:
+        from tools.benchmark.offset_reset_native_source import require_prefeed_phases
+        require_prefeed_phases(binding.required_owned if binding else None, role)
+    native = make_capture_native_client(args, session_dir, on_first_ack=on_first_ack, session_id=session_id)
+    try:
+        if binding and role in binding.required_owned:
+            binding.register_owned(role, native.process, args.shadow_binary)
+        if v2:
+            native.release_prefeed(binding, role)
+    except BaseException as primary:
+        if v2:
+            from tools.benchmark.capture_online_estimates import _secondary
+            try:
+                native.finish()
+            except BaseException as cleanup:
+                _secondary(primary, [cleanup])
+        raise
+    return native
+
+
 def main():
     args = parse_capture_args()
     binding_doc = None
@@ -789,6 +811,9 @@ def main():
         from tools.benchmark.runtime_resource_binding import validate_binding
 
         binding_doc = validate_binding(read_declaration(args.runtime_binding))
+        if args.native_estimate_profile == 'offset-reset-v2':
+            from tools.benchmark.offset_reset_native_source import require_prefeed_phases
+            require_prefeed_phases(binding_doc.get('runtime_maps', {}).get('owned_roles'))
     launch_environment = derive_launch_environment(binding_doc) if binding_doc and binding_doc["schema"] in (
         "capture-resource-binding-v3", "capture-resource-binding-v4") else None
     contract = validate_declaration(args, launch_environment)
@@ -1042,20 +1067,9 @@ def main():
                         binding.observe_owned(role, "ready")
                         owned_ready[role] = True
 
-                native = make_capture_native_client(args, session_dir, on_first_ack=openvins_ready, session_id=session_id)
-                try:
-                    if binding and role in binding.required_owned:
-                        binding.register_owned(role, native.process, args.shadow_binary)
-                        owned_processes[role] = native.process
-                except BaseException as primary:
-                    if args.native_estimate_profile == 'offset-reset-v2':
-                        from tools.benchmark.capture_online_estimates import _secondary
-
-                        try:
-                            native.finish()
-                        except BaseException as cleanup:
-                            _secondary(primary,[cleanup])
-                    raise
+                native = start_bound_native_client(args, session_dir, binding, role, openvins_ready, session_id)
+                if binding and role in binding.required_owned:
+                    owned_processes[role] = native.process
                 client_roles[id(native)] = role
                 return native
 

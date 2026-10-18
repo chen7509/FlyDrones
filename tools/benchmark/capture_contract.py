@@ -173,7 +173,8 @@ def execution_contract(args, launch_environment=None, *, record_provider=None):
         result['native_estimate_profile'] = dict(profile='offset-reset-v2',disarmed_odometry=True,
             physical_target_period_ns=20_000_000,cache_policy='invalidate-before-each-physical-IMU-target',
             reset_policy='native-single-manager-lifecycle-discontinuity-aborts',fusion_verified=False,
-            controller_ready=False,parameter_writes=False)
+            controller_ready=False,parameter_writes=False,
+            prefeed_profile='native-prefeed-v1',owned_map_phases=['prefeed','ready','prestop'])
     if policy_path is not None:
         result['trajectory_gauge_policy'] = trajectory_gauge_policy_record(policy_path)
     simulation_seed = getattr(args, 'simulation_seed', None)

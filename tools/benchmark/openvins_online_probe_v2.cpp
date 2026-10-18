@@ -123,7 +123,7 @@ bool read_header(std::string &header) {
 }
 
 int main(int argc, char **argv) {
-  if (argc!=7) return 2;
+  if (argc!=8 || std::string(argv[6])!="prefeed-v1") return 2;
   try {
     const std::string native_session(argv[4]);
     if (!is_sha256(native_session)) throw std::runtime_error("invalid native session nonce");
@@ -135,7 +135,7 @@ int main(int argc, char **argv) {
     flydrones_probe::validate_output_pair(argv[2], argv[3]);
     flydrones_probe::ExclusiveOutput state_file(argv[2]), fast_file(argv[3]);
     auto &states=state_file.stream(), &fast=fast_file.stream();
-    int ack_fd=std::stoi(argv[6]);
+    int ack_fd=std::stoi(argv[7]);
     if (ack_fd<3) throw std::runtime_error("invalid ack descriptor");
     std::unique_ptr<OnlineManagerV2> manager;
     if (!parse_only) {
@@ -154,6 +154,23 @@ int main(int argc, char **argv) {
       manager=std::make_unique<OnlineManagerV2>(options);
       manager->bind_lifecycle(native_session, offset_ns);
     }
+    // Constructed-manager identity precedes any input. The parent checks its
+    // actual owned process/maps and releases this same stdin pipe exactly once.
+    std::ostringstream readiness;
+    readiness << "{\"event\":\"native_prefeed_ready\"";
+    manager->observe_lifecycle();
+    manager->lifecycle_fields(readiness);
+    readiness << "}\n";
+    const auto ready_bytes=readiness.str();
+    size_t ready_sent=0;
+    while (ready_sent<ready_bytes.size()) {
+      const auto count=::write(ack_fd,ready_bytes.data()+ready_sent,ready_bytes.size()-ready_sent);
+      if (count<=0) throw std::runtime_error("prefeed readiness write failed");
+      ready_sent+=count;
+    }
+    char release;
+    if (!std::cin.get(release) || release!='\x01') throw std::runtime_error("prefeed release refused");
+    manager->observe_lifecycle();
     long long sequence=0, first_imu=-1, last_imu=-1, last_camera=-1, next_target=-1, last_dispatch=0;
     std::string header;
     while (read_header(header)) {

@@ -1,0 +1,11 @@
+# v2 production prefeed and once lifecycle
+
+The human explicitly authorizes implementation of the three software gaps from the once plan. No compiler/configure/native/WSL/resource query or old tests may execute in this preparation session. New software tests use inert process boundaries and retained files. Existing sealed evidence remains immutable.
+
+The v2 manager emits PID/nonce/signed-offset/reset readiness on its owned ack pipe after construction and waits for one release byte before reading any sensor frame. Its production client must register the child, observe declared `prefeed` owned maps, recheck liveness within the original two-second deadline, persist outcomes and latch failures. First sensor ACK remains a separate `ready` observation. This protocol is correlation, not authentication or real-time qualification.
+
+The new coordinator binds current request bytes, input pins, explicit build/runtime closure documents and a stage-specific SHA-bound review. Build and capture have separate fixed exclusive stages in one fixed attempt directory; first observation and consumed records cannot be reopened by changing request names. Refusal and partial effects remain recorded. Build is only the independent adapter target, fixed C++17/O2/parallel1, no upstream rebuild/install/fallback. Run uses the actual capture declaration and factory, and requires the complete build receipt plus a separately bound run review and runtime closure. No automatic build-to-run transition.
+
+Receipts preserve exact commands, raw streams, process/cleanup results, compiler/link/depfile/CMake trace outputs, input before/after and produced ELF identity. Unknown inputs fail closed; an exit0 or hash is insufficient. Build completeness does not prove ABI, loaded closure, signed propagation, reset, PX4 receipt, fusion, RTF or cleanup of unknown descendants. Original budgets and all false qualifications remain.
+
+Future external requirements remain current Linux tools/headers/libraries/packages, library source build proof, measured calibration/noise and signed offset, fresh original dual-host resource gate, cgroup/pidfd support and one applicable admission review. Software implementation is not native admission.

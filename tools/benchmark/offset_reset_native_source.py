@@ -5,6 +5,9 @@ from __future__ import annotations
 import copy
 import hashlib
 import json
+import os
+import select
+import time
 
 from tools.benchmark.managed_capture_source import ManagedCaptureSource, ManagedEstimateNativeClient
 from tools.benchmark.openvins_causal_input import CausalInput
@@ -157,6 +160,84 @@ class OffsetResetSource(ManagedCaptureSource):
 
 
 class OffsetResetNativeClient(ManagedEstimateNativeClient):
+    def __init__(self, *args, **kwargs):
+        self._prefeed_started = self._prefeed_released = False
+        super().__init__(*args, **kwargs)
+
+    def release_prefeed(self, binding, role):
+        """Consume constructed-manager identity, observe owned maps, release once."""
+        if getattr(self, '_prefeed_started', False) or self.sequence or self.closed or self.failed:
+            raise ValueError('prefeed unavailable/already attempted')
+        self._prefeed_started = True
+        trace = dict(profile='native-prefeed-v1', native_pid=self.process.pid, ready=None, mapping=None,
+                     release_attempted=False, release_bytes_returned=None, error=None,
+                     source_authenticated=False, fusion_verified=False, readiness_raw_hex='')
+        primary = None
+        deadline = time.monotonic() + self.timeout_s
+        try:
+            require_prefeed_phases(binding.required_owned, role)
+            raw = b''
+            while b'\n' not in raw:
+                remaining = deadline - time.monotonic()
+                if remaining <= 0:
+                    raise TimeoutError('prefeed readiness deadline')
+                if self.process.poll() is not None:
+                    raise ValueError('native exited before prefeed')
+                reads, _, _ = select.select([self.ack_fd], [], [], remaining)
+                if reads:
+                    part = os.read(self.ack_fd, 8193-len(raw))
+                    if not part:
+                        raise ValueError('prefeed EOF')
+                    raw += part
+                    trace['readiness_raw_hex'] = raw.hex()
+                    if len(raw) > 8192:
+                        raise ValueError('prefeed readiness bound')
+            if raw.count(b'\n') != 1 or not raw.endswith(b'\n'):
+                raise ValueError('extra prefeed output')
+            from tools.benchmark.capture_online_estimates import _pairs
+            ready = json.loads(raw, object_pairs_hook=_pairs)
+            if type(ready) is not dict or set(ready) != LIFECYCLE_FIELDS | {'event','reset_counter'} or ready['event'] != 'native_prefeed_ready':
+                raise ValueError('prefeed readiness schema')
+            trace['ready'] = ready
+            self.managed_source.lifecycle.accept(ready)
+            if time.monotonic() >= deadline:
+                raise TimeoutError('prefeed identity deadline')
+            trace['mapping'] = binding.observe_owned(role, 'prefeed')
+            if (trace['mapping'].get('observed_files_covered') is not True
+                    or trace['mapping'].get('identity_after', {}).get('pid') != self.process.pid
+                    or binding.errors):
+                raise ValueError('prefeed owned mappings not covered')
+            self.managed_source.lifecycle.accept(ready)
+            if time.monotonic() >= deadline:
+                raise TimeoutError('prefeed map/release deadline')
+            trace['release_attempted'] = True
+            trace['release_bytes_returned'] = os.write(self.process.stdin.fileno(), b'\x01')
+            if trace['release_bytes_returned'] != 1:
+                raise ValueError('prefeed short release')
+            self._prefeed_released = True
+            return trace
+        except BaseException as exc:
+            primary = exc
+            trace['error'] = self._feed_failure = self.failed = repr(exc)
+            self.managed_source.latch_failure(exc)
+            raise
+        finally:
+            try:
+                with (self.output/'native-prefeed.json').open('x', encoding='utf-8') as stream:
+                    json.dump(trace, stream, indent=2, allow_nan=False)
+            except BaseException as cleanup:
+                if primary is None:
+                    self.failed = self._feed_failure = repr(cleanup)
+                    self.managed_source.latch_failure(cleanup)
+                    raise
+                from tools.benchmark.capture_online_estimates import _secondary
+                _secondary(primary, [cleanup])
+
+    def send(self, action, pixels=None):
+        if not self._prefeed_released:
+            raise ValueError('native prefeed barrier not released')
+        return super().send(action, pixels)
+
     def _validate_ack_contract(self, ack):
         self.managed_source.lifecycle.accept(ack)
 
@@ -172,3 +253,8 @@ def install_offset_causal(shadow, source):
     shadow.causal = OffsetCausalInput(
         session_id=shadow.causal.session_id, clock_id=shadow.causal.clock_id, offset_ns=source.artifact.timeshift_ns
     )
+
+
+def require_prefeed_phases(roles, role='openvins'):
+    if type(roles) is not dict or role != 'openvins' or roles.get(role) != ['prefeed','ready','prestop']:
+        raise ValueError('v2 requires prefeed/ready/prestop owned maps before child creation')

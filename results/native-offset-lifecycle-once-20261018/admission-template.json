@@ -1,0 +1,17 @@
+{
+  "schema": "native-offset-once-admission-v1",
+  "decision": null,
+  "stage": "build",
+  "request_sha256": null,
+  "covers": [
+    "current-source",
+    "tool-library-closure",
+    "recipe",
+    "budget",
+    "stops",
+    "once-cleanup",
+    "prefeed"
+  ],
+  "created_unix": null,
+  "expires_unix": null
+}
