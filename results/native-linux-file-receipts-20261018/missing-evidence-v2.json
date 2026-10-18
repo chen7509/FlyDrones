@@ -1,0 +1,2514 @@
+{
+  "schema": "native-offset-current-file-evidence-gaps-v1",
+  "gaps": {
+    "library_current_bytes": {
+      "status": "blocked_file_cap",
+      "actual_size": 291717384,
+      "unchanged_cap": 67108864,
+      "current_sha256": null
+    },
+    "existing_library_source_provenance": {
+      "status": "not_proven",
+      "metadata_only": true,
+      "compile_commands_absent": true
+    },
+    "linux_identity_and_symlinks": {
+      "status": "unavailable_via_share",
+      "unresolved_count": 98,
+      "native_stat_or_readlink_run": false
+    },
+    "headers": {
+      "status": "partial_deadline",
+      "package_selected_paths": 18151,
+      "actual_observed": 371,
+      "selected_before_after": "Per-file observations, not whole-tree or native compiler dependency closure"
+    },
+    "compiler_implicit_inputs": {
+      "status": "partial",
+      "specs_sysroot_startfiles_full_system_headers_not_proven": true
+    },
+    "ELF_resolution_and_ABI": {
+      "status": "static_candidates_only",
+      "actual_loader_maps": false,
+      "recursive_current_loaded_closure": false
+    },
+    "package_origin": {
+      "status": "local_db_only",
+      "authenticated_repository_or_package_archives": false
+    },
+    "build_and_run": {
+      "status": "not_requested_not_executed",
+      "newbinary_absent": true,
+      "review_resources_calibration_noise_pins_not_filled": true
+    }
+  },
+  "unavailable_or_unresolved": {
+    "/usr/bin/ar": {
+      "linux_path": "/usr/bin/ar",
+      "roles": [
+        "tool"
+      ],
+      "utc": "2026-10-18T10:15:40.316911+00:00",
+      "status": "unresolved_reparse",
+      "before": {
+        "mode": 33206,
+        "size": 19,
+        "ino": 1462,
+        "dev": 0,
+        "mtime_ns": 1764774080000000000,
+        "ctime_ns": 1764774080000000000,
+        "attributes": 1024,
+        "reparse_tag": 2684354589
+      },
+      "reason": "Windows readlink and read-only FSCTL unsupported on observed share; target not inferred"
+    },
+    "/usr/bin/as": {
+      "linux_path": "/usr/bin/as",
+      "roles": [
+        "tool"
+      ],
+      "utc": "2026-10-18T10:15:40.317797+00:00",
+      "status": "unresolved_reparse",
+      "before": {
+        "mode": 33206,
+        "size": 19,
+        "ino": 1464,
+        "dev": 0,
+        "mtime_ns": 1764774080000000000,
+        "ctime_ns": 1764774080000000000,
+        "attributes": 1024,
+        "reparse_tag": 2684354589
+      },
+      "reason": "Windows readlink and read-only FSCTL unsupported on observed share; target not inferred"
+    },
+    "/usr/bin/c++": {
+      "linux_path": "/usr/bin/c++",
+      "roles": [
+        "tool"
+      ],
+      "utc": "2026-10-18T10:15:40.317797+00:00",
+      "status": "unresolved_reparse",
+      "before": {
+        "mode": 33206,
+        "size": 21,
+        "ino": 11839,
+        "dev": 0,
+        "mtime_ns": 1711797595000000000,
+        "ctime_ns": 1711797595000000000,
+        "attributes": 1024,
+        "reparse_tag": 2684354589
+      },
+      "reason": "Windows readlink and read-only FSCTL unsupported on observed share; target not inferred"
+    },
+    "/usr/bin/cpp": {
+      "linux_path": "/usr/bin/cpp",
+      "roles": [
+        "tool"
+      ],
+      "utc": "2026-10-18T10:15:40.503245+00:00",
+      "status": "unresolved_reparse",
+      "before": {
+        "mode": 33206,
+        "size": 6,
+        "ino": 47379,
+        "dev": 0,
+        "mtime_ns": 1706706580000000000,
+        "ctime_ns": 1706706580000000000,
+        "attributes": 1024,
+        "reparse_tag": 2684354589
+      },
+      "reason": "Windows readlink and read-only FSCTL unsupported on observed share; target not inferred"
+    },
+    "/usr/bin/cpp-13": {
+      "linux_path": "/usr/bin/cpp-13",
+      "roles": [
+        "tool"
+      ],
+      "utc": "2026-10-18T10:15:40.505261+00:00",
+      "status": "unresolved_reparse",
+      "before": {
+        "mode": 33206,
+        "size": 23,
+        "ino": 47363,
+        "dev": 0,
+        "mtime_ns": 1766091591000000000,
+        "ctime_ns": 1766091591000000000,
+        "attributes": 1024,
+        "reparse_tag": 2684354589
+      },
+      "reason": "Windows readlink and read-only FSCTL unsupported on observed share; target not inferred"
+    },
+    "/usr/bin/g++": {
+      "linux_path": "/usr/bin/g++",
+      "roles": [
+        "tool"
+      ],
+      "utc": "2026-10-18T10:15:40.520009+00:00",
+      "status": "unresolved_reparse",
+      "before": {
+        "mode": 33206,
+        "size": 6,
+        "ino": 49462,
+        "dev": 0,
+        "mtime_ns": 1706706580000000000,
+        "ctime_ns": 1706706580000000000,
+        "attributes": 1024,
+        "reparse_tag": 2684354589
+      },
+      "reason": "Windows readlink and read-only FSCTL unsupported on observed share; target not inferred"
+    },
+    "/usr/bin/g++-13": {
+      "linux_path": "/usr/bin/g++-13",
+      "roles": [
+        "tool"
+      ],
+      "utc": "2026-10-18T10:15:40.533795+00:00",
+      "status": "unresolved_reparse",
+      "before": {
+        "mode": 33206,
+        "size": 23,
+        "ino": 49456,
+        "dev": 0,
+        "mtime_ns": 1766091591000000000,
+        "ctime_ns": 1766091591000000000,
+        "attributes": 1024,
+        "reparse_tag": 2684354589
+      },
+      "reason": "Windows readlink and read-only FSCTL unsupported on observed share; target not inferred"
+    },
+    "/usr/bin/gcc": {
+      "linux_path": "/usr/bin/gcc",
+      "roles": [
+        "tool"
+      ],
+      "utc": "2026-10-18T10:15:40.535808+00:00",
+      "status": "unresolved_reparse",
+      "before": {
+        "mode": 33206,
+        "size": 6,
+        "ino": 48561,
+        "dev": 0,
+        "mtime_ns": 1706706580000000000,
+        "ctime_ns": 1706706580000000000,
+        "attributes": 1024,
+        "reparse_tag": 2684354589
+      },
+      "reason": "Windows readlink and read-only FSCTL unsupported on observed share; target not inferred"
+    },
+    "/usr/bin/gcc-13": {
+      "linux_path": "/usr/bin/gcc-13",
+      "roles": [
+        "tool"
+      ],
+      "utc": "2026-10-18T10:15:40.536806+00:00",
+      "status": "unresolved_reparse",
+      "before": {
+        "mode": 33206,
+        "size": 23,
+        "ino": 48522,
+        "dev": 0,
+        "mtime_ns": 1766091591000000000,
+        "ctime_ns": 1766091591000000000,
+        "attributes": 1024,
+        "reparse_tag": 2684354589
+      },
+      "reason": "Windows readlink and read-only FSCTL unsupported on observed share; target not inferred"
+    },
+    "/usr/bin/ld": {
+      "linux_path": "/usr/bin/ld",
+      "roles": [
+        "tool"
+      ],
+      "utc": "2026-10-18T10:15:40.538819+00:00",
+      "status": "unresolved_reparse",
+      "before": {
+        "mode": 33206,
+        "size": 19,
+        "ino": 1770,
+        "dev": 0,
+        "mtime_ns": 1764774080000000000,
+        "ctime_ns": 1764774080000000000,
+        "attributes": 1024,
+        "reparse_tag": 2684354589
+      },
+      "reason": "Windows readlink and read-only FSCTL unsupported on observed share; target not inferred"
+    },
+    "/usr/bin/ld.bfd": {
+      "linux_path": "/usr/bin/ld.bfd",
+      "roles": [
+        "tool"
+      ],
+      "utc": "2026-10-18T10:15:40.539840+00:00",
+      "status": "unresolved_reparse",
+      "before": {
+        "mode": 33206,
+        "size": 23,
+        "ino": 1771,
+        "dev": 0,
+        "mtime_ns": 1764774080000000000,
+        "ctime_ns": 1764774080000000000,
+        "attributes": 1024,
+        "reparse_tag": 2684354589
+      },
+      "reason": "Windows readlink and read-only FSCTL unsupported on observed share; target not inferred"
+    },
+    "/usr/bin/python3": {
+      "linux_path": "/usr/bin/python3",
+      "roles": [
+        "tool"
+      ],
+      "utc": "2026-10-18T10:15:40.569105+00:00",
+      "status": "unresolved_reparse",
+      "before": {
+        "mode": 33206,
+        "size": 10,
+        "ino": 1954,
+        "dev": 0,
+        "mtime_ns": 1762949744000000000,
+        "ctime_ns": 1762949744000000000,
+        "attributes": 1024,
+        "reparse_tag": 2684354589
+      },
+      "reason": "Windows readlink and read-only FSCTL unsupported on observed share; target not inferred"
+    },
+    "/usr/bin/ranlib": {
+      "linux_path": "/usr/bin/ranlib",
+      "roles": [
+        "tool"
+      ],
+      "utc": "2026-10-18T10:15:40.683993+00:00",
+      "status": "unresolved_reparse",
+      "before": {
+        "mode": 33206,
+        "size": 23,
+        "ino": 1956,
+        "dev": 0,
+        "mtime_ns": 1764774080000000000,
+        "ctime_ns": 1764774080000000000,
+        "attributes": 1024,
+        "reparse_tag": 2684354589
+      },
+      "reason": "Windows readlink and read-only FSCTL unsupported on observed share; target not inferred"
+    },
+    "/usr/bin/x86_64-linux-gnu-cpp": {
+      "linux_path": "/usr/bin/x86_64-linux-gnu-cpp",
+      "roles": [
+        "tool"
+      ],
+      "utc": "2026-10-18T10:15:40.850210+00:00",
+      "status": "unresolved_reparse",
+      "before": {
+        "mode": 33206,
+        "size": 23,
+        "ino": 47372,
+        "dev": 0,
+        "mtime_ns": 1706706580000000000,
+        "ctime_ns": 1706706580000000000,
+        "attributes": 1024,
+        "reparse_tag": 2684354589
+      },
+      "reason": "Windows readlink and read-only FSCTL unsupported on observed share; target not inferred"
+    },
+    "/usr/bin/x86_64-linux-gnu-g++": {
+      "linux_path": "/usr/bin/x86_64-linux-gnu-g++",
+      "roles": [
+        "tool"
+      ],
+      "utc": "2026-10-18T10:15:40.885766+00:00",
+      "status": "unresolved_reparse",
+      "before": {
+        "mode": 33206,
+        "size": 23,
+        "ino": 49459,
+        "dev": 0,
+        "mtime_ns": 1706706580000000000,
+        "ctime_ns": 1706706580000000000,
+        "attributes": 1024,
+        "reparse_tag": 2684354589
+      },
+      "reason": "Windows readlink and read-only FSCTL unsupported on observed share; target not inferred"
+    },
+    "/usr/bin/x86_64-linux-gnu-gcc": {
+      "linux_path": "/usr/bin/x86_64-linux-gnu-gcc",
+      "roles": [
+        "tool"
+      ],
+      "utc": "2026-10-18T10:15:40.917880+00:00",
+      "status": "unresolved_reparse",
+      "before": {
+        "mode": 33206,
+        "size": 23,
+        "ino": 48539,
+        "dev": 0,
+        "mtime_ns": 1706706580000000000,
+        "ctime_ns": 1706706580000000000,
+        "attributes": 1024,
+        "reparse_tag": 2684354589
+      },
+      "reason": "Windows readlink and read-only FSCTL unsupported on observed share; target not inferred"
+    },
+    "/usr/bin/x86_64-linux-gnu-ld": {
+      "linux_path": "/usr/bin/x86_64-linux-gnu-ld",
+      "roles": [
+        "tool"
+      ],
+      "utc": "2026-10-18T10:15:40.955186+00:00",
+      "status": "unresolved_reparse",
+      "before": {
+        "mode": 33206,
+        "size": 23,
+        "ino": 2200,
+        "dev": 0,
+        "mtime_ns": 1764774080000000000,
+        "ctime_ns": 1764774080000000000,
+        "attributes": 1024,
+        "reparse_tag": 2684354589
+      },
+      "reason": "Windows readlink and read-only FSCTL unsupported on observed share; target not inferred"
+    },
+    "/usr/lib/gcc/x86_64-linux-gnu/13/cc1plus": {
+      "linux_path": "/usr/lib/gcc/x86_64-linux-gnu/13/cc1plus",
+      "roles": [
+        "compiler-component"
+      ],
+      "utc": "2026-10-18T10:15:41.024123+00:00",
+      "status": "unavailable",
+      "error": "FileNotFoundError(2, '\u7cfb\u7edf\u627e\u4e0d\u5230\u6307\u5b9a\u7684\u6587\u4ef6\u3002')"
+    },
+    "/usr/lib/gcc/x86_64-linux-gnu/13/cc1": {
+      "linux_path": "/usr/lib/gcc/x86_64-linux-gnu/13/cc1",
+      "roles": [
+        "compiler-component"
+      ],
+      "utc": "2026-10-18T10:15:41.024123+00:00",
+      "status": "unavailable",
+      "error": "FileNotFoundError(2, '\u7cfb\u7edf\u627e\u4e0d\u5230\u6307\u5b9a\u7684\u6587\u4ef6\u3002')"
+    },
+    "/usr/lib/gcc/x86_64-linux-gnu/13/collect2": {
+      "linux_path": "/usr/lib/gcc/x86_64-linux-gnu/13/collect2",
+      "roles": [
+        "compiler-component"
+      ],
+      "utc": "2026-10-18T10:15:41.026132+00:00",
+      "status": "unavailable",
+      "error": "FileNotFoundError(2, '\u7cfb\u7edf\u627e\u4e0d\u5230\u6307\u5b9a\u7684\u6587\u4ef6\u3002')"
+    },
+    "/usr/lib/gcc/x86_64-linux-gnu/13/specs": {
+      "linux_path": "/usr/lib/gcc/x86_64-linux-gnu/13/specs",
+      "roles": [
+        "compiler-component"
+      ],
+      "utc": "2026-10-18T10:15:41.026132+00:00",
+      "status": "unavailable",
+      "error": "FileNotFoundError(2, '\u7cfb\u7edf\u627e\u4e0d\u5230\u6307\u5b9a\u7684\u6587\u4ef6\u3002')"
+    },
+    "/usr/lib/gcc/x86_64-linux-gnu/13/libstdc++.so": {
+      "linux_path": "/usr/lib/gcc/x86_64-linux-gnu/13/libstdc++.so",
+      "roles": [
+        "compiler-component"
+      ],
+      "utc": "2026-10-18T10:15:41.089258+00:00",
+      "status": "unresolved_reparse",
+      "before": {
+        "mode": 33206,
+        "size": 40,
+        "ino": 49445,
+        "dev": 0,
+        "mtime_ns": 1766091591000000000,
+        "ctime_ns": 1766091591000000000,
+        "attributes": 1024,
+        "reparse_tag": 2684354589
+      },
+      "reason": "Windows readlink and read-only FSCTL unsupported on observed share; target not inferred"
+    },
+    "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/compile_commands.json": {
+      "linux_path": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/compile_commands.json",
+      "roles": [
+        "openvins-build"
+      ],
+      "utc": "2026-10-18T10:15:41.189090+00:00",
+      "status": "unavailable",
+      "error": "FileNotFoundError(2, '\u7cfb\u7edf\u627e\u4e0d\u5230\u6307\u5b9a\u7684\u6587\u4ef6\u3002')"
+    },
+    "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/libov_msckf_lib.so": {
+      "linux_path": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/libov_msckf_lib.so",
+      "roles": [
+        "openvins-build"
+      ],
+      "utc": "2026-10-18T10:15:41.255589+00:00",
+      "status": "file_cap",
+      "before": {
+        "mode": 33206,
+        "size": 291717384,
+        "ino": 260615,
+        "dev": 0,
+        "mtime_ns": 1790912561562527700,
+        "ctime_ns": 1790912561562527700,
+        "attributes": 128,
+        "reparse_tag": 0
+      },
+      "limit": 67108864
+    },
+    "/home/yuchen7509/flydrones-upstream/open_vins/LICENSE": {
+      "linux_path": "/home/yuchen7509/flydrones-upstream/open_vins/LICENSE",
+      "roles": [
+        "current-upstream-source"
+      ],
+      "utc": "2026-10-18T10:15:41.318152+00:00",
+      "status": "unavailable",
+      "error": "FileNotFoundError(2, '\u7cfb\u7edf\u627e\u4e0d\u5230\u6307\u5b9a\u7684\u6587\u4ef6\u3002')"
+    },
+    "/home/yuchen7509/flydrones-upstream/open_vins/ReadMe.md": {
+      "linux_path": "/home/yuchen7509/flydrones-upstream/open_vins/ReadMe.md",
+      "roles": [
+        "current-upstream-source"
+      ],
+      "utc": "2026-10-18T10:15:41.318152+00:00",
+      "status": "unavailable",
+      "error": "FileNotFoundError(2, '\u7cfb\u7edf\u627e\u4e0d\u5230\u6307\u5b9a\u7684\u6587\u4ef6\u3002')"
+    },
+    "/usr/lib/x86_64-linux-gnu/libcurl.so.4": {
+      "linux_path": "/usr/lib/x86_64-linux-gnu/libcurl.so.4",
+      "roles": [
+        "elf-candidate"
+      ],
+      "utc": "2026-10-18T10:15:52.423809+00:00",
+      "status": "unresolved_reparse",
+      "before": {
+        "mode": 33206,
+        "size": 16,
+        "ino": 20457,
+        "dev": 0,
+        "mtime_ns": 1791843153000000000,
+        "ctime_ns": 1791843153000000000,
+        "attributes": 1024,
+        "reparse_tag": 2684354589
+      },
+      "reason": "Windows readlink and read-only FSCTL unsupported on observed share; target not inferred"
+    },
+    "/usr/lib/x86_64-linux-gnu/libarchive.so.13": {
+      "linux_path": "/usr/lib/x86_64-linux-gnu/libarchive.so.13",
+      "roles": [
+        "elf-candidate"
+      ],
+      "utc": "2026-10-18T10:15:52.476444+00:00",
+      "status": "unresolved_reparse",
+      "before": {
+        "mode": 33206,
+        "size": 20,
+        "ino": 56563,
+        "dev": 0,
+        "mtime_ns": 1791380472000000000,
+        "ctime_ns": 1791380472000000000,
+        "attributes": 1024,
+        "reparse_tag": 2684354589
+      },
+      "reason": "Windows readlink and read-only FSCTL unsupported on observed share; target not inferred"
+    },
+    "/usr/lib/x86_64-linux-gnu/libuv.so.1": {
+      "linux_path": "/usr/lib/x86_64-linux-gnu/libuv.so.1",
+      "roles": [
+        "elf-candidate"
+      ],
+      "utc": "2026-10-18T10:15:52.573402+00:00",
+      "status": "unresolved_reparse",
+      "before": {
+        "mode": 33206,
+        "size": 14,
+        "ino": 12378,
+        "dev": 0,
+        "mtime_ns": 1711872100000000000,
+        "ctime_ns": 1711872100000000000,
+        "attributes": 1024,
+        "reparse_tag": 2684354589
+      },
+      "reason": "Windows readlink and read-only FSCTL unsupported on observed share; target not inferred"
+    },
+    "/usr/lib/x86_64-linux-gnu/libz.so.1": {
+      "linux_path": "/usr/lib/x86_64-linux-gnu/libz.so.1",
+      "roles": [
+        "elf-candidate"
+      ],
+      "utc": "2026-10-18T10:15:52.618338+00:00",
+      "status": "unresolved_reparse",
+      "before": {
+        "mode": 33206,
+        "size": 11,
+        "ino": 13916,
+        "dev": 0,
+        "mtime_ns": 1787654490000000000,
+        "ctime_ns": 1787654490000000000,
+        "attributes": 1024,
+        "reparse_tag": 2684354589
+      },
+      "reason": "Windows readlink and read-only FSCTL unsupported on observed share; target not inferred"
+    },
+    "/usr/lib/x86_64-linux-gnu/libjsoncpp.so.25": {
+      "linux_path": "/usr/lib/x86_64-linux-gnu/libjsoncpp.so.25",
+      "roles": [
+        "elf-candidate"
+      ],
+      "utc": "2026-10-18T10:15:52.653648+00:00",
+      "status": "unresolved_reparse",
+      "before": {
+        "mode": 33206,
+        "size": 19,
+        "ino": 50417,
+        "dev": 0,
+        "mtime_ns": 1712592295000000000,
+        "ctime_ns": 1712592295000000000,
+        "attributes": 1024,
+        "reparse_tag": 2684354589
+      },
+      "reason": "Windows readlink and read-only FSCTL unsupported on observed share; target not inferred"
+    },
+    "/usr/lib/x86_64-linux-gnu/libstdc++.so.6": {
+      "linux_path": "/usr/lib/x86_64-linux-gnu/libstdc++.so.6",
+      "roles": [
+        "elf-candidate"
+      ],
+      "utc": "2026-10-18T10:15:52.653648+00:00",
+      "status": "unresolved_reparse",
+      "before": {
+        "mode": 33206,
+        "size": 19,
+        "ino": 13213,
+        "dev": 0,
+        "mtime_ns": 1766093810000000000,
+        "ctime_ns": 1766093810000000000,
+        "attributes": 1024,
+        "reparse_tag": 2684354589
+      },
+      "reason": "Windows readlink and read-only FSCTL unsupported on observed share; target not inferred"
+    },
+    "/usr/lib/x86_64-linux-gnu/libexpat.so.1": {
+      "linux_path": "/usr/lib/x86_64-linux-gnu/libexpat.so.1",
+      "roles": [
+        "elf-candidate"
+      ],
+      "utc": "2026-10-18T10:15:52.935123+00:00",
+      "status": "unresolved_reparse",
+      "before": {
+        "mode": 33206,
+        "size": 17,
+        "ino": 196950,
+        "dev": 0,
+        "mtime_ns": 1790021143000000000,
+        "ctime_ns": 1790021143000000000,
+        "attributes": 1024,
+        "reparse_tag": 2684354589
+      },
+      "reason": "Windows readlink and read-only FSCTL unsupported on observed share; target not inferred"
+    },
+    "/usr/lib/x86_64-linux-gnu/libcap.so.2": {
+      "linux_path": "/usr/lib/x86_64-linux-gnu/libcap.so.2",
+      "roles": [
+        "elf-candidate"
+      ],
+      "utc": "2026-10-18T10:15:52.980360+00:00",
+      "status": "unresolved_reparse",
+      "before": {
+        "mode": 33206,
+        "size": 14,
+        "ino": 20488,
+        "dev": 0,
+        "mtime_ns": 1775747067000000000,
+        "ctime_ns": 1775747067000000000,
+        "attributes": 1024,
+        "reparse_tag": 2684354589
+      },
+      "reason": "Windows readlink and read-only FSCTL unsupported on observed share; target not inferred"
+    },
+    "/usr/lib/x86_64-linux-gnu/liblz4.so.1": {
+      "linux_path": "/usr/lib/x86_64-linux-gnu/liblz4.so.1",
+      "roles": [
+        "elf-candidate"
+      ],
+      "utc": "2026-10-18T10:15:53.022839+00:00",
+      "status": "unresolved_reparse",
+      "before": {
+        "mode": 33206,
+        "size": 15,
+        "ino": 12995,
+        "dev": 0,
+        "mtime_ns": 1723170801000000000,
+        "ctime_ns": 1723170801000000000,
+        "attributes": 1024,
+        "reparse_tag": 2684354589
+      },
+      "reason": "Windows readlink and read-only FSCTL unsupported on observed share; target not inferred"
+    },
+    "/usr/lib/x86_64-linux-gnu/liblzma.so.5": {
+      "linux_path": "/usr/lib/x86_64-linux-gnu/liblzma.so.5",
+      "roles": [
+        "elf-candidate"
+      ],
+      "utc": "2026-10-18T10:15:53.114162+00:00",
+      "status": "unresolved_reparse",
+      "before": {
+        "mode": 33206,
+        "size": 16,
+        "ino": 19332,
+        "dev": 0,
+        "mtime_ns": 1779984407000000000,
+        "ctime_ns": 1779984407000000000,
+        "attributes": 1024,
+        "reparse_tag": 2684354589
+      },
+      "reason": "Windows readlink and read-only FSCTL unsupported on observed share; target not inferred"
+    },
+    "/usr/lib/x86_64-linux-gnu/libzstd.so.1": {
+      "linux_path": "/usr/lib/x86_64-linux-gnu/libzstd.so.1",
+      "roles": [
+        "elf-candidate"
+      ],
+      "utc": "2026-10-18T10:15:53.156966+00:00",
+      "status": "unresolved_reparse",
+      "before": {
+        "mode": 33206,
+        "size": 16,
+        "ino": 13205,
+        "dev": 0,
+        "mtime_ns": 1723170802000000000,
+        "ctime_ns": 1723170802000000000,
+        "attributes": 1024,
+        "reparse_tag": 2684354589
+      },
+      "reason": "Windows readlink and read-only FSCTL unsupported on observed share; target not inferred"
+    },
+    "/usr/lib/x86_64-linux-gnu/libblkid.so.1": {
+      "linux_path": "/usr/lib/x86_64-linux-gnu/libblkid.so.1",
+      "roles": [
+        "elf-candidate"
+      ],
+      "utc": "2026-10-18T10:15:53.207017+00:00",
+      "status": "unresolved_reparse",
+      "before": {
+        "mode": 33206,
+        "size": 17,
+        "ino": 1831,
+        "dev": 0,
+        "mtime_ns": 1787158071000000000,
+        "ctime_ns": 1787158071000000000,
+        "attributes": 1024,
+        "reparse_tag": 2684354589
+      },
+      "reason": "Windows readlink and read-only FSCTL unsupported on observed share; target not inferred"
+    },
+    "/usr/lib/x86_64-linux-gnu/libgcrypt.so.20": {
+      "linux_path": "/usr/lib/x86_64-linux-gnu/libgcrypt.so.20",
+      "roles": [
+        "elf-candidate"
+      ],
+      "utc": "2026-10-18T10:15:53.254312+00:00",
+      "status": "unresolved_reparse",
+      "before": {
+        "mode": 33206,
+        "size": 19,
+        "ino": 1519,
+        "dev": 0,
+        "mtime_ns": 1787594789000000000,
+        "ctime_ns": 1787594789000000000,
+        "attributes": 1024,
+        "reparse_tag": 2684354589
+      },
+      "reason": "Windows readlink and read-only FSCTL unsupported on observed share; target not inferred"
+    },
+    "/usr/lib/x86_64-linux-gnu/libmount.so.1": {
+      "linux_path": "/usr/lib/x86_64-linux-gnu/libmount.so.1",
+      "roles": [
+        "elf-candidate"
+      ],
+      "utc": "2026-10-18T10:15:53.317764+00:00",
+      "status": "unresolved_reparse",
+      "before": {
+        "mode": 33206,
+        "size": 17,
+        "ino": 1865,
+        "dev": 0,
+        "mtime_ns": 1787158071000000000,
+        "ctime_ns": 1787158071000000000,
+        "attributes": 1024,
+        "reparse_tag": 2684354589
+      },
+      "reason": "Windows readlink and read-only FSCTL unsupported on observed share; target not inferred"
+    },
+    "/usr/lib/x86_64-linux-gnu/libctf.so.0": {
+      "linux_path": "/usr/lib/x86_64-linux-gnu/libctf.so.0",
+      "roles": [
+        "elf-candidate"
+      ],
+      "utc": "2026-10-18T10:15:53.570952+00:00",
+      "status": "unresolved_reparse",
+      "before": {
+        "mode": 33206,
+        "size": 15,
+        "ino": 12826,
+        "dev": 0,
+        "mtime_ns": 1764774080000000000,
+        "ctime_ns": 1764774080000000000,
+        "attributes": 1024,
+        "reparse_tag": 2684354589
+      },
+      "reason": "Windows readlink and read-only FSCTL unsupported on observed share; target not inferred"
+    },
+    "/usr/lib/x86_64-linux-gnu/libjansson.so.4": {
+      "linux_path": "/usr/lib/x86_64-linux-gnu/libjansson.so.4",
+      "roles": [
+        "elf-candidate"
+      ],
+      "utc": "2026-10-18T10:15:53.609772+00:00",
+      "status": "unresolved_reparse",
+      "before": {
+        "mode": 33206,
+        "size": 20,
+        "ino": 12970,
+        "dev": 0,
+        "mtime_ns": 1711848366000000000,
+        "ctime_ns": 1711848366000000000,
+        "attributes": 1024,
+        "reparse_tag": 2684354589
+      },
+      "reason": "Windows readlink and read-only FSCTL unsupported on observed share; target not inferred"
+    },
+    "/usr/lib/x86_64-linux-gnu/libboost_chrono.so": {
+      "linux_path": "/usr/lib/x86_64-linux-gnu/libboost_chrono.so",
+      "roles": [
+        "elf-candidate"
+      ],
+      "utc": "2026-10-18T10:15:53.648479+00:00",
+      "status": "unresolved_reparse",
+      "before": {
+        "mode": 33206,
+        "size": 25,
+        "ino": 224924,
+        "dev": 0,
+        "mtime_ns": 1765623771000000000,
+        "ctime_ns": 1765623771000000000,
+        "attributes": 1024,
+        "reparse_tag": 2684354589
+      },
+      "reason": "Windows readlink and read-only FSCTL unsupported on observed share; target not inferred"
+    },
+    "/usr/lib/x86_64-linux-gnu/libboost_date_time.so": {
+      "linux_path": "/usr/lib/x86_64-linux-gnu/libboost_date_time.so",
+      "roles": [
+        "elf-candidate"
+      ],
+      "utc": "2026-10-18T10:15:53.694990+00:00",
+      "status": "unresolved_reparse",
+      "before": {
+        "mode": 33206,
+        "size": 28,
+        "ino": 224965,
+        "dev": 0,
+        "mtime_ns": 1765623771000000000,
+        "ctime_ns": 1765623771000000000,
+        "attributes": 1024,
+        "reparse_tag": 2684354589
+      },
+      "reason": "Windows readlink and read-only FSCTL unsupported on observed share; target not inferred"
+    },
+    "/usr/lib/x86_64-linux-gnu/libboost_filesystem.so": {
+      "linux_path": "/usr/lib/x86_64-linux-gnu/libboost_filesystem.so",
+      "roles": [
+        "elf-candidate"
+      ],
+      "utc": "2026-10-18T10:15:53.736980+00:00",
+      "status": "unresolved_reparse",
+      "before": {
+        "mode": 33206,
+        "size": 29,
+        "ino": 260404,
+        "dev": 0,
+        "mtime_ns": 1765623771000000000,
+        "ctime_ns": 1765623771000000000,
+        "attributes": 1024,
+        "reparse_tag": 2684354589
+      },
+      "reason": "Windows readlink and read-only FSCTL unsupported on observed share; target not inferred"
+    },
+    "/usr/lib/x86_64-linux-gnu/libboost_system.so": {
+      "linux_path": "/usr/lib/x86_64-linux-gnu/libboost_system.so",
+      "roles": [
+        "elf-candidate"
+      ],
+      "utc": "2026-10-18T10:15:53.785111+00:00",
+      "status": "unresolved_reparse",
+      "before": {
+        "mode": 33206,
+        "size": 25,
+        "ino": 224980,
+        "dev": 0,
+        "mtime_ns": 1765623771000000000,
+        "ctime_ns": 1765623771000000000,
+        "attributes": 1024,
+        "reparse_tag": 2684354589
+      },
+      "reason": "Windows readlink and read-only FSCTL unsupported on observed share; target not inferred"
+    },
+    "/usr/lib/x86_64-linux-gnu/libboost_thread.so": {
+      "linux_path": "/usr/lib/x86_64-linux-gnu/libboost_thread.so",
+      "roles": [
+        "elf-candidate"
+      ],
+      "utc": "2026-10-18T10:15:53.818822+00:00",
+      "status": "unresolved_reparse",
+      "before": {
+        "mode": 33206,
+        "size": 25,
+        "ino": 224990,
+        "dev": 0,
+        "mtime_ns": 1765623771000000000,
+        "ctime_ns": 1765623771000000000,
+        "attributes": 1024,
+        "reparse_tag": 2684354589
+      },
+      "reason": "Windows readlink and read-only FSCTL unsupported on observed share; target not inferred"
+    },
+    "/usr/lib/x86_64-linux-gnu/libceres.so": {
+      "linux_path": "/usr/lib/x86_64-linux-gnu/libceres.so",
+      "roles": [
+        "elf-candidate"
+      ],
+      "utc": "2026-10-18T10:15:53.856277+00:00",
+      "status": "unresolved_reparse",
+      "before": {
+        "mode": 33206,
+        "size": 13,
+        "ino": 260124,
+        "dev": 0,
+        "mtime_ns": 1711907251000000000,
+        "ctime_ns": 1711907251000000000,
+        "attributes": 1024,
+        "reparse_tag": 2684354589
+      },
+      "reason": "Windows readlink and read-only FSCTL unsupported on observed share; target not inferred"
+    },
+    "/usr/lib/x86_64-linux-gnu/libceres.so.4": {
+      "linux_path": "/usr/lib/x86_64-linux-gnu/libceres.so.4",
+      "roles": [
+        "elf-candidate"
+      ],
+      "utc": "2026-10-18T10:15:53.977127+00:00",
+      "status": "unresolved_reparse",
+      "before": {
+        "mode": 33206,
+        "size": 17,
+        "ino": 259759,
+        "dev": 0,
+        "mtime_ns": 1711907251000000000,
+        "ctime_ns": 1711907251000000000,
+        "attributes": 1024,
+        "reparse_tag": 2684354589
+      },
+      "reason": "Windows readlink and read-only FSCTL unsupported on observed share; target not inferred"
+    },
+    "/usr/lib/x86_64-linux-gnu/libopencv_core.so": {
+      "linux_path": "/usr/lib/x86_64-linux-gnu/libopencv_core.so",
+      "roles": [
+        "elf-candidate"
+      ],
+      "utc": "2026-10-18T10:15:53.980599+00:00",
+      "status": "unresolved_reparse",
+      "before": {
+        "mode": 33206,
+        "size": 21,
+        "ino": 239128,
+        "dev": 0,
+        "mtime_ns": 1712171327000000000,
+        "ctime_ns": 1712171327000000000,
+        "attributes": 1024,
+        "reparse_tag": 2684354589
+      },
+      "reason": "Windows readlink and read-only FSCTL unsupported on observed share; target not inferred"
+    },
+    "/usr/lib/x86_64-linux-gnu/libopencv_core.so.406": {
+      "linux_path": "/usr/lib/x86_64-linux-gnu/libopencv_core.so.406",
+      "roles": [
+        "elf-candidate"
+      ],
+      "utc": "2026-10-18T10:15:54.077210+00:00",
+      "status": "unresolved_reparse",
+      "before": {
+        "mode": 33206,
+        "size": 23,
+        "ino": 238792,
+        "dev": 0,
+        "mtime_ns": 1712171327000000000,
+        "ctime_ns": 1712171327000000000,
+        "attributes": 1024,
+        "reparse_tag": 2684354589
+      },
+      "reason": "Windows readlink and read-only FSCTL unsupported on observed share; target not inferred"
+    },
+    "/usr/lib/x86_64-linux-gnu/libopencv_imgproc.so": {
+      "linux_path": "/usr/lib/x86_64-linux-gnu/libopencv_imgproc.so",
+      "roles": [
+        "elf-candidate"
+      ],
+      "utc": "2026-10-18T10:15:54.081221+00:00",
+      "status": "unresolved_reparse",
+      "before": {
+        "mode": 33206,
+        "size": 24,
+        "ino": 239208,
+        "dev": 0,
+        "mtime_ns": 1712171327000000000,
+        "ctime_ns": 1712171327000000000,
+        "attributes": 1024,
+        "reparse_tag": 2684354589
+      },
+      "reason": "Windows readlink and read-only FSCTL unsupported on observed share; target not inferred"
+    },
+    "/usr/lib/x86_64-linux-gnu/libopencv_imgproc.so.406": {
+      "linux_path": "/usr/lib/x86_64-linux-gnu/libopencv_imgproc.so.406",
+      "roles": [
+        "elf-candidate"
+      ],
+      "utc": "2026-10-18T10:15:54.186812+00:00",
+      "status": "unresolved_reparse",
+      "before": {
+        "mode": 33206,
+        "size": 26,
+        "ino": 238803,
+        "dev": 0,
+        "mtime_ns": 1712171327000000000,
+        "ctime_ns": 1712171327000000000,
+        "attributes": 1024,
+        "reparse_tag": 2684354589
+      },
+      "reason": "Windows readlink and read-only FSCTL unsupported on observed share; target not inferred"
+    },
+    "/usr/lib/x86_64-linux-gnu/libtbbmalloc.so": {
+      "linux_path": "/usr/lib/x86_64-linux-gnu/libtbbmalloc.so",
+      "roles": [
+        "elf-candidate"
+      ],
+      "utc": "2026-10-18T10:15:54.193929+00:00",
+      "status": "unresolved_reparse",
+      "before": {
+        "mode": 33206,
+        "size": 17,
+        "ino": 238974,
+        "dev": 0,
+        "mtime_ns": 1703687155000000000,
+        "ctime_ns": 1703687155000000000,
+        "attributes": 1024,
+        "reparse_tag": 2684354589
+      },
+      "reason": "Windows readlink and read-only FSCTL unsupported on observed share; target not inferred"
+    },
+    "/usr/lib/x86_64-linux-gnu/libtbbmalloc.so.2": {
+      "linux_path": "/usr/lib/x86_64-linux-gnu/libtbbmalloc.so.2",
+      "roles": [
+        "elf-candidate"
+      ],
+      "utc": "2026-10-18T10:15:54.195842+00:00",
+      "status": "unresolved_reparse",
+      "before": {
+        "mode": 33206,
+        "size": 20,
+        "ino": 238774,
+        "dev": 0,
+        "mtime_ns": 1703687155000000000,
+        "ctime_ns": 1703687155000000000,
+        "attributes": 1024,
+        "reparse_tag": 2684354589
+      },
+      "reason": "Windows readlink and read-only FSCTL unsupported on observed share; target not inferred"
+    },
+    "/usr/lib/x86_64-linux-gnu/libnghttp2.so.14": {
+      "linux_path": "/usr/lib/x86_64-linux-gnu/libnghttp2.so.14",
+      "roles": [
+        "elf-candidate"
+      ],
+      "utc": "2026-10-18T10:15:54.240089+00:00",
+      "status": "unresolved_reparse",
+      "before": {
+        "mode": 33206,
+        "size": 21,
+        "ino": 10897,
+        "dev": 0,
+        "mtime_ns": 1782837886000000000,
+        "ctime_ns": 1782837886000000000,
+        "attributes": 1024,
+        "reparse_tag": 2684354589
+      },
+      "reason": "Windows readlink and read-only FSCTL unsupported on observed share; target not inferred"
+    },
+    "/usr/lib/x86_64-linux-gnu/libidn2.so.0": {
+      "linux_path": "/usr/lib/x86_64-linux-gnu/libidn2.so.0",
+      "roles": [
+        "elf-candidate"
+      ],
+      "utc": "2026-10-18T10:15:54.285365+00:00",
+      "status": "unresolved_reparse",
+      "before": {
+        "mode": 33206,
+        "size": 16,
+        "ino": 12968,
+        "dev": 0,
+        "mtime_ns": 1727872850000000000,
+        "ctime_ns": 1727872850000000000,
+        "attributes": 1024,
+        "reparse_tag": 2684354589
+      },
+      "reason": "Windows readlink and read-only FSCTL unsupported on observed share; target not inferred"
+    },
+    "/usr/lib/x86_64-linux-gnu/libssh.so.4": {
+      "linux_path": "/usr/lib/x86_64-linux-gnu/libssh.so.4",
+      "roles": [
+        "elf-candidate"
+      ],
+      "utc": "2026-10-18T10:15:54.360850+00:00",
+      "status": "unresolved_reparse",
+      "before": {
+        "mode": 33206,
+        "size": 15,
+        "ino": 12778,
+        "dev": 0,
+        "mtime_ns": 1787583574000000000,
+        "ctime_ns": 1787583574000000000,
+        "attributes": 1024,
+        "reparse_tag": 2684354589
+      },
+      "reason": "Windows readlink and read-only FSCTL unsupported on observed share; target not inferred"
+    },
+    "/usr/lib/x86_64-linux-gnu/libpsl.so.5": {
+      "linux_path": "/usr/lib/x86_64-linux-gnu/libpsl.so.5",
+      "roles": [
+        "elf-candidate"
+      ],
+      "utc": "2026-10-18T10:15:54.407975+00:00",
+      "status": "unresolved_reparse",
+      "before": {
+        "mode": 33206,
+        "size": 15,
+        "ino": 13073,
+        "dev": 0,
+        "mtime_ns": 1711871785000000000,
+        "ctime_ns": 1711871785000000000,
+        "attributes": 1024,
+        "reparse_tag": 2684354589
+      },
+      "reason": "Windows readlink and read-only FSCTL unsupported on observed share; target not inferred"
+    },
+    "/usr/lib/x86_64-linux-gnu/libgssapi_krb5.so.2": {
+      "linux_path": "/usr/lib/x86_64-linux-gnu/libgssapi_krb5.so.2",
+      "roles": [
+        "elf-candidate"
+      ],
+      "utc": "2026-10-18T10:15:54.508224+00:00",
+      "status": "unresolved_reparse",
+      "before": {
+        "mode": 33206,
+        "size": 21,
+        "ino": 194204,
+        "dev": 0,
+        "mtime_ns": 1787231245000000000,
+        "ctime_ns": 1787231245000000000,
+        "attributes": 1024,
+        "reparse_tag": 2684354589
+      },
+      "reason": "Windows readlink and read-only FSCTL unsupported on observed share; target not inferred"
+    },
+    "/usr/lib/x86_64-linux-gnu/libldap.so.2": {
+      "linux_path": "/usr/lib/x86_64-linux-gnu/libldap.so.2",
+      "roles": [
+        "elf-candidate"
+      ],
+      "utc": "2026-10-18T10:15:54.558388+00:00",
+      "status": "unresolved_reparse",
+      "before": {
+        "mode": 33206,
+        "size": 18,
+        "ino": 12993,
+        "dev": 0,
+        "mtime_ns": 1758644799000000000,
+        "ctime_ns": 1758644799000000000,
+        "attributes": 1024,
+        "reparse_tag": 2684354589
+      },
+      "reason": "Windows readlink and read-only FSCTL unsupported on observed share; target not inferred"
+    },
+    "/usr/lib/x86_64-linux-gnu/liblber.so.2": {
+      "linux_path": "/usr/lib/x86_64-linux-gnu/liblber.so.2",
+      "roles": [
+        "elf-candidate"
+      ],
+      "utc": "2026-10-18T10:15:54.609061+00:00",
+      "status": "unresolved_reparse",
+      "before": {
+        "mode": 33206,
+        "size": 18,
+        "ino": 12989,
+        "dev": 0,
+        "mtime_ns": 1758644799000000000,
+        "ctime_ns": 1758644799000000000,
+        "attributes": 1024,
+        "reparse_tag": 2684354589
+      },
+      "reason": "Windows readlink and read-only FSCTL unsupported on observed share; target not inferred"
+    },
+    "/usr/lib/x86_64-linux-gnu/libbrotlidec.so.1": {
+      "linux_path": "/usr/lib/x86_64-linux-gnu/libbrotlidec.so.1",
+      "roles": [
+        "elf-candidate"
+      ],
+      "utc": "2026-10-18T10:15:54.647174+00:00",
+      "status": "unresolved_reparse",
+      "before": {
+        "mode": 33206,
+        "size": 21,
+        "ino": 12792,
+        "dev": 0,
+        "mtime_ns": 1711870146000000000,
+        "ctime_ns": 1711870146000000000,
+        "attributes": 1024,
+        "reparse_tag": 2684354589
+      },
+      "reason": "Windows readlink and read-only FSCTL unsupported on observed share; target not inferred"
+    },
+    "/usr/lib/x86_64-linux-gnu/libnettle.so.8": {
+      "linux_path": "/usr/lib/x86_64-linux-gnu/libnettle.so.8",
+      "roles": [
+        "elf-candidate"
+      ],
+      "utc": "2026-10-18T10:15:54.678683+00:00",
+      "status": "unresolved_reparse",
+      "before": {
+        "mode": 33206,
+        "size": 16,
+        "ino": 13019,
+        "dev": 0,
+        "mtime_ns": 1723170802000000000,
+        "ctime_ns": 1723170802000000000,
+        "attributes": 1024,
+        "reparse_tag": 2684354589
+      },
+      "reason": "Windows readlink and read-only FSCTL unsupported on observed share; target not inferred"
+    },
+    "/usr/lib/x86_64-linux-gnu/libacl.so.1": {
+      "linux_path": "/usr/lib/x86_64-linux-gnu/libacl.so.1",
+      "roles": [
+        "elf-candidate"
+      ],
+      "utc": "2026-10-18T10:15:54.717628+00:00",
+      "status": "unresolved_reparse",
+      "before": {
+        "mode": 33206,
+        "size": 18,
+        "ino": 12755,
+        "dev": 0,
+        "mtime_ns": 1727872851000000000,
+        "ctime_ns": 1727872851000000000,
+        "attributes": 1024,
+        "reparse_tag": 2684354589
+      },
+      "reason": "Windows readlink and read-only FSCTL unsupported on observed share; target not inferred"
+    },
+    "/usr/lib/x86_64-linux-gnu/libbz2.so.1.0": {
+      "linux_path": "/usr/lib/x86_64-linux-gnu/libbz2.so.1.0",
+      "roles": [
+        "elf-candidate"
+      ],
+      "utc": "2026-10-18T10:15:54.753512+00:00",
+      "status": "unresolved_reparse",
+      "before": {
+        "mode": 33206,
+        "size": 15,
+        "ino": 5749,
+        "dev": 0,
+        "mtime_ns": 1787803550000000000,
+        "ctime_ns": 1787803550000000000,
+        "attributes": 1024,
+        "reparse_tag": 2684354589
+      },
+      "reason": "Windows readlink and read-only FSCTL unsupported on observed share; target not inferred"
+    },
+    "/usr/lib/x86_64-linux-gnu/libxml2.so.2": {
+      "linux_path": "/usr/lib/x86_64-linux-gnu/libxml2.so.2",
+      "roles": [
+        "elf-candidate"
+      ],
+      "utc": "2026-10-18T10:15:54.788313+00:00",
+      "status": "unresolved_reparse",
+      "before": {
+        "mode": 33206,
+        "size": 17,
+        "ino": 12259,
+        "dev": 0,
+        "mtime_ns": 1791304857000000000,
+        "ctime_ns": 1791304857000000000,
+        "attributes": 1024,
+        "reparse_tag": 2684354589
+      },
+      "reason": "Windows readlink and read-only FSCTL unsupported on observed share; target not inferred"
+    },
+    "/usr/lib/x86_64-linux-gnu/libpcre2-8.so.0": {
+      "linux_path": "/usr/lib/x86_64-linux-gnu/libpcre2-8.so.0",
+      "roles": [
+        "elf-candidate"
+      ],
+      "utc": "2026-10-18T10:15:54.867154+00:00",
+      "status": "unresolved_reparse",
+      "before": {
+        "mode": 33206,
+        "size": 20,
+        "ino": 13055,
+        "dev": 0,
+        "mtime_ns": 1727872851000000000,
+        "ctime_ns": 1727872851000000000,
+        "attributes": 1024,
+        "reparse_tag": 2684354589
+      },
+      "reason": "Windows readlink and read-only FSCTL unsupported on observed share; target not inferred"
+    },
+    "/usr/lib/x86_64-linux-gnu/libgpg-error.so.0": {
+      "linux_path": "/usr/lib/x86_64-linux-gnu/libgpg-error.so.0",
+      "roles": [
+        "elf-candidate"
+      ],
+      "utc": "2026-10-18T10:15:54.919017+00:00",
+      "status": "unresolved_reparse",
+      "before": {
+        "mode": 33206,
+        "size": 22,
+        "ino": 12924,
+        "dev": 0,
+        "mtime_ns": 1727872850000000000,
+        "ctime_ns": 1727872850000000000,
+        "attributes": 1024,
+        "reparse_tag": 2684354589
+      },
+      "reason": "Windows readlink and read-only FSCTL unsupported on observed share; target not inferred"
+    },
+    "/usr/lib/x86_64-linux-gnu/libsframe.so.1": {
+      "linux_path": "/usr/lib/x86_64-linux-gnu/libsframe.so.1",
+      "roles": [
+        "elf-candidate"
+      ],
+      "utc": "2026-10-18T10:15:54.970395+00:00",
+      "status": "unresolved_reparse",
+      "before": {
+        "mode": 33206,
+        "size": 18,
+        "ino": 13096,
+        "dev": 0,
+        "mtime_ns": 1764774080000000000,
+        "ctime_ns": 1764774080000000000,
+        "attributes": 1024,
+        "reparse_tag": 2684354589
+      },
+      "reason": "Windows readlink and read-only FSCTL unsupported on observed share; target not inferred"
+    },
+    "/usr/lib/x86_64-linux-gnu/libglog.so.1": {
+      "linux_path": "/usr/lib/x86_64-linux-gnu/libglog.so.1",
+      "roles": [
+        "elf-candidate"
+      ],
+      "utc": "2026-10-18T10:15:55.008059+00:00",
+      "status": "unresolved_reparse",
+      "before": {
+        "mode": 33206,
+        "size": 16,
+        "ino": 259745,
+        "dev": 0,
+        "mtime_ns": 1711909012000000000,
+        "ctime_ns": 1711909012000000000,
+        "attributes": 1024,
+        "reparse_tag": 2684354589
+      },
+      "reason": "Windows readlink and read-only FSCTL unsupported on observed share; target not inferred"
+    },
+    "/usr/lib/x86_64-linux-gnu/libcholmod.so.5": {
+      "linux_path": "/usr/lib/x86_64-linux-gnu/libcholmod.so.5",
+      "roles": [
+        "elf-candidate"
+      ],
+      "utc": "2026-10-18T10:15:55.010045+00:00",
+      "status": "unresolved_reparse",
+      "before": {
+        "mode": 33206,
+        "size": 19,
+        "ino": 259731,
+        "dev": 0,
+        "mtime_ns": 1711873539000000000,
+        "ctime_ns": 1711873539000000000,
+        "attributes": 1024,
+        "reparse_tag": 2684354589
+      },
+      "reason": "Windows readlink and read-only FSCTL unsupported on observed share; target not inferred"
+    },
+    "/usr/lib/x86_64-linux-gnu/libspqr.so.4": {
+      "linux_path": "/usr/lib/x86_64-linux-gnu/libspqr.so.4",
+      "roles": [
+        "elf-candidate"
+      ],
+      "utc": "2026-10-18T10:15:55.067152+00:00",
+      "status": "unresolved_reparse",
+      "before": {
+        "mode": 33206,
+        "size": 16,
+        "ino": 259750,
+        "dev": 0,
+        "mtime_ns": 1711873539000000000,
+        "ctime_ns": 1711873539000000000,
+        "attributes": 1024,
+        "reparse_tag": 2684354589
+      },
+      "reason": "Windows readlink and read-only FSCTL unsupported on observed share; target not inferred"
+    },
+    "/usr/lib/x86_64-linux-gnu/liblapack.so.3": {
+      "linux_path": "/usr/lib/x86_64-linux-gnu/liblapack.so.3",
+      "roles": [
+        "elf-candidate"
+      ],
+      "utc": "2026-10-18T10:15:55.106544+00:00",
+      "status": "unresolved_reparse",
+      "before": {
+        "mode": 33206,
+        "size": 49,
+        "ino": 179915,
+        "dev": 0,
+        "mtime_ns": 1723170802000000000,
+        "ctime_ns": 1723170802000000000,
+        "attributes": 1024,
+        "reparse_tag": 2684354589
+      },
+      "reason": "Windows readlink and read-only FSCTL unsupported on observed share; target not inferred"
+    },
+    "/usr/lib/x86_64-linux-gnu/libGLX.so.0": {
+      "linux_path": "/usr/lib/x86_64-linux-gnu/libGLX.so.0",
+      "roles": [
+        "elf-candidate"
+      ],
+      "utc": "2026-10-18T10:15:55.109545+00:00",
+      "status": "unresolved_reparse",
+      "before": {
+        "mode": 33206,
+        "size": 15,
+        "ino": 12710,
+        "dev": 0,
+        "mtime_ns": 1712592241000000000,
+        "ctime_ns": 1712592241000000000,
+        "attributes": 1024,
+        "reparse_tag": 2684354589
+      },
+      "reason": "Windows readlink and read-only FSCTL unsupported on observed share; target not inferred"
+    },
+    "/usr/lib/x86_64-linux-gnu/libblas.so.3": {
+      "linux_path": "/usr/lib/x86_64-linux-gnu/libblas.so.3",
+      "roles": [
+        "elf-candidate"
+      ],
+      "utc": "2026-10-18T10:15:55.145107+00:00",
+      "status": "unresolved_reparse",
+      "before": {
+        "mode": 33206,
+        "size": 47,
+        "ino": 179806,
+        "dev": 0,
+        "mtime_ns": 1723170802000000000,
+        "ctime_ns": 1723170802000000000,
+        "attributes": 1024,
+        "reparse_tag": 2684354589
+      },
+      "reason": "Windows readlink and read-only FSCTL unsupported on observed share; target not inferred"
+    },
+    "/usr/lib/x86_64-linux-gnu/libtbb.so.12": {
+      "linux_path": "/usr/lib/x86_64-linux-gnu/libtbb.so.12",
+      "roles": [
+        "elf-candidate"
+      ],
+      "utc": "2026-10-18T10:15:55.148106+00:00",
+      "status": "unresolved_reparse",
+      "before": {
+        "mode": 33206,
+        "size": 15,
+        "ino": 238785,
+        "dev": 0,
+        "mtime_ns": 1703687155000000000,
+        "ctime_ns": 1703687155000000000,
+        "attributes": 1024,
+        "reparse_tag": 2684354589
+      },
+      "reason": "Windows readlink and read-only FSCTL unsupported on observed share; target not inferred"
+    },
+    "/usr/lib/x86_64-linux-gnu/libunistring.so.5": {
+      "linux_path": "/usr/lib/x86_64-linux-gnu/libunistring.so.5",
+      "roles": [
+        "elf-candidate"
+      ],
+      "utc": "2026-10-18T10:15:55.198076+00:00",
+      "status": "unresolved_reparse",
+      "before": {
+        "mode": 33206,
+        "size": 21,
+        "ino": 13138,
+        "dev": 0,
+        "mtime_ns": 1727872850000000000,
+        "ctime_ns": 1727872850000000000,
+        "attributes": 1024,
+        "reparse_tag": 2684354589
+      },
+      "reason": "Windows readlink and read-only FSCTL unsupported on observed share; target not inferred"
+    },
+    "/usr/lib/x86_64-linux-gnu/libgnutls.so.30": {
+      "linux_path": "/usr/lib/x86_64-linux-gnu/libgnutls.so.30",
+      "roles": [
+        "elf-candidate"
+      ],
+      "utc": "2026-10-18T10:15:55.255153+00:00",
+      "status": "unresolved_reparse",
+      "before": {
+        "mode": 33206,
+        "size": 20,
+        "ino": 20329,
+        "dev": 0,
+        "mtime_ns": 1778259542000000000,
+        "ctime_ns": 1778259542000000000,
+        "attributes": 1024,
+        "reparse_tag": 2684354589
+      },
+      "reason": "Windows readlink and read-only FSCTL unsupported on observed share; target not inferred"
+    },
+    "/usr/lib/x86_64-linux-gnu/libhogweed.so.6": {
+      "linux_path": "/usr/lib/x86_64-linux-gnu/libhogweed.so.6",
+      "roles": [
+        "elf-candidate"
+      ],
+      "utc": "2026-10-18T10:15:55.317690+00:00",
+      "status": "unresolved_reparse",
+      "before": {
+        "mode": 33206,
+        "size": 17,
+        "ino": 12954,
+        "dev": 0,
+        "mtime_ns": 1723170802000000000,
+        "ctime_ns": 1723170802000000000,
+        "attributes": 1024,
+        "reparse_tag": 2684354589
+      },
+      "reason": "Windows readlink and read-only FSCTL unsupported on observed share; target not inferred"
+    },
+    "/usr/lib/x86_64-linux-gnu/libgmp.so.10": {
+      "linux_path": "/usr/lib/x86_64-linux-gnu/libgmp.so.10",
+      "roles": [
+        "elf-candidate"
+      ],
+      "utc": "2026-10-18T10:15:55.379431+00:00",
+      "status": "unresolved_reparse",
+      "before": {
+        "mode": 33206,
+        "size": 16,
+        "ino": 12918,
+        "dev": 0,
+        "mtime_ns": 1727872851000000000,
+        "ctime_ns": 1727872851000000000,
+        "attributes": 1024,
+        "reparse_tag": 2684354589
+      },
+      "reason": "Windows readlink and read-only FSCTL unsupported on observed share; target not inferred"
+    },
+    "/usr/lib/x86_64-linux-gnu/libkrb5.so.3": {
+      "linux_path": "/usr/lib/x86_64-linux-gnu/libkrb5.so.3",
+      "roles": [
+        "elf-candidate"
+      ],
+      "utc": "2026-10-18T10:15:55.435429+00:00",
+      "status": "unresolved_reparse",
+      "before": {
+        "mode": 33206,
+        "size": 14,
+        "ino": 194207,
+        "dev": 0,
+        "mtime_ns": 1787231245000000000,
+        "ctime_ns": 1787231245000000000,
+        "attributes": 1024,
+        "reparse_tag": 2684354589
+      },
+      "reason": "Windows readlink and read-only FSCTL unsupported on observed share; target not inferred"
+    },
+    "/usr/lib/x86_64-linux-gnu/libk5crypto.so.3": {
+      "linux_path": "/usr/lib/x86_64-linux-gnu/libk5crypto.so.3",
+      "roles": [
+        "elf-candidate"
+      ],
+      "utc": "2026-10-18T10:15:55.484353+00:00",
+      "status": "unresolved_reparse",
+      "before": {
+        "mode": 33206,
+        "size": 18,
+        "ino": 12983,
+        "dev": 0,
+        "mtime_ns": 1787231245000000000,
+        "ctime_ns": 1787231245000000000,
+        "attributes": 1024,
+        "reparse_tag": 2684354589
+      },
+      "reason": "Windows readlink and read-only FSCTL unsupported on observed share; target not inferred"
+    },
+    "/usr/lib/x86_64-linux-gnu/libcom_err.so.2": {
+      "linux_path": "/usr/lib/x86_64-linux-gnu/libcom_err.so.2",
+      "roles": [
+        "elf-candidate"
+      ],
+      "utc": "2026-10-18T10:15:55.537709+00:00",
+      "status": "unresolved_reparse",
+      "before": {
+        "mode": 33206,
+        "size": 17,
+        "ino": 12817,
+        "dev": 0,
+        "mtime_ns": 1714347886000000000,
+        "ctime_ns": 1714347886000000000,
+        "attributes": 1024,
+        "reparse_tag": 2684354589
+      },
+      "reason": "Windows readlink and read-only FSCTL unsupported on observed share; target not inferred"
+    },
+    "/usr/lib/x86_64-linux-gnu/libkrb5support.so.0": {
+      "linux_path": "/usr/lib/x86_64-linux-gnu/libkrb5support.so.0",
+      "roles": [
+        "elf-candidate"
+      ],
+      "utc": "2026-10-18T10:15:55.582547+00:00",
+      "status": "unresolved_reparse",
+      "before": {
+        "mode": 33206,
+        "size": 21,
+        "ino": 12932,
+        "dev": 0,
+        "mtime_ns": 1787231245000000000,
+        "ctime_ns": 1787231245000000000,
+        "attributes": 1024,
+        "reparse_tag": 2684354589
+      },
+      "reason": "Windows readlink and read-only FSCTL unsupported on observed share; target not inferred"
+    },
+    "/usr/lib/x86_64-linux-gnu/libsasl2.so.2": {
+      "linux_path": "/usr/lib/x86_64-linux-gnu/libsasl2.so.2",
+      "roles": [
+        "elf-candidate"
+      ],
+      "utc": "2026-10-18T10:15:55.618206+00:00",
+      "status": "unresolved_reparse",
+      "before": {
+        "mode": 33206,
+        "size": 18,
+        "ino": 13087,
+        "dev": 0,
+        "mtime_ns": 1723170801000000000,
+        "ctime_ns": 1723170801000000000,
+        "attributes": 1024,
+        "reparse_tag": 2684354589
+      },
+      "reason": "Windows readlink and read-only FSCTL unsupported on observed share; target not inferred"
+    },
+    "/usr/lib/x86_64-linux-gnu/libbrotlicommon.so.1": {
+      "linux_path": "/usr/lib/x86_64-linux-gnu/libbrotlicommon.so.1",
+      "roles": [
+        "elf-candidate"
+      ],
+      "utc": "2026-10-18T10:15:55.655639+00:00",
+      "status": "unresolved_reparse",
+      "before": {
+        "mode": 33206,
+        "size": 24,
+        "ino": 12790,
+        "dev": 0,
+        "mtime_ns": 1711870146000000000,
+        "ctime_ns": 1711870146000000000,
+        "attributes": 1024,
+        "reparse_tag": 2684354589
+      },
+      "reason": "Windows readlink and read-only FSCTL unsupported on observed share; target not inferred"
+    },
+    "/usr/lib/x86_64-linux-gnu/libicuuc.so.74": {
+      "linux_path": "/usr/lib/x86_64-linux-gnu/libicuuc.so.74",
+      "roles": [
+        "elf-candidate"
+      ],
+      "utc": "2026-10-18T10:15:55.701501+00:00",
+      "status": "unresolved_reparse",
+      "before": {
+        "mode": 33206,
+        "size": 16,
+        "ino": 12966,
+        "dev": 0,
+        "mtime_ns": 1723170800000000000,
+        "ctime_ns": 1723170800000000000,
+        "attributes": 1024,
+        "reparse_tag": 2684354589
+      },
+      "reason": "Windows readlink and read-only FSCTL unsupported on observed share; target not inferred"
+    },
+    "/usr/lib/x86_64-linux-gnu/libamd.so.3": {
+      "linux_path": "/usr/lib/x86_64-linux-gnu/libamd.so.3",
+      "roles": [
+        "elf-candidate"
+      ],
+      "utc": "2026-10-18T10:15:55.823563+00:00",
+      "status": "unresolved_reparse",
+      "before": {
+        "mode": 33206,
+        "size": 15,
+        "ino": 259704,
+        "dev": 0,
+        "mtime_ns": 1711873539000000000,
+        "ctime_ns": 1711873539000000000,
+        "attributes": 1024,
+        "reparse_tag": 2684354589
+      },
+      "reason": "Windows readlink and read-only FSCTL unsupported on observed share; target not inferred"
+    },
+    "/usr/lib/x86_64-linux-gnu/libcolamd.so.3": {
+      "linux_path": "/usr/lib/x86_64-linux-gnu/libcolamd.so.3",
+      "roles": [
+        "elf-candidate"
+      ],
+      "utc": "2026-10-18T10:15:55.851056+00:00",
+      "status": "unresolved_reparse",
+      "before": {
+        "mode": 33206,
+        "size": 18,
+        "ino": 259724,
+        "dev": 0,
+        "mtime_ns": 1711873539000000000,
+        "ctime_ns": 1711873539000000000,
+        "attributes": 1024,
+        "reparse_tag": 2684354589
+      },
+      "reason": "Windows readlink and read-only FSCTL unsupported on observed share; target not inferred"
+    },
+    "/usr/lib/x86_64-linux-gnu/libcamd.so.3": {
+      "linux_path": "/usr/lib/x86_64-linux-gnu/libcamd.so.3",
+      "roles": [
+        "elf-candidate"
+      ],
+      "utc": "2026-10-18T10:15:55.899422+00:00",
+      "status": "unresolved_reparse",
+      "before": {
+        "mode": 33206,
+        "size": 16,
+        "ino": 259714,
+        "dev": 0,
+        "mtime_ns": 1711873539000000000,
+        "ctime_ns": 1711873539000000000,
+        "attributes": 1024,
+        "reparse_tag": 2684354589
+      },
+      "reason": "Windows readlink and read-only FSCTL unsupported on observed share; target not inferred"
+    },
+    "/usr/lib/x86_64-linux-gnu/libccolamd.so.3": {
+      "linux_path": "/usr/lib/x86_64-linux-gnu/libccolamd.so.3",
+      "roles": [
+        "elf-candidate"
+      ],
+      "utc": "2026-10-18T10:15:55.941856+00:00",
+      "status": "unresolved_reparse",
+      "before": {
+        "mode": 33206,
+        "size": 19,
+        "ino": 259719,
+        "dev": 0,
+        "mtime_ns": 1711873539000000000,
+        "ctime_ns": 1711873539000000000,
+        "attributes": 1024,
+        "reparse_tag": 2684354589
+      },
+      "reason": "Windows readlink and read-only FSCTL unsupported on observed share; target not inferred"
+    },
+    "/usr/lib/x86_64-linux-gnu/libsuitesparseconfig.so.7": {
+      "linux_path": "/usr/lib/x86_64-linux-gnu/libsuitesparseconfig.so.7",
+      "roles": [
+        "elf-candidate"
+      ],
+      "utc": "2026-10-18T10:15:55.980510+00:00",
+      "status": "unresolved_reparse",
+      "before": {
+        "mode": 33206,
+        "size": 29,
+        "ino": 259700,
+        "dev": 0,
+        "mtime_ns": 1711873539000000000,
+        "ctime_ns": 1711873539000000000,
+        "attributes": 1024,
+        "reparse_tag": 2684354589
+      },
+      "reason": "Windows readlink and read-only FSCTL unsupported on observed share; target not inferred"
+    },
+    "/usr/lib/x86_64-linux-gnu/libgomp.so.1": {
+      "linux_path": "/usr/lib/x86_64-linux-gnu/libgomp.so.1",
+      "roles": [
+        "elf-candidate"
+      ],
+      "utc": "2026-10-18T10:15:56.012193+00:00",
+      "status": "unresolved_reparse",
+      "before": {
+        "mode": 33206,
+        "size": 16,
+        "ino": 47388,
+        "dev": 0,
+        "mtime_ns": 1766093810000000000,
+        "ctime_ns": 1766093810000000000,
+        "attributes": 1024,
+        "reparse_tag": 2684354589
+      },
+      "reason": "Windows readlink and read-only FSCTL unsupported on observed share; target not inferred"
+    },
+    "/usr/lib/x86_64-linux-gnu/libGLdispatch.so.0": {
+      "linux_path": "/usr/lib/x86_64-linux-gnu/libGLdispatch.so.0",
+      "roles": [
+        "elf-candidate"
+      ],
+      "utc": "2026-10-18T10:15:56.052862+00:00",
+      "status": "unresolved_reparse",
+      "before": {
+        "mode": 33206,
+        "size": 22,
+        "ino": 12715,
+        "dev": 0,
+        "mtime_ns": 1712592241000000000,
+        "ctime_ns": 1712592241000000000,
+        "attributes": 1024,
+        "reparse_tag": 2684354589
+      },
+      "reason": "Windows readlink and read-only FSCTL unsupported on observed share; target not inferred"
+    },
+    "/usr/lib/x86_64-linux-gnu/libX11.so.6": {
+      "linux_path": "/usr/lib/x86_64-linux-gnu/libX11.so.6",
+      "roles": [
+        "elf-candidate"
+      ],
+      "utc": "2026-10-18T10:15:56.135705+00:00",
+      "status": "unresolved_reparse",
+      "before": {
+        "mode": 33206,
+        "size": 15,
+        "ino": 226667,
+        "dev": 0,
+        "mtime_ns": 1791457999000000000,
+        "ctime_ns": 1791457999000000000,
+        "attributes": 1024,
+        "reparse_tag": 2684354589
+      },
+      "reason": "Windows readlink and read-only FSCTL unsupported on observed share; target not inferred"
+    },
+    "/usr/lib/x86_64-linux-gnu/libp11-kit.so.0": {
+      "linux_path": "/usr/lib/x86_64-linux-gnu/libp11-kit.so.0",
+      "roles": [
+        "elf-candidate"
+      ],
+      "utc": "2026-10-18T10:15:56.219781+00:00",
+      "status": "unresolved_reparse",
+      "before": {
+        "mode": 33206,
+        "size": 19,
+        "ino": 1170,
+        "dev": 0,
+        "mtime_ns": 1787590632000000000,
+        "ctime_ns": 1787590632000000000,
+        "attributes": 1024,
+        "reparse_tag": 2684354589
+      },
+      "reason": "Windows readlink and read-only FSCTL unsupported on observed share; target not inferred"
+    },
+    "/usr/lib/x86_64-linux-gnu/libtasn1.so.6": {
+      "linux_path": "/usr/lib/x86_64-linux-gnu/libtasn1.so.6",
+      "roles": [
+        "elf-candidate"
+      ],
+      "utc": "2026-10-18T10:15:56.302372+00:00",
+      "status": "unresolved_reparse",
+      "before": {
+        "mode": 33206,
+        "size": 17,
+        "ino": 13121,
+        "dev": 0,
+        "mtime_ns": 1767893081000000000,
+        "ctime_ns": 1767893081000000000,
+        "attributes": 1024,
+        "reparse_tag": 2684354589
+      },
+      "reason": "Windows readlink and read-only FSCTL unsupported on observed share; target not inferred"
+    },
+    "/usr/lib/x86_64-linux-gnu/libkeyutils.so.1": {
+      "linux_path": "/usr/lib/x86_64-linux-gnu/libkeyutils.so.1",
+      "roles": [
+        "elf-candidate"
+      ],
+      "utc": "2026-10-18T10:15:56.342000+00:00",
+      "status": "unresolved_reparse",
+      "before": {
+        "mode": 33206,
+        "size": 19,
+        "ino": 12979,
+        "dev": 0,
+        "mtime_ns": 1712592056000000000,
+        "ctime_ns": 1712592056000000000,
+        "attributes": 1024,
+        "reparse_tag": 2684354589
+      },
+      "reason": "Windows readlink and read-only FSCTL unsupported on observed share; target not inferred"
+    },
+    "/usr/lib/x86_64-linux-gnu/libicudata.so.74": {
+      "linux_path": "/usr/lib/x86_64-linux-gnu/libicudata.so.74",
+      "roles": [
+        "elf-candidate"
+      ],
+      "utc": "2026-10-18T10:15:56.418860+00:00",
+      "status": "unresolved_reparse",
+      "before": {
+        "mode": 33206,
+        "size": 18,
+        "ino": 12956,
+        "dev": 0,
+        "mtime_ns": 1723170800000000000,
+        "ctime_ns": 1723170800000000000,
+        "attributes": 1024,
+        "reparse_tag": 2684354589
+      },
+      "reason": "Windows readlink and read-only FSCTL unsupported on observed share; target not inferred"
+    },
+    "/usr/lib/x86_64-linux-gnu/libxcb.so.1": {
+      "linux_path": "/usr/lib/x86_64-linux-gnu/libxcb.so.1",
+      "roles": [
+        "elf-candidate"
+      ],
+      "utc": "2026-10-18T10:15:56.763678+00:00",
+      "status": "unresolved_reparse",
+      "before": {
+        "mode": 33206,
+        "size": 15,
+        "ino": 13187,
+        "dev": 0,
+        "mtime_ns": 1713450082000000000,
+        "ctime_ns": 1713450082000000000,
+        "attributes": 1024,
+        "reparse_tag": 2684354589
+      },
+      "reason": "Windows readlink and read-only FSCTL unsupported on observed share; target not inferred"
+    },
+    "/usr/lib/x86_64-linux-gnu/libffi.so.8": {
+      "linux_path": "/usr/lib/x86_64-linux-gnu/libffi.so.8",
+      "roles": [
+        "elf-candidate"
+      ],
+      "utc": "2026-10-18T10:15:56.817272+00:00",
+      "status": "unresolved_reparse",
+      "before": {
+        "mode": 33206,
+        "size": 15,
+        "ino": 12882,
+        "dev": 0,
+        "mtime_ns": 1712592217000000000,
+        "ctime_ns": 1712592217000000000,
+        "attributes": 1024,
+        "reparse_tag": 2684354589
+      },
+      "reason": "Windows readlink and read-only FSCTL unsupported on observed share; target not inferred"
+    },
+    "/usr/lib/x86_64-linux-gnu/libXau.so.6": {
+      "linux_path": "/usr/lib/x86_64-linux-gnu/libXau.so.6",
+      "roles": [
+        "elf-candidate"
+      ],
+      "utc": "2026-10-18T10:15:56.858179+00:00",
+      "status": "unresolved_reparse",
+      "before": {
+        "mode": 33206,
+        "size": 15,
+        "ino": 12727,
+        "dev": 0,
+        "mtime_ns": 1712592551000000000,
+        "ctime_ns": 1712592551000000000,
+        "attributes": 1024,
+        "reparse_tag": 2684354589
+      },
+      "reason": "Windows readlink and read-only FSCTL unsupported on observed share; target not inferred"
+    },
+    "/usr/lib/x86_64-linux-gnu/libXdmcp.so.6": {
+      "linux_path": "/usr/lib/x86_64-linux-gnu/libXdmcp.so.6",
+      "roles": [
+        "elf-candidate"
+      ],
+      "utc": "2026-10-18T10:15:56.892873+00:00",
+      "status": "unresolved_reparse",
+      "before": {
+        "mode": 33206,
+        "size": 17,
+        "ino": 12735,
+        "dev": 0,
+        "mtime_ns": 1712592578000000000,
+        "ctime_ns": 1712592578000000000,
+        "attributes": 1024,
+        "reparse_tag": 2684354589
+      },
+      "reason": "Windows readlink and read-only FSCTL unsupported on observed share; target not inferred"
+    },
+    "/usr/lib/x86_64-linux-gnu/libbsd.so.0": {
+      "linux_path": "/usr/lib/x86_64-linux-gnu/libbsd.so.0",
+      "roles": [
+        "elf-candidate"
+      ],
+      "utc": "2026-10-18T10:15:56.928451+00:00",
+      "status": "unresolved_reparse",
+      "before": {
+        "mode": 33206,
+        "size": 16,
+        "ino": 12796,
+        "dev": 0,
+        "mtime_ns": 1727872850000000000,
+        "ctime_ns": 1727872850000000000,
+        "attributes": 1024,
+        "reparse_tag": 2684354589
+      },
+      "reason": "Windows readlink and read-only FSCTL unsupported on observed share; target not inferred"
+    },
+    "/usr/lib/x86_64-linux-gnu/libmd.so.0": {
+      "linux_path": "/usr/lib/x86_64-linux-gnu/libmd.so.0",
+      "roles": [
+        "elf-candidate"
+      ],
+      "utc": "2026-10-18T10:15:56.970871+00:00",
+      "status": "unresolved_reparse",
+      "before": {
+        "mode": 33206,
+        "size": 14,
+        "ino": 13004,
+        "dev": 0,
+        "mtime_ns": 1727872850000000000,
+        "ctime_ns": 1727872850000000000,
+        "attributes": 1024,
+        "reparse_tag": 2684354589
+      },
+      "reason": "Windows readlink and read-only FSCTL unsupported on observed share; target not inferred"
+    },
+    "/usr/include/boost/accumulators": {
+      "linux_path": "/usr/include/boost/accumulators",
+      "roles": [
+        "header-package-selection"
+      ],
+      "utc": "2026-10-18T10:15:57.033788+00:00",
+      "status": "not_regular",
+      "before": {
+        "mode": 16895,
+        "size": 0,
+        "ino": 200067,
+        "dev": 0,
+        "mtime_ns": 1789904094008324600,
+        "ctime_ns": 1789904094008324600,
+        "attributes": 16,
+        "reparse_tag": 0
+      }
+    },
+    "/usr/include/boost/accumulators/framework": {
+      "linux_path": "/usr/include/boost/accumulators/framework",
+      "roles": [
+        "header-package-selection"
+      ],
+      "utc": "2026-10-18T10:15:57.088219+00:00",
+      "status": "not_regular",
+      "before": {
+        "mode": 16895,
+        "size": 0,
+        "ino": 200070,
+        "dev": 0,
+        "mtime_ns": 1789904093996538700,
+        "ctime_ns": 1789904093996538700,
+        "attributes": 16,
+        "reparse_tag": 0
+      }
+    },
+    "/usr/include/boost/accumulators/framework/accumulators": {
+      "linux_path": "/usr/include/boost/accumulators/framework/accumulators",
+      "roles": [
+        "header-package-selection"
+      ],
+      "utc": "2026-10-18T10:15:57.162830+00:00",
+      "status": "not_regular",
+      "before": {
+        "mode": 16895,
+        "size": 0,
+        "ino": 200074,
+        "dev": 0,
+        "mtime_ns": 1789904093996538700,
+        "ctime_ns": 1789904093996538700,
+        "attributes": 16,
+        "reparse_tag": 0
+      }
+    },
+    "/usr/include/boost/accumulators/framework/parameters": {
+      "linux_path": "/usr/include/boost/accumulators/framework/parameters",
+      "roles": [
+        "header-package-selection"
+      ],
+      "utc": "2026-10-18T10:15:57.352034+00:00",
+      "status": "not_regular",
+      "before": {
+        "mode": 16895,
+        "size": 0,
+        "ino": 200083,
+        "dev": 0,
+        "mtime_ns": 1789904093996538700,
+        "ctime_ns": 1789904093996538700,
+        "attributes": 16,
+        "reparse_tag": 0
+      }
+    },
+    "/usr/include/boost/accumulators/numeric": {
+      "linux_path": "/usr/include/boost/accumulators/numeric",
+      "roles": [
+        "header-package-selection"
+      ],
+      "utc": "2026-10-18T10:15:57.444894+00:00",
+      "status": "not_regular",
+      "before": {
+        "mode": 16895,
+        "size": 0,
+        "ino": 200088,
+        "dev": 0,
+        "mtime_ns": 1789904094000467300,
+        "ctime_ns": 1789904094000467300,
+        "attributes": 16,
+        "reparse_tag": 0
+      }
+    },
+    "/usr/include/boost/accumulators/numeric/detail": {
+      "linux_path": "/usr/include/boost/accumulators/numeric/detail",
+      "roles": [
+        "header-package-selection"
+      ],
+      "utc": "2026-10-18T10:15:57.446432+00:00",
+      "status": "not_regular",
+      "before": {
+        "mode": 16895,
+        "size": 0,
+        "ino": 200089,
+        "dev": 0,
+        "mtime_ns": 1789904093996538700,
+        "ctime_ns": 1789904093996538700,
+        "attributes": 16,
+        "reparse_tag": 0
+      }
+    },
+    "/usr/include/boost/accumulators/numeric/functional": {
+      "linux_path": "/usr/include/boost/accumulators/numeric/functional",
+      "roles": [
+        "header-package-selection"
+      ],
+      "utc": "2026-10-18T10:15:57.617713+00:00",
+      "status": "not_regular",
+      "before": {
+        "mode": 16895,
+        "size": 0,
+        "ino": 200096,
+        "dev": 0,
+        "mtime_ns": 1789904094000467300,
+        "ctime_ns": 1789904094000467300,
+        "attributes": 16,
+        "reparse_tag": 0
+      }
+    },
+    "/usr/include/boost/accumulators/statistics": {
+      "linux_path": "/usr/include/boost/accumulators/statistics",
+      "roles": [
+        "header-package-selection"
+      ],
+      "utc": "2026-10-18T10:15:57.760434+00:00",
+      "status": "not_regular",
+      "before": {
+        "mode": 16895,
+        "size": 0,
+        "ino": 200102,
+        "dev": 0,
+        "mtime_ns": 1789904094008324600,
+        "ctime_ns": 1789904094008324600,
+        "attributes": 16,
+        "reparse_tag": 0
+      }
+    },
+    "/usr/include/boost/accumulators/statistics/parameters": {
+      "linux_path": "/usr/include/boost/accumulators/statistics/parameters",
+      "roles": [
+        "header-package-selection"
+      ],
+      "utc": "2026-10-18T10:15:58.187940+00:00",
+      "status": "not_regular",
+      "before": {
+        "mode": 16895,
+        "size": 0,
+        "ino": 200119,
+        "dev": 0,
+        "mtime_ns": 1789904094000467300,
+        "ctime_ns": 1789904094000467300,
+        "attributes": 16,
+        "reparse_tag": 0
+      }
+    },
+    "/usr/include/boost/accumulators/statistics/variates": {
+      "linux_path": "/usr/include/boost/accumulators/statistics/variates",
+      "roles": [
+        "header-package-selection"
+      ],
+      "utc": "2026-10-18T10:15:58.721236+00:00",
+      "status": "not_regular",
+      "before": {
+        "mode": 16895,
+        "size": 0,
+        "ino": 200141,
+        "dev": 0,
+        "mtime_ns": 1789904094004395900,
+        "ctime_ns": 1789904094004395900,
+        "attributes": 16,
+        "reparse_tag": 0
+      }
+    },
+    "/usr/include/boost/algorithm": {
+      "linux_path": "/usr/include/boost/algorithm",
+      "roles": [
+        "header-package-selection"
+      ],
+      "utc": "2026-10-18T10:15:59.280614+00:00",
+      "status": "not_regular",
+      "before": {
+        "mode": 16895,
+        "size": 0,
+        "ino": 200164,
+        "dev": 0,
+        "mtime_ns": 1789904094024039100,
+        "ctime_ns": 1789904094024039100,
+        "attributes": 16,
+        "reparse_tag": 0
+      }
+    },
+    "/usr/include/boost/algorithm/cxx11": {
+      "linux_path": "/usr/include/boost/algorithm/cxx11",
+      "roles": [
+        "header-package-selection"
+      ],
+      "utc": "2026-10-18T10:15:59.356658+00:00",
+      "status": "not_regular",
+      "before": {
+        "mode": 16895,
+        "size": 0,
+        "ino": 200168,
+        "dev": 0,
+        "mtime_ns": 1789904094012253200,
+        "ctime_ns": 1789904094012253200,
+        "attributes": 16,
+        "reparse_tag": 0
+      }
+    },
+    "/usr/include/boost/algorithm/cxx14": {
+      "linux_path": "/usr/include/boost/algorithm/cxx14",
+      "roles": [
+        "header-package-selection"
+      ],
+      "utc": "2026-10-18T10:15:59.688619+00:00",
+      "status": "not_regular",
+      "before": {
+        "mode": 16895,
+        "size": 0,
+        "ino": 200182,
+        "dev": 0,
+        "mtime_ns": 1789904094012253200,
+        "ctime_ns": 1789904094012253200,
+        "attributes": 16,
+        "reparse_tag": 0
+      }
+    },
+    "/usr/include/boost/algorithm/cxx17": {
+      "linux_path": "/usr/include/boost/algorithm/cxx17",
+      "roles": [
+        "header-package-selection"
+      ],
+      "utc": "2026-10-18T10:15:59.755615+00:00",
+      "status": "not_regular",
+      "before": {
+        "mode": 16895,
+        "size": 0,
+        "ino": 200186,
+        "dev": 0,
+        "mtime_ns": 1789904094012253200,
+        "ctime_ns": 1789904094012253200,
+        "attributes": 16,
+        "reparse_tag": 0
+      }
+    },
+    "/usr/include/boost/algorithm/searching": {
+      "linux_path": "/usr/include/boost/algorithm/searching",
+      "roles": [
+        "header-package-selection"
+      ],
+      "utc": "2026-10-18T10:16:00.197526+00:00",
+      "status": "not_regular",
+      "before": {
+        "mode": 16895,
+        "size": 0,
+        "ino": 200203,
+        "dev": 0,
+        "mtime_ns": 1789904094016181800,
+        "ctime_ns": 1789904094016181800,
+        "attributes": 16,
+        "reparse_tag": 0
+      }
+    },
+    "/usr/include/boost/algorithm/searching/detail": {
+      "linux_path": "/usr/include/boost/algorithm/searching/detail",
+      "roles": [
+        "header-package-selection"
+      ],
+      "utc": "2026-10-18T10:16:00.248117+00:00",
+      "status": "not_regular",
+      "before": {
+        "mode": 16895,
+        "size": 0,
+        "ino": 200206,
+        "dev": 0,
+        "mtime_ns": 1789904094016181800,
+        "ctime_ns": 1789904094016181800,
+        "attributes": 16,
+        "reparse_tag": 0
+      }
+    },
+    "/usr/include/boost/algorithm/string": {
+      "linux_path": "/usr/include/boost/algorithm/string",
+      "roles": [
+        "header-package-selection"
+      ],
+      "utc": "2026-10-18T10:16:00.352421+00:00",
+      "status": "not_regular",
+      "before": {
+        "mode": 16895,
+        "size": 0,
+        "ino": 200211,
+        "dev": 0,
+        "mtime_ns": 1789904094024039100,
+        "ctime_ns": 1789904094024039100,
+        "attributes": 16,
+        "reparse_tag": 0
+      }
+    },
+    "/usr/include/boost/algorithm/string/detail": {
+      "linux_path": "/usr/include/boost/algorithm/string/detail",
+      "roles": [
+        "header-package-selection"
+      ],
+      "utc": "2026-10-18T10:16:00.592308+00:00",
+      "status": "not_regular",
+      "before": {
+        "mode": 16895,
+        "size": 0,
+        "ino": 200218,
+        "dev": 0,
+        "mtime_ns": 1789904094020110400,
+        "ctime_ns": 1789904094020110400,
+        "attributes": 16,
+        "reparse_tag": 0
+      }
+    },
+    "/usr/include/boost/algorithm/string/std": {
+      "linux_path": "/usr/include/boost/algorithm/string/std",
+      "roles": [
+        "header-package-selection"
+      ],
+      "utc": "2026-10-18T10:16:01.484348+00:00",
+      "status": "not_regular",
+      "before": {
+        "mode": 16895,
+        "size": 0,
+        "ino": 200249,
+        "dev": 0,
+        "mtime_ns": 1789904094024039100,
+        "ctime_ns": 1789904094024039100,
+        "attributes": 16,
+        "reparse_tag": 0
+      }
+    },
+    "/usr/include/boost/align": {
+      "linux_path": "/usr/include/boost/align",
+      "roles": [
+        "header-package-selection"
+      ],
+      "utc": "2026-10-18T10:16:01.709291+00:00",
+      "status": "not_regular",
+      "before": {
+        "mode": 16895,
+        "size": 0,
+        "ino": 200260,
+        "dev": 0,
+        "mtime_ns": 1789904094031896300,
+        "ctime_ns": 1789904094031896300,
+        "attributes": 16,
+        "reparse_tag": 0
+      }
+    },
+    "/usr/include/boost/align/detail": {
+      "linux_path": "/usr/include/boost/align/detail",
+      "roles": [
+        "header-package-selection"
+      ],
+      "utc": "2026-10-18T10:16:02.041892+00:00",
+      "status": "not_regular",
+      "before": {
+        "mode": 16895,
+        "size": 0,
+        "ino": 200274,
+        "dev": 0,
+        "mtime_ns": 1789904094031896300,
+        "ctime_ns": 1789904094031896300,
+        "attributes": 16,
+        "reparse_tag": 0
+      }
+    },
+    "/usr/include/boost/any": {
+      "linux_path": "/usr/include/boost/any",
+      "roles": [
+        "header-package-selection"
+      ],
+      "utc": "2026-10-18T10:16:02.985211+00:00",
+      "status": "not_regular",
+      "before": {
+        "mode": 16895,
+        "size": 0,
+        "ino": 200313,
+        "dev": 0,
+        "mtime_ns": 1789904094031896300,
+        "ctime_ns": 1789904094031896300,
+        "attributes": 16,
+        "reparse_tag": 0
+      }
+    },
+    "/usr/include/boost/any/detail": {
+      "linux_path": "/usr/include/boost/any/detail",
+      "roles": [
+        "header-package-selection"
+      ],
+      "utc": "2026-10-18T10:16:03.055755+00:00",
+      "status": "not_regular",
+      "before": {
+        "mode": 16895,
+        "size": 0,
+        "ino": 200316,
+        "dev": 0,
+        "mtime_ns": 1789904094031896300,
+        "ctime_ns": 1789904094031896300,
+        "attributes": 16,
+        "reparse_tag": 0
+      }
+    },
+    "/usr/include/boost/archive": {
+      "linux_path": "/usr/include/boost/archive",
+      "roles": [
+        "header-package-selection"
+      ],
+      "utc": "2026-10-18T10:16:03.119798+00:00",
+      "status": "not_regular",
+      "before": {
+        "mode": 16895,
+        "size": 0,
+        "ino": 200321,
+        "dev": 0,
+        "mtime_ns": 1789904094051539500,
+        "ctime_ns": 1789904094051539500,
+        "attributes": 16,
+        "reparse_tag": 0
+      }
+    },
+    "/usr/include/boost/archive/detail": {
+      "linux_path": "/usr/include/boost/archive/detail",
+      "roles": [
+        "header-package-selection"
+      ],
+      "utc": "2026-10-18T10:16:03.730385+00:00",
+      "status": "not_regular",
+      "before": {
+        "mode": 16895,
+        "size": 0,
+        "ino": 200343,
+        "dev": 0,
+        "mtime_ns": 1789904094039753600,
+        "ctime_ns": 1789904094039753600,
+        "attributes": 16,
+        "reparse_tag": 0
+      }
+    },
+    "/usr/include/boost/archive/impl": {
+      "linux_path": "/usr/include/boost/archive/impl",
+      "roles": [
+        "header-package-selection"
+      ],
+      "utc": "2026-10-18T10:16:04.474398+00:00",
+      "status": "not_regular",
+      "before": {
+        "mode": 16895,
+        "size": 0,
+        "ino": 200371,
+        "dev": 0,
+        "mtime_ns": 1789904094043682200,
+        "ctime_ns": 1789904094043682200,
+        "attributes": 16,
+        "reparse_tag": 0
+      }
+    },
+    "/usr/include/boost/archive/iterators": {
+      "linux_path": "/usr/include/boost/archive/iterators",
+      "roles": [
+        "header-package-selection"
+      ],
+      "utc": "2026-10-18T10:16:05.011468+00:00",
+      "status": "not_regular",
+      "before": {
+        "mode": 16895,
+        "size": 0,
+        "ino": 200392,
+        "dev": 0,
+        "mtime_ns": 1789904094047610800,
+        "ctime_ns": 1789904094047610800,
+        "attributes": 16,
+        "reparse_tag": 0
+      }
+    },
+    "/usr/include/boost/asio": {
+      "linux_path": "/usr/include/boost/asio",
+      "roles": [
+        "header-package-selection"
+      ],
+      "utc": "2026-10-18T10:16:06.068634+00:00",
+      "status": "not_regular",
+      "before": {
+        "mode": 16895,
+        "size": 0,
+        "ino": 200434,
+        "dev": 0,
+        "mtime_ns": 1789904094165469700,
+        "ctime_ns": 1789904094165469700,
+        "attributes": 16,
+        "reparse_tag": 0
+      }
+    },
+    "/usr/include/boost/asio/basic_waitable_timer.hpp": {
+      "linux_path": "/usr/include/boost/asio/basic_waitable_timer.hpp",
+      "roles": [
+        "header-package-selection"
+      ],
+      "utc": "2026-10-18T10:16:06.917807+00:00",
+      "status": "deadline",
+      "before": {
+        "mode": 33206,
+        "size": 29439,
+        "ino": 200465,
+        "dev": 0,
+        "mtime_ns": 1765623771000000000,
+        "ctime_ns": 1765623771000000000,
+        "attributes": 128,
+        "reparse_tag": 0
+      }
+    }
+  },
+  "historical_hashes_substituted": false
+}
