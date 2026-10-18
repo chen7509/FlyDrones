@@ -1,0 +1,89 @@
+{
+  "schema": "px4-disarmed-receipts-postseal-prose-erratum-v1",
+  "correction": "The additive recorder-v2 declaration has32 paths, not33. Original recorder-v1 has17 paths.",
+  "cause": "Executor prose miscount; actual source_before/source_after dictionaries and owned-retention.json already record exact32.",
+  "affected_prose": [
+    "sealed docs/PX4_DISARMED_RECEIPTS_PROGRESS.md final retention paragraph",
+    "postseal NEXT_PHASE.md",
+    "first automation prepend"
+  ],
+  "canonical_archive_unchanged": {
+    "path": "evidence/px4-disarmed-receipts-20261018.zip",
+    "sha256": "16a5c19c308ca06acdb019ee4d6554c62fbe68072fa20f779fc11fee69e50fa3"
+  },
+  "declared_counts_by_recorded_run": [
+    [
+      "final-diff-check",
+      32,
+      32
+    ],
+    [
+      "final-ruff",
+      32,
+      32
+    ],
+    [
+      "final-software",
+      32,
+      32
+    ],
+    [
+      "first-consumer",
+      17,
+      17
+    ],
+    [
+      "fusion-observation-green",
+      17,
+      17
+    ],
+    [
+      "fusion-observation-red",
+      17,
+      17
+    ],
+    [
+      "install-software-parser",
+      17,
+      17
+    ],
+    [
+      "interface-red",
+      17,
+      17
+    ],
+    [
+      "pre-review-format",
+      32,
+      32
+    ],
+    [
+      "pre-review-imports",
+      32,
+      32
+    ],
+    [
+      "pre-review-routes",
+      32,
+      32
+    ],
+    [
+      "production-consumer-coverage",
+      17,
+      17
+    ],
+    [
+      "review-freeze-lint",
+      32,
+      32
+    ],
+    [
+      "review-I1-red",
+      32,
+      32
+    ]
+  ],
+  "unaffected": "14runs/28inventories/8pytest/155fixtures157608B/archive members/hash/tests/source and all native limitations remain unchanged. No rerun, reconstructed payload or widened retention claim.",
+  "scope": "Additive documentation erratum only; sealed source/raw/report/ZIP/map not altered.",
+  "all_qualifications": false
+}
