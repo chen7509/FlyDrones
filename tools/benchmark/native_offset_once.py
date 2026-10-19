@@ -11,6 +11,7 @@ import time
 from pathlib import Path
 
 from tools.benchmark.native_offset_build_receipt import file_pin, read_json, verify_pins, write
+from tools.benchmark.native_offset_fresh_build import LIBRARY, PROFILE
 
 ROOT = Path(__file__).resolve().parents[2]
 ATTEMPT = ROOT / "results/native-offset-once-attempt-v1"
@@ -20,6 +21,8 @@ SOURCE_NAMES = (
     "native_offset_once.py",
     "native_offset_once_scope.py",
     "native_offset_build_receipt.py",
+    "native_offset_fresh_build.py",
+    "native_offset_fresh_receipt.py",
     "openvins_online_probe_v2.cpp",
     "openvins_fast_probe_v2.h",
     "exclusive_probe_output.h",
@@ -35,9 +38,6 @@ BUILD_KEYS = (
     "pinned_cmake",
     "pinned_gxx",
     "pinned_make",
-    "openvins_library_dir",
-    "openvins_library_file",
-    "library_source_build_receipt",
     "eigen_config_dir",
     "opencv4_config_dir",
     "boost_config_dir",
@@ -63,7 +63,7 @@ SCOPE_TOOLS = ("/usr/bin/env", "/usr/bin/time", "/usr/bin/timeout", "/usr/bin/sy
 UPSTREAM_MANIFEST_SHA = "19b343211b5ae6b25d9c565095e812f32a265c32997b27100e7eb6bbd3a0ec7f"
 
 
-def verify_upstream(b, pins, library):
+def verify_upstream(b, pins):
     path = ROOT / "results/native-offset-run-plan-20261018/upstream-build-source-manifest.json"
     if str(path) not in pins or pins[str(path)]["sha256"] != UPSTREAM_MANIFEST_SHA:
         raise ValueError("frozen upstream build subtree manifest not pinned")
@@ -73,13 +73,8 @@ def verify_upstream(b, pins, library):
     for name, expected in manifest["files"].items():
         current = str(Path(b["upstream_source_tree"]) / name)
         record = pins.get(current)
-        if (
-            not record
-            or record["sha256"] != expected["sha256"]
-            or record["bytes"] != expected["bytes"]
-            or library["source_pins"].get(current) != record
-        ):
-            raise ValueError("current upstream/library source binding missing: " + current)
+        if not record or record["sha256"] != expected["sha256"] or record["bytes"] != expected["bytes"]:
+            raise ValueError("current fixed upstream source binding missing: " + current)
 
 
 def guard_attempt(path):
@@ -92,6 +87,8 @@ def guard_attempt(path):
 
 
 def build_commands(b):
+    if any(key in b for key in ("openvins_library_file", "openvins_library_dir", "library_source_build_receipt")):
+        raise ValueError("existing library bindings forbidden for fresh-source build")
     configure = [
         b["pinned_cmake"],
         "-S",
@@ -107,8 +104,7 @@ def build_commands(b):
         "-DCMAKE_EXPORT_COMPILE_COMMANDS=ON",
         "-DCMAKE_TOOLCHAIN_FILE=" + b["toolchain_file"],
         "-DOPENVINS_SOURCE_DIR=" + b["upstream_source_tree"],
-        "-DOPENVINS_LIBRARY_DIR=" + b["openvins_library_dir"],
-        "-DOV_MSCKF=" + b["openvins_library_file"],
+        "-DOPENVINS_FIXED_SOURCES=" + b["exclusive_build_dir"] + "/openvins-fixed-sources.cmake",
         "-DEigen3_DIR=" + b["eigen_config_dir"],
         "-DOpenCV_DIR=" + b["opencv4_config_dir"],
         "-DBoost_DIR=" + b["boost_config_dir"],
@@ -119,7 +115,13 @@ def build_commands(b):
         "--trace-format=json-v1",
         "--trace-redirect=" + b["exclusive_build_dir"] + "/cmake-trace.jsonl",
     ]
-    return [configure, [b["pinned_cmake"], "--build", b["exclusive_build_dir"], "--target", TARGET, "--parallel", "1"]]
+    return [
+        configure,
+        *[
+            [b["pinned_cmake"], "--build", b["exclusive_build_dir"], "--target", target, "--parallel", "1"]
+            for target in ("ov_msckf_lib", TARGET)
+        ],
+    ]
 
 
 def verify_request(request_path, sha, review_path, review_sha, stage, *, require_absent=True):
@@ -130,7 +132,7 @@ def verify_request(request_path, sha, review_path, review_sha, stage, *, require
     request, review = read_json(request_path, sha=sha), read_json(review_path, sha=review_sha)
     now = time.time()
     if (
-        review.get("schema") != "native-offset-once-admission-v1"
+        review.get("schema") != "native-offset-fresh-source-admission-v1"
         or review.get("decision") != "allow-once"
         or review.get("request_sha256") != sha
         or review.get("stage") != stage
@@ -141,7 +143,8 @@ def verify_request(request_path, sha, review_path, review_sha, stage, *, require
     ):
         raise ValueError("missing applicable fresh SHA-bound once review; document is not authentication")
     if (
-        request.get("schema") != "native-offset-once-request-v1"
+        request.get("schema") != "native-offset-fresh-source-request-v1"
+        or request.get("build_profile") != PROFILE
         or request.get("target") != TARGET
         or request.get("upstream_commit") != UPSTREAM
         or request.get("stage") != stage
@@ -149,6 +152,8 @@ def verify_request(request_path, sha, review_path, review_sha, stage, *, require
         raise ValueError("new fixed target request required")
     pins = verify_pins(request["input_pins"])
     b = request["bindings"]
+    # Reject legacy input libraries before selecting/pinning any new build output.
+    build_commands(b)
     guard_attempt(ATTEMPT)
 
     def bound(path):
@@ -174,7 +179,6 @@ def verify_request(request_path, sha, review_path, review_sha, stage, *, require
         not in (
             "deployed_repo",
             "upstream_source_tree",
-            "openvins_library_dir",
             "eigen_config_dir",
             "opencv4_config_dir",
             "boost_config_dir",
@@ -210,19 +214,7 @@ def verify_request(request_path, sha, review_path, review_sha, stage, *, require
     for names in closure["groups"].values():
         if type(names) is not list or not names or any(name not in pins for name in names):
             raise ValueError("build closure contains missing/unpinned inputs")
-    library = bound(b["library_source_build_receipt"])
-    if (
-        library.get("schema") != "openvins-no-ros-current-build-v1"
-        or library.get("upstream_commit") != UPSTREAM
-        or library.get("no_ros") is not True
-        or library.get("opencv_major") != 4
-        or library.get("library") != pins[b["openvins_library_file"]]
-        or not library.get("abi")
-        or not library.get("source_pins")
-        or any(pins.get(k) != v for k, v in library["source_pins"].items())
-    ):
-        raise ValueError("current NO_ROS library source/ABI receipt missing")
-    verify_upstream(b, pins, library)
+    verify_upstream(b, pins)
     from tools.benchmark.capture_contract import materialize_launch_environment
 
     environment = materialize_launch_environment(request["build_environment"])
@@ -236,12 +228,21 @@ def verify_request(request_path, sha, review_path, review_sha, stage, *, require
         receipt = read_json(build / "build-receipt.json", expected=request.get("build_receipt"))
         if (
             receipt.get("complete") is not True
+            or receipt.get("schema") != "native-offset-fresh-source-build-receipt-v1"
+            or receipt.get("build_profile") != PROFILE
+            or receipt.get("upstream_commit") != UPSTREAM
             or receipt.get("native_qualified") is not False
             or file_pin(build / "build-receipt.json") != request.get("build_receipt")
             or receipt.get("binary") != file_pin(build / TARGET)
+            or receipt.get("library") != file_pin(build / LIBRARY)
             or any(pins.get(k) != v for k, v in receipt["input_pins"].items())
         ):
             raise ValueError("current complete bound build receipt required")
+        for key in ("elf_recursive_closure",):
+            if b.get(key) in pins:
+                evidence = bound(b[key])
+                if evidence.get("file_pins", {}).get(str(build / LIBRARY)) != receipt["library"]:
+                    raise ValueError("new OpenVINS library absent from current runtime closure")
         for path in (ATTEMPT / "build/completion.json", ATTEMPT / "build/inside-completion.json"):
             if str(path) not in pins:
                 raise ValueError("missing complete build lifecycle pin")
@@ -258,6 +259,20 @@ def verify_request(request_path, sha, review_path, review_sha, stage, *, require
             or not 0 <= inside["elapsed_s"] <= 300
         ):
             raise ValueError("build stage failed/incomplete; receipt cannot release run")
+        abi_path = b.get("new_library_abi_receipt")
+        if abi_path not in pins:
+            raise ValueError("current new-library ABI receipt required before run")
+        abi = bound(abi_path)
+        if (
+            abi.get("schema") != "native-offset-new-library-abi-v1"
+            or abi.get("abi_verified") is not True
+            or abi.get("library") != receipt["library"]
+            or abi.get("binary") != receipt["binary"]
+            or abi.get("build_receipt") != request["build_receipt"]
+            or not abi.get("file_pins")
+            or any(pins.get(k) != v for k, v in abi["file_pins"].items())
+        ):
+            raise ValueError("new-library ABI declaration not bound to current build/runtime inputs")
         from tools.benchmark.capture_contract import declared_command, derive_launch_environment
         from tools.benchmark.capture_disarmed_sensors import parse_capture_args
         from tools.benchmark.offset_reset_native_source import require_prefeed_phases

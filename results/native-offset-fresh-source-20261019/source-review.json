@@ -1,0 +1,15 @@
+{
+  "scope": "ONE read-only source review of the new fresh-source software flow; no native admission",
+  "baseline": "b12a87b4e1a8848b85ffd9731e38206a330e6db4",
+  "candidate": "uncommitted source before bounded executor fixes; no source pin set recorded by reviewer",
+  "counts": {"critical": 0, "important": 3, "minor": 0},
+  "findings": [
+    {"id": "I1", "grade": "Important", "file": "tools/benchmark/native_offset_fresh_receipt.py", "candidate_line": 29,
+     "finding": "Valid symlink pins fail receipt verification: known() resolves the consumed path before comparing file_pin(path) against the original lexical pin. file_pin includes both path and resolved; valid compiler/library aliases can therefore compare unequal. Compare using the original pinned path or normalize both consistently."},
+    {"id": "I2", "grade": "Important", "file": "tools/benchmark/native_offset_once_scope.py", "candidate_line": 173,
+     "finding": "Command dispatch can occur after the shared deadline: request/input revalidation follows the deadline check, and an expired remainder is converted to a positive 0.001-second timeout. Recheck after verification and refuse dispatch without remaining budget."},
+    {"id": "I3", "grade": "Important", "file": "tools/benchmark/native_offset_fresh_receipt.py", "candidate_line": 285,
+     "finding": "Inventory limits apply after unbounded traversal: sorted(build.rglob('*')) consumes the whole tree before deadline/512-entry checks. Enforce bounds while traversing before sorting/materialization."}
+  ],
+  "reviewer_limitations": "Read-only review; no tests, builds, native commands or resource queries. CMake compilation, native behavior and ABI remain untested; no admission or qualification established."
+}

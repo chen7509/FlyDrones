@@ -68,6 +68,10 @@ def verify_pins(pins):
 
 def produce(request, build, steps, *, stage_errors=(), deadline=None):
     """Keep failure/partial outputs. Completeness is a build record, never ABI/runtime admission."""
+    if request.get("build_profile") == "fixed-source-openvins-v1":
+        from tools.benchmark.native_offset_fresh_receipt import produce_fresh
+
+        return produce_fresh(request, build, steps, stage_errors=stage_errors, deadline=deadline)
     build = Path(build).resolve()
     result = dict(
         schema="native-offset-build-receipt-v1",

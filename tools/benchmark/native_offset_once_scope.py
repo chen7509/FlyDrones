@@ -12,7 +12,8 @@ import time
 from pathlib import Path
 
 from tools.benchmark.calibration_capture_scope import cleanup_owned, manager_environment
-from tools.benchmark.native_offset_build_receipt import produce, read_json, write
+from tools.benchmark.native_offset_build_receipt import file_pin, produce, read_json, write
+from tools.benchmark.native_offset_fresh_build import LIBRARY, PROFILE, STEP_NAMES, prepare_sources
 from tools.benchmark.native_offset_once import ROOT, verify_request
 from tools.benchmark.run_openvins_dataset_consumer import linux
 
@@ -164,6 +165,8 @@ def run_inside(profile):
     result = dict(exit=None, qualification=False, descendants="unknown", errors=[])
     resource.setrlimit(resource.RLIMIT_FSIZE, (64 * 1024**2, 64 * 1024**2))
     try:
+        if stage == "build" and request.get("build_profile") == PROFILE:
+            prepare_sources(build, request["bindings"]["upstream_source_tree"])
         for index, command in enumerate(commands):
             if time.monotonic() >= deadline:
                 raise TimeoutError("whole stage deadline before command")
@@ -172,8 +175,10 @@ def run_inside(profile):
             )
             if boundary != checked:
                 raise ValueError("selected request/review changed at final command boundary")
-            name = ("configure", "build")[index] if stage == "build" else "capture"
+            name = STEP_NAMES[index] if stage == "build" else "capture"
             remaining = deadline - time.monotonic()
+            if remaining <= 0:
+                raise TimeoutError("whole stage deadline exhausted by command revalidation")
             actual = [
                 "/usr/bin/time",
                 "-v",
@@ -182,7 +187,7 @@ def run_inside(profile):
                 "/usr/bin/timeout",
                 "--signal=TERM",
                 "--kill-after=10s",
-                str(max(0.001, remaining)) + "s",
+                str(remaining) + "s",
                 *command,
             ]
             row = dict(name=name, command=command, actual_command=actual, exit=None, cleanup=None, error=None)
@@ -190,6 +195,8 @@ def run_inside(profile):
             process = None
             try:
                 with (output / (name + ".stdout")).open("xb") as stdout, (output / (name + ".stderr")).open("xb") as stderr:
+                    if time.monotonic() >= deadline:
+                        raise TimeoutError("whole stage deadline before process dispatch")
                     process = subprocess.Popen(
                         actual, cwd=ROOT, env=checked["environment"], stdin=subprocess.DEVNULL, stdout=stdout, stderr=stderr
                     )
@@ -204,6 +211,12 @@ def run_inside(profile):
                 write(output / (name + ".return.json"), row)
             if row["exit"] != 0 or row["cleanup"].get("exit") != 0:
                 raise RuntimeError(name + " failed; attempt remains consumed")
+            if name == "openvins-library":
+                # Stop before adapter dispatch if its sole new library is missing/over cap.
+                row["library"] = file_pin(build / LIBRARY)
+                write(output / "openvins-library.output.json", row["library"])
+            if name == "adapter" and file_pin(build / LIBRARY) != steps[1]["library"]:
+                raise ValueError("new library changed during adapter build")
         verify_request(
             profile["request"], profile["sha256"], profile["review"], profile["review_sha256"], stage, require_absent=False
         )

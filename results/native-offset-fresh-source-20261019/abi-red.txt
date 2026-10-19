@@ -1,0 +1,50 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+____ test_run_gate_cannot_use_old_or_failed_build_result[missing-new-abi] _____
+
+tmp_path = WindowsPath('C:/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/native-offset-fresh-source-20261019/abi-red-fixtures/test_run_gate_cannot_use_old_o0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000247FCC1F080>
+fault = 'missing-new-abi'
+
+    @pytest.mark.parametrize("fault", ["legacy-receipt", "wrong-library", "failed-build-scope", "missing-new-abi"])
+    def test_run_gate_cannot_use_old_or_failed_build_result(tmp_path, monkeypatch, fault):
+        request, save = request_fixture(tmp_path, monkeypatch)
+        request["stage"] = "run"
+        build = Path(request["bindings"]["exclusive_build_dir"])
+        build.mkdir(parents=True)
+        for name in ("libov_msckf_lib.so", once.TARGET, "other.so"):
+            (build / name).write_bytes(b"inert fixture output")
+        receipt = dict(
+            schema="native-offset-fresh-source-build-receipt-v1",
+            build_profile="fixed-source-openvins-v1",
+            upstream_commit=once.UPSTREAM,
+            complete=True,
+            native_qualified=False,
+            binary=file_pin(build / once.TARGET),
+            library=file_pin(build / "libov_msckf_lib.so"),
+            input_pins=dict(request["input_pins"]),
+        )
+        if fault == "legacy-receipt":
+            receipt["schema"] = "native-offset-build-receipt-v1"
+        if fault == "wrong-library":
+            receipt["library"] = file_pin(build / "other.so")
+        (build / "build-receipt.json").write_text(json.dumps(receipt))
+        request["build_receipt"] = file_pin(build / "build-receipt.json")
+        for name, value in (
+            ("completion.json", dict(consumed=True, error=None,
+                                     launch=dict(exit=0 if fault == "missing-new-abi" else 2, owned_group_released=True))),
+            ("inside-completion.json", dict(exit=0, errors=[], elapsed_s=1)),
+        ):
+            path = once.ATTEMPT / "build" / name
+            path.write_text(json.dumps(value))
+            request["input_pins"][str(path)] = file_pin(path)
+>       with pytest.raises(ValueError, match="ABI" if fault == "missing-new-abi" else None):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: Regex pattern did not match.
+E         Expected regex: 'ABI'
+E         Actual message: 'missing pinned capture input estimator_config'
+
+tests\benchmark\test_native_offset_fresh_build.py:398: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/benchmark/test_native_offset_fresh_build.py::test_run_gate_cannot_use_old_or_failed_build_result[missing-new-abi]
+1 failed, 36 deselected in 8.53s

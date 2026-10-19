@@ -1,0 +1,14 @@
+{
+  "scope": "ONE bounded executor fix after ONE source review; no second review or native approval",
+  "original_counts_preserved": {"critical": 0, "important": 3, "minor": 0},
+  "rulings": [
+    {"id": "I1", "action": "implemented", "change": "Consume the original lexical pin for an already resolved external input; full pin still checks resolved target, bytes and SHA. Model alias resolution in a Windows-only fixture; verify subsequent target drift is rejected."},
+    {"id": "I2", "action": "implemented", "change": "Reject nonpositive shared remainder after revalidation and check again before Popen. Scope fixture advances the clock during revalidation; zero commands must dispatch."},
+    {"id": "I3", "action": "implemented", "change": "Stream directory entries via scandir with shared deadline, 512-entry and 64MiB aggregate guards before traversal grows; reject symlink/junction/nonregular outputs. Failure fixture has 520 files and must stop by the 513th observed entry."}
+  ],
+  "software_regression": "review-red.txt: 3 failed / 33 deselected; review-fixed.txt: 3 passed / 33 deselected",
+  "native_qualified": false,
+  "abi_verified": false,
+  "historical_old_library_proven": false,
+  "dispatchable": false
+}
