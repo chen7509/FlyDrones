@@ -1,0 +1,76 @@
+{
+  "schema": "native-linux-missing-source-two-repair-proposal-v1",
+  "source_head": "e47c5b4295d7d8f53e7067db06d38ebdc2824e7a",
+  "fixed_upstream_commit": "69488123ed9362dd44b6f28e7f4680abbff1442b",
+  "status": "PREPARED_NOT_AUTHORIZED_NOT_EXECUTED",
+  "human_continue_scope": "Prepare the next concrete action; previous authorization was read-only and its selections ended. Exact Linux create-if-absent writes require new explicit authorization.",
+  "items": [
+    {
+      "name": "LICENSE",
+      "retained_source": "results/native-offset-run-plan-20261018/upstream-source/LICENSE",
+      "linux_target": "/home/yuchen7509/flydrones-upstream/open_vins/LICENSE",
+      "expected_bytes": 35149,
+      "expected_sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+      "expected_git_blob_sha1": "f288702d2fa16d3cdf0035b15a9fcbc552cd88e7"
+    },
+    {
+      "name": "ReadMe.md",
+      "retained_source": "results/native-offset-run-plan-20261018/upstream-source/ReadMe.md",
+      "linux_target": "/home/yuchen7509/flydrones-upstream/open_vins/ReadMe.md",
+      "expected_bytes": 13100,
+      "expected_sha256": "2553e1d5d570a391a1f8376ae4037760d84d45668d781ccf6683ccfc2a54a044",
+      "expected_git_blob_sha1": "1448a49c1acc3c1c23d6631e8e49be2e49e1a500"
+    }
+  ],
+  "total_source_bytes": 48249,
+  "allowed_if_approved": [
+    "Read only the two retained source payloads and compare SHA256, Git blob SHA1 and byte count to frozen manifest fields as copy-input verification, not an old evidence audit.",
+    "One isolated standard-library Python invocation through WSL; inspect exact target ancestors without following symlinks or enumerating directories.",
+    "If an exact target is absent, create it exclusively with O_EXCL/O_NOFOLLOW and the verified retained bytes; no overwrite, removal, rename, permissions repair or directory creation.",
+    "If an exact target already exists as a regular file, observe its complete bounded contents; matching content needs no write, differing content stops.",
+    "Record actual before/after identities, actual bytes and SHA, any creation and failures; retain outputs on Windows only."
+  ],
+  "stops": [
+    "Any missing retained source, source-byte/hash mismatch, unsupported no-follow boundary or redirected ancestor stops before Linux target creation.",
+    "Any differing existing target, nonregular target, alias to excluded prior payload, cap hit, incomplete write or unknown cleanup stops the whole selection; preserve partial/UNKNOWN state, no retry/delete/repair.",
+    "Do not expand path selection, follow references, reread141 source files, restore .git metadata or open old build/library/object/log paths."
+  ],
+  "caps": {
+    "file_bytes": 67108864,
+    "total_read_bytes": 201326592,
+    "read_seconds": 27,
+    "first_metadata_seconds_within_read": 10,
+    "parent_wait_seconds": 30,
+    "terminate_seconds": 5,
+    "kill_seconds": 5,
+    "outer_seconds": 45,
+    "metadata_bytes": 2097152,
+    "stderr_bytes": 2097152,
+    "symlink_hops": 40,
+    "selected_files": 2,
+    "max_target_payload_write_bytes": 48249
+  },
+  "excluded_actions": [
+    "network",
+    "directory search",
+    "CMake module collection",
+    "resource query",
+    "production deployment",
+    "toolchain creation",
+    "configure",
+    "compile",
+    "link",
+    "native target",
+    "SDK",
+    "tests",
+    "old archive/payload audit",
+    "automatic build/run"
+  ],
+  "result_limit": "At most closes the two selected missing fixed-source entries at observation time; previous141 observations are cross-time, not refreshed/atomic. All other build/run blockers remain.",
+  "all_qualifications": false,
+  "dispatchable": false,
+  "native_attempt_consumed": false,
+  "linux_access_performed_for_this_proposal": false,
+  "linux_writes_performed_for_this_proposal": false,
+  "preparation_note": "One local rg search accidentally included old fixture JSON and produced tool-truncated output (reported1119352 tokens); it executed no tests or Linux command, mutated no payload, and is not claimed as a fully retained raw diagnostic. Subsequent reads were exact-path or filename-only."
+}
