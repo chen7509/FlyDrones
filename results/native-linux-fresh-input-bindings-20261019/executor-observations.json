@@ -1,0 +1,37 @@
+{
+  "schema": "native-linux-fresh-input-executor-observations-v1",
+  "scope": "Only new saved metadata, helper syntax and new archive integrity; no old payload or archive reads.",
+  "prior_distinct_acquired_paths": 988,
+  "conservative_exclusion_spellings": 1148,
+  "summary_prior_acquired_content_paths_means": "1148 conservative exclusion spellings, not 1148 distinct acquired files",
+  "metadata_row_types": {
+    "start": 1,
+    "identity": 3524,
+    "skip": 999,
+    "begin": 750,
+    "end": 749,
+    "completion": 1
+  },
+  "metadata_frame_body_bytes": 2089117,
+  "retained_jsonl_bytes": 2095141,
+  "jsonl_separator_bytes": 6024,
+  "jsonl_form": "Unmodified JSON frame bodies plus one LF per frame, written in binary mode",
+  "complete_end_receipts": 749,
+  "duplicate_new_contents_retained_with_partial_suffix": 15,
+  "genuinely_unclosed_transfers": 1,
+  "genuinely_unclosed_bytes": 215,
+  "saved_sha_field_intersection": 0,
+  "sha_field_comparison_not_old_payload_rehash": true,
+  "helper_ast_only": [
+    "analyze_saved.py",
+    "linux_reader.py",
+    "package_new_results.py",
+    "prepare_selection.py",
+    "run_collection.py"
+  ],
+  "tests_run": false,
+  "old_evidence_reverified": false,
+  "native_or_compiler_run": false,
+  "all_qualifications": false,
+  "dispatchable": false
+}

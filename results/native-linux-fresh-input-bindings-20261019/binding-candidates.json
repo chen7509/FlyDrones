@@ -1,0 +1,409 @@
+{
+  "schema": "native-offset-fresh-input-candidates-v1",
+  "bindings": {
+    "pinned_cmake": {
+      "candidate_path": "/usr/bin/cmake",
+      "identity": {
+        "type": "identity",
+        "path": "/usr/bin/cmake",
+        "resolved": "/usr/bin/cmake",
+        "stat": {
+          "dev": 2128,
+          "ino": 53808,
+          "mode": 33261,
+          "uid": 0,
+          "gid": 0,
+          "nlink": 1,
+          "bytes": 11796472,
+          "mtime_ns": 1713179337000000000,
+          "ctime_ns": 1789201712208466445
+        },
+        "links": [],
+        "status": "observed",
+        "content_action": "prior_payload_excluded_no_open_no_rehash"
+      },
+      "current_file_pin": null,
+      "admitted": false,
+      "note": "Directory identity is not a consumed config closure; old retained SHA is not refreshed."
+    },
+    "pinned_gxx": {
+      "candidate_path": "/usr/bin/x86_64-linux-gnu-g++-13",
+      "identity": {
+        "type": "identity",
+        "path": "/usr/bin/x86_64-linux-gnu-g++-13",
+        "resolved": "/usr/bin/x86_64-linux-gnu-g++-13",
+        "stat": {
+          "dev": 2128,
+          "ino": 49448,
+          "mode": 33261,
+          "uid": 0,
+          "gid": 0,
+          "nlink": 1,
+          "bytes": 1027128,
+          "mtime_ns": 1766091591000000000,
+          "ctime_ns": 1789201708145516608
+        },
+        "links": [],
+        "status": "observed",
+        "content_action": "prior_payload_excluded_no_open_no_rehash"
+      },
+      "current_file_pin": null,
+      "admitted": false,
+      "note": "Directory identity is not a consumed config closure; old retained SHA is not refreshed."
+    },
+    "pinned_make": {
+      "candidate_path": "/usr/bin/make",
+      "identity": {
+        "type": "identity",
+        "path": "/usr/bin/make",
+        "resolved": "/usr/bin/make",
+        "stat": {
+          "dev": 2128,
+          "ino": 49465,
+          "mode": 33261,
+          "uid": 0,
+          "gid": 0,
+          "nlink": 1,
+          "bytes": 259808,
+          "mtime_ns": 1712592721000000000,
+          "ctime_ns": 1789201708287265198
+        },
+        "links": [],
+        "status": "observed",
+        "content_action": "prior_payload_excluded_no_open_no_rehash"
+      },
+      "current_file_pin": null,
+      "admitted": false,
+      "note": "Directory identity is not a consumed config closure; old retained SHA is not refreshed."
+    },
+    "pinned_python": {
+      "candidate_path": "/usr/bin/python3.12",
+      "identity": {
+        "type": "identity",
+        "path": "/usr/bin/python3.12",
+        "resolved": "/usr/bin/python3.12",
+        "stat": {
+          "dev": 2128,
+          "ino": 10111,
+          "mode": 33261,
+          "uid": 0,
+          "gid": 0,
+          "nlink": 2,
+          "bytes": 8020928,
+          "mtime_ns": 1788171506000000000,
+          "ctime_ns": 1790355413278115115
+        },
+        "links": [],
+        "status": "observed",
+        "content_action": "prior_payload_excluded_no_open_no_rehash"
+      },
+      "current_file_pin": null,
+      "admitted": false,
+      "note": "Directory identity is not a consumed config closure; old retained SHA is not refreshed."
+    },
+    "eigen_config_dir": {
+      "candidate_path": "/usr/share/eigen3/cmake",
+      "identity": {
+        "type": "identity",
+        "path": "/usr/share/eigen3/cmake",
+        "resolved": "/usr/share/eigen3/cmake",
+        "stat": {
+          "dev": 2128,
+          "ino": 224792,
+          "mode": 16877,
+          "uid": 0,
+          "gid": 0,
+          "nlink": 2,
+          "bytes": 4096,
+          "mtime_ns": 1789904104583114985,
+          "ctime_ns": 1789904104583114985
+        },
+        "links": [],
+        "status": "observed",
+        "content_action": "new_candidate_pending"
+      },
+      "current_file_pin": null,
+      "admitted": false,
+      "note": "Directory identity is not a consumed config closure; old retained SHA is not refreshed."
+    },
+    "opencv4_config_dir": {
+      "candidate_path": "/usr/lib/x86_64-linux-gnu/cmake/opencv4",
+      "identity": {
+        "type": "identity",
+        "path": "/usr/lib/x86_64-linux-gnu/cmake/opencv4",
+        "resolved": "/usr/lib/x86_64-linux-gnu/cmake/opencv4",
+        "stat": {
+          "dev": 2128,
+          "ino": 241061,
+          "mode": 16877,
+          "uid": 0,
+          "gid": 0,
+          "nlink": 2,
+          "bytes": 4096,
+          "mtime_ns": 1789904136352417165,
+          "ctime_ns": 1789904136352417165
+        },
+        "links": [],
+        "status": "observed",
+        "content_action": "new_candidate_pending"
+      },
+      "current_file_pin": null,
+      "admitted": false,
+      "note": "Directory identity is not a consumed config closure; old retained SHA is not refreshed."
+    },
+    "boost_config_dir": {
+      "candidate_path": "/usr/lib/x86_64-linux-gnu/cmake/Boost-1.83.0",
+      "identity": {
+        "type": "identity",
+        "path": "/usr/lib/x86_64-linux-gnu/cmake/Boost-1.83.0",
+        "resolved": "/usr/lib/x86_64-linux-gnu/cmake/Boost-1.83.0",
+        "stat": {
+          "dev": 2128,
+          "ino": 217011,
+          "mode": 16877,
+          "uid": 0,
+          "gid": 0,
+          "nlink": 2,
+          "bytes": 4096,
+          "mtime_ns": 1789904096609077254,
+          "ctime_ns": 1789904096609077254
+        },
+        "links": [],
+        "status": "observed",
+        "content_action": "new_candidate_pending"
+      },
+      "current_file_pin": null,
+      "admitted": false,
+      "note": "Directory identity is not a consumed config closure; old retained SHA is not refreshed."
+    },
+    "ceres_config_dir": {
+      "candidate_path": "/usr/lib/x86_64-linux-gnu/cmake/Ceres",
+      "identity": {
+        "type": "identity",
+        "path": "/usr/lib/x86_64-linux-gnu/cmake/Ceres",
+        "resolved": "/usr/lib/x86_64-linux-gnu/cmake/Ceres",
+        "stat": {
+          "dev": 2128,
+          "ino": 260114,
+          "mode": 16877,
+          "uid": 0,
+          "gid": 0,
+          "nlink": 2,
+          "bytes": 4096,
+          "mtime_ns": 1790912145861394864,
+          "ctime_ns": 1790912145861394864
+        },
+        "links": [],
+        "status": "observed",
+        "content_action": "new_candidate_pending"
+      },
+      "current_file_pin": null,
+      "admitted": false,
+      "note": "Directory identity is not a consumed config closure; old retained SHA is not refreshed."
+    },
+    "deployed_repo": {
+      "candidate_path": null,
+      "current_file_pin": null,
+      "admitted": false,
+      "note": "No complete fresh request binding established in this bounded observation; no production template filled."
+    },
+    "upstream_source_tree": {
+      "candidate_path": null,
+      "current_file_pin": null,
+      "admitted": false,
+      "note": "No complete fresh request binding established in this bounded observation; no production template filled."
+    },
+    "toolchain_file": {
+      "candidate_path": null,
+      "current_file_pin": null,
+      "admitted": false,
+      "note": "No complete fresh request binding established in this bounded observation; no production template filled."
+    },
+    "toolchain_receipt": {
+      "candidate_path": null,
+      "current_file_pin": null,
+      "admitted": false,
+      "note": "No complete fresh request binding established in this bounded observation; no production template filled."
+    },
+    "header_package_manifest": {
+      "candidate_path": null,
+      "current_file_pin": null,
+      "admitted": false,
+      "note": "No complete fresh request binding established in this bounded observation; no production template filled."
+    },
+    "current_linux_source_manifest": {
+      "candidate_path": null,
+      "current_file_pin": null,
+      "admitted": false,
+      "note": "No complete fresh request binding established in this bounded observation; no production template filled."
+    },
+    "capture_script": {
+      "candidate_path": null,
+      "current_file_pin": null,
+      "admitted": false,
+      "note": "No complete fresh request binding established in this bounded observation; no production template filled."
+    },
+    "exclusive_build_dir": {
+      "candidate_path": null,
+      "current_file_pin": null,
+      "admitted": false,
+      "note": "No complete fresh request binding established in this bounded observation; no production template filled."
+    }
+  },
+  "compiler_component_observations": {
+    "/usr/libexec/gcc/x86_64-linux-gnu/13/cc1plus": {
+      "path": "/usr/libexec/gcc/x86_64-linux-gnu/13/cc1plus",
+      "roles": [
+        "saved-package-list-compiler-component"
+      ],
+      "identity": {
+        "type": "identity",
+        "path": "/usr/libexec/gcc/x86_64-linux-gnu/13/cc1plus",
+        "resolved": "/usr/libexec/gcc/x86_64-linux-gnu/13/cc1plus",
+        "stat": {
+          "dev": 2128,
+          "ino": 49449,
+          "mode": 33261,
+          "uid": 0,
+          "gid": 0,
+          "nlink": 1,
+          "bytes": 32675168,
+          "mtime_ns": 1766091591000000000,
+          "ctime_ns": 1789201708145516608
+        },
+        "links": [],
+        "status": "observed",
+        "content_action": "new_candidate_pending"
+      },
+      "native_current_content_pin": null,
+      "all_qualifications": false,
+      "admitted": false,
+      "state": "identity_only_content_not_acquired_in_bounded_selection",
+      "skip": null
+    },
+    "/usr/libexec/gcc/x86_64-linux-gnu/13/cc1": {
+      "path": "/usr/libexec/gcc/x86_64-linux-gnu/13/cc1",
+      "roles": [
+        "saved-package-list-compiler-component"
+      ],
+      "identity": {
+        "type": "identity",
+        "path": "/usr/libexec/gcc/x86_64-linux-gnu/13/cc1",
+        "resolved": "/usr/libexec/gcc/x86_64-linux-gnu/13/cc1",
+        "stat": {
+          "dev": 2128,
+          "ino": 47358,
+          "mode": 33261,
+          "uid": 0,
+          "gid": 0,
+          "nlink": 1,
+          "bytes": 30487984,
+          "mtime_ns": 1766091591000000000,
+          "ctime_ns": 1789201706160634497
+        },
+        "links": [],
+        "status": "observed",
+        "content_action": "new_candidate_pending"
+      },
+      "native_current_content_pin": null,
+      "all_qualifications": false,
+      "admitted": false,
+      "state": "identity_only_content_not_acquired_in_bounded_selection",
+      "skip": null
+    },
+    "/usr/libexec/gcc/x86_64-linux-gnu/13/collect2": {
+      "path": "/usr/libexec/gcc/x86_64-linux-gnu/13/collect2",
+      "roles": [
+        "saved-package-list-compiler-component"
+      ],
+      "identity": {
+        "type": "identity",
+        "path": "/usr/libexec/gcc/x86_64-linux-gnu/13/collect2",
+        "resolved": "/usr/libexec/gcc/x86_64-linux-gnu/13/collect2",
+        "stat": {
+          "dev": 2128,
+          "ino": 48487,
+          "mode": 33261,
+          "uid": 0,
+          "gid": 0,
+          "nlink": 1,
+          "bytes": 336056,
+          "mtime_ns": 1766091591000000000,
+          "ctime_ns": 1789201707444568387
+        },
+        "links": [],
+        "status": "observed",
+        "content_action": "new_candidate_pending"
+      },
+      "native_current_content_pin": null,
+      "all_qualifications": false,
+      "admitted": false,
+      "state": "identity_only_content_not_acquired_in_bounded_selection",
+      "skip": null
+    },
+    "/usr/libexec/gcc/x86_64-linux-gnu/13/lto1": {
+      "path": "/usr/libexec/gcc/x86_64-linux-gnu/13/lto1",
+      "roles": [
+        "saved-package-list-compiler-component"
+      ],
+      "identity": {
+        "type": "identity",
+        "path": "/usr/libexec/gcc/x86_64-linux-gnu/13/lto1",
+        "resolved": "/usr/libexec/gcc/x86_64-linux-gnu/13/lto1",
+        "stat": {
+          "dev": 2128,
+          "ino": 48490,
+          "mode": 33261,
+          "uid": 0,
+          "gid": 0,
+          "nlink": 1,
+          "bytes": 29352624,
+          "mtime_ns": 1766091591000000000,
+          "ctime_ns": 1789201707444568387
+        },
+        "links": [],
+        "status": "observed",
+        "content_action": "new_candidate_pending"
+      },
+      "native_current_content_pin": null,
+      "all_qualifications": false,
+      "admitted": false,
+      "state": "identity_only_content_not_acquired_in_bounded_selection",
+      "skip": null
+    },
+    "/usr/libexec/gcc/x86_64-linux-gnu/13/lto-wrapper": {
+      "path": "/usr/libexec/gcc/x86_64-linux-gnu/13/lto-wrapper",
+      "roles": [
+        "saved-package-list-compiler-component"
+      ],
+      "identity": {
+        "type": "identity",
+        "path": "/usr/libexec/gcc/x86_64-linux-gnu/13/lto-wrapper",
+        "resolved": "/usr/libexec/gcc/x86_64-linux-gnu/13/lto-wrapper",
+        "stat": {
+          "dev": 2128,
+          "ino": 48489,
+          "mode": 33261,
+          "uid": 0,
+          "gid": 0,
+          "nlink": 1,
+          "bytes": 831800,
+          "mtime_ns": 1766091591000000000,
+          "ctime_ns": 1789201707444568387
+        },
+        "links": [],
+        "status": "observed",
+        "content_action": "new_candidate_pending"
+      },
+      "native_current_content_pin": null,
+      "all_qualifications": false,
+      "admitted": false,
+      "state": "identity_only_content_not_acquired_in_bounded_selection",
+      "skip": null
+    }
+  },
+  "request_schema": "native-offset-fresh-source-request-v1",
+  "request_complete": false,
+  "dispatchable": false,
+  "all_qualifications": false
+}

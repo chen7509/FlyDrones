@@ -1,0 +1,15 @@
+{
+  "schema": "new-observation-archive-receipt-v1",
+  "path": "evidence/native-linux-fresh-input-bindings-20261019.zip",
+  "bytes": 5899006,
+  "sha256": "dadcd718c451a0382412f09e75930a42de8a98cfd31a3e110d8327046ad08201",
+  "members": 770,
+  "mapped_members": 769,
+  "mapped_bytes": 21053262,
+  "manifest_bytes": 195171,
+  "whole_member_bytes": 21248433,
+  "new_archive_crc_and_member_hashes_checked": true,
+  "old_archives_or_payloads_checked": false,
+  "all_qualifications": false,
+  "dispatchable": false
+}

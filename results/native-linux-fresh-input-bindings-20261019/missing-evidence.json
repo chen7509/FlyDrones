@@ -1,0 +1,131 @@
+{
+  "schema": "native-linux-fresh-input-missing-v1",
+  "unbound_path_count": 2775,
+  "unavailable_paths": {
+    "/usr/lib/gcc/x86_64-linux-gnu/13/cc1plus": {
+      "type": "identity",
+      "path": "/usr/lib/gcc/x86_64-linux-gnu/13/cc1plus",
+      "status": "unavailable_or_unresolved",
+      "error": "FileNotFoundError(2, 'No such file or directory')",
+      "content_action": "none"
+    },
+    "/usr/lib/gcc/x86_64-linux-gnu/13/cc1": {
+      "type": "identity",
+      "path": "/usr/lib/gcc/x86_64-linux-gnu/13/cc1",
+      "status": "unavailable_or_unresolved",
+      "error": "FileNotFoundError(2, 'No such file or directory')",
+      "content_action": "none"
+    },
+    "/usr/lib/gcc/x86_64-linux-gnu/13/collect2": {
+      "type": "identity",
+      "path": "/usr/lib/gcc/x86_64-linux-gnu/13/collect2",
+      "status": "unavailable_or_unresolved",
+      "error": "FileNotFoundError(2, 'No such file or directory')",
+      "content_action": "none"
+    },
+    "/usr/lib/gcc/x86_64-linux-gnu/13/specs": {
+      "type": "identity",
+      "path": "/usr/lib/gcc/x86_64-linux-gnu/13/specs",
+      "status": "unavailable_or_unresolved",
+      "error": "FileNotFoundError(2, 'No such file or directory')",
+      "content_action": "none"
+    },
+    "/home/yuchen7509/flydrones-upstream/open_vins/LICENSE": {
+      "type": "identity",
+      "path": "/home/yuchen7509/flydrones-upstream/open_vins/LICENSE",
+      "status": "unavailable_or_unresolved",
+      "error": "FileNotFoundError(2, 'No such file or directory')",
+      "content_action": "none"
+    },
+    "/home/yuchen7509/flydrones-upstream/open_vins/ReadMe.md": {
+      "type": "identity",
+      "path": "/home/yuchen7509/flydrones-upstream/open_vins/ReadMe.md",
+      "status": "unavailable_or_unresolved",
+      "error": "FileNotFoundError(2, 'No such file or directory')",
+      "content_action": "none"
+    }
+  },
+  "unclosed_transfers": [
+    {
+      "path": "/usr/share/cmake-3.28/Modules/Platform/BlueGeneQ-static.cmake",
+      "roles": [
+        "saved-cmake-data-package-module-candidate-not-consumed-proof"
+      ],
+      "identity": {
+        "type": "identity",
+        "path": "/usr/share/cmake-3.28/Modules/Platform/BlueGeneQ-static.cmake",
+        "resolved": "/usr/share/cmake-3.28/Modules/Platform/BlueGeneQ-static.cmake",
+        "stat": {
+          "dev": 2128,
+          "ino": 53389,
+          "mode": 33188,
+          "uid": 0,
+          "gid": 0,
+          "nlink": 1,
+          "bytes": 215,
+          "mtime_ns": 1707146905000000000,
+          "ctime_ns": 1789201711908466456
+        },
+        "links": [],
+        "status": "observed",
+        "content_action": "new_candidate_pending"
+      },
+      "native_current_content_pin": null,
+      "all_qualifications": false,
+      "admitted": false,
+      "state": "unclosed_content_transfer_no_current_pin",
+      "begin": {
+        "type": "begin",
+        "id": 1752,
+        "path": "/usr/share/cmake-3.28/Modules/Platform/BlueGeneQ-static.cmake",
+        "resolved": "/usr/share/cmake-3.28/Modules/Platform/BlueGeneQ-static.cmake",
+        "before": {
+          "dev": 2128,
+          "ino": 53389,
+          "mode": 33188,
+          "uid": 0,
+          "gid": 0,
+          "nlink": 1,
+          "bytes": 215,
+          "mtime_ns": 1707146905000000000,
+          "ctime_ns": 1789201711908466456
+        }
+      },
+      "partial_path": "payload-1752.partial"
+    }
+  ],
+  "compiler_components": {
+    "/usr/libexec/gcc/x86_64-linux-gnu/13/cc1plus": "identity_only_content_not_acquired_in_bounded_selection",
+    "/usr/libexec/gcc/x86_64-linux-gnu/13/cc1": "identity_only_content_not_acquired_in_bounded_selection",
+    "/usr/libexec/gcc/x86_64-linux-gnu/13/collect2": "identity_only_content_not_acquired_in_bounded_selection",
+    "/usr/libexec/gcc/x86_64-linux-gnu/13/lto1": "identity_only_content_not_acquired_in_bounded_selection",
+    "/usr/libexec/gcc/x86_64-linux-gnu/13/lto-wrapper": "identity_only_content_not_acquired_in_bounded_selection"
+  },
+  "missing_request_bindings": [
+    "pinned_cmake",
+    "pinned_gxx",
+    "pinned_make",
+    "pinned_python",
+    "eigen_config_dir",
+    "opencv4_config_dir",
+    "boost_config_dir",
+    "ceres_config_dir",
+    "deployed_repo",
+    "upstream_source_tree",
+    "toolchain_file",
+    "toolchain_receipt",
+    "header_package_manifest",
+    "current_linux_source_manifest",
+    "capture_script",
+    "exclusive_build_dir"
+  ],
+  "limits": [
+    "No second batch/reordered selection after the metadata cap.",
+    "Saved package lists/old depfiles yield candidates, not current consumed compile/loader closure.",
+    "Known prior paths and observed resolved/inode aliases excluded; unobserved hardlinks not globally established.",
+    "Old retained content hashes remain historical; metadata identity does not refresh contents.",
+    "All identities are per-observation, not atomic build-time snapshots or authenticated producer records.",
+    "Original toolchain/current production/source/config/header/package/implicit/loader/ABI and fresh resource/admission requirements remain.",
+    "No native target, compile, package signing/origin verification, resource query or production template admission."
+  ]
+}

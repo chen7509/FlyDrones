@@ -1,0 +1,56 @@
+{
+  "schema": "native-linux-fresh-input-summary-v1",
+  "selected": 3524,
+  "native_identity_status": {
+    "observed": 3518,
+    "unavailable_or_unresolved": 6
+  },
+  "new_complete_file_observations": 749,
+  "new_distinct_sha_blobs": 734,
+  "complete_observed_payload_bytes": 12063908,
+  "actual_payload_bytes_read": 12064123,
+  "partial_transfers": 1,
+  "observed_payload_roles": {
+    "previous-selection-unresolved-or-observed": 4,
+    "saved-cmake-data-package-module-candidate-not-consumed-proof": 745
+  },
+  "content_state_counts": {
+    "native_identity_only_prior_payload_excluded_current_content_unknown": 1000,
+    "native_identity_unavailable_or_unresolved": 6,
+    "new_saved_content_with_native_descriptor_and_link_observation_not_admitted": 749,
+    "unclosed_content_transfer_no_current_pin": 1,
+    "identity_only_content_not_acquired_in_bounded_selection": 1768
+  },
+  "metadata_bytes": 2089117,
+  "stderr_bytes": 132,
+  "stderr_text": "wsl: \u68c0\u6d4b\u5230 localhost \u4ee3\u7406\u914d\u7f6e\uff0c\u4f46\u672a\u955c\u50cf\u5230 WSL\u3002NAT \u6a21\u5f0f\u4e0b\u7684 WSL \u4e0d\u652f\u6301 localhost \u4ee3\u7406\u3002\r\n",
+  "elapsed_s": 1.625,
+  "collection_complete": false,
+  "stop_reason": "Stop('2MiB metadata cap; no second selection')",
+  "parent_exit": 0,
+  "readers_closed": true,
+  "linux_completion": {
+    "type": "completion",
+    "complete": false,
+    "reason": "Stop('2MiB metadata cap; no second selection')",
+    "elapsed_s": 1.189235336962156,
+    "identity_paths_attempted": 3524,
+    "payload_bytes": 12064123,
+    "new_inodes": 750,
+    "metadata_bytes_before_completion": 2088826,
+    "all_qualifications": false,
+    "dispatchable": false
+  },
+  "prior_acquired_content_paths": 1148,
+  "old_build_prefix_accessed": false,
+  "old_content_rehashed": false,
+  "resource_query": false,
+  "compile": false,
+  "native_target": false,
+  "new_request_complete": false,
+  "production_input_closure_complete": false,
+  "abi_verified": false,
+  "package_origin_authenticated": false,
+  "all_qualifications": false,
+  "dispatchable": false
+}
