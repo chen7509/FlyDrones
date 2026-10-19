@@ -1,0 +1,14 @@
+/.
+/usr
+/usr/lib
+/usr/lib/x86_64-linux-gnu
+/usr/lib/x86_64-linux-gnu/libsuitesparseconfig.so.7.6.1
+/usr/share
+/usr/share/doc
+/usr/share/doc/libsuitesparseconfig7
+/usr/share/doc/libsuitesparseconfig7/changelog.Debian.gz
+/usr/share/doc/libsuitesparseconfig7/copyright
+/usr/share/lintian
+/usr/share/lintian/overrides
+/usr/share/lintian/overrides/libsuitesparseconfig7
+/usr/lib/x86_64-linux-gnu/libsuitesparseconfig.so.7

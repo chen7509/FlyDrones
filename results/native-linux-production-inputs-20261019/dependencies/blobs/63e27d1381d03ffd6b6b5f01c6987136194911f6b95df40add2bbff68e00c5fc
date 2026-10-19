@@ -1,0 +1,14 @@
+b2477885c240d80e075924928dfce8dd  usr/include/gflags/gflags.h
+b7d25f82d3c7250aa6c50f31cea0540f  usr/include/gflags/gflags_completions.h
+6e7e4fcf66d8bbbf13f6498b86a2e159  usr/include/gflags/gflags_declare.h
+59626a1694d4bbfb294d372cde605b40  usr/include/gflags/gflags_gflags.h
+0f005a66063351fbaee730a3539fb340  usr/lib/x86_64-linux-gnu/cmake/gflags/gflags-config-version.cmake
+d8c73ea924f02e6bdf181d17604fa341  usr/lib/x86_64-linux-gnu/cmake/gflags/gflags-config.cmake
+812fc3547daf976fd9976463a9bc370c  usr/lib/x86_64-linux-gnu/cmake/gflags/gflags-nonamespace-targets-release.cmake
+a973cfce9a50d57a72faafbcc7664a41  usr/lib/x86_64-linux-gnu/cmake/gflags/gflags-nonamespace-targets.cmake
+77db7fa388ab4fe93aaf45f1af5d4740  usr/lib/x86_64-linux-gnu/cmake/gflags/gflags-targets-release.cmake
+269a089a2165444fece55b4c0027e95e  usr/lib/x86_64-linux-gnu/cmake/gflags/gflags-targets.cmake
+0ae03958b68b9c6319dc8a6eaae1e718  usr/lib/x86_64-linux-gnu/libgflags.a
+d5a20f17b428c449a7129f69fd45dd65  usr/lib/x86_64-linux-gnu/libgflags_nothreads.a
+ba635fbc171a4171eb24c06b93af1c81  usr/lib/x86_64-linux-gnu/pkgconfig/gflags.pc
+937b10dee98ba616ed1f9d47af079c4b  usr/share/doc/libgflags-dev/copyright

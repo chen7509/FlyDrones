@@ -1,0 +1,8 @@
+a14f596e7ccd0d358d0cff1451b97c95  usr/include/opencv4/opencv2/shape.hpp
+cb3d2a2193d40612b2fb077f60fff172  usr/include/opencv4/opencv2/shape/emdL1.hpp
+02bca6346facd9a8c3762cf25b9501ac  usr/include/opencv4/opencv2/shape/hist_cost.hpp
+0dd75c72abd7577154eac7c77cce15e0  usr/include/opencv4/opencv2/shape/shape.hpp
+da22e08cb26e128e8ee99f3e6ec3e048  usr/include/opencv4/opencv2/shape/shape_distance.hpp
+57614cd04bae73ff42bea229e57ed539  usr/include/opencv4/opencv2/shape/shape_transformer.hpp
+18343d5ab759482fb0237626b8c85ff6  usr/lib/x86_64-linux-gnu/libopencv_shape.a
+d2a68a8dbb4fd22dd8668c2e70094144  usr/share/doc/libopencv-shape-dev/copyright

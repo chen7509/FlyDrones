@@ -1,0 +1,14 @@
+/.
+/usr
+/usr/lib
+/usr/lib/x86_64-linux-gnu
+/usr/lib/x86_64-linux-gnu/libtbbbind_2_5.so.3.11
+/usr/share
+/usr/share/doc
+/usr/share/doc/libtbbbind-2-5
+/usr/share/doc/libtbbbind-2-5/changelog.Debian.gz
+/usr/share/doc/libtbbbind-2-5/copyright
+/usr/share/lintian
+/usr/share/lintian/overrides
+/usr/share/lintian/overrides/libtbbbind-2-5
+/usr/lib/x86_64-linux-gnu/libtbbbind_2_5.so.3

@@ -1,0 +1,4 @@
+d80270a0b932789786898135fe0121a1  usr/lib/x86_64-linux-gnu/libboost_atomic.so.1.83.0
+637ba53c8f6a196a49a783a0f3fe65dd  usr/share/doc/libboost-atomic1.83.0/changelog.Debian.gz
+6a70c00fc4a21b8da6d647a5afc88b7c  usr/share/doc/libboost-atomic1.83.0/copyright
+256142a2272a188da8b367457be7d83c  usr/share/lintian/overrides/libboost-atomic1.83.0

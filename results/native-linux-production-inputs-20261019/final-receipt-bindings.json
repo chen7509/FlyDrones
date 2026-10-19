@@ -1,0 +1,272 @@
+{
+  "schema": "actual-linux-input-document-readbacks-v1",
+  "files": {
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/native-linux-production-inputs-20261019/current-linux-source-manifest.json": {
+      "file_pin": {
+        "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/native-linux-production-inputs-20261019/current-linux-source-manifest.json",
+        "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/native-linux-production-inputs-20261019/current-linux-source-manifest.json",
+        "bytes": 61561,
+        "sha256": "a05c351b4f54fd4c2b8b73acdfd4b003c86b2994c925d3a113f972eb466a77cb"
+      },
+      "phase": "results/native-linux-production-inputs-20261019/receipt-readback",
+      "before": {
+        "dev": 115,
+        "ino": 7036874420147667,
+        "mode": 33279,
+        "uid": 1000,
+        "gid": 1000,
+        "nlink": 1,
+        "bytes": 61561,
+        "mtime_ns": 1792404447873295100,
+        "ctime_ns": 1792404447873295100
+      },
+      "after": {
+        "dev": 115,
+        "ino": 7036874420147667,
+        "mode": 33279,
+        "uid": 1000,
+        "gid": 1000,
+        "nlink": 1,
+        "bytes": 61561,
+        "mtime_ns": 1792404447873295100,
+        "ctime_ns": 1792404447873295100
+      },
+      "blob": "blobs/a05c351b4f54fd4c2b8b73acdfd4b003c86b2994c925d3a113f972eb466a77cb"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/native-linux-production-inputs-20261019/final-v2/toolchain-receipt.json": {
+      "file_pin": {
+        "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/native-linux-production-inputs-20261019/final-v2/toolchain-receipt.json",
+        "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/native-linux-production-inputs-20261019/final-v2/toolchain-receipt.json",
+        "bytes": 7641,
+        "sha256": "a9ba6c7070eb4c49f9c90f7fb114a098183d644f6330f434518227b10f057c78"
+      },
+      "phase": "results/native-linux-production-inputs-20261019/receipt-readback",
+      "before": {
+        "dev": 115,
+        "ino": 2814749769597003,
+        "mode": 33279,
+        "uid": 1000,
+        "gid": 1000,
+        "nlink": 1,
+        "bytes": 7641,
+        "mtime_ns": 1792405116760081600,
+        "ctime_ns": 1792405116760081600
+      },
+      "after": {
+        "dev": 115,
+        "ino": 2814749769597003,
+        "mode": 33279,
+        "uid": 1000,
+        "gid": 1000,
+        "nlink": 1,
+        "bytes": 7641,
+        "mtime_ns": 1792405116760081600,
+        "ctime_ns": 1792405116760081600
+      },
+      "blob": "blobs/a9ba6c7070eb4c49f9c90f7fb114a098183d644f6330f434518227b10f057c78"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/native-linux-production-inputs-20261019/final-v2/header-package-manifest.json": {
+      "file_pin": {
+        "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/native-linux-production-inputs-20261019/final-v2/header-package-manifest.json",
+        "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/native-linux-production-inputs-20261019/final-v2/header-package-manifest.json",
+        "bytes": 209409,
+        "sha256": "68fece09090668e262d4b5c6e66568d09881f45055c710ae36d1a54db8400674"
+      },
+      "phase": "results/native-linux-production-inputs-20261019/receipt-readback",
+      "before": {
+        "dev": 115,
+        "ino": 3096224746307658,
+        "mode": 33279,
+        "uid": 1000,
+        "gid": 1000,
+        "nlink": 1,
+        "bytes": 209409,
+        "mtime_ns": 1792405116760081600,
+        "ctime_ns": 1792405116760081600
+      },
+      "after": {
+        "dev": 115,
+        "ino": 3096224746307658,
+        "mode": 33279,
+        "uid": 1000,
+        "gid": 1000,
+        "nlink": 1,
+        "bytes": 209409,
+        "mtime_ns": 1792405116760081600,
+        "ctime_ns": 1792405116760081600
+      },
+      "blob": "blobs/68fece09090668e262d4b5c6e66568d09881f45055c710ae36d1a54db8400674"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/native-linux-production-inputs-20261019/final-v2/input-pin-references.json": {
+      "file_pin": {
+        "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/native-linux-production-inputs-20261019/final-v2/input-pin-references.json",
+        "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/native-linux-production-inputs-20261019/final-v2/input-pin-references.json",
+        "bytes": 1879915,
+        "sha256": "1ba7f7a7cad85ab6029695ac1829b7f9b536e3bf3de725c291c2a216d9a36f36"
+      },
+      "phase": "results/native-linux-production-inputs-20261019/receipt-readback",
+      "before": {
+        "dev": 115,
+        "ino": 3096224746307660,
+        "mode": 33279,
+        "uid": 1000,
+        "gid": 1000,
+        "nlink": 1,
+        "bytes": 1879915,
+        "mtime_ns": 1792405116791753400,
+        "ctime_ns": 1792405116791753400
+      },
+      "after": {
+        "dev": 115,
+        "ino": 3096224746307660,
+        "mode": 33279,
+        "uid": 1000,
+        "gid": 1000,
+        "nlink": 1,
+        "bytes": 1879915,
+        "mtime_ns": 1792405116791753400,
+        "ctime_ns": 1792405116791753400
+      },
+      "blob": "blobs/1ba7f7a7cad85ab6029695ac1829b7f9b536e3bf3de725c291c2a216d9a36f36"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/native-linux-production-inputs-20261019/final-v2/binding-candidates.json": {
+      "file_pin": {
+        "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/native-linux-production-inputs-20261019/final-v2/binding-candidates.json",
+        "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/native-linux-production-inputs-20261019/final-v2/binding-candidates.json",
+        "bytes": 1984,
+        "sha256": "a71c22df93c20ffb5cb7bf4f3192ccc4d72d88fcb55c7bfcf6c10867e69d95a3"
+      },
+      "phase": "results/native-linux-production-inputs-20261019/receipt-readback",
+      "before": {
+        "dev": 115,
+        "ino": 3096224746307661,
+        "mode": 33279,
+        "uid": 1000,
+        "gid": 1000,
+        "nlink": 1,
+        "bytes": 1984,
+        "mtime_ns": 1792405116792754400,
+        "ctime_ns": 1792405116792754400
+      },
+      "after": {
+        "dev": 115,
+        "ino": 3096224746307661,
+        "mode": 33279,
+        "uid": 1000,
+        "gid": 1000,
+        "nlink": 1,
+        "bytes": 1984,
+        "mtime_ns": 1792405116792754400,
+        "ctime_ns": 1792405116792754400
+      },
+      "blob": "blobs/a71c22df93c20ffb5cb7bf4f3192ccc4d72d88fcb55c7bfcf6c10867e69d95a3"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/native-linux-production-inputs-20261019/final-v3/header-package-manifest.json": {
+      "file_pin": {
+        "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/native-linux-production-inputs-20261019/final-v3/header-package-manifest.json",
+        "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/native-linux-production-inputs-20261019/final-v3/header-package-manifest.json",
+        "bytes": 209633,
+        "sha256": "c1ebbbcb5e77707ba7b3fe170b01702cc57045b570d86a41a31a594f82c4c2e5"
+      },
+      "phase": "results/native-linux-production-inputs-20261019/final-receipt-readback",
+      "before": {
+        "dev": 115,
+        "ino": 3096224746307720,
+        "mode": 33279,
+        "uid": 1000,
+        "gid": 1000,
+        "nlink": 1,
+        "bytes": 209633,
+        "mtime_ns": 1792405306695661000,
+        "ctime_ns": 1792405306695661000
+      },
+      "after": {
+        "dev": 115,
+        "ino": 3096224746307720,
+        "mode": 33279,
+        "uid": 1000,
+        "gid": 1000,
+        "nlink": 1,
+        "bytes": 209633,
+        "mtime_ns": 1792405306695661000,
+        "ctime_ns": 1792405306695661000
+      },
+      "blob": "blobs/c1ebbbcb5e77707ba7b3fe170b01702cc57045b570d86a41a31a594f82c4c2e5"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/native-linux-production-inputs-20261019/final-v3/input-pin-references.json": {
+      "file_pin": {
+        "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/native-linux-production-inputs-20261019/final-v3/input-pin-references.json",
+        "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/native-linux-production-inputs-20261019/final-v3/input-pin-references.json",
+        "bytes": 1882033,
+        "sha256": "0162917239855192dca3643149150363a996b379e70ea3d01ca738752fc4b891"
+      },
+      "phase": "results/native-linux-production-inputs-20261019/final-receipt-readback",
+      "before": {
+        "dev": 115,
+        "ino": 2814749769597066,
+        "mode": 33279,
+        "uid": 1000,
+        "gid": 1000,
+        "nlink": 1,
+        "bytes": 1882033,
+        "mtime_ns": 1792405306729176900,
+        "ctime_ns": 1792405306729176900
+      },
+      "after": {
+        "dev": 115,
+        "ino": 2814749769597066,
+        "mode": 33279,
+        "uid": 1000,
+        "gid": 1000,
+        "nlink": 1,
+        "bytes": 1882033,
+        "mtime_ns": 1792405306729176900,
+        "ctime_ns": 1792405306729176900
+      },
+      "blob": "blobs/0162917239855192dca3643149150363a996b379e70ea3d01ca738752fc4b891"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/native-linux-production-inputs-20261019/final-v3/binding-candidates.json": {
+      "file_pin": {
+        "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/native-linux-production-inputs-20261019/final-v3/binding-candidates.json",
+        "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/native-linux-production-inputs-20261019/final-v3/binding-candidates.json",
+        "bytes": 2054,
+        "sha256": "2f290e397fcf3cf787fc4052df1ac886940836f79450a1d2129549692698bb11"
+      },
+      "phase": "results/native-linux-production-inputs-20261019/final-receipt-readback",
+      "before": {
+        "dev": 115,
+        "ino": 3940649676439691,
+        "mode": 33279,
+        "uid": 1000,
+        "gid": 1000,
+        "nlink": 1,
+        "bytes": 2054,
+        "mtime_ns": 1792405306730178600,
+        "ctime_ns": 1792405306730178600
+      },
+      "after": {
+        "dev": 115,
+        "ino": 3940649676439691,
+        "mode": 33279,
+        "uid": 1000,
+        "gid": 1000,
+        "nlink": 1,
+        "bytes": 2054,
+        "mtime_ns": 1792405306730178600,
+        "ctime_ns": 1792405306730178600
+      },
+      "blob": "blobs/2f290e397fcf3cf787fc4052df1ac886940836f79450a1d2129549692698bb11"
+    }
+  },
+  "selected_toolchain_file": {
+    "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/native-linux-production-inputs-20261019/toolchain-native.cmake",
+    "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/native-linux-production-inputs-20261019/toolchain-native.cmake",
+    "bytes": 1677,
+    "sha256": "3b7f6512ffe514f021d12b78bfc749ac2d3e60b9a25aea38e34d0cd17273d9b3"
+  },
+  "all_required_new_documents_actually_read": true,
+  "old_creation_time_pending_fields_not_rewritten": true,
+  "later_readback_supersedes_pending_state_only": true,
+  "all_qualifications": false,
+  "dispatchable": false
+}

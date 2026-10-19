@@ -1,0 +1,29 @@
+{
+  "command": [
+    "wsl",
+    "-d",
+    "Ubuntu",
+    "--",
+    "/usr/bin/python3",
+    "-I",
+    "-S",
+    "-B",
+    "-"
+  ],
+  "caps": {
+    "file_bytes": 67108864,
+    "total_payload_bytes": 98806242,
+    "read_seconds": 27,
+    "parent_wait_seconds": 30,
+    "terminate_seconds": 5,
+    "kill_seconds": 5,
+    "outer_seconds": 45,
+    "metadata_bytes": 776524,
+    "stderr_bytes": 2097152,
+    "selected_paths": 6000,
+    "symlink_hops": 40
+  },
+  "selected": 116,
+  "script_sha256": "8e73b0108f61b49cb48f9763a8e8db8073eaa61ce49b22fae4c70a74e001538b",
+  "utc_start": "2026-10-19T10:12:41.349588+00:00"
+}

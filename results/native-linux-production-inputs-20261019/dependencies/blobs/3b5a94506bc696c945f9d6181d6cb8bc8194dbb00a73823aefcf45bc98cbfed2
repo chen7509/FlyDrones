@@ -1,0 +1,6 @@
+4c4c4ffb5fcb0228df275173437fc7b7  usr/include/opencv4/opencv2/objdetect.hpp
+26321d5ec1be0c55a2fc65300584f7d1  usr/include/opencv4/opencv2/objdetect/detection_based_tracker.hpp
+f46897da2a1b5520aed3503b8c3d7b5d  usr/include/opencv4/opencv2/objdetect/face.hpp
+701efc0be261890f2aab2ada5330105b  usr/include/opencv4/opencv2/objdetect/objdetect.hpp
+5e41f6e8f8945a1e8666abbaa2f2f6af  usr/lib/x86_64-linux-gnu/libopencv_objdetect.a
+d2a68a8dbb4fd22dd8668c2e70094144  usr/share/doc/libopencv-objdetect-dev/copyright

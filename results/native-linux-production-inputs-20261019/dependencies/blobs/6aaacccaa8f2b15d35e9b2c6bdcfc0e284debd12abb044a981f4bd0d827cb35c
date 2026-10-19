@@ -1,0 +1,4 @@
+c25ba4dce71730774aa1baa1ed51faee  usr/lib/x86_64-linux-gnu/libopencv_core.so.4.6.0
+f0fc742f04c495d0bdcf8611f3d45bc9  usr/share/doc/libopencv-core406t64/changelog.Debian.gz
+d2a68a8dbb4fd22dd8668c2e70094144  usr/share/doc/libopencv-core406t64/copyright
+53ddd69c727626b82f72decf0d959d8f  usr/share/lintian/overrides/libopencv-core406t64

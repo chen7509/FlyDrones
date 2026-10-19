@@ -1,0 +1,385 @@
+"""Terminal capture consumer of owned PX4 ULog receipt/disabled-EV evidence.
+
+Logged correlation only: no transport, parameters, live control or flight grant.
+"""
+
+from __future__ import annotations
+
+import bisect
+import hashlib
+import importlib.metadata
+import json
+import math
+import struct
+import time
+from pathlib import Path
+
+from tools.benchmark.openvins_receiver_parity import _ObservedULogBuffer, extract_receiver_rows, validate_ulog_stream
+from tools.benchmark.openvins_timesync_wire import PinnedCodec
+from tools.benchmark.owned_ulog_source import LIMITS, file_record, linked
+
+PROFILE = "disarmed-receipt-v2"
+EV_FLAGS = ("cs_ev_pos", "cs_ev_vel", "cs_ev_hgt", "cs_ev_yaw")
+AIDS = {"estimator_aid_src_ev_pos": 2, "estimator_aid_src_ev_vel": 3, "estimator_aid_src_ev_hgt": 1}
+TOPICS = (
+    "vehicle_visual_odometry",
+    "timesync_status",
+    "vehicle_status",
+    "actuator_armed",
+    "estimator_status",
+    "estimator_selector_status",
+    "estimator_status_flags",
+    *AIDS,
+)
+MAX_ROWS = 200_000
+
+
+def parser_inputs():
+    if importlib.metadata.version("pyulog") != "1.2.4":
+        raise ValueError("pinned pyulog1.2.4 required before launch")
+    import pyulog
+
+    folder = Path(pyulog.__file__).resolve().parent
+    paths = sorted(folder.glob("*.py"))
+    if not 0 < len(paths) <= 64 or sum(path.stat().st_size for path in paths) > 4 * 1024**2:
+        raise ValueError("selected parser source closure bound")
+    return paths
+
+
+def _int(value, low=0, high=2**63 - 1):
+    if type(value) is not int or not low <= value <= high:
+        raise ValueError("invalid logged integer")
+    return value
+
+
+def _scalar(value):
+    return value.item() if hasattr(value, "item") else value
+
+
+def _rows(parsed, framing, name):
+    topics = [row for row in parsed.data_list if row.name == name]
+    counts = [row for row in framing["topic_counts"] if row["name"] == name]
+    if len(topics) != 1 or topics[0].multi_id != 0 or len(counts) != 1 or counts[0]["multi_id"] != 0:
+        raise ValueError("missing/ambiguous topic " + name)
+    data = topics[0].data
+    size = len(data.get("timestamp", []))
+    if not 0 < size <= MAX_ROWS or size != counts[0]["data_count"] or any(len(v) != size for v in data.values()):
+        raise ValueError("raw/decoded topic count " + name)
+    rows = [{key: _scalar(values[i]) for key, values in data.items()} for i in range(size)]
+    previous = 0
+    for row in rows:
+        previous = _int(row["timestamp"], previous + 1)
+    return rows
+
+
+def _decode(raw):
+    if type(raw) is not bytes or not 16 <= len(raw) <= LIMITS["max_artifact_bytes"]:
+        raise ValueError("ULog byte bound")
+    framing = validate_ulog_stream(raw, include_topic_counts=True)
+    if importlib.metadata.version("pyulog") != "1.2.4":
+        raise ValueError("pinned pyulog1.2.4 required")
+    from pyulog import ULog
+
+    stream = _ObservedULogBuffer(raw)
+    try:
+        parsed = ULog(stream, message_name_filter_list=list(TOPICS), disable_str_exceptions=False)
+    except (struct.error, NotImplementedError, IndexError, KeyError, UnicodeError, RecursionError) as exc:
+        raise ValueError("ULog parser refused") from exc
+    finally:
+        stream.close()
+    if stream.last_read != (len(raw), 3, 0) or parsed.file_corruption or parsed.dropouts:
+        raise ValueError("ULog incomplete/corrupt/dropout")
+    return parsed, framing
+
+
+def analyze_log(raw, sends, *, clock_signature=None):
+    parsed, framing = _decode(raw)
+    facts = dict(
+        schema="capture-disarmed-receipt-observations-v1",
+        errors=[],
+        matched_receipts=0,
+        receiver_fields_correlated=False,
+        disabled_ev_observed=False,
+        positive_fusion_samples=0,
+        fusion_verified=False,
+        flight_eligible=False,
+        controller_ready=False,
+        source_authenticated=False,
+        clock_epoch_qualified=False,
+        timesync_convergence_qualified=False,
+        continuous_runtime_coverage_verified=False,
+        receiver_only_evidence_complete=False,
+        topic_counts=framing["topic_counts"],
+        aid_observations={},
+    )
+    errors = facts["errors"]
+    topics = {}
+    for name in TOPICS:
+        try:
+            topics[name] = _rows(parsed, framing, name)
+        except ValueError as exc:
+            errors.append(str(exc))
+    try:
+        if type(sends) is not list or not 2 <= len(sends) <= 4096:
+            raise ValueError("bounded nonempty ODOMETRY stream required")
+        receiver = extract_receiver_rows(parsed)
+        if len(receiver) != len(sends):
+            raise ValueError("whole receiver/send count mismatch")
+        codec = PinnedCodec()
+        session = None
+        last_sample = 0
+        sync = topics["timesync_status"]
+        sync_times = [row["timestamp"] for row in sync]
+        first = receiver[0]["timestamp"]
+        last = receiver[-1]["timestamp"]
+        for name, field, expected in (
+            ("vehicle_status", "arming_state", 1),
+            ("actuator_armed", "armed", 0),
+            ("estimator_status", "filter_fault_flags", 0),
+            ("estimator_selector_status", "primary_instance", 0),
+        ):
+            rows = topics[name]
+            if rows[0]["timestamp"] > first or rows[-1]["timestamp"] < last:
+                raise ValueError("unbracketed status evidence " + name)
+            if any(_int(row[field]) != expected for row in rows):
+                raise ValueError("armed/fault/estimator instance change " + name)
+            if any(b["timestamp"] - a["timestamp"] > 2_000_000 for a, b in zip(rows, rows[1:])):
+                raise ValueError("status observation gap " + name)
+        for event, row in zip(sends, receiver, strict=True):
+            packet = bytes.fromhex(event["raw_hex"])
+            if (
+                event.get("kind") != "odometry"
+                or type(event["bytes_returned"]) is not int
+                or event["bytes_returned"] != len(packet)
+            ):
+                raise ValueError("send without full actual return")
+            identity = (event["native_pid"], event["native_session"])
+            if (
+                type(identity[0]) is not int
+                or identity[0] <= 1
+                or type(identity[1]) is not str
+                or len(identity[1]) != 64
+                or any(c not in "0123456789abcdef" for c in identity[1])
+            ):
+                raise ValueError("native session identity")
+            if session is not None and session != identity:
+                raise ValueError("native session changed")
+            session = identity
+            decoded = codec.decode_datagram(packet)
+            if (
+                len(decoded) != 1
+                or decoded[0]["type"] != "ODOMETRY"
+                or decoded[0]["framing"] != 2
+                or (decoded[0]["system"], decoded[0]["component"]) != (254, 191)
+            ):
+                raise ValueError("ODOMETRY packet identity")
+            wire = decoded[0]["fields"]
+            stamp = _int(wire["time_usec"], last_sample + 1)
+            last_sample = stamp
+            if clock_signature is not None:
+                if (
+                    len(clock_signature) != 3
+                    or stamp != (_int(clock_signature[2]) + _int(event["sample_ns"]) - _int(clock_signature[1])) // 1000
+                ):
+                    raise ValueError("independent capture sample mapping changed")
+            if (wire["frame_id"], wire["child_frame_id"], wire["estimator_type"], wire["quality"], wire["reset_counter"]) != (
+                20,
+                12,
+                3,
+                0,
+                0,
+            ):
+                raise ValueError("source frame/reset/quality profile changed")
+            arrival = _int(row["timestamp"])
+            sample = _int(row["timestamp_sample"], 1)
+            index = bisect.bisect_right(sync_times, arrival) - 1
+            if index < 0:
+                raise ValueError("no preceding independent TIMESYNC status")
+            clock = sync[index]
+            # Pinned MavlinkTimesync default-constructs Timesync with UNKNOWN0.
+            # This compatibility value cannot authenticate its producer.
+            if (
+                _int(clock["source_protocol"]) != 0
+                or not 0 <= arrival - clock["timestamp"] < 2_000_000
+                or not 0 < _int(clock["round_trip_time"]) < 10000
+            ):
+                raise ValueError("TIMESYNC source/age/RTT")
+            expected = stamp + _int(clock["estimated_offset"], -(2**63) + 1)
+            if abs(sample - expected) > 1 or not 1 < arrival - sample <= 100000:
+                raise ValueError("sample clock/fallback/arrival age mismatch")
+            expected_fields = dict(
+                pose_frame=2,
+                velocity_frame=3,
+                position=[wire[k] for k in ("x", "y", "z")],
+                q=wire["q"],
+                velocity=[wire[k] for k in ("vx", "vy", "vz")],
+                angular_velocity=[wire[k] for k in ("rollspeed", "pitchspeed", "yawspeed")],
+                position_variance=[wire["pose_covariance"][i] for i in (0, 6, 11)],
+                orientation_variance=[wire["pose_covariance"][i] for i in (15, 18, 20)],
+                velocity_variance=[wire["velocity_covariance"][i] for i in (0, 6, 11)],
+                reset_counter=0,
+                quality=0,
+            )
+            for key, value in expected_fields.items():
+                if row[key] != value:
+                    raise ValueError("receiver field mismatch " + key)
+                if isinstance(value, list) and any(not math.isfinite(v) for v in value):
+                    raise ValueError("nonfinite receiver field")
+            facts["matched_receipts"] += 1
+        facts["receiver_fields_correlated"] = True
+        facts["native_session"] = dict(pid=session[0], session=session[1])
+    except (ValueError, KeyError, TypeError, OverflowError) as exc:
+        errors.append(str(exc))
+    try:
+        if parsed.initial_parameters.get("EKF2_EV_CTRL") != 0 or type(parsed.initial_parameters.get("EKF2_EV_CTRL")) is not int:
+            raise ValueError("disabled EV initial parameter missing/nonzero")
+        if any(name == "EKF2_EV_CTRL" and value != 0 for _, name, value in parsed.changed_parameters):
+            raise ValueError("EV parameter changed")
+        flags = topics["estimator_status_flags"]
+        receiver_times = [row["timestamp"] for row in topics["vehicle_visual_odometry"]]
+        if flags[0]["timestamp"] > receiver_times[0] or flags[-1]["timestamp"] < receiver_times[-1]:
+            raise ValueError("unbracketed EV flag observations")
+        if any(b["timestamp"] - a["timestamp"] > 2_000_000 for a, b in zip(flags, flags[1:])):
+            raise ValueError("EV flag observation gap")
+        if any(_int(row[field]) != 0 for row in flags for field in EV_FLAGS):
+            raise ValueError("EV control flags active")
+    except (ValueError, KeyError, TypeError) as exc:
+        errors.append(str(exc))
+    # Consume aid observations even after a profile violation; never rewrite
+    # an actual fused sample to zero merely because this capture must fail.
+    for name, n in AIDS.items():
+        try:
+            rows = topics[name]
+            fused = rejected = 0
+            last_sample = 0
+            maximum_ratio = 0.0
+            for row in rows:
+                sample = _int(row["timestamp_sample"], last_sample + 1)
+                last_sample = sample
+                if sample > row["timestamp"] or _int(row["estimator_instance"]) != 0:
+                    raise ValueError("aid sample/instance invalid")
+                observed_fused = _int(row["fused"], 0, 1)
+                fused += observed_fused
+                facts["positive_fusion_samples"] += observed_fused
+                rejected += _int(row["innovation_rejected"], 0, 1)
+                if _int(row["time_last_fuse"]) != 0:
+                    errors.append("nonzero last-fuse time in disabled-EV capture: " + name)
+                for field in ("observation", "observation_variance", "innovation", "innovation_variance", "test_ratio"):
+                    values = [row[field]] if n == 1 else [row[f"{field}[{i}]"] for i in range(n)]
+                    if any(type(v) not in (float, int) or not math.isfinite(v) for v in values):
+                        raise ValueError("missing/nonfinite aid " + field)
+                    if field in ("observation_variance", "innovation_variance", "test_ratio") and any(v < 0 for v in values):
+                        raise ValueError("negative aid variance/ratio")
+                    if field == "test_ratio":
+                        maximum_ratio = max(maximum_ratio, *values)
+            facts["aid_observations"][name] = dict(
+                samples=len(rows),
+                fused_samples=fused,
+                rejected_samples=rejected,
+                max_test_ratio=maximum_ratio,
+                last_fuse_us=rows[-1]["time_last_fuse"],
+            )
+        except (ValueError, KeyError, TypeError) as exc:
+            errors.append(name + ": " + str(exc))
+    if facts["positive_fusion_samples"]:
+        errors.append("unexpected fusion in disabled-EV capture")
+    facts["positive_fusion_count_scope"] = "validated fused fields consumed; incomplete topics may hide more"
+    facts["aid_evidence_complete"] = len(facts["aid_observations"]) == len(AIDS)
+    facts["disabled_ev_observed"] = not errors
+    facts["receiver_only_evidence_complete"] = not errors
+    return facts
+
+
+def _stable_read(path, limit):
+    if linked(path) or not path.is_file() or path.stat().st_size > limit:
+        raise ValueError("artifact input byte bound/type")
+    before = file_record(path)
+    if before["bytes"] > limit:
+        raise ValueError("artifact input byte bound")
+    with path.open("rb") as stream:
+        raw = stream.read(limit + 1)
+    after = file_record(path)
+    if before != after or len(raw) != before["bytes"] or hashlib.sha256(raw).hexdigest() != before["sha256"]:
+        raise ValueError("evidence changed during consumer read")
+    return raw, before
+
+
+def consume_capture(output, result, *, deadline_ns):
+    output = Path(output)
+    summary = dict(
+        schema="capture-owned-px4-disarmed-receipts-v1",
+        errors=[],
+        logs=[],
+        fusion_verified=False,
+        flight_eligible=False,
+        controller_ready=False,
+        receiver_only_evidence_complete=False,
+        source_authenticated=False,
+    )
+
+    def deadline():
+        if type(deadline_ns) is not int or time.monotonic_ns() >= deadline_ns:
+            raise TimeoutError("original capture worker deadline")
+
+    try:
+        deadline()
+        association = result["owned_ulog_source"]
+        if (
+            association.get("all_logs_associated") is not True
+            or association.get("errors")
+            or type(association.get("owner_exit")) is not int
+        ):
+            raise ValueError("owned ULog association/exit unavailable")
+        wire = result["wire_lifecycle"]
+        if wire.get("failure") or not wire.get("session"):
+            raise ValueError("wire lifecycle failed/missing")
+        raw, owner_pin = _stable_read(output / "wire-owner.json", 65536)
+        wire_owner = json.loads(raw)["owner"]
+        owner = association["owner"]
+        for key in ("pid", "pgrp", "session", "start_ticks"):
+            if wire_owner[key] != owner[key]:
+                raise ValueError("PX4 wire/ULog owner mismatch")
+        if wire_owner["exe"] != owner["executable"]:
+            raise ValueError("PX4 executable owner mismatch")
+        signature = wire["session"]["clock_signature"]
+        sends = wire["session"]["estimate_receiver"]["send_events"]
+        sends = [row for row in sends if row.get("kind") == "odometry"]
+        raw, manifest_pin = _stable_read(output / "px4-ulog-manifest.json", 65536)
+        records = json.loads(raw)["logs"]
+        if records != result["px4_ulogs"] or len(records) != 1:
+            raise ValueError("one exact owned log required; no log selection/stitching")
+        entry = records[0]
+        relative = Path(entry["path"])
+        if (
+            relative.is_absolute()
+            or ".." in relative.parts
+            or relative.parts[0] != "px4-ulog"
+            or relative.suffix != ".ulg"
+            or linked(output / relative)
+        ):
+            raise ValueError("owned log path invalid")
+        witnesses = association["logs"]
+        if (
+            len(witnesses) != 1
+            or witnesses[0].get("path") != entry["path"]
+            or witnesses[0].get("sha256") != entry["sha256"]
+            or witnesses[0].get("observed_writable_opener") is not True
+        ):
+            raise ValueError("exact owned ULog witness missing")
+        raw, pin = _stable_read(output / relative, LIMITS["max_artifact_bytes"])
+        if pin["bytes"] != entry["bytes"] or pin["sha256"] != entry["sha256"] or entry.get("valid_header") is not True:
+            raise ValueError("ULog manifest byte mismatch")
+        deadline()
+        facts = analyze_log(raw, sends, clock_signature=signature)
+        summary["logs"].append(dict(path=entry["path"], pin=pin, observations=facts))
+        summary["errors"].extend(facts["errors"])
+        summary["input_pins"] = dict(manifest=manifest_pin, wire_owner=owner_pin)
+        if result.get("errors") or result.get("status") != "capture_completed":
+            raise ValueError("capture already failed/incomplete")
+        deadline()
+        summary["receiver_only_evidence_complete"] = not summary["errors"]
+    except (ValueError, OSError, KeyError, TypeError, IndexError) as exc:
+        summary["errors"].append(type(exc).__name__ + ": " + str(exc))
+    with (output / "px4-disarmed-receipts.json").open("x", encoding="utf-8") as stream:
+        json.dump(summary, stream, indent=2, allow_nan=False)
+    return summary

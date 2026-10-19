@@ -1,0 +1,13 @@
+/.
+/usr
+/usr/lib
+/usr/lib/x86_64-linux-gnu
+/usr/lib/x86_64-linux-gnu/libsuitesparse_mongoose.so.3
+/usr/share
+/usr/share/doc
+/usr/share/doc/libsuitesparse-mongoose3
+/usr/share/doc/libsuitesparse-mongoose3/copyright
+/usr/share/lintian
+/usr/share/lintian/overrides
+/usr/share/lintian/overrides/libsuitesparse-mongoose3
+/usr/share/doc/libsuitesparse-mongoose3/changelog.Debian.gz

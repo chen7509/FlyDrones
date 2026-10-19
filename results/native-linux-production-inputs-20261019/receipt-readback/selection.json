@@ -1,0 +1,87 @@
+{
+  "caps": {
+    "file_bytes": 67108864,
+    "total_payload_bytes": 86680758,
+    "read_seconds": 20,
+    "parent_wait_seconds": 30,
+    "terminate_seconds": 5,
+    "kill_seconds": 5,
+    "outer_seconds": 45,
+    "metadata_bytes": 633512,
+    "stderr_bytes": 2097152,
+    "selected_paths": 6000,
+    "symlink_hops": 40
+  },
+  "forbidden_prefixes": [
+    "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build"
+  ],
+  "all_qualifications": false,
+  "dispatchable": false,
+  "excluded": {},
+  "excluded_native_identities": [],
+  "linux_file_writes": false,
+  "compile": false,
+  "resource_query": false,
+  "schema": "linux-visible-production-source-selection-v1",
+  "selected": [
+    {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/native-linux-production-inputs-20261019/current-linux-source-manifest.json",
+      "roles": [
+        "new-derived-input-receipt"
+      ]
+    },
+    {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/native-linux-production-inputs-20261019/final-v2/toolchain-receipt.json",
+      "roles": [
+        "new-derived-input-receipt"
+      ]
+    },
+    {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/native-linux-production-inputs-20261019/final-v2/header-package-manifest.json",
+      "roles": [
+        "new-derived-input-receipt"
+      ]
+    },
+    {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/native-linux-production-inputs-20261019/final-v2/input-pin-references.json",
+      "roles": [
+        "new-derived-input-receipt"
+      ]
+    },
+    {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/native-linux-production-inputs-20261019/final-v2/binding-candidates.json",
+      "roles": [
+        "new-derived-input-receipt"
+      ]
+    }
+  ],
+  "allowed_content_endpoints": [
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/native-linux-production-inputs-20261019/current-linux-source-manifest.json",
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/native-linux-production-inputs-20261019/final-v2/toolchain-receipt.json",
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/native-linux-production-inputs-20261019/final-v2/header-package-manifest.json",
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/native-linux-production-inputs-20261019/final-v2/input-pin-references.json",
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/native-linux-production-inputs-20261019/final-v2/binding-candidates.json"
+  ],
+  "expected_content": {
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/native-linux-production-inputs-20261019/current-linux-source-manifest.json": {
+      "bytes": 61561,
+      "sha256": "a05c351b4f54fd4c2b8b73acdfd4b003c86b2994c925d3a113f972eb466a77cb"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/native-linux-production-inputs-20261019/final-v2/toolchain-receipt.json": {
+      "bytes": 7641,
+      "sha256": "a9ba6c7070eb4c49f9c90f7fb114a098183d644f6330f434518227b10f057c78"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/native-linux-production-inputs-20261019/final-v2/header-package-manifest.json": {
+      "bytes": 209409,
+      "sha256": "68fece09090668e262d4b5c6e66568d09881f45055c710ae36d1a54db8400674"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/native-linux-production-inputs-20261019/final-v2/input-pin-references.json": {
+      "bytes": 1879915,
+      "sha256": "1ba7f7a7cad85ab6029695ac1829b7f9b536e3bf3de725c291c2a216d9a36f36"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/native-linux-production-inputs-20261019/final-v2/binding-candidates.json": {
+      "bytes": 1984,
+      "sha256": "a71c22df93c20ffb5cb7bf4f3192ccc4d72d88fcb55c7bfcf6c10867e69d95a3"
+    }
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "scripts": [
+    {
+      "path": "/usr/lib/gcc/x86_64-linux-gnu/13/libgcc_s.so",
+      "absolute_references": [],
+      "unbound_exact_references": [],
+      "actual_linker_search_selection_proven": false
+    },
+    {
+      "path": "/usr/lib/x86_64-linux-gnu/libc.so",
+      "absolute_references": [
+        "/lib/x86_64-linux-gnu/libc.so.6",
+        "/usr/lib/x86_64-linux-gnu/libc_nonshared.a",
+        "/lib64/ld-linux-x86-64.so.2"
+      ],
+      "unbound_exact_references": [
+        "/lib/x86_64-linux-gnu/libc.so.6",
+        "/lib64/ld-linux-x86-64.so.2"
+      ],
+      "actual_linker_search_selection_proven": false
+    },
+    {
+      "path": "/usr/lib/x86_64-linux-gnu/libm.so",
+      "absolute_references": [
+        "/lib/x86_64-linux-gnu/libm.so.6",
+        "/lib/x86_64-linux-gnu/libmvec.so.1"
+      ],
+      "unbound_exact_references": [
+        "/lib/x86_64-linux-gnu/libm.so.6",
+        "/lib/x86_64-linux-gnu/libmvec.so.1"
+      ],
+      "actual_linker_search_selection_proven": false
+    }
+  ],
+  "absolute_paths_only_not_full_grammar": true,
+  "compiler_builtin_specs_and_implicit_search_execution_proven": false
+}
