@@ -1,0 +1,9 @@
+# Exact five completed; no automatic next collection
+
+The five explicitly authorized /usr/libexec/gcc/x86_64-linux-gnu/13 components now have actual saved complete contents and acquisition-time native identity/pins. All five succeeded in the one bounded selection; no partial or limit hit. Do not repeat this selection or continue claiming these five contents are missing.
+
+No CMake modules or other file contents were selected. Earlier evidence remains unchanged; the previous module selection's unclosed partial remains unknown. This new five-file observation does not close all current BUILD_KEYS, toolchain/header/config/source/package/implicit or recursive-lazy-loader inputs, signed origin, ABI or measured calibration/noise. It does not prove actual driver invocation or the old OpenVINS library history. Do not fill production request/admission templates from these observations alone.
+
+No further Linux access is part of this selection. No additional batch, reacquisition, reordered retry, old evidence/tests review, compile/configure/link, native target or resource query. Any later collection needs a separate explicit exact scope; future build/run remains separately authorized and admitted with original fresh resources/no competition/cgroup/pidfd and all required current inputs. No automatic build-to-run transition, cap expansion, consumed-attempt reopening or fallback.
+
+All qualifications/runtime_graph_frozen/physical_dispatch_ready/dispatch remain false. Goal blocked read-only; automation ACTIVE; original branch and personal only. Preserve all original UNKNOWN/CONSUMED states, budgets, safety and full single-aircraft/heldout/future goals. Ordinary pending DONT_NOTIFY; notify only actual new evidence/consumer/material progress, actual target failure, major gap or required input. No repeated completed implementation, tests or archival checks as progress.

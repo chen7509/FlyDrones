@@ -1,0 +1,15 @@
+{
+  "schema": "native-linux-compiler-five-missing-v1",
+  "selected_missing": [],
+  "limits": [
+    "Completeness applies only to these five explicit paths at observation time.",
+    "Content/native identity is not actual compiler invocation, signed package origin or ABI proof.",
+    "Earlier retained tool/config/source hashes were not refreshed; saved fields and observed inode exclusions are conservative, not a current global hardlink inventory.",
+    "Full current source/toolchain/header/config/package/implicit input/recursive-lazy-loader and new request bindings remain incomplete.",
+    "The observer runtime and its implicit dependencies are not authenticated or fully inventoried.",
+    "Fresh execution resource/no-competition/cgroup/pidfd, measured calibration/noise and applicable admission remain separate requirements.",
+    "No production templates filled, build/run dispatch, old library provenance claim or second collection."
+  ],
+  "all_qualifications": false,
+  "dispatchable": false
+}
