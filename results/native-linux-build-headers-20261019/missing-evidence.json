@@ -1,0 +1,18 @@
+{
+  "schema": "native-linux-new-header-missing-v1",
+  "selected_missing": [],
+  "actual_new_build_input_closure_unknown": true,
+  "pending_no_reacquisition_exception_proposal": "required-input-refresh-PROPOSAL.json",
+  "proposal_executed": false,
+  "limits": [
+    "Completed acquisition covers this exact saved candidate selection, not all headers or new compile-time consumed inputs.",
+    "No newly read include references followed; no CMake modules or directory enumeration.",
+    "Previously acquired tool/config/source content hashes were not refreshed; identity alone cannot establish current content pins.",
+    "Proposal for169 old-content refresh paths is not authorized or dispatched by this header collection.",
+    "Missing source candidates/LICENSE/ReadMe.md, current deployed source, toolchain recipe/receipt, package origin, implicit/loader/ABI and measured inputs remain unknown or incomplete.",
+    "Fresh execution resource/no-competition/cgroup/pidfd and applicable admission remain separate gates; no compile/native/SDK/resource/Linux-write authorization inferred.",
+    "No production templates filled, auto build/run, old library provenance claim or second collection."
+  ],
+  "all_qualifications": false,
+  "dispatchable": false
+}

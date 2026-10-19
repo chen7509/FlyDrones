@@ -1,0 +1,16 @@
+{
+  "schema": "fixed-upstream-current-content-coverage-v1",
+  "commit": "69488123ed9362dd44b6f28e7f4680abbff1442b",
+  "required_manifest_files": 143,
+  "actual_current_refreshed": 141,
+  "matches_fixed_manifest_fields": 141,
+  "differences": [],
+  "missing_current_payload_paths": [
+    "/home/yuchen7509/flydrones-upstream/open_vins/LICENSE",
+    "/home/yuchen7509/flydrones-upstream/open_vins/ReadMe.md"
+  ],
+  "missing_paths_not_accessed_this_selection": true,
+  "atomic_snapshot": false,
+  "old_library_history_proven": false,
+  "complete": false
+}

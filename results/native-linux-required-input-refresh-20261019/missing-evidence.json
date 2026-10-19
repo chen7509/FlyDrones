@@ -1,0 +1,54 @@
+{
+  "schema": "native-linux-build-input-frontier-v1",
+  "build_stage_blockers": [
+    {
+      "id": "fixed-source-143",
+      "status": "incomplete",
+      "actual": {
+        "schema": "fixed-upstream-current-content-coverage-v1",
+        "commit": "69488123ed9362dd44b6f28e7f4680abbff1442b",
+        "required_manifest_files": 143,
+        "actual_current_refreshed": 141,
+        "matches_fixed_manifest_fields": 141,
+        "differences": [],
+        "missing_current_payload_paths": [
+          "/home/yuchen7509/flydrones-upstream/open_vins/LICENSE",
+          "/home/yuchen7509/flydrones-upstream/open_vins/ReadMe.md"
+        ],
+        "missing_paths_not_accessed_this_selection": true,
+        "atomic_snapshot": false,
+        "old_library_history_proven": false,
+        "complete": false
+      }
+    },
+    {
+      "id": "deployed-current-production-source",
+      "status": "unknown",
+      "note": "Local software implementation exists, but a complete current Linux deployed source/capture closure is not bound here."
+    },
+    {
+      "id": "toolchain-recipe-and-receipt",
+      "status": "unknown",
+      "note": "No complete current bound toolchain_file/toolchain_receipt input created or inferred."
+    },
+    {
+      "id": "current-full-input-closure",
+      "status": "incomplete",
+      "note": "New headers/current16 configs and9 tools are real observations, not all CMake/config/package/implicit tool/header/link/loader consumption or signed origin proof. Earlier CMake-module evidence is not refreshed or newly consumed proof."
+    },
+    {
+      "id": "fresh-once-build-admission",
+      "status": "not_granted",
+      "note": "No resource refresh, cgroup/pidfd execution or build approval inferred; preserve original budgets and consumed states."
+    }
+  ],
+  "run_stage_requirements_not_build_outputs_preconditions": [
+    "Successful actual library+adapter build receipt and owned inside/host release",
+    "New library/adapter identities and ABI/recursive-lazy-loaded closure proof",
+    "Measured calibration/noise and actual signed source/clock/runtime/wire bindings",
+    "Separate applicable run admission; no automatic build-to-run"
+  ],
+  "old_library_history_still_unknown": true,
+  "all_qualifications": false,
+  "dispatchable": false
+}
