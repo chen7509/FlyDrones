@@ -1,0 +1,15 @@
+# Authorized exact-two conditional restoration
+
+Human reply: 允许精确两份条件恢复及回读.
+
+Only `/home/yuchen7509/flydrones-upstream/open_vins/LICENSE` and `ReadMe.md` in that same directory, from the two retained fixed69488123ed9362dd44b6f28e7f4680abbff1442b sources named in selection.json. Source verification reads only those two authorized copy inputs (48249B total), not a retrospective archive/payload audit. Both source checks complete before WSL invocation. The original frozen proposal stays unchanged; authorization is a later separate record.
+
+One `wsl -d Ubuntu -- /usr/bin/python3 -I -S -B -` invocation. Python standard-library observer, implicit runtime unauthenticated/not completely inventoried. No shell, compiler/configure/link/native target, SDK, resource query, network, package tool, directory enumeration, extra references or unrelated writes. Exact ancestor directory metadata/open operations are necessary no-follow boundaries; no directory creation or repair.
+
+Missing targets only: O_CREAT|O_EXCL|O_NOFOLLOW, requested0644 and actual permissions recorded. Existing exact regular targets only: O_RDONLY|O_NOFOLLOW read/compare; size/content difference stops before overwrite. Hold directory FDs, compare ancestor dev/inode/mode/owner bindings; parent directory size/timestamps may change as a direct result of creating authorized files and are not claimed unchanged. Target before/after stable readback pins, explicit create intent, created identity, actual bytes written and completion retained. No target deletion, rename, chmod, replacement or retry on any outcome. Known prior inode/path aliases excluded; no global unseen-hardlink guarantee or hostile-filesystem authentication.
+
+Caps unchanged: file67108864B, aggregate201326592B, shared restore/read27s (first metadata at most10s within27), parent wait30s+terminate5s+kill5s, outer45s, metadata/stderr2097152B each, at most40 linkhops (this stricter executor follows zero symlinks). Target writes at most48249B and only2files; no refill/second invocation. Synchronous FS calls are bounded by Linux alarm/owned Windows parent termination mechanisms, not a proof of hard cancellation, escaped-descendant closure or crash durability. If timeout/cleanup unknown or partial write, preserve partial/UNKNOWN; never retry/delete. Windows uses fresh exclusive result/start/copy-verification files; no prior consumed native attempt is opened or recreated.
+
+Only new helper AST, new JSON/result/payload checks and new archive integrity verification. No software tests, old archives or unrelated payload audits, second source/native/delivery review, or production/template changes. Historical coverage is read-only split across primary and three agents, not an independent new native admission.
+
+Any successful two-file result only fills those two observations at this time. Prior141 source observations remain cross-time, not refreshed/atomic. Linux production source/toolchain/input closure/fresh build admission and later ABI/runtime/calibration/noise gates remain incomplete, all qualification/readiness/dispatch false. No automatic next selection/build/run.

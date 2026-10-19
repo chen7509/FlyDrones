@@ -1,0 +1,37 @@
+{
+  "schema": "fixed-upstream-cross-time-content-coverage-v1",
+  "commit": "69488123ed9362dd44b6f28e7f4680abbff1442b",
+  "required_files": 143,
+  "earlier_actual141": {
+    "phase": "results/native-linux-required-input-refresh-20261019",
+    "count": 141,
+    "matches": 141,
+    "earlier_payload_not_rehashed": true,
+    "not_refreshed_this_selection": true
+  },
+  "new_actual2": {
+    "phase": "native-linux-missing-source-two-20261019",
+    "files": {
+      "/home/yuchen7509/flydrones-upstream/open_vins/LICENSE": {
+        "path": "/home/yuchen7509/flydrones-upstream/open_vins/LICENSE",
+        "resolved": "/home/yuchen7509/flydrones-upstream/open_vins/LICENSE",
+        "bytes": 35149,
+        "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986"
+      },
+      "/home/yuchen7509/flydrones-upstream/open_vins/ReadMe.md": {
+        "path": "/home/yuchen7509/flydrones-upstream/open_vins/ReadMe.md",
+        "resolved": "/home/yuchen7509/flydrones-upstream/open_vins/ReadMe.md",
+        "bytes": 13100,
+        "sha256": "2553e1d5d570a391a1f8376ae4037760d84d45668d781ccf6683ccfc2a54a044"
+      }
+    }
+  },
+  "observed_content_entries_across_phases": 143,
+  "missing_entries_across_these_phases": [],
+  "all143_observed_at_same_time": false,
+  "earlier141_currently_revalidated": false,
+  "actual_build_consumption_proven": false,
+  "old_library_history_proven": false,
+  "full_build_stage_complete": false,
+  "dispatchable": false
+}

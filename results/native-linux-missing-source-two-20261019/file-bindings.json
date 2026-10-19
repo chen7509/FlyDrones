@@ -1,0 +1,79 @@
+{
+  "schema": "exact-two-restored-file-bindings-v1",
+  "files": {
+    "/home/yuchen7509/flydrones-upstream/open_vins/LICENSE": {
+      "file_pin": {
+        "path": "/home/yuchen7509/flydrones-upstream/open_vins/LICENSE",
+        "resolved": "/home/yuchen7509/flydrones-upstream/open_vins/LICENSE",
+        "bytes": 35149,
+        "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986"
+      },
+      "before": {
+        "dev": 2128,
+        "ino": 455272,
+        "mode": 33188,
+        "uid": 1000,
+        "gid": 1000,
+        "nlink": 1,
+        "bytes": 35149,
+        "mtime_ns": 1792403641375855856,
+        "ctime_ns": 1792403641375855856
+      },
+      "after": {
+        "dev": 2128,
+        "ino": 455272,
+        "mode": 33188,
+        "uid": 1000,
+        "gid": 1000,
+        "nlink": 1,
+        "bytes": 35149,
+        "mtime_ns": 1792403641375855856,
+        "ctime_ns": 1792403641375855856
+      },
+      "actual_action": "created_from_verified_retained_bytes",
+      "prior_target": null,
+      "blob": "blobs/3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+      "fixed_git_blob_sha1": "f288702d2fa16d3cdf0035b15a9fcbc552cd88e7",
+      "stable": true,
+      "admitted": false
+    },
+    "/home/yuchen7509/flydrones-upstream/open_vins/ReadMe.md": {
+      "file_pin": {
+        "path": "/home/yuchen7509/flydrones-upstream/open_vins/ReadMe.md",
+        "resolved": "/home/yuchen7509/flydrones-upstream/open_vins/ReadMe.md",
+        "bytes": 13100,
+        "sha256": "2553e1d5d570a391a1f8376ae4037760d84d45668d781ccf6683ccfc2a54a044"
+      },
+      "before": {
+        "dev": 2128,
+        "ino": 455275,
+        "mode": 33188,
+        "uid": 1000,
+        "gid": 1000,
+        "nlink": 1,
+        "bytes": 13100,
+        "mtime_ns": 1792403641379852204,
+        "ctime_ns": 1792403641379852204
+      },
+      "after": {
+        "dev": 2128,
+        "ino": 455275,
+        "mode": 33188,
+        "uid": 1000,
+        "gid": 1000,
+        "nlink": 1,
+        "bytes": 13100,
+        "mtime_ns": 1792403641379852204,
+        "ctime_ns": 1792403641379852204
+      },
+      "actual_action": "created_from_verified_retained_bytes",
+      "prior_target": null,
+      "blob": "blobs/2553e1d5d570a391a1f8376ae4037760d84d45668d781ccf6683ccfc2a54a044",
+      "fixed_git_blob_sha1": "1448a49c1acc3c1c23d6631e8e49be2e49e1a500",
+      "stable": true,
+      "admitted": false
+    }
+  },
+  "acquisition_time_only": true,
+  "admitted": false
+}
