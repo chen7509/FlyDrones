@@ -1,0 +1,95 @@
+{
+  "schema": "native-fresh-build-p1-precise-gaps-v1",
+  "selected_declaration_scope": [
+    "results/native-linux-production-inputs-20261019/final-v3/input-pin-references.json",
+    "results/native-linux-production-inputs-20261019/final-receipt-bindings.json"
+  ],
+  "pin_gaps": [
+    {
+      "id": "P1-M1",
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/native-offset-run-plan-20261018/upstream-build-source-manifest.json",
+      "missing_fields": [
+        "actual-context path/resolved/bytes/sha256 pin and observation provenance"
+      ],
+      "known_contract_sha256": "19b343211b5ae6b25d9c565095e812f32a265c32997b27100e7eb6bbd3a0ec7f",
+      "basis": "Absent from the selected sealed union and readback sidecar, not a global absence claim",
+      "no_bytes_sha_or_resolved_guessed": true
+    }
+  ],
+  "non_pin_gaps": [
+    {
+      "id": "P1-R1",
+      "field": "link_resolutions",
+      "status": "EMPTY_NOT_COMPLETE",
+      "owner": "P4",
+      "exact_limit": "Actual new link argv does not exist; no speculative -l names or NEEDED-to-driver resolution"
+    },
+    {
+      "id": "P1-E1",
+      "field": "build_environment",
+      "status": "SELECTED_DECLARATION_NOT_ENVIRONMENT_PROOF",
+      "owner": "P2",
+      "selected": {
+        "HOME": "/home/yuchen7509",
+        "PATH": "/usr/bin:/bin",
+        "LANG": "C.UTF-8"
+      }
+    },
+    {
+      "id": "P1-F1",
+      "field": "input_pins",
+      "status": "SAVED_CROSS_TIME_NOT_FUTUREFRESH",
+      "owner": "P2-P8",
+      "exact_limit": "No production verifier or current-path hash/identity revalidation was invoked"
+    },
+    {
+      "id": "P1-A1",
+      "field": "review",
+      "status": "NOT_CREATED_NO_ALLOW_ONCE",
+      "owner": "P8"
+    }
+  ],
+  "directory_binding_keys_are_not_missing_regular_file_pins": [
+    "boost_config_dir",
+    "ceres_config_dir",
+    "deployed_repo",
+    "eigen_config_dir",
+    "exclusive_build_dir",
+    "opencv4_config_dir",
+    "upstream_source_tree"
+  ],
+  "deferred_other_conditions": [
+    {
+      "id": "P2",
+      "status": "EXECUTION_CONTEXT_INCOMPLETE"
+    },
+    {
+      "id": "P3",
+      "status": "NOT_COMPLETE_NOT_OBSERVED_AGAIN"
+    },
+    {
+      "id": "P4",
+      "status": "REQUEST_LEVEL_RESOLUTIONS_NOT_COMPLETE"
+    },
+    {
+      "id": "P5",
+      "status": "MECHANISM_COVERAGE_REQUIRES_DISPOSITION"
+    },
+    {
+      "id": "P6",
+      "status": "NOT_QUERIED_NOT_GRANTED"
+    },
+    {
+      "id": "P7",
+      "status": "UNKNOWN_NOT_BENCHMARKED"
+    },
+    {
+      "id": "P8",
+      "status": "NOT_AUTHORIZED_NOT_ADMITTED"
+    }
+  ],
+  "post_build_outputs_not_required_as_preexisting_inputs": true,
+  "original_templates_unchanged": true,
+  "full_request_complete": false,
+  "dispatchable": false
+}

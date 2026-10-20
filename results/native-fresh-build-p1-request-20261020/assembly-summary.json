@@ -1,0 +1,62 @@
+{
+  "schema": "native-fresh-build-p1-assembly-summary-v1",
+  "source_head": "b06f2746a38bfdd904f20a2a8b41d1dd936b73cf",
+  "status": "P1_REQUEST_ASSEMBLED_INCOMPLETE_NOT_ADMITTED",
+  "request_schema": "native-offset-fresh-source-request-v1",
+  "stage": "build",
+  "saved_union_pin_paths": 3677,
+  "required_receipt_file_pins_added": 3,
+  "assembled_input_pin_paths": 3680,
+  "required_binding_keys": 16,
+  "required_binding_file_pins_present": 9,
+  "directory_binding_keys": 7,
+  "local_source_pins": 128,
+  "required_once_source_pins": 12,
+  "upstream_source_pins": 143,
+  "named_group_entries": {
+    "tools": 20,
+    "system_headers": 1828,
+    "cmake_modules": 1205,
+    "link_implicit": 20,
+    "libraries": 105,
+    "packages": 234
+  },
+  "missing_required_pin_paths": [
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/native-offset-run-plan-20261018/upstream-build-source-manifest.json"
+  ],
+  "saved_source_field_mismatches": 0,
+  "saved_upstream_sha_size_mismatches": 0,
+  "saved_group_missing_pin_paths": 0,
+  "saved_pin_conflicts": 0,
+  "generated_outputs": [
+    {
+      "file": "request.json",
+      "bytes": 1192438,
+      "sha256": "0688c76c57e8a6fb415e735f1ea5e662abc65328dedc8fa872ef7745f4820d54"
+    },
+    {
+      "file": "input-pin-sources.json",
+      "bytes": 1313118,
+      "sha256": "89755f456d42897715d865a858be7fda44714ab23e457d020c85bedd5fd26f2e"
+    },
+    {
+      "file": "missing-evidence.json",
+      "bytes": 2756,
+      "sha256": "8d1a8eaafd5e95f72bd15df4219759c2293353fc64f9265067da2c9b83ef66bf"
+    },
+    {
+      "file": "next-minimum-scope.json",
+      "bytes": 1634,
+      "sha256": "769ffdf657142d5e72a4908fd5fef2a27661249175d92679c84ede40465a0e35"
+    }
+  ],
+  "request_sha_is_only_new_local_bytes_not_linux_readback": true,
+  "no_production_import_verify_or_once": true,
+  "no_existing_payload_hash_or_archive_audit": true,
+  "no_linux_resources_compiler_configure_link_target_sdk_or_tests": true,
+  "original_attempt_not_created_or_probed": true,
+  "full_request_complete": false,
+  "full_input_closure_complete": false,
+  "all_qualifications": false,
+  "dispatchable": false
+}
