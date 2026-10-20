@@ -1,0 +1,31 @@
+{
+  "schema": "native-fresh-build-admission-plan-static-checks-v1",
+  "checks_passed": [
+    "new JSON parsed; no production import",
+    "8 pre-build and 5 output IDs match plan",
+    "16 BUILD_KEYS match AST extraction in preparation",
+    "five saved document pin references equal derived readback fields",
+    "selected toolchain reference exact",
+    "baseline static counts copied without qualification",
+    "independent non-dispatch schema and all decisions false/null",
+    "original budget values retained",
+    "full old automation prompt exact TOML string match, 63912chars and prompt SHA"
+  ],
+  "no_tests": true,
+  "no_linux_or_resources": true,
+  "no_build_or_target_execution": true,
+  "no_old_payload_hash_or_archive_audit": true,
+  "no_new_source_native_or_delivery_review": true,
+  "source_baseline": "dde58388d76ceb2798d324fb07768d1e56952959",
+  "full_history_prompt_sha256": "447ab39d6db49a3218788b07146988e3ea0a67b3cb520b0c6c41c830c01a9265",
+  "limitations": [
+    "saved derived JSON equality, not payload/source-origin/futurefresh authentication",
+    "current source text/AST contract inspection, no execution of production verifiers",
+    "initial combined console display truncated; focused reads used for required fields",
+    "one nonexistent cleanup filename read produced rg diagnostic; actual cleanup file inspected"
+  ],
+  "all_qualifications": false,
+  "dispatchable": false,
+  "scoped_git_diff_check_exit": 0,
+  "self_review": "P3 prebuild existing loader policy/config versus actual selection/maps output distinguished; P5 missing observation mechanism cannot be waived; no circular requirement for new binaries/depfiles."
+}
