@@ -1,0 +1,691 @@
+{
+  "schema": "causal-pair-simulation-time-retry-evidence-v1",
+  "member_count_without_manifest": 137,
+  "members": [
+    {
+      "path": "docs/ESTIMATOR_PHYSICAL_REFUSAL_DIAGNOSIS_REPORT.md",
+      "bytes": 63067,
+      "sha256": "d729ef909cf3ef508ac27f1d8414b14236698c89b0b2bb9023a894834b609d93"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-10-07-causal-pair-sim-time-retry.md",
+      "bytes": 4422,
+      "sha256": "a263af421f882710ed9e4c9592df8ff6d3cc9112e5caeb508694503e2bee17ab"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-10-07-causal-pair-sim-time-retry-design.md",
+      "bytes": 3209,
+      "sha256": "5f53fb8b17ae3618da652f2919810a6ccf2c0069ace61a52f7a23ea46e77b7d8"
+    },
+    {
+      "path": "evidence/causal-pair-sim-time-dev-1701.zip",
+      "bytes": 1411776,
+      "sha256": "1b063c7e502670f646984fa3dd64b963a4a77e1d46686f269e9bf353fcc15ef9"
+    },
+    {
+      "path": "results/causal-pair-sim-time-retry-preflight-dev-1701/audit-output-v1.txt",
+      "bytes": 534,
+      "sha256": "b9d676cb4b461c2960a1b7c5e80753f1b8ba567209ab49bad7f32b02a0a528d9"
+    },
+    {
+      "path": "results/causal-pair-sim-time-retry-preflight-dev-1701/audit-output-v2-code-drift.txt",
+      "bytes": 563,
+      "sha256": "8dc0458acfcbf5d838d13629be3eec8426b65b9fdc7020ea481fe9fdef19400d"
+    },
+    {
+      "path": "results/causal-pair-sim-time-retry-preflight-dev-1701/audit-output-v3-authoritative.txt",
+      "bytes": 534,
+      "sha256": "b9d676cb4b461c2960a1b7c5e80753f1b8ba567209ab49bad7f32b02a0a528d9"
+    },
+    {
+      "path": "results/causal-pair-sim-time-retry-preflight-dev-1701/audit-output-v4-committed.txt",
+      "bytes": 534,
+      "sha256": "b9d676cb4b461c2960a1b7c5e80753f1b8ba567209ab49bad7f32b02a0a528d9"
+    },
+    {
+      "path": "results/causal-pair-sim-time-retry-preflight-dev-1701/audit-output-v5-after-startup.txt",
+      "bytes": 534,
+      "sha256": "b9d676cb4b461c2960a1b7c5e80753f1b8ba567209ab49bad7f32b02a0a528d9"
+    },
+    {
+      "path": "results/causal-pair-sim-time-retry-preflight-dev-1701/diff-check.txt",
+      "bytes": 157,
+      "sha256": "0aa8d0fdb7a180c74ca6e952a0431308508fbe8df736290ec5a2c6cb633d014f"
+    },
+    {
+      "path": "results/causal-pair-sim-time-retry-preflight-dev-1701/diff-stat.txt",
+      "bytes": 278,
+      "sha256": "7f6870699f12d098e06d16d0fdf9945f05861cf856db4244206968ae26194742"
+    },
+    {
+      "path": "results/causal-pair-sim-time-retry-preflight-dev-1701/focused-final-v2.txt",
+      "bytes": 101,
+      "sha256": "a995694a79bbfac23731a03fc54d3c0173006e9dc53bc08d31ec12dcae116fb7"
+    },
+    {
+      "path": "results/causal-pair-sim-time-retry-preflight-dev-1701/focused-final.txt",
+      "bytes": 1499,
+      "sha256": "9f69afa662715a9d72976c5baa21dab50cc3559829db12f9f795e607c6da8f09"
+    },
+    {
+      "path": "results/causal-pair-sim-time-retry-preflight-dev-1701/full-tests.txt",
+      "bytes": 2761,
+      "sha256": "dbe527a92de93ebc4542f630b198a81fb2f249c3880ee2578cfc7e3254b16c58"
+    },
+    {
+      "path": "results/causal-pair-sim-time-retry-preflight-dev-1701/green-v1.txt",
+      "bytes": 4243,
+      "sha256": "dec843352dc269cefcfc3fb5bd98bec214f439fc591fc925b8ff3e208ea2a62b"
+    },
+    {
+      "path": "results/causal-pair-sim-time-retry-preflight-dev-1701/green-v2.txt",
+      "bytes": 4649,
+      "sha256": "b3ed551926a4eb8a3698ae8d5e80a5777684ba206eff41c825c1683ffe3f9335"
+    },
+    {
+      "path": "results/causal-pair-sim-time-retry-preflight-dev-1701/green-v3.txt",
+      "bytes": 101,
+      "sha256": "36685de6a1781a09f5a6fd36ac6dbc6c0400a606441fa2d043f43bb50455a091"
+    },
+    {
+      "path": "results/causal-pair-sim-time-retry-preflight-dev-1701/green-v4.txt",
+      "bytes": 975,
+      "sha256": "3dbeb12e4400c6c42b29d84c81995d43778f2a9720651af3d836f5e4b6e13bc0"
+    },
+    {
+      "path": "results/causal-pair-sim-time-retry-preflight-dev-1701/green-v5.txt",
+      "bytes": 101,
+      "sha256": "a0b1a877291e4cc37388c668ed29c389256a9be5707490de50cf11b55534ffd7"
+    },
+    {
+      "path": "results/causal-pair-sim-time-retry-preflight-dev-1701/green-v6.txt",
+      "bytes": 101,
+      "sha256": "c52697b70017a000116339e7dbe3e14c8db142a9c3021bc65cbd8d4ff4b878d8"
+    },
+    {
+      "path": "results/causal-pair-sim-time-retry-preflight-dev-1701/green-v7-authoritative.txt",
+      "bytes": 101,
+      "sha256": "36406ffb62bd4d7effef144dae806857d3a3b3368e4d341c509c7100e0d7d504"
+    },
+    {
+      "path": "results/causal-pair-sim-time-retry-preflight-dev-1701/prepare-output-v1.txt",
+      "bytes": 9269,
+      "sha256": "209fa841be272eaed2aa47748b568567b3229a5c52e0e29cb41b04480d62f852"
+    },
+    {
+      "path": "results/causal-pair-sim-time-retry-preflight-dev-1701/prepare-output-v2-authoritative.txt",
+      "bytes": 9269,
+      "sha256": "f912c1207f0dc0b0c5e73f47eecb64d2fbfb0aca2fc12f3d4d48f125283f94c9"
+    },
+    {
+      "path": "results/causal-pair-sim-time-retry-preflight-dev-1701/red-v2.txt",
+      "bytes": 1428,
+      "sha256": "abf98cee70875198bc2219af2b9333e9e7a5c1cac10c9d6c4de09be0b13a6324"
+    },
+    {
+      "path": "results/causal-pair-sim-time-retry-preflight-dev-1701/red.txt",
+      "bytes": 1136,
+      "sha256": "5044170e2d886acad60ca4371837151e09735faeda025918dd880e8baa96699c"
+    },
+    {
+      "path": "results/causal-pair-sim-time-retry-preflight-dev-1701/resource-scan-windows.json",
+      "bytes": 4,
+      "sha256": "a5338d955b09046ec0b16f3a9625b7955c763aae07dc722e474e6078745f932f"
+    },
+    {
+      "path": "results/causal-pair-sim-time-retry-preflight-dev-1701/resource-scan-wsl.json",
+      "bytes": 3,
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    {
+      "path": "results/causal-pair-sim-time-retry-preflight-dev-1701/ruff-final-v2.txt",
+      "bytes": 20,
+      "sha256": "a4443afdcfb6d7363adb285762515ccf7cf50473b1a05c20c1a50f6bed4d26b0"
+    },
+    {
+      "path": "results/causal-pair-sim-time-retry-preflight-dev-1701/ruff-final.txt",
+      "bytes": 456,
+      "sha256": "9adc0c746c46ee639a03f60acc293138176f6873cc82876c655d9612b4cc3838"
+    },
+    {
+      "path": "results/causal-pair-sim-time-retry-preflight-dev-1701/ruff-v1.txt",
+      "bytes": 20,
+      "sha256": "a4443afdcfb6d7363adb285762515ccf7cf50473b1a05c20c1a50f6bed4d26b0"
+    },
+    {
+      "path": "results/causal-pair-sim-time-retry-preflight-dev-1701/ruff-v2.txt",
+      "bytes": 726,
+      "sha256": "ce0df469fb3e552f8ea848aee1e8100f0e7166dbb81b5b4761126ff9227e0185"
+    },
+    {
+      "path": "results/causal-pair-sim-time-retry-preflight-dev-1701/ruff-v3.txt",
+      "bytes": 20,
+      "sha256": "a4443afdcfb6d7363adb285762515ccf7cf50473b1a05c20c1a50f6bed4d26b0"
+    },
+    {
+      "path": "results/causal-pair-sim-time-retry-preflight-dev-1701/ruff-v4.txt",
+      "bytes": 20,
+      "sha256": "a4443afdcfb6d7363adb285762515ccf7cf50473b1a05c20c1a50f6bed4d26b0"
+    },
+    {
+      "path": "results/causal-pair-sim-time-retry-preflight-dev-1701/startup-audit-output-v1.txt",
+      "bytes": 1150,
+      "sha256": "5e1d2497b2e05318779f850d5f23fc8980459bcdc7e8ea9e083e10e95024e4db"
+    },
+    {
+      "path": "results/causal-pair-sim-time-retry-preflight-dev-1701/study-v17-audit-v1.json",
+      "bytes": 369,
+      "sha256": "e8595be456280f901185c870170b359d676ba5531a894f49b38dd48b591af62c"
+    },
+    {
+      "path": "results/causal-pair-sim-time-retry-preflight-dev-1701/study-v17-audit-v2-code-drift.json",
+      "bytes": 396,
+      "sha256": "213ee43185a067e6f9fa6bdf0f9963b5c8e6d8fe7f9dea55a63b4577452f8dd3"
+    },
+    {
+      "path": "results/causal-pair-sim-time-retry-preflight-dev-1701/study-v18-audit-v1.json",
+      "bytes": 369,
+      "sha256": "e8595be456280f901185c870170b359d676ba5531a894f49b38dd48b591af62c"
+    },
+    {
+      "path": "results/causal-pair-sim-time-retry-preflight-dev-1701/study-v18-audit-v2-committed.json",
+      "bytes": 369,
+      "sha256": "e8595be456280f901185c870170b359d676ba5531a894f49b38dd48b591af62c"
+    },
+    {
+      "path": "results/causal-pair-sim-time-retry-preflight-dev-1701/study-v18-audit-v3-after-startup.json",
+      "bytes": 369,
+      "sha256": "e8595be456280f901185c870170b359d676ba5531a894f49b38dd48b591af62c"
+    },
+    {
+      "path": "results/causal-pair-sim-time-retry-preflight-dev-1701/study-v18-startup-audit-v1.json",
+      "bytes": 971,
+      "sha256": "ceff06f79b494b6d8a2df6b9a8bd70731c6befe68b9c0ea2b75664b8eb3cc3da"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/current-head-for-startup-v10.txt",
+      "bytes": 40,
+      "sha256": "56912969a637e0df3f1a0bb344f8c4aabd22a0adfa71459d97d7e1fa2f693c49"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/startup-preflight-v10-completion.json",
+      "bytes": 336,
+      "sha256": "b0de2fa894a44bc6649cc863998e38e28ac85b5d753e7cf97bbf9796c15b3b1b"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/startup-preflight-v10-dispatch.json",
+      "bytes": 2292,
+      "sha256": "af861c1c61b702acad7489ccec52477e869ae8c738e8599a7b338d83a6bc0d75"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/startup-preflight-v10-launcher.py",
+      "bytes": 2849,
+      "sha256": "87f389a8bbe8d34e4f76ea9ec5242b94d219222a44990c98278f15430b4fee95"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/startup-preflight-v10-output.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v17/causal-pair-simulation-time-authorization.json",
+      "bytes": 4813,
+      "sha256": "8ee79591a67d8d929818d2573bb6f0413a4815def793bfd0c3598c2fd43417cb"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v17/deadline-correction-authorization.json",
+      "bytes": 6366,
+      "sha256": "3305268de81094ffc8ae0e3cf4c870866fc167d4c038af2fd454541b70313fb9"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v17/estimator-readiness-contract.json",
+      "bytes": 7705,
+      "sha256": "7fc0d8de6860f3b179c0e929568eed96be5db8c6c6bb17bfae89e0d3b30a8448"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v17/execution-contract.json",
+      "bytes": 4490,
+      "sha256": "aaed00cfadd5d8e4ea5823a6ba5f1c413a781de54e8b9ef5034575c2be81bd0d"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v17/handoff-correction-authorization.json",
+      "bytes": 4838,
+      "sha256": "8e09581f819fe4b2c97af3f0e6d6ca1a88ba7527da8541fca4ea463da74b6aca"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v17/heartbeat-routing-authorization.json",
+      "bytes": 6389,
+      "sha256": "5751773cbb95d12e0712f7954e9e2a410b95528b7d8f179343628fdc488329f5"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v17/heartbeat-simulation-time-authorization.json",
+      "bytes": 4816,
+      "sha256": "d2f78494935d8b29cfd169073ec731292d7ae36af50674a62235bcbee2343dfa"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v17/lazy-runtime-contract.json",
+      "bytes": 21086,
+      "sha256": "caa64813b32cc19967e9c12365bcccbe4c62edbe065ae2a2538db4909a79b233"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v17/pair-correction-authorization.json",
+      "bytes": 6361,
+      "sha256": "b42d3552fd12c7d725ede1fb2bbea71f02fec093260c279252e13030ef5afcbf"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v17/physical-refusal-contract.json",
+      "bytes": 11240,
+      "sha256": "e0dd3d8866ecd2319bf4b1676617d25ecd9e752d399cd57efe35a7645f2bebec"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v17/runtime-binding-v3.json",
+      "bytes": 579021,
+      "sha256": "54accc727b7e6111a8c1590a3b09bb8f171b84ae3e2aa77ea2042be845c5e37c"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v17/startup-authorization-contract.json",
+      "bytes": 3904,
+      "sha256": "9d9913b8fe64eb0e452762960b947a8776e3c348d3dbc8a0cd0740d5d297112c"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v17/study-manifest.json",
+      "bytes": 8975,
+      "sha256": "37b80d9c5175ad69ba1a15c3db51704f5785c27d851c32cb6ff13f0810e3ac23"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v17/trajectory-gauge-policy.json",
+      "bytes": 1031,
+      "sha256": "a97bc126e90e0bfb88cc995f782904a7a842e460854dbd71cec977cd98800463"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v18/causal-pair-simulation-time-authorization.json",
+      "bytes": 4813,
+      "sha256": "8ee79591a67d8d929818d2573bb6f0413a4815def793bfd0c3598c2fd43417cb"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v18/deadline-correction-authorization.json",
+      "bytes": 6366,
+      "sha256": "3305268de81094ffc8ae0e3cf4c870866fc167d4c038af2fd454541b70313fb9"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v18/estimator-readiness-contract.json",
+      "bytes": 7705,
+      "sha256": "7fc0d8de6860f3b179c0e929568eed96be5db8c6c6bb17bfae89e0d3b30a8448"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v18/execution-contract.json",
+      "bytes": 4490,
+      "sha256": "3110a9561e553a39a9131034cb935acfcffed050c61c632e7ba99f512baa8ce2"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v18/handoff-correction-authorization.json",
+      "bytes": 4838,
+      "sha256": "8e09581f819fe4b2c97af3f0e6d6ca1a88ba7527da8541fca4ea463da74b6aca"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v18/heartbeat-routing-authorization.json",
+      "bytes": 6389,
+      "sha256": "5751773cbb95d12e0712f7954e9e2a410b95528b7d8f179343628fdc488329f5"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v18/heartbeat-simulation-time-authorization.json",
+      "bytes": 4816,
+      "sha256": "d2f78494935d8b29cfd169073ec731292d7ae36af50674a62235bcbee2343dfa"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v18/lazy-runtime-contract.json",
+      "bytes": 21086,
+      "sha256": "caa64813b32cc19967e9c12365bcccbe4c62edbe065ae2a2538db4909a79b233"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v18/pair-correction-authorization.json",
+      "bytes": 6361,
+      "sha256": "b42d3552fd12c7d725ede1fb2bbea71f02fec093260c279252e13030ef5afcbf"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v18/physical-refusal-contract.json",
+      "bytes": 11240,
+      "sha256": "e0dd3d8866ecd2319bf4b1676617d25ecd9e752d399cd57efe35a7645f2bebec"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v18/runtime-binding-v3.json",
+      "bytes": 579021,
+      "sha256": "9ce875d5e46d3ea04b1fdfe1d08c5c274689fd41c87df9030c80c9f817f03f8a"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v18/startup-authorization-contract.json",
+      "bytes": 3904,
+      "sha256": "9d9913b8fe64eb0e452762960b947a8776e3c348d3dbc8a0cd0740d5d297112c"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v18/startup-preflight-v1.supervisor-environment.json",
+      "bytes": 5972,
+      "sha256": "61fa02101ecc229a6ee3892dfda88bac99790e8b39508aae7806b423484b3b5d"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v18/startup-preflight-v1.supervisor-events.jsonl",
+      "bytes": 1195,
+      "sha256": "f4a2a352277fbff5e3f2c154b64542576e7a02808e71d0973b44b5e04a05a0a1"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v18/startup-preflight-v1/board_albedo.png",
+      "bytes": 1970,
+      "sha256": "5d24a1d96cccf2f81046dbfa6afe57b4760038a8714da5059d6258fc34166945"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v18/startup-preflight-v1/execution-environment-worker.json",
+      "bytes": 8601,
+      "sha256": "29058e12829bc64d81a82a8d252173e5792228a96aefd468cfe9dffce39ceba2"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v18/startup-preflight-v1/ground_albedo.png",
+      "bytes": 154343,
+      "sha256": "5e62827968eeabb55285bba85276518b6d8fb1441f0bf9659caa52a48ed48593"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v18/startup-preflight-v1/launch.json",
+      "bytes": 5698,
+      "sha256": "ac26992a44831679494617f63c24c55200c83ae03d721caedf93c8e3d435906d"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v18/startup-preflight-v1/obstacle_albedo.png",
+      "bytes": 52690,
+      "sha256": "28f87e79cc5cd767b029a4c7b00b165e1aad9f2cbb998be1a161e3ff5d121c3f"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v18/startup-preflight-v1/resource-graph.json",
+      "bytes": 149067,
+      "sha256": "c9faf346edbdb8f53a0cc01424b5bb7c2de89b42b22490a7d508eafeea1806ce"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v18/startup-preflight-v1/resource-query-0000.json",
+      "bytes": 9173,
+      "sha256": "0a1d4d7ac07a585ef6c92786a9dc0936d84dada90e6a4a566091b451daeffb14"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v18/startup-preflight-v1/resource-query-0001.json",
+      "bytes": 11261,
+      "sha256": "d22a6984698220c01007dea49e58f1030471e2195c986537a1ae507174e0a944"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v18/startup-preflight-v1/resource-query-0002.json",
+      "bytes": 11897,
+      "sha256": "282611ece7a64a3303a682fcd81bd0df7a51543377b29a05812b7df17138a08c"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v18/startup-preflight-v1/resource-query-0003.json",
+      "bytes": 12321,
+      "sha256": "b6703bb63a4f5807c32fb4115ea0be542524d2675c5f4b431cc422bbccf0ff7b"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v18/startup-preflight-v1/resource-query-0004.json",
+      "bytes": 11261,
+      "sha256": "45e9c091a812523cd55fbe036116fad073dc8aa30c8308494cc6ba24400a54cc"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v18/startup-preflight-v1/resource-query-0005.json",
+      "bytes": 10837,
+      "sha256": "fe43155b232a50bed6194df07f40fafbfa376921862b96343e4c118388a14b57"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v18/startup-preflight-v1/resource-query-0006.json",
+      "bytes": 11155,
+      "sha256": "df4560b27f1e46e82bb0c8257a196b424f0bf889a1998dbb1ceeda12db2a4d26"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v18/startup-preflight-v1/resource-query-0007.json",
+      "bytes": 11791,
+      "sha256": "e01e7630983de34726be3a899cb0b2809c1d2482492edd57dacd1fcf9f5d8f9e"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v18/startup-preflight-v1/resource-query-0008.json",
+      "bytes": 11790,
+      "sha256": "aa4d31f28308a5e1af3dd724847631068153b7220ba826b52cbbeac33815611f"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v18/startup-preflight-v1/resource-query-0009.json",
+      "bytes": 11260,
+      "sha256": "f37304884d58a98244aee3e1ba8f568c22e8b35edfa6440ec7d0642d8e1213fa"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v18/startup-preflight-v1/resource-query-0010.json",
+      "bytes": 11875,
+      "sha256": "0c07ce18300cf19c3a57bbcb9d500099a895c5612a51f20b197d3549b59e25b9"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v18/startup-preflight-v1/resource-query-0011.json",
+      "bytes": 11856,
+      "sha256": "2a2ca1a88082a67a07db4a993759a8db3cf3b8b455e12f7502d979b7255ae42c"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v18/startup-preflight-v1/resource-query-0012.json",
+      "bytes": 11856,
+      "sha256": "ab5e4af4f8b48177538060edab66798eb5b0d50ff640f2a2728112516a245266"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v18/startup-preflight-v1/resource-query-0013.json",
+      "bytes": 11913,
+      "sha256": "0425c2b044e79ea20ad49dd93b8ddf1c80fd2f40df228f91018b58059b91f5ec"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v18/startup-preflight-v1/resource-query-0014.json",
+      "bytes": 12286,
+      "sha256": "81989bbfc0b0cd17d3efdfadface1073c6131193c120b182cbdb0316a5fd4b91"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v18/startup-preflight-v1/resource-query-0015.json",
+      "bytes": 11169,
+      "sha256": "165771b7c8c11db8ac3ba1be8e82b635b55ec7045d9919a7b8e24b2dcce19bc1"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v18/startup-preflight-v1/resource-query-0016.json",
+      "bytes": 11307,
+      "sha256": "f487dd91d08cd1d17d7ad33b6c994ecb4e7420cf30375a0ef5e1867ab1829c79"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v18/startup-preflight-v1/resource-query-0017.json",
+      "bytes": 11104,
+      "sha256": "fefec2b2c15f51102fb395936d4df1feaf8fc03a2f1b9252195680bc493eca57"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v18/startup-preflight-v1/resource-query-0018.json",
+      "bytes": 11627,
+      "sha256": "dcc1e1fcdd9020aa9f00202841b0bc84193c9eddce53fa09b4d06f4a0815dd27"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v18/startup-preflight-v1/resource-query-0019.json",
+      "bytes": 11048,
+      "sha256": "54de0d92ecd3e45b4c2c8373a4937b1028c3474e4ec8af866864d024fca2ef0f"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v18/startup-preflight-v1/resource-query-0020.json",
+      "bytes": 11048,
+      "sha256": "b2238e0efaa0bda2ab83953497b0f01265501c1abe51d89f6b08db32e1153a95"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v18/startup-preflight-v1/resource-query-0021.json",
+      "bytes": 11048,
+      "sha256": "d602d5c59795c2a8ed359d1bbf365474be0a4ab27806c8e6984aba7c3e210acb"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v18/startup-preflight-v1/resource-query-0022.json",
+      "bytes": 11048,
+      "sha256": "df0ec1a6ab54e02b8661c71866fc55f1a8b9bf17ba5ddbab10b844a8e308033e"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v18/startup-preflight-v1/resource-query-0023.json",
+      "bytes": 11236,
+      "sha256": "1f990345fd63e4d2fe0da559a0580199bd479d54b0952beab13f2cc6e43cc7e0"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v18/startup-preflight-v1/resource-query-0024.json",
+      "bytes": 11236,
+      "sha256": "6bf549bf778005a2aa0de895bc2a53cce1f45a63393cc33989355f206b6c834f"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v18/startup-preflight-v1/resource-query-0025.json",
+      "bytes": 11208,
+      "sha256": "9be5ff07a36bac642fecca93cc9a122819d9c665cc91a1dfa90a98e887ac6870"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v18/startup-preflight-v1/resource-query-0026.json",
+      "bytes": 11188,
+      "sha256": "72e992c2eaee5edeec36b12fe14424cca1bc83e6646f104cb6b50acb16be237f"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v18/startup-preflight-v1/resource-query-0027.json",
+      "bytes": 3738,
+      "sha256": "2624406234519c1dd4e3f1b2a50f22d4e80f3c3adf3afc47758c426c26517bf6"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v18/startup-preflight-v1/resource-query-0028.json",
+      "bytes": 11048,
+      "sha256": "709358dec5612ba72c6a96798e655f717fc033d650d2303e806d31e97a9a6e12"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v18/startup-preflight-v1/resource-query-0029.json",
+      "bytes": 11188,
+      "sha256": "fbb4e5ee8314655a3d1b56baffe91bda90ee6bae7161ba0cf7a1f47ae049b259"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v18/startup-preflight-v1/resource-query-0030.json",
+      "bytes": 11047,
+      "sha256": "dea999d7a5eae8c2fe599c056f815f290b649993cd8e4478fc093b222c2181c4"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v18/startup-preflight-v1/resource-query-0031.json",
+      "bytes": 11160,
+      "sha256": "1662c2785ace1b84873ff8adbbc7f759734406a98c82f7c92eb1a4f67c66ecba"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v18/startup-preflight-v1/resource-query-0032.json",
+      "bytes": 11048,
+      "sha256": "b7c40deb54968a8127ef88903ca1dd2b15b909f5a53b394aaaf526eb6f1ea0ce"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v18/startup-preflight-v1/resource-query-0033.json",
+      "bytes": 11160,
+      "sha256": "8a3db46832acc09ea1bb3233e7f4682fcda3050c945f992d52e2108965e735ad"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v18/startup-preflight-v1/resource-query-0034.json",
+      "bytes": 11047,
+      "sha256": "f695c80f5aebca98b5f1c754100e5dea42be43788658e2e97dde70cfb3be60f7"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v18/startup-preflight-v1/resource-query-0035.json",
+      "bytes": 12957,
+      "sha256": "3adc3fc9b976913a70e1242311abd2eceba4cd57dc6609b8879403f7974f9de1"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v18/startup-preflight-v1/resource-query-0036.json",
+      "bytes": 12957,
+      "sha256": "60ff223851f66f4bcd80672834eb70311f15e146e1f59456956594a0d7f81c26"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v18/startup-preflight-v1/resource-query-0037.json",
+      "bytes": 12957,
+      "sha256": "fc80a09249f8b95bb7ba576ef77c8bda0cb387439ea676b49448f6aa14d8e2c7"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v18/startup-preflight-v1/resource-query-0038.json",
+      "bytes": 12957,
+      "sha256": "273c02369f7d37cdd97657930f02daeff4e1aec4580c9387c8c0a99fbba69663"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v18/startup-preflight-v1/resource-query-0039.json",
+      "bytes": 12090,
+      "sha256": "d4299158d676d120c30774fe427dcf594fd0355f6e34218d43ba3b9b47818c12"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v18/startup-preflight-v1/resource-search-context.json",
+      "bytes": 2192,
+      "sha256": "2ff1fe4d23a4b4a5d758720853a7eb0237b50ec42d498ab9d8f9c44d5ab477bc"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v18/startup-preflight-v1/result.json",
+      "bytes": 1093,
+      "sha256": "f00863c87986074b2191949bf0f12b4766dc38ec05b48c25773f07ac4cb64e55"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v18/startup-preflight-v1/runtime-binding-after-queries.json",
+      "bytes": 502047,
+      "sha256": "7aa014b250e0edad4c42947e4873bccf2d21c178ce8cdd05c90240a631a6d70c"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v18/startup-preflight-v1/runtime-binding-post.json",
+      "bytes": 502047,
+      "sha256": "14dadb794e6a92387be7c1f4bfa826a252bfe5f9b18bcc4ec49a484cc8ebd439"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v18/startup-preflight-v1/runtime-binding-pre.json",
+      "bytes": 1278460,
+      "sha256": "5f8f7dbd3fbf7e5b46fbec86547772efb5fa1414ac6ba438dd0b592de60897a7"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v18/startup-preflight-v1/runtime-maps-bootstrap.json",
+      "bytes": 159,
+      "sha256": "f593aa6afcb78d71a30862a6e2518ce1cd5995beb8e0c2ae96b95474301f4c0c"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v18/startup-preflight-v1/runtime-maps-bootstrap.txt",
+      "bytes": 95196,
+      "sha256": "1645031feaddb84f62a02e8b9161f1b93b1a885fb8728df3ed41e42aabbca5b8"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v18/startup-preflight-v1/runtime-maps-postgraph.json",
+      "bytes": 159,
+      "sha256": "7387a46d42c663552aee14a8effbfdf933e172e9a66bc3162501deda58e5a540"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v18/startup-preflight-v1/runtime-maps-postgraph.txt",
+      "bytes": 95588,
+      "sha256": "8499b6af064a37d559c58cdb5aa0a165b42b102b05534ee0b804c90f4688e939"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v18/startup-preflight-v1/supervisor.json",
+      "bytes": 2896,
+      "sha256": "37266dba01dc31cc9165fb3458b03a7501e5997b1ccccccffe42d339a06f6fd7"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v18/startup-preflight-v1/trajectory-gauge-policy-worker.json",
+      "bytes": 600,
+      "sha256": "1c634265b7940e35ac6b89aea02b317481e96649fb512eabad659eee97815420"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v18/startup-preflight-v1/world.json",
+      "bytes": 910,
+      "sha256": "e783db3dbbebf1142ba4bae7f09f5133d474f21415bd3843427598c6c3f58f51"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v18/startup-preflight-v1/world.sdf",
+      "bytes": 5844,
+      "sha256": "b42bd639080c967ceb84edc7bbf023b064dbd4fc610ccb81a1eaceb5fb373c1e"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v18/study-manifest.json",
+      "bytes": 8975,
+      "sha256": "ba0e3dc1a878994aa3c5e2d8bc3e872199889d5d48147302404332dbf4bdfd2b"
+    },
+    {
+      "path": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v18/trajectory-gauge-policy.json",
+      "bytes": 1031,
+      "sha256": "a97bc126e90e0bfb88cc995f782904a7a842e460854dbd71cec977cd98800463"
+    },
+    {
+      "path": "tests/benchmark/test_causal_pair_sim_time_retry_preflight.py",
+      "bytes": 4741,
+      "sha256": "775e9312a917f883cd7aee3aee4411055f61cb80d54eaef94f6e0fda471764ee"
+    },
+    {
+      "path": "tools/benchmark/audit_causal_pair_sim_time_retry_preflight.py",
+      "bytes": 5782,
+      "sha256": "4a38fd5095997a9df6ff0d9852b89666046f29c1674ba30805e380ab443c879c"
+    },
+    {
+      "path": "tools/benchmark/causal_pair_sim_time_retry_preflight.py",
+      "bytes": 12852,
+      "sha256": "9295770bbb7c6b3498b06c5269debc681c0cafa5c69fea5bc5f6e78ec3f0a90d"
+    }
+  ]
+}

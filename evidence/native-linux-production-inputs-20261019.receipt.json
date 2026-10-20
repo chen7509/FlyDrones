@@ -1,0 +1,16 @@
+{
+  "schema": "new-production-inputs-archive-receipt-v1",
+  "archive": "evidence/native-linux-production-inputs-20261019.zip",
+  "bytes": 51701224,
+  "sha256": "bb11bbad26ebce29e65f248a55cefacd82367a1045e944baf93d5b1afdf5a30f",
+  "members": 1437,
+  "mapped_members": 1436,
+  "mapped_bytes": 150551375,
+  "manifest_bytes": 371255,
+  "whole_member_bytes": 150922630,
+  "executor_new_crc_memberhash_only": true,
+  "old_archives_or_payloads_checked": false,
+  "source_native_delivery_review": false,
+  "all_qualifications": false,
+  "dispatchable": false
+}

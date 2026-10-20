@@ -1,0 +1,13 @@
+/.
+/usr
+/usr/lib
+/usr/lib/x86_64-linux-gnu
+/usr/lib/x86_64-linux-gnu/libtbbmalloc.so.2.11
+/usr/lib/x86_64-linux-gnu/libtbbmalloc_proxy.so.2.11
+/usr/share
+/usr/share/doc
+/usr/share/doc/libtbbmalloc2
+/usr/share/doc/libtbbmalloc2/changelog.Debian.gz
+/usr/share/doc/libtbbmalloc2/copyright
+/usr/lib/x86_64-linux-gnu/libtbbmalloc.so.2
+/usr/lib/x86_64-linux-gnu/libtbbmalloc_proxy.so.2

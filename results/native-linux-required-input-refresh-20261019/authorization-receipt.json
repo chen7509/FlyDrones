@@ -1,0 +1,14 @@
+{
+  "schema": "conversation-authorization-receipt-v1",
+  "identity_authentication": false,
+  "user_reply": "\u5141\u8bb8\u6b64\u6e05\u5355\u4e00\u6b21\u53ea\u8bfb\u590d\u6838",
+  "reviewed_path_count": 169,
+  "executed_path_count": 166,
+  "strict_subset": true,
+  "excluded_only": [
+    "/home/yuchen7509/flydrones-upstream/open_vins/.git/HEAD",
+    "/home/yuchen7509/flydrones-upstream/open_vins/.git/refs/heads/master",
+    "/home/yuchen7509/flydrones-upstream/open_vins/.git/packed-refs"
+  ],
+  "scope": "One readonly current-content refresh; no compile/native/resources/Linux writes or second selection."
+}

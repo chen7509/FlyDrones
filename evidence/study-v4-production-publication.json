@@ -1,0 +1,176 @@
+{
+  "schema": "study-v4-production-publication-v1",
+  "software_commit": "978e2689e494cac015b485be428b1e4e6030aa26",
+  "archive": {
+    "archive": "evidence/study-v4-production-dev-1701.zip",
+    "bytes": 23633448,
+    "sha256": "7235982e96c088d43641f20d8add3d2092d3ceb35472de8a17a00b92d484ad9d",
+    "members": 3925,
+    "mapped_members": 3924,
+    "manifest_sha256": "af550ad9753853bd98aae1f48c20dcf1758588ba1d1785c294bcf3cd6697e779",
+    "scope": "Task3 first3software boxesdone,lastpublicationpending;Task4/5pending;receipt/audit/publication/helpers outside sealed set"
+  },
+  "archive_plan_sha256": "748aecb39d97f1a3aa4d57ec81f842a3852ebd84f6476e57212b7d06208ffd5b",
+  "postpublication_plan_sha256": "08d8033682b7e70b99392dbae498d6f4eeea357f85e146e1ef144275ef84798a",
+  "plan_changed_byte_offsets": [
+    8348
+  ],
+  "plan_change": "Task3 final software verification/review/seal/publication only;Task4/5 pending;no actual runtime freeze or native dispatch",
+  "working_vs_git_normalized": [
+    {
+      "path": "tools/benchmark/native_loader_paths_v4.py",
+      "working_archive_sha256": "9f90f5db8daa4aef4dd24429d6086015273ea8f7ffd045b7de03d30b2978f3dc",
+      "git_normalized_blob_sha256": "9f90f5db8daa4aef4dd24429d6086015273ea8f7ffd045b7de03d30b2978f3dc",
+      "bytes": 18423
+    },
+    {
+      "path": "tools/benchmark/native_entry_context_v4.py",
+      "working_archive_sha256": "c049a19de0abdc850af49357d910c000b8e4b13b9785a9fd5f40b5fb187b530e",
+      "git_normalized_blob_sha256": "c049a19de0abdc850af49357d910c000b8e4b13b9785a9fd5f40b5fb187b530e",
+      "bytes": 62213
+    },
+    {
+      "path": "tools/benchmark/prepare_calibration_capture_v4.py",
+      "working_archive_sha256": "ffc035c1ce61b2f3419364a5ff7618fe3843c29ed8f7a712cef7f767956db874",
+      "git_normalized_blob_sha256": "ffc035c1ce61b2f3419364a5ff7618fe3843c29ed8f7a712cef7f767956db874",
+      "bytes": 1795
+    },
+    {
+      "path": "tools/benchmark/calibration_capture_study_v4.py",
+      "working_archive_sha256": "5b95260be5c5a3cc6df9f611bdda276863277ae7f70d3f9503b38120baf7b61d",
+      "git_normalized_blob_sha256": "5b95260be5c5a3cc6df9f611bdda276863277ae7f70d3f9503b38120baf7b61d",
+      "bytes": 2041
+    },
+    {
+      "path": "tools/benchmark/calibration_capture_pipeline_v4.py",
+      "working_archive_sha256": "58a7ace9f5a4ee74f1a9e4bd5be7a0c681b303acb1469bcf135a971e1eebc7f0",
+      "git_normalized_blob_sha256": "1d3e567fe850940fcb663eaa2bdb037e38673dd86fb6b2e63006e2e781851563",
+      "bytes": 76710
+    },
+    {
+      "path": "tools/benchmark/capture_contract.py",
+      "working_archive_sha256": "18d95975bf9676554d65aa4d7b30591fa43c68e7198ecff24a5808ef709c4883",
+      "git_normalized_blob_sha256": "7fb0d4a9a8e9370f24b84daba9f411d5d521c58a3dd5a95c07c67b8c59c8191f",
+      "bytes": 14585
+    },
+    {
+      "path": "tools/benchmark/calibration_capture_contract.py",
+      "working_archive_sha256": "c64d9363624551406414e9b21e6747724ee2f60380f124d9be8cc8ca44ef3fef",
+      "git_normalized_blob_sha256": "c64d9363624551406414e9b21e6747724ee2f60380f124d9be8cc8ca44ef3fef",
+      "bytes": 6160
+    },
+    {
+      "path": "tools/benchmark/runtime_resource_binding.py",
+      "working_archive_sha256": "745fdb329bfa14ad322672f273778386df561331bb8f2fda4305fc52fbe991dd",
+      "git_normalized_blob_sha256": "f3a8adf2e181069d01b1a217dd11bc86ad189ce918d007c674000aadb88b7445",
+      "bytes": 24118
+    },
+    {
+      "path": "tools/benchmark/calibration_capture_study.py",
+      "working_archive_sha256": "19b38cb6401979a01f4e0015422260184f13757cbf47b09b3de567ced0545e44",
+      "git_normalized_blob_sha256": "19b38cb6401979a01f4e0015422260184f13757cbf47b09b3de567ced0545e44",
+      "bytes": 13436
+    },
+    {
+      "path": "tools/benchmark/bound_resource_graph.py",
+      "working_archive_sha256": "5093af9baa63daee6945b76b70690d4dbeedefcaf4ed09d4db353af7b96c7fda",
+      "git_normalized_blob_sha256": "d824b06b8fe8061ac31d3041edd72eb7a56818ab841f20b16248d778179eb0e3",
+      "bytes": 5683
+    },
+    {
+      "path": "tools/benchmark/audit_live_wire_resources.py",
+      "working_archive_sha256": "4813a6587750dd7bc4eb0b5386057c0aee3afb9b96b395e24f7be86fb14d7fb2",
+      "git_normalized_blob_sha256": "4813a6587750dd7bc4eb0b5386057c0aee3afb9b96b395e24f7be86fb14d7fb2",
+      "bytes": 10464
+    },
+    {
+      "path": "tests/benchmark/test_calibration_capture_study_v4.py",
+      "working_archive_sha256": "4af0b80c92d9f27347771575fd5564edbd0bfe6423dc9ee99513259c101a9a2b",
+      "git_normalized_blob_sha256": "4af0b80c92d9f27347771575fd5564edbd0bfe6423dc9ee99513259c101a9a2b",
+      "bytes": 29616
+    },
+    {
+      "path": "docs/TARGET_BEARING_STUDY_V4_PRODUCTION_REPORT.md",
+      "working_archive_sha256": "9810fe882c637e89b8756b087e7988f38a5551c445894e829dddff6b9385ae1c",
+      "git_normalized_blob_sha256": "1a910eba27ea835ce02b3a18a1db8e48259413adfd14c29b2b5009cd3290bce6",
+      "bytes": 9459
+    },
+    {
+      "path": "docs/superpowers/plans/2026-10-15-loader-selected-path-production.md",
+      "working_archive_sha256": "748aecb39d97f1a3aa4d57ec81f842a3852ebd84f6476e57212b7d06208ffd5b",
+      "git_normalized_blob_sha256": "748aecb39d97f1a3aa4d57ec81f842a3852ebd84f6476e57212b7d06208ffd5b",
+      "bytes": 12349
+    },
+    {
+      "path": "docs/superpowers/specs/2026-10-15-loader-selected-path-production-design.md",
+      "working_archive_sha256": "f91c1aa9111e8573149dbf6afef9518d4ae99334cdeb5e4e0f547dea4503ca7b",
+      "git_normalized_blob_sha256": "e0f562dd0e042e43c20455f3b100ee476535586fd610b8d8e06f9811e7302975",
+      "bytes": 17695
+    },
+    {
+      "path": "evidence/study-v4-production-dev-1701.zip",
+      "working_archive_sha256": "7235982e96c088d43641f20d8add3d2092d3ceb35472de8a17a00b92d484ad9d",
+      "git_normalized_blob_sha256": "7235982e96c088d43641f20d8add3d2092d3ceb35472de8a17a00b92d484ad9d",
+      "bytes": 23633448
+    },
+    {
+      "path": "evidence/study-v4-production-dev-1701.sha256.json",
+      "working_archive_sha256": "af550ad9753853bd98aae1f48c20dcf1758588ba1d1785c294bcf3cd6697e779",
+      "git_normalized_blob_sha256": "af550ad9753853bd98aae1f48c20dcf1758588ba1d1785c294bcf3cd6697e779",
+      "bytes": 990955
+    }
+  ],
+  "initial_independent_review": {
+    "C": 0,
+    "I": 4,
+    "M": 0,
+    "path": "results/study-v4-production-dev-1701/independent-review.md",
+    "sha256": "916326e5473de81048e0c7181bc541ec4b3c939a964d268353e952ecf87ff199"
+  },
+  "executor_fix_pass": {
+    "single_pass": true,
+    "whole_code_review_repeated": false,
+    "inventory_red": "1 assertion failure;actual production inventory role precedence",
+    "finished_red": "13 DIDNOTRAISE/1pass with refreshed internal hashes/pins",
+    "focused_green": "15pass4.50s",
+    "final": "51passed43.14s after all source format/import fixes",
+    "lint": "0",
+    "diff": "0",
+    "neighbors": "61graph/10ordinary-runtime/16execution;all inert",
+    "note_sha256": "fa912b4f8e1574534c4a5b063b1e7c838a39d640c56382e0584e7ead96ebf4a0"
+  },
+  "independent_deliverable_audit": {
+    "path": "results/study-v4-production-dev-1701/independent-archive-audit.md",
+    "sha256": "782d906ea8ae1984db3d3914cd6a28ffdec45dcc62f9243cc48f6a84ec178fa6",
+    "text": "# Independent Task3 delivery and archive audit\n\n**PASS — no delivery-integrity or evidence-honesty finding in this scope.** This is a fresh independent read-only audit of the Task3 software deliverable, not a second whole-code review or native approval. No tests, project imports, Linux/SDK/native observer commands, target commands, Git changes, automation changes, or source/raw/sealed-file edits were performed. Only this audit's new helper/results were created in the Task3 results directory.\n\nThe canonical `evidence/study-v4-production-dev-1701.zip` is **23,633,448 bytes**, SHA256 `7235982e96c088d43641f20d8add3d2092d3ceb35472de8a17a00b92d484ad9d`. Its **3,924 mapped members plus the manifest = 3,925 members** exactly match the seal receipt's ordered preseal membership and manifest. All mapped ZIP contents (444,572,871 uncompressed bytes) passed complete reads, explicit CRC, size and SHA256 checks, and match their current working-file bytes. The manifest matches both its ZIP copy and receipt SHA256 `af550ad9753853bd98aae1f48c20dcf1758588ba1d1785c294bcf3cd6697e779`. No duplicate, extra, missing or unsafe member was found. Receipt and later audit/publication files are deliberately outside the preseal set.\n\nThe private initial resource inventory is excluded. Its current bytes/size/hash join both the manifest's exclusion record and the public derivative. The scan checked **193 distinct nonempty private argv hashes** and every private `(pid, name, argv_sha256)` identity triple against mapped archive JSON/content: zero leaks. No identities were emitted into audit results. This scan verifies the requested hash/triple disclosure boundary, not general secret detection.\n\nAll **291 historical ZIPs / 845,182,128 bytes** were independently streamed and matched their preserved sizes/SHA256 values; the evidence ZIP set is exactly those old ZIPs plus this canonical ZIP. These are POSTsoftware preservation observations, not native prepins. All **811 old product files** were compared against `product-before.json`: the changed set is exactly the eight files in `product-preservation-after-fix-pass.json`; the other **803** remain byte-identical. No consumed version-specific product changed. The earlier seven-change preservation record remains intact and is not rewritten.\n\nRead `independent-review.md`, `executor-fix-pass.md`, the production report, plan and spec, and inspected only the relevant fixture/recorder evidence rather than renewing whole-code review. The original independent review remains **C0/I4/M0, changes required**. Raw evidence confirms a genuine inventory role assertion failure, then **13 finished-audit DIDNOTRAISE failures plus one acceptance pass**, followed by **15 focused passes**. The three registry cases, five execution cases and five provenance cases are independently represented in the retained failure output. Final affected evidence says **51 passed in 43.14s**; final Ruff and working-diff checks exit **0**. The diff stderr retains CRLF normalization warnings; exit zero is not an assertion of empty stderr. Separate scoped runs retain **16 execution neighbors / 61 graph neighbors / 10 ordinary-runtime neighbors** passing. These are observations of recorded runs; this auditor did not rerun them.\n\nAll **36 recorder runs** with before/after pin sets have intact start records and source snapshots; intervals are ordered. Initial recorder configuration declares 12 paths, later 14, finally 15. Early interface failures naturally have only 9 or 11 existing-file snapshots; the helper reports these exact counts rather than pretending missing modules were pinned. Formatter/import-order mutation runs retain their before/after changes. The execution-neighbor run also records a change to the separately appended v4 test file while testing only selected `test_capture_contract.py` neighbors; it is not presented as a stable full-source run. Final 51-test pins are stable before/after and match current sealed sources. Earlier failures and lint results remain retained.\n\nThe finished acceptance/mutation fixture explicitly substitutes **inert bill, canonical-membership and graph protocols**; its native pins, scene and Agent are protocol metadata. Its acceptance demonstrates those finished semantic checks in that controlled fixture. Separate tests above it use real Task2 producer/auditor code with inert external backends and pure retained POSIX graph replay. Neither set establishes Linux descriptors, SDK behavior, actual cross-host transport/atomicity, target admission or native source authentication. The report/fix-pass/spec state these boundaries honestly and do not infer native success from software GREEN.\n\nThe current fixed v4 native parent and physical attempt directories are absent. The report/spec preserve **all eight qualifications and readiness false**. Task4 bootstrap/identity/coordinator/recipe and Task5 static/physical work remain pending, with all Task4/5 checkboxes unchecked. The sealed plan's last Task3 review/seal/publication checkbox is still pending at this prepublication point, as declared. This audit can support that software publication step; it does not authorize a native dispatch.\n\nMachine-readable measurements and per-run metadata are in `independent-archive-audit.json`. Retained helper: `independent_archive_audit.py`, **11,699 bytes**, SHA256 `a105f411d9f58ecb053c7fd4fba0e8efec8ee34367f6708ba89b39252a210ce8` (stdlib-only; no project imports). The helper and results were created after sealing and are not retroactively members of the canonical archive.\n"
+  },
+  "historical_zip_count": 291,
+  "historical_zip_bytes": 845182128,
+  "historical_sha_unchanged": true,
+  "historical_audit_scope": "POSTsoftware,not native prepin",
+  "old_product_count": 811,
+  "explicit_old_product_changes": 8,
+  "all_other_old_product_byte_same": true,
+  "fixed_native_receiver_contract": "Task4 must bind source_root/full file pins to literal native recipe/cwd/source prepost/actual child exit;schema reference is not caller authority",
+  "software_scope": "actual Task2producer evidence+independent byte witnesses+pure originalgraph replay;finished semantic fixture uses explicit inert bill/canonical/graph backends and metadata pins;no Linux/SDK acceptance",
+  "recorder_pin_scope": "12 initial declared recorder paths yielded9/11existing-file pins while new files were absent;later14declared and final15declared;per-run exact snapshots authoritative. Execution-neighbor run saw separately appended v4 testfile change;it ran only test_capture_contract neighbors,not v4suite. Final51 pins stable/current.",
+  "sdk_terminal_scope": "sameSDKPID staged study;final scope success retained before terminal readback/transport/exclusivecommit;actual bootstrap/receiver/atomic/crosshost transport not exercised",
+  "consumed_v3_status": "CONSUMED_FAILED_UNADMITTED_HARNESS_ESCAPE",
+  "escaped_closure": "UNKNOWN",
+  "v4_native_dispatch": false,
+  "v4_fixed_study_claim_scope": false,
+  "physical_fixed_attempt": false,
+  "qualification": {
+    "source": false,
+    "clock": false,
+    "measured_calibration": false,
+    "accuracy": false,
+    "teacher": false,
+    "fusion": false,
+    "training": false,
+    "flight": false
+  },
+  "runtime_graph_frozen": false,
+  "physical_dispatch_ready": false,
+  "postseal_boundary": "sealreceipt/archiveaudit/stage/publication/PR/automation/NEXT_PHASE helpers outside immutable canonical preseal set"
+}

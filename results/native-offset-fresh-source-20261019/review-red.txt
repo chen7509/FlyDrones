@@ -1,0 +1,201 @@
+FFF                                                                      [100%]
+================================== FAILURES ===================================
+_ test_scoped_chain_stops_at_failed_leg_retains_cleanup_and_shares_budget[revalidate-deadline-0] _
+
+tmp_path = WindowsPath('C:/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/native-offset-fresh-source-20261019/review-red-fixtures/test_scoped_chain_stops_at_fai0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001D63800FEF0>
+fault = 'revalidate-deadline', expected = 0
+
+    @pytest.mark.parametrize(
+        "fault,expected",
+        [("none", 3), ("configure", 1), ("library", 2), ("adapter", 3), ("cleanup", 2), ("deadline", 2),
+         ("library-cap", 2), ("revalidate-deadline", 0)],
+    )
+    def test_scoped_chain_stops_at_failed_leg_retains_cleanup_and_shares_budget(tmp_path, monkeypatch, fault, expected):
+        import sys
+        from types import SimpleNamespace
+    
+        from tools.benchmark import native_offset_once_scope as scope
+    
+        request, template, _ = fixture_fresh(tmp_path)
+        build = tmp_path / "actual-artifacts"
+        request["bindings"]["exclusive_build_dir"] = str(build)
+        commands = [["inert-cmake", name] for name in ("configure", "library", "adapter")]
+        selection = dict(request=request, command=commands, source=request["source"], environment={"PATH": "/usr/bin:/bin"})
+        verified_calls = [0]
+    
+        def verify(*args, **kwargs):
+            verified_calls[0] += 1
+            if fault == "revalidate-deadline" and verified_calls[0] == 2:
+                clock[0] = 301
+            return selection
+    
+        monkeypatch.setattr(scope, "verify_request", verify)
+        monkeypatch.setattr(scope, "require_consumed_claim", lambda profile: None)
+        monkeypatch.setattr(scope, "manager_environment", lambda: {})
+        limits_record = []
+        monkeypatch.setitem(
+            sys.modules, "resource", SimpleNamespace(RLIMIT_FSIZE=1, setrlimit=lambda *args: limits_record.append(args))
+        )
+        unit = "fly-offset-" + "a" * 24 + ".scope"
+        group = "/user.slice/" + unit
+        original_read = Path.read_text
+    
+        def read(path, *args, **kwargs):
+            if path.as_posix() == "/proc/self/cgroup":
+                return "0::" + group + "\n"
+            if path.as_posix().startswith("/sys/fs/cgroup"):
+                return {
+                    "memory.max": str(1024**3),
+                    "memory.swap.max": "0",
+                    "cpu.max": "100000 100000",
+                    "pids.max": "64",
+                    "memory.events": "oom 0\noom_kill 0\n",
+                    "memory.peak": "1234",
+                }[path.name]
+            return original_read(path, *args, **kwargs)
+    
+        monkeypatch.setattr(Path, "read_text", read)
+    
+        def systemctl(command, **kwargs):
+            assert command[:3] == ["systemctl", "--user", "show"]
+            return SimpleNamespace(stdout="InvocationID=owned\nControlGroup=" + group + "\n")
+    
+        monkeypatch.setattr(subprocess, "run", systemctl)
+        launched, cleaned = [], []
+        clock = [0]
+        monkeypatch.setattr(scope.time, "monotonic", lambda: clock[0])
+    
+        class Process:
+            pid = 42
+    
+            def __init__(self, command, **kwargs):
+                self.name = command[-1]
+                assert command[:2] == ["/usr/bin/time", "-v"]
+                self.remaining = float(command[-3].removesuffix("s"))
+                launched.append(self)
+                if self.name == "library":
+                    for path in template.rglob("*"):
+                        if not path.is_file() or path.name == "openvins-fixed-sources.cmake":
+                            continue
+                        destination = build / path.relative_to(template)
+                        destination.parent.mkdir(parents=True, exist_ok=True)
+                        raw = path.read_bytes().replace(template.as_posix().encode(), build.as_posix().encode())
+                        destination.write_bytes(raw)
+    
+            def wait(self, **kwargs):
+                clock[0] += 301 if fault == "deadline" and self.name == "library" else 10
+                return 2 if self.name == fault else 0
+    
+        monkeypatch.setattr(subprocess, "Popen", Process)
+    
+        def cleanup(process):
+            cleaned.append(process.name)
+            return dict(exit=None if fault == "cleanup" and process.name == "library" else 0)
+    
+        monkeypatch.setattr(scope, "cleanup_owned", cleanup)
+        if fault == "library-cap":
+    
+            def refuse(path):
+                raise ValueError("regular bounded file required")
+    
+            monkeypatch.setattr(scope, "file_pin", refuse)
+        output = tmp_path / "scope"
+        output.mkdir()
+        result = scope.run_inside(
+            dict(
+                stage="build",
+                output=str(output),
+                unit=unit,
+                request="inert",
+                sha256="a" * 64,
+                review="inert",
+                review_sha256="b" * 64,
+                verified=selection,
+            )
+        )
+        receipt = json.loads((build / "build-receipt.json").read_text())
+>       assert len(launched) == expected
+E       assert 1 == 0
+E        +  where 1 = len([<test_native_offset_fresh_build.test_scoped_chain_stops_at_failed_leg_retains_cleanup_and_shares_budget.<locals>.Process object at 0x000001D638285E80>])
+
+tests\benchmark\test_native_offset_fresh_build.py:510: AssertionError
+___ test_current_alias_pin_is_consumed_without_losing_its_lexical_identity ____
+
+tmp_path = WindowsPath('C:/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/native-offset-fresh-source-20261019/review-red-fixtures/test_current_alias_pin_is_cons0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001D6380D1EE0>
+
+    def test_current_alias_pin_is_consumed_without_losing_its_lexical_identity(tmp_path, monkeypatch):
+        from tools.benchmark.native_offset_fresh_receipt import Evidence
+    
+        target, alias = tmp_path / "g++-13", tmp_path / "g++"
+        target.write_text("inert driver")
+        original = Path.resolve
+    
+        def resolve(path, *args, **kwargs):
+            return target if path == alias else original(path, *args, **kwargs)
+    
+        # Model Linux alias resolution; Windows fixture does not require symlink privileges.
+        monkeypatch.setattr(Path, "resolve", resolve)
+        pin = file_pin(alias)
+        evidence = Evidence(tmp_path / "build", {str(alias): pin}, dict(artifacts={}), None)
+>       assert evidence.known(alias) == target
+               ^^^^^^^^^^^^^^^^^^^^^
+
+tests\benchmark\test_native_offset_fresh_build.py:536: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <tools.benchmark.native_offset_fresh_receipt.Evidence object at 0x000001D6380F62D0>
+path = WindowsPath('C:/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/native-offset-fresh-source-20261019/review-red-fixtures/test_current_alias_pin_is_cons0/g++-13')
+
+    def known(self, path):
+        path = Path(path).resolve(strict=True)
+        if path.is_relative_to(self.build):
+            self.result["artifacts"][path.relative_to(self.build).as_posix()] = self.pin(path)
+        elif path not in self.resolved_inputs or self.pin(path) != self.resolved_inputs[path]:
+>           raise ValueError("undeclared/drifted consumed input: " + str(path))
+E           ValueError: undeclared/drifted consumed input: C:\Users\yuche\.codex\worktrees\FlyDrones\track-eligibility\results\native-offset-fresh-source-20261019\review-red-fixtures\test_current_alias_pin_is_cons0\g++-13
+
+tools\benchmark\native_offset_fresh_receipt.py:33: ValueError
+_ test_failure_inventory_stops_during_directory_iteration_at_original_entry_cap _
+
+tmp_path = WindowsPath('C:/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/native-offset-fresh-source-20261019/review-red-fixtures/test_failure_inventory_stops_d0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001D6381EE450>
+
+    def test_failure_inventory_stops_during_directory_iteration_at_original_entry_cap(tmp_path, monkeypatch):
+        for index in range(520):
+            (tmp_path / f"output-{index}").write_bytes(b"inert partial output")
+        original = os.scandir
+        consumed = [0]
+    
+        class Scan:
+            def __init__(self, path):
+                self.iterator = original(path)
+    
+            def __enter__(self):
+                return self
+    
+            def __exit__(self, *args):
+                self.iterator.close()
+    
+            def __iter__(self):
+                return self
+    
+            def __next__(self):
+                item = next(self.iterator)
+                consumed[0] += 1
+                return item
+    
+        monkeypatch.setattr(os, "scandir", Scan)
+        result = produce(dict(build_profile="fixed-source-openvins-v1"), tmp_path, [], stage_errors=["inert failed build"])
+        assert result["complete"] is False and result["inventory_skipped"] is True
+        assert len(result["outputs_present"]) <= 512
+>       assert consumed[0] <= 513
+E       assert 1040 <= 513
+
+tests\benchmark\test_native_offset_fresh_build.py:570: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/benchmark/test_native_offset_fresh_build.py::test_scoped_chain_stops_at_failed_leg_retains_cleanup_and_shares_budget[revalidate-deadline-0]
+FAILED tests/benchmark/test_native_offset_fresh_build.py::test_current_alias_pin_is_consumed_without_losing_its_lexical_identity
+FAILED tests/benchmark/test_native_offset_fresh_build.py::test_failure_inventory_stops_during_directory_iteration_at_original_entry_cap
+3 failed, 33 deselected in 1.69s

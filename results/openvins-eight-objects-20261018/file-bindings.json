@@ -1,0 +1,168 @@
+{
+  "schema": "openvins-eight-object-file-observations-v1",
+  "files": {
+    "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/src/sim/Simulator.cpp.o": {
+      "linux_path": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/src/sim/Simulator.cpp.o",
+      "role": "authorized-eight-tu-object",
+      "utc": "2026-10-18T13:20:26.200247+00:00",
+      "status": "observed",
+      "linux_resolved_path": null,
+      "before": {
+        "mode": 33206,
+        "size": 45073752,
+        "ino": 260582,
+        "dev": 0,
+        "mtime_ns": 1790912449547745200,
+        "ctime_ns": 1790912449547745200,
+        "attributes": 128,
+        "reparse_tag": 0
+      },
+      "after": {
+        "mode": 33206,
+        "size": 45073752,
+        "ino": 260582,
+        "dev": 0,
+        "mtime_ns": 1790912449547745200,
+        "ctime_ns": 1790912449547745200,
+        "attributes": 128,
+        "reparse_tag": 0
+      },
+      "bytes": 45073752,
+      "sha256": "2f37da36a934526aaed5b5d9a04bc5d8562e96690281c5441e21341a663108f5",
+      "blob": "blobs/2f37da36a934526aaed5b5d9a04bc5d8562e96690281c5441e21341a663108f5",
+      "linux_native_identity_verified": false,
+      "native_admission": false
+    },
+    "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/src/state/State.cpp.o": {
+      "linux_path": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/src/state/State.cpp.o",
+      "role": "authorized-eight-tu-object",
+      "utc": "2026-10-18T13:20:26.653254+00:00",
+      "status": "observed",
+      "linux_resolved_path": null,
+      "before": {
+        "mode": 33206,
+        "size": 17344392,
+        "ino": 260584,
+        "dev": 0,
+        "mtime_ns": 1790912448386908500,
+        "ctime_ns": 1790912448386908500,
+        "attributes": 128,
+        "reparse_tag": 0
+      },
+      "after": {
+        "mode": 33206,
+        "size": 17344392,
+        "ino": 260584,
+        "dev": 0,
+        "mtime_ns": 1790912448386908500,
+        "ctime_ns": 1790912448386908500,
+        "attributes": 128,
+        "reparse_tag": 0
+      },
+      "bytes": 17344392,
+      "sha256": "5f695752c5ccbd901d0877a6218aa263043a02121d83ee2d2ebd7bc8bd8d5347",
+      "blob": "blobs/5f695752c5ccbd901d0877a6218aa263043a02121d83ee2d2ebd7bc8bd8d5347",
+      "linux_native_identity_verified": false,
+      "native_admission": false
+    },
+    "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/src/state/StateHelper.cpp.o": {
+      "linux_path": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/src/state/StateHelper.cpp.o",
+      "role": "authorized-eight-tu-object",
+      "utc": "2026-10-18T13:20:26.833570+00:00",
+      "status": "observed",
+      "linux_resolved_path": null,
+      "before": {
+        "mode": 33206,
+        "size": 43751096,
+        "ino": 260588,
+        "dev": 0,
+        "mtime_ns": 1790912482161050300,
+        "ctime_ns": 1790912482161050300,
+        "attributes": 128,
+        "reparse_tag": 0
+      },
+      "after": {
+        "mode": 33206,
+        "size": 43751096,
+        "ino": 260588,
+        "dev": 0,
+        "mtime_ns": 1790912482161050300,
+        "ctime_ns": 1790912482161050300,
+        "attributes": 128,
+        "reparse_tag": 0
+      },
+      "bytes": 43751096,
+      "sha256": "c99ca6bf045ba3b4e8884c2d8ec6744319f8f36183ec0ff7f112ee84111de424",
+      "blob": "blobs/c99ca6bf045ba3b4e8884c2d8ec6744319f8f36183ec0ff7f112ee84111de424",
+      "linux_native_identity_verified": false,
+      "native_admission": false
+    },
+    "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/src/update/UpdaterHelper.cpp.o": {
+      "linux_path": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/src/update/UpdaterHelper.cpp.o",
+      "role": "authorized-eight-tu-object",
+      "utc": "2026-10-18T13:20:27.260500+00:00",
+      "status": "observed",
+      "linux_resolved_path": null,
+      "before": {
+        "mode": 33206,
+        "size": 26676344,
+        "ino": 260604,
+        "dev": 0,
+        "mtime_ns": 1790912522390872700,
+        "ctime_ns": 1790912522390872700,
+        "attributes": 128,
+        "reparse_tag": 0
+      },
+      "after": {
+        "mode": 33206,
+        "size": 26676344,
+        "ino": 260604,
+        "dev": 0,
+        "mtime_ns": 1790912522390872700,
+        "ctime_ns": 1790912522390872700,
+        "attributes": 128,
+        "reparse_tag": 0
+      },
+      "bytes": 26676344,
+      "sha256": "14fe0077b61c644c9210ac7892b85bd09f50bf9cbab226695e43c593050b9346",
+      "blob": "blobs/14fe0077b61c644c9210ac7892b85bd09f50bf9cbab226695e43c593050b9346",
+      "linux_native_identity_verified": false,
+      "native_admission": false
+    },
+    "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/src/update/UpdaterMSCKF.cpp.o": {
+      "linux_path": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/src/update/UpdaterMSCKF.cpp.o",
+      "role": "authorized-eight-tu-object",
+      "utc": "2026-10-18T13:20:27.540232+00:00",
+      "status": "observed",
+      "linux_resolved_path": null,
+      "before": {
+        "mode": 33206,
+        "size": 27557640,
+        "ino": 260607,
+        "dev": 0,
+        "mtime_ns": 1790912536838413600,
+        "ctime_ns": 1790912536838413600,
+        "attributes": 128,
+        "reparse_tag": 0
+      },
+      "after": {
+        "mode": 33206,
+        "size": 27557640,
+        "ino": 260607,
+        "dev": 0,
+        "mtime_ns": 1790912536838413600,
+        "ctime_ns": 1790912536838413600,
+        "attributes": 128,
+        "reparse_tag": 0
+      },
+      "bytes": 27557640,
+      "sha256": "36afe358c20f7ebbf44eafe023c9916bb2f635c949c55687fa6b9cde01506677",
+      "blob": "blobs/36afe358c20f7ebbf44eafe023c9916bb2f635c949c55687fa6b9cde01506677",
+      "linux_native_identity_verified": false,
+      "native_admission": false
+    }
+  },
+  "current_library_sha256": null,
+  "all_qualifications": false,
+  "source_to_existing_library_proven": false
+}

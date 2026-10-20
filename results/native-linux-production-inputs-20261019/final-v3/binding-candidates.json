@@ -1,0 +1,29 @@
+{
+  "schema": "production-build-binding-candidates-v1",
+  "request_schema": "native-offset-fresh-source-request-v1",
+  "bindings": {
+    "deployed_repo": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility",
+    "upstream_source_tree": "/home/yuchen7509/flydrones-upstream/open_vins",
+    "capture_script": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/capture_disarmed_sensors.py",
+    "pinned_cmake": "/usr/bin/cmake",
+    "pinned_gxx": "/usr/bin/x86_64-linux-gnu-g++-13",
+    "pinned_make": "/usr/bin/make",
+    "pinned_python": "/usr/bin/python3.12",
+    "current_linux_source_manifest": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/native-linux-production-inputs-20261019/current-linux-source-manifest.json",
+    "toolchain_file": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/native-linux-production-inputs-20261019/toolchain-native.cmake",
+    "toolchain_receipt": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/native-linux-production-inputs-20261019/final-v2/toolchain-receipt.json",
+    "header_package_manifest": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/native-linux-production-inputs-20261019/final-v3/header-package-manifest.json",
+    "eigen_config_dir": "/usr/share/eigen3/cmake",
+    "opencv4_config_dir": "/usr/lib/x86_64-linux-gnu/cmake/opencv4",
+    "boost_config_dir": "/usr/lib/x86_64-linux-gnu/cmake/Boost-1.83.0",
+    "ceres_config_dir": "/usr/lib/x86_64-linux-gnu/cmake/Ceres",
+    "exclusive_build_dir": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/native-offset-once-attempt-v1/build/artifacts"
+  },
+  "exclusive_build_dir_not_created_or_probed": true,
+  "production_templates_unmodified": true,
+  "source12_and_static128_observed": true,
+  "full_request_complete": false,
+  "admission_granted": false,
+  "dispatchable": false,
+  "receipt_readback_evidence": "results/native-linux-production-inputs-20261019/final-receipt-bindings.json"
+}

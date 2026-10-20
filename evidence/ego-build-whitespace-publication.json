@@ -1,0 +1,21 @@
+{
+  "scope": "publication addendum; exact command reconstructed from retained tool call; interpreter observed after run, not pre-run attestation",
+  "pytest_argv": [
+    "python",
+    "-m",
+    "pytest",
+    "tests/benchmark/test_ego_build_whitespace.py",
+    "tests/benchmark/test_ego_diagnostic_reconcile.py",
+    "tests/benchmark/test_ego_causal_join.py",
+    "-q"
+  ],
+  "PYTHONPATH": "C:\\Users\\yuche\\.codex\\worktrees\\FlyDrones\\track-eligibility\\results\\ego-cdr-field-audit-dev-1701\\deps;C:\\Users\\yuche\\.codex\\worktrees\\FlyDrones\\track-eligibility\\src;C:\\Users\\yuche\\.codex\\worktrees\\FlyDrones\\track-eligibility",
+  "post_run_interpreter": "C:\\Users\\yuche\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+  "post_run_python_version": "3.12.10 (tags/v3.12.10:0cc8128, Apr  8 2025, 12:21:36) [MSC v.1943 64 bit (AMD64)]",
+  "archive_sha256": "de9511745154b703f59235a4194ea626d469833712dac9b2b937fc98512acd17",
+  "archive_members": 54,
+  "pytest_passed": 76,
+  "focused_passed": 6,
+  "build_v3_attempted": false,
+  "teacher_qualified": false
+}

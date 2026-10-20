@@ -1,0 +1,941 @@
+{
+  "schema": "flydrones-file-evidence-sha256-v1",
+  "study": "px4-camera-file-producer-dev-1701-v2",
+  "archive": "evidence/px4-camera-file-producer-dev-1701-v2.zip",
+  "archive_sha256": "9ac9f0377ce9c71b204c37cf92b72dfe29587a7cde01fbf2fd5f5513603239de",
+  "archive_bytes": 2119843,
+  "member_count": 186,
+  "members": [
+    {
+      "path": "src/flydrones/benchmark/px4_camera_source.py",
+      "size": 14720,
+      "sha256": "4344b5caa950c617ca2e0890fe3a302f84ddd063ec0d942ac31ae0b947ab4b70"
+    },
+    {
+      "path": "tools/benchmark/produce_px4_camera_file.py",
+      "size": 5122,
+      "sha256": "e4cdd319880e2aea17f0ba45c7f2a0206bdf7f076d3ef6e10a13a6fc85fd2566"
+    },
+    {
+      "path": "tests/benchmark/test_px4_camera_source.py",
+      "size": 10533,
+      "sha256": "59f72056a7598661cecd86c7de41b2fd52f52d23f26d2f2901142fa0e1f86a30"
+    },
+    {
+      "path": "tests/benchmark/test_px4_camera_file_cli.py",
+      "size": 1809,
+      "sha256": "d53c804bc44a201a2837aedcc1f553770e0990f51bcdb3426c79bead383faad8"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-10-14-px4-camera-file-producer.md",
+      "size": 4992,
+      "sha256": "46ccda6e7d530ae2af1a3d0c0078fd9c551512687bd4b108189d0d1dc201ea20"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-10-14-px4-camera-file-producer.md",
+      "size": 3944,
+      "sha256": "4722d50378dcc605972666f0bd0e2b7050a40381c432ce2d4d8b8d9e65904f21"
+    },
+    {
+      "path": "docs/PX4_CAMERA_FILE_PRODUCER_REPORT.md",
+      "size": 9409,
+      "sha256": "f4bf6e60101023e03ae9b0e804b62bb75460dc38afac925f857d497bcecf410d"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/camera-association-correction.json",
+      "size": 800,
+      "sha256": "9c925d76b4059fc2394632529dbfb9bbf583d1bb34a53f549328e1ea37820dea"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/cli-red-command.json",
+      "size": 170,
+      "sha256": "da3fbef65c714fb86cca8309b7c94499d1392dbe4a3b6d734a95972f442e92e3"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/cli-red.txt",
+      "size": 3882,
+      "sha256": "79ad8dd418b11ff9852249598416c59496ef42647af27d52ccb0c095b4706fc3"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/column-red-command.json",
+      "size": 206,
+      "sha256": "a9508f69049637b5cd1fdcd92376ba34c91b637ebdfbfc22c958d0b53e68792a"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/column-red.txt",
+      "size": 969,
+      "sha256": "3a2fcd9aa627a9e9f219dc11231d1fa87ff28b0224488b179c2573012525bab3"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/development-inputs/association-gaps.json",
+      "size": 1434,
+      "sha256": "55439f81ce58ad274d216acd580eb731a0c080af7de7d4cfe62595b4ec5203d6"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/development-inputs/epoch.json",
+      "size": 368,
+      "sha256": "0b9d9fdf6c1f46dbaffa9cad32753c0e6cbae63b1d3781ad80c37b98a9caf6a9"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/development-inputs/frames.json",
+      "size": 4433,
+      "sha256": "312ea91cf6cd43f6a61cd1e196e15ffcea8a6ab870ac9588de32c55afa3fc696"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/development-inputs/intrinsics.json",
+      "size": 785,
+      "sha256": "7887f77ebc2ac020bc603fd27ca2c3cf73b584414e33458d572859acaa5d658e"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/development-inputs/mount.json",
+      "size": 363,
+      "sha256": "6374a81bfd3218e2ce20ba973407236595cb59627030fe2f1d9b01839255fa04"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/development-inputs/rgb-capture-manifest.json",
+      "size": 53076,
+      "sha256": "6d71edb71136d4c0b696f900c46b5913dad586bb71b2b0f8e340a649fb631bdf"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/development-inputs/rig.json",
+      "size": 446,
+      "sha256": "92e62fb3d851b95eb7098e327766f58e2252af70c1fa6fd697fe0099550ed29f"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/green-v1.txt",
+      "size": 101,
+      "sha256": "696bf4f6c01e030fb89479f6ea4a734b4390057893d21ff457a7bc32d779e4a4"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/green-v2.txt",
+      "size": 101,
+      "sha256": "372fa6e59e37ab61454666ea33d56bfe142f5eee0ffbd0ebb48db9ab62299d2f"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/green-v3.txt",
+      "size": 101,
+      "sha256": "a97530e1d80881a28ef77b9f362d60e3bba4b6a07509621206c983c9a647653e"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/green-v4.txt",
+      "size": 101,
+      "sha256": "8dcd3ef7a246d25e27ca0498a23d2d612b0af62a53f8a2838eca13a4a97f2b72"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/post-run-process-resource.json",
+      "size": 16982,
+      "sha256": "6bb546a3b5b6c4c21efb0fa2e525e45fab198bd52610558a7508a07d9d152fae"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/prepublication-pr-command.json",
+      "size": 171,
+      "sha256": "51889a9c28ca69d8b40214657a9979c9a25ddc2d3da7fbebec8d97b9c04485ce"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/prepublication-pr.json",
+      "size": 25753,
+      "sha256": "f9e4d7f1a0073ec77e108c84890773e712a7e2e2dadb446bb1b2c142a877c5ad"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/prior-adapter-report.md",
+      "size": 5764,
+      "sha256": "e84248f663ec70c61180353b325f25af6aceee06dbf49bfb15792982d32ca7ca"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/prior-archive-sha256.json",
+      "size": 780,
+      "sha256": "e7f96be3bc405a792babb73168fb3b073cd649e6e706a1e4ed684ec05da9ba1f"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/prior-health-report.md",
+      "size": 5089,
+      "sha256": "387934450f8a47d0226a63d00e3b28f84fe1d3d96d26c01689cfd4aae2034f07"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/process-resource-preflight.json",
+      "size": 4717,
+      "sha256": "253c507d68eea3ce3607f2da7c3b0aa87a3270068eccd2d9a45cb16c014c9503"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/pytest-v3/test_bound_rig_and_state_produ0/intrinsics.json",
+      "size": 180,
+      "sha256": "e7fba943abc00a1f15f05798cae46e75a3f47929d4d02fa7917bbcb3c02e6689"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/pytest-v3/test_bound_rig_and_state_produ0/mount.json",
+      "size": 206,
+      "sha256": "e7bc990641bbd4a7afe590516e6f889698f6f7508d29350fda315b0fa22fb106"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/pytest-v3/test_bound_rig_and_state_produ0/rig.json",
+      "size": 360,
+      "sha256": "92f0fb506c2ef879a73d3288dad8f7c72258da834e9057baab736c438af64bd0"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/pytest-v3/test_bound_ulog_refuses_hash_b0/intrinsics.json",
+      "size": 180,
+      "sha256": "e7fba943abc00a1f15f05798cae46e75a3f47929d4d02fa7917bbcb3c02e6689"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/pytest-v3/test_bound_ulog_refuses_hash_b0/mount.json",
+      "size": 206,
+      "sha256": "e7bc990641bbd4a7afe590516e6f889698f6f7508d29350fda315b0fa22fb106"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/pytest-v3/test_bound_ulog_refuses_hash_b0/rig.json",
+      "size": 360,
+      "sha256": "92f0fb506c2ef879a73d3288dad8f7c72258da834e9057baab736c438af64bd0"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/pytest-v3/test_bound_ulog_refuses_hash_b0/source.ulg",
+      "size": 10,
+      "sha256": "387c6ce06500022047e8217b19376c489a93ea49ac9eb00b8c4c38fe992fcd20"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/pytest-v3/test_each_row_preserves_source0/intrinsics.json",
+      "size": 180,
+      "sha256": "e7fba943abc00a1f15f05798cae46e75a3f47929d4d02fa7917bbcb3c02e6689"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/pytest-v3/test_each_row_preserves_source0/mount.json",
+      "size": 206,
+      "sha256": "e7bc990641bbd4a7afe590516e6f889698f6f7508d29350fda315b0fa22fb106"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/pytest-v3/test_each_row_preserves_source0/rig.json",
+      "size": 360,
+      "sha256": "92f0fb506c2ef879a73d3288dad8f7c72258da834e9057baab736c438af64bd0"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/pytest-v3/test_file_cli_never_overwrites0/frames.json",
+      "size": 26,
+      "sha256": "683ac89b531891b23de97dee14ffb02f02fa05badf5b5f1df00433ed65bc47a0"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/pytest-v3/test_file_cli_never_overwrites0/produced/completion.json",
+      "size": 305,
+      "sha256": "80add9d9a0fa60397032f2e0145a5496b931b61966a8027ac7bcc487f16b7c67"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/pytest-v3/test_file_cli_never_overwrites0/produced/request.json",
+      "size": 1387,
+      "sha256": "17940d6ba3cd21b1797bdfdfa320dd73925365586cefc9d0288bb0c385d2c49a"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/pytest-v3/test_file_cli_never_overwrites0/source.ulg",
+      "size": 29,
+      "sha256": "3b5bd95b265a46be3671bf1085b18555f935954b82e4102d03a7e738a54147bd"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/pytest-v3/test_file_cli_retains_refusal_0/frames.json",
+      "size": 26,
+      "sha256": "683ac89b531891b23de97dee14ffb02f02fa05badf5b5f1df00433ed65bc47a0"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/pytest-v3/test_file_cli_retains_refusal_0/produced/completion.json",
+      "size": 305,
+      "sha256": "80add9d9a0fa60397032f2e0145a5496b931b61966a8027ac7bcc487f16b7c67"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/pytest-v3/test_file_cli_retains_refusal_0/produced/request.json",
+      "size": 1387,
+      "sha256": "7c66f18bac936e0a48ffad2e5158697262f4c23c63fb5b6a627f36511975345f"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/pytest-v3/test_file_cli_retains_refusal_0/source.ulg",
+      "size": 29,
+      "sha256": "3b5bd95b265a46be3671bf1085b18555f935954b82e4102d03a7e738a54147bd"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/pytest-v3/test_future_and_stale_state_ne0/intrinsics.json",
+      "size": 180,
+      "sha256": "e7fba943abc00a1f15f05798cae46e75a3f47929d4d02fa7917bbcb3c02e6689"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/pytest-v3/test_future_and_stale_state_ne0/mount.json",
+      "size": 206,
+      "sha256": "e7bc990641bbd4a7afe590516e6f889698f6f7508d29350fda315b0fa22fb106"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/pytest-v3/test_future_and_stale_state_ne0/rig.json",
+      "size": 360,
+      "sha256": "92f0fb506c2ef879a73d3288dad8f7c72258da834e9057baab736c438af64bd0"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/pytest-v3/test_missing_epoch_declaration0/intrinsics.json",
+      "size": 180,
+      "sha256": "e7fba943abc00a1f15f05798cae46e75a3f47929d4d02fa7917bbcb3c02e6689"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/pytest-v3/test_missing_epoch_declaration0/mount.json",
+      "size": 206,
+      "sha256": "e7bc990641bbd4a7afe590516e6f889698f6f7508d29350fda315b0fa22fb106"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/pytest-v3/test_missing_epoch_declaration0/rig.json",
+      "size": 360,
+      "sha256": "92f0fb506c2ef879a73d3288dad8f7c72258da834e9057baab736c438af64bd0"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/pytest-v3/test_noncommuting_body_camera_0/intrinsics.json",
+      "size": 180,
+      "sha256": "e7fba943abc00a1f15f05798cae46e75a3f47929d4d02fa7917bbcb3c02e6689"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/pytest-v3/test_noncommuting_body_camera_0/mount.json",
+      "size": 206,
+      "sha256": "e7bc990641bbd4a7afe590516e6f889698f6f7508d29350fda315b0fa22fb106"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/pytest-v3/test_noncommuting_body_camera_0/rig.json",
+      "size": 360,
+      "sha256": "92f0fb506c2ef879a73d3288dad8f7c72258da834e9057baab736c438af64bd0"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/pytest-v3/test_real_file_parser_boundary0/intrinsics.json",
+      "size": 180,
+      "sha256": "e7fba943abc00a1f15f05798cae46e75a3f47929d4d02fa7917bbcb3c02e6689"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/pytest-v3/test_real_file_parser_boundary0/mount.json",
+      "size": 206,
+      "sha256": "e7bc990641bbd4a7afe590516e6f889698f6f7508d29350fda315b0fa22fb106"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/pytest-v3/test_real_file_parser_boundary0/parser-boundary.ulg",
+      "size": 52,
+      "sha256": "9857f0dc65166878c0f279fdaef663ca4e006cd607b5279d802e1513099af0ce"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/pytest-v3/test_real_file_parser_boundary0/rig.json",
+      "size": 360,
+      "sha256": "92f0fb506c2ef879a73d3288dad8f7c72258da834e9057baab736c438af64bd0"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/pytest-v3/test_reflection_and_escaping_m0/intrinsics.json",
+      "size": 180,
+      "sha256": "e7fba943abc00a1f15f05798cae46e75a3f47929d4d02fa7917bbcb3c02e6689"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/pytest-v3/test_reflection_and_escaping_m0/mount.json",
+      "size": 207,
+      "sha256": "ff7690ea0e16fd09f44d75c714bac6b411e45565a53c6df9752d0f96227e1859"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/pytest-v3/test_reflection_and_escaping_m0/rig.json",
+      "size": 365,
+      "sha256": "1d7fb95b2fee8bee7833586470bf8436115d286a8db713075cd60d8a8f5d02af"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/pytest-v3/test_reset_transition_stays_re0/intrinsics.json",
+      "size": 180,
+      "sha256": "e7fba943abc00a1f15f05798cae46e75a3f47929d4d02fa7917bbcb3c02e6689"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/pytest-v3/test_reset_transition_stays_re0/mount.json",
+      "size": 206,
+      "sha256": "e7bc990641bbd4a7afe590516e6f889698f6f7508d29350fda315b0fa22fb106"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/pytest-v3/test_reset_transition_stays_re0/rig.json",
+      "size": 360,
+      "sha256": "92f0fb506c2ef879a73d3288dad8f7c72258da834e9057baab736c438af64bd0"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/pytest-v3/test_rig_rejects_changed_evide0/intrinsics.json",
+      "size": 180,
+      "sha256": "e7fba943abc00a1f15f05798cae46e75a3f47929d4d02fa7917bbcb3c02e6689"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/pytest-v3/test_rig_rejects_changed_evide0/mount.json",
+      "size": 2,
+      "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/pytest-v3/test_rig_rejects_changed_evide0/rig.json",
+      "size": 360,
+      "sha256": "92f0fb506c2ef879a73d3288dad8f7c72258da834e9057baab736c438af64bd0"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/pytest-v3/test_source_columns_are_snapsh0/intrinsics.json",
+      "size": 180,
+      "sha256": "e7fba943abc00a1f15f05798cae46e75a3f47929d4d02fa7917bbcb3c02e6689"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/pytest-v3/test_source_columns_are_snapsh0/mount.json",
+      "size": 206,
+      "sha256": "e7bc990641bbd4a7afe590516e6f889698f6f7508d29350fda315b0fa22fb106"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/pytest-v3/test_source_columns_are_snapsh0/rig.json",
+      "size": 360,
+      "sha256": "92f0fb506c2ef879a73d3288dad8f7c72258da834e9057baab736c438af64bd0"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/pytest-v3/test_unhealthy_px4_does_not_pr0/intrinsics.json",
+      "size": 180,
+      "sha256": "e7fba943abc00a1f15f05798cae46e75a3f47929d4d02fa7917bbcb3c02e6689"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/pytest-v3/test_unhealthy_px4_does_not_pr0/mount.json",
+      "size": 206,
+      "sha256": "e7bc990641bbd4a7afe590516e6f889698f6f7508d29350fda315b0fa22fb106"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/pytest-v3/test_unhealthy_px4_does_not_pr0/rig.json",
+      "size": 360,
+      "sha256": "92f0fb506c2ef879a73d3288dad8f7c72258da834e9057baab736c438af64bd0"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/pytest-v3/test_unhealthy_px4_does_not_pr1/intrinsics.json",
+      "size": 180,
+      "sha256": "e7fba943abc00a1f15f05798cae46e75a3f47929d4d02fa7917bbcb3c02e6689"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/pytest-v3/test_unhealthy_px4_does_not_pr1/mount.json",
+      "size": 206,
+      "sha256": "e7bc990641bbd4a7afe590516e6f889698f6f7508d29350fda315b0fa22fb106"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/pytest-v3/test_unhealthy_px4_does_not_pr1/rig.json",
+      "size": 360,
+      "sha256": "92f0fb506c2ef879a73d3288dad8f7c72258da834e9057baab736c438af64bd0"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/pytest-v3/test_unhealthy_px4_does_not_pr2/intrinsics.json",
+      "size": 180,
+      "sha256": "e7fba943abc00a1f15f05798cae46e75a3f47929d4d02fa7917bbcb3c02e6689"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/pytest-v3/test_unhealthy_px4_does_not_pr2/mount.json",
+      "size": 206,
+      "sha256": "e7bc990641bbd4a7afe590516e6f889698f6f7508d29350fda315b0fa22fb106"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/pytest-v3/test_unhealthy_px4_does_not_pr2/rig.json",
+      "size": 360,
+      "sha256": "92f0fb506c2ef879a73d3288dad8f7c72258da834e9057baab736c438af64bd0"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/pytest-v4/test_bound_rig_and_state_produ0/intrinsics.json",
+      "size": 180,
+      "sha256": "e7fba943abc00a1f15f05798cae46e75a3f47929d4d02fa7917bbcb3c02e6689"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/pytest-v4/test_bound_rig_and_state_produ0/mount.json",
+      "size": 206,
+      "sha256": "e7bc990641bbd4a7afe590516e6f889698f6f7508d29350fda315b0fa22fb106"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/pytest-v4/test_bound_rig_and_state_produ0/rig.json",
+      "size": 360,
+      "sha256": "92f0fb506c2ef879a73d3288dad8f7c72258da834e9057baab736c438af64bd0"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/pytest-v4/test_bound_ulog_refuses_hash_b0/intrinsics.json",
+      "size": 180,
+      "sha256": "e7fba943abc00a1f15f05798cae46e75a3f47929d4d02fa7917bbcb3c02e6689"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/pytest-v4/test_bound_ulog_refuses_hash_b0/mount.json",
+      "size": 206,
+      "sha256": "e7bc990641bbd4a7afe590516e6f889698f6f7508d29350fda315b0fa22fb106"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/pytest-v4/test_bound_ulog_refuses_hash_b0/rig.json",
+      "size": 360,
+      "sha256": "92f0fb506c2ef879a73d3288dad8f7c72258da834e9057baab736c438af64bd0"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/pytest-v4/test_bound_ulog_refuses_hash_b0/source.ulg",
+      "size": 10,
+      "sha256": "387c6ce06500022047e8217b19376c489a93ea49ac9eb00b8c4c38fe992fcd20"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/pytest-v4/test_decoded_source_refuses_no0/intrinsics.json",
+      "size": 180,
+      "sha256": "e7fba943abc00a1f15f05798cae46e75a3f47929d4d02fa7917bbcb3c02e6689"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/pytest-v4/test_decoded_source_refuses_no0/mount.json",
+      "size": 206,
+      "sha256": "e7bc990641bbd4a7afe590516e6f889698f6f7508d29350fda315b0fa22fb106"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/pytest-v4/test_decoded_source_refuses_no0/rig.json",
+      "size": 360,
+      "sha256": "92f0fb506c2ef879a73d3288dad8f7c72258da834e9057baab736c438af64bd0"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/pytest-v4/test_each_row_preserves_source0/intrinsics.json",
+      "size": 180,
+      "sha256": "e7fba943abc00a1f15f05798cae46e75a3f47929d4d02fa7917bbcb3c02e6689"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/pytest-v4/test_each_row_preserves_source0/mount.json",
+      "size": 206,
+      "sha256": "e7bc990641bbd4a7afe590516e6f889698f6f7508d29350fda315b0fa22fb106"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/pytest-v4/test_each_row_preserves_source0/rig.json",
+      "size": 360,
+      "sha256": "92f0fb506c2ef879a73d3288dad8f7c72258da834e9057baab736c438af64bd0"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/pytest-v4/test_file_cli_never_overwrites0/frames.json",
+      "size": 26,
+      "sha256": "683ac89b531891b23de97dee14ffb02f02fa05badf5b5f1df00433ed65bc47a0"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/pytest-v4/test_file_cli_never_overwrites0/produced/completion.json",
+      "size": 305,
+      "sha256": "80add9d9a0fa60397032f2e0145a5496b931b61966a8027ac7bcc487f16b7c67"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/pytest-v4/test_file_cli_never_overwrites0/produced/request.json",
+      "size": 1387,
+      "sha256": "b1b8d245e4d02454cf8a939502ba7e20829bbeef292b18edbc142ae45be74d43"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/pytest-v4/test_file_cli_never_overwrites0/source.ulg",
+      "size": 29,
+      "sha256": "3b5bd95b265a46be3671bf1085b18555f935954b82e4102d03a7e738a54147bd"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/pytest-v4/test_file_cli_retains_refusal_0/frames.json",
+      "size": 26,
+      "sha256": "683ac89b531891b23de97dee14ffb02f02fa05badf5b5f1df00433ed65bc47a0"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/pytest-v4/test_file_cli_retains_refusal_0/produced/completion.json",
+      "size": 305,
+      "sha256": "80add9d9a0fa60397032f2e0145a5496b931b61966a8027ac7bcc487f16b7c67"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/pytest-v4/test_file_cli_retains_refusal_0/produced/request.json",
+      "size": 1387,
+      "sha256": "a03a482dcd846fbd5f3a0de9d643b956387000ed99a8e4d9adc7d9bff01c4ae4"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/pytest-v4/test_file_cli_retains_refusal_0/source.ulg",
+      "size": 29,
+      "sha256": "3b5bd95b265a46be3671bf1085b18555f935954b82e4102d03a7e738a54147bd"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/pytest-v4/test_future_and_stale_state_ne0/intrinsics.json",
+      "size": 180,
+      "sha256": "e7fba943abc00a1f15f05798cae46e75a3f47929d4d02fa7917bbcb3c02e6689"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/pytest-v4/test_future_and_stale_state_ne0/mount.json",
+      "size": 206,
+      "sha256": "e7bc990641bbd4a7afe590516e6f889698f6f7508d29350fda315b0fa22fb106"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/pytest-v4/test_future_and_stale_state_ne0/rig.json",
+      "size": 360,
+      "sha256": "92f0fb506c2ef879a73d3288dad8f7c72258da834e9057baab736c438af64bd0"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/pytest-v4/test_missing_epoch_declaration0/intrinsics.json",
+      "size": 180,
+      "sha256": "e7fba943abc00a1f15f05798cae46e75a3f47929d4d02fa7917bbcb3c02e6689"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/pytest-v4/test_missing_epoch_declaration0/mount.json",
+      "size": 206,
+      "sha256": "e7bc990641bbd4a7afe590516e6f889698f6f7508d29350fda315b0fa22fb106"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/pytest-v4/test_missing_epoch_declaration0/rig.json",
+      "size": 360,
+      "sha256": "92f0fb506c2ef879a73d3288dad8f7c72258da834e9057baab736c438af64bd0"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/pytest-v4/test_noncommuting_body_camera_0/intrinsics.json",
+      "size": 180,
+      "sha256": "e7fba943abc00a1f15f05798cae46e75a3f47929d4d02fa7917bbcb3c02e6689"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/pytest-v4/test_noncommuting_body_camera_0/mount.json",
+      "size": 206,
+      "sha256": "e7bc990641bbd4a7afe590516e6f889698f6f7508d29350fda315b0fa22fb106"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/pytest-v4/test_noncommuting_body_camera_0/rig.json",
+      "size": 360,
+      "sha256": "92f0fb506c2ef879a73d3288dad8f7c72258da834e9057baab736c438af64bd0"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/pytest-v4/test_real_file_parser_boundary0/intrinsics.json",
+      "size": 180,
+      "sha256": "e7fba943abc00a1f15f05798cae46e75a3f47929d4d02fa7917bbcb3c02e6689"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/pytest-v4/test_real_file_parser_boundary0/mount.json",
+      "size": 206,
+      "sha256": "e7bc990641bbd4a7afe590516e6f889698f6f7508d29350fda315b0fa22fb106"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/pytest-v4/test_real_file_parser_boundary0/parser-boundary.ulg",
+      "size": 52,
+      "sha256": "9857f0dc65166878c0f279fdaef663ca4e006cd607b5279d802e1513099af0ce"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/pytest-v4/test_real_file_parser_boundary0/rig.json",
+      "size": 360,
+      "sha256": "92f0fb506c2ef879a73d3288dad8f7c72258da834e9057baab736c438af64bd0"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/pytest-v4/test_reflection_and_escaping_m0/intrinsics.json",
+      "size": 180,
+      "sha256": "e7fba943abc00a1f15f05798cae46e75a3f47929d4d02fa7917bbcb3c02e6689"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/pytest-v4/test_reflection_and_escaping_m0/mount.json",
+      "size": 207,
+      "sha256": "ff7690ea0e16fd09f44d75c714bac6b411e45565a53c6df9752d0f96227e1859"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/pytest-v4/test_reflection_and_escaping_m0/rig.json",
+      "size": 365,
+      "sha256": "1d7fb95b2fee8bee7833586470bf8436115d286a8db713075cd60d8a8f5d02af"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/pytest-v4/test_reset_transition_stays_re0/intrinsics.json",
+      "size": 180,
+      "sha256": "e7fba943abc00a1f15f05798cae46e75a3f47929d4d02fa7917bbcb3c02e6689"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/pytest-v4/test_reset_transition_stays_re0/mount.json",
+      "size": 206,
+      "sha256": "e7bc990641bbd4a7afe590516e6f889698f6f7508d29350fda315b0fa22fb106"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/pytest-v4/test_reset_transition_stays_re0/rig.json",
+      "size": 360,
+      "sha256": "92f0fb506c2ef879a73d3288dad8f7c72258da834e9057baab736c438af64bd0"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/pytest-v4/test_rig_rejects_changed_evide0/intrinsics.json",
+      "size": 180,
+      "sha256": "e7fba943abc00a1f15f05798cae46e75a3f47929d4d02fa7917bbcb3c02e6689"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/pytest-v4/test_rig_rejects_changed_evide0/mount.json",
+      "size": 2,
+      "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/pytest-v4/test_rig_rejects_changed_evide0/rig.json",
+      "size": 360,
+      "sha256": "92f0fb506c2ef879a73d3288dad8f7c72258da834e9057baab736c438af64bd0"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/pytest-v4/test_source_columns_are_snapsh0/intrinsics.json",
+      "size": 180,
+      "sha256": "e7fba943abc00a1f15f05798cae46e75a3f47929d4d02fa7917bbcb3c02e6689"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/pytest-v4/test_source_columns_are_snapsh0/mount.json",
+      "size": 206,
+      "sha256": "e7bc990641bbd4a7afe590516e6f889698f6f7508d29350fda315b0fa22fb106"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/pytest-v4/test_source_columns_are_snapsh0/rig.json",
+      "size": 360,
+      "sha256": "92f0fb506c2ef879a73d3288dad8f7c72258da834e9057baab736c438af64bd0"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/pytest-v4/test_unhealthy_px4_does_not_pr0/intrinsics.json",
+      "size": 180,
+      "sha256": "e7fba943abc00a1f15f05798cae46e75a3f47929d4d02fa7917bbcb3c02e6689"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/pytest-v4/test_unhealthy_px4_does_not_pr0/mount.json",
+      "size": 206,
+      "sha256": "e7bc990641bbd4a7afe590516e6f889698f6f7508d29350fda315b0fa22fb106"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/pytest-v4/test_unhealthy_px4_does_not_pr0/rig.json",
+      "size": 360,
+      "sha256": "92f0fb506c2ef879a73d3288dad8f7c72258da834e9057baab736c438af64bd0"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/pytest-v4/test_unhealthy_px4_does_not_pr1/intrinsics.json",
+      "size": 180,
+      "sha256": "e7fba943abc00a1f15f05798cae46e75a3f47929d4d02fa7917bbcb3c02e6689"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/pytest-v4/test_unhealthy_px4_does_not_pr1/mount.json",
+      "size": 206,
+      "sha256": "e7bc990641bbd4a7afe590516e6f889698f6f7508d29350fda315b0fa22fb106"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/pytest-v4/test_unhealthy_px4_does_not_pr1/rig.json",
+      "size": 360,
+      "sha256": "92f0fb506c2ef879a73d3288dad8f7c72258da834e9057baab736c438af64bd0"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/pytest-v4/test_unhealthy_px4_does_not_pr2/intrinsics.json",
+      "size": 180,
+      "sha256": "e7fba943abc00a1f15f05798cae46e75a3f47929d4d02fa7917bbcb3c02e6689"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/pytest-v4/test_unhealthy_px4_does_not_pr2/mount.json",
+      "size": 206,
+      "sha256": "e7bc990641bbd4a7afe590516e6f889698f6f7508d29350fda315b0fa22fb106"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/pytest-v4/test_unhealthy_px4_does_not_pr2/rig.json",
+      "size": 360,
+      "sha256": "92f0fb506c2ef879a73d3288dad8f7c72258da834e9057baab736c438af64bd0"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/real-file-attempt-v1/completion.json",
+      "size": 319,
+      "sha256": "8d7c6a081f11337fbed5edb592d6c3966f81fa3031c1a5b61ba0451a4c670476"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/real-file-attempt-v1/inputs/epoch.json",
+      "size": 368,
+      "sha256": "0b9d9fdf6c1f46dbaffa9cad32753c0e6cbae63b1d3781ad80c37b98a9caf6a9"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/real-file-attempt-v1/inputs/frames.json",
+      "size": 4433,
+      "sha256": "312ea91cf6cd43f6a61cd1e196e15ffcea8a6ab870ac9588de32c55afa3fc696"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/real-file-attempt-v1/inputs/intrinsics.json",
+      "size": 785,
+      "sha256": "7887f77ebc2ac020bc603fd27ca2c3cf73b584414e33458d572859acaa5d658e"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/real-file-attempt-v1/inputs/mount.json",
+      "size": 363,
+      "sha256": "6374a81bfd3218e2ce20ba973407236595cb59627030fe2f1d9b01839255fa04"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/real-file-attempt-v1/inputs/rig.json",
+      "size": 446,
+      "sha256": "92e62fb3d851b95eb7098e327766f58e2252af70c1fa6fd697fe0099550ed29f"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/real-file-attempt-v1/inputs/source.ulg",
+      "size": 7553120,
+      "sha256": "55428c6d37e75d7fa2d53ab67a6527b4350fa020dca4a761a44fa7aec68d1028"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/real-file-attempt-v1/production.json",
+      "size": 1019,
+      "sha256": "2b0402c5e98acafc65144573c3865ea21eb5cba47c9c4b8dcaa476747fe84ea9"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/real-file-attempt-v1/request.json",
+      "size": 1601,
+      "sha256": "8b70a9b9e507a0fa89d6357507b291d43506d32d9dee69043cd96495a230104b"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/real-file-attempt-v1/rows.jsonl",
+      "size": 756455,
+      "sha256": "b2a276357c7ee80b3d9c1565bb2b35c288412a2fb89bbaf8715a91fc0c00906d"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/real-file-command.json",
+      "size": 1765,
+      "sha256": "7d5e2becf9f9c052eb14963b2d63a6aaea6ead657fd34d3e92a06ebb999236d9"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/real-file-console.bin",
+      "size": 132,
+      "sha256": "b280c454d6f559e56eb3f5ed39f3ba084b8d1744a3ff7fe016b21ff86dea1aca"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/real-file-parent-completion.json",
+      "size": 410,
+      "sha256": "3bd8c3ecdf34926d92c6dc627ad1584d2e35c857c55bc4a5171c87455db07633"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/real-file-parent.json",
+      "size": 77,
+      "sha256": "a4412c709e59fa45892b3349e15ecffd7dedf02a739bcbb59ea7278044179089"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/real-file-summary.json",
+      "size": 746,
+      "sha256": "d6ec0a2062e0a88c823b533dbbfd307667e90c7b28ecedf2acbb3b3db4af0db8"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/red-command.json",
+      "size": 168,
+      "sha256": "69578cc6decc6ff4084f61c865ddd9b4f48b2a7533e7f2e31a11341d94578c44"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/red.txt",
+      "size": 19069,
+      "sha256": "0f0837708eba313d886440329c0eee19e82c38a0391df99abfcca7a17f5e5b0e"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/report-correction.json",
+      "size": 616,
+      "sha256": "cdde1a572d4ca71656ef1f05d3f6f16cf9de8aaf563b827e1d30bc02612085a6"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/research/EstimatorStatus.msg",
+      "size": 9225,
+      "sha256": "44cba4424c224753b8249729e9bf7e530d0b34e04d5299fcf94f2677c8f50bd5"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/research/EstimatorStatus.msg.stderr",
+      "size": 132,
+      "sha256": "b280c454d6f559e56eb3f5ed39f3ba084b8d1744a3ff7fe016b21ff86dea1aca"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/research/EstimatorStatusFlags.msg",
+      "size": 7568,
+      "sha256": "dbe714087ebd463317f51bf53a392d5a41f9f5d3524a1e080eda2649980f642b"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/research/EstimatorStatusFlags.msg.stderr",
+      "size": 132,
+      "sha256": "b280c454d6f559e56eb3f5ed39f3ba084b8d1744a3ff7fe016b21ff86dea1aca"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/research/LICENSE",
+      "size": 1527,
+      "sha256": "4f486239f62804b2190ff52b3005f087cf1033342012152e6383bdad6b891cc4"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/research/LICENSE.stderr",
+      "size": 132,
+      "sha256": "b280c454d6f559e56eb3f5ed39f3ba084b8d1744a3ff7fe016b21ff86dea1aca"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/research/parser-observation-command.json",
+      "size": 1064,
+      "sha256": "1dcb146c401b18d37a5ed9d7c32c60454e973d9200adc919ba06fcf2580d6bdc"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/research/parser-observation.stderr",
+      "size": 132,
+      "sha256": "b280c454d6f559e56eb3f5ed39f3ba084b8d1744a3ff7fe016b21ff86dea1aca"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/research/parser-runtime-command.json",
+      "size": 303,
+      "sha256": "0965175326eab23aa91377f8b907c4110a65f2810da5d2b8dd2c2efdb6ab12e4"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/research/parser-runtime.txt",
+      "size": 261,
+      "sha256": "ca11281f6cd21adf4b5cecbc920b6b6d15dafcd26939c0de680c723b99c4dd95"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/research/real-source-parser-observation.json",
+      "size": 2510,
+      "sha256": "e4d7d6d30742d87e8194bc1375dfe4ece416435c04899aaa3fd87d51b8b3c3af"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/research/same-capture-camera-info.json",
+      "size": 785,
+      "sha256": "7887f77ebc2ac020bc603fd27ca2c3cf73b584414e33458d572859acaa5d658e"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/research/source.json",
+      "size": 2704,
+      "sha256": "6a035ba00b6f35b6c419f13240a65eabff9c48ed3147097141fd49157c27f295"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/research/VehicleAttitude.msg",
+      "size": 700,
+      "sha256": "d23f153b574daad31f21f767bc6e2781bcd486bb9e56c605b8b6fd10814b1c74"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/research/VehicleAttitude.msg.stderr",
+      "size": 132,
+      "sha256": "b280c454d6f559e56eb3f5ed39f3ba084b8d1744a3ff7fe016b21ff86dea1aca"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/research/VehicleLocalPosition.msg",
+      "size": 4797,
+      "sha256": "87d7540cb4207d044d69ff9af11c51f7cd2883f4160fc62650e17d80cbbec5db"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/research/VehicleLocalPosition.msg.stderr",
+      "size": 132,
+      "sha256": "b280c454d6f559e56eb3f5ed39f3ba084b8d1744a3ff7fe016b21ff86dea1aca"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/review-red-command.json",
+      "size": 232,
+      "sha256": "4ffc4afd4ade5a19ef3658e99b2a78affe6a6331f5275260ac09a5e039a6aaec"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/review-red.txt",
+      "size": 4779,
+      "sha256": "2db1d81079b883764537994cc2bf8670c96861a81c710ee4245d12308fb33832"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/review-rounds.json",
+      "size": 869,
+      "sha256": "7ec67f3a6e03d3002c57289ebcbb9466a67f2d70b5895d0c1cd67872717bfdd8"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/ruff-import-fix.txt",
+      "size": 39,
+      "sha256": "4b9315462a6ef4a2fe64e4dc2aec1252bf2299ac92f4976c0e81c84799cff44a"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/ruff-v1.txt",
+      "size": 20,
+      "sha256": "a4443afdcfb6d7363adb285762515ccf7cf50473b1a05c20c1a50f6bed4d26b0"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/ruff-v2.txt",
+      "size": 20,
+      "sha256": "a4443afdcfb6d7363adb285762515ccf7cf50473b1a05c20c1a50f6bed4d26b0"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/ruff-v3-corrected.txt",
+      "size": 20,
+      "sha256": "a4443afdcfb6d7363adb285762515ccf7cf50473b1a05c20c1a50f6bed4d26b0"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/ruff-v3.txt",
+      "size": 426,
+      "sha256": "83b0d88cb27933ed325fdb16985222707ccd80d041ac451120bcc5386e5c1e2e"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/ruff-v4.txt",
+      "size": 20,
+      "sha256": "a4443afdcfb6d7363adb285762515ccf7cf50473b1a05c20c1a50f6bed4d26b0"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/seal-review-v1.json",
+      "size": 630,
+      "sha256": "3e90d905bd14ba294e531de35286066c5c3136a268fcc9be53c603c22b18ebd1"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/verification-v1.json",
+      "size": 231,
+      "sha256": "cab9bed88b85e39e4af809d14e33ffeb138796e5326acc00f65c2602cef17341"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/verification-v2.json",
+      "size": 231,
+      "sha256": "5d14a82db1a16ec8292de4bb4335fc1784c93c137a185804a2785a1e644aefa0"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/verification-v3.json",
+      "size": 362,
+      "sha256": "4351ff19ff73bb06d4beaa3781bc0554c61784377b7399078933d1f516937d0a"
+    },
+    {
+      "path": "results/px4-camera-file-producer-dev-1701/verification-v4.json",
+      "size": 429,
+      "sha256": "a622b9cdbc40ff17bbae24d9cde3e98355e0887348e8e97645007da852610d80"
+    }
+  ],
+  "publication_boundary": "prepublication plan; canonical corrected report; original attempts retained. Final independent audit and publication ledger external."
+}

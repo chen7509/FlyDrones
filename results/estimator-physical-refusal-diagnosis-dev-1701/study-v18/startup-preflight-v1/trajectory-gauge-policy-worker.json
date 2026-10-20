@@ -1,0 +1,11 @@
+{
+  "schema": "trajectory-gauge-policy-v1",
+  "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/estimator-physical-refusal-diagnosis-dev-1701/study-v18/trajectory-gauge-policy.json",
+  "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/estimator-physical-refusal-diagnosis-dev-1701/study-v18/trajectory-gauge-policy.json",
+  "bytes": 1031,
+  "sha256": "a97bc126e90e0bfb88cc995f782904a7a842e460854dbd71cec977cd98800463",
+  "matches_declaration": true,
+  "physics_qualified": false,
+  "fusion_eligible": false,
+  "flight_ready": false
+}

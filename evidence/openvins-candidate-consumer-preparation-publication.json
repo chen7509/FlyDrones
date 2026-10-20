@@ -1,0 +1,36 @@
+{
+  "schema": "flydrones-preparation-publication-v1",
+  "implementation_commit": "00b2aa17a00ff53aad7124f62ca3864948d88f68",
+  "pr": "https://github.com/chen7509/FlyDrones/pull/65",
+  "initial_head_body_verified": true,
+  "initial_body_sha256": "d1e4e59b842587c489516818dc4040fef424100be1c498a8c7440d85bba1d13b",
+  "archive": "evidence/openvins-candidate-consumer-preparation-dev-1701.zip",
+  "archive_sha256": "18e3198740950eb337726371b504dcb092f59d38dc9588ba3c9b716b5691ade6",
+  "members": 151,
+  "bytes": 2423736,
+  "report_sha256": "8f569c92c9783064f1a9d3f562d632d269c8e534dcd1088f99617296c4fb4749",
+  "prepublication_plan_sha256": "0b8a056186ac6f73bcf6c53fb7403ddd7f93e62457e3a0d607e738fe8a024602",
+  "postpublication_plan_sha256": "3a022450fccc59378b03f4c1db0a9b2078dd3571a45ebf6c0d249245a1fc1e83",
+  "source_sha256": {
+    "tools/benchmark/openvins_cached_bridge.py": "5dd6c758275373d4b21d9741db5f870af1f2e23041b20064a427791511456c7e",
+    "tools/benchmark/run_openvins_dataset_consumer.py": "f3720395751ab5ab0aade300687d1c451e930e7127ddfb1379b33e6414094aa7",
+    "tools/benchmark/native_consumer_scope.py": "5f1ef5c972d1719654a8c284462ede7467f9b1c8c033c40703fce18734206034"
+  },
+  "current_cli": [
+    "python",
+    "-m",
+    "tools.benchmark.openvins_cached_bridge",
+    "--execute-once",
+    "--admission-record",
+    "<new exclusive existing-parent JSON path>"
+  ],
+  "software_passed": 12,
+  "cpp_compiled": false,
+  "cached_native_executed": false,
+  "cached_native_attempt_consumed": false,
+  "first_cli_parent_pid": 23316,
+  "first_cli_exit": 1,
+  "first_gate_counter": "unknown; later547086336notbackfill",
+  "source_clock_calibration_teacher_fusion_training_flight_qualified": false,
+  "all_local_work_complete": false
+}

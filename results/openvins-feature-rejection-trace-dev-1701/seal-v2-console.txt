@@ -1,0 +1,8 @@
+{
+  "manifest_member_count": 144,
+  "path": "evidence/openvins-feature-rejection-trace-dev-1701-v2.zip",
+  "sha256": "dce47e4de3bd7a1800328178cc203af2369fca7078f496d1f2abeee8b4217fd5",
+  "size": 36943110,
+  "verified": true,
+  "zip_member_count": 145
+}

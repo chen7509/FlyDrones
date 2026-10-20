@@ -1,0 +1,77 @@
+{
+  "caps": {
+    "file_bytes": 67108864,
+    "total_payload_bytes": 84520248,
+    "read_seconds": 20,
+    "parent_wait_seconds": 30,
+    "terminate_seconds": 5,
+    "kill_seconds": 5,
+    "outer_seconds": 45,
+    "metadata_bytes": 624731,
+    "stderr_bytes": 2097152,
+    "selected_paths": 6000,
+    "symlink_hops": 40
+  },
+  "forbidden_prefixes": [
+    "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build"
+  ],
+  "all_qualifications": false,
+  "dispatchable": false,
+  "excluded": {},
+  "excluded_native_identities": [],
+  "linux_file_writes": false,
+  "compile": false,
+  "resource_query": false,
+  "schema": "linux-visible-production-source-selection-v1",
+  "selected": [
+    {
+      "path": "/lib/x86_64-linux-gnu/libc.so.6",
+      "roles": [
+        "actual-linker-script-absolute-alias-binding-not-new-content"
+      ]
+    },
+    {
+      "path": "/lib/x86_64-linux-gnu/libm.so.6",
+      "roles": [
+        "actual-linker-script-absolute-alias-binding-not-new-content"
+      ]
+    },
+    {
+      "path": "/lib/x86_64-linux-gnu/libmvec.so.1",
+      "roles": [
+        "actual-linker-script-absolute-alias-binding-not-new-content"
+      ]
+    },
+    {
+      "path": "/lib64/ld-linux-x86-64.so.2",
+      "roles": [
+        "actual-linker-script-absolute-alias-binding-not-new-content"
+      ]
+    }
+  ],
+  "allowed_content_endpoints": [
+    "/usr/lib/x86_64-linux-gnu/libc.so.6",
+    "/usr/lib/x86_64-linux-gnu/libm.so.6",
+    "/usr/lib/x86_64-linux-gnu/libmvec.so.1",
+    "/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2"
+  ],
+  "expected_content": {
+    "/lib/x86_64-linux-gnu/libc.so.6": {
+      "bytes": 2129424,
+      "sha256": "3a15d66867d83762c7f2f1e37359cb8f6c5743edb369c65285cb0b1c4f7498bf"
+    },
+    "/lib/x86_64-linux-gnu/libm.so.6": {
+      "bytes": 952616,
+      "sha256": "fce00b6f25f459cf4ae0b7fae4257909a1a8a86f9149e7c029a5d617baf1ccd0"
+    },
+    "/lib/x86_64-linux-gnu/libmvec.so.1": {
+      "bytes": 1018144,
+      "sha256": "57329ee0018b8fd8f8e51af5f87c723b6ecdf04679f4493134beab0f45d58ec5"
+    },
+    "/lib64/ld-linux-x86-64.so.2": {
+      "bytes": 236616,
+      "sha256": "c20a2dc8917c755f02b94049356320fe1f62ac7d9f8994731f807d9df39302da"
+    }
+  },
+  "explicit_known_content_reread_reason": "Four absolute linker-script spellings were absent from actual pin keys. User authorized complete input binding; this observes those exact alias contexts, not four new content blobs or an old payload audit."
+}

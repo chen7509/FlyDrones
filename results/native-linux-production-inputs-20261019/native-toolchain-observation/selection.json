@@ -1,0 +1,43 @@
+{
+  "caps": {
+    "file_bytes": 67108864,
+    "total_payload_bytes": 86682435,
+    "read_seconds": 20,
+    "parent_wait_seconds": 30,
+    "terminate_seconds": 5,
+    "kill_seconds": 5,
+    "outer_seconds": 45,
+    "metadata_bytes": 635507,
+    "stderr_bytes": 2097152,
+    "selected_paths": 6000,
+    "symlink_hops": 40
+  },
+  "forbidden_prefixes": [
+    "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build"
+  ],
+  "all_qualifications": false,
+  "dispatchable": false,
+  "excluded": {},
+  "excluded_native_identities": [],
+  "linux_file_writes": false,
+  "compile": false,
+  "resource_query": false,
+  "schema": "linux-visible-production-source-selection-v1",
+  "selected": [
+    {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/native-linux-production-inputs-20261019/toolchain-native.cmake",
+      "roles": [
+        "selected-native-toolchain-text"
+      ]
+    }
+  ],
+  "allowed_content_endpoints": [
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/native-linux-production-inputs-20261019/toolchain-native.cmake"
+  ],
+  "expected_content": {
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/native-linux-production-inputs-20261019/toolchain-native.cmake": {
+      "bytes": 1677,
+      "sha256": "3b7f6512ffe514f021d12b78bfc749ac2d3e60b9a25aea38e34d0cd17273d9b3"
+    }
+  }
+}

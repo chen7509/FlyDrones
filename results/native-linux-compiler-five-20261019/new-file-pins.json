@@ -1,0 +1,37 @@
+{
+  "schema": "native-linux-new-read-file-pins-v1",
+  "files": {
+    "/usr/libexec/gcc/x86_64-linux-gnu/13/cc1plus": {
+      "path": "/usr/libexec/gcc/x86_64-linux-gnu/13/cc1plus",
+      "resolved": "/usr/libexec/gcc/x86_64-linux-gnu/13/cc1plus",
+      "bytes": 32675168,
+      "sha256": "840b332fb62ec6f694ac77d91fe69ef7f80b0d69512ed89374af0ee7a506255d"
+    },
+    "/usr/libexec/gcc/x86_64-linux-gnu/13/cc1": {
+      "path": "/usr/libexec/gcc/x86_64-linux-gnu/13/cc1",
+      "resolved": "/usr/libexec/gcc/x86_64-linux-gnu/13/cc1",
+      "bytes": 30487984,
+      "sha256": "5d1679131184e2de4435b426eb264bf13472fe026db8e5c6bc97445814e8e2f4"
+    },
+    "/usr/libexec/gcc/x86_64-linux-gnu/13/collect2": {
+      "path": "/usr/libexec/gcc/x86_64-linux-gnu/13/collect2",
+      "resolved": "/usr/libexec/gcc/x86_64-linux-gnu/13/collect2",
+      "bytes": 336056,
+      "sha256": "4d1f341ae5b763b513258ee2812422a45e063c30a2f1924a0cf63d3699f3a158"
+    },
+    "/usr/libexec/gcc/x86_64-linux-gnu/13/lto1": {
+      "path": "/usr/libexec/gcc/x86_64-linux-gnu/13/lto1",
+      "resolved": "/usr/libexec/gcc/x86_64-linux-gnu/13/lto1",
+      "bytes": 29352624,
+      "sha256": "7c9bdc474948b9127b5942f0f260ecc7067fb3afbb54fcbe2ddf598b9889edc8"
+    },
+    "/usr/libexec/gcc/x86_64-linux-gnu/13/lto-wrapper": {
+      "path": "/usr/libexec/gcc/x86_64-linux-gnu/13/lto-wrapper",
+      "resolved": "/usr/libexec/gcc/x86_64-linux-gnu/13/lto-wrapper",
+      "bytes": 831800,
+      "sha256": "f6d39bcfb1c2798c704e275a4ed2c1fe6374ebfb6aa0c5f3f3b6c669e1ff2e13"
+    }
+  },
+  "acquisition_time_only": true,
+  "admitted": false
+}

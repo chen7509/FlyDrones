@@ -1,0 +1,1869 @@
+{
+  "seal": {
+    "archive": "evidence/live-wire-first-activation-dev-1701.zip",
+    "sha256": "2a1effc4ba82273f38d77199ef855c93015851e7821e39efa60faa4b054a556f",
+    "members": 269,
+    "bytes": 1414390,
+    "crc_and_hashes_verified": true
+  },
+  "manifest": {
+    "schema": "failed-physical-study-and-offline-repair-evidence-v1",
+    "summary": {
+      "producer_commit": "7766bfc6e9cee8cde6c6980d60679cd30b69a819",
+      "selected_manifest_sha256": "b1e254e98b26c2183741a2a0f8db91d92de34d165cced42918e8c8254693d9d2",
+      "source_record_counts": {
+        "imu": 1,
+        "info": 1,
+        "depth": 1
+      },
+      "clock_records": 3,
+      "last_clock_sim_ns": 3000000,
+      "native_ack_count": 1,
+      "native_ack_kinds": {
+        "I": 1
+      },
+      "native_reference_count": 3,
+      "force_records": 0,
+      "heartbeat_records": 0,
+      "ulog_count": 0,
+      "supervisor_worker_exit": -6,
+      "supervisor_journal_matches": true,
+      "supervisor_signal_events": [
+        {
+          "event": "signal_intent",
+          "pgid": 1127,
+          "signal": 15,
+          "monotonic_s": 426.829468317
+        },
+        {
+          "event": "signal_result",
+          "pgid": 1127,
+          "signal": 15,
+          "outcome": "dispatched",
+          "monotonic_s": 426.82994048
+        }
+      ],
+      "cleanup": {
+        "no_executing_members": true,
+        "group_absent": true,
+        "sigkill_dispatched": false,
+        "graceful_group_cleanup_verified": true,
+        "all_descendant_cleanup_qualified": false
+      },
+      "interval_last_state": {
+        "baseline_us": null,
+        "candidate_us": 10000,
+        "final_us": null,
+        "mutation_attempted": false,
+        "restore_attempted": false,
+        "primary_failure": "ValueError: BootstrapRefusal: ValueError: bootstrap progress timeout",
+        "restore_failures": [],
+        "terminal_failure": null,
+        "terminal_pending": null,
+        "events": [
+          {
+            "kind": "send_attempt",
+            "phase": "baseline",
+            "at_ns": 394255497474,
+            "operation": "get",
+            "value": null
+          },
+          {
+            "kind": "send_return",
+            "phase": "baseline",
+            "at_ns": 394255497474,
+            "return_is_none": true
+          },
+          {
+            "kind": "stop",
+            "phase": "baseline",
+            "at_ns": 394985895532,
+            "reason": "ValueError: BootstrapRefusal: ValueError: bootstrap progress timeout",
+            "pending": {
+              "command": 510,
+              "sent_ns": 394255497474,
+              "deadline_ns": 396255497474,
+              "ack": null,
+              "interval_us": null
+            }
+          }
+        ],
+        "modeled_transaction_pass": false,
+        "network_authorized": false,
+        "live_rate_qualified": false,
+        "fusion_qualified": false,
+        "phase": "done",
+        "pending": null,
+        "cleanup_deadline_ns": 404983696164
+      },
+      "dispatch_to_completion_wall_s": 54.930648307,
+      "command_returncode": 2,
+      "resources_after": [],
+      "audit_refusals": [
+        {
+          "stage": "capture",
+          "reason": "ValueError('inconsistent capture status')"
+        }
+      ],
+      "normal_capture_qualified": false,
+      "live_qualified": false,
+      "fusion_qualified": false,
+      "repair_retested_in_physics": false
+    },
+    "source_copies": [
+      {
+        "path": "src/flydrones/__init__.py",
+        "basis": "post-run current bytes matched frozen source digest",
+        "sha256": "d727a1daa671c586aa3a87acd741a509521f8707d9d811ccffb4a713a8895285"
+      },
+      {
+        "path": "src/flydrones/benchmark/__init__.py",
+        "basis": "post-run current bytes matched frozen source digest",
+        "sha256": "87f71597fc29585ef2a2243393caae34935e692b15df1dc6e66f9a00568290ff"
+      },
+      {
+        "path": "src/flydrones/benchmark/camera_info_capture.py",
+        "basis": "post-run current bytes matched frozen source digest",
+        "sha256": "005c180b94938d8aa90b73c9555d87bdea4ca4bcdc6173bee613056e11635edf"
+      },
+      {
+        "path": "src/flydrones/benchmark/clock.py",
+        "basis": "post-run current bytes matched frozen source digest",
+        "sha256": "fef2652f9d4d33cd12c7e207bebf3ca3ca0521ec37445123f0e32d2856978d35"
+      },
+      {
+        "path": "src/flydrones/benchmark/contract.py",
+        "basis": "post-run current bytes matched frozen source digest",
+        "sha256": "a81f751070ea0e2aa65a76a37d86a52b49fc24edb9bae5f7bbb104c1455cedc1"
+      },
+      {
+        "path": "src/flydrones/benchmark/gateway.py",
+        "basis": "post-run current bytes matched frozen source digest",
+        "sha256": "45d6cd052adbc07e5eb4b18cb004ea2e6d9031e22b280b062ee18b5410c62ea6"
+      },
+      {
+        "path": "src/flydrones/benchmark/geometry.py",
+        "basis": "post-run current bytes matched frozen source digest",
+        "sha256": "b15887f873aec2f6342e76c75a018ad9c95c1ec17c236cea3b32284990560432"
+      },
+      {
+        "path": "src/flydrones/benchmark/rgb_capture.py",
+        "basis": "post-run current bytes matched frozen source digest",
+        "sha256": "d1d0fe92b9bcf13bcb6d4f75f2445cfe3903752bbd68279a9c07bec7503be4dc"
+      },
+      {
+        "path": "src/flydrones/benchmark/score.py",
+        "basis": "post-run current bytes matched frozen source digest",
+        "sha256": "9981e1a3e2134e06f195caefb31d88447cff9822e3321d99f4c5dee7309b9dc8"
+      },
+      {
+        "path": "src/flydrones/benchmark/sensors.py",
+        "basis": "post-run current bytes matched frozen source digest",
+        "sha256": "8e23d0da1ad58e766f3784de90fece7c48c34b02f8cda9acc3f46084308d9390"
+      },
+      {
+        "path": "src/flydrones/benchmark/ulog_capture.py",
+        "basis": "post-run current bytes matched frozen source digest",
+        "sha256": "dbce660942b708f8f36eb1fbcfe95469170b6a4bd697ac9e1305a88b2c350aac"
+      },
+      {
+        "path": "src/flydrones/benchmark/worlds.py",
+        "basis": "post-run current bytes matched frozen source digest",
+        "sha256": "063515ad32d57d4ab8a8007375acf557140338a7dbe520386d2685cc123a9e88"
+      },
+      {
+        "path": "src/flydrones/drones/__init__.py",
+        "basis": "post-run current bytes matched frozen source digest",
+        "sha256": "8d2369e6b950b195e4bf71cc1c2f839a258acc1f2c084c5f74864a02da974247"
+      },
+      {
+        "path": "src/flydrones/drones/base.py",
+        "basis": "post-run current bytes matched frozen source digest",
+        "sha256": "30c08931aa8cb77f8b41e33ce1e424e95cb7bdabc836b34e1f4fc40106d01e86"
+      },
+      {
+        "path": "src/flydrones/drones/crazyflie.py",
+        "basis": "post-run current bytes matched frozen source digest",
+        "sha256": "8ded30ec845093815f0ca81eaf7a35f681d7a17f4ddb7c74a09473490d02c0f2"
+      },
+      {
+        "path": "src/flydrones/drones/mavlink.py",
+        "basis": "post-run current bytes matched frozen source digest",
+        "sha256": "d9fb60ea6ec59a0bc7571d04684dea22a22d325f95ce1f84a54b3f73558084cf"
+      },
+      {
+        "path": "src/flydrones/drones/sim.py",
+        "basis": "post-run current bytes matched frozen source digest",
+        "sha256": "89ef7a67f2d0a5f70cf8fc15ffa08caf355157fcbfc715298ceb6136fddb740d"
+      },
+      {
+        "path": "src/flydrones/drones/tello.py",
+        "basis": "post-run current bytes matched frozen source digest",
+        "sha256": "2a783177b0b2b7206a92ceafc431b1876ffbc7bb2b9fd2f72544e28ba19887ab"
+      },
+      {
+        "path": "src/flydrones/drones/udp_bridge.py",
+        "basis": "post-run current bytes matched frozen source digest",
+        "sha256": "d83ba1e2cb5b07e5727c6e8d5b0a09367acf8a6e4d815c00934bdd9adfb238c7"
+      },
+      {
+        "path": "src/flydrones/motor/__init__.py",
+        "basis": "post-run current bytes matched frozen source digest",
+        "sha256": "d5757bcb834ea819f9fc97720dc99a3c610cadd741708bd5c249c6aacba067b1"
+      },
+      {
+        "path": "src/flydrones/motor/command.py",
+        "basis": "post-run current bytes matched frozen source digest",
+        "sha256": "febc2273083733e80ab814718391925950508189671be60f4c7cd956f06e358a"
+      },
+      {
+        "path": "src/flydrones/motor/decoder.py",
+        "basis": "post-run current bytes matched frozen source digest",
+        "sha256": "12b8a5d2220d44c18b25dffca118f0e5499295a3cc58b36820237e30cd0085f7"
+      },
+      {
+        "path": "src/flydrones/safety.py",
+        "basis": "post-run current bytes matched frozen source digest",
+        "sha256": "64eda73ada930b478a367c04b189ebaca0ebbbe6a1f110ea597e9fa11cf46b22"
+      },
+      {
+        "path": "tools/benchmark/audit_live_wire_coverage.py",
+        "basis": "post-run current bytes matched frozen source digest",
+        "sha256": "e587ecfd943bc39afb1be3e5f808e8a20e3a02702f8cce30057ad4befa984e4b"
+      },
+      {
+        "path": "tools/benchmark/audit_live_wire_resources.py",
+        "basis": "post-run current bytes matched frozen source digest",
+        "sha256": "604f424932070455cf8bfe265fb92358814d4af806be8e96c94c49fea2fb7c3a"
+      },
+      {
+        "path": "tools/benchmark/audit_live_wire_runtime.py",
+        "basis": "post-run current bytes matched frozen source digest",
+        "sha256": "e2e5ee6bf5955edb1f03fca8310cbe7df6a69260eafeac3d4035bfea6c5b6bd8"
+      },
+      {
+        "path": "tools/benchmark/audit_live_wire_safety.py",
+        "basis": "post-run current bytes matched frozen source digest",
+        "sha256": "2d66a18626a47c94fca792a0639181e3823551414b76fc9b24f70bc4904a40e5"
+      },
+      {
+        "path": "tools/benchmark/audit_live_wire_study.py",
+        "basis": "post-run current bytes matched frozen source digest",
+        "sha256": "7a1444cb543def342c0e31d5b2d37488a43e15358e0d249c6f8d25bbc0c24499"
+      },
+      {
+        "path": "tools/benchmark/audit_live_wire_ulog.py",
+        "basis": "post-run current bytes matched frozen source digest",
+        "sha256": "4bc86de845a6099a9374a54a2555ee5c5e0d3eeaa6a52815ef93f3fd876d2274"
+      },
+      {
+        "path": "tools/benchmark/audit_live_wire_workload.py",
+        "basis": "post-run current bytes matched frozen source digest",
+        "sha256": "6b14b7fb3011fb956d4bdac7cf459e3445b3a062d4f0564394c800d5fa9e79a2"
+      },
+      {
+        "path": "tools/benchmark/bound_resource_graph.py",
+        "basis": "post-run current bytes matched frozen source digest",
+        "sha256": "b89a201bf1c0188892e28b62d819e15cd3cd9d00f67137f699ff26ca0266853d"
+      },
+      {
+        "path": "tools/benchmark/build_openvins_ekf2_fast_run_evidence.py",
+        "basis": "post-run current bytes matched frozen source digest",
+        "sha256": "00edf7aec7354c7033cda46f68631d2ae27787dc6edee28e5852217d0d5a6895"
+      },
+      {
+        "path": "tools/benchmark/capture_contract.py",
+        "basis": "post-run current bytes matched frozen source digest",
+        "sha256": "b14d4419ffc8db6ffc24eb9fa929c14f4a3432e2ac7cd9cfe6fc0dfb00596bb5"
+      },
+      {
+        "path": "tools/benchmark/capture_disarmed_sensors.py",
+        "basis": "post-run current bytes matched frozen source digest",
+        "sha256": "b650d1fbc5c21d9b61914de74d94fdf39210b190f3d41f821c031874d02a7bf0"
+      },
+      {
+        "path": "tools/benchmark/capture_wire_lifecycle.py",
+        "basis": "post-run Git reconstruction with line ending conversion; digest matched, not a pre-run copy",
+        "sha256": "348cfed59ab96a413cca007a642c831fe522a1d954f3bfb1594a13c1b8368c7d"
+      },
+      {
+        "path": "tools/benchmark/declared_runtime_snapshot.py",
+        "basis": "post-run current bytes matched frozen source digest",
+        "sha256": "b0d9eb7611fc6505827c7fd4279a3b6aae5ae0add9e25011da6e69badfea115f"
+      },
+      {
+        "path": "tools/benchmark/disarmed_motion_probe.py",
+        "basis": "post-run current bytes matched frozen source digest",
+        "sha256": "f397625c4191f25d74cc487a49ea290d3e00400b99d363e2a6d0fe9ca8564e23"
+      },
+      {
+        "path": "tools/benchmark/disarmed_sensor_provenance.py",
+        "basis": "post-run current bytes matched frozen source digest",
+        "sha256": "f6cc1f2784806943f777f4fc18f8616fa1402deed21b2609e30a1f4085e91dff"
+      },
+      {
+        "path": "tools/benchmark/estimator_aware_readiness.py",
+        "basis": "post-run current bytes matched frozen source digest",
+        "sha256": "be471045e808a46b44dd36f3a87a5c25b95889c393246aa0b99d090f3d62de2f"
+      },
+      {
+        "path": "tools/benchmark/execute_openvins_health_physical_run.py",
+        "basis": "post-run current bytes matched frozen source digest",
+        "sha256": "057991923309a0524799080d15de17c23e9633c2ade8f468864fc4be8b32da58"
+      },
+      {
+        "path": "tools/benchmark/journaled_heartbeat_lane.py",
+        "basis": "post-run current bytes matched frozen source digest",
+        "sha256": "af0cfa376e0093049a2ddbee8b93728d04c3793a4dc7d30091d5fd89fd2a6202"
+      },
+      {
+        "path": "tools/benchmark/live_wire_study.py",
+        "basis": "post-run current bytes matched frozen source digest",
+        "sha256": "799e891a305f05da2d3ec074434c1c920602038448df835b6e8d2654366cee2e"
+      },
+      {
+        "path": "tools/benchmark/motion_intent_gate.py",
+        "basis": "post-run current bytes matched frozen source digest",
+        "sha256": "e006e263d33b2674a128b693c65faeea38b0767903704ce6183bdc7c15688f9d"
+      },
+      {
+        "path": "tools/benchmark/motion_intent_physical.py",
+        "basis": "post-run current bytes matched frozen source digest",
+        "sha256": "0ce6cf0d9d46a9cdab9b2cb35dd0a87521941473930e04e42bdb8f339afa9d40"
+      },
+      {
+        "path": "tools/benchmark/native_query_process.py",
+        "basis": "post-run current bytes matched frozen source digest",
+        "sha256": "ceb01f99258c1cff424ecc08ed107945eb279d5cf49e4e030f079a0bc930f3cf"
+      },
+      {
+        "path": "tools/benchmark/native_reference_probe.py",
+        "basis": "post-run current bytes matched frozen source digest",
+        "sha256": "bc36572cf4c532d3e1aadef19a41e31c70f8d5eb6549e3f738c9dfd585c39328"
+      },
+      {
+        "path": "tools/benchmark/native_resource_client.py",
+        "basis": "post-run current bytes matched frozen source digest",
+        "sha256": "ec68d50758f5352727cb79b252597aae2f61f2006da8435f47f4d1ffacaa744e"
+      },
+      {
+        "path": "tools/benchmark/native_runtime_refusal.py",
+        "basis": "post-run current bytes matched frozen source digest",
+        "sha256": "16b4063adb1e5835ecc9ae899587ea1b6d1860596c63e606d5dcb17b0a3b4f8f"
+      },
+      {
+        "path": "tools/benchmark/native_supervisor_integration.py",
+        "basis": "post-run current bytes matched frozen source digest",
+        "sha256": "20e35ff52a930df4a33b758d79e4768e9a8c599ca8eb660ec558286a86eaf581"
+      },
+      {
+        "path": "tools/benchmark/openvins_causal_input.py",
+        "basis": "post-run current bytes matched frozen source digest",
+        "sha256": "cb188d29b5fdc70fc1282a9653dd8fc7338884fa63b2d53416cddb18f204d115"
+      },
+      {
+        "path": "tools/benchmark/openvins_datagram_receive.py",
+        "basis": "post-run current bytes matched frozen source digest",
+        "sha256": "454a547f69fc07aa6a63a42398a53e0bd57cfea64e941a53b0c8b4dd8e35066b"
+      },
+      {
+        "path": "tools/benchmark/openvins_ekf2_disarmed_preflight.py",
+        "basis": "post-run current bytes matched frozen source digest",
+        "sha256": "feca7b24b136153783388861135c5d8cd1be9393488e3b03fdb8e5d6d7b84960"
+      },
+      {
+        "path": "tools/benchmark/openvins_ekf2_fast_contract.py",
+        "basis": "post-run current bytes matched frozen source digest",
+        "sha256": "4cf4431c83976e6b8ac1cde719547a2aa9a97196ed98d2542b73e55c6644924f"
+      },
+      {
+        "path": "tools/benchmark/openvins_ekf2_integration.py",
+        "basis": "post-run current bytes matched frozen source digest",
+        "sha256": "a985686438d26769575eb1c20ec2739505d5f24c18bd94bbe310f71c8388fa3e"
+      },
+      {
+        "path": "tools/benchmark/openvins_ekf2_transform.py",
+        "basis": "post-run current bytes matched frozen source digest",
+        "sha256": "aa95f772ec3340a93031850df27b5f29cc41ae6c1c63e1aa0a6507d7890801c3"
+      },
+      {
+        "path": "tools/benchmark/openvins_health_contract.py",
+        "basis": "post-run current bytes matched frozen source digest",
+        "sha256": "be44d975ac7698b86af6b4347e8d81da4c33b65cb4ae8be85d48e39478dd2eee"
+      },
+      {
+        "path": "tools/benchmark/openvins_health_physical_faults.py",
+        "basis": "post-run current bytes matched frozen source digest",
+        "sha256": "774de064bdac365089c65246da0332597c76a5c06033d50c48e945845e30a2d6"
+      },
+      {
+        "path": "tools/benchmark/openvins_listener_transport.py",
+        "basis": "post-run current bytes matched frozen source digest",
+        "sha256": "afbbadb73d1bca95b8941cd1f747d4201d39bb7773aed1f8dc12bbe8b88e5ed9"
+      },
+      {
+        "path": "tools/benchmark/openvins_observed_wire_session.py",
+        "basis": "post-run current bytes matched frozen source digest",
+        "sha256": "0452b98cb3eb679a7546d2d720f673cfd8006b7afae86074ca4faf300aed4ab8"
+      },
+      {
+        "path": "tools/benchmark/openvins_online_shadow.py",
+        "basis": "post-run current bytes matched frozen source digest",
+        "sha256": "99651fd531cf4c915feeff71987a1d8347dc0da10e842209105b9002d4fbf4aa"
+      },
+      {
+        "path": "tools/benchmark/openvins_owned_bootstrap.py",
+        "basis": "post-run current bytes matched frozen source digest",
+        "sha256": "617b95805aa18c5f533621c46b44205d33e291e3a98fa5411f358f2e59122bde"
+      },
+      {
+        "path": "tools/benchmark/openvins_receiver_parity.py",
+        "basis": "post-run current bytes matched frozen source digest",
+        "sha256": "8cc4b4b753bd1daaa90d5028680d50974ad8df6cc230c42b73a500590633cf1a"
+      },
+      {
+        "path": "tools/benchmark/openvins_segmented_journal.py",
+        "basis": "post-run current bytes matched frozen source digest",
+        "sha256": "a07c73553aa34bdb5299028454a6c22f73f057e6bc18aed612614143f5acb3e2"
+      },
+      {
+        "path": "tools/benchmark/openvins_simulation_clock.py",
+        "basis": "post-run current bytes matched frozen source digest",
+        "sha256": "65ea9a3f5811d329436a13b358d744e20fada36f79a31c829e51638ae1b0bdf7"
+      },
+      {
+        "path": "tools/benchmark/openvins_timesync_bootstrap.py",
+        "basis": "post-run current bytes matched frozen source digest",
+        "sha256": "5dd859e4ca09ca74b0bf899c13595b0aa7e8906ff99b18e87f8e14cf821637ea"
+      },
+      {
+        "path": "tools/benchmark/openvins_timesync_interval.py",
+        "basis": "post-run current bytes matched frozen source digest",
+        "sha256": "c614bb8857eee1168572078244dd506483293a3ad2f6cd1fad5bc4e7034d6b6d"
+      },
+      {
+        "path": "tools/benchmark/openvins_timesync_listener.py",
+        "basis": "post-run current bytes matched frozen source digest",
+        "sha256": "29ee45a446fd4a00b15383efc532530e998608be65cc4b69e08eb24d83218e0b"
+      },
+      {
+        "path": "tools/benchmark/openvins_timesync_maintenance.py",
+        "basis": "post-run current bytes matched frozen source digest",
+        "sha256": "b6037bb0045d6f2ad71b50c01a94fcec22a3fdb917c430c7a867197838c00eb3"
+      },
+      {
+        "path": "tools/benchmark/openvins_timesync_observer.py",
+        "basis": "post-run current bytes matched frozen source digest",
+        "sha256": "5bfb1e27e77b360575416027400cbb664c487b2cbe5660c8817fbcd5c43f75b7"
+      },
+      {
+        "path": "tools/benchmark/openvins_timesync_wire.py",
+        "basis": "post-run current bytes matched frozen source digest",
+        "sha256": "6d9f2afc1f29580e1eaf8253e8418a159cb4c1f3f7434ce22efb3c91f191fd52"
+      },
+      {
+        "path": "tools/benchmark/openvins_wire_bootstrap.py",
+        "basis": "post-run current bytes matched frozen source digest",
+        "sha256": "c9d44715b132182d9848bbc3251a8d0d392066daa1e583036700038723036ef8"
+      },
+      {
+        "path": "tools/benchmark/owned_daemon_connection.py",
+        "basis": "post-run current bytes matched frozen source digest",
+        "sha256": "d69d39580b2e1e5f344c1004fae3981a3e82f22af586d6c45843318cc611dc53"
+      },
+      {
+        "path": "tools/benchmark/owned_group_evidence.py",
+        "basis": "post-run current bytes matched frozen source digest",
+        "sha256": "f5b50e1aefb93050a9a0c90cce93dbc0ea22440185489f726b760458640a502a"
+      },
+      {
+        "path": "tools/benchmark/owned_runtime_maps.py",
+        "basis": "post-run current bytes matched frozen source digest",
+        "sha256": "aca43b67ad2c7b530c09191979cf77f78699c1a2dcfcb4dfd355404150c84e04"
+      },
+      {
+        "path": "tools/benchmark/physics_substep_trace.py",
+        "basis": "post-run current bytes matched frozen source digest",
+        "sha256": "0d9716a788ee33d1b8aeff7f627becaa8a9563e260baf3a4d04c00a63fb55aea"
+      },
+      {
+        "path": "tools/benchmark/readiness_anchor.py",
+        "basis": "post-run current bytes matched frozen source digest",
+        "sha256": "b3c07aca65b5df5e25f860d79a09ec2d376602944107d432da6cba4452cce51f"
+      },
+      {
+        "path": "tools/benchmark/ready_shadow_fanout.py",
+        "basis": "post-run current bytes matched frozen source digest",
+        "sha256": "75dc7f142886705c7f8377ed2e0ca7f5086c446264629efcb8178359943ac197"
+      },
+      {
+        "path": "tools/benchmark/repository_python_sources.py",
+        "basis": "post-run current bytes matched frozen source digest",
+        "sha256": "373c137bd788781a43fe22089fdafb29226bd9284e28f515f6d02ebb44dd7e69"
+      },
+      {
+        "path": "tools/benchmark/runtime_resource_binding.py",
+        "basis": "post-run current bytes matched frozen source digest",
+        "sha256": "7e0bea2f888ec07b0b1ab0e7cb384601830f918d2cb74e79cbc8a25804918d9d"
+      },
+      {
+        "path": "tools/benchmark/selected_resource_graph.py",
+        "basis": "post-run current bytes matched frozen source digest",
+        "sha256": "30b0de50251daf1025a204b2992a727c192f8094188247440f4752cb35c8852f"
+      },
+      {
+        "path": "tools/benchmark/supported_excitation.py",
+        "basis": "post-run current bytes matched frozen source digest",
+        "sha256": "d340ab48d328be8af50418472d620ab904de456e013f9dc02eb24714556756ea"
+      },
+      {
+        "path": "tools/benchmark/trajectory_gauge_contract.py",
+        "basis": "post-run current bytes matched frozen source digest",
+        "sha256": "42d7e1d410b0078e37e248edbb72cdd6ac94fe30ad8481068e8f59bf41150005"
+      }
+    ],
+    "installed_dependencies": "identities/hashes in v6 declaration, not copies of every library or OS file",
+    "members": [
+      {
+        "path": "docs/LIVE_WIRE_FIRST_ACTIVATION_REPORT.md",
+        "bytes": 6809,
+        "sha256": "9e8eb7849aa358fb589767db86ff9ba24a9a108e4c0001aa6fb69b2bbfd20111"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/activation-context-v6.json",
+        "bytes": 723,
+        "sha256": "0a4c40e5f13d3237a1d490f7dd730b21bcaddae4bc669e48b241b30375b575f5"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/callback-refusal-green-v2.txt",
+        "bytes": 12189,
+        "sha256": "c84fd757d6d26ec0ff3fbc06eb5de4cf7dd5fe61116771138ffcc5157fce9611"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/callback-refusal-green.txt",
+        "bytes": 12978,
+        "sha256": "d6e9038619693ba8ba07e482ab311e25212865d9d9b01c2d12b078c407b383f9"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/callback-refusal-red-v2.txt",
+        "bytes": 4175,
+        "sha256": "7421767b8c7a129952b4f5ed9768a97b74722ddadf8347ec6f63d78eb906b0a9"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/callback-refusal-red-v3.txt",
+        "bytes": 8464,
+        "sha256": "b774fd4716416957be8f63e862b188c4c48037c312562e22d614abcf260cf721"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/callback-refusal-red.txt",
+        "bytes": 173,
+        "sha256": "e2fee819456ed3b593da0a3bf4c5e4fd773622ac4f3354543a88e7742e77b65c"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/callback-refusal-windows.txt",
+        "bytes": 112,
+        "sha256": "201b496c0b63356fe4cce57ed947625cf5e92f164f8a975d9697e76ff1eedd55"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/callback-review.txt",
+        "bytes": 564,
+        "sha256": "d7a5f9436bca26d3b4bbc8c146656b90fb2fd4e4bba1e74412660f1f0ccbce20"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/committed-source-v6.json",
+        "bytes": 69477,
+        "sha256": "89fa9a1b1591615cd8b72703ab7e73c637d6aaba2fdc0c57c0b919fcc0719cd0"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/prepare-v6-output.txt",
+        "bytes": 1457,
+        "sha256": "0addf057c0cc015d5b8e338ef36b4387b6900dae3ef748da9f7ce73a9c56726b"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/prepare-v6.py",
+        "bytes": 13362,
+        "sha256": "63068497e9d7902069cb73ff3793eb2d41716295f1b7e837e2785229b162cec7"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/seal_activation_v6.py",
+        "bytes": 6549,
+        "sha256": "7ff4387ed31be83b5e5e88e793aee868fec56a8e249e2418ab438cb57b59e19f"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v5/activation-cli-output.txt",
+        "bytes": 1735,
+        "sha256": "3ceed3e0663d75c81df45e63e460c9ca2194097357a07c2c99ab3e6307e7f879"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v5/execution-identity-diagnosis.json",
+        "bytes": 1696,
+        "sha256": "0b4e4e9f625149b633dab6a1364ae37e31be1005be4e492dd0e1926c7292efa8"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/activation-cli-output.txt",
+        "bytes": 132,
+        "sha256": "b280c454d6f559e56eb3f5ed39f3ba084b8d1744a3ff7fe016b21ff86dea1aca"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/activation-request.json",
+        "bytes": 1910,
+        "sha256": "f3f02e65dc141d69738b9c8fde3b4c94ca2371de039fc29ca3c7a673814e1ae7"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/audit-source-dependencies.json",
+        "bytes": 173156,
+        "sha256": "d678d2082c6802514170df67500d1759f3d96d7b804ffae38dd7c95b48fb9b9f"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/audit.json",
+        "bytes": 10300,
+        "sha256": "6b58c9f47a7a3d238739517db1d6775513f452fab67ab012144f8a300e27a66b"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/capture-v1/backend-loaded.json",
+        "bytes": 1131,
+        "sha256": "d9f1588cf1c9875bc6b770634ceec16f4123362a11b3af1e56a928d3e526c2c6"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/capture-v1/board_albedo.png",
+        "bytes": 1970,
+        "sha256": "5d24a1d96cccf2f81046dbfa6afe57b4760038a8714da5059d6258fc34166945"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/capture-v1/camera-info-messages/2000000.pb",
+        "bytes": 332,
+        "sha256": "6d2ed00a687f29103f8c48e5f49fedd4b0b903852682cc2c8b6592eb6e3b1437"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/capture-v1/estimator-readiness.jsonl",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/capture-v1/events.jsonl",
+        "bytes": 1570,
+        "sha256": "0aba2f66fbd5c3d88bfb24bf6281972379cce396e8a17bbff46e1ad2a41598e8"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/capture-v1/execution-environment-worker.json",
+        "bytes": 8579,
+        "sha256": "bd8654f4000ae0101ea7192afb52625c856227a4c5cc1ad5677875c6dd9fc91c"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/capture-v1/ground_albedo.png",
+        "bytes": 154343,
+        "sha256": "5e62827968eeabb55285bba85276518b6d8fb1441f0bf9659caa52a48ed48593"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/capture-v1/heartbeat-observations.jsonl",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/capture-v1/launch.json",
+        "bytes": 6424,
+        "sha256": "c0adc4af15b0237ea5012ad6bce216d79d57f60979c71c640c20fb3ee02d56d4"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/capture-v1/motion-force.jsonl",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/capture-v1/motion-ground-truth.jsonl",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/capture-v1/motion-intent.jsonl",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/capture-v1/motion-profile.json",
+        "bytes": 1120,
+        "sha256": "84dc2e89e665dd9d5d94dc7db9a9f754f32ea62c2016e0bbd381605d9fb487df"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/capture-v1/native-reference-binary.json",
+        "bytes": 292,
+        "sha256": "ffe1655f4f0a3f2f46d051d1f14bf6b6573710394749c15da19d0ae6a0d210a3"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/capture-v1/native-reference.jsonl",
+        "bytes": 1598,
+        "sha256": "bd31ca611d7806d1760e7b4812ce8fdbf08f72b9eb2fa30b54e0ba301af5b5c4"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/capture-v1/obstacle_albedo.png",
+        "bytes": 52690,
+        "sha256": "28f87e79cc5cd767b029a4c7b00b165e1aad9f2cbb998be1a161e3ff5d121c3f"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/capture-v1/physics-substeps.jsonl",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/capture-v1/process.json",
+        "bytes": 238,
+        "sha256": "5fb8cd004bf83bb916b2180eaaeace6b8ea8bc327bc5bf85213e09c5982019c1"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/capture-v1/px4-ulog-manifest.json",
+        "bytes": 62,
+        "sha256": "1eb05351f3a79fc846481a63c9a243b856a5055e549fb8d759e8bb8140caf5ca"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/capture-v1/px4.log",
+        "bytes": 1359,
+        "sha256": "a9cc6ebeda2a4ce7f08b3ec1d2c7619d07c503c79cfb69b90faa27e4f0d205ab"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/capture-v1/resource-graph.json",
+        "bytes": 147627,
+        "sha256": "5e1f660153da17b6969880841389513035e58316469dcfcaa5eab6ed352709ae"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/capture-v1/resource-query-0000.json",
+        "bytes": 9175,
+        "sha256": "ef24cfbcbae1170c5069941b98af68662936528d5da870c1ced5744df24a9acc"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/capture-v1/resource-query-0001.json",
+        "bytes": 11263,
+        "sha256": "b0a2007afa16cf096379e40e5d096c09319b0880af0b9bcb89f8634cf24def18"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/capture-v1/resource-query-0002.json",
+        "bytes": 11899,
+        "sha256": "3981f54b3e8584c4a510792b6a2bb12fd6b379c582c88b89192e9bb306338667"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/capture-v1/resource-query-0003.json",
+        "bytes": 12323,
+        "sha256": "052e35e91f37482d97a9755c3ad2675216c566be8304e6e97e7bc521877ca195"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/capture-v1/resource-query-0004.json",
+        "bytes": 11263,
+        "sha256": "1b24b88bd90ba749dfbd1021323ebe479ef7ffc38fd58f3223c9e607188d1ecf"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/capture-v1/resource-query-0005.json",
+        "bytes": 10839,
+        "sha256": "d61e7d4831ca4e74a0a7e1d27c9fe28145122a3f07356b061952bb2481a85969"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/capture-v1/resource-query-0006.json",
+        "bytes": 11157,
+        "sha256": "9717202710c25ab0a1fb40f23c759398c448a814b4f187a4f1d9630edd06e245"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/capture-v1/resource-query-0007.json",
+        "bytes": 11792,
+        "sha256": "f0ce82ddb9233c29d1512e33b8351dc2173579bef0ca97804ffe424d9bd1eeff"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/capture-v1/resource-query-0008.json",
+        "bytes": 11792,
+        "sha256": "88201a6edaeaf38b5c09dc4f839061c85db1d7bd4f66d1e8fc730f223a99dded"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/capture-v1/resource-query-0009.json",
+        "bytes": 11263,
+        "sha256": "86c1de13922471698e7ad57a13ed0a224d757b27c60fa9709a21f406928414fa"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/capture-v1/resource-query-0010.json",
+        "bytes": 11269,
+        "sha256": "543ee3c1d736562c0d8b63eb49a59eff5508f6f52eea7d2b12fb593e52322e8a"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/capture-v1/resource-query-0011.json",
+        "bytes": 11250,
+        "sha256": "bb943de73a2643863711f2df0bd5e94fa679f9316f7703a88b51e8d8d9f9cf03"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/capture-v1/resource-query-0012.json",
+        "bytes": 11250,
+        "sha256": "48e56f29843684d57aa55dc8b7ce741e8fb6b92a10c4496746b775daddef0145"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/capture-v1/resource-query-0013.json",
+        "bytes": 11307,
+        "sha256": "f1d014da8ce32e18e1df93cfe165095668d430b836bceeb7215d5d83324e1fb7"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/capture-v1/resource-query-0014.json",
+        "bytes": 12160,
+        "sha256": "7f22934398a4a570fc7289cfa4fbaaee5a06b5c1b74959d782fb2d55a1f3affa"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/capture-v1/resource-query-0015.json",
+        "bytes": 11171,
+        "sha256": "eb5f7b12ccbb626705c3d1e9b5ac0154b52dc1ed563a0cba43fa549e2a88bdad"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/capture-v1/resource-query-0016.json",
+        "bytes": 11309,
+        "sha256": "ded1cc9eed771f14285e7b6b5dbeb680954ec112626a3c67d98084775619c724"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/capture-v1/resource-query-0017.json",
+        "bytes": 11106,
+        "sha256": "50c31a3f1d3d2ab6c3901bae78d83e3bd09581920c78f161327dc64493c0e9bd"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/capture-v1/resource-query-0018.json",
+        "bytes": 11629,
+        "sha256": "77797c718c27669467ad9946d44579d53861eb065259fc13b67c4db0fc00653b"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/capture-v1/resource-query-0019.json",
+        "bytes": 11050,
+        "sha256": "4ef336fab14befdf9c4b5eaa3fa3279f0e4d2a9ee4fcdba31d37d0501365f2e5"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/capture-v1/resource-query-0020.json",
+        "bytes": 11050,
+        "sha256": "360dd300b1de03f9368cbcedf6880b4cfb4b57f8ee9c040994a3afa56520995e"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/capture-v1/resource-query-0021.json",
+        "bytes": 11050,
+        "sha256": "712ba55eeb9d20f9a878d7c2a219b2456dc5d1b007d4b82ead2fd4feb95170ca"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/capture-v1/resource-query-0022.json",
+        "bytes": 11050,
+        "sha256": "e8d1fddde478f9b7ece192cfb44cec108ce04cc772682da04110ef0bbe0ba75b"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/capture-v1/resource-query-0023.json",
+        "bytes": 11238,
+        "sha256": "677d52194779642736daa65c0e6cdedca63ada9722b151e09edf1c3552c5d44f"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/capture-v1/resource-query-0024.json",
+        "bytes": 11238,
+        "sha256": "4da8100fbe0795f99cf6a4fe0cd7de3f9c7769d4d444c387f608abe913488a64"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/capture-v1/resource-query-0025.json",
+        "bytes": 11210,
+        "sha256": "4f7237daaf466d879858ef5b803ce82c92a82466337995a45d9983a5b500fa85"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/capture-v1/resource-query-0026.json",
+        "bytes": 11188,
+        "sha256": "1d2fdd8618a3ca557a021c4da7996bc1c6c1a408102ebc4ae62aab1189f86146"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/capture-v1/resource-query-0027.json",
+        "bytes": 3739,
+        "sha256": "783ff8ada1d04919b2ee417fe8f2fbe141cc2ae8da74062dc7a875b2444a7939"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/capture-v1/resource-query-0028.json",
+        "bytes": 11050,
+        "sha256": "0bddc2e2c90aae7f45f76d995315df81219e475a31937af17a02573b7d6fdd16"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/capture-v1/resource-query-0029.json",
+        "bytes": 11190,
+        "sha256": "3d32adbd8875c0b8c4e504a72dfe6913fc39b7d096bc7bc481f29e8736d7bab7"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/capture-v1/resource-query-0030.json",
+        "bytes": 11050,
+        "sha256": "815f5d4805af39dda0f85ec092de3ecdba024be4d675c61b4d55efc85b21f9aa"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/capture-v1/resource-query-0031.json",
+        "bytes": 11161,
+        "sha256": "8f8a93fdc727a893a3afae476a1c0730e76d26360ddfe648f082b714f486e1b7"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/capture-v1/resource-query-0032.json",
+        "bytes": 11050,
+        "sha256": "86c842a048b221a4e6b79cbafef83d6269864822c54bf3d5f892c72bb0dc4d44"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/capture-v1/resource-query-0033.json",
+        "bytes": 11161,
+        "sha256": "173e88819bf7e505bc38f04d4ef3201f13f64276f250421390a9a141a9a046cd"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/capture-v1/resource-query-0034.json",
+        "bytes": 11050,
+        "sha256": "9016dec2b64d275b2550f916b91eef0d95455fcfd4ab86c1ce81cecf36484e9c"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/capture-v1/resource-query-0035.json",
+        "bytes": 12959,
+        "sha256": "1a7397c78c10537860e39626fa3933c5ccd6ccd75458deb323ed27e5823940c5"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/capture-v1/resource-query-0036.json",
+        "bytes": 12958,
+        "sha256": "ef401483823d23f15a9ce31f0db6bac2943e042eb3d816a26a5555a588b120f3"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/capture-v1/resource-query-0037.json",
+        "bytes": 12958,
+        "sha256": "e9ae6b18e75f6953c8d7d6e33e9be2d47d4000915e537db166ab4a3ca96e2ab4"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/capture-v1/resource-query-0038.json",
+        "bytes": 12958,
+        "sha256": "643049533323544aa578568aa500c17c1e0239235465b82c4fef6ed4869a5cfd"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/capture-v1/resource-query-0039.json",
+        "bytes": 12092,
+        "sha256": "ec9d3d623e7ea79d33bd561fb0ff2b44d0e657fab7457a7c0e88ac5dd83f1d0b"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/capture-v1/resource-search-context.json",
+        "bytes": 2192,
+        "sha256": "2ff1fe4d23a4b4a5d758720853a7eb0237b50ec42d498ab9d8f9c44d5ab477bc"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/capture-v1/result.json",
+        "bytes": 165,
+        "sha256": "8b33e71943b9442c0491886046ee98aeafcba0579d64c6c7442827eefaea5339"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/capture-v1/runtime-binding-after-queries.json",
+        "bytes": 572346,
+        "sha256": "015b5d386f574918140a3ede1d74a7fd206184013763a22a7f6900330776851a"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/capture-v1/runtime-binding-pre.json",
+        "bytes": 1438005,
+        "sha256": "e128574abf2cd0d12862d04aafd344fcab37085c7f7fc40b06b67a690688edc8"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/capture-v1/runtime-maps-bootstrap.json",
+        "bytes": 159,
+        "sha256": "f593aa6afcb78d71a30862a6e2518ce1cd5995beb8e0c2ae96b95474301f4c0c"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/capture-v1/runtime-maps-bootstrap.txt",
+        "bytes": 95000,
+        "sha256": "bd43758b02799afef6bf0effe6539181284823a8e1d220e5ad15e57dcf38a464"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/capture-v1/runtime-maps-openvins-ready.json",
+        "bytes": 687,
+        "sha256": "db0cc6cddcdcf860d9500417d885fd86ef79aa7f7922ef66100bed99a85b795d"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/capture-v1/runtime-maps-openvins-ready.txt",
+        "bytes": 96912,
+        "sha256": "4c32ec4612b9e9108ab17de19d424aa03313460d66f8fa25f3f35c218f0364db"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/capture-v1/runtime-maps-postfinalize.json",
+        "bytes": 162,
+        "sha256": "4045ccf457672c6630ffdd99fce7bf78c9318379e953f1374eee544ae29a58e9"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/capture-v1/runtime-maps-postfinalize.txt",
+        "bytes": 217051,
+        "sha256": "9a0fa1ab5983d2f958bca8b24c3582c10e1911cac9d61c7789cbe722190f9b17"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/capture-v1/runtime-maps-postgraph.json",
+        "bytes": 159,
+        "sha256": "7387a46d42c663552aee14a8effbfdf933e172e9a66bc3162501deda58e5a540"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/capture-v1/runtime-maps-postgraph.txt",
+        "bytes": 95441,
+        "sha256": "b8b564a3c611d925bfe04983097961f21e24801c79fe23663151b878ca7a9902"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/capture-v1/runtime-maps-postimports.json",
+        "bytes": 161,
+        "sha256": "a5868274d650df06a128838ad88c85d200b5d717096674b130171272b434623c"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/capture-v1/runtime-maps-postimports.txt",
+        "bytes": 151275,
+        "sha256": "cb4798e161db14ad179a47b5173766a4cac0d1141ae7060ec2c3369b83e3e176"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/capture-v1/runtime-owner-openvins.json",
+        "bytes": 263,
+        "sha256": "1e19c692d45c7a47ddaf0344ab439568affb98c27098b02aad3f2ce514a9fe7c"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/capture-v1/runtime-owner-px4.json",
+        "bytes": 190,
+        "sha256": "54695555a8ff3f6c45ab8b7041b0e40f136a8e3b882a75f0b142a75e31856fc6"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/capture-v1/shadow/fast.jsonl",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/capture-v1/shadow/health-evidence.jsonl",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/capture-v1/shadow/native-acks.jsonl",
+        "bytes": 310,
+        "sha256": "f6dd7a089cf55757fd99d02f5e8dd76f1f64d5f1bb31e89b30c92f61b67543f0"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/capture-v1/shadow/native-requests.jsonl",
+        "bytes": 627,
+        "sha256": "dc1c2f136601db131318f760d471d2787da74a4117689cafdec641d9ab73cc85"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/capture-v1/shadow/native-session.json",
+        "bytes": 737,
+        "sha256": "3ecf2671f1f6e16308cf7e5f9c93425edeaa21cdfa228ffd2cc8e27da0d27590"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/capture-v1/shadow/native.log",
+        "bytes": 14782,
+        "sha256": "8b1013103dd1d27c38181e2394528ee017452b76be56e7a51fa2255a1f9b65f0"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/capture-v1/shadow/shadow-failures.jsonl",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/capture-v1/shadow/states.jsonl",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/capture-v1/simulation-random-seed.json",
+        "bytes": 206,
+        "sha256": "84e7270b98b894b2f906977bb171bd18e003e82f456453b25f576b0251cd0d57"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/capture-v1/source-fanout.jsonl",
+        "bytes": 2347,
+        "sha256": "43416eaff4ed5af0fcf304e44a78e3cec9faa882f4b1fb42125b49477ff9f61e"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/capture-v1/supervisor.json",
+        "bytes": 5886,
+        "sha256": "5a738df1e8b3ca1164a000d751885bbcbdb0924739acd108ffe5c1974cba647a"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/capture-v1/support-clearance.jsonl",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/capture-v1/support-links.json",
+        "bytes": 1353,
+        "sha256": "0221c767700f2707219470482174a0e09d5dcd9209027cd07df4f6ccf05745be"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/capture-v1/trajectory-gauge-policy-worker.json",
+        "bytes": 556,
+        "sha256": "777658c37a1182efcd5eadc10242c57aecf9630ce0a4b3c1d18109bd63047d44"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/capture-v1/watchdog-retained-ulogs.json",
+        "bytes": 60,
+        "sha256": "dd4e9f6acbd3c0d59ab83fbef5e6967066fd9bf5eeac3f39506bfe276b5f6546"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/capture-v1/wire-clock.jsonl",
+        "bytes": 546,
+        "sha256": "0a48a90097643d0b0e12d8966676232917a28325ac723cfce17971a0d7db82e9"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/capture-v1/wire-owner.json",
+        "bytes": 798,
+        "sha256": "44ffd75da8d9d19d06d54ada253d638f6f5410598ebae563e32ac68969c4def6"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/capture-v1/wire-segments/manifest.json",
+        "bytes": 823,
+        "sha256": "92d07080b8f65e257d99cdb7e62c97f63d78c02a10509a46c68799c74af0c900"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/capture-v1/wire-segments/segment-0000.jsonl",
+        "bytes": 21643,
+        "sha256": "53a5da0070d35eb3953b1601f6a1369d6e1910ae7299097fa95230b50b056166"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/capture-v1/world.json",
+        "bytes": 910,
+        "sha256": "e783db3dbbebf1142ba4bae7f09f5133d474f21415bd3843427598c6c3f58f51"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/capture-v1/world.sdf",
+        "bytes": 5844,
+        "sha256": "b42bd639080c967ceb84edc7bbf023b064dbd4fc610ccb81a1eaceb5fb373c1e"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/capture-v1.supervisor-environment.json",
+        "bytes": 5950,
+        "sha256": "4e899e7c458c7d4c4b1f7f8f486af05d2a52f302cd8736eab08dbd5e4a3bef8d"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/capture-v1.supervisor-events.jsonl",
+        "bytes": 2695,
+        "sha256": "decd31d7309836de8472f8636a4ca80eb49e0771293a38b7765fd3cdae4c58a3"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/completion.json",
+        "bytes": 450,
+        "sha256": "99f24f34f8b3238b26ae6945c0ae3976a4bd950d1b91b9fce3ad07aeb1a66482"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/dispatch.json",
+        "bytes": 4041,
+        "sha256": "02cf6c4eeabe7bb5d4b6b7cc3d96785cb9a9aaead2b122a027c7cc2728a0c949"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/execution-contract.json",
+        "bytes": 5161,
+        "sha256": "78f9347cb3f50034e2589f74875e328dbf6f6a9bf7a253c713ba6cdf208c262f"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/executor-binding.json",
+        "bytes": 4823,
+        "sha256": "b989b4cabf84a0fffc4ddadd949d4c1de1172daee236e0ddb5e65bed265addb2"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/failure-summary.json",
+        "bytes": 2766,
+        "sha256": "131a462ad4cf2c5afce9a88a168d4573d53b1db7842c64a0dd7d4b2f1f5037b3"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/negative-cases/auditor_hash.json",
+        "bytes": 9670,
+        "sha256": "89137fa58c5d12c7f8a73a5163b385a3e886e49f63062e71763b810226e935ca"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/negative-cases/clock_scope.json",
+        "bytes": 9652,
+        "sha256": "9b6b05c7627af73ffc2bb05189a4b8386b59f3a85156ea0a6e9c8e8e8827698f"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/negative-cases/lazy_leaf_missing.json",
+        "bytes": 9719,
+        "sha256": "44c059604b5a68f391c49ef6aba1bd69551b9113a9c75d3e18ce850f7503ad3d"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/negative-cases/missing-leaf-binding.json",
+        "bytes": 662856,
+        "sha256": "fe7708a2a47f607a4728797f7b66f53617b26c7d59232fdd6fea6d0e598dc5bb"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/negative-cases/seed.json",
+        "bytes": 9670,
+        "sha256": "7f81ff3ab0219f91eb0f0808f26aa76a5414f71ca93895701589f8b6130e6570"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/negative-cases/startup_command.json",
+        "bytes": 9697,
+        "sha256": "84238674c51cd01ad0278f189efdc026a6c9aacb6033baadb60c8d3ab05a004b"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/physical-output.txt",
+        "bytes": 1977,
+        "sha256": "c1b8d0e67a356863d961932496843198744bd47f7dbca0cf236485a74d2f11aa"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/preparation-result.json",
+        "bytes": 11863,
+        "sha256": "764b6136c95d493e2dfc72d9ac785b10a9fb0419a9a94577ffe18f663ba71e28"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/resource-check/board_albedo.png",
+        "bytes": 1970,
+        "sha256": "5d24a1d96cccf2f81046dbfa6afe57b4760038a8714da5059d6258fc34166945"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/resource-check/ground_albedo.png",
+        "bytes": 154343,
+        "sha256": "5e62827968eeabb55285bba85276518b6d8fb1441f0bf9659caa52a48ed48593"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/resource-check/gz_env.sh",
+        "bytes": 1189,
+        "sha256": "ab02c6a75a47a56a1ca133f07248d7c42b952c4038eb29a97da062e90c796bd3"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/resource-check/obstacle_albedo.png",
+        "bytes": 52690,
+        "sha256": "28f87e79cc5cd767b029a4c7b00b165e1aad9f2cbb998be1a161e3ff5d121c3f"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/resource-check/resource-graph.json",
+        "bytes": 147807,
+        "sha256": "28a21aeb8397eba5be554914b68923ba08dd4b23a809d1782ea44ecb1a6974ea"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/resource-check/resource-query-0000.json",
+        "bytes": 9174,
+        "sha256": "be5ff66c23562891559dd8ff5760bf9dfc8e3a522226a93e4e7cba0363415f12"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/resource-check/resource-query-0001.json",
+        "bytes": 11263,
+        "sha256": "45fe206ce3831305267d101ef1a8e429b5e408670d9834985615127d7ab9ac3a"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/resource-check/resource-query-0002.json",
+        "bytes": 11899,
+        "sha256": "6e98a545d1d1466e81d0829bcabcdaa16048ce821ca215ca1d64428c1ce50538"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/resource-check/resource-query-0003.json",
+        "bytes": 12323,
+        "sha256": "2681062cad2327b87645623a3b4609a11f46de08cf89252075a0ff824e610728"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/resource-check/resource-query-0004.json",
+        "bytes": 11263,
+        "sha256": "cdc130fd0932190de7974fdbcf62d0f829a7a17230ee843ccfe3c26e9919cc0a"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/resource-check/resource-query-0005.json",
+        "bytes": 10838,
+        "sha256": "2d67a6672b3f5e25e945d0696fb895e648d7503d1935933b0bf51a57fe13b3ba"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/resource-check/resource-query-0006.json",
+        "bytes": 11157,
+        "sha256": "c23de368c382082eb9517946959878465de83c673044d209e90d7b335ac3c96d"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/resource-check/resource-query-0007.json",
+        "bytes": 11793,
+        "sha256": "1dfed15c63c154214cc9378768d5fd84dc2e00abec8d12fc427786170823e8e5"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/resource-check/resource-query-0008.json",
+        "bytes": 11793,
+        "sha256": "87e5a756fd8ea3e38c2fd24410a0d5c37d5bf7976c9abdf0bc928cd632b98486"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/resource-check/resource-query-0009.json",
+        "bytes": 11263,
+        "sha256": "45e78565b35064708a83fb39405abd89d2cfa88a3386e635fdaea59ab32c6310"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/resource-check/resource-query-0010.json",
+        "bytes": 11345,
+        "sha256": "ca1fa422f57bb5fb9a1143b67f4571f7fada976053796590ce5117153f8a62ec"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/resource-check/resource-query-0011.json",
+        "bytes": 11326,
+        "sha256": "4e0ef366702aafce4eef68a126ff6ff5007aaf64ab4e91dcaa7c8d37e4c9116a"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/resource-check/resource-query-0012.json",
+        "bytes": 11325,
+        "sha256": "6b0806ccad1ce2f76a5f9cb80f3b5211e3a2442c849e4b411f739ccd625a131e"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/resource-check/resource-query-0013.json",
+        "bytes": 11383,
+        "sha256": "90c15659c105ed2f55297b82c85904400067a3fb100c68370a243757ae86b283"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/resource-check/resource-query-0014.json",
+        "bytes": 12176,
+        "sha256": "274473076ebaf0240931fd36ffc4acac9528515c253da42fdf50fc4cdbd7ef87"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/resource-check/resource-query-0015.json",
+        "bytes": 11171,
+        "sha256": "fc32e8b789f99b0c2a671b959bbcdf1435223ef260f98119a73b26f798b8e2ca"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/resource-check/resource-query-0016.json",
+        "bytes": 11309,
+        "sha256": "0870b9ed101dd25db0a457b27eec4c40c61ab26c0c1c0a5e42391d60032fbc62"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/resource-check/resource-query-0017.json",
+        "bytes": 11106,
+        "sha256": "044bb16232ee93cbf7e8081e6d58165465002f8910e2871b8f58ca316d07130f"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/resource-check/resource-query-0018.json",
+        "bytes": 11629,
+        "sha256": "0c29d46791db2fcdb211e716ae3b999a5b2393c03fe969373766a07a3320d3f7"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/resource-check/resource-query-0019.json",
+        "bytes": 11050,
+        "sha256": "ce07aafea350406df90e3129ce191e6a072e3ba5e058b8964341f5856851f778"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/resource-check/resource-query-0020.json",
+        "bytes": 11050,
+        "sha256": "3739b9b5434671f46cacb8c563137dd49906216c0a60f121f786483ab1eeca8b"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/resource-check/resource-query-0021.json",
+        "bytes": 11050,
+        "sha256": "5eae5ba436d701c5f2a73dcb41d902e17246f60e9f804bb4b9d9eaa0057fee7d"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/resource-check/resource-query-0022.json",
+        "bytes": 11050,
+        "sha256": "65edd75a68fde8cdabfef4f5337be9bf099948ee426fc496a6e50189b30b3542"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/resource-check/resource-query-0023.json",
+        "bytes": 11237,
+        "sha256": "b5beacfb40949d77dc8c60f73f0a8f6eb70e82fc6103f75c2036b63c79cc036d"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/resource-check/resource-query-0024.json",
+        "bytes": 11237,
+        "sha256": "b8121a78912e2ae244a3225b92cd9aa7c3208422c20b91338e1840a98bfba911"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/resource-check/resource-query-0025.json",
+        "bytes": 11210,
+        "sha256": "df8323a593bd21473c569e6dacfa7e57019500e42352a00443fc84f5c9434c9e"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/resource-check/resource-query-0026.json",
+        "bytes": 11190,
+        "sha256": "f4b9bbfceb29a5f066c0835051bad8fc318e17d88f7f4434ba39ee0ed2d19b05"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/resource-check/resource-query-0027.json",
+        "bytes": 3738,
+        "sha256": "e52f04b78cd54b92aeab427aafc1e9259b1041ea98698d8ba137d641a8186e04"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/resource-check/resource-query-0028.json",
+        "bytes": 11050,
+        "sha256": "ce4fbfdb77b41b508c19d8c9a3e53b3327083e31f6ce9cb2e917786d267d991f"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/resource-check/resource-query-0029.json",
+        "bytes": 11190,
+        "sha256": "d42adb408091972ae8bfb9bbb65f7cbf50dae89f009323f3e4c4167663a9070e"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/resource-check/resource-query-0030.json",
+        "bytes": 11050,
+        "sha256": "7d375c1836401d584927b491c6cf2a0964b8a0f293667a2ff252f92b791bc3a0"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/resource-check/resource-query-0031.json",
+        "bytes": 11161,
+        "sha256": "fa67d9ebaf39a40ca6dbc0dece4b4aa89d49c102c56ac03db853a64093d3a351"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/resource-check/resource-query-0032.json",
+        "bytes": 11050,
+        "sha256": "31fc5072a2283fa1bac4259023e5255bb37ee3226be7882e488adb0467dfb163"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/resource-check/resource-query-0033.json",
+        "bytes": 11162,
+        "sha256": "d989e7ea91a129a396a13361601713806b4923287ca58b1065e9895a5135e412"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/resource-check/resource-query-0034.json",
+        "bytes": 11050,
+        "sha256": "b02232b45e4e012462074e08d7f7b59e30b06a47809cc6bd70e6999260cde2ac"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/resource-check/resource-query-0035.json",
+        "bytes": 12959,
+        "sha256": "1a3887cef780182d8f38057f830c41695839f56d39a318905d41a90cf04659a2"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/resource-check/resource-query-0036.json",
+        "bytes": 12959,
+        "sha256": "18d79d6179cf9f6a0c03d5a917fd67501025dfadb9e950c1a35315b2a9f501ca"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/resource-check/resource-query-0037.json",
+        "bytes": 12959,
+        "sha256": "3e666bb980970ec9b7a2e1180d857fd03e8fbf427f0466bf969ddd652e57343e"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/resource-check/resource-query-0038.json",
+        "bytes": 12959,
+        "sha256": "62f00bf01b67fc8f9907a5282d791c25a64e9342e87e618d54f3d15d6cb6b2e7"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/resource-check/resource-query-0039.json",
+        "bytes": 12092,
+        "sha256": "afbc2e3e3aabe4e215d16d553f0e22b6347f076352640c73a575ab376570f1c7"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/resource-check/world.json",
+        "bytes": 910,
+        "sha256": "e783db3dbbebf1142ba4bae7f09f5133d474f21415bd3843427598c6c3f58f51"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/resource-check/world.sdf",
+        "bytes": 5844,
+        "sha256": "b42bd639080c967ceb84edc7bbf023b064dbd4fc610ccb81a1eaceb5fb373c1e"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/runtime-binding-v3.json",
+        "bytes": 663891,
+        "sha256": "2b47f3b37c6208dce32bf36b72e4102caac4dbe5a9069848352bc7c2bec483ab"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/source-drift.json",
+        "bytes": 708,
+        "sha256": "1b2d50a0c357c1ccce0d33100ce35c374b093bd605275df671c239123d3ab705"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/study-manifest.json",
+        "bytes": 9670,
+        "sha256": "b1e254e98b26c2183741a2a0f8db91d92de34d165cced42918e8c8254693d9d2"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/trajectory-gauge-policy.json",
+        "bytes": 1031,
+        "sha256": "a97bc126e90e0bfb88cc995f782904a7a842e460854dbd71cec977cd98800463"
+      },
+      {
+        "path": "results/live-wire-study-dev-1701/study-v6/wire-config.json",
+        "bytes": 128,
+        "sha256": "0c9602e0870caa8c50e8dd267c3ce4bdc40e267c3f36c584b2ddeee316536fd7"
+      },
+      {
+        "path": "tests/benchmark/test_capture_wire_lifecycle.py",
+        "bytes": 18455,
+        "sha256": "2f321925aee832394c92af92515d5367b795ff1aca96e54955abad1b15f873af"
+      },
+      {
+        "path": "tools/benchmark/capture_wire_lifecycle.py",
+        "bytes": 21239,
+        "sha256": "6d2686db0ca9d9e9e0a68999e4cd96e60acc7dcf45655d719d5c1226d611bc22"
+      },
+      {
+        "path": "producer-source/src/flydrones/__init__.py",
+        "bytes": 84,
+        "sha256": "d727a1daa671c586aa3a87acd741a509521f8707d9d811ccffb4a713a8895285"
+      },
+      {
+        "path": "producer-source/src/flydrones/benchmark/__init__.py",
+        "bytes": 64,
+        "sha256": "87f71597fc29585ef2a2243393caae34935e692b15df1dc6e66f9a00568290ff"
+      },
+      {
+        "path": "producer-source/src/flydrones/benchmark/camera_info_capture.py",
+        "bytes": 4539,
+        "sha256": "005c180b94938d8aa90b73c9555d87bdea4ca4bcdc6173bee613056e11635edf"
+      },
+      {
+        "path": "producer-source/src/flydrones/benchmark/clock.py",
+        "bytes": 1051,
+        "sha256": "fef2652f9d4d33cd12c7e207bebf3ca3ca0521ec37445123f0e32d2856978d35"
+      },
+      {
+        "path": "producer-source/src/flydrones/benchmark/contract.py",
+        "bytes": 978,
+        "sha256": "a81f751070ea0e2aa65a76a37d86a52b49fc24edb9bae5f7bbb104c1455cedc1"
+      },
+      {
+        "path": "producer-source/src/flydrones/benchmark/gateway.py",
+        "bytes": 37410,
+        "sha256": "45d6cd052adbc07e5eb4b18cb004ea2e6d9031e22b280b062ee18b5410c62ea6"
+      },
+      {
+        "path": "producer-source/src/flydrones/benchmark/geometry.py",
+        "bytes": 2443,
+        "sha256": "b15887f873aec2f6342e76c75a018ad9c95c1ec17c236cea3b32284990560432"
+      },
+      {
+        "path": "producer-source/src/flydrones/benchmark/rgb_capture.py",
+        "bytes": 3851,
+        "sha256": "d1d0fe92b9bcf13bcb6d4f75f2445cfe3903752bbd68279a9c07bec7503be4dc"
+      },
+      {
+        "path": "producer-source/src/flydrones/benchmark/score.py",
+        "bytes": 4381,
+        "sha256": "9981e1a3e2134e06f195caefb31d88447cff9822e3321d99f4c5dee7309b9dc8"
+      },
+      {
+        "path": "producer-source/src/flydrones/benchmark/sensors.py",
+        "bytes": 8017,
+        "sha256": "8e23d0da1ad58e766f3784de90fece7c48c34b02f8cda9acc3f46084308d9390"
+      },
+      {
+        "path": "producer-source/src/flydrones/benchmark/ulog_capture.py",
+        "bytes": 3961,
+        "sha256": "dbce660942b708f8f36eb1fbcfe95469170b6a4bd697ac9e1305a88b2c350aac"
+      },
+      {
+        "path": "producer-source/src/flydrones/benchmark/worlds.py",
+        "bytes": 11569,
+        "sha256": "063515ad32d57d4ab8a8007375acf557140338a7dbe520386d2685cc123a9e88"
+      },
+      {
+        "path": "producer-source/src/flydrones/drones/__init__.py",
+        "bytes": 795,
+        "sha256": "8d2369e6b950b195e4bf71cc1c2f839a258acc1f2c084c5f74864a02da974247"
+      },
+      {
+        "path": "producer-source/src/flydrones/drones/base.py",
+        "bytes": 2051,
+        "sha256": "30c08931aa8cb77f8b41e33ce1e424e95cb7bdabc836b34e1f4fc40106d01e86"
+      },
+      {
+        "path": "producer-source/src/flydrones/drones/crazyflie.py",
+        "bytes": 4239,
+        "sha256": "8ded30ec845093815f0ca81eaf7a35f681d7a17f4ddb7c74a09473490d02c0f2"
+      },
+      {
+        "path": "producer-source/src/flydrones/drones/mavlink.py",
+        "bytes": 7671,
+        "sha256": "d9fb60ea6ec59a0bc7571d04684dea22a22d325f95ce1f84a54b3f73558084cf"
+      },
+      {
+        "path": "producer-source/src/flydrones/drones/sim.py",
+        "bytes": 9259,
+        "sha256": "89ef7a67f2d0a5f70cf8fc15ffa08caf355157fcbfc715298ceb6136fddb740d"
+      },
+      {
+        "path": "producer-source/src/flydrones/drones/tello.py",
+        "bytes": 3005,
+        "sha256": "2a783177b0b2b7206a92ceafc431b1876ffbc7bb2b9fd2f72544e28ba19887ab"
+      },
+      {
+        "path": "producer-source/src/flydrones/drones/udp_bridge.py",
+        "bytes": 4518,
+        "sha256": "d83ba1e2cb5b07e5727c6e8d5b0a09367acf8a6e4d815c00934bdd9adfb238c7"
+      },
+      {
+        "path": "producer-source/src/flydrones/motor/__init__.py",
+        "bytes": 118,
+        "sha256": "d5757bcb834ea819f9fc97720dc99a3c610cadd741708bd5c249c6aacba067b1"
+      },
+      {
+        "path": "producer-source/src/flydrones/motor/command.py",
+        "bytes": 949,
+        "sha256": "febc2273083733e80ab814718391925950508189671be60f4c7cd956f06e358a"
+      },
+      {
+        "path": "producer-source/src/flydrones/motor/decoder.py",
+        "bytes": 7230,
+        "sha256": "12b8a5d2220d44c18b25dffca118f0e5499295a3cc58b36820237e30cd0085f7"
+      },
+      {
+        "path": "producer-source/src/flydrones/safety.py",
+        "bytes": 5999,
+        "sha256": "64eda73ada930b478a367c04b189ebaca0ebbbe6a1f110ea597e9fa11cf46b22"
+      },
+      {
+        "path": "producer-source/tools/benchmark/audit_live_wire_coverage.py",
+        "bytes": 15636,
+        "sha256": "e587ecfd943bc39afb1be3e5f808e8a20e3a02702f8cce30057ad4befa984e4b"
+      },
+      {
+        "path": "producer-source/tools/benchmark/audit_live_wire_resources.py",
+        "bytes": 10411,
+        "sha256": "604f424932070455cf8bfe265fb92358814d4af806be8e96c94c49fea2fb7c3a"
+      },
+      {
+        "path": "producer-source/tools/benchmark/audit_live_wire_runtime.py",
+        "bytes": 13383,
+        "sha256": "e2e5ee6bf5955edb1f03fca8310cbe7df6a69260eafeac3d4035bfea6c5b6bd8"
+      },
+      {
+        "path": "producer-source/tools/benchmark/audit_live_wire_safety.py",
+        "bytes": 23455,
+        "sha256": "2d66a18626a47c94fca792a0639181e3823551414b76fc9b24f70bc4904a40e5"
+      },
+      {
+        "path": "producer-source/tools/benchmark/audit_live_wire_study.py",
+        "bytes": 75687,
+        "sha256": "7a1444cb543def342c0e31d5b2d37488a43e15358e0d249c6f8d25bbc0c24499"
+      },
+      {
+        "path": "producer-source/tools/benchmark/audit_live_wire_ulog.py",
+        "bytes": 4235,
+        "sha256": "4bc86de845a6099a9374a54a2555ee5c5e0d3eeaa6a52815ef93f3fd876d2274"
+      },
+      {
+        "path": "producer-source/tools/benchmark/audit_live_wire_workload.py",
+        "bytes": 11779,
+        "sha256": "6b14b7fb3011fb956d4bdac7cf459e3445b3a062d4f0564394c800d5fa9e79a2"
+      },
+      {
+        "path": "producer-source/tools/benchmark/bound_resource_graph.py",
+        "bytes": 5637,
+        "sha256": "b89a201bf1c0188892e28b62d819e15cd3cd9d00f67137f699ff26ca0266853d"
+      },
+      {
+        "path": "producer-source/tools/benchmark/build_openvins_ekf2_fast_run_evidence.py",
+        "bytes": 7157,
+        "sha256": "00edf7aec7354c7033cda46f68631d2ae27787dc6edee28e5852217d0d5a6895"
+      },
+      {
+        "path": "producer-source/tools/benchmark/capture_contract.py",
+        "bytes": 9264,
+        "sha256": "b14d4419ffc8db6ffc24eb9fa929c14f4a3432e2ac7cd9cfe6fc0dfb00596bb5"
+      },
+      {
+        "path": "producer-source/tools/benchmark/capture_disarmed_sensors.py",
+        "bytes": 52876,
+        "sha256": "b650d1fbc5c21d9b61914de74d94fdf39210b190f3d41f821c031874d02a7bf0"
+      },
+      {
+        "path": "producer-source/tools/benchmark/capture_wire_lifecycle.py",
+        "bytes": 20825,
+        "sha256": "348cfed59ab96a413cca007a642c831fe522a1d954f3bfb1594a13c1b8368c7d"
+      },
+      {
+        "path": "producer-source/tools/benchmark/declared_runtime_snapshot.py",
+        "bytes": 5442,
+        "sha256": "b0d9eb7611fc6505827c7fd4279a3b6aae5ae0add9e25011da6e69badfea115f"
+      },
+      {
+        "path": "producer-source/tools/benchmark/disarmed_motion_probe.py",
+        "bytes": 9881,
+        "sha256": "f397625c4191f25d74cc487a49ea290d3e00400b99d363e2a6d0fe9ca8564e23"
+      },
+      {
+        "path": "producer-source/tools/benchmark/disarmed_sensor_provenance.py",
+        "bytes": 20152,
+        "sha256": "f6cc1f2784806943f777f4fc18f8616fa1402deed21b2609e30a1f4085e91dff"
+      },
+      {
+        "path": "producer-source/tools/benchmark/estimator_aware_readiness.py",
+        "bytes": 17368,
+        "sha256": "be471045e808a46b44dd36f3a87a5c25b95889c393246aa0b99d090f3d62de2f"
+      },
+      {
+        "path": "producer-source/tools/benchmark/execute_openvins_health_physical_run.py",
+        "bytes": 11900,
+        "sha256": "057991923309a0524799080d15de17c23e9633c2ade8f468864fc4be8b32da58"
+      },
+      {
+        "path": "producer-source/tools/benchmark/journaled_heartbeat_lane.py",
+        "bytes": 8305,
+        "sha256": "af0cfa376e0093049a2ddbee8b93728d04c3793a4dc7d30091d5fd89fd2a6202"
+      },
+      {
+        "path": "producer-source/tools/benchmark/live_wire_study.py",
+        "bytes": 14662,
+        "sha256": "799e891a305f05da2d3ec074434c1c920602038448df835b6e8d2654366cee2e"
+      },
+      {
+        "path": "producer-source/tools/benchmark/motion_intent_gate.py",
+        "bytes": 12307,
+        "sha256": "e006e263d33b2674a128b693c65faeea38b0767903704ce6183bdc7c15688f9d"
+      },
+      {
+        "path": "producer-source/tools/benchmark/motion_intent_physical.py",
+        "bytes": 1608,
+        "sha256": "0ce6cf0d9d46a9cdab9b2cb35dd0a87521941473930e04e42bdb8f339afa9d40"
+      },
+      {
+        "path": "producer-source/tools/benchmark/native_query_process.py",
+        "bytes": 2368,
+        "sha256": "ceb01f99258c1cff424ecc08ed107945eb279d5cf49e4e030f079a0bc930f3cf"
+      },
+      {
+        "path": "producer-source/tools/benchmark/native_reference_probe.py",
+        "bytes": 5356,
+        "sha256": "bc36572cf4c532d3e1aadef19a41e31c70f8d5eb6549e3f738c9dfd585c39328"
+      },
+      {
+        "path": "producer-source/tools/benchmark/native_resource_client.py",
+        "bytes": 10312,
+        "sha256": "ec68d50758f5352727cb79b252597aae2f61f2006da8435f47f4d1ffacaa744e"
+      },
+      {
+        "path": "producer-source/tools/benchmark/native_runtime_refusal.py",
+        "bytes": 5835,
+        "sha256": "16b4063adb1e5835ecc9ae899587ea1b6d1860596c63e606d5dcb17b0a3b4f8f"
+      },
+      {
+        "path": "producer-source/tools/benchmark/native_supervisor_integration.py",
+        "bytes": 11019,
+        "sha256": "20e35ff52a930df4a33b758d79e4768e9a8c599ca8eb660ec558286a86eaf581"
+      },
+      {
+        "path": "producer-source/tools/benchmark/openvins_causal_input.py",
+        "bytes": 12017,
+        "sha256": "cb188d29b5fdc70fc1282a9653dd8fc7338884fa63b2d53416cddb18f204d115"
+      },
+      {
+        "path": "producer-source/tools/benchmark/openvins_datagram_receive.py",
+        "bytes": 12763,
+        "sha256": "454a547f69fc07aa6a63a42398a53e0bd57cfea64e941a53b0c8b4dd8e35066b"
+      },
+      {
+        "path": "producer-source/tools/benchmark/openvins_ekf2_disarmed_preflight.py",
+        "bytes": 24405,
+        "sha256": "feca7b24b136153783388861135c5d8cd1be9393488e3b03fdb8e5d6d7b84960"
+      },
+      {
+        "path": "producer-source/tools/benchmark/openvins_ekf2_fast_contract.py",
+        "bytes": 10254,
+        "sha256": "4cf4431c83976e6b8ac1cde719547a2aa9a97196ed98d2542b73e55c6644924f"
+      },
+      {
+        "path": "producer-source/tools/benchmark/openvins_ekf2_integration.py",
+        "bytes": 19590,
+        "sha256": "a985686438d26769575eb1c20ec2739505d5f24c18bd94bbe310f71c8388fa3e"
+      },
+      {
+        "path": "producer-source/tools/benchmark/openvins_ekf2_transform.py",
+        "bytes": 4225,
+        "sha256": "aa95f772ec3340a93031850df27b5f29cc41ae6c1c63e1aa0a6507d7890801c3"
+      },
+      {
+        "path": "producer-source/tools/benchmark/openvins_health_contract.py",
+        "bytes": 10430,
+        "sha256": "be44d975ac7698b86af6b4347e8d81da4c33b65cb4ae8be85d48e39478dd2eee"
+      },
+      {
+        "path": "producer-source/tools/benchmark/openvins_health_physical_faults.py",
+        "bytes": 11095,
+        "sha256": "774de064bdac365089c65246da0332597c76a5c06033d50c48e945845e30a2d6"
+      },
+      {
+        "path": "producer-source/tools/benchmark/openvins_listener_transport.py",
+        "bytes": 16578,
+        "sha256": "afbbadb73d1bca95b8941cd1f747d4201d39bb7773aed1f8dc12bbe8b88e5ed9"
+      },
+      {
+        "path": "producer-source/tools/benchmark/openvins_observed_wire_session.py",
+        "bytes": 23844,
+        "sha256": "0452b98cb3eb679a7546d2d720f673cfd8006b7afae86074ca4faf300aed4ab8"
+      },
+      {
+        "path": "producer-source/tools/benchmark/openvins_online_shadow.py",
+        "bytes": 29922,
+        "sha256": "99651fd531cf4c915feeff71987a1d8347dc0da10e842209105b9002d4fbf4aa"
+      },
+      {
+        "path": "producer-source/tools/benchmark/openvins_owned_bootstrap.py",
+        "bytes": 16020,
+        "sha256": "617b95805aa18c5f533621c46b44205d33e291e3a98fa5411f358f2e59122bde"
+      },
+      {
+        "path": "producer-source/tools/benchmark/openvins_receiver_parity.py",
+        "bytes": 14707,
+        "sha256": "8cc4b4b753bd1daaa90d5028680d50974ad8df6cc230c42b73a500590633cf1a"
+      },
+      {
+        "path": "producer-source/tools/benchmark/openvins_segmented_journal.py",
+        "bytes": 11740,
+        "sha256": "a07c73553aa34bdb5299028454a6c22f73f057e6bc18aed612614143f5acb3e2"
+      },
+      {
+        "path": "producer-source/tools/benchmark/openvins_simulation_clock.py",
+        "bytes": 10597,
+        "sha256": "65ea9a3f5811d329436a13b358d744e20fada36f79a31c829e51638ae1b0bdf7"
+      },
+      {
+        "path": "producer-source/tools/benchmark/openvins_timesync_bootstrap.py",
+        "bytes": 13938,
+        "sha256": "5dd859e4ca09ca74b0bf899c13595b0aa7e8906ff99b18e87f8e14cf821637ea"
+      },
+      {
+        "path": "producer-source/tools/benchmark/openvins_timesync_interval.py",
+        "bytes": 23186,
+        "sha256": "c614bb8857eee1168572078244dd506483293a3ad2f6cd1fad5bc4e7034d6b6d"
+      },
+      {
+        "path": "producer-source/tools/benchmark/openvins_timesync_listener.py",
+        "bytes": 6885,
+        "sha256": "29ee45a446fd4a00b15383efc532530e998608be65cc4b69e08eb24d83218e0b"
+      },
+      {
+        "path": "producer-source/tools/benchmark/openvins_timesync_maintenance.py",
+        "bytes": 10650,
+        "sha256": "b6037bb0045d6f2ad71b50c01a94fcec22a3fdb917c430c7a867197838c00eb3"
+      },
+      {
+        "path": "producer-source/tools/benchmark/openvins_timesync_observer.py",
+        "bytes": 5712,
+        "sha256": "5bfb1e27e77b360575416027400cbb664c487b2cbe5660c8817fbcd5c43f75b7"
+      },
+      {
+        "path": "producer-source/tools/benchmark/openvins_timesync_wire.py",
+        "bytes": 33786,
+        "sha256": "6d9f2afc1f29580e1eaf8253e8418a159cb4c1f3f7434ce22efb3c91f191fd52"
+      },
+      {
+        "path": "producer-source/tools/benchmark/openvins_wire_bootstrap.py",
+        "bytes": 9498,
+        "sha256": "c9d44715b132182d9848bbc3251a8d0d392066daa1e583036700038723036ef8"
+      },
+      {
+        "path": "producer-source/tools/benchmark/owned_daemon_connection.py",
+        "bytes": 8625,
+        "sha256": "d69d39580b2e1e5f344c1004fae3981a3e82f22af586d6c45843318cc611dc53"
+      },
+      {
+        "path": "producer-source/tools/benchmark/owned_group_evidence.py",
+        "bytes": 10831,
+        "sha256": "f5b50e1aefb93050a9a0c90cce93dbc0ea22440185489f726b760458640a502a"
+      },
+      {
+        "path": "producer-source/tools/benchmark/owned_runtime_maps.py",
+        "bytes": 6837,
+        "sha256": "aca43b67ad2c7b530c09191979cf77f78699c1a2dcfcb4dfd355404150c84e04"
+      },
+      {
+        "path": "producer-source/tools/benchmark/physics_substep_trace.py",
+        "bytes": 8791,
+        "sha256": "0d9716a788ee33d1b8aeff7f627becaa8a9563e260baf3a4d04c00a63fb55aea"
+      },
+      {
+        "path": "producer-source/tools/benchmark/readiness_anchor.py",
+        "bytes": 10058,
+        "sha256": "b3c07aca65b5df5e25f860d79a09ec2d376602944107d432da6cba4452cce51f"
+      },
+      {
+        "path": "producer-source/tools/benchmark/ready_shadow_fanout.py",
+        "bytes": 12433,
+        "sha256": "75dc7f142886705c7f8377ed2e0ca7f5086c446264629efcb8178359943ac197"
+      },
+      {
+        "path": "producer-source/tools/benchmark/repository_python_sources.py",
+        "bytes": 5652,
+        "sha256": "373c137bd788781a43fe22089fdafb29226bd9284e28f515f6d02ebb44dd7e69"
+      },
+      {
+        "path": "producer-source/tools/benchmark/runtime_resource_binding.py",
+        "bytes": 19439,
+        "sha256": "7e0bea2f888ec07b0b1ab0e7cb384601830f918d2cb74e79cbc8a25804918d9d"
+      },
+      {
+        "path": "producer-source/tools/benchmark/selected_resource_graph.py",
+        "bytes": 3503,
+        "sha256": "30b0de50251daf1025a204b2992a727c192f8094188247440f4752cb35c8852f"
+      },
+      {
+        "path": "producer-source/tools/benchmark/supported_excitation.py",
+        "bytes": 10720,
+        "sha256": "d340ab48d328be8af50418472d620ab904de456e013f9dc02eb24714556756ea"
+      },
+      {
+        "path": "producer-source/tools/benchmark/trajectory_gauge_contract.py",
+        "bytes": 25695,
+        "sha256": "42d7e1d410b0078e37e248edbb72cdd6ac94fe30ad8481068e8f59bf41150005"
+      }
+    ]
+  }
+}

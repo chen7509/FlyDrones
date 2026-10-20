@@ -1,0 +1,7 @@
+warning: in the working copy of 'docs/superpowers/plans/2026-10-07-heartbeat-sim-time-physical-retry.md', LF will be replaced by CRLF the next time Git touches it
+ .../ESTIMATOR_PHYSICAL_REFUSAL_DIAGNOSIS_REPORT.md | 14 ++++++
+ ...2026-10-07-heartbeat-sim-time-physical-retry.md |  8 ++--
+ tests/benchmark/test_openvins_causal_input.py      | 50 ++++++++++++++--------
+ tests/benchmark/test_openvins_online_shadow.py     | 24 ++++++++---
+ tools/benchmark/openvins_causal_input.py           | 20 ++++++---
+ 5 files changed, 81 insertions(+), 35 deletions(-)

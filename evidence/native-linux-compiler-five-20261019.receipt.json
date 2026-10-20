@@ -1,0 +1,17 @@
+{
+  "schema": "new-observation-archive-receipt-v1",
+  "path": "evidence/native-linux-compiler-five-20261019.zip",
+  "bytes": 38868625,
+  "sha256": "baa8bc1cfc3396dccefa2970b78d823e3e4f14daca16233a7181e84328dc2265",
+  "members": 24,
+  "mapped_members": 23,
+  "mapped_bytes": 94619769,
+  "manifest_bytes": 5174,
+  "whole_member_bytes": 94624943,
+  "new_archive_crc_and_member_hashes_checked": true,
+  "helper_ast_only": true,
+  "tests_run": false,
+  "old_archives_or_payloads_checked": false,
+  "all_qualifications": false,
+  "dispatchable": false
+}

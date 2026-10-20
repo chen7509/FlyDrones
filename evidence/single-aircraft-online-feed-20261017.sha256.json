@@ -1,0 +1,3749 @@
+{
+  "archive": "evidence/single-aircraft-online-feed-20261017.zip",
+  "bytes": 1941515,
+  "sha256": "749169fb954b1899d27c78333d19b49e3965c2bc0b31ae94af912da59aff23c7",
+  "members": 748,
+  "mapped_members": 747,
+  "mapped_payload_bytes": 6767598,
+  "manifest_bytes": 181569,
+  "manifest_sha256": "59ec542581cfbb00e90c3b0a3f5e268a60e5979d87d1ad3e1debfcb6e5c7fd8f",
+  "whole_expanded_bytes": 6949167,
+  "files": [
+    {
+      "path": "docs/SINGLE_AIRCRAFT_ONLINE_FEED_PROGRESS.md",
+      "bytes": 7480,
+      "sha256": "77085d44f178a0b307dd1d87f82d37990daac1bc5a689084e64fbdf75a5c612c"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-10-17-capture-online-estimates.md",
+      "bytes": 3036,
+      "sha256": "500cc823f5ebfbe9935a9ed03d7adde4f8533ced6e9b58ec65ef3dfbeef81360"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-10-17-capture-online-estimates-design.md",
+      "bytes": 3415,
+      "sha256": "39dc089c8f2e496cd925c1f9df2d453f18fa9b932ff99c26cf026392f079bb20"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/before/tests/benchmark/test_capture_contract.py",
+      "bytes": 27257,
+      "sha256": "4d50a49209b31ee053c3b6138080bfa95f86ee00fcd72ed84bf258856cb28697"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/before/tools/benchmark/capture_contract.py",
+      "bytes": 14585,
+      "sha256": "18d95975bf9676554d65aa4d7b30591fa43c68e7198ecff24a5808ef709c4883"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/before/tools/benchmark/capture_disarmed_sensors.py",
+      "bytes": 64954,
+      "sha256": "917089fe23870c081de2a17cc3a9ee386bbbb78c00036cfd9a0acf039b847347"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/before/tools/benchmark/openvins_fast_probe.h",
+      "bytes": 2663,
+      "sha256": "3795243174eec9a28842cffecdd3939507e198dcad2308a57b4aa309f268857e"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/before/tools/benchmark/openvins_online_probe.cpp",
+      "bytes": 10837,
+      "sha256": "7a0804bd9c39f3a67f4f50aae09f15387cd8dd7d8f61474eb57d3db22f0d8f02"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/before/tools/benchmark/openvins_online_shadow.py",
+      "bytes": 29922,
+      "sha256": "99651fd531cf4c915feeff71987a1d8347dc0da10e842209105b9002d4fbf4aa"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/capture-integration/after/results/single-aircraft-online-feed-20261017/record.py",
+      "bytes": 3682,
+      "sha256": "774704831204ded284aef82deb2ea98c16b4053bf4b575388414ce1227cf6820"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/capture-integration/after/tests/benchmark/test_capture_contract.py",
+      "bytes": 27257,
+      "sha256": "4d50a49209b31ee053c3b6138080bfa95f86ee00fcd72ed84bf258856cb28697"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/capture-integration/after/tests/benchmark/test_capture_online_estimates.py",
+      "bytes": 10967,
+      "sha256": "b561651307c8bcaeec7efd4cc82e91cb1b24711c488d46908ce56fa1d81eaeac"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/capture-integration/after/tools/benchmark/capture_contract.py",
+      "bytes": 15268,
+      "sha256": "5ed057b25344c283e2fdba25e3bc05e3ca85413df055b23946fab041a3a1ad53"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/capture-integration/after/tools/benchmark/capture_disarmed_sensors.py",
+      "bytes": 65910,
+      "sha256": "aeea2e4b7f5ea37ed56aced18f449979caf5ad47de46725c8fc4c8e831331e7d"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/capture-integration/after/tools/benchmark/capture_online_estimates.py",
+      "bytes": 9076,
+      "sha256": "f6d97289d1e59ff2633c8b766e653ab36f150cd7c06e284ad3d19cfa056097d5"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/capture-integration/after/tools/benchmark/openvins_fast_probe.h",
+      "bytes": 2663,
+      "sha256": "3795243174eec9a28842cffecdd3939507e198dcad2308a57b4aa309f268857e"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/capture-integration/after/tools/benchmark/openvins_online_probe.cpp",
+      "bytes": 10837,
+      "sha256": "7a0804bd9c39f3a67f4f50aae09f15387cd8dd7d8f61474eb57d3db22f0d8f02"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/capture-integration/after/tools/benchmark/openvins_online_shadow.py",
+      "bytes": 29922,
+      "sha256": "99651fd531cf4c915feeff71987a1d8347dc0da10e842209105b9002d4fbf4aa"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/capture-integration/before/results/single-aircraft-online-feed-20261017/record.py",
+      "bytes": 3682,
+      "sha256": "774704831204ded284aef82deb2ea98c16b4053bf4b575388414ce1227cf6820"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/capture-integration/before/tests/benchmark/test_capture_contract.py",
+      "bytes": 27257,
+      "sha256": "4d50a49209b31ee053c3b6138080bfa95f86ee00fcd72ed84bf258856cb28697"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/capture-integration/before/tests/benchmark/test_capture_online_estimates.py",
+      "bytes": 10967,
+      "sha256": "b561651307c8bcaeec7efd4cc82e91cb1b24711c488d46908ce56fa1d81eaeac"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/capture-integration/before/tools/benchmark/capture_contract.py",
+      "bytes": 15268,
+      "sha256": "5ed057b25344c283e2fdba25e3bc05e3ca85413df055b23946fab041a3a1ad53"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/capture-integration/before/tools/benchmark/capture_disarmed_sensors.py",
+      "bytes": 65910,
+      "sha256": "aeea2e4b7f5ea37ed56aced18f449979caf5ad47de46725c8fc4c8e831331e7d"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/capture-integration/before/tools/benchmark/capture_online_estimates.py",
+      "bytes": 9076,
+      "sha256": "f6d97289d1e59ff2633c8b766e653ab36f150cd7c06e284ad3d19cfa056097d5"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/capture-integration/before/tools/benchmark/openvins_fast_probe.h",
+      "bytes": 2663,
+      "sha256": "3795243174eec9a28842cffecdd3939507e198dcad2308a57b4aa309f268857e"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/capture-integration/before/tools/benchmark/openvins_online_probe.cpp",
+      "bytes": 10837,
+      "sha256": "7a0804bd9c39f3a67f4f50aae09f15387cd8dd7d8f61474eb57d3db22f0d8f02"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/capture-integration/before/tools/benchmark/openvins_online_shadow.py",
+      "bytes": 29922,
+      "sha256": "99651fd531cf4c915feeff71987a1d8347dc0da10e842209105b9002d4fbf4aa"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/capture-integration/completion.json",
+      "bytes": 18273,
+      "sha256": "449952e6600a6e9b1c9d0f98d793f57f85d682de1079f7abb11d930dacd63a99"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/capture-integration/fixtures/test_bad_native_output_latches0/fast.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/capture-integration/fixtures/test_bad_native_output_latches0/online-estimates.jsonl",
+      "bytes": 2167,
+      "sha256": "a6ecf892a7e04ef456a606566106e84b02804a620c7ea44338c3d079536b6580"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/capture-integration/fixtures/test_bad_native_output_latches1/fast.jsonl",
+      "bytes": 1239,
+      "sha256": "5a7e9c70246601f834252a5d86eee940c335aeb232d2bad91bd41901e73c318c"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/capture-integration/fixtures/test_bad_native_output_latches1/online-estimates.jsonl",
+      "bytes": 2167,
+      "sha256": "a6ecf892a7e04ef456a606566106e84b02804a620c7ea44338c3d079536b6580"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/capture-integration/fixtures/test_bad_native_output_latches2/fast.jsonl",
+      "bytes": 2480,
+      "sha256": "c2e590b202d888d5c3d1a84d54b872e0f1189df7333d81034cb756a6ea1b9d6d"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/capture-integration/fixtures/test_bad_native_output_latches2/online-estimates.jsonl",
+      "bytes": 2167,
+      "sha256": "a6ecf892a7e04ef456a606566106e84b02804a620c7ea44338c3d079536b6580"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/capture-integration/fixtures/test_bad_native_output_latches3/fast.jsonl",
+      "bytes": 1240,
+      "sha256": "9b88f24d2b3c8175af8f7a3fea5ebf70ae006538ba733c6cc73c5bbca4873314"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/capture-integration/fixtures/test_bad_native_output_latches3/online-estimates.jsonl",
+      "bytes": 2167,
+      "sha256": "3be6fa82b5b7c5ff0d0b9b7ed087fc964beeca08cc68e455d0f6193cd990bc22"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/capture-integration/fixtures/test_bad_native_output_latches4/fast.jsonl",
+      "bytes": 1240,
+      "sha256": "eed376b6abd17f6404429d34a7dacd5642b49e1f2d414a490d1523c50ace3e4f"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/capture-integration/fixtures/test_bad_native_output_latches4/online-estimates.jsonl",
+      "bytes": 2167,
+      "sha256": "3be6fa82b5b7c5ff0d0b9b7ed087fc964beeca08cc68e455d0f6193cd990bc22"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/capture-integration/fixtures/test_bad_native_output_latches5/fast.jsonl",
+      "bytes": 1239,
+      "sha256": "d07cd1c76e62d6a6afefe7c2c481ff2037da4de400de7c3db6d706fc051d1ae2"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/capture-integration/fixtures/test_bad_native_output_latches5/online-estimates.jsonl",
+      "bytes": 2167,
+      "sha256": "3be6fa82b5b7c5ff0d0b9b7ed087fc964beeca08cc68e455d0f6193cd990bc22"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/capture-integration/fixtures/test_bad_native_output_latches6/fast.jsonl",
+      "bytes": 1240,
+      "sha256": "b66184810d452725c46f0f09a0e79d1ff6ac8470fe81ab86475d6b392fb35d7a"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/capture-integration/fixtures/test_bad_native_output_latches6/online-estimates.jsonl",
+      "bytes": 2164,
+      "sha256": "b245708f3161563e704cad9409eab18dc1cdfcf010106924ec15e4cdade3be4b"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/capture-integration/fixtures/test_bad_native_output_latches7/fast.jsonl",
+      "bytes": 16385,
+      "sha256": "0a6f21fda2a49df0c6671aacfe31136e24b4880f334ee89182752f35c2f0cb3d"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/capture-integration/fixtures/test_bad_native_output_latches7/online-estimates.jsonl",
+      "bytes": 2166,
+      "sha256": "05ef8442d7b9830be8ce2025e17fc6a76b4d7bb467d26e82c5e764701bd37450"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/capture-integration/fixtures/test_direct_worker_refuses_bef0/wrong.json",
+      "bytes": 2,
+      "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/capture-integration/fixtures/test_duplicate_json_keys_refus0/duplicate.json",
+      "bytes": 40,
+      "sha256": "d1e45a04de6b757975264cf4457d20fa5696fa4247b472ecaf209d7796282519"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/capture-integration/fixtures/test_elapsed_transport_and_out0/fast.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/capture-integration/fixtures/test_elapsed_transport_and_out0/online-estimates.jsonl",
+      "bytes": 448,
+      "sha256": "0a6c6d9e72f1d32c5332d9c7851345068036c740a3b1603c96c4942517023157"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/capture-integration/fixtures/test_execution_v2_binds_exact_0/execution-v2.json",
+      "bytes": 548,
+      "sha256": "0ba34d5d80c4416dcb748db9238643b22b5560f83d5b980ff081a2f6191110dc"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/capture-integration/fixtures/test_execution_v3_binds_exact_0/execution-v3.json",
+      "bytes": 1143,
+      "sha256": "845a6a1647e13a3c8118ca07027a0d42cfdefb0f144a662fc122c9e5343df4f6"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/capture-integration/fixtures/test_execution_v3_binds_exact_0/trajectory-gauge-policy.json",
+      "bytes": 956,
+      "sha256": "45212af2015c65dffe9ba88c77fd03daf2cd25a03f4ca55ac10eca5232f8f2a8"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/capture-integration/fixtures/test_execution_v3_refuses_inva0/trajectory-gauge-policy.json",
+      "bytes": 953,
+      "sha256": "c68670e4e044eb5dcc8ca76f8b31e69fdf4a81a19906c0299f5ec928fdbff72f"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/capture-integration/fixtures/test_execution_v3_refuses_inva1/trajectory-gauge-policy.json",
+      "bytes": 58,
+      "sha256": "85e213424174b31d91a10da74886d6d24f2aab0951759a37bbfed31a9beec5f0"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/capture-integration/fixtures/test_execution_v3_refuses_inva2/trajectory-gauge-policy.json",
+      "bytes": 954,
+      "sha256": "0356bc8e45966fb25e86620a9b3511f752b704eb6a7ceaa06077c0470b3af6ad"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/capture-integration/fixtures/test_live_capture_consumes_rea0/fast.jsonl",
+      "bytes": 1240,
+      "sha256": "c19157034a28ce52551b2d923af3869d027809360f61d796cb5a4dd5871f72a1"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/capture-integration/fixtures/test_live_capture_consumes_rea0/online-estimates.jsonl",
+      "bytes": 3386,
+      "sha256": "3cc6bc1a5b30d50ea4dc65a65b5a241855ce1c25617f3ba172919bdcb7349455"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/capture-integration/fixtures/test_live_feed_failure_reaches0/fast.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/capture-integration/fixtures/test_live_feed_failure_reaches0/online-estimates.jsonl",
+      "bytes": 450,
+      "sha256": "b0c15f6e118c9fa261b06f39c8820d2e0f6af381bf8cd4c45f94289a89ece06a"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/capture-integration/fixtures/test_live_feed_failure_reaches0/shadow/shadow-failures.jsonl",
+      "bytes": 862,
+      "sha256": "a359a7a5b7312e99888792cb3a5648a986878fccd827c38b57d3c3ee46550d66"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/capture-integration/fixtures/test_live_feed_failure_reaches0/shadow/shadow-input-result.json",
+      "bytes": 1109,
+      "sha256": "550aa8b5d7d91bbb29aed829e975a351dd9069f4de0bf91c63da94802ff7c66f"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/capture-integration/fixtures/test_new_workload_is_forwarded0/execution.json",
+      "bytes": 901,
+      "sha256": "bda566411f6242bcb4a0af1b01357b0d046a0f442d2eeac2f4e7a0bc0e7dbcb2"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/capture-integration/fixtures/test_old_output_is_rejected_be0/fast.jsonl",
+      "bytes": 4,
+      "sha256": "01d09d19c2139a46aebfb577780d123d7396e97201bc7ead210a2ebff8239dee"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/capture-integration/fixtures/test_parent_cleanup_failure_st0/fast.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/capture-integration/fixtures/test_parent_cleanup_failure_st0/online-estimates.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/capture-integration/fixtures/test_parent_derives_v2_environ0/binding.json",
+      "bytes": 205,
+      "sha256": "85d14318e318c031ce41c9754af031af02a1f4171adfc9aa643a4fab6ce3db72"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/capture-integration/fixtures/test_parent_derives_v2_environ0/execution.json",
+      "bytes": 587,
+      "sha256": "04a9ec5d0eb9a70e427f5f59a0a96f91c673208938d03b6b4859c0bf6f0a2f65"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/capture-integration/fixtures/test_real_native_pre_camera_se0/fast.jsonl",
+      "bytes": 436,
+      "sha256": "cbc07b429266edc44d66909c8cd2050a58d39271bf61b96f683c4b1d5dcb0545"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/capture-integration/fixtures/test_real_native_pre_camera_se0/online-estimates.jsonl",
+      "bytes": 868,
+      "sha256": "44bd43a53106b840245fb0cfc6a1e0444c0bd3cafa2c368ea4a3077a83297e08"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/capture-integration/fixtures/test_replaced_fast_path_is_not0/fast.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/capture-integration/fixtures/test_replaced_fast_path_is_not0/online-estimates.jsonl",
+      "bytes": 444,
+      "sha256": "ed212f34d080e924a1096274cb509832efe8eaf3356a5c0a38a0304a35c58b7e"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/capture-integration/fixtures/test_replaced_fast_path_is_not0/other-fast.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/capture-integration/fixtures/test_simulation_seed_is_declar0/capture/simulation-random-seed.json",
+      "bytes": 206,
+      "sha256": "7b898283a544ab9a1f6641ab43085a4984c1d8e0ac983ce9d94dc2a239742d79"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/capture-integration/fixtures/test_supervisor_consumes_contr0/selected.json",
+      "bytes": 466,
+      "sha256": "a2d29b9eb93c6f2615357a4d9dfa4717275d93c84bb508da47682d183d9d4e7c"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/capture-integration/fixtures/test_supervisor_consumes_contr1/selected.json",
+      "bytes": 646,
+      "sha256": "9ca86d256df5ffe320e049ddd95a304e20c27af0eb2ea7edb32b51c9390f6d99"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/capture-integration/fixtures/test_tampered_declaration_refu0/declaration.json",
+      "bytes": 465,
+      "sha256": "3a3142ed7fad72ca2123d553d73922b29de9095e4829d91810ae473df47aa0d0"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/capture-integration/fixtures/test_tampered_declaration_refu1/declaration.json",
+      "bytes": 465,
+      "sha256": "eab3a96c762aac7725b4b57d8f09b6952cdc4bf8149bb8207986a9fbab8a29c0"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/capture-integration/fixtures/test_tampered_declaration_refu2/declaration.json",
+      "bytes": 466,
+      "sha256": "8a28fcfb7301378baa7bd093e66181a8a3525877a9345960eab5db9892ee2be7"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/capture-integration/fixtures/test_tampered_declaration_refu3/declaration.json",
+      "bytes": 468,
+      "sha256": "e227727a150b29c88ac6f9c73646ada650b656b9f54ae159916f5b8031bbfeda"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/capture-integration/fixtures/test_tampered_declaration_refu4/declaration.json",
+      "bytes": 462,
+      "sha256": "efacdfc997c73bb01b73c5fe1cf606e0206f9dfc57c85cad2679b8ebd8b92cb4"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/capture-integration/fixtures/test_tampered_declaration_refu5/declaration.json",
+      "bytes": 486,
+      "sha256": "d5567fe5a5e5c2001e65e2291f7f735f988325641895f1553cd0b741126dab00"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/capture-integration/fixtures/test_worker_contract_read_dist0/capture/execution-environment-worker.json",
+      "bytes": 652,
+      "sha256": "7b31d139eb641c678e85a0c9f81f996cf1af1662172571b2aca9a71585690edc"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/capture-integration/fixtures/test_worker_contract_read_dist0/execution.json",
+      "bytes": 80,
+      "sha256": "10ff83f76bcec49a47b4dafdc207f0ff70dbe50b1144fc76cd0a2bc744db846c"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/capture-integration/fixtures/test_worker_contract_read_dist1/execution.json",
+      "bytes": 80,
+      "sha256": "10ff83f76bcec49a47b4dafdc207f0ff70dbe50b1144fc76cd0a2bc744db846c"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/capture-integration/fixtures/test_worker_contract_read_dist2/execution.json",
+      "bytes": 80,
+      "sha256": "10ff83f76bcec49a47b4dafdc207f0ff70dbe50b1144fc76cd0a2bc744db846c"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/capture-integration/fixtures/test_worker_contract_read_dist3/execution.json",
+      "bytes": 80,
+      "sha256": "10ff83f76bcec49a47b4dafdc207f0ff70dbe50b1144fc76cd0a2bc744db846c"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/capture-integration/fixtures/test_worker_contract_read_dist4/execution.json",
+      "bytes": 80,
+      "sha256": "10ff83f76bcec49a47b4dafdc207f0ff70dbe50b1144fc76cd0a2bc744db846c"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/capture-integration/fixtures/test_worker_contract_read_dist5/execution.json",
+      "bytes": 80,
+      "sha256": "10ff83f76bcec49a47b4dafdc207f0ff70dbe50b1144fc76cd0a2bc744db846c"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/capture-integration/fixtures/test_worker_contract_read_dist6/execution.json",
+      "bytes": 80,
+      "sha256": "10ff83f76bcec49a47b4dafdc207f0ff70dbe50b1144fc76cd0a2bc744db846c"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/capture-integration/fixtures/test_worker_contract_read_dist7/execution.json",
+      "bytes": 80,
+      "sha256": "10ff83f76bcec49a47b4dafdc207f0ff70dbe50b1144fc76cd0a2bc744db846c"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/capture-integration/fixtures/test_worker_contract_read_dist8/execution.json",
+      "bytes": 80,
+      "sha256": "10ff83f76bcec49a47b4dafdc207f0ff70dbe50b1144fc76cd0a2bc744db846c"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/capture-integration/fixtures/test_worker_contract_read_dist9/execution.json",
+      "bytes": 80,
+      "sha256": "10ff83f76bcec49a47b4dafdc207f0ff70dbe50b1144fc76cd0a2bc744db846c"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/capture-integration/fixtures/test_worker_environment_eviden0/execution-contract.json",
+      "bytes": 80,
+      "sha256": "10ff83f76bcec49a47b4dafdc207f0ff70dbe50b1144fc76cd0a2bc744db846c"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/capture-integration/fixtures/test_worker_environment_mismat0/capture/execution-environment-worker.json",
+      "bytes": 776,
+      "sha256": "0e106b891177b79a08f6246e1d63ef62b32d13806e23952f2be571e09f7bf892"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/capture-integration/fixtures/test_worker_environment_mismat0/execution-contract.json",
+      "bytes": 116,
+      "sha256": "9a68ee7c27c0fc0f855e512ccc356595b3d45960a1fb53d2f945a7e017bb0dfb"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/capture-integration/fixtures/test_worker_records_exact_envi0/capture/execution-environment-worker.json",
+      "bytes": 746,
+      "sha256": "fdbd3fb76d5f8eedfbada0f11bebe9f1e3299d4e15e126986f836c057525e8c7"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/capture-integration/fixtures/test_worker_records_exact_envi0/execution-contract.json",
+      "bytes": 116,
+      "sha256": "9a68ee7c27c0fc0f855e512ccc356595b3d45960a1fb53d2f945a7e017bb0dfb"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/capture-integration/fixtures/test_worker_records_v3_policy_0/capture/trajectory-gauge-policy-worker.json",
+      "bytes": 713,
+      "sha256": "6aedeaeb0a3d3f4e0f14204fe65e7bf159cc89c3212ceba89aa1cb08839ff526"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/capture-integration/fixtures/test_worker_records_v3_policy_0/execution-v3.json",
+      "bytes": 1127,
+      "sha256": "e3b67a28ba22342387a1ac70ac9849bb77b71d0f6a46fe20ff2308ecfe8807ad"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/capture-integration/fixtures/test_worker_records_v3_policy_0/trajectory-gauge-policy.json",
+      "bytes": 954,
+      "sha256": "0356bc8e45966fb25e86620a9b3511f752b704eb6a7ceaa06077c0470b3af6ad"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/capture-integration/start.json",
+      "bytes": 2503,
+      "sha256": "c622c905f3f4d1c35345dd11072152a54261a97d59ac4f3018cb38e7fdcdc899"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/capture-integration/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/capture-integration/stdout",
+      "bytes": 182,
+      "sha256": "8a7bfa75596dbbaedf53ec54fc89b8b3ba326852e6ce3ee534d776a9afabfee2"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/execution-ledger.md",
+      "bytes": 4277,
+      "sha256": "2dc46c7b32544f34927056bcc1888258d024df04a5cac6ead76fb2b39d490c0a"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/executor-disposition.json",
+      "bytes": 6704,
+      "sha256": "1fa8316ef486a164b18d1eef9f22e8339fabc92294d3efe505da4f551fedb157"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/executor-disposition.md",
+      "bytes": 3635,
+      "sha256": "96385b0364d12e4386b4994a71ff0213d32e2186b062c99a91c649b795e328e4"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/final-diff.command.json",
+      "bytes": 300,
+      "sha256": "e5bfd77fb4383ee770e261843b557993377de616fa71efd67f98d57e4fc80c66"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/final-diff.completion.json",
+      "bytes": 404,
+      "sha256": "f288fb6b67db27699c59da70d757679ac2005a8ac54309250fef9f0516a03315"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/final-diff.stderr",
+      "bytes": 128,
+      "sha256": "16f07ccc35e72bb3f8f9f4b4d5917e926033f9e01b9b68d77a3124ff3780f6a7"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/final-diff.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/final-format/after/results/single-aircraft-online-feed-20261017/record.py",
+      "bytes": 3682,
+      "sha256": "774704831204ded284aef82deb2ea98c16b4053bf4b575388414ce1227cf6820"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/final-format/after/tests/benchmark/test_capture_contract.py",
+      "bytes": 27257,
+      "sha256": "4d50a49209b31ee053c3b6138080bfa95f86ee00fcd72ed84bf258856cb28697"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/final-format/after/tests/benchmark/test_capture_online_estimates.py",
+      "bytes": 15591,
+      "sha256": "3a5e5cff91d603ec07d56b4c4e0ab9941b11aa4399f3097656041be6a1bd59f8"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/final-format/after/tools/benchmark/capture_contract.py",
+      "bytes": 15268,
+      "sha256": "5ed057b25344c283e2fdba25e3bc05e3ca85413df055b23946fab041a3a1ad53"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/final-format/after/tools/benchmark/capture_disarmed_sensors.py",
+      "bytes": 65910,
+      "sha256": "aeea2e4b7f5ea37ed56aced18f449979caf5ad47de46725c8fc4c8e831331e7d"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/final-format/after/tools/benchmark/capture_online_estimates.py",
+      "bytes": 10468,
+      "sha256": "498e5607c15e8f17f7a1bf980f6d0057399c03e8c02fab17bb618518d4ccf33f"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/final-format/after/tools/benchmark/openvins_fast_probe.h",
+      "bytes": 2663,
+      "sha256": "3795243174eec9a28842cffecdd3939507e198dcad2308a57b4aa309f268857e"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/final-format/after/tools/benchmark/openvins_online_probe.cpp",
+      "bytes": 10837,
+      "sha256": "7a0804bd9c39f3a67f4f50aae09f15387cd8dd7d8f61474eb57d3db22f0d8f02"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/final-format/after/tools/benchmark/openvins_online_shadow.py",
+      "bytes": 29922,
+      "sha256": "99651fd531cf4c915feeff71987a1d8347dc0da10e842209105b9002d4fbf4aa"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/final-format/before/results/single-aircraft-online-feed-20261017/record.py",
+      "bytes": 3682,
+      "sha256": "774704831204ded284aef82deb2ea98c16b4053bf4b575388414ce1227cf6820"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/final-format/before/tests/benchmark/test_capture_contract.py",
+      "bytes": 27257,
+      "sha256": "4d50a49209b31ee053c3b6138080bfa95f86ee00fcd72ed84bf258856cb28697"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/final-format/before/tests/benchmark/test_capture_online_estimates.py",
+      "bytes": 15524,
+      "sha256": "27565b512252172329ec22914724a6fcd3a2c13a87b194c775d226ebc56ea79d"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/final-format/before/tools/benchmark/capture_contract.py",
+      "bytes": 15268,
+      "sha256": "5ed057b25344c283e2fdba25e3bc05e3ca85413df055b23946fab041a3a1ad53"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/final-format/before/tools/benchmark/capture_disarmed_sensors.py",
+      "bytes": 65910,
+      "sha256": "aeea2e4b7f5ea37ed56aced18f449979caf5ad47de46725c8fc4c8e831331e7d"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/final-format/before/tools/benchmark/capture_online_estimates.py",
+      "bytes": 10468,
+      "sha256": "498e5607c15e8f17f7a1bf980f6d0057399c03e8c02fab17bb618518d4ccf33f"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/final-format/before/tools/benchmark/openvins_fast_probe.h",
+      "bytes": 2663,
+      "sha256": "3795243174eec9a28842cffecdd3939507e198dcad2308a57b4aa309f268857e"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/final-format/before/tools/benchmark/openvins_online_probe.cpp",
+      "bytes": 10837,
+      "sha256": "7a0804bd9c39f3a67f4f50aae09f15387cd8dd7d8f61474eb57d3db22f0d8f02"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/final-format/before/tools/benchmark/openvins_online_shadow.py",
+      "bytes": 29922,
+      "sha256": "99651fd531cf4c915feeff71987a1d8347dc0da10e842209105b9002d4fbf4aa"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/final-format/completion.json",
+      "bytes": 4018,
+      "sha256": "17285aaf43165701a3d5ea4c5fa79d7c00f7f4901253873eb18c4df2f1425d57"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/final-format/start.json",
+      "bytes": 2339,
+      "sha256": "fad55e5f9a6ee5055cb86900072ef5b83f7a37faf02cc336a7981f84e0813f83"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/final-format/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/final-format/stdout",
+      "bytes": 42,
+      "sha256": "10869b88a75066aa23546ef1f95fcd4678c3fb92a56ed46ef91688052b67976a"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/final-lint/after/results/single-aircraft-online-feed-20261017/record.py",
+      "bytes": 3682,
+      "sha256": "774704831204ded284aef82deb2ea98c16b4053bf4b575388414ce1227cf6820"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/final-lint/after/tests/benchmark/test_capture_contract.py",
+      "bytes": 27257,
+      "sha256": "4d50a49209b31ee053c3b6138080bfa95f86ee00fcd72ed84bf258856cb28697"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/final-lint/after/tests/benchmark/test_capture_online_estimates.py",
+      "bytes": 15591,
+      "sha256": "3a5e5cff91d603ec07d56b4c4e0ab9941b11aa4399f3097656041be6a1bd59f8"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/final-lint/after/tools/benchmark/capture_contract.py",
+      "bytes": 15268,
+      "sha256": "5ed057b25344c283e2fdba25e3bc05e3ca85413df055b23946fab041a3a1ad53"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/final-lint/after/tools/benchmark/capture_disarmed_sensors.py",
+      "bytes": 65910,
+      "sha256": "aeea2e4b7f5ea37ed56aced18f449979caf5ad47de46725c8fc4c8e831331e7d"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/final-lint/after/tools/benchmark/capture_online_estimates.py",
+      "bytes": 10468,
+      "sha256": "498e5607c15e8f17f7a1bf980f6d0057399c03e8c02fab17bb618518d4ccf33f"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/final-lint/after/tools/benchmark/openvins_fast_probe.h",
+      "bytes": 2663,
+      "sha256": "3795243174eec9a28842cffecdd3939507e198dcad2308a57b4aa309f268857e"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/final-lint/after/tools/benchmark/openvins_online_probe.cpp",
+      "bytes": 10837,
+      "sha256": "7a0804bd9c39f3a67f4f50aae09f15387cd8dd7d8f61474eb57d3db22f0d8f02"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/final-lint/after/tools/benchmark/openvins_online_shadow.py",
+      "bytes": 29922,
+      "sha256": "99651fd531cf4c915feeff71987a1d8347dc0da10e842209105b9002d4fbf4aa"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/final-lint/before/results/single-aircraft-online-feed-20261017/record.py",
+      "bytes": 3682,
+      "sha256": "774704831204ded284aef82deb2ea98c16b4053bf4b575388414ce1227cf6820"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/final-lint/before/tests/benchmark/test_capture_contract.py",
+      "bytes": 27257,
+      "sha256": "4d50a49209b31ee053c3b6138080bfa95f86ee00fcd72ed84bf258856cb28697"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/final-lint/before/tests/benchmark/test_capture_online_estimates.py",
+      "bytes": 15591,
+      "sha256": "3a5e5cff91d603ec07d56b4c4e0ab9941b11aa4399f3097656041be6a1bd59f8"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/final-lint/before/tools/benchmark/capture_contract.py",
+      "bytes": 15268,
+      "sha256": "5ed057b25344c283e2fdba25e3bc05e3ca85413df055b23946fab041a3a1ad53"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/final-lint/before/tools/benchmark/capture_disarmed_sensors.py",
+      "bytes": 65910,
+      "sha256": "aeea2e4b7f5ea37ed56aced18f449979caf5ad47de46725c8fc4c8e831331e7d"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/final-lint/before/tools/benchmark/capture_online_estimates.py",
+      "bytes": 10468,
+      "sha256": "498e5607c15e8f17f7a1bf980f6d0057399c03e8c02fab17bb618518d4ccf33f"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/final-lint/before/tools/benchmark/openvins_fast_probe.h",
+      "bytes": 2663,
+      "sha256": "3795243174eec9a28842cffecdd3939507e198dcad2308a57b4aa309f268857e"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/final-lint/before/tools/benchmark/openvins_online_probe.cpp",
+      "bytes": 10837,
+      "sha256": "7a0804bd9c39f3a67f4f50aae09f15387cd8dd7d8f61474eb57d3db22f0d8f02"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/final-lint/before/tools/benchmark/openvins_online_shadow.py",
+      "bytes": 29922,
+      "sha256": "99651fd531cf4c915feeff71987a1d8347dc0da10e842209105b9002d4fbf4aa"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/final-lint/completion.json",
+      "bytes": 4114,
+      "sha256": "287bc29e3816dd7b1fe0db2e243fc56a9f5d4624a20ae5ca0f3ee3edeed463a1"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/final-lint/start.json",
+      "bytes": 2434,
+      "sha256": "f04ff3f6a0775cb93b8d01a259325be191e5708e529175bc53e6ae4e435bacff"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/final-lint/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/final-lint/stdout",
+      "bytes": 19,
+      "sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/first-green/after/results/single-aircraft-online-feed-20261017/record.py",
+      "bytes": 3682,
+      "sha256": "774704831204ded284aef82deb2ea98c16b4053bf4b575388414ce1227cf6820"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/first-green/after/tests/benchmark/test_capture_contract.py",
+      "bytes": 27257,
+      "sha256": "4d50a49209b31ee053c3b6138080bfa95f86ee00fcd72ed84bf258856cb28697"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/first-green/after/tests/benchmark/test_capture_online_estimates.py",
+      "bytes": 7193,
+      "sha256": "f12855574b1ab25a5260bc65da41704539988061ee9ea9c5d02530ab20935202"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/first-green/after/tools/benchmark/capture_contract.py",
+      "bytes": 15268,
+      "sha256": "5ed057b25344c283e2fdba25e3bc05e3ca85413df055b23946fab041a3a1ad53"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/first-green/after/tools/benchmark/capture_disarmed_sensors.py",
+      "bytes": 65812,
+      "sha256": "48685c9b9ee7ef730d9c1e29ece2e3363d171013cb92b0a4dda52f3bfd74f4c6"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/first-green/after/tools/benchmark/capture_online_estimates.py",
+      "bytes": 8683,
+      "sha256": "e5648cf95501def7b34505f0b039a7a4d14783e6509501729f4a14ca41327486"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/first-green/after/tools/benchmark/openvins_fast_probe.h",
+      "bytes": 2663,
+      "sha256": "3795243174eec9a28842cffecdd3939507e198dcad2308a57b4aa309f268857e"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/first-green/after/tools/benchmark/openvins_online_probe.cpp",
+      "bytes": 10837,
+      "sha256": "7a0804bd9c39f3a67f4f50aae09f15387cd8dd7d8f61474eb57d3db22f0d8f02"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/first-green/after/tools/benchmark/openvins_online_shadow.py",
+      "bytes": 29922,
+      "sha256": "99651fd531cf4c915feeff71987a1d8347dc0da10e842209105b9002d4fbf4aa"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/first-green/before/results/single-aircraft-online-feed-20261017/record.py",
+      "bytes": 3682,
+      "sha256": "774704831204ded284aef82deb2ea98c16b4053bf4b575388414ce1227cf6820"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/first-green/before/tests/benchmark/test_capture_contract.py",
+      "bytes": 27257,
+      "sha256": "4d50a49209b31ee053c3b6138080bfa95f86ee00fcd72ed84bf258856cb28697"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/first-green/before/tests/benchmark/test_capture_online_estimates.py",
+      "bytes": 7193,
+      "sha256": "f12855574b1ab25a5260bc65da41704539988061ee9ea9c5d02530ab20935202"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/first-green/before/tools/benchmark/capture_contract.py",
+      "bytes": 15268,
+      "sha256": "5ed057b25344c283e2fdba25e3bc05e3ca85413df055b23946fab041a3a1ad53"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/first-green/before/tools/benchmark/capture_disarmed_sensors.py",
+      "bytes": 65812,
+      "sha256": "48685c9b9ee7ef730d9c1e29ece2e3363d171013cb92b0a4dda52f3bfd74f4c6"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/first-green/before/tools/benchmark/capture_online_estimates.py",
+      "bytes": 8683,
+      "sha256": "e5648cf95501def7b34505f0b039a7a4d14783e6509501729f4a14ca41327486"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/first-green/before/tools/benchmark/openvins_fast_probe.h",
+      "bytes": 2663,
+      "sha256": "3795243174eec9a28842cffecdd3939507e198dcad2308a57b4aa309f268857e"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/first-green/before/tools/benchmark/openvins_online_probe.cpp",
+      "bytes": 10837,
+      "sha256": "7a0804bd9c39f3a67f4f50aae09f15387cd8dd7d8f61474eb57d3db22f0d8f02"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/first-green/before/tools/benchmark/openvins_online_shadow.py",
+      "bytes": 29922,
+      "sha256": "99651fd531cf4c915feeff71987a1d8347dc0da10e842209105b9002d4fbf4aa"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/first-green/completion.json",
+      "bytes": 8015,
+      "sha256": "f8f65f792d14ae088023ceb6d26be1bc94959906616204768ac1298aa1dd32da"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/first-green/fixtures/test_bad_native_output_latches0/fast.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/first-green/fixtures/test_bad_native_output_latches0/online-estimates.jsonl",
+      "bytes": 476,
+      "sha256": "588c01854e06cadea258efc910e168e43bdd3858b42204e8340e7d57b42a2960"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/first-green/fixtures/test_bad_native_output_latches1/fast.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/first-green/fixtures/test_bad_native_output_latches1/online-estimates.jsonl",
+      "bytes": 476,
+      "sha256": "588c01854e06cadea258efc910e168e43bdd3858b42204e8340e7d57b42a2960"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/first-green/fixtures/test_bad_native_output_latches2/fast.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/first-green/fixtures/test_bad_native_output_latches2/online-estimates.jsonl",
+      "bytes": 476,
+      "sha256": "588c01854e06cadea258efc910e168e43bdd3858b42204e8340e7d57b42a2960"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/first-green/fixtures/test_bad_native_output_latches3/fast.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/first-green/fixtures/test_bad_native_output_latches3/online-estimates.jsonl",
+      "bytes": 476,
+      "sha256": "588c01854e06cadea258efc910e168e43bdd3858b42204e8340e7d57b42a2960"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/first-green/fixtures/test_bad_native_output_latches4/fast.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/first-green/fixtures/test_bad_native_output_latches4/online-estimates.jsonl",
+      "bytes": 476,
+      "sha256": "588c01854e06cadea258efc910e168e43bdd3858b42204e8340e7d57b42a2960"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/first-green/fixtures/test_bad_native_output_latches5/fast.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/first-green/fixtures/test_bad_native_output_latches5/online-estimates.jsonl",
+      "bytes": 476,
+      "sha256": "588c01854e06cadea258efc910e168e43bdd3858b42204e8340e7d57b42a2960"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/first-green/fixtures/test_bad_native_output_latches6/fast.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/first-green/fixtures/test_bad_native_output_latches6/online-estimates.jsonl",
+      "bytes": 476,
+      "sha256": "588c01854e06cadea258efc910e168e43bdd3858b42204e8340e7d57b42a2960"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/first-green/fixtures/test_bad_native_output_latches7/fast.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/first-green/fixtures/test_bad_native_output_latches7/online-estimates.jsonl",
+      "bytes": 476,
+      "sha256": "588c01854e06cadea258efc910e168e43bdd3858b42204e8340e7d57b42a2960"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/first-green/fixtures/test_live_capture_consumes_rea0/fast.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/first-green/fixtures/test_live_capture_consumes_rea0/online-estimates.jsonl",
+      "bytes": 476,
+      "sha256": "588c01854e06cadea258efc910e168e43bdd3858b42204e8340e7d57b42a2960"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/first-green/fixtures/test_new_workload_is_forwarded0/execution.json",
+      "bytes": 885,
+      "sha256": "f954b508b49b61a323308d4094d7cac46742244417e26508e226a10fd49ac9e4"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/first-green/fixtures/test_old_output_is_rejected_be0/fast.jsonl",
+      "bytes": 4,
+      "sha256": "01d09d19c2139a46aebfb577780d123d7396e97201bc7ead210a2ebff8239dee"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/first-green/start.json",
+      "bytes": 2445,
+      "sha256": "df15dfc0df4e723e71eac3dbbc02206f06f0e68f302d71e5abb4b938dc8d3fef"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/first-green/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/first-green/stdout",
+      "bytes": 33930,
+      "sha256": "a446041650b42269764f14cd218b9e2cc3011690fe9593ce4d3b82b72c37ed9e"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/fixed-final/after/results/single-aircraft-online-feed-20261017/record.py",
+      "bytes": 3682,
+      "sha256": "774704831204ded284aef82deb2ea98c16b4053bf4b575388414ce1227cf6820"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/fixed-final/after/tests/benchmark/test_capture_contract.py",
+      "bytes": 27257,
+      "sha256": "4d50a49209b31ee053c3b6138080bfa95f86ee00fcd72ed84bf258856cb28697"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/fixed-final/after/tests/benchmark/test_capture_online_estimates.py",
+      "bytes": 15591,
+      "sha256": "3a5e5cff91d603ec07d56b4c4e0ab9941b11aa4399f3097656041be6a1bd59f8"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/fixed-final/after/tools/benchmark/capture_contract.py",
+      "bytes": 15268,
+      "sha256": "5ed057b25344c283e2fdba25e3bc05e3ca85413df055b23946fab041a3a1ad53"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/fixed-final/after/tools/benchmark/capture_disarmed_sensors.py",
+      "bytes": 65910,
+      "sha256": "aeea2e4b7f5ea37ed56aced18f449979caf5ad47de46725c8fc4c8e831331e7d"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/fixed-final/after/tools/benchmark/capture_online_estimates.py",
+      "bytes": 10468,
+      "sha256": "498e5607c15e8f17f7a1bf980f6d0057399c03e8c02fab17bb618518d4ccf33f"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/fixed-final/after/tools/benchmark/openvins_fast_probe.h",
+      "bytes": 2663,
+      "sha256": "3795243174eec9a28842cffecdd3939507e198dcad2308a57b4aa309f268857e"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/fixed-final/after/tools/benchmark/openvins_online_probe.cpp",
+      "bytes": 10837,
+      "sha256": "7a0804bd9c39f3a67f4f50aae09f15387cd8dd7d8f61474eb57d3db22f0d8f02"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/fixed-final/after/tools/benchmark/openvins_online_shadow.py",
+      "bytes": 29922,
+      "sha256": "99651fd531cf4c915feeff71987a1d8347dc0da10e842209105b9002d4fbf4aa"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/fixed-final/before/results/single-aircraft-online-feed-20261017/record.py",
+      "bytes": 3682,
+      "sha256": "774704831204ded284aef82deb2ea98c16b4053bf4b575388414ce1227cf6820"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/fixed-final/before/tests/benchmark/test_capture_contract.py",
+      "bytes": 27257,
+      "sha256": "4d50a49209b31ee053c3b6138080bfa95f86ee00fcd72ed84bf258856cb28697"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/fixed-final/before/tests/benchmark/test_capture_online_estimates.py",
+      "bytes": 15591,
+      "sha256": "3a5e5cff91d603ec07d56b4c4e0ab9941b11aa4399f3097656041be6a1bd59f8"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/fixed-final/before/tools/benchmark/capture_contract.py",
+      "bytes": 15268,
+      "sha256": "5ed057b25344c283e2fdba25e3bc05e3ca85413df055b23946fab041a3a1ad53"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/fixed-final/before/tools/benchmark/capture_disarmed_sensors.py",
+      "bytes": 65910,
+      "sha256": "aeea2e4b7f5ea37ed56aced18f449979caf5ad47de46725c8fc4c8e831331e7d"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/fixed-final/before/tools/benchmark/capture_online_estimates.py",
+      "bytes": 10468,
+      "sha256": "498e5607c15e8f17f7a1bf980f6d0057399c03e8c02fab17bb618518d4ccf33f"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/fixed-final/before/tools/benchmark/openvins_fast_probe.h",
+      "bytes": 2663,
+      "sha256": "3795243174eec9a28842cffecdd3939507e198dcad2308a57b4aa309f268857e"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/fixed-final/before/tools/benchmark/openvins_online_probe.cpp",
+      "bytes": 10837,
+      "sha256": "7a0804bd9c39f3a67f4f50aae09f15387cd8dd7d8f61474eb57d3db22f0d8f02"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/fixed-final/before/tools/benchmark/openvins_online_shadow.py",
+      "bytes": 29922,
+      "sha256": "99651fd531cf4c915feeff71987a1d8347dc0da10e842209105b9002d4fbf4aa"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/fixed-final/completion.json",
+      "bytes": 20422,
+      "sha256": "8ee2700436b24f650bd851c0027817a8c4b438535045978f69a95d1e85861f4b"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/fixed-final/fixtures/test_ack_sample_cannot_disagre0/fast.jsonl",
+      "bytes": 1240,
+      "sha256": "eed376b6abd17f6404429d34a7dacd5642b49e1f2d414a490d1523c50ace3e4f"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/fixed-final/fixtures/test_ack_sample_cannot_disagre0/online-estimates.jsonl",
+      "bytes": 2182,
+      "sha256": "adce6abc0b11c0a0665502acc5556017d6fa436c240018f1cf83f1940f655bfc"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/fixed-final/fixtures/test_ack_sample_cannot_disagre1/fast.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/fixed-final/fixtures/test_ack_sample_cannot_disagre1/online-estimates.jsonl",
+      "bytes": 465,
+      "sha256": "e17dd0f1530ff2b8dd1ebf72d3cc45b649f51358a426ab35147ead4c48e5c8dc"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/fixed-final/fixtures/test_ack_sample_cannot_disagre2/fast.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/fixed-final/fixtures/test_ack_sample_cannot_disagre2/online-estimates.jsonl",
+      "bytes": 3514,
+      "sha256": "4ac8cdd2ec842d47df5714ca767184244ec1360a9c8183f42c64381f977e47f6"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/fixed-final/fixtures/test_bad_native_output_latches0/fast.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/fixed-final/fixtures/test_bad_native_output_latches0/online-estimates.jsonl",
+      "bytes": 2167,
+      "sha256": "a6ecf892a7e04ef456a606566106e84b02804a620c7ea44338c3d079536b6580"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/fixed-final/fixtures/test_bad_native_output_latches1/fast.jsonl",
+      "bytes": 1239,
+      "sha256": "5a7e9c70246601f834252a5d86eee940c335aeb232d2bad91bd41901e73c318c"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/fixed-final/fixtures/test_bad_native_output_latches1/online-estimates.jsonl",
+      "bytes": 2167,
+      "sha256": "a6ecf892a7e04ef456a606566106e84b02804a620c7ea44338c3d079536b6580"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/fixed-final/fixtures/test_bad_native_output_latches2/fast.jsonl",
+      "bytes": 2480,
+      "sha256": "c2e590b202d888d5c3d1a84d54b872e0f1189df7333d81034cb756a6ea1b9d6d"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/fixed-final/fixtures/test_bad_native_output_latches2/online-estimates.jsonl",
+      "bytes": 2167,
+      "sha256": "a6ecf892a7e04ef456a606566106e84b02804a620c7ea44338c3d079536b6580"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/fixed-final/fixtures/test_bad_native_output_latches3/fast.jsonl",
+      "bytes": 1240,
+      "sha256": "9b88f24d2b3c8175af8f7a3fea5ebf70ae006538ba733c6cc73c5bbca4873314"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/fixed-final/fixtures/test_bad_native_output_latches3/online-estimates.jsonl",
+      "bytes": 2167,
+      "sha256": "3be6fa82b5b7c5ff0d0b9b7ed087fc964beeca08cc68e455d0f6193cd990bc22"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/fixed-final/fixtures/test_bad_native_output_latches4/fast.jsonl",
+      "bytes": 1240,
+      "sha256": "eed376b6abd17f6404429d34a7dacd5642b49e1f2d414a490d1523c50ace3e4f"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/fixed-final/fixtures/test_bad_native_output_latches4/online-estimates.jsonl",
+      "bytes": 2167,
+      "sha256": "3be6fa82b5b7c5ff0d0b9b7ed087fc964beeca08cc68e455d0f6193cd990bc22"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/fixed-final/fixtures/test_bad_native_output_latches5/fast.jsonl",
+      "bytes": 1239,
+      "sha256": "d07cd1c76e62d6a6afefe7c2c481ff2037da4de400de7c3db6d706fc051d1ae2"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/fixed-final/fixtures/test_bad_native_output_latches5/online-estimates.jsonl",
+      "bytes": 2167,
+      "sha256": "3be6fa82b5b7c5ff0d0b9b7ed087fc964beeca08cc68e455d0f6193cd990bc22"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/fixed-final/fixtures/test_bad_native_output_latches6/fast.jsonl",
+      "bytes": 1240,
+      "sha256": "b66184810d452725c46f0f09a0e79d1ff6ac8470fe81ab86475d6b392fb35d7a"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/fixed-final/fixtures/test_bad_native_output_latches6/online-estimates.jsonl",
+      "bytes": 2164,
+      "sha256": "b245708f3161563e704cad9409eab18dc1cdfcf010106924ec15e4cdade3be4b"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/fixed-final/fixtures/test_bad_native_output_latches7/fast.jsonl",
+      "bytes": 16385,
+      "sha256": "0a6f21fda2a49df0c6671aacfe31136e24b4880f334ee89182752f35c2f0cb3d"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/fixed-final/fixtures/test_bad_native_output_latches7/online-estimates.jsonl",
+      "bytes": 2166,
+      "sha256": "05ef8442d7b9830be8ce2025e17fc6a76b4d7bb467d26e82c5e764701bd37450"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/fixed-final/fixtures/test_constructor_rollback_clos0/online-estimates.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/fixed-final/fixtures/test_direct_worker_refuses_bef0/wrong.json",
+      "bytes": 2,
+      "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/fixed-final/fixtures/test_duplicate_json_keys_refus0/duplicate.json",
+      "bytes": 40,
+      "sha256": "d1e45a04de6b757975264cf4457d20fa5696fa4247b472ecaf209d7796282519"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/fixed-final/fixtures/test_elapsed_transport_and_out0/fast.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/fixed-final/fixtures/test_elapsed_transport_and_out0/online-estimates.jsonl",
+      "bytes": 448,
+      "sha256": "0a6c6d9e72f1d32c5332d9c7851345068036c740a3b1603c96c4942517023157"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/fixed-final/fixtures/test_execution_v2_binds_exact_0/execution-v2.json",
+      "bytes": 548,
+      "sha256": "0ba34d5d80c4416dcb748db9238643b22b5560f83d5b980ff081a2f6191110dc"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/fixed-final/fixtures/test_execution_v3_binds_exact_0/execution-v3.json",
+      "bytes": 1127,
+      "sha256": "e08a700622b216e74bd603c05305c9a073ec40734782c90f3d2af18d3b28eb91"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/fixed-final/fixtures/test_execution_v3_binds_exact_0/trajectory-gauge-policy.json",
+      "bytes": 956,
+      "sha256": "45212af2015c65dffe9ba88c77fd03daf2cd25a03f4ca55ac10eca5232f8f2a8"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/fixed-final/fixtures/test_execution_v3_refuses_inva0/trajectory-gauge-policy.json",
+      "bytes": 953,
+      "sha256": "c68670e4e044eb5dcc8ca76f8b31e69fdf4a81a19906c0299f5ec928fdbff72f"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/fixed-final/fixtures/test_execution_v3_refuses_inva1/trajectory-gauge-policy.json",
+      "bytes": 58,
+      "sha256": "85e213424174b31d91a10da74886d6d24f2aab0951759a37bbfed31a9beec5f0"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/fixed-final/fixtures/test_execution_v3_refuses_inva2/trajectory-gauge-policy.json",
+      "bytes": 954,
+      "sha256": "0356bc8e45966fb25e86620a9b3511f752b704eb6a7ceaa06077c0470b3af6ad"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/fixed-final/fixtures/test_internal_negative_camera_0/fast.jsonl",
+      "bytes": 436,
+      "sha256": "cbc07b429266edc44d66909c8cd2050a58d39271bf61b96f683c4b1d5dcb0545"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/fixed-final/fixtures/test_internal_negative_camera_0/online-estimates.jsonl",
+      "bytes": 450,
+      "sha256": "edeecd2ff7bea932391808fdc26fdda13be90c224275644cf5c6550b153a1dd9"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/fixed-final/fixtures/test_live_capture_consumes_rea0/fast.jsonl",
+      "bytes": 1240,
+      "sha256": "c19157034a28ce52551b2d923af3869d027809360f61d796cb5a4dd5871f72a1"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/fixed-final/fixtures/test_live_capture_consumes_rea0/online-estimates.jsonl",
+      "bytes": 3386,
+      "sha256": "3cc6bc1a5b30d50ea4dc65a65b5a241855ce1c25617f3ba172919bdcb7349455"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/fixed-final/fixtures/test_live_feed_failure_reaches0/fast.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/fixed-final/fixtures/test_live_feed_failure_reaches0/online-estimates.jsonl",
+      "bytes": 450,
+      "sha256": "b0c15f6e118c9fa261b06f39c8820d2e0f6af381bf8cd4c45f94289a89ece06a"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/fixed-final/fixtures/test_live_feed_failure_reaches0/shadow/shadow-failures.jsonl",
+      "bytes": 862,
+      "sha256": "24b666e8f00d859dadf62065887724db8e068916e893e559c26319f1662eec22"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/fixed-final/fixtures/test_live_feed_failure_reaches0/shadow/shadow-input-result.json",
+      "bytes": 1109,
+      "sha256": "550aa8b5d7d91bbb29aed829e975a351dd9069f4de0bf91c63da94802ff7c66f"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/fixed-final/fixtures/test_new_workload_is_forwarded0/execution.json",
+      "bytes": 885,
+      "sha256": "f102fc78d0da6d0edbfcd6c51aa8a3660cae32b77c921b7848d413a973186818"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/fixed-final/fixtures/test_old_output_is_rejected_be0/fast.jsonl",
+      "bytes": 4,
+      "sha256": "01d09d19c2139a46aebfb577780d123d7396e97201bc7ead210a2ebff8239dee"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/fixed-final/fixtures/test_parent_cleanup_failure_st0/fast.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/fixed-final/fixtures/test_parent_cleanup_failure_st0/online-estimates.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/fixed-final/fixtures/test_parent_derives_v2_environ0/binding.json",
+      "bytes": 205,
+      "sha256": "85d14318e318c031ce41c9754af031af02a1f4171adfc9aa643a4fab6ce3db72"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/fixed-final/fixtures/test_parent_derives_v2_environ0/execution.json",
+      "bytes": 587,
+      "sha256": "04a9ec5d0eb9a70e427f5f59a0a96f91c673208938d03b6b4859c0bf6f0a2f65"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/fixed-final/fixtures/test_real_native_pre_camera_nu0/fast.jsonl",
+      "bytes": 438,
+      "sha256": "91fe180e3c380f5782331d1da38836d04e8e39bf28e1927669336c41b83357c1"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/fixed-final/fixtures/test_real_native_pre_camera_nu0/online-estimates.jsonl",
+      "bytes": 870,
+      "sha256": "daab14a85daa77d5f3fb25c9111a9d8361a0d6b1a8e848486e09836f8667e516"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/fixed-final/fixtures/test_replaced_fast_path_is_not0/fast.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/fixed-final/fixtures/test_replaced_fast_path_is_not0/online-estimates.jsonl",
+      "bytes": 444,
+      "sha256": "ed212f34d080e924a1096274cb509832efe8eaf3356a5c0a38a0304a35c58b7e"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/fixed-final/fixtures/test_replaced_fast_path_is_not0/other-fast.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/fixed-final/fixtures/test_simulation_seed_is_declar0/capture/simulation-random-seed.json",
+      "bytes": 206,
+      "sha256": "7b898283a544ab9a1f6641ab43085a4984c1d8e0ac983ce9d94dc2a239742d79"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/fixed-final/fixtures/test_simultaneous_cleanup_fail0/fast.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/fixed-final/fixtures/test_simultaneous_cleanup_fail0/online-estimates.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/fixed-final/fixtures/test_supervisor_consumes_contr0/selected.json",
+      "bytes": 466,
+      "sha256": "a2d29b9eb93c6f2615357a4d9dfa4717275d93c84bb508da47682d183d9d4e7c"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/fixed-final/fixtures/test_supervisor_consumes_contr1/selected.json",
+      "bytes": 646,
+      "sha256": "9ca86d256df5ffe320e049ddd95a304e20c27af0eb2ea7edb32b51c9390f6d99"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/fixed-final/fixtures/test_tampered_declaration_refu0/declaration.json",
+      "bytes": 465,
+      "sha256": "3a3142ed7fad72ca2123d553d73922b29de9095e4829d91810ae473df47aa0d0"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/fixed-final/fixtures/test_tampered_declaration_refu1/declaration.json",
+      "bytes": 465,
+      "sha256": "eab3a96c762aac7725b4b57d8f09b6952cdc4bf8149bb8207986a9fbab8a29c0"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/fixed-final/fixtures/test_tampered_declaration_refu2/declaration.json",
+      "bytes": 466,
+      "sha256": "8a28fcfb7301378baa7bd093e66181a8a3525877a9345960eab5db9892ee2be7"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/fixed-final/fixtures/test_tampered_declaration_refu3/declaration.json",
+      "bytes": 468,
+      "sha256": "e227727a150b29c88ac6f9c73646ada650b656b9f54ae159916f5b8031bbfeda"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/fixed-final/fixtures/test_tampered_declaration_refu4/declaration.json",
+      "bytes": 462,
+      "sha256": "efacdfc997c73bb01b73c5fe1cf606e0206f9dfc57c85cad2679b8ebd8b92cb4"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/fixed-final/fixtures/test_tampered_declaration_refu5/declaration.json",
+      "bytes": 486,
+      "sha256": "d5567fe5a5e5c2001e65e2291f7f735f988325641895f1553cd0b741126dab00"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/fixed-final/fixtures/test_worker_contract_read_dist0/capture/execution-environment-worker.json",
+      "bytes": 644,
+      "sha256": "ea6b98b95c8fb25e2d120b56479a123df04ccdb126eb884290b66a12526108ac"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/fixed-final/fixtures/test_worker_contract_read_dist0/execution.json",
+      "bytes": 80,
+      "sha256": "10ff83f76bcec49a47b4dafdc207f0ff70dbe50b1144fc76cd0a2bc744db846c"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/fixed-final/fixtures/test_worker_contract_read_dist1/execution.json",
+      "bytes": 80,
+      "sha256": "10ff83f76bcec49a47b4dafdc207f0ff70dbe50b1144fc76cd0a2bc744db846c"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/fixed-final/fixtures/test_worker_contract_read_dist2/execution.json",
+      "bytes": 80,
+      "sha256": "10ff83f76bcec49a47b4dafdc207f0ff70dbe50b1144fc76cd0a2bc744db846c"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/fixed-final/fixtures/test_worker_contract_read_dist3/execution.json",
+      "bytes": 80,
+      "sha256": "10ff83f76bcec49a47b4dafdc207f0ff70dbe50b1144fc76cd0a2bc744db846c"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/fixed-final/fixtures/test_worker_contract_read_dist4/execution.json",
+      "bytes": 80,
+      "sha256": "10ff83f76bcec49a47b4dafdc207f0ff70dbe50b1144fc76cd0a2bc744db846c"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/fixed-final/fixtures/test_worker_contract_read_dist5/execution.json",
+      "bytes": 80,
+      "sha256": "10ff83f76bcec49a47b4dafdc207f0ff70dbe50b1144fc76cd0a2bc744db846c"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/fixed-final/fixtures/test_worker_contract_read_dist6/execution.json",
+      "bytes": 80,
+      "sha256": "10ff83f76bcec49a47b4dafdc207f0ff70dbe50b1144fc76cd0a2bc744db846c"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/fixed-final/fixtures/test_worker_contract_read_dist7/execution.json",
+      "bytes": 80,
+      "sha256": "10ff83f76bcec49a47b4dafdc207f0ff70dbe50b1144fc76cd0a2bc744db846c"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/fixed-final/fixtures/test_worker_contract_read_dist8/execution.json",
+      "bytes": 80,
+      "sha256": "10ff83f76bcec49a47b4dafdc207f0ff70dbe50b1144fc76cd0a2bc744db846c"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/fixed-final/fixtures/test_worker_contract_read_dist9/execution.json",
+      "bytes": 80,
+      "sha256": "10ff83f76bcec49a47b4dafdc207f0ff70dbe50b1144fc76cd0a2bc744db846c"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/fixed-final/fixtures/test_worker_environment_eviden0/execution-contract.json",
+      "bytes": 80,
+      "sha256": "10ff83f76bcec49a47b4dafdc207f0ff70dbe50b1144fc76cd0a2bc744db846c"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/fixed-final/fixtures/test_worker_environment_mismat0/capture/execution-environment-worker.json",
+      "bytes": 768,
+      "sha256": "1c8d0fb103a0ef1457fd5890ac6101463e593070c7217d050f2fd76c3ab52405"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/fixed-final/fixtures/test_worker_environment_mismat0/execution-contract.json",
+      "bytes": 116,
+      "sha256": "9a68ee7c27c0fc0f855e512ccc356595b3d45960a1fb53d2f945a7e017bb0dfb"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/fixed-final/fixtures/test_worker_records_exact_envi0/capture/execution-environment-worker.json",
+      "bytes": 738,
+      "sha256": "7523995dae8afc3b900dddd6062c533d8f4827d908a7216d6cdf8b0a47f37f1d"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/fixed-final/fixtures/test_worker_records_exact_envi0/execution-contract.json",
+      "bytes": 116,
+      "sha256": "9a68ee7c27c0fc0f855e512ccc356595b3d45960a1fb53d2f945a7e017bb0dfb"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/fixed-final/fixtures/test_worker_records_v3_policy_0/capture/trajectory-gauge-policy-worker.json",
+      "bytes": 697,
+      "sha256": "54ff05f6a86929cc6c4d189f76ec33e357b1311bfb2847fcae5cda0981ce4252"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/fixed-final/fixtures/test_worker_records_v3_policy_0/execution-v3.json",
+      "bytes": 1111,
+      "sha256": "6a6ad5040d9ead890a02c465697d92ddeb7f85709812e8b2735c3a8004686cf0"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/fixed-final/fixtures/test_worker_records_v3_policy_0/trajectory-gauge-policy.json",
+      "bytes": 954,
+      "sha256": "0356bc8e45966fb25e86620a9b3511f752b704eb6a7ceaa06077c0470b3af6ad"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/fixed-final/start.json",
+      "bytes": 2496,
+      "sha256": "33f98d74fb980d319a600cea8dd71a1dd96011f7e7da95e2ee68776d89a9ed05"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/fixed-final/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/fixed-final/stdout",
+      "bytes": 182,
+      "sha256": "3bb38c725dfc73409feed2ffdd35cb313e8beec7e22271063d6526f6bed573db"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/format-new/after/results/single-aircraft-online-feed-20261017/record.py",
+      "bytes": 3682,
+      "sha256": "774704831204ded284aef82deb2ea98c16b4053bf4b575388414ce1227cf6820"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/format-new/after/tests/benchmark/test_capture_contract.py",
+      "bytes": 27257,
+      "sha256": "4d50a49209b31ee053c3b6138080bfa95f86ee00fcd72ed84bf258856cb28697"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/format-new/after/tests/benchmark/test_capture_online_estimates.py",
+      "bytes": 11507,
+      "sha256": "9599a66c259e41314920205360d75b790e674d4d22700588771421256e76d619"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/format-new/after/tools/benchmark/capture_contract.py",
+      "bytes": 15268,
+      "sha256": "5ed057b25344c283e2fdba25e3bc05e3ca85413df055b23946fab041a3a1ad53"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/format-new/after/tools/benchmark/capture_disarmed_sensors.py",
+      "bytes": 65910,
+      "sha256": "aeea2e4b7f5ea37ed56aced18f449979caf5ad47de46725c8fc4c8e831331e7d"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/format-new/after/tools/benchmark/capture_online_estimates.py",
+      "bytes": 9301,
+      "sha256": "10aeac199433dcffcc813d82168a3b8f6af24f58e49746161a23e2742ef56be0"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/format-new/after/tools/benchmark/openvins_fast_probe.h",
+      "bytes": 2663,
+      "sha256": "3795243174eec9a28842cffecdd3939507e198dcad2308a57b4aa309f268857e"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/format-new/after/tools/benchmark/openvins_online_probe.cpp",
+      "bytes": 10837,
+      "sha256": "7a0804bd9c39f3a67f4f50aae09f15387cd8dd7d8f61474eb57d3db22f0d8f02"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/format-new/after/tools/benchmark/openvins_online_shadow.py",
+      "bytes": 29922,
+      "sha256": "99651fd531cf4c915feeff71987a1d8347dc0da10e842209105b9002d4fbf4aa"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/format-new/before/results/single-aircraft-online-feed-20261017/record.py",
+      "bytes": 3682,
+      "sha256": "774704831204ded284aef82deb2ea98c16b4053bf4b575388414ce1227cf6820"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/format-new/before/tests/benchmark/test_capture_contract.py",
+      "bytes": 27257,
+      "sha256": "4d50a49209b31ee053c3b6138080bfa95f86ee00fcd72ed84bf258856cb28697"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/format-new/before/tests/benchmark/test_capture_online_estimates.py",
+      "bytes": 10967,
+      "sha256": "b561651307c8bcaeec7efd4cc82e91cb1b24711c488d46908ce56fa1d81eaeac"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/format-new/before/tools/benchmark/capture_contract.py",
+      "bytes": 15268,
+      "sha256": "5ed057b25344c283e2fdba25e3bc05e3ca85413df055b23946fab041a3a1ad53"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/format-new/before/tools/benchmark/capture_disarmed_sensors.py",
+      "bytes": 65910,
+      "sha256": "aeea2e4b7f5ea37ed56aced18f449979caf5ad47de46725c8fc4c8e831331e7d"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/format-new/before/tools/benchmark/capture_online_estimates.py",
+      "bytes": 9076,
+      "sha256": "f6d97289d1e59ff2633c8b766e653ab36f150cd7c06e284ad3d19cfa056097d5"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/format-new/before/tools/benchmark/openvins_fast_probe.h",
+      "bytes": 2663,
+      "sha256": "3795243174eec9a28842cffecdd3939507e198dcad2308a57b4aa309f268857e"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/format-new/before/tools/benchmark/openvins_online_probe.cpp",
+      "bytes": 10837,
+      "sha256": "7a0804bd9c39f3a67f4f50aae09f15387cd8dd7d8f61474eb57d3db22f0d8f02"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/format-new/before/tools/benchmark/openvins_online_shadow.py",
+      "bytes": 29922,
+      "sha256": "99651fd531cf4c915feeff71987a1d8347dc0da10e842209105b9002d4fbf4aa"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/format-new/completion.json",
+      "bytes": 4016,
+      "sha256": "c2a20528b5db116a5d57aad0e2dd352e33ac05ce6d2bd05c9ac4ccd9286d80b6"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/format-new/start.json",
+      "bytes": 2338,
+      "sha256": "a4ee6cbdfba60e7a7a6ca619a04bb44f6ec1c07b240a270efea0be89513cc821"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/format-new/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/format-new/stdout",
+      "bytes": 20,
+      "sha256": "96a977f329ec3c59092d40e041a019b49dcf03ca04055e177aa0ccb8c27234df"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/history-read-coverage.json",
+      "bytes": 2980,
+      "sha256": "a2affe3c56f98a42b24232c1546a33217a41116fa5a861aed51d8d37a9593af6"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/import-fix/after/results/single-aircraft-online-feed-20261017/record.py",
+      "bytes": 3682,
+      "sha256": "774704831204ded284aef82deb2ea98c16b4053bf4b575388414ce1227cf6820"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/import-fix/after/tests/benchmark/test_capture_contract.py",
+      "bytes": 27257,
+      "sha256": "4d50a49209b31ee053c3b6138080bfa95f86ee00fcd72ed84bf258856cb28697"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/import-fix/after/tests/benchmark/test_capture_online_estimates.py",
+      "bytes": 11507,
+      "sha256": "474022e7d18ff9b2d8f38dc0929c995cc67a2fdf0e88abcbc97d4fad9015b105"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/import-fix/after/tools/benchmark/capture_contract.py",
+      "bytes": 15268,
+      "sha256": "5ed057b25344c283e2fdba25e3bc05e3ca85413df055b23946fab041a3a1ad53"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/import-fix/after/tools/benchmark/capture_disarmed_sensors.py",
+      "bytes": 65910,
+      "sha256": "aeea2e4b7f5ea37ed56aced18f449979caf5ad47de46725c8fc4c8e831331e7d"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/import-fix/after/tools/benchmark/capture_online_estimates.py",
+      "bytes": 9301,
+      "sha256": "10aeac199433dcffcc813d82168a3b8f6af24f58e49746161a23e2742ef56be0"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/import-fix/after/tools/benchmark/openvins_fast_probe.h",
+      "bytes": 2663,
+      "sha256": "3795243174eec9a28842cffecdd3939507e198dcad2308a57b4aa309f268857e"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/import-fix/after/tools/benchmark/openvins_online_probe.cpp",
+      "bytes": 10837,
+      "sha256": "7a0804bd9c39f3a67f4f50aae09f15387cd8dd7d8f61474eb57d3db22f0d8f02"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/import-fix/after/tools/benchmark/openvins_online_shadow.py",
+      "bytes": 29922,
+      "sha256": "99651fd531cf4c915feeff71987a1d8347dc0da10e842209105b9002d4fbf4aa"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/import-fix/before/results/single-aircraft-online-feed-20261017/record.py",
+      "bytes": 3682,
+      "sha256": "774704831204ded284aef82deb2ea98c16b4053bf4b575388414ce1227cf6820"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/import-fix/before/tests/benchmark/test_capture_contract.py",
+      "bytes": 27257,
+      "sha256": "4d50a49209b31ee053c3b6138080bfa95f86ee00fcd72ed84bf258856cb28697"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/import-fix/before/tests/benchmark/test_capture_online_estimates.py",
+      "bytes": 11507,
+      "sha256": "9599a66c259e41314920205360d75b790e674d4d22700588771421256e76d619"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/import-fix/before/tools/benchmark/capture_contract.py",
+      "bytes": 15268,
+      "sha256": "5ed057b25344c283e2fdba25e3bc05e3ca85413df055b23946fab041a3a1ad53"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/import-fix/before/tools/benchmark/capture_disarmed_sensors.py",
+      "bytes": 65910,
+      "sha256": "aeea2e4b7f5ea37ed56aced18f449979caf5ad47de46725c8fc4c8e831331e7d"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/import-fix/before/tools/benchmark/capture_online_estimates.py",
+      "bytes": 9301,
+      "sha256": "10aeac199433dcffcc813d82168a3b8f6af24f58e49746161a23e2742ef56be0"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/import-fix/before/tools/benchmark/openvins_fast_probe.h",
+      "bytes": 2663,
+      "sha256": "3795243174eec9a28842cffecdd3939507e198dcad2308a57b4aa309f268857e"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/import-fix/before/tools/benchmark/openvins_online_probe.cpp",
+      "bytes": 10837,
+      "sha256": "7a0804bd9c39f3a67f4f50aae09f15387cd8dd7d8f61474eb57d3db22f0d8f02"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/import-fix/before/tools/benchmark/openvins_online_shadow.py",
+      "bytes": 29922,
+      "sha256": "99651fd531cf4c915feeff71987a1d8347dc0da10e842209105b9002d4fbf4aa"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/import-fix/completion.json",
+      "bytes": 4005,
+      "sha256": "975f3ea9a8fb13906686a99ddbe1d1fb30253afbd21c451a4bf44e328a881b4a"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/import-fix/start.json",
+      "bytes": 2326,
+      "sha256": "0a3f98277e4b1c15829c57facffe13ec2946badf4a390e25d2c633aad9ae6bb2"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/import-fix/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/import-fix/stdout",
+      "bytes": 38,
+      "sha256": "aac3a0503d8b95052cc85fb9f1717dc82b74aa55853a5aa9749b41e30275d472"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/initial-lint/after/results/single-aircraft-online-feed-20261017/record.py",
+      "bytes": 3682,
+      "sha256": "774704831204ded284aef82deb2ea98c16b4053bf4b575388414ce1227cf6820"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/initial-lint/after/tests/benchmark/test_capture_contract.py",
+      "bytes": 27257,
+      "sha256": "4d50a49209b31ee053c3b6138080bfa95f86ee00fcd72ed84bf258856cb28697"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/initial-lint/after/tests/benchmark/test_capture_online_estimates.py",
+      "bytes": 9402,
+      "sha256": "325fe8489e31e32e2de10c5ed28ee16e348f2716fc55e299e4632bab9d09ff2c"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/initial-lint/after/tools/benchmark/capture_contract.py",
+      "bytes": 15268,
+      "sha256": "5ed057b25344c283e2fdba25e3bc05e3ca85413df055b23946fab041a3a1ad53"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/initial-lint/after/tools/benchmark/capture_disarmed_sensors.py",
+      "bytes": 65910,
+      "sha256": "aeea2e4b7f5ea37ed56aced18f449979caf5ad47de46725c8fc4c8e831331e7d"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/initial-lint/after/tools/benchmark/capture_online_estimates.py",
+      "bytes": 9076,
+      "sha256": "f6d97289d1e59ff2633c8b766e653ab36f150cd7c06e284ad3d19cfa056097d5"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/initial-lint/after/tools/benchmark/openvins_fast_probe.h",
+      "bytes": 2663,
+      "sha256": "3795243174eec9a28842cffecdd3939507e198dcad2308a57b4aa309f268857e"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/initial-lint/after/tools/benchmark/openvins_online_probe.cpp",
+      "bytes": 10837,
+      "sha256": "7a0804bd9c39f3a67f4f50aae09f15387cd8dd7d8f61474eb57d3db22f0d8f02"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/initial-lint/after/tools/benchmark/openvins_online_shadow.py",
+      "bytes": 29922,
+      "sha256": "99651fd531cf4c915feeff71987a1d8347dc0da10e842209105b9002d4fbf4aa"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/initial-lint/before/results/single-aircraft-online-feed-20261017/record.py",
+      "bytes": 3682,
+      "sha256": "774704831204ded284aef82deb2ea98c16b4053bf4b575388414ce1227cf6820"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/initial-lint/before/tests/benchmark/test_capture_contract.py",
+      "bytes": 27257,
+      "sha256": "4d50a49209b31ee053c3b6138080bfa95f86ee00fcd72ed84bf258856cb28697"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/initial-lint/before/tests/benchmark/test_capture_online_estimates.py",
+      "bytes": 9402,
+      "sha256": "325fe8489e31e32e2de10c5ed28ee16e348f2716fc55e299e4632bab9d09ff2c"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/initial-lint/before/tools/benchmark/capture_contract.py",
+      "bytes": 15268,
+      "sha256": "5ed057b25344c283e2fdba25e3bc05e3ca85413df055b23946fab041a3a1ad53"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/initial-lint/before/tools/benchmark/capture_disarmed_sensors.py",
+      "bytes": 65910,
+      "sha256": "aeea2e4b7f5ea37ed56aced18f449979caf5ad47de46725c8fc4c8e831331e7d"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/initial-lint/before/tools/benchmark/capture_online_estimates.py",
+      "bytes": 9076,
+      "sha256": "f6d97289d1e59ff2633c8b766e653ab36f150cd7c06e284ad3d19cfa056097d5"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/initial-lint/before/tools/benchmark/openvins_fast_probe.h",
+      "bytes": 2663,
+      "sha256": "3795243174eec9a28842cffecdd3939507e198dcad2308a57b4aa309f268857e"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/initial-lint/before/tools/benchmark/openvins_online_probe.cpp",
+      "bytes": 10837,
+      "sha256": "7a0804bd9c39f3a67f4f50aae09f15387cd8dd7d8f61474eb57d3db22f0d8f02"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/initial-lint/before/tools/benchmark/openvins_online_shadow.py",
+      "bytes": 29922,
+      "sha256": "99651fd531cf4c915feeff71987a1d8347dc0da10e842209105b9002d4fbf4aa"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/initial-lint/completion.json",
+      "bytes": 4109,
+      "sha256": "a7c3669571e0aac9febf83b68cb8c309d1f2e51a611423c3d1fa91e88bcf2b55"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/initial-lint/start.json",
+      "bytes": 2432,
+      "sha256": "e38bc6902b944b56336dceb64c26e0fef0552aaefea67d5817c804aaed314801"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/initial-lint/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/initial-lint/stdout",
+      "bytes": 4053,
+      "sha256": "bc5e5a7af82090f8ad0f7bc83f5c48726df6511df8e977d59c9ee2adf0edda53"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/interface-red/after/results/single-aircraft-online-feed-20261017/record.py",
+      "bytes": 3682,
+      "sha256": "774704831204ded284aef82deb2ea98c16b4053bf4b575388414ce1227cf6820"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/interface-red/after/tests/benchmark/test_capture_contract.py",
+      "bytes": 27257,
+      "sha256": "4d50a49209b31ee053c3b6138080bfa95f86ee00fcd72ed84bf258856cb28697"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/interface-red/after/tests/benchmark/test_capture_online_estimates.py",
+      "bytes": 7193,
+      "sha256": "f12855574b1ab25a5260bc65da41704539988061ee9ea9c5d02530ab20935202"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/interface-red/after/tools/benchmark/capture_contract.py",
+      "bytes": 14585,
+      "sha256": "18d95975bf9676554d65aa4d7b30591fa43c68e7198ecff24a5808ef709c4883"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/interface-red/after/tools/benchmark/capture_disarmed_sensors.py",
+      "bytes": 64954,
+      "sha256": "917089fe23870c081de2a17cc3a9ee386bbbb78c00036cfd9a0acf039b847347"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/interface-red/after/tools/benchmark/openvins_fast_probe.h",
+      "bytes": 2663,
+      "sha256": "3795243174eec9a28842cffecdd3939507e198dcad2308a57b4aa309f268857e"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/interface-red/after/tools/benchmark/openvins_online_probe.cpp",
+      "bytes": 10837,
+      "sha256": "7a0804bd9c39f3a67f4f50aae09f15387cd8dd7d8f61474eb57d3db22f0d8f02"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/interface-red/after/tools/benchmark/openvins_online_shadow.py",
+      "bytes": 29922,
+      "sha256": "99651fd531cf4c915feeff71987a1d8347dc0da10e842209105b9002d4fbf4aa"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/interface-red/before/results/single-aircraft-online-feed-20261017/record.py",
+      "bytes": 3682,
+      "sha256": "774704831204ded284aef82deb2ea98c16b4053bf4b575388414ce1227cf6820"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/interface-red/before/tests/benchmark/test_capture_contract.py",
+      "bytes": 27257,
+      "sha256": "4d50a49209b31ee053c3b6138080bfa95f86ee00fcd72ed84bf258856cb28697"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/interface-red/before/tests/benchmark/test_capture_online_estimates.py",
+      "bytes": 7193,
+      "sha256": "f12855574b1ab25a5260bc65da41704539988061ee9ea9c5d02530ab20935202"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/interface-red/before/tools/benchmark/capture_contract.py",
+      "bytes": 14585,
+      "sha256": "18d95975bf9676554d65aa4d7b30591fa43c68e7198ecff24a5808ef709c4883"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/interface-red/before/tools/benchmark/capture_disarmed_sensors.py",
+      "bytes": 64954,
+      "sha256": "917089fe23870c081de2a17cc3a9ee386bbbb78c00036cfd9a0acf039b847347"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/interface-red/before/tools/benchmark/openvins_fast_probe.h",
+      "bytes": 2663,
+      "sha256": "3795243174eec9a28842cffecdd3939507e198dcad2308a57b4aa309f268857e"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/interface-red/before/tools/benchmark/openvins_online_probe.cpp",
+      "bytes": 10837,
+      "sha256": "7a0804bd9c39f3a67f4f50aae09f15387cd8dd7d8f61474eb57d3db22f0d8f02"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/interface-red/before/tools/benchmark/openvins_online_shadow.py",
+      "bytes": 29922,
+      "sha256": "99651fd531cf4c915feeff71987a1d8347dc0da10e842209105b9002d4fbf4aa"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/interface-red/completion.json",
+      "bytes": 4095,
+      "sha256": "81a3649e2eea8d6f7ed347a4c9540eadf626fe7099ebb30a11f6e25bded1a394"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/interface-red/fixtures/test_old_output_is_rejected_be0/fast.jsonl",
+      "bytes": 4,
+      "sha256": "01d09d19c2139a46aebfb577780d123d7396e97201bc7ead210a2ebff8239dee"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/interface-red/start.json",
+      "bytes": 2337,
+      "sha256": "e42bf5ead94df99c2dee4ed9ff2cfc1abe2e490a7715868f4be163e85e87e611"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/interface-red/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/interface-red/stdout",
+      "bytes": 37558,
+      "sha256": "10571a5bde561ce96301ea44c6c86dd33fa5321b120c9e7a51a507430d3bdfe4"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/pr-before.command.json",
+      "bytes": 291,
+      "sha256": "9a781afccfb4eb63c78fae3027ddecbda1e1534a5f17a4bf9fdf6efec8864e94"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/pr-before.completion.json",
+      "bytes": 394,
+      "sha256": "9093ab233b5fb4fb42dfd9d8ee0dea3f8442d61d9bd35211bf8e34c4aaf68bd8"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/pr-before.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/pr-before.stdout",
+      "bytes": 41153,
+      "sha256": "adad0e7588213d0831b6a71c1cd29748e30286c2e2977a56eb770d8f1b1699fc"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/protocol-green/after/results/single-aircraft-online-feed-20261017/record.py",
+      "bytes": 3682,
+      "sha256": "774704831204ded284aef82deb2ea98c16b4053bf4b575388414ce1227cf6820"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/protocol-green/after/tests/benchmark/test_capture_contract.py",
+      "bytes": 27257,
+      "sha256": "4d50a49209b31ee053c3b6138080bfa95f86ee00fcd72ed84bf258856cb28697"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/protocol-green/after/tests/benchmark/test_capture_online_estimates.py",
+      "bytes": 9402,
+      "sha256": "325fe8489e31e32e2de10c5ed28ee16e348f2716fc55e299e4632bab9d09ff2c"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/protocol-green/after/tools/benchmark/capture_contract.py",
+      "bytes": 15268,
+      "sha256": "5ed057b25344c283e2fdba25e3bc05e3ca85413df055b23946fab041a3a1ad53"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/protocol-green/after/tools/benchmark/capture_disarmed_sensors.py",
+      "bytes": 65910,
+      "sha256": "aeea2e4b7f5ea37ed56aced18f449979caf5ad47de46725c8fc4c8e831331e7d"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/protocol-green/after/tools/benchmark/capture_online_estimates.py",
+      "bytes": 9076,
+      "sha256": "f6d97289d1e59ff2633c8b766e653ab36f150cd7c06e284ad3d19cfa056097d5"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/protocol-green/after/tools/benchmark/openvins_fast_probe.h",
+      "bytes": 2663,
+      "sha256": "3795243174eec9a28842cffecdd3939507e198dcad2308a57b4aa309f268857e"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/protocol-green/after/tools/benchmark/openvins_online_probe.cpp",
+      "bytes": 10837,
+      "sha256": "7a0804bd9c39f3a67f4f50aae09f15387cd8dd7d8f61474eb57d3db22f0d8f02"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/protocol-green/after/tools/benchmark/openvins_online_shadow.py",
+      "bytes": 29922,
+      "sha256": "99651fd531cf4c915feeff71987a1d8347dc0da10e842209105b9002d4fbf4aa"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/protocol-green/before/results/single-aircraft-online-feed-20261017/record.py",
+      "bytes": 3682,
+      "sha256": "774704831204ded284aef82deb2ea98c16b4053bf4b575388414ce1227cf6820"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/protocol-green/before/tests/benchmark/test_capture_contract.py",
+      "bytes": 27257,
+      "sha256": "4d50a49209b31ee053c3b6138080bfa95f86ee00fcd72ed84bf258856cb28697"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/protocol-green/before/tests/benchmark/test_capture_online_estimates.py",
+      "bytes": 9402,
+      "sha256": "325fe8489e31e32e2de10c5ed28ee16e348f2716fc55e299e4632bab9d09ff2c"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/protocol-green/before/tools/benchmark/capture_contract.py",
+      "bytes": 15268,
+      "sha256": "5ed057b25344c283e2fdba25e3bc05e3ca85413df055b23946fab041a3a1ad53"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/protocol-green/before/tools/benchmark/capture_disarmed_sensors.py",
+      "bytes": 65910,
+      "sha256": "aeea2e4b7f5ea37ed56aced18f449979caf5ad47de46725c8fc4c8e831331e7d"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/protocol-green/before/tools/benchmark/capture_online_estimates.py",
+      "bytes": 9076,
+      "sha256": "f6d97289d1e59ff2633c8b766e653ab36f150cd7c06e284ad3d19cfa056097d5"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/protocol-green/before/tools/benchmark/openvins_fast_probe.h",
+      "bytes": 2663,
+      "sha256": "3795243174eec9a28842cffecdd3939507e198dcad2308a57b4aa309f268857e"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/protocol-green/before/tools/benchmark/openvins_online_probe.cpp",
+      "bytes": 10837,
+      "sha256": "7a0804bd9c39f3a67f4f50aae09f15387cd8dd7d8f61474eb57d3db22f0d8f02"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/protocol-green/before/tools/benchmark/openvins_online_shadow.py",
+      "bytes": 29922,
+      "sha256": "99651fd531cf4c915feeff71987a1d8347dc0da10e842209105b9002d4fbf4aa"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/protocol-green/completion.json",
+      "bytes": 9418,
+      "sha256": "dbdc80035b23ef72e09e93cebf14b9aad46c13a25fdc24289f50f1b2308558ca"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/protocol-green/fixtures/test_bad_native_output_latches0/fast.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/protocol-green/fixtures/test_bad_native_output_latches0/online-estimates.jsonl",
+      "bytes": 2167,
+      "sha256": "a6ecf892a7e04ef456a606566106e84b02804a620c7ea44338c3d079536b6580"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/protocol-green/fixtures/test_bad_native_output_latches1/fast.jsonl",
+      "bytes": 1239,
+      "sha256": "5a7e9c70246601f834252a5d86eee940c335aeb232d2bad91bd41901e73c318c"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/protocol-green/fixtures/test_bad_native_output_latches1/online-estimates.jsonl",
+      "bytes": 2167,
+      "sha256": "a6ecf892a7e04ef456a606566106e84b02804a620c7ea44338c3d079536b6580"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/protocol-green/fixtures/test_bad_native_output_latches2/fast.jsonl",
+      "bytes": 2480,
+      "sha256": "c2e590b202d888d5c3d1a84d54b872e0f1189df7333d81034cb756a6ea1b9d6d"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/protocol-green/fixtures/test_bad_native_output_latches2/online-estimates.jsonl",
+      "bytes": 2167,
+      "sha256": "a6ecf892a7e04ef456a606566106e84b02804a620c7ea44338c3d079536b6580"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/protocol-green/fixtures/test_bad_native_output_latches3/fast.jsonl",
+      "bytes": 1240,
+      "sha256": "9b88f24d2b3c8175af8f7a3fea5ebf70ae006538ba733c6cc73c5bbca4873314"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/protocol-green/fixtures/test_bad_native_output_latches3/online-estimates.jsonl",
+      "bytes": 2167,
+      "sha256": "3be6fa82b5b7c5ff0d0b9b7ed087fc964beeca08cc68e455d0f6193cd990bc22"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/protocol-green/fixtures/test_bad_native_output_latches4/fast.jsonl",
+      "bytes": 1240,
+      "sha256": "eed376b6abd17f6404429d34a7dacd5642b49e1f2d414a490d1523c50ace3e4f"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/protocol-green/fixtures/test_bad_native_output_latches4/online-estimates.jsonl",
+      "bytes": 2167,
+      "sha256": "3be6fa82b5b7c5ff0d0b9b7ed087fc964beeca08cc68e455d0f6193cd990bc22"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/protocol-green/fixtures/test_bad_native_output_latches5/fast.jsonl",
+      "bytes": 1239,
+      "sha256": "d07cd1c76e62d6a6afefe7c2c481ff2037da4de400de7c3db6d706fc051d1ae2"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/protocol-green/fixtures/test_bad_native_output_latches5/online-estimates.jsonl",
+      "bytes": 2167,
+      "sha256": "3be6fa82b5b7c5ff0d0b9b7ed087fc964beeca08cc68e455d0f6193cd990bc22"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/protocol-green/fixtures/test_bad_native_output_latches6/fast.jsonl",
+      "bytes": 1240,
+      "sha256": "b66184810d452725c46f0f09a0e79d1ff6ac8470fe81ab86475d6b392fb35d7a"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/protocol-green/fixtures/test_bad_native_output_latches6/online-estimates.jsonl",
+      "bytes": 2164,
+      "sha256": "b245708f3161563e704cad9409eab18dc1cdfcf010106924ec15e4cdade3be4b"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/protocol-green/fixtures/test_bad_native_output_latches7/fast.jsonl",
+      "bytes": 16385,
+      "sha256": "0a6f21fda2a49df0c6671aacfe31136e24b4880f334ee89182752f35c2f0cb3d"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/protocol-green/fixtures/test_bad_native_output_latches7/online-estimates.jsonl",
+      "bytes": 2166,
+      "sha256": "05ef8442d7b9830be8ce2025e17fc6a76b4d7bb467d26e82c5e764701bd37450"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/protocol-green/fixtures/test_live_capture_consumes_rea0/fast.jsonl",
+      "bytes": 1240,
+      "sha256": "c19157034a28ce52551b2d923af3869d027809360f61d796cb5a4dd5871f72a1"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/protocol-green/fixtures/test_live_capture_consumes_rea0/online-estimates.jsonl",
+      "bytes": 3386,
+      "sha256": "3cc6bc1a5b30d50ea4dc65a65b5a241855ce1c25617f3ba172919bdcb7349455"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/protocol-green/fixtures/test_new_workload_is_forwarded0/execution.json",
+      "bytes": 891,
+      "sha256": "d403f6939db4a147387989e41eb50ea7fb3cf043a00bb5171e20fa75a9364950"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/protocol-green/fixtures/test_old_output_is_rejected_be0/fast.jsonl",
+      "bytes": 4,
+      "sha256": "01d09d19c2139a46aebfb577780d123d7396e97201bc7ead210a2ebff8239dee"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/protocol-green/fixtures/test_parent_cleanup_failure_st0/fast.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/protocol-green/fixtures/test_parent_cleanup_failure_st0/online-estimates.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/protocol-green/fixtures/test_real_native_pre_camera_se0/fast.jsonl",
+      "bytes": 436,
+      "sha256": "cbc07b429266edc44d66909c8cd2050a58d39271bf61b96f683c4b1d5dcb0545"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/protocol-green/fixtures/test_real_native_pre_camera_se0/online-estimates.jsonl",
+      "bytes": 868,
+      "sha256": "44bd43a53106b840245fb0cfc6a1e0444c0bd3cafa2c368ea4a3077a83297e08"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/protocol-green/fixtures/test_replaced_fast_path_is_not0/fast.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/protocol-green/fixtures/test_replaced_fast_path_is_not0/online-estimates.jsonl",
+      "bytes": 444,
+      "sha256": "ed212f34d080e924a1096274cb509832efe8eaf3356a5c0a38a0304a35c58b7e"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/protocol-green/fixtures/test_replaced_fast_path_is_not0/other-fast.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/protocol-green/start.json",
+      "bytes": 2448,
+      "sha256": "a5ec2d2fe1c778504b89d68152fc66cae2544dff6a24327d47f5d7ba17db42e2"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/protocol-green/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/protocol-green/stdout",
+      "bytes": 101,
+      "sha256": "25729df2610118d7658241970fc631aaf36f58ab550d5b99d51c400c42c14a4c"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/protocol-red/after/results/single-aircraft-online-feed-20261017/record.py",
+      "bytes": 3682,
+      "sha256": "774704831204ded284aef82deb2ea98c16b4053bf4b575388414ce1227cf6820"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/protocol-red/after/tests/benchmark/test_capture_contract.py",
+      "bytes": 27257,
+      "sha256": "4d50a49209b31ee053c3b6138080bfa95f86ee00fcd72ed84bf258856cb28697"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/protocol-red/after/tests/benchmark/test_capture_online_estimates.py",
+      "bytes": 9145,
+      "sha256": "8d613262686db1ef8f064b69d50dc40b11ec9d7de517cbf55cbca11c63c7b20f"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/protocol-red/after/tools/benchmark/capture_contract.py",
+      "bytes": 15268,
+      "sha256": "5ed057b25344c283e2fdba25e3bc05e3ca85413df055b23946fab041a3a1ad53"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/protocol-red/after/tools/benchmark/capture_disarmed_sensors.py",
+      "bytes": 65812,
+      "sha256": "48685c9b9ee7ef730d9c1e29ece2e3363d171013cb92b0a4dda52f3bfd74f4c6"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/protocol-red/after/tools/benchmark/capture_online_estimates.py",
+      "bytes": 8683,
+      "sha256": "e5648cf95501def7b34505f0b039a7a4d14783e6509501729f4a14ca41327486"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/protocol-red/after/tools/benchmark/openvins_fast_probe.h",
+      "bytes": 2663,
+      "sha256": "3795243174eec9a28842cffecdd3939507e198dcad2308a57b4aa309f268857e"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/protocol-red/after/tools/benchmark/openvins_online_probe.cpp",
+      "bytes": 10837,
+      "sha256": "7a0804bd9c39f3a67f4f50aae09f15387cd8dd7d8f61474eb57d3db22f0d8f02"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/protocol-red/after/tools/benchmark/openvins_online_shadow.py",
+      "bytes": 29922,
+      "sha256": "99651fd531cf4c915feeff71987a1d8347dc0da10e842209105b9002d4fbf4aa"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/protocol-red/before/results/single-aircraft-online-feed-20261017/record.py",
+      "bytes": 3682,
+      "sha256": "774704831204ded284aef82deb2ea98c16b4053bf4b575388414ce1227cf6820"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/protocol-red/before/tests/benchmark/test_capture_contract.py",
+      "bytes": 27257,
+      "sha256": "4d50a49209b31ee053c3b6138080bfa95f86ee00fcd72ed84bf258856cb28697"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/protocol-red/before/tests/benchmark/test_capture_online_estimates.py",
+      "bytes": 9145,
+      "sha256": "8d613262686db1ef8f064b69d50dc40b11ec9d7de517cbf55cbca11c63c7b20f"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/protocol-red/before/tools/benchmark/capture_contract.py",
+      "bytes": 15268,
+      "sha256": "5ed057b25344c283e2fdba25e3bc05e3ca85413df055b23946fab041a3a1ad53"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/protocol-red/before/tools/benchmark/capture_disarmed_sensors.py",
+      "bytes": 65812,
+      "sha256": "48685c9b9ee7ef730d9c1e29ece2e3363d171013cb92b0a4dda52f3bfd74f4c6"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/protocol-red/before/tools/benchmark/capture_online_estimates.py",
+      "bytes": 8683,
+      "sha256": "e5648cf95501def7b34505f0b039a7a4d14783e6509501729f4a14ca41327486"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/protocol-red/before/tools/benchmark/openvins_fast_probe.h",
+      "bytes": 2663,
+      "sha256": "3795243174eec9a28842cffecdd3939507e198dcad2308a57b4aa309f268857e"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/protocol-red/before/tools/benchmark/openvins_online_probe.cpp",
+      "bytes": 10837,
+      "sha256": "7a0804bd9c39f3a67f4f50aae09f15387cd8dd7d8f61474eb57d3db22f0d8f02"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/protocol-red/before/tools/benchmark/openvins_online_shadow.py",
+      "bytes": 29922,
+      "sha256": "99651fd531cf4c915feeff71987a1d8347dc0da10e842209105b9002d4fbf4aa"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/protocol-red/completion.json",
+      "bytes": 9220,
+      "sha256": "bbca89888f8ca9887e7fbda5bbc8cff133640b52899e300c6601879c350b1bda"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/protocol-red/fixtures/test_bad_native_output_latches0/fast.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/protocol-red/fixtures/test_bad_native_output_latches0/online-estimates.jsonl",
+      "bytes": 2167,
+      "sha256": "a6ecf892a7e04ef456a606566106e84b02804a620c7ea44338c3d079536b6580"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/protocol-red/fixtures/test_bad_native_output_latches1/fast.jsonl",
+      "bytes": 1239,
+      "sha256": "5a7e9c70246601f834252a5d86eee940c335aeb232d2bad91bd41901e73c318c"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/protocol-red/fixtures/test_bad_native_output_latches1/online-estimates.jsonl",
+      "bytes": 2167,
+      "sha256": "a6ecf892a7e04ef456a606566106e84b02804a620c7ea44338c3d079536b6580"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/protocol-red/fixtures/test_bad_native_output_latches2/fast.jsonl",
+      "bytes": 2480,
+      "sha256": "c2e590b202d888d5c3d1a84d54b872e0f1189df7333d81034cb756a6ea1b9d6d"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/protocol-red/fixtures/test_bad_native_output_latches2/online-estimates.jsonl",
+      "bytes": 2167,
+      "sha256": "a6ecf892a7e04ef456a606566106e84b02804a620c7ea44338c3d079536b6580"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/protocol-red/fixtures/test_bad_native_output_latches3/fast.jsonl",
+      "bytes": 1240,
+      "sha256": "9b88f24d2b3c8175af8f7a3fea5ebf70ae006538ba733c6cc73c5bbca4873314"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/protocol-red/fixtures/test_bad_native_output_latches3/online-estimates.jsonl",
+      "bytes": 2167,
+      "sha256": "3be6fa82b5b7c5ff0d0b9b7ed087fc964beeca08cc68e455d0f6193cd990bc22"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/protocol-red/fixtures/test_bad_native_output_latches4/fast.jsonl",
+      "bytes": 1240,
+      "sha256": "eed376b6abd17f6404429d34a7dacd5642b49e1f2d414a490d1523c50ace3e4f"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/protocol-red/fixtures/test_bad_native_output_latches4/online-estimates.jsonl",
+      "bytes": 2167,
+      "sha256": "3be6fa82b5b7c5ff0d0b9b7ed087fc964beeca08cc68e455d0f6193cd990bc22"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/protocol-red/fixtures/test_bad_native_output_latches5/fast.jsonl",
+      "bytes": 1239,
+      "sha256": "d07cd1c76e62d6a6afefe7c2c481ff2037da4de400de7c3db6d706fc051d1ae2"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/protocol-red/fixtures/test_bad_native_output_latches5/online-estimates.jsonl",
+      "bytes": 2167,
+      "sha256": "3be6fa82b5b7c5ff0d0b9b7ed087fc964beeca08cc68e455d0f6193cd990bc22"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/protocol-red/fixtures/test_bad_native_output_latches6/fast.jsonl",
+      "bytes": 1240,
+      "sha256": "b66184810d452725c46f0f09a0e79d1ff6ac8470fe81ab86475d6b392fb35d7a"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/protocol-red/fixtures/test_bad_native_output_latches6/online-estimates.jsonl",
+      "bytes": 2164,
+      "sha256": "b245708f3161563e704cad9409eab18dc1cdfcf010106924ec15e4cdade3be4b"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/protocol-red/fixtures/test_bad_native_output_latches7/fast.jsonl",
+      "bytes": 16385,
+      "sha256": "0a6f21fda2a49df0c6671aacfe31136e24b4880f334ee89182752f35c2f0cb3d"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/protocol-red/fixtures/test_bad_native_output_latches7/online-estimates.jsonl",
+      "bytes": 2166,
+      "sha256": "05ef8442d7b9830be8ce2025e17fc6a76b4d7bb467d26e82c5e764701bd37450"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/protocol-red/fixtures/test_live_capture_consumes_rea0/fast.jsonl",
+      "bytes": 1240,
+      "sha256": "c19157034a28ce52551b2d923af3869d027809360f61d796cb5a4dd5871f72a1"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/protocol-red/fixtures/test_live_capture_consumes_rea0/online-estimates.jsonl",
+      "bytes": 3386,
+      "sha256": "3cc6bc1a5b30d50ea4dc65a65b5a241855ce1c25617f3ba172919bdcb7349455"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/protocol-red/fixtures/test_new_workload_is_forwarded0/execution.json",
+      "bytes": 887,
+      "sha256": "3e36d270de53090f6aa10c1c545780d540820a51fbbbf205a961284d6143a588"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/protocol-red/fixtures/test_old_output_is_rejected_be0/fast.jsonl",
+      "bytes": 4,
+      "sha256": "01d09d19c2139a46aebfb577780d123d7396e97201bc7ead210a2ebff8239dee"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/protocol-red/fixtures/test_parent_cleanup_failure_st0/fast.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/protocol-red/fixtures/test_parent_cleanup_failure_st0/online-estimates.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/protocol-red/fixtures/test_real_native_pre_camera_se0/fast.jsonl",
+      "bytes": 436,
+      "sha256": "cbc07b429266edc44d66909c8cd2050a58d39271bf61b96f683c4b1d5dcb0545"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/protocol-red/fixtures/test_real_native_pre_camera_se0/online-estimates.jsonl",
+      "bytes": 450,
+      "sha256": "edeecd2ff7bea932391808fdc26fdda13be90c224275644cf5c6550b153a1dd9"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/protocol-red/fixtures/test_replaced_fast_path_is_not0/fast.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/protocol-red/fixtures/test_replaced_fast_path_is_not0/online-estimates.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/protocol-red/start.json",
+      "bytes": 2446,
+      "sha256": "f3fc5e50038821e0a1f9dbabf732fa736335f0e44974a822fdff100d38bcb678"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/protocol-red/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/protocol-red/stdout",
+      "bytes": 5740,
+      "sha256": "24266422d5bb24d0770da431f95ff2acdb6fdf2c7c09f47724c4d8012520f448"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/publication_commands.py",
+      "bytes": 1201,
+      "sha256": "aa04abf1a112c8bd9de42475ef1dcdff51a11ec1d41f10209a6a07da07fd7f06"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/record.py",
+      "bytes": 3682,
+      "sha256": "774704831204ded284aef82deb2ea98c16b4053bf4b575388414ce1227cf6820"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/replacement-behavior-red/after/results/single-aircraft-online-feed-20261017/record.py",
+      "bytes": 3682,
+      "sha256": "774704831204ded284aef82deb2ea98c16b4053bf4b575388414ce1227cf6820"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/replacement-behavior-red/after/tests/benchmark/test_capture_contract.py",
+      "bytes": 27257,
+      "sha256": "4d50a49209b31ee053c3b6138080bfa95f86ee00fcd72ed84bf258856cb28697"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/replacement-behavior-red/after/tests/benchmark/test_capture_online_estimates.py",
+      "bytes": 9402,
+      "sha256": "325fe8489e31e32e2de10c5ed28ee16e348f2716fc55e299e4632bab9d09ff2c"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/replacement-behavior-red/after/tools/benchmark/capture_contract.py",
+      "bytes": 15268,
+      "sha256": "5ed057b25344c283e2fdba25e3bc05e3ca85413df055b23946fab041a3a1ad53"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/replacement-behavior-red/after/tools/benchmark/capture_disarmed_sensors.py",
+      "bytes": 65812,
+      "sha256": "48685c9b9ee7ef730d9c1e29ece2e3363d171013cb92b0a4dda52f3bfd74f4c6"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/replacement-behavior-red/after/tools/benchmark/capture_online_estimates.py",
+      "bytes": 8683,
+      "sha256": "e5648cf95501def7b34505f0b039a7a4d14783e6509501729f4a14ca41327486"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/replacement-behavior-red/after/tools/benchmark/openvins_fast_probe.h",
+      "bytes": 2663,
+      "sha256": "3795243174eec9a28842cffecdd3939507e198dcad2308a57b4aa309f268857e"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/replacement-behavior-red/after/tools/benchmark/openvins_online_probe.cpp",
+      "bytes": 10837,
+      "sha256": "7a0804bd9c39f3a67f4f50aae09f15387cd8dd7d8f61474eb57d3db22f0d8f02"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/replacement-behavior-red/after/tools/benchmark/openvins_online_shadow.py",
+      "bytes": 29922,
+      "sha256": "99651fd531cf4c915feeff71987a1d8347dc0da10e842209105b9002d4fbf4aa"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/replacement-behavior-red/before/results/single-aircraft-online-feed-20261017/record.py",
+      "bytes": 3682,
+      "sha256": "774704831204ded284aef82deb2ea98c16b4053bf4b575388414ce1227cf6820"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/replacement-behavior-red/before/tests/benchmark/test_capture_contract.py",
+      "bytes": 27257,
+      "sha256": "4d50a49209b31ee053c3b6138080bfa95f86ee00fcd72ed84bf258856cb28697"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/replacement-behavior-red/before/tests/benchmark/test_capture_online_estimates.py",
+      "bytes": 9402,
+      "sha256": "325fe8489e31e32e2de10c5ed28ee16e348f2716fc55e299e4632bab9d09ff2c"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/replacement-behavior-red/before/tools/benchmark/capture_contract.py",
+      "bytes": 15268,
+      "sha256": "5ed057b25344c283e2fdba25e3bc05e3ca85413df055b23946fab041a3a1ad53"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/replacement-behavior-red/before/tools/benchmark/capture_disarmed_sensors.py",
+      "bytes": 65812,
+      "sha256": "48685c9b9ee7ef730d9c1e29ece2e3363d171013cb92b0a4dda52f3bfd74f4c6"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/replacement-behavior-red/before/tools/benchmark/capture_online_estimates.py",
+      "bytes": 8683,
+      "sha256": "e5648cf95501def7b34505f0b039a7a4d14783e6509501729f4a14ca41327486"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/replacement-behavior-red/before/tools/benchmark/openvins_fast_probe.h",
+      "bytes": 2663,
+      "sha256": "3795243174eec9a28842cffecdd3939507e198dcad2308a57b4aa309f268857e"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/replacement-behavior-red/before/tools/benchmark/openvins_online_probe.cpp",
+      "bytes": 10837,
+      "sha256": "7a0804bd9c39f3a67f4f50aae09f15387cd8dd7d8f61474eb57d3db22f0d8f02"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/replacement-behavior-red/before/tools/benchmark/openvins_online_shadow.py",
+      "bytes": 29922,
+      "sha256": "99651fd531cf4c915feeff71987a1d8347dc0da10e842209105b9002d4fbf4aa"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/replacement-behavior-red/completion.json",
+      "bytes": 4758,
+      "sha256": "2cbb3fe97af65316318d4360fae05b83046d8097f01c6cc6748846409b2634a7"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/replacement-behavior-red/fixtures/test_replaced_fast_path_is_not0/fast.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/replacement-behavior-red/fixtures/test_replaced_fast_path_is_not0/online-estimates.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/replacement-behavior-red/fixtures/test_replaced_fast_path_is_not0/other-fast.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/replacement-behavior-red/start.json",
+      "bytes": 2496,
+      "sha256": "6eb20af306202636aa12ec397f11605e5fdb438206076c469bd1acd469317943"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/replacement-behavior-red/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/replacement-behavior-red/stdout",
+      "bytes": 1704,
+      "sha256": "11149588df52ed32e19dae46e1fdfbc24b6f1b21e3aaa62256cd6ebf84954e2e"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-green/after/results/single-aircraft-online-feed-20261017/record.py",
+      "bytes": 3682,
+      "sha256": "774704831204ded284aef82deb2ea98c16b4053bf4b575388414ce1227cf6820"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-green/after/tests/benchmark/test_capture_contract.py",
+      "bytes": 27257,
+      "sha256": "4d50a49209b31ee053c3b6138080bfa95f86ee00fcd72ed84bf258856cb28697"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-green/after/tests/benchmark/test_capture_online_estimates.py",
+      "bytes": 15524,
+      "sha256": "27565b512252172329ec22914724a6fcd3a2c13a87b194c775d226ebc56ea79d"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-green/after/tools/benchmark/capture_contract.py",
+      "bytes": 15268,
+      "sha256": "5ed057b25344c283e2fdba25e3bc05e3ca85413df055b23946fab041a3a1ad53"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-green/after/tools/benchmark/capture_disarmed_sensors.py",
+      "bytes": 65910,
+      "sha256": "aeea2e4b7f5ea37ed56aced18f449979caf5ad47de46725c8fc4c8e831331e7d"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-green/after/tools/benchmark/capture_online_estimates.py",
+      "bytes": 10468,
+      "sha256": "498e5607c15e8f17f7a1bf980f6d0057399c03e8c02fab17bb618518d4ccf33f"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-green/after/tools/benchmark/openvins_fast_probe.h",
+      "bytes": 2663,
+      "sha256": "3795243174eec9a28842cffecdd3939507e198dcad2308a57b4aa309f268857e"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-green/after/tools/benchmark/openvins_online_probe.cpp",
+      "bytes": 10837,
+      "sha256": "7a0804bd9c39f3a67f4f50aae09f15387cd8dd7d8f61474eb57d3db22f0d8f02"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-green/after/tools/benchmark/openvins_online_shadow.py",
+      "bytes": 29922,
+      "sha256": "99651fd531cf4c915feeff71987a1d8347dc0da10e842209105b9002d4fbf4aa"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-green/before/results/single-aircraft-online-feed-20261017/record.py",
+      "bytes": 3682,
+      "sha256": "774704831204ded284aef82deb2ea98c16b4053bf4b575388414ce1227cf6820"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-green/before/tests/benchmark/test_capture_contract.py",
+      "bytes": 27257,
+      "sha256": "4d50a49209b31ee053c3b6138080bfa95f86ee00fcd72ed84bf258856cb28697"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-green/before/tests/benchmark/test_capture_online_estimates.py",
+      "bytes": 15524,
+      "sha256": "27565b512252172329ec22914724a6fcd3a2c13a87b194c775d226ebc56ea79d"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-green/before/tools/benchmark/capture_contract.py",
+      "bytes": 15268,
+      "sha256": "5ed057b25344c283e2fdba25e3bc05e3ca85413df055b23946fab041a3a1ad53"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-green/before/tools/benchmark/capture_disarmed_sensors.py",
+      "bytes": 65910,
+      "sha256": "aeea2e4b7f5ea37ed56aced18f449979caf5ad47de46725c8fc4c8e831331e7d"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-green/before/tools/benchmark/capture_online_estimates.py",
+      "bytes": 10468,
+      "sha256": "498e5607c15e8f17f7a1bf980f6d0057399c03e8c02fab17bb618518d4ccf33f"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-green/before/tools/benchmark/openvins_fast_probe.h",
+      "bytes": 2663,
+      "sha256": "3795243174eec9a28842cffecdd3939507e198dcad2308a57b4aa309f268857e"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-green/before/tools/benchmark/openvins_online_probe.cpp",
+      "bytes": 10837,
+      "sha256": "7a0804bd9c39f3a67f4f50aae09f15387cd8dd7d8f61474eb57d3db22f0d8f02"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-green/before/tools/benchmark/openvins_online_shadow.py",
+      "bytes": 29922,
+      "sha256": "99651fd531cf4c915feeff71987a1d8347dc0da10e842209105b9002d4fbf4aa"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-green/completion.json",
+      "bytes": 12775,
+      "sha256": "490814eff9cebc3d86e494fcb93d7c41bd5a83bb4188d1ad011e8e2831315ed8"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-green/fixtures/test_ack_sample_cannot_disagre0/fast.jsonl",
+      "bytes": 1240,
+      "sha256": "eed376b6abd17f6404429d34a7dacd5642b49e1f2d414a490d1523c50ace3e4f"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-green/fixtures/test_ack_sample_cannot_disagre0/online-estimates.jsonl",
+      "bytes": 2182,
+      "sha256": "adce6abc0b11c0a0665502acc5556017d6fa436c240018f1cf83f1940f655bfc"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-green/fixtures/test_ack_sample_cannot_disagre1/fast.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-green/fixtures/test_ack_sample_cannot_disagre1/online-estimates.jsonl",
+      "bytes": 465,
+      "sha256": "e17dd0f1530ff2b8dd1ebf72d3cc45b649f51358a426ab35147ead4c48e5c8dc"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-green/fixtures/test_ack_sample_cannot_disagre2/fast.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-green/fixtures/test_ack_sample_cannot_disagre2/online-estimates.jsonl",
+      "bytes": 3514,
+      "sha256": "4ac8cdd2ec842d47df5714ca767184244ec1360a9c8183f42c64381f977e47f6"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-green/fixtures/test_bad_native_output_latches0/fast.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-green/fixtures/test_bad_native_output_latches0/online-estimates.jsonl",
+      "bytes": 2167,
+      "sha256": "a6ecf892a7e04ef456a606566106e84b02804a620c7ea44338c3d079536b6580"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-green/fixtures/test_bad_native_output_latches1/fast.jsonl",
+      "bytes": 1239,
+      "sha256": "5a7e9c70246601f834252a5d86eee940c335aeb232d2bad91bd41901e73c318c"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-green/fixtures/test_bad_native_output_latches1/online-estimates.jsonl",
+      "bytes": 2167,
+      "sha256": "a6ecf892a7e04ef456a606566106e84b02804a620c7ea44338c3d079536b6580"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-green/fixtures/test_bad_native_output_latches2/fast.jsonl",
+      "bytes": 2480,
+      "sha256": "c2e590b202d888d5c3d1a84d54b872e0f1189df7333d81034cb756a6ea1b9d6d"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-green/fixtures/test_bad_native_output_latches2/online-estimates.jsonl",
+      "bytes": 2167,
+      "sha256": "a6ecf892a7e04ef456a606566106e84b02804a620c7ea44338c3d079536b6580"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-green/fixtures/test_bad_native_output_latches3/fast.jsonl",
+      "bytes": 1240,
+      "sha256": "9b88f24d2b3c8175af8f7a3fea5ebf70ae006538ba733c6cc73c5bbca4873314"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-green/fixtures/test_bad_native_output_latches3/online-estimates.jsonl",
+      "bytes": 2167,
+      "sha256": "3be6fa82b5b7c5ff0d0b9b7ed087fc964beeca08cc68e455d0f6193cd990bc22"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-green/fixtures/test_bad_native_output_latches4/fast.jsonl",
+      "bytes": 1240,
+      "sha256": "eed376b6abd17f6404429d34a7dacd5642b49e1f2d414a490d1523c50ace3e4f"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-green/fixtures/test_bad_native_output_latches4/online-estimates.jsonl",
+      "bytes": 2167,
+      "sha256": "3be6fa82b5b7c5ff0d0b9b7ed087fc964beeca08cc68e455d0f6193cd990bc22"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-green/fixtures/test_bad_native_output_latches5/fast.jsonl",
+      "bytes": 1239,
+      "sha256": "d07cd1c76e62d6a6afefe7c2c481ff2037da4de400de7c3db6d706fc051d1ae2"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-green/fixtures/test_bad_native_output_latches5/online-estimates.jsonl",
+      "bytes": 2167,
+      "sha256": "3be6fa82b5b7c5ff0d0b9b7ed087fc964beeca08cc68e455d0f6193cd990bc22"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-green/fixtures/test_bad_native_output_latches6/fast.jsonl",
+      "bytes": 1240,
+      "sha256": "b66184810d452725c46f0f09a0e79d1ff6ac8470fe81ab86475d6b392fb35d7a"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-green/fixtures/test_bad_native_output_latches6/online-estimates.jsonl",
+      "bytes": 2164,
+      "sha256": "b245708f3161563e704cad9409eab18dc1cdfcf010106924ec15e4cdade3be4b"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-green/fixtures/test_bad_native_output_latches7/fast.jsonl",
+      "bytes": 16385,
+      "sha256": "0a6f21fda2a49df0c6671aacfe31136e24b4880f334ee89182752f35c2f0cb3d"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-green/fixtures/test_bad_native_output_latches7/online-estimates.jsonl",
+      "bytes": 2166,
+      "sha256": "05ef8442d7b9830be8ce2025e17fc6a76b4d7bb467d26e82c5e764701bd37450"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-green/fixtures/test_constructor_rollback_clos0/online-estimates.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-green/fixtures/test_elapsed_transport_and_out0/fast.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-green/fixtures/test_elapsed_transport_and_out0/online-estimates.jsonl",
+      "bytes": 448,
+      "sha256": "0a6c6d9e72f1d32c5332d9c7851345068036c740a3b1603c96c4942517023157"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-green/fixtures/test_internal_negative_camera_0/fast.jsonl",
+      "bytes": 436,
+      "sha256": "cbc07b429266edc44d66909c8cd2050a58d39271bf61b96f683c4b1d5dcb0545"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-green/fixtures/test_internal_negative_camera_0/online-estimates.jsonl",
+      "bytes": 450,
+      "sha256": "edeecd2ff7bea932391808fdc26fdda13be90c224275644cf5c6550b153a1dd9"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-green/fixtures/test_live_capture_consumes_rea0/fast.jsonl",
+      "bytes": 1240,
+      "sha256": "c19157034a28ce52551b2d923af3869d027809360f61d796cb5a4dd5871f72a1"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-green/fixtures/test_live_capture_consumes_rea0/online-estimates.jsonl",
+      "bytes": 3386,
+      "sha256": "3cc6bc1a5b30d50ea4dc65a65b5a241855ce1c25617f3ba172919bdcb7349455"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-green/fixtures/test_live_feed_failure_reaches0/fast.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-green/fixtures/test_live_feed_failure_reaches0/online-estimates.jsonl",
+      "bytes": 450,
+      "sha256": "b0c15f6e118c9fa261b06f39c8820d2e0f6af381bf8cd4c45f94289a89ece06a"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-green/fixtures/test_live_feed_failure_reaches0/shadow/shadow-failures.jsonl",
+      "bytes": 862,
+      "sha256": "06b33b52c853b72d2fa7edfe8ed2db999ba3e1ca410cbb4f7a10df9cffc393a0"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-green/fixtures/test_live_feed_failure_reaches0/shadow/shadow-input-result.json",
+      "bytes": 1109,
+      "sha256": "550aa8b5d7d91bbb29aed829e975a351dd9069f4de0bf91c63da94802ff7c66f"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-green/fixtures/test_new_workload_is_forwarded0/execution.json",
+      "bytes": 887,
+      "sha256": "c3afa4719785bf1ee80477b57ee2c926495f58c3160680593977f26062b977e6"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-green/fixtures/test_old_output_is_rejected_be0/fast.jsonl",
+      "bytes": 4,
+      "sha256": "01d09d19c2139a46aebfb577780d123d7396e97201bc7ead210a2ebff8239dee"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-green/fixtures/test_parent_cleanup_failure_st0/fast.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-green/fixtures/test_parent_cleanup_failure_st0/online-estimates.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-green/fixtures/test_real_native_pre_camera_nu0/fast.jsonl",
+      "bytes": 438,
+      "sha256": "91fe180e3c380f5782331d1da38836d04e8e39bf28e1927669336c41b83357c1"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-green/fixtures/test_real_native_pre_camera_nu0/online-estimates.jsonl",
+      "bytes": 870,
+      "sha256": "daab14a85daa77d5f3fb25c9111a9d8361a0d6b1a8e848486e09836f8667e516"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-green/fixtures/test_replaced_fast_path_is_not0/fast.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-green/fixtures/test_replaced_fast_path_is_not0/online-estimates.jsonl",
+      "bytes": 444,
+      "sha256": "ed212f34d080e924a1096274cb509832efe8eaf3356a5c0a38a0304a35c58b7e"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-green/fixtures/test_replaced_fast_path_is_not0/other-fast.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-green/fixtures/test_simultaneous_cleanup_fail0/fast.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-green/fixtures/test_simultaneous_cleanup_fail0/online-estimates.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-green/start.json",
+      "bytes": 2448,
+      "sha256": "dd36ea45a9a2b5fffde6ef0f7ff710a5428cdfd9a4ca165eba5db8979d61b14e"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-green/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-green/stdout",
+      "bytes": 101,
+      "sha256": "0a016ea5a810891c943f1878cd015f5a6a249965819afa966916c55aa261339a"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-lint/after/results/single-aircraft-online-feed-20261017/record.py",
+      "bytes": 3682,
+      "sha256": "774704831204ded284aef82deb2ea98c16b4053bf4b575388414ce1227cf6820"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-lint/after/tests/benchmark/test_capture_contract.py",
+      "bytes": 27257,
+      "sha256": "4d50a49209b31ee053c3b6138080bfa95f86ee00fcd72ed84bf258856cb28697"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-lint/after/tests/benchmark/test_capture_online_estimates.py",
+      "bytes": 11507,
+      "sha256": "474022e7d18ff9b2d8f38dc0929c995cc67a2fdf0e88abcbc97d4fad9015b105"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-lint/after/tools/benchmark/capture_contract.py",
+      "bytes": 15268,
+      "sha256": "5ed057b25344c283e2fdba25e3bc05e3ca85413df055b23946fab041a3a1ad53"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-lint/after/tools/benchmark/capture_disarmed_sensors.py",
+      "bytes": 65910,
+      "sha256": "aeea2e4b7f5ea37ed56aced18f449979caf5ad47de46725c8fc4c8e831331e7d"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-lint/after/tools/benchmark/capture_online_estimates.py",
+      "bytes": 9301,
+      "sha256": "10aeac199433dcffcc813d82168a3b8f6af24f58e49746161a23e2742ef56be0"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-lint/after/tools/benchmark/openvins_fast_probe.h",
+      "bytes": 2663,
+      "sha256": "3795243174eec9a28842cffecdd3939507e198dcad2308a57b4aa309f268857e"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-lint/after/tools/benchmark/openvins_online_probe.cpp",
+      "bytes": 10837,
+      "sha256": "7a0804bd9c39f3a67f4f50aae09f15387cd8dd7d8f61474eb57d3db22f0d8f02"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-lint/after/tools/benchmark/openvins_online_shadow.py",
+      "bytes": 29922,
+      "sha256": "99651fd531cf4c915feeff71987a1d8347dc0da10e842209105b9002d4fbf4aa"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-lint/before/results/single-aircraft-online-feed-20261017/record.py",
+      "bytes": 3682,
+      "sha256": "774704831204ded284aef82deb2ea98c16b4053bf4b575388414ce1227cf6820"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-lint/before/tests/benchmark/test_capture_contract.py",
+      "bytes": 27257,
+      "sha256": "4d50a49209b31ee053c3b6138080bfa95f86ee00fcd72ed84bf258856cb28697"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-lint/before/tests/benchmark/test_capture_online_estimates.py",
+      "bytes": 11507,
+      "sha256": "474022e7d18ff9b2d8f38dc0929c995cc67a2fdf0e88abcbc97d4fad9015b105"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-lint/before/tools/benchmark/capture_contract.py",
+      "bytes": 15268,
+      "sha256": "5ed057b25344c283e2fdba25e3bc05e3ca85413df055b23946fab041a3a1ad53"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-lint/before/tools/benchmark/capture_disarmed_sensors.py",
+      "bytes": 65910,
+      "sha256": "aeea2e4b7f5ea37ed56aced18f449979caf5ad47de46725c8fc4c8e831331e7d"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-lint/before/tools/benchmark/capture_online_estimates.py",
+      "bytes": 9301,
+      "sha256": "10aeac199433dcffcc813d82168a3b8f6af24f58e49746161a23e2742ef56be0"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-lint/before/tools/benchmark/openvins_fast_probe.h",
+      "bytes": 2663,
+      "sha256": "3795243174eec9a28842cffecdd3939507e198dcad2308a57b4aa309f268857e"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-lint/before/tools/benchmark/openvins_online_probe.cpp",
+      "bytes": 10837,
+      "sha256": "7a0804bd9c39f3a67f4f50aae09f15387cd8dd7d8f61474eb57d3db22f0d8f02"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-lint/before/tools/benchmark/openvins_online_shadow.py",
+      "bytes": 29922,
+      "sha256": "99651fd531cf4c915feeff71987a1d8347dc0da10e842209105b9002d4fbf4aa"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-lint/completion.json",
+      "bytes": 4112,
+      "sha256": "ea1525d5a94118e3bcdae8084ea640da936fa093bda0d918f235c5fafd2c51f0"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-lint/start.json",
+      "bytes": 2433,
+      "sha256": "3876c9921beeb500d7ac70e174dcee913dc657fe85922b664d2f62081e2ff7f4"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-lint/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-lint/stdout",
+      "bytes": 19,
+      "sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-package.json",
+      "bytes": 1214,
+      "sha256": "616970a81e99b40ba9091ea7c48292f350a0fcae41472639f72c8a62e86bfdb1"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-red/after/results/single-aircraft-online-feed-20261017/record.py",
+      "bytes": 3682,
+      "sha256": "774704831204ded284aef82deb2ea98c16b4053bf4b575388414ce1227cf6820"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-red/after/tests/benchmark/test_capture_contract.py",
+      "bytes": 27257,
+      "sha256": "4d50a49209b31ee053c3b6138080bfa95f86ee00fcd72ed84bf258856cb28697"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-red/after/tests/benchmark/test_capture_online_estimates.py",
+      "bytes": 15524,
+      "sha256": "27565b512252172329ec22914724a6fcd3a2c13a87b194c775d226ebc56ea79d"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-red/after/tools/benchmark/capture_contract.py",
+      "bytes": 15268,
+      "sha256": "5ed057b25344c283e2fdba25e3bc05e3ca85413df055b23946fab041a3a1ad53"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-red/after/tools/benchmark/capture_disarmed_sensors.py",
+      "bytes": 65910,
+      "sha256": "aeea2e4b7f5ea37ed56aced18f449979caf5ad47de46725c8fc4c8e831331e7d"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-red/after/tools/benchmark/capture_online_estimates.py",
+      "bytes": 9301,
+      "sha256": "10aeac199433dcffcc813d82168a3b8f6af24f58e49746161a23e2742ef56be0"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-red/after/tools/benchmark/openvins_fast_probe.h",
+      "bytes": 2663,
+      "sha256": "3795243174eec9a28842cffecdd3939507e198dcad2308a57b4aa309f268857e"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-red/after/tools/benchmark/openvins_online_probe.cpp",
+      "bytes": 10837,
+      "sha256": "7a0804bd9c39f3a67f4f50aae09f15387cd8dd7d8f61474eb57d3db22f0d8f02"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-red/after/tools/benchmark/openvins_online_shadow.py",
+      "bytes": 29922,
+      "sha256": "99651fd531cf4c915feeff71987a1d8347dc0da10e842209105b9002d4fbf4aa"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-red/before/results/single-aircraft-online-feed-20261017/record.py",
+      "bytes": 3682,
+      "sha256": "774704831204ded284aef82deb2ea98c16b4053bf4b575388414ce1227cf6820"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-red/before/tests/benchmark/test_capture_contract.py",
+      "bytes": 27257,
+      "sha256": "4d50a49209b31ee053c3b6138080bfa95f86ee00fcd72ed84bf258856cb28697"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-red/before/tests/benchmark/test_capture_online_estimates.py",
+      "bytes": 15524,
+      "sha256": "27565b512252172329ec22914724a6fcd3a2c13a87b194c775d226ebc56ea79d"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-red/before/tools/benchmark/capture_contract.py",
+      "bytes": 15268,
+      "sha256": "5ed057b25344c283e2fdba25e3bc05e3ca85413df055b23946fab041a3a1ad53"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-red/before/tools/benchmark/capture_disarmed_sensors.py",
+      "bytes": 65910,
+      "sha256": "aeea2e4b7f5ea37ed56aced18f449979caf5ad47de46725c8fc4c8e831331e7d"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-red/before/tools/benchmark/capture_online_estimates.py",
+      "bytes": 9301,
+      "sha256": "10aeac199433dcffcc813d82168a3b8f6af24f58e49746161a23e2742ef56be0"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-red/before/tools/benchmark/openvins_fast_probe.h",
+      "bytes": 2663,
+      "sha256": "3795243174eec9a28842cffecdd3939507e198dcad2308a57b4aa309f268857e"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-red/before/tools/benchmark/openvins_online_probe.cpp",
+      "bytes": 10837,
+      "sha256": "7a0804bd9c39f3a67f4f50aae09f15387cd8dd7d8f61474eb57d3db22f0d8f02"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-red/before/tools/benchmark/openvins_online_shadow.py",
+      "bytes": 29922,
+      "sha256": "99651fd531cf4c915feeff71987a1d8347dc0da10e842209105b9002d4fbf4aa"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-red/completion.json",
+      "bytes": 6789,
+      "sha256": "f6dad1e70720db3e294eb2cf518e408ee25d4605917d7ced3ea4a26dba92e43a"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-red/fixtures/test_ack_sample_cannot_disagre0/fast.jsonl",
+      "bytes": 1240,
+      "sha256": "eed376b6abd17f6404429d34a7dacd5642b49e1f2d414a490d1523c50ace3e4f"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-red/fixtures/test_ack_sample_cannot_disagre0/online-estimates.jsonl",
+      "bytes": 3386,
+      "sha256": "b44471692e0f3b241bf6413910e7f52a79e4ca77924abd410a81c1ab0ea2a9ad"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-red/fixtures/test_ack_sample_cannot_disagre1/fast.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-red/fixtures/test_ack_sample_cannot_disagre1/online-estimates.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-red/fixtures/test_ack_sample_cannot_disagre2/fast.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-red/fixtures/test_ack_sample_cannot_disagre2/online-estimates.jsonl",
+      "bytes": 3434,
+      "sha256": "d46d744a361992b24fc6aa69f33a8ecc66b6c5f77e891eaee64bfa9f6664e052"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-red/fixtures/test_constructor_rollback_clos0/online-estimates.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-red/fixtures/test_internal_negative_camera_0/fast.jsonl",
+      "bytes": 436,
+      "sha256": "cbc07b429266edc44d66909c8cd2050a58d39271bf61b96f683c4b1d5dcb0545"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-red/fixtures/test_internal_negative_camera_0/online-estimates.jsonl",
+      "bytes": 868,
+      "sha256": "44bd43a53106b840245fb0cfc6a1e0444c0bd3cafa2c368ea4a3077a83297e08"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-red/fixtures/test_real_native_pre_camera_nu0/fast.jsonl",
+      "bytes": 438,
+      "sha256": "91fe180e3c380f5782331d1da38836d04e8e39bf28e1927669336c41b83357c1"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-red/fixtures/test_real_native_pre_camera_nu0/online-estimates.jsonl",
+      "bytes": 450,
+      "sha256": "edeecd2ff7bea932391808fdc26fdda13be90c224275644cf5c6550b153a1dd9"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-red/fixtures/test_simultaneous_cleanup_fail0/fast.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-red/fixtures/test_simultaneous_cleanup_fail0/online-estimates.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-red/start.json",
+      "bytes": 2563,
+      "sha256": "4760a65aa34ad40e51d1da9df56f98c61b3b9394940df8b58684bf194bbe1675"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-red/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-red/stdout",
+      "bytes": 15363,
+      "sha256": "5b065242468a6e8b97369f908b06d23607cede1676ba0558dc4b96d8e284a76f"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-source/docs/superpowers/plans/2026-10-17-capture-online-estimates.md",
+      "bytes": 3001,
+      "sha256": "361b51544e58cce1c3470dd97e91ca90f5510e9a7c602449b1c03b84c44e342a"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-source/docs/superpowers/specs/2026-10-17-capture-online-estimates-design.md",
+      "bytes": 3415,
+      "sha256": "39dc089c8f2e496cd925c1f9df2d453f18fa9b932ff99c26cf026392f079bb20"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-source/tests/benchmark/test_capture_online_estimates.py",
+      "bytes": 11507,
+      "sha256": "474022e7d18ff9b2d8f38dc0929c995cc67a2fdf0e88abcbc97d4fad9015b105"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-source/tools/benchmark/capture_contract.py",
+      "bytes": 15268,
+      "sha256": "5ed057b25344c283e2fdba25e3bc05e3ca85413df055b23946fab041a3a1ad53"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-source/tools/benchmark/capture_disarmed_sensors.py",
+      "bytes": 65910,
+      "sha256": "aeea2e4b7f5ea37ed56aced18f449979caf5ad47de46725c8fc4c8e831331e7d"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-source/tools/benchmark/capture_online_estimates.py",
+      "bytes": 9301,
+      "sha256": "10aeac199433dcffcc813d82168a3b8f6af24f58e49746161a23e2742ef56be0"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-verification/after/results/single-aircraft-online-feed-20261017/record.py",
+      "bytes": 3682,
+      "sha256": "774704831204ded284aef82deb2ea98c16b4053bf4b575388414ce1227cf6820"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-verification/after/tests/benchmark/test_capture_contract.py",
+      "bytes": 27257,
+      "sha256": "4d50a49209b31ee053c3b6138080bfa95f86ee00fcd72ed84bf258856cb28697"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-verification/after/tests/benchmark/test_capture_online_estimates.py",
+      "bytes": 11507,
+      "sha256": "474022e7d18ff9b2d8f38dc0929c995cc67a2fdf0e88abcbc97d4fad9015b105"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-verification/after/tools/benchmark/capture_contract.py",
+      "bytes": 15268,
+      "sha256": "5ed057b25344c283e2fdba25e3bc05e3ca85413df055b23946fab041a3a1ad53"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-verification/after/tools/benchmark/capture_disarmed_sensors.py",
+      "bytes": 65910,
+      "sha256": "aeea2e4b7f5ea37ed56aced18f449979caf5ad47de46725c8fc4c8e831331e7d"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-verification/after/tools/benchmark/capture_online_estimates.py",
+      "bytes": 9301,
+      "sha256": "10aeac199433dcffcc813d82168a3b8f6af24f58e49746161a23e2742ef56be0"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-verification/after/tools/benchmark/openvins_fast_probe.h",
+      "bytes": 2663,
+      "sha256": "3795243174eec9a28842cffecdd3939507e198dcad2308a57b4aa309f268857e"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-verification/after/tools/benchmark/openvins_online_probe.cpp",
+      "bytes": 10837,
+      "sha256": "7a0804bd9c39f3a67f4f50aae09f15387cd8dd7d8f61474eb57d3db22f0d8f02"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-verification/after/tools/benchmark/openvins_online_shadow.py",
+      "bytes": 29922,
+      "sha256": "99651fd531cf4c915feeff71987a1d8347dc0da10e842209105b9002d4fbf4aa"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-verification/before/results/single-aircraft-online-feed-20261017/record.py",
+      "bytes": 3682,
+      "sha256": "774704831204ded284aef82deb2ea98c16b4053bf4b575388414ce1227cf6820"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-verification/before/tests/benchmark/test_capture_contract.py",
+      "bytes": 27257,
+      "sha256": "4d50a49209b31ee053c3b6138080bfa95f86ee00fcd72ed84bf258856cb28697"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-verification/before/tests/benchmark/test_capture_online_estimates.py",
+      "bytes": 11507,
+      "sha256": "474022e7d18ff9b2d8f38dc0929c995cc67a2fdf0e88abcbc97d4fad9015b105"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-verification/before/tools/benchmark/capture_contract.py",
+      "bytes": 15268,
+      "sha256": "5ed057b25344c283e2fdba25e3bc05e3ca85413df055b23946fab041a3a1ad53"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-verification/before/tools/benchmark/capture_disarmed_sensors.py",
+      "bytes": 65910,
+      "sha256": "aeea2e4b7f5ea37ed56aced18f449979caf5ad47de46725c8fc4c8e831331e7d"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-verification/before/tools/benchmark/capture_online_estimates.py",
+      "bytes": 9301,
+      "sha256": "10aeac199433dcffcc813d82168a3b8f6af24f58e49746161a23e2742ef56be0"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-verification/before/tools/benchmark/openvins_fast_probe.h",
+      "bytes": 2663,
+      "sha256": "3795243174eec9a28842cffecdd3939507e198dcad2308a57b4aa309f268857e"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-verification/before/tools/benchmark/openvins_online_probe.cpp",
+      "bytes": 10837,
+      "sha256": "7a0804bd9c39f3a67f4f50aae09f15387cd8dd7d8f61474eb57d3db22f0d8f02"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-verification/before/tools/benchmark/openvins_online_shadow.py",
+      "bytes": 29922,
+      "sha256": "99651fd531cf4c915feeff71987a1d8347dc0da10e842209105b9002d4fbf4aa"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-verification/completion.json",
+      "bytes": 18274,
+      "sha256": "a059aee3374aa29415624d55d869a951a3114b1d0bf0d28451f59b8008ab0840"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-verification/fixtures/test_bad_native_output_latches0/fast.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-verification/fixtures/test_bad_native_output_latches0/online-estimates.jsonl",
+      "bytes": 2167,
+      "sha256": "a6ecf892a7e04ef456a606566106e84b02804a620c7ea44338c3d079536b6580"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-verification/fixtures/test_bad_native_output_latches1/fast.jsonl",
+      "bytes": 1239,
+      "sha256": "5a7e9c70246601f834252a5d86eee940c335aeb232d2bad91bd41901e73c318c"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-verification/fixtures/test_bad_native_output_latches1/online-estimates.jsonl",
+      "bytes": 2167,
+      "sha256": "a6ecf892a7e04ef456a606566106e84b02804a620c7ea44338c3d079536b6580"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-verification/fixtures/test_bad_native_output_latches2/fast.jsonl",
+      "bytes": 2480,
+      "sha256": "c2e590b202d888d5c3d1a84d54b872e0f1189df7333d81034cb756a6ea1b9d6d"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-verification/fixtures/test_bad_native_output_latches2/online-estimates.jsonl",
+      "bytes": 2167,
+      "sha256": "a6ecf892a7e04ef456a606566106e84b02804a620c7ea44338c3d079536b6580"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-verification/fixtures/test_bad_native_output_latches3/fast.jsonl",
+      "bytes": 1240,
+      "sha256": "9b88f24d2b3c8175af8f7a3fea5ebf70ae006538ba733c6cc73c5bbca4873314"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-verification/fixtures/test_bad_native_output_latches3/online-estimates.jsonl",
+      "bytes": 2167,
+      "sha256": "3be6fa82b5b7c5ff0d0b9b7ed087fc964beeca08cc68e455d0f6193cd990bc22"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-verification/fixtures/test_bad_native_output_latches4/fast.jsonl",
+      "bytes": 1240,
+      "sha256": "eed376b6abd17f6404429d34a7dacd5642b49e1f2d414a490d1523c50ace3e4f"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-verification/fixtures/test_bad_native_output_latches4/online-estimates.jsonl",
+      "bytes": 2167,
+      "sha256": "3be6fa82b5b7c5ff0d0b9b7ed087fc964beeca08cc68e455d0f6193cd990bc22"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-verification/fixtures/test_bad_native_output_latches5/fast.jsonl",
+      "bytes": 1239,
+      "sha256": "d07cd1c76e62d6a6afefe7c2c481ff2037da4de400de7c3db6d706fc051d1ae2"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-verification/fixtures/test_bad_native_output_latches5/online-estimates.jsonl",
+      "bytes": 2167,
+      "sha256": "3be6fa82b5b7c5ff0d0b9b7ed087fc964beeca08cc68e455d0f6193cd990bc22"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-verification/fixtures/test_bad_native_output_latches6/fast.jsonl",
+      "bytes": 1240,
+      "sha256": "b66184810d452725c46f0f09a0e79d1ff6ac8470fe81ab86475d6b392fb35d7a"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-verification/fixtures/test_bad_native_output_latches6/online-estimates.jsonl",
+      "bytes": 2164,
+      "sha256": "b245708f3161563e704cad9409eab18dc1cdfcf010106924ec15e4cdade3be4b"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-verification/fixtures/test_bad_native_output_latches7/fast.jsonl",
+      "bytes": 16385,
+      "sha256": "0a6f21fda2a49df0c6671aacfe31136e24b4880f334ee89182752f35c2f0cb3d"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-verification/fixtures/test_bad_native_output_latches7/online-estimates.jsonl",
+      "bytes": 2166,
+      "sha256": "05ef8442d7b9830be8ce2025e17fc6a76b4d7bb467d26e82c5e764701bd37450"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-verification/fixtures/test_direct_worker_refuses_bef0/wrong.json",
+      "bytes": 2,
+      "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-verification/fixtures/test_duplicate_json_keys_refus0/duplicate.json",
+      "bytes": 40,
+      "sha256": "d1e45a04de6b757975264cf4457d20fa5696fa4247b472ecaf209d7796282519"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-verification/fixtures/test_elapsed_transport_and_out0/fast.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-verification/fixtures/test_elapsed_transport_and_out0/online-estimates.jsonl",
+      "bytes": 448,
+      "sha256": "0a6c6d9e72f1d32c5332d9c7851345068036c740a3b1603c96c4942517023157"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-verification/fixtures/test_execution_v2_binds_exact_0/execution-v2.json",
+      "bytes": 548,
+      "sha256": "0ba34d5d80c4416dcb748db9238643b22b5560f83d5b980ff081a2f6191110dc"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-verification/fixtures/test_execution_v3_binds_exact_0/execution-v3.json",
+      "bytes": 1143,
+      "sha256": "aa481bc15b92cc8ba76885b6c9b5a71c43df63ca9e1d912ecdfee21d48c838a4"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-verification/fixtures/test_execution_v3_binds_exact_0/trajectory-gauge-policy.json",
+      "bytes": 956,
+      "sha256": "45212af2015c65dffe9ba88c77fd03daf2cd25a03f4ca55ac10eca5232f8f2a8"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-verification/fixtures/test_execution_v3_refuses_inva0/trajectory-gauge-policy.json",
+      "bytes": 953,
+      "sha256": "c68670e4e044eb5dcc8ca76f8b31e69fdf4a81a19906c0299f5ec928fdbff72f"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-verification/fixtures/test_execution_v3_refuses_inva1/trajectory-gauge-policy.json",
+      "bytes": 58,
+      "sha256": "85e213424174b31d91a10da74886d6d24f2aab0951759a37bbfed31a9beec5f0"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-verification/fixtures/test_execution_v3_refuses_inva2/trajectory-gauge-policy.json",
+      "bytes": 954,
+      "sha256": "0356bc8e45966fb25e86620a9b3511f752b704eb6a7ceaa06077c0470b3af6ad"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-verification/fixtures/test_live_capture_consumes_rea0/fast.jsonl",
+      "bytes": 1240,
+      "sha256": "c19157034a28ce52551b2d923af3869d027809360f61d796cb5a4dd5871f72a1"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-verification/fixtures/test_live_capture_consumes_rea0/online-estimates.jsonl",
+      "bytes": 3386,
+      "sha256": "3cc6bc1a5b30d50ea4dc65a65b5a241855ce1c25617f3ba172919bdcb7349455"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-verification/fixtures/test_live_feed_failure_reaches0/fast.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-verification/fixtures/test_live_feed_failure_reaches0/online-estimates.jsonl",
+      "bytes": 450,
+      "sha256": "b0c15f6e118c9fa261b06f39c8820d2e0f6af381bf8cd4c45f94289a89ece06a"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-verification/fixtures/test_live_feed_failure_reaches0/shadow/shadow-failures.jsonl",
+      "bytes": 862,
+      "sha256": "dafe0af170147bc7e4b2c42b31bbf2d81c1707e0ab0886b6ba696d649979ec4d"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-verification/fixtures/test_live_feed_failure_reaches0/shadow/shadow-input-result.json",
+      "bytes": 1109,
+      "sha256": "550aa8b5d7d91bbb29aed829e975a351dd9069f4de0bf91c63da94802ff7c66f"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-verification/fixtures/test_new_workload_is_forwarded0/execution.json",
+      "bytes": 901,
+      "sha256": "894243783edd9a95e137a28aebfe6d80e5aa64f191a49befc2f256c79652aef0"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-verification/fixtures/test_old_output_is_rejected_be0/fast.jsonl",
+      "bytes": 4,
+      "sha256": "01d09d19c2139a46aebfb577780d123d7396e97201bc7ead210a2ebff8239dee"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-verification/fixtures/test_parent_cleanup_failure_st0/fast.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-verification/fixtures/test_parent_cleanup_failure_st0/online-estimates.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-verification/fixtures/test_parent_derives_v2_environ0/binding.json",
+      "bytes": 205,
+      "sha256": "85d14318e318c031ce41c9754af031af02a1f4171adfc9aa643a4fab6ce3db72"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-verification/fixtures/test_parent_derives_v2_environ0/execution.json",
+      "bytes": 587,
+      "sha256": "04a9ec5d0eb9a70e427f5f59a0a96f91c673208938d03b6b4859c0bf6f0a2f65"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-verification/fixtures/test_real_native_pre_camera_se0/fast.jsonl",
+      "bytes": 436,
+      "sha256": "cbc07b429266edc44d66909c8cd2050a58d39271bf61b96f683c4b1d5dcb0545"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-verification/fixtures/test_real_native_pre_camera_se0/online-estimates.jsonl",
+      "bytes": 868,
+      "sha256": "44bd43a53106b840245fb0cfc6a1e0444c0bd3cafa2c368ea4a3077a83297e08"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-verification/fixtures/test_replaced_fast_path_is_not0/fast.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-verification/fixtures/test_replaced_fast_path_is_not0/online-estimates.jsonl",
+      "bytes": 444,
+      "sha256": "ed212f34d080e924a1096274cb509832efe8eaf3356a5c0a38a0304a35c58b7e"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-verification/fixtures/test_replaced_fast_path_is_not0/other-fast.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-verification/fixtures/test_simulation_seed_is_declar0/capture/simulation-random-seed.json",
+      "bytes": 206,
+      "sha256": "7b898283a544ab9a1f6641ab43085a4984c1d8e0ac983ce9d94dc2a239742d79"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-verification/fixtures/test_supervisor_consumes_contr0/selected.json",
+      "bytes": 466,
+      "sha256": "a2d29b9eb93c6f2615357a4d9dfa4717275d93c84bb508da47682d183d9d4e7c"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-verification/fixtures/test_supervisor_consumes_contr1/selected.json",
+      "bytes": 646,
+      "sha256": "9ca86d256df5ffe320e049ddd95a304e20c27af0eb2ea7edb32b51c9390f6d99"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-verification/fixtures/test_tampered_declaration_refu0/declaration.json",
+      "bytes": 465,
+      "sha256": "3a3142ed7fad72ca2123d553d73922b29de9095e4829d91810ae473df47aa0d0"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-verification/fixtures/test_tampered_declaration_refu1/declaration.json",
+      "bytes": 465,
+      "sha256": "eab3a96c762aac7725b4b57d8f09b6952cdc4bf8149bb8207986a9fbab8a29c0"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-verification/fixtures/test_tampered_declaration_refu2/declaration.json",
+      "bytes": 466,
+      "sha256": "8a28fcfb7301378baa7bd093e66181a8a3525877a9345960eab5db9892ee2be7"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-verification/fixtures/test_tampered_declaration_refu3/declaration.json",
+      "bytes": 468,
+      "sha256": "e227727a150b29c88ac6f9c73646ada650b656b9f54ae159916f5b8031bbfeda"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-verification/fixtures/test_tampered_declaration_refu4/declaration.json",
+      "bytes": 462,
+      "sha256": "efacdfc997c73bb01b73c5fe1cf606e0206f9dfc57c85cad2679b8ebd8b92cb4"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-verification/fixtures/test_tampered_declaration_refu5/declaration.json",
+      "bytes": 486,
+      "sha256": "d5567fe5a5e5c2001e65e2291f7f735f988325641895f1553cd0b741126dab00"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-verification/fixtures/test_worker_contract_read_dist0/capture/execution-environment-worker.json",
+      "bytes": 652,
+      "sha256": "4d9393c802e5b47a0e0394f95ec2578d28fe8ff6ba05caf1face5b81528344d1"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-verification/fixtures/test_worker_contract_read_dist0/execution.json",
+      "bytes": 80,
+      "sha256": "10ff83f76bcec49a47b4dafdc207f0ff70dbe50b1144fc76cd0a2bc744db846c"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-verification/fixtures/test_worker_contract_read_dist1/execution.json",
+      "bytes": 80,
+      "sha256": "10ff83f76bcec49a47b4dafdc207f0ff70dbe50b1144fc76cd0a2bc744db846c"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-verification/fixtures/test_worker_contract_read_dist2/execution.json",
+      "bytes": 80,
+      "sha256": "10ff83f76bcec49a47b4dafdc207f0ff70dbe50b1144fc76cd0a2bc744db846c"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-verification/fixtures/test_worker_contract_read_dist3/execution.json",
+      "bytes": 80,
+      "sha256": "10ff83f76bcec49a47b4dafdc207f0ff70dbe50b1144fc76cd0a2bc744db846c"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-verification/fixtures/test_worker_contract_read_dist4/execution.json",
+      "bytes": 80,
+      "sha256": "10ff83f76bcec49a47b4dafdc207f0ff70dbe50b1144fc76cd0a2bc744db846c"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-verification/fixtures/test_worker_contract_read_dist5/execution.json",
+      "bytes": 80,
+      "sha256": "10ff83f76bcec49a47b4dafdc207f0ff70dbe50b1144fc76cd0a2bc744db846c"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-verification/fixtures/test_worker_contract_read_dist6/execution.json",
+      "bytes": 80,
+      "sha256": "10ff83f76bcec49a47b4dafdc207f0ff70dbe50b1144fc76cd0a2bc744db846c"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-verification/fixtures/test_worker_contract_read_dist7/execution.json",
+      "bytes": 80,
+      "sha256": "10ff83f76bcec49a47b4dafdc207f0ff70dbe50b1144fc76cd0a2bc744db846c"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-verification/fixtures/test_worker_contract_read_dist8/execution.json",
+      "bytes": 80,
+      "sha256": "10ff83f76bcec49a47b4dafdc207f0ff70dbe50b1144fc76cd0a2bc744db846c"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-verification/fixtures/test_worker_contract_read_dist9/execution.json",
+      "bytes": 80,
+      "sha256": "10ff83f76bcec49a47b4dafdc207f0ff70dbe50b1144fc76cd0a2bc744db846c"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-verification/fixtures/test_worker_environment_eviden0/execution-contract.json",
+      "bytes": 80,
+      "sha256": "10ff83f76bcec49a47b4dafdc207f0ff70dbe50b1144fc76cd0a2bc744db846c"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-verification/fixtures/test_worker_environment_mismat0/capture/execution-environment-worker.json",
+      "bytes": 776,
+      "sha256": "03fce7b0314394386256c44322209d1e899ea140996a30a646d3c1bd7061d646"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-verification/fixtures/test_worker_environment_mismat0/execution-contract.json",
+      "bytes": 116,
+      "sha256": "9a68ee7c27c0fc0f855e512ccc356595b3d45960a1fb53d2f945a7e017bb0dfb"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-verification/fixtures/test_worker_records_exact_envi0/capture/execution-environment-worker.json",
+      "bytes": 746,
+      "sha256": "e9abfdefdcebfd4c251e3cf73c55f3080b65794ae25c8ebcd7efe5bc06905206"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-verification/fixtures/test_worker_records_exact_envi0/execution-contract.json",
+      "bytes": 116,
+      "sha256": "9a68ee7c27c0fc0f855e512ccc356595b3d45960a1fb53d2f945a7e017bb0dfb"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-verification/fixtures/test_worker_records_v3_policy_0/capture/trajectory-gauge-policy-worker.json",
+      "bytes": 713,
+      "sha256": "9b6e30947ed8e00bfe5f809d4efae178e846b3fd88126e519059938f886c9530"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-verification/fixtures/test_worker_records_v3_policy_0/execution-v3.json",
+      "bytes": 1127,
+      "sha256": "7403d915c9bc98ae20be7b8c5f27de4d0d78b6369d9d4f84fa9a890e5da3edcd"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-verification/fixtures/test_worker_records_v3_policy_0/trajectory-gauge-policy.json",
+      "bytes": 954,
+      "sha256": "0356bc8e45966fb25e86620a9b3511f752b704eb6a7ceaa06077c0470b3af6ad"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-verification/start.json",
+      "bytes": 2503,
+      "sha256": "400a06dbb20fb08359784f6b0f7678338a2196b7405fc7b7b89ec3ea60b9f029"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-verification/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-verification/stdout",
+      "bytes": 182,
+      "sha256": "5e943eaf2c9cbae593ac088f7abeef58c26eb0a398fcefe67b0b1314c24f0935"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review-working.diff",
+      "bytes": 5808,
+      "sha256": "0411b93a89debf0d886da8e1122ca0d4dc2dc7d4a1eb5c0b2df3bd8e786269f6"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review.json",
+      "bytes": 9799,
+      "sha256": "bd0cf6dc66263ac0028164d4a4e61e9c105b9d5b27b1a5048b7b0babc6f2c688"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/review.md",
+      "bytes": 10762,
+      "sha256": "de62a8c256c545eace6f17dbab36dea5a87375d0bc2c6eaa84bb1abff4fd7bea"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/seal.py",
+      "bytes": 2905,
+      "sha256": "3dc92d901713d3b2ffa70f9c7a14a3689a7cb6625f9ca8a18c0006797f419c30"
+    },
+    {
+      "path": "results/single-aircraft-online-feed-20261017/source-before.json",
+      "bytes": 1064,
+      "sha256": "ded5ef8f5a0b33097a501e8f6191e7dced172291ab212771bd1b25462e0a789a"
+    },
+    {
+      "path": "tests/benchmark/test_capture_online_estimates.py",
+      "bytes": 15591,
+      "sha256": "3a5e5cff91d603ec07d56b4c4e0ab9941b11aa4399f3097656041be6a1bd59f8"
+    },
+    {
+      "path": "tools/benchmark/capture_contract.py",
+      "bytes": 15268,
+      "sha256": "5ed057b25344c283e2fdba25e3bc05e3ca85413df055b23946fab041a3a1ad53"
+    },
+    {
+      "path": "tools/benchmark/capture_disarmed_sensors.py",
+      "bytes": 65910,
+      "sha256": "aeea2e4b7f5ea37ed56aced18f449979caf5ad47de46725c8fc4c8e831331e7d"
+    },
+    {
+      "path": "tools/benchmark/capture_online_estimates.py",
+      "bytes": 10468,
+      "sha256": "498e5607c15e8f17f7a1bf980f6d0057399c03e8c02fab17bb618518d4ccf33f"
+    }
+  ],
+  "scope": "Executor CRC/member/hash verification only, not independent source/native/archive reapproval; no old global scan"
+}

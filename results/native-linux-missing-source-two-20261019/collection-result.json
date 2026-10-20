@@ -1,0 +1,123 @@
+{
+  "schema": "native-linux-exact-two-restoration-parent-v1",
+  "command": [
+    "wsl",
+    "-d",
+    "Ubuntu",
+    "--",
+    "/usr/bin/python3",
+    "-I",
+    "-S",
+    "-B",
+    "-"
+  ],
+  "utc_start": "2026-10-19T09:54:01.206797+00:00",
+  "errors": [],
+  "all_qualifications": false,
+  "dispatchable": false,
+  "resource_queries": false,
+  "compiler_or_target_executed": false,
+  "linux_file_writes": "only authorized exact-two create-if-absent; actual completion records actions",
+  "observed_files": [
+    {
+      "type": "end",
+      "id": 0,
+      "path": "/home/yuchen7509/flydrones-upstream/open_vins/LICENSE",
+      "resolved": "/home/yuchen7509/flydrones-upstream/open_vins/LICENSE",
+      "before": {
+        "dev": 2128,
+        "ino": 455272,
+        "mode": 33188,
+        "uid": 1000,
+        "gid": 1000,
+        "nlink": 1,
+        "bytes": 35149,
+        "mtime_ns": 1792403641375855856,
+        "ctime_ns": 1792403641375855856
+      },
+      "after": {
+        "dev": 2128,
+        "ino": 455272,
+        "mode": 33188,
+        "uid": 1000,
+        "gid": 1000,
+        "nlink": 1,
+        "bytes": 35149,
+        "mtime_ns": 1792403641375855856,
+        "ctime_ns": 1792403641375855856
+      },
+      "prior_target": null,
+      "bytes": 35149,
+      "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+      "git_blob_sha1": "f288702d2fa16d3cdf0035b15a9fcbc552cd88e7",
+      "stable": true,
+      "matches_fixed_manifest": true,
+      "action": "created_from_verified_retained_bytes",
+      "blob": "blobs/3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986"
+    },
+    {
+      "type": "end",
+      "id": 1,
+      "path": "/home/yuchen7509/flydrones-upstream/open_vins/ReadMe.md",
+      "resolved": "/home/yuchen7509/flydrones-upstream/open_vins/ReadMe.md",
+      "before": {
+        "dev": 2128,
+        "ino": 455275,
+        "mode": 33188,
+        "uid": 1000,
+        "gid": 1000,
+        "nlink": 1,
+        "bytes": 13100,
+        "mtime_ns": 1792403641379852204,
+        "ctime_ns": 1792403641379852204
+      },
+      "after": {
+        "dev": 2128,
+        "ino": 455275,
+        "mode": 33188,
+        "uid": 1000,
+        "gid": 1000,
+        "nlink": 1,
+        "bytes": 13100,
+        "mtime_ns": 1792403641379852204,
+        "ctime_ns": 1792403641379852204
+      },
+      "prior_target": null,
+      "bytes": 13100,
+      "sha256": "2553e1d5d570a391a1f8376ae4037760d84d45668d781ccf6683ccfc2a54a044",
+      "git_blob_sha1": "1448a49c1acc3c1c23d6631e8e49be2e49e1a500",
+      "stable": true,
+      "matches_fixed_manifest": true,
+      "action": "created_from_verified_retained_bytes",
+      "blob": "blobs/2553e1d5d570a391a1f8376ae4037760d84d45668d781ccf6683ccfc2a54a044"
+    }
+  ],
+  "stream_payload_bytes": 48249,
+  "stream_metadata_bytes": 6526,
+  "active_partial": null,
+  "stderr_bytes": 132,
+  "linux_completion": {
+    "type": "completion",
+    "complete": true,
+    "reason": null,
+    "elapsed_s": 0.01564578094985336,
+    "payload_bytes": 48249,
+    "target_bytes_written": 48249,
+    "created_paths": [
+      "/home/yuchen7509/flydrones-upstream/open_vins/LICENSE",
+      "/home/yuchen7509/flydrones-upstream/open_vins/ReadMe.md"
+    ],
+    "completed_files": 2,
+    "metadata_bytes_before_completion": 6119,
+    "all_qualifications": false,
+    "dispatchable": false,
+    "partial_files_not_deleted": true
+  },
+  "bootstrap_identity_authenticated": false,
+  "owned_windows_launcher_pid": 54736,
+  "exit": 0,
+  "readers_closed": true,
+  "elapsed_s": 0.23399999970570207,
+  "outer_exceeded": false,
+  "collection_complete": true
+}

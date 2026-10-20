@@ -1,0 +1,9 @@
+{
+  "archive": "evidence/kalibr-native-target-consumption-dev-1701.zip",
+  "sha256": "b2ef3316e3be642da3501a20a2e460cf1cdbd6580f00ddb63138a8b49d1f7047",
+  "members": 299,
+  "bytes": 681177,
+  "allCRC_SHA_size_currentbytes": true,
+  "report_sha256": "d20701d84479160fda83e2e391c107ba5bca05c34951f09977ccb7e7e6068e2b",
+  "independent_ZIP_review": "passed zeroC/I/M"
+}

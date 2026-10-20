@@ -1,0 +1,253 @@
+{
+  "schema": "native-fresh-build-admission-plan-v1",
+  "prepared_local_date": "2026-10-20",
+  "baseline_publication_commit": "dde58388d76ceb2798d324fb07768d1e56952959",
+  "human_request": "继续按顺序推进，基于已封存的源码绑定和toolchain回执，准备一次新源码构建的准入方案，区分构建前必须补齐的条件和构建后才能取得的证据，先不编译或运行，也不重复采集已有内容。",
+  "status": "PREPARED_NOT_AUTHORIZED_NOT_ADMITTED_NOT_EXECUTED",
+  "plan": "docs/superpowers/plans/2026-10-20-native-fresh-build-admission.md",
+  "proposed_stage": "build",
+  "request_contract": "native-offset-fresh-source-request-v1",
+  "review_contract": "native-offset-fresh-source-admission-v1",
+  "build_profile": "fixed-source-openvins-v1",
+  "target": "openvins_offset_reset_v2",
+  "upstream_commit": "69488123ed9362dd44b6f28e7f4680abbff1442b",
+  "fixed_upstream_manifest_recorded_sha256": "19b343211b5ae6b25d9c565095e812f32a265c32997b27100e7eb6bbd3a0ec7f",
+  "binding_candidates": {
+    "deployed_repo": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility",
+    "upstream_source_tree": "/home/yuchen7509/flydrones-upstream/open_vins",
+    "capture_script": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/capture_disarmed_sensors.py",
+    "pinned_cmake": "/usr/bin/cmake",
+    "pinned_gxx": "/usr/bin/x86_64-linux-gnu-g++-13",
+    "pinned_make": "/usr/bin/make",
+    "pinned_python": "/usr/bin/python3.12",
+    "current_linux_source_manifest": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/native-linux-production-inputs-20261019/current-linux-source-manifest.json",
+    "toolchain_file": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/native-linux-production-inputs-20261019/toolchain-native.cmake",
+    "toolchain_receipt": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/native-linux-production-inputs-20261019/final-v2/toolchain-receipt.json",
+    "header_package_manifest": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/native-linux-production-inputs-20261019/final-v3/header-package-manifest.json",
+    "eigen_config_dir": "/usr/share/eigen3/cmake",
+    "opencv4_config_dir": "/usr/lib/x86_64-linux-gnu/cmake/opencv4",
+    "boost_config_dir": "/usr/lib/x86_64-linux-gnu/cmake/Boost-1.83.0",
+    "ceres_config_dir": "/usr/lib/x86_64-linux-gnu/cmake/Ceres",
+    "exclusive_build_dir": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/native-offset-once-attempt-v1/build/artifacts"
+  },
+  "saved_document_references": {
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/native-linux-production-inputs-20261019/current-linux-source-manifest.json": {
+      "recorded_file_pin": {
+        "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/native-linux-production-inputs-20261019/current-linux-source-manifest.json",
+        "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/native-linux-production-inputs-20261019/current-linux-source-manifest.json",
+        "bytes": 61561,
+        "sha256": "a05c351b4f54fd4c2b8b73acdfd4b003c86b2994c925d3a113f972eb466a77cb"
+      },
+      "phase": "results/native-linux-production-inputs-20261019/receipt-readback",
+      "blob": "blobs/a05c351b4f54fd4c2b8b73acdfd4b003c86b2994c925d3a113f972eb466a77cb",
+      "basis": "Copied saved derived readback; no payload rehash or Linux refresh"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/native-linux-production-inputs-20261019/final-v2/toolchain-receipt.json": {
+      "recorded_file_pin": {
+        "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/native-linux-production-inputs-20261019/final-v2/toolchain-receipt.json",
+        "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/native-linux-production-inputs-20261019/final-v2/toolchain-receipt.json",
+        "bytes": 7641,
+        "sha256": "a9ba6c7070eb4c49f9c90f7fb114a098183d644f6330f434518227b10f057c78"
+      },
+      "phase": "results/native-linux-production-inputs-20261019/receipt-readback",
+      "blob": "blobs/a9ba6c7070eb4c49f9c90f7fb114a098183d644f6330f434518227b10f057c78",
+      "basis": "Copied saved derived readback; no payload rehash or Linux refresh"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/native-linux-production-inputs-20261019/final-v3/header-package-manifest.json": {
+      "recorded_file_pin": {
+        "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/native-linux-production-inputs-20261019/final-v3/header-package-manifest.json",
+        "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/native-linux-production-inputs-20261019/final-v3/header-package-manifest.json",
+        "bytes": 209633,
+        "sha256": "c1ebbbcb5e77707ba7b3fe170b01702cc57045b570d86a41a31a594f82c4c2e5"
+      },
+      "phase": "results/native-linux-production-inputs-20261019/final-receipt-readback",
+      "blob": "blobs/c1ebbbcb5e77707ba7b3fe170b01702cc57045b570d86a41a31a594f82c4c2e5",
+      "basis": "Copied saved derived readback; no payload rehash or Linux refresh"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/native-linux-production-inputs-20261019/final-v3/input-pin-references.json": {
+      "recorded_file_pin": {
+        "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/native-linux-production-inputs-20261019/final-v3/input-pin-references.json",
+        "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/native-linux-production-inputs-20261019/final-v3/input-pin-references.json",
+        "bytes": 1882033,
+        "sha256": "0162917239855192dca3643149150363a996b379e70ea3d01ca738752fc4b891"
+      },
+      "phase": "results/native-linux-production-inputs-20261019/final-receipt-readback",
+      "blob": "blobs/0162917239855192dca3643149150363a996b379e70ea3d01ca738752fc4b891",
+      "basis": "Copied saved derived readback; no payload rehash or Linux refresh"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/native-linux-production-inputs-20261019/final-v3/binding-candidates.json": {
+      "recorded_file_pin": {
+        "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/native-linux-production-inputs-20261019/final-v3/binding-candidates.json",
+        "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/native-linux-production-inputs-20261019/final-v3/binding-candidates.json",
+        "bytes": 2054,
+        "sha256": "2f290e397fcf3cf787fc4052df1ac886940836f79450a1d2129549692698bb11"
+      },
+      "phase": "results/native-linux-production-inputs-20261019/final-receipt-readback",
+      "blob": "blobs/2f290e397fcf3cf787fc4052df1ac886940836f79450a1d2129549692698bb11",
+      "basis": "Copied saved derived readback; no payload rehash or Linux refresh"
+    }
+  },
+  "selected_toolchain_recorded_pin": {
+    "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/native-linux-production-inputs-20261019/toolchain-native.cmake",
+    "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/native-linux-production-inputs-20261019/toolchain-native.cmake",
+    "bytes": 1677,
+    "sha256": "3b7f6512ffe514f021d12b78bfc749ac2d3e60b9a25aea38e34d0cd17273d9b3"
+  },
+  "static_baseline": {
+    "production_files": 128,
+    "required_once_files": 12,
+    "static_edges": 411,
+    "dynamic_sites": 2,
+    "input_reference_paths": 3677,
+    "named_groups": {
+      "tools": 20,
+      "system_headers": 1828,
+      "cmake_modules": 1205,
+      "link_implicit": 20,
+      "libraries": 105,
+      "packages": 234
+    },
+    "elf_files": 129,
+    "needed_edges": 374,
+    "unbound_observed_names": 0
+  },
+  "pre_build_conditions": [
+    {
+      "id": "P1",
+      "requirement": "Concrete stage=build request with exact production/upstream/toolchain/16 bindings and complete traceable input pins",
+      "status": "CANDIDATES_AVAILABLE_REQUEST_NOT_PREPARED",
+      "satisfied": false
+    },
+    {
+      "id": "P2",
+      "requirement": "Selected Windows coordinator and WSL verification/scope/tool interpreter, Python native dependencies and separate execution environments",
+      "status": "EXECUTION_CONTEXT_INCOMPLETE",
+      "satisfied": false
+    },
+    {
+      "id": "P3",
+      "requirement": "Build-reachable loader/config/glob/hwcaps/search context and explicit unresolved origin disposition",
+      "status": "NOT_COMPLETE_NOT_OBSERVED_AGAIN",
+      "satisfied": false
+    },
+    {
+      "id": "P4",
+      "requirement": "Declared link_resolutions and pinned explicit linker/response/script inputs; actual argv is later output",
+      "status": "REQUEST_LEVEL_RESOLUTIONS_NOT_COMPLETE",
+      "satisfied": false
+    },
+    {
+      "id": "P5",
+      "requirement": "Bounded observation plan for actual consumed inputs; existing producer limits and missing driver-builtins/search/syscall evidence acknowledged",
+      "status": "MECHANISM_COVERAGE_REQUIRES_DISPOSITION",
+      "satisfied": false
+    },
+    {
+      "id": "P6",
+      "requirement": "Original two fresh dual4GiB/no-competition gates, owned scope/control/cleanup/pidfd applicability; no present resource probe",
+      "status": "NOT_QUERIED_NOT_GRANTED",
+      "satisfied": false
+    },
+    {
+      "id": "P7",
+      "requirement": "35TU plus repeated validation/receipts/control/cleanup feasible within original unchanged limits",
+      "status": "UNKNOWN_NOT_BENCHMARKED",
+      "satisfied": false
+    },
+    {
+      "id": "P8",
+      "requirement": "ONE applicable fresh SHA-bound review and separate explicit human build-only execution authorization",
+      "status": "NOT_AUTHORIZED_NOT_ADMITTED",
+      "satisfied": false
+    }
+  ],
+  "post_build_evidence": [
+    {
+      "id": "B1",
+      "evidence": "Actual scope identity and configure/cache/trace/compile-commands/generated fixed-source recipe",
+      "timing": "DURING_AUTHORIZED_BUILD",
+      "evidence_observed": false
+    },
+    {
+      "id": "B2",
+      "evidence": "35 actual TU commands, objects and system depfiles consistent with frozen external inputs",
+      "timing": "DURING_AUTHORIZED_BUILD",
+      "evidence_observed": false
+    },
+    {
+      "id": "B3",
+      "evidence": "Successful new library pin/checkpoint then adapter links that exact new library",
+      "timing": "DURING_AUTHORIZED_BUILD",
+      "evidence_observed": false
+    },
+    {
+      "id": "B4",
+      "evidence": "Complete fresh build receipt, actual inside/host exit and owned release records",
+      "timing": "TERMINAL_AUTHORIZED_BUILD",
+      "evidence_observed": false
+    },
+    {
+      "id": "B5",
+      "evidence": "Driver builtin specs/search/implicit loader/syscall consumption evidence if a separately scoped mechanism actually obtains it",
+      "timing": "NOT_AUTOMATICALLY_PRODUCED_BY_EXISTING_PRODUCER",
+      "evidence_observed": false
+    }
+  ],
+  "future_review_covers": [
+    "current-source",
+    "tool-library-closure",
+    "recipe",
+    "budget",
+    "stops",
+    "once-cleanup",
+    "prefeed"
+  ],
+  "future_review_max_ttl_s": 300,
+  "build_environment_candidate": {
+    "HOME": "/home/yuchen7509",
+    "PATH": "/usr/bin:/bin",
+    "LANG": "C.UTF-8"
+  },
+  "environment_candidate_is_admitted": false,
+  "budget": {
+    "resource_reserve_each_os_bytes": 4294967296,
+    "memory_max_bytes": 1073741824,
+    "memory_swap_max_bytes": 0,
+    "cpu_quota_percent": 100,
+    "tasks_max": 64,
+    "parallel": 1,
+    "inside_shared_s": 300,
+    "scope_runtime_max_s": 315,
+    "scope_stop_timeout_s": 10,
+    "launcher_work_deadline_s": 300,
+    "outer_total_s": 330,
+    "outer_cleanup_reserve_s": 30,
+    "file_cap_bytes": 67108864,
+    "inventory_max_entries": 512,
+    "inventory_total_bytes": 67108864,
+    "response_depth": 4,
+    "response_tokens": 65536,
+    "explicit_text_single_bytes": 1048576,
+    "explicit_text_total_bytes": 4194304
+  },
+  "nonautomatic_post_build_mechanisms": [
+    "driver builtins/specs/search full consumption",
+    "syscall read-set",
+    "loader context/hwcaps/version/lazy maps",
+    "all descendants/pidfd/hard cancellation proof"
+  ],
+  "future_freshness_revalidation_requires_separate_explicit_scope": true,
+  "existing_attempt_not_created_or_probed": true,
+  "old_templates_unmodified": true,
+  "old_mapped_files_unmodified": true,
+  "old_library_history_unchanged_unknown": true,
+  "run_is_separate": true,
+  "decision": null,
+  "admission_granted": false,
+  "dispatchable": false,
+  "all_qualifications": false,
+  "runtime_graph_frozen": false,
+  "physical_dispatch_ready": false,
+  "full_input_closure_complete": false,
+  "full_request_complete": false
+}

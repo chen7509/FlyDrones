@@ -1,0 +1,14 @@
+{
+  "schema": "heartbeat-simulation-time-readiness-audit-v1",
+  "failures": [],
+  "qualified": true,
+  "source_sha256": "65b25711a0b0e3745ecc05c3ec3f8a851ce7a95148cfaf806cb860b5532d9f5e",
+  "heartbeat_wall_age_ns": 2000774305,
+  "heartbeat_sim_age_ns": 968000000,
+  "fixed_evidence_ready": true,
+  "simulation_silence_refused": true,
+  "timeout_increased": false,
+  "physical_rerun": false,
+  "vio_accuracy_qualified": false,
+  "fusion_eligible": false
+}

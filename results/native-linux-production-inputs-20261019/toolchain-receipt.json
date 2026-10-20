@@ -1,0 +1,168 @@
+{
+  "schema": "native-linux-toolchain-declaration-receipt-v1",
+  "source_head": "68c648e12f6850abbfde30441f9dfd43d36dcaef",
+  "toolchain_file": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/native-linux-production-inputs-20261019/toolchain-native.cmake",
+  "prepared_file_pin": {
+    "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/native-linux-production-inputs-20261019/toolchain-native.cmake",
+    "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/native-linux-production-inputs-20261019/toolchain-native.cmake",
+    "bytes": 1677,
+    "sha256": "3b7f6512ffe514f021d12b78bfc749ac2d3e60b9a25aea38e34d0cd17273d9b3"
+  },
+  "toolchain_file_linux_readback_pending": true,
+  "earlier_draft_observed_but_not_selected": {
+    "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/native-linux-production-inputs-20261019/toolchain.cmake",
+    "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/native-linux-production-inputs-20261019/toolchain.cmake",
+    "bytes": 1630,
+    "sha256": "36f2bcd36dcd1cc28256a5e1126042609928f9c042f54dee38829f5f4e297638"
+  },
+  "tool_files": {
+    "/usr/bin/cmake": {
+      "pin": {
+        "path": "/usr/bin/cmake",
+        "resolved": "/usr/bin/cmake",
+        "bytes": 11796472,
+        "sha256": "1c5227af4edd22d8d689def545e18ee458260c0fd579eba2187967f38817e638"
+      },
+      "phase": "results/native-linux-required-input-refresh-20261019",
+      "blob": "blobs/1c5227af4edd22d8d689def545e18ee458260c0fd579eba2187967f38817e638"
+    },
+    "/usr/bin/x86_64-linux-gnu-g++-13": {
+      "pin": {
+        "path": "/usr/bin/x86_64-linux-gnu-g++-13",
+        "resolved": "/usr/bin/x86_64-linux-gnu-g++-13",
+        "bytes": 1027128,
+        "sha256": "1353e9bdd29a7295c7226bf6c63abccce056d8cac31f112e5cdbecc3f28c2769"
+      },
+      "phase": "results/native-linux-required-input-refresh-20261019",
+      "blob": "blobs/1353e9bdd29a7295c7226bf6c63abccce056d8cac31f112e5cdbecc3f28c2769"
+    },
+    "/usr/bin/make": {
+      "pin": {
+        "path": "/usr/bin/make",
+        "resolved": "/usr/bin/make",
+        "bytes": 259808,
+        "sha256": "d78b8f1d099fbcfb6f2f49ab87223b9b68fb3956642f92d6ec6de812e8afa965"
+      },
+      "phase": "results/native-linux-required-input-refresh-20261019",
+      "blob": "blobs/d78b8f1d099fbcfb6f2f49ab87223b9b68fb3956642f92d6ec6de812e8afa965"
+    },
+    "/usr/bin/x86_64-linux-gnu-ar": {
+      "pin": {
+        "path": "/usr/bin/x86_64-linux-gnu-ar",
+        "resolved": "/usr/bin/x86_64-linux-gnu-ar",
+        "bytes": 55792,
+        "sha256": "534681ac11c18868cfc4fdf98770aa0ba8973eedc90c231e94e6ba96e1a04f27"
+      },
+      "phase": "results/native-linux-production-inputs-20261019/dependencies",
+      "blob": "blobs/534681ac11c18868cfc4fdf98770aa0ba8973eedc90c231e94e6ba96e1a04f27"
+    },
+    "/usr/bin/x86_64-linux-gnu-ranlib": {
+      "pin": {
+        "path": "/usr/bin/x86_64-linux-gnu-ranlib",
+        "resolved": "/usr/bin/x86_64-linux-gnu-ranlib",
+        "bytes": 55792,
+        "sha256": "3fb728371b8fff3c7cf74c0cf2184293717b8729f591bb2290b540dfd92edef7"
+      },
+      "phase": "results/native-linux-production-inputs-20261019/dependencies",
+      "blob": "blobs/3fb728371b8fff3c7cf74c0cf2184293717b8729f591bb2290b540dfd92edef7"
+    },
+    "/usr/bin/x86_64-linux-gnu-ld.bfd": {
+      "pin": {
+        "path": "/usr/bin/x86_64-linux-gnu-ld.bfd",
+        "resolved": "/usr/bin/x86_64-linux-gnu-ld.bfd",
+        "bytes": 1359128,
+        "sha256": "e46a122cc3a29feba3b1d0fc2a274b6e46538be016ebe381370c0801bb98b0b8"
+      },
+      "phase": "results/native-linux-production-inputs-20261019/dependencies",
+      "blob": "blobs/e46a122cc3a29feba3b1d0fc2a274b6e46538be016ebe381370c0801bb98b0b8"
+    },
+    "/usr/bin/x86_64-linux-gnu-as": {
+      "pin": {
+        "path": "/usr/bin/x86_64-linux-gnu-as",
+        "resolved": "/usr/bin/x86_64-linux-gnu-as",
+        "bytes": 745768,
+        "sha256": "7a2ef948033b05ad0c5dcb0d5be059bc68562b5d45713d91aee21df2b4bf4e92"
+      },
+      "phase": "results/native-linux-production-inputs-20261019/dependencies",
+      "blob": "blobs/7a2ef948033b05ad0c5dcb0d5be059bc68562b5d45713d91aee21df2b4bf4e92"
+    },
+    "/usr/bin/python3.12": {
+      "pin": {
+        "path": "/usr/bin/python3.12",
+        "resolved": "/usr/bin/python3.12",
+        "bytes": 8020928,
+        "sha256": "e50d468e8b0adfb05733f5b87b3cff34829c4a8c1aea50c865aa8bdfe4bb150f"
+      },
+      "phase": "results/native-linux-required-input-refresh-20261019",
+      "blob": "blobs/e50d468e8b0adfb05733f5b87b3cff34829c4a8c1aea50c865aa8bdfe4bb150f"
+    },
+    "/usr/bin/env": {
+      "pin": {
+        "path": "/usr/bin/env",
+        "resolved": "/usr/bin/env",
+        "bytes": 48072,
+        "sha256": "886e5fa8be716b03eeda48856e0f04493f2969fc148fb7812594ffac647fa050"
+      },
+      "phase": "results/native-linux-required-input-refresh-20261019",
+      "blob": "blobs/886e5fa8be716b03eeda48856e0f04493f2969fc148fb7812594ffac647fa050"
+    },
+    "/usr/bin/time": {
+      "pin": {
+        "path": "/usr/bin/time",
+        "resolved": "/usr/bin/time",
+        "bytes": 27160,
+        "sha256": "3b11dec50514a8473e9f6efa7a34d584d0657538c09988f61b72d38ad4991a10"
+      },
+      "phase": "results/native-linux-required-input-refresh-20261019",
+      "blob": "blobs/3b11dec50514a8473e9f6efa7a34d584d0657538c09988f61b72d38ad4991a10"
+    },
+    "/usr/bin/timeout": {
+      "pin": {
+        "path": "/usr/bin/timeout",
+        "resolved": "/usr/bin/timeout",
+        "bytes": 39880,
+        "sha256": "12690a043dfd555a6c14ccc1564f5649c18f1762c0d6ff66729948130898ec52"
+      },
+      "phase": "results/native-linux-required-input-refresh-20261019",
+      "blob": "blobs/12690a043dfd555a6c14ccc1564f5649c18f1762c0d6ff66729948130898ec52"
+    },
+    "/usr/bin/systemd-run": {
+      "pin": {
+        "path": "/usr/bin/systemd-run",
+        "resolved": "/usr/bin/systemd-run",
+        "bytes": 68392,
+        "sha256": "de28cc5757d3789efa5f6fed5659893410469f68b42175d4531f5b34d3a09e16"
+      },
+      "phase": "results/native-linux-required-input-refresh-20261019",
+      "blob": "blobs/de28cc5757d3789efa5f6fed5659893410469f68b42175d4531f5b34d3a09e16"
+    },
+    "/usr/bin/systemctl": {
+      "pin": {
+        "path": "/usr/bin/systemctl",
+        "resolved": "/usr/bin/systemctl",
+        "bytes": 1501304,
+        "sha256": "37ec607113f55f1b385b4fa75588a43402aec0de57927500763b267713f10f63"
+      },
+      "phase": "results/native-linux-required-input-refresh-20261019",
+      "blob": "blobs/37ec607113f55f1b385b4fa75588a43402aec0de57927500763b267713f10f63"
+    }
+  },
+  "sysroot": "/",
+  "declared_search_prefixes": [
+    "/usr"
+  ],
+  "ignored_search_prefixes": [
+    "/usr/local",
+    "/opt"
+  ],
+  "user_and_system_package_registries": false,
+  "cmake_or_compiler_executed": false,
+  "try_compile_not_bypassed": true,
+  "driver_builtin_specs_consumption_proven": false,
+  "static_elf_needed_name_candidates_complete": false,
+  "full_sysroot_contents_bound": false,
+  "abi_verified": false,
+  "admission_granted": false,
+  "all_qualifications": false,
+  "dispatchable": false
+}

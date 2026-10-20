@@ -1,0 +1,10 @@
+{
+  "archive": "evidence/owned-ulog-source-association-dev-1701.zip",
+  "sha256": "d7c022cf53d1a5347b798b18c152647d59c2835a7e50f7649bb00880cdc804d1",
+  "bytes": 400490,
+  "members": 695,
+  "report_sha256": "f5808432798e9080e32bb7721733812ca4daaa303072317a9fe96e1cbcf5f7ef",
+  "prepublication_plan_sha256": "d2ff421a103c223abf961e98c09baea400fc7261c5144be02de3651bedb9a01e",
+  "actual_px4_source_execution": false,
+  "actual_pidfd_duplication_executed": false
+}

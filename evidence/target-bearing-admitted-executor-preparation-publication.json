@@ -1,0 +1,126 @@
+{
+  "schema": "target-bearing-admitted-executor-publication-v1",
+  "implementation_commit": "116b8bab32e7d2c96333e078e7f41c807b88dff5",
+  "remote": "personal",
+  "pull_request": "https://github.com/chen7509/FlyDrones/pull/65",
+  "implementation_pr_verified": {
+    "expected_head": "116b8bab32e7d2c96333e078e7f41c807b88dff5",
+    "observed_head": "116b8bab32e7d2c96333e078e7f41c807b88dff5",
+    "body_sha256": "0c1a5e52bdf98667f1adc2f7d56193764046c32e4e08e8d2b10224cd9d201b29",
+    "only_crlf_normalized_exact": true,
+    "utc": "2026-10-14T19:41:56.652341+00:00"
+  },
+  "archive": {
+    "path": "evidence/target-bearing-admitted-executor-preparation-dev-1701.zip",
+    "bytes": 32127533,
+    "members": 4120,
+    "mapped_members": 4119,
+    "sha256": "c68d7ea30ef376dad088720296a6f7c4446497920ab7ba619193b88032036a14"
+  },
+  "archive_plan_sha256": "651b6dc75f897681bd977d67002b05418530423470963851a0d19e821da3f527",
+  "postpublication_plan_sha256": "029df6438e4dbdba24208f6996f941896a78fefee661485ad093002ccb7cdcdb",
+  "publication_change": "Only one publication checkbox; full Task2 static freeze/Task3 physical/Task4 solver remain incomplete",
+  "actual_static_attempt": "CONSUMED_FAILED",
+  "physical_attempt_consumed": false,
+  "runtime_graph_frozen": false,
+  "physical_dispatch_ready": false,
+  "qualification": {
+    "source": false,
+    "clock": false,
+    "measured_calibration": false,
+    "accuracy": false,
+    "teacher": false,
+    "fusion": false,
+    "training": false,
+    "flight": false
+  },
+  "source_identities": {
+    "tools/benchmark/run_calibration_capture.py": {
+      "working_sha256": "124edd13db846751c100c5b755c2e3b42b3e34a7fa831d8f9159b8b84b798041",
+      "git_normalized_blob_sha256": "74de8250263fd8e8f2cebd7c8644a1cffeca903ceafb5139cea0263a628dcd2a",
+      "same_bytes": false
+    },
+    "tools/benchmark/calibration_capture_scope.py": {
+      "working_sha256": "5bbd5055425f2b95385abbb50a903e9affc48d36054bcd11c04caef14550fcec",
+      "git_normalized_blob_sha256": "5bbd5055425f2b95385abbb50a903e9affc48d36054bcd11c04caef14550fcec",
+      "same_bytes": true
+    },
+    "tools/benchmark/calibration_capture_study.py": {
+      "working_sha256": "a47db8735e6d728d17c16cc3aecfd9fc425131dd16c4156b942c130e88076e1a",
+      "git_normalized_blob_sha256": "70342d3c02b122072285f750f8009a047dd46dfa8cff448ccf5ae6b7d636277b",
+      "same_bytes": false
+    },
+    "tools/benchmark/prepare_calibration_capture.py": {
+      "working_sha256": "9113bd1148c9e529de2f0ab1a97b818f86766ba5e44a5d0c94133f0cb8f8c68d",
+      "git_normalized_blob_sha256": "579c490cbdd838031a45915ca2bf694b7cb24e5652a0d4ee2efe4645ad78ffc4",
+      "same_bytes": false
+    },
+    "tools/benchmark/calibration_capture_contract.py": {
+      "working_sha256": "f946b6b329170a290784bd2e5c90e278fb8dab1209c1a11e9df24d5a0c2b96df",
+      "git_normalized_blob_sha256": "f946b6b329170a290784bd2e5c90e278fb8dab1209c1a11e9df24d5a0c2b96df",
+      "same_bytes": true
+    },
+    "tools/benchmark/capture_contract.py": {
+      "working_sha256": "ed126474e53dbe0c52db365aa1636f20d807183fb56e9fa4ff7488d908539b75",
+      "git_normalized_blob_sha256": "ed126474e53dbe0c52db365aa1636f20d807183fb56e9fa4ff7488d908539b75",
+      "same_bytes": true
+    },
+    "tools/benchmark/capture_disarmed_sensors.py": {
+      "working_sha256": "917089fe23870c081de2a17cc3a9ee386bbbb78c00036cfd9a0acf039b847347",
+      "git_normalized_blob_sha256": "917089fe23870c081de2a17cc3a9ee386bbbb78c00036cfd9a0acf039b847347",
+      "same_bytes": true
+    },
+    "tools/benchmark/disarmed_sensor_provenance.py": {
+      "working_sha256": "2c71b1203a254377844b14465a12a8c8b1ea64e99f151f2a76a21376adb70a6d",
+      "git_normalized_blob_sha256": "1be254881d02582dee925f538212457ca360636a0ac12538447a85d081cdc1d0",
+      "same_bytes": false
+    },
+    "tests/benchmark/test_calibration_admitted_executor.py": {
+      "working_sha256": "16110840321fd14906230d23c8eb7871625bd8da1ba1e49a42dcd81ecf90a976",
+      "git_normalized_blob_sha256": "16110840321fd14906230d23c8eb7871625bd8da1ba1e49a42dcd81ecf90a976",
+      "same_bytes": true
+    },
+    "docs/TARGET_BEARING_ADMITTED_EXECUTOR_PREPARATION_REPORT.md": {
+      "working_sha256": "53e56360f408876b6fa7a8162dd4ac4de70b14e0f9e4da76340386889426e35c",
+      "git_normalized_blob_sha256": "f8697c2b1892d68042da64470d99dbb67f2c70d04f0f901ddf88b5150f3b44e8",
+      "same_bytes": false
+    },
+    "docs/superpowers/specs/2026-10-15-target-bearing-admitted-executor.md": {
+      "working_sha256": "baa48c7a8c89ac0ca88ab52e51359033e001a85d7394577962b7d1cb41700dd7",
+      "git_normalized_blob_sha256": "f92ed2d5bd5a4955679de137e046ee31ef2a0b9238ad7f13a84af6c274680e52",
+      "same_bytes": false
+    }
+  },
+  "outside_zip": {
+    "independent-archive-review.json": {
+      "bytes": 5172,
+      "working_sha256": "ec74d04817cd3eca9ec518d14a63b96ff27cd669e686c808100137051b602072",
+      "scope": "post-seal outside ZIP; not claimed as an archived member"
+    },
+    "independent-archive-review.md": {
+      "bytes": 3173,
+      "working_sha256": "4b5cc9bd9f902f47314a6aef72c2028281f542fddfae5724b5eebabf8eb35c03",
+      "scope": "post-seal outside ZIP; not claimed as an archived member"
+    },
+    "publication-staged-check.json": {
+      "bytes": 3229,
+      "working_sha256": "1a2432150e492d0ea7cb6b781c6b6a89a24d699fc8484eecfd66f89c9b12c70f",
+      "scope": "post-seal outside ZIP; not claimed as an archived member"
+    },
+    "publication-tool-gaps.md": {
+      "bytes": 521,
+      "working_sha256": "b49af3c5f8dce826e7a7fa6c4878832d134084fbca873013375404133c43e1f4",
+      "scope": "post-seal outside ZIP; not claimed as an archived member"
+    }
+  },
+  "archived_source_and_raw_unchanged": true,
+  "recorded_group_released": true,
+  "escaped_closure": "unknown",
+  "utc": "2026-10-14T19:41:57.293252+00:00",
+  "publication_newline_correction": {
+    "reason": "Windows text output retransformed already-decoded CRLF into CRCRLF; corrected with raw-byte single-checkbox replacement before Git publication. Original intermediate artifacts retained outside ZIP, no native/raw/source changes.",
+    "initial_plan_sha256": "34aebc426dedcc7e967250007fa475c5e4b2fd44ac237305368094fe097c7b4c",
+    "initial_ledger_sha256": "ce69a56909b36374b9bb3175db07acf52a0b830903bbee8a0a9a82b018a41974",
+    "actual_plan_change_only_one_checkbox": true
+  }
+}

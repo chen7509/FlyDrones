@@ -2,9 +2,15 @@ import hashlib
 import json
 import math
 
+import numpy as np
 import pytest
 
-from tools.benchmark.openvins_online_shadow import SourceWatchdog, encode_packet, validate_ack
+from tools.benchmark.openvins_online_shadow import (
+    SourceWatchdog,
+    encode_packet,
+    project_camera_health_row,
+    validate_ack,
+)
 
 
 def imu():
@@ -51,6 +57,72 @@ def test_ack_checks_actual_cross_process_clock_interval():
     for field, value in [("sequence", 1), ("receive_ns", 199), ("end_ns", 211), ("start_ns", 206)]:
         with pytest.raises(ValueError):
             validate_ack(dict(ack, **{field: value}), sequence=0, kind="I", dispatch_ns=200, acknowledged_ns=210)
+
+
+def camera_ack(**updates):
+    value = {
+        "sequence": 4,
+        "kind": "C",
+        "sample_ns": 3_000_000_000,
+        "receive_ns": 201,
+        "start_ns": 202,
+        "end_ns": 205,
+        "gray_first": 10,
+        "internal_initialized": True,
+        "public_initialized": True,
+        "initializer_time_s": 1.2,
+        "state_time_s": 3.0,
+        "last_regular_update_s": 2.9,
+        "zupt_flag_latched": False,
+        "has_moved_since_zupt": True,
+        "imu_state": [0.0, 0.0, 0.0, 1.0] + [0.0] * 12,
+        "imu_covariance15": (np.eye(15) * 1e-3).tolist(),
+        "fusion_eligible": False,
+        "quality": None,
+        "reset_counter": None,
+    }
+    value.update(updates)
+    return value
+
+
+def test_camera_health_projection_retains_exact_native_covariance():
+    projected = project_camera_health_row(camera_ack(), session_id="native-42")
+    assert projected["session_id"] == "native-42"
+    assert projected["sample_ns"] == 3_000_000_000
+    assert np.asarray(projected["imu_covariance15"]).shape == (15, 15)
+    assert projected["public_initialized"] is True
+    assert "imu_state" not in projected
+
+
+def test_camera_health_projection_accepts_uninitialized_null_state_and_covariance():
+    ack = camera_ack(
+        internal_initialized=False,
+        public_initialized=False,
+        state_time_s=-1.0,
+        last_regular_update_s=-1.0,
+        imu_state=None,
+        imu_covariance15=None,
+    )
+    projected = project_camera_health_row(ack, session_id="native-42")
+    assert projected["internal_initialized"] is False
+    assert projected["imu_covariance15"] is None
+
+
+@pytest.mark.parametrize("corruption", ["missing", "short", "nan", "asymmetric", "unexpected_quality"])
+def test_camera_health_projection_rejects_covariance_or_health_mutation(corruption):
+    ack = camera_ack()
+    if corruption == "missing":
+        del ack["imu_covariance15"]
+    elif corruption == "short":
+        ack["imu_covariance15"] = [[1.0]]
+    elif corruption == "nan":
+        ack["imu_covariance15"][0][0] = math.nan
+    elif corruption == "asymmetric":
+        ack["imu_covariance15"][0][1] = 0.1
+    else:
+        ack["quality"] = 1
+    with pytest.raises(ValueError):
+        project_camera_health_row(ack, session_id="native-42")
 
 
 def test_watchdog_detects_total_silence_without_pending_images():
@@ -138,6 +210,65 @@ def test_causal_handoff_real_pixels_and_final_unreleased_frame(tmp_path):
     result = shadow.finish()
     assert result["pending"][0]["reason"] == "later_imu_missing"
     assert result["fusion_eligible"] is False
+
+
+def test_study_v8_queued_later_imu_is_not_expired_by_local_service_time(tmp_path):
+    """Exact retained clocks: source arrival passes 250 ms, post-service wall time does not."""
+    from tools.benchmark.openvins_online_shadow import ShadowInput
+
+    client = FakeNative()
+    after_record = iter([65_524_453_701, 66_698_382_096, 66_947_892_850, 66_949_524_266])
+    shadow = ShadowInput(client, tmp_path, session_id="study-v8-fixed", now=lambda: next(after_record))
+    pixels = b"\xff" * 57600
+    shadow.on_record(event("imu", 1_000_000, 65_491_832_354), None)
+    shadow.on_record(event("info", 2_000_000, 66_678_238_723), b"PB")
+    shadow.on_record(event("rgb", 2_000_000, 66_905_573_764), pixels)
+    shadow.on_record(event("imu", 4_000_000, 66_906_522_485), None)
+    result = shadow.finish()
+    assert result["failure"] is None
+    assert [action[0]["kind"] for action in client.sent] == ["imu", "imu", "camera"]
+    assert client.sent[-1][0]["sample_ns"] == 2_000_000
+    assert client.sent[-1][0]["imu_boundary_ns"] == 4_000_000
+
+
+def test_online_adapter_accepts_slow_wall_pair_with_fresh_simulation_time(tmp_path):
+    from tools.benchmark.openvins_online_shadow import ShadowInput
+
+    after_record = iter([1_000_000_000, 1_001_000_000, 1_002_000_000, 1_251_000_001])
+    shadow = ShadowInput(FakeNative(), tmp_path, session_id="stale-source", now=lambda: next(after_record))
+    pixels = b"\xff" * 57600
+    shadow.on_record(event("imu", 1_000_000, 1_000_000_000), None)
+    shadow.on_record(event("info", 2_000_000, 1_001_000_000), b"PB")
+    shadow.on_record(event("rgb", 2_000_000, 1_002_000_000), pixels)
+    shadow.on_record(event("imu", 4_000_000, 1_252_000_001), None)
+    result = shadow.finish()
+    assert result["failure"] is None
+    assert [item[0]["kind"] for item in shadow.client.sent] == ["imu", "imu", "camera"]
+    assert result["fusion_eligible"] is False
+
+
+def test_online_adapter_wall_idle_does_not_advance_simulation_dependency_age(tmp_path):
+    from tools.benchmark.openvins_online_shadow import ShadowInput
+
+    shadow = ShadowInput(FakeNative(), tmp_path, session_id="silent-source", now=lambda: 9_000_000_000)
+    shadow.on_record(event("info", 2_000_000, 1_000_000_000), b"PB")
+    shadow.tick_idle(1_250_000_000)
+    assert shadow.failure is None
+    shadow.tick_idle(9_000_000_000)
+    result = shadow.finish()
+    assert result["failure"] is None
+    assert result["pending"][0]["reason"] == "rgb_missing"
+
+
+def test_online_adapter_rejects_missing_pair_after_simulation_advance(tmp_path):
+    from tools.benchmark.openvins_online_shadow import ShadowInput
+
+    shadow = ShadowInput(FakeNative(), tmp_path, session_id="sim-stale", now=lambda: 2_000_000_000)
+    shadow.on_record(event("info", 2_000_000, 1_000_000_000), b"PB")
+    shadow.on_record(event("rgb", 253_000_001, 1_000_000_001), b"\xff" * 57600)
+    result = shadow.finish()
+    assert result["failure"] == "InputRefusal('pending input exceeded simulation wait')"
+    assert result["pending"][0]["reason"] == "pending input exceeded simulation wait"
 
 
 def test_consumer_failure_latches_but_raw_writer_still_retains_inputs(tmp_path):

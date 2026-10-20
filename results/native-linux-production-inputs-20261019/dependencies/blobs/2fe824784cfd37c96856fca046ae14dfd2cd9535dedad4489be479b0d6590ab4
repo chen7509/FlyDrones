@@ -1,0 +1,5 @@
+50c862fe03b621d4fa09495ad35ac6be  usr/lib/x86_64-linux-gnu/libboost_serialization.so.1.83.0
+0b117f59b2cd54f2d4043fb352160860  usr/lib/x86_64-linux-gnu/libboost_wserialization.so.1.83.0
+926af9123ddd38f464f12e5ef99b2f69  usr/share/doc/libboost-serialization1.83.0/changelog.Debian.gz
+6a70c00fc4a21b8da6d647a5afc88b7c  usr/share/doc/libboost-serialization1.83.0/copyright
+237fb29daf02d885f7c0f963c0c91818  usr/share/lintian/overrides/libboost-serialization1.83.0

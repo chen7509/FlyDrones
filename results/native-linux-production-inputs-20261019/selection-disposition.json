@@ -1,0 +1,23 @@
+{
+  "production_count": 129,
+  "dependency_endpoints": 1046,
+  "estimated_dependency_bytes": 100826740,
+  "prior_index_aliases_already_with_content": 2378,
+  "nonregular": [
+    "/usr/share/eigen3/cmake",
+    "/usr/lib/x86_64-linux-gnu/cmake/opencv4",
+    "/usr/lib/x86_64-linux-gnu/cmake/Boost-1.83.0",
+    "/usr/lib/x86_64-linux-gnu/cmake/Ceres"
+  ],
+  "unavailable": [
+    "/usr/lib/gcc/x86_64-linux-gnu/13/cc1plus",
+    "/usr/lib/gcc/x86_64-linux-gnu/13/cc1",
+    "/usr/lib/gcc/x86_64-linux-gnu/13/collect2",
+    "/usr/lib/gcc/x86_64-linux-gnu/13/specs",
+    "/home/yuchen7509/flydrones-upstream/open_vins/LICENSE",
+    "/home/yuchen7509/flydrones-upstream/open_vins/ReadMe.md"
+  ],
+  "bluegeneq_historical_partial_not_repaired": true,
+  "no_directory_search": true,
+  "no_build_or_native_run": true
+}

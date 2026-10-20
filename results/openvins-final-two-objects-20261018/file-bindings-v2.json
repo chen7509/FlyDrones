@@ -1,0 +1,72 @@
+{
+  "schema": "openvins-two-object-file-observations-v1",
+  "files": {
+    "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/src/update/UpdaterSLAM.cpp.o": {
+      "linux_path": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/src/update/UpdaterSLAM.cpp.o",
+      "role": "authorized-two-tu-object",
+      "utc": "2026-10-18T13:33:50.667844+00:00",
+      "status": "observed",
+      "linux_resolved_path": null,
+      "before": {
+        "mode": 33206,
+        "size": 45841632,
+        "ino": 260610,
+        "dev": 0,
+        "mtime_ns": 1790912555124144900,
+        "ctime_ns": 1790912555124144900,
+        "attributes": 128,
+        "reparse_tag": 0
+      },
+      "after": {
+        "mode": 33206,
+        "size": 45841632,
+        "ino": 260610,
+        "dev": 0,
+        "mtime_ns": 1790912555124144900,
+        "ctime_ns": 1790912555124144900,
+        "attributes": 128,
+        "reparse_tag": 0
+      },
+      "bytes": 45841632,
+      "sha256": "3da8b16371510cac058ffe57b7ef24c5a07d86cdbe289189704a84a2e9706ab2",
+      "blob": "blobs/3da8b16371510cac058ffe57b7ef24c5a07d86cdbe289189704a84a2e9706ab2",
+      "linux_native_identity_verified": false,
+      "native_admission": false
+    },
+    "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/src/update/UpdaterZeroVelocity.cpp.o": {
+      "linux_path": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/src/update/UpdaterZeroVelocity.cpp.o",
+      "role": "authorized-two-tu-object",
+      "utc": "2026-10-18T13:33:51.132675+00:00",
+      "status": "observed",
+      "linux_resolved_path": null,
+      "before": {
+        "mode": 33206,
+        "size": 30651792,
+        "ino": 260611,
+        "dev": 0,
+        "mtime_ns": 1790912556927967700,
+        "ctime_ns": 1790912556927967700,
+        "attributes": 128,
+        "reparse_tag": 0
+      },
+      "after": {
+        "mode": 33206,
+        "size": 30651792,
+        "ino": 260611,
+        "dev": 0,
+        "mtime_ns": 1790912556927967700,
+        "ctime_ns": 1790912556927967700,
+        "attributes": 128,
+        "reparse_tag": 0
+      },
+      "bytes": 30651792,
+      "sha256": "185bbcdf9dfd30e592922b957d60847cf9fd6100f71b1c70ace1796fb7314f97",
+      "blob": "blobs/185bbcdf9dfd30e592922b957d60847cf9fd6100f71b1c70ace1796fb7314f97",
+      "linux_native_identity_verified": false,
+      "native_admission": false
+    }
+  },
+  "current_library_sha256": null,
+  "all_qualifications": false,
+  "source_to_existing_library_proven": false
+}

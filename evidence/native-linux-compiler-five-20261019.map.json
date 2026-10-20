@@ -1,0 +1,126 @@
+{
+  "schema": "new-observation-archive-map-v1",
+  "entries": [
+    {
+      "path": "results/native-linux-compiler-five-20261019/.gitattributes",
+      "bytes": 8,
+      "sha256": "705fd4d6451a31d36b3df7de96f83f30ac976c9b4a6d1e51671d8e2f33e2d0da"
+    },
+    {
+      "path": "results/native-linux-compiler-five-20261019/analysis-summary.json",
+      "bytes": 1957,
+      "sha256": "2c5ec8e08ac4cc34d8d269a8648e3557ef63138ab44461658329707219c4d0db"
+    },
+    {
+      "path": "results/native-linux-compiler-five-20261019/analyze_saved.py",
+      "bytes": 5441,
+      "sha256": "9285c3f4759bbca93155bf87a806fe199661969eb59fa590dd1ac0dda9800044"
+    },
+    {
+      "path": "results/native-linux-compiler-five-20261019/blobs/4d1f341ae5b763b513258ee2812422a45e063c30a2f1924a0cf63d3699f3a158",
+      "bytes": 336056,
+      "sha256": "4d1f341ae5b763b513258ee2812422a45e063c30a2f1924a0cf63d3699f3a158"
+    },
+    {
+      "path": "results/native-linux-compiler-five-20261019/blobs/5d1679131184e2de4435b426eb264bf13472fe026db8e5c6bc97445814e8e2f4",
+      "bytes": 30487984,
+      "sha256": "5d1679131184e2de4435b426eb264bf13472fe026db8e5c6bc97445814e8e2f4"
+    },
+    {
+      "path": "results/native-linux-compiler-five-20261019/blobs/7c9bdc474948b9127b5942f0f260ecc7067fb3afbb54fcbe2ddf598b9889edc8",
+      "bytes": 29352624,
+      "sha256": "7c9bdc474948b9127b5942f0f260ecc7067fb3afbb54fcbe2ddf598b9889edc8"
+    },
+    {
+      "path": "results/native-linux-compiler-five-20261019/blobs/840b332fb62ec6f694ac77d91fe69ef7f80b0d69512ed89374af0ee7a506255d",
+      "bytes": 32675168,
+      "sha256": "840b332fb62ec6f694ac77d91fe69ef7f80b0d69512ed89374af0ee7a506255d"
+    },
+    {
+      "path": "results/native-linux-compiler-five-20261019/blobs/f6d39bcfb1c2798c704e275a4ed2c1fe6374ebfb6aa0c5f3f3b6c669e1ff2e13",
+      "bytes": 831800,
+      "sha256": "f6d39bcfb1c2798c704e275a4ed2c1fe6374ebfb6aa0c5f3f3b6c669e1ff2e13"
+    },
+    {
+      "path": "results/native-linux-compiler-five-20261019/collection-result.json",
+      "bytes": 5827,
+      "sha256": "2fa90fd4d31a731fb43752e43b0ebd902ce02967a633fc7c35e8505694881945"
+    },
+    {
+      "path": "results/native-linux-compiler-five-20261019/file-bindings.json",
+      "bytes": 8835,
+      "sha256": "39ea2a360e6cde1bf1d8bd0f2d33ea77c0e5daf892ef35724319b6d614b2d66a"
+    },
+    {
+      "path": "results/native-linux-compiler-five-20261019/linux_reader.py",
+      "bytes": 7439,
+      "sha256": "4c2ba32a6332bd785990f0af112ae8b8a4d666138b7ee3eefc5a6a7e2f51ed05"
+    },
+    {
+      "path": "results/native-linux-compiler-five-20261019/metadata.jsonl",
+      "bytes": 5539,
+      "sha256": "f9c488ecc3811382fd868ab08bcde07c4d071604603a6dc620e0c100588ef606"
+    },
+    {
+      "path": "results/native-linux-compiler-five-20261019/missing-evidence.json",
+      "bytes": 1008,
+      "sha256": "d26cd7a836da84c15ba8f8f8398ed6f6c228b8f64116d251f920a41c7039e184"
+    },
+    {
+      "path": "results/native-linux-compiler-five-20261019/new-file-pins.json",
+      "bytes": 1599,
+      "sha256": "8c0bbd6b0e2bcddb0c7d31732e2d5f276e48798b9cb4744be93a841ebd88fd25"
+    },
+    {
+      "path": "results/native-linux-compiler-five-20261019/NEXT_PHASE.md",
+      "bytes": 1881,
+      "sha256": "67e343d201b0b57e9bf995692a698fc691b81d7f6578e1fc51b3616438a41639"
+    },
+    {
+      "path": "results/native-linux-compiler-five-20261019/package_new_results.py",
+      "bytes": 2971,
+      "sha256": "fff904efeb76604bcaaa5768959ae8d883cf00308ebac87d777961f509841a4c"
+    },
+    {
+      "path": "results/native-linux-compiler-five-20261019/prepare_exact_five.py",
+      "bytes": 4322,
+      "sha256": "e58671169ec28211a99bb96e9026d55a3247bbb56e8007c2ff45f0874cf51dfb"
+    },
+    {
+      "path": "results/native-linux-compiler-five-20261019/REQUEST_CONTRACT.md",
+      "bytes": 2406,
+      "sha256": "b912c3003037a8b3a93eb33a3741d053ebd3dca6e2190438fd56f8f6a5ac7901"
+    },
+    {
+      "path": "results/native-linux-compiler-five-20261019/run_collection.py",
+      "bytes": 9014,
+      "sha256": "77ba689f39cc6ebf22ec0cb61bdc5cd4806ff4d902f2ad03a8be6c1a33232af3"
+    },
+    {
+      "path": "results/native-linux-compiler-five-20261019/selection.json",
+      "bytes": 873586,
+      "sha256": "4240da19d13cc84f5ebad1e6766a297253eec771e38f1eb0eea844719ca254ea"
+    },
+    {
+      "path": "results/native-linux-compiler-five-20261019/start.json",
+      "bytes": 637,
+      "sha256": "43d860be71c1d7d09681e19e59badaad78bf2b5f6db9f8d528dc80307d354385"
+    },
+    {
+      "path": "results/native-linux-compiler-five-20261019/stderr.bin",
+      "bytes": 132,
+      "sha256": "b280c454d6f559e56eb3f5ed39f3ba084b8d1744a3ff7fe016b21ff86dea1aca"
+    },
+    {
+      "path": "docs/NATIVE_LINUX_COMPILER_FIVE_PROGRESS.md",
+      "bytes": 3535,
+      "sha256": "5379b8006c12386788a88ace5446563f9982caecff9eafaab0353df2cff744a0"
+    }
+  ],
+  "mapped_bytes": 94619769,
+  "limits": [
+    "Only the exact-five acquisition and declared new helpers/derived/docs.",
+    "Not full environment, implicit runtime, authenticated custody, consumed toolchain/build/loader closure or ABI/native admission.",
+    "No old payloads/archives rehashed; all qualification/dispatch remain false."
+  ]
+}

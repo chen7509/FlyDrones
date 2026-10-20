@@ -1,0 +1,261 @@
+{
+  "schema": "openvins-eight-object-static-v1",
+  "objects": {
+    "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/src/sim/Simulator.cpp.o": {
+      "elf_class": 64,
+      "little_endian": true,
+      "e_type": 1,
+      "machine": 62,
+      "section_count": 2027,
+      "selected_sections": {
+        ".text": {
+          "offset": 7904,
+          "bytes": 76646,
+          "flags": 6
+        },
+        ".debug_info": {
+          "offset": 296544,
+          "bytes": 7172045,
+          "flags": 0
+        },
+        ".debug_str": {
+          "offset": 10457837,
+          "bytes": 19880005,
+          "flags": 48
+        },
+        ".debug_line_str": {
+          "offset": 30337842,
+          "bytes": 26122,
+          "flags": 48
+        },
+        ".comment": {
+          "offset": 30363976,
+          "bytes": 46,
+          "flags": 48
+        },
+        ".symtab": {
+          "offset": 30372200,
+          "bytes": 50112,
+          "flags": 0
+        }
+      },
+      "executed_or_loaded": false,
+      "source_to_object_proven": false,
+      "object_to_library_proven": false,
+      "comment_strings": [
+        "GCC: (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0"
+      ],
+      "debug_line_string_observations": {
+        "exact_source_path_present": true,
+        "source_basename_present": true,
+        "build_path_present": true,
+        "note": "String-table occurrences only; not DWARF DIE/path/relocation attribution or source digest."
+      }
+    },
+    "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/src/state/State.cpp.o": {
+      "elf_class": 64,
+      "little_endian": true,
+      "e_type": 1,
+      "machine": 62,
+      "section_count": 1739,
+      "selected_sections": {
+        ".text": {
+          "offset": 6864,
+          "bytes": 10122,
+          "flags": 6
+        },
+        ".debug_info": {
+          "offset": 74108,
+          "bytes": 2722674,
+          "flags": 0
+        },
+        ".debug_str": {
+          "offset": 3583497,
+          "bytes": 8530343,
+          "flags": 48
+        },
+        ".debug_line_str": {
+          "offset": 12113840,
+          "bytes": 19093,
+          "flags": 48
+        },
+        ".comment": {
+          "offset": 12132944,
+          "bytes": 46,
+          "flags": 48
+        },
+        ".symtab": {
+          "offset": 12137120,
+          "bytes": 30456,
+          "flags": 0
+        }
+      },
+      "executed_or_loaded": false,
+      "source_to_object_proven": false,
+      "object_to_library_proven": false,
+      "comment_strings": [
+        "GCC: (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0"
+      ],
+      "debug_line_string_observations": {
+        "exact_source_path_present": true,
+        "source_basename_present": true,
+        "build_path_present": true,
+        "note": "String-table occurrences only; not DWARF DIE/path/relocation attribution or source digest."
+      }
+    },
+    "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/src/state/StateHelper.cpp.o": {
+      "elf_class": 64,
+      "little_endian": true,
+      "e_type": 1,
+      "machine": 62,
+      "section_count": 2083,
+      "selected_sections": {
+        ".text": {
+          "offset": 8176,
+          "bytes": 209596,
+          "flags": 6
+        },
+        ".debug_info": {
+          "offset": 411424,
+          "bytes": 6643686,
+          "flags": 0
+        },
+        ".debug_str": {
+          "offset": 10351327,
+          "bytes": 19685446,
+          "flags": 48
+        },
+        ".debug_line_str": {
+          "offset": 30036773,
+          "bytes": 24233,
+          "flags": 48
+        },
+        ".comment": {
+          "offset": 30061024,
+          "bytes": 46,
+          "flags": 48
+        },
+        ".symtab": {
+          "offset": 30070424,
+          "bytes": 50184,
+          "flags": 0
+        }
+      },
+      "executed_or_loaded": false,
+      "source_to_object_proven": false,
+      "object_to_library_proven": false,
+      "comment_strings": [
+        "GCC: (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0"
+      ],
+      "debug_line_string_observations": {
+        "exact_source_path_present": true,
+        "source_basename_present": true,
+        "build_path_present": true,
+        "note": "String-table occurrences only; not DWARF DIE/path/relocation attribution or source digest."
+      }
+    },
+    "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/src/update/UpdaterHelper.cpp.o": {
+      "elf_class": 64,
+      "little_endian": true,
+      "e_type": 1,
+      "machine": 62,
+      "section_count": 1484,
+      "selected_sections": {
+        ".text": {
+          "offset": 5840,
+          "bytes": 56742,
+          "flags": 6
+        },
+        ".debug_info": {
+          "offset": 120736,
+          "bytes": 4221005,
+          "flags": 0
+        },
+        ".debug_str": {
+          "offset": 6014221,
+          "bytes": 12028527,
+          "flags": 48
+        },
+        ".debug_line_str": {
+          "offset": 18042748,
+          "bytes": 19200,
+          "flags": 48
+        },
+        ".comment": {
+          "offset": 18061960,
+          "bytes": 46,
+          "flags": 48
+        },
+        ".symtab": {
+          "offset": 18065552,
+          "bytes": 25920,
+          "flags": 0
+        }
+      },
+      "executed_or_loaded": false,
+      "source_to_object_proven": false,
+      "object_to_library_proven": false,
+      "comment_strings": [
+        "GCC: (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0"
+      ],
+      "debug_line_string_observations": {
+        "exact_source_path_present": true,
+        "source_basename_present": true,
+        "build_path_present": true,
+        "note": "String-table occurrences only; not DWARF DIE/path/relocation attribution or source digest."
+      }
+    },
+    "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/src/update/UpdaterMSCKF.cpp.o": {
+      "elf_class": 64,
+      "little_endian": true,
+      "e_type": 1,
+      "machine": 62,
+      "section_count": 2295,
+      "selected_sections": {
+        ".text": {
+          "offset": 9024,
+          "bytes": 70245,
+          "flags": 6
+        },
+        ".debug_info": {
+          "offset": 228736,
+          "bytes": 4228229,
+          "flags": 0
+        },
+        ".debug_str": {
+          "offset": 6134181,
+          "bytes": 12879474,
+          "flags": 48
+        },
+        ".debug_line_str": {
+          "offset": 19013655,
+          "bytes": 27153,
+          "flags": 48
+        },
+        ".comment": {
+          "offset": 19040824,
+          "bytes": 46,
+          "flags": 48
+        },
+        ".symtab": {
+          "offset": 19050248,
+          "bytes": 53160,
+          "flags": 0
+        }
+      },
+      "executed_or_loaded": false,
+      "source_to_object_proven": false,
+      "object_to_library_proven": false,
+      "comment_strings": [
+        "GCC: (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0"
+      ],
+      "debug_line_string_observations": {
+        "exact_source_path_present": true,
+        "source_basename_present": true,
+        "build_path_present": true,
+        "note": "String-table occurrences only; not DWARF DIE/path/relocation attribution or source digest."
+      }
+    }
+  },
+  "note": "ELF and strings from actual retained objects only. No load/execution, ABI, compiler identity or historical source content proof."
+}

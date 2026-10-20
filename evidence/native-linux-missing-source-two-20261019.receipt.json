@@ -1,0 +1,16 @@
+{
+  "schema": "new-exact-two-restoration-archive-receipt-v1",
+  "archive": "evidence/native-linux-missing-source-two-20261019.zip",
+  "bytes": 509522,
+  "sha256": "336f4ae627f109b6048d9f007c600dbd370780ecd79293b4c221390066ce6b76",
+  "members": 26,
+  "mapped_members": 25,
+  "mapped_bytes": 2994128,
+  "manifest_bytes": 5342,
+  "whole_member_bytes": 2999470,
+  "executor_new_crc_memberhash_only": true,
+  "old_archives_or_payloads_checked": false,
+  "source_native_delivery_review": false,
+  "all_qualifications": false,
+  "dispatchable": false
+}

@@ -1,0 +1,125 @@
+{
+  "schema": "openvins-eight-objects-seal-v1",
+  "archive": "evidence/openvins-eight-objects-20261018.zip",
+  "bytes": 29073638,
+  "sha256": "e514e34d8b08199e01d1d494703216c46b0ba9e2224c5316d676733f4af22b23",
+  "members": 26,
+  "mapped": 25,
+  "mapped_payload_bytes": 160870126,
+  "manifest_bytes": 5004,
+  "whole_expanded_bytes": 160875130,
+  "software_files": [
+    "docs/OPENVINS_EIGHT_OBJECTS_PROGRESS.md",
+    "docs/superpowers/plans/2026-10-18-openvins-eight-objects.md",
+    "results/openvins-eight-objects-20261018/file-bindings.json",
+    "results/openvins-eight-objects-20261018/object-static-observations.json",
+    "results/openvins-eight-objects-20261018/object-union-bindings.json",
+    "results/openvins-eight-objects-20261018/analysis-summary.json",
+    "results/openvins-eight-objects-20261018/missing-evidence.json"
+  ],
+  "source_to_existing_library_proven": false,
+  "native_admission": false,
+  "all_qualifications": false,
+  "mapping": {
+    "docs/OPENVINS_EIGHT_OBJECTS_PROGRESS.md": {
+      "bytes": 3683,
+      "sha256": "baa552f30fc3c3e292ee642bf639c7e188d55a83d2a2a44e769fb26705980985"
+    },
+    "docs/superpowers/plans/2026-10-18-openvins-eight-objects.md": {
+      "bytes": 2101,
+      "sha256": "3d5b3ac9cc96d7f41b35572a09a8b427e634a70643da4bf37f10916cc18f99be"
+    },
+    "results/openvins-eight-objects-20261018/analysis-summary.json": {
+      "bytes": 1151,
+      "sha256": "f13262afefa32003da0d9ddfb653611b3dd448af6eac5831fdbd05c4518c5a92"
+    },
+    "results/openvins-eight-objects-20261018/analyze_saved_eight.py": {
+      "bytes": 9051,
+      "sha256": "3c4a4d2532cbdc1e3a3e8b30a9a65c19afd417b3112784a7481b3549aaf7e38b"
+    },
+    "results/openvins-eight-objects-20261018/blobs/14fe0077b61c644c9210ac7892b85bd09f50bf9cbab226695e43c593050b9346": {
+      "bytes": 26676344,
+      "sha256": "14fe0077b61c644c9210ac7892b85bd09f50bf9cbab226695e43c593050b9346"
+    },
+    "results/openvins-eight-objects-20261018/blobs/2f37da36a934526aaed5b5d9a04bc5d8562e96690281c5441e21341a663108f5": {
+      "bytes": 45073752,
+      "sha256": "2f37da36a934526aaed5b5d9a04bc5d8562e96690281c5441e21341a663108f5"
+    },
+    "results/openvins-eight-objects-20261018/blobs/36afe358c20f7ebbf44eafe023c9916bb2f635c949c55687fa6b9cde01506677": {
+      "bytes": 27557640,
+      "sha256": "36afe358c20f7ebbf44eafe023c9916bb2f635c949c55687fa6b9cde01506677"
+    },
+    "results/openvins-eight-objects-20261018/blobs/5f695752c5ccbd901d0877a6218aa263043a02121d83ee2d2ebd7bc8bd8d5347": {
+      "bytes": 17344392,
+      "sha256": "5f695752c5ccbd901d0877a6218aa263043a02121d83ee2d2ebd7bc8bd8d5347"
+    },
+    "results/openvins-eight-objects-20261018/blobs/c99ca6bf045ba3b4e8884c2d8ec6744319f8f36183ec0ff7f112ee84111de424": {
+      "bytes": 43751096,
+      "sha256": "c99ca6bf045ba3b4e8884c2d8ec6744319f8f36183ec0ff7f112ee84111de424"
+    },
+    "results/openvins-eight-objects-20261018/collect_eight_objects.py": {
+      "bytes": 5494,
+      "sha256": "c4a9d8118b8b8f89ac1a0b6f2872d4ade0b3bcf1b20da3334d84eb3664984b37"
+    },
+    "results/openvins-eight-objects-20261018/collection-completion.json": {
+      "bytes": 518,
+      "sha256": "124a6b7014232111fd14c0e9576661e0db5402f206f2e0d3213696cc5ad22798"
+    },
+    "results/openvins-eight-objects-20261018/collection-parent-completion.json": {
+      "bytes": 123,
+      "sha256": "720875cc8bd43884652e4cd3d874a33922f4af5682d41252611a6b476d690930"
+    },
+    "results/openvins-eight-objects-20261018/collection-start.json": {
+      "bytes": 554,
+      "sha256": "43d2dc2c003749b7269deb4677104aa2974b42e0649d48acf45fde60a0bf0a63"
+    },
+    "results/openvins-eight-objects-20261018/collection.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "results/openvins-eight-objects-20261018/collection.stdout": {
+      "bytes": 475,
+      "sha256": "abc27548766c0275fd8c74f49076538ff019b917c1c263016cbe0cdc8e69ce94"
+    },
+    "results/openvins-eight-objects-20261018/current-files.json": {
+      "bytes": 6937,
+      "sha256": "bab85e24d0760c48a33798a05641c4d77a7d84e497e9c74442575c35011a314d"
+    },
+    "results/openvins-eight-objects-20261018/file-bindings.json": {
+      "bytes": 6375,
+      "sha256": "8ffcb3bf8d61641d6728a9e7747c27407f0c2deaafd4bb2e428ba0aa7fb334e2"
+    },
+    "results/openvins-eight-objects-20261018/files.jsonl": {
+      "bytes": 4962,
+      "sha256": "fce8fe21b89dd3e98eb0f4f5ec67cefb2a644e237b45a0ab9373f01aaedc4c55"
+    },
+    "results/openvins-eight-objects-20261018/missing-evidence.json": {
+      "bytes": 6216,
+      "sha256": "7109327d9c3d612c1e68b44cee3c1a88fcd95bc67f96072e23857041e6249dc6"
+    },
+    "results/openvins-eight-objects-20261018/object-static-observations.json": {
+      "bytes": 7681,
+      "sha256": "46817ff5d4e260fafd31eb0df05aa6094f67a541dc948fd4300f4786f9b62973"
+    },
+    "results/openvins-eight-objects-20261018/object-union-bindings.json": {
+      "bytes": 48432,
+      "sha256": "d7755444e057b5ffbd038dbc013d23e838373f49b07fdc59837f7ff7bf64ad8e"
+    },
+    "results/openvins-eight-objects-20261018/prepare_and_collect.py": {
+      "bytes": 3458,
+      "sha256": "8539be64111b3a11f1e207d89275141626a7b0ee429185ec38ab6bf8d5d87899"
+    },
+    "results/openvins-eight-objects-20261018/seal_eight.py": {
+      "bytes": 4816,
+      "sha256": "58d5e3c6ebf38885bf0ad8deb8e2290ca12bc21867af448603615e2534581a4e"
+    },
+    "results/openvins-eight-objects-20261018/selection-contract.json": {
+      "bytes": 354271,
+      "sha256": "2a89b7afee7dea252c684ae59a4000835c56acb60774495164dbf37b22a9027d"
+    },
+    "results/openvins-eight-objects-20261018/self-check.json": {
+      "bytes": 604,
+      "sha256": "4703ec088fe22412caf82d78481040aa0168afb2c4251aed708de326fb942282"
+    }
+  }
+}

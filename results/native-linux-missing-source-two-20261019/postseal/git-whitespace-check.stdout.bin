@@ -1,0 +1,497 @@
+results/native-linux-missing-source-two-20261019/.gitattributes:1: trailing whitespace.
++* -text
+results/native-linux-missing-source-two-20261019/blobs/2553e1d5d570a391a1f8376ae4037760d84d45668d781ccf6683ccfc2a54a044:184: new blank line at EOF.
+results/native-linux-missing-source-two-20261019/collection-result.json:1: trailing whitespace.
++{
+results/native-linux-missing-source-two-20261019/collection-result.json:2: trailing whitespace.
++  "schema": "native-linux-exact-two-restoration-parent-v1",
+results/native-linux-missing-source-two-20261019/collection-result.json:3: trailing whitespace.
++  "command": [
+results/native-linux-missing-source-two-20261019/collection-result.json:4: trailing whitespace.
++    "wsl",
+results/native-linux-missing-source-two-20261019/collection-result.json:5: trailing whitespace.
++    "-d",
+results/native-linux-missing-source-two-20261019/collection-result.json:6: trailing whitespace.
++    "Ubuntu",
+results/native-linux-missing-source-two-20261019/collection-result.json:7: trailing whitespace.
++    "--",
+results/native-linux-missing-source-two-20261019/collection-result.json:8: trailing whitespace.
++    "/usr/bin/python3",
+results/native-linux-missing-source-two-20261019/collection-result.json:9: trailing whitespace.
++    "-I",
+results/native-linux-missing-source-two-20261019/collection-result.json:10: trailing whitespace.
++    "-S",
+results/native-linux-missing-source-two-20261019/collection-result.json:11: trailing whitespace.
++    "-B",
+results/native-linux-missing-source-two-20261019/collection-result.json:12: trailing whitespace.
++    "-"
+results/native-linux-missing-source-two-20261019/collection-result.json:13: trailing whitespace.
++  ],
+results/native-linux-missing-source-two-20261019/collection-result.json:14: trailing whitespace.
++  "utc_start": "2026-10-19T09:54:01.206797+00:00",
+results/native-linux-missing-source-two-20261019/collection-result.json:15: trailing whitespace.
++  "errors": [],
+results/native-linux-missing-source-two-20261019/collection-result.json:16: trailing whitespace.
++  "all_qualifications": false,
+results/native-linux-missing-source-two-20261019/collection-result.json:17: trailing whitespace.
++  "dispatchable": false,
+results/native-linux-missing-source-two-20261019/collection-result.json:18: trailing whitespace.
++  "resource_queries": false,
+results/native-linux-missing-source-two-20261019/collection-result.json:19: trailing whitespace.
++  "compiler_or_target_executed": false,
+results/native-linux-missing-source-two-20261019/collection-result.json:20: trailing whitespace.
++  "linux_file_writes": "only authorized exact-two create-if-absent; actual completion records actions",
+results/native-linux-missing-source-two-20261019/collection-result.json:21: trailing whitespace.
++  "observed_files": [
+results/native-linux-missing-source-two-20261019/collection-result.json:22: trailing whitespace.
++    {
+results/native-linux-missing-source-two-20261019/collection-result.json:23: trailing whitespace.
++      "type": "end",
+results/native-linux-missing-source-two-20261019/collection-result.json:24: trailing whitespace.
++      "id": 0,
+results/native-linux-missing-source-two-20261019/collection-result.json:25: trailing whitespace.
++      "path": "/home/yuchen7509/flydrones-upstream/open_vins/LICENSE",
+results/native-linux-missing-source-two-20261019/collection-result.json:26: trailing whitespace.
++      "resolved": "/home/yuchen7509/flydrones-upstream/open_vins/LICENSE",
+results/native-linux-missing-source-two-20261019/collection-result.json:27: trailing whitespace.
++      "before": {
+results/native-linux-missing-source-two-20261019/collection-result.json:28: trailing whitespace.
++        "dev": 2128,
+results/native-linux-missing-source-two-20261019/collection-result.json:29: trailing whitespace.
++        "ino": 455272,
+results/native-linux-missing-source-two-20261019/collection-result.json:30: trailing whitespace.
++        "mode": 33188,
+results/native-linux-missing-source-two-20261019/collection-result.json:31: trailing whitespace.
++        "uid": 1000,
+results/native-linux-missing-source-two-20261019/collection-result.json:32: trailing whitespace.
++        "gid": 1000,
+results/native-linux-missing-source-two-20261019/collection-result.json:33: trailing whitespace.
++        "nlink": 1,
+results/native-linux-missing-source-two-20261019/collection-result.json:34: trailing whitespace.
++        "bytes": 35149,
+results/native-linux-missing-source-two-20261019/collection-result.json:35: trailing whitespace.
++        "mtime_ns": 1792403641375855856,
+results/native-linux-missing-source-two-20261019/collection-result.json:36: trailing whitespace.
++        "ctime_ns": 1792403641375855856
+results/native-linux-missing-source-two-20261019/collection-result.json:37: trailing whitespace.
++      },
+results/native-linux-missing-source-two-20261019/collection-result.json:38: trailing whitespace.
++      "after": {
+results/native-linux-missing-source-two-20261019/collection-result.json:39: trailing whitespace.
++        "dev": 2128,
+results/native-linux-missing-source-two-20261019/collection-result.json:40: trailing whitespace.
++        "ino": 455272,
+results/native-linux-missing-source-two-20261019/collection-result.json:41: trailing whitespace.
++        "mode": 33188,
+results/native-linux-missing-source-two-20261019/collection-result.json:42: trailing whitespace.
++        "uid": 1000,
+results/native-linux-missing-source-two-20261019/collection-result.json:43: trailing whitespace.
++        "gid": 1000,
+results/native-linux-missing-source-two-20261019/collection-result.json:44: trailing whitespace.
++        "nlink": 1,
+results/native-linux-missing-source-two-20261019/collection-result.json:45: trailing whitespace.
++        "bytes": 35149,
+results/native-linux-missing-source-two-20261019/collection-result.json:46: trailing whitespace.
++        "mtime_ns": 1792403641375855856,
+results/native-linux-missing-source-two-20261019/collection-result.json:47: trailing whitespace.
++        "ctime_ns": 1792403641375855856
+results/native-linux-missing-source-two-20261019/collection-result.json:48: trailing whitespace.
++      },
+results/native-linux-missing-source-two-20261019/collection-result.json:49: trailing whitespace.
++      "prior_target": null,
+results/native-linux-missing-source-two-20261019/collection-result.json:50: trailing whitespace.
++      "bytes": 35149,
+results/native-linux-missing-source-two-20261019/collection-result.json:51: trailing whitespace.
++      "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+results/native-linux-missing-source-two-20261019/collection-result.json:52: trailing whitespace.
++      "git_blob_sha1": "f288702d2fa16d3cdf0035b15a9fcbc552cd88e7",
+results/native-linux-missing-source-two-20261019/collection-result.json:53: trailing whitespace.
++      "stable": true,
+results/native-linux-missing-source-two-20261019/collection-result.json:54: trailing whitespace.
++      "matches_fixed_manifest": true,
+results/native-linux-missing-source-two-20261019/collection-result.json:55: trailing whitespace.
++      "action": "created_from_verified_retained_bytes",
+results/native-linux-missing-source-two-20261019/collection-result.json:56: trailing whitespace.
++      "blob": "blobs/3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986"
+results/native-linux-missing-source-two-20261019/collection-result.json:57: trailing whitespace.
++    },
+results/native-linux-missing-source-two-20261019/collection-result.json:58: trailing whitespace.
++    {
+results/native-linux-missing-source-two-20261019/collection-result.json:59: trailing whitespace.
++      "type": "end",
+results/native-linux-missing-source-two-20261019/collection-result.json:60: trailing whitespace.
++      "id": 1,
+results/native-linux-missing-source-two-20261019/collection-result.json:61: trailing whitespace.
++      "path": "/home/yuchen7509/flydrones-upstream/open_vins/ReadMe.md",
+results/native-linux-missing-source-two-20261019/collection-result.json:62: trailing whitespace.
++      "resolved": "/home/yuchen7509/flydrones-upstream/open_vins/ReadMe.md",
+results/native-linux-missing-source-two-20261019/collection-result.json:63: trailing whitespace.
++      "before": {
+results/native-linux-missing-source-two-20261019/collection-result.json:64: trailing whitespace.
++        "dev": 2128,
+results/native-linux-missing-source-two-20261019/collection-result.json:65: trailing whitespace.
++        "ino": 455275,
+results/native-linux-missing-source-two-20261019/collection-result.json:66: trailing whitespace.
++        "mode": 33188,
+results/native-linux-missing-source-two-20261019/collection-result.json:67: trailing whitespace.
++        "uid": 1000,
+results/native-linux-missing-source-two-20261019/collection-result.json:68: trailing whitespace.
++        "gid": 1000,
+results/native-linux-missing-source-two-20261019/collection-result.json:69: trailing whitespace.
++        "nlink": 1,
+results/native-linux-missing-source-two-20261019/collection-result.json:70: trailing whitespace.
++        "bytes": 13100,
+results/native-linux-missing-source-two-20261019/collection-result.json:71: trailing whitespace.
++        "mtime_ns": 1792403641379852204,
+results/native-linux-missing-source-two-20261019/collection-result.json:72: trailing whitespace.
++        "ctime_ns": 1792403641379852204
+results/native-linux-missing-source-two-20261019/collection-result.json:73: trailing whitespace.
++      },
+results/native-linux-missing-source-two-20261019/collection-result.json:74: trailing whitespace.
++      "after": {
+results/native-linux-missing-source-two-20261019/collection-result.json:75: trailing whitespace.
++        "dev": 2128,
+results/native-linux-missing-source-two-20261019/collection-result.json:76: trailing whitespace.
++        "ino": 455275,
+results/native-linux-missing-source-two-20261019/collection-result.json:77: trailing whitespace.
++        "mode": 33188,
+results/native-linux-missing-source-two-20261019/collection-result.json:78: trailing whitespace.
++        "uid": 1000,
+results/native-linux-missing-source-two-20261019/collection-result.json:79: trailing whitespace.
++        "gid": 1000,
+results/native-linux-missing-source-two-20261019/collection-result.json:80: trailing whitespace.
++        "nlink": 1,
+results/native-linux-missing-source-two-20261019/collection-result.json:81: trailing whitespace.
++        "bytes": 13100,
+results/native-linux-missing-source-two-20261019/collection-result.json:82: trailing whitespace.
++        "mtime_ns": 1792403641379852204,
+results/native-linux-missing-source-two-20261019/collection-result.json:83: trailing whitespace.
++        "ctime_ns": 1792403641379852204
+results/native-linux-missing-source-two-20261019/collection-result.json:84: trailing whitespace.
++      },
+results/native-linux-missing-source-two-20261019/collection-result.json:85: trailing whitespace.
++      "prior_target": null,
+results/native-linux-missing-source-two-20261019/collection-result.json:86: trailing whitespace.
++      "bytes": 13100,
+results/native-linux-missing-source-two-20261019/collection-result.json:87: trailing whitespace.
++      "sha256": "2553e1d5d570a391a1f8376ae4037760d84d45668d781ccf6683ccfc2a54a044",
+results/native-linux-missing-source-two-20261019/collection-result.json:88: trailing whitespace.
++      "git_blob_sha1": "1448a49c1acc3c1c23d6631e8e49be2e49e1a500",
+results/native-linux-missing-source-two-20261019/collection-result.json:89: trailing whitespace.
++      "stable": true,
+results/native-linux-missing-source-two-20261019/collection-result.json:90: trailing whitespace.
++      "matches_fixed_manifest": true,
+results/native-linux-missing-source-two-20261019/collection-result.json:91: trailing whitespace.
++      "action": "created_from_verified_retained_bytes",
+results/native-linux-missing-source-two-20261019/collection-result.json:92: trailing whitespace.
++      "blob": "blobs/2553e1d5d570a391a1f8376ae4037760d84d45668d781ccf6683ccfc2a54a044"
+results/native-linux-missing-source-two-20261019/collection-result.json:93: trailing whitespace.
++    }
+results/native-linux-missing-source-two-20261019/collection-result.json:94: trailing whitespace.
++  ],
+results/native-linux-missing-source-two-20261019/collection-result.json:95: trailing whitespace.
++  "stream_payload_bytes": 48249,
+results/native-linux-missing-source-two-20261019/collection-result.json:96: trailing whitespace.
++  "stream_metadata_bytes": 6526,
+results/native-linux-missing-source-two-20261019/collection-result.json:97: trailing whitespace.
++  "active_partial": null,
+results/native-linux-missing-source-two-20261019/collection-result.json:98: trailing whitespace.
++  "stderr_bytes": 132,
+results/native-linux-missing-source-two-20261019/collection-result.json:99: trailing whitespace.
++  "linux_completion": {
+results/native-linux-missing-source-two-20261019/collection-result.json:100: trailing whitespace.
++    "type": "completion",
+results/native-linux-missing-source-two-20261019/collection-result.json:101: trailing whitespace.
++    "complete": true,
+results/native-linux-missing-source-two-20261019/collection-result.json:102: trailing whitespace.
++    "reason": null,
+results/native-linux-missing-source-two-20261019/collection-result.json:103: trailing whitespace.
++    "elapsed_s": 0.01564578094985336,
+results/native-linux-missing-source-two-20261019/collection-result.json:104: trailing whitespace.
++    "payload_bytes": 48249,
+results/native-linux-missing-source-two-20261019/collection-result.json:105: trailing whitespace.
++    "target_bytes_written": 48249,
+results/native-linux-missing-source-two-20261019/collection-result.json:106: trailing whitespace.
++    "created_paths": [
+results/native-linux-missing-source-two-20261019/collection-result.json:107: trailing whitespace.
++      "/home/yuchen7509/flydrones-upstream/open_vins/LICENSE",
+results/native-linux-missing-source-two-20261019/collection-result.json:108: trailing whitespace.
++      "/home/yuchen7509/flydrones-upstream/open_vins/ReadMe.md"
+results/native-linux-missing-source-two-20261019/collection-result.json:109: trailing whitespace.
++    ],
+results/native-linux-missing-source-two-20261019/collection-result.json:110: trailing whitespace.
++    "completed_files": 2,
+results/native-linux-missing-source-two-20261019/collection-result.json:111: trailing whitespace.
++    "metadata_bytes_before_completion": 6119,
+results/native-linux-missing-source-two-20261019/collection-result.json:112: trailing whitespace.
++    "all_qualifications": false,
+results/native-linux-missing-source-two-20261019/collection-result.json:113: trailing whitespace.
++    "dispatchable": false,
+results/native-linux-missing-source-two-20261019/collection-result.json:114: trailing whitespace.
++    "partial_files_not_deleted": true
+results/native-linux-missing-source-two-20261019/collection-result.json:115: trailing whitespace.
++  },
+results/native-linux-missing-source-two-20261019/collection-result.json:116: trailing whitespace.
++  "bootstrap_identity_authenticated": false,
+results/native-linux-missing-source-two-20261019/collection-result.json:117: trailing whitespace.
++  "owned_windows_launcher_pid": 54736,
+results/native-linux-missing-source-two-20261019/collection-result.json:118: trailing whitespace.
++  "exit": 0,
+results/native-linux-missing-source-two-20261019/collection-result.json:119: trailing whitespace.
++  "readers_closed": true,
+results/native-linux-missing-source-two-20261019/collection-result.json:120: trailing whitespace.
++  "elapsed_s": 0.23399999970570207,
+results/native-linux-missing-source-two-20261019/collection-result.json:121: trailing whitespace.
++  "outer_exceeded": false,
+results/native-linux-missing-source-two-20261019/collection-result.json:122: trailing whitespace.
++  "collection_complete": true
+results/native-linux-missing-source-two-20261019/copy-input-verification.json:1: trailing whitespace.
++{
+results/native-linux-missing-source-two-20261019/copy-input-verification.json:2: trailing whitespace.
++  "schema": "verified-copy-inputs-v1",
+results/native-linux-missing-source-two-20261019/copy-input-verification.json:3: trailing whitespace.
++  "files": [
+results/native-linux-missing-source-two-20261019/copy-input-verification.json:4: trailing whitespace.
++    {
+results/native-linux-missing-source-two-20261019/copy-input-verification.json:5: trailing whitespace.
++      "source": "results/native-offset-run-plan-20261018/upstream-source/LICENSE",
+results/native-linux-missing-source-two-20261019/copy-input-verification.json:6: trailing whitespace.
++      "target": "/home/yuchen7509/flydrones-upstream/open_vins/LICENSE",
+results/native-linux-missing-source-two-20261019/copy-input-verification.json:7: trailing whitespace.
++      "bytes": 35149,
+results/native-linux-missing-source-two-20261019/copy-input-verification.json:8: trailing whitespace.
++      "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+results/native-linux-missing-source-two-20261019/copy-input-verification.json:9: trailing whitespace.
++      "git_blob_sha1": "f288702d2fa16d3cdf0035b15a9fcbc552cd88e7",
+results/native-linux-missing-source-two-20261019/copy-input-verification.json:10: trailing whitespace.
++      "stable_windows_copy_input": true,
+results/native-linux-missing-source-two-20261019/copy-input-verification.json:11: trailing whitespace.
++      "not_linux_target_observation": true
+results/native-linux-missing-source-two-20261019/copy-input-verification.json:12: trailing whitespace.
++    },
+results/native-linux-missing-source-two-20261019/copy-input-verification.json:13: trailing whitespace.
++    {
+results/native-linux-missing-source-two-20261019/copy-input-verification.json:14: trailing whitespace.
++      "source": "results/native-offset-run-plan-20261018/upstream-source/ReadMe.md",
+results/native-linux-missing-source-two-20261019/copy-input-verification.json:15: trailing whitespace.
++      "target": "/home/yuchen7509/flydrones-upstream/open_vins/ReadMe.md",
+results/native-linux-missing-source-two-20261019/copy-input-verification.json:16: trailing whitespace.
++      "bytes": 13100,
+results/native-linux-missing-source-two-20261019/copy-input-verification.json:17: trailing whitespace.
++      "sha256": "2553e1d5d570a391a1f8376ae4037760d84d45668d781ccf6683ccfc2a54a044",
+results/native-linux-missing-source-two-20261019/copy-input-verification.json:18: trailing whitespace.
++      "git_blob_sha1": "1448a49c1acc3c1c23d6631e8e49be2e49e1a500",
+results/native-linux-missing-source-two-20261019/copy-input-verification.json:19: trailing whitespace.
++      "stable_windows_copy_input": true,
+results/native-linux-missing-source-two-20261019/copy-input-verification.json:20: trailing whitespace.
++      "not_linux_target_observation": true
+results/native-linux-missing-source-two-20261019/copy-input-verification.json:21: trailing whitespace.
++    }
+results/native-linux-missing-source-two-20261019/copy-input-verification.json:22: trailing whitespace.
++  ],
+results/native-linux-missing-source-two-20261019/copy-input-verification.json:23: trailing whitespace.
++  "scope": "Only the two explicitly authorized copy inputs; no old archive/general payload audit"
+results/native-linux-missing-source-two-20261019/history-read-coverage.json:1: trailing whitespace.
++{
+results/native-linux-missing-source-two-20261019/history-read-coverage.json:2: trailing whitespace.
++  "schema": "inherited-history-read-coverage-v1",
+results/native-linux-missing-source-two-20261019/history-read-coverage.json:3: trailing whitespace.
++  "not_native_admission": true,
+results/native-linux-missing-source-two-20261019/history-read-coverage.json:4: trailing whitespace.
++  "primary": {
+results/native-linux-missing-source-two-20261019/history-read-coverage.json:5: trailing whitespace.
++    "path": "evidence/flydrones-history-through-single-aircraft-input-20261017.json",
+results/native-linux-missing-source-two-20261019/history-read-coverage.json:6: trailing whitespace.
++    "prompt_characters": 63952,
+results/native-linux-missing-source-two-20261019/history-read-coverage.json:7: trailing whitespace.
++    "intervals": [
+results/native-linux-missing-source-two-20261019/history-read-coverage.json:8: trailing whitespace.
++      [
+results/native-linux-missing-source-two-20261019/history-read-coverage.json:9: trailing whitespace.
++        0,
+results/native-linux-missing-source-two-20261019/history-read-coverage.json:10: trailing whitespace.
++        22000
+results/native-linux-missing-source-two-20261019/history-read-coverage.json:11: trailing whitespace.
++      ],
+results/native-linux-missing-source-two-20261019/history-read-coverage.json:12: trailing whitespace.
++      [
+results/native-linux-missing-source-two-20261019/history-read-coverage.json:13: trailing whitespace.
++        22000,
+results/native-linux-missing-source-two-20261019/history-read-coverage.json:14: trailing whitespace.
++        44000
+results/native-linux-missing-source-two-20261019/history-read-coverage.json:15: trailing whitespace.
++      ],
+results/native-linux-missing-source-two-20261019/history-read-coverage.json:16: trailing whitespace.
++      [
+results/native-linux-missing-source-two-20261019/history-read-coverage.json:17: trailing whitespace.
++        44000,
+results/native-linux-missing-source-two-20261019/history-read-coverage.json:18: trailing whitespace.
++        63952
+results/native-linux-missing-source-two-20261019/history-read-coverage.json:19: trailing whitespace.
++      ]
+results/native-linux-missing-source-two-20261019/history-read-coverage.json:20: trailing whitespace.
++    ],
+results/native-linux-missing-source-two-20261019/history-read-coverage.json:21: trailing whitespace.
++    "untruncated_utf8_reads": true
+results/native-linux-missing-source-two-20261019/history-read-coverage.json:22: trailing whitespace.
++  },
+results/native-linux-missing-source-two-20261019/history-read-coverage.json:23: trailing whitespace.
++  "agents": [
+results/native-linux-missing-source-two-20261019/history-read-coverage.json:24: trailing whitespace.
++    {
+results/native-linux-missing-source-two-20261019/history-read-coverage.json:25: trailing whitespace.
++      "agent": "repair_read_initialized_history",
+results/native-linux-missing-source-two-20261019/history-read-coverage.json:26: trailing whitespace.
++      "path": "evidence/flydrones-history-through-initialized-baseline-dev-1701.json",
+results/native-linux-missing-source-two-20261019/history-read-coverage.json:27: trailing whitespace.
++      "prompt_characters": 63552,
+results/native-linux-missing-source-two-20261019/history-read-coverage.json:28: trailing whitespace.
++      "covered_all_untruncated": true
+results/native-linux-missing-source-two-20261019/history-read-coverage.json:29: trailing whitespace.
++    },
+results/native-linux-missing-source-two-20261019/history-read-coverage.json:30: trailing whitespace.
++    {
+results/native-linux-missing-source-two-20261019/history-read-coverage.json:31: trailing whitespace.
++      "agent": "repair_read_admitted_history",
+results/native-linux-missing-source-two-20261019/history-read-coverage.json:32: trailing whitespace.
++      "path": "evidence/flydrones-history-through-admitted-executor-dev-1701.json",
+results/native-linux-missing-source-two-20261019/history-read-coverage.json:33: trailing whitespace.
++      "prompt_characters": 62986,
+results/native-linux-missing-source-two-20261019/history-read-coverage.json:34: trailing whitespace.
++      "covered_all_untruncated": true
+results/native-linux-missing-source-two-20261019/history-read-coverage.json:35: trailing whitespace.
++    },
+results/native-linux-missing-source-two-20261019/history-read-coverage.json:36: trailing whitespace.
++    {
+results/native-linux-missing-source-two-20261019/history-read-coverage.json:37: trailing whitespace.
++      "agent": "repair_read_loader_history",
+results/native-linux-missing-source-two-20261019/history-read-coverage.json:38: trailing whitespace.
++      "path": "evidence/flydrones-history-through-loader-path-research-dev-1701.json",
+results/native-linux-missing-source-two-20261019/history-read-coverage.json:39: trailing whitespace.
++      "prompt_characters": 62676,
+results/native-linux-missing-source-two-20261019/history-read-coverage.json:40: trailing whitespace.
++      "covered_all_untruncated": true
+results/native-linux-missing-source-two-20261019/history-read-coverage.json:41: trailing whitespace.
++    }
+results/native-linux-missing-source-two-20261019/history-read-coverage.json:42: trailing whitespace.
++  ],
+results/native-linux-missing-source-two-20261019/history-read-coverage.json:43: trailing whitespace.
++  "constraints_integrated": [
+results/native-linux-missing-source-two-20261019/history-read-coverage.json:44: trailing whitespace.
++    "Only approved exact two creates and readback supersede no-Linux-writes rule",
+results/native-linux-missing-source-two-20261019/history-read-coverage.json:45: trailing whitespace.
++    "No compile/native/resources/tests/SDK/old attempts/old payload audit",
+results/native-linux-missing-source-two-20261019/history-read-coverage.json:46: trailing whitespace.
++    "Preserve UNKNOWN/CONSUMED, budgets, physical safety and full goals",
+results/native-linux-missing-source-two-20261019/history-read-coverage.json:47: trailing whitespace.
++    "Goal blocked, automation ACTIVE, personal only, all qualifications/dispatch false"
+results/native-linux-missing-source-two-20261019/history-read-coverage.json:48: trailing whitespace.
++  ],
+results/native-linux-missing-source-two-20261019/history-read-coverage.json:49: trailing whitespace.
++  "no_linux_actions_by_history_agents": true
+results/native-linux-missing-source-two-20261019/start.json:1: trailing whitespace.
++{
+results/native-linux-missing-source-two-20261019/start.json:2: trailing whitespace.
++  "command": [
+results/native-linux-missing-source-two-20261019/start.json:3: trailing whitespace.
++    "wsl",
+results/native-linux-missing-source-two-20261019/start.json:4: trailing whitespace.
++    "-d",
+results/native-linux-missing-source-two-20261019/start.json:5: trailing whitespace.
++    "Ubuntu",
+results/native-linux-missing-source-two-20261019/start.json:6: trailing whitespace.
++    "--",
+results/native-linux-missing-source-two-20261019/start.json:7: trailing whitespace.
++    "/usr/bin/python3",
+results/native-linux-missing-source-two-20261019/start.json:8: trailing whitespace.
++    "-I",
+results/native-linux-missing-source-two-20261019/start.json:9: trailing whitespace.
++    "-S",
+results/native-linux-missing-source-two-20261019/start.json:10: trailing whitespace.
++    "-B",
+results/native-linux-missing-source-two-20261019/start.json:11: trailing whitespace.
++    "-"
+results/native-linux-missing-source-two-20261019/start.json:12: trailing whitespace.
++  ],
+results/native-linux-missing-source-two-20261019/start.json:13: trailing whitespace.
++  "cwd": "C:\\Users\\yuche\\.codex\\worktrees\\FlyDrones\\track-eligibility",
+results/native-linux-missing-source-two-20261019/start.json:14: trailing whitespace.
++  "caps": {
+results/native-linux-missing-source-two-20261019/start.json:15: trailing whitespace.
++    "file_bytes": 67108864,
+results/native-linux-missing-source-two-20261019/start.json:16: trailing whitespace.
++    "total_payload_bytes": 201326592,
+results/native-linux-missing-source-two-20261019/start.json:17: trailing whitespace.
++    "read_seconds": 27,
+results/native-linux-missing-source-two-20261019/start.json:18: trailing whitespace.
++    "parent_wait_seconds": 30,
+results/native-linux-missing-source-two-20261019/start.json:19: trailing whitespace.
++    "terminate_seconds": 5,
+results/native-linux-missing-source-two-20261019/start.json:20: trailing whitespace.
++    "kill_seconds": 5,
+results/native-linux-missing-source-two-20261019/start.json:21: trailing whitespace.
++    "outer_seconds": 45,
+results/native-linux-missing-source-two-20261019/start.json:22: trailing whitespace.
++    "metadata_bytes": 2097152,
+results/native-linux-missing-source-two-20261019/start.json:23: trailing whitespace.
++    "stderr_bytes": 2097152,
+results/native-linux-missing-source-two-20261019/start.json:24: trailing whitespace.
++    "selected_paths": 6000,
+results/native-linux-missing-source-two-20261019/start.json:25: trailing whitespace.
++    "symlink_hops": 40,
+results/native-linux-missing-source-two-20261019/start.json:26: trailing whitespace.
++    "selected_files": 2,
+results/native-linux-missing-source-two-20261019/start.json:27: trailing whitespace.
++    "target_write_bytes": 48249
+results/native-linux-missing-source-two-20261019/start.json:28: trailing whitespace.
++  },
+results/native-linux-missing-source-two-20261019/start.json:29: trailing whitespace.
++  "selected": 2,
+results/native-linux-missing-source-two-20261019/start.json:30: trailing whitespace.
++  "script_sha256": "dc3e12922511a33abbebb891fd5dce7c4b18565d92984f803bd344c086900fd1",
+results/native-linux-missing-source-two-20261019/start.json:31: trailing whitespace.
++  "script_bytes": 1348625,
+results/native-linux-missing-source-two-20261019/start.json:32: trailing whitespace.
++  "source_checks": [
+results/native-linux-missing-source-two-20261019/start.json:33: trailing whitespace.
++    {
+results/native-linux-missing-source-two-20261019/start.json:34: trailing whitespace.
++      "source": "results/native-offset-run-plan-20261018/upstream-source/LICENSE",
+results/native-linux-missing-source-two-20261019/start.json:35: trailing whitespace.
++      "target": "/home/yuchen7509/flydrones-upstream/open_vins/LICENSE",
+results/native-linux-missing-source-two-20261019/start.json:36: trailing whitespace.
++      "bytes": 35149,
+results/native-linux-missing-source-two-20261019/start.json:37: trailing whitespace.
++      "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+results/native-linux-missing-source-two-20261019/start.json:38: trailing whitespace.
++      "git_blob_sha1": "f288702d2fa16d3cdf0035b15a9fcbc552cd88e7",
+results/native-linux-missing-source-two-20261019/start.json:39: trailing whitespace.
++      "stable_windows_copy_input": true,
+results/native-linux-missing-source-two-20261019/start.json:40: trailing whitespace.
++      "not_linux_target_observation": true
+results/native-linux-missing-source-two-20261019/start.json:41: trailing whitespace.
++    },
+results/native-linux-missing-source-two-20261019/start.json:42: trailing whitespace.
++    {
+results/native-linux-missing-source-two-20261019/start.json:43: trailing whitespace.
++      "source": "results/native-offset-run-plan-20261018/upstream-source/ReadMe.md",
+results/native-linux-missing-source-two-20261019/start.json:44: trailing whitespace.
++      "target": "/home/yuchen7509/flydrones-upstream/open_vins/ReadMe.md",
+results/native-linux-missing-source-two-20261019/start.json:45: trailing whitespace.
++      "bytes": 13100,
+results/native-linux-missing-source-two-20261019/start.json:46: trailing whitespace.
++      "sha256": "2553e1d5d570a391a1f8376ae4037760d84d45668d781ccf6683ccfc2a54a044",
+results/native-linux-missing-source-two-20261019/start.json:47: trailing whitespace.
++      "git_blob_sha1": "1448a49c1acc3c1c23d6631e8e49be2e49e1a500",
+results/native-linux-missing-source-two-20261019/start.json:48: trailing whitespace.
++      "stable_windows_copy_input": true,
+results/native-linux-missing-source-two-20261019/start.json:49: trailing whitespace.
++      "not_linux_target_observation": true
+results/native-linux-missing-source-two-20261019/start.json:50: trailing whitespace.
++    }
+results/native-linux-missing-source-two-20261019/start.json:51: trailing whitespace.
++  ],
+results/native-linux-missing-source-two-20261019/start.json:52: trailing whitespace.
++  "parent_script_sha256": "481a5a329772b9c57d9001d791305285092cd412f3c3745639790501b57c9426",
+results/native-linux-missing-source-two-20261019/start.json:53: trailing whitespace.
++  "utc_start": "2026-10-19T09:54:01.206797+00:00"

@@ -1,0 +1,6 @@
+{
+  "human_instruction": "继续按顺序补齐Linux生产源码绑定、toolchain回执和完整输入闭包，先不编译或运行。",
+  "scope": "Current production source Linux visibility, new toolchain text/receipts and necessary exact known dependency observations. No compile/run/resources/SDK/network/install/old native attempts.",
+  "all_qualifications": false,
+  "dispatchable": false
+}

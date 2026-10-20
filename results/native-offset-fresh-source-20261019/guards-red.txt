@@ -1,0 +1,118 @@
+FF                                                                       [100%]
+================================== FAILURES ===================================
+_ test_fresh_receipt_fails_closed_without_losing_partial_result[missing-checkpoint] _
+
+tmp_path = WindowsPath('C:/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/native-offset-fresh-source-20261019/guards-red-fixtures/test_fresh_receipt_fails_close0')
+fault = 'missing-checkpoint'
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000002359701E390>
+
+    @pytest.mark.parametrize("fault", ["missing-tu", "extra-tu", "duplicate-tu", "old-library", "missing-link-object",
+                                      "missing-depfile", "unknown-header", "failed-library", "cleanup", "oversize",
+                                      "missing-checkpoint", "conflicting-ros", "missing-source-dependency"])
+    def test_fresh_receipt_fails_closed_without_losing_partial_result(tmp_path, fault, monkeypatch):
+        from tools.benchmark import native_offset_build_receipt as receipts
+    
+        request, build, steps = fixture_fresh(tmp_path)
+        path = build / "compile_commands.json"
+        entries = json.loads(path.read_text())
+        if fault == "missing-tu":
+            entries.pop(0)
+        if fault == "extra-tu":
+            entries[0]["file"] = str(tmp_path / "unselected.cpp")
+        if fault == "duplicate-tu":
+            entries[0] = entries[1]
+        if fault == "conflicting-ros":
+            entries[0]["arguments"].append("-DROS_AVAILABLE=1")
+        path.write_text(json.dumps(entries))
+        link = build / "CMakeFiles/openvins_offset_reset_v2.dir/link.txt"
+        if fault == "old-library":
+            link.write_text(link.read_text().replace("libov_msckf_lib.so", "/old/libov_msckf_lib.so"))
+        if fault == "missing-link-object":
+            liblink = build / "CMakeFiles/ov_msckf_lib.dir/link.txt"
+            liblink.write_text(liblink.read_text().replace("CMakeFiles/ov_msckf_lib.dir/0.o", ""))
+        if fault == "missing-depfile":
+            (build / "CMakeFiles/ov_msckf_lib.dir/0.o.d").unlink()
+        if fault == "missing-source-dependency":
+            p = build / "CMakeFiles/ov_msckf_lib.dir/0.o.d"
+            p.write_text(p.read_text().replace(entries[0]["file"], ""))
+        if fault == "unknown-header":
+            request["input_pins"].pop(str(tmp_path / "header.h"))
+        if fault == "failed-library":
+            steps[1]["exit"] = 2
+            steps.pop()
+        if fault == "cleanup":
+            steps[1]["cleanup"]["exit"] = None
+        if fault == "missing-checkpoint":
+            steps[1].pop("library")
+        if fault == "oversize":
+            original = receipts.file_pin
+            def pin(path):
+                if Path(path).name == "libov_msckf_lib.so":
+                    raise ValueError("regular bounded file required")
+                return original(path)
+            monkeypatch.setattr(receipts, "file_pin", pin)
+        result = produce(request, build, steps)
+>       assert result["complete"] is False and result["errors"]
+E       assert (True is False)
+
+tests\benchmark\test_native_offset_fresh_build.py:181: AssertionError
+_ test_fresh_receipt_fails_closed_without_losing_partial_result[conflicting-ros] _
+
+tmp_path = WindowsPath('C:/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/native-offset-fresh-source-20261019/guards-red-fixtures/test_fresh_receipt_fails_close1')
+fault = 'conflicting-ros'
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000235970303B0>
+
+    @pytest.mark.parametrize("fault", ["missing-tu", "extra-tu", "duplicate-tu", "old-library", "missing-link-object",
+                                      "missing-depfile", "unknown-header", "failed-library", "cleanup", "oversize",
+                                      "missing-checkpoint", "conflicting-ros", "missing-source-dependency"])
+    def test_fresh_receipt_fails_closed_without_losing_partial_result(tmp_path, fault, monkeypatch):
+        from tools.benchmark import native_offset_build_receipt as receipts
+    
+        request, build, steps = fixture_fresh(tmp_path)
+        path = build / "compile_commands.json"
+        entries = json.loads(path.read_text())
+        if fault == "missing-tu":
+            entries.pop(0)
+        if fault == "extra-tu":
+            entries[0]["file"] = str(tmp_path / "unselected.cpp")
+        if fault == "duplicate-tu":
+            entries[0] = entries[1]
+        if fault == "conflicting-ros":
+            entries[0]["arguments"].append("-DROS_AVAILABLE=1")
+        path.write_text(json.dumps(entries))
+        link = build / "CMakeFiles/openvins_offset_reset_v2.dir/link.txt"
+        if fault == "old-library":
+            link.write_text(link.read_text().replace("libov_msckf_lib.so", "/old/libov_msckf_lib.so"))
+        if fault == "missing-link-object":
+            liblink = build / "CMakeFiles/ov_msckf_lib.dir/link.txt"
+            liblink.write_text(liblink.read_text().replace("CMakeFiles/ov_msckf_lib.dir/0.o", ""))
+        if fault == "missing-depfile":
+            (build / "CMakeFiles/ov_msckf_lib.dir/0.o.d").unlink()
+        if fault == "missing-source-dependency":
+            p = build / "CMakeFiles/ov_msckf_lib.dir/0.o.d"
+            p.write_text(p.read_text().replace(entries[0]["file"], ""))
+        if fault == "unknown-header":
+            request["input_pins"].pop(str(tmp_path / "header.h"))
+        if fault == "failed-library":
+            steps[1]["exit"] = 2
+            steps.pop()
+        if fault == "cleanup":
+            steps[1]["cleanup"]["exit"] = None
+        if fault == "missing-checkpoint":
+            steps[1].pop("library")
+        if fault == "oversize":
+            original = receipts.file_pin
+            def pin(path):
+                if Path(path).name == "libov_msckf_lib.so":
+                    raise ValueError("regular bounded file required")
+                return original(path)
+            monkeypatch.setattr(receipts, "file_pin", pin)
+        result = produce(request, build, steps)
+>       assert result["complete"] is False and result["errors"]
+E       assert (True is False)
+
+tests\benchmark\test_native_offset_fresh_build.py:181: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/benchmark/test_native_offset_fresh_build.py::test_fresh_receipt_fails_closed_without_losing_partial_result[missing-checkpoint]
+FAILED tests/benchmark/test_native_offset_fresh_build.py::test_fresh_receipt_fails_closed_without_losing_partial_result[conflicting-ros]
+2 failed, 16 deselected in 4.41s

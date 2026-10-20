@@ -1,0 +1,12 @@
+{
+  "schema": "exact-two-restoration-human-authorization-v1",
+  "question": "是否允许一次性恢复这两份固定源码文件：/home/yuchen7509/flydrones-upstream/open_vins/LICENSE 和同目录的 ReadMe.md？使用已保存的固定提交字节（合计48249字节），仅在缺失时创建；已有文件只读比对，遇到差异即停止，不覆盖或重试。不包含编译、资源刷新或其他Linux写入。此前授权仅限只读，因此这里需要单独确认。",
+  "answer": "允许精确两份条件恢复及回读",
+  "proposal": "results/native-linux-missing-source-two-plan-20261019/proposal.json",
+  "selected_paths": [
+    "/home/yuchen7509/flydrones-upstream/open_vins/LICENSE",
+    "/home/yuchen7509/flydrones-upstream/open_vins/ReadMe.md"
+  ],
+  "write_bytes_maximum": 48249,
+  "includes_build_run_resources_or_other_writes": false
+}

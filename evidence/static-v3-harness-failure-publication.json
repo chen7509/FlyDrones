@@ -1,0 +1,378 @@
+{
+  "schema": "static-v3-harness-failure-publication-v1",
+  "failure_seal_commit": "c18b8b3fc910a3cb1fdb7aa542c5237055a70921",
+  "archive": {
+    "schema": "static-v3-failure-seal-receipt-v1",
+    "archive": "evidence/static-v3-harness-failure-dev-1701.zip",
+    "sha256": "9368f59c76e9fde2833b693321d2f91896e8ff6d7dc5387679296135c64df7b5",
+    "bytes": 18763781,
+    "members": 1707,
+    "mapped_members": 1706,
+    "manifest_sha256": "28780d4d0009ff4b7c60abe75713e546928a9d6ee2758f5c14139e564b6a4695",
+    "nonempty_private_argv_hashes": 188,
+    "private_compound_matches": 0,
+    "actual_status": "CONSUMED_FAILED_UNADMITTED_HARNESS_ESCAPE"
+  },
+  "actual_status": "CONSUMED_FAILED_UNADMITTED_HARNESS_ESCAPE",
+  "admission_valid": false,
+  "full_linux_prepins": false,
+  "coordinator_cli_executed": false,
+  "real_test_function_dispatched": true,
+  "actual_fixed_folder_exists": true,
+  "final_study_json_exists": false,
+  "physical_attempt_exists": false,
+  "escaped_closure": "unknown",
+  "qualification": {
+    "source": false,
+    "clock": false,
+    "measured_calibration": false,
+    "accuracy": false,
+    "teacher": false,
+    "fusion": false,
+    "training": false,
+    "flight": false
+  },
+  "runtime_graph_frozen": false,
+  "physical_dispatch_ready": false,
+  "archive_plan_sha256": "ad93f47d6b10f7ce095f0ddbedf8f057463ac5a7a3a5f9db1927e54daf6f34d3",
+  "postpublication_plan_sha256": "378fd7f8ac1055eaf9d2a1d109d1eeb1652a071a681a7a50baa0555836594294",
+  "plan_changed_byte_offsets": [
+    626
+  ],
+  "plan_change": "Only containment/failure audit-seal-publication checkbox; typed-loader research pending and full Task3 freeze/Task4 physical not completed",
+  "source_scope": "373 POST snapshot and 7 recorder pre/post source identities, not complete predispatch attestation",
+  "known_consumed_source_blockers": [
+    "identity observer secondary writer masks primary",
+    "scope absence ignores manager return code",
+    "consumed test Ruff5 failures",
+    "unadmitted test harness escape"
+  ],
+  "guard_verification": "inert missing-interface RED7; initial74pass neighbors; final8pass0.15s/Ruff0; no consumed v3 suite rerun",
+  "old_history": {
+    "source_snapshot_members": 373,
+    "source_scope": "POST373, seven recorded pre/post current-byte joins only",
+    "recorder_sha256": "e008e126b30b6a407bb8ffaf1954736e8b97a83a11242d6c8958e56a9e08f26d",
+    "sdk_queries": 12,
+    "sdk_queries_exit_zero": true,
+    "historical_zip_count": 287,
+    "historical_zip_bytes": 803630878,
+    "history_sha256": "c88840b6f58dea4e7e4931683c4993b4fc3b8eb55887807994b6381ef6c2b989",
+    "private_exclusion": {
+      "path": "results/static-v3-coordinator-dev-1701/initial-resource-private.json",
+      "bytes": 67936,
+      "sha256": "c3fe78b8871588b6f35abac03acd6f2f05d3bc69624daddf20b31976a75a46b4"
+    },
+    "all_assertions_passed": true
+  },
+  "working_vs_git_normalized_prepublication": [
+    {
+      "path": "docs/TARGET_BEARING_STATIC_V3_HARNESS_FAILURE_REPORT.md",
+      "working_archive_sha256": "fba96c9e2ba958a5bf55e09b0498c3bccb3e53417ffd6c34a7238d2522a949e7",
+      "git_normalized_blob_sha256": "fba96c9e2ba958a5bf55e09b0498c3bccb3e53417ffd6c34a7238d2522a949e7",
+      "bytes": 11143
+    },
+    {
+      "path": "docs/superpowers/plans/2026-10-15-python-extension-context-production.md",
+      "working_archive_sha256": "042be283bb244ec7cae10f1eb667d6c8144764d4a97f287b7d10ee4a462d8c37",
+      "git_normalized_blob_sha256": "042be283bb244ec7cae10f1eb667d6c8144764d4a97f287b7d10ee4a462d8c37",
+      "bytes": 10362
+    },
+    {
+      "path": "docs/superpowers/plans/2026-10-15-static-harness-containment-and-v3-failure.md",
+      "working_archive_sha256": "ad93f47d6b10f7ce095f0ddbedf8f057463ac5a7a3a5f9db1927e54daf6f34d3",
+      "git_normalized_blob_sha256": "073be68bba21f7a2ece1051d348b3f7fc980e5e7bdd9ad85fbfc7516d94a33a6",
+      "bytes": 1538
+    },
+    {
+      "path": "docs/superpowers/specs/2026-10-15-static-harness-containment-and-v3-failure-design.md",
+      "working_archive_sha256": "d49c24a9604ad6d762b8f1ce801b0cc123da240fa6b948c2616da2f50915cef5",
+      "git_normalized_blob_sha256": "2a905ec652a668d9780e36d1bf3e5f87041d4a7036236be4c3dc6d24b4317f88",
+      "bytes": 3337
+    },
+    {
+      "path": "evidence/static-v3-harness-failure-dev-1701.sha256.json",
+      "working_archive_sha256": "28780d4d0009ff4b7c60abe75713e546928a9d6ee2758f5c14139e564b6a4695",
+      "git_normalized_blob_sha256": "28780d4d0009ff4b7c60abe75713e546928a9d6ee2758f5c14139e564b6a4695",
+      "bytes": 437724
+    },
+    {
+      "path": "evidence/static-v3-harness-failure-dev-1701.zip",
+      "working_archive_sha256": "9368f59c76e9fde2833b693321d2f91896e8ff6d7dc5387679296135c64df7b5",
+      "git_normalized_blob_sha256": "9368f59c76e9fde2833b693321d2f91896e8ff6d7dc5387679296135c64df7b5",
+      "bytes": 18763781
+    },
+    {
+      "path": "results/target-bearing-runtime-freeze-v3-dev-1701/run-static-preparation-v3.py",
+      "working_archive_sha256": "5d5d7a7acb0fdd34c058740a3eb52b9e5ae824d376d4edfd3ec47858bea5b018",
+      "git_normalized_blob_sha256": "f703bf53ecb700a49e3a9a394af578f7cc18b9e0f983e5deb785db123ce3ef64",
+      "bytes": 38243
+    },
+    {
+      "path": "tests/benchmark/conftest.py",
+      "working_archive_sha256": "e2b76c0e04b4fdd555a23310535b5b09cb5b0817f4bc94ae7c70df5506648e83",
+      "git_normalized_blob_sha256": "e2b76c0e04b4fdd555a23310535b5b09cb5b0817f4bc94ae7c70df5506648e83",
+      "bytes": 338
+    },
+    {
+      "path": "tests/benchmark/test_calibration_static_v3_executor.py",
+      "working_archive_sha256": "4eb1cfe2058cdb3a1e232e8f08d6d2919bc0623e573faaa947694c265208a41a",
+      "git_normalized_blob_sha256": "9420645cd333d11903b4ed7e7abdba21a9440e4826863f13114fdef63adb6981",
+      "bytes": 23533
+    },
+    {
+      "path": "tests/benchmark/test_static_harness_containment.py",
+      "working_archive_sha256": "2bc4078851079d726f845742159e9d356e0261d7e72875ca485ab82b57eab90e",
+      "git_normalized_blob_sha256": "ae53eda093e9d9a2f738bf8ad5e40872772591c6159c43c2e95c4362928aa913",
+      "bytes": 2471
+    },
+    {
+      "path": "tools/benchmark/prepare_calibration_capture_v3.py",
+      "working_archive_sha256": "a063e57bfbe834ff4aabe8a9c43edcb3bd0aa88b7821276ab7104f670bc35baf",
+      "git_normalized_blob_sha256": "10ae58b7f3c878fe89ca30eb3fa9fb952de2800ad174000061a9cbfd58a1c85b",
+      "bytes": 23558
+    },
+    {
+      "path": "tools/benchmark/software_process_boundary.py",
+      "working_archive_sha256": "ea6ec69df99b2ad8e4823d265e285bda898741ef4ef3eae3781709f2be52d469",
+      "git_normalized_blob_sha256": "ea6ec69df99b2ad8e4823d265e285bda898741ef4ef3eae3781709f2be52d469",
+      "bytes": 1553
+    },
+    {
+      "path": "tools/benchmark/static_v3_identity.py",
+      "working_archive_sha256": "9e4f8813557e5668ee04429711190255f0ab07824dd98b469fb1c6c6eefe73f8",
+      "git_normalized_blob_sha256": "08bfc5f6fea6cfe3dab5524d8198ed8b67e4495200e3cb5b074519a8bc5f5174",
+      "bytes": 10500
+    }
+  ],
+  "postseal_reviews": [
+    {
+      "path": "results/static-v3-coordinator-dev-1701/forensic-containment-review.json",
+      "bytes": 7867,
+      "sha256": "bf4447b5cb16285491a524d8d2bd10760eee8360b03a76c20ee2950524355c79",
+      "retained_content": {
+        "schema": "static-v3-forensic-containment-independent-review-v1",
+        "review_scope": "Local immutable-file forensic audit and narrow new software test-body containment review; no overall consumed-source clearance",
+        "actual_status": "CONSUMED_FAILED_UNADMITTED_HARNESS_ESCAPE",
+        "actual_facts": {
+          "unit": "fly-calibration-prepare-67600195ae0306816f63eb94.scope",
+          "invocation": "585195c554f64dabb7412f4f764be722",
+          "windows_owned_popen_pid": 16984,
+          "windows_exit": 1,
+          "sdk_and_context_pid": 43964,
+          "entries_started": 29,
+          "entries_classified": 28,
+          "retained_queries": 64,
+          "query_kind_counts": {
+            "dynamic": 29,
+            "ldd": 29,
+            "elf-metadata": 2,
+            "version:loader": 1,
+            "version:python": 1,
+            "version:readelf": 1,
+            "version:ldd": 1
+          },
+          "all_64_raw_queries_equal_embedded_bill": true,
+          "all_64_per_query_input_before_equal_after": true,
+          "all_64_local_clock_exit_reader_cap_fields_consistent": true,
+          "declared_candidate_inputs": 145,
+          "candidate_inputs_with_retained_initial_file_identities": 145,
+          "retained_file_records": 463,
+          "candidate_result_rows": 0,
+          "final_file_records": 0,
+          "final_tool_records": 0,
+          "observed_context_after_present": false,
+          "bill_complete": false,
+          "last_query": 64,
+          "last_query_exit": 0,
+          "last_query_stderr_empty": true,
+          "last_query_error": null,
+          "parser_error": "ValueError('absolute non-traversing declared path required')",
+          "last_selected_lexical_path": "/usr/local/lib/python3.12/dist-packages/numpy/_core/../../numpy.libs/libscipy_openblas64_-f48b354e.so",
+          "last_rpath": "$ORIGIN/../../numpy.libs",
+          "zero_direct_needed_entries": [
+            "_json",
+            "_contextvars"
+          ],
+          "zero_entry_query_pairs": [
+            [
+              58,
+              59
+            ],
+            [
+              61,
+              62
+            ]
+          ],
+          "zero_entry_runtime_import_verified": false,
+          "zero_entry_symbols_resolved": false,
+          "context": {
+            "schema": "python-extension-context-v1",
+            "pid": 43964,
+            "implementation": "cpython",
+            "version": "3.12.3",
+            "soabi": "cpython-312-x86_64-linux-gnu",
+            "ext_suffix": ".cpython-312-x86_64-linux-gnu.so",
+            "dlopen_flags": 2,
+            "python_sha256": "e50d468e8b0adfb05733f5b87b3cff34829c4a8c1aea50c865aa8bdfe4bb150f"
+          },
+          "limits_before_and_after": {
+            "memory.max": "536870912",
+            "memory.swap.max": "0",
+            "cpu.max": "100000 100000",
+            "pids.max": "64"
+          },
+          "sdk_elapsed_ns": 27842605763,
+          "memory_peak_bytes": 536870912,
+          "memory_events": {
+            "max": 1600,
+            "oom": 0,
+            "oom_kill": 0,
+            "oom_group_kill": 0
+          },
+          "release_followup": {
+            "manager_show_exit": 0,
+            "loadstate": "not-found",
+            "original_group_test_exit": 1,
+            "unit_stop_performed": false,
+            "owned_cgroup_disappearance_supported": true,
+            "escaped_closure": "unknown"
+          },
+          "actual_fixed_folder_exists": true,
+          "study_json_produced": false,
+          "actual_fresh_admission": false,
+          "actual_complete_preidentity": false,
+          "complete_predispatch_source_attestation": false,
+          "source_snapshot_members": 373,
+          "source_snapshot_timing": "POST",
+          "seven_current_source_hashes_match_recorder_and_postsnapshot": true
+        },
+        "fixture_correction": "FIXTURE_SCOPE_CORRECTION.json accurately supersedes synthetic admission counters, source_stable, postidentity.fixture_only and owned_group_released. Original fixture flags remain raw and are not actual evidence. Fixed-root attempt.json absence does not undo actual scope/SDK consumption.",
+        "new_guard_assessment": {
+          "verdict": "Acceptable for its explicitly limited normal-subprocess/supported-os test-body policy; no concrete new blocking defect identified in the three new guard files.",
+          "source_only_boundary": "Autouse fixture selects explicit static executor test filenames; Popen._execute_child catches ordinary subprocess and saved original Popen class references, supported os entrypoints are denied, explicit inert doubles remain usable.",
+          "recorded_tests": "Retained final guard results 7 passed in 0.14s; Ruff exit0. Reviewer did not run tests.",
+          "red_qualification": "Retained RED is 7 missing-module failures, not behavioral preimplementation process-denial RED.",
+          "excluded_guarantees": [
+            "No adversarial Python/FFI sandbox",
+            "No collection-time or higher-scope fixture containment guarantee",
+            "No proof from an actual native subprocess test",
+            "No production-side pytest/cwd/claim/recipe/nonce protections implemented",
+            "No consumed v3 rerun authorized"
+          ]
+        },
+        "known_consumed_source_blockers": [
+          "Actual unadmitted harness escape in the frozen scope-absence fixture: configure omitted a Popen stub while mocking safety/evidence paths.",
+          "Frozen coordinator scope-absence path ignores manager return code.",
+          "Frozen primitive observer secondary-writer failure can mask the primary failure.",
+          "Prior independent review's partial fixes were not a final whole-change approval; current consumed revision must not be relabeled C0/I0/M0 or GREEN."
+        ],
+        "report_review": {
+          "path": "docs/TARGET_BEARING_STATIC_V3_HARNESS_FAILURE_REPORT.md",
+          "reviewed_sha256": "30a1be2702b84a893d61efaa42afd8d4aae5e97dbca2160642e301988b951ac4",
+          "material_factual_contradictions_identified": [],
+          "recommendations": [
+            "Explicitly distinguish 145 declared candidates with retained initial file identities from empty final candidates[] and missing files_after/tools_after/observed_context_after.",
+            "Additively clarify escaped-attempt-actual-summary.json actual_fixed_study_exists=false as folder_exists=true and study_json_exists=false; preserve original summary.",
+            "Archive CRC/size/SHA/exact membership/287 historical ZIP and publication statements require the separate sealing/publication audit; this seat has not established them."
+          ]
+        },
+        "hashes": {
+          "tools/benchmark/software_process_boundary.py": "ea6ec69df99b2ad8e4823d265e285bda898741ef4ef3eae3781709f2be52d469",
+          "tests/benchmark/conftest.py": "e2b76c0e04b4fdd555a23310535b5b09cb5b0817f4bc94ae7c70df5506648e83",
+          "tests/benchmark/test_static_harness_containment.py": "a3f6947a7389bc97f9da1fc5c0db4729e3807b9ea3149324bdd76bb44ed71179",
+          "docs/superpowers/specs/2026-10-15-static-harness-containment-and-v3-failure-design.md": "d49c24a9604ad6d762b8f1ce801b0cc123da240fa6b948c2616da2f50915cef5",
+          "docs/superpowers/plans/2026-10-15-static-harness-containment-and-v3-failure.md": "914cfb44c1b0562b0eaa235b4118af3538000bee3788c23143bf38742cbdce77",
+          "results/static-v3-coordinator-dev-1701/FIXTURE_SCOPE_CORRECTION.json": "3603f5a3b1f5947d3ac06f73dfe98fcadb7253f517e488b839044975f30e681b",
+          "results/static-v3-coordinator-dev-1701/escaped-attempt-actual-summary.json": "b58bebeaca4166cac7c5ea247d3aab4aa0bcb9a3e34b9f09aaaf4a682864900c",
+          "results/static-v3-coordinator-dev-1701/escaped-attempt-owned-release-followup.json": "176e82955289c5960bbb884915b8a3682c56bce1efd12745015105de48bcf30e"
+        },
+        "verification": "Only local file reads, local JSON comparisons/counts and file hashing. No tests/target imports/WSL/native/observer/SDK/metadata/resource/process inspection/network performed by this reviewer.",
+        "qualification": "All eight source/clock/measured_calibration/accuracy/teacher/fusion/training/flight flags and readiness remain false. No physical attempt. Actual cgroup disappearance does not establish escaped descendant closure. No resource minimum or OOM-cause claim.",
+        "assessment": "Frozen consumed v3 remains inadmissible and must not be rerun or changed to recover this attempt. Narrow containment may be retained independently. Separate retained-source research and independent new production/executor specification are required before a future revision."
+      }
+    },
+    {
+      "path": "results/static-v3-coordinator-dev-1701/independent-deliverable-archive-scan.json",
+      "bytes": 1624,
+      "sha256": "6f550e134f240b0d26415559e79b2ef01651de4d392868a3a28ca461896f1c4c",
+      "retained_content": {
+        "schema": "static-v3-failure-independent-deliverable-scan-v1",
+        "archive_sha256": "9368f59c76e9fde2833b693321d2f91896e8ff6d7dc5387679296135c64df7b5",
+        "archive_bytes": 18763781,
+        "manifest_sha256": "28780d4d0009ff4b7c60abe75713e546928a9d6ee2758f5c14139e564b6a4695",
+        "zip_members": 1707,
+        "mapped_members": 1706,
+        "all_crc_size_and_member_hashes_match": true,
+        "all_archive_members_match_current_bytes": true,
+        "exact_manifest_plus_map_set": true,
+        "receipt_exact_set_matches": true,
+        "embedded_manifest_equal": true,
+        "private_excluded": {
+          "bytes": 67936,
+          "sha256": "c3fe78b8871588b6f35abac03acd6f2f05d3bc69624daddf20b31976a75a46b4",
+          "nonempty_hash_needles": 188,
+          "private_rows": 445,
+          "hash_hits": [],
+          "triple_hits": []
+        },
+        "historical_archives": {
+          "prior_ledger_count": 286,
+          "with_previous_archive_count": 287,
+          "bytes": 803630878,
+          "current_mismatches": [],
+          "postledger_set_diff": [],
+          "postledger_identity_diff": [],
+          "current_zip_set_diff": []
+        },
+        "guard_hashes": {
+          "tools/benchmark/software_process_boundary.py": "ea6ec69df99b2ad8e4823d265e285bda898741ef4ef3eae3781709f2be52d469",
+          "tests/benchmark/conftest.py": "e2b76c0e04b4fdd555a23310535b5b09cb5b0817f4bc94ae7c70df5506648e83",
+          "tests/benchmark/test_static_harness_containment.py": "2bc4078851079d726f845742159e9d356e0261d7e72875ca485ab82b57eab90e"
+        },
+        "current_mismatches": [],
+        "zip_extra": [],
+        "zip_missing": [],
+        "errors": [],
+        "scope": "File/ZIP/hash reads only; no tests, production imports, target/native/resource/process calls. Not overall consumed-source approval."
+      }
+    },
+    {
+      "path": "results/static-v3-coordinator-dev-1701/independent-deliverable-membership-boundaries.json",
+      "bytes": 1572,
+      "sha256": "4bb36760d5aa291361eead7366d57dc5d53c404f7ae8c185e9d4a1915c9f5087",
+      "retained_content": {
+        "schema": "static-v3-deliverable-membership-boundaries-v1",
+        "unexpected_scope_members": [],
+        "missing_explicit_deliverables": [],
+        "cache_members": [],
+        "postseal_files_outside_archive": [
+          "results/static-v3-coordinator-dev-1701/audit-sealed-failure.py",
+          "results/static-v3-coordinator-dev-1701/audit-staged-failure.py",
+          "results/static-v3-coordinator-dev-1701/automation-before-summary.json",
+          "results/static-v3-coordinator-dev-1701/automation-before.toml",
+          "results/static-v3-coordinator-dev-1701/independent-deliverable-archive-scan.json",
+          "results/static-v3-coordinator-dev-1701/pr-before.stderr",
+          "results/static-v3-coordinator-dev-1701/pr-before.stdout",
+          "results/static-v3-coordinator-dev-1701/prepare-publication.py",
+          "results/static-v3-coordinator-dev-1701/seal-receipt.json",
+          "results/static-v3-coordinator-dev-1701/sealed-failure-audit.json",
+          "results/static-v3-coordinator-dev-1701/staged-failure-audit.json"
+        ],
+        "integration_record_exit": 0,
+        "integration_argv": [
+          "python",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/benchmark/test_static_harness_containment.py",
+          "--basetemp",
+          "C:\\Users\\yuche\\.codex\\worktrees\\FlyDrones\\track-eligibility\\results\\static-v3-coordinator-dev-1701\\containment-integration-final-fixtures"
+        ],
+        "integration_test_guard_hash": "2bc4078851079d726f845742159e9d356e0261d7e72875ca485ab82b57eab90e",
+        "integration_after_same": true,
+        "report_sha256": "fba96c9e2ba958a5bf55e09b0498c3bccb3e53417ffd6c34a7238d2522a949e7"
+      }
+    }
+  ],
+  "postseal_boundary": "seal receipt, independent readback/reviews, staged audit, publication helpers/ledger, PR and automation receipts are outside canonical prepublication ZIP; original sources/raw/ZIP unchanged"
+}

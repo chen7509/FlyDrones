@@ -1,0 +1,17 @@
+{
+  "schema": "new-observation-archive-receipt-v1",
+  "path": "evidence/native-linux-ordered-build-inputs-20261019.zip",
+  "bytes": 14963960,
+  "sha256": "495e3ae99863573e78aea5a0f96dc45447ade726d45bc1eecf9288c9bad18b1a",
+  "members": 1663,
+  "mapped_members": 1662,
+  "mapped_bytes": 52958615,
+  "manifest_bytes": 414297,
+  "whole_member_bytes": 53372912,
+  "new_archive_crc_and_member_hashes_checked": true,
+  "helper_ast_only": true,
+  "tests_run": false,
+  "old_archives_or_payloads_checked": false,
+  "all_qualifications": false,
+  "dispatchable": false
+}

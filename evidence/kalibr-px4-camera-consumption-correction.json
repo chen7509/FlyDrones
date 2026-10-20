@@ -1,0 +1,13 @@
+{
+  "schema": "kalibr-consumer-prospective-wording-correction-v1",
+  "original_archive": "evidence\\kalibr-px4-camera-consumption-dev-1701.zip",
+  "original_sha256": "a6fc2f3ccfed8c2e080923990e7a9b0f97a9b654bea8bc87144e7945eb4504f5",
+  "canonical_archive": "evidence\\kalibr-px4-camera-consumption-dev-1701-v2.zip",
+  "canonical_sha256": "707afba837f62e2e55d60d80e65c6ffdcc8455a2c26087a031763b43070974f3",
+  "canonical_bytes": 407104,
+  "members": 751,
+  "canonical_report_sha256": "6e00174c303606b1e645ede46b89ad414141013ae248c8615ba8ee8a0f6e5a49",
+  "only_changed_member_besides_manifest": "docs/KALIBR_PX4_CAMERA_CONSUMPTION_REPORT.md",
+  "reason": "Conditional wording for prospective archive/publication stages; old ZIP preserved, all experiment/source bytes unchanged",
+  "experiment_rerun": false
+}

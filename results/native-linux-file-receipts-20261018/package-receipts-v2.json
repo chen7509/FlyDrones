@@ -1,0 +1,1081 @@
+{
+  "schema": "current-linux-package-file-observations-v1",
+  "status_file": {
+    "bytes": 1523646,
+    "sha256": "f93f44e774a675af2e22516844dea761938076c000b737ca1fd8252101345eca",
+    "blob": "blobs/f93f44e774a675af2e22516844dea761938076c000b737ca1fd8252101345eca",
+    "roles": [
+      "package-platform"
+    ],
+    "windows_share_before": {
+      "mode": 33206,
+      "size": 1523646,
+      "ino": 33554999,
+      "dev": 0,
+      "mtime_ns": 1792153059038228700,
+      "ctime_ns": 1792153059038228700,
+      "attributes": 128,
+      "reparse_tag": 0
+    },
+    "windows_share_after": {
+      "mode": 33206,
+      "size": 1523646,
+      "ino": 33554999,
+      "dev": 0,
+      "mtime_ns": 1792153059038228700,
+      "ctime_ns": 1792153059038228700,
+      "attributes": 128,
+      "reparse_tag": 0
+    },
+    "linux_resolved_path": null,
+    "linux_device_inode_permissions_verified": false,
+    "share_projection_escape_detected": false,
+    "linux_path_candidate": "/var/lib/dpkg/status",
+    "raw_linux_directory_name_verified": false,
+    "package_list_exact_path": [],
+    "package_md5_comparisons": [],
+    "static_elf": null,
+    "elf_error": null
+  },
+  "selected_packages": {
+    "binutils": {
+      "package": "binutils",
+      "version": "2.42-4ubuntu2.8",
+      "architecture": "amd64",
+      "status": "install ok installed",
+      "source": null,
+      "maintainer": "Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>",
+      "origin": null
+    },
+    "binutils-common": {
+      "package": "binutils-common",
+      "version": "2.42-4ubuntu2.8",
+      "architecture": "amd64",
+      "status": "install ok installed",
+      "source": "binutils",
+      "maintainer": "Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>",
+      "origin": null
+    },
+    "binutils-x86-64-linux-gnu": {
+      "package": "binutils-x86-64-linux-gnu",
+      "version": "2.42-4ubuntu2.8",
+      "architecture": "amd64",
+      "status": "install ok installed",
+      "source": "binutils",
+      "maintainer": "Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>",
+      "origin": null
+    },
+    "cmake": {
+      "package": "cmake",
+      "version": "3.28.3-1build7",
+      "architecture": "amd64",
+      "status": "install ok installed",
+      "source": null,
+      "maintainer": "Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>",
+      "origin": null
+    },
+    "cmake-data": {
+      "package": "cmake-data",
+      "version": "3.28.3-1build7",
+      "architecture": "all",
+      "status": "install ok installed",
+      "source": "cmake",
+      "maintainer": "Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>",
+      "origin": null
+    },
+    "coreutils": {
+      "package": "coreutils",
+      "version": "9.4-3ubuntu6.3",
+      "architecture": "amd64",
+      "status": "install ok installed",
+      "source": null,
+      "maintainer": "Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>",
+      "origin": null
+    },
+    "cpp": {
+      "package": "cpp",
+      "version": "4:13.2.0-7ubuntu1",
+      "architecture": "amd64",
+      "status": "install ok installed",
+      "source": "gcc-defaults (1.214ubuntu1)",
+      "maintainer": "Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>",
+      "origin": null
+    },
+    "cpp-13": {
+      "package": "cpp-13",
+      "version": "13.3.0-6ubuntu2~24.04.1",
+      "architecture": "amd64",
+      "status": "install ok installed",
+      "source": "gcc-13",
+      "maintainer": "Ubuntu Core developers <ubuntu-devel-discuss@lists.ubuntu.com>",
+      "origin": null
+    },
+    "cpp-13-x86-64-linux-gnu": {
+      "package": "cpp-13-x86-64-linux-gnu",
+      "version": "13.3.0-6ubuntu2~24.04.1",
+      "architecture": "amd64",
+      "status": "install ok installed",
+      "source": "gcc-13",
+      "maintainer": "Ubuntu Core developers <ubuntu-devel-discuss@lists.ubuntu.com>",
+      "origin": null
+    },
+    "cpp-x86-64-linux-gnu": {
+      "package": "cpp-x86-64-linux-gnu",
+      "version": "4:13.2.0-7ubuntu1",
+      "architecture": "amd64",
+      "status": "install ok installed",
+      "source": "gcc-defaults (1.214ubuntu1)",
+      "maintainer": "Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>",
+      "origin": null
+    },
+    "g++": {
+      "package": "g++",
+      "version": "4:13.2.0-7ubuntu1",
+      "architecture": "amd64",
+      "status": "install ok installed",
+      "source": "gcc-defaults (1.214ubuntu1)",
+      "maintainer": "Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>",
+      "origin": null
+    },
+    "g++-13": {
+      "package": "g++-13",
+      "version": "13.3.0-6ubuntu2~24.04.1",
+      "architecture": "amd64",
+      "status": "install ok installed",
+      "source": "gcc-13",
+      "maintainer": "Ubuntu Core developers <ubuntu-devel-discuss@lists.ubuntu.com>",
+      "origin": null
+    },
+    "g++-13-x86-64-linux-gnu": {
+      "package": "g++-13-x86-64-linux-gnu",
+      "version": "13.3.0-6ubuntu2~24.04.1",
+      "architecture": "amd64",
+      "status": "install ok installed",
+      "source": "gcc-13",
+      "maintainer": "Ubuntu Core developers <ubuntu-devel-discuss@lists.ubuntu.com>",
+      "origin": null
+    },
+    "g++-x86-64-linux-gnu": {
+      "package": "g++-x86-64-linux-gnu",
+      "version": "4:13.2.0-7ubuntu1",
+      "architecture": "amd64",
+      "status": "install ok installed",
+      "source": "gcc-defaults (1.214ubuntu1)",
+      "maintainer": "Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>",
+      "origin": null
+    },
+    "gcc": {
+      "package": "gcc",
+      "version": "4:13.2.0-7ubuntu1",
+      "architecture": "amd64",
+      "status": "install ok installed",
+      "source": "gcc-defaults (1.214ubuntu1)",
+      "maintainer": "Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>",
+      "origin": null
+    },
+    "gcc-13": {
+      "package": "gcc-13",
+      "version": "13.3.0-6ubuntu2~24.04.1",
+      "architecture": "amd64",
+      "status": "install ok installed",
+      "source": null,
+      "maintainer": "Ubuntu Core developers <ubuntu-devel-discuss@lists.ubuntu.com>",
+      "origin": null
+    },
+    "gcc-13-base": {
+      "package": "gcc-13-base",
+      "version": "13.3.0-6ubuntu2~24.04.1",
+      "architecture": "amd64",
+      "status": "install ok installed",
+      "source": "gcc-13",
+      "maintainer": "Ubuntu Core developers <ubuntu-devel-discuss@lists.ubuntu.com>",
+      "origin": null
+    },
+    "gcc-13-x86-64-linux-gnu": {
+      "package": "gcc-13-x86-64-linux-gnu",
+      "version": "13.3.0-6ubuntu2~24.04.1",
+      "architecture": "amd64",
+      "status": "install ok installed",
+      "source": "gcc-13",
+      "maintainer": "Ubuntu Core developers <ubuntu-devel-discuss@lists.ubuntu.com>",
+      "origin": null
+    },
+    "gcc-14-base": {
+      "package": "gcc-14-base",
+      "version": "14.2.0-4ubuntu2~24.04.1",
+      "architecture": "amd64",
+      "status": "install ok installed",
+      "source": "gcc-14",
+      "maintainer": "Ubuntu Core developers <ubuntu-devel-discuss@lists.ubuntu.com>",
+      "origin": null
+    },
+    "gcc-x86-64-linux-gnu": {
+      "package": "gcc-x86-64-linux-gnu",
+      "version": "4:13.2.0-7ubuntu1",
+      "architecture": "amd64",
+      "status": "install ok installed",
+      "source": "gcc-defaults (1.214ubuntu1)",
+      "maintainer": "Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>",
+      "origin": null
+    },
+    "libblas-dev": {
+      "package": "libblas-dev",
+      "version": "3.12.0-3build1.1",
+      "architecture": "amd64",
+      "status": "install ok installed",
+      "source": "lapack",
+      "maintainer": "Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>",
+      "origin": null
+    },
+    "libblas3": {
+      "package": "libblas3",
+      "version": "3.12.0-3build1.1",
+      "architecture": "amd64",
+      "status": "install ok installed",
+      "source": "lapack",
+      "maintainer": "Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>",
+      "origin": null
+    },
+    "libboost-atomic1.83-dev": {
+      "package": "libboost-atomic1.83-dev",
+      "version": "1.83.0-2.1ubuntu3.2",
+      "architecture": "amd64",
+      "status": "install ok installed",
+      "source": "boost1.83",
+      "maintainer": "Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>",
+      "origin": null
+    },
+    "libboost-atomic1.83.0": {
+      "package": "libboost-atomic1.83.0",
+      "version": "1.83.0-2.1ubuntu3.2",
+      "architecture": "amd64",
+      "status": "install ok installed",
+      "source": "boost1.83",
+      "maintainer": "Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>",
+      "origin": null
+    },
+    "libboost-chrono1.83-dev": {
+      "package": "libboost-chrono1.83-dev",
+      "version": "1.83.0-2.1ubuntu3.2",
+      "architecture": "amd64",
+      "status": "install ok installed",
+      "source": "boost1.83",
+      "maintainer": "Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>",
+      "origin": null
+    },
+    "libboost-chrono1.83.0t64": {
+      "package": "libboost-chrono1.83.0t64",
+      "version": "1.83.0-2.1ubuntu3.2",
+      "architecture": "amd64",
+      "status": "install ok installed",
+      "source": "boost1.83",
+      "maintainer": "Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>",
+      "origin": null
+    },
+    "libboost-date-time-dev": {
+      "package": "libboost-date-time-dev",
+      "version": "1.83.0.1ubuntu2",
+      "architecture": "amd64",
+      "status": "install ok installed",
+      "source": "boost-defaults",
+      "maintainer": "Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>",
+      "origin": null
+    },
+    "libboost-date-time1.83-dev": {
+      "package": "libboost-date-time1.83-dev",
+      "version": "1.83.0-2.1ubuntu3.2",
+      "architecture": "amd64",
+      "status": "install ok installed",
+      "source": "boost1.83",
+      "maintainer": "Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>",
+      "origin": null
+    },
+    "libboost-date-time1.83.0": {
+      "package": "libboost-date-time1.83.0",
+      "version": "1.83.0-2.1ubuntu3.2",
+      "architecture": "amd64",
+      "status": "install ok installed",
+      "source": "boost1.83",
+      "maintainer": "Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>",
+      "origin": null
+    },
+    "libboost-dev": {
+      "package": "libboost-dev",
+      "version": "1.83.0.1ubuntu2",
+      "architecture": "amd64",
+      "status": "install ok installed",
+      "source": "boost-defaults",
+      "maintainer": "Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>",
+      "origin": null
+    },
+    "libboost-filesystem-dev": {
+      "package": "libboost-filesystem-dev",
+      "version": "1.83.0.1ubuntu2",
+      "architecture": "amd64",
+      "status": "install ok installed",
+      "source": "boost-defaults",
+      "maintainer": "Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>",
+      "origin": null
+    },
+    "libboost-filesystem1.83-dev": {
+      "package": "libboost-filesystem1.83-dev",
+      "version": "1.83.0-2.1ubuntu3.2",
+      "architecture": "amd64",
+      "status": "install ok installed",
+      "source": "boost1.83",
+      "maintainer": "Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>",
+      "origin": null
+    },
+    "libboost-filesystem1.83.0": {
+      "package": "libboost-filesystem1.83.0",
+      "version": "1.83.0-2.1ubuntu3.2",
+      "architecture": "amd64",
+      "status": "install ok installed",
+      "source": "boost1.83",
+      "maintainer": "Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>",
+      "origin": null
+    },
+    "libboost-serialization1.83-dev": {
+      "package": "libboost-serialization1.83-dev",
+      "version": "1.83.0-2.1ubuntu3.2",
+      "architecture": "amd64",
+      "status": "install ok installed",
+      "source": "boost1.83",
+      "maintainer": "Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>",
+      "origin": null
+    },
+    "libboost-serialization1.83.0": {
+      "package": "libboost-serialization1.83.0",
+      "version": "1.83.0-2.1ubuntu3.2",
+      "architecture": "amd64",
+      "status": "install ok installed",
+      "source": "boost1.83",
+      "maintainer": "Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>",
+      "origin": null
+    },
+    "libboost-system-dev": {
+      "package": "libboost-system-dev",
+      "version": "1.83.0.1ubuntu2",
+      "architecture": "amd64",
+      "status": "install ok installed",
+      "source": "boost-defaults",
+      "maintainer": "Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>",
+      "origin": null
+    },
+    "libboost-system1.83-dev": {
+      "package": "libboost-system1.83-dev",
+      "version": "1.83.0-2.1ubuntu3.2",
+      "architecture": "amd64",
+      "status": "install ok installed",
+      "source": "boost1.83",
+      "maintainer": "Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>",
+      "origin": null
+    },
+    "libboost-system1.83.0": {
+      "package": "libboost-system1.83.0",
+      "version": "1.83.0-2.1ubuntu3.2",
+      "architecture": "amd64",
+      "status": "install ok installed",
+      "source": "boost1.83",
+      "maintainer": "Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>",
+      "origin": null
+    },
+    "libboost-thread-dev": {
+      "package": "libboost-thread-dev",
+      "version": "1.83.0.1ubuntu2",
+      "architecture": "amd64",
+      "status": "install ok installed",
+      "source": "boost-defaults",
+      "maintainer": "Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>",
+      "origin": null
+    },
+    "libboost-thread1.83-dev": {
+      "package": "libboost-thread1.83-dev",
+      "version": "1.83.0-2.1ubuntu3.2",
+      "architecture": "amd64",
+      "status": "install ok installed",
+      "source": "boost1.83",
+      "maintainer": "Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>",
+      "origin": null
+    },
+    "libboost-thread1.83.0": {
+      "package": "libboost-thread1.83.0",
+      "version": "1.83.0-2.1ubuntu3.2",
+      "architecture": "amd64",
+      "status": "install ok installed",
+      "source": "boost1.83",
+      "maintainer": "Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>",
+      "origin": null
+    },
+    "libboost1.83-dev": {
+      "package": "libboost1.83-dev",
+      "version": "1.83.0-2.1ubuntu3.2",
+      "architecture": "amd64",
+      "status": "install ok installed",
+      "source": "boost1.83",
+      "maintainer": "Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>",
+      "origin": null
+    },
+    "libceres-dev": {
+      "package": "libceres-dev",
+      "version": "2.2.0+dfsg-4.1ubuntu2",
+      "architecture": "amd64",
+      "status": "install ok installed",
+      "source": "ceres-solver",
+      "maintainer": "Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>",
+      "origin": null
+    },
+    "libceres4t64": {
+      "package": "libceres4t64",
+      "version": "2.2.0+dfsg-4.1ubuntu2",
+      "architecture": "amd64",
+      "status": "install ok installed",
+      "source": "ceres-solver",
+      "maintainer": "Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>",
+      "origin": null
+    },
+    "libeigen3-dev": {
+      "package": "libeigen3-dev",
+      "version": "3.4.0-4build0.1",
+      "architecture": "all",
+      "status": "install ok installed",
+      "source": "eigen3",
+      "maintainer": "Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>",
+      "origin": null
+    },
+    "libgcc-13-dev": {
+      "package": "libgcc-13-dev",
+      "version": "13.3.0-6ubuntu2~24.04.1",
+      "architecture": "amd64",
+      "status": "install ok installed",
+      "source": "gcc-13",
+      "maintainer": "Ubuntu Core developers <ubuntu-devel-discuss@lists.ubuntu.com>",
+      "origin": null
+    },
+    "libgcc-s1": {
+      "package": "libgcc-s1",
+      "version": "14.2.0-4ubuntu2~24.04.1",
+      "architecture": "amd64",
+      "status": "install ok installed",
+      "source": "gcc-14",
+      "maintainer": "Ubuntu Core developers <ubuntu-devel-discuss@lists.ubuntu.com>",
+      "origin": null
+    },
+    "libgflags-dev": {
+      "package": "libgflags-dev",
+      "version": "2.2.2-2build1",
+      "architecture": "amd64",
+      "status": "install ok installed",
+      "source": "gflags",
+      "maintainer": "Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>",
+      "origin": null
+    },
+    "libgflags2.2": {
+      "package": "libgflags2.2",
+      "version": "2.2.2-2build1",
+      "architecture": "amd64",
+      "status": "install ok installed",
+      "source": "gflags",
+      "maintainer": "Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>",
+      "origin": null
+    },
+    "libgoogle-glog-dev": {
+      "package": "libgoogle-glog-dev",
+      "version": "0.6.0-2.1build1",
+      "architecture": "amd64",
+      "status": "install ok installed",
+      "source": "google-glog",
+      "maintainer": "Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>",
+      "origin": null
+    },
+    "libgoogle-glog0v6t64": {
+      "package": "libgoogle-glog0v6t64",
+      "version": "0.6.0-2.1build1",
+      "architecture": "amd64",
+      "status": "install ok installed",
+      "source": "google-glog",
+      "maintainer": "Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>",
+      "origin": null
+    },
+    "liblapack-dev": {
+      "package": "liblapack-dev",
+      "version": "3.12.0-3build1.1",
+      "architecture": "amd64",
+      "status": "install ok installed",
+      "source": "lapack",
+      "maintainer": "Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>",
+      "origin": null
+    },
+    "liblapack3": {
+      "package": "liblapack3",
+      "version": "3.12.0-3build1.1",
+      "architecture": "amd64",
+      "status": "install ok installed",
+      "source": "lapack",
+      "maintainer": "Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>",
+      "origin": null
+    },
+    "libopencv-calib3d-dev": {
+      "package": "libopencv-calib3d-dev",
+      "version": "4.6.0+dfsg-13.1ubuntu1",
+      "architecture": "amd64",
+      "status": "install ok installed",
+      "source": "opencv",
+      "maintainer": "Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>",
+      "origin": null
+    },
+    "libopencv-calib3d406t64": {
+      "package": "libopencv-calib3d406t64",
+      "version": "4.6.0+dfsg-13.1ubuntu1",
+      "architecture": "amd64",
+      "status": "install ok installed",
+      "source": "opencv",
+      "maintainer": "Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>",
+      "origin": null
+    },
+    "libopencv-contrib-dev": {
+      "package": "libopencv-contrib-dev",
+      "version": "4.6.0+dfsg-13.1ubuntu1",
+      "architecture": "amd64",
+      "status": "install ok installed",
+      "source": "opencv",
+      "maintainer": "Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>",
+      "origin": null
+    },
+    "libopencv-contrib406t64": {
+      "package": "libopencv-contrib406t64",
+      "version": "4.6.0+dfsg-13.1ubuntu1",
+      "architecture": "amd64",
+      "status": "install ok installed",
+      "source": "opencv",
+      "maintainer": "Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>",
+      "origin": null
+    },
+    "libopencv-core-dev": {
+      "package": "libopencv-core-dev",
+      "version": "4.6.0+dfsg-13.1ubuntu1",
+      "architecture": "amd64",
+      "status": "install ok installed",
+      "source": "opencv",
+      "maintainer": "Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>",
+      "origin": null
+    },
+    "libopencv-core406t64": {
+      "package": "libopencv-core406t64",
+      "version": "4.6.0+dfsg-13.1ubuntu1",
+      "architecture": "amd64",
+      "status": "install ok installed",
+      "source": "opencv",
+      "maintainer": "Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>",
+      "origin": null
+    },
+    "libopencv-dev": {
+      "package": "libopencv-dev",
+      "version": "4.6.0+dfsg-13.1ubuntu1",
+      "architecture": "amd64",
+      "status": "install ok installed",
+      "source": "opencv",
+      "maintainer": "Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>",
+      "origin": null
+    },
+    "libopencv-dnn-dev": {
+      "package": "libopencv-dnn-dev",
+      "version": "4.6.0+dfsg-13.1ubuntu1",
+      "architecture": "amd64",
+      "status": "install ok installed",
+      "source": "opencv",
+      "maintainer": "Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>",
+      "origin": null
+    },
+    "libopencv-dnn406t64": {
+      "package": "libopencv-dnn406t64",
+      "version": "4.6.0+dfsg-13.1ubuntu1",
+      "architecture": "amd64",
+      "status": "install ok installed",
+      "source": "opencv",
+      "maintainer": "Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>",
+      "origin": null
+    },
+    "libopencv-features2d-dev": {
+      "package": "libopencv-features2d-dev",
+      "version": "4.6.0+dfsg-13.1ubuntu1",
+      "architecture": "amd64",
+      "status": "install ok installed",
+      "source": "opencv",
+      "maintainer": "Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>",
+      "origin": null
+    },
+    "libopencv-features2d406t64": {
+      "package": "libopencv-features2d406t64",
+      "version": "4.6.0+dfsg-13.1ubuntu1",
+      "architecture": "amd64",
+      "status": "install ok installed",
+      "source": "opencv",
+      "maintainer": "Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>",
+      "origin": null
+    },
+    "libopencv-flann-dev": {
+      "package": "libopencv-flann-dev",
+      "version": "4.6.0+dfsg-13.1ubuntu1",
+      "architecture": "amd64",
+      "status": "install ok installed",
+      "source": "opencv",
+      "maintainer": "Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>",
+      "origin": null
+    },
+    "libopencv-flann406t64": {
+      "package": "libopencv-flann406t64",
+      "version": "4.6.0+dfsg-13.1ubuntu1",
+      "architecture": "amd64",
+      "status": "install ok installed",
+      "source": "opencv",
+      "maintainer": "Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>",
+      "origin": null
+    },
+    "libopencv-highgui-dev": {
+      "package": "libopencv-highgui-dev",
+      "version": "4.6.0+dfsg-13.1ubuntu1",
+      "architecture": "amd64",
+      "status": "install ok installed",
+      "source": "opencv",
+      "maintainer": "Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>",
+      "origin": null
+    },
+    "libopencv-highgui406t64": {
+      "package": "libopencv-highgui406t64",
+      "version": "4.6.0+dfsg-13.1ubuntu1",
+      "architecture": "amd64",
+      "status": "install ok installed",
+      "source": "opencv",
+      "maintainer": "Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>",
+      "origin": null
+    },
+    "libopencv-imgcodecs-dev": {
+      "package": "libopencv-imgcodecs-dev",
+      "version": "4.6.0+dfsg-13.1ubuntu1",
+      "architecture": "amd64",
+      "status": "install ok installed",
+      "source": "opencv",
+      "maintainer": "Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>",
+      "origin": null
+    },
+    "libopencv-imgcodecs406t64": {
+      "package": "libopencv-imgcodecs406t64",
+      "version": "4.6.0+dfsg-13.1ubuntu1",
+      "architecture": "amd64",
+      "status": "install ok installed",
+      "source": "opencv",
+      "maintainer": "Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>",
+      "origin": null
+    },
+    "libopencv-imgproc-dev": {
+      "package": "libopencv-imgproc-dev",
+      "version": "4.6.0+dfsg-13.1ubuntu1",
+      "architecture": "amd64",
+      "status": "install ok installed",
+      "source": "opencv",
+      "maintainer": "Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>",
+      "origin": null
+    },
+    "libopencv-imgproc406t64": {
+      "package": "libopencv-imgproc406t64",
+      "version": "4.6.0+dfsg-13.1ubuntu1",
+      "architecture": "amd64",
+      "status": "install ok installed",
+      "source": "opencv",
+      "maintainer": "Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>",
+      "origin": null
+    },
+    "libopencv-ml-dev": {
+      "package": "libopencv-ml-dev",
+      "version": "4.6.0+dfsg-13.1ubuntu1",
+      "architecture": "amd64",
+      "status": "install ok installed",
+      "source": "opencv",
+      "maintainer": "Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>",
+      "origin": null
+    },
+    "libopencv-ml406t64": {
+      "package": "libopencv-ml406t64",
+      "version": "4.6.0+dfsg-13.1ubuntu1",
+      "architecture": "amd64",
+      "status": "install ok installed",
+      "source": "opencv",
+      "maintainer": "Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>",
+      "origin": null
+    },
+    "libopencv-objdetect-dev": {
+      "package": "libopencv-objdetect-dev",
+      "version": "4.6.0+dfsg-13.1ubuntu1",
+      "architecture": "amd64",
+      "status": "install ok installed",
+      "source": "opencv",
+      "maintainer": "Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>",
+      "origin": null
+    },
+    "libopencv-objdetect406t64": {
+      "package": "libopencv-objdetect406t64",
+      "version": "4.6.0+dfsg-13.1ubuntu1",
+      "architecture": "amd64",
+      "status": "install ok installed",
+      "source": "opencv",
+      "maintainer": "Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>",
+      "origin": null
+    },
+    "libopencv-photo-dev": {
+      "package": "libopencv-photo-dev",
+      "version": "4.6.0+dfsg-13.1ubuntu1",
+      "architecture": "amd64",
+      "status": "install ok installed",
+      "source": "opencv",
+      "maintainer": "Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>",
+      "origin": null
+    },
+    "libopencv-photo406t64": {
+      "package": "libopencv-photo406t64",
+      "version": "4.6.0+dfsg-13.1ubuntu1",
+      "architecture": "amd64",
+      "status": "install ok installed",
+      "source": "opencv",
+      "maintainer": "Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>",
+      "origin": null
+    },
+    "libopencv-shape-dev": {
+      "package": "libopencv-shape-dev",
+      "version": "4.6.0+dfsg-13.1ubuntu1",
+      "architecture": "amd64",
+      "status": "install ok installed",
+      "source": "opencv",
+      "maintainer": "Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>",
+      "origin": null
+    },
+    "libopencv-shape406t64": {
+      "package": "libopencv-shape406t64",
+      "version": "4.6.0+dfsg-13.1ubuntu1",
+      "architecture": "amd64",
+      "status": "install ok installed",
+      "source": "opencv",
+      "maintainer": "Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>",
+      "origin": null
+    },
+    "libopencv-stitching-dev": {
+      "package": "libopencv-stitching-dev",
+      "version": "4.6.0+dfsg-13.1ubuntu1",
+      "architecture": "amd64",
+      "status": "install ok installed",
+      "source": "opencv",
+      "maintainer": "Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>",
+      "origin": null
+    },
+    "libopencv-stitching406t64": {
+      "package": "libopencv-stitching406t64",
+      "version": "4.6.0+dfsg-13.1ubuntu1",
+      "architecture": "amd64",
+      "status": "install ok installed",
+      "source": "opencv",
+      "maintainer": "Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>",
+      "origin": null
+    },
+    "libopencv-superres-dev": {
+      "package": "libopencv-superres-dev",
+      "version": "4.6.0+dfsg-13.1ubuntu1",
+      "architecture": "amd64",
+      "status": "install ok installed",
+      "source": "opencv",
+      "maintainer": "Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>",
+      "origin": null
+    },
+    "libopencv-superres406t64": {
+      "package": "libopencv-superres406t64",
+      "version": "4.6.0+dfsg-13.1ubuntu1",
+      "architecture": "amd64",
+      "status": "install ok installed",
+      "source": "opencv",
+      "maintainer": "Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>",
+      "origin": null
+    },
+    "libopencv-video-dev": {
+      "package": "libopencv-video-dev",
+      "version": "4.6.0+dfsg-13.1ubuntu1",
+      "architecture": "amd64",
+      "status": "install ok installed",
+      "source": "opencv",
+      "maintainer": "Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>",
+      "origin": null
+    },
+    "libopencv-video406t64": {
+      "package": "libopencv-video406t64",
+      "version": "4.6.0+dfsg-13.1ubuntu1",
+      "architecture": "amd64",
+      "status": "install ok installed",
+      "source": "opencv",
+      "maintainer": "Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>",
+      "origin": null
+    },
+    "libopencv-videoio-dev": {
+      "package": "libopencv-videoio-dev",
+      "version": "4.6.0+dfsg-13.1ubuntu1",
+      "architecture": "amd64",
+      "status": "install ok installed",
+      "source": "opencv",
+      "maintainer": "Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>",
+      "origin": null
+    },
+    "libopencv-videoio406t64": {
+      "package": "libopencv-videoio406t64",
+      "version": "4.6.0+dfsg-13.1ubuntu1",
+      "architecture": "amd64",
+      "status": "install ok installed",
+      "source": "opencv",
+      "maintainer": "Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>",
+      "origin": null
+    },
+    "libopencv-videostab-dev": {
+      "package": "libopencv-videostab-dev",
+      "version": "4.6.0+dfsg-13.1ubuntu1",
+      "architecture": "amd64",
+      "status": "install ok installed",
+      "source": "opencv",
+      "maintainer": "Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>",
+      "origin": null
+    },
+    "libopencv-videostab406t64": {
+      "package": "libopencv-videostab406t64",
+      "version": "4.6.0+dfsg-13.1ubuntu1",
+      "architecture": "amd64",
+      "status": "install ok installed",
+      "source": "opencv",
+      "maintainer": "Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>",
+      "origin": null
+    },
+    "libopencv-viz-dev": {
+      "package": "libopencv-viz-dev",
+      "version": "4.6.0+dfsg-13.1ubuntu1",
+      "architecture": "amd64",
+      "status": "install ok installed",
+      "source": "opencv",
+      "maintainer": "Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>",
+      "origin": null
+    },
+    "libopencv-viz406t64": {
+      "package": "libopencv-viz406t64",
+      "version": "4.6.0+dfsg-13.1ubuntu1",
+      "architecture": "amd64",
+      "status": "install ok installed",
+      "source": "opencv",
+      "maintainer": "Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>",
+      "origin": null
+    },
+    "libstdc++-13-dev": {
+      "package": "libstdc++-13-dev",
+      "version": "13.3.0-6ubuntu2~24.04.1",
+      "architecture": "amd64",
+      "status": "install ok installed",
+      "source": "gcc-13",
+      "maintainer": "Ubuntu Core developers <ubuntu-devel-discuss@lists.ubuntu.com>",
+      "origin": null
+    },
+    "libstdc++6": {
+      "package": "libstdc++6",
+      "version": "14.2.0-4ubuntu2~24.04.1",
+      "architecture": "amd64",
+      "status": "install ok installed",
+      "source": "gcc-14",
+      "maintainer": "Ubuntu Core developers <ubuntu-devel-discuss@lists.ubuntu.com>",
+      "origin": null
+    },
+    "libsuitesparse-dev": {
+      "package": "libsuitesparse-dev",
+      "version": "1:7.6.1+dfsg-1build1",
+      "architecture": "amd64",
+      "status": "install ok installed",
+      "source": "suitesparse",
+      "maintainer": "Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>",
+      "origin": null
+    },
+    "libsuitesparse-mongoose3": {
+      "package": "libsuitesparse-mongoose3",
+      "version": "1:7.6.1+dfsg-1build1",
+      "architecture": "amd64",
+      "status": "install ok installed",
+      "source": "suitesparse",
+      "maintainer": "Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>",
+      "origin": null
+    },
+    "libsuitesparseconfig7": {
+      "package": "libsuitesparseconfig7",
+      "version": "1:7.6.1+dfsg-1build1",
+      "architecture": "amd64",
+      "status": "install ok installed",
+      "source": "suitesparse",
+      "maintainer": "Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>",
+      "origin": null
+    },
+    "libtbb-dev": {
+      "package": "libtbb-dev",
+      "version": "2021.11.0-2ubuntu2",
+      "architecture": "amd64",
+      "status": "install ok installed",
+      "source": "onetbb",
+      "maintainer": "Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>",
+      "origin": null
+    },
+    "libtbb12": {
+      "package": "libtbb12",
+      "version": "2021.11.0-2ubuntu2",
+      "architecture": "amd64",
+      "status": "install ok installed",
+      "source": "onetbb",
+      "maintainer": "Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>",
+      "origin": null
+    },
+    "libtbbbind-2-5": {
+      "package": "libtbbbind-2-5",
+      "version": "2021.11.0-2ubuntu2",
+      "architecture": "amd64",
+      "status": "install ok installed",
+      "source": "onetbb",
+      "maintainer": "Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>",
+      "origin": null
+    },
+    "libtbbmalloc2": {
+      "package": "libtbbmalloc2",
+      "version": "2021.11.0-2ubuntu2",
+      "architecture": "amd64",
+      "status": "install ok installed",
+      "source": "onetbb",
+      "maintainer": "Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>",
+      "origin": null
+    },
+    "libunwind-dev": {
+      "package": "libunwind-dev",
+      "version": "1.6.2-3build1.1",
+      "architecture": "amd64",
+      "status": "install ok installed",
+      "source": "libunwind",
+      "maintainer": "Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>",
+      "origin": null
+    },
+    "libunwind8": {
+      "package": "libunwind8",
+      "version": "1.6.2-3build1.1",
+      "architecture": "amd64",
+      "status": "install ok installed",
+      "source": "libunwind",
+      "maintainer": "Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>",
+      "origin": null
+    },
+    "make": {
+      "package": "make",
+      "version": "4.3-4.1build2",
+      "architecture": "amd64",
+      "status": "install ok installed",
+      "source": "make-dfsg",
+      "maintainer": "Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>",
+      "origin": null
+    },
+    "python3": {
+      "package": "python3",
+      "version": "3.12.3-0ubuntu2.1",
+      "architecture": "amd64",
+      "status": "install ok installed",
+      "source": "python3-defaults",
+      "maintainer": "Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>",
+      "origin": null
+    },
+    "python3-minimal": {
+      "package": "python3-minimal",
+      "version": "3.12.3-0ubuntu2.1",
+      "architecture": "amd64",
+      "status": "install ok installed",
+      "source": "python3-defaults",
+      "maintainer": "Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>",
+      "origin": null
+    },
+    "python3.12": {
+      "package": "python3.12",
+      "version": "3.12.3-1ubuntu0.17",
+      "architecture": "amd64",
+      "status": "install ok installed",
+      "source": null,
+      "maintainer": "Ubuntu Core Developers <ubuntu-devel-discuss@lists.ubuntu.com>",
+      "origin": null
+    },
+    "python3.12-minimal": {
+      "package": "python3.12-minimal",
+      "version": "3.12.3-1ubuntu0.17",
+      "architecture": "amd64",
+      "status": "install ok installed",
+      "source": "python3.12",
+      "maintainer": "Ubuntu Core Developers <ubuntu-devel-discuss@lists.ubuntu.com>",
+      "origin": null
+    },
+    "systemd": {
+      "package": "systemd",
+      "version": "255.4-1ubuntu8.18",
+      "architecture": "amd64",
+      "status": "install ok installed",
+      "source": null,
+      "maintainer": "Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>",
+      "origin": null
+    },
+    "systemd-dev": {
+      "package": "systemd-dev",
+      "version": "255.4-1ubuntu8.18",
+      "architecture": "all",
+      "status": "install ok installed",
+      "source": "systemd",
+      "maintainer": "Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>",
+      "origin": null
+    },
+    "systemd-hwe-hwdb": {
+      "package": "systemd-hwe-hwdb",
+      "version": "255.1.6",
+      "architecture": "all",
+      "status": "install ok installed",
+      "source": "systemd-hwe",
+      "maintainer": "Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>",
+      "origin": null
+    },
+    "systemd-resolved": {
+      "package": "systemd-resolved",
+      "version": "255.4-1ubuntu8.18",
+      "architecture": "amd64",
+      "status": "install ok installed",
+      "source": "systemd",
+      "maintainer": "Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>",
+      "origin": null
+    },
+    "systemd-sysv": {
+      "package": "systemd-sysv",
+      "version": "255.4-1ubuntu8.18",
+      "architecture": "amd64",
+      "status": "install ok installed",
+      "source": "systemd",
+      "maintainer": "Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>",
+      "origin": null
+    },
+    "systemd-timesyncd": {
+      "package": "systemd-timesyncd",
+      "version": "255.4-1ubuntu8.18",
+      "architecture": "amd64",
+      "status": "install ok installed",
+      "source": "systemd",
+      "maintainer": "Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>",
+      "origin": null
+    },
+    "time": {
+      "package": "time",
+      "version": "1.9-0.2build1",
+      "architecture": "amd64",
+      "status": "install ok installed",
+      "source": null,
+      "maintainer": "Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>",
+      "origin": null
+    }
+  },
+  "package_database_authenticated": false,
+  "repository_origin_verified": false,
+  "install_or_dpkg_program_run": false,
+  "note": "Versions/ownership come from retained current local DB bytes. Windows share U+F03A in inventory names is normalized to colon for package association only; raw Linux directory names/identity remain unverified. Checksums do not authenticate origin."
+}

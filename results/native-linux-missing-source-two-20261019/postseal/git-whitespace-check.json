@@ -1,0 +1,15 @@
+{
+  "exit": 2,
+  "stdout_bytes": 32243,
+  "stderr_bytes": 0,
+  "issues_by_file": {
+    "results/native-linux-missing-source-two-20261019/.gitattributes": 1,
+    "results/native-linux-missing-source-two-20261019/blobs/2553e1d5d570a391a1f8376ae4037760d84d45668d781ccf6683ccfc2a54a044": 1,
+    "results/native-linux-missing-source-two-20261019/collection-result.json": 122,
+    "results/native-linux-missing-source-two-20261019/copy-input-verification.json": 23,
+    "results/native-linux-missing-source-two-20261019/history-read-coverage.json": 49,
+    "results/native-linux-missing-source-two-20261019/start.json": 53
+  },
+  "preserved_original_mapped_bytes": true,
+  "new_raw_crlf_and_original_readme_blank_eof_not_native_failure": true
+}

@@ -1,0 +1,849 @@
+
+=================================== ERRORS ====================================
+_ ERROR collecting tests/benchmark/test_audit_causal_pair_sim_time_physical_attempt.py _
+ImportError while importing test module 'C:\Users\yuche\.codex\worktrees\FlyDrones\track-eligibility\tests\benchmark\test_audit_causal_pair_sim_time_physical_attempt.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+..\..\..\..\AppData\Local\Programs\Python\Python312\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\benchmark\test_audit_causal_pair_sim_time_physical_attempt.py:5: in <module>
+    from tools.benchmark.audit_causal_pair_sim_time_physical_attempt import audit
+tools\benchmark\audit_causal_pair_sim_time_physical_attempt.py:9: in <module>
+    from tools.benchmark.openvins_causal_input import CausalInput
+tools\benchmark\openvins_causal_input.py:10: in <module>
+    from tools.benchmark.disarmed_sensor_provenance import validate_event
+tools\benchmark\disarmed_sensor_provenance.py:18: in <module>
+    from flydrones.benchmark.camera_info_capture import CameraInfoRecorder
+E   ModuleNotFoundError: No module named 'flydrones.benchmark'
+_ ERROR collecting tests/benchmark/test_audit_heartbeat_sim_time_readiness.py _
+ImportError while importing test module 'C:\Users\yuche\.codex\worktrees\FlyDrones\track-eligibility\tests\benchmark\test_audit_heartbeat_sim_time_readiness.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+..\..\..\..\AppData\Local\Programs\Python\Python312\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\benchmark\test_audit_heartbeat_sim_time_readiness.py:3: in <module>
+    from tools.benchmark.audit_heartbeat_sim_time_readiness import audit
+tools\benchmark\audit_heartbeat_sim_time_readiness.py:9: in <module>
+    from tools.benchmark.readiness_anchor import JournaledReadiness
+tools\benchmark\readiness_anchor.py:11: in <module>
+    from tools.benchmark.supported_excitation import MASSES, SupportedPolicy, supported_profile
+tools\benchmark\supported_excitation.py:13: in <module>
+    from flydrones.benchmark.gateway import sim_duration_ns
+E   ModuleNotFoundError: No module named 'flydrones.benchmark'
+_ ERROR collecting tests/benchmark/test_audit_openvins_lazy_runtime_closure.py _
+ImportError while importing test module 'C:\Users\yuche\.codex\worktrees\FlyDrones\track-eligibility\tests\benchmark\test_audit_openvins_lazy_runtime_closure.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+..\..\..\..\AppData\Local\Programs\Python\Python312\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\benchmark\test_audit_openvins_lazy_runtime_closure.py:9: in <module>
+    from tools.benchmark import openvins_lazy_runtime_closure as lazy
+tools\benchmark\openvins_lazy_runtime_closure.py:24: in <module>
+    from tools.benchmark.openvins_online_shadow import NativeClient, validate_frozen_config
+tools\benchmark\openvins_online_shadow.py:17: in <module>
+    from tools.benchmark.openvins_causal_input import CausalInput, InputRefusal
+tools\benchmark\openvins_causal_input.py:10: in <module>
+    from tools.benchmark.disarmed_sensor_provenance import validate_event
+tools\benchmark\disarmed_sensor_provenance.py:18: in <module>
+    from flydrones.benchmark.camera_info_capture import CameraInfoRecorder
+E   ModuleNotFoundError: No module named 'flydrones.benchmark'
+________ ERROR collecting tests/benchmark/test_camera_info_capture.py _________
+ImportError while importing test module 'C:\Users\yuche\.codex\worktrees\FlyDrones\track-eligibility\tests\benchmark\test_camera_info_capture.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+..\..\..\..\AppData\Local\Programs\Python\Python312\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\benchmark\test_camera_info_capture.py:6: in <module>
+    from flydrones.benchmark.camera_info_capture import (
+E   ModuleNotFoundError: No module named 'flydrones.benchmark'
+__________ ERROR collecting tests/benchmark/test_capture_contract.py __________
+ImportError while importing test module 'C:\Users\yuche\.codex\worktrees\FlyDrones\track-eligibility\tests\benchmark\test_capture_contract.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+..\..\..\..\AppData\Local\Programs\Python\Python312\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\benchmark\test_capture_contract.py:8: in <module>
+    from tools.benchmark import capture_disarmed_sensors as capture
+tools\benchmark\capture_disarmed_sensors.py:22: in <module>
+    from flydrones.benchmark.camera_info_capture import camera_info_fields  # noqa: E402
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   ModuleNotFoundError: No module named 'flydrones.benchmark'
+______ ERROR collecting tests/benchmark/test_causal_pair_stage_replay.py ______
+ImportError while importing test module 'C:\Users\yuche\.codex\worktrees\FlyDrones\track-eligibility\tests\benchmark\test_causal_pair_stage_replay.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+..\..\..\..\AppData\Local\Programs\Python\Python312\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\benchmark\test_causal_pair_stage_replay.py:7: in <module>
+    from tools.benchmark.openvins_causal_input import raw_profile
+tools\benchmark\openvins_causal_input.py:10: in <module>
+    from tools.benchmark.disarmed_sensor_provenance import validate_event
+tools\benchmark\disarmed_sensor_provenance.py:18: in <module>
+    from flydrones.benchmark.camera_info_capture import CameraInfoRecorder
+E   ModuleNotFoundError: No module named 'flydrones.benchmark'
+_______________ ERROR collecting tests/benchmark/test_clock.py ________________
+ImportError while importing test module 'C:\Users\yuche\.codex\worktrees\FlyDrones\track-eligibility\tests\benchmark\test_clock.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+..\..\..\..\AppData\Local\Programs\Python\Python312\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\benchmark\test_clock.py:6: in <module>
+    from flydrones.benchmark.contract import Command
+E   ModuleNotFoundError: No module named 'flydrones.benchmark'
+_ ERROR collecting tests/benchmark/test_declared_launch_environment_harness.py _
+ImportError while importing test module 'C:\Users\yuche\.codex\worktrees\FlyDrones\track-eligibility\tests\benchmark\test_declared_launch_environment_harness.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+..\..\..\..\AppData\Local\Programs\Python\Python312\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\benchmark\test_declared_launch_environment_harness.py:5: in <module>
+    from tools.benchmark import declared_launch_environment_harness as harness
+tools\benchmark\declared_launch_environment_harness.py:17: in <module>
+    from tools.benchmark.capture_disarmed_sensors import record_worker_environment  # noqa: E402
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tools\benchmark\capture_disarmed_sensors.py:22: in <module>
+    from flydrones.benchmark.camera_info_capture import camera_info_fields  # noqa: E402
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   ModuleNotFoundError: No module named 'flydrones.benchmark'
+___ ERROR collecting tests/benchmark/test_diagnostic_reference_freshness.py ___
+ImportError while importing test module 'C:\Users\yuche\.codex\worktrees\FlyDrones\track-eligibility\tests\benchmark\test_diagnostic_reference_freshness.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+..\..\..\..\AppData\Local\Programs\Python\Python312\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\benchmark\test_diagnostic_reference_freshness.py:5: in <module>
+    from tools.benchmark.diagnostic_reference_freshness import analyze_reference
+tools\benchmark\diagnostic_reference_freshness.py:9: in <module>
+    from tools.benchmark.physics_substep_trace import _state
+tools\benchmark\physics_substep_trace.py:13: in <module>
+    from flydrones.benchmark.gateway import sim_duration_ns
+E   ModuleNotFoundError: No module named 'flydrones.benchmark'
+_______ ERROR collecting tests/benchmark/test_disarmed_motion_probe.py ________
+ImportError while importing test module 'C:\Users\yuche\.codex\worktrees\FlyDrones\track-eligibility\tests\benchmark\test_disarmed_motion_probe.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+..\..\..\..\AppData\Local\Programs\Python\Python312\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\benchmark\test_disarmed_motion_probe.py:5: in <module>
+    from tools.benchmark.disarmed_motion_probe import MotionPolicy, profile
+tools\benchmark\disarmed_motion_probe.py:10: in <module>
+    from flydrones.benchmark.gateway import sim_duration_ns
+E   ModuleNotFoundError: No module named 'flydrones.benchmark'
+_________ ERROR collecting tests/benchmark/test_dynamic_camera_imu.py _________
+ImportError while importing test module 'C:\Users\yuche\.codex\worktrees\FlyDrones\track-eligibility\tests\benchmark\test_dynamic_camera_imu.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+..\..\..\..\AppData\Local\Programs\Python\Python312\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\benchmark\test_dynamic_camera_imu.py:6: in <module>
+    from flydrones.benchmark.dynamic_camera_imu import fit_image_imu_lag
+E   ModuleNotFoundError: No module named 'flydrones.benchmark'
+____________ ERROR collecting tests/benchmark/test_ego_adapter.py _____________
+ImportError while importing test module 'C:\Users\yuche\.codex\worktrees\FlyDrones\track-eligibility\tests\benchmark\test_ego_adapter.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+..\..\..\..\AppData\Local\Programs\Python\Python312\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\benchmark\test_ego_adapter.py:7: in <module>
+    from flydrones.benchmark.contract import Observation
+E   ModuleNotFoundError: No module named 'flydrones.benchmark'
+_________ ERROR collecting tests/benchmark/test_ekf2_heading_probe.py _________
+ImportError while importing test module 'C:\Users\yuche\.codex\worktrees\FlyDrones\track-eligibility\tests\benchmark\test_ekf2_heading_probe.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+..\..\..\..\AppData\Local\Programs\Python\Python312\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\benchmark\test_ekf2_heading_probe.py:10: in <module>
+    from flydrones.benchmark.gateway import NativeGazeboPx4Backend
+E   ModuleNotFoundError: No module named 'flydrones.benchmark'
+____________ ERROR collecting tests/benchmark/test_ekf2_shadow.py _____________
+ImportError while importing test module 'C:\Users\yuche\.codex\worktrees\FlyDrones\track-eligibility\tests\benchmark\test_ekf2_shadow.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+..\..\..\..\AppData\Local\Programs\Python\Python312\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\benchmark\test_ekf2_shadow.py:8: in <module>
+    from flydrones.benchmark.ekf2_shadow import audit_shadow_frames
+E   ModuleNotFoundError: No module named 'flydrones.benchmark'
+__________ ERROR collecting tests/benchmark/test_ekf2_shadow_cli.py ___________
+ImportError while importing test module 'C:\Users\yuche\.codex\worktrees\FlyDrones\track-eligibility\tests\benchmark\test_ekf2_shadow_cli.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+..\..\..\..\AppData\Local\Programs\Python\Python312\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\benchmark\test_ekf2_shadow_cli.py:10: in <module>
+    from tools.benchmark.audit_ekf2_shadow import _audit_verified_archive, write_report_once
+tools\benchmark\audit_ekf2_shadow.py:17: in <module>
+    from flydrones.benchmark.ekf2_shadow import audit_shadow_frames  # noqa: E402
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   ModuleNotFoundError: No module named 'flydrones.benchmark'
+_____ ERROR collecting tests/benchmark/test_estimator_aware_readiness.py ______
+ImportError while importing test module 'C:\Users\yuche\.codex\worktrees\FlyDrones\track-eligibility\tests\benchmark\test_estimator_aware_readiness.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+..\..\..\..\AppData\Local\Programs\Python\Python312\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\benchmark\test_estimator_aware_readiness.py:7: in <module>
+    from tools.benchmark.disarmed_sensor_provenance import validate_event
+tools\benchmark\disarmed_sensor_provenance.py:18: in <module>
+    from flydrones.benchmark.camera_info_capture import CameraInfoRecorder
+E   ModuleNotFoundError: No module named 'flydrones.benchmark'
+_ ERROR collecting tests/benchmark/test_execute_heartbeat_commit_order_startup_preflight.py _
+ImportError while importing test module 'C:\Users\yuche\.codex\worktrees\FlyDrones\track-eligibility\tests\benchmark\test_execute_heartbeat_commit_order_startup_preflight.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+..\..\..\..\AppData\Local\Programs\Python\Python312\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\benchmark\test_execute_heartbeat_commit_order_startup_preflight.py:6: in <module>
+    import tools.benchmark.execute_heartbeat_commit_order_startup_preflight as module
+tools\benchmark\execute_heartbeat_commit_order_startup_preflight.py:13: in <module>
+    from tools.benchmark.capture_disarmed_sensors import active_resources
+tools\benchmark\capture_disarmed_sensors.py:22: in <module>
+    from flydrones.benchmark.camera_info_capture import camera_info_fields  # noqa: E402
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   ModuleNotFoundError: No module named 'flydrones.benchmark'
+____________ ERROR collecting tests/benchmark/test_fly_adapter.py _____________
+ImportError while importing test module 'C:\Users\yuche\.codex\worktrees\FlyDrones\track-eligibility\tests\benchmark\test_fly_adapter.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+..\..\..\..\AppData\Local\Programs\Python\Python312\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\benchmark\test_fly_adapter.py:4: in <module>
+    from flydrones.benchmark.contract import Command, Observation
+E   ModuleNotFoundError: No module named 'flydrones.benchmark'
+________ ERROR collecting tests/benchmark/test_formal_archive_audit.py ________
+ImportError while importing test module 'C:\Users\yuche\.codex\worktrees\FlyDrones\track-eligibility\tests\benchmark\test_formal_archive_audit.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+..\..\..\..\AppData\Local\Programs\Python\Python312\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\benchmark\test_formal_archive_audit.py:8: in <module>
+    from tools.benchmark.audit_archive import audit_archive
+tools\benchmark\audit_archive.py:19: in <module>
+    from flydrones.benchmark.provenance import verify_sealed_manifest  # noqa: E402
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   ModuleNotFoundError: No module named 'flydrones.benchmark'
+_______ ERROR collecting tests/benchmark/test_heartbeat_commit_order.py _______
+ImportError while importing test module 'C:\Users\yuche\.codex\worktrees\FlyDrones\track-eligibility\tests\benchmark\test_heartbeat_commit_order.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+..\..\..\..\AppData\Local\Programs\Python\Python312\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\benchmark\test_heartbeat_commit_order.py:5: in <module>
+    from tools.benchmark.readiness_anchor import JournaledReadiness
+tools\benchmark\readiness_anchor.py:11: in <module>
+    from tools.benchmark.supported_excitation import MASSES, SupportedPolicy, supported_profile
+tools\benchmark\supported_excitation.py:13: in <module>
+    from flydrones.benchmark.gateway import sim_duration_ns
+E   ModuleNotFoundError: No module named 'flydrones.benchmark'
+________ ERROR collecting tests/benchmark/test_inertial_consistency.py ________
+ImportError while importing test module 'C:\Users\yuche\.codex\worktrees\FlyDrones\track-eligibility\tests\benchmark\test_inertial_consistency.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+..\..\..\..\AppData\Local\Programs\Python\Python312\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\benchmark\test_inertial_consistency.py:8: in <module>
+    from tools.benchmark.audit_inertial_consistency import audit_imu_delivery, audit_inertial_window
+tools\benchmark\audit_inertial_consistency.py:11: in <module>
+    from tools.benchmark.openvins_online_shadow import encode_packet, validate_ack
+tools\benchmark\openvins_online_shadow.py:17: in <module>
+    from tools.benchmark.openvins_causal_input import CausalInput, InputRefusal
+tools\benchmark\openvins_causal_input.py:10: in <module>
+    from tools.benchmark.disarmed_sensor_provenance import validate_event
+tools\benchmark\disarmed_sensor_provenance.py:18: in <module>
+    from flydrones.benchmark.camera_info_capture import CameraInfoRecorder
+E   ModuleNotFoundError: No module named 'flydrones.benchmark'
+______ ERROR collecting tests/benchmark/test_journaled_heartbeat_lane.py ______
+ImportError while importing test module 'C:\Users\yuche\.codex\worktrees\FlyDrones\track-eligibility\tests\benchmark\test_journaled_heartbeat_lane.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+..\..\..\..\AppData\Local\Programs\Python\Python312\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\benchmark\test_journaled_heartbeat_lane.py:8: in <module>
+    from tools.benchmark.journaled_heartbeat_lane import JournaledHeartbeatFanout
+tools\benchmark\journaled_heartbeat_lane.py:9: in <module>
+    from tools.benchmark.disarmed_sensor_provenance import validate_event
+tools\benchmark\disarmed_sensor_provenance.py:18: in <module>
+    from flydrones.benchmark.camera_info_capture import CameraInfoRecorder
+E   ModuleNotFoundError: No module named 'flydrones.benchmark'
+_______ ERROR collecting tests/benchmark/test_native_reference_probe.py _______
+ImportError while importing test module 'C:\Users\yuche\.codex\worktrees\FlyDrones\track-eligibility\tests\benchmark\test_native_reference_probe.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+..\..\..\..\AppData\Local\Programs\Python\Python312\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\benchmark\test_native_reference_probe.py:6: in <module>
+    from tools.benchmark.native_reference_probe import ReferenceRecorder, validate_module
+tools\benchmark\native_reference_probe.py:10: in <module>
+    from flydrones.benchmark.gateway import sim_duration_ns
+E   ModuleNotFoundError: No module named 'flydrones.benchmark'
+_______ ERROR collecting tests/benchmark/test_native_runtime_refusal.py _______
+ImportError while importing test module 'C:\Users\yuche\.codex\worktrees\FlyDrones\track-eligibility\tests\benchmark\test_native_runtime_refusal.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+..\..\..\..\AppData\Local\Programs\Python\Python312\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\benchmark\test_native_runtime_refusal.py:7: in <module>
+    from tests.benchmark.test_native_reference_probe import state
+tests\benchmark\test_native_reference_probe.py:6: in <module>
+    from tools.benchmark.native_reference_probe import ReferenceRecorder, validate_module
+tools\benchmark\native_reference_probe.py:10: in <module>
+    from flydrones.benchmark.gateway import sim_duration_ns
+E   ModuleNotFoundError: No module named 'flydrones.benchmark'
+_______ ERROR collecting tests/benchmark/test_openvins_delayed_feed.py ________
+ImportError while importing test module 'C:\Users\yuche\.codex\worktrees\FlyDrones\track-eligibility\tests\benchmark\test_openvins_delayed_feed.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+..\..\..\..\AppData\Local\Programs\Python\Python312\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\benchmark\test_openvins_delayed_feed.py:5: in <module>
+    from tools.benchmark.prepare_openvins_delayed_feed import (
+tools\benchmark\prepare_openvins_delayed_feed.py:18: in <module>
+    from flydrones.benchmark.camera_info_capture import verify_camera_info_capture
+E   ModuleNotFoundError: No module named 'flydrones.benchmark'
+___ ERROR collecting tests/benchmark/test_openvins_lazy_runtime_closure.py ____
+ImportError while importing test module 'C:\Users\yuche\.codex\worktrees\FlyDrones\track-eligibility\tests\benchmark\test_openvins_lazy_runtime_closure.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+..\..\..\..\AppData\Local\Programs\Python\Python312\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\benchmark\test_openvins_lazy_runtime_closure.py:8: in <module>
+    from tools.benchmark import openvins_lazy_runtime_closure as lazy
+tools\benchmark\openvins_lazy_runtime_closure.py:24: in <module>
+    from tools.benchmark.openvins_online_shadow import NativeClient, validate_frozen_config
+tools\benchmark\openvins_online_shadow.py:17: in <module>
+    from tools.benchmark.openvins_causal_input import CausalInput, InputRefusal
+tools\benchmark\openvins_causal_input.py:10: in <module>
+    from tools.benchmark.disarmed_sensor_provenance import validate_event
+tools\benchmark\disarmed_sensor_provenance.py:18: in <module>
+    from flydrones.benchmark.camera_info_capture import CameraInfoRecorder
+E   ModuleNotFoundError: No module named 'flydrones.benchmark'
+_______ ERROR collecting tests/benchmark/test_openvins_online_shadow.py _______
+ImportError while importing test module 'C:\Users\yuche\.codex\worktrees\FlyDrones\track-eligibility\tests\benchmark\test_openvins_online_shadow.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+..\..\..\..\AppData\Local\Programs\Python\Python312\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\benchmark\test_openvins_online_shadow.py:7: in <module>
+    from tools.benchmark.openvins_online_shadow import SourceWatchdog, encode_packet, validate_ack
+tools\benchmark\openvins_online_shadow.py:17: in <module>
+    from tools.benchmark.openvins_causal_input import CausalInput, InputRefusal
+tools\benchmark\openvins_causal_input.py:10: in <module>
+    from tools.benchmark.disarmed_sensor_provenance import validate_event
+tools\benchmark\disarmed_sensor_provenance.py:18: in <module>
+    from flydrones.benchmark.camera_info_capture import CameraInfoRecorder
+E   ModuleNotFoundError: No module named 'flydrones.benchmark'
+__________ ERROR collecting tests/benchmark/test_optical_fixture.py ___________
+ImportError while importing test module 'C:\Users\yuche\.codex\worktrees\FlyDrones\track-eligibility\tests\benchmark\test_optical_fixture.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+..\..\..\..\AppData\Local\Programs\Python\Python312\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\benchmark\test_optical_fixture.py:3: in <module>
+    from flydrones.benchmark.optical_fixture import analyze_markers
+E   ModuleNotFoundError: No module named 'flydrones.benchmark'
+_______ ERROR collecting tests/benchmark/test_physics_substep_trace.py ________
+ImportError while importing test module 'C:\Users\yuche\.codex\worktrees\FlyDrones\track-eligibility\tests\benchmark\test_physics_substep_trace.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+..\..\..\..\AppData\Local\Programs\Python\Python312\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\benchmark\test_physics_substep_trace.py:7: in <module>
+    from tools.benchmark.capture_disarmed_sensors import parse_capture_args
+tools\benchmark\capture_disarmed_sensors.py:22: in <module>
+    from flydrones.benchmark.camera_info_capture import camera_info_fields  # noqa: E402
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   ModuleNotFoundError: No module named 'flydrones.benchmark'
+________ ERROR collecting tests/benchmark/test_prearm_board_fixture.py ________
+ImportError while importing test module 'C:\Users\yuche\.codex\worktrees\FlyDrones\track-eligibility\tests\benchmark\test_prearm_board_fixture.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+..\..\..\..\AppData\Local\Programs\Python\Python312\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\benchmark\test_prearm_board_fixture.py:9: in <module>
+    from flydrones.benchmark.worlds import generate_development_world, write_sdf
+E   ModuleNotFoundError: No module named 'flydrones.benchmark'
+_______ ERROR collecting tests/benchmark/test_prearm_pattern_fixture.py _______
+ImportError while importing test module 'C:\Users\yuche\.codex\worktrees\FlyDrones\track-eligibility\tests\benchmark\test_prearm_pattern_fixture.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+..\..\..\..\AppData\Local\Programs\Python\Python312\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\benchmark\test_prearm_pattern_fixture.py:8: in <module>
+    from flydrones.benchmark.worlds import generate_development_world, write_sdf
+E   ModuleNotFoundError: No module named 'flydrones.benchmark'
+________ ERROR collecting tests/benchmark/test_prearm_static_audit.py _________
+ImportError while importing test module 'C:\Users\yuche\.codex\worktrees\FlyDrones\track-eligibility\tests\benchmark\test_prearm_static_audit.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+..\..\..\..\AppData\Local\Programs\Python\Python312\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\benchmark\test_prearm_static_audit.py:4: in <module>
+    from tools.benchmark.audit_prearm_static import assess_prearm_windows
+tools\benchmark\audit_prearm_static.py:20: in <module>
+    from flydrones.benchmark.camera_info_capture import verify_camera_info_capture
+E   ModuleNotFoundError: No module named 'flydrones.benchmark'
+_____________ ERROR collecting tests/benchmark/test_provenance.py _____________
+ImportError while importing test module 'C:\Users\yuche\.codex\worktrees\FlyDrones\track-eligibility\tests\benchmark\test_provenance.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+..\..\..\..\AppData\Local\Programs\Python\Python312\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\benchmark\test_provenance.py:6: in <module>
+    from flydrones.benchmark.provenance import (
+E   ModuleNotFoundError: No module named 'flydrones.benchmark'
+__________ ERROR collecting tests/benchmark/test_readiness_anchor.py __________
+ImportError while importing test module 'C:\Users\yuche\.codex\worktrees\FlyDrones\track-eligibility\tests\benchmark\test_readiness_anchor.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+..\..\..\..\AppData\Local\Programs\Python\Python312\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\benchmark\test_readiness_anchor.py:5: in <module>
+    from tools.benchmark.capture_disarmed_sensors import parse_capture_args
+tools\benchmark\capture_disarmed_sensors.py:22: in <module>
+    from flydrones.benchmark.camera_info_capture import camera_info_fields  # noqa: E402
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   ModuleNotFoundError: No module named 'flydrones.benchmark'
+________ ERROR collecting tests/benchmark/test_ready_shadow_fanout.py _________
+ImportError while importing test module 'C:\Users\yuche\.codex\worktrees\FlyDrones\track-eligibility\tests\benchmark\test_ready_shadow_fanout.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+..\..\..\..\AppData\Local\Programs\Python\Python312\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\benchmark\test_ready_shadow_fanout.py:8: in <module>
+    from tools.benchmark.disarmed_sensor_provenance import CaptureWriter, validate_event
+tools\benchmark\disarmed_sensor_provenance.py:18: in <module>
+    from flydrones.benchmark.camera_info_capture import CameraInfoRecorder
+E   ModuleNotFoundError: No module named 'flydrones.benchmark'
+_____ ERROR collecting tests/benchmark/test_renderer_first_step_study.py ______
+ImportError while importing test module 'C:\Users\yuche\.codex\worktrees\FlyDrones\track-eligibility\tests\benchmark\test_renderer_first_step_study.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+..\..\..\..\AppData\Local\Programs\Python\Python312\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\benchmark\test_renderer_first_step_study.py:6: in <module>
+    from tools.benchmark.renderer_first_step_study import build_command, run_study
+tools\benchmark\renderer_first_step_study.py:11: in <module>
+    from tools.benchmark.disarmed_sensor_provenance import supervise_worker
+tools\benchmark\disarmed_sensor_provenance.py:18: in <module>
+    from flydrones.benchmark.camera_info_capture import CameraInfoRecorder
+E   ModuleNotFoundError: No module named 'flydrones.benchmark'
+_______________ ERROR collecting tests/benchmark/test_report.py _______________
+ImportError while importing test module 'C:\Users\yuche\.codex\worktrees\FlyDrones\track-eligibility\tests\benchmark\test_report.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+..\..\..\..\AppData\Local\Programs\Python\Python312\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\benchmark\test_report.py:3: in <module>
+    from flydrones.benchmark.report import path_length, summarize_controller
+E   ModuleNotFoundError: No module named 'flydrones.benchmark'
+____________ ERROR collecting tests/benchmark/test_rgb_capture.py _____________
+ImportError while importing test module 'C:\Users\yuche\.codex\worktrees\FlyDrones\track-eligibility\tests\benchmark\test_rgb_capture.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+..\..\..\..\AppData\Local\Programs\Python\Python312\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\benchmark\test_rgb_capture.py:7: in <module>
+    from flydrones.benchmark.gateway import NativeGazeboPx4Backend
+E   ModuleNotFoundError: No module named 'flydrones.benchmark'
+___________ ERROR collecting tests/benchmark/test_rgb_imu_timing.py ___________
+ImportError while importing test module 'C:\Users\yuche\.codex\worktrees\FlyDrones\track-eligibility\tests\benchmark\test_rgb_imu_timing.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+..\..\..\..\AppData\Local\Programs\Python\Python312\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\benchmark\test_rgb_imu_timing.py:3: in <module>
+    from flydrones.benchmark.rgb_imu_timing import analyze_decision_window, analyze_timing
+E   ModuleNotFoundError: No module named 'flydrones.benchmark'
+_______________ ERROR collecting tests/benchmark/test_runner.py _______________
+ImportError while importing test module 'C:\Users\yuche\.codex\worktrees\FlyDrones\track-eligibility\tests\benchmark\test_runner.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+..\..\..\..\AppData\Local\Programs\Python\Python312\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\benchmark\test_runner.py:5: in <module>
+    from flydrones.benchmark.provenance import freeze_files, seal_manifest
+E   ModuleNotFoundError: No module named 'flydrones.benchmark'
+______ ERROR collecting tests/benchmark/test_runtime_resource_binding.py ______
+ImportError while importing test module 'C:\Users\yuche\.codex\worktrees\FlyDrones\track-eligibility\tests\benchmark\test_runtime_resource_binding.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+..\..\..\..\AppData\Local\Programs\Python\Python312\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\benchmark\test_runtime_resource_binding.py:7: in <module>
+    from tools.benchmark import capture_disarmed_sensors as capture
+tools\benchmark\capture_disarmed_sensors.py:22: in <module>
+    from flydrones.benchmark.camera_info_capture import camera_info_fields  # noqa: E402
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   ModuleNotFoundError: No module named 'flydrones.benchmark'
+_______________ ERROR collecting tests/benchmark/test_score.py ________________
+ImportError while importing test module 'C:\Users\yuche\.codex\worktrees\FlyDrones\track-eligibility\tests\benchmark\test_score.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+..\..\..\..\AppData\Local\Programs\Python\Python312\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\benchmark\test_score.py:3: in <module>
+    from flydrones.benchmark.score import EpisodeScorer, ScoreSample
+E   ModuleNotFoundError: No module named 'flydrones.benchmark'
+______________ ERROR collecting tests/benchmark/test_sensors.py _______________
+ImportError while importing test module 'C:\Users\yuche\.codex\worktrees\FlyDrones\track-eligibility\tests\benchmark\test_sensors.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+..\..\..\..\AppData\Local\Programs\Python\Python312\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\benchmark\test_sensors.py:4: in <module>
+    from flydrones.benchmark.contract import Observation
+E   ModuleNotFoundError: No module named 'flydrones.benchmark'
+___ ERROR collecting tests/benchmark/test_source_watchdog_startup_cohort.py ___
+ImportError while importing test module 'C:\Users\yuche\.codex\worktrees\FlyDrones\track-eligibility\tests\benchmark\test_source_watchdog_startup_cohort.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+..\..\..\..\AppData\Local\Programs\Python\Python312\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\benchmark\test_source_watchdog_startup_cohort.py:8: in <module>
+    from tools.benchmark.openvins_online_shadow import SourceWatchdog
+tools\benchmark\openvins_online_shadow.py:17: in <module>
+    from tools.benchmark.openvins_causal_input import CausalInput, InputRefusal
+tools\benchmark\openvins_causal_input.py:10: in <module>
+    from tools.benchmark.disarmed_sensor_provenance import validate_event
+tools\benchmark\disarmed_sensor_provenance.py:18: in <module>
+    from flydrones.benchmark.camera_info_capture import CameraInfoRecorder
+E   ModuleNotFoundError: No module named 'flydrones.benchmark'
+_________ ERROR collecting tests/benchmark/test_stationary_prelude.py _________
+ImportError while importing test module 'C:\Users\yuche\.codex\worktrees\FlyDrones\track-eligibility\tests\benchmark\test_stationary_prelude.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+..\..\..\..\AppData\Local\Programs\Python\Python312\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\benchmark\test_stationary_prelude.py:7: in <module>
+    from flydrones.benchmark import gateway as gateway_module
+E   ModuleNotFoundError: No module named 'flydrones.benchmark'
+______ ERROR collecting tests/benchmark/test_stationary_prelude_audit.py ______
+ImportError while importing test module 'C:\Users\yuche\.codex\worktrees\FlyDrones\track-eligibility\tests\benchmark\test_stationary_prelude_audit.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+..\..\..\..\AppData\Local\Programs\Python\Python312\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\benchmark\test_stationary_prelude_audit.py:6: in <module>
+    from tools.benchmark.audit_stationary_prelude import assess_prelude, verify_rgb_consistency
+tools\benchmark\audit_stationary_prelude.py:11: in <module>
+    from flydrones.benchmark.camera_info_capture import verify_camera_info_capture
+E   ModuleNotFoundError: No module named 'flydrones.benchmark'
+________ ERROR collecting tests/benchmark/test_supported_excitation.py ________
+ImportError while importing test module 'C:\Users\yuche\.codex\worktrees\FlyDrones\track-eligibility\tests\benchmark\test_supported_excitation.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+..\..\..\..\AppData\Local\Programs\Python\Python312\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\benchmark\test_supported_excitation.py:5: in <module>
+    from tools.benchmark.capture_disarmed_sensors import parse_capture_args
+tools\benchmark\capture_disarmed_sensors.py:22: in <module>
+    from flydrones.benchmark.camera_info_capture import camera_info_fields  # noqa: E402
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   ModuleNotFoundError: No module named 'flydrones.benchmark'
+____________ ERROR collecting tests/benchmark/test_ulog_capture.py ____________
+ImportError while importing test module 'C:\Users\yuche\.codex\worktrees\FlyDrones\track-eligibility\tests\benchmark\test_ulog_capture.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+..\..\..\..\AppData\Local\Programs\Python\Python312\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\benchmark\test_ulog_capture.py:5: in <module>
+    from flydrones.benchmark.gateway import NativeGazeboPx4Backend
+E   ModuleNotFoundError: No module named 'flydrones.benchmark'
+____________ ERROR collecting tests/benchmark/test_ulog_health.py _____________
+ImportError while importing test module 'C:\Users\yuche\.codex\worktrees\FlyDrones\track-eligibility\tests\benchmark\test_ulog_health.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+..\..\..\..\AppData\Local\Programs\Python\Python312\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\benchmark\test_ulog_health.py:5: in <module>
+    from flydrones.benchmark.ulog_health import summarize_ulog
+E   ModuleNotFoundError: No module named 'flydrones.benchmark'
+_______________ ERROR collecting tests/benchmark/test_worlds.py _______________
+ImportError while importing test module 'C:\Users\yuche\.codex\worktrees\FlyDrones\track-eligibility\tests\benchmark\test_worlds.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+..\..\..\..\AppData\Local\Programs\Python\Python312\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\benchmark\test_worlds.py:4: in <module>
+    from flydrones.benchmark.geometry import segment_box_clearance, segment_cylinder_clearance
+E   ModuleNotFoundError: No module named 'flydrones.benchmark'
+____ ERROR collecting tests/connectome_training/test_capture_input_gate.py ____
+ImportError while importing test module 'C:\Users\yuche\.codex\worktrees\FlyDrones\track-eligibility\tests\connectome_training\test_capture_input_gate.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+..\..\..\..\AppData\Local\Programs\Python\Python312\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\connectome_training\test_capture_input_gate.py:10: in <module>
+    from flydrones.benchmark.contract import Observation
+E   ModuleNotFoundError: No module named 'flydrones.benchmark'
+______ ERROR collecting tests/connectome_training/test_corpus_config.py _______
+ImportError while importing test module 'C:\Users\yuche\.codex\worktrees\FlyDrones\track-eligibility\tests\connectome_training\test_corpus_config.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+..\..\..\..\AppData\Local\Programs\Python\Python312\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\connectome_training\test_corpus_config.py:11: in <module>
+    from flydrones.benchmark.provenance import seal_manifest
+E   ModuleNotFoundError: No module named 'flydrones.benchmark'
+______ ERROR collecting tests/connectome_training/test_corpus_horizon.py ______
+ImportError while importing test module 'C:\Users\yuche\.codex\worktrees\FlyDrones\track-eligibility\tests\connectome_training\test_corpus_horizon.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+..\..\..\..\AppData\Local\Programs\Python\Python312\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\connectome_training\test_corpus_horizon.py:8: in <module>
+    from flydrones.benchmark.contract import Command, Decision, Observation
+E   ModuleNotFoundError: No module named 'flydrones.benchmark'
+______ ERROR collecting tests/connectome_training/test_corpus_worlds.py _______
+ImportError while importing test module 'C:\Users\yuche\.codex\worktrees\FlyDrones\track-eligibility\tests\connectome_training\test_corpus_worlds.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+..\..\..\..\AppData\Local\Programs\Python\Python312\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\connectome_training\test_corpus_worlds.py:8: in <module>
+    from flydrones.benchmark.worlds import dynamic_center, has_route
+E   ModuleNotFoundError: No module named 'flydrones.benchmark'
+________ ERROR collecting tests/connectome_training/test_curriculum.py ________
+ImportError while importing test module 'C:\Users\yuche\.codex\worktrees\FlyDrones\track-eligibility\tests\connectome_training\test_curriculum.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+..\..\..\..\AppData\Local\Programs\Python\Python312\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\connectome_training\test_curriculum.py:6: in <module>
+    from flydrones.connectome_training.curriculum import run_curriculum
+E   ModuleNotFoundError: No module named 'flydrones.connectome_training'
+______ ERROR collecting tests/connectome_training/test_curriculum_cli.py ______
+ImportError while importing test module 'C:\Users\yuche\.codex\worktrees\FlyDrones\track-eligibility\tests\connectome_training\test_curriculum_cli.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+..\..\..\..\AppData\Local\Programs\Python\Python312\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\connectome_training\test_curriculum_cli.py:9: in <module>
+    from flydrones.connectome_training.curriculum_session import verify_source_digest
+E   ModuleNotFoundError: No module named 'flydrones.connectome_training'
+____ ERROR collecting tests/connectome_training/test_curriculum_config.py _____
+ImportError while importing test module 'C:\Users\yuche\.codex\worktrees\FlyDrones\track-eligibility\tests\connectome_training\test_curriculum_config.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+..\..\..\..\AppData\Local\Programs\Python\Python312\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\connectome_training\test_curriculum_config.py:6: in <module>
+    from flydrones.connectome_training.curriculum_config import (
+E   ModuleNotFoundError: No module named 'flydrones.connectome_training'
+_____ ERROR collecting tests/connectome_training/test_curriculum_state.py _____
+ImportError while importing test module 'C:\Users\yuche\.codex\worktrees\FlyDrones\track-eligibility\tests\connectome_training\test_curriculum_state.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+..\..\..\..\AppData\Local\Programs\Python\Python312\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\connectome_training\test_curriculum_state.py:8: in <module>
+    from flydrones.connectome_training.checkpoint import (
+E   ModuleNotFoundError: No module named 'flydrones.connectome_training'
+_________ ERROR collecting tests/connectome_training/test_dataset.py __________
+ImportError while importing test module 'C:\Users\yuche\.codex\worktrees\FlyDrones\track-eligibility\tests\connectome_training\test_dataset.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+..\..\..\..\AppData\Local\Programs\Python\Python312\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\connectome_training\test_dataset.py:6: in <module>
+    from flydrones.connectome_training.dataset import (
+E   ModuleNotFoundError: No module named 'flydrones.connectome_training'
+________ ERROR collecting tests/connectome_training/test_governance.py ________
+ImportError while importing test module 'C:\Users\yuche\.codex\worktrees\FlyDrones\track-eligibility\tests\connectome_training\test_governance.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+..\..\..\..\AppData\Local\Programs\Python\Python312\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\connectome_training\test_governance.py:4: in <module>
+    from flydrones.connectome_training.checkpoint import load_checkpoint, save_checkpoint
+E   ModuleNotFoundError: No module named 'flydrones.connectome_training'
+__________ ERROR collecting tests/connectome_training/test_model.py ___________
+ImportError while importing test module 'C:\Users\yuche\.codex\worktrees\FlyDrones\track-eligibility\tests\connectome_training\test_model.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+..\..\..\..\AppData\Local\Programs\Python\Python312\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\connectome_training\test_model.py:7: in <module>
+    from flydrones.connectome_training.model import ConnectomeConstrainedCore
+E   ModuleNotFoundError: No module named 'flydrones.connectome_training'
+________ ERROR collecting tests/connectome_training/test_parameters.py ________
+ImportError while importing test module 'C:\Users\yuche\.codex\worktrees\FlyDrones\track-eligibility\tests\connectome_training\test_parameters.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+..\..\..\..\AppData\Local\Programs\Python\Python312\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\connectome_training\test_parameters.py:6: in <module>
+    from flydrones.connectome_training.parameters import (
+E   ModuleNotFoundError: No module named 'flydrones.connectome_training'
+________ ERROR collecting tests/connectome_training/test_profiling.py _________
+ImportError while importing test module 'C:\Users\yuche\.codex\worktrees\FlyDrones\track-eligibility\tests\connectome_training\test_profiling.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+..\..\..\..\AppData\Local\Programs\Python\Python312\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\connectome_training\test_profiling.py:3: in <module>
+    from flydrones.connectome_training.profiling import summarize_latency
+E   ModuleNotFoundError: No module named 'flydrones.connectome_training'
+_________ ERROR collecting tests/connectome_training/test_recorder.py _________
+ImportError while importing test module 'C:\Users\yuche\.codex\worktrees\FlyDrones\track-eligibility\tests\connectome_training\test_recorder.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+..\..\..\..\AppData\Local\Programs\Python\Python312\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\connectome_training\test_recorder.py:4: in <module>
+    from flydrones.benchmark.contract import Command, Decision, Observation
+E   ModuleNotFoundError: No module named 'flydrones.benchmark'
+_________ ERROR collecting tests/connectome_training/test_trainer.py __________
+ImportError while importing test module 'C:\Users\yuche\.codex\worktrees\FlyDrones\track-eligibility\tests\connectome_training\test_trainer.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+..\..\..\..\AppData\Local\Programs\Python\Python312\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\connectome_training\test_trainer.py:8: in <module>
+    from flydrones.connectome_training.dataset import (
+E   ModuleNotFoundError: No module named 'flydrones.connectome_training'
+______________ ERROR collecting tests/test_distributed_stress.py ______________
+ImportError while importing test module 'C:\Users\yuche\.codex\worktrees\FlyDrones\track-eligibility\tests\test_distributed_stress.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+..\..\..\..\AppData\Local\Programs\Python\Python312\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\test_distributed_stress.py:8: in <module>
+    from flydrones.distributed_stress import (
+E   ImportError: cannot import name '_publish_start_signal' from 'flydrones.distributed_stress' (C:\Users\yuche\.codex\worktrees\FlyDrones\curriculum-training\src\flydrones\distributed_stress.py)
+=========================== short test summary info ===========================
+ERROR tests/benchmark/test_audit_causal_pair_sim_time_physical_attempt.py
+ERROR tests/benchmark/test_audit_heartbeat_sim_time_readiness.py
+ERROR tests/benchmark/test_audit_openvins_lazy_runtime_closure.py
+ERROR tests/benchmark/test_camera_info_capture.py
+ERROR tests/benchmark/test_capture_contract.py
+ERROR tests/benchmark/test_causal_pair_stage_replay.py
+ERROR tests/benchmark/test_clock.py
+ERROR tests/benchmark/test_declared_launch_environment_harness.py
+ERROR tests/benchmark/test_diagnostic_reference_freshness.py
+ERROR tests/benchmark/test_disarmed_motion_probe.py
+ERROR tests/benchmark/test_dynamic_camera_imu.py
+ERROR tests/benchmark/test_ego_adapter.py
+ERROR tests/benchmark/test_ekf2_heading_probe.py
+ERROR tests/benchmark/test_ekf2_shadow.py
+ERROR tests/benchmark/test_ekf2_shadow_cli.py
+ERROR tests/benchmark/test_estimator_aware_readiness.py
+ERROR tests/benchmark/test_execute_heartbeat_commit_order_startup_preflight.py
+ERROR tests/benchmark/test_fly_adapter.py
+ERROR tests/benchmark/test_formal_archive_audit.py
+ERROR tests/benchmark/test_heartbeat_commit_order.py
+ERROR tests/benchmark/test_inertial_consistency.py
+ERROR tests/benchmark/test_journaled_heartbeat_lane.py
+ERROR tests/benchmark/test_native_reference_probe.py
+ERROR tests/benchmark/test_native_runtime_refusal.py
+ERROR tests/benchmark/test_openvins_delayed_feed.py
+ERROR tests/benchmark/test_openvins_lazy_runtime_closure.py
+ERROR tests/benchmark/test_openvins_online_shadow.py
+ERROR tests/benchmark/test_optical_fixture.py
+ERROR tests/benchmark/test_physics_substep_trace.py
+ERROR tests/benchmark/test_prearm_board_fixture.py
+ERROR tests/benchmark/test_prearm_pattern_fixture.py
+ERROR tests/benchmark/test_prearm_static_audit.py
+ERROR tests/benchmark/test_provenance.py
+ERROR tests/benchmark/test_readiness_anchor.py
+ERROR tests/benchmark/test_ready_shadow_fanout.py
+ERROR tests/benchmark/test_renderer_first_step_study.py
+ERROR tests/benchmark/test_report.py
+ERROR tests/benchmark/test_rgb_capture.py
+ERROR tests/benchmark/test_rgb_imu_timing.py
+ERROR tests/benchmark/test_runner.py
+ERROR tests/benchmark/test_runtime_resource_binding.py
+ERROR tests/benchmark/test_score.py
+ERROR tests/benchmark/test_sensors.py
+ERROR tests/benchmark/test_source_watchdog_startup_cohort.py
+ERROR tests/benchmark/test_stationary_prelude.py
+ERROR tests/benchmark/test_stationary_prelude_audit.py
+ERROR tests/benchmark/test_supported_excitation.py
+ERROR tests/benchmark/test_ulog_capture.py
+ERROR tests/benchmark/test_ulog_health.py
+ERROR tests/benchmark/test_worlds.py
+ERROR tests/connectome_training/test_capture_input_gate.py
+ERROR tests/connectome_training/test_corpus_config.py
+ERROR tests/connectome_training/test_corpus_horizon.py
+ERROR tests/connectome_training/test_corpus_worlds.py
+ERROR tests/connectome_training/test_curriculum.py
+ERROR tests/connectome_training/test_curriculum_cli.py
+ERROR tests/connectome_training/test_curriculum_config.py
+ERROR tests/connectome_training/test_curriculum_state.py
+ERROR tests/connectome_training/test_dataset.py
+ERROR tests/connectome_training/test_governance.py
+ERROR tests/connectome_training/test_model.py
+ERROR tests/connectome_training/test_parameters.py
+ERROR tests/connectome_training/test_profiling.py
+ERROR tests/connectome_training/test_recorder.py
+ERROR tests/connectome_training/test_trainer.py
+ERROR tests/test_distributed_stress.py
+!!!!!!!!!!!!!!!!!! Interrupted: 66 errors during collection !!!!!!!!!!!!!!!!!!!
+66 errors in 8.10s

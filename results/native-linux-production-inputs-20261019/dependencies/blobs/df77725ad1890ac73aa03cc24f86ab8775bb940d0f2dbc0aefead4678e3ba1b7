@@ -1,0 +1,15 @@
+/.
+/usr
+/usr/lib
+/usr/lib/x86_64-linux-gnu
+/usr/lib/x86_64-linux-gnu/lapack
+/usr/lib/x86_64-linux-gnu/lapack/liblapack.a
+/usr/lib/x86_64-linux-gnu/liblapack_pic.a
+/usr/lib/x86_64-linux-gnu/pkgconfig
+/usr/lib/x86_64-linux-gnu/pkgconfig/lapack-netlib.pc
+/usr/share
+/usr/share/doc
+/usr/share/doc/liblapack-dev
+/usr/share/doc/liblapack-dev/copyright
+/usr/lib/x86_64-linux-gnu/lapack/liblapack.so
+/usr/share/doc/liblapack-dev/changelog.Debian.gz

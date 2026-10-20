@@ -1,0 +1,45 @@
+{
+  "schema": "flydrones-camera-info-v1",
+  "topic": "/benchmark/rgbd/camera_info",
+  "message_count": 1,
+  "changed_stable_fields": 0,
+  "first_message_sha256": "6d2ed00a687f29103f8c48e5f49fedd4b0b903852682cc2c8b6592eb6e3b1437",
+  "camera_info": {
+    "width": 160,
+    "height": 120,
+    "frame_id": "camera_link",
+    "intrinsics_k": [
+      108.12401050876075,
+      0.0,
+      80.0,
+      0.0,
+      108.12401050876075,
+      60.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "projection_p": [
+      108.12401050876075,
+      0.0,
+      80.0,
+      0.0,
+      0.0,
+      108.12401050876075,
+      60.0,
+      0.0,
+      0.0,
+      0.0,
+      1.0,
+      0.0
+    ],
+    "distortion_model": 0,
+    "distortion_k": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ]
+  }
+}

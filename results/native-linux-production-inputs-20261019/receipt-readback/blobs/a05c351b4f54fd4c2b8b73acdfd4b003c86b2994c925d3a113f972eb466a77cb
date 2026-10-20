@@ -1,0 +1,783 @@
+{
+  "schema": "native-offset-current-source-v1",
+  "files": {
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/src/flydrones/__init__.py": {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/src/flydrones/__init__.py",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/src/flydrones/__init__.py",
+      "bytes": 84,
+      "sha256": "d727a1daa671c586aa3a87acd741a509521f8707d9d811ccffb4a713a8895285"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/src/flydrones/benchmark/__init__.py": {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/src/flydrones/benchmark/__init__.py",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/src/flydrones/benchmark/__init__.py",
+      "bytes": 64,
+      "sha256": "87f71597fc29585ef2a2243393caae34935e692b15df1dc6e66f9a00568290ff"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/src/flydrones/benchmark/camera_info_capture.py": {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/src/flydrones/benchmark/camera_info_capture.py",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/src/flydrones/benchmark/camera_info_capture.py",
+      "bytes": 4539,
+      "sha256": "005c180b94938d8aa90b73c9555d87bdea4ca4bcdc6173bee613056e11635edf"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/src/flydrones/benchmark/clock.py": {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/src/flydrones/benchmark/clock.py",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/src/flydrones/benchmark/clock.py",
+      "bytes": 1051,
+      "sha256": "fef2652f9d4d33cd12c7e207bebf3ca3ca0521ec37445123f0e32d2856978d35"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/src/flydrones/benchmark/contract.py": {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/src/flydrones/benchmark/contract.py",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/src/flydrones/benchmark/contract.py",
+      "bytes": 1597,
+      "sha256": "44145adb507d671a66191aadc654461a75ba6424ad65f7c6cbd75abcde4d258f"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/src/flydrones/benchmark/ekf2_shadow.py": {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/src/flydrones/benchmark/ekf2_shadow.py",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/src/flydrones/benchmark/ekf2_shadow.py",
+      "bytes": 14458,
+      "sha256": "689af9da42e65b29e06a8416927f0e13faec7508c95b682ca903ff428a95d101"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/src/flydrones/benchmark/gateway.py": {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/src/flydrones/benchmark/gateway.py",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/src/flydrones/benchmark/gateway.py",
+      "bytes": 53284,
+      "sha256": "1e5502a8765769146db120bf9343394f4fabcefc4c28b93e6113f1ecc9a9e740"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/src/flydrones/benchmark/geometry.py": {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/src/flydrones/benchmark/geometry.py",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/src/flydrones/benchmark/geometry.py",
+      "bytes": 2443,
+      "sha256": "b15887f873aec2f6342e76c75a018ad9c95c1ec17c236cea3b32284990560432"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/src/flydrones/benchmark/kalibr_camera_consumption.py": {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/src/flydrones/benchmark/kalibr_camera_consumption.py",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/src/flydrones/benchmark/kalibr_camera_consumption.py",
+      "bytes": 8902,
+      "sha256": "40c2715ce9fa86a712b02de36502c681c603a2e3d1f523e4728d16989bbb4cae"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/src/flydrones/benchmark/px4_camera_source.py": {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/src/flydrones/benchmark/px4_camera_source.py",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/src/flydrones/benchmark/px4_camera_source.py",
+      "bytes": 18276,
+      "sha256": "9e23b8c6f0cca9e80bb393bd7f8bc4e8d591e1b99944516241faa86c37c05b63"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/src/flydrones/benchmark/rgb_capture.py": {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/src/flydrones/benchmark/rgb_capture.py",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/src/flydrones/benchmark/rgb_capture.py",
+      "bytes": 3851,
+      "sha256": "d1d0fe92b9bcf13bcb6d4f75f2445cfe3903752bbd68279a9c07bec7503be4dc"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/src/flydrones/benchmark/score.py": {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/src/flydrones/benchmark/score.py",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/src/flydrones/benchmark/score.py",
+      "bytes": 4381,
+      "sha256": "9981e1a3e2134e06f195caefb31d88447cff9822e3321d99f4c5dee7309b9dc8"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/src/flydrones/benchmark/sensors.py": {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/src/flydrones/benchmark/sensors.py",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/src/flydrones/benchmark/sensors.py",
+      "bytes": 8017,
+      "sha256": "8e23d0da1ad58e766f3784de90fece7c48c34b02f8cda9acc3f46084308d9390"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/src/flydrones/benchmark/ulog_capture.py": {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/src/flydrones/benchmark/ulog_capture.py",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/src/flydrones/benchmark/ulog_capture.py",
+      "bytes": 3961,
+      "sha256": "dbce660942b708f8f36eb1fbcfe95469170b6a4bd697ac9e1305a88b2c350aac"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/src/flydrones/benchmark/worlds.py": {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/src/flydrones/benchmark/worlds.py",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/src/flydrones/benchmark/worlds.py",
+      "bytes": 11569,
+      "sha256": "063515ad32d57d4ab8a8007375acf557140338a7dbe520386d2685cc123a9e88"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/src/flydrones/drones/__init__.py": {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/src/flydrones/drones/__init__.py",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/src/flydrones/drones/__init__.py",
+      "bytes": 795,
+      "sha256": "8d2369e6b950b195e4bf71cc1c2f839a258acc1f2c084c5f74864a02da974247"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/src/flydrones/drones/base.py": {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/src/flydrones/drones/base.py",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/src/flydrones/drones/base.py",
+      "bytes": 2051,
+      "sha256": "30c08931aa8cb77f8b41e33ce1e424e95cb7bdabc836b34e1f4fc40106d01e86"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/src/flydrones/drones/crazyflie.py": {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/src/flydrones/drones/crazyflie.py",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/src/flydrones/drones/crazyflie.py",
+      "bytes": 4239,
+      "sha256": "8ded30ec845093815f0ca81eaf7a35f681d7a17f4ddb7c74a09473490d02c0f2"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/src/flydrones/drones/mavlink.py": {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/src/flydrones/drones/mavlink.py",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/src/flydrones/drones/mavlink.py",
+      "bytes": 13835,
+      "sha256": "4d49427fcfabd9588da8bb877d48e0f4578f52349a002c704a1821948eb88066"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/src/flydrones/drones/sim.py": {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/src/flydrones/drones/sim.py",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/src/flydrones/drones/sim.py",
+      "bytes": 9259,
+      "sha256": "89ef7a67f2d0a5f70cf8fc15ffa08caf355157fcbfc715298ceb6136fddb740d"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/src/flydrones/drones/tello.py": {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/src/flydrones/drones/tello.py",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/src/flydrones/drones/tello.py",
+      "bytes": 3005,
+      "sha256": "2a783177b0b2b7206a92ceafc431b1876ffbc7bb2b9fd2f72544e28ba19887ab"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/src/flydrones/drones/udp_bridge.py": {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/src/flydrones/drones/udp_bridge.py",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/src/flydrones/drones/udp_bridge.py",
+      "bytes": 4518,
+      "sha256": "d83ba1e2cb5b07e5727c6e8d5b0a09367acf8a6e4d815c00934bdd9adfb238c7"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/src/flydrones/motor/__init__.py": {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/src/flydrones/motor/__init__.py",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/src/flydrones/motor/__init__.py",
+      "bytes": 118,
+      "sha256": "d5757bcb834ea819f9fc97720dc99a3c610cadd741708bd5c249c6aacba067b1"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/src/flydrones/motor/command.py": {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/src/flydrones/motor/command.py",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/src/flydrones/motor/command.py",
+      "bytes": 949,
+      "sha256": "febc2273083733e80ab814718391925950508189671be60f4c7cd956f06e358a"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/src/flydrones/motor/decoder.py": {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/src/flydrones/motor/decoder.py",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/src/flydrones/motor/decoder.py",
+      "bytes": 7230,
+      "sha256": "12b8a5d2220d44c18b25dffca118f0e5499295a3cc58b36820237e30cd0085f7"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/src/flydrones/safety.py": {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/src/flydrones/safety.py",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/src/flydrones/safety.py",
+      "bytes": 7517,
+      "sha256": "8fe14304c64a3d6b3aa7281034bbf028aee78b166f73b9241c7ebe52a75bd695"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/agent_capture_runtime.py": {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/agent_capture_runtime.py",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/agent_capture_runtime.py",
+      "bytes": 13456,
+      "sha256": "da6de0ab42c999a27884ea3401ea0c268bd5f03d27fd596ab440e8278a736a35"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/agent_owned_listener.py": {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/agent_owned_listener.py",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/agent_owned_listener.py",
+      "bytes": 6555,
+      "sha256": "296c2fe8cca95657e183f15a08dd74983e895f87ea8bbf25b84260fbf3949d10"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/audit_live_wire_coverage.py": {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/audit_live_wire_coverage.py",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/audit_live_wire_coverage.py",
+      "bytes": 15636,
+      "sha256": "e587ecfd943bc39afb1be3e5f808e8a20e3a02702f8cce30057ad4befa984e4b"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/audit_live_wire_resources.py": {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/audit_live_wire_resources.py",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/audit_live_wire_resources.py",
+      "bytes": 10464,
+      "sha256": "4813a6587750dd7bc4eb0b5386057c0aee3afb9b96b395e24f7be86fb14d7fb2"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/audit_live_wire_runtime.py": {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/audit_live_wire_runtime.py",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/audit_live_wire_runtime.py",
+      "bytes": 13383,
+      "sha256": "e2e5ee6bf5955edb1f03fca8310cbe7df6a69260eafeac3d4035bfea6c5b6bd8"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/audit_live_wire_safety.py": {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/audit_live_wire_safety.py",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/audit_live_wire_safety.py",
+      "bytes": 23455,
+      "sha256": "2d66a18626a47c94fca792a0639181e3823551414b76fc9b24f70bc4904a40e5"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/audit_live_wire_study.py": {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/audit_live_wire_study.py",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/audit_live_wire_study.py",
+      "bytes": 76478,
+      "sha256": "079386b27cee32ed20990bba30d3ae4857b351336c915ebc80eaea896041e65c"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/audit_live_wire_ulog.py": {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/audit_live_wire_ulog.py",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/audit_live_wire_ulog.py",
+      "bytes": 4235,
+      "sha256": "4bc86de845a6099a9374a54a2555ee5c5e0d3eeaa6a52815ef93f3fd876d2274"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/audit_live_wire_workload.py": {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/audit_live_wire_workload.py",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/audit_live_wire_workload.py",
+      "bytes": 11779,
+      "sha256": "6b14b7fb3011fb956d4bdac7cf459e3445b3a062d4f0564394c800d5fa9e79a2"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/bound_resource_graph.py": {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/bound_resource_graph.py",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/bound_resource_graph.py",
+      "bytes": 5683,
+      "sha256": "5093af9baa63daee6945b76b70690d4dbeedefcaf4ed09d4db353af7b96c7fda"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/build_openvins_ekf2_fast_run_evidence.py": {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/build_openvins_ekf2_fast_run_evidence.py",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/build_openvins_ekf2_fast_run_evidence.py",
+      "bytes": 7157,
+      "sha256": "00edf7aec7354c7033cda46f68631d2ae27787dc6edee28e5852217d0d5a6895"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/calibration_capture_contract.py": {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/calibration_capture_contract.py",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/calibration_capture_contract.py",
+      "bytes": 6160,
+      "sha256": "c64d9363624551406414e9b21e6747724ee2f60380f124d9be8cc8ca44ef3fef"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/calibration_capture_pipeline_v4.py": {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/calibration_capture_pipeline_v4.py",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/calibration_capture_pipeline_v4.py",
+      "bytes": 76710,
+      "sha256": "58a7ace9f5a4ee74f1a9e4bd5be7a0c681b303acb1469bcf135a971e1eebc7f0"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/calibration_capture_scene.py": {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/calibration_capture_scene.py",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/calibration_capture_scene.py",
+      "bytes": 23878,
+      "sha256": "68f091481b2f737f4667c233f1e653b937a39df3b6f8ebd02f566ca96bffd2c3"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/calibration_capture_scope.py": {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/calibration_capture_scope.py",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/calibration_capture_scope.py",
+      "bytes": 5467,
+      "sha256": "5bbd5055425f2b95385abbb50a903e9affc48d36054bcd11c04caef14550fcec"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/calibration_capture_study.py": {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/calibration_capture_study.py",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/calibration_capture_study.py",
+      "bytes": 13436,
+      "sha256": "19b38cb6401979a01f4e0015422260184f13757cbf47b09b3de567ced0545e44"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/calibration_capture_study_v2.py": {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/calibration_capture_study_v2.py",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/calibration_capture_study_v2.py",
+      "bytes": 5887,
+      "sha256": "00cd4c5890a6833af8f3656d8665a2888614f37bcb40dffef534474125202fc2"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/calibration_capture_study_v3.py": {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/calibration_capture_study_v3.py",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/calibration_capture_study_v3.py",
+      "bytes": 8092,
+      "sha256": "9195373b2a015d6ddbe12375aa8c9b10a76fa77607d42e76c925fe2fe3e2a3e0"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/calibration_capture_study_v4.py": {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/calibration_capture_study_v4.py",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/calibration_capture_study_v4.py",
+      "bytes": 2041,
+      "sha256": "5b95260be5c5a3cc6df9f611bdda276863277ae7f70d3f9503b38120baf7b61d"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/calibration_excitation.py": {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/calibration_excitation.py",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/calibration_excitation.py",
+      "bytes": 15131,
+      "sha256": "a48a688ebdeb6ec063d4dc8908306d32957c8fa652f7a34baf74229e24535971"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/capture_contract.py": {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/capture_contract.py",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/capture_contract.py",
+      "bytes": 18066,
+      "sha256": "b8fadeb6218319738b0df3d10f3f71c519b8373f64373a2db39178c53bdd1007"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/capture_disarmed_sensors.py": {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/capture_disarmed_sensors.py",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/capture_disarmed_sensors.py",
+      "bytes": 74603,
+      "sha256": "5fd2c9794c38de025cb55266d614f166f32924151861ecb0db170adcd7c878cd"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/capture_online_estimates.py": {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/capture_online_estimates.py",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/capture_online_estimates.py",
+      "bytes": 10803,
+      "sha256": "af8a88e6806d36344d04e2f68b2d6cd7cfbf5c89c8c455272862d5b3e03aa78f"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/capture_wire_lifecycle.py": {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/capture_wire_lifecycle.py",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/capture_wire_lifecycle.py",
+      "bytes": 30158,
+      "sha256": "17d5e072e70d8e9faba3903300b237e033fbe1448bc23329149cb438bf7a39c0"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/declared_runtime_snapshot.py": {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/declared_runtime_snapshot.py",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/declared_runtime_snapshot.py",
+      "bytes": 5442,
+      "sha256": "b0d9eb7611fc6505827c7fd4279a3b6aae5ae0add9e25011da6e69badfea115f"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/disarmed_estimate_receiver.py": {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/disarmed_estimate_receiver.py",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/disarmed_estimate_receiver.py",
+      "bytes": 3389,
+      "sha256": "4767502c586ff79a83ac63a4681034b53342518e0a8460bcc1446c41d0b8a2fe"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/disarmed_motion_probe.py": {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/disarmed_motion_probe.py",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/disarmed_motion_probe.py",
+      "bytes": 9881,
+      "sha256": "f397625c4191f25d74cc487a49ea290d3e00400b99d363e2a6d0fe9ca8564e23"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/disarmed_odometry_receiver.py": {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/disarmed_odometry_receiver.py",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/disarmed_odometry_receiver.py",
+      "bytes": 4493,
+      "sha256": "fe934acb9a34fa5a621c926cc046196a9874f72f854d9c03c89957591b22251e"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/disarmed_sensor_provenance.py": {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/disarmed_sensor_provenance.py",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/disarmed_sensor_provenance.py",
+      "bytes": 27794,
+      "sha256": "2c71b1203a254377844b14465a12a8c8b1ea64e99f151f2a76a21376adb70a6d"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/estimator_aware_readiness.py": {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/estimator_aware_readiness.py",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/estimator_aware_readiness.py",
+      "bytes": 18371,
+      "sha256": "f2f17c494aceaa1e6ccde9a25af08d6ebf0977615131ead30dada79b07613cb9"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/exclusive_probe_output.h": {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/exclusive_probe_output.h",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/exclusive_probe_output.h",
+      "bytes": 1608,
+      "sha256": "6c5a622a66af56e6086a48091cd2c2da1feb7dc03bdd7f8bd37a173c0a0d3091"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/journaled_heartbeat_lane.py": {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/journaled_heartbeat_lane.py",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/journaled_heartbeat_lane.py",
+      "bytes": 8305,
+      "sha256": "af0cfa376e0093049a2ddbee8b93728d04c3793a4dc7d30091d5fd89fd2a6202"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/kernel_datagram_arrival.py": {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/kernel_datagram_arrival.py",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/kernel_datagram_arrival.py",
+      "bytes": 9352,
+      "sha256": "38df5d7f1879b9ff90efb0a9a4134d31b225063c1a647588d9e28e0dc57bb987"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/kernel_queue_age.py": {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/kernel_queue_age.py",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/kernel_queue_age.py",
+      "bytes": 9546,
+      "sha256": "e15ef42b23d39666e0eb5ae80922a6cdc19d531db8cda731ed9cd1ea14986405"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/kernel_rx_timestamping.py": {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/kernel_rx_timestamping.py",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/kernel_rx_timestamping.py",
+      "bytes": 2411,
+      "sha256": "350eed6f06d5693589a7200da7751e162e303833ed1324309ed5af26fcb3a9ea"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/live_wire_study.py": {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/live_wire_study.py",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/live_wire_study.py",
+      "bytes": 21360,
+      "sha256": "c94fffd0127475e0eea1dd29768a2205eea38b3254c7f6cb73d17aced4488d9c"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/managed_capture_source.py": {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/managed_capture_source.py",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/managed_capture_source.py",
+      "bytes": 19826,
+      "sha256": "d6300ea0f57de75d45e65caf46cccdcc5e682f643e25cbd74d16ae42d7d63f8e"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/motion_intent_gate.py": {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/motion_intent_gate.py",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/motion_intent_gate.py",
+      "bytes": 12307,
+      "sha256": "e006e263d33b2674a128b693c65faeea38b0767903704ce6183bdc7c15688f9d"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/motion_intent_physical.py": {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/motion_intent_physical.py",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/motion_intent_physical.py",
+      "bytes": 1608,
+      "sha256": "0ce6cf0d9d46a9cdab9b2cb35dd0a87521941473930e04e42bdb8f339afa9d40"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/native_consumer_scope.py": {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/native_consumer_scope.py",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/native_consumer_scope.py",
+      "bytes": 2772,
+      "sha256": "5f1ef5c972d1719654a8c284462ede7467f9b1c8c033c40703fce18734206034"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/native_entry_context_v3.py": {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/native_entry_context_v3.py",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/native_entry_context_v3.py",
+      "bytes": 42894,
+      "sha256": "7521236a5129182a637b3f2b0298993be60c7a97bc197e1d636bdf98c57af802"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/native_entry_context_v4.py": {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/native_entry_context_v4.py",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/native_entry_context_v4.py",
+      "bytes": 62213,
+      "sha256": "c049a19de0abdc850af49357d910c000b8e4b13b9785a9fd5f40b5fb187b530e"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/native_entry_dependencies.py": {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/native_entry_dependencies.py",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/native_entry_dependencies.py",
+      "bytes": 22425,
+      "sha256": "38bdb30431abb6d399f0a79c20671c7a7d75ecf444436b7a0d956f08bed988ea"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/native_loader_paths_v4.py": {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/native_loader_paths_v4.py",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/native_loader_paths_v4.py",
+      "bytes": 18423,
+      "sha256": "9f90f5db8daa4aef4dd24429d6086015273ea8f7ffd045b7de03d30b2978f3dc"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/native_offset_build_receipt.py": {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/native_offset_build_receipt.py",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/native_offset_build_receipt.py",
+      "bytes": 13902,
+      "sha256": "6378cc1ab8b52d4d48c25c164096a7b113566ac764837632ed6a030d6639071d"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/native_offset_fresh_build.py": {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/native_offset_fresh_build.py",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/native_offset_fresh_build.py",
+      "bytes": 2253,
+      "sha256": "2cd69f0117e741fdd8b982d628cf9012a000ed0d39497ded9f3b5140204d0a5d"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/native_offset_fresh_receipt.py": {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/native_offset_fresh_receipt.py",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/native_offset_fresh_receipt.py",
+      "bytes": 14436,
+      "sha256": "8c632eec350173285f36baa22fd0e016745b02ed176cb50e7273f3478efff36f"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/native_offset_once.py": {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/native_offset_once.py",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/native_offset_once.py",
+      "bytes": 24722,
+      "sha256": "ecd3b2fdafae5bcaefa9f3692e7dfc2ffcf4d59cb521d97b0a50cf20ee4816df"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/native_offset_once_scope.py": {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/native_offset_once_scope.py",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/native_offset_once_scope.py",
+      "bytes": 21201,
+      "sha256": "2746c9ea3b72e4f765311d2ac19594de4e94bf552974d76377b060ad9a00ef0e"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/native_offset_reset_v2/CMakeLists.txt": {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/native_offset_reset_v2/CMakeLists.txt",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/native_offset_reset_v2/CMakeLists.txt",
+      "bytes": 2452,
+      "sha256": "75b8b4d24265d5ea4f79912f446aed196be9ae78c2419ebcc51c0bdb990e02fe"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/native_query_process.py": {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/native_query_process.py",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/native_query_process.py",
+      "bytes": 2368,
+      "sha256": "ceb01f99258c1cff424ecc08ed107945eb279d5cf49e4e030f079a0bc930f3cf"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/native_reference_probe.py": {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/native_reference_probe.py",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/native_reference_probe.py",
+      "bytes": 5356,
+      "sha256": "bc36572cf4c532d3e1aadef19a41e31c70f8d5eb6549e3f738c9dfd585c39328"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/native_resource_client.py": {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/native_resource_client.py",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/native_resource_client.py",
+      "bytes": 10312,
+      "sha256": "ec68d50758f5352727cb79b252597aae2f61f2006da8435f47f4d1ffacaa744e"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/native_runtime_refusal.py": {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/native_runtime_refusal.py",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/native_runtime_refusal.py",
+      "bytes": 5835,
+      "sha256": "16b4063adb1e5835ecc9ae899587ea1b6d1860596c63e606d5dcb17b0a3b4f8f"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/native_supervisor_integration.py": {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/native_supervisor_integration.py",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/native_supervisor_integration.py",
+      "bytes": 11019,
+      "sha256": "20e35ff52a930df4a33b758d79e4768e9a8c599ca8eb660ec558286a86eaf581"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/offset_reset_native_source.py": {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/offset_reset_native_source.py",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/offset_reset_native_source.py",
+      "bytes": 11973,
+      "sha256": "c71c12515071ae8aecffefe704296357bb20f8c65476261b93829f895ec19b1a"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/openvins_causal_input.py": {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/openvins_causal_input.py",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/openvins_causal_input.py",
+      "bytes": 12017,
+      "sha256": "cb188d29b5fdc70fc1282a9653dd8fc7338884fa63b2d53416cddb18f204d115"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/openvins_datagram_receive.py": {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/openvins_datagram_receive.py",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/openvins_datagram_receive.py",
+      "bytes": 18613,
+      "sha256": "69d3561d90460afea1ddc3bf061dbccd721e2d309433a7b2ca30e4173015fed3"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/openvins_ekf2_disarmed_preflight.py": {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/openvins_ekf2_disarmed_preflight.py",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/openvins_ekf2_disarmed_preflight.py",
+      "bytes": 24405,
+      "sha256": "feca7b24b136153783388861135c5d8cd1be9393488e3b03fdb8e5d6d7b84960"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/openvins_ekf2_fast_contract.py": {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/openvins_ekf2_fast_contract.py",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/openvins_ekf2_fast_contract.py",
+      "bytes": 10254,
+      "sha256": "4cf4431c83976e6b8ac1cde719547a2aa9a97196ed98d2542b73e55c6644924f"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/openvins_ekf2_integration.py": {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/openvins_ekf2_integration.py",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/openvins_ekf2_integration.py",
+      "bytes": 19590,
+      "sha256": "a985686438d26769575eb1c20ec2739505d5f24c18bd94bbe310f71c8388fa3e"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/openvins_ekf2_transform.py": {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/openvins_ekf2_transform.py",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/openvins_ekf2_transform.py",
+      "bytes": 4225,
+      "sha256": "aa95f772ec3340a93031850df27b5f29cc41ae6c1c63e1aa0a6507d7890801c3"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/openvins_fast_probe_v2.h": {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/openvins_fast_probe_v2.h",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/openvins_fast_probe_v2.h",
+      "bytes": 3483,
+      "sha256": "3494318e1718407ec815345ca464c3277b93ae675e5296e73e20f4daaced6c21"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/openvins_health_contract.py": {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/openvins_health_contract.py",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/openvins_health_contract.py",
+      "bytes": 10430,
+      "sha256": "be44d975ac7698b86af6b4347e8d81da4c33b65cb4ae8be85d48e39478dd2eee"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/openvins_health_physical_faults.py": {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/openvins_health_physical_faults.py",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/openvins_health_physical_faults.py",
+      "bytes": 11095,
+      "sha256": "774de064bdac365089c65246da0332597c76a5c06033d50c48e945845e30a2d6"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/openvins_listener_transport.py": {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/openvins_listener_transport.py",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/openvins_listener_transport.py",
+      "bytes": 16578,
+      "sha256": "afbbadb73d1bca95b8941cd1f747d4201d39bb7773aed1f8dc12bbe8b88e5ed9"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/openvins_observed_wire_session.py": {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/openvins_observed_wire_session.py",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/openvins_observed_wire_session.py",
+      "bytes": 29838,
+      "sha256": "25a244286f1f1e3f3173db079cd441866597ebe9abb5f6ab49fa37880655aeeb"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/openvins_odometry_contract.py": {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/openvins_odometry_contract.py",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/openvins_odometry_contract.py",
+      "bytes": 9528,
+      "sha256": "912acd47b2d5d8618d977ce9b26604c4e047bb4ad4ed36fd7c98d3eeb8ae319f"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/openvins_online_probe_v2.cpp": {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/openvins_online_probe_v2.cpp",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/openvins_online_probe_v2.cpp",
+      "bytes": 12656,
+      "sha256": "bb7664e157f2e07f75ada49df6946b6791d8c46b8dcf4f509b781deed802efe8"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/openvins_online_shadow.py": {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/openvins_online_shadow.py",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/openvins_online_shadow.py",
+      "bytes": 29922,
+      "sha256": "99651fd531cf4c915feeff71987a1d8347dc0da10e842209105b9002d4fbf4aa"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/openvins_owned_bootstrap.py": {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/openvins_owned_bootstrap.py",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/openvins_owned_bootstrap.py",
+      "bytes": 16020,
+      "sha256": "617b95805aa18c5f533621c46b44205d33e291e3a98fa5411f358f2e59122bde"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/openvins_receiver_parity.py": {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/openvins_receiver_parity.py",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/openvins_receiver_parity.py",
+      "bytes": 14707,
+      "sha256": "8cc4b4b753bd1daaa90d5028680d50974ad8df6cc230c42b73a500590633cf1a"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/openvins_segmented_journal.py": {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/openvins_segmented_journal.py",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/openvins_segmented_journal.py",
+      "bytes": 11740,
+      "sha256": "a07c73553aa34bdb5299028454a6c22f73f057e6bc18aed612614143f5acb3e2"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/openvins_simulation_clock.py": {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/openvins_simulation_clock.py",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/openvins_simulation_clock.py",
+      "bytes": 10597,
+      "sha256": "65ea9a3f5811d329436a13b358d744e20fada36f79a31c829e51638ae1b0bdf7"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/openvins_timesync_bootstrap.py": {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/openvins_timesync_bootstrap.py",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/openvins_timesync_bootstrap.py",
+      "bytes": 13938,
+      "sha256": "5dd859e4ca09ca74b0bf899c13595b0aa7e8906ff99b18e87f8e14cf821637ea"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/openvins_timesync_interval.py": {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/openvins_timesync_interval.py",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/openvins_timesync_interval.py",
+      "bytes": 23186,
+      "sha256": "c614bb8857eee1168572078244dd506483293a3ad2f6cd1fad5bc4e7034d6b6d"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/openvins_timesync_listener.py": {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/openvins_timesync_listener.py",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/openvins_timesync_listener.py",
+      "bytes": 6885,
+      "sha256": "29ee45a446fd4a00b15383efc532530e998608be65cc4b69e08eb24d83218e0b"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/openvins_timesync_maintenance.py": {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/openvins_timesync_maintenance.py",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/openvins_timesync_maintenance.py",
+      "bytes": 10650,
+      "sha256": "b6037bb0045d6f2ad71b50c01a94fcec22a3fdb917c430c7a867197838c00eb3"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/openvins_timesync_observer.py": {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/openvins_timesync_observer.py",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/openvins_timesync_observer.py",
+      "bytes": 5712,
+      "sha256": "5bfb1e27e77b360575416027400cbb664c487b2cbe5660c8817fbcd5c43f75b7"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/openvins_timesync_wire.py": {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/openvins_timesync_wire.py",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/openvins_timesync_wire.py",
+      "bytes": 33786,
+      "sha256": "6d9f2afc1f29580e1eaf8253e8418a159cb4c1f3f7434ce22efb3c91f191fd52"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/openvins_wire_bootstrap.py": {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/openvins_wire_bootstrap.py",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/openvins_wire_bootstrap.py",
+      "bytes": 9498,
+      "sha256": "c9d44715b132182d9848bbc3251a8d0d392066daa1e583036700038723036ef8"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/owned_daemon_connection.py": {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/owned_daemon_connection.py",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/owned_daemon_connection.py",
+      "bytes": 8625,
+      "sha256": "d69d39580b2e1e5f344c1004fae3981a3e82f22af586d6c45843318cc611dc53"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/owned_group_evidence.py": {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/owned_group_evidence.py",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/owned_group_evidence.py",
+      "bytes": 10831,
+      "sha256": "f5b50e1aefb93050a9a0c90cce93dbc0ea22440185489f726b760458640a502a"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/owned_runtime_maps.py": {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/owned_runtime_maps.py",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/owned_runtime_maps.py",
+      "bytes": 6837,
+      "sha256": "aca43b67ad2c7b530c09191979cf77f78699c1a2dcfcb4dfd355404150c84e04"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/owned_ulog_source.py": {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/owned_ulog_source.py",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/owned_ulog_source.py",
+      "bytes": 12282,
+      "sha256": "dbee899fd676a3b7b77d51f7fe50f79c055492542e454b0ff4b7976af5f3d198"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/physics_substep_trace.py": {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/physics_substep_trace.py",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/physics_substep_trace.py",
+      "bytes": 8791,
+      "sha256": "0d9716a788ee33d1b8aeff7f627becaa8a9563e260baf3a4d04c00a63fb55aea"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/prepare_calibration_capture_v4.py": {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/prepare_calibration_capture_v4.py",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/prepare_calibration_capture_v4.py",
+      "bytes": 1795,
+      "sha256": "ffc035c1ce61b2f3419364a5ff7618fe3843c29ed8f7a712cef7f767956db874"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/px4_disarmed_receipts.py": {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/px4_disarmed_receipts.py",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/px4_disarmed_receipts.py",
+      "bytes": 18238,
+      "sha256": "c56340c95db86f6c8b00ddc2600a58ca1cd0fd5d356872b72d4e5d0c2801e51b"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/px4_logger_runtime.py": {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/px4_logger_runtime.py",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/px4_logger_runtime.py",
+      "bytes": 6876,
+      "sha256": "6f6b55ce0adc4d2a75419d763d8914bcc7f2ae2f03a5378b273052245423dbda"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/px4_mavlink_startup_status.py": {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/px4_mavlink_startup_status.py",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/px4_mavlink_startup_status.py",
+      "bytes": 2989,
+      "sha256": "2ce8d4c2ae5e4123456b233e61d07e0bdd2b88fd6977420ffe1cedc0f77a4476"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/px4_owned_startup_probe.py": {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/px4_owned_startup_probe.py",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/px4_owned_startup_probe.py",
+      "bytes": 9389,
+      "sha256": "8206fde1c76baa87965a22707c2285da884db6cb15b193e00040498e85443eca"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/px4_startup_phase_gate.py": {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/px4_startup_phase_gate.py",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/px4_startup_phase_gate.py",
+      "bytes": 12169,
+      "sha256": "5fa60f9c8bbdbf72740bc3013e8002c9c1d287efbf0c707c3e2ac5886d4057f6"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/readiness_anchor.py": {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/readiness_anchor.py",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/readiness_anchor.py",
+      "bytes": 10058,
+      "sha256": "b3c07aca65b5df5e25f860d79a09ec2d376602944107d432da6cba4452cce51f"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/ready_shadow_fanout.py": {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/ready_shadow_fanout.py",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/ready_shadow_fanout.py",
+      "bytes": 12827,
+      "sha256": "0ea1eca8a7ae00ddc05275da581cb18e12f3dc8e670a4ce009e8cc8a939df624"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/repository_python_sources.py": {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/repository_python_sources.py",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/repository_python_sources.py",
+      "bytes": 5652,
+      "sha256": "373c137bd788781a43fe22089fdafb29226bd9284e28f515f6d02ebb44dd7e69"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/run_calibration_capture.py": {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/run_calibration_capture.py",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/run_calibration_capture.py",
+      "bytes": 11018,
+      "sha256": "124edd13db846751c100c5b755c2e3b42b3e34a7fa831d8f9159b8b84b798041"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/run_openvins_dataset_consumer.py": {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/run_openvins_dataset_consumer.py",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/run_openvins_dataset_consumer.py",
+      "bytes": 17691,
+      "sha256": "f93c19ed132281339202f63172089711ee348697bedf8edee31a7d8ab32bf09a"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/runtime_resource_binding.py": {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/runtime_resource_binding.py",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/runtime_resource_binding.py",
+      "bytes": 24118,
+      "sha256": "745fdb329bfa14ad322672f273778386df561331bb8f2fda4305fc52fbe991dd"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/selected_resource_graph.py": {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/selected_resource_graph.py",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/selected_resource_graph.py",
+      "bytes": 3503,
+      "sha256": "30b0de50251daf1025a204b2992a727c192f8094188247440f4752cb35c8852f"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/supported_excitation.py": {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/supported_excitation.py",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/supported_excitation.py",
+      "bytes": 10720,
+      "sha256": "d340ab48d328be8af50418472d620ab904de456e013f9dc02eb24714556756ea"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/trajectory_gauge_contract.py": {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/trajectory_gauge_contract.py",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/trajectory_gauge_contract.py",
+      "bytes": 25695,
+      "sha256": "42d7e1d410b0078e37e248edbb72cdd6ac94fe30ad8481068e8f59bf41150005"
+    },
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/connectome/audit_px4_logger_diagnostic.py": {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/connectome/audit_px4_logger_diagnostic.py",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/connectome/audit_px4_logger_diagnostic.py",
+      "bytes": 3568,
+      "sha256": "64c5e2e2ba3b3493987552d43adae131b56c8ae4b84ba83af483e584087e9904"
+    }
+  },
+  "source_head": "68c648e12f6850abbfde30441f9dfd43d36dcaef",
+  "linux_root": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility",
+  "observation_phase": "results/native-linux-production-inputs-20261019/production",
+  "required12_present": true,
+  "static_local_source_graph_files": 128,
+  "linux_bytes_equal_prepared_working_bytes": true,
+  "product_modules_imported": false,
+  "dynamic_external_python_closure_complete": false,
+  "admission_granted": false,
+  "dispatchable": false
+}

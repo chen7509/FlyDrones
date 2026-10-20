@@ -1,0 +1,15 @@
+{
+  "reason": "Explicit pinned-source whitespace preservation policy and staged-diff failure evidence added, no actual asset/trial rerun",
+  "original_draft_archive": "evidence/kalibr-aprilgrid-production-dev-1701.zip",
+  "original_sha256": "58d44fec33332afe65327605c2b76826fe63df3edb1baf0ade4a754d3c854e40",
+  "canonical": {
+    "archive": "evidence\\kalibr-aprilgrid-production-dev-1701-v2.zip",
+    "sha256": "a17dc100c6c57bfd163b4a618c8b9e3d64c063ea3da2b8415da5198117faddf2",
+    "members": 95,
+    "bytes": 204318,
+    "CRC": "allpass",
+    "mapped_current_bytes": "allpass",
+    "report_sha256": "daec07bb94d66cc6a6e22c18fc174741619cdc886acf099b18f2bcfaa91331a2",
+    "independent_archive_review": "pending"
+  }
+}

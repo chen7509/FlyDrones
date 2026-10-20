@@ -1,8 +1,9 @@
 from __future__ import annotations
 
-from collections.abc import Mapping
 import json
 import math
+from collections.abc import Mapping
+from numbers import Real
 from pathlib import Path
 from typing import Protocol
 from uuid import uuid4
@@ -52,6 +53,8 @@ def _artifact_path(root: Path, parent: str, stem: str, suffix: str = "") -> Path
 
 
 def _metrics(value: Mapping[str, object]) -> dict[str, float | bool]:
+    if not isinstance(value, Mapping):
+        raise ValueError("evaluation metrics must be a mapping")
     required = {
         "validation_loss",
         "initial_validation_loss",
@@ -60,8 +63,16 @@ def _metrics(value: Mapping[str, object]) -> dict[str, float | bool]:
     missing = required - set(value)
     if missing:
         raise ValueError(f"evaluation metrics missing: {', '.join(sorted(missing))}")
-    validation_loss = float(value["validation_loss"])
-    initial_loss = float(value["initial_validation_loss"])
+    if type(value["parameters_finite"]) is not bool:
+        raise ValueError("parameters_finite must be a bool")
+    for name in ("validation_loss", "initial_validation_loss"):
+        if isinstance(value[name], bool) or not isinstance(value[name], Real):
+            raise ValueError("evaluation losses must be real numbers")
+    try:
+        validation_loss = float(value["validation_loss"])
+        initial_loss = float(value["initial_validation_loss"])
+    except (TypeError, ValueError, OverflowError) as exc:
+        raise ValueError("evaluation losses must be finite") from exc
     if not math.isfinite(validation_loss) or not math.isfinite(initial_loss):
         raise ValueError("evaluation losses must be finite")
     if validation_loss < 0 or initial_loss <= 0:
@@ -69,8 +80,14 @@ def _metrics(value: Mapping[str, object]) -> dict[str, float | bool]:
     return {
         "validation_loss": validation_loss,
         "initial_validation_loss": initial_loss,
-        "parameters_finite": bool(value["parameters_finite"]),
+        "parameters_finite": value["parameters_finite"],
     }
+
+
+def _counter(value: object) -> int:
+    if type(value) is not int or value < 0:
+        raise ValueError("training counters must be non-negative integers")
+    return value
 
 
 def _gate(stage: CurriculumStage, metrics: Mapping[str, object]) -> list[str]:
@@ -136,10 +153,8 @@ def run_curriculum(
             batch = state.batch_index
             seed = stage.train_seeds[batch % len(stage.train_seeds)]
             train_metrics = dict(session.train_batch(stage, seed))
-            updates = int(train_metrics.get("updates", 0))
-            environment_steps = int(train_metrics.get("environment_steps", 0))
-            if updates < 0 or environment_steps < 0:
-                raise ValueError("training counters must be non-negative")
+            updates = _counter(train_metrics.get("updates", 0))
+            environment_steps = _counter(train_metrics.get("environment_steps", 0))
 
             current = _metrics(session.evaluate(stage))
             gate_failures = _gate(stage, current)
@@ -154,7 +169,8 @@ def run_curriculum(
                     regression[completed] = result
                     baseline = state.baseline_losses[completed]
                     if (
-                        float(result["validation_loss"])
+                        not result["parameters_finite"]
+                        or float(result["validation_loss"])
                         > baseline * stage.maximum_regression_ratio
                     ):
                         regression_failures.append(completed)
@@ -196,11 +212,14 @@ def run_curriculum(
                     status = "COMPLETE"
             else:
                 failed_attempts += 1
-                if regression_failures:
+                if regression_failures or "parameters_finite" in gate_failures:
                     if best_checkpoint is None:
-                        raise RuntimeError("regression rollback requires a best checkpoint")
-                    session.restore_checkpoint(root / best_checkpoint)
-                    latest_checkpoint = best_checkpoint
+                        # Retain the failed candidate, but never resume its nonfinite model.
+                        latest_checkpoint = None
+                        status = "FAILED"
+                    else:
+                        session.restore_checkpoint(root / best_checkpoint)
+                        latest_checkpoint = best_checkpoint
                 if next_batch >= stage.max_batches:
                     status = "FAILED"
 

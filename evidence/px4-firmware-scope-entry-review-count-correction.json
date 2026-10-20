@@ -1,0 +1,37 @@
+{
+  "schema": "px4-firmware-scope-entry-review-count-correction-v1",
+  "supersedes_wording": [
+    "primitive and other9 original review files",
+    "Entry and nine other reviewed files"
+  ],
+  "correction": "Original11reviewpins minus2runner/testfixdelta equals9TOTAL unchanged INCLUDING primitive before task-checkbox completion, not primitive plus9others. Atseal plan2checkboxes also differ, so8reviewpins are byteidentical. No source bytes/test outcome/qualification claim changes.",
+  "review_pins": 11,
+  "fix_delta_files": 2,
+  "unchanged_before_plan_checkboxes": 9,
+  "unchanged_at_seal": 8,
+  "join": [
+    {
+      "path": "docs/PX4_FIRMWARE_SCOPE_ENTRY_PRODUCTION_REPORT.md",
+      "bytes": 10302,
+      "sha256": "037a7341ada84b412e693e711dba9f5ed6c309e009cee08c98f6e61e58b7be34"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/executor-fix-pass.md",
+      "bytes": 8089,
+      "sha256": "ab97e2bd4c1c996d7f09bc725818aeae566531ff78627a3e34629dd122bd9290"
+    },
+    {
+      "path": "results/px4-firmware-scope-entry-dev-1701/review-fix-delta.json",
+      "bytes": 769,
+      "sha256": "39d3001c76f35b43954735d9b30005a6b03d4aac8470b9daf7ad2a2e229ec73c"
+    },
+    {
+      "path": "evidence/px4-firmware-scope-entry-dev-1701.zip",
+      "bytes": 2388532,
+      "sha256": "700c8a1f2af728c8e64026a7e5ac6f834d31174514ae0d75c45d744e6c2c8580"
+    }
+  ],
+  "review_fix_delta_field": "other_nine_review_files_byte_identical means all9 unaffected, including primitive",
+  "archive_report_and_raw_unchanged": true,
+  "scope": "Postseal additive arithmetic correction only;not source/native reapproval;allfalsequalifications unchanged. Original report/ZIP retained, correction separately pinned/tracked with publication;no global pristine historical immutability claim."
+}

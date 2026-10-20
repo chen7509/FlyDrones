@@ -1,0 +1,21 @@
+{
+  "schema": "remaining-build-frontier-after-exact-two-v1",
+  "selected_two_restoration_complete": true,
+  "fixed143_content_observations": "143 across phases; not an atomic or future-fresh snapshot",
+  "build_stage_blockers": [
+    "Current Linux deployed production/capture source manifest and bindings",
+    "Explicit current bound toolchain_file/toolchain_receipt",
+    "Complete current named header/package/config/implicit link/recursive loader inputs",
+    "Fresh separate once-build admission under original resource/no-competition/cgroup/pidfd/budget/cleanup gates"
+  ],
+  "post_build_pre_run_requirements": [
+    "Actual successful new library and adapter build receipts plus owned inside/host release",
+    "Actual new library/adapter ABI and recursive/lazy loaded closure",
+    "Measured calibration/noise and source/clock/runtime/wire bindings",
+    "Separate applicable run admission; no automatic build-to-run"
+  ],
+  "no_current_source_manifest_or_request_fabricated": true,
+  "old_library_history_unknown": true,
+  "all_qualifications": false,
+  "dispatchable": false
+}

@@ -1,0 +1,6 @@
+2844d29d2b70b040d559efe14b524136  usr/lib/x86_64-linux-gnu/cmake/boost_atomic-1.83.0/boost_atomic-config-version.cmake
+a75971f348e0b49ead8e941eacd84506  usr/lib/x86_64-linux-gnu/cmake/boost_atomic-1.83.0/boost_atomic-config.cmake
+54f4a26f35b2e3a72174ec12a10a3a48  usr/lib/x86_64-linux-gnu/cmake/boost_atomic-1.83.0/libboost_atomic-variant-shared.cmake
+bd0dc035d26b89fba985ee82c30fb3b0  usr/lib/x86_64-linux-gnu/cmake/boost_atomic-1.83.0/libboost_atomic-variant-static.cmake
+125fc172bb0a2bf94974e3e10cbfa6dd  usr/lib/x86_64-linux-gnu/libboost_atomic.a
+6a70c00fc4a21b8da6d647a5afc88b7c  usr/share/doc/libboost-atomic1.83-dev/copyright

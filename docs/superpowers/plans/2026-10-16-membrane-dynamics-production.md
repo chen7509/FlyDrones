@@ -1,0 +1,10 @@
+# Membrane dynamics production implementation plan
+
+> Execute natively in the existing worktree under standing autonomous authorization; one independent whole source review and one bounded executor fix/verification pass, separate delivery audits.
+
+Goal: make a distinct opt-in held-drive exponential leak learn the global timeconstant at actual20Hz without rewriting legacy numerical meaning.
+Spec: docs/superpowers/specs/2026-10-16-membrane-dynamics-production-design.md. Python/PyTorch CPU, existing core/session/checkpoint/offline/CLI. Global constraints: no resource/target/native/fullmodel dispatch or consumed reruns, no sampleclock change/new learningdegrees/gate relaxation; all qualifications false, onlypersonal.
+
+- [x] Implement and verify model dynamics_format fixed choices/identity suffix and stable exponential alpha; new test_membrane_dynamics.py first. Check legacy zero-tau-gradient control vs explicit new20Hz nonzero gradient/update, held-drive scalar formula, both COO/CSR, unequal dt and sequence composition.
+- [x] Connect explicit mode through curriculum_session.py/inference_artifact.py/inference.py/run_curriculum.py. Distinct identity and new-only metadata, unchanged default/legacy; reject invalid selectors/live drift/conflicting checkpoint metadata before effects/copy. Cover actual tiny session/offline/CLI, initial baseline joins and necessary neighbors. Preserve failures, final Ruff/diff; one whole source review plus bounded executor pass, report and canonical integrity/privacy seal. Review focus: legacy implicit meaning; coherent rehash contradictory mode; live mode drift;20Hz saturation hiding tau gradients; labels mistaken for continuous-network/LIF/source proof.
+- [x] Publish exact personal commits/draftPR65headbody with full priorbody suffix, sole publicationcheckboxbyte/working-Git identities. Preserve three full histories/oldZIPs/old382/refusal/private3/STALErelease. Update ACTIVEautomation by exact priorprompt suffix, independent publication-only audit and NEXT_PHASE; software-only DONT_NOTIFY.

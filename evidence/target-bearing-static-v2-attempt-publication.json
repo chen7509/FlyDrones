@@ -1,0 +1,104 @@
+{
+  "schema": "static-v2-attempt-publication-v1",
+  "coordinator_commit": "47346ce8201796cc64813804f57387e79518f931",
+  "attempt_evidence_commit": "3fcd33b90b57fb190bef320b8c58c3fca05da128",
+  "remote": "personal",
+  "pull_request": "https://github.com/chen7509/FlyDrones/pull/65",
+  "pr_verified": {
+    "head": "3fcd33b90b57fb190bef320b8c58c3fca05da128",
+    "body_crlf_only_exact": true,
+    "body_sha256": "f780fa96b046c29336309d0558b8e80833ac60a7b0ddb09a88f01fb9de555a35"
+  },
+  "archive": {
+    "path": "evidence/target-bearing-static-v2-attempt-dev-1701.zip",
+    "bytes": 16921423,
+    "members": 1017,
+    "mapped_members": 1016,
+    "sha256": "62eabad05b888068776d3297be3f67f059e187839e3c0d4075222fbfed7d560d"
+  },
+  "archive_plan_sha256": "99bab11bbdf06c9bd1e076c3b82f9438568dda836bab82f963fa3e42c5581222",
+  "postpublication_plan_sha256": "6a86b8a0160aa4961c05f212c18bb77140fd7c21bca2df5c6cbee29a820f8dad",
+  "plan_changed_byte_offsets": [
+    9175
+  ],
+  "publication_change": "Failure evidence publication checkbox only; Task3 fullfreeze/Task4 success remain pending",
+  "actual_v2_static_attempt": "CONSUMED_FAILED",
+  "runtime_graph_frozen": false,
+  "physical_dispatch_ready": false,
+  "actual_physical_attempt_consumed": false,
+  "qualification": {
+    "source": false,
+    "clock": false,
+    "measured_calibration": false,
+    "accuracy": false,
+    "teacher": false,
+    "fusion": false,
+    "training": false,
+    "flight": false
+  },
+  "historical_archives": {
+    "count": 284,
+    "bytes": 778750978,
+    "streamed_unchanged": true,
+    "scope": "POSTattempt, not predispatch"
+  },
+  "working_vs_git_normalized": [
+    {
+      "path": "docs/superpowers/plans/2026-10-15-target-bearing-entry-dependency-production.md",
+      "working_sha256": "6a86b8a0160aa4961c05f212c18bb77140fd7c21bca2df5c6cbee29a820f8dad",
+      "git_blob_sha256": "8a8b0f179f322a9c85a4839c7b2c93a2f477336c1facad782dc2e7195ad6b3cb"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-10-15-zero-needed-python-entry-research.md",
+      "working_sha256": "023e91334b49aa2b5055d62b405ba3fd94e5786f2789ac4fb5770b8dbe1b7ca8",
+      "git_blob_sha256": "023e91334b49aa2b5055d62b405ba3fd94e5786f2789ac4fb5770b8dbe1b7ca8"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-10-15-target-bearing-entry-dependency-production-design.md",
+      "working_sha256": "0e9b567934b625d359dbda567d455c8dee7c12664902c59703a69a8704be5dbd",
+      "git_blob_sha256": "a07816c28a6cf9819f2b484818b59595404c16a1546eb2ada243974a6c423d1b"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-10-15-zero-needed-python-entry-research-design.md",
+      "working_sha256": "2124c33fe63a0a078b4e0ae1719959b27b384f43128d593bfee0bfa83296b6f7",
+      "git_blob_sha256": "2124c33fe63a0a078b4e0ae1719959b27b384f43128d593bfee0bfa83296b6f7"
+    },
+    {
+      "path": "docs/TARGET_BEARING_STATIC_V2_ATTEMPT_REPORT.md",
+      "working_sha256": "4d76c3615ad8b61e6a44905684d7cf693b7d63c24e2649e725a4eec08e315c42",
+      "git_blob_sha256": "4d76c3615ad8b61e6a44905684d7cf693b7d63c24e2649e725a4eec08e315c42"
+    },
+    {
+      "path": "results/target-bearing-runtime-freeze-v2-dev-1701/run-static-preparation-v2.py",
+      "working_sha256": "d9fad48a1ff1229745cd5dd835abf6f4d518f8cddaa05a371c396f3c9fbd42fd",
+      "git_blob_sha256": "d9fad48a1ff1229745cd5dd835abf6f4d518f8cddaa05a371c396f3c9fbd42fd"
+    },
+    {
+      "path": "tests/benchmark/test_calibration_static_v2_executor.py",
+      "working_sha256": "96abb1a8e7bca764086dca3be8e2dd5e0fda78b31ed362a09d7c8281070f3557",
+      "git_blob_sha256": "96abb1a8e7bca764086dca3be8e2dd5e0fda78b31ed362a09d7c8281070f3557"
+    },
+    {
+      "path": "tools/benchmark/calibration_capture_study.py",
+      "working_sha256": "bf8f082cf5fda77a20fe8876c0b83b1f4ae9c329c3ebe992768e7afb75378b11",
+      "git_blob_sha256": "bf8f082cf5fda77a20fe8876c0b83b1f4ae9c329c3ebe992768e7afb75378b11"
+    },
+    {
+      "path": "tools/benchmark/calibration_capture_study_v2.py",
+      "working_sha256": "00cd4c5890a6833af8f3656d8665a2888614f37bcb40dffef534474125202fc2",
+      "git_blob_sha256": "00cd4c5890a6833af8f3656d8665a2888614f37bcb40dffef534474125202fc2"
+    },
+    {
+      "path": "tools/benchmark/native_entry_dependencies.py",
+      "working_sha256": "38bdb30431abb6d399f0a79c20671c7a7d75ecf444436b7a0d956f08bed988ea",
+      "git_blob_sha256": "38bdb30431abb6d399f0a79c20671c7a7d75ecf444436b7a0d956f08bed988ea"
+    },
+    {
+      "path": "tools/benchmark/prepare_calibration_capture_v2.py",
+      "working_sha256": "068f52eac326024a72cba0c06bf8fcca2bddc71536c5f279880540afc48cb7c0",
+      "git_blob_sha256": "068f52eac326024a72cba0c06bf8fcca2bddc71536c5f279880540afc48cb7c0"
+    }
+  ],
+  "independent_archive_review_sha256": "49d490b20e4827b508e7e294dc3dfd08dbfb406bec40bc9f31b77b9e9a6fa48f",
+  "outside_zip_scope": "Later receipt/review/publication helpers+PR/stage/automation records and this ledger; no actual artifacts/source/ZIP modified"
+}

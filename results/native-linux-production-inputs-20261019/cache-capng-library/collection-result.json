@@ -1,0 +1,78 @@
+{
+  "schema": "native-linux-production-inputs-cache-capng-parent-v1",
+  "command": [
+    "wsl",
+    "-d",
+    "Ubuntu",
+    "--",
+    "/usr/bin/python3",
+    "-I",
+    "-S",
+    "-B",
+    "-"
+  ],
+  "utc_start": "2026-10-19T10:17:51.470194+00:00",
+  "errors": [],
+  "all_qualifications": false,
+  "dispatchable": false,
+  "resource_queries": false,
+  "compiler_or_target_executed": false,
+  "linux_file_writes": false,
+  "observed_files": [
+    {
+      "type": "end",
+      "id": 0,
+      "path": "/lib/x86_64-linux-gnu/libcap-ng.so.0",
+      "resolved": "/usr/lib/x86_64-linux-gnu/libcap-ng.so.0.0.0",
+      "after": {
+        "dev": 2128,
+        "ino": 12808,
+        "mode": 33188,
+        "uid": 0,
+        "gid": 0,
+        "nlink": 1,
+        "bytes": 26848,
+        "mtime_ns": 1711871122000000000,
+        "ctime_ns": 1777242475819363887
+      },
+      "bytes": 26848,
+      "sha256": "25349c22956c7af94f46e728d7e4c1eba57d0e4a0517f72781fb495d541eeef3",
+      "stable": true,
+      "before": {
+        "dev": 2128,
+        "ino": 12808,
+        "mode": 33188,
+        "uid": 0,
+        "gid": 0,
+        "nlink": 1,
+        "bytes": 26848,
+        "mtime_ns": 1711871122000000000,
+        "ctime_ns": 1777242475819363887
+      },
+      "blob": "blobs/25349c22956c7af94f46e728d7e4c1eba57d0e4a0517f72781fb495d541eeef3"
+    }
+  ],
+  "stream_payload_bytes": 26848,
+  "stream_metadata_bytes": 2083,
+  "active_partial": null,
+  "stderr_bytes": 132,
+  "linux_completion": {
+    "type": "completion",
+    "complete": true,
+    "reason": null,
+    "elapsed_s": 0.0004314299440011382,
+    "identity_paths_attempted": 1,
+    "payload_bytes": 26848,
+    "new_inodes": 1,
+    "metadata_bytes_before_completion": 1844,
+    "all_qualifications": false,
+    "dispatchable": false
+  },
+  "bootstrap_identity_authenticated": false,
+  "owned_windows_launcher_pid": 42540,
+  "exit": 0,
+  "readers_closed": true,
+  "elapsed_s": 0.2190000000409782,
+  "outer_exceeded": false,
+  "collection_complete": true
+}

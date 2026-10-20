@@ -1,0 +1,9 @@
+{
+  "schema": "flydrones.px4_logger_diagnostic.v1",
+  "profile_id": "source-diagnostic-v1",
+  "px4_commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+  "logger_source_sha256": "33c1cd7c55dc81d4fa53153b7f269401b67c7f6edc929707ec536203096bcfe5",
+  "sdlog_profile": 0,
+  "diagnostic_only": true,
+  "topics_sha256": "0bb9a3d9b57c6a73c73e8fee75569b9e690857654c4631b6f6cd5b6654328994"
+}

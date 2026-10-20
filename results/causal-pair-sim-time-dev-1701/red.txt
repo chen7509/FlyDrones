@@ -1,0 +1,288 @@
+............F.F.FFF..F....                                               [100%]
+================================== FAILURES ===================================
+_ test_wall_idle_does_not_expire_simulation_pair_and_queue_overflow_is_explicit _
+
+    def test_wall_idle_does_not_expire_simulation_pair_and_queue_overflow_is_explicit():
+        s = stream()
+        send(s, 0, sample("rgb", 2_000_000))
+>       assert s.tick(1_250_000_001) == []
+               ^^^^^^^^^^^^^^^^^^^^^
+
+tests\benchmark\test_openvins_causal_input.py:112: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tools\benchmark\openvins_causal_input.py:243: in tick
+    self._expire()
+tools\benchmark\openvins_causal_input.py:120: in _expire
+    self._reject("pending input exceeded wall wait")
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <tools.benchmark.openvins_causal_input.CausalInput object at 0x0000028A6718DB20>
+reason = 'pending input exceeded wall wait'
+
+    def _reject(self, reason):
+        self.failure = reason
+>       raise ValueError(reason)
+E       ValueError: pending input exceeded wall wait
+
+tools\benchmark\openvins_causal_input.py:100: ValueError
+__________ test_study_v16_same_sim_pair_survives_slow_wall_callbacks __________
+
+    def test_study_v16_same_sim_pair_survives_slow_wall_callbacks():
+        s = stream()
+        send(s, 0, sample("imu", 1_000_000, wall=75_113_106_330))
+        info = sample("info", 2_000_000, wall=76_528_630_909)
+        info["observed_sim_ns"] = 3_000_000
+        assert send(s, 1, info) == []
+>       assert s.tick(76_822_710_787) == []
+               ^^^^^^^^^^^^^^^^^^^^^^
+
+tests\benchmark\test_openvins_causal_input.py:138: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tools\benchmark\openvins_causal_input.py:243: in tick
+    self._expire()
+tools\benchmark\openvins_causal_input.py:120: in _expire
+    self._reject("pending input exceeded wall wait")
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <tools.benchmark.openvins_causal_input.CausalInput object at 0x0000028A6718FF50>
+reason = 'pending input exceeded wall wait'
+
+    def _reject(self, reason):
+        self.failure = reason
+>       raise ValueError(reason)
+E       ValueError: pending input exceeded wall wait
+
+tools\benchmark\openvins_causal_input.py:100: ValueError
+________ test_paired_stage_waiting_for_imu_is_not_expired_by_wall_idle ________
+
+    def test_paired_stage_waiting_for_imu_is_not_expired_by_wall_idle():
+        s = stream()
+        send(s, 0, sample("imu", 1_000_000, wall=900_000_000))
+        send(s, 1, sample("info", 2_000_000, wall=1_000_000_000))
+        send(s, 2, sample("rgb", 2_000_000, wall=1_200_000_000))
+>       assert s.tick(1_450_000_001) == []
+               ^^^^^^^^^^^^^^^^^^^^^
+
+tests\benchmark\test_openvins_causal_input.py:162: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tools\benchmark\openvins_causal_input.py:243: in tick
+    self._expire()
+tools\benchmark\openvins_causal_input.py:120: in _expire
+    self._reject("pending input exceeded wall wait")
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <tools.benchmark.openvins_causal_input.CausalInput object at 0x0000028A6718F140>
+reason = 'pending input exceeded wall wait'
+
+    def _reject(self, reason):
+        self.failure = reason
+>       raise ValueError(reason)
+E       ValueError: pending input exceeded wall wait
+
+tools\benchmark\openvins_causal_input.py:100: ValueError
+___________ test_simulation_advance_expires_another_unpaired_stamp ____________
+
+    def test_simulation_advance_expires_another_unpaired_stamp():
+        s = stream()
+        send(s, 0, sample("info", 2_000_000, wall=1_000_000_000))
+>       with pytest.raises(ValueError, match="simulation wait"):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests\benchmark\test_openvins_causal_input.py:169: Failed
+______ test_paired_stage_wall_delay_does_not_change_simulation_contract _______
+
+self = <tools.benchmark.openvins_causal_input.CausalInput object at 0x0000028A673FA510>
+event = {'kind': 'imu', 'sample_ns': 4000000, 'arrival_monotonic_ns': 1508765753, 'observed_sim_ns': 4000000, ...}
+sequence = 3, session_id = 'capture-v2', clock_id = 'sim-and-monotonic-v2'
+
+    def accept(self, event, *, sequence, session_id, clock_id):
+        self._open()
+        transaction_fields = (
+            "_last_sequence",
+            "_watermark",
+            "_last",
+            "_last_arrival",
+            "_pending",
+            "_imu_first",
+            "_imu_latest",
+            "_imu_sequence",
+        )
+        before = {key: copy.deepcopy(getattr(self, key)) for key in transaction_fields}
+        try:
+            if session_id != self.session_id or clock_id != self.clock_id:
+                raise ValueError("session/clock changed; explicit estimator reset required")
+            if type(sequence) is not int or sequence != self._last_sequence + 1:
+                raise ValueError("input sequence gap or duplicate")
+            row = validate_event(copy.deepcopy(event))
+            kind = row["kind"]
+            if kind not in {"imu", "rgb", "info"}:
+                raise ValueError("unsupported estimator input kind")
+            stamp, arrival = row["sample_ns"], row["arrival_monotonic_ns"]
+            if stamp <= self._last.get(kind, 0) or arrival < self._last_arrival.get(kind, 0):
+                raise ValueError("duplicate/regressed sample or arrival")
+            if kind == "imu" and kind in self._last and stamp - self._last[kind] > 4_000_000:
+                raise ValueError("IMU sample gap")
+            if kind == "info":
+                calibration = row["camera_info"]
+                if (
+                    calibration != self.profile["camera_info"]
+                    or any(type(calibration[key]) is not int for key in ("width", "height", "distortion_model"))
+                    or any(
+                        type(value) not in (int, float) or not math.isfinite(value)
+                        for key in ("intrinsics_k", "projection_p", "distortion_k")
+                        for value in calibration[key]
+                    )
+                ):
+                    raise ValueError("camera calibration differs from pinned profile")
+            self._watermark = max(self._watermark, arrival)
+            if self._watermark - arrival > 250_000_000:
+                raise ValueError("input already exceeded wall wait")
+            complement = {"rgb": "info", "info": "rgb"}.get(kind)
+            completing_stamp = stamp if complement is not None and stamp in self._pending[complement] else None
+>           self._expire(completing_stamp=completing_stamp)
+
+tools\benchmark\openvins_causal_input.py:166: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tools\benchmark\openvins_causal_input.py:120: in _expire
+    self._reject("pending input exceeded wall wait")
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <tools.benchmark.openvins_causal_input.CausalInput object at 0x0000028A673FA510>
+reason = 'pending input exceeded wall wait'
+
+    def _reject(self, reason):
+        self.failure = reason
+>       raise ValueError(reason)
+E       ValueError: pending input exceeded wall wait
+
+tools\benchmark\openvins_causal_input.py:100: ValueError
+
+The above exception was the direct cause of the following exception:
+
+    def test_paired_stage_wall_delay_does_not_change_simulation_contract():
+        s = stream()
+        send(s, 0, sample("imu", 1_000_000, wall=900_000_000))
+        send(s, 1, sample("info", 2_000_000, wall=1_000_000_000))
+        send(s, 2, sample("rgb", 2_000_000, wall=1_258_765_752))
+>       actions = send(s, 3, sample("imu", 4_000_000, wall=1_508_765_753))
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\benchmark\test_openvins_causal_input.py:178: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\benchmark\test_openvins_causal_input.py:31: in send
+    return s.accept(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <tools.benchmark.openvins_causal_input.CausalInput object at 0x0000028A673FA510>
+event = {'kind': 'imu', 'sample_ns': 4000000, 'arrival_monotonic_ns': 1508765753, 'observed_sim_ns': 4000000, ...}
+sequence = 3, session_id = 'capture-v2', clock_id = 'sim-and-monotonic-v2'
+
+    def accept(self, event, *, sequence, session_id, clock_id):
+        self._open()
+        transaction_fields = (
+            "_last_sequence",
+            "_watermark",
+            "_last",
+            "_last_arrival",
+            "_pending",
+            "_imu_first",
+            "_imu_latest",
+            "_imu_sequence",
+        )
+        before = {key: copy.deepcopy(getattr(self, key)) for key in transaction_fields}
+        try:
+            if session_id != self.session_id or clock_id != self.clock_id:
+                raise ValueError("session/clock changed; explicit estimator reset required")
+            if type(sequence) is not int or sequence != self._last_sequence + 1:
+                raise ValueError("input sequence gap or duplicate")
+            row = validate_event(copy.deepcopy(event))
+            kind = row["kind"]
+            if kind not in {"imu", "rgb", "info"}:
+                raise ValueError("unsupported estimator input kind")
+            stamp, arrival = row["sample_ns"], row["arrival_monotonic_ns"]
+            if stamp <= self._last.get(kind, 0) or arrival < self._last_arrival.get(kind, 0):
+                raise ValueError("duplicate/regressed sample or arrival")
+            if kind == "imu" and kind in self._last and stamp - self._last[kind] > 4_000_000:
+                raise ValueError("IMU sample gap")
+            if kind == "info":
+                calibration = row["camera_info"]
+                if (
+                    calibration != self.profile["camera_info"]
+                    or any(type(calibration[key]) is not int for key in ("width", "height", "distortion_model"))
+                    or any(
+                        type(value) not in (int, float) or not math.isfinite(value)
+                        for key in ("intrinsics_k", "projection_p", "distortion_k")
+                        for value in calibration[key]
+                    )
+                ):
+                    raise ValueError("camera calibration differs from pinned profile")
+            self._watermark = max(self._watermark, arrival)
+            if self._watermark - arrival > 250_000_000:
+                raise ValueError("input already exceeded wall wait")
+            complement = {"rgb": "info", "info": "rgb"}.get(kind)
+            completing_stamp = stamp if complement is not None and stamp in self._pending[complement] else None
+            self._expire(completing_stamp=completing_stamp)
+            if kind != "imu" and len(self._pending[kind]) >= 8:
+                raise ValueError("pending input capacity exceeded")
+            self._last[kind], self._last_arrival[kind] = stamp, arrival
+            self._last_sequence = sequence
+            actions = []
+            if kind == "imu":
+                self._imu_first = stamp if self._imu_first is None else self._imu_first
+                self._imu_latest, self._imu_sequence = stamp, sequence
+                actions.append(
+                    dict(
+                        kind="imu",
+                        sample_ns=stamp,
+                        wm=row["gyro_frd"],
+                        am=row["accel_frd"],
+                        source_sequence=sequence,
+                        source_arrival_ns=arrival,
+                        release_sequence=sequence,
+                        release_wall_ns=self._watermark,
+                        profile_sha256=self.profile_sha256,
+                        eligible_for_px4_fusion=False,
+                    )
+                )
+            else:
+                self._pending[kind][stamp] = (row, sequence)
+            actions.extend(self._release())
+            self._expire()
+            return actions
+        except (ValueError, TypeError, KeyError, AttributeError, OverflowError) as exc:
+            for key, value in before.items():
+                setattr(self, key, value)
+            self.failure = str(exc)
+            self._refused = dict(
+                kind="refused_input",
+                source_sequence=sequence,
+                input=copy.deepcopy(event),
+                reason=self.failure,
+                eligible_for_px4_fusion=False,
+            )
+>           raise InputRefusal(self._refused) from exc
+E           tools.benchmark.openvins_causal_input.InputRefusal: pending input exceeded wall wait
+
+tools\benchmark\openvins_causal_input.py:205: InputRefusal
+___ test_newly_enqueued_old_sim_camera_is_rejected_at_current_sim_watermark ___
+
+    def test_newly_enqueued_old_sim_camera_is_rejected_at_current_sim_watermark():
+        s = stream()
+        send(s, 0, sample("imu", 300_000_001))
+        s.tick(2_000_000_000)
+>       with pytest.raises(ValueError, match="simulation wait"):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: Regex pattern did not match.
+E         Expected regex: 'simulation wait'
+E         Actual message: 'input already exceeded wall wait'
+
+tests\benchmark\test_openvins_causal_input.py:211: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/benchmark/test_openvins_causal_input.py::test_wall_idle_does_not_expire_simulation_pair_and_queue_overflow_is_explicit
+FAILED tests/benchmark/test_openvins_causal_input.py::test_study_v16_same_sim_pair_survives_slow_wall_callbacks
+FAILED tests/benchmark/test_openvins_causal_input.py::test_paired_stage_waiting_for_imu_is_not_expired_by_wall_idle
+FAILED tests/benchmark/test_openvins_causal_input.py::test_simulation_advance_expires_another_unpaired_stamp
+FAILED tests/benchmark/test_openvins_causal_input.py::test_paired_stage_wall_delay_does_not_change_simulation_contract
+FAILED tests/benchmark/test_openvins_causal_input.py::test_newly_enqueued_old_sim_camera_is_rejected_at_current_sim_watermark
+6 failed, 20 passed in 0.83s

@@ -1,0 +1,50 @@
+{
+  "schema": "inherited-history-read-coverage-v1",
+  "not_native_admission": true,
+  "primary": {
+    "path": "evidence/flydrones-history-through-single-aircraft-input-20261017.json",
+    "prompt_characters": 63952,
+    "intervals": [
+      [
+        0,
+        22000
+      ],
+      [
+        22000,
+        44000
+      ],
+      [
+        44000,
+        63952
+      ]
+    ],
+    "untruncated_utf8_reads": true
+  },
+  "agents": [
+    {
+      "agent": "repair_read_initialized_history",
+      "path": "evidence/flydrones-history-through-initialized-baseline-dev-1701.json",
+      "prompt_characters": 63552,
+      "covered_all_untruncated": true
+    },
+    {
+      "agent": "repair_read_admitted_history",
+      "path": "evidence/flydrones-history-through-admitted-executor-dev-1701.json",
+      "prompt_characters": 62986,
+      "covered_all_untruncated": true
+    },
+    {
+      "agent": "repair_read_loader_history",
+      "path": "evidence/flydrones-history-through-loader-path-research-dev-1701.json",
+      "prompt_characters": 62676,
+      "covered_all_untruncated": true
+    }
+  ],
+  "constraints_integrated": [
+    "Only approved exact two creates and readback supersede no-Linux-writes rule",
+    "No compile/native/resources/tests/SDK/old attempts/old payload audit",
+    "Preserve UNKNOWN/CONSUMED, budgets, physical safety and full goals",
+    "Goal blocked, automation ACTIVE, personal only, all qualifications/dispatch false"
+  ],
+  "no_linux_actions_by_history_agents": true
+}

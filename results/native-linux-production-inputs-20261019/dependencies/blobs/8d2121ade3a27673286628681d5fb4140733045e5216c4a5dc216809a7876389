@@ -1,0 +1,13 @@
+f8f05c11b78eabc0317030c4a0943d84  usr/include/opencv4/opencv2/dnn.hpp
+5597aef046e20b260d3c29914c5f2e9e  usr/include/opencv4/opencv2/dnn/all_layers.hpp
+56bc6cc2008a74c88d345ae16afb4bfc  usr/include/opencv4/opencv2/dnn/dict.hpp
+370b9d8737431e80ea10a9c61edb77a2  usr/include/opencv4/opencv2/dnn/dnn.hpp
+806e7f09784988752411fbafbff23fd8  usr/include/opencv4/opencv2/dnn/dnn.inl.hpp
+516734637bc1533166e92d408a091e3b  usr/include/opencv4/opencv2/dnn/layer.details.hpp
+12019f6ee34a639d76cdd6581f8c3f63  usr/include/opencv4/opencv2/dnn/layer.hpp
+d909cdeec5afd9cb691813ea6c588692  usr/include/opencv4/opencv2/dnn/shape_utils.hpp
+badb1fe38f82c35deb625d2c746784ad  usr/include/opencv4/opencv2/dnn/utils/debug_utils.hpp
+cd6993ab47996cb9cebc747b83131e94  usr/include/opencv4/opencv2/dnn/utils/inference_engine.hpp
+3d4c81fd088bc0ac8c6bc0d76b2c9425  usr/include/opencv4/opencv2/dnn/version.hpp
+32a9b5274e0604c94d6dc340b7529efb  usr/lib/x86_64-linux-gnu/libopencv_dnn.a
+d2a68a8dbb4fd22dd8668c2e70094144  usr/share/doc/libopencv-dnn-dev/copyright

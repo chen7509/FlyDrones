@@ -1,0 +1,9 @@
+{
+  "archive": "evidence/openvins-timesync-channel-dev-1701.zip",
+  "sha256": "ccf0ee01e398476c335cb2dbab723168777613177dff326a2a6c953ca9c5f78a",
+  "members": 41,
+  "bytes": 196103,
+  "crc_verified": true,
+  "member_hashes_verified": true,
+  "previous_listener_archive_unchanged": true
+}

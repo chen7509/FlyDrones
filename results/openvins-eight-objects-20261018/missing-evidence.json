@@ -1,0 +1,114 @@
+{
+  "schema": "openvins-eight-selection-missing-evidence-v1",
+  "unobserved_objects": [
+    {
+      "source": "/home/yuchen7509/flydrones-upstream/open_vins/ov_init/src/dynamic/DynamicInitializer.cpp",
+      "object": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/home/yuchen7509/flydrones-upstream/open_vins/ov_init/src/dynamic/DynamicInitializer.cpp.o",
+      "depfile": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/home/yuchen7509/flydrones-upstream/open_vins/ov_init/src/dynamic/DynamicInitializer.cpp.o.d",
+      "source_to_object_proven": false,
+      "object_to_library_proven": false,
+      "historical_same_build_session_proven": false,
+      "this_collection_status": "known_overcap_skipped_without_stat_open_read",
+      "previous_overcap_observation": {
+        "phase": "results/openvins-remaining-objects-20261018",
+        "observed_metadata": {
+          "mode": 33206,
+          "size": 81028080,
+          "ino": 260579,
+          "dev": 0,
+          "mtime_ns": 1790912438614707800,
+          "ctime_ns": 1790912438614707800,
+          "attributes": 128,
+          "reparse_tag": 0
+        },
+        "limit": 67108864
+      },
+      "prior_depfile_observation": {
+        "phase": "results/openvins-build-provenance-20261018",
+        "blob": "blobs/f749dca806bd5d93c7c254488618686ac2645d237f684c61becc69d7efd9b360",
+        "bytes": 72982,
+        "sha256": "f749dca806bd5d93c7c254488618686ac2645d237f684c61becc69d7efd9b360",
+        "historical_input_content_proven": false
+      }
+    },
+    {
+      "source": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/src/state/Propagator.cpp",
+      "object": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/src/state/Propagator.cpp.o",
+      "depfile": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/src/state/Propagator.cpp.o.d",
+      "source_to_object_proven": false,
+      "object_to_library_proven": false,
+      "historical_same_build_session_proven": false,
+      "this_collection_status": "file_cap",
+      "metadata_this_collection": {
+        "mode": 33206,
+        "size": 81915872,
+        "ino": 260591,
+        "dev": 0,
+        "mtime_ns": 1790912493381117400,
+        "ctime_ns": 1790912493381117400,
+        "attributes": 128,
+        "reparse_tag": 0
+      },
+      "prior_depfile_observation": {
+        "phase": "results/openvins-build-provenance-20261018",
+        "blob": "blobs/ec2bc5fe9adacfc9bc5f8eabe975e77f8733dcaa05bc9e657b3ec68d20a64312",
+        "bytes": 53331,
+        "sha256": "ec2bc5fe9adacfc9bc5f8eabe975e77f8733dcaa05bc9e657b3ec68d20a64312",
+        "historical_input_content_proven": false
+      }
+    },
+    {
+      "source": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/src/update/UpdaterSLAM.cpp",
+      "object": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/src/update/UpdaterSLAM.cpp.o",
+      "depfile": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/src/update/UpdaterSLAM.cpp.o.d",
+      "source_to_object_proven": false,
+      "object_to_library_proven": false,
+      "historical_same_build_session_proven": false,
+      "this_collection_status": "aggregate_cap",
+      "metadata_this_collection": {
+        "mode": 33206,
+        "size": 45841632,
+        "ino": 260610,
+        "dev": 0,
+        "mtime_ns": 1790912555124144900,
+        "ctime_ns": 1790912555124144900,
+        "attributes": 128,
+        "reparse_tag": 0
+      },
+      "prior_depfile_observation": {
+        "phase": "results/openvins-build-provenance-20261018",
+        "blob": "blobs/67f9d76c108e0f612f06d33959861b5eec5897be2517e1797dd0599232a4a19f",
+        "bytes": 74052,
+        "sha256": "67f9d76c108e0f612f06d33959861b5eec5897be2517e1797dd0599232a4a19f",
+        "historical_input_content_proven": false
+      }
+    },
+    {
+      "source": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/src/update/UpdaterZeroVelocity.cpp",
+      "object": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/src/update/UpdaterZeroVelocity.cpp.o",
+      "depfile": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/src/update/UpdaterZeroVelocity.cpp.o.d",
+      "source_to_object_proven": false,
+      "object_to_library_proven": false,
+      "historical_same_build_session_proven": false,
+      "this_collection_status": "not_attempted_after_stop",
+      "prior_depfile_observation": {
+        "phase": "results/openvins-build-provenance-20261018",
+        "blob": "blobs/bd776e506aec79d47c0bf5f158fbcaa9a19ed22f372fb2c52f334d062721a7cd",
+        "bytes": 74224,
+        "sha256": "bd776e506aec79d47c0bf5f158fbcaa9a19ed22f372fb2c52f334d062721a7cd",
+        "historical_input_content_proven": false
+      }
+    }
+  ],
+  "current_library_sha256": null,
+  "source_to_existing_library_proven": false,
+  "gaps": [
+    "Four objects remain unobserved: known skipped DynamicInitializer81,028,080B, newly observed Propagator81,915,872B exceed64MiB; UpdaterSLAM aggregate refusal and UpdaterZeroVelocity not attempted.",
+    "Known overcap DynamicInitializer and old291717384B library not stat/open/read. No strip/chunk reassembly/rebuild/replace or higher cap.",
+    "No new log search or directory enumeration in this narrow authorization; prior bounded log searches do not prove logs absent everywhere.",
+    "30/34 object bytes across multiple observations are not a build-time snapshot or authenticated main compile/link execution receipt.",
+    "Original source/header/tool input content, compiler identity, build-session and object-to-library association remain unproven.",
+    "Linux native identity/links/permissions, full current sourcebuild/tool/header/library/package/loader/ABI closure and remaining original runtime gates unproven.",
+    "All qualification/readiness/dispatch flags remainfalse; no native experiment/resource query/old test executed."
+  ]
+}

@@ -1,0 +1,141 @@
+{
+  "schema": "causal-pair-simulation-time-physical-retry-preflight-v1",
+  "prepare_only": true,
+  "source": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/estimator-physical-refusal-diagnosis-dev-1701/study-v16",
+  "source_manifest": {
+    "requested": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/study-manifest.json",
+    "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/estimator-physical-refusal-diagnosis-dev-1701/study-v16/study-manifest.json",
+    "links": [],
+    "identity": {
+      "device": 68,
+      "inode": 20547673301421578,
+      "mode": 33279,
+      "size": 8969,
+      "mtime_ns": 1791323429731964600,
+      "ctime_ns": 1791323429731964600
+    },
+    "path_identity": {
+      "device": 68,
+      "inode": 20547673301421578,
+      "mode": 33279,
+      "size": 8969,
+      "mtime_ns": 1791323429731964600,
+      "ctime_ns": 1791323429731964600
+    },
+    "bytes": 8969,
+    "sha256": "643e1f67cbf2b931c24f3d2bd85a35a3f933de02e38a9e51e4103bbf445a8bf1"
+  },
+  "authorization": {
+    "requested": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/estimator-physical-refusal-diagnosis-dev-1701/study-v18/causal-pair-simulation-time-authorization.json",
+    "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/estimator-physical-refusal-diagnosis-dev-1701/study-v18/causal-pair-simulation-time-authorization.json",
+    "links": [],
+    "identity": {
+      "device": 68,
+      "inode": 8725724278769632,
+      "mode": 33279,
+      "size": 4813,
+      "mtime_ns": 1791326219863982700,
+      "ctime_ns": 1791326219863982700
+    },
+    "path_identity": {
+      "device": 68,
+      "inode": 8725724278769632,
+      "mode": 33279,
+      "size": 4813,
+      "mtime_ns": 1791326219863982700,
+      "ctime_ns": 1791326219863982700
+    },
+    "bytes": 4813,
+    "sha256": "8ee79591a67d8d929818d2573bb6f0413a4815def793bfd0c3598c2fd43417cb"
+  },
+  "execution_contract": {
+    "schema": "capture-execution-v3",
+    "wall_budget_s": 300,
+    "supervisor_s": 300,
+    "simulation_duration_ns": 25000000000,
+    "physics_step_ns": 1000000,
+    "imu_hz": 250,
+    "rgbd_hz": 10,
+    "rgbd_size": [
+      160,
+      120
+    ],
+    "estimator_run": true,
+    "profiles": {
+      "motion_profile": "supported-ready-v1",
+      "physics_trace_profile": "substep-ready-v1",
+      "reference_fault_profile": null,
+      "source_fanout_profile": "ready-shadow-heartbeat-estimator-v1"
+    },
+    "inputs": {
+      "shadow_binary": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/openvins-online-shadow-dev-1701/online_probe",
+      "shadow_config": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/openvins-online-shadow-dev-1701/raw-model-zero-bias-diffusion-v1/estimator_config.yaml",
+      "reference_module": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/native-reference-probe-dev-1701/production-build/_fly_native_reference.cpython-312-x86_64-linux-gnu.so"
+    },
+    "reference_sha256": "303b575e29d44bf50850ad03e3d3b865207a225e366418ec5733ed5292cc18ce",
+    "launch_environment": {
+      "GZ_FILE_PATH": "",
+      "GZ_HOMEDIR": null,
+      "GZ_LOG_PATH": null,
+      "GZ_MESH_FORCE_ASSIMP": null,
+      "GZ_PLUGIN_PATH": "",
+      "GZ_SIM_RESOURCE_PATH": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/assets/gazebo/models:/home/yuchen7509/PX4-Autopilot/Tools/simulation/gz/models:",
+      "GZ_SIM_SERVER_CONFIG_PATH": null,
+      "GZ_SIM_SYSTEM_PLUGIN_PATH": "",
+      "HOME": "/home/yuchen7509",
+      "IGN_FILE_PATH": "",
+      "IGN_GAZEBO_RESOURCE_PATH": "",
+      "IGN_GAZEBO_SYSTEM_PLUGIN_PATH": "",
+      "IGN_LOG_PATH": null,
+      "IGN_PLUGIN_PATH": "",
+      "LANG": "C.UTF-8",
+      "LD_LIBRARY_PATH": null,
+      "MESA_SHADER_CACHE_DISABLE": "true",
+      "PATH": "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/usr/lib/wsl/lib:/mnt/c/Users/yuche/.cache/codex-runtimes/codex-primary-runtime/dependencies/native/powershell:/mnt/c/Users/yuche/.codex/tmp/arg0/codex-arg0VXmCbp:/mnt/c/Users/yuche/.cache/codex-runtimes/codex-primary-runtime/dependencies/native/libheif/libheif/bin:/mnt/c/Users/yuche/.cache/codex-runtimes/codex-primary-runtime/dependencies/native/jxrlib/jxrlib/bin:/mnt/c/Users/yuche/.cache/codex-runtimes/codex-primary-runtime/dependencies/native/poppler/Library/bin:/mnt/c/Users/yuche/.cache/codex-runtimes/codex-primary-runtime/dependencies/bin/override:/mnt/c/Windows/system32:/mnt/c/Windows:/mnt/c/Windows/System32/Wbem:/mnt/c/Windows/System32/WindowsPowerShell/v1.0/:/mnt/c/Windows/System32/OpenSSH/:/mnt/c/Program Files (x86)/NVIDIA Corporation/PhysX/Common:/mnt/c/WINDOWS/system32:/mnt/c/WINDOWS:/mnt/c/WINDOWS/System32/Wbem:/mnt/c/WINDOWS/System32/WindowsPowerShell/v1.0/:/mnt/c/WINDOWS/System32/OpenSSH/:/mnt/c/Program Files/nodejs/:/mnt/c/Program Files/Docker/Docker/resources/bin:/mnt/c/Program Files/NVIDIA Corporation/NVIDIA App/NvDLISR:/mnt/c/Program Files/GitHub CLI/:/mnt/c/Program Files/Git/cmd:/mnt/c/Users/yuche/AppData/Local/Programs/Python/Python312/Scripts/:/mnt/c/Users/yuche/AppData/Local/Programs/Python/Python312/:/mnt/c/Users/yuche/.cache/codex-runtimes/codex-primary-runtime/dependencies/native/powershell:/mnt/c/Users/yuche/AppData/Local/Microsoft/WindowsApps:/mnt/c/Program Files/JetBrains/PyCharm 2023.2.5/bin:/mnt/c/Users/yuche/AppData/Local/Programs/Microsoft VS Code/bin:/mnt/c/Users/yuche/AppData/Roaming/npm:/mnt/c/Users/yuche/AppData/Local/Programs/cursor/resources/app/bin:/mnt/c/Users/yuche/.cache/codex-runtimes/codex-primary-runtime/dependencies/bin/fallback:/mnt/c/Users/yuche/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin:/mnt/c/Users/yuche/.cache/codex-runtimes/codex-primary-runtime/dependencies/native/git/cmd:/mnt/c/Users/yuche/AppData/Local/OpenAI/Codex/bin/681770561a4656a5:/mnt/c/Users/yuche/AppData/Local/OpenAI/Codex/bin/d375f7df50d3b421",
+      "PYTHONPATH": null,
+      "SDF_PATH": ""
+    },
+    "trajectory_gauge_policy": {
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/estimator-physical-refusal-diagnosis-dev-1701/study-v18/trajectory-gauge-policy.json",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/estimator-physical-refusal-diagnosis-dev-1701/study-v18/trajectory-gauge-policy.json",
+      "bytes": 1031,
+      "sha256": "a97bc126e90e0bfb88cc995f782904a7a842e460854dbd71cec977cd98800463",
+      "schema": "trajectory-gauge-policy-v1"
+    }
+  },
+  "runtime_binding": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/estimator-physical-refusal-diagnosis-dev-1701/study-v18/runtime-binding-v3.json",
+  "future_destination": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/estimator-physical-refusal-diagnosis-dev-1701/study-v18/capture-v1",
+  "command": [
+    "/usr/bin/python3",
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/tools/benchmark/capture_disarmed_sensors.py",
+    "--output",
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/estimator-physical-refusal-diagnosis-dev-1701/study-v18/capture-v1",
+    "--shadow-binary",
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/openvins-online-shadow-dev-1701/online_probe",
+    "--shadow-config",
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/openvins-online-shadow-dev-1701/raw-model-zero-bias-diffusion-v1/estimator_config.yaml",
+    "--reference-module",
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/native-reference-probe-dev-1701/production-build/_fly_native_reference.cpython-312-x86_64-linux-gnu.so",
+    "--motion-profile",
+    "supported-ready-v1",
+    "--physics-trace-profile",
+    "substep-ready-v1",
+    "--source-fanout-profile",
+    "ready-shadow-heartbeat-estimator-v1",
+    "--reference-sha256",
+    "303b575e29d44bf50850ad03e3d3b865207a225e366418ec5733ed5292cc18ce",
+    "--execution-contract",
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/estimator-physical-refusal-diagnosis-dev-1701/study-v18/execution-contract.json",
+    "--runtime-binding",
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/estimator-physical-refusal-diagnosis-dev-1701/study-v18/runtime-binding-v3.json",
+    "--trajectory-gauge-policy",
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/estimator-physical-refusal-diagnosis-dev-1701/study-v18/trajectory-gauge-policy.json"
+  ],
+  "physical_execution_qualified": false,
+  "runtime_mapping_coverage_verified": false,
+  "runtime_closure_qualified": false,
+  "vio_accuracy_qualified": false,
+  "estimator_health_qualified": false,
+  "fusion_eligible": false,
+  "flight_ready": false
+}

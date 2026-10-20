@@ -1,0 +1,54 @@
+{
+  "command": [
+    "wsl",
+    "-d",
+    "Ubuntu",
+    "--",
+    "/usr/bin/python3",
+    "-I",
+    "-S",
+    "-B",
+    "-"
+  ],
+  "cwd": "C:\\Users\\yuche\\.codex\\worktrees\\FlyDrones\\track-eligibility",
+  "caps": {
+    "file_bytes": 67108864,
+    "total_payload_bytes": 201326592,
+    "read_seconds": 27,
+    "parent_wait_seconds": 30,
+    "terminate_seconds": 5,
+    "kill_seconds": 5,
+    "outer_seconds": 45,
+    "metadata_bytes": 2097152,
+    "stderr_bytes": 2097152,
+    "selected_paths": 6000,
+    "symlink_hops": 40,
+    "selected_files": 2,
+    "target_write_bytes": 48249
+  },
+  "selected": 2,
+  "script_sha256": "dc3e12922511a33abbebb891fd5dce7c4b18565d92984f803bd344c086900fd1",
+  "script_bytes": 1348625,
+  "source_checks": [
+    {
+      "source": "results/native-offset-run-plan-20261018/upstream-source/LICENSE",
+      "target": "/home/yuchen7509/flydrones-upstream/open_vins/LICENSE",
+      "bytes": 35149,
+      "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+      "git_blob_sha1": "f288702d2fa16d3cdf0035b15a9fcbc552cd88e7",
+      "stable_windows_copy_input": true,
+      "not_linux_target_observation": true
+    },
+    {
+      "source": "results/native-offset-run-plan-20261018/upstream-source/ReadMe.md",
+      "target": "/home/yuchen7509/flydrones-upstream/open_vins/ReadMe.md",
+      "bytes": 13100,
+      "sha256": "2553e1d5d570a391a1f8376ae4037760d84d45668d781ccf6683ccfc2a54a044",
+      "git_blob_sha1": "1448a49c1acc3c1c23d6631e8e49be2e49e1a500",
+      "stable_windows_copy_input": true,
+      "not_linux_target_observation": true
+    }
+  ],
+  "parent_script_sha256": "481a5a329772b9c57d9001d791305285092cd412f3c3745639790501b57c9426",
+  "utc_start": "2026-10-19T09:54:01.206797+00:00"
+}

@@ -1,0 +1,786 @@
+{
+  "anchor": {
+    "anchor_ns": 2619000000,
+    "selected_sim_ns": 2419000000,
+    "proof": {
+      "checked_wall_ns": 33800062134,
+      "records": {
+        "imu": {
+          "kind": "imu",
+          "arrival_monotonic_ns": 33728435324,
+          "observed_sim_ns": 2404000000,
+          "sample_ns": 2404000000,
+          "gyro_flu": [
+            -0.0004314418519103725,
+            -0.0001009032470429962,
+            -0.00014378583142885814
+          ],
+          "accel_flu": [
+            -0.009109192505908333,
+            -0.0007079276587086588,
+            9.823517014250235
+          ],
+          "sim_age_at_callback_ns": 0,
+          "gyro_frd": [
+            -0.0004314418519103725,
+            0.0001009032470429962,
+            0.00014378583142885814
+          ],
+          "accel_frd": [
+            -0.009109192505908333,
+            0.0007079276587086588,
+            -9.823517014250235
+          ],
+          "source_sequence": 675,
+          "writer_begin_monotonic_ns": 33762271948,
+          "recorded_monotonic_ns": 33762273179,
+          "journal_ack_monotonic_ns": 33763876974
+        },
+        "info": {
+          "kind": "info",
+          "arrival_monotonic_ns": 33725474067,
+          "observed_sim_ns": 2401000000,
+          "sample_ns": 2400000000,
+          "camera_info": {
+            "width": 160,
+            "height": 120,
+            "frame_id": "camera_link",
+            "intrinsics_k": [
+              108.12401050876075,
+              0.0,
+              80.0,
+              0.0,
+              108.12401050876075,
+              60.0,
+              0.0,
+              0.0,
+              1.0
+            ],
+            "projection_p": [
+              108.12401050876075,
+              0.0,
+              80.0,
+              0.0,
+              0.0,
+              108.12401050876075,
+              60.0,
+              0.0,
+              0.0,
+              0.0,
+              1.0,
+              0.0
+            ],
+            "distortion_model": 0,
+            "distortion_k": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ]
+          },
+          "sim_age_at_callback_ns": 1000000,
+          "source_sequence": 674,
+          "writer_begin_monotonic_ns": 33725602459,
+          "payload_path": "camera-info-messages/2400000000.pb",
+          "payload_sha256": "8111369548695bbd02184f93b84b151db90a280fa8854fbf6a4a8a118c730fc1",
+          "recorded_monotonic_ns": 33736504429,
+          "journal_ack_monotonic_ns": 33761963268
+        },
+        "rgb": {
+          "kind": "rgb",
+          "arrival_monotonic_ns": 33732128359,
+          "observed_sim_ns": 2406000000,
+          "sample_ns": 2400000000,
+          "width": 160,
+          "height": 120,
+          "sim_age_at_callback_ns": 6000000,
+          "source_sequence": 677,
+          "writer_begin_monotonic_ns": 33764962919,
+          "recorded_monotonic_ns": 33770686438,
+          "journal_ack_monotonic_ns": 33799407788
+        },
+        "heartbeat": {
+          "kind": "heartbeat",
+          "arrival_monotonic_ns": 31505517005,
+          "observed_sim_ns": 1429000000,
+          "system_id": 9,
+          "base_mode": 29,
+          "custom_mode": 50593792,
+          "writer_begin_monotonic_ns": 31505590163,
+          "recorded_monotonic_ns": 31505590163,
+          "journal_ack_monotonic_ns": 31515414814
+        }
+      },
+      "freshness": {
+        "high_rate_wall_limit_ns": 2000000000,
+        "heartbeat_sim_limit_ns": 2000000000,
+        "heartbeat_wall_age_ns": 2294545129,
+        "heartbeat_sim_age_ns": 975000000,
+        "latest_heartbeat_ahead_ns": 0,
+        "simulation_reference": "latest wall-fresh journaled IMU observed_sim_ns"
+      },
+      "scope": "sensor fan-out commit plus independent heartbeat write/flush; heartbeat reconciliation is separate; not fsync durability",
+      "estimator_internal": {
+        "event": "estimator_internal_ready",
+        "native_sequence": 626,
+        "sample_ns": 2400000000,
+        "acknowledged_monotonic_ns": 33793422662,
+        "journal_ack_monotonic_ns": 33798822004,
+        "source_sequence": 677,
+        "source_sha256": "f0221563a198789ad0414287bdaef9325c564292a9f4377fe735e9f827e320c4",
+        "source_arrival_monotonic_ns": 33732128359,
+        "observed_sim_ns": 2406000000,
+        "internal_initialized": true,
+        "public_initialized": false,
+        "truth_used": false,
+        "fusion_eligible": false
+      },
+      "first_estimator_internal": {
+        "event": "estimator_internal_ready",
+        "native_sequence": 626,
+        "sample_ns": 2400000000,
+        "acknowledged_monotonic_ns": 33793422662,
+        "journal_ack_monotonic_ns": 33798822004,
+        "source_sequence": 677,
+        "source_sha256": "f0221563a198789ad0414287bdaef9325c564292a9f4377fe735e9f827e320c4",
+        "source_arrival_monotonic_ns": 33732128359,
+        "observed_sim_ns": 2406000000,
+        "internal_initialized": true,
+        "public_initialized": false,
+        "truth_used": false,
+        "fusion_eligible": false
+      },
+      "truth_used": false
+    },
+    "profile": {
+      "name": "supported-ready-v1",
+      "cycle_ns": 800000000,
+      "force_world_y_n": 26.0,
+      "physics_step_ns": 1000000,
+      "heartbeat_max_age_ns": 2000000000,
+      "max_displacement_m": 1.0,
+      "max_speed_m_s": 3.0,
+      "max_roll_pitch_rad": 0.7853981633974483,
+      "sensor_hz": {
+        "imu": 250,
+        "rgbd": 10
+      },
+      "eligible_for_px4_fusion": false,
+      "scope": "external disarmed fixture; truth only in isolated abort/audit monitor",
+      "lateral_active_steps": 1600,
+      "fixed_masses_kg": {
+        "base_link": 2.0,
+        "rotor_0": 0.016076923076923075,
+        "rotor_1": 0.016076923076923075,
+        "rotor_2": 0.016076923076923075,
+        "rotor_3": 0.016076923076923075,
+        "camera_link": 0.061
+      },
+      "gravity_m_s2": 9.81,
+      "lift_height_m": 0.4,
+      "minimum_ground_clearance_m": 0.1,
+      "max_total_force_n": 40.0,
+      "force_distribution": "each link COM proportional to static mass",
+      "truth_feedback": false,
+      "startup_deadline_ns": 8000000000,
+      "anchor_delay_ns": 200000000,
+      "lift_duration_ns": 2000000000,
+      "lateral_start_after_anchor_ns": 3000000000,
+      "lateral_end_after_anchor_ns": 4600000000,
+      "total_duration_ns": 25000000000
+    },
+    "eligible_for_px4_fusion": false
+  },
+  "sources": [
+    {
+      "kind": "heartbeat",
+      "arrival_monotonic_ns": 31505517005,
+      "observed_sim_ns": 1429000000,
+      "system_id": 9,
+      "base_mode": 29,
+      "custom_mode": 50593792,
+      "source_sequence": 403,
+      "writer_begin_monotonic_ns": 31515851999,
+      "recorded_monotonic_ns": 31515852505
+    },
+    {
+      "kind": "info",
+      "arrival_monotonic_ns": 33725474067,
+      "observed_sim_ns": 2401000000,
+      "sample_ns": 2400000000,
+      "camera_info": {
+        "width": 160,
+        "height": 120,
+        "frame_id": "camera_link",
+        "intrinsics_k": [
+          108.12401050876075,
+          0.0,
+          80.0,
+          0.0,
+          108.12401050876075,
+          60.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "projection_p": [
+          108.12401050876075,
+          0.0,
+          80.0,
+          0.0,
+          0.0,
+          108.12401050876075,
+          60.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        "distortion_model": 0,
+        "distortion_k": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "sim_age_at_callback_ns": 1000000,
+      "source_sequence": 674,
+      "writer_begin_monotonic_ns": 33725602459,
+      "payload_path": "camera-info-messages/2400000000.pb",
+      "payload_sha256": "8111369548695bbd02184f93b84b151db90a280fa8854fbf6a4a8a118c730fc1",
+      "recorded_monotonic_ns": 33736504429
+    },
+    {
+      "kind": "imu",
+      "arrival_monotonic_ns": 33728435324,
+      "observed_sim_ns": 2404000000,
+      "sample_ns": 2404000000,
+      "gyro_flu": [
+        -0.0004314418519103725,
+        -0.0001009032470429962,
+        -0.00014378583142885814
+      ],
+      "accel_flu": [
+        -0.009109192505908333,
+        -0.0007079276587086588,
+        9.823517014250235
+      ],
+      "sim_age_at_callback_ns": 0,
+      "gyro_frd": [
+        -0.0004314418519103725,
+        0.0001009032470429962,
+        0.00014378583142885814
+      ],
+      "accel_frd": [
+        -0.009109192505908333,
+        0.0007079276587086588,
+        -9.823517014250235
+      ],
+      "source_sequence": 675,
+      "writer_begin_monotonic_ns": 33762271948,
+      "recorded_monotonic_ns": 33762273179
+    },
+    {
+      "kind": "rgb",
+      "arrival_monotonic_ns": 33732128359,
+      "observed_sim_ns": 2406000000,
+      "sample_ns": 2400000000,
+      "width": 160,
+      "height": 120,
+      "sim_age_at_callback_ns": 6000000,
+      "source_sequence": 677,
+      "writer_begin_monotonic_ns": 33764962919,
+      "recorded_monotonic_ns": 33770686438
+    }
+  ],
+  "fanout": [
+    {
+      "event": "source_intent",
+      "sequence_repr": "403",
+      "dispositions": {
+        "shadow": "not_attempted",
+        "readiness": "not_attempted"
+      },
+      "source_sha256": "c180eed2c56ab6970e2802167616c1b68cb3850821a5ceda788d376abe9a4559",
+      "payload_sha256": null,
+      "source_sequence": 403,
+      "begin_ns": 31516916623,
+      "consumers": {}
+    },
+    {
+      "event": "source_delivery",
+      "sequence_repr": "403",
+      "dispositions": {
+        "shadow": "returned",
+        "readiness": "returned"
+      },
+      "source_sha256": "c180eed2c56ab6970e2802167616c1b68cb3850821a5ceda788d376abe9a4559",
+      "payload_sha256": null,
+      "source_sequence": 403,
+      "begin_ns": 31516916623,
+      "consumers": {
+        "shadow": {
+          "start_ns": 31516916623,
+          "returned_ns": 31517387821
+        },
+        "readiness": {
+          "start_ns": 31517394682,
+          "returned_ns": 31518002427
+        }
+      },
+      "end_ns": 31518003376
+    },
+    {
+      "event": "source_intent",
+      "sequence_repr": "674",
+      "dispositions": {
+        "shadow": "not_attempted",
+        "readiness": "not_attempted"
+      },
+      "source_sha256": "f8a72c4237b3e96d486868fe1bebb264d9efd5d435778d56c77944e6ae6c66ba",
+      "payload_sha256": "8111369548695bbd02184f93b84b151db90a280fa8854fbf6a4a8a118c730fc1",
+      "source_sequence": 674,
+      "begin_ns": 33736783339,
+      "consumers": {}
+    },
+    {
+      "event": "source_delivery",
+      "sequence_repr": "674",
+      "dispositions": {
+        "shadow": "returned",
+        "readiness": "returned"
+      },
+      "source_sha256": "f8a72c4237b3e96d486868fe1bebb264d9efd5d435778d56c77944e6ae6c66ba",
+      "payload_sha256": "8111369548695bbd02184f93b84b151db90a280fa8854fbf6a4a8a118c730fc1",
+      "source_sequence": 674,
+      "begin_ns": 33736783339,
+      "consumers": {
+        "shadow": {
+          "start_ns": 33736783339,
+          "returned_ns": 33761940319
+        },
+        "readiness": {
+          "start_ns": 33761959690,
+          "returned_ns": 33761998719
+        }
+      },
+      "end_ns": 33761999133
+    },
+    {
+      "event": "source_intent",
+      "sequence_repr": "675",
+      "dispositions": {
+        "shadow": "not_attempted",
+        "readiness": "not_attempted"
+      },
+      "source_sha256": "75fe73673f9061aadeab1604b1bf5dbe76236e8e1daa9a01df263b52d38a7ca6",
+      "payload_sha256": null,
+      "source_sequence": 675,
+      "begin_ns": 33762499156,
+      "consumers": {}
+    },
+    {
+      "event": "source_delivery",
+      "sequence_repr": "675",
+      "dispositions": {
+        "shadow": "returned",
+        "readiness": "returned"
+      },
+      "source_sha256": "75fe73673f9061aadeab1604b1bf5dbe76236e8e1daa9a01df263b52d38a7ca6",
+      "payload_sha256": null,
+      "source_sequence": 675,
+      "begin_ns": 33762499156,
+      "consumers": {
+        "shadow": {
+          "start_ns": 33762499156,
+          "returned_ns": 33763859942
+        },
+        "readiness": {
+          "start_ns": 33763873411,
+          "returned_ns": 33763905654
+        }
+      },
+      "end_ns": 33763906057
+    },
+    {
+      "event": "source_intent",
+      "sequence_repr": "677",
+      "dispositions": {
+        "shadow": "not_attempted",
+        "readiness": "not_attempted"
+      },
+      "source_sha256": "f0221563a198789ad0414287bdaef9325c564292a9f4377fe735e9f827e320c4",
+      "payload_sha256": "948ebaa91785868b8d90df443141b600fcf2612d0ac84248bc976402f91e8b47",
+      "source_sequence": 677,
+      "begin_ns": 33773691219,
+      "consumers": {}
+    },
+    {
+      "event": "source_delivery",
+      "sequence_repr": "677",
+      "dispositions": {
+        "shadow": "returned",
+        "readiness": "returned"
+      },
+      "source_sha256": "f0221563a198789ad0414287bdaef9325c564292a9f4377fe735e9f827e320c4",
+      "payload_sha256": "948ebaa91785868b8d90df443141b600fcf2612d0ac84248bc976402f91e8b47",
+      "source_sequence": 677,
+      "begin_ns": 33773691219,
+      "consumers": {
+        "shadow": {
+          "start_ns": 33773691219,
+          "returned_ns": 33799392993
+        },
+        "readiness": {
+          "start_ns": 33799400832,
+          "returned_ns": 33799449602
+        }
+      },
+      "end_ns": 33799450293
+    }
+  ],
+  "heartbeat_records": [
+    {
+      "observation_sequence": 0,
+      "source_sha256": "305140a34e7a355fa18051facd11f6a5bcad0ada2c23a6fcafd466d03a162a2c",
+      "arrival_monotonic_ns": 31505517005,
+      "observed_ns": 31505590163,
+      "original": {
+        "kind": "heartbeat",
+        "arrival_monotonic_ns": 31505517005,
+        "observed_sim_ns": 1429000000,
+        "system_id": 9,
+        "base_mode": 29,
+        "custom_mode": 50593792
+      },
+      "event": "heartbeat_observed"
+    },
+    {
+      "event": "heartbeat_reconciled",
+      "observation_sequence": 0,
+      "source_sequence": 403,
+      "source_sha256": "305140a34e7a355fa18051facd11f6a5bcad0ada2c23a6fcafd466d03a162a2c",
+      "reconciled_ns": 31517408067
+    }
+  ],
+  "estimator_records": [
+    {
+      "acknowledged_monotonic_ns": 33793422662,
+      "event": "estimator_internal_ready",
+      "fusion_eligible": false,
+      "internal_initialized": true,
+      "journal_ack_monotonic_ns": 33798822004,
+      "native_sequence": 626,
+      "observed_sim_ns": 2406000000,
+      "public_initialized": false,
+      "sample_ns": 2400000000,
+      "source_arrival_monotonic_ns": 33732128359,
+      "source_sequence": 677,
+      "source_sha256": "f0221563a198789ad0414287bdaef9325c564292a9f4377fe735e9f827e320c4",
+      "truth_used": false
+    }
+  ],
+  "acknowledgements": [
+    {
+      "sequence": 626,
+      "kind": "C",
+      "sample_ns": 2400000000,
+      "receive_ns": 33790889457,
+      "start_ns": 33790927812,
+      "end_ns": 33792988304,
+      "gray_first": 218,
+      "internal_initialized": true,
+      "public_initialized": false,
+      "initializer_time_s": 1.304,
+      "state_time_s": 2.4000000000000004,
+      "last_regular_update_s": -1,
+      "zupt_flag_latched": false,
+      "has_moved_since_zupt": false,
+      "imu_state": [
+        -0.9999999945417724,
+        1.3734508896856978e-05,
+        0.00010307864851142306,
+        1.0129711075616199e-05,
+        -0.00012627314254931018,
+        1.9761353057442354e-05,
+        0.0013324576645282885,
+        0.00020740936910334815,
+        -0.00032443297364226456,
+        0.0017751346261487958,
+        -9.293601164254848e-06,
+        0.00011203958160537296,
+        -1.527971111862728e-05,
+        -5.572554873071339e-09,
+        1.9147778606342443e-09,
+        0.00046133625782829313
+      ],
+      "imu_covariance15": [
+        [
+          0.0008804897364992461,
+          -8.916316790384144e-15,
+          -1.9725249175061573e-15,
+          -8.569478668510717e-08,
+          -0.003301156838166757,
+          -1.4883812942813721e-08,
+          -1.8430597939860453e-07,
+          -0.006884737917715023,
+          -2.9431894845440226e-07,
+          -0.00043839999654247865,
+          5.1225880822503965e-09,
+          -4.6500362012657295e-08,
+          0,
+          0,
+          0
+        ],
+        [
+          -8.916316790384144e-15,
+          0.0008804897384735116,
+          -9.70231833367538e-14,
+          -0.0033011569045920245,
+          8.570453413031008e-08,
+          -1.524817344801532e-08,
+          -0.006884738014229974,
+          1.8426977435975344e-07,
+          2.380033266231875e-07,
+          -5.121812696791683e-09,
+          -0.00043839999984962764,
+          -7.233909211383672e-09,
+          0,
+          0,
+          0
+        ],
+        [
+          -1.972524937358492e-15,
+          -9.702318333840816e-14,
+          0.0008804897365669879,
+          5.151276538892444e-08,
+          6.438242382198771e-07,
+          4.2812692967771e-12,
+          -1.5567504292014623e-07,
+          1.0862462974651996e-06,
+          5.399487217386618e-11,
+          4.6500448333521867e-08,
+          7.2334544184356574e-09,
+          -0.00043839999654367187,
+          0,
+          0,
+          0
+        ],
+        [
+          -8.569478668510719e-08,
+          -0.0033011569045920245,
+          5.1512765388924456e-08,
+          0.018510891103526682,
+          5.510448592636914e-12,
+          2.284025154791692e-07,
+          0.03079703602039508,
+          -1.770352611258968e-08,
+          -8.031535436242165e-07,
+          2.9173592616329614e-08,
+          0.000861160193954854,
+          1.8004233550728734e-08,
+          -0.00024024319897935544,
+          8.989264195621892e-09,
+          1.5301315005967943e-08
+        ],
+        [
+          -0.0033011568381667573,
+          8.57045341303101e-08,
+          6.438242382198771e-07,
+          5.510448592650149e-12,
+          0.01851089111591815,
+          -1.8214390816628168e-09,
+          1.772334646275991e-08,
+          0.030797036021042164,
+          1.0881191822505597e-06,
+          0.0008611601954597507,
+          -2.9171360239013175e-08,
+          -6.5928436377476904e-09,
+          8.989207077385145e-09,
+          0.00024024319979051953,
+          -8.230042796031455e-10
+        ],
+        [
+          -1.4883812942813721e-08,
+          -1.524817344801532e-08,
+          4.2812692967771e-12,
+          2.284025154791692e-07,
+          -1.8214390816628102e-09,
+          0.002764496204721111,
+          3.6326510865645624e-07,
+          3.742120674723791e-08,
+          0.0003730196097177684,
+          2.0790508037662482e-08,
+          -3.217273892153937e-08,
+          -2.7849096619039076e-12,
+          1.530135077011936e-08,
+          8.223174698853204e-10,
+          0.00024024319916951572
+        ],
+        [
+          -1.8430597939860453e-07,
+          -0.006884738014229974,
+          -1.556750429201462e-07,
+          0.03079703602039508,
+          1.7723346462759937e-08,
+          3.6326510865645624e-07,
+          0.06072521683194318,
+          9.90933680248207e-11,
+          -1.7256738675080305e-06,
+          8.786572176786832e-08,
+          0.0023570310288609296,
+          1.4205412917782022e-07,
+          -0.00043839999648878294,
+          1.7187056897611205e-08,
+          4.4054306451035975e-08
+        ],
+        [
+          -0.006884737917715023,
+          1.8426977435975344e-07,
+          1.0862462974651996e-06,
+          -1.7703526112589706e-08,
+          0.030797036021042164,
+          3.742120674723788e-08,
+          9.909336802471482e-11,
+          0.06072521678544169,
+          2.280225149025647e-06,
+          0.0023570310311282405,
+          -8.78530110474755e-08,
+          -7.696000571958728e-09,
+          1.718688076621736e-08,
+          0.0004383999995992686,
+          -1.6590874269008231e-09
+        ],
+        [
+          -2.9431894845440226e-07,
+          2.3800332662318753e-07,
+          5.399487217386618e-11,
+          -8.031535436242165e-07,
+          1.0881191822505595e-06,
+          0.0003730196097177684,
+          -1.7256738675080305e-06,
+          2.280225149025647e-06,
+          0.0005806928729323366,
+          1.501323799661463e-07,
+          -1.4145698811577466e-07,
+          -1.2798386375253366e-11,
+          4.4054369495934615e-08,
+          1.6572763294843684e-09,
+          0.0004383999968528456
+        ],
+        [
+          -0.00043839999654247865,
+          -5.121812696791683e-09,
+          4.6500448333521867e-08,
+          2.9173592616329614e-08,
+          0.0008611601954597507,
+          2.0790508037662482e-08,
+          8.786572176786832e-08,
+          0.0023570310311282405,
+          1.501323799661463e-07,
+          0.0004,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          5.1225880822503965e-09,
+          -0.00043839999984962764,
+          7.2334544184356574e-09,
+          0.000861160193954854,
+          -2.9171360239013175e-08,
+          -3.217273892153937e-08,
+          0.0023570310288609296,
+          -8.78530110474755e-08,
+          -1.4145698811577466e-07,
+          0,
+          0.0004,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          -4.6500362012657295e-08,
+          -7.233909211383672e-09,
+          -0.00043839999654367187,
+          1.8004233550728734e-08,
+          -6.5928436377476904e-09,
+          -2.7849096619039076e-12,
+          1.4205412917782022e-07,
+          -7.696000571958728e-09,
+          -1.2798386375253366e-11,
+          0,
+          0,
+          0.0004,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          -0.00024024319897935544,
+          8.989207077385145e-09,
+          1.530135077011936e-08,
+          -0.00043839999648878294,
+          1.718688076621736e-08,
+          4.4054369495934615e-08,
+          0,
+          0,
+          0,
+          0.0004,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          8.989264195621892e-09,
+          0.00024024319979051953,
+          8.223174698853204e-10,
+          1.7187056897611205e-08,
+          0.0004383999995992686,
+          1.6572763294843684e-09,
+          0,
+          0,
+          0,
+          0,
+          0.0004,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          1.5301315005967943e-08,
+          -8.230042796031455e-10,
+          0.00024024319916951572,
+          4.4054306451035975e-08,
+          -1.6590874269008231e-09,
+          0.0004383999968528456,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0.0004
+        ]
+      ],
+      "fusion_eligible": false,
+      "quality": null,
+      "reset_counter": null,
+      "acknowledged_ns": 33793422662,
+      "source_arrival_ns": 33732128359,
+      "dispatch_ns": 33790186513
+    }
+  ]
+}

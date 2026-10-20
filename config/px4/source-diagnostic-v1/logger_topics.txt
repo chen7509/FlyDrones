@@ -1,0 +1,10 @@
+vehicle_odometry 0 0
+vehicle_status 100 0
+vehicle_attitude 20 0
+vehicle_local_position 20 0
+estimator_status 20 0
+estimator_selector_status 100 0
+sensor_combined 0 0
+timesync_status 1000 0
+logger_status 100 0
+failsafe_flags 100 0

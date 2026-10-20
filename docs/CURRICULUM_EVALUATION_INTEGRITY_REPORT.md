@@ -1,0 +1,23 @@
+# Curriculum evaluation and recovery integrity (2026-10-14)
+
+The actual curriculum controller now refuses malformed evaluation types and counters, checks finite parameters during completed-stage regression, and never resumes a current candidate already reported as nonfinite. This advances the complete-learning orchestration dependency without loading a MaleCNS graph or running optimizer updates.
+
+Previously, `bool("false")` became True, bool/string losses and fractional/string/bool counters were coerced, and completed-stage `parameters_finite=False` was ignored if its loss remained low. The regression case could produce `COMPLETE` despite the reported parameter failure. Strict exact bool flags, finite Real loss values excluding bool/strings, and nonnegative integer counters now prevent those paths. Existing omitted-counter defaults remain zero; this is not independent proof of update counts. The real ConnectomeCurriculumSession producer already returns compatible Python bool/float/int values. Stage thresholds, seed partitions, model structure and data/source eligibility were not changed.
+
+Independent review found a further Important recovery defect: a nonfinite current-stage candidate could still become `latest_checkpoint` in a COMMITTED run and be used by the next batch or resumed session. A separate two-case RED reproduced it. The controller now retains that failed candidate and its report, but restores the prior best checkpoint when available. Without a qualified best checkpoint it records FAILED with latest=null and stops after that attempt. With a prior best it uses the original max_batches budget, and resumes from that best rather than a failed candidate. Completed-stage parameter failure also triggers best-checkpoint rollback.
+
+## Evidence
+
+Initial behavior checks: **11 failed, 1 passed**; the passing case was the already supported exact False current-stage failure with max_batches=1. The first implementation passed 31 tests. Initial Ruff rejected import order; its output remains, and the import-only correction passed. Review additions first produced **2 failed**, then the final curriculum/config/state run passed **33 tests in 1.31s**, Ruff and diff checks passed. No broad suite or complete-model training was run.
+
+The selected tests execute actual run_curriculum, StateStore, lock, checkpoint-directory and report publication paths with deterministic protocol sessions. They do not construct a tiny neural model as a substitute for the full graph. The package initializer imports existing PyTorch dependencies; no connectome graph, inference run or optimization was instantiated by these selected cases. Process peak memory was not measured or claimed.
+
+All 48 final test files (45,061 bytes), including candidate/session files, state manifests and batch reports, were retained under the previously absent, dedicated `results/curriculum-evaluation-integrity-dev-1701/pytest-final` directory. In particular, the no-best failure has latest=null, and the two failed later-stage candidates remain alongside the resumed state pointing to best. Original RED/GREEN/style failures and exact argv/PYTHONPATH records remain separate. The original production module is recovered from commit afc2e45 after RED and explicitly labeled as such, rather than falsely treated as a timestamped pre-run copy.
+
+Code and retained recovery artifacts passed independent read-only review with no remaining Critical/Important/Minor findings. The immutable `evidence/curriculum-evaluation-integrity-dev-1701.zip` and SHA sidecar bind code, tests, baseline, plan, report, logs and the small actual protocol-run artifacts by member length/hash and CRC.
+
+## Boundaries
+
+A session-provided bool is still a reported property, not independent inspection of every complete-model tensor or authenticated producer. These tests validate controller behavior and persistence, not MaleCNS learning quality, trained checkpoint qualification, fair baseline performance, trusted sensor/teacher corpus or flight. An evaluation exception refuses publication but does not prove that a custom session made no in-memory mutation before that exception. Real full-model resources and independent artifact/source checks remain required.
+
+Complete masked MaleCNS remains initialized but untrained. The EGO v3 OOM attempt remains consumed and failed; no rebuild, PX4/Gazebo run, source-quality promotion, physical threshold reduction or full-model memory-gate bypass occurred. Mission-state safety's prior evidence and all historical failures remain unchanged. Goal panel status is not rewritten or called complete.

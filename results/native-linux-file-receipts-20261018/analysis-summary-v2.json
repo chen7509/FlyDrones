@@ -1,0 +1,71 @@
+{
+  "selected": 1054,
+  "observed": 919,
+  "status_counts": {
+    "observed": 919,
+    "unresolved_reparse": 98,
+    "unavailable": 7,
+    "file_cap": 1,
+    "not_regular": 28,
+    "deadline": 1
+  },
+  "role_counts": {
+    "package-platform": {
+      "observed": 4
+    },
+    "loader-config": {
+      "observed": 5
+    },
+    "tool": {
+      "unresolved_reparse": 17,
+      "observed": 15
+    },
+    "compiler-component": {
+      "unavailable": 4,
+      "observed": 4,
+      "unresolved_reparse": 1
+    },
+    "openvins-build": {
+      "observed": 11,
+      "unavailable": 1,
+      "file_cap": 1
+    },
+    "source-git": {
+      "observed": 3
+    },
+    "current-upstream-source": {
+      "unavailable": 2,
+      "observed": 141
+    },
+    "package-inventory": {
+      "observed": 230
+    },
+    "dependency-cmake-config": {
+      "observed": 52
+    },
+    "elf-candidate": {
+      "unresolved_reparse": 80,
+      "observed": 83
+    },
+    "header-package-selection": {
+      "not_regular": 28,
+      "observed": 371,
+      "deadline": 1
+    }
+  },
+  "source_matches": 141,
+  "source_mismatches": [],
+  "source_missing": [
+    "LICENSE",
+    "ReadMe.md"
+  ],
+  "existing_library_bytes": 291717384,
+  "unique_blob_count": 907,
+  "package_inventory_packages": 115,
+  "md5_match_files": 455,
+  "md5_mismatch_files": [],
+  "elf_files": 100,
+  "translation_units": 34,
+  "complete": false,
+  "qualification": false
+}

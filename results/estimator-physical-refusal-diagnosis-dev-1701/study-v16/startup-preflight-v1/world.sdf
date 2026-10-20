@@ -1,0 +1,181 @@
+<?xml version='1.0' encoding='utf-8'?>
+<sdf version="1.9">
+  <world name="fly_ego_benchmark">
+    <physics name="fixed" type="ignored">
+      <max_step_size>0.001</max_step_size>
+      <real_time_factor>1.0</real_time_factor>
+    </physics>
+    <plugin filename="gz-sim-physics-system" name="gz::sim::systems::Physics" />
+    <plugin filename="gz-sim-user-commands-system" name="gz::sim::systems::UserCommands" />
+    <plugin filename="gz-sim-scene-broadcaster-system" name="gz::sim::systems::SceneBroadcaster" />
+    <plugin filename="gz-sim-sensors-system" name="gz::sim::systems::Sensors">
+      <render_engine>ogre2</render_engine>
+    </plugin>
+    <plugin filename="gz-sim-imu-system" name="gz::sim::systems::Imu" />
+    <plugin filename="gz-sim-navsat-system" name="gz::sim::systems::NavSat" />
+    <plugin filename="gz-sim-air-pressure-system" name="gz::sim::systems::AirPressure" />
+    <plugin filename="gz-sim-magnetometer-system" name="gz::sim::systems::Magnetometer" />
+    <plugin filename="gz-sim-contact-system" name="gz::sim::systems::Contact" />
+    <gravity>0 0 -9.81</gravity>
+    <spherical_coordinates>
+      <surface_model>EARTH_WGS84</surface_model>
+      <world_frame_orientation>ENU</world_frame_orientation>
+      <latitude_deg>47.397742</latitude_deg>
+      <longitude_deg>8.545594</longitude_deg>
+      <elevation>488</elevation>
+      <heading_deg>0</heading_deg>
+    </spherical_coordinates>
+    <light name="sun" type="directional">
+      <pose>0 0 10 0 0 0</pose>
+      <diffuse>.8 .8 .8 1</diffuse>
+      <direction>-.5 .1 -1</direction>
+    </light>
+    <model name="ground">
+      <static>true</static>
+      <pose>0 0 -0.1 0 0 0</pose>
+      <link name="body">
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>100 100 .2</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>100 100 .2</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.45 .5 .35 1</ambient>
+            <diffuse>.45 .5 .35 1</diffuse>
+            <pbr>
+              <metal>
+                <albedo_map>ground_albedo.png</albedo_map>
+              </metal>
+            </pbr>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="wall_0">
+      <static>true</static>
+      <pose>-5.5 -1.15 0.75 0 0 0</pose>
+      <link name="body">
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>0.03999999999999915 0.8 1.2999999999999998</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>0.03999999999999915 0.8 1.2999999999999998</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.6 .55 .5 1</ambient>
+            <diffuse>.6 .55 .5 1</diffuse>
+            <pbr>
+              <metal>
+                <albedo_map>board_albedo.png</albedo_map>
+              </metal>
+            </pbr>
+          </material>
+        </visual>
+        <sensor name="benchmark_contact" type="contact">
+          <contact>
+            <collision>collision</collision>
+            <topic>/benchmark/contacts</topic>
+          </contact>
+          <always_on>1</always_on>
+          <update_rate>100</update_rate>
+        </sensor>
+      </link>
+    </model>
+    <model name="wall_1">
+      <static>true</static>
+      <pose>-5.5 1.15 0.75 0 0 0</pose>
+      <link name="body">
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>0.03999999999999915 0.8 1.2999999999999998</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>0.03999999999999915 0.8 1.2999999999999998</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.6 .55 .5 1</ambient>
+            <diffuse>.6 .55 .5 1</diffuse>
+            <pbr>
+              <metal>
+                <albedo_map>board_albedo.png</albedo_map>
+              </metal>
+            </pbr>
+          </material>
+        </visual>
+        <sensor name="benchmark_contact" type="contact">
+          <contact>
+            <collision>collision</collision>
+            <topic>/benchmark/contacts</topic>
+          </contact>
+          <always_on>1</always_on>
+          <update_rate>100</update_rate>
+        </sensor>
+      </link>
+    </model>
+    <model name="tree_0">
+      <static>true</static>
+      <pose>0.0 0.0 2.25 0 0 0</pose>
+      <link name="body">
+        <collision name="collision">
+          <geometry>
+            <cylinder>
+              <radius>0.8</radius>
+              <length>4.5</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <cylinder>
+              <radius>0.8</radius>
+              <length>4.5</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>.25 .15 .07 1</ambient>
+            <diffuse>.25 .15 .07 1</diffuse>
+            <pbr>
+              <metal>
+                <albedo_map>obstacle_albedo.png</albedo_map>
+              </metal>
+            </pbr>
+          </material>
+        </visual>
+        <sensor name="benchmark_contact" type="contact">
+          <contact>
+            <collision>collision</collision>
+            <topic>/benchmark/contacts</topic>
+          </contact>
+          <always_on>1</always_on>
+          <update_rate>100</update_rate>
+        </sensor>
+      </link>
+    </model>
+    <include>
+      <uri>model://x500_benchmark</uri>
+      <name>x500_benchmark_8</name>
+      <pose>-8.0 0.0 .24 0 0 0</pose>
+    </include>
+  </world>
+</sdf>

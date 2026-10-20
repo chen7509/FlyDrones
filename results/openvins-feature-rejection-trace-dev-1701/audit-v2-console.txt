@@ -1,0 +1,75 @@
+{
+  "control_binary_sha256": "d7252cdb97b4b73baa64f6950e3a03299fd4e0c6bb8252a568fcbc118218719e",
+  "diagnostic_binary_sha256": "945e5279ef4286ef85dda65a9bf0f1dc6532536cad951c00aee8ad0be3ac49b6",
+  "diagnostic_library_sha256": "fc8af64f7417917c2f5f70f493adcf53d842d5439314784550c9ce0d73b38c4f",
+  "diagnostic_patch_sha256": "def348ff3f007e86fdba83ad9fe22cd612101acf6af7b5947034145fc851925a",
+  "dominant_observed_rejections": {
+    "msckf_insufficient": 1202,
+    "slam_delayed_triangulation": 114,
+    "slam_update_chi2": 2
+  },
+  "fusion_eligible": false,
+  "online_latency_qualified": false,
+  "physical_replay": false,
+  "qualified": true,
+  "replayed_source_records": 6477,
+  "root_cause_qualified": false,
+  "schema": "openvins-feature-rejection-trace-audit-v1",
+  "source_capture": "results/estimator-physical-refusal-diagnosis-dev-1701/study-v21/capture-v1",
+  "source_requests_sha256": "7794cc35334069c0b10cb48c5c7bb754d1cc642acf8c664d104061505f478868",
+  "state_comparison": {
+    "qualified": true,
+    "rows": 250,
+    "tolerance": 1e-12
+  },
+  "totals": {
+    "msckf": {
+      "accepted": 23,
+      "chi2": 0,
+      "input": 1235,
+      "insufficient": 1202,
+      "refinement": 4,
+      "triangulation": 6
+    },
+    "pipe": {
+      "db": 10669,
+      "lost": 1230,
+      "marg": 5,
+      "maxtracks": 0,
+      "msckf_accepted": 23,
+      "msckf_selected": 1235,
+      "slam_delayed": 160,
+      "slam_delayed_accepted": 46,
+      "slam_update": 6427,
+      "slam_update_accepted": 6425
+    },
+    "slam_delay": {
+      "accepted": 46,
+      "initialization": 0,
+      "input": 160,
+      "insufficient": 0,
+      "refinement": 0,
+      "triangulation": 114
+    },
+    "slam_update": {
+      "accepted": 6425,
+      "chi2": 2,
+      "input": 6427,
+      "no_measurements": 0,
+      "representation_insufficient": 0
+    },
+    "track": {
+      "accepted": 9438,
+      "cam": 0,
+      "initial": 0,
+      "klt_or_ransac": 0,
+      "masked": 0,
+      "out_of_bounds": 224,
+      "previous": 9432,
+      "reset": 0,
+      "topped": 9662
+    }
+  },
+  "trace_frames": 222,
+  "truth_used": false
+}

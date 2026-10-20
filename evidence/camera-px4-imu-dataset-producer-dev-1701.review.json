@@ -1,0 +1,19 @@
+{
+  "reviewer": "/root/executor_review",
+  "mode": "independent read-only; no tests or producers rerun",
+  "archive_sha256": "05dbf78468c8f159ebec8cc504c538595f7694304869f1de1af1c50cedd09fb3",
+  "archive_bytes": 14182564,
+  "members": 1376,
+  "all_CRC_size_SHA_currentbyte_passed": true,
+  "v1_snapshot_and_v2_current_code_match_actual_commands": true,
+  "all_pixels_source_CRC_decode_and_CSV_raw_values_equal": true,
+  "real_dataset_versions_retained": [
+    "v1",
+    "v2"
+  ],
+  "Critical": 0,
+  "Important": 0,
+  "Minor": 0,
+  "qualification": "candidate file production/consistency only; source clock calibration training flight false",
+  "prepublication_plan": "later publication ledger external"
+}

@@ -1,0 +1,771 @@
+{
+  "schema": "openvins-object-static-observations-v1",
+  "objects": {
+    "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/home/yuchen7509/flydrones-upstream/open_vins/ov_core/src/cpi/CpiV1.cpp.o": {
+      "elf_class": 64,
+      "little_endian": true,
+      "e_type": 1,
+      "machine": 62,
+      "section_count": 824,
+      "selected_sections": {
+        ".text": {
+          "offset": 3232,
+          "bytes": 45714,
+          "flags": 6
+        },
+        ".debug_info": {
+          "offset": 64528,
+          "bytes": 4054354,
+          "flags": 0
+        },
+        ".debug_str": {
+          "offset": 5222418,
+          "bytes": 15112355,
+          "flags": 48
+        },
+        ".debug_line_str": {
+          "offset": 20334773,
+          "bytes": 9617,
+          "flags": 48
+        },
+        ".comment": {
+          "offset": 20344400,
+          "bytes": 46,
+          "flags": 48
+        },
+        ".symtab": {
+          "offset": 20345912,
+          "bytes": 14712,
+          "flags": 0
+        }
+      },
+      "executed_or_loaded": false,
+      "source_to_object_proven": false,
+      "object_to_library_proven": false,
+      "comment_strings": [
+        "GCC: (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0"
+      ],
+      "debug_line_string_observations": {
+        "exact_source_path_present": true,
+        "source_basename_present": true,
+        "build_path_present": true,
+        "note": "String-table occurrences only; not DWARF DIE/path/relocation attribution or source digest."
+      }
+    },
+    "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/home/yuchen7509/flydrones-upstream/open_vins/ov_core/src/cpi/CpiV2.cpp.o": {
+      "elf_class": 64,
+      "little_endian": true,
+      "e_type": 1,
+      "machine": 62,
+      "section_count": 837,
+      "selected_sections": {
+        ".text": {
+          "offset": 3280,
+          "bytes": 65853,
+          "flags": 6
+        },
+        ".debug_info": {
+          "offset": 92528,
+          "bytes": 5159022,
+          "flags": 0
+        },
+        ".debug_str": {
+          "offset": 7030357,
+          "bytes": 18336335,
+          "flags": 48
+        },
+        ".debug_line_str": {
+          "offset": 25366692,
+          "bytes": 9617,
+          "flags": 48
+        },
+        ".comment": {
+          "offset": 25376320,
+          "bytes": 46,
+          "flags": 48
+        },
+        ".symtab": {
+          "offset": 25378232,
+          "bytes": 15168,
+          "flags": 0
+        }
+      },
+      "executed_or_loaded": false,
+      "source_to_object_proven": false,
+      "object_to_library_proven": false,
+      "comment_strings": [
+        "GCC: (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0"
+      ],
+      "debug_line_string_observations": {
+        "exact_source_path_present": true,
+        "source_basename_present": true,
+        "build_path_present": true,
+        "note": "String-table occurrences only; not DWARF DIE/path/relocation attribution or source digest."
+      }
+    },
+    "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/home/yuchen7509/flydrones-upstream/open_vins/ov_core/src/dummy.cpp.o": {
+      "elf_class": 64,
+      "little_endian": true,
+      "e_type": 1,
+      "machine": 62,
+      "section_count": 27,
+      "selected_sections": {
+        ".text": {
+          "offset": 88,
+          "bytes": 0,
+          "flags": 6
+        },
+        ".debug_info": {
+          "offset": 88,
+          "bytes": 34,
+          "flags": 0
+        },
+        ".debug_str": {
+          "offset": 3111,
+          "bytes": 14074,
+          "flags": 48
+        },
+        ".debug_line_str": {
+          "offset": 17185,
+          "bytes": 295,
+          "flags": 48
+        },
+        ".comment": {
+          "offset": 17480,
+          "bytes": 46,
+          "flags": 48
+        },
+        ".symtab": {
+          "offset": 17560,
+          "bytes": 288,
+          "flags": 0
+        }
+      },
+      "executed_or_loaded": false,
+      "source_to_object_proven": false,
+      "object_to_library_proven": false,
+      "comment_strings": [
+        "GCC: (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0"
+      ],
+      "debug_line_string_observations": {
+        "exact_source_path_present": true,
+        "source_basename_present": true,
+        "build_path_present": true,
+        "note": "String-table occurrences only; not DWARF DIE/path/relocation attribution or source digest."
+      }
+    },
+    "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/home/yuchen7509/flydrones-upstream/open_vins/ov_core/src/feat/Feature.cpp.o": {
+      "elf_class": 64,
+      "little_endian": true,
+      "e_type": 1,
+      "machine": 62,
+      "section_count": 782,
+      "selected_sections": {
+        ".text": {
+          "offset": 3072,
+          "bytes": 5187,
+          "flags": 6
+        },
+        ".debug_info": {
+          "offset": 10123,
+          "bytes": 161533,
+          "flags": 0
+        },
+        ".debug_str": {
+          "offset": 266531,
+          "bytes": 415369,
+          "flags": 48
+        },
+        ".debug_line_str": {
+          "offset": 681900,
+          "bytes": 9539,
+          "flags": 48
+        },
+        ".comment": {
+          "offset": 691448,
+          "bytes": 46,
+          "flags": 48
+        },
+        ".symtab": {
+          "offset": 691984,
+          "bytes": 12816,
+          "flags": 0
+        }
+      },
+      "executed_or_loaded": false,
+      "source_to_object_proven": false,
+      "object_to_library_proven": false,
+      "comment_strings": [
+        "GCC: (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0"
+      ],
+      "debug_line_string_observations": {
+        "exact_source_path_present": true,
+        "source_basename_present": true,
+        "build_path_present": true,
+        "note": "String-table occurrences only; not DWARF DIE/path/relocation attribution or source digest."
+      }
+    },
+    "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/home/yuchen7509/flydrones-upstream/open_vins/ov_core/src/feat/FeatureDatabase.cpp.o": {
+      "elf_class": 64,
+      "little_endian": true,
+      "e_type": 1,
+      "machine": 62,
+      "section_count": 916,
+      "selected_sections": {
+        ".text": {
+          "offset": 3584,
+          "bytes": 16640,
+          "flags": 6
+        },
+        ".debug_info": {
+          "offset": 38732,
+          "bytes": 413077,
+          "flags": 0
+        },
+        ".debug_str": {
+          "offset": 782805,
+          "bytes": 612403,
+          "flags": 48
+        },
+        ".debug_line_str": {
+          "offset": 1395208,
+          "bytes": 9888,
+          "flags": 48
+        },
+        ".comment": {
+          "offset": 1405104,
+          "bytes": 46,
+          "flags": 48
+        },
+        ".symtab": {
+          "offset": 1407712,
+          "bytes": 16176,
+          "flags": 0
+        }
+      },
+      "executed_or_loaded": false,
+      "source_to_object_proven": false,
+      "object_to_library_proven": false,
+      "comment_strings": [
+        "GCC: (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0"
+      ],
+      "debug_line_string_observations": {
+        "exact_source_path_present": true,
+        "source_basename_present": true,
+        "build_path_present": true,
+        "note": "String-table occurrences only; not DWARF DIE/path/relocation attribution or source digest."
+      }
+    },
+    "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/home/yuchen7509/flydrones-upstream/open_vins/ov_core/src/feat/FeatureInitializer.cpp.o": {
+      "elf_class": 64,
+      "little_endian": true,
+      "e_type": 1,
+      "machine": 62,
+      "section_count": 1458,
+      "selected_sections": {
+        ".text": {
+          "offset": 5744,
+          "bytes": 72428,
+          "flags": 6
+        },
+        ".debug_info": {
+          "offset": 217096,
+          "bytes": 6975434,
+          "flags": 0
+        },
+        ".debug_str": {
+          "offset": 9811183,
+          "bytes": 21896803,
+          "flags": 48
+        },
+        ".debug_line_str": {
+          "offset": 31707986,
+          "bytes": 18915,
+          "flags": 48
+        },
+        ".comment": {
+          "offset": 31726912,
+          "bytes": 46,
+          "flags": 48
+        },
+        ".symtab": {
+          "offset": 31730400,
+          "bytes": 25368,
+          "flags": 0
+        }
+      },
+      "executed_or_loaded": false,
+      "source_to_object_proven": false,
+      "object_to_library_proven": false,
+      "comment_strings": [
+        "GCC: (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0"
+      ],
+      "debug_line_string_observations": {
+        "exact_source_path_present": true,
+        "source_basename_present": true,
+        "build_path_present": true,
+        "note": "String-table occurrences only; not DWARF DIE/path/relocation attribution or source digest."
+      }
+    },
+    "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/home/yuchen7509/flydrones-upstream/open_vins/ov_core/src/sim/BsplineSE3.cpp.o": {
+      "elf_class": 64,
+      "little_endian": true,
+      "e_type": 1,
+      "machine": 62,
+      "section_count": 803,
+      "selected_sections": {
+        ".text": {
+          "offset": 3136,
+          "bytes": 27809,
+          "flags": 6
+        },
+        ".debug_info": {
+          "offset": 49664,
+          "bytes": 2728908,
+          "flags": 0
+        },
+        ".debug_str": {
+          "offset": 4058288,
+          "bytes": 8584898,
+          "flags": 48
+        },
+        ".debug_line_str": {
+          "offset": 12643186,
+          "bytes": 9652,
+          "flags": 48
+        },
+        ".comment": {
+          "offset": 12652848,
+          "bytes": 46,
+          "flags": 48
+        },
+        ".symtab": {
+          "offset": 12653744,
+          "bytes": 14232,
+          "flags": 0
+        }
+      },
+      "executed_or_loaded": false,
+      "source_to_object_proven": false,
+      "object_to_library_proven": false,
+      "comment_strings": [
+        "GCC: (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0"
+      ],
+      "debug_line_string_observations": {
+        "exact_source_path_present": true,
+        "source_basename_present": true,
+        "build_path_present": true,
+        "note": "String-table occurrences only; not DWARF DIE/path/relocation attribution or source digest."
+      }
+    },
+    "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/home/yuchen7509/flydrones-upstream/open_vins/ov_core/src/track/TrackAruco.cpp.o": {
+      "elf_class": 64,
+      "little_endian": true,
+      "e_type": 1,
+      "machine": 62,
+      "section_count": 1454,
+      "selected_sections": {
+        ".text": {
+          "offset": 5760,
+          "bytes": 332,
+          "flags": 6
+        },
+        ".debug_info": {
+          "offset": 9704,
+          "bytes": 470190,
+          "flags": 0
+        },
+        ".debug_str": {
+          "offset": 625905,
+          "bytes": 1801549,
+          "flags": 48
+        },
+        ".debug_line_str": {
+          "offset": 2427454,
+          "bytes": 24014,
+          "flags": 48
+        },
+        ".comment": {
+          "offset": 2451468,
+          "bytes": 46,
+          "flags": 48
+        },
+        ".symtab": {
+          "offset": 2451848,
+          "bytes": 23736,
+          "flags": 0
+        }
+      },
+      "executed_or_loaded": false,
+      "source_to_object_proven": false,
+      "object_to_library_proven": false,
+      "comment_strings": [
+        "GCC: (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0"
+      ],
+      "debug_line_string_observations": {
+        "exact_source_path_present": true,
+        "source_basename_present": true,
+        "build_path_present": true,
+        "note": "String-table occurrences only; not DWARF DIE/path/relocation attribution or source digest."
+      }
+    },
+    "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/home/yuchen7509/flydrones-upstream/open_vins/ov_core/src/track/TrackBase.cpp.o": {
+      "elf_class": 64,
+      "little_endian": true,
+      "e_type": 1,
+      "machine": 62,
+      "section_count": 1559,
+      "selected_sections": {
+        ".text": {
+          "offset": 6160,
+          "bytes": 23992,
+          "flags": 6
+        },
+        ".debug_info": {
+          "offset": 44632,
+          "bytes": 775881,
+          "flags": 0
+        },
+        ".debug_str": {
+          "offset": 1201991,
+          "bytes": 2016860,
+          "flags": 48
+        },
+        ".debug_line_str": {
+          "offset": 3218851,
+          "bytes": 23977,
+          "flags": 48
+        },
+        ".comment": {
+          "offset": 3242840,
+          "bytes": 46,
+          "flags": 48
+        },
+        ".symtab": {
+          "offset": 3245048,
+          "bytes": 27168,
+          "flags": 0
+        }
+      },
+      "executed_or_loaded": false,
+      "source_to_object_proven": false,
+      "object_to_library_proven": false,
+      "comment_strings": [
+        "GCC: (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0"
+      ],
+      "debug_line_string_observations": {
+        "exact_source_path_present": true,
+        "source_basename_present": true,
+        "build_path_present": true,
+        "note": "String-table occurrences only; not DWARF DIE/path/relocation attribution or source digest."
+      }
+    },
+    "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/home/yuchen7509/flydrones-upstream/open_vins/ov_core/src/track/TrackDescriptor.cpp.o": {
+      "elf_class": 64,
+      "little_endian": true,
+      "e_type": 1,
+      "machine": 62,
+      "section_count": 1735,
+      "selected_sections": {
+        ".text": {
+          "offset": 6848,
+          "bytes": 31725,
+          "flags": 6
+        },
+        ".debug_info": {
+          "offset": 75208,
+          "bytes": 851919,
+          "flags": 0
+        },
+        ".debug_str": {
+          "offset": 1372208,
+          "bytes": 2053344,
+          "flags": 48
+        },
+        ".debug_line_str": {
+          "offset": 3425552,
+          "bytes": 24060,
+          "flags": 48
+        },
+        ".comment": {
+          "offset": 3449624,
+          "bytes": 46,
+          "flags": 48
+        },
+        ".symtab": {
+          "offset": 3454224,
+          "bytes": 32448,
+          "flags": 0
+        }
+      },
+      "executed_or_loaded": false,
+      "source_to_object_proven": false,
+      "object_to_library_proven": false,
+      "comment_strings": [
+        "GCC: (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0"
+      ],
+      "debug_line_string_observations": {
+        "exact_source_path_present": true,
+        "source_basename_present": true,
+        "build_path_present": true,
+        "note": "String-table occurrences only; not DWARF DIE/path/relocation attribution or source digest."
+      }
+    },
+    "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/home/yuchen7509/flydrones-upstream/open_vins/ov_core/src/track/TrackKLT.cpp.o": {
+      "elf_class": 64,
+      "little_endian": true,
+      "e_type": 1,
+      "machine": 62,
+      "section_count": 1732,
+      "selected_sections": {
+        ".text": {
+          "offset": 6832,
+          "bytes": 55003,
+          "flags": 6
+        },
+        ".debug_info": {
+          "offset": 103132,
+          "bytes": 951856,
+          "flags": 0
+        },
+        ".debug_str": {
+          "offset": 1626753,
+          "bytes": 2041893,
+          "flags": 48
+        },
+        ".debug_line_str": {
+          "offset": 3668646,
+          "bytes": 24046,
+          "flags": 48
+        },
+        ".comment": {
+          "offset": 3692704,
+          "bytes": 46,
+          "flags": 48
+        },
+        ".symtab": {
+          "offset": 3697592,
+          "bytes": 32640,
+          "flags": 0
+        }
+      },
+      "executed_or_loaded": false,
+      "source_to_object_proven": false,
+      "object_to_library_proven": false,
+      "comment_strings": [
+        "GCC: (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0"
+      ],
+      "debug_line_string_observations": {
+        "exact_source_path_present": true,
+        "source_basename_present": true,
+        "build_path_present": true,
+        "note": "String-table occurrences only; not DWARF DIE/path/relocation attribution or source digest."
+      }
+    },
+    "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/home/yuchen7509/flydrones-upstream/open_vins/ov_core/src/track/TrackSIM.cpp.o": {
+      "elf_class": 64,
+      "little_endian": true,
+      "e_type": 1,
+      "machine": 62,
+      "section_count": 1473,
+      "selected_sections": {
+        ".text": {
+          "offset": 5824,
+          "bytes": 4576,
+          "flags": 6
+        },
+        ".debug_info": {
+          "offset": 14088,
+          "bytes": 436148,
+          "flags": 0
+        },
+        ".debug_str": {
+          "offset": 619028,
+          "bytes": 1726886,
+          "flags": 48
+        },
+        ".debug_line_str": {
+          "offset": 2345914,
+          "bytes": 23985,
+          "flags": 48
+        },
+        ".comment": {
+          "offset": 2369912,
+          "bytes": 46,
+          "flags": 48
+        },
+        ".symtab": {
+          "offset": 2370544,
+          "bytes": 24408,
+          "flags": 0
+        }
+      },
+      "executed_or_loaded": false,
+      "source_to_object_proven": false,
+      "object_to_library_proven": false,
+      "comment_strings": [
+        "GCC: (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0"
+      ],
+      "debug_line_string_observations": {
+        "exact_source_path_present": true,
+        "source_basename_present": true,
+        "build_path_present": true,
+        "note": "String-table occurrences only; not DWARF DIE/path/relocation attribution or source digest."
+      }
+    },
+    "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/home/yuchen7509/flydrones-upstream/open_vins/ov_core/src/types/Landmark.cpp.o": {
+      "elf_class": 64,
+      "little_endian": true,
+      "e_type": 1,
+      "machine": 62,
+      "section_count": 807,
+      "selected_sections": {
+        ".text": {
+          "offset": 3152,
+          "bytes": 3057,
+          "flags": 6
+        },
+        ".debug_info": {
+          "offset": 9840,
+          "bytes": 273874,
+          "flags": 0
+        },
+        ".debug_str": {
+          "offset": 433859,
+          "bytes": 603284,
+          "flags": 48
+        },
+        ".debug_line_str": {
+          "offset": 1037143,
+          "bytes": 9830,
+          "flags": 48
+        },
+        ".comment": {
+          "offset": 1046984,
+          "bytes": 46,
+          "flags": 48
+        },
+        ".symtab": {
+          "offset": 1047432,
+          "bytes": 13200,
+          "flags": 0
+        }
+      },
+      "executed_or_loaded": false,
+      "source_to_object_proven": false,
+      "object_to_library_proven": false,
+      "comment_strings": [
+        "GCC: (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0"
+      ],
+      "debug_line_string_observations": {
+        "exact_source_path_present": true,
+        "source_basename_present": true,
+        "build_path_present": true,
+        "note": "String-table occurrences only; not DWARF DIE/path/relocation attribution or source digest."
+      }
+    },
+    "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/home/yuchen7509/flydrones-upstream/open_vins/ov_core/src/utils/print.cpp.o": {
+      "elf_class": 64,
+      "little_endian": true,
+      "e_type": 1,
+      "machine": 62,
+      "section_count": 424,
+      "selected_sections": {
+        ".text": {
+          "offset": 1632,
+          "bytes": 2298,
+          "flags": 6
+        },
+        ".debug_info": {
+          "offset": 4436,
+          "bytes": 38629,
+          "flags": 0
+        },
+        ".debug_str": {
+          "offset": 78003,
+          "bytes": 101362,
+          "flags": 48
+        },
+        ".debug_line_str": {
+          "offset": 179365,
+          "bytes": 3344,
+          "flags": 48
+        },
+        ".comment": {
+          "offset": 182720,
+          "bytes": 46,
+          "flags": 48
+        },
+        ".symtab": {
+          "offset": 183160,
+          "bytes": 7824,
+          "flags": 0
+        }
+      },
+      "executed_or_loaded": false,
+      "source_to_object_proven": false,
+      "object_to_library_proven": false,
+      "comment_strings": [
+        "GCC: (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0"
+      ],
+      "debug_line_string_observations": {
+        "exact_source_path_present": true,
+        "source_basename_present": true,
+        "build_path_present": true,
+        "note": "String-table occurrences only; not DWARF DIE/path/relocation attribution or source digest."
+      }
+    },
+    "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/home/yuchen7509/flydrones-upstream/open_vins/ov_init/src/ceres/Factor_GenericPrior.cpp.o": {
+      "elf_class": 64,
+      "little_endian": true,
+      "e_type": 1,
+      "machine": 62,
+      "section_count": 987,
+      "selected_sections": {
+        ".text": {
+          "offset": 3872,
+          "bytes": 89274,
+          "flags": 6
+        },
+        ".debug_info": {
+          "offset": 167972,
+          "bytes": 4321194,
+          "flags": 0
+        },
+        ".debug_str": {
+          "offset": 6331706,
+          "bytes": 12309922,
+          "flags": 48
+        },
+        ".debug_line_str": {
+          "offset": 18641628,
+          "bytes": 11372,
+          "flags": 48
+        },
+        ".comment": {
+          "offset": 18653008,
+          "bytes": 46,
+          "flags": 48
+        },
+        ".symtab": {
+          "offset": 18655896,
+          "bytes": 18456,
+          "flags": 0
+        }
+      },
+      "executed_or_loaded": false,
+      "source_to_object_proven": false,
+      "object_to_library_proven": false,
+      "comment_strings": [
+        "GCC: (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0"
+      ],
+      "debug_line_string_observations": {
+        "exact_source_path_present": true,
+        "source_basename_present": true,
+        "build_path_present": true,
+        "note": "String-table occurrences only; not DWARF DIE/path/relocation attribution or source digest."
+      }
+    }
+  },
+  "note": "Static retained ELF/strings only, no ELF loading/execution, ABI or DWARF source-content proof."
+}

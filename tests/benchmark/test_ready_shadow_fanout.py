@@ -1,4 +1,5 @@
 import copy
+import hashlib
 import io
 import json
 import threading
@@ -26,6 +27,12 @@ class Consumer:
 
     def proof(self):
         return {"rows": len(self.rows)}
+
+
+class IdleRefusalConsumer(Consumer):
+    def tick_idle(self, _wall_monotonic_ns):
+        self.failure = "ValueError('pending input exceeded wall wait')"
+        return False
 
 
 def row(seq=0, kind="imu"):
@@ -62,6 +69,18 @@ def test_both_receive_exact_independent_rows(tmp_path):
     assert out["committed"] == 1 and out["failure"] is None
     events = [json.loads(x) for x in (tmp_path / "source-fanout.jsonl").read_text().splitlines()]
     assert events[-1]["dispositions"] == {"shadow": "returned", "readiness": "returned"}
+
+
+def test_shadow_idle_refusal_latches_fanout_and_blocks_force(tmp_path):
+    f, _, _, _ = setup(tmp_path, shadow=IdleRefusalConsumer())
+    assert f.on_idle(1_250_000_001) is False
+    force = []
+    assert not f.pre_step(lambda: force.append(1), lambda: None)
+    assert force == []
+    result = f.finish()
+    assert "source idle" in result["failure"]
+    event = json.loads((tmp_path / "source-fanout.jsonl").read_text().splitlines()[-1])
+    assert event["event"] == "source_idle_refusal"
 
 
 @pytest.mark.parametrize(
@@ -130,6 +149,28 @@ def test_rgb_closed_exact_bytes_and_local_path(tmp_path, fault):
     f.on_record(row(kind="rgb"), pixels)
     assert bool(f.failure) == (fault is not None)
     assert len(s.rows) == int(fault is None)
+    f.finish()
+
+
+@pytest.mark.parametrize("fault", [None, "missing", "changed"])
+def test_depth_sidecar_is_verified_without_native_pixel_delivery(tmp_path, fault):
+    class BytesConsumer(Consumer):
+        def on_record(self, record, payload):
+            assert payload is None
+            super().on_record(record, payload)
+
+    f, r, s, _ = setup(tmp_path, readiness=BytesConsumer(), shadow=BytesConsumer())
+    payload = b"exact depth protobuf"
+    source = row(kind="depth")
+    source.update(payload_path="depth-messages/1000.pb", payload_bytes=len(payload),
+                  payload_sha256=hashlib.sha256(payload).hexdigest())
+    if fault != "missing":
+        folder = tmp_path / "depth-messages"
+        folder.mkdir()
+        (folder / "1000.pb").write_bytes(b"changed" if fault == "changed" else payload)
+    f.on_record(source, None)
+    assert bool(f.failure) == (fault is not None)
+    assert len(r.rows) == len(s.rows) == int(fault is None)
     f.finish()
 
 

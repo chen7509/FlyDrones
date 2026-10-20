@@ -1,0 +1,283 @@
+{
+  "schema": "native-linux-compiler-five-bindings-v1",
+  "files": {
+    "/usr/libexec/gcc/x86_64-linux-gnu/13/cc1plus": {
+      "path": "/usr/libexec/gcc/x86_64-linux-gnu/13/cc1plus",
+      "identity": {
+        "type": "identity",
+        "path": "/usr/libexec/gcc/x86_64-linux-gnu/13/cc1plus",
+        "resolved": "/usr/libexec/gcc/x86_64-linux-gnu/13/cc1plus",
+        "stat": {
+          "dev": 2128,
+          "ino": 49449,
+          "mode": 33261,
+          "uid": 0,
+          "gid": 0,
+          "nlink": 1,
+          "bytes": 32675168,
+          "mtime_ns": 1766091591000000000,
+          "ctime_ns": 1789201708145516608
+        },
+        "links": [],
+        "status": "observed",
+        "content_action": "new_candidate_pending"
+      },
+      "state": "new_complete_acquisition_time_observation_not_admitted",
+      "file_pin": {
+        "path": "/usr/libexec/gcc/x86_64-linux-gnu/13/cc1plus",
+        "resolved": "/usr/libexec/gcc/x86_64-linux-gnu/13/cc1plus",
+        "bytes": 32675168,
+        "sha256": "840b332fb62ec6f694ac77d91fe69ef7f80b0d69512ed89374af0ee7a506255d"
+      },
+      "actual_compiler_invocation_proven": false,
+      "abi_verified": false,
+      "admitted": false,
+      "before": {
+        "dev": 2128,
+        "ino": 49449,
+        "mode": 33261,
+        "uid": 0,
+        "gid": 0,
+        "nlink": 1,
+        "bytes": 32675168,
+        "mtime_ns": 1766091591000000000,
+        "ctime_ns": 1789201708145516608
+      },
+      "after": {
+        "dev": 2128,
+        "ino": 49449,
+        "mode": 33261,
+        "uid": 0,
+        "gid": 0,
+        "nlink": 1,
+        "bytes": 32675168,
+        "mtime_ns": 1766091591000000000,
+        "ctime_ns": 1789201708145516608
+      },
+      "blob": "blobs/840b332fb62ec6f694ac77d91fe69ef7f80b0d69512ed89374af0ee7a506255d"
+    },
+    "/usr/libexec/gcc/x86_64-linux-gnu/13/cc1": {
+      "path": "/usr/libexec/gcc/x86_64-linux-gnu/13/cc1",
+      "identity": {
+        "type": "identity",
+        "path": "/usr/libexec/gcc/x86_64-linux-gnu/13/cc1",
+        "resolved": "/usr/libexec/gcc/x86_64-linux-gnu/13/cc1",
+        "stat": {
+          "dev": 2128,
+          "ino": 47358,
+          "mode": 33261,
+          "uid": 0,
+          "gid": 0,
+          "nlink": 1,
+          "bytes": 30487984,
+          "mtime_ns": 1766091591000000000,
+          "ctime_ns": 1789201706160634497
+        },
+        "links": [],
+        "status": "observed",
+        "content_action": "new_candidate_pending"
+      },
+      "state": "new_complete_acquisition_time_observation_not_admitted",
+      "file_pin": {
+        "path": "/usr/libexec/gcc/x86_64-linux-gnu/13/cc1",
+        "resolved": "/usr/libexec/gcc/x86_64-linux-gnu/13/cc1",
+        "bytes": 30487984,
+        "sha256": "5d1679131184e2de4435b426eb264bf13472fe026db8e5c6bc97445814e8e2f4"
+      },
+      "actual_compiler_invocation_proven": false,
+      "abi_verified": false,
+      "admitted": false,
+      "before": {
+        "dev": 2128,
+        "ino": 47358,
+        "mode": 33261,
+        "uid": 0,
+        "gid": 0,
+        "nlink": 1,
+        "bytes": 30487984,
+        "mtime_ns": 1766091591000000000,
+        "ctime_ns": 1789201706160634497
+      },
+      "after": {
+        "dev": 2128,
+        "ino": 47358,
+        "mode": 33261,
+        "uid": 0,
+        "gid": 0,
+        "nlink": 1,
+        "bytes": 30487984,
+        "mtime_ns": 1766091591000000000,
+        "ctime_ns": 1789201706160634497
+      },
+      "blob": "blobs/5d1679131184e2de4435b426eb264bf13472fe026db8e5c6bc97445814e8e2f4"
+    },
+    "/usr/libexec/gcc/x86_64-linux-gnu/13/collect2": {
+      "path": "/usr/libexec/gcc/x86_64-linux-gnu/13/collect2",
+      "identity": {
+        "type": "identity",
+        "path": "/usr/libexec/gcc/x86_64-linux-gnu/13/collect2",
+        "resolved": "/usr/libexec/gcc/x86_64-linux-gnu/13/collect2",
+        "stat": {
+          "dev": 2128,
+          "ino": 48487,
+          "mode": 33261,
+          "uid": 0,
+          "gid": 0,
+          "nlink": 1,
+          "bytes": 336056,
+          "mtime_ns": 1766091591000000000,
+          "ctime_ns": 1789201707444568387
+        },
+        "links": [],
+        "status": "observed",
+        "content_action": "new_candidate_pending"
+      },
+      "state": "new_complete_acquisition_time_observation_not_admitted",
+      "file_pin": {
+        "path": "/usr/libexec/gcc/x86_64-linux-gnu/13/collect2",
+        "resolved": "/usr/libexec/gcc/x86_64-linux-gnu/13/collect2",
+        "bytes": 336056,
+        "sha256": "4d1f341ae5b763b513258ee2812422a45e063c30a2f1924a0cf63d3699f3a158"
+      },
+      "actual_compiler_invocation_proven": false,
+      "abi_verified": false,
+      "admitted": false,
+      "before": {
+        "dev": 2128,
+        "ino": 48487,
+        "mode": 33261,
+        "uid": 0,
+        "gid": 0,
+        "nlink": 1,
+        "bytes": 336056,
+        "mtime_ns": 1766091591000000000,
+        "ctime_ns": 1789201707444568387
+      },
+      "after": {
+        "dev": 2128,
+        "ino": 48487,
+        "mode": 33261,
+        "uid": 0,
+        "gid": 0,
+        "nlink": 1,
+        "bytes": 336056,
+        "mtime_ns": 1766091591000000000,
+        "ctime_ns": 1789201707444568387
+      },
+      "blob": "blobs/4d1f341ae5b763b513258ee2812422a45e063c30a2f1924a0cf63d3699f3a158"
+    },
+    "/usr/libexec/gcc/x86_64-linux-gnu/13/lto1": {
+      "path": "/usr/libexec/gcc/x86_64-linux-gnu/13/lto1",
+      "identity": {
+        "type": "identity",
+        "path": "/usr/libexec/gcc/x86_64-linux-gnu/13/lto1",
+        "resolved": "/usr/libexec/gcc/x86_64-linux-gnu/13/lto1",
+        "stat": {
+          "dev": 2128,
+          "ino": 48490,
+          "mode": 33261,
+          "uid": 0,
+          "gid": 0,
+          "nlink": 1,
+          "bytes": 29352624,
+          "mtime_ns": 1766091591000000000,
+          "ctime_ns": 1789201707444568387
+        },
+        "links": [],
+        "status": "observed",
+        "content_action": "new_candidate_pending"
+      },
+      "state": "new_complete_acquisition_time_observation_not_admitted",
+      "file_pin": {
+        "path": "/usr/libexec/gcc/x86_64-linux-gnu/13/lto1",
+        "resolved": "/usr/libexec/gcc/x86_64-linux-gnu/13/lto1",
+        "bytes": 29352624,
+        "sha256": "7c9bdc474948b9127b5942f0f260ecc7067fb3afbb54fcbe2ddf598b9889edc8"
+      },
+      "actual_compiler_invocation_proven": false,
+      "abi_verified": false,
+      "admitted": false,
+      "before": {
+        "dev": 2128,
+        "ino": 48490,
+        "mode": 33261,
+        "uid": 0,
+        "gid": 0,
+        "nlink": 1,
+        "bytes": 29352624,
+        "mtime_ns": 1766091591000000000,
+        "ctime_ns": 1789201707444568387
+      },
+      "after": {
+        "dev": 2128,
+        "ino": 48490,
+        "mode": 33261,
+        "uid": 0,
+        "gid": 0,
+        "nlink": 1,
+        "bytes": 29352624,
+        "mtime_ns": 1766091591000000000,
+        "ctime_ns": 1789201707444568387
+      },
+      "blob": "blobs/7c9bdc474948b9127b5942f0f260ecc7067fb3afbb54fcbe2ddf598b9889edc8"
+    },
+    "/usr/libexec/gcc/x86_64-linux-gnu/13/lto-wrapper": {
+      "path": "/usr/libexec/gcc/x86_64-linux-gnu/13/lto-wrapper",
+      "identity": {
+        "type": "identity",
+        "path": "/usr/libexec/gcc/x86_64-linux-gnu/13/lto-wrapper",
+        "resolved": "/usr/libexec/gcc/x86_64-linux-gnu/13/lto-wrapper",
+        "stat": {
+          "dev": 2128,
+          "ino": 48489,
+          "mode": 33261,
+          "uid": 0,
+          "gid": 0,
+          "nlink": 1,
+          "bytes": 831800,
+          "mtime_ns": 1766091591000000000,
+          "ctime_ns": 1789201707444568387
+        },
+        "links": [],
+        "status": "observed",
+        "content_action": "new_candidate_pending"
+      },
+      "state": "new_complete_acquisition_time_observation_not_admitted",
+      "file_pin": {
+        "path": "/usr/libexec/gcc/x86_64-linux-gnu/13/lto-wrapper",
+        "resolved": "/usr/libexec/gcc/x86_64-linux-gnu/13/lto-wrapper",
+        "bytes": 831800,
+        "sha256": "f6d39bcfb1c2798c704e275a4ed2c1fe6374ebfb6aa0c5f3f3b6c669e1ff2e13"
+      },
+      "actual_compiler_invocation_proven": false,
+      "abi_verified": false,
+      "admitted": false,
+      "before": {
+        "dev": 2128,
+        "ino": 48489,
+        "mode": 33261,
+        "uid": 0,
+        "gid": 0,
+        "nlink": 1,
+        "bytes": 831800,
+        "mtime_ns": 1766091591000000000,
+        "ctime_ns": 1789201707444568387
+      },
+      "after": {
+        "dev": 2128,
+        "ino": 48489,
+        "mode": 33261,
+        "uid": 0,
+        "gid": 0,
+        "nlink": 1,
+        "bytes": 831800,
+        "mtime_ns": 1766091591000000000,
+        "ctime_ns": 1789201707444568387
+      },
+      "blob": "blobs/f6d39bcfb1c2798c704e275a4ed2c1fe6374ebfb6aa0c5f3f3b6c669e1ff2e13"
+    }
+  },
+  "acquisition_time_only": true,
+  "all_qualifications": false,
+  "dispatchable": false
+}

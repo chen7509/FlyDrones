@@ -1,0 +1,848 @@
+{
+  "schema": "openvins-multicollection-object-correspondence-v1",
+  "units": [
+    {
+      "source": "/home/yuchen7509/flydrones-upstream/open_vins/ov_core/src/cpi/CpiV1.cpp",
+      "object": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/home/yuchen7509/flydrones-upstream/open_vins/ov_core/src/cpi/CpiV1.cpp.o",
+      "depfile": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/home/yuchen7509/flydrones-upstream/open_vins/ov_core/src/cpi/CpiV1.cpp.o.d",
+      "source_to_object_proven": false,
+      "object_to_library_proven": false,
+      "historical_same_build_session_proven": false,
+      "this_collection_status": "excluded_previously_acquired",
+      "retained_observation": {
+        "phase": "results/openvins-build-provenance-20261018",
+        "blob": "blobs/40af3bace3f807acdfdc642e36a0b0e8dda66ceeb95d8ca006364b6a61d5a6b2",
+        "bytes": 27829656,
+        "sha256": "40af3bace3f807acdfdc642e36a0b0e8dda66ceeb95d8ca006364b6a61d5a6b2",
+        "same_build_time_input_proven": false
+      },
+      "previous_depfile_observation": {
+        "phase": "results/openvins-build-provenance-20261018",
+        "blob": "blobs/356e56518be6f833560e7f0e7d9e8d0fc09d5ecf6f22dedc0becb48b226d7ded",
+        "bytes": 28039,
+        "sha256": "356e56518be6f833560e7f0e7d9e8d0fc09d5ecf6f22dedc0becb48b226d7ded",
+        "historical_input_bytes_proven": false
+      }
+    },
+    {
+      "source": "/home/yuchen7509/flydrones-upstream/open_vins/ov_core/src/cpi/CpiV2.cpp",
+      "object": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/home/yuchen7509/flydrones-upstream/open_vins/ov_core/src/cpi/CpiV2.cpp.o",
+      "depfile": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/home/yuchen7509/flydrones-upstream/open_vins/ov_core/src/cpi/CpiV2.cpp.o.d",
+      "source_to_object_proven": false,
+      "object_to_library_proven": false,
+      "historical_same_build_session_proven": false,
+      "this_collection_status": "excluded_previously_acquired",
+      "retained_observation": {
+        "phase": "results/openvins-build-provenance-20261018",
+        "blob": "blobs/6f2425e82e7976e2672b7064f5d355932d7ff1b8e83831201681e251c2d74e61",
+        "bytes": 35425416,
+        "sha256": "6f2425e82e7976e2672b7064f5d355932d7ff1b8e83831201681e251c2d74e61",
+        "same_build_time_input_proven": false
+      },
+      "previous_depfile_observation": {
+        "phase": "results/openvins-build-provenance-20261018",
+        "blob": "blobs/c4e5762066f25f1f71391281e625887ff1453702043e293c10a3d4fecca4ee02",
+        "bytes": 28039,
+        "sha256": "c4e5762066f25f1f71391281e625887ff1453702043e293c10a3d4fecca4ee02",
+        "historical_input_bytes_proven": false
+      }
+    },
+    {
+      "source": "/home/yuchen7509/flydrones-upstream/open_vins/ov_core/src/dummy.cpp",
+      "object": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/home/yuchen7509/flydrones-upstream/open_vins/ov_core/src/dummy.cpp.o",
+      "depfile": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/home/yuchen7509/flydrones-upstream/open_vins/ov_core/src/dummy.cpp.o.d",
+      "source_to_object_proven": false,
+      "object_to_library_proven": false,
+      "historical_same_build_session_proven": false,
+      "this_collection_status": "excluded_previously_acquired",
+      "retained_observation": {
+        "phase": "results/openvins-build-provenance-20261018",
+        "blob": "blobs/6a44c88f234b9b5544005f5edc5a42a4464015259b128ae3d54df0df05b1a691",
+        "bytes": 31624,
+        "sha256": "6a44c88f234b9b5544005f5edc5a42a4464015259b128ae3d54df0df05b1a691",
+        "same_build_time_input_proven": false
+      },
+      "previous_depfile_observation": {
+        "phase": "results/openvins-build-provenance-20261018",
+        "blob": "blobs/fccb3a92e2c9ab3a350bec7326b6459e047587bbbc9f33c3f652552f73b4dba8",
+        "bytes": 199,
+        "sha256": "fccb3a92e2c9ab3a350bec7326b6459e047587bbbc9f33c3f652552f73b4dba8",
+        "historical_input_bytes_proven": false
+      }
+    },
+    {
+      "source": "/home/yuchen7509/flydrones-upstream/open_vins/ov_core/src/feat/Feature.cpp",
+      "object": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/home/yuchen7509/flydrones-upstream/open_vins/ov_core/src/feat/Feature.cpp.o",
+      "depfile": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/home/yuchen7509/flydrones-upstream/open_vins/ov_core/src/feat/Feature.cpp.o.d",
+      "source_to_object_proven": false,
+      "object_to_library_proven": false,
+      "historical_same_build_session_proven": false,
+      "this_collection_status": "excluded_previously_acquired",
+      "retained_observation": {
+        "phase": "results/openvins-build-provenance-20261018",
+        "blob": "blobs/447a885232fe3185145cc27c52951ad94332f674e0e5b79162d562d4aa8795eb",
+        "bytes": 1180016,
+        "sha256": "447a885232fe3185145cc27c52951ad94332f674e0e5b79162d562d4aa8795eb",
+        "same_build_time_input_proven": false
+      },
+      "previous_depfile_observation": {
+        "phase": "results/openvins-build-provenance-20261018",
+        "blob": "blobs/6e93dc90861f805843750681af11c6be31e3725b6f435e6803782e0b2f5f81c0",
+        "bytes": 27880,
+        "sha256": "6e93dc90861f805843750681af11c6be31e3725b6f435e6803782e0b2f5f81c0",
+        "historical_input_bytes_proven": false
+      }
+    },
+    {
+      "source": "/home/yuchen7509/flydrones-upstream/open_vins/ov_core/src/feat/FeatureDatabase.cpp",
+      "object": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/home/yuchen7509/flydrones-upstream/open_vins/ov_core/src/feat/FeatureDatabase.cpp.o",
+      "depfile": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/home/yuchen7509/flydrones-upstream/open_vins/ov_core/src/feat/FeatureDatabase.cpp.o.d",
+      "source_to_object_proven": false,
+      "object_to_library_proven": false,
+      "historical_same_build_session_proven": false,
+      "this_collection_status": "excluded_previously_acquired",
+      "retained_observation": {
+        "phase": "results/openvins-build-provenance-20261018",
+        "blob": "blobs/9ff4287ea4895735562111040ad1d831de55c20f895a08aeb830605c46133b03",
+        "bytes": 2581472,
+        "sha256": "9ff4287ea4895735562111040ad1d831de55c20f895a08aeb830605c46133b03",
+        "same_build_time_input_proven": false
+      },
+      "previous_depfile_observation": {
+        "phase": "results/openvins-build-provenance-20261018",
+        "blob": "blobs/a95598023c7f4f00287fe54bc81b87a62c32b111bc8907a674a8a42e382669e2",
+        "bytes": 28760,
+        "sha256": "a95598023c7f4f00287fe54bc81b87a62c32b111bc8907a674a8a42e382669e2",
+        "historical_input_bytes_proven": false
+      }
+    },
+    {
+      "source": "/home/yuchen7509/flydrones-upstream/open_vins/ov_core/src/feat/FeatureInitializer.cpp",
+      "object": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/home/yuchen7509/flydrones-upstream/open_vins/ov_core/src/feat/FeatureInitializer.cpp.o",
+      "depfile": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/home/yuchen7509/flydrones-upstream/open_vins/ov_core/src/feat/FeatureInitializer.cpp.o.d",
+      "source_to_object_proven": false,
+      "object_to_library_proven": false,
+      "historical_same_build_session_proven": false,
+      "this_collection_status": "excluded_previously_acquired",
+      "retained_observation": {
+        "phase": "results/openvins-build-provenance-20261018",
+        "blob": "blobs/3e34ed5f56e6979108e04470e74463fc135932f5e3f8e4e14f93a539052b0f5d",
+        "bytes": 45092240,
+        "sha256": "3e34ed5f56e6979108e04470e74463fc135932f5e3f8e4e14f93a539052b0f5d",
+        "same_build_time_input_proven": false
+      },
+      "previous_depfile_observation": {
+        "phase": "results/openvins-build-provenance-20261018",
+        "blob": "blobs/48c300b60a47d3ec693584279cbc76d1101310247c3e1580c45754648bbe27d6",
+        "bytes": 51989,
+        "sha256": "48c300b60a47d3ec693584279cbc76d1101310247c3e1580c45754648bbe27d6",
+        "historical_input_bytes_proven": false
+      }
+    },
+    {
+      "source": "/home/yuchen7509/flydrones-upstream/open_vins/ov_core/src/sim/BsplineSE3.cpp",
+      "object": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/home/yuchen7509/flydrones-upstream/open_vins/ov_core/src/sim/BsplineSE3.cpp.o",
+      "depfile": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/home/yuchen7509/flydrones-upstream/open_vins/ov_core/src/sim/BsplineSE3.cpp.o.d",
+      "source_to_object_proven": false,
+      "object_to_library_proven": false,
+      "historical_same_build_session_proven": false,
+      "this_collection_status": "excluded_previously_acquired",
+      "retained_observation": {
+        "phase": "results/openvins-build-provenance-20261018",
+        "blob": "blobs/e0a152da90c74a9eab9cabb51cbea6c79be59fecea70bcb63fced53dcf91361a",
+        "bytes": 18447264,
+        "sha256": "e0a152da90c74a9eab9cabb51cbea6c79be59fecea70bcb63fced53dcf91361a",
+        "same_build_time_input_proven": false
+      },
+      "previous_depfile_observation": {
+        "phase": "results/openvins-build-provenance-20261018",
+        "blob": "blobs/2460abc2211cd90ddc3f0f9ddeb7362e46d41f9857c3421109ff212b80678a63",
+        "bytes": 28094,
+        "sha256": "2460abc2211cd90ddc3f0f9ddeb7362e46d41f9857c3421109ff212b80678a63",
+        "historical_input_bytes_proven": false
+      }
+    },
+    {
+      "source": "/home/yuchen7509/flydrones-upstream/open_vins/ov_core/src/track/TrackAruco.cpp",
+      "object": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/home/yuchen7509/flydrones-upstream/open_vins/ov_core/src/track/TrackAruco.cpp.o",
+      "depfile": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/home/yuchen7509/flydrones-upstream/open_vins/ov_core/src/track/TrackAruco.cpp.o.d",
+      "source_to_object_proven": false,
+      "object_to_library_proven": false,
+      "historical_same_build_session_proven": false,
+      "this_collection_status": "excluded_previously_acquired",
+      "retained_observation": {
+        "phase": "results/openvins-build-provenance-20261018",
+        "blob": "blobs/40853ac75f65b6b9b91d10a08f56279818745a1b21821ac65b64729e993e711b",
+        "bytes": 3644600,
+        "sha256": "40853ac75f65b6b9b91d10a08f56279818745a1b21821ac65b64729e993e711b",
+        "same_build_time_input_proven": false
+      },
+      "previous_depfile_observation": {
+        "phase": "results/openvins-build-provenance-20261018",
+        "blob": "blobs/f7d0299e53ce40037de2addf7c8a58c5615fb83a69e221f8278631a77d9cab23",
+        "bytes": 64872,
+        "sha256": "f7d0299e53ce40037de2addf7c8a58c5615fb83a69e221f8278631a77d9cab23",
+        "historical_input_bytes_proven": false
+      }
+    },
+    {
+      "source": "/home/yuchen7509/flydrones-upstream/open_vins/ov_core/src/track/TrackBase.cpp",
+      "object": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/home/yuchen7509/flydrones-upstream/open_vins/ov_core/src/track/TrackBase.cpp.o",
+      "depfile": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/home/yuchen7509/flydrones-upstream/open_vins/ov_core/src/track/TrackBase.cpp.o.d",
+      "source_to_object_proven": false,
+      "object_to_library_proven": false,
+      "historical_same_build_session_proven": false,
+      "this_collection_status": "excluded_previously_acquired",
+      "retained_observation": {
+        "phase": "results/openvins-build-provenance-20261018",
+        "blob": "blobs/8654987808f1548ee4bd1a95b9ee3298f7197c76db05be13593d0764eb1d6168",
+        "bytes": 5229384,
+        "sha256": "8654987808f1548ee4bd1a95b9ee3298f7197c76db05be13593d0764eb1d6168",
+        "same_build_time_input_proven": false
+      },
+      "previous_depfile_observation": {
+        "phase": "results/openvins-build-provenance-20261018",
+        "blob": "blobs/ebf17772f00d4e546d3e9bfad5d887b947fa861cab0e56148747a635892005b9",
+        "bytes": 64690,
+        "sha256": "ebf17772f00d4e546d3e9bfad5d887b947fa861cab0e56148747a635892005b9",
+        "historical_input_bytes_proven": false
+      }
+    },
+    {
+      "source": "/home/yuchen7509/flydrones-upstream/open_vins/ov_core/src/track/TrackDescriptor.cpp",
+      "object": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/home/yuchen7509/flydrones-upstream/open_vins/ov_core/src/track/TrackDescriptor.cpp.o",
+      "depfile": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/home/yuchen7509/flydrones-upstream/open_vins/ov_core/src/track/TrackDescriptor.cpp.o.d",
+      "source_to_object_proven": false,
+      "object_to_library_proven": false,
+      "historical_same_build_session_proven": false,
+      "this_collection_status": "excluded_previously_acquired",
+      "retained_observation": {
+        "phase": "results/openvins-build-provenance-20261018",
+        "blob": "blobs/2b6e11066aa9631895c694e7a23ad470d41dd8ffeea3f0651a932a3bff832b35",
+        "bytes": 5641304,
+        "sha256": "2b6e11066aa9631895c694e7a23ad470d41dd8ffeea3f0651a932a3bff832b35",
+        "same_build_time_input_proven": false
+      },
+      "previous_depfile_observation": {
+        "phase": "results/openvins-build-provenance-20261018",
+        "blob": "blobs/7bf1199d1260c958629f41fa630e10d39f98e9465bdd2f6757b70f29f726231e",
+        "bytes": 65020,
+        "sha256": "7bf1199d1260c958629f41fa630e10d39f98e9465bdd2f6757b70f29f726231e",
+        "historical_input_bytes_proven": false
+      }
+    },
+    {
+      "source": "/home/yuchen7509/flydrones-upstream/open_vins/ov_core/src/track/TrackKLT.cpp",
+      "object": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/home/yuchen7509/flydrones-upstream/open_vins/ov_core/src/track/TrackKLT.cpp.o",
+      "depfile": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/home/yuchen7509/flydrones-upstream/open_vins/ov_core/src/track/TrackKLT.cpp.o.d",
+      "source_to_object_proven": false,
+      "object_to_library_proven": false,
+      "historical_same_build_session_proven": false,
+      "this_collection_status": "excluded_previously_acquired",
+      "retained_observation": {
+        "phase": "results/openvins-build-provenance-20261018",
+        "blob": "blobs/ca0cf819ba98b051eb146c15cda7b42f3041c50772f89e3470c581565ed88fa5",
+        "bytes": 6156696,
+        "sha256": "ca0cf819ba98b051eb146c15cda7b42f3041c50772f89e3470c581565ed88fa5",
+        "same_build_time_input_proven": false
+      },
+      "previous_depfile_observation": {
+        "phase": "results/openvins-build-provenance-20261018",
+        "blob": "blobs/0b022f6af153b7060d88298eb5b0f9c85c60b9d994325793d357479244558ca2",
+        "bytes": 65080,
+        "sha256": "0b022f6af153b7060d88298eb5b0f9c85c60b9d994325793d357479244558ca2",
+        "historical_input_bytes_proven": false
+      }
+    },
+    {
+      "source": "/home/yuchen7509/flydrones-upstream/open_vins/ov_core/src/track/TrackSIM.cpp",
+      "object": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/home/yuchen7509/flydrones-upstream/open_vins/ov_core/src/track/TrackSIM.cpp.o",
+      "depfile": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/home/yuchen7509/flydrones-upstream/open_vins/ov_core/src/track/TrackSIM.cpp.o.d",
+      "source_to_object_proven": false,
+      "object_to_library_proven": false,
+      "historical_same_build_session_proven": false,
+      "this_collection_status": "excluded_previously_acquired",
+      "retained_observation": {
+        "phase": "results/openvins-build-provenance-20261018",
+        "blob": "blobs/b8d67b721defe23375a9dc6e81094e6d598bb03b934032c627144a6ba14d6993",
+        "bytes": 3555600,
+        "sha256": "b8d67b721defe23375a9dc6e81094e6d598bb03b934032c627144a6ba14d6993",
+        "same_build_time_input_proven": false
+      },
+      "previous_depfile_observation": {
+        "phase": "results/openvins-build-provenance-20261018",
+        "blob": "blobs/068008eb57588eaf827c780c33296d2825ae13edd8a0bee596066e6356b44e79",
+        "bytes": 64766,
+        "sha256": "068008eb57588eaf827c780c33296d2825ae13edd8a0bee596066e6356b44e79",
+        "historical_input_bytes_proven": false
+      }
+    },
+    {
+      "source": "/home/yuchen7509/flydrones-upstream/open_vins/ov_core/src/types/Landmark.cpp",
+      "object": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/home/yuchen7509/flydrones-upstream/open_vins/ov_core/src/types/Landmark.cpp.o",
+      "depfile": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/home/yuchen7509/flydrones-upstream/open_vins/ov_core/src/types/Landmark.cpp.o.d",
+      "source_to_object_proven": false,
+      "object_to_library_proven": false,
+      "historical_same_build_session_proven": false,
+      "this_collection_status": "excluded_previously_acquired",
+      "retained_observation": {
+        "phase": "results/openvins-build-provenance-20261018",
+        "blob": "blobs/603c4c3954d0859e2536c109d147dd6de77130f869fa38563dd84ea1e33d2dc5",
+        "bytes": 1800624,
+        "sha256": "603c4c3954d0859e2536c109d147dd6de77130f869fa38563dd84ea1e33d2dc5",
+        "same_build_time_input_proven": false
+      },
+      "previous_depfile_observation": {
+        "phase": "results/openvins-build-provenance-20261018",
+        "blob": "blobs/cf2f43e135cd06fe49e9eb3b948319806283718c3cea21475b6a2bd296ad39ac",
+        "bytes": 28758,
+        "sha256": "cf2f43e135cd06fe49e9eb3b948319806283718c3cea21475b6a2bd296ad39ac",
+        "historical_input_bytes_proven": false
+      }
+    },
+    {
+      "source": "/home/yuchen7509/flydrones-upstream/open_vins/ov_core/src/utils/print.cpp",
+      "object": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/home/yuchen7509/flydrones-upstream/open_vins/ov_core/src/utils/print.cpp.o",
+      "depfile": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/home/yuchen7509/flydrones-upstream/open_vins/ov_core/src/utils/print.cpp.o.d",
+      "source_to_object_proven": false,
+      "object_to_library_proven": false,
+      "historical_same_build_session_proven": false,
+      "this_collection_status": "excluded_previously_acquired",
+      "retained_observation": {
+        "phase": "results/openvins-build-provenance-20261018",
+        "blob": "blobs/2ddd33e2499458a1f3879c876d4c3361d97e6c78547b649bebf90f2288f8302f",
+        "bytes": 365968,
+        "sha256": "2ddd33e2499458a1f3879c876d4c3361d97e6c78547b649bebf90f2288f8302f",
+        "same_build_time_input_proven": false
+      },
+      "previous_depfile_observation": {
+        "phase": "results/openvins-build-provenance-20261018",
+        "blob": "blobs/c07a8e493eea6ae99dd822618cacff352e35954218a3526c17f0a8f2d28873af",
+        "bytes": 9261,
+        "sha256": "c07a8e493eea6ae99dd822618cacff352e35954218a3526c17f0a8f2d28873af",
+        "historical_input_bytes_proven": false
+      }
+    },
+    {
+      "source": "/home/yuchen7509/flydrones-upstream/open_vins/ov_init/src/ceres/Factor_GenericPrior.cpp",
+      "object": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/home/yuchen7509/flydrones-upstream/open_vins/ov_init/src/ceres/Factor_GenericPrior.cpp.o",
+      "depfile": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/home/yuchen7509/flydrones-upstream/open_vins/ov_init/src/ceres/Factor_GenericPrior.cpp.o.d",
+      "source_to_object_proven": false,
+      "object_to_library_proven": false,
+      "historical_same_build_session_proven": false,
+      "this_collection_status": "excluded_previously_acquired",
+      "retained_observation": {
+        "phase": "results/openvins-build-provenance-20261018",
+        "blob": "blobs/bd3b6ab9e2f6a59fa5b75d9804328881be964d1ef48cb91e7c83572672913310",
+        "bytes": 27364224,
+        "sha256": "bd3b6ab9e2f6a59fa5b75d9804328881be964d1ef48cb91e7c83572672913310",
+        "same_build_time_input_proven": false
+      },
+      "previous_depfile_observation": {
+        "phase": "results/openvins-build-provenance-20261018",
+        "blob": "blobs/a0c993b00269450bffa5ba8b8eee264b92604df82f8b35bd28763c4ab313dcf2",
+        "bytes": 32286,
+        "sha256": "a0c993b00269450bffa5ba8b8eee264b92604df82f8b35bd28763c4ab313dcf2",
+        "historical_input_bytes_proven": false
+      }
+    },
+    {
+      "source": "/home/yuchen7509/flydrones-upstream/open_vins/ov_init/src/ceres/Factor_ImageReprojCalib.cpp",
+      "object": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/home/yuchen7509/flydrones-upstream/open_vins/ov_init/src/ceres/Factor_ImageReprojCalib.cpp.o",
+      "depfile": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/home/yuchen7509/flydrones-upstream/open_vins/ov_init/src/ceres/Factor_ImageReprojCalib.cpp.o.d",
+      "source_to_object_proven": false,
+      "object_to_library_proven": false,
+      "historical_same_build_session_proven": false,
+      "this_collection_status": "observed",
+      "this_collection_metadata": {
+        "mode": 33206,
+        "size": 20403152,
+        "ino": 260549,
+        "dev": 0,
+        "mtime_ns": 1790912366290189000,
+        "ctime_ns": 1790912366290189000,
+        "attributes": 128,
+        "reparse_tag": 0
+      },
+      "retained_observation": {
+        "phase": "results/openvins-remaining-objects-20261018",
+        "blob": "blobs/b29531e41a21224174d70ff79aac89b0e2993e4f60dde09574ac32830ffe3fd1",
+        "bytes": 20403152,
+        "sha256": "b29531e41a21224174d70ff79aac89b0e2993e4f60dde09574ac32830ffe3fd1",
+        "same_build_time_input_proven": false
+      },
+      "previous_depfile_observation": {
+        "phase": "results/openvins-build-provenance-20261018",
+        "blob": "blobs/073abfcab57c6b159d86c9b34b5aff79f8fc64cde467b73ecc882d1cc46ceb4f",
+        "bytes": 38793,
+        "sha256": "073abfcab57c6b159d86c9b34b5aff79f8fc64cde467b73ecc882d1cc46ceb4f",
+        "historical_input_bytes_proven": false
+      }
+    },
+    {
+      "source": "/home/yuchen7509/flydrones-upstream/open_vins/ov_init/src/ceres/Factor_ImuCPIv1.cpp",
+      "object": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/home/yuchen7509/flydrones-upstream/open_vins/ov_init/src/ceres/Factor_ImuCPIv1.cpp.o",
+      "depfile": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/home/yuchen7509/flydrones-upstream/open_vins/ov_init/src/ceres/Factor_ImuCPIv1.cpp.o.d",
+      "source_to_object_proven": false,
+      "object_to_library_proven": false,
+      "historical_same_build_session_proven": false,
+      "this_collection_status": "observed",
+      "this_collection_metadata": {
+        "mode": 33206,
+        "size": 31891992,
+        "ino": 260564,
+        "dev": 0,
+        "mtime_ns": 1790912383301536600,
+        "ctime_ns": 1790912383301536600,
+        "attributes": 128,
+        "reparse_tag": 0
+      },
+      "retained_observation": {
+        "phase": "results/openvins-remaining-objects-20261018",
+        "blob": "blobs/e07beb8aea4cecfcf5b86df8c1bb7392f986214e1e5b10de0a38eeda5ff85242",
+        "bytes": 31891992,
+        "sha256": "e07beb8aea4cecfcf5b86df8c1bb7392f986214e1e5b10de0a38eeda5ff85242",
+        "same_build_time_input_proven": false
+      },
+      "previous_depfile_observation": {
+        "phase": "results/openvins-build-provenance-20261018",
+        "blob": "blobs/0b5d337996c430f41eb5ea926363bc4f7c6dc85c6f31e78c68e108d0c839d05d",
+        "bytes": 32274,
+        "sha256": "0b5d337996c430f41eb5ea926363bc4f7c6dc85c6f31e78c68e108d0c839d05d",
+        "historical_input_bytes_proven": false
+      }
+    },
+    {
+      "source": "/home/yuchen7509/flydrones-upstream/open_vins/ov_init/src/ceres/State_JPLQuatLocal.cpp",
+      "object": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/home/yuchen7509/flydrones-upstream/open_vins/ov_init/src/ceres/State_JPLQuatLocal.cpp.o",
+      "depfile": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/home/yuchen7509/flydrones-upstream/open_vins/ov_init/src/ceres/State_JPLQuatLocal.cpp.o.d",
+      "source_to_object_proven": false,
+      "object_to_library_proven": false,
+      "historical_same_build_session_proven": false,
+      "this_collection_status": "observed",
+      "this_collection_metadata": {
+        "mode": 33206,
+        "size": 11143056,
+        "ino": 260555,
+        "dev": 0,
+        "mtime_ns": 1790912375720942300,
+        "ctime_ns": 1790912375720942300,
+        "attributes": 128,
+        "reparse_tag": 0
+      },
+      "retained_observation": {
+        "phase": "results/openvins-remaining-objects-20261018",
+        "blob": "blobs/7e9afb5d72bed1aa56f6352351b7ed73073e669ee365cd4ef42723c447840f37",
+        "bytes": 11143056,
+        "sha256": "7e9afb5d72bed1aa56f6352351b7ed73073e669ee365cd4ef42723c447840f37",
+        "same_build_time_input_proven": false
+      },
+      "previous_depfile_observation": {
+        "phase": "results/openvins-build-provenance-20261018",
+        "blob": "blobs/fb394bf515be2fbfd55ace289c2cb0a46e690e50166677aee073e3723be9c8ba",
+        "bytes": 32283,
+        "sha256": "fb394bf515be2fbfd55ace289c2cb0a46e690e50166677aee073e3723be9c8ba",
+        "historical_input_bytes_proven": false
+      }
+    },
+    {
+      "source": "/home/yuchen7509/flydrones-upstream/open_vins/ov_init/src/dummy.cpp",
+      "object": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/home/yuchen7509/flydrones-upstream/open_vins/ov_init/src/dummy.cpp.o",
+      "depfile": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/home/yuchen7509/flydrones-upstream/open_vins/ov_init/src/dummy.cpp.o.d",
+      "source_to_object_proven": false,
+      "object_to_library_proven": false,
+      "historical_same_build_session_proven": false,
+      "this_collection_status": "observed",
+      "this_collection_metadata": {
+        "mode": 33206,
+        "size": 31624,
+        "ino": 260558,
+        "dev": 0,
+        "mtime_ns": 1790912375760941100,
+        "ctime_ns": 1790912375760941100,
+        "attributes": 128,
+        "reparse_tag": 0
+      },
+      "retained_observation": {
+        "phase": "results/openvins-remaining-objects-20261018",
+        "blob": "blobs/eec4daaf544c7d7390e25266579deb7ad7b66687f3b2beca4d62c42f5a8da1c4",
+        "bytes": 31624,
+        "sha256": "eec4daaf544c7d7390e25266579deb7ad7b66687f3b2beca4d62c42f5a8da1c4",
+        "same_build_time_input_proven": false
+      },
+      "previous_depfile_observation": {
+        "phase": "results/openvins-build-provenance-20261018",
+        "blob": "blobs/ed53e7b3176869349aadc60ed2a6e53cd50f1d386a1f2822ee9480c8681b0618",
+        "bytes": 199,
+        "sha256": "ed53e7b3176869349aadc60ed2a6e53cd50f1d386a1f2822ee9480c8681b0618",
+        "historical_input_bytes_proven": false
+      }
+    },
+    {
+      "source": "/home/yuchen7509/flydrones-upstream/open_vins/ov_init/src/dynamic/DynamicInitializer.cpp",
+      "object": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/home/yuchen7509/flydrones-upstream/open_vins/ov_init/src/dynamic/DynamicInitializer.cpp.o",
+      "depfile": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/home/yuchen7509/flydrones-upstream/open_vins/ov_init/src/dynamic/DynamicInitializer.cpp.o.d",
+      "source_to_object_proven": false,
+      "object_to_library_proven": false,
+      "historical_same_build_session_proven": false,
+      "this_collection_status": "file_cap",
+      "this_collection_metadata": {
+        "mode": 33206,
+        "size": 81028080,
+        "ino": 260579,
+        "dev": 0,
+        "mtime_ns": 1790912438614707800,
+        "ctime_ns": 1790912438614707800,
+        "attributes": 128,
+        "reparse_tag": 0
+      },
+      "previous_depfile_observation": {
+        "phase": "results/openvins-build-provenance-20261018",
+        "blob": "blobs/f749dca806bd5d93c7c254488618686ac2645d237f684c61becc69d7efd9b360",
+        "bytes": 72982,
+        "sha256": "f749dca806bd5d93c7c254488618686ac2645d237f684c61becc69d7efd9b360",
+        "historical_input_bytes_proven": false
+      }
+    },
+    {
+      "source": "/home/yuchen7509/flydrones-upstream/open_vins/ov_init/src/init/InertialInitializer.cpp",
+      "object": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/home/yuchen7509/flydrones-upstream/open_vins/ov_init/src/init/InertialInitializer.cpp.o",
+      "depfile": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/home/yuchen7509/flydrones-upstream/open_vins/ov_init/src/init/InertialInitializer.cpp.o.d",
+      "source_to_object_proven": false,
+      "object_to_library_proven": false,
+      "historical_same_build_session_proven": false,
+      "this_collection_status": "observed",
+      "this_collection_metadata": {
+        "mode": 33206,
+        "size": 16012568,
+        "ino": 260567,
+        "dev": 0,
+        "mtime_ns": 1790912392009777800,
+        "ctime_ns": 1790912392009777800,
+        "attributes": 128,
+        "reparse_tag": 0
+      },
+      "retained_observation": {
+        "phase": "results/openvins-remaining-objects-20261018",
+        "blob": "blobs/e07fc5f2472ab8ad745c1cf8c1fd121b4adbce1a89f823773849868097735c99",
+        "bytes": 16012568,
+        "sha256": "e07fc5f2472ab8ad745c1cf8c1fd121b4adbce1a89f823773849868097735c99",
+        "same_build_time_input_proven": false
+      },
+      "previous_depfile_observation": {
+        "phase": "results/openvins-build-provenance-20261018",
+        "blob": "blobs/aa8bbdbae1b782848f074080487529326849aa66ecc95f48edf8c37d23fefbb5",
+        "bytes": 68940,
+        "sha256": "aa8bbdbae1b782848f074080487529326849aa66ecc95f48edf8c37d23fefbb5",
+        "historical_input_bytes_proven": false
+      }
+    },
+    {
+      "source": "/home/yuchen7509/flydrones-upstream/open_vins/ov_init/src/sim/SimulatorInit.cpp",
+      "object": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/home/yuchen7509/flydrones-upstream/open_vins/ov_init/src/sim/SimulatorInit.cpp.o",
+      "depfile": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/home/yuchen7509/flydrones-upstream/open_vins/ov_init/src/sim/SimulatorInit.cpp.o.d",
+      "source_to_object_proven": false,
+      "object_to_library_proven": false,
+      "historical_same_build_session_proven": false,
+      "this_collection_status": "observed",
+      "this_collection_metadata": {
+        "mode": 33206,
+        "size": 22761552,
+        "ino": 260570,
+        "dev": 0,
+        "mtime_ns": 1790912406831677200,
+        "ctime_ns": 1790912406831677200,
+        "attributes": 128,
+        "reparse_tag": 0
+      },
+      "retained_observation": {
+        "phase": "results/openvins-remaining-objects-20261018",
+        "blob": "blobs/4207f9d6776da935518c1143c5a56902245c4b6e583e95ace89fdc87d11c0ff7",
+        "bytes": 22761552,
+        "sha256": "4207f9d6776da935518c1143c5a56902245c4b6e583e95ace89fdc87d11c0ff7",
+        "same_build_time_input_proven": false
+      },
+      "previous_depfile_observation": {
+        "phase": "results/openvins-build-provenance-20261018",
+        "blob": "blobs/cb9deef2f946ca4af34aea5cbac59d99d73c7b41341038dc7d9ceae09ffe1594",
+        "bytes": 69087,
+        "sha256": "cb9deef2f946ca4af34aea5cbac59d99d73c7b41341038dc7d9ceae09ffe1594",
+        "historical_input_bytes_proven": false
+      }
+    },
+    {
+      "source": "/home/yuchen7509/flydrones-upstream/open_vins/ov_init/src/static/StaticInitializer.cpp",
+      "object": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/home/yuchen7509/flydrones-upstream/open_vins/ov_init/src/static/StaticInitializer.cpp.o",
+      "depfile": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/home/yuchen7509/flydrones-upstream/open_vins/ov_init/src/static/StaticInitializer.cpp.o.d",
+      "source_to_object_proven": false,
+      "object_to_library_proven": false,
+      "historical_same_build_session_proven": false,
+      "this_collection_status": "observed",
+      "this_collection_metadata": {
+        "mode": 33206,
+        "size": 19835088,
+        "ino": 260573,
+        "dev": 0,
+        "mtime_ns": 1790912419048427700,
+        "ctime_ns": 1790912419048427700,
+        "attributes": 128,
+        "reparse_tag": 0
+      },
+      "retained_observation": {
+        "phase": "results/openvins-remaining-objects-20261018",
+        "blob": "blobs/60cfb03f311e7afb9ea30b37643b951f5878361ae047a81e8bf8e67864fc1069",
+        "bytes": 19835088,
+        "sha256": "60cfb03f311e7afb9ea30b37643b951f5878361ae047a81e8bf8e67864fc1069",
+        "same_build_time_input_proven": false
+      },
+      "previous_depfile_observation": {
+        "phase": "results/openvins-build-provenance-20261018",
+        "blob": "blobs/9fc7004b186a57dac0a5fecfd1d8ec0d8302a13cdf9f5254e2d033a869fe4152",
+        "bytes": 69381,
+        "sha256": "9fc7004b186a57dac0a5fecfd1d8ec0d8302a13cdf9f5254e2d033a869fe4152",
+        "historical_input_bytes_proven": false
+      }
+    },
+    {
+      "source": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/src/core/VioManager.cpp",
+      "object": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/src/core/VioManager.cpp.o",
+      "depfile": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/src/core/VioManager.cpp.o.d",
+      "source_to_object_proven": false,
+      "object_to_library_proven": false,
+      "historical_same_build_session_proven": false,
+      "this_collection_status": "observed",
+      "this_collection_metadata": {
+        "mode": 33206,
+        "size": 38377264,
+        "ino": 260596,
+        "dev": 0,
+        "mtime_ns": 1790912507370404500,
+        "ctime_ns": 1790912507370404500,
+        "attributes": 128,
+        "reparse_tag": 0
+      },
+      "retained_observation": {
+        "phase": "results/openvins-remaining-objects-20261018",
+        "blob": "blobs/2204cf80687888d933c1eaf9c28630c4d6a4a298273aba9737a1270bcb83ac62",
+        "bytes": 38377264,
+        "sha256": "2204cf80687888d933c1eaf9c28630c4d6a4a298273aba9737a1270bcb83ac62",
+        "same_build_time_input_proven": false
+      },
+      "previous_depfile_observation": {
+        "phase": "results/openvins-build-provenance-20261018",
+        "blob": "blobs/70625780436042fe3c933c68dc960ab211fe83c447fd38c7d1d471f0ea3fbf7c",
+        "bytes": 71760,
+        "sha256": "70625780436042fe3c933c68dc960ab211fe83c447fd38c7d1d471f0ea3fbf7c",
+        "historical_input_bytes_proven": false
+      }
+    },
+    {
+      "source": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/src/core/VioManagerHelper.cpp",
+      "object": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/src/core/VioManagerHelper.cpp.o",
+      "depfile": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/src/core/VioManagerHelper.cpp.o.d",
+      "source_to_object_proven": false,
+      "object_to_library_proven": false,
+      "historical_same_build_session_proven": false,
+      "this_collection_status": "observed",
+      "this_collection_metadata": {
+        "mode": 33206,
+        "size": 40783280,
+        "ino": 260601,
+        "dev": 0,
+        "mtime_ns": 1790912518059461100,
+        "ctime_ns": 1790912518059461100,
+        "attributes": 128,
+        "reparse_tag": 0
+      },
+      "retained_observation": {
+        "phase": "results/openvins-remaining-objects-20261018",
+        "blob": "blobs/d087259a4f0493ec0b248be16d555cea29a8a816f54242f4695def0ea2087133",
+        "bytes": 40783280,
+        "sha256": "d087259a4f0493ec0b248be16d555cea29a8a816f54242f4695def0ea2087133",
+        "same_build_time_input_proven": false
+      },
+      "previous_depfile_observation": {
+        "phase": "results/openvins-build-provenance-20261018",
+        "blob": "blobs/28f3fce15afc0daa937b301c1408a85a62f44af8442a8cb724d303e4bd9d1ecf",
+        "bytes": 70868,
+        "sha256": "28f3fce15afc0daa937b301c1408a85a62f44af8442a8cb724d303e4bd9d1ecf",
+        "historical_input_bytes_proven": false
+      }
+    },
+    {
+      "source": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/src/dummy.cpp",
+      "object": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/src/dummy.cpp.o",
+      "depfile": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/src/dummy.cpp.o.d",
+      "source_to_object_proven": false,
+      "object_to_library_proven": false,
+      "historical_same_build_session_proven": false,
+      "this_collection_status": "observed",
+      "this_collection_metadata": {
+        "mode": 33206,
+        "size": 31624,
+        "ino": 260576,
+        "dev": 0,
+        "mtime_ns": 1790912419100423700,
+        "ctime_ns": 1790912419100423700,
+        "attributes": 128,
+        "reparse_tag": 0
+      },
+      "retained_observation": {
+        "phase": "results/openvins-remaining-objects-20261018",
+        "blob": "blobs/47d5695e836e17235caffbbf95010a8bf973c245329650c296f864a7e7791df3",
+        "bytes": 31624,
+        "sha256": "47d5695e836e17235caffbbf95010a8bf973c245329650c296f864a7e7791df3",
+        "same_build_time_input_proven": false
+      },
+      "previous_depfile_observation": {
+        "phase": "results/openvins-build-provenance-20261018",
+        "blob": "blobs/c80c6cc3d16b9bdba0c9da6357a346c535a7b86f40d92c49f1e1629e0baa4a12",
+        "bytes": 147,
+        "sha256": "c80c6cc3d16b9bdba0c9da6357a346c535a7b86f40d92c49f1e1629e0baa4a12",
+        "historical_input_bytes_proven": false
+      }
+    },
+    {
+      "source": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/src/sim/Simulator.cpp",
+      "object": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/src/sim/Simulator.cpp.o",
+      "depfile": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/src/sim/Simulator.cpp.o.d",
+      "source_to_object_proven": false,
+      "object_to_library_proven": false,
+      "historical_same_build_session_proven": false,
+      "this_collection_status": "aggregate_cap",
+      "this_collection_metadata": {
+        "mode": 33206,
+        "size": 45073752,
+        "ino": 260582,
+        "dev": 0,
+        "mtime_ns": 1790912449547745200,
+        "ctime_ns": 1790912449547745200,
+        "attributes": 128,
+        "reparse_tag": 0
+      },
+      "previous_depfile_observation": {
+        "phase": "results/openvins-build-provenance-20261018",
+        "blob": "blobs/c61b76cef77dc8e87ae1e5ff0c152ac93138dcf210a00a0806bf223d30149d97",
+        "bytes": 70517,
+        "sha256": "c61b76cef77dc8e87ae1e5ff0c152ac93138dcf210a00a0806bf223d30149d97",
+        "historical_input_bytes_proven": false
+      }
+    },
+    {
+      "source": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/src/state/Propagator.cpp",
+      "object": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/src/state/Propagator.cpp.o",
+      "depfile": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/src/state/Propagator.cpp.o.d",
+      "source_to_object_proven": false,
+      "object_to_library_proven": false,
+      "historical_same_build_session_proven": false,
+      "this_collection_status": "not_attempted_after_stop",
+      "previous_depfile_observation": {
+        "phase": "results/openvins-build-provenance-20261018",
+        "blob": "blobs/ec2bc5fe9adacfc9bc5f8eabe975e77f8733dcaa05bc9e657b3ec68d20a64312",
+        "bytes": 53331,
+        "sha256": "ec2bc5fe9adacfc9bc5f8eabe975e77f8733dcaa05bc9e657b3ec68d20a64312",
+        "historical_input_bytes_proven": false
+      }
+    },
+    {
+      "source": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/src/state/State.cpp",
+      "object": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/src/state/State.cpp.o",
+      "depfile": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/src/state/State.cpp.o.d",
+      "source_to_object_proven": false,
+      "object_to_library_proven": false,
+      "historical_same_build_session_proven": false,
+      "this_collection_status": "not_attempted_after_stop",
+      "previous_depfile_observation": {
+        "phase": "results/openvins-build-provenance-20261018",
+        "blob": "blobs/ae9a3782d30c103cefbe9a0b3cb8f1a5506bddb59195c6d32f49fa06c4d5a881",
+        "bytes": 53069,
+        "sha256": "ae9a3782d30c103cefbe9a0b3cb8f1a5506bddb59195c6d32f49fa06c4d5a881",
+        "historical_input_bytes_proven": false
+      }
+    },
+    {
+      "source": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/src/state/StateHelper.cpp",
+      "object": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/src/state/StateHelper.cpp.o",
+      "depfile": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/src/state/StateHelper.cpp.o.d",
+      "source_to_object_proven": false,
+      "object_to_library_proven": false,
+      "historical_same_build_session_proven": false,
+      "this_collection_status": "not_attempted_after_stop",
+      "previous_depfile_observation": {
+        "phase": "results/openvins-build-provenance-20261018",
+        "blob": "blobs/5b9b3d3cfe6edb6563dd1d4200851fc4c217253c689236e576a484a0b5210d55",
+        "bytes": 66171,
+        "sha256": "5b9b3d3cfe6edb6563dd1d4200851fc4c217253c689236e576a484a0b5210d55",
+        "historical_input_bytes_proven": false
+      }
+    },
+    {
+      "source": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/src/update/UpdaterHelper.cpp",
+      "object": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/src/update/UpdaterHelper.cpp.o",
+      "depfile": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/src/update/UpdaterHelper.cpp.o.d",
+      "source_to_object_proven": false,
+      "object_to_library_proven": false,
+      "historical_same_build_session_proven": false,
+      "this_collection_status": "not_attempted_after_stop",
+      "previous_depfile_observation": {
+        "phase": "results/openvins-build-provenance-20261018",
+        "blob": "blobs/5c26995fe31af798439c535aab373a9a8ebd387c8664dfe1a029b165f0792ff4",
+        "bytes": 53178,
+        "sha256": "5c26995fe31af798439c535aab373a9a8ebd387c8664dfe1a029b165f0792ff4",
+        "historical_input_bytes_proven": false
+      }
+    },
+    {
+      "source": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/src/update/UpdaterMSCKF.cpp",
+      "object": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/src/update/UpdaterMSCKF.cpp.o",
+      "depfile": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/src/update/UpdaterMSCKF.cpp.o.d",
+      "source_to_object_proven": false,
+      "object_to_library_proven": false,
+      "historical_same_build_session_proven": false,
+      "this_collection_status": "not_attempted_after_stop",
+      "previous_depfile_observation": {
+        "phase": "results/openvins-build-provenance-20261018",
+        "blob": "blobs/fa138eb6bdda168deb626cedfdd7f84bf14d5cf1d7e6544ec024235478e5655f",
+        "bytes": 74055,
+        "sha256": "fa138eb6bdda168deb626cedfdd7f84bf14d5cf1d7e6544ec024235478e5655f",
+        "historical_input_bytes_proven": false
+      }
+    },
+    {
+      "source": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/src/update/UpdaterSLAM.cpp",
+      "object": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/src/update/UpdaterSLAM.cpp.o",
+      "depfile": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/src/update/UpdaterSLAM.cpp.o.d",
+      "source_to_object_proven": false,
+      "object_to_library_proven": false,
+      "historical_same_build_session_proven": false,
+      "this_collection_status": "not_attempted_after_stop",
+      "previous_depfile_observation": {
+        "phase": "results/openvins-build-provenance-20261018",
+        "blob": "blobs/67f9d76c108e0f612f06d33959861b5eec5897be2517e1797dd0599232a4a19f",
+        "bytes": 74052,
+        "sha256": "67f9d76c108e0f612f06d33959861b5eec5897be2517e1797dd0599232a4a19f",
+        "historical_input_bytes_proven": false
+      }
+    },
+    {
+      "source": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/src/update/UpdaterZeroVelocity.cpp",
+      "object": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/src/update/UpdaterZeroVelocity.cpp.o",
+      "depfile": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/src/update/UpdaterZeroVelocity.cpp.o.d",
+      "source_to_object_proven": false,
+      "object_to_library_proven": false,
+      "historical_same_build_session_proven": false,
+      "this_collection_status": "not_attempted_after_stop",
+      "previous_depfile_observation": {
+        "phase": "results/openvins-build-provenance-20261018",
+        "blob": "blobs/bd776e506aec79d47c0bf5f158fbcaa9a19ed22f372fb2c52f334d062721a7cd",
+        "bytes": 74224,
+        "sha256": "bd776e506aec79d47c0bf5f158fbcaa9a19ed22f372fb2c52f334d062721a7cd",
+        "historical_input_bytes_proven": false
+      }
+    }
+  ],
+  "association_basis": "Prior actual DependInfo and link-name observations; not main build execution or content inputs.",
+  "atomic_snapshot": false,
+  "historical_same_build_session_proven": false,
+  "source_to_existing_library_proven": false
+}

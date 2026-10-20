@@ -1,0 +1,77 @@
+{
+  "publication_checkbox": {
+    "before_sha256": "6ceb6747600798234a89d1d5a011d59334b286539821dd9a953374548ffd3f99",
+    "after_sha256": "acfacec1c2667c8de10a382436a2fb1d381966dae5fc05a34b06872fce6d49e0",
+    "one_byte": true
+  },
+  "schema": "openvins-remaining-objects-publication-v1",
+  "base": "0d2c4e6c4ea19d5a9284927f56c315a5ed784ff0",
+  "plan_head": "47b3d91ad682dec36b006b8b6d9976daeddb1acf",
+  "files": {
+    "docs/OPENVINS_REMAINING_OBJECTS_PROGRESS.md": {
+      "working_bytes": 4538,
+      "working_sha256": "03ae53a5fffd57a6e53f91af39724fd06c41b8c73f106e41701573619cd08e81",
+      "git_bytes": 4538,
+      "git_sha256": "03ae53a5fffd57a6e53f91af39724fd06c41b8c73f106e41701573619cd08e81"
+    },
+    "docs/superpowers/plans/2026-10-18-openvins-remaining-objects.md": {
+      "working_bytes": 2559,
+      "working_sha256": "6ceb6747600798234a89d1d5a011d59334b286539821dd9a953374548ffd3f99",
+      "git_bytes": 2559,
+      "git_sha256": "6ceb6747600798234a89d1d5a011d59334b286539821dd9a953374548ffd3f99"
+    },
+    "results/openvins-remaining-objects-20261018/file-bindings.json": {
+      "working_bytes": 13243,
+      "working_sha256": "578fba33f0f871d1cdafd84ad240d5f93a60a97523ecc61dd3732cbb8e4affcf",
+      "git_bytes": 12917,
+      "git_sha256": "fbadeec96385e55cec5f17d1c39c676f40bd4edb61ba4adcca49e9cbd2771058"
+    },
+    "results/openvins-remaining-objects-20261018/object-static-observations.json": {
+      "working_bytes": 15459,
+      "working_sha256": "1e7cac9d0bd838a4ae104fef716fcff7920fbcee387b0b2521063ddf3ea8b5b7",
+      "git_bytes": 14944,
+      "git_sha256": "13031d921643e90c8a5defa8cc7e686f8fc05c30425b110a68e6a4a932af5ab4"
+    },
+    "results/openvins-remaining-objects-20261018/object-union-bindings.json": {
+      "working_bytes": 47440,
+      "working_sha256": "8e2af16aeda52c54fb72804053eda12ac9e3da189261f254348ac064c2d8d47e",
+      "git_bytes": 46593,
+      "git_sha256": "208799fc0a2e6d2373fbd5b72ad0bfff2374e040ecfe0a1f99a83c26a0503531"
+    },
+    "results/openvins-remaining-objects-20261018/log-search-observations.json": {
+      "working_bytes": 7095,
+      "working_sha256": "ea193c208dd842a418699093b2c65c830ec7f892fa397c771f3257ca5bd6240e",
+      "git_bytes": 7095,
+      "git_sha256": "ea193c208dd842a418699093b2c65c830ec7f892fa397c771f3257ca5bd6240e"
+    },
+    "results/openvins-remaining-objects-20261018/analysis-summary.json": {
+      "working_bytes": 1170,
+      "working_sha256": "8c1e75c560ff5fdc5ae15b51c7aa09cafa8a252cc7fd4401249f877ab613b716",
+      "git_bytes": 1133,
+      "git_sha256": "4f638cab2387772eaf075eaf818ab55325abc211d8c6fd1f9779e1c1f2f11e33"
+    },
+    "results/openvins-remaining-objects-20261018/missing-evidence.json": {
+      "working_bytes": 12200,
+      "working_sha256": "4eda3fa206e3e1531377fb95013240f46a4d385c422809b5c8d20e81b9bb8cda",
+      "git_bytes": 11980,
+      "git_sha256": "ceb8ff30d5a2ab4280dd96a485aa88eb50197fcb09cc42c37cfb70a9fef4a04b"
+    },
+    "evidence/openvins-remaining-objects-20261018.zip": {
+      "working_bytes": 35365563,
+      "working_sha256": "e46e0da4f1b63345438172d287303bb1db129f2a9115beab8d1b9dfbf49bef9b",
+      "git_bytes": 35365563,
+      "git_sha256": "e46e0da4f1b63345438172d287303bb1db129f2a9115beab8d1b9dfbf49bef9b"
+    },
+    "evidence/openvins-remaining-objects-20261018.sha256.json": {
+      "working_bytes": 7894,
+      "working_sha256": "3c11877940134584b0695933946ac6709af8837da3c27066e9d23eb639fd8670",
+      "git_bytes": 7737,
+      "git_sha256": "23e4996eba0a2a761ae508423a524005a14626172c3f9de4df4aaa8c905a9eb9"
+    }
+  },
+  "scope": "New unacquired existing OpenVINS build-directory depfiles, objects and logs only; original caps stop partial. No Linux command, compiler, configure, native, resource or test operation.",
+  "dispatchable": false,
+  "native_admission_review_performed": false,
+  "all_qualifications": false,
+  "future_checkboxes": "Build directory correspondence publication only; current library hash, full objects, historical source-to-object-to-library proof and native admission remain absent."
+}

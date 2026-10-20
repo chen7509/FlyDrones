@@ -1,0 +1,379 @@
+FFFFFFFFFFFFFF.                                                          [100%]
+================================== FAILURES ===================================
+__ test_build_commands_need_no_existing_library_and_build_it_before_adapter ___
+
+tmp_path = WindowsPath('C:/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/native-offset-fresh-source-20261019/red-fixtures/test_build_commands_need_no_ex0')
+
+    def test_build_commands_need_no_existing_library_and_build_it_before_adapter(tmp_path):
+        # Catch falling back to an external library or skipping the new library target.
+        b = bindings(tmp_path)
+>       commands = once.build_commands(b)
+                   ^^^^^^^^^^^^^^^^^^^^^^
+
+tests\benchmark\test_native_offset_fresh_build.py:38: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+b = {'pinned_cmake': 'C:\\Users\\yuche\\.codex\\worktrees\\FlyDrones\\track-eligibility\\results\\native-offset-fresh-sour...ibility\\results\\native-offset-fresh-source-20261019\\red-fixtures\\test_build_commands_need_no_ex0\\pinned_gxx', ...}
+
+    def build_commands(b):
+        configure = [
+            b["pinned_cmake"],
+            "-S",
+            b["deployed_repo"] + "/tools/benchmark/native_offset_reset_v2",
+            "-B",
+            b["exclusive_build_dir"],
+            "-G",
+            "Unix Makefiles",
+            "-DCMAKE_BUILD_TYPE=Release",
+            "-DCMAKE_CXX_COMPILER=" + b["pinned_gxx"],
+            "-DCMAKE_MAKE_PROGRAM=" + b["pinned_make"],
+            "-DCMAKE_CXX_FLAGS_RELEASE=-O2",
+            "-DCMAKE_EXPORT_COMPILE_COMMANDS=ON",
+            "-DCMAKE_TOOLCHAIN_FILE=" + b["toolchain_file"],
+            "-DOPENVINS_SOURCE_DIR=" + b["upstream_source_tree"],
+>           "-DOPENVINS_LIBRARY_DIR=" + b["openvins_library_dir"],
+                                        ^^^^^^^^^^^^^^^^^^^^^^^^^
+            "-DOV_MSCKF=" + b["openvins_library_file"],
+            "-DEigen3_DIR=" + b["eigen_config_dir"],
+            "-DOpenCV_DIR=" + b["opencv4_config_dir"],
+            "-DBoost_DIR=" + b["boost_config_dir"],
+            "-DCeres_DIR=" + b["ceres_config_dir"],
+            "-DCMAKE_FIND_USE_PACKAGE_REGISTRY=OFF",
+            "-DCMAKE_FIND_USE_SYSTEM_PACKAGE_REGISTRY=OFF",
+            "--trace-expand",
+            "--trace-format=json-v1",
+            "--trace-redirect=" + b["exclusive_build_dir"] + "/cmake-trace.jsonl",
+        ]
+E       KeyError: 'openvins_library_dir'
+
+tools\benchmark\native_offset_once.py:110: KeyError
+____ test_old_library_bindings_refused_even_if_commands_could_ignore_them _____
+
+tmp_path = WindowsPath('C:/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/native-offset-fresh-source-20261019/red-fixtures/test_old_library_bindings_refu0')
+
+    def test_old_library_bindings_refused_even_if_commands_could_ignore_them(tmp_path):
+        b = bindings(tmp_path)
+        b["openvins_library_file"] = "/old/libov_msckf_lib.so"
+        with pytest.raises(ValueError, match="existing library"):
+>           once.build_commands(b)
+
+tests\benchmark\test_native_offset_fresh_build.py:50: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+b = {'pinned_cmake': 'C:\\Users\\yuche\\.codex\\worktrees\\FlyDrones\\track-eligibility\\results\\native-offset-fresh-sour...ibility\\results\\native-offset-fresh-source-20261019\\red-fixtures\\test_old_library_bindings_refu0\\pinned_gxx', ...}
+
+    def build_commands(b):
+        configure = [
+            b["pinned_cmake"],
+            "-S",
+            b["deployed_repo"] + "/tools/benchmark/native_offset_reset_v2",
+            "-B",
+            b["exclusive_build_dir"],
+            "-G",
+            "Unix Makefiles",
+            "-DCMAKE_BUILD_TYPE=Release",
+            "-DCMAKE_CXX_COMPILER=" + b["pinned_gxx"],
+            "-DCMAKE_MAKE_PROGRAM=" + b["pinned_make"],
+            "-DCMAKE_CXX_FLAGS_RELEASE=-O2",
+            "-DCMAKE_EXPORT_COMPILE_COMMANDS=ON",
+            "-DCMAKE_TOOLCHAIN_FILE=" + b["toolchain_file"],
+            "-DOPENVINS_SOURCE_DIR=" + b["upstream_source_tree"],
+>           "-DOPENVINS_LIBRARY_DIR=" + b["openvins_library_dir"],
+                                        ^^^^^^^^^^^^^^^^^^^^^^^^^
+            "-DOV_MSCKF=" + b["openvins_library_file"],
+            "-DEigen3_DIR=" + b["eigen_config_dir"],
+            "-DOpenCV_DIR=" + b["opencv4_config_dir"],
+            "-DBoost_DIR=" + b["boost_config_dir"],
+            "-DCeres_DIR=" + b["ceres_config_dir"],
+            "-DCMAKE_FIND_USE_PACKAGE_REGISTRY=OFF",
+            "-DCMAKE_FIND_USE_SYSTEM_PACKAGE_REGISTRY=OFF",
+            "--trace-expand",
+            "--trace-format=json-v1",
+            "--trace-redirect=" + b["exclusive_build_dir"] + "/cmake-trace.jsonl",
+        ]
+E       KeyError: 'openvins_library_dir'
+
+tools\benchmark\native_offset_once.py:110: KeyError
+_ test_fixed_recipe_is_exclusive_and_contains_no_arbitrary_extra_translation_unit _
+
+tmp_path = WindowsPath('C:/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/native-offset-fresh-source-20261019/red-fixtures/test_fixed_recipe_is_exclusive0')
+
+    def test_fixed_recipe_is_exclusive_and_contains_no_arbitrary_extra_translation_unit(tmp_path):
+>       from tools.benchmark.native_offset_fresh_build import prepare_sources
+E       ModuleNotFoundError: No module named 'tools.benchmark.native_offset_fresh_build'
+
+tests\benchmark\test_native_offset_fresh_build.py:54: ModuleNotFoundError
+_____ test_receipt_binds_all_new_objects_both_links_and_generated_library _____
+
+tmp_path = WindowsPath('C:/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/native-offset-fresh-source-20261019/red-fixtures/test_receipt_binds_all_new_obj0')
+
+    def test_receipt_binds_all_new_objects_both_links_and_generated_library(tmp_path):
+>       request, build, steps = fixture_fresh(tmp_path)
+                                ^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\benchmark\test_native_offset_fresh_build.py:124: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+tmp_path = WindowsPath('C:/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/native-offset-fresh-source-20261019/red-fixtures/test_receipt_binds_all_new_obj0')
+
+    def fixture_fresh(tmp_path):
+>       from tools.benchmark.native_offset_fresh_build import SOURCES, prepare_sources
+E       ModuleNotFoundError: No module named 'tools.benchmark.native_offset_fresh_build'
+
+tests\benchmark\test_native_offset_fresh_build.py:69: ModuleNotFoundError
+__ test_fresh_receipt_fails_closed_without_losing_partial_result[missing-tu] __
+
+tmp_path = WindowsPath('C:/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/native-offset-fresh-source-20261019/red-fixtures/test_fresh_receipt_fails_close0')
+fault = 'missing-tu'
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000002471EC5D3D0>
+
+    @pytest.mark.parametrize("fault", ["missing-tu", "extra-tu", "duplicate-tu", "old-library", "missing-link-object",
+                                      "missing-depfile", "unknown-header", "failed-library", "cleanup", "oversize"])
+    def test_fresh_receipt_fails_closed_without_losing_partial_result(tmp_path, fault, monkeypatch):
+        from tools.benchmark import native_offset_build_receipt as receipts
+    
+>       request, build, steps = fixture_fresh(tmp_path)
+                                ^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\benchmark\test_native_offset_fresh_build.py:139: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+tmp_path = WindowsPath('C:/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/native-offset-fresh-source-20261019/red-fixtures/test_fresh_receipt_fails_close0')
+
+    def fixture_fresh(tmp_path):
+>       from tools.benchmark.native_offset_fresh_build import SOURCES, prepare_sources
+E       ModuleNotFoundError: No module named 'tools.benchmark.native_offset_fresh_build'
+
+tests\benchmark\test_native_offset_fresh_build.py:69: ModuleNotFoundError
+___ test_fresh_receipt_fails_closed_without_losing_partial_result[extra-tu] ___
+
+tmp_path = WindowsPath('C:/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/native-offset-fresh-source-20261019/red-fixtures/test_fresh_receipt_fails_close1')
+fault = 'extra-tu'
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000002471EC5DEB0>
+
+    @pytest.mark.parametrize("fault", ["missing-tu", "extra-tu", "duplicate-tu", "old-library", "missing-link-object",
+                                      "missing-depfile", "unknown-header", "failed-library", "cleanup", "oversize"])
+    def test_fresh_receipt_fails_closed_without_losing_partial_result(tmp_path, fault, monkeypatch):
+        from tools.benchmark import native_offset_build_receipt as receipts
+    
+>       request, build, steps = fixture_fresh(tmp_path)
+                                ^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\benchmark\test_native_offset_fresh_build.py:139: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+tmp_path = WindowsPath('C:/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/native-offset-fresh-source-20261019/red-fixtures/test_fresh_receipt_fails_close1')
+
+    def fixture_fresh(tmp_path):
+>       from tools.benchmark.native_offset_fresh_build import SOURCES, prepare_sources
+E       ModuleNotFoundError: No module named 'tools.benchmark.native_offset_fresh_build'
+
+tests\benchmark\test_native_offset_fresh_build.py:69: ModuleNotFoundError
+_ test_fresh_receipt_fails_closed_without_losing_partial_result[duplicate-tu] _
+
+tmp_path = WindowsPath('C:/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/native-offset-fresh-source-20261019/red-fixtures/test_fresh_receipt_fails_close2')
+fault = 'duplicate-tu'
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000002471EC5EC30>
+
+    @pytest.mark.parametrize("fault", ["missing-tu", "extra-tu", "duplicate-tu", "old-library", "missing-link-object",
+                                      "missing-depfile", "unknown-header", "failed-library", "cleanup", "oversize"])
+    def test_fresh_receipt_fails_closed_without_losing_partial_result(tmp_path, fault, monkeypatch):
+        from tools.benchmark import native_offset_build_receipt as receipts
+    
+>       request, build, steps = fixture_fresh(tmp_path)
+                                ^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\benchmark\test_native_offset_fresh_build.py:139: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+tmp_path = WindowsPath('C:/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/native-offset-fresh-source-20261019/red-fixtures/test_fresh_receipt_fails_close2')
+
+    def fixture_fresh(tmp_path):
+>       from tools.benchmark.native_offset_fresh_build import SOURCES, prepare_sources
+E       ModuleNotFoundError: No module named 'tools.benchmark.native_offset_fresh_build'
+
+tests\benchmark\test_native_offset_fresh_build.py:69: ModuleNotFoundError
+_ test_fresh_receipt_fails_closed_without_losing_partial_result[old-library] __
+
+tmp_path = WindowsPath('C:/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/native-offset-fresh-source-20261019/red-fixtures/test_fresh_receipt_fails_close3')
+fault = 'old-library'
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000002471EC5FAD0>
+
+    @pytest.mark.parametrize("fault", ["missing-tu", "extra-tu", "duplicate-tu", "old-library", "missing-link-object",
+                                      "missing-depfile", "unknown-header", "failed-library", "cleanup", "oversize"])
+    def test_fresh_receipt_fails_closed_without_losing_partial_result(tmp_path, fault, monkeypatch):
+        from tools.benchmark import native_offset_build_receipt as receipts
+    
+>       request, build, steps = fixture_fresh(tmp_path)
+                                ^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\benchmark\test_native_offset_fresh_build.py:139: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+tmp_path = WindowsPath('C:/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/native-offset-fresh-source-20261019/red-fixtures/test_fresh_receipt_fails_close3')
+
+    def fixture_fresh(tmp_path):
+>       from tools.benchmark.native_offset_fresh_build import SOURCES, prepare_sources
+E       ModuleNotFoundError: No module named 'tools.benchmark.native_offset_fresh_build'
+
+tests\benchmark\test_native_offset_fresh_build.py:69: ModuleNotFoundError
+_ test_fresh_receipt_fails_closed_without_losing_partial_result[missing-link-object] _
+
+tmp_path = WindowsPath('C:/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/native-offset-fresh-source-20261019/red-fixtures/test_fresh_receipt_fails_close4')
+fault = 'missing-link-object'
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000002471EC4B860>
+
+    @pytest.mark.parametrize("fault", ["missing-tu", "extra-tu", "duplicate-tu", "old-library", "missing-link-object",
+                                      "missing-depfile", "unknown-header", "failed-library", "cleanup", "oversize"])
+    def test_fresh_receipt_fails_closed_without_losing_partial_result(tmp_path, fault, monkeypatch):
+        from tools.benchmark import native_offset_build_receipt as receipts
+    
+>       request, build, steps = fixture_fresh(tmp_path)
+                                ^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\benchmark\test_native_offset_fresh_build.py:139: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+tmp_path = WindowsPath('C:/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/native-offset-fresh-source-20261019/red-fixtures/test_fresh_receipt_fails_close4')
+
+    def fixture_fresh(tmp_path):
+>       from tools.benchmark.native_offset_fresh_build import SOURCES, prepare_sources
+E       ModuleNotFoundError: No module named 'tools.benchmark.native_offset_fresh_build'
+
+tests\benchmark\test_native_offset_fresh_build.py:69: ModuleNotFoundError
+_ test_fresh_receipt_fails_closed_without_losing_partial_result[missing-depfile] _
+
+tmp_path = WindowsPath('C:/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/native-offset-fresh-source-20261019/red-fixtures/test_fresh_receipt_fails_close5')
+fault = 'missing-depfile'
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000002471EC4AFC0>
+
+    @pytest.mark.parametrize("fault", ["missing-tu", "extra-tu", "duplicate-tu", "old-library", "missing-link-object",
+                                      "missing-depfile", "unknown-header", "failed-library", "cleanup", "oversize"])
+    def test_fresh_receipt_fails_closed_without_losing_partial_result(tmp_path, fault, monkeypatch):
+        from tools.benchmark import native_offset_build_receipt as receipts
+    
+>       request, build, steps = fixture_fresh(tmp_path)
+                                ^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\benchmark\test_native_offset_fresh_build.py:139: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+tmp_path = WindowsPath('C:/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/native-offset-fresh-source-20261019/red-fixtures/test_fresh_receipt_fails_close5')
+
+    def fixture_fresh(tmp_path):
+>       from tools.benchmark.native_offset_fresh_build import SOURCES, prepare_sources
+E       ModuleNotFoundError: No module named 'tools.benchmark.native_offset_fresh_build'
+
+tests\benchmark\test_native_offset_fresh_build.py:69: ModuleNotFoundError
+_ test_fresh_receipt_fails_closed_without_losing_partial_result[unknown-header] _
+
+tmp_path = WindowsPath('C:/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/native-offset-fresh-source-20261019/red-fixtures/test_fresh_receipt_fails_close6')
+fault = 'unknown-header'
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000002471EC4A000>
+
+    @pytest.mark.parametrize("fault", ["missing-tu", "extra-tu", "duplicate-tu", "old-library", "missing-link-object",
+                                      "missing-depfile", "unknown-header", "failed-library", "cleanup", "oversize"])
+    def test_fresh_receipt_fails_closed_without_losing_partial_result(tmp_path, fault, monkeypatch):
+        from tools.benchmark import native_offset_build_receipt as receipts
+    
+>       request, build, steps = fixture_fresh(tmp_path)
+                                ^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\benchmark\test_native_offset_fresh_build.py:139: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+tmp_path = WindowsPath('C:/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/native-offset-fresh-source-20261019/red-fixtures/test_fresh_receipt_fails_close6')
+
+    def fixture_fresh(tmp_path):
+>       from tools.benchmark.native_offset_fresh_build import SOURCES, prepare_sources
+E       ModuleNotFoundError: No module named 'tools.benchmark.native_offset_fresh_build'
+
+tests\benchmark\test_native_offset_fresh_build.py:69: ModuleNotFoundError
+_ test_fresh_receipt_fails_closed_without_losing_partial_result[failed-library] _
+
+tmp_path = WindowsPath('C:/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/native-offset-fresh-source-20261019/red-fixtures/test_fresh_receipt_fails_close7')
+fault = 'failed-library'
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000002471EC5E5A0>
+
+    @pytest.mark.parametrize("fault", ["missing-tu", "extra-tu", "duplicate-tu", "old-library", "missing-link-object",
+                                      "missing-depfile", "unknown-header", "failed-library", "cleanup", "oversize"])
+    def test_fresh_receipt_fails_closed_without_losing_partial_result(tmp_path, fault, monkeypatch):
+        from tools.benchmark import native_offset_build_receipt as receipts
+    
+>       request, build, steps = fixture_fresh(tmp_path)
+                                ^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\benchmark\test_native_offset_fresh_build.py:139: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+tmp_path = WindowsPath('C:/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/native-offset-fresh-source-20261019/red-fixtures/test_fresh_receipt_fails_close7')
+
+    def fixture_fresh(tmp_path):
+>       from tools.benchmark.native_offset_fresh_build import SOURCES, prepare_sources
+E       ModuleNotFoundError: No module named 'tools.benchmark.native_offset_fresh_build'
+
+tests\benchmark\test_native_offset_fresh_build.py:69: ModuleNotFoundError
+___ test_fresh_receipt_fails_closed_without_losing_partial_result[cleanup] ____
+
+tmp_path = WindowsPath('C:/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/native-offset-fresh-source-20261019/red-fixtures/test_fresh_receipt_fails_close8')
+fault = 'cleanup'
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000002471EC5FB30>
+
+    @pytest.mark.parametrize("fault", ["missing-tu", "extra-tu", "duplicate-tu", "old-library", "missing-link-object",
+                                      "missing-depfile", "unknown-header", "failed-library", "cleanup", "oversize"])
+    def test_fresh_receipt_fails_closed_without_losing_partial_result(tmp_path, fault, monkeypatch):
+        from tools.benchmark import native_offset_build_receipt as receipts
+    
+>       request, build, steps = fixture_fresh(tmp_path)
+                                ^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\benchmark\test_native_offset_fresh_build.py:139: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+tmp_path = WindowsPath('C:/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/native-offset-fresh-source-20261019/red-fixtures/test_fresh_receipt_fails_close8')
+
+    def fixture_fresh(tmp_path):
+>       from tools.benchmark.native_offset_fresh_build import SOURCES, prepare_sources
+E       ModuleNotFoundError: No module named 'tools.benchmark.native_offset_fresh_build'
+
+tests\benchmark\test_native_offset_fresh_build.py:69: ModuleNotFoundError
+___ test_fresh_receipt_fails_closed_without_losing_partial_result[oversize] ___
+
+tmp_path = WindowsPath('C:/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/native-offset-fresh-source-20261019/red-fixtures/test_fresh_receipt_fails_close9')
+fault = 'oversize'
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000002471EC5CC20>
+
+    @pytest.mark.parametrize("fault", ["missing-tu", "extra-tu", "duplicate-tu", "old-library", "missing-link-object",
+                                      "missing-depfile", "unknown-header", "failed-library", "cleanup", "oversize"])
+    def test_fresh_receipt_fails_closed_without_losing_partial_result(tmp_path, fault, monkeypatch):
+        from tools.benchmark import native_offset_build_receipt as receipts
+    
+>       request, build, steps = fixture_fresh(tmp_path)
+                                ^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\benchmark\test_native_offset_fresh_build.py:139: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+tmp_path = WindowsPath('C:/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/native-offset-fresh-source-20261019/red-fixtures/test_fresh_receipt_fails_close9')
+
+    def fixture_fresh(tmp_path):
+>       from tools.benchmark.native_offset_fresh_build import SOURCES, prepare_sources
+E       ModuleNotFoundError: No module named 'tools.benchmark.native_offset_fresh_build'
+
+tests\benchmark\test_native_offset_fresh_build.py:69: ModuleNotFoundError
+=========================== short test summary info ===========================
+FAILED tests/benchmark/test_native_offset_fresh_build.py::test_build_commands_need_no_existing_library_and_build_it_before_adapter
+FAILED tests/benchmark/test_native_offset_fresh_build.py::test_old_library_bindings_refused_even_if_commands_could_ignore_them
+FAILED tests/benchmark/test_native_offset_fresh_build.py::test_fixed_recipe_is_exclusive_and_contains_no_arbitrary_extra_translation_unit
+FAILED tests/benchmark/test_native_offset_fresh_build.py::test_receipt_binds_all_new_objects_both_links_and_generated_library
+FAILED tests/benchmark/test_native_offset_fresh_build.py::test_fresh_receipt_fails_closed_without_losing_partial_result[missing-tu]
+FAILED tests/benchmark/test_native_offset_fresh_build.py::test_fresh_receipt_fails_closed_without_losing_partial_result[extra-tu]
+FAILED tests/benchmark/test_native_offset_fresh_build.py::test_fresh_receipt_fails_closed_without_losing_partial_result[duplicate-tu]
+FAILED tests/benchmark/test_native_offset_fresh_build.py::test_fresh_receipt_fails_closed_without_losing_partial_result[old-library]
+FAILED tests/benchmark/test_native_offset_fresh_build.py::test_fresh_receipt_fails_closed_without_losing_partial_result[missing-link-object]
+FAILED tests/benchmark/test_native_offset_fresh_build.py::test_fresh_receipt_fails_closed_without_losing_partial_result[missing-depfile]
+FAILED tests/benchmark/test_native_offset_fresh_build.py::test_fresh_receipt_fails_closed_without_losing_partial_result[unknown-header]
+FAILED tests/benchmark/test_native_offset_fresh_build.py::test_fresh_receipt_fails_closed_without_losing_partial_result[failed-library]
+FAILED tests/benchmark/test_native_offset_fresh_build.py::test_fresh_receipt_fails_closed_without_losing_partial_result[cleanup]
+FAILED tests/benchmark/test_native_offset_fresh_build.py::test_fresh_receipt_fails_closed_without_losing_partial_result[oversize]
+14 failed, 1 passed in 0.44s

@@ -1,0 +1,16 @@
+4bc44330c793b153bb09f9d004e2d743  usr/include/glog/export.h
+51a31e1d457ba69fc8e6d143a497ffad  usr/include/glog/log_severity.h
+a9e2a61aea9e8fecb439c82a96f4c624  usr/include/glog/logging.h
+5935c4d9efb05b46527d88f6d8f02f74  usr/include/glog/platform.h
+7f57bb95fedc08707c5272115fb23333  usr/include/glog/raw_logging.h
+cfda1c71a78247c13bc3b75a40ebd9e6  usr/include/glog/stl_logging.h
+7a054748b74dc1655fb4347870afdb30  usr/include/glog/vlog_is_on.h
+0e5fea73ca6ecd8200571634e109698b  usr/lib/x86_64-linux-gnu/cmake/glog/glog-config-version.cmake
+a56dfdd3a1fba2118b33cdbd1a8a46ea  usr/lib/x86_64-linux-gnu/cmake/glog/glog-config.cmake
+cd1094027b060dc7083b1250565e9f79  usr/lib/x86_64-linux-gnu/cmake/glog/glog-modules.cmake
+bcd55270efaed2c9f1036dcc85e64404  usr/lib/x86_64-linux-gnu/cmake/glog/glog-targets-release.cmake
+bc596e232e8d93392d9a805242498d5e  usr/lib/x86_64-linux-gnu/cmake/glog/glog-targets.cmake
+9c5e17a70008e384a64ea87ac19f0035  usr/lib/x86_64-linux-gnu/libglog.a
+9c27ad2b95026baaed5f1b1795aeafca  usr/lib/x86_64-linux-gnu/pkgconfig/libglog.pc
+8f21dda2339e9007d45000ac0a8e73d1  usr/share/doc/libgoogle-glog-dev/copyright
+c3bf350d60791b6c39f2056928471475  usr/share/glog/cmake/FindUnwind.cmake

@@ -1,0 +1,23 @@
+{
+  "schema": "flydrones-stage-publication-v1",
+  "implementation_commit": "129360826a702c4dff7d9ab98db2617e5a804ea9",
+  "canonical_archive_sha256": "05dbf78468c8f159ebec8cc504c538595f7694304869f1de1af1c50cedd09fb3",
+  "prepublication_plan_sha256": "6d1295c5372572b9da9c59bb6c7f22e00c874c01fd62a103e13124311f392b1e",
+  "current_publication_plan_sha256": "5e2092043813e2f31da3e1645c42a719e98dec94c35c8df6033a24d1946506f5",
+  "plan_change": "publication checkbox and appended ledger only; ZIP plan unchanged",
+  "test_result": "27passed4.82s; Ruff/diff0",
+  "independent_final_review": "no Critical/Important/Minor;1376members allCRC/size/SHA/currentbyte",
+  "real_file_runs": {
+    "v1_parent": 61764,
+    "v2_parent": 7760,
+    "both_exit": 0,
+    "camera_frames": 251,
+    "raw_IMU_and_candidate_CSV_rows": 6123,
+    "camera_frames_outside_IMU_range": 6
+  },
+  "source_clock_calibration_training_flight_qualified": false,
+  "consumer_executed": false,
+  "source_bytes": "archive tested working-tree bytes; Git text newline normalization is distinct",
+  "remote_policy": "only personal; never origin",
+  "pr": "https://github.com/chen7509/FlyDrones/pull/65"
+}

@@ -1,0 +1,384 @@
+"""Bounded read of a supplied UDP socket; no creation, send or live authority.
+
+Caller owns socket lifetime and must independently establish namespace/process
+and simulation-clock provenance. Endpoint agreement is not PID authentication.
+The timestamp is userspace recvmsg-return time, not a kernel arrival timestamp.
+"""
+from __future__ import annotations
+
+import copy
+import socket
+from dataclasses import dataclass
+from threading import Lock
+
+from tools.benchmark.kernel_datagram_arrival import KernelTimestampNS
+from tools.benchmark.kernel_rx_timestamping import KernelRXTimestamping
+from tools.benchmark.openvins_segmented_journal import SegmentedEvents, event_log, record_failure, require_capacity
+from tools.benchmark.openvins_timesync_interval import _RestorationWindow
+from tools.benchmark.owned_daemon_connection import _error
+
+
+@dataclass(frozen=True)
+class ReceivedDatagram:
+    data: bytes
+    peer: tuple[str, int]
+    received_ns: int
+    kernel_received_realtime_ns: int | None = None
+    modeled_kernel_age_upper_ns: int | None = None
+
+
+class DatagramReceiver:
+    MAX_EVENTS = 8192
+    LOCAL = ("127.0.0.1", 14548)
+    PEER = ("127.0.0.1", 14588)
+
+    def __init__(self, sock, guard, now, start_ns, journal, *, retention=None, kernel_timestamps=None,
+                 kernel_queue_age=None):
+        if (type(start_ns) is not int or not 0 <= start_ns < 2**64 - 8_000_000_000
+                or not all(callable(f) for f in (guard, now, journal))):
+            raise ValueError("explicit receive clock/guard/journal required")
+        if kernel_timestamps is not None and type(kernel_timestamps) not in (KernelTimestampNS, KernelRXTimestamping):
+            raise ValueError("exact optional kernel timestamp profile required")
+        if kernel_queue_age is not None:
+            # Existing frozen default/NS bundles gain no new import dependency.
+            from tools.benchmark.kernel_queue_age import KernelQueueAge
+            if type(kernel_queue_age) is not KernelQueueAge:
+                raise ValueError('exact optional queue-age profile required')
+        self._kernel = kernel_timestamps
+        self._queue_age = kernel_queue_age
+        self._last_issued_kernel = None
+        self._last_age_check = None
+        self._issued_packet = None
+        self._recv_flags = getattr(socket, "MSG_DONTWAIT", None)
+        if type(self._recv_flags) not in (int, socket.MsgFlag) or self._recv_flags <= 0:
+            raise ValueError("platform MSG_DONTWAIT required")
+        self._recv_flags = int(self._recv_flags)
+        self._sock, self._guard, self._now, self._journal = sock, guard, now, journal
+        self._last = self._start = start_ns
+        self._deadline = start_ns + 8_000_000_000
+        self._continuation = None
+        self._restoration = None
+        self._restoring = False
+        self._datagram_returns = 0
+        self._events, self._journal_errors = event_log(retention, 'receiver'), []
+        self._draft = None
+        self._regular_events = 0
+        self._failure = None
+        self._lock = Lock()
+        try:
+            if self._queue_age is not None:
+                self._queue_age._bind(self,sock,kernel_timestamps,now,start_ns)
+            self._check()
+        except BaseException as exc:
+            self._fail(exc)
+            raise
+
+    @property
+    def progress(self):
+        return dict(failure=self._failure, sender_process_proven=False, network_authorized=False,
+                    live_convergence_qualified=False, fusion_qualified=False)
+
+    @property
+    def evidence(self):
+        result = dict(events=copy.deepcopy(self._events), failure=self._failure,
+                    datagram_returns=self._datagram_returns,
+                    unpublished_event=copy.deepcopy(self._draft),
+                    journal_errors=copy.deepcopy(self._journal_errors),
+                    timestamp_basis="userspace monotonic recvmsg return, not kernel arrival",
+                    sender_process_proven=False, network_authorized=False,
+                    live_convergence_qualified=False, fusion_qualified=False)
+        if self._kernel is not None:
+            result['kernel_timestamps'] = self._kernel.evidence
+            result['timestamp_basis'] = 'userspace monotonic return plus separate unmapped kernel software CLOCK_REALTIME'
+        if self._queue_age is not None:
+            result['kernel_queue_age'] = self._queue_age.evidence
+            result['last_issued_age_check'] = copy.deepcopy(self._last_age_check)
+        return result
+
+    def _open(self):
+        if self._restoration is not None:
+            if not self._restoring:
+                raise ValueError('receiver restricted to restoration')
+            if self._restoration.failure is not None or self._restoration.closed:
+                raise ValueError('receiver restoration window failed or closed')
+            return
+        if self._failure is not None:
+            raise ValueError("datagram receiver failure latched: " + self._failure)
+        if self._continuation is not None:
+            state = self._continuation.progress
+            if state['failure'] is not None or state['phase'] == 'cancelled':
+                raise ValueError('datagram maintenance context failed or cancelled')
+
+    def _clock(self):
+        self._open()
+        value = self._now()
+        return self._accept_clock(value)
+
+    def _accept_clock(self, value):
+        """Check a clock already observed by the age sampler; no callback."""
+        self._open()
+        if type(value) is not int or not self._last <= value < 2**64:
+            raise ValueError("datagram receive clock invalid or regressed")
+        self._last = value
+        if self._queue_age is not None:
+            self._queue_age._observe_mono(self,value)
+        if self._restoring:
+            return self._restoration.check(value)
+        if value >= self._deadline:
+            raise ValueError("datagram receive global deadline")
+        return value
+
+    def _bind_restoration(self, window):
+        if type(window) is not _RestorationWindow or self._restoration is not None:
+            raise ValueError('one exact receiver restoration window required')
+        now = self._now()
+        if type(now) is not int or now < self._last:
+            raise ValueError('receiver restoration clock regression')
+        window.check(now)
+        self._last = now
+        self._restoration = window
+
+    def _restore_call(self, window, action):
+        if window is not self._restoration or self._restoring:
+            window.fail('receiver restoration identity/concurrency')
+            raise ValueError('receiver restoration identity/concurrency')
+        self._restoring = True
+        try:
+            return action()
+        except BaseException as exc:
+            window.fail(_error(exc))
+            raise
+        finally:
+            self._restoring = False
+
+    def _poll_restoration(self, window):
+        return self._restore_call(window, self.poll)
+
+    def _check_restoration(self, window):
+        return self._restore_call(window, self.check)
+
+    def _continue_with(self, continuation):
+        """Bind once without replacing the supplied descriptor or high water mark."""
+        from tools.benchmark.openvins_timesync_maintenance import _TimesyncMaintenance
+
+        if not self._lock.acquire(blocking=False):
+            self._fail(ValueError('concurrent receive maintenance binding'))
+            raise ValueError('concurrent receive maintenance binding')
+        try:
+            now = self._check()
+            if type(continuation) is not _TimesyncMaintenance or self._continuation is not None:
+                raise ValueError('one exact receiver continuation required')
+            state = continuation.progress
+            if (state['failure'] is not None or state['phase'] != 'replay_pending'
+                    or not self._start <= state['handoff_ns'] <= now < self._start + 8_000_000_000
+                    or not now < state['deadline_ns'] <= self._start + 300_000_000_000):
+                raise ValueError('receive maintenance context/deadline invalid')
+            self._publish(self._append('maintenance_bound', deadline_ns=state['deadline_ns'],
+                                       listener_token=state['listener_token']))
+            self._check()  # Binding and all callbacks still obey bootstrap8s.
+            self._continuation, self._deadline = continuation, state['deadline_ns']
+        except BaseException as exc:
+            self._fail(exc)
+            raise
+        finally:
+            self._lock.release()
+
+    @staticmethod
+    def _address(value, expected):
+        return (type(value) is tuple and len(value) == 2 and type(value[0]) is str
+                and type(value[1]) is int and value == expected)
+
+    def _check(self):
+        self._clock()
+        if self._guard() is not None:
+            raise ValueError("ownership guard must return None")
+        self._open()
+        s = self._sock
+        if (not all(isinstance(v, int) and not isinstance(v, bool) for v in (s.family, s.type, s.proto))
+                or s.family != socket.AF_INET or s.type != socket.SOCK_DGRAM
+                or s.proto not in (0, socket.IPPROTO_UDP)):
+            raise ValueError("IPv4 UDP socket required")
+        timeout = s.gettimeout()
+        if type(timeout) not in (int, float) or timeout != 0:
+            raise ValueError("nonblocking socket required")
+        if not self._address(s.getsockname(), self.LOCAL):
+            raise ValueError("local endpoint changed")
+        if self._kernel is not None:
+            self._kernel.check(s)
+        if self._queue_age is not None:
+            self._queue_age._current(self)
+        return self._clock()
+
+    def _append(self, kind, **fields):
+        require_capacity(self._events, self._regular_events, self.MAX_EVENTS)
+        self._regular_events += 1
+        event = dict(kind=kind, **fields)
+        if isinstance(self._events, SegmentedEvents):
+            self._draft = event
+        else:
+            self._events.append(event)
+        return event
+
+    def _publish(self, event):
+        if isinstance(self._events, SegmentedEvents):
+            self._events.append(event)
+            self._draft = None
+        if self._journal(copy.deepcopy(event)) is not None:
+            raise ValueError("receive journal must return None")
+        self._open()
+
+    def _fail(self, exc):
+        if self._failure is not None:
+            return
+        self._failure = "receive refusal (formatting error)"
+        self._failure = _error(exc)
+        event = dict(kind="refusal", reason=self._failure, last_checked_ns=self._last)
+        record_failure(self._events, event)  # Explicit terminal slot if storage refused.
+        try:
+            if self._journal(copy.deepcopy(event)) is not None:
+                raise ValueError("refusal journal must return None")
+        except BaseException as secondary:
+            self._journal_errors.append(_error(secondary))
+
+    @staticmethod
+    def _description(result):
+        fields = dict(return_type=type(result).__name__, data_hex=None, data_length=None,
+                      flags=None, ancillary_count=None, peer=None)
+        if type(result) is tuple and len(result) == 4:
+            data, ancillary, flags, peer = result
+            if type(data) is bytes:
+                fields.update(data_hex=data[:4096].hex(), data_length=len(data))
+            if type(ancillary) is list:
+                fields["ancillary_count"] = len(ancillary)
+            if type(flags) is int and -2**63 <= flags < 2**64:
+                fields["flags"] = flags
+            if type(peer) is tuple and len(peer) == 2 and type(peer[0]) is str and type(peer[1]) is int:
+                fields["peer"] = (peer[0][:256], peer[1] if -2**63 <= peer[1] < 2**64 else None)
+        return fields
+
+    def poll(self):
+        self._open()
+        if not self._lock.acquire(blocking=False):
+            self._fail(ValueError("concurrent datagram receive"))
+            raise ValueError("concurrent datagram receive")
+        try:
+            self._check()
+            if self._datagram_returns >= 4096:
+                raise ValueError('total datagram return capacity')
+            require_capacity(self._events, self._regular_events, self.MAX_EVENTS, 3 if self._kernel is not None else 2)
+            self._publish(self._append("receive_attempt", last_checked_ns=self._last))
+            started = self._check()
+            realtime_before = None
+            clock_before = None
+            if self._kernel is not None:
+                if self._queue_age is None:
+                    realtime_before = self._kernel.realtime()
+                else:
+                    clock_before = self._queue_age._sample(self)
+                    realtime_before = clock_before['realtime_ns']
+                self._check()
+            try:
+                result = self._sock.recvmsg(4096, 0 if self._kernel is None else self._kernel.ancillary_bytes,
+                                            self._recv_flags)
+            except BlockingIOError:
+                if self._kernel is not None:
+                    if self._queue_age is None:
+                        self._kernel.realtime()
+                    else:
+                        self._queue_age._sample(self)
+                returned = self._check()
+                if returned - started >= 2_000_000_000:
+                    raise ValueError("receive call timeout") from None
+                return None
+            self._datagram_returns += 1
+            # Save actual returned bytes before any clock/guard/journal callback.
+            event = self._append("receive_return", started_ns=started, received_ns=None,
+                                 **self._description(result))
+            if self._kernel is not None:
+                event.update(ancillary_raw=self._kernel.describe(result[1])
+                             if type(result) is tuple and len(result) == 4 else None,
+                             kernel_realtime_before_ns=realtime_before, kernel_realtime_after_ns=None,
+                             kernel_realtime_after_raw_ns=None)
+                if self._queue_age is not None:
+                    event.update(queue_clock_before=clock_before,queue_clock_after=None)
+            after_realtime_attempted = False
+            try:
+                received = self._clock()
+                event["received_ns"] = received
+                if self._kernel is not None:
+                    after_realtime_attempted = True
+                    if self._queue_age is None:
+                        event["kernel_realtime_after_ns"] = self._kernel.realtime()
+                    else:
+                        anchor = self._queue_age._sample(self)
+                        event['queue_clock_after'] = anchor
+                        event['kernel_realtime_after_ns'] = anchor['realtime_ns']
+                    event["kernel_realtime_after_raw_ns"] = self._kernel.evidence["last_realtime_read_ns"]
+            except BaseException:
+                if self._kernel is not None and after_realtime_attempted:
+                    event["kernel_realtime_after_raw_ns"] = self._kernel.evidence["last_realtime_read_ns"]
+                try:
+                    self._publish(event)
+                except BaseException as secondary:
+                    self._journal_errors.append(_error(secondary))
+                raise
+            event["received_ns"] = received
+            self._publish(event)
+            if received - started >= 2_000_000_000:
+                raise ValueError("receive call timeout")
+            self._check()
+            if type(result) is not tuple or len(result) != 4:
+                raise ValueError("recvmsg return shape")
+            data, ancillary, flags, peer = result
+            if (type(data) is not bytes or not 1 <= len(data) <= 4096
+                    or type(ancillary) is not list or (self._kernel is None and ancillary)
+                    or type(flags) is not int or flags != 0
+                    or not self._address(peer, self.PEER)):
+                raise ValueError("datagram payload/ancillary/flags/source refused")
+            self._open()
+            kernel_received = None
+            modeled_upper = None
+            if self._kernel is not None:
+                kernel_received = self._kernel.parse(ancillary, flags, event["kernel_realtime_after_ns"])
+                age_fields = {}
+                if self._queue_age is not None:
+                    age_fields['modeled_age_before_journal'] = self._queue_age._assess(self,kernel_received)
+                self._publish(self._append("kernel_timestamp_observed", kernel_received_realtime_ns=kernel_received,
+                                           clock_domain="CLOCK_REALTIME", abi_sha256=self._kernel.evidence["abi_sha256"],
+                                           clock_mapping_qualified=False,**age_fields))
+                self._check()
+                if self._queue_age is not None:
+                    final_age = self._queue_age._assess(self,kernel_received)
+                    self._accept_clock(final_age['checked_monotonic_ns'])
+                    modeled_upper = final_age['modeled_age_upper_ns']
+                    self._last_issued_kernel = kernel_received
+                    self._last_age_check = final_age
+            packet = ReceivedDatagram(data, peer, received, kernel_received,modeled_upper)
+            self._issued_packet = packet
+            return packet
+        except BaseException as exc:
+            self._fail(exc)
+            if not isinstance(exc, Exception):
+                raise
+            raise ValueError(_error(exc)) from exc
+        finally:
+            self._lock.release()
+
+    def check(self, packet=None):
+        """Non-consuming revalidation, for the final send boundary."""
+        self._open()
+        if not self._lock.acquire(blocking=False):
+            self._fail(ValueError("concurrent datagram check"))
+            raise ValueError("concurrent datagram check")
+        try:
+            self._check()
+            if self._queue_age is not None and (packet is not None or self._issued_packet is not None):
+                if packet is not self._issued_packet:
+                    raise ValueError('queue-age final check requires exact latest issued packet')
+                self._last_age_check = self._queue_age._assess(self,packet.kernel_received_realtime_ns)
+                self._accept_clock(self._last_age_check['checked_monotonic_ns'])
+        except BaseException as exc:
+            self._fail(exc)
+            raise
+        finally:
+            self._lock.release()

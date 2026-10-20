@@ -1,0 +1,32 @@
+..F............                                                          [100%]
+================================== FAILURES ===================================
+_ test_fixed_recipe_is_exclusive_and_contains_no_arbitrary_extra_translation_unit _
+
+tmp_path = WindowsPath('C:/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/native-offset-fresh-source-20261019/first-fixtures/test_fixed_recipe_is_exclusive0')
+
+    def test_fixed_recipe_is_exclusive_and_contains_no_arbitrary_extra_translation_unit(tmp_path):
+        from tools.benchmark.native_offset_fresh_build import prepare_sources
+    
+        build = tmp_path / "build"
+        build.mkdir()
+        path = prepare_sources(build, tmp_path / "source")
+        text = path.read_text()
+        assert text.count('.cpp"') == 34
+        assert 'ov_msckf/src/state/Propagator.cpp"' in text
+        assert 'ov_core/src/track/TrackKLT.cpp"' in text
+>       assert "test_" not in text and "GLOB" not in text
+E       assert ('test_' not in 'set(FIXED_O...ty.cpp"\n)\n'
+E         
+E         'test_' is contained here:
+E           -fixtures/test_fixed_recipe_is_exclusive0/source/ov_core/src/cpi/CpiV1.cpp"
+E         ?           +++++
+E             "C:/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/native-offset-fresh-source-20261019/first-fixtures/test_fixed_recipe_is_exclusive0/source/ov_core/src/cpi/CpiV2.cpp"
+E             "C:/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/native-offset-fresh-source-20261019/first-fixtures/test_fixed_recipe_is_exclusive0/source/ov_core/src/dummy.cpp"
+E             "C:/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/native-offset-fresh-source-202...
+E         
+E         ...Full output truncated (32 lines hidden), use '-vv' to show)
+
+tests\benchmark\test_native_offset_fresh_build.py:63: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/benchmark/test_native_offset_fresh_build.py::test_fixed_recipe_is_exclusive_and_contains_no_arbitrary_extra_translation_unit
+1 failed, 14 passed in 15.15s

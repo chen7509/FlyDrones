@@ -1,0 +1,659 @@
+00400000-00420000 r--p 00000000 08:30 10111                              /usr/bin/python3.12
+00420000-00703000 r-xp 00020000 08:30 10111                              /usr/bin/python3.12
+00703000-00a28000 r--p 00303000 08:30 10111                              /usr/bin/python3.12
+00a28000-00a29000 r--p 00627000 08:30 10111                              /usr/bin/python3.12
+00a29000-00ba7000 rw-p 00628000 08:30 10111                              /usr/bin/python3.12
+00ba7000-00bab000 rw-p 00000000 00:00 0 
+25ed6000-2843f000 rw-p 00000000 00:00 0                                  [heap]
+7d923c000000-7d923c021000 rw-p 00000000 00:00 0 
+7d923c021000-7d9240000000 ---p 00000000 00:00 0 
+7d9244000000-7d9244021000 rw-p 00000000 00:00 0 
+7d9244021000-7d9248000000 ---p 00000000 00:00 0 
+7d924a78f000-7d924aa8f000 rw-p 00000000 00:00 0 
+7d924aa8f000-7d924aa90000 ---p 00000000 00:00 0 
+7d924aa90000-7d924b290000 rw-p 00000000 00:00 0 
+7d924b290000-7d924b291000 ---p 00000000 00:00 0 
+7d924b291000-7d924bd91000 rw-p 00000000 00:00 0 
+7d924bda9000-7d924bfa9000 rw-p 00000000 00:00 0 
+7d924bfa9000-7d924bfb0000 r--p 00000000 08:30 10856                      /usr/lib/python3.12/lib-dynload/_decimal.cpython-312-x86_64-linux-gnu.so
+7d924bfb0000-7d924bff0000 r-xp 00007000 08:30 10856                      /usr/lib/python3.12/lib-dynload/_decimal.cpython-312-x86_64-linux-gnu.so
+7d924bff0000-7d924c001000 r--p 00047000 08:30 10856                      /usr/lib/python3.12/lib-dynload/_decimal.cpython-312-x86_64-linux-gnu.so
+7d924c001000-7d924c002000 r--p 00057000 08:30 10856                      /usr/lib/python3.12/lib-dynload/_decimal.cpython-312-x86_64-linux-gnu.so
+7d924c002000-7d924c005000 rw-p 00058000 08:30 10856                      /usr/lib/python3.12/lib-dynload/_decimal.cpython-312-x86_64-linux-gnu.so
+7d924c005000-7d924c00e000 r--p 00000000 08:30 252099                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/spatial/transform/_rotation.cpython-312-x86_64-linux-gnu.so
+7d924c00e000-7d924c08e000 r-xp 00009000 08:30 252099                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/spatial/transform/_rotation.cpython-312-x86_64-linux-gnu.so
+7d924c08e000-7d924c0bd000 r--p 00089000 08:30 252099                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/spatial/transform/_rotation.cpython-312-x86_64-linux-gnu.so
+7d924c0bd000-7d924c0c0000 r--p 000b7000 08:30 252099                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/spatial/transform/_rotation.cpython-312-x86_64-linux-gnu.so
+7d924c0c0000-7d924c0c3000 rw-p 000ba000 08:30 252099                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/spatial/transform/_rotation.cpython-312-x86_64-linux-gnu.so
+7d924c0c3000-7d924c0c4000 rw-p 00000000 00:00 0 
+7d924c0c4000-7d924c0cb000 r--p 00000000 08:30 252098                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/spatial/transform/_rigid_transform.cpython-312-x86_64-linux-gnu.so
+7d924c0cb000-7d924c0fc000 r-xp 00007000 08:30 252098                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/spatial/transform/_rigid_transform.cpython-312-x86_64-linux-gnu.so
+7d924c0fc000-7d924c11a000 r--p 00038000 08:30 252098                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/spatial/transform/_rigid_transform.cpython-312-x86_64-linux-gnu.so
+7d924c11a000-7d924c11c000 r--p 00055000 08:30 252098                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/spatial/transform/_rigid_transform.cpython-312-x86_64-linux-gnu.so
+7d924c11c000-7d924c11e000 rw-p 00057000 08:30 252098                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/spatial/transform/_rigid_transform.cpython-312-x86_64-linux-gnu.so
+7d924c11e000-7d924c11f000 rw-p 00000000 00:00 0 
+7d924c11f000-7d924c121000 r--p 00000000 08:30 252036                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/spatial/_distance_wrap.cpython-312-x86_64-linux-gnu.so
+7d924c121000-7d924c135000 r-xp 00002000 08:30 252036                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/spatial/_distance_wrap.cpython-312-x86_64-linux-gnu.so
+7d924c135000-7d924c137000 r--p 00016000 08:30 252036                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/spatial/_distance_wrap.cpython-312-x86_64-linux-gnu.so
+7d924c137000-7d924c138000 ---p 00018000 08:30 252036                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/spatial/_distance_wrap.cpython-312-x86_64-linux-gnu.so
+7d924c138000-7d924c139000 r--p 00018000 08:30 252036                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/spatial/_distance_wrap.cpython-312-x86_64-linux-gnu.so
+7d924c139000-7d924c13a000 rw-p 00019000 08:30 252036                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/spatial/_distance_wrap.cpython-312-x86_64-linux-gnu.so
+7d924c13a000-7d924c140000 r--p 00000000 08:30 252035                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/spatial/_distance_pybind.cpython-312-x86_64-linux-gnu.so
+7d924c140000-7d924c1ac000 r-xp 00006000 08:30 252035                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/spatial/_distance_pybind.cpython-312-x86_64-linux-gnu.so
+7d924c1ac000-7d924c1bd000 r--p 00072000 08:30 252035                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/spatial/_distance_pybind.cpython-312-x86_64-linux-gnu.so
+7d924c1bd000-7d924c1be000 ---p 00083000 08:30 252035                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/spatial/_distance_pybind.cpython-312-x86_64-linux-gnu.so
+7d924c1be000-7d924c1bf000 r--p 00083000 08:30 252035                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/spatial/_distance_pybind.cpython-312-x86_64-linux-gnu.so
+7d924c1bf000-7d924c1c0000 rw-p 00084000 08:30 252035                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/spatial/_distance_pybind.cpython-312-x86_64-linux-gnu.so
+7d924c1c0000-7d924c1c8000 r--p 00000000 08:30 252042                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/spatial/_qhull.cpython-312-x86_64-linux-gnu.so
+7d924c1c8000-7d924c263000 r-xp 00008000 08:30 252042                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/spatial/_qhull.cpython-312-x86_64-linux-gnu.so
+7d924c263000-7d924c299000 r--p 000a3000 08:30 252042                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/spatial/_qhull.cpython-312-x86_64-linux-gnu.so
+7d924c299000-7d924c29a000 ---p 000d9000 08:30 252042                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/spatial/_qhull.cpython-312-x86_64-linux-gnu.so
+7d924c29a000-7d924c29c000 r--p 000d9000 08:30 252042                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/spatial/_qhull.cpython-312-x86_64-linux-gnu.so
+7d924c29c000-7d924c29e000 rw-p 000db000 08:30 252042                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/spatial/_qhull.cpython-312-x86_64-linux-gnu.so
+7d924c29e000-7d924c29f000 rw-p 00000000 00:00 0 
+7d924c29f000-7d924c2a8000 r--p 00000000 08:30 252034                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/spatial/_ckdtree.cpython-312-x86_64-linux-gnu.so
+7d924c2a8000-7d924c333000 r-xp 00009000 08:30 252034                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/spatial/_ckdtree.cpython-312-x86_64-linux-gnu.so
+7d924c333000-7d924c350000 r--p 00094000 08:30 252034                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/spatial/_ckdtree.cpython-312-x86_64-linux-gnu.so
+7d924c350000-7d924c351000 ---p 000b1000 08:30 252034                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/spatial/_ckdtree.cpython-312-x86_64-linux-gnu.so
+7d924c351000-7d924c353000 r--p 000b1000 08:30 252034                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/spatial/_ckdtree.cpython-312-x86_64-linux-gnu.so
+7d924c353000-7d924c356000 rw-p 000b3000 08:30 252034                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/spatial/_ckdtree.cpython-312-x86_64-linux-gnu.so
+7d924c356000-7d924c457000 rw-p 00000000 00:00 0 
+7d924c457000-7d924c45f000 r--p 00000000 08:30 251069                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/fft/_pocketfft/pypocketfft.cpython-312-x86_64-linux-gnu.so
+7d924c45f000-7d924c53c000 r-xp 00008000 08:30 251069                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/fft/_pocketfft/pypocketfft.cpython-312-x86_64-linux-gnu.so
+7d924c53c000-7d924c557000 r--p 000e5000 08:30 251069                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/fft/_pocketfft/pypocketfft.cpython-312-x86_64-linux-gnu.so
+7d924c557000-7d924c558000 ---p 00100000 08:30 251069                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/fft/_pocketfft/pypocketfft.cpython-312-x86_64-linux-gnu.so
+7d924c558000-7d924c559000 r--p 00100000 08:30 251069                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/fft/_pocketfft/pypocketfft.cpython-312-x86_64-linux-gnu.so
+7d924c559000-7d924c55a000 rw-p 00101000 08:30 251069                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/fft/_pocketfft/pypocketfft.cpython-312-x86_64-linux-gnu.so
+7d924c55a000-7d924c55c000 rw-p 00000000 00:00 0 
+7d924c55c000-7d924c55e000 r--p 00000000 08:30 252117                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/special/_gufuncs.cpython-312-x86_64-linux-gnu.so
+7d924c55e000-7d924c5e4000 r-xp 00002000 08:30 252117                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/special/_gufuncs.cpython-312-x86_64-linux-gnu.so
+7d924c5e4000-7d924c5f1000 r--p 00088000 08:30 252117                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/special/_gufuncs.cpython-312-x86_64-linux-gnu.so
+7d924c5f1000-7d924c5f2000 r--p 00094000 08:30 252117                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/special/_gufuncs.cpython-312-x86_64-linux-gnu.so
+7d924c5f2000-7d924c5f3000 rw-p 00095000 08:30 252117                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/special/_gufuncs.cpython-312-x86_64-linux-gnu.so
+7d924c5f3000-7d924c6f3000 rw-p 00000000 00:00 0 
+7d924c6f3000-7d924c6f7000 r--p 00000000 08:30 252127                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/special/_special_ufuncs.cpython-312-x86_64-linux-gnu.so
+7d924c6f7000-7d924c808000 r-xp 00004000 08:30 252127                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/special/_special_ufuncs.cpython-312-x86_64-linux-gnu.so
+7d924c808000-7d924c854000 r--p 00115000 08:30 252127                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/special/_special_ufuncs.cpython-312-x86_64-linux-gnu.so
+7d924c854000-7d924c855000 r--p 00160000 08:30 252127                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/special/_special_ufuncs.cpython-312-x86_64-linux-gnu.so
+7d924c855000-7d924c856000 rw-p 00161000 08:30 252127                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/special/_special_ufuncs.cpython-312-x86_64-linux-gnu.so
+7d924c856000-7d924c85c000 r--p 00000000 08:30 252137                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/special/_ufuncs_cxx.cpython-312-x86_64-linux-gnu.so
+7d924c85c000-7d924c9a3000 r-xp 00006000 08:30 252137                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/special/_ufuncs_cxx.cpython-312-x86_64-linux-gnu.so
+7d924c9a3000-7d924c9d2000 r--p 0014d000 08:30 252137                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/special/_ufuncs_cxx.cpython-312-x86_64-linux-gnu.so
+7d924c9d2000-7d924c9d3000 ---p 0017c000 08:30 252137                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/special/_ufuncs_cxx.cpython-312-x86_64-linux-gnu.so
+7d924c9d3000-7d924c9d4000 r--p 0017c000 08:30 252137                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/special/_ufuncs_cxx.cpython-312-x86_64-linux-gnu.so
+7d924c9d4000-7d924c9d5000 rw-p 0017d000 08:30 252137                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/special/_ufuncs_cxx.cpython-312-x86_64-linux-gnu.so
+7d924c9d5000-7d924c9d6000 rw-p 00000000 00:00 0 
+7d924c9d6000-7d924c9de000 r--p 00000000 08:30 252134                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/special/_ufuncs.cpython-312-x86_64-linux-gnu.so
+7d924c9de000-7d924cae2000 r-xp 00008000 08:30 252134                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/special/_ufuncs.cpython-312-x86_64-linux-gnu.so
+7d924cae2000-7d924cb37000 r--p 0010c000 08:30 252134                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/special/_ufuncs.cpython-312-x86_64-linux-gnu.so
+7d924cb37000-7d924cb38000 ---p 00161000 08:30 252134                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/special/_ufuncs.cpython-312-x86_64-linux-gnu.so
+7d924cb38000-7d924cb3a000 r--p 00161000 08:30 252134                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/special/_ufuncs.cpython-312-x86_64-linux-gnu.so
+7d924cb3a000-7d924cb3b000 rw-p 00163000 08:30 252134                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/special/_ufuncs.cpython-312-x86_64-linux-gnu.so
+7d924cb3b000-7d924cb42000 rw-p 00000000 00:00 0 
+7d924cb42000-7d924cb47000 rw-p 0018a000 08:30 252134                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/special/_ufuncs.cpython-312-x86_64-linux-gnu.so
+7d924cb47000-7d924cb4d000 r--p 00000000 08:30 251507                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/linalg/_decomp_interpolative.cpython-312-x86_64-linux-gnu.so
+7d924cb4d000-7d924cbef000 r-xp 00006000 08:30 251507                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/linalg/_decomp_interpolative.cpython-312-x86_64-linux-gnu.so
+7d924cbef000-7d924cbfc000 r--p 000a8000 08:30 251507                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/linalg/_decomp_interpolative.cpython-312-x86_64-linux-gnu.so
+7d924cbfc000-7d924cbfe000 r--p 000b4000 08:30 251507                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/linalg/_decomp_interpolative.cpython-312-x86_64-linux-gnu.so
+7d924cbfe000-7d924cbff000 rw-p 000b6000 08:30 251507                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/linalg/_decomp_interpolative.cpython-312-x86_64-linux-gnu.so
+7d924cbff000-7d924cc00000 rw-p 00000000 00:00 0 
+7d924cc00000-7d924cc13000 r--p 00000000 08:30 251718                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/optimize/_highspy/_core.cpython-312-x86_64-linux-gnu.so
+7d924cc13000-7d924d017000 r-xp 00013000 08:30 251718                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/optimize/_highspy/_core.cpython-312-x86_64-linux-gnu.so
+7d924d017000-7d924d0c0000 r--p 00417000 08:30 251718                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/optimize/_highspy/_core.cpython-312-x86_64-linux-gnu.so
+7d924d0c0000-7d924d0c5000 r--p 004bf000 08:30 251718                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/optimize/_highspy/_core.cpython-312-x86_64-linux-gnu.so
+7d924d0c5000-7d924d0c6000 rw-p 004c4000 08:30 251718                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/optimize/_highspy/_core.cpython-312-x86_64-linux-gnu.so
+7d924d0c6000-7d924d0cb000 rw-p 00000000 00:00 0 
+7d924d0d1000-7d924d0d5000 r--p 00000000 08:30 252038                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/spatial/_hausdorff.cpython-312-x86_64-linux-gnu.so
+7d924d0d5000-7d924d0e0000 r-xp 00004000 08:30 252038                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/spatial/_hausdorff.cpython-312-x86_64-linux-gnu.so
+7d924d0e0000-7d924d0e4000 r--p 0000f000 08:30 252038                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/spatial/_hausdorff.cpython-312-x86_64-linux-gnu.so
+7d924d0e4000-7d924d0e5000 ---p 00013000 08:30 252038                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/spatial/_hausdorff.cpython-312-x86_64-linux-gnu.so
+7d924d0e5000-7d924d0e6000 r--p 00013000 08:30 252038                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/spatial/_hausdorff.cpython-312-x86_64-linux-gnu.so
+7d924d0e6000-7d924d0e7000 rw-p 00014000 08:30 252038                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/spatial/_hausdorff.cpython-312-x86_64-linux-gnu.so
+7d924d0e7000-7d924d0eb000 r--p 00000000 08:30 252045                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/spatial/_voronoi.cpython-312-x86_64-linux-gnu.so
+7d924d0eb000-7d924d0f4000 r-xp 00004000 08:30 252045                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/spatial/_voronoi.cpython-312-x86_64-linux-gnu.so
+7d924d0f4000-7d924d0f8000 r--p 0000d000 08:30 252045                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/spatial/_voronoi.cpython-312-x86_64-linux-gnu.so
+7d924d0f8000-7d924d0f9000 ---p 00011000 08:30 252045                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/spatial/_voronoi.cpython-312-x86_64-linux-gnu.so
+7d924d0f9000-7d924d0fa000 r--p 00011000 08:30 252045                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/spatial/_voronoi.cpython-312-x86_64-linux-gnu.so
+7d924d0fa000-7d924d0fb000 rw-p 00012000 08:30 252045                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/spatial/_voronoi.cpython-312-x86_64-linux-gnu.so
+7d924d0fb000-7d924d100000 r--p 00000000 08:30 251685                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/optimize/_pava_pybind.cpython-312-x86_64-linux-gnu.so
+7d924d100000-7d924d11d000 r-xp 00005000 08:30 251685                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/optimize/_pava_pybind.cpython-312-x86_64-linux-gnu.so
+7d924d11d000-7d924d127000 r--p 00022000 08:30 251685                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/optimize/_pava_pybind.cpython-312-x86_64-linux-gnu.so
+7d924d127000-7d924d128000 r--p 0002b000 08:30 251685                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/optimize/_pava_pybind.cpython-312-x86_64-linux-gnu.so
+7d924d128000-7d924d129000 rw-p 0002c000 08:30 251685                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/optimize/_pava_pybind.cpython-312-x86_64-linux-gnu.so
+7d924d129000-7d924d12e000 r--p 00000000 08:30 251649                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/optimize/_bglu_dense.cpython-312-x86_64-linux-gnu.so
+7d924d12e000-7d924d14c000 r-xp 00005000 08:30 251649                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/optimize/_bglu_dense.cpython-312-x86_64-linux-gnu.so
+7d924d14c000-7d924d154000 r--p 00023000 08:30 251649                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/optimize/_bglu_dense.cpython-312-x86_64-linux-gnu.so
+7d924d154000-7d924d155000 ---p 0002b000 08:30 251649                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/optimize/_bglu_dense.cpython-312-x86_64-linux-gnu.so
+7d924d155000-7d924d156000 r--p 0002b000 08:30 251649                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/optimize/_bglu_dense.cpython-312-x86_64-linux-gnu.so
+7d924d156000-7d924d158000 rw-p 0002c000 08:30 251649                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/optimize/_bglu_dense.cpython-312-x86_64-linux-gnu.so
+7d924d158000-7d924d15f000 r--p 00000000 08:30 251719                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/optimize/_highspy/_highs_options.cpython-312-x86_64-linux-gnu.so
+7d924d15f000-7d924d199000 r-xp 00007000 08:30 251719                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/optimize/_highspy/_highs_options.cpython-312-x86_64-linux-gnu.so
+7d924d199000-7d924d1ab000 r--p 00041000 08:30 251719                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/optimize/_highspy/_highs_options.cpython-312-x86_64-linux-gnu.so
+7d924d1ab000-7d924d1ac000 r--p 00052000 08:30 251719                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/optimize/_highspy/_highs_options.cpython-312-x86_64-linux-gnu.so
+7d924d1ac000-7d924d1ad000 rw-p 00053000 08:30 251719                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/optimize/_highspy/_highs_options.cpython-312-x86_64-linux-gnu.so
+7d924d1ad000-7d924d2ad000 rw-p 00000000 00:00 0 
+7d924d2ad000-7d924d2c8000 r--p 00000000 08:30 251692                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/optimize/_slsqplib.cpython-312-x86_64-linux-gnu.so
+7d924d2c8000-7d924d2dc000 r-xp 0001b000 08:30 251692                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/optimize/_slsqplib.cpython-312-x86_64-linux-gnu.so
+7d924d2dc000-7d924d2e9000 r--p 0002f000 08:30 251692                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/optimize/_slsqplib.cpython-312-x86_64-linux-gnu.so
+7d924d2e9000-7d924d2ea000 r--p 0003b000 08:30 251692                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/optimize/_slsqplib.cpython-312-x86_64-linux-gnu.so
+7d924d2ea000-7d924d2ee000 rw-p 0003c000 08:30 251692                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/optimize/_slsqplib.cpython-312-x86_64-linux-gnu.so
+7d924d2ee000-7d924d304000 rw-p 0005a000 08:30 251692                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/optimize/_slsqplib.cpython-312-x86_64-linux-gnu.so
+7d924d304000-7d924d31f000 r--p 00000000 08:30 251665                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/optimize/_lbfgsb.cpython-312-x86_64-linux-gnu.so
+7d924d31f000-7d924d334000 r-xp 0001b000 08:30 251665                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/optimize/_lbfgsb.cpython-312-x86_64-linux-gnu.so
+7d924d334000-7d924d340000 r--p 00030000 08:30 251665                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/optimize/_lbfgsb.cpython-312-x86_64-linux-gnu.so
+7d924d340000-7d924d341000 ---p 0003c000 08:30 251665                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/optimize/_lbfgsb.cpython-312-x86_64-linux-gnu.so
+7d924d341000-7d924d342000 r--p 0003c000 08:30 251665                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/optimize/_lbfgsb.cpython-312-x86_64-linux-gnu.so
+7d924d342000-7d924d346000 rw-p 0003d000 08:30 251665                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/optimize/_lbfgsb.cpython-312-x86_64-linux-gnu.so
+7d924d346000-7d924d35c000 rw-p 0005b000 08:30 251665                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/optimize/_lbfgsb.cpython-312-x86_64-linux-gnu.so
+7d924d35c000-7d924d379000 r--p 00000000 08:30 251999                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/sparse/linalg/_propack/_zpropack.cpython-312-x86_64-linux-gnu.so
+7d924d379000-7d924d398000 r-xp 0001d000 08:30 251999                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/sparse/linalg/_propack/_zpropack.cpython-312-x86_64-linux-gnu.so
+7d924d398000-7d924d3a8000 r--p 0003c000 08:30 251999                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/sparse/linalg/_propack/_zpropack.cpython-312-x86_64-linux-gnu.so
+7d924d3a8000-7d924d3a9000 ---p 0004c000 08:30 251999                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/sparse/linalg/_propack/_zpropack.cpython-312-x86_64-linux-gnu.so
+7d924d3a9000-7d924d3aa000 r--p 0004c000 08:30 251999                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/sparse/linalg/_propack/_zpropack.cpython-312-x86_64-linux-gnu.so
+7d924d3aa000-7d924d3b2000 rw-p 0004d000 08:30 251999                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/sparse/linalg/_propack/_zpropack.cpython-312-x86_64-linux-gnu.so
+7d924d3b2000-7d924d3e8000 rw-p 00000000 00:00 0 
+7d924d3e8000-7d924d400000 rw-p 00071000 08:30 251999                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/sparse/linalg/_propack/_zpropack.cpython-312-x86_64-linux-gnu.so
+7d924d400000-7d924d43b000 r-xp 00000000 08:30 252384                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy.libs/libquadmath-96973f99.so.0.0.0
+7d924d43b000-7d924d63a000 ---p 0003b000 08:30 252384                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy.libs/libquadmath-96973f99.so.0.0.0
+7d924d63a000-7d924d63b000 r--p 0003a000 08:30 252384                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy.libs/libquadmath-96973f99.so.0.0.0
+7d924d63b000-7d924d63d000 rw-p 0003b000 08:30 252384                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy.libs/libquadmath-96973f99.so.0.0.0
+7d924d63e000-7d924d643000 r--p 00000000 08:30 252126                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/special/_specfun.cpython-312-x86_64-linux-gnu.so
+7d924d643000-7d924d66a000 r-xp 00005000 08:30 252126                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/special/_specfun.cpython-312-x86_64-linux-gnu.so
+7d924d66a000-7d924d670000 r--p 0002c000 08:30 252126                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/special/_specfun.cpython-312-x86_64-linux-gnu.so
+7d924d670000-7d924d671000 ---p 00032000 08:30 252126                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/special/_specfun.cpython-312-x86_64-linux-gnu.so
+7d924d671000-7d924d672000 r--p 00032000 08:30 252126                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/special/_specfun.cpython-312-x86_64-linux-gnu.so
+7d924d672000-7d924d673000 rw-p 00033000 08:30 252126                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/special/_specfun.cpython-312-x86_64-linux-gnu.so
+7d924d673000-7d924d674000 rw-p 00000000 00:00 0 
+7d924d674000-7d924d691000 r--p 00000000 08:30 251996                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/sparse/linalg/_propack/_cpropack.cpython-312-x86_64-linux-gnu.so
+7d924d691000-7d924d6b3000 r-xp 0001d000 08:30 251996                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/sparse/linalg/_propack/_cpropack.cpython-312-x86_64-linux-gnu.so
+7d924d6b3000-7d924d6c3000 r--p 0003f000 08:30 251996                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/sparse/linalg/_propack/_cpropack.cpython-312-x86_64-linux-gnu.so
+7d924d6c3000-7d924d6c4000 ---p 0004f000 08:30 251996                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/sparse/linalg/_propack/_cpropack.cpython-312-x86_64-linux-gnu.so
+7d924d6c4000-7d924d6c5000 r--p 0004f000 08:30 251996                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/sparse/linalg/_propack/_cpropack.cpython-312-x86_64-linux-gnu.so
+7d924d6c5000-7d924d6cd000 rw-p 00050000 08:30 251996                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/sparse/linalg/_propack/_cpropack.cpython-312-x86_64-linux-gnu.so
+7d924d6cd000-7d924d6e8000 rw-p 00000000 00:00 0 
+7d924d6e8000-7d924d700000 rw-p 00074000 08:30 251996                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/sparse/linalg/_propack/_cpropack.cpython-312-x86_64-linux-gnu.so
+7d924d700000-7d924d800000 rw-p 00000000 00:00 0 
+7d924d800000-7d924da76000 r-xp 00000000 08:30 252382                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy.libs/libgfortran-040039e1.so.5.0.0
+7d924da76000-7d924dc75000 ---p 00276000 08:30 252382                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy.libs/libgfortran-040039e1.so.5.0.0
+7d924dc75000-7d924dc76000 r--p 00275000 08:30 252382                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy.libs/libgfortran-040039e1.so.5.0.0
+7d924dc76000-7d924dc78000 rw-p 00276000 08:30 252382                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy.libs/libgfortran-040039e1.so.5.0.0
+7d924dc78000-7d924dc8d000 rw-p 0027b000 08:30 252382                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy.libs/libgfortran-040039e1.so.5.0.0
+7d924dc9e000-7d924dca2000 r--p 00000000 08:30 252116                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/special/_ellip_harm_2.cpython-312-x86_64-linux-gnu.so
+7d924dca2000-7d924dcb5000 r-xp 00004000 08:30 252116                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/special/_ellip_harm_2.cpython-312-x86_64-linux-gnu.so
+7d924dcb5000-7d924dcb8000 r--p 00017000 08:30 252116                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/special/_ellip_harm_2.cpython-312-x86_64-linux-gnu.so
+7d924dcb8000-7d924dcb9000 ---p 0001a000 08:30 252116                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/special/_ellip_harm_2.cpython-312-x86_64-linux-gnu.so
+7d924dcb9000-7d924dcba000 r--p 0001a000 08:30 252116                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/special/_ellip_harm_2.cpython-312-x86_64-linux-gnu.so
+7d924dcba000-7d924dcbb000 rw-p 0001b000 08:30 252116                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/special/_ellip_harm_2.cpython-312-x86_64-linux-gnu.so
+7d924dcbb000-7d924dcbe000 rw-p 00021000 08:30 252116                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/special/_ellip_harm_2.cpython-312-x86_64-linux-gnu.so
+7d924dcbe000-7d924dcc2000 r--p 00000000 08:30 250894                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/_lib/_uarray/_uarray.cpython-312-x86_64-linux-gnu.so
+7d924dcc2000-7d924dcd5000 r-xp 00004000 08:30 250894                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/_lib/_uarray/_uarray.cpython-312-x86_64-linux-gnu.so
+7d924dcd5000-7d924dcdb000 r--p 00017000 08:30 250894                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/_lib/_uarray/_uarray.cpython-312-x86_64-linux-gnu.so
+7d924dcdb000-7d924dcdc000 r--p 0001c000 08:30 250894                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/_lib/_uarray/_uarray.cpython-312-x86_64-linux-gnu.so
+7d924dcdc000-7d924dcdd000 rw-p 0001d000 08:30 250894                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/_lib/_uarray/_uarray.cpython-312-x86_64-linux-gnu.so
+7d924dcdd000-7d924dcfa000 r--p 00000000 08:30 251997                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/sparse/linalg/_propack/_dpropack.cpython-312-x86_64-linux-gnu.so
+7d924dcfa000-7d924dd15000 r-xp 0001d000 08:30 251997                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/sparse/linalg/_propack/_dpropack.cpython-312-x86_64-linux-gnu.so
+7d924dd15000-7d924dd25000 r--p 00038000 08:30 251997                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/sparse/linalg/_propack/_dpropack.cpython-312-x86_64-linux-gnu.so
+7d924dd25000-7d924dd26000 r--p 00047000 08:30 251997                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/sparse/linalg/_propack/_dpropack.cpython-312-x86_64-linux-gnu.so
+7d924dd26000-7d924dd2e000 rw-p 00048000 08:30 251997                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/sparse/linalg/_propack/_dpropack.cpython-312-x86_64-linux-gnu.so
+7d924dd2e000-7d924dd46000 rw-p 0006b000 08:30 251997                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/sparse/linalg/_propack/_dpropack.cpython-312-x86_64-linux-gnu.so
+7d924dd46000-7d924dd64000 r--p 00000000 08:30 251962                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/sparse/linalg/_eigen/arpack/_arpack.cpython-312-x86_64-linux-gnu.so
+7d924dd64000-7d924ddbc000 r-xp 0001e000 08:30 251962                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/sparse/linalg/_eigen/arpack/_arpack.cpython-312-x86_64-linux-gnu.so
+7d924ddbc000-7d924ddd7000 r--p 00076000 08:30 251962                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/sparse/linalg/_eigen/arpack/_arpack.cpython-312-x86_64-linux-gnu.so
+7d924ddd7000-7d924ddd8000 ---p 00091000 08:30 251962                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/sparse/linalg/_eigen/arpack/_arpack.cpython-312-x86_64-linux-gnu.so
+7d924ddd8000-7d924ddd9000 r--p 00091000 08:30 251962                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/sparse/linalg/_eigen/arpack/_arpack.cpython-312-x86_64-linux-gnu.so
+7d924ddd9000-7d924dde7000 rw-p 00092000 08:30 251962                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/sparse/linalg/_eigen/arpack/_arpack.cpython-312-x86_64-linux-gnu.so
+7d924dde7000-7d924dde8000 rw-p 00000000 00:00 0 
+7d924dde8000-7d924de00000 rw-p 000c0000 08:30 251962                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/sparse/linalg/_eigen/arpack/_arpack.cpython-312-x86_64-linux-gnu.so
+7d924de00000-7d924de03000 r--p 00000000 08:30 251892                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/sparse/_sparsetools.cpython-312-x86_64-linux-gnu.so
+7d924de03000-7d924e187000 r-xp 00003000 08:30 251892                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/sparse/_sparsetools.cpython-312-x86_64-linux-gnu.so
+7d924e187000-7d924e1d1000 r--p 00387000 08:30 251892                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/sparse/_sparsetools.cpython-312-x86_64-linux-gnu.so
+7d924e1d1000-7d924e1d2000 r--p 003d0000 08:30 251892                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/sparse/_sparsetools.cpython-312-x86_64-linux-gnu.so
+7d924e1d2000-7d924e1d3000 rw-p 003d1000 08:30 251892                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/sparse/_sparsetools.cpython-312-x86_64-linux-gnu.so
+7d924e1da000-7d924e1dd000 r--p 00000000 08:30 251726                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/optimize/_lsq/givens_elimination.cpython-312-x86_64-linux-gnu.so
+7d924e1dd000-7d924e1e5000 r-xp 00003000 08:30 251726                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/optimize/_lsq/givens_elimination.cpython-312-x86_64-linux-gnu.so
+7d924e1e5000-7d924e1e9000 r--p 0000b000 08:30 251726                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/optimize/_lsq/givens_elimination.cpython-312-x86_64-linux-gnu.so
+7d924e1e9000-7d924e1ea000 r--p 0000e000 08:30 251726                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/optimize/_lsq/givens_elimination.cpython-312-x86_64-linux-gnu.so
+7d924e1ea000-7d924e1eb000 rw-p 0000f000 08:30 251726                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/optimize/_lsq/givens_elimination.cpython-312-x86_64-linux-gnu.so
+7d924e1eb000-7d924e1f0000 r--p 00000000 08:30 251737                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/optimize/_trlib/_trlib.cpython-312-x86_64-linux-gnu.so
+7d924e1f0000-7d924e212000 r-xp 00005000 08:30 251737                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/optimize/_trlib/_trlib.cpython-312-x86_64-linux-gnu.so
+7d924e212000-7d924e219000 r--p 00027000 08:30 251737                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/optimize/_trlib/_trlib.cpython-312-x86_64-linux-gnu.so
+7d924e219000-7d924e21a000 ---p 0002e000 08:30 251737                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/optimize/_trlib/_trlib.cpython-312-x86_64-linux-gnu.so
+7d924e21a000-7d924e21b000 r--p 0002e000 08:30 251737                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/optimize/_trlib/_trlib.cpython-312-x86_64-linux-gnu.so
+7d924e21b000-7d924e21c000 rw-p 0002f000 08:30 251737                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/optimize/_trlib/_trlib.cpython-312-x86_64-linux-gnu.so
+7d924e21c000-7d924e21d000 rw-p 00000000 00:00 0 
+7d924e21d000-7d924e220000 rw-p 00036000 08:30 251737                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/optimize/_trlib/_trlib.cpython-312-x86_64-linux-gnu.so
+7d924e220000-7d924e23d000 r--p 00000000 08:30 251998                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/sparse/linalg/_propack/_spropack.cpython-312-x86_64-linux-gnu.so
+7d924e23d000-7d924e258000 r-xp 0001d000 08:30 251998                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/sparse/linalg/_propack/_spropack.cpython-312-x86_64-linux-gnu.so
+7d924e258000-7d924e268000 r--p 00038000 08:30 251998                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/sparse/linalg/_propack/_spropack.cpython-312-x86_64-linux-gnu.so
+7d924e268000-7d924e269000 r--p 00047000 08:30 251998                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/sparse/linalg/_propack/_spropack.cpython-312-x86_64-linux-gnu.so
+7d924e269000-7d924e271000 rw-p 00048000 08:30 251998                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/sparse/linalg/_propack/_spropack.cpython-312-x86_64-linux-gnu.so
+7d924e271000-7d924e289000 rw-p 0006b000 08:30 251998                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/sparse/linalg/_propack/_spropack.cpython-312-x86_64-linux-gnu.so
+7d924e289000-7d924e2a5000 r--p 00000000 08:30 251950                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/sparse/linalg/_dsolve/_superlu.cpython-312-x86_64-linux-gnu.so
+7d924e2a5000-7d924e2fe000 r-xp 0001c000 08:30 251950                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/sparse/linalg/_dsolve/_superlu.cpython-312-x86_64-linux-gnu.so
+7d924e2fe000-7d924e314000 r--p 00075000 08:30 251950                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/sparse/linalg/_dsolve/_superlu.cpython-312-x86_64-linux-gnu.so
+7d924e314000-7d924e315000 r--p 0008a000 08:30 251950                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/sparse/linalg/_dsolve/_superlu.cpython-312-x86_64-linux-gnu.so
+7d924e315000-7d924e31a000 rw-p 0008b000 08:30 251950                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/sparse/linalg/_dsolve/_superlu.cpython-312-x86_64-linux-gnu.so
+7d924e31a000-7d924e332000 rw-p 000af000 08:30 251950                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/sparse/linalg/_dsolve/_superlu.cpython-312-x86_64-linux-gnu.so
+7d924e332000-7d924e338000 r--p 00000000 08:30 251882                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/sparse/_csparsetools.cpython-312-x86_64-linux-gnu.so
+7d924e338000-7d924e3a3000 r-xp 00006000 08:30 251882                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/sparse/_csparsetools.cpython-312-x86_64-linux-gnu.so
+7d924e3a3000-7d924e3ae000 r--p 00071000 08:30 251882                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/sparse/_csparsetools.cpython-312-x86_64-linux-gnu.so
+7d924e3ae000-7d924e3b0000 r--p 0007b000 08:30 251882                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/sparse/_csparsetools.cpython-312-x86_64-linux-gnu.so
+7d924e3b0000-7d924e3b2000 rw-p 0007d000 08:30 251882                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/sparse/_csparsetools.cpython-312-x86_64-linux-gnu.so
+7d924e3b2000-7d924e4b3000 rw-p 00000000 00:00 0 
+7d924e4b3000-7d924e4b8000 r--p 00000000 08:30 251517                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/linalg/_decomp_update.cpython-312-x86_64-linux-gnu.so
+7d924e4b8000-7d924e4f0000 r-xp 00005000 08:30 251517                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/linalg/_decomp_update.cpython-312-x86_64-linux-gnu.so
+7d924e4f0000-7d924e500000 r--p 0003d000 08:30 251517                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/linalg/_decomp_update.cpython-312-x86_64-linux-gnu.so
+7d924e500000-7d924e501000 ---p 0004d000 08:30 251517                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/linalg/_decomp_update.cpython-312-x86_64-linux-gnu.so
+7d924e501000-7d924e502000 r--p 0004d000 08:30 251517                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/linalg/_decomp_update.cpython-312-x86_64-linux-gnu.so
+7d924e502000-7d924e503000 rw-p 0004e000 08:30 251517                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/linalg/_decomp_update.cpython-312-x86_64-linux-gnu.so
+7d924e503000-7d924e504000 rw-p 00000000 00:00 0 
+7d924e504000-7d924e51f000 r--p 00000000 08:30 251524                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/linalg/_matfuncs_expm.cpython-312-x86_64-linux-gnu.so
+7d924e51f000-7d924e53f000 r-xp 0001b000 08:30 251524                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/linalg/_matfuncs_expm.cpython-312-x86_64-linux-gnu.so
+7d924e53f000-7d924e54d000 r--p 0003b000 08:30 251524                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/linalg/_matfuncs_expm.cpython-312-x86_64-linux-gnu.so
+7d924e54d000-7d924e54e000 r--p 00048000 08:30 251524                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/linalg/_matfuncs_expm.cpython-312-x86_64-linux-gnu.so
+7d924e54e000-7d924e552000 rw-p 00049000 08:30 251524                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/linalg/_matfuncs_expm.cpython-312-x86_64-linux-gnu.so
+7d924e552000-7d924e568000 rw-p 00067000 08:30 251524                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/linalg/_matfuncs_expm.cpython-312-x86_64-linux-gnu.so
+7d924e568000-7d924e583000 r--p 00000000 08:30 251527                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/linalg/_matfuncs_schur_sqrtm.cpython-312-x86_64-linux-gnu.so
+7d924e583000-7d924e5a0000 r-xp 0001b000 08:30 251527                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/linalg/_matfuncs_schur_sqrtm.cpython-312-x86_64-linux-gnu.so
+7d924e5a0000-7d924e5ad000 r--p 00038000 08:30 251527                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/linalg/_matfuncs_schur_sqrtm.cpython-312-x86_64-linux-gnu.so
+7d924e5ad000-7d924e5ae000 r--p 00044000 08:30 251527                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/linalg/_matfuncs_schur_sqrtm.cpython-312-x86_64-linux-gnu.so
+7d924e5ae000-7d924e5b2000 rw-p 00045000 08:30 251527                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/linalg/_matfuncs_schur_sqrtm.cpython-312-x86_64-linux-gnu.so
+7d924e5b2000-7d924e5c8000 rw-p 00063000 08:30 251527                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/linalg/_matfuncs_schur_sqrtm.cpython-312-x86_64-linux-gnu.so
+7d924e5c8000-7d924e7b3000 rw-p 00000000 00:00 0 
+7d924e7b6000-7d924e7b8000 r--p 00000000 08:30 10864                      /usr/lib/python3.12/lib-dynload/_queue.cpython-312-x86_64-linux-gnu.so
+7d924e7b8000-7d924e7ba000 r-xp 00002000 08:30 10864                      /usr/lib/python3.12/lib-dynload/_queue.cpython-312-x86_64-linux-gnu.so
+7d924e7ba000-7d924e7bb000 r--p 00004000 08:30 10864                      /usr/lib/python3.12/lib-dynload/_queue.cpython-312-x86_64-linux-gnu.so
+7d924e7bb000-7d924e7bc000 r--p 00004000 08:30 10864                      /usr/lib/python3.12/lib-dynload/_queue.cpython-312-x86_64-linux-gnu.so
+7d924e7bc000-7d924e7bd000 rw-p 00005000 08:30 10864                      /usr/lib/python3.12/lib-dynload/_queue.cpython-312-x86_64-linux-gnu.so
+7d924e7bd000-7d924e7bf000 r--p 00000000 08:30 251678                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/optimize/_minpack.cpython-312-x86_64-linux-gnu.so
+7d924e7bf000-7d924e7d1000 r-xp 00002000 08:30 251678                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/optimize/_minpack.cpython-312-x86_64-linux-gnu.so
+7d924e7d1000-7d924e7d3000 r--p 00014000 08:30 251678                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/optimize/_minpack.cpython-312-x86_64-linux-gnu.so
+7d924e7d3000-7d924e7d4000 r--p 00015000 08:30 251678                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/optimize/_minpack.cpython-312-x86_64-linux-gnu.so
+7d924e7d4000-7d924e7d5000 rw-p 00016000 08:30 251678                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/optimize/_minpack.cpython-312-x86_64-linux-gnu.so
+7d924e7d5000-7d924e7db000 r--p 00000000 08:30 251539                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/linalg/cython_blas.cpython-312-x86_64-linux-gnu.so
+7d924e7db000-7d924e7ec000 r-xp 00006000 08:30 251539                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/linalg/cython_blas.cpython-312-x86_64-linux-gnu.so
+7d924e7ec000-7d924e7f7000 r--p 00017000 08:30 251539                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/linalg/cython_blas.cpython-312-x86_64-linux-gnu.so
+7d924e7f7000-7d924e7f8000 ---p 00022000 08:30 251539                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/linalg/cython_blas.cpython-312-x86_64-linux-gnu.so
+7d924e7f8000-7d924e7f9000 r--p 00022000 08:30 251539                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/linalg/cython_blas.cpython-312-x86_64-linux-gnu.so
+7d924e7f9000-7d924e7fb000 rw-p 00023000 08:30 251539                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/linalg/cython_blas.cpython-312-x86_64-linux-gnu.so
+7d924e7fb000-7d924e800000 rw-p 0002e000 08:30 251539                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/linalg/cython_blas.cpython-312-x86_64-linux-gnu.so
+7d924e800000-7d924ea00000 rw-p 00000000 00:00 0 
+7d924ea00000-7d924ea3e000 r--p 00000000 08:30 251520                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/linalg/_flapack.cpython-312-x86_64-linux-gnu.so
+7d924ea3e000-7d924eb3b000 r-xp 0003e000 08:30 251520                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/linalg/_flapack.cpython-312-x86_64-linux-gnu.so
+7d924eb3b000-7d924eba0000 r--p 0013b000 08:30 251520                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/linalg/_flapack.cpython-312-x86_64-linux-gnu.so
+7d924eba0000-7d924eba1000 r--p 0019f000 08:30 251520                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/linalg/_flapack.cpython-312-x86_64-linux-gnu.so
+7d924eba1000-7d924ec34000 rw-p 001a0000 08:30 251520                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/linalg/_flapack.cpython-312-x86_64-linux-gnu.so
+7d924ec34000-7d924ec4c000 rw-p 00260000 08:30 251520                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/linalg/_flapack.cpython-312-x86_64-linux-gnu.so
+7d924ec4d000-7d924ec51000 r--p 00000000 08:30 251680                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/optimize/_moduleTNC.cpython-312-x86_64-linux-gnu.so
+7d924ec51000-7d924ec68000 r-xp 00004000 08:30 251680                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/optimize/_moduleTNC.cpython-312-x86_64-linux-gnu.so
+7d924ec68000-7d924ec6c000 r--p 0001b000 08:30 251680                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/optimize/_moduleTNC.cpython-312-x86_64-linux-gnu.so
+7d924ec6c000-7d924ec6d000 ---p 0001f000 08:30 251680                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/optimize/_moduleTNC.cpython-312-x86_64-linux-gnu.so
+7d924ec6d000-7d924ec6e000 r--p 0001f000 08:30 251680                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/optimize/_moduleTNC.cpython-312-x86_64-linux-gnu.so
+7d924ec6e000-7d924ec6f000 rw-p 00020000 08:30 251680                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/optimize/_moduleTNC.cpython-312-x86_64-linux-gnu.so
+7d924ec6f000-7d924ec71000 r--p 00000000 08:30 185305                     /usr/local/lib/python3.12/dist-packages/numpy/fft/_pocketfft_umath.cpython-312-x86_64-linux-gnu.so
+7d924ec71000-7d924ece5000 r-xp 00002000 08:30 185305                     /usr/local/lib/python3.12/dist-packages/numpy/fft/_pocketfft_umath.cpython-312-x86_64-linux-gnu.so
+7d924ece5000-7d924eceb000 r--p 00076000 08:30 185305                     /usr/local/lib/python3.12/dist-packages/numpy/fft/_pocketfft_umath.cpython-312-x86_64-linux-gnu.so
+7d924eceb000-7d924ecec000 r--p 0007b000 08:30 185305                     /usr/local/lib/python3.12/dist-packages/numpy/fft/_pocketfft_umath.cpython-312-x86_64-linux-gnu.so
+7d924ecec000-7d924eced000 rw-p 0007c000 08:30 185305                     /usr/local/lib/python3.12/dist-packages/numpy/fft/_pocketfft_umath.cpython-312-x86_64-linux-gnu.so
+7d924eced000-7d924eded000 rw-p 00000000 00:00 0 
+7d924eded000-7d924edee000 ---p 00000000 00:00 0 
+7d924edee000-7d924f5ee000 rw-p 00000000 00:00 0 
+7d924f5ee000-7d924f5ef000 ---p 00000000 00:00 0 
+7d924f5ef000-7d924fdef000 rw-p 00000000 00:00 0 
+7d924fdef000-7d924fdf0000 ---p 00000000 00:00 0 
+7d924fdf0000-7d92505f0000 rw-p 00000000 00:00 0 
+7d92505f0000-7d92505f1000 ---p 00000000 00:00 0 
+7d92505f1000-7d9250df1000 rw-p 00000000 00:00 0 
+7d9250df1000-7d9250df2000 ---p 00000000 00:00 0 
+7d9250df2000-7d92515f2000 rw-p 00000000 00:00 0 
+7d92515f2000-7d92515f3000 ---p 00000000 00:00 0 
+7d92515f3000-7d9251df3000 rw-p 00000000 00:00 0 
+7d9251df3000-7d9251df4000 ---p 00000000 00:00 0 
+7d9251df4000-7d92525f4000 rw-p 00000000 00:00 0 
+7d92525f4000-7d92525f5000 ---p 00000000 00:00 0 
+7d92525f5000-7d9252df5000 rw-p 00000000 00:00 0 
+7d9252df5000-7d9252df6000 ---p 00000000 00:00 0 
+7d9252df6000-7d92535f6000 rw-p 00000000 00:00 0 
+7d92535f6000-7d92535f7000 ---p 00000000 00:00 0 
+7d92535f7000-7d9253df7000 rw-p 00000000 00:00 0 
+7d9253df7000-7d9253df8000 ---p 00000000 00:00 0 
+7d9253df8000-7d92545f8000 rw-p 00000000 00:00 0 
+7d92545f8000-7d92545f9000 ---p 00000000 00:00 0 
+7d92545f9000-7d9254df9000 rw-p 00000000 00:00 0 
+7d9254df9000-7d9254dfa000 ---p 00000000 00:00 0 
+7d9254dfa000-7d92555fa000 rw-p 00000000 00:00 0 
+7d92555fa000-7d92555fb000 ---p 00000000 00:00 0 
+7d92555fb000-7d9255dfb000 rw-p 00000000 00:00 0 
+7d9255dfb000-7d9255dfc000 ---p 00000000 00:00 0 
+7d9255dfc000-7d92565fc000 rw-p 00000000 00:00 0 
+7d92565fc000-7d92565fd000 ---p 00000000 00:00 0 
+7d92565fd000-7d9256dfd000 rw-p 00000000 00:00 0 
+7d9256dfd000-7d9256dfe000 ---p 00000000 00:00 0 
+7d9256dfe000-7d92575fe000 rw-p 00000000 00:00 0 
+7d92575fe000-7d92575ff000 ---p 00000000 00:00 0 
+7d92575ff000-7d9257dff000 rw-p 00000000 00:00 0 
+7d9257dff000-7d9257e00000 ---p 00000000 00:00 0 
+7d9257e00000-7d9258600000 rw-p 00000000 00:00 0 
+7d9258600000-7d9280600000 rw-p 00000000 00:00 0 
+7d9280600000-7d928063b000 r-xp 00000000 08:30 252383                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy.libs/libquadmath-96973f99-934c22de.so.0.0.0
+7d928063b000-7d928083a000 ---p 0003b000 08:30 252383                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy.libs/libquadmath-96973f99-934c22de.so.0.0.0
+7d928083a000-7d928083b000 r--p 0003a000 08:30 252383                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy.libs/libquadmath-96973f99-934c22de.so.0.0.0
+7d928083b000-7d928083e000 rw-p 0003b000 08:30 252383                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy.libs/libquadmath-96973f99-934c22de.so.0.0.0
+7d9280844000-7d928084b000 r--p 00000000 08:30 185521                     /usr/local/lib/python3.12/dist-packages/numpy/random/mtrand.cpython-312-x86_64-linux-gnu.so
+7d928084b000-7d928089d000 r-xp 00007000 08:30 185521                     /usr/local/lib/python3.12/dist-packages/numpy/random/mtrand.cpython-312-x86_64-linux-gnu.so
+7d928089d000-7d92808da000 r--p 00059000 08:30 185521                     /usr/local/lib/python3.12/dist-packages/numpy/random/mtrand.cpython-312-x86_64-linux-gnu.so
+7d92808da000-7d92808db000 r--p 00096000 08:30 185521                     /usr/local/lib/python3.12/dist-packages/numpy/random/mtrand.cpython-312-x86_64-linux-gnu.so
+7d92808db000-7d92808dd000 rw-p 00097000 08:30 185521                     /usr/local/lib/python3.12/dist-packages/numpy/random/mtrand.cpython-312-x86_64-linux-gnu.so
+7d92808dd000-7d92808df000 rw-p 00000000 00:00 0 
+7d92808df000-7d92808e3000 r--p 00000000 08:30 185511                     /usr/local/lib/python3.12/dist-packages/numpy/random/_philox.cpython-312-x86_64-linux-gnu.so
+7d92808e3000-7d92808f5000 r-xp 00004000 08:30 185511                     /usr/local/lib/python3.12/dist-packages/numpy/random/_philox.cpython-312-x86_64-linux-gnu.so
+7d92808f5000-7d92808fa000 r--p 00016000 08:30 185511                     /usr/local/lib/python3.12/dist-packages/numpy/random/_philox.cpython-312-x86_64-linux-gnu.so
+7d92808fa000-7d92808fb000 r--p 0001a000 08:30 185511                     /usr/local/lib/python3.12/dist-packages/numpy/random/_philox.cpython-312-x86_64-linux-gnu.so
+7d92808fb000-7d92808fc000 rw-p 0001b000 08:30 185511                     /usr/local/lib/python3.12/dist-packages/numpy/random/_philox.cpython-312-x86_64-linux-gnu.so
+7d92808fc000-7d92808fd000 rw-p 00000000 00:00 0 
+7d92808fd000-7d9280906000 r--p 00000000 08:30 185505                     /usr/local/lib/python3.12/dist-packages/numpy/random/_generator.cpython-312-x86_64-linux-gnu.so
+7d9280906000-7d928097a000 r-xp 00009000 08:30 185505                     /usr/local/lib/python3.12/dist-packages/numpy/random/_generator.cpython-312-x86_64-linux-gnu.so
+7d928097a000-7d92809bd000 r--p 0007d000 08:30 185505                     /usr/local/lib/python3.12/dist-packages/numpy/random/_generator.cpython-312-x86_64-linux-gnu.so
+7d92809bd000-7d92809be000 r--p 000bf000 08:30 185505                     /usr/local/lib/python3.12/dist-packages/numpy/random/_generator.cpython-312-x86_64-linux-gnu.so
+7d92809be000-7d92809c1000 rw-p 000c0000 08:30 185505                     /usr/local/lib/python3.12/dist-packages/numpy/random/_generator.cpython-312-x86_64-linux-gnu.so
+7d92809c1000-7d92809c3000 rw-p 00000000 00:00 0 
+7d92809c3000-7d92809c7000 r--p 00000000 08:30 185502                     /usr/local/lib/python3.12/dist-packages/numpy/random/_common.cpython-312-x86_64-linux-gnu.so
+7d92809c7000-7d92809f9000 r-xp 00004000 08:30 185502                     /usr/local/lib/python3.12/dist-packages/numpy/random/_common.cpython-312-x86_64-linux-gnu.so
+7d92809f9000-7d92809fd000 r--p 00036000 08:30 185502                     /usr/local/lib/python3.12/dist-packages/numpy/random/_common.cpython-312-x86_64-linux-gnu.so
+7d92809fd000-7d92809fe000 r--p 00039000 08:30 185502                     /usr/local/lib/python3.12/dist-packages/numpy/random/_common.cpython-312-x86_64-linux-gnu.so
+7d92809fe000-7d92809ff000 rw-p 0003a000 08:30 185502                     /usr/local/lib/python3.12/dist-packages/numpy/random/_common.cpython-312-x86_64-linux-gnu.so
+7d92809ff000-7d9280a00000 rw-p 00000000 00:00 0 
+7d9280a00000-7d9280c76000 r-xp 00000000 08:30 252381                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy.libs/libgfortran-040039e1-0352e75f.so.5.0.0
+7d9280c76000-7d9280e75000 ---p 00276000 08:30 252381                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy.libs/libgfortran-040039e1-0352e75f.so.5.0.0
+7d9280e75000-7d9280e76000 r--p 00275000 08:30 252381                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy.libs/libgfortran-040039e1-0352e75f.so.5.0.0
+7d9280e76000-7d9280e78000 rw-p 00276000 08:30 252381                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy.libs/libgfortran-040039e1-0352e75f.so.5.0.0
+7d9280e78000-7d9280eb1000 rw-p 0027b000 08:30 252381                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy.libs/libgfortran-040039e1-0352e75f.so.5.0.0
+7d9280eb6000-7d9280eba000 r--p 00000000 08:30 185499                     /usr/local/lib/python3.12/dist-packages/numpy/random/_bounded_integers.cpython-312-x86_64-linux-gnu.so
+7d9280eba000-7d9280ef6000 r-xp 00004000 08:30 185499                     /usr/local/lib/python3.12/dist-packages/numpy/random/_bounded_integers.cpython-312-x86_64-linux-gnu.so
+7d9280ef6000-7d9280efe000 r--p 00040000 08:30 185499                     /usr/local/lib/python3.12/dist-packages/numpy/random/_bounded_integers.cpython-312-x86_64-linux-gnu.so
+7d9280efe000-7d9280eff000 r--p 00048000 08:30 185499                     /usr/local/lib/python3.12/dist-packages/numpy/random/_bounded_integers.cpython-312-x86_64-linux-gnu.so
+7d9280eff000-7d9280f00000 rw-p 00049000 08:30 185499                     /usr/local/lib/python3.12/dist-packages/numpy/random/_bounded_integers.cpython-312-x86_64-linux-gnu.so
+7d9280f00000-7d9281000000 rw-p 00000000 00:00 0 
+7d9281000000-7d92810cc000 r--p 00000000 08:30 252385                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy.libs/libscipy_openblas-b75cc656.so
+7d92810cc000-7d92823b2000 r-xp 000cc000 08:30 252385                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy.libs/libscipy_openblas-b75cc656.so
+7d92823b2000-7d9282596000 r--p 013b2000 08:30 252385                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy.libs/libscipy_openblas-b75cc656.so
+7d9282596000-7d928259e000 r--p 01595000 08:30 252385                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy.libs/libscipy_openblas-b75cc656.so
+7d928259e000-7d92825ac000 rw-p 0159d000 08:30 252385                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy.libs/libscipy_openblas-b75cc656.so
+7d92825ac000-7d92825b5000 rw-p 00000000 00:00 0 
+7d92825b5000-7d92825ba000 ---p 015b5000 08:30 252385                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy.libs/libscipy_openblas-b75cc656.so
+7d92825ba000-7d92826e2000 rw-p 01684000 08:30 252385                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy.libs/libscipy_openblas-b75cc656.so
+7d92826e2000-7d92826e3000 r--p 00000000 08:30 251658                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/optimize/_direct.cpython-312-x86_64-linux-gnu.so
+7d92826e3000-7d92826e9000 r-xp 00001000 08:30 251658                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/optimize/_direct.cpython-312-x86_64-linux-gnu.so
+7d92826e9000-7d92826eb000 r--p 00007000 08:30 251658                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/optimize/_direct.cpython-312-x86_64-linux-gnu.so
+7d92826eb000-7d92826ec000 r--p 00008000 08:30 251658                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/optimize/_direct.cpython-312-x86_64-linux-gnu.so
+7d92826ec000-7d92826ed000 rw-p 00009000 08:30 251658                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/optimize/_direct.cpython-312-x86_64-linux-gnu.so
+7d92826ed000-7d92826f1000 r--p 00000000 08:30 185507                     /usr/local/lib/python3.12/dist-packages/numpy/random/_mt19937.cpython-312-x86_64-linux-gnu.so
+7d92826f1000-7d9282704000 r-xp 00004000 08:30 185507                     /usr/local/lib/python3.12/dist-packages/numpy/random/_mt19937.cpython-312-x86_64-linux-gnu.so
+7d9282704000-7d928270a000 r--p 00017000 08:30 185507                     /usr/local/lib/python3.12/dist-packages/numpy/random/_mt19937.cpython-312-x86_64-linux-gnu.so
+7d928270a000-7d928270b000 r--p 0001c000 08:30 185507                     /usr/local/lib/python3.12/dist-packages/numpy/random/_mt19937.cpython-312-x86_64-linux-gnu.so
+7d928270b000-7d928270c000 rw-p 0001d000 08:30 185507                     /usr/local/lib/python3.12/dist-packages/numpy/random/_mt19937.cpython-312-x86_64-linux-gnu.so
+7d928270c000-7d928270d000 rw-p 00000000 00:00 0 
+7d928270d000-7d9282734000 r--p 00000000 08:30 251519                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/linalg/_fblas.cpython-312-x86_64-linux-gnu.so
+7d9282734000-7d9282782000 r-xp 00027000 08:30 251519                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/linalg/_fblas.cpython-312-x86_64-linux-gnu.so
+7d9282782000-7d92827ab000 r--p 00075000 08:30 251519                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/linalg/_fblas.cpython-312-x86_64-linux-gnu.so
+7d92827ab000-7d92827ac000 r--p 0009d000 08:30 251519                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/linalg/_fblas.cpython-312-x86_64-linux-gnu.so
+7d92827ac000-7d92827d5000 rw-p 0009e000 08:30 251519                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/linalg/_fblas.cpython-312-x86_64-linux-gnu.so
+7d92827d5000-7d92827ed000 rw-p 000e7000 08:30 251519                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/linalg/_fblas.cpython-312-x86_64-linux-gnu.so
+7d92827ed000-7d92827ee000 ---p 00000000 00:00 0 
+7d92827ee000-7d9282fee000 rw-p 00000000 00:00 0 
+7d9282fee000-7d9282fef000 ---p 00000000 00:00 0 
+7d9282fef000-7d92837ef000 rw-p 00000000 00:00 0 
+7d92837ef000-7d92837f0000 ---p 00000000 00:00 0 
+7d92837f0000-7d9283ff0000 rw-p 00000000 00:00 0 
+7d9283ff0000-7d9283ff1000 ---p 00000000 00:00 0 
+7d9283ff1000-7d92847f1000 rw-p 00000000 00:00 0 
+7d92847f1000-7d92847f2000 ---p 00000000 00:00 0 
+7d92847f2000-7d9284ff2000 rw-p 00000000 00:00 0 
+7d9284ff2000-7d9284ff3000 ---p 00000000 00:00 0 
+7d9284ff3000-7d92857f3000 rw-p 00000000 00:00 0 
+7d92857f3000-7d92857f4000 ---p 00000000 00:00 0 
+7d92857f4000-7d9285ff4000 rw-p 00000000 00:00 0 
+7d9285ff4000-7d9285ff5000 ---p 00000000 00:00 0 
+7d9285ff5000-7d92867f5000 rw-p 00000000 00:00 0 
+7d92867f5000-7d92867f6000 ---p 00000000 00:00 0 
+7d92867f6000-7d9286ff6000 rw-p 00000000 00:00 0 
+7d9286ff6000-7d9286ff7000 ---p 00000000 00:00 0 
+7d9286ff7000-7d92877f7000 rw-p 00000000 00:00 0 
+7d92877f7000-7d92877f8000 ---p 00000000 00:00 0 
+7d92877f8000-7d9287ff8000 rw-p 00000000 00:00 0 
+7d9287ff8000-7d9287ff9000 ---p 00000000 00:00 0 
+7d9287ff9000-7d92887f9000 rw-p 00000000 00:00 0 
+7d92887f9000-7d92887fa000 ---p 00000000 00:00 0 
+7d92887fa000-7d9288ffa000 rw-p 00000000 00:00 0 
+7d9288ffa000-7d9288ffb000 ---p 00000000 00:00 0 
+7d9288ffb000-7d92897fb000 rw-p 00000000 00:00 0 
+7d92897fb000-7d92897fc000 ---p 00000000 00:00 0 
+7d92897fc000-7d9289ffc000 rw-p 00000000 00:00 0 
+7d9289ffc000-7d9289ffd000 ---p 00000000 00:00 0 
+7d9289ffd000-7d928a7fd000 rw-p 00000000 00:00 0 
+7d928a7fd000-7d928a7fe000 ---p 00000000 00:00 0 
+7d928a7fe000-7d928affe000 rw-p 00000000 00:00 0 
+7d928affe000-7d928afff000 ---p 00000000 00:00 0 
+7d928afff000-7d928b7ff000 rw-p 00000000 00:00 0 
+7d928b7ff000-7d928b800000 ---p 00000000 00:00 0 
+7d928b800000-7d928c000000 rw-p 00000000 00:00 0 
+7d928c000000-7d92b4000000 rw-p 00000000 00:00 0 
+7d92b4000000-7d92b4040000 r-xp 00000000 08:30 185760                     /usr/local/lib/python3.12/dist-packages/numpy.libs/libquadmath-2284e583-a9307bba.so.0.0.0
+7d92b4040000-7d92b423f000 ---p 00040000 08:30 185760                     /usr/local/lib/python3.12/dist-packages/numpy.libs/libquadmath-2284e583-a9307bba.so.0.0.0
+7d92b423f000-7d92b4240000 r--p 0003f000 08:30 185760                     /usr/local/lib/python3.12/dist-packages/numpy.libs/libquadmath-2284e583-a9307bba.so.0.0.0
+7d92b4240000-7d92b4241000 rw-p 00040000 08:30 185760                     /usr/local/lib/python3.12/dist-packages/numpy.libs/libquadmath-2284e583-a9307bba.so.0.0.0
+7d92b4241000-7d92b4243000 rw-p 00042000 08:30 185760                     /usr/local/lib/python3.12/dist-packages/numpy.libs/libquadmath-2284e583-a9307bba.so.0.0.0
+7d92b4246000-7d92b4249000 r--p 00000000 08:30 252114                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/special/_comb.cpython-312-x86_64-linux-gnu.so
+7d92b4249000-7d92b424f000 r-xp 00003000 08:30 252114                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/special/_comb.cpython-312-x86_64-linux-gnu.so
+7d92b424f000-7d92b4251000 r--p 00009000 08:30 252114                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/special/_comb.cpython-312-x86_64-linux-gnu.so
+7d92b4251000-7d92b4252000 r--p 0000a000 08:30 252114                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/special/_comb.cpython-312-x86_64-linux-gnu.so
+7d92b4252000-7d92b4253000 rw-p 0000b000 08:30 252114                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/special/_comb.cpython-312-x86_64-linux-gnu.so
+7d92b4253000-7d92b426e000 r--p 00000000 08:30 251542                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/linalg/cython_lapack.cpython-312-x86_64-linux-gnu.so
+7d92b426e000-7d92b428c000 r-xp 0001b000 08:30 251542                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/linalg/cython_lapack.cpython-312-x86_64-linux-gnu.so
+7d92b428c000-7d92b42e5000 r--p 00039000 08:30 251542                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/linalg/cython_lapack.cpython-312-x86_64-linux-gnu.so
+7d92b42e5000-7d92b42e6000 r--p 00091000 08:30 251542                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/linalg/cython_lapack.cpython-312-x86_64-linux-gnu.so
+7d92b42e6000-7d92b42ea000 rw-p 00092000 08:30 251542                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/linalg/cython_lapack.cpython-312-x86_64-linux-gnu.so
+7d92b42ea000-7d92b4300000 rw-p 000c1000 08:30 251542                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/linalg/cython_lapack.cpython-312-x86_64-linux-gnu.so
+7d92b4300000-7d92b4400000 rw-p 00000000 00:00 0 
+7d92b4400000-7d92b467c000 r-xp 00000000 08:30 185759                     /usr/local/lib/python3.12/dist-packages/numpy.libs/libgfortran-83c28eba-468e71e5.so.5.0.0
+7d92b467c000-7d92b487c000 ---p 0027c000 08:30 185759                     /usr/local/lib/python3.12/dist-packages/numpy.libs/libgfortran-83c28eba-468e71e5.so.5.0.0
+7d92b487c000-7d92b487e000 r--p 0027c000 08:30 185759                     /usr/local/lib/python3.12/dist-packages/numpy.libs/libgfortran-83c28eba-468e71e5.so.5.0.0
+7d92b487e000-7d92b487f000 rw-p 0027e000 08:30 185759                     /usr/local/lib/python3.12/dist-packages/numpy.libs/libgfortran-83c28eba-468e71e5.so.5.0.0
+7d92b487f000-7d92b48b8000 rw-p 00282000 08:30 185759                     /usr/local/lib/python3.12/dist-packages/numpy.libs/libgfortran-83c28eba-468e71e5.so.5.0.0
+7d92b48b8000-7d92b48bc000 r--p 00000000 08:30 250888                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/_lib/messagestream.cpython-312-x86_64-linux-gnu.so
+7d92b48bc000-7d92b48c5000 r-xp 00004000 08:30 250888                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/_lib/messagestream.cpython-312-x86_64-linux-gnu.so
+7d92b48c5000-7d92b48c8000 r--p 0000d000 08:30 250888                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/_lib/messagestream.cpython-312-x86_64-linux-gnu.so
+7d92b48c8000-7d92b48c9000 r--p 0000f000 08:30 250888                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/_lib/messagestream.cpython-312-x86_64-linux-gnu.so
+7d92b48c9000-7d92b48ca000 rw-p 00010000 08:30 250888                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/_lib/messagestream.cpython-312-x86_64-linux-gnu.so
+7d92b48ca000-7d92b48cf000 r--p 00000000 08:30 185517                     /usr/local/lib/python3.12/dist-packages/numpy/random/bit_generator.cpython-312-x86_64-linux-gnu.so
+7d92b48cf000-7d92b48f2000 r-xp 00005000 08:30 185517                     /usr/local/lib/python3.12/dist-packages/numpy/random/bit_generator.cpython-312-x86_64-linux-gnu.so
+7d92b48f2000-7d92b48fc000 r--p 00028000 08:30 185517                     /usr/local/lib/python3.12/dist-packages/numpy/random/bit_generator.cpython-312-x86_64-linux-gnu.so
+7d92b48fc000-7d92b48fd000 r--p 00032000 08:30 185517                     /usr/local/lib/python3.12/dist-packages/numpy/random/bit_generator.cpython-312-x86_64-linux-gnu.so
+7d92b48fd000-7d92b48ff000 rw-p 00033000 08:30 185517                     /usr/local/lib/python3.12/dist-packages/numpy/random/bit_generator.cpython-312-x86_64-linux-gnu.so
+7d92b48ff000-7d92b4a00000 rw-p 00000000 00:00 0 
+7d92b4a00000-7d92b4a9d000 r--p 00000000 08:30 13037                      /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.33
+7d92b4a9d000-7d92b4be5000 r-xp 0009d000 08:30 13037                      /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.33
+7d92b4be5000-7d92b4c6c000 r--p 001e5000 08:30 13037                      /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.33
+7d92b4c6c000-7d92b4c77000 r--p 0026b000 08:30 13037                      /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.33
+7d92b4c77000-7d92b4c7a000 rw-p 00276000 08:30 13037                      /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.33
+7d92b4c7a000-7d92b4c7e000 rw-p 00000000 00:00 0 
+7d92b4c84000-7d92b4c88000 r--p 00000000 08:30 185515                     /usr/local/lib/python3.12/dist-packages/numpy/random/_sfc64.cpython-312-x86_64-linux-gnu.so
+7d92b4c88000-7d92b4c93000 r-xp 00004000 08:30 185515                     /usr/local/lib/python3.12/dist-packages/numpy/random/_sfc64.cpython-312-x86_64-linux-gnu.so
+7d92b4c93000-7d92b4c97000 r--p 0000f000 08:30 185515                     /usr/local/lib/python3.12/dist-packages/numpy/random/_sfc64.cpython-312-x86_64-linux-gnu.so
+7d92b4c97000-7d92b4c98000 r--p 00012000 08:30 185515                     /usr/local/lib/python3.12/dist-packages/numpy/random/_sfc64.cpython-312-x86_64-linux-gnu.so
+7d92b4c98000-7d92b4c99000 rw-p 00013000 08:30 185515                     /usr/local/lib/python3.12/dist-packages/numpy/random/_sfc64.cpython-312-x86_64-linux-gnu.so
+7d92b4c99000-7d92b4c9a000 rw-p 00000000 00:00 0 
+7d92b4c9a000-7d92b4ca0000 r--p 00000000 08:30 251501                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/linalg/_cythonized_array_utils.cpython-312-x86_64-linux-gnu.so
+7d92b4ca0000-7d92b4cee000 r-xp 00006000 08:30 251501                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/linalg/_cythonized_array_utils.cpython-312-x86_64-linux-gnu.so
+7d92b4cee000-7d92b4cfb000 r--p 00054000 08:30 251501                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/linalg/_cythonized_array_utils.cpython-312-x86_64-linux-gnu.so
+7d92b4cfb000-7d92b4cfd000 r--p 00060000 08:30 251501                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/linalg/_cythonized_array_utils.cpython-312-x86_64-linux-gnu.so
+7d92b4cfd000-7d92b4cff000 rw-p 00062000 08:30 251501                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/linalg/_cythonized_array_utils.cpython-312-x86_64-linux-gnu.so
+7d92b4cff000-7d92b4e00000 rw-p 00000000 00:00 0 
+7d92b4e00000-7d92b4e82000 r--p 00000000 08:30 185761                     /usr/local/lib/python3.12/dist-packages/numpy.libs/libscipy_openblas64_-f48b354e.so
+7d92b4e82000-7d92b61bd000 r-xp 00082000 08:30 185761                     /usr/local/lib/python3.12/dist-packages/numpy.libs/libscipy_openblas64_-f48b354e.so
+7d92b61bd000-7d92b63a4000 r--p 013bd000 08:30 185761                     /usr/local/lib/python3.12/dist-packages/numpy.libs/libscipy_openblas64_-f48b354e.so
+7d92b63a4000-7d92b63ac000 r--p 015a3000 08:30 185761                     /usr/local/lib/python3.12/dist-packages/numpy.libs/libscipy_openblas64_-f48b354e.so
+7d92b63ac000-7d92b63bb000 rw-p 015ab000 08:30 185761                     /usr/local/lib/python3.12/dist-packages/numpy.libs/libscipy_openblas64_-f48b354e.so
+7d92b63bb000-7d92b63c0000 rw-p 00000000 00:00 0 
+7d92b63c0000-7d92b63c8000 ---p 015c0000 08:30 185761                     /usr/local/lib/python3.12/dist-packages/numpy.libs/libscipy_openblas64_-f48b354e.so
+7d92b63c8000-7d92b6464000 rw-p 01697000 08:30 185761                     /usr/local/lib/python3.12/dist-packages/numpy.libs/libscipy_openblas64_-f48b354e.so
+7d92b6468000-7d92b6469000 r--p 00000000 08:30 251675                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/optimize/_lsap.cpython-312-x86_64-linux-gnu.so
+7d92b6469000-7d92b646b000 r-xp 00001000 08:30 251675                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/optimize/_lsap.cpython-312-x86_64-linux-gnu.so
+7d92b646b000-7d92b646d000 r--p 00003000 08:30 251675                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/optimize/_lsap.cpython-312-x86_64-linux-gnu.so
+7d92b646d000-7d92b646e000 r--p 00004000 08:30 251675                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/optimize/_lsap.cpython-312-x86_64-linux-gnu.so
+7d92b646e000-7d92b646f000 rw-p 00005000 08:30 251675                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/optimize/_lsap.cpython-312-x86_64-linux-gnu.so
+7d92b646f000-7d92b6474000 r--p 00000000 08:30 250859                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/_cyutility.cpython-312-x86_64-linux-gnu.so
+7d92b6474000-7d92b6490000 r-xp 00005000 08:30 250859                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/_cyutility.cpython-312-x86_64-linux-gnu.so
+7d92b6490000-7d92b6496000 r--p 00021000 08:30 250859                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/_cyutility.cpython-312-x86_64-linux-gnu.so
+7d92b6496000-7d92b6497000 ---p 00027000 08:30 250859                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/_cyutility.cpython-312-x86_64-linux-gnu.so
+7d92b6497000-7d92b6498000 r--p 00027000 08:30 250859                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/_cyutility.cpython-312-x86_64-linux-gnu.so
+7d92b6498000-7d92b649a000 rw-p 00028000 08:30 250859                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/_cyutility.cpython-312-x86_64-linux-gnu.so
+7d92b64a0000-7d92b64a1000 r--p 00000000 08:30 251701                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/optimize/_zeros.cpython-312-x86_64-linux-gnu.so
+7d92b64a1000-7d92b64a3000 r-xp 00001000 08:30 251701                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/optimize/_zeros.cpython-312-x86_64-linux-gnu.so
+7d92b64a3000-7d92b64a4000 r--p 00003000 08:30 251701                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/optimize/_zeros.cpython-312-x86_64-linux-gnu.so
+7d92b64a4000-7d92b64a5000 r--p 00003000 08:30 251701                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/optimize/_zeros.cpython-312-x86_64-linux-gnu.so
+7d92b64a5000-7d92b64a6000 rw-p 00004000 08:30 251701                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/optimize/_zeros.cpython-312-x86_64-linux-gnu.so
+7d92b64a6000-7d92b64a9000 r--p 00000000 08:30 251522                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/linalg/_linalg_pythran.cpython-312-x86_64-linux-gnu.so
+7d92b64a9000-7d92b64bd000 r-xp 00003000 08:30 251522                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/linalg/_linalg_pythran.cpython-312-x86_64-linux-gnu.so
+7d92b64bd000-7d92b64c1000 r--p 00017000 08:30 251522                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/linalg/_linalg_pythran.cpython-312-x86_64-linux-gnu.so
+7d92b64c1000-7d92b64c2000 r--p 0001a000 08:30 251522                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/linalg/_linalg_pythran.cpython-312-x86_64-linux-gnu.so
+7d92b64c2000-7d92b64c3000 rw-p 0001b000 08:30 251522                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/linalg/_linalg_pythran.cpython-312-x86_64-linux-gnu.so
+7d92b64c3000-7d92b64c7000 r--p 00000000 08:30 251510                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/linalg/_decomp_lu_cython.cpython-312-x86_64-linux-gnu.so
+7d92b64c7000-7d92b64d8000 r-xp 00004000 08:30 251510                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/linalg/_decomp_lu_cython.cpython-312-x86_64-linux-gnu.so
+7d92b64d8000-7d92b64dc000 r--p 00015000 08:30 251510                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/linalg/_decomp_lu_cython.cpython-312-x86_64-linux-gnu.so
+7d92b64dc000-7d92b64dd000 ---p 00019000 08:30 251510                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/linalg/_decomp_lu_cython.cpython-312-x86_64-linux-gnu.so
+7d92b64dd000-7d92b64de000 r--p 00019000 08:30 251510                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/linalg/_decomp_lu_cython.cpython-312-x86_64-linux-gnu.so
+7d92b64de000-7d92b64df000 rw-p 0001a000 08:30 251510                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/linalg/_decomp_lu_cython.cpython-312-x86_64-linux-gnu.so
+7d92b64df000-7d92b64e3000 r--p 00000000 08:30 251533                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/linalg/_solve_toeplitz.cpython-312-x86_64-linux-gnu.so
+7d92b64e3000-7d92b64f7000 r-xp 00004000 08:30 251533                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/linalg/_solve_toeplitz.cpython-312-x86_64-linux-gnu.so
+7d92b64f7000-7d92b64fd000 r--p 00018000 08:30 251533                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/linalg/_solve_toeplitz.cpython-312-x86_64-linux-gnu.so
+7d92b64fd000-7d92b64fe000 r--p 0001d000 08:30 251533                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/linalg/_solve_toeplitz.cpython-312-x86_64-linux-gnu.so
+7d92b64fe000-7d92b64ff000 rw-p 0001e000 08:30 251533                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/linalg/_solve_toeplitz.cpython-312-x86_64-linux-gnu.so
+7d92b64ff000-7d92b6600000 rw-p 00000000 00:00 0 
+7d92b6600000-7d92b662b000 r--p 00000000 08:30 184817                     /usr/local/lib/python3.12/dist-packages/numpy/_core/_multiarray_umath.cpython-312-x86_64-linux-gnu.so
+7d92b662b000-7d92b6de0000 r-xp 0002b000 08:30 184817                     /usr/local/lib/python3.12/dist-packages/numpy/_core/_multiarray_umath.cpython-312-x86_64-linux-gnu.so
+7d92b6de0000-7d92b6f71000 r--p 007e0000 08:30 184817                     /usr/local/lib/python3.12/dist-packages/numpy/_core/_multiarray_umath.cpython-312-x86_64-linux-gnu.so
+7d92b6f71000-7d92b6f74000 r--p 00971000 08:30 184817                     /usr/local/lib/python3.12/dist-packages/numpy/_core/_multiarray_umath.cpython-312-x86_64-linux-gnu.so
+7d92b6f74000-7d92b6f97000 rw-p 00974000 08:30 184817                     /usr/local/lib/python3.12/dist-packages/numpy/_core/_multiarray_umath.cpython-312-x86_64-linux-gnu.so
+7d92b6f97000-7d92b6fae000 rw-p 00000000 00:00 0 
+7d92b6fae000-7d92b6fb9000 rw-p 00a1a000 08:30 184817                     /usr/local/lib/python3.12/dist-packages/numpy/_core/_multiarray_umath.cpython-312-x86_64-linux-gnu.so
+7d92b6fb9000-7d92b6fbc000 r--p 00000000 08:30 251662                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/optimize/_group_columns.cpython-312-x86_64-linux-gnu.so
+7d92b6fbc000-7d92b6fc9000 r-xp 00003000 08:30 251662                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/optimize/_group_columns.cpython-312-x86_64-linux-gnu.so
+7d92b6fc9000-7d92b6fcc000 r--p 00010000 08:30 251662                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/optimize/_group_columns.cpython-312-x86_64-linux-gnu.so
+7d92b6fcc000-7d92b6fcd000 r--p 00012000 08:30 251662                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/optimize/_group_columns.cpython-312-x86_64-linux-gnu.so
+7d92b6fcd000-7d92b6fce000 rw-p 00013000 08:30 251662                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/optimize/_group_columns.cpython-312-x86_64-linux-gnu.so
+7d92b6fce000-7d92b6fd2000 r--p 00000000 08:30 185415                     /usr/local/lib/python3.12/dist-packages/numpy/linalg/_umath_linalg.cpython-312-x86_64-linux-gnu.so
+7d92b6fd2000-7d92b6ff6000 r-xp 00004000 08:30 185415                     /usr/local/lib/python3.12/dist-packages/numpy/linalg/_umath_linalg.cpython-312-x86_64-linux-gnu.so
+7d92b6ff6000-7d92b6ffb000 r--p 00028000 08:30 185415                     /usr/local/lib/python3.12/dist-packages/numpy/linalg/_umath_linalg.cpython-312-x86_64-linux-gnu.so
+7d92b6ffb000-7d92b6ffc000 r--p 0002d000 08:30 185415                     /usr/local/lib/python3.12/dist-packages/numpy/linalg/_umath_linalg.cpython-312-x86_64-linux-gnu.so
+7d92b6ffc000-7d92b6ffd000 rw-p 0002e000 08:30 185415                     /usr/local/lib/python3.12/dist-packages/numpy/linalg/_umath_linalg.cpython-312-x86_64-linux-gnu.so
+7d92b6ffd000-7d92b7000000 rw-p 00036000 08:30 185415                     /usr/local/lib/python3.12/dist-packages/numpy/linalg/_umath_linalg.cpython-312-x86_64-linux-gnu.so
+7d92b7000000-7d92b7200000 rw-p 00000000 00:00 0 
+7d92b7200000-7d92b72b3000 r--p 00000000 08:30 56143                      /usr/lib/x86_64-linux-gnu/libcrypto.so.3
+7d92b72b3000-7d92b75e7000 r-xp 000b3000 08:30 56143                      /usr/lib/x86_64-linux-gnu/libcrypto.so.3
+7d92b75e7000-7d92b76b2000 r--p 003e7000 08:30 56143                      /usr/lib/x86_64-linux-gnu/libcrypto.so.3
+7d92b76b2000-7d92b770e000 r--p 004b1000 08:30 56143                      /usr/lib/x86_64-linux-gnu/libcrypto.so.3
+7d92b770e000-7d92b7711000 rw-p 0050d000 08:30 56143                      /usr/lib/x86_64-linux-gnu/libcrypto.so.3
+7d92b7711000-7d92b7714000 rw-p 00000000 00:00 0 
+7d92b7717000-7d92b771b000 r--p 00000000 08:30 185509                     /usr/local/lib/python3.12/dist-packages/numpy/random/_pcg64.cpython-312-x86_64-linux-gnu.so
+7d92b771b000-7d92b772f000 r-xp 00004000 08:30 185509                     /usr/local/lib/python3.12/dist-packages/numpy/random/_pcg64.cpython-312-x86_64-linux-gnu.so
+7d92b772f000-7d92b7735000 r--p 00018000 08:30 185509                     /usr/local/lib/python3.12/dist-packages/numpy/random/_pcg64.cpython-312-x86_64-linux-gnu.so
+7d92b7735000-7d92b7736000 r--p 0001e000 08:30 185509                     /usr/local/lib/python3.12/dist-packages/numpy/random/_pcg64.cpython-312-x86_64-linux-gnu.so
+7d92b7736000-7d92b7738000 rw-p 0001f000 08:30 185509                     /usr/local/lib/python3.12/dist-packages/numpy/random/_pcg64.cpython-312-x86_64-linux-gnu.so
+7d92b7738000-7d92b7739000 r--p 00000000 08:30 37832                      /usr/lib/x86_64-linux-gnu/libpthread.so.0
+7d92b7739000-7d92b773a000 r-xp 00001000 08:30 37832                      /usr/lib/x86_64-linux-gnu/libpthread.so.0
+7d92b773a000-7d92b773b000 r--p 00002000 08:30 37832                      /usr/lib/x86_64-linux-gnu/libpthread.so.0
+7d92b773b000-7d92b773c000 r--p 00002000 08:30 37832                      /usr/lib/x86_64-linux-gnu/libpthread.so.0
+7d92b773c000-7d92b773d000 rw-p 00003000 08:30 37832                      /usr/lib/x86_64-linux-gnu/libpthread.so.0
+7d92b773d000-7d92b7741000 r--p 00000000 08:30 13115                      /usr/lib/x86_64-linux-gnu/libgcc_s.so.1
+7d92b7741000-7d92b7765000 r-xp 00004000 08:30 13115                      /usr/lib/x86_64-linux-gnu/libgcc_s.so.1
+7d92b7765000-7d92b7769000 r--p 00028000 08:30 13115                      /usr/lib/x86_64-linux-gnu/libgcc_s.so.1
+7d92b7769000-7d92b776a000 r--p 0002b000 08:30 13115                      /usr/lib/x86_64-linux-gnu/libgcc_s.so.1
+7d92b776a000-7d92b776b000 rw-p 0002c000 08:30 13115                      /usr/lib/x86_64-linux-gnu/libgcc_s.so.1
+7d92b776b000-7d92b776e000 r--p 00000000 08:30 19023                      /usr/lib/x86_64-linux-gnu/liblzma.so.5.4.5
+7d92b776e000-7d92b7790000 r-xp 00003000 08:30 19023                      /usr/lib/x86_64-linux-gnu/liblzma.so.5.4.5
+7d92b7790000-7d92b779b000 r--p 00025000 08:30 19023                      /usr/lib/x86_64-linux-gnu/liblzma.so.5.4.5
+7d92b779b000-7d92b779c000 r--p 00030000 08:30 19023                      /usr/lib/x86_64-linux-gnu/liblzma.so.5.4.5
+7d92b779c000-7d92b779d000 rw-p 00031000 08:30 19023                      /usr/lib/x86_64-linux-gnu/liblzma.so.5.4.5
+7d92b779d000-7d92b779f000 r--p 00000000 08:30 5743                       /usr/lib/x86_64-linux-gnu/libbz2.so.1.0.4
+7d92b779f000-7d92b77ad000 r-xp 00002000 08:30 5743                       /usr/lib/x86_64-linux-gnu/libbz2.so.1.0.4
+7d92b77ad000-7d92b77af000 r--p 00010000 08:30 5743                       /usr/lib/x86_64-linux-gnu/libbz2.so.1.0.4
+7d92b77af000-7d92b77b0000 r--p 00011000 08:30 5743                       /usr/lib/x86_64-linux-gnu/libbz2.so.1.0.4
+7d92b77b0000-7d92b77b1000 rw-p 00012000 08:30 5743                       /usr/lib/x86_64-linux-gnu/libbz2.so.1.0.4
+7d92b77b3000-7d92b77b7000 r--p 00000000 08:30 250870                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/_lib/_ccallback_c.cpython-312-x86_64-linux-gnu.so
+7d92b77b7000-7d92b77c3000 r-xp 00004000 08:30 250870                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/_lib/_ccallback_c.cpython-312-x86_64-linux-gnu.so
+7d92b77c3000-7d92b77c6000 r--p 00010000 08:30 250870                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/_lib/_ccallback_c.cpython-312-x86_64-linux-gnu.so
+7d92b77c6000-7d92b77c7000 r--p 00012000 08:30 250870                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/_lib/_ccallback_c.cpython-312-x86_64-linux-gnu.so
+7d92b77c7000-7d92b77c8000 rw-p 00013000 08:30 250870                     /home/yuchen7509/.local/lib/python3.12/site-packages/scipy/_lib/_ccallback_c.cpython-312-x86_64-linux-gnu.so
+7d92b77c8000-7d92b77c9000 r--p 00000000 08:30 10849                      /usr/lib/python3.12/lib-dynload/_contextvars.cpython-312-x86_64-linux-gnu.so
+7d92b77c9000-7d92b77ca000 r-xp 00001000 08:30 10849                      /usr/lib/python3.12/lib-dynload/_contextvars.cpython-312-x86_64-linux-gnu.so
+7d92b77ca000-7d92b77cb000 r--p 00002000 08:30 10849                      /usr/lib/python3.12/lib-dynload/_contextvars.cpython-312-x86_64-linux-gnu.so
+7d92b77cb000-7d92b77cc000 r--p 00002000 08:30 10849                      /usr/lib/python3.12/lib-dynload/_contextvars.cpython-312-x86_64-linux-gnu.so
+7d92b77cc000-7d92b77cd000 rw-p 00003000 08:30 10849                      /usr/lib/python3.12/lib-dynload/_contextvars.cpython-312-x86_64-linux-gnu.so
+7d92b77cd000-7d92b78cd000 rw-p 00000000 00:00 0 
+7d92b78d1000-7d92b78d3000 r--p 00000000 08:30 12883                      /usr/lib/x86_64-linux-gnu/libffi.so.8.1.4
+7d92b78d3000-7d92b78da000 r-xp 00002000 08:30 12883                      /usr/lib/x86_64-linux-gnu/libffi.so.8.1.4
+7d92b78da000-7d92b78db000 r--p 00009000 08:30 12883                      /usr/lib/x86_64-linux-gnu/libffi.so.8.1.4
+7d92b78db000-7d92b78dc000 r--p 0000a000 08:30 12883                      /usr/lib/x86_64-linux-gnu/libffi.so.8.1.4
+7d92b78dc000-7d92b78dd000 rw-p 0000b000 08:30 12883                      /usr/lib/x86_64-linux-gnu/libffi.so.8.1.4
+7d92b78dd000-7d92b78e3000 r--p 00000000 08:30 10851                      /usr/lib/python3.12/lib-dynload/_ctypes.cpython-312-x86_64-linux-gnu.so
+7d92b78e3000-7d92b78f5000 r-xp 00006000 08:30 10851                      /usr/lib/python3.12/lib-dynload/_ctypes.cpython-312-x86_64-linux-gnu.so
+7d92b78f5000-7d92b78fb000 r--p 00018000 08:30 10851                      /usr/lib/python3.12/lib-dynload/_ctypes.cpython-312-x86_64-linux-gnu.so
+7d92b78fb000-7d92b78fc000 r--p 0001d000 08:30 10851                      /usr/lib/python3.12/lib-dynload/_ctypes.cpython-312-x86_64-linux-gnu.so
+7d92b78fc000-7d92b7900000 rw-p 0001e000 08:30 10851                      /usr/lib/python3.12/lib-dynload/_ctypes.cpython-312-x86_64-linux-gnu.so
+7d92b7900000-7d92b7c00000 rw-p 00000000 00:00 0 
+7d92b7c00000-7d92b7c28000 r--p 00000000 08:30 37769                      /usr/lib/x86_64-linux-gnu/libc.so.6
+7d92b7c28000-7d92b7db1000 r-xp 00028000 08:30 37769                      /usr/lib/x86_64-linux-gnu/libc.so.6
+7d92b7db1000-7d92b7e00000 r--p 001b1000 08:30 37769                      /usr/lib/x86_64-linux-gnu/libc.so.6
+7d92b7e00000-7d92b7e04000 r--p 001ff000 08:30 37769                      /usr/lib/x86_64-linux-gnu/libc.so.6
+7d92b7e04000-7d92b7e06000 rw-p 00203000 08:30 37769                      /usr/lib/x86_64-linux-gnu/libc.so.6
+7d92b7e06000-7d92b7e13000 rw-p 00000000 00:00 0 
+7d92b7e14000-7d92b7e17000 r--p 00000000 08:30 10859                      /usr/lib/python3.12/lib-dynload/_lzma.cpython-312-x86_64-linux-gnu.so
+7d92b7e17000-7d92b7e1c000 r-xp 00003000 08:30 10859                      /usr/lib/python3.12/lib-dynload/_lzma.cpython-312-x86_64-linux-gnu.so
+7d92b7e1c000-7d92b7e1f000 r--p 00008000 08:30 10859                      /usr/lib/python3.12/lib-dynload/_lzma.cpython-312-x86_64-linux-gnu.so
+7d92b7e1f000-7d92b7e20000 r--p 0000a000 08:30 10859                      /usr/lib/python3.12/lib-dynload/_lzma.cpython-312-x86_64-linux-gnu.so
+7d92b7e20000-7d92b7e21000 rw-p 0000b000 08:30 10859                      /usr/lib/python3.12/lib-dynload/_lzma.cpython-312-x86_64-linux-gnu.so
+7d92b7e21000-7d92b7e23000 r--p 00000000 08:30 10842                      /usr/lib/python3.12/lib-dynload/_bz2.cpython-312-x86_64-linux-gnu.so
+7d92b7e23000-7d92b7e26000 r-xp 00002000 08:30 10842                      /usr/lib/python3.12/lib-dynload/_bz2.cpython-312-x86_64-linux-gnu.so
+7d92b7e26000-7d92b7e28000 r--p 00005000 08:30 10842                      /usr/lib/python3.12/lib-dynload/_bz2.cpython-312-x86_64-linux-gnu.so
+7d92b7e28000-7d92b7e29000 r--p 00006000 08:30 10842                      /usr/lib/python3.12/lib-dynload/_bz2.cpython-312-x86_64-linux-gnu.so
+7d92b7e29000-7d92b7e2a000 rw-p 00007000 08:30 10842                      /usr/lib/python3.12/lib-dynload/_bz2.cpython-312-x86_64-linux-gnu.so
+7d92b7e2a000-7d92b7e2c000 r--p 00000000 08:30 10857                      /usr/lib/python3.12/lib-dynload/_json.cpython-312-x86_64-linux-gnu.so
+7d92b7e2c000-7d92b7e33000 r-xp 00002000 08:30 10857                      /usr/lib/python3.12/lib-dynload/_json.cpython-312-x86_64-linux-gnu.so
+7d92b7e33000-7d92b7e35000 r--p 00009000 08:30 10857                      /usr/lib/python3.12/lib-dynload/_json.cpython-312-x86_64-linux-gnu.so
+7d92b7e35000-7d92b7e36000 r--p 0000a000 08:30 10857                      /usr/lib/python3.12/lib-dynload/_json.cpython-312-x86_64-linux-gnu.so
+7d92b7e36000-7d92b7e37000 rw-p 0000b000 08:30 10857                      /usr/lib/python3.12/lib-dynload/_json.cpython-312-x86_64-linux-gnu.so
+7d92b7e37000-7d92b7e99000 rw-p 00000000 00:00 0 
+7d92b7e99000-7d92b7ef2000 r--p 00000000 08:30 18857                      /usr/lib/locale/C.utf8/LC_CTYPE
+7d92b7ef2000-7d92b7ef4000 rw-p 00000000 00:00 0 
+7d92b7ef4000-7d92b7ef8000 r--p 00000000 08:30 12722                      /usr/lib/x86_64-linux-gnu/libexpat.so.1.9.1
+7d92b7ef8000-7d92b7f17000 r-xp 00004000 08:30 12722                      /usr/lib/x86_64-linux-gnu/libexpat.so.1.9.1
+7d92b7f17000-7d92b7f1f000 r--p 00023000 08:30 12722                      /usr/lib/x86_64-linux-gnu/libexpat.so.1.9.1
+7d92b7f1f000-7d92b7f21000 r--p 0002b000 08:30 12722                      /usr/lib/x86_64-linux-gnu/libexpat.so.1.9.1
+7d92b7f21000-7d92b7f22000 rw-p 0002d000 08:30 12722                      /usr/lib/x86_64-linux-gnu/libexpat.so.1.9.1
+7d92b7f22000-7d92b7f24000 r--p 00000000 08:30 12870                      /usr/lib/x86_64-linux-gnu/libz.so.1.3
+7d92b7f24000-7d92b7f36000 r-xp 00002000 08:30 12870                      /usr/lib/x86_64-linux-gnu/libz.so.1.3
+7d92b7f36000-7d92b7f3c000 r--p 00014000 08:30 12870                      /usr/lib/x86_64-linux-gnu/libz.so.1.3
+7d92b7f3c000-7d92b7f3d000 r--p 0001a000 08:30 12870                      /usr/lib/x86_64-linux-gnu/libz.so.1.3
+7d92b7f3d000-7d92b7f3e000 rw-p 0001b000 08:30 12870                      /usr/lib/x86_64-linux-gnu/libz.so.1.3
+7d92b7f3e000-7d92b7f4e000 r--p 00000000 08:30 37788                      /usr/lib/x86_64-linux-gnu/libm.so.6
+7d92b7f4e000-7d92b7fcd000 r-xp 00010000 08:30 37788                      /usr/lib/x86_64-linux-gnu/libm.so.6
+7d92b7fcd000-7d92b8025000 r--p 0008f000 08:30 37788                      /usr/lib/x86_64-linux-gnu/libm.so.6
+7d92b8025000-7d92b8026000 r--p 000e7000 08:30 37788                      /usr/lib/x86_64-linux-gnu/libm.so.6
+7d92b8026000-7d92b8027000 rw-p 000e8000 08:30 37788                      /usr/lib/x86_64-linux-gnu/libm.so.6
+7d92b8027000-7d92b802b000 r--p 00000000 08:30 10533                      /usr/lib/python3.12/lib-dynload/_hashlib.cpython-312-x86_64-linux-gnu.so
+7d92b802b000-7d92b8031000 r-xp 00004000 08:30 10533                      /usr/lib/python3.12/lib-dynload/_hashlib.cpython-312-x86_64-linux-gnu.so
+7d92b8031000-7d92b8035000 r--p 0000a000 08:30 10533                      /usr/lib/python3.12/lib-dynload/_hashlib.cpython-312-x86_64-linux-gnu.so
+7d92b8035000-7d92b8036000 r--p 0000d000 08:30 10533                      /usr/lib/python3.12/lib-dynload/_hashlib.cpython-312-x86_64-linux-gnu.so
+7d92b8036000-7d92b8038000 rw-p 0000e000 08:30 10533                      /usr/lib/python3.12/lib-dynload/_hashlib.cpython-312-x86_64-linux-gnu.so
+7d92b8038000-7d92b803c000 rw-p 00000000 00:00 0 
+7d92b803c000-7d92b8043000 r--s 00000000 08:30 37728                      /usr/lib/x86_64-linux-gnu/gconv/gconv-modules.cache
+7d92b8043000-7d92b8045000 rw-p 00000000 00:00 0 
+7d92b8045000-7d92b8046000 r--p 00000000 08:30 37756                      /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2
+7d92b8046000-7d92b8071000 r-xp 00001000 08:30 37756                      /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2
+7d92b8071000-7d92b807b000 r--p 0002c000 08:30 37756                      /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2
+7d92b807b000-7d92b807d000 r--p 00036000 08:30 37756                      /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2
+7d92b807d000-7d92b807f000 rw-p 00038000 08:30 37756                      /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2
+7ffd6eda7000-7ffd6edc8000 rw-p 00000000 00:00 0                          [stack]
+7ffd6edcd000-7ffd6edd1000 r--p 00000000 00:00 0                          [vvar]
+7ffd6edd1000-7ffd6edd3000 r-xp 00000000 00:00 0                          [vdso]

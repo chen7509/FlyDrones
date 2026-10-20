@@ -1,0 +1,203 @@
+{
+  "schema": "target-bearing-entry-dependency-production-publication-v1",
+  "implementation_commit": "735aed967701e4531746ea5e415bf0ecfb8b5bf0",
+  "remote": "personal",
+  "pull_request": "https://github.com/chen7509/FlyDrones/pull/65",
+  "pr_verified": {
+    "expected_head": "735aed967701e4531746ea5e415bf0ecfb8b5bf0",
+    "observed_head": "735aed967701e4531746ea5e415bf0ecfb8b5bf0",
+    "only_crlf_normalized_exact": true,
+    "body_sha256": "e638e42c0ce5df2787c5dbd380a9feb2d029ee4ad19663db06556a8474ca79f1",
+    "utc": "2026-10-14T21:33:15.515116+00:00"
+  },
+  "archive": {
+    "path": "evidence/target-bearing-entry-dependency-production-dev-1701.zip",
+    "bytes": 6220873,
+    "members": 6247,
+    "mapped_members": 6246,
+    "sha256": "124c4e8550ff8e1d85c23dc725223f95d00f3841117c427b058266b3a7c6fe43"
+  },
+  "archive_plan_sha256": "40dd4035cc3a2ece364838c97e09108621dcd4d70c4cb234f06d73437fc92e30",
+  "postpublication_plan_sha256": "f4c8e1ed18b1872dad132b5517a3b6950046abb14be4a1f786bdc3f094625913",
+  "plan_changed_byte_offsets": [
+    4255,
+    6059
+  ],
+  "publication_change": "Only Task1/Task2 software review/seal/commit checkboxes; Task3 native/static-v2 and Task4 physical/measurement remain pending",
+  "production_implementation": true,
+  "software_verified": true,
+  "new_actual_native_entry_trace": false,
+  "actual_v1_static_attempt": "CONSUMED_FAILED",
+  "actual_v2_static_attempt_consumed": false,
+  "actual_physical_attempt_consumed": false,
+  "runtime_graph_frozen": false,
+  "physical_dispatch_ready": false,
+  "qualification": {
+    "source": false,
+    "clock": false,
+    "measured_calibration": false,
+    "accuracy": false,
+    "teacher": false,
+    "fusion": false,
+    "training": false,
+    "flight": false
+  },
+  "final_verification": {
+    "passed": 259,
+    "skipped": 3,
+    "seconds": 22.86,
+    "pytest_exit": 0,
+    "ruff_exit": 0,
+    "diff_exit": 0,
+    "platform": "Windows Python software/protocol fixtures; owned Python timeout/cap children only"
+  },
+  "prospective_recipe_final_sha256": "e7fd97a0fb1620a3f5980ef4c6d000b5e701f5044e177ded73e4ae76ec5e39dc",
+  "historical_archives": {
+    "count": 283,
+    "bytes": 772530105,
+    "all_streamed_sha_unchanged": true
+  },
+  "working_vs_git_normalized_identities": [
+    {
+      "path": "docs/superpowers/plans/2026-10-15-target-bearing-entry-dependency-production.md",
+      "working_sha256": "f4c8e1ed18b1872dad132b5517a3b6950046abb14be4a1f786bdc3f094625913",
+      "implementation_commit_blob_sha256": "a7092fb49f0b1dd0f9499330e968a3f795513ffb7ad8cd846a851481ec200281",
+      "working_bytes": 8701,
+      "git_blob_bytes": 8631
+    },
+    {
+      "path": "docs/superpowers/specs/2026-10-15-target-bearing-entry-dependency-production-design.md",
+      "working_sha256": "0e9b567934b625d359dbda567d455c8dee7c12664902c59703a69a8704be5dbd",
+      "implementation_commit_blob_sha256": "a07816c28a6cf9819f2b484818b59595404c16a1546eb2ada243974a6c423d1b",
+      "working_bytes": 10599,
+      "git_blob_bytes": 10556
+    },
+    {
+      "path": "docs/TARGET_BEARING_ENTRY_DEPENDENCY_PRODUCTION_REPORT.md",
+      "working_sha256": "74f9d94f31fd74a5e310f2e2cdf6e5c010b6bc3fd1f167df93c98bff41382871",
+      "implementation_commit_blob_sha256": "74f9d94f31fd74a5e310f2e2cdf6e5c010b6bc3fd1f167df93c98bff41382871",
+      "working_bytes": 14634,
+      "git_blob_bytes": 14634
+    },
+    {
+      "path": "tests/benchmark/test_calibration_study_v2.py",
+      "working_sha256": "2aac0dc006093349166f038b852e21269e4d638d7999e067871d6adaa40146e8",
+      "implementation_commit_blob_sha256": "2aac0dc006093349166f038b852e21269e4d638d7999e067871d6adaa40146e8",
+      "working_bytes": 17553,
+      "git_blob_bytes": 17553
+    },
+    {
+      "path": "tests/benchmark/test_native_entry_dependencies.py",
+      "working_sha256": "586af23b04b3de2aa6d787b57508da2235441fa394519744d55122e84f2329d5",
+      "implementation_commit_blob_sha256": "586af23b04b3de2aa6d787b57508da2235441fa394519744d55122e84f2329d5",
+      "working_bytes": 14619,
+      "git_blob_bytes": 14619
+    },
+    {
+      "path": "tools/benchmark/calibration_capture_scope.py",
+      "working_sha256": "5bbd5055425f2b95385abbb50a903e9affc48d36054bcd11c04caef14550fcec",
+      "implementation_commit_blob_sha256": "5bbd5055425f2b95385abbb50a903e9affc48d36054bcd11c04caef14550fcec",
+      "working_bytes": 5467,
+      "git_blob_bytes": 5467
+    },
+    {
+      "path": "tools/benchmark/calibration_capture_study.py",
+      "working_sha256": "bf8f082cf5fda77a20fe8876c0b83b1f4ae9c329c3ebe992768e7afb75378b11",
+      "implementation_commit_blob_sha256": "bf8f082cf5fda77a20fe8876c0b83b1f4ae9c329c3ebe992768e7afb75378b11",
+      "working_bytes": 12349,
+      "git_blob_bytes": 12349
+    },
+    {
+      "path": "tools/benchmark/calibration_capture_study_v2.py",
+      "working_sha256": "00cd4c5890a6833af8f3656d8665a2888614f37bcb40dffef534474125202fc2",
+      "implementation_commit_blob_sha256": "00cd4c5890a6833af8f3656d8665a2888614f37bcb40dffef534474125202fc2",
+      "working_bytes": 5887,
+      "git_blob_bytes": 5887
+    },
+    {
+      "path": "tools/benchmark/capture_contract.py",
+      "working_sha256": "ed126474e53dbe0c52db365aa1636f20d807183fb56e9fa4ff7488d908539b75",
+      "implementation_commit_blob_sha256": "ed126474e53dbe0c52db365aa1636f20d807183fb56e9fa4ff7488d908539b75",
+      "working_bytes": 12264,
+      "git_blob_bytes": 12264
+    },
+    {
+      "path": "tools/benchmark/native_entry_dependencies.py",
+      "working_sha256": "38bdb30431abb6d399f0a79c20671c7a7d75ecf444436b7a0d956f08bed988ea",
+      "implementation_commit_blob_sha256": "38bdb30431abb6d399f0a79c20671c7a7d75ecf444436b7a0d956f08bed988ea",
+      "working_bytes": 22425,
+      "git_blob_bytes": 22425
+    },
+    {
+      "path": "tools/benchmark/native_resource_client.py",
+      "working_sha256": "ec68d50758f5352727cb79b252597aae2f61f2006da8435f47f4d1ffacaa744e",
+      "implementation_commit_blob_sha256": "2f4a2672ada4c67f2e8a78289d3b09b382b89d8ceaa6f956169b60eea07a2af1",
+      "working_bytes": 10312,
+      "git_blob_bytes": 10134
+    },
+    {
+      "path": "tools/benchmark/prepare_calibration_capture.py",
+      "working_sha256": "9113bd1148c9e529de2f0ab1a97b818f86766ba5e44a5d0c94133f0cb8f8c68d",
+      "implementation_commit_blob_sha256": "579c490cbdd838031a45915ca2bf694b7cb24e5652a0d4ee2efe4645ad78ffc4",
+      "working_bytes": 21380,
+      "git_blob_bytes": 20914
+    },
+    {
+      "path": "tools/benchmark/prepare_calibration_capture_v2.py",
+      "working_sha256": "068f52eac326024a72cba0c06bf8fcca2bddc71536c5f279880540afc48cb7c0",
+      "implementation_commit_blob_sha256": "068f52eac326024a72cba0c06bf8fcca2bddc71536c5f279880540afc48cb7c0",
+      "working_bytes": 22016,
+      "git_blob_bytes": 22016
+    },
+    {
+      "path": "tools/benchmark/run_calibration_capture.py",
+      "working_sha256": "124edd13db846751c100c5b755c2e3b42b3e34a7fa831d8f9159b8b84b798041",
+      "implementation_commit_blob_sha256": "74de8250263fd8e8f2cebd7c8644a1cffeca903ceafb5139cea0263a628dcd2a",
+      "working_bytes": 11018,
+      "git_blob_bytes": 10757
+    },
+    {
+      "path": "tools/benchmark/runtime_resource_binding.py",
+      "working_sha256": "0a29c1753632d206e572379dc2951340dcaa3792960021a60d5b5c803f0cd0f0",
+      "implementation_commit_blob_sha256": "2540f8e1ab5b826cce9ff9adfbdf052db8c3cd531b0458fc4cfd9e2fafb4f0a2",
+      "working_bytes": 21061,
+      "git_blob_bytes": 20702
+    }
+  ],
+  "independent_archive_review": {
+    "path": "results/target-bearing-entry-dependency-production-dev-1701/independent-archive-review.json",
+    "sha256": "906a33f400fabefe541c496b643b1e9247cf6bbae3d66f79c08a415f0373ed88"
+  },
+  "outside_zip_scope": "Seal receipt/archive review; postseal publication/stage/PR/automation helpers and facts; later ledger/two-checkbox change. Original source/raw/ZIP/history not rewritten.",
+  "postseal_helpers": [
+    {
+      "path": "results/target-bearing-entry-dependency-production-dev-1701/finish-publication.py",
+      "bytes": 2726,
+      "sha256": "e55a408457d3a0a7d4f3a44dd372dc38af543bfcdf82e3de044b6c0e3073b0e0"
+    },
+    {
+      "path": "results/target-bearing-entry-dependency-production-dev-1701/prepare-automation-prompt.py",
+      "bytes": 9500,
+      "sha256": "2cf1ab85b20526a529fcefc00b511a6b3f174f43baa156687ba30ebd498b978d"
+    },
+    {
+      "path": "results/target-bearing-entry-dependency-production-dev-1701/publish-software.py",
+      "bytes": 4901,
+      "sha256": "a7ceaa8796c814db5587c6d7ac6e14b40d50ce257a1bd86c3edb71314cc7a560"
+    },
+    {
+      "path": "results/target-bearing-entry-dependency-production-dev-1701/read-automation-before.py",
+      "bytes": 874,
+      "sha256": "c11922641ba3f35ebdbb59b908ebb16cbafa391af8b41506104fba937d59d794"
+    },
+    {
+      "path": "results/target-bearing-entry-dependency-production-dev-1701/record-publication.py",
+      "bytes": 5416,
+      "sha256": "c480b3806693abd06d2544bfa2ea87abfb87463b2f8c834919d4e367f35be487"
+    }
+  ],
+  "preserved_full_history": {
+    "path": "evidence/flydrones-history-through-admitted-executor-dev-1701.json",
+    "sha256": "c88840b6f58dea4e7e4931683c4993b4fc3b8eb55887807994b6381ef6c2b989"
+  }
+}

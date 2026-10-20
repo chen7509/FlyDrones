@@ -1,0 +1,9 @@
+# Publication boundary after ordered input observations
+
+Canonical new ZIP14963960B, SHA256495e3ae99863573e78aea5a0f96dc45447ade726d45bc1eecf9288c9bad18b1a;1663members1662mapped. Mapped52958615B plus MANIFEST414297B gives53372912B whole member bytes. Executor checked only the new archive CRC/member hashes and new helper AST; no tests, old payload/archive verification, source/native/delivery re-review or actual build/run/ABI execution.
+
+This note, external map/receipt and later automation/Git publication metadata are outside the map. No mapped file is appended or relabeled after sealing. Both new directories include scoped -text attributes in the sealed map to preserve retained bytes. The separate progress document may receive an ordinary Git LF/CRLF working-copy advisory; this is not a native/payload failure.
+
+The header phase's frozen169 proposal/analysis initially record authorized=false. Its166-path v2 only removes3 Git metadata files. The later explicit human authorization and actual166-path refresh are recorded by the refresh phase; never rewrite the earlier proposal as preauthorized. New141 source observations match fixed143 manifest fields, but the two missing paths were not retried and completeness remains false. Current9tools16configs now have real refreshed pins; no future continuity, package origin or actual full input consumption proof inferred.
+
+Publish only these new results and the declared progress document, to personal on the existing branch. Draft PR65 body, old evidence, production request/admission templates and source stay unchanged. Stage1/request remains incomplete; no resources refresh, new Linux batch/deployment write/compiler/native target or automatic next stage. Goal blocked read-only, automation ACTIVE, all qualification/readiness/dispatchfalse and all inherited UNKNOWN/CONSUMED/budgets/safety/full goals maintained.

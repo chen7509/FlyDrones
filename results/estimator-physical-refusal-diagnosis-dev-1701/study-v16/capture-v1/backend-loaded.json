@@ -1,0 +1,32 @@
+[
+  {
+    "path": "/usr/lib/x86_64-linux-gnu/gz-physics-7/engine-plugins/libgz-physics7-dartsim-plugin.so.7.8.0",
+    "bytes": 3122968,
+    "sha256": "1ee9350aa09d5a5eb43a5075c9c61d2cdcb85113d2ff1e0f32136847edf1688e"
+  },
+  {
+    "path": "/usr/lib/x86_64-linux-gnu/libdart-collision-bullet.so.6.13.2",
+    "bytes": 325992,
+    "sha256": "897709e0c988e9e562c662292ed5bc860bce70ee2c64499501f54a6b5ca02201"
+  },
+  {
+    "path": "/usr/lib/x86_64-linux-gnu/libdart-collision-ode.so.6.13.2",
+    "bytes": 289128,
+    "sha256": "2940e0bd6b056f186d3596e051a26ec25f1c27add88d870cdfe673785dad4b44"
+  },
+  {
+    "path": "/usr/lib/x86_64-linux-gnu/libdart-external-odelcpsolver.so.6.13.2",
+    "bytes": 47280,
+    "sha256": "b890ed6936ea7cf486303fc5101ee5ff68356fc89596273ebaef83671aa4cb16"
+  },
+  {
+    "path": "/usr/lib/x86_64-linux-gnu/libdart.so.6.13.2",
+    "bytes": 5783040,
+    "sha256": "f74f4ec9820aee785ef94fb7bedafa7e4c832f209675a8ca1d35019c72b48e06"
+  },
+  {
+    "path": "/usr/lib/x86_64-linux-gnu/libgz-physics7.so.7.8.0",
+    "bytes": 188152,
+    "sha256": "6b1dc93504ed958ef8c006d967e5e12eea24ebfe778af4ec25007bdba7ca290e"
+  }
+]

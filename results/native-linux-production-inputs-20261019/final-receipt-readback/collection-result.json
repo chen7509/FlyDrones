@@ -1,0 +1,142 @@
+{
+  "schema": "native-linux-production-inputs-final-receipts-parent-v1",
+  "command": [
+    "wsl",
+    "-d",
+    "Ubuntu",
+    "--",
+    "/usr/bin/python3",
+    "-I",
+    "-S",
+    "-B",
+    "-"
+  ],
+  "utc_start": "2026-10-19T10:21:47.591780+00:00",
+  "errors": [],
+  "all_qualifications": false,
+  "dispatchable": false,
+  "resource_queries": false,
+  "compiler_or_target_executed": false,
+  "linux_file_writes": false,
+  "observed_files": [
+    {
+      "type": "end",
+      "id": 0,
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/native-linux-production-inputs-20261019/final-v3/header-package-manifest.json",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/native-linux-production-inputs-20261019/final-v3/header-package-manifest.json",
+      "after": {
+        "dev": 115,
+        "ino": 3096224746307720,
+        "mode": 33279,
+        "uid": 1000,
+        "gid": 1000,
+        "nlink": 1,
+        "bytes": 209633,
+        "mtime_ns": 1792405306695661000,
+        "ctime_ns": 1792405306695661000
+      },
+      "bytes": 209633,
+      "sha256": "c1ebbbcb5e77707ba7b3fe170b01702cc57045b570d86a41a31a594f82c4c2e5",
+      "stable": true,
+      "before": {
+        "dev": 115,
+        "ino": 3096224746307720,
+        "mode": 33279,
+        "uid": 1000,
+        "gid": 1000,
+        "nlink": 1,
+        "bytes": 209633,
+        "mtime_ns": 1792405306695661000,
+        "ctime_ns": 1792405306695661000
+      },
+      "blob": "blobs/c1ebbbcb5e77707ba7b3fe170b01702cc57045b570d86a41a31a594f82c4c2e5"
+    },
+    {
+      "type": "end",
+      "id": 1,
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/native-linux-production-inputs-20261019/final-v3/input-pin-references.json",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/native-linux-production-inputs-20261019/final-v3/input-pin-references.json",
+      "after": {
+        "dev": 115,
+        "ino": 2814749769597066,
+        "mode": 33279,
+        "uid": 1000,
+        "gid": 1000,
+        "nlink": 1,
+        "bytes": 1882033,
+        "mtime_ns": 1792405306729176900,
+        "ctime_ns": 1792405306729176900
+      },
+      "bytes": 1882033,
+      "sha256": "0162917239855192dca3643149150363a996b379e70ea3d01ca738752fc4b891",
+      "stable": true,
+      "before": {
+        "dev": 115,
+        "ino": 2814749769597066,
+        "mode": 33279,
+        "uid": 1000,
+        "gid": 1000,
+        "nlink": 1,
+        "bytes": 1882033,
+        "mtime_ns": 1792405306729176900,
+        "ctime_ns": 1792405306729176900
+      },
+      "blob": "blobs/0162917239855192dca3643149150363a996b379e70ea3d01ca738752fc4b891"
+    },
+    {
+      "type": "end",
+      "id": 2,
+      "path": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/native-linux-production-inputs-20261019/final-v3/binding-candidates.json",
+      "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/native-linux-production-inputs-20261019/final-v3/binding-candidates.json",
+      "after": {
+        "dev": 115,
+        "ino": 3940649676439691,
+        "mode": 33279,
+        "uid": 1000,
+        "gid": 1000,
+        "nlink": 1,
+        "bytes": 2054,
+        "mtime_ns": 1792405306730178600,
+        "ctime_ns": 1792405306730178600
+      },
+      "bytes": 2054,
+      "sha256": "2f290e397fcf3cf787fc4052df1ac886940836f79450a1d2129549692698bb11",
+      "stable": true,
+      "before": {
+        "dev": 115,
+        "ino": 3940649676439691,
+        "mode": 33279,
+        "uid": 1000,
+        "gid": 1000,
+        "nlink": 1,
+        "bytes": 2054,
+        "mtime_ns": 1792405306730178600,
+        "ctime_ns": 1792405306730178600
+      },
+      "blob": "blobs/2f290e397fcf3cf787fc4052df1ac886940836f79450a1d2129549692698bb11"
+    }
+  ],
+  "stream_payload_bytes": 2093720,
+  "stream_metadata_bytes": 5445,
+  "active_partial": null,
+  "stderr_bytes": 132,
+  "linux_completion": {
+    "type": "completion",
+    "complete": true,
+    "reason": null,
+    "elapsed_s": 0.08098092599539086,
+    "identity_paths_attempted": 3,
+    "payload_bytes": 2093720,
+    "new_inodes": 3,
+    "metadata_bytes_before_completion": 5206,
+    "all_qualifications": false,
+    "dispatchable": false
+  },
+  "bootstrap_identity_authenticated": false,
+  "owned_windows_launcher_pid": 47216,
+  "exit": 0,
+  "readers_closed": true,
+  "elapsed_s": 4.516000000294298,
+  "outer_exceeded": false,
+  "collection_complete": true
+}

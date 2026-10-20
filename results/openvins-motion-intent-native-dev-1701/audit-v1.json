@@ -1,0 +1,11 @@
+{
+  "binary_sha256": "d7252cdb97b4b73baa64f6950e3a03299fd4e0c6bb8252a568fcbc118218719e",
+  "config_sha256": "eaa40224f0de2f4c5b0f1d33504d215670544b9cc000252a0e92f404478360e6",
+  "failures": [],
+  "fusion_eligible": false,
+  "physical_validation": false,
+  "qualified": true,
+  "schema": "openvins-motion-intent-replay-audit-v1",
+  "source_requests_sha256": "7794cc35334069c0b10cb48c5c7bb754d1cc642acf8c664d104061505f478868",
+  "truth_used": false
+}

@@ -1,0 +1,81 @@
+{
+  "status": "software-preparation-published-native-pending",
+  "observed_utc": "2026-10-14T16:12:55.026771+00:00",
+  "implementation_commit": "14504b6c4b3268a6be1ecdc2b01c00f2abf1284a",
+  "remote": "personal",
+  "pr": "https://github.com/chen7509/FlyDrones/pull/65",
+  "actual_pr_head_at_implementation_publication": "14504b6c4b3268a6be1ecdc2b01c00f2abf1284a",
+  "body_verified_after_newline_normalization": true,
+  "review_findings": {
+    "Critical": 0,
+    "Important": 0,
+    "Minor": 0
+  },
+  "plan_inside_archive_prepublication_sha256": "156adf41a9d495a5b1b20e19773087d45282290f9790b37be7fff92a6f2de588",
+  "plan_after_implementation_publication_sha256": "9d86571735c40ceecb9a5cd72d160411daa789ecf5bb32f970e970e9316853d7",
+  "source_identity": {
+    "tools/benchmark/run_openvins_dataset_consumer.py": {
+      "working_archive_sha256": "f93c19ed132281339202f63172089711ee348697bedf8edee31a7d8ab32bf09a",
+      "implementation_git_blob_sha256": "f93c19ed132281339202f63172089711ee348697bedf8edee31a7d8ab32bf09a"
+    },
+    "tools/benchmark/openvins_native_identity.py": {
+      "working_archive_sha256": "8489d2d06a931832fe2ace305b9a283e9d83899a8835381cf673222d34417439",
+      "implementation_git_blob_sha256": "8489d2d06a931832fe2ace305b9a283e9d83899a8835381cf673222d34417439"
+    },
+    "tools/benchmark/gpl/openvins_dataset_consumer.cpp": {
+      "working_archive_sha256": "a8a479c59c9880f3abcf9077fa772e0c1877810a9b1766937a77f8f3b460d53c",
+      "implementation_git_blob_sha256": "a8a479c59c9880f3abcf9077fa772e0c1877810a9b1766937a77f8f3b460d53c"
+    },
+    "tools/benchmark/gpl/openvins_dataset_io.h": {
+      "working_archive_sha256": "175226bd06b37d5236a891efec3c1871e4b2949b12425f5cd1d37c1122429e74",
+      "implementation_git_blob_sha256": "175226bd06b37d5236a891efec3c1871e4b2949b12425f5cd1d37c1122429e74"
+    },
+    "tools/benchmark/native_consumer_scope.py": {
+      "working_archive_sha256": "5f1ef5c972d1719654a8c284462ede7467f9b1c8c033c40703fce18734206034",
+      "implementation_git_blob_sha256": "5f1ef5c972d1719654a8c284462ede7467f9b1c8c033c40703fce18734206034"
+    },
+    "tests/benchmark/test_openvins_dataset_native.py": {
+      "working_archive_sha256": "5908a1a621ea5b5cf9a5a0a51f648195ac331360d83e987ff7d1b8c3090b831b",
+      "implementation_git_blob_sha256": "5908a1a621ea5b5cf9a5a0a51f648195ac331360d83e987ff7d1b8c3090b831b"
+    },
+    "tests/benchmark/test_openvins_png_admission_record.py": {
+      "working_archive_sha256": "46ea51efc8bfddbd1a73c41b6877c9f98141ed3a7f9a9efcfae6c2b9306cdf68",
+      "implementation_git_blob_sha256": "46ea51efc8bfddbd1a73c41b6877c9f98141ed3a7f9a9efcfae6c2b9306cdf68"
+    },
+    "tests/benchmark/test_openvins_native_identity.py": {
+      "working_archive_sha256": "449410d676068e7d94cb8a1472231fb6157784f675b34fe87421e3ab98e62f29",
+      "implementation_git_blob_sha256": "449410d676068e7d94cb8a1472231fb6157784f675b34fe87421e3ab98e62f29"
+    }
+  },
+  "native_study_exists": false,
+  "native_parser_cases_verified": 0,
+  "native_attempt_consumed": false,
+  "compiler_started": false,
+  "linux_barrier_verified": false,
+  "qualifications": {
+    "source": false,
+    "clock": false,
+    "measured_calibration": false,
+    "accuracy": false,
+    "teacher": false,
+    "fusion": false,
+    "training": false,
+    "flight": false
+  },
+  "historical_archives_unchanged": 276,
+  "final_documentation_commit_is_later_than_this_observation": true,
+  "archive_seal_observation_before_publication": {
+    "path": "evidence/openvins-png-consumer-completion-preparation-dev-1701.zip",
+    "sha256": "f9b373a077e28868884a61e0ceb6b754a880de1210232520172ad6b9afb508e6",
+    "members": 119,
+    "bytes": 536695,
+    "mapped_members": 118,
+    "CRC_SHA_size_currentbytes_errors": 0,
+    "historical_count": 276,
+    "historical_changed": [],
+    "native_dispatch": false,
+    "publication": "not yet committed or pushed"
+  },
+  "review_working_sha256": "6cf8ccac4d182ee32bf2b1a4b3610370b35ed6ae27788bba07bb74b2d544e7c0",
+  "review_staged_git_blob_sha256": "375758956f0feef0a01499c0ebc89e21ec87a615a4a5b11df9aab4dc9578bdec"
+}

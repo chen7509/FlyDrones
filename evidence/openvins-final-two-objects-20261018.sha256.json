@@ -1,0 +1,141 @@
+{
+  "schema": "openvins-final-two-seal-v1",
+  "archive": "evidence/openvins-final-two-objects-20261018.zip",
+  "bytes": 14052244,
+  "sha256": "8ef391af0fb2fcc0afd2dfc8f31ff51d1c9075fcbbb8f912a4743db5956d70ab",
+  "members": 30,
+  "mapped": 29,
+  "mapped_payload_bytes": 77011469,
+  "manifest_bytes": 5736,
+  "whole_expanded_bytes": 77017205,
+  "software_files": [
+    "docs/OPENVINS_FINAL_TWO_OBJECTS_PROGRESS.md",
+    "docs/superpowers/plans/2026-10-18-openvins-final-two-objects.md",
+    "results/openvins-final-two-objects-20261018/file-bindings-v2.json",
+    "results/openvins-final-two-objects-20261018/object-static-observations-v2.json",
+    "results/openvins-final-two-objects-20261018/object-union-bindings-v2.json",
+    "results/openvins-final-two-objects-20261018/analysis-summary-v2.json",
+    "results/openvins-final-two-objects-20261018/missing-evidence-v2.json"
+  ],
+  "source_to_existing_library_proven": false,
+  "native_admission": false,
+  "all_qualifications": false,
+  "mapping": {
+    "docs/OPENVINS_FINAL_TWO_OBJECTS_PROGRESS.md": {
+      "bytes": 3616,
+      "sha256": "7bc7846f776d360c14a4821815be4640b6b237c0d51255f9f7395b2c795b4604"
+    },
+    "docs/superpowers/plans/2026-10-18-openvins-final-two-objects.md": {
+      "bytes": 1900,
+      "sha256": "d1f29800790df7b06472972de7d698d7a4fee998fa4c547d1405c2fb388e64c0"
+    },
+    "results/openvins-final-two-objects-20261018/analysis-reference-erratum.json": {
+      "bytes": 690,
+      "sha256": "4cd652442d32a4905812ff11ba3f9fd1a06dd226bd2d3fbac852ec04392bd301"
+    },
+    "results/openvins-final-two-objects-20261018/analysis-summary-v2.json": {
+      "bytes": 1035,
+      "sha256": "6bce8067da20f8422c55b0cb83129fa489780b8be4dec42ea43e0de7e0f353fb"
+    },
+    "results/openvins-final-two-objects-20261018/analysis-summary.json": {
+      "bytes": 1035,
+      "sha256": "6bce8067da20f8422c55b0cb83129fa489780b8be4dec42ea43e0de7e0f353fb"
+    },
+    "results/openvins-final-two-objects-20261018/analyze_saved_two.py": {
+      "bytes": 8996,
+      "sha256": "c3a7d9f0e2c1c9b2ba35d96780b0a2f510559fb9438ee67b3eb5fce6242126b3"
+    },
+    "results/openvins-final-two-objects-20261018/analyze_saved_two_v2.py": {
+      "bytes": 9049,
+      "sha256": "793233bb115bc67e9ad541849da519c9eb3574a9d975b4ac85f4ef8a112137f9"
+    },
+    "results/openvins-final-two-objects-20261018/blobs/185bbcdf9dfd30e592922b957d60847cf9fd6100f71b1c70ace1796fb7314f97": {
+      "bytes": 30651792,
+      "sha256": "185bbcdf9dfd30e592922b957d60847cf9fd6100f71b1c70ace1796fb7314f97"
+    },
+    "results/openvins-final-two-objects-20261018/blobs/3da8b16371510cac058ffe57b7ef24c5a07d86cdbe289189704a84a2e9706ab2": {
+      "bytes": 45841632,
+      "sha256": "3da8b16371510cac058ffe57b7ef24c5a07d86cdbe289189704a84a2e9706ab2"
+    },
+    "results/openvins-final-two-objects-20261018/collect_two_objects.py": {
+      "bytes": 5492,
+      "sha256": "f9669e3e8b54d2ad36ee67584f2b7f63d22423c419ba44d0ff5f2e9945964a75"
+    },
+    "results/openvins-final-two-objects-20261018/collection-completion.json": {
+      "bytes": 462,
+      "sha256": "4d42c8ab64c8ece79da602098848101276b51fc1dcb86153502b1b194f23d76d"
+    },
+    "results/openvins-final-two-objects-20261018/collection-parent-completion.json": {
+      "bytes": 122,
+      "sha256": "450eecf6498f1f0cdee0ae98eb444fd6ea9dc121ae046f8705dac5271c1c3bc5"
+    },
+    "results/openvins-final-two-objects-20261018/collection-start.json": {
+      "bytes": 556,
+      "sha256": "1e550a1b451570dabe2ff8e67db9675c9029cc6731b2ea9134a45d9a7062c784"
+    },
+    "results/openvins-final-two-objects-20261018/collection.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "results/openvins-final-two-objects-20261018/collection.stdout": {
+      "bytes": 419,
+      "sha256": "2fd55f39b9646b201a339ae897338c7ecfa57384b1677a054be86328e36f4878"
+    },
+    "results/openvins-final-two-objects-20261018/current-files.json": {
+      "bytes": 2211,
+      "sha256": "1e9835027e39e7165600fa5f5d60da0dd248841ad1dd227d829266482e6a223f"
+    },
+    "results/openvins-final-two-objects-20261018/file-bindings-v2.json": {
+      "bytes": 2685,
+      "sha256": "d8e8eb5f00a8178573d8c86bd18417a6d2230534c4f79e40d1b09a6c12b7c9c7"
+    },
+    "results/openvins-final-two-objects-20261018/file-bindings.json": {
+      "bytes": 2685,
+      "sha256": "d8e8eb5f00a8178573d8c86bd18417a6d2230534c4f79e40d1b09a6c12b7c9c7"
+    },
+    "results/openvins-final-two-objects-20261018/files.jsonl": {
+      "bytes": 1590,
+      "sha256": "c9bb962532051dfe98520358818543b740009ad5682744a52e71684ba690b39a"
+    },
+    "results/openvins-final-two-objects-20261018/missing-evidence-v2.json": {
+      "bytes": 4153,
+      "sha256": "98a87a535901299deaeeba76a425d6c0746dfe2326d83a26f836b8f323f874e3"
+    },
+    "results/openvins-final-two-objects-20261018/missing-evidence.json": {
+      "bytes": 4153,
+      "sha256": "98a87a535901299deaeeba76a425d6c0746dfe2326d83a26f836b8f323f874e3"
+    },
+    "results/openvins-final-two-objects-20261018/object-static-observations-v2.json": {
+      "bytes": 3213,
+      "sha256": "08adb5cb73b355d5f485bfd0a41fdcfd4395aea3c7671b5627a937ee6010f571"
+    },
+    "results/openvins-final-two-objects-20261018/object-static-observations.json": {
+      "bytes": 3213,
+      "sha256": "08adb5cb73b355d5f485bfd0a41fdcfd4395aea3c7671b5627a937ee6010f571"
+    },
+    "results/openvins-final-two-objects-20261018/object-union-bindings-v2.json": {
+      "bytes": 48305,
+      "sha256": "5ea34a2b650f21a4471faec5bcd1602ffe689849daad19100a9d86d84d737590"
+    },
+    "results/openvins-final-two-objects-20261018/object-union-bindings.json": {
+      "bytes": 48293,
+      "sha256": "cfe67c47afd5802967c3934757fc5b44155488106b85185cee5264eabc9563bb"
+    },
+    "results/openvins-final-two-objects-20261018/prepare_and_collect.py": {
+      "bytes": 3619,
+      "sha256": "0a49e707c772a361b4b93d02db6f91b5e0554a9ae4d6697861608429f6b8f8a2"
+    },
+    "results/openvins-final-two-objects-20261018/seal_two.py": {
+      "bytes": 5288,
+      "sha256": "dcf938bd219983f73db68270ae739bc5923c084ff1999eed936cc5869f8fc74b"
+    },
+    "results/openvins-final-two-objects-20261018/selection-contract.json": {
+      "bytes": 354567,
+      "sha256": "e7f074041c241ea9b8d119ae8ddaaf35eaed605b97f7347d7cd8e47dba6c90c3"
+    },
+    "results/openvins-final-two-objects-20261018/self-check.json": {
+      "bytes": 698,
+      "sha256": "cc9edb6497d619b11874912f2f890a77a10fb971cb3c30afdee7c016a8175bf0"
+    }
+  }
+}

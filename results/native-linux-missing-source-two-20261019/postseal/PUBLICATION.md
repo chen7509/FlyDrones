@@ -1,0 +1,9 @@
+# Publication boundary after exact two-file restoration
+
+Canonical new ZIP509522B/SHA256336f4ae627f109b6048d9f007c600dbd370780ecd79293b4c221390066ce6b76/26members25mapped. Mapped2994128B plus MANIFEST5342B gives2999470B whole member payload. Executor only new helper AST/new JSON and payload/new ZIP CRC-memberSHA; no tests, old archive/payload audits or second source/native/delivery review.
+
+This publication note, external map/receipt, later Git/PR/automation receipts stay outside the map. No mapped file is appended or rewritten after sealing. Original plan/proposal remain prepared-time history; actual human approval and new create/readback evidence are separate later facts. No old artifacts, production source,143manifest,45bindings or admission templates changed. Ordinary progressdoc LF/CRLF advisory is not a native failure.
+
+Actual two Linux targets were absent and exclusively created,48249B written/read,2stable SHA/Gitblob matches, one invocation. Cross-phase source observations now143, not an atomic current snapshot or historical original checkout proof. Stage1 incomplete: Linux production/capture bindings, toolchain file/receipt, full input closure and separate fresh build admission remain. No other Linux write, deployment, toolchain generation, compiler/native/resources/SDK/tests, new batch or automatic build/run. Goal blocked, automationACTIVE, personal only, all qualifications/readiness/dispatchfalse and inherited UNKNOWN/CONSUMED/budgets/safety/full goals preserved.
+
+Full cached diffcheck: the first PowerShell tool reported exit1; direct Git return2, stdout32243B/stderr0B: retained raw CRLF in attributes/parent JSON/history/copy-check files and the unchanged upstream ReadMe blank EOF. Full output retained in postseal; scoped helpers/progress checks separate. No mapped bytes normalized or repaired, no target/native failure inferred.

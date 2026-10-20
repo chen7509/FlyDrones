@@ -1,0 +1,110 @@
+{
+  "schema": "target-bearing-loader-context-research-publication-v1",
+  "research_commit": "d10d429de13e7cb49ce02632092d3509695566fc",
+  "remote": "personal",
+  "pull_request": "https://github.com/chen7509/FlyDrones/pull/65",
+  "pr_verified": {
+    "expected_head": "d10d429de13e7cb49ce02632092d3509695566fc",
+    "observed_head": "d10d429de13e7cb49ce02632092d3509695566fc",
+    "only_crlf_normalized_exact": true,
+    "body_sha256": "0484f0d928cd47c828c1b827a10fd05a38491a6e0c377e7c87cd78284e433fbe",
+    "utc": "2026-10-14T20:19:52.976650+00:00"
+  },
+  "archive": {
+    "path": "evidence/target-bearing-loader-context-research-dev-1701.zip",
+    "bytes": 1433663,
+    "members": 64,
+    "mapped_members": 63,
+    "sha256": "0ca8b5b6739b634e52c3c4edaf136b76f343d1f273ac0d9f147a384f0b7aaf3d"
+  },
+  "archive_plan_sha256": "80a84f49cc9948e61b25cf52b02025bcbccfca62d19129e5d0fd08ebdf5c56a0",
+  "postpublication_plan_sha256": "5f379af531ee98aa4ae5013b79db15441211b95e64d228110c884dd01380d257",
+  "plan_changed_byte_offsets": [
+    8373
+  ],
+  "publication_change": "Only research/design publication checkbox; all13 production implementation/native/static-v2/physical tasks remain pending",
+  "actual_v1_static_attempt": "CONSUMED_FAILED",
+  "actual_v2_static_attempt_consumed": false,
+  "actual_physical_attempt_consumed": false,
+  "runtime_graph_frozen": false,
+  "physical_dispatch_ready": false,
+  "new_product_implementation": false,
+  "new_native_entry_trace": false,
+  "qualification": {
+    "source": false,
+    "clock": false,
+    "measured_calibration": false,
+    "accuracy": false,
+    "teacher": false,
+    "fusion": false,
+    "training": false,
+    "flight": false
+  },
+  "working_vs_git_normalized_identities": [
+    {
+      "path": "docs/superpowers/plans/2026-10-15-target-bearing-entry-dependency-production.md",
+      "working_sha256": "5f379af531ee98aa4ae5013b79db15441211b95e64d228110c884dd01380d257",
+      "research_commit_git_blob_sha256": "bff7294be92574f852f81a7821274f34b4e853ec89aa65b0d617b5e114902019",
+      "working_bytes": 8701,
+      "git_blob_bytes": 8631
+    },
+    {
+      "path": "docs/superpowers/specs/2026-10-15-target-bearing-entry-dependency-production-design.md",
+      "working_sha256": "0e9b567934b625d359dbda567d455c8dee7c12664902c59703a69a8704be5dbd",
+      "research_commit_git_blob_sha256": "a07816c28a6cf9819f2b484818b59595404c16a1546eb2ada243974a6c423d1b",
+      "working_bytes": 10599,
+      "git_blob_bytes": 10556
+    },
+    {
+      "path": "docs/TARGET_BEARING_LOADER_CONTEXT_RESEARCH_REPORT.md",
+      "working_sha256": "560acd2355cde04d9b89941cb2b191f310de5a3905013e217995f4fe7f97e958",
+      "research_commit_git_blob_sha256": "38158cccfac0d8f0dcc329cf5502b994ea3beec6b62ecc9a18fca73caf30ee27",
+      "working_bytes": 8634,
+      "git_blob_bytes": 8588
+    },
+    {
+      "path": "evidence/flydrones-history-through-admitted-executor-dev-1701.json",
+      "working_sha256": "c88840b6f58dea4e7e4931683c4993b4fc3b8eb55887807994b6381ef6c2b989",
+      "research_commit_git_blob_sha256": "c88840b6f58dea4e7e4931683c4993b4fc3b8eb55887807994b6381ef6c2b989",
+      "working_bytes": 89359,
+      "git_blob_bytes": 89359
+    }
+  ],
+  "history_file_sha256": "c88840b6f58dea4e7e4931683c4993b4fc3b8eb55887807994b6381ef6c2b989",
+  "history_current_toml_audit": {
+    "source_toml_sha256": "a6a0ac1e660ca7de64141104de71d81e01f9bc42fe2c95ebb17b08eac0155692",
+    "history_file_sha256": "c88840b6f58dea4e7e4931683c4993b4fc3b8eb55887807994b6381ef6c2b989",
+    "prompt_sha256": "b4f7a24ffad69a2afa213f684e27d71f760ede34b6212f0b11f565949ad1a883",
+    "prompt_chars": 62986,
+    "exact_prompt_equal": true,
+    "status": "ACTIVE",
+    "rrule": "FREQ=MINUTELY;INTERVAL=30",
+    "target_thread_id": "01a0c2f3-942b-78b0-bf73-08cef80c58a5",
+    "scope": "Postseal read-only exact old-prompt preservation audit; no automation write yet"
+  },
+  "outside_zip_scope": "archive review/seal receipt/postseal publication helper/PR/stage audit/historical prompt exact TOML audit and this later publication ledger; no experiment bytes or archive changed",
+  "postseal_publication_helpers": [
+    {
+      "path": "results/target-bearing-loader-context-research-dev-1701/publish-research.py",
+      "bytes": 1430,
+      "sha256": "e8c783cf54e4592d67fa880873023fba52851a377151038fefd4471183bfec9a"
+    },
+    {
+      "path": "results/target-bearing-loader-context-research-dev-1701/record-publication.py",
+      "bytes": 4233,
+      "sha256": "f3231a7f536fca671d9811fc17509359eb1c6a1ca202fa887cd960ab2778ff8f"
+    }
+  ],
+  "independent_archive_review": {
+    "path": "results/target-bearing-loader-context-research-dev-1701/independent-archive-review.json",
+    "sha256": "a0e494a818c2d33d621496ea57107edf4416bd31a1fa4513d478319c05db730f",
+    "critical": 0,
+    "important": 0,
+    "minor": 0
+  },
+  "staged_identity_record": {
+    "path": "results/target-bearing-loader-context-research-dev-1701/precommit-stage-verification.json",
+    "sha256": "e253d7f4799087081ef771c6c0033a64963173cd1281b9c7a2289e6addc3a492",
+    "scope": "before research commit exact six staged working/index identities; index may normalize CRLF"
+  }
+}

@@ -1,0 +1,7 @@
+warning: in the working copy of 'docs/ESTIMATOR_PHYSICAL_REFUSAL_DIAGNOSIS_REPORT.md', LF will be replaced by CRLF the next time Git touches it
+ .../ESTIMATOR_PHYSICAL_REFUSAL_DIAGNOSIS_REPORT.md |  7 +++
+ tests/benchmark/test_estimator_aware_readiness.py  |  9 ++-
+ tests/benchmark/test_journaled_heartbeat_lane.py   | 14 ++++-
+ tests/benchmark/test_readiness_anchor.py           | 70 ++++++++++++++++++++++
+ tools/benchmark/readiness_anchor.py                | 41 ++++++++++++-
+ 5 files changed, 135 insertions(+), 6 deletions(-)

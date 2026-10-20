@@ -1,0 +1,8 @@
+{
+  "phase": "postfinalize",
+  "unknown": [],
+  "mismatched": [],
+  "parse_error": null,
+  "observed_files_covered": true,
+  "runtime_closure_qualified": false
+}

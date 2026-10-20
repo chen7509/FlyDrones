@@ -1,0 +1,53 @@
+{
+  "before_environment": {
+    "GZ_SIM_RESOURCE_PATH": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/assets/gazebo/models:/home/yuchen7509/PX4-Autopilot/Tools/simulation/gz/models:",
+    "SDF_PATH": "",
+    "GZ_FILE_PATH": "",
+    "GZ_PLUGIN_PATH": "",
+    "GZ_SIM_SYSTEM_PLUGIN_PATH": "",
+    "HOME": "/home/yuchen7509",
+    "GZ_HOMEDIR": null,
+    "GZ_MESH_FORCE_ASSIMP": null,
+    "IGN_PLUGIN_PATH": "",
+    "IGN_FILE_PATH": "",
+    "IGN_GAZEBO_RESOURCE_PATH": "",
+    "IGN_GAZEBO_SYSTEM_PLUGIN_PATH": "",
+    "GZ_LOG_PATH": null,
+    "IGN_LOG_PATH": null
+  },
+  "after_environment": {
+    "GZ_SIM_RESOURCE_PATH": ":/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/assets/gazebo/models:/home/yuchen7509/PX4-Autopilot/Tools/simulation/gz/models:",
+    "SDF_PATH": ":/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/assets/gazebo/models:/home/yuchen7509/PX4-Autopilot/Tools/simulation/gz/models:",
+    "GZ_FILE_PATH": ":/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/assets/gazebo/models:/home/yuchen7509/PX4-Autopilot/Tools/simulation/gz/models:",
+    "GZ_PLUGIN_PATH": "",
+    "GZ_SIM_SYSTEM_PLUGIN_PATH": "",
+    "HOME": "/home/yuchen7509",
+    "GZ_HOMEDIR": null,
+    "GZ_MESH_FORCE_ASSIMP": null,
+    "IGN_PLUGIN_PATH": "",
+    "IGN_FILE_PATH": "",
+    "IGN_GAZEBO_RESOURCE_PATH": "",
+    "IGN_GAZEBO_SYSTEM_PLUGIN_PATH": "",
+    "GZ_LOG_PATH": null,
+    "IGN_LOG_PATH": null
+  },
+  "cwd": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility",
+  "file_paths": [
+    "/",
+    "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/assets/gazebo/models/",
+    "/home/yuchen7509/PX4-Autopilot/Tools/simulation/gz/models/"
+  ],
+  "plugin_paths": [
+    "/home/yuchen7509/.gz/sim/plugins/",
+    "/usr/lib/x86_64-linux-gnu/gz-sim-8/plugins/"
+  ],
+  "sdf_share_path": "/usr/share",
+  "sdf_version": "1.11",
+  "sdf_uri_paths": {},
+  "sdf_callback_present": false,
+  "common_file_callbacks_present": null,
+  "common_uri_callbacks_present": null,
+  "common_callback_observation": "unavailable: SDK has no callback inspection API",
+  "search_context_qualified": false,
+  "runtime_closure_qualified": false
+}

@@ -1,0 +1,30 @@
+{
+  "schema": "native-fresh-build-p1-static-verification-v1",
+  "outcome": "STATIC_ARTIFACT_CHECKS_PASSED_REQUEST_INCOMPLETE",
+  "checks_passed": [
+    "3680 request pins exactly equal 3677 saved union plus three actual document readbacks",
+    "per-path provenance phase/blob agrees with each copied saved row",
+    "128 local source pin records equal manifest and fixed143 source SHA/size fields match",
+    "all six group members have saved pins; required12 checked during assembly",
+    "16 binding keys/9 required file pins/7 directory bindings checked during assembly",
+    "one precise mandatory manifest pin remains absent; no guessed observation",
+    "request has real build schema, no review/allow-once, all completeness/dispatch flags false",
+    "no generated build output is predeclared as an external input",
+    "four new generated files match their new-byte SHA/length records",
+    "helper AST parsed without production import or execution"
+  ],
+  "request_new_local_bytes": {
+    "file": "request.json",
+    "bytes": 1192438,
+    "sha256": "0688c76c57e8a6fb415e735f1ea5e662abc65328dedc8fa872ef7745f4820d54"
+  },
+  "no_old_payload_or_archive_rehash": true,
+  "no_production_verifier_called": true,
+  "no_tests_or_second_review": true,
+  "no_linux_resources_or_native_execution": true,
+  "scope": "saved declaration equality and new artifact integrity only; no authentication, freshness, full consumption or admission",
+  "full_request_complete": false,
+  "dispatchable": false,
+  "scoped_git_diff_check_exit": 0,
+  "self_review": "P1 assembly only; exact manifest-context pin absent in selected saved metadata. Seven directory bindings are not regular-file gaps. No review created; link resolution/environment/freshness remain incomplete. No post-build output prerequisite or guessed Linux pin."
+}

@@ -1,0 +1,681 @@
+{
+  "schema": "sealed-working-byte-map-v1",
+  "scope": "Primary-source/file-metadata research with explicit JSON accelerator import-attempt scope violation; no production correction or new static/physical/consumer qualification",
+  "members": [
+    {
+      "path": ".superpowers/sdd/2026-10-15-zero-needed-python-entry-research/progress.md",
+      "bytes": 1394,
+      "sha256": "994dd6dba0198f69dad3dc25cacb323b278bdc20e3869fa0fdf0a7ee4683cca0"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-10-15-python-extension-context-production.md",
+      "bytes": 8759,
+      "sha256": "e4f8b092c8d7bcac87345fc0d7bc06ffc98bdc868b51ca26cd4cc346f6489f64"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-10-15-zero-needed-python-entry-research.md",
+      "bytes": 2524,
+      "sha256": "4b92e6790ab5b2dd65ec91be05cac7f0e66a2156014f22971500432124d47a96"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-10-15-python-extension-context-production-design.md",
+      "bytes": 9351,
+      "sha256": "61936ea87016b38de33217f6fcc551c0bf20666a08850b9c29311527e1f43997"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-10-15-zero-needed-python-entry-research-design.md",
+      "bytes": 2638,
+      "sha256": "2124c33fe63a0a078b4e0ae1719959b27b384f43128d593bfee0bfa83296b6f7"
+    },
+    {
+      "path": "docs/TARGET_BEARING_STATIC_V2_ATTEMPT_REPORT.md",
+      "bytes": 12371,
+      "sha256": "4d76c3615ad8b61e6a44905684d7cf693b7d63c24e2649e725a4eec08e315c42"
+    },
+    {
+      "path": "docs/TARGET_BEARING_ZERO_NEEDED_RESEARCH_REPORT.md",
+      "bytes": 12194,
+      "sha256": "7a45bf43fa2d01efd18e967d42686e98f7626c3451c6e740b8ec397ded54d2be"
+    },
+    {
+      "path": "evidence/target-bearing-static-v2-attempt-publication.json",
+      "bytes": 4943,
+      "sha256": "e52d6f189d8208ac1e5a47ad388ff4809a1db874533e97cba648eeb607ae9529"
+    },
+    {
+      "path": "results/target-bearing-runtime-freeze-v2-dev-1701/frozen-study-v2/sdk/entry-dependencies/entry-bill.json",
+      "bytes": 1243926,
+      "sha256": "0e23ebc65d8baaceaaad86c454b5325cebc9fe5ac3777bb92cb9504ccdc3f690"
+    },
+    {
+      "path": "results/target-bearing-runtime-freeze-v2-dev-1701/frozen-study-v2/sdk/entry-dependencies/query-0001.json",
+      "bytes": 2494,
+      "sha256": "cee844a503a28bccc83c06c5d3751a70df664b27904b9d504dba957263524b3b"
+    },
+    {
+      "path": "results/target-bearing-runtime-freeze-v2-dev-1701/frozen-study-v2/sdk/entry-dependencies/query-0002.json",
+      "bytes": 3258,
+      "sha256": "1b93e86de6a5ebba347adbfc34e5456b8abdee6ccbb986ecf27c4b14027918e6"
+    },
+    {
+      "path": "results/target-bearing-runtime-freeze-v2-dev-1701/frozen-study-v2/sdk/entry-dependencies/query-0003.json",
+      "bytes": 2663,
+      "sha256": "5c967edc6c9d59daad48d365c2cd4ca482027627ee3ced04c39e573a5dcbe4d2"
+    },
+    {
+      "path": "results/target-bearing-runtime-freeze-v2-dev-1701/frozen-study-v2/sdk/entry-dependencies/query-0004.json",
+      "bytes": 3992,
+      "sha256": "17f97b7928660362729f3fe9110c608f73c80f1a36a435985c47b29104b5b7a8"
+    },
+    {
+      "path": "results/target-bearing-runtime-freeze-v2-dev-1701/frozen-study-v2/sdk/entry-dependencies/query-0005.json",
+      "bytes": 9431,
+      "sha256": "0b771b3ce6d6103fc6114197948955ce4a40fa4061d8ee334c38f39629bf3f85"
+    },
+    {
+      "path": "results/target-bearing-runtime-freeze-v2-dev-1701/frozen-study-v2/sdk/entry-dependencies/query-0006.json",
+      "bytes": 12531,
+      "sha256": "8003e11dd465a8075e738c181a8502d44c6c4b1a2fd1ef5e5a3e5d3c4fdb71cd"
+    },
+    {
+      "path": "results/target-bearing-runtime-freeze-v2-dev-1701/frozen-study-v2/sdk/entry-dependencies/query-0007.json",
+      "bytes": 8604,
+      "sha256": "dd67f7aa2cbd1cc96ab3bf2966d5f0e733c8460d4dd40edd63540d774a3c1737"
+    },
+    {
+      "path": "results/target-bearing-runtime-freeze-v2-dev-1701/frozen-study-v2/sdk/entry-dependencies/query-0008.json",
+      "bytes": 7284,
+      "sha256": "81d2b78e6f9b8f6dd5f68c7a40bb265bb1da85b4afd4b183afccc32e40e12752"
+    },
+    {
+      "path": "results/target-bearing-runtime-freeze-v2-dev-1701/frozen-study-v2/sdk/entry-dependencies/query-0009.json",
+      "bytes": 10078,
+      "sha256": "18ba022619c678b7a8dc57b25896191ead1da26bbb8575e6b521e61adf98e867"
+    },
+    {
+      "path": "results/target-bearing-runtime-freeze-v2-dev-1701/frozen-study-v2/sdk/entry-dependencies/query-0010.json",
+      "bytes": 15508,
+      "sha256": "4ec40607c01f4da05b8bb2934121556c03274ea6f2adf1a6d52a8017335b67e4"
+    },
+    {
+      "path": "results/target-bearing-runtime-freeze-v2-dev-1701/frozen-study-v2/sdk/entry-dependencies/query-0011.json",
+      "bytes": 8619,
+      "sha256": "9e615931bc6463c17308108c61e5fd648a40e75e7a8819c63ffa25f1cd5d9bc2"
+    },
+    {
+      "path": "results/target-bearing-runtime-freeze-v2-dev-1701/frozen-study-v2/sdk/entry-dependencies/query-0012.json",
+      "bytes": 8119,
+      "sha256": "78de7afc1295225ce1b9712b1457fc92b6d0f53c4fa115dcd8a736c8146f58e1"
+    },
+    {
+      "path": "results/target-bearing-runtime-freeze-v2-dev-1701/frozen-study-v2/sdk/entry-dependencies/query-0013.json",
+      "bytes": 8368,
+      "sha256": "6e08d84a40652d613c67da04399de6945b39294df907efa4058f87b730aa6f61"
+    },
+    {
+      "path": "results/target-bearing-runtime-freeze-v2-dev-1701/frozen-study-v2/sdk/entry-dependencies/query-0014.json",
+      "bytes": 7860,
+      "sha256": "e73b295fc90536972fdf7c1e394c8ec754478ed2a39b164b50bd75016351bb1b"
+    },
+    {
+      "path": "results/target-bearing-runtime-freeze-v2-dev-1701/frozen-study-v2/sdk/entry-dependencies/query-0015.json",
+      "bytes": 9133,
+      "sha256": "4bcf4a1df96421d48567c894192c5a69545415d3e8464c4d087338ba714496c8"
+    },
+    {
+      "path": "results/target-bearing-runtime-freeze-v2-dev-1701/frozen-study-v2/sdk/entry-dependencies/query-0016.json",
+      "bytes": 13777,
+      "sha256": "19cb8ff8bb7fe1b9525e30df069d37ac477084b760ccb4119305c29b04837fbd"
+    },
+    {
+      "path": "results/target-bearing-runtime-freeze-v2-dev-1701/frozen-study-v2/sdk/entry-dependencies/query-0017.json",
+      "bytes": 9359,
+      "sha256": "cb07b6b7c515060b0e0a3621a7ec4a9aafe6315d37af595e6b553038190a41b4"
+    },
+    {
+      "path": "results/target-bearing-runtime-freeze-v2-dev-1701/frozen-study-v2/sdk/entry-dependencies/query-0018.json",
+      "bytes": 14021,
+      "sha256": "7e0160f4490371991f3a73e6eedbf5715264dad2275ba92cf0f4b51bca0b3741"
+    },
+    {
+      "path": "results/target-bearing-runtime-freeze-v2-dev-1701/frozen-study-v2/sdk/entry-dependencies/query-0019.json",
+      "bytes": 8540,
+      "sha256": "e08a3a34d7c6e7d5210d7d8197b2ef24e1537e9f0501b805a0cdc63ce3517470"
+    },
+    {
+      "path": "results/target-bearing-runtime-freeze-v2-dev-1701/frozen-study-v2/sdk/entry-dependencies/query-0020.json",
+      "bytes": 8056,
+      "sha256": "404b42dd55c4680710ae2abf885a218720e9e06ff251956d97d8df9df80bf83e"
+    },
+    {
+      "path": "results/target-bearing-runtime-freeze-v2-dev-1701/frozen-study-v2/sdk/entry-dependencies/query-0021.json",
+      "bytes": 8481,
+      "sha256": "d6a92fb8ae07060e43ee8d5a718841620ea2120eefe9cacb01eba108d15ee8fe"
+    },
+    {
+      "path": "results/target-bearing-runtime-freeze-v2-dev-1701/frozen-study-v2/sdk/entry-dependencies/query-0022.json",
+      "bytes": 8119,
+      "sha256": "1c614728574e434ef3086640d50f853cd292d40d37a3ed1ff2c30f998cfb6ff7"
+    },
+    {
+      "path": "results/target-bearing-runtime-freeze-v2-dev-1701/frozen-study-v2/sdk/entry-dependencies/query-0023.json",
+      "bytes": 8427,
+      "sha256": "972bc649f0e16aa33510a4db0008f46be4cecdcd615b6eaa690cd417665f6742"
+    },
+    {
+      "path": "results/target-bearing-runtime-freeze-v2-dev-1701/frozen-study-v2/sdk/entry-dependencies/query-0024.json",
+      "bytes": 8077,
+      "sha256": "fe23ad30750fc6c4912ffb6ec07de2c64895cd3e40585aab27ebbb4a809dd357"
+    },
+    {
+      "path": "results/target-bearing-runtime-freeze-v2-dev-1701/frozen-study-v2/sdk/entry-dependencies/query-0025.json",
+      "bytes": 8162,
+      "sha256": "2346f3da2b166cc8444601f906a075481f0bd1d92f34b294595b3d31fb9257c9"
+    },
+    {
+      "path": "results/target-bearing-runtime-freeze-v2-dev-1701/frozen-study-v2/sdk/entry-dependencies/query-0026.json",
+      "bytes": 13578,
+      "sha256": "8ea4a0d45ff7e6078596c2cc16d0e7b8452d680ff85321c0c665dee579dc87f3"
+    },
+    {
+      "path": "results/target-bearing-runtime-freeze-v2-dev-1701/frozen-study-v2/sdk/entry-dependencies/query-0027.json",
+      "bytes": 9000,
+      "sha256": "75e79064c4bedf96b90d39c4aade38e69d6ccd1b9671bb40679c1a177c94bfc4"
+    },
+    {
+      "path": "results/target-bearing-runtime-freeze-v2-dev-1701/frozen-study-v2/sdk/entry-dependencies/query-0028.json",
+      "bytes": 14008,
+      "sha256": "babf865150050db48888bd0411197eaccbd3f57f6b63a46f9e3b119370ad6c12"
+    },
+    {
+      "path": "results/target-bearing-runtime-freeze-v2-dev-1701/frozen-study-v2/sdk/entry-dependencies/query-0029.json",
+      "bytes": 8812,
+      "sha256": "e5e82e4853d1e2da35a67c7d254e6988134aea6d8d8847c00d409dca21f21703"
+    },
+    {
+      "path": "results/target-bearing-runtime-freeze-v2-dev-1701/frozen-study-v2/sdk/entry-dependencies/query-0030.json",
+      "bytes": 18508,
+      "sha256": "4e2091853866945668c4a07b53e1f15bb36a9881ab3379fce53a67e76b671e2a"
+    },
+    {
+      "path": "results/target-bearing-runtime-freeze-v2-dev-1701/frozen-study-v2/sdk/entry-dependencies/query-0031.json",
+      "bytes": 8453,
+      "sha256": "af3ae28ff3dc40f3faa2cc307df181083000a84a5ac998fbc23e516d749e96ef"
+    },
+    {
+      "path": "results/target-bearing-runtime-freeze-v2-dev-1701/frozen-study-v2/sdk/entry-dependencies/query-0032.json",
+      "bytes": 18073,
+      "sha256": "488415146a20e78b53ec2fb7ffe8af7babd8761b310fbe0ea76eab9bb906627b"
+    },
+    {
+      "path": "results/target-bearing-runtime-freeze-v2-dev-1701/frozen-study-v2/sdk/entry-dependencies/query-0033.json",
+      "bytes": 8867,
+      "sha256": "69005c7e294b37adef8b48ae7207342c56f2353a3fd49aa4a9ad77d553fbf155"
+    },
+    {
+      "path": "results/target-bearing-runtime-freeze-v2-dev-1701/frozen-study-v2/sdk/entry-dependencies/query-0034.json",
+      "bytes": 18409,
+      "sha256": "f16eb99c64218b8ca8bf25fcf933cb346dbaca6064052c1724589509dde9bafd"
+    },
+    {
+      "path": "results/target-bearing-runtime-freeze-v2-dev-1701/frozen-study-v2/sdk/entry-dependencies/query-0035.json",
+      "bytes": 8812,
+      "sha256": "9a97ae0e77ff1a9f3847b28afe004f75d0f745bf3e20e6eff73f2eae43b464f0"
+    },
+    {
+      "path": "results/target-bearing-runtime-freeze-v2-dev-1701/frozen-study-v2/sdk/entry-dependencies/query-0036.json",
+      "bytes": 18508,
+      "sha256": "3bb59317911ab37caa66343def0144737778d6d57bb44c23b0f776f2b2cbb3b3"
+    },
+    {
+      "path": "results/target-bearing-runtime-freeze-v2-dev-1701/frozen-study-v2/sdk/entry-dependencies/query-0037.json",
+      "bytes": 8737,
+      "sha256": "64272123824d673b2fd856ee4266a1397d2da5175179bb030d821a6e6fb9d5f1"
+    },
+    {
+      "path": "results/target-bearing-runtime-freeze-v2-dev-1701/frozen-study-v2/sdk/entry-dependencies/query-0038.json",
+      "bytes": 18185,
+      "sha256": "3de2b332224dbe4319593af8ee935da9770fed48623da614b1264044965db79a"
+    },
+    {
+      "path": "results/target-bearing-runtime-freeze-v2-dev-1701/frozen-study-v2/sdk/entry-dependencies/query-0039.json",
+      "bytes": 8608,
+      "sha256": "f31655537866d75114ea718f45235203734a8cdd8d5c7f03dd9e49f92cd02df1"
+    },
+    {
+      "path": "results/target-bearing-runtime-freeze-v2-dev-1701/frozen-study-v2/sdk/entry-dependencies/query-0040.json",
+      "bytes": 18442,
+      "sha256": "bedb804587a22efde338f69a877eebad70caa827a766416550364d372e8e9e2c"
+    },
+    {
+      "path": "results/target-bearing-runtime-freeze-v2-dev-1701/frozen-study-v2/sdk/entry-dependencies/query-0041.json",
+      "bytes": 9619,
+      "sha256": "398b9b1ca108911dd9e7b39268a9d2ba92f735130950646674509a6913bfc940"
+    },
+    {
+      "path": "results/target-bearing-runtime-freeze-v2-dev-1701/frozen-study-v2/sdk/entry-dependencies/query-0042.json",
+      "bytes": 27453,
+      "sha256": "944276088ebc7e556b134bb468983b9f891f1800764c8b2e0c095e5f79819656"
+    },
+    {
+      "path": "results/target-bearing-runtime-freeze-v2-dev-1701/frozen-study-v2/sdk/entry-dependencies/query-0043.json",
+      "bytes": 8845,
+      "sha256": "863483fa0b6fdc7699aaf836489bc46a67c05e44b5f2402a17d0a9a50a8d19f5"
+    },
+    {
+      "path": "results/target-bearing-runtime-freeze-v2-dev-1701/frozen-study-v2/sdk/entry-dependencies/query-0044.json",
+      "bytes": 18143,
+      "sha256": "0bfdcb4280b4b16d2721d2a0dde92a55f3e7a2b0be84a6046c171e6ac1b35bb7"
+    },
+    {
+      "path": "results/target-bearing-runtime-freeze-v2-dev-1701/frozen-study-v2/sdk/entry-dependencies/query-0045.json",
+      "bytes": 10751,
+      "sha256": "f52d9e088deaf9257e7fb09c6d9c56dc91664e5d99c2ab96cc69b370b4565684"
+    },
+    {
+      "path": "results/target-bearing-runtime-freeze-v2-dev-1701/frozen-study-v2/sdk/entry-dependencies/query-0046.json",
+      "bytes": 30087,
+      "sha256": "0a717bfb69142d13b6bc0870eba2b4107965850e98f5fcb5b97110c339249ed3"
+    },
+    {
+      "path": "results/target-bearing-runtime-freeze-v2-dev-1701/frozen-study-v2/sdk/entry-dependencies/query-0047.json",
+      "bytes": 8971,
+      "sha256": "a66538ce5cc00bea071ca0b71a1d91fec2475e5b9744bc339ad5ac5d3668c444"
+    },
+    {
+      "path": "results/target-bearing-runtime-freeze-v2-dev-1701/frozen-study-v2/sdk/entry-dependencies/query-0048.json",
+      "bytes": 18115,
+      "sha256": "3a93feead94f159a5b702817c0dbfe76384d325e36f95be7ee8ec57acc5305a4"
+    },
+    {
+      "path": "results/target-bearing-runtime-freeze-v2-dev-1701/frozen-study-v2/sdk/entry-dependencies/query-0049.json",
+      "bytes": 7738,
+      "sha256": "434bf87abc1bdb275feb8623c3aa1db80fe157d6804eac2a1a427676e777aab1"
+    },
+    {
+      "path": "results/target-bearing-runtime-freeze-v2-dev-1701/frozen-study-v2/sdk/entry-dependencies/query-0050.json",
+      "bytes": 4619,
+      "sha256": "2e616cd7ace19b4dbe33e4a3dbe537a75815f51ad7bce0a5538e50d675a99d37"
+    },
+    {
+      "path": "results/target-bearing-runtime-freeze-v2-dev-1701/frozen-study-v2/sdk/entry-dependencies/query-0051.json",
+      "bytes": 7119,
+      "sha256": "9f3c050987f4d2b43d8b9e2fb56395f9eb333fc76957e51f0c18b1a7fc6b7eb5"
+    },
+    {
+      "path": "results/target-bearing-runtime-freeze-v2-dev-1701/frozen-study-v2/sdk/entry-dependencies/query-0052.json",
+      "bytes": 4069,
+      "sha256": "6f11ddf1ce529464bd908bc3c816fdd836fa757dde18298f1a347035d495df14"
+    },
+    {
+      "path": "results/target-bearing-runtime-freeze-v2-dev-1701/frozen-study-v2/sdk/entry-dependencies/query-0053.json",
+      "bytes": 7081,
+      "sha256": "08fa45560ac71045d35a1e3246f5552145c262bf8dcccb9a916bb8c1aa4f52b9"
+    },
+    {
+      "path": "results/target-bearing-runtime-freeze-v2-dev-1701/frozen-study-v2/sdk/entry-dependencies/query-0054.json",
+      "bytes": 4037,
+      "sha256": "ae7b6edc03984e8905fcdeabe3249ebf90da26ec2737b926f590b5efce902dc9"
+    },
+    {
+      "path": "results/target-bearing-runtime-freeze-v2-dev-1701/frozen-study-v2/sdk/entry-dependencies/query-0055.json",
+      "bytes": 7092,
+      "sha256": "3c8399d1e7b93375726e8235b7d007c50b451253546f57e4fe082ba465908a4c"
+    },
+    {
+      "path": "results/target-bearing-runtime-freeze-v2-dev-1701/frozen-study-v2/sdk/entry-dependencies/query-0056.json",
+      "bytes": 4040,
+      "sha256": "e21e2ba7d0efd452f83f664eabfa2adb8b8a3ad92d06f987b100bc8776e85a02"
+    },
+    {
+      "path": "results/target-bearing-runtime-freeze-v2-dev-1701/frozen-study-v2/sdk/entry-dependencies/query-0057.json",
+      "bytes": 6530,
+      "sha256": "8b2649809c141b59d8b3eefdd6ee24b63821569dc12a29c8a742a15072729c26"
+    },
+    {
+      "path": "results/target-bearing-runtime-freeze-v2-dev-1701/frozen-study-v2/sdk/entry-dependencies/query-0058.json",
+      "bytes": 3622,
+      "sha256": "f5e5a6b3bf48b7aed21bcf17484fc2e3f982a83eaae356e1b66e0ad082788c9b"
+    },
+    {
+      "path": "results/target-bearing-runtime-freeze-v2-dev-1701/native-freeze-failure.json",
+      "bytes": 261,
+      "sha256": "e56afe86c6ff795ef9d546398944ac04b8880fff03e2e7a71bb5b018d7fef816"
+    },
+    {
+      "path": "results/zero-needed-python-entry-research-dev-1701/analyze-retained-context.py",
+      "bytes": 3819,
+      "sha256": "4549c6c1491e8cd569063984b0a6eb73029c37d930a52c21ab0020bcd01c01b2"
+    },
+    {
+      "path": "results/zero-needed-python-entry-research-dev-1701/audit-before-seal.py",
+      "bytes": 1746,
+      "sha256": "c5b8d28e8dac505cd8afa3dcbb288541aefaaf347adb2cb2d1c878e944c03830"
+    },
+    {
+      "path": "results/zero-needed-python-entry-research-dev-1701/audit-history-followup.py",
+      "bytes": 1390,
+      "sha256": "3631ffe25245b935cbc6ce2c239fad495435faffac5fb351369478cbc9e2df2e"
+    },
+    {
+      "path": "results/zero-needed-python-entry-research-dev-1701/elf-context-analysis.json",
+      "bytes": 16609,
+      "sha256": "68f3a9e56810c47b583c7e2f8c8f812c72d80f0f69f54b1e8ff41eb434ba39eb"
+    },
+    {
+      "path": "results/zero-needed-python-entry-research-dev-1701/elf-file-facts.json",
+      "bytes": 16820,
+      "sha256": "645db9fc245d0b1c17ecc330aa0696439e21b5b6c879b450ed65074c47dcca33"
+    },
+    {
+      "path": "results/zero-needed-python-entry-research-dev-1701/fetch-context-followup.py",
+      "bytes": 1239,
+      "sha256": "d84fe04ee30131b674b5c1956d9094f68d7684fd54390e568db6ab68f9ab00de"
+    },
+    {
+      "path": "results/zero-needed-python-entry-research-dev-1701/fetch-primary.py",
+      "bytes": 3326,
+      "sha256": "14238b9dc141faca2746d8d2ac65bd2c3ecc9f6029ac82dd715a968070da98c6"
+    },
+    {
+      "path": "results/zero-needed-python-entry-research-dev-1701/historical-archives-before-seal.json",
+      "bytes": 53485,
+      "sha256": "92bda841940fa91a41228dbda55de5bca8c2078b6e1cdb7e448786edef40bf69"
+    },
+    {
+      "path": "results/zero-needed-python-entry-research-dev-1701/independent-research-review.json",
+      "bytes": 19069,
+      "sha256": "d7eae555c8909946343de3efc4b3feb9ae8a60658cbe5337425370d4e6fc35bc"
+    },
+    {
+      "path": "results/zero-needed-python-entry-research-dev-1701/independent-research-review.md",
+      "bytes": 3651,
+      "sha256": "ab8ac02704626747980ff04fb1e776ac61fc4f908f7ad7c0c0f4f72bb1039356"
+    },
+    {
+      "path": "results/zero-needed-python-entry-research-dev-1701/initial-resource-public.json",
+      "bytes": 532,
+      "sha256": "060982c5dead8f904a98704c9e05a87fbcea3324104718a30191bb26931b388d"
+    },
+    {
+      "path": "results/zero-needed-python-entry-research-dev-1701/installed-ldd-script.txt",
+      "bytes": 5382,
+      "sha256": "752803b8baa217b821bd4566c4fbdaec50c01cb32d2796ec056d22d190d4290f"
+    },
+    {
+      "path": "results/zero-needed-python-entry-research-dev-1701/ldd-template-versus-installed.diff",
+      "bytes": 1727,
+      "sha256": "fa908781ffff0ec9ae93da3a1dc08e8cbc8a4202ffef4ce4a258766e4c3289e4"
+    },
+    {
+      "path": "results/zero-needed-python-entry-research-dev-1701/metadata-after.json",
+      "bytes": 2830,
+      "sha256": "151a0e2916a1ac03afe57cf58d43e042133b97f9e1c6f27b10e47d60bc982fe6"
+    },
+    {
+      "path": "results/zero-needed-python-entry-research-dev-1701/metadata-before.json",
+      "bytes": 2813,
+      "sha256": "7b29d59b8d46caf5959d51706f8c22b9a68522dad2c55721394805e069cb6d8d"
+    },
+    {
+      "path": "results/zero-needed-python-entry-research-dev-1701/metadata-command.json",
+      "bytes": 587,
+      "sha256": "d32b283571af901320bcbe69e76ecff50ba210469235db1bf627c77450ad7f7f"
+    },
+    {
+      "path": "results/zero-needed-python-entry-research-dev-1701/metadata-outer-return.json",
+      "bytes": 464,
+      "sha256": "940f14cfaab2231f24a8beab573ef9595bd6b166d69db900b65a4e1e151dcf0c"
+    },
+    {
+      "path": "results/zero-needed-python-entry-research-dev-1701/METADATA_SCOPE.md",
+      "bytes": 2077,
+      "sha256": "b49679f4b85adb305354084d4131316be45bd89c17795644490f0d7797f36051"
+    },
+    {
+      "path": "results/zero-needed-python-entry-research-dev-1701/observe-metadata.py",
+      "bytes": 4373,
+      "sha256": "5e386e99395425864db7a2bcd86ac288bbe34894c7d288a4a60747e0e84f46db"
+    },
+    {
+      "path": "results/zero-needed-python-entry-research-dev-1701/observer-scope-correction.json",
+      "bytes": 524,
+      "sha256": "b900d4b551642cdf0642015022c2a7e991e332f4fd52cbc06ed85433dd03aba5"
+    },
+    {
+      "path": "results/zero-needed-python-entry-research-dev-1701/OBSERVER_SCOPE_CORRECTION.md",
+      "bytes": 1781,
+      "sha256": "caccf25c240807c54dbfc6236a27da9f10dac944f9ac774ef611b3ae706a49c4"
+    },
+    {
+      "path": "results/zero-needed-python-entry-research-dev-1701/primary-context-followup-retained-audit.json",
+      "bytes": 1179,
+      "sha256": "502bb77cd6b74bcc37f07db1c68ac1454ce961449fe532ae247ebfbe797b6c6c"
+    },
+    {
+      "path": "results/zero-needed-python-entry-research-dev-1701/primary-fetch-bminor__glibc.json",
+      "bytes": 3869,
+      "sha256": "3990e291baa478278d89463bb9c9c8547a077b680fec0c11d903aa64e40b5a0f"
+    },
+    {
+      "path": "results/zero-needed-python-entry-research-dev-1701/primary-fetch-python__cpython.json",
+      "bytes": 4198,
+      "sha256": "5feb3dcab624a10d3ac2e2d675afa5d4e1072eb3ba0d5edf0cf268add269f2ca"
+    },
+    {
+      "path": "results/zero-needed-python-entry-research-dev-1701/product-sources-after.json",
+      "bytes": 114374,
+      "sha256": "c4e120cfc122f24792102ccbe4a057337da64265683ff488c3d1f9f936eb0cb4"
+    },
+    {
+      "path": "results/zero-needed-python-entry-research-dev-1701/product-sources-before.json",
+      "bytes": 107963,
+      "sha256": "f9775d2c139ea7e3f60dda9a5c12819487e1b17ec012d411ba08a842deac17a5"
+    },
+    {
+      "path": "results/zero-needed-python-entry-research-dev-1701/readelf-version.json",
+      "bytes": 1104,
+      "sha256": "1ae727c475d06f42e7e9ea3cd516a41413672a026cfed15c45dc7b60d0643918"
+    },
+    {
+      "path": "results/zero-needed-python-entry-research-dev-1701/retained-failure-byte-audit.json",
+      "bytes": 14540,
+      "sha256": "dd5f1f3e393ccd06818521cedb653dfd20485abb2745ec3a53bcf2ccd20871d1"
+    },
+    {
+      "path": "results/zero-needed-python-entry-research-dev-1701/run-metadata-once.py",
+      "bytes": 1547,
+      "sha256": "00b271ee2b49eef19febd1055090b21350a7ea2de230edbedc3fea7b6666cbc1"
+    },
+    {
+      "path": "results/zero-needed-python-entry-research-dev-1701/seal-research.py",
+      "bytes": 3662,
+      "sha256": "b96f74180ea971660ecb0605b7118cdbcea33977ecb825c5d3535aafe1f3d237"
+    },
+    {
+      "path": "results/zero-needed-python-entry-research-dev-1701/start-research.py",
+      "bytes": 3487,
+      "sha256": "165b4ac4464672c07d6b513c1be0b29258be2cba8e13f494192731926078b172"
+    },
+    {
+      "path": "results/zero-needed-python-entry-research-dev-1701/upstream/bminor__glibc/COPYING",
+      "bytes": 18092,
+      "sha256": "8177f97513213526df2cf6184d8ff986c675afb514d4e68a404010521b880643"
+    },
+    {
+      "path": "results/zero-needed-python-entry-research-dev-1701/upstream/bminor__glibc/COPYING.LIB",
+      "bytes": 26530,
+      "sha256": "dc626520dcd53a22f727af3ee42c770e56c97a64fe3adb063799d8ab032fe551"
+    },
+    {
+      "path": "results/zero-needed-python-entry-research-dev-1701/upstream/bminor__glibc/elf/dl-deps.c",
+      "bytes": 17592,
+      "sha256": "47a1cb0f16d2073e2992af1a17c5aa269ffdd08b606a5a7e627bbfe6988d8fb1"
+    },
+    {
+      "path": "results/zero-needed-python-entry-research-dev-1701/upstream/bminor__glibc/elf/dl-load.c",
+      "bytes": 70348,
+      "sha256": "26345f234ef918c866e40bb86524bdfd4c3beac487af81b3f51668379e671ae0"
+    },
+    {
+      "path": "results/zero-needed-python-entry-research-dev-1701/upstream/bminor__glibc/elf/dl-lookup.c",
+      "bytes": 28526,
+      "sha256": "bddde80ad0a1280ef79da019fdf07568b2ae7da2335c582773d9f53e9c28b3a5"
+    },
+    {
+      "path": "results/zero-needed-python-entry-research-dev-1701/upstream/bminor__glibc/elf/dl-open.c",
+      "bytes": 32685,
+      "sha256": "718b2b47dd3c282bdfebf7a0633cbb1b4d980e98b1180f4fa48b620f4981f8ed"
+    },
+    {
+      "path": "results/zero-needed-python-entry-research-dev-1701/upstream/bminor__glibc/elf/ldd.bash.in",
+      "bytes": 5298,
+      "sha256": "8728a77b83c34f9311d0615ab868129adabd4f26e43dd2becd7af51ceaf40270"
+    },
+    {
+      "path": "results/zero-needed-python-entry-research-dev-1701/upstream/bminor__glibc/elf/rtld.c",
+      "bytes": 88632,
+      "sha256": "03681f7c7cea6f542a6416e3478a8c6bfe6c3a7969d1bb081dbba4f18395ed49"
+    },
+    {
+      "path": "results/zero-needed-python-entry-research-dev-1701/upstream/bminor__glibc/official-commit.json",
+      "bytes": 2498,
+      "sha256": "5a8a682431d66d8f34780e56299a48aa6cb60e22d998b8e7ec44ecdaea98b8e4"
+    },
+    {
+      "path": "results/zero-needed-python-entry-research-dev-1701/upstream/bminor__glibc/official-ref.json",
+      "bytes": 339,
+      "sha256": "efc56fb51944628ab2e682d0f2ef424adf04173c0e45c127292a000d79e87884"
+    },
+    {
+      "path": "results/zero-needed-python-entry-research-dev-1701/upstream/bminor__glibc/official-tag-0.json",
+      "bytes": 32396,
+      "sha256": "661eefb6362a9d0e70af316347c09fcfa76975a7b7db01bc4448a1404ac590b6"
+    },
+    {
+      "path": "results/zero-needed-python-entry-research-dev-1701/upstream/bminor__glibc/official-tree.json",
+      "bytes": 4739949,
+      "sha256": "149fc06a0b8ab4078602d023b30de77b6936f759861cd9475eeec48b2c5c65ea"
+    },
+    {
+      "path": "results/zero-needed-python-entry-research-dev-1701/upstream/python__cpython/configure.ac",
+      "bytes": 235763,
+      "sha256": "d704479004c87f2ed351b8f4ef0f6ea2bd6b8b398f877f2832ed49dabaa765f6"
+    },
+    {
+      "path": "results/zero-needed-python-entry-research-dev-1701/upstream/python__cpython/Doc/library/sys.rst",
+      "bytes": 77890,
+      "sha256": "841a166d74cd702921630ed05ec83d738ac173614a7eac33c9e1dcb4f2ec174f"
+    },
+    {
+      "path": "results/zero-needed-python-entry-research-dev-1701/upstream/python__cpython/Include/internal/pycore_import.h",
+      "bytes": 6358,
+      "sha256": "e5b179692f05707e7fb182b908ed46f9a75f4a751b20501a74de2a440c387e1d"
+    },
+    {
+      "path": "results/zero-needed-python-entry-research-dev-1701/upstream/python__cpython/Lib/json/__init__.py",
+      "bytes": 14020,
+      "sha256": "d5d41e2c29049515d295d81a6d40b4890fbec8d8482cfb401630f8ef2f77e4d5"
+    },
+    {
+      "path": "results/zero-needed-python-entry-research-dev-1701/upstream/python__cpython/Lib/json/decoder.py",
+      "bytes": 12473,
+      "sha256": "9f02654649816145bc76f8c210a5fe3ba1de142d4d97a1c93105732e747c285b"
+    },
+    {
+      "path": "results/zero-needed-python-entry-research-dev-1701/upstream/python__cpython/Lib/json/encoder.py",
+      "bytes": 16070,
+      "sha256": "af7bd40a0d0d0a3e726a9b4b3a2a543019f6ab97a340d0162a9c29ca9da97869"
+    },
+    {
+      "path": "results/zero-needed-python-entry-research-dev-1701/upstream/python__cpython/Lib/json/scanner.py",
+      "bytes": 2425,
+      "sha256": "8604d9d03786d0d509abb49e9f069337278ea988c244069ae8ca2c89acc2cb08"
+    },
+    {
+      "path": "results/zero-needed-python-entry-research-dev-1701/upstream/python__cpython/LICENSE",
+      "bytes": 13936,
+      "sha256": "3b2f81fe21d181c499c59a256c8e1968455d6689d269aa85373bfb6af41da3bf"
+    },
+    {
+      "path": "results/zero-needed-python-entry-research-dev-1701/upstream/python__cpython/Modules/_json.c",
+      "bytes": 57033,
+      "sha256": "6a0eaa8a82a30d5e35b47bda64c0a9741924c0b925fa6a9445addb3a61a5b5b9"
+    },
+    {
+      "path": "results/zero-needed-python-entry-research-dev-1701/upstream/python__cpython/Modules/Setup.stdlib.in",
+      "bytes": 8108,
+      "sha256": "9e305741899860a69787fb68356cc86fa7b71d8ab12ba0187e006f85fe8ab177"
+    },
+    {
+      "path": "results/zero-needed-python-entry-research-dev-1701/upstream/python__cpython/official-commit.json",
+      "bytes": 1076,
+      "sha256": "08e3f8cd43111f49a00c2c6d36ce69278eeb11229e6a40237b5e20322b9f0d8c"
+    },
+    {
+      "path": "results/zero-needed-python-entry-research-dev-1701/upstream/python__cpython/official-ref.json",
+      "bytes": 339,
+      "sha256": "8c645652955502a79ee2a040372fa1d911372c1487d19415cfd88293d765d98f"
+    },
+    {
+      "path": "results/zero-needed-python-entry-research-dev-1701/upstream/python__cpython/official-tree.json",
+      "bytes": 1173916,
+      "sha256": "27e6f2aab42928a4e9c6db4ddbc1d0b60ee61e250bbf746737332fa0fe48f71c"
+    },
+    {
+      "path": "results/zero-needed-python-entry-research-dev-1701/upstream/python__cpython/Python/dynload_shlib.c",
+      "bytes": 2923,
+      "sha256": "6b78ca8ca5ebe73deba0576ea17b4df48434741d16b8ef34952498638c4cc220"
+    },
+    {
+      "path": "results/zero-needed-python-entry-research-dev-1701/upstream/python__cpython/Python/import.c",
+      "bytes": 111633,
+      "sha256": "8b0473e3972d22ed745e44fb3c61d34328e4cd9813e22dd8f4f4d818fc4410c7"
+    },
+    {
+      "path": "results/zero-needed-python-entry-research-dev-1701/upstream/python__cpython/Python/importdl.c",
+      "bytes": 7684,
+      "sha256": "4c7022151e500d93a4383e70cd8d5170fb307863e67143819a66ae6c960c9234"
+    },
+    {
+      "path": "tools/benchmark/calibration_capture_study_v2.py",
+      "bytes": 5887,
+      "sha256": "00cd4c5890a6833af8f3656d8665a2888614f37bcb40dffef534474125202fc2"
+    },
+    {
+      "path": "tools/benchmark/native_entry_dependencies.py",
+      "bytes": 22425,
+      "sha256": "38bdb30431abb6d399f0a79c20671c7a7d75ecf444436b7a0d956f08bed988ea"
+    },
+    {
+      "path": "tools/benchmark/prepare_calibration_capture_v2.py",
+      "bytes": 22016,
+      "sha256": "068f52eac326024a72cba0c06bf8fcca2bddc71536c5f279880540afc48cb7c0"
+    },
+    {
+      "path": "tools/benchmark/runtime_resource_binding.py",
+      "bytes": 21061,
+      "sha256": "0a29c1753632d206e572379dc2951340dcaa3792960021a60d5b5c803f0cd0f0"
+    }
+  ],
+  "private_originals": [
+    {
+      "path": "results/zero-needed-python-entry-research-dev-1701/initial-resource-private.json",
+      "bytes": 67595,
+      "sha256": "88e93460e9368f36b6e9ac0a2ac915175a69cbb0c35046578ae158609a46ace3",
+      "policy": "LOCAL_UNPUBLISHED"
+    }
+  ],
+  "qualification": {
+    "source": false,
+    "clock": false,
+    "measured_calibration": false,
+    "accuracy": false,
+    "teacher": false,
+    "fusion": false,
+    "training": false,
+    "flight": false
+  },
+  "observer_import_result": "UNKNOWN; original false raw flag superseded",
+  "static_v2": "CONSUMED_FAILED"
+}

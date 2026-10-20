@@ -1,0 +1,56 @@
+{
+  "stage": "openvins-cached-dataset-consumption-dev-1701",
+  "review_scope": "Independent read-only final seal and actual-artifact audit; no tests, native executable, compiler, simulator, or source edit",
+  "disposition": "No Critical, Important, or Minor findings",
+  "archive": {
+    "path": "evidence/openvins-cached-dataset-consumption-dev-1701.zip",
+    "sha256": "ba7aef4a5236424ca45a387e52ff063be7144cbb2e38524b1933955d58dff71f",
+    "bytes": 7772811,
+    "members": 566,
+    "crc_errors": 0,
+    "member_length_or_sha256_errors": 0,
+    "duplicate_or_unlisted_members": 0,
+    "current_byte_differences": 0
+  },
+  "embedded_dataset": {
+    "members": 515,
+    "exactly_matches_prior_dataset_manifest_member_set": true,
+    "member_size_or_sha256_errors": 0,
+    "source_camera_identities": 251,
+    "source_imu_rows": 6123,
+    "bridge_hash_mismatches": 0
+  },
+  "actual_run": {
+    "preflight_and_both_admissions_passed_1gib_host_gate": true,
+    "classified_competitors_or_running_docker": 0,
+    "parent_pid": 42288,
+    "parent_exit_code": 0,
+    "windows_launcher_pid": 56068,
+    "native_elf_pid_separately_observed": false,
+    "native_frames": 245,
+    "range_refused_camera_frames": 6,
+    "native_imu_fed": 6102,
+    "unconsumed_imu_tail": 21,
+    "public_initialized_false_rows": 60,
+    "public_initialized_true_rows": 185,
+    "finite_initialized_rows": 185,
+    "scope_limits_observed": "memory.max=201326592, memory.swap.max=0, cpu.max=100000 100000, pids.max=64",
+    "memory_peak_bytes": 78888960,
+    "memory_events_all_zero": true,
+    "inside_and_launcher_exit_zero": true,
+    "owned_scope_released": true,
+    "escaped_descendant_closure": "unknown",
+    "runtime_max_120s": "configured but not independently read back",
+    "imu_feed_proof": "native returned count plus archived pointer-loop source, not per-IMU receipts"
+  },
+  "preservation": {
+    "code_and_native_snapshot_hash_mismatches": 0,
+    "eleven_prior_archive_current_hash_mismatches": 0,
+    "preparation_archive_unchanged": true,
+    "original_preparation_report": "historical preparation evidence; current actual-run report is separately sealed"
+  },
+  "qualifications": {
+    "all_false": true,
+    "boundary": "Recorded offline PPM-to-grayscale input with immediate-following IMU look-ahead; no authenticated live source, causal arrival, measured clock or rig calibration, pose accuracy or health, LOCAL_NED conversion, covariance, EKF2 fusion, teacher, training, or flight qualification"
+  }
+}

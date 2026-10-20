@@ -1,0 +1,71 @@
+{
+  "publication_checkbox": {
+    "before_sha256": "3d5b3ac9cc96d7f41b35572a09a8b427e634a70643da4bf37f10916cc18f99be",
+    "after_sha256": "9e734426f052cec1546ff8578dedb585b1513726480a831e14f67382f1067ec1",
+    "one_byte": true
+  },
+  "schema": "openvins-eight-objects-publication-v1",
+  "base": "324ec5b24439da8db58466291bd0f385ae873dc0",
+  "plan_head": "114fe87bc183e17cbb52920cc20c0b5519ec75e2",
+  "files": {
+    "docs/OPENVINS_EIGHT_OBJECTS_PROGRESS.md": {
+      "working_bytes": 3683,
+      "working_sha256": "baa552f30fc3c3e292ee642bf639c7e188d55a83d2a2a44e769fb26705980985",
+      "git_bytes": 3683,
+      "git_sha256": "baa552f30fc3c3e292ee642bf639c7e188d55a83d2a2a44e769fb26705980985"
+    },
+    "docs/superpowers/plans/2026-10-18-openvins-eight-objects.md": {
+      "working_bytes": 2101,
+      "working_sha256": "3d5b3ac9cc96d7f41b35572a09a8b427e634a70643da4bf37f10916cc18f99be",
+      "git_bytes": 2101,
+      "git_sha256": "3d5b3ac9cc96d7f41b35572a09a8b427e634a70643da4bf37f10916cc18f99be"
+    },
+    "results/openvins-eight-objects-20261018/file-bindings.json": {
+      "working_bytes": 6375,
+      "working_sha256": "8ffcb3bf8d61641d6728a9e7747c27407f0c2deaafd4bb2e428ba0aa7fb334e2",
+      "git_bytes": 6208,
+      "git_sha256": "04b185bcd08ea41f3ec9cb8cc5a2dca3ac75836ee262171777b9e26788efbd15"
+    },
+    "results/openvins-eight-objects-20261018/object-static-observations.json": {
+      "working_bytes": 7681,
+      "working_sha256": "46817ff5d4e260fafd31eb0df05aa6094f67a541dc948fd4300f4786f9b62973",
+      "git_bytes": 7421,
+      "git_sha256": "76ef657cfbefa7760a2cb08e69ad61e93e05c03797c6d80c7a8d0ef578a46e3c"
+    },
+    "results/openvins-eight-objects-20261018/object-union-bindings.json": {
+      "working_bytes": 48432,
+      "working_sha256": "d7755444e057b5ffbd038dbc013d23e838373f49b07fdc59837f7ff7bf64ad8e",
+      "git_bytes": 47586,
+      "git_sha256": "444156df923458532e3e51ad3ade7e353dd40f5909c39d21e4a47a9fd2ed62e4"
+    },
+    "results/openvins-eight-objects-20261018/analysis-summary.json": {
+      "working_bytes": 1151,
+      "working_sha256": "f13262afefa32003da0d9ddfb653611b3dd448af6eac5831fdbd05c4518c5a92",
+      "git_bytes": 1116,
+      "git_sha256": "1025504e8ad3ae900653cc979014a480b4e92637884ec4c9d54c67d1eb7e535e"
+    },
+    "results/openvins-eight-objects-20261018/missing-evidence.json": {
+      "working_bytes": 6216,
+      "working_sha256": "7109327d9c3d612c1e68b44cee3c1a88fcd95bc67f96072e23857041e6249dc6",
+      "git_bytes": 6103,
+      "git_sha256": "2f9596cad6cd6181265f49ce7991796d7476bc29c74fcaebebc882d9f9a8e099"
+    },
+    "evidence/openvins-eight-objects-20261018.zip": {
+      "working_bytes": 29073638,
+      "working_sha256": "e514e34d8b08199e01d1d494703216c46b0ba9e2224c5316d676733f4af22b23",
+      "git_bytes": 29073638,
+      "git_sha256": "e514e34d8b08199e01d1d494703216c46b0ba9e2224c5316d676733f4af22b23"
+    },
+    "evidence/openvins-eight-objects-20261018.sha256.json": {
+      "working_bytes": 5876,
+      "working_sha256": "b1094a6694248188584b4f93115a80b637631d9deb0add4cd50562349e4f76b2",
+      "git_bytes": 5752,
+      "git_sha256": "44a9b786d138cc1971a470cc686f75c19bfa6c5cd72622ff00dce6f0bc3f340f"
+    }
+  },
+  "scope": "Exact8 unacquired objects only, known DynamicInitializer overcap skipped; five actual payloads, new Propagator overcap, aggregate stop. No search, Linux command, compile, native, resource or test operation.",
+  "dispatchable": false,
+  "native_admission_review_performed": false,
+  "all_qualifications": false,
+  "future_checkboxes": "Build directory correspondence publication only; current library hash, full objects, historical source-to-object-to-library proof and native admission remain absent."
+}

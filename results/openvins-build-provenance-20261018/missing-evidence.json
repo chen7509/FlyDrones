@@ -1,0 +1,152 @@
+{
+  "schema": "openvins-build-supplement-missing-evidence-v1",
+  "source_to_existing_library_proven": false,
+  "current_library_sha256": null,
+  "missing": [
+    "Existing291717384B library remains unaccessed in this phase, unbound, SHA/ELF/ABI unknown after earlier64MiB refusal.",
+    "15 of34 objects acquired; next object would exceed192MiB aggregate.19 objects unknown, no second batch/retry.",
+    "Depfiles contain paths, not build-time source/header/tool content hashes or authenticated compile execution.",
+    "Stored configure log reports historical probe subprocess outputs only, not all34 library TU compilations or final successful link.",
+    "Seven selected log/internal paths unavailable; cannot infer absence of logs at all other unsearched locations.",
+    "No signed/session-correlated source-to-object-to-library transcript, historical inputs, or full linked-object set/library comparison.",
+    "Windows share stability is not native Linux device/inode/permission/symlink identity or atomic snapshot.",
+    "Current observed source/package/tool bytes from the prior phase do not establish historical compiler aliases/headers or source authenticity.",
+    "No actual ABI/propagation/reset/receiver/fusion/RTF/cleanup or native admission results."
+  ],
+  "unavailable": {
+    "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/CMakeOutput.log": {
+      "linux_path": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/CMakeOutput.log",
+      "role": "build-log-or-dependency",
+      "utc": "2026-10-18T11:40:24.455166+00:00",
+      "status": "unavailable",
+      "linux_resolved_path": null,
+      "error": "FileNotFoundError(2, '\u7cfb\u7edf\u627e\u4e0d\u5230\u6307\u5b9a\u7684\u6587\u4ef6\u3002')"
+    },
+    "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/CMakeError.log": {
+      "linux_path": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/CMakeError.log",
+      "role": "build-log-or-dependency",
+      "utc": "2026-10-18T11:40:24.467626+00:00",
+      "status": "unavailable",
+      "linux_resolved_path": null,
+      "error": "FileNotFoundError(2, '\u7cfb\u7edf\u627e\u4e0d\u5230\u6307\u5b9a\u7684\u6587\u4ef6\u3002')"
+    },
+    "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/build.log": {
+      "linux_path": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/build.log",
+      "role": "build-log-or-dependency",
+      "utc": "2026-10-18T11:40:24.479403+00:00",
+      "status": "unavailable",
+      "linux_resolved_path": null,
+      "error": "FileNotFoundError(2, '\u7cfb\u7edf\u627e\u4e0d\u5230\u6307\u5b9a\u7684\u6587\u4ef6\u3002')"
+    },
+    "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/configure.log": {
+      "linux_path": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/configure.log",
+      "role": "build-log-or-dependency",
+      "utc": "2026-10-18T11:40:24.488391+00:00",
+      "status": "unavailable",
+      "linux_resolved_path": null,
+      "error": "FileNotFoundError(2, '\u7cfb\u7edf\u627e\u4e0d\u5230\u6307\u5b9a\u7684\u6587\u4ef6\u3002')"
+    },
+    "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/compile.log": {
+      "linux_path": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/compile.log",
+      "role": "build-log-or-dependency",
+      "utc": "2026-10-18T11:40:24.496625+00:00",
+      "status": "unavailable",
+      "linux_resolved_path": null,
+      "error": "FileNotFoundError(2, '\u7cfb\u7edf\u627e\u4e0d\u5230\u6307\u5b9a\u7684\u6587\u4ef6\u3002')"
+    },
+    "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/link.log": {
+      "linux_path": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/link.log",
+      "role": "build-log-or-dependency",
+      "utc": "2026-10-18T11:40:24.505280+00:00",
+      "status": "unavailable",
+      "linux_resolved_path": null,
+      "error": "FileNotFoundError(2, '\u7cfb\u7edf\u627e\u4e0d\u5230\u6307\u5b9a\u7684\u6587\u4ef6\u3002')"
+    },
+    "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/compiler_depend.internal": {
+      "linux_path": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/compiler_depend.internal",
+      "role": "build-log-or-dependency",
+      "utc": "2026-10-18T11:40:24.513114+00:00",
+      "status": "unavailable",
+      "linux_resolved_path": null,
+      "error": "FileNotFoundError(2, '\u7cfb\u7edf\u627e\u4e0d\u5230\u6307\u5b9a\u7684\u6587\u4ef6\u3002')"
+    }
+  },
+  "unobserved_objects": [
+    {
+      "object": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/home/yuchen7509/flydrones-upstream/open_vins/ov_init/src/ceres/Factor_ImageReprojCalib.cpp.o",
+      "status": "aggregate_cap"
+    },
+    {
+      "object": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/home/yuchen7509/flydrones-upstream/open_vins/ov_init/src/ceres/Factor_ImuCPIv1.cpp.o",
+      "status": "not_attempted_after_stop"
+    },
+    {
+      "object": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/home/yuchen7509/flydrones-upstream/open_vins/ov_init/src/ceres/State_JPLQuatLocal.cpp.o",
+      "status": "not_attempted_after_stop"
+    },
+    {
+      "object": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/home/yuchen7509/flydrones-upstream/open_vins/ov_init/src/dummy.cpp.o",
+      "status": "not_attempted_after_stop"
+    },
+    {
+      "object": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/home/yuchen7509/flydrones-upstream/open_vins/ov_init/src/dynamic/DynamicInitializer.cpp.o",
+      "status": "not_attempted_after_stop"
+    },
+    {
+      "object": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/home/yuchen7509/flydrones-upstream/open_vins/ov_init/src/init/InertialInitializer.cpp.o",
+      "status": "not_attempted_after_stop"
+    },
+    {
+      "object": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/home/yuchen7509/flydrones-upstream/open_vins/ov_init/src/sim/SimulatorInit.cpp.o",
+      "status": "not_attempted_after_stop"
+    },
+    {
+      "object": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/home/yuchen7509/flydrones-upstream/open_vins/ov_init/src/static/StaticInitializer.cpp.o",
+      "status": "not_attempted_after_stop"
+    },
+    {
+      "object": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/src/core/VioManager.cpp.o",
+      "status": "not_attempted_after_stop"
+    },
+    {
+      "object": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/src/core/VioManagerHelper.cpp.o",
+      "status": "not_attempted_after_stop"
+    },
+    {
+      "object": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/src/dummy.cpp.o",
+      "status": "not_attempted_after_stop"
+    },
+    {
+      "object": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/src/sim/Simulator.cpp.o",
+      "status": "not_attempted_after_stop"
+    },
+    {
+      "object": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/src/state/Propagator.cpp.o",
+      "status": "not_attempted_after_stop"
+    },
+    {
+      "object": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/src/state/State.cpp.o",
+      "status": "not_attempted_after_stop"
+    },
+    {
+      "object": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/src/state/StateHelper.cpp.o",
+      "status": "not_attempted_after_stop"
+    },
+    {
+      "object": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/src/update/UpdaterHelper.cpp.o",
+      "status": "not_attempted_after_stop"
+    },
+    {
+      "object": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/src/update/UpdaterMSCKF.cpp.o",
+      "status": "not_attempted_after_stop"
+    },
+    {
+      "object": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/src/update/UpdaterSLAM.cpp.o",
+      "status": "not_attempted_after_stop"
+    },
+    {
+      "object": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/CMakeFiles/ov_msckf_lib.dir/src/update/UpdaterZeroVelocity.cpp.o",
+      "status": "not_attempted_after_stop"
+    }
+  ]
+}

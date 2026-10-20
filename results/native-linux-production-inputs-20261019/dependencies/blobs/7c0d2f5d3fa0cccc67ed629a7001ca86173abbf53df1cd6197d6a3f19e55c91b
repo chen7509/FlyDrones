@@ -1,0 +1,11 @@
+81325d01f36d67a51b67c39fe1287434  usr/include/opencv4/opencv2/imgproc.hpp
+70bfa51d09cba316a7e147170c370a5e  usr/include/opencv4/opencv2/imgproc/bindings.hpp
+56602069d24131b10bc65eab57399538  usr/include/opencv4/opencv2/imgproc/detail/gcgraph.hpp
+5714fd38bf76606449d763a41aebe062  usr/include/opencv4/opencv2/imgproc/hal/hal.hpp
+411768bb36e4d3834bd3d0d4d1eeb2e4  usr/include/opencv4/opencv2/imgproc/hal/interface.h
+81a671468548cf0ad688db509ddd3d16  usr/include/opencv4/opencv2/imgproc/imgproc.hpp
+e73ef3600d6a0ef16ed96f747285c961  usr/include/opencv4/opencv2/imgproc/imgproc_c.h
+7f05527058c67fae38c76eb3e6269f0a  usr/include/opencv4/opencv2/imgproc/segmentation.hpp
+04492057be827989a90d4a92393b9a7b  usr/include/opencv4/opencv2/imgproc/types_c.h
+d4be363d4e8f10470018bbd21e603706  usr/lib/x86_64-linux-gnu/libopencv_imgproc.a
+d2a68a8dbb4fd22dd8668c2e70094144  usr/share/doc/libopencv-imgproc-dev/copyright

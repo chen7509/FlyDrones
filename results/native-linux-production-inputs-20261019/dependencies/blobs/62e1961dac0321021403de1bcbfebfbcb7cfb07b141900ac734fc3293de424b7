@@ -1,0 +1,11 @@
+/.
+/usr
+/usr/lib
+/usr/lib/x86_64-linux-gnu
+/usr/lib/x86_64-linux-gnu/libtbb.so.12.11
+/usr/share
+/usr/share/doc
+/usr/share/doc/libtbb12
+/usr/share/doc/libtbb12/copyright
+/usr/lib/x86_64-linux-gnu/libtbb.so.12
+/usr/share/doc/libtbb12/changelog.Debian.gz

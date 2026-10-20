@@ -1,0 +1,130 @@
+{
+  "schema": "loader-path-identity-production-publication-v1",
+  "software_commit": "1e94aa918d555c0b2abf6e882f5132a26426e35a",
+  "archive": {
+    "archive": "evidence/loader-path-identity-production-dev-1701.zip",
+    "bytes": 1610283,
+    "sha256": "18459583fd919c50ddf0b1302c85d0672bc4a892003596a2bf7a3be8c59fca1b",
+    "members": 1451,
+    "mapped_members": 1450,
+    "manifest_sha256": "832ee13c57ede06cd5075bbf64de80a302eb68e67c1c6ce2bdb41f2002bf2ce9",
+    "scope": "Task1 software2boxesdone/lastpublicationpending,Tasks2..5pending;postseal helpers/reviews/publication separate"
+  },
+  "archive_plan_sha256": "ab82fca130716f9273f301d141bae2c8477f723dca8ebd96b0bff5a39a7d9083",
+  "postpublication_plan_sha256": "4e2587ddf5a5162fd7ea009467f5690e6e839684505dd73e889e6aa9e173edb3",
+  "plan_changed_byte_offsets": [
+    4093
+  ],
+  "plan_change": "Only Task1 review/seal/software publication checkbox completed. Task2 producer integration and Tasks3..5/fullstatic/physical remain pending.",
+  "working_vs_git_normalized": [
+    {
+      "path": "tools/benchmark/native_loader_paths_v4.py",
+      "working_archive_sha256": "bebec07140a97a995b64427bf15e619d1e8f4d156a55eaa1fe1e9c716d0ab679",
+      "git_normalized_blob_sha256": "bebec07140a97a995b64427bf15e619d1e8f4d156a55eaa1fe1e9c716d0ab679",
+      "bytes": 18087
+    },
+    {
+      "path": "tests/benchmark/test_native_loader_paths_v4.py",
+      "working_archive_sha256": "71ced0263a2e889c114cf529f958f0d1d5bab79f02bad5b45a7a8c10efa4c64f",
+      "git_normalized_blob_sha256": "71ced0263a2e889c114cf529f958f0d1d5bab79f02bad5b45a7a8c10efa4c64f",
+      "bytes": 21648
+    },
+    {
+      "path": "tools/benchmark/software_process_boundary.py",
+      "working_archive_sha256": "1aced69a1cd810728c0bf557cc272a5bd43a94ababc31bb6ba33de791fd139a1",
+      "git_normalized_blob_sha256": "1aced69a1cd810728c0bf557cc272a5bd43a94ababc31bb6ba33de791fd139a1",
+      "bytes": 1737
+    },
+    {
+      "path": "docs/TARGET_BEARING_LOADER_PATH_IDENTITY_PRODUCTION_REPORT.md",
+      "working_archive_sha256": "0036fcb621ef1fbfb9d07f4490b0a1f04f6c446057c542bdec2f5779c6439d50",
+      "git_normalized_blob_sha256": "0036fcb621ef1fbfb9d07f4490b0a1f04f6c446057c542bdec2f5779c6439d50",
+      "bytes": 6162
+    },
+    {
+      "path": "docs/superpowers/plans/2026-10-15-loader-selected-path-production.md",
+      "working_archive_sha256": "ab82fca130716f9273f301d141bae2c8477f723dca8ebd96b0bff5a39a7d9083",
+      "git_normalized_blob_sha256": "ab82fca130716f9273f301d141bae2c8477f723dca8ebd96b0bff5a39a7d9083",
+      "bytes": 12349
+    },
+    {
+      "path": "evidence/flydrones-history-through-loader-path-research-dev-1701.json",
+      "working_archive_sha256": "80dfb89ed0e51e639bd6b24b115cbcd3c444b967614e2e8334d55962c262b824",
+      "git_normalized_blob_sha256": "80dfb89ed0e51e639bd6b24b115cbcd3c444b967614e2e8334d55962c262b824",
+      "bytes": 80946
+    },
+    {
+      "path": "evidence/loader-path-identity-production-dev-1701.zip",
+      "working_archive_sha256": "18459583fd919c50ddf0b1302c85d0672bc4a892003596a2bf7a3be8c59fca1b",
+      "git_normalized_blob_sha256": "18459583fd919c50ddf0b1302c85d0672bc4a892003596a2bf7a3be8c59fca1b",
+      "bytes": 1610283
+    },
+    {
+      "path": "evidence/loader-path-identity-production-dev-1701.sha256.json",
+      "working_archive_sha256": "832ee13c57ede06cd5075bbf64de80a302eb68e67c1c6ce2bdb41f2002bf2ce9",
+      "git_normalized_blob_sha256": "832ee13c57ede06cd5075bbf64de80a302eb68e67c1c6ce2bdb41f2002bf2ce9",
+      "bytes": 356805
+    }
+  ],
+  "independent_review_initial": {
+    "C": 0,
+    "I": 3,
+    "M": 1,
+    "path": "results/loader-selected-path-production-dev-1701/independent-review.md",
+    "sha256": "d4aa6e484d5b112dd40dce5d0c68a281310bc08885a137be32e3e1d3f42639b1"
+  },
+  "executor_fix_pass": {
+    "review_red": "6fail62pass1skip; then3fail70pass1skip",
+    "green": "73passed1skip3.13s",
+    "ruff_errors": 0,
+    "utc_regraded_important": true,
+    "event_bound_coverage": "4096crossing refusal andexact4096success, existingboundpassed;no inventedRED"
+  },
+  "independent_deliverable_audit": {
+    "path": "results/loader-selected-path-production-dev-1701/independent-archive-audit.md",
+    "bytes": 3250,
+    "sha256": "e72e30cbf6be5a1b8cbef4438a1c0cbc0150e58cdced1b665ea42f88d7f3fff0",
+    "text": "**Deliverable/archive audit: C0 / I0 / M0 within the declared Task1 software-evidence scope.** No archive-integrity, privacy, retained-history, or reported-result discrepancy found. This is not a second whole-code review or native-dispatch approval.\n\nVerified independently, using read-only archive/hash/JSON operations:\n\n- **Canonical ZIP:** 1,610,283 bytes; SHA256 `18459583fd919c50ddf0b1302c85d0672bc4a892003596a2bf7a3be8c59fca1b`.\n- **Manifest:** 356,805 bytes; SHA256 `832ee13c57ede06cd5075bbf64de80a302eb68e67c1c6ce2bdb41f2002bf2ce9`.\n- Streamed **all 1,451 ZIP members**, totaling **3,902,511 uncompressed bytes**. Checked CRC, size, SHA256, current filesystem bytes, duplicate names, exact manifest membership, and the receipt’s exact preseal set. **0 errors**. The archive contains 1,450 mapped files plus the manifest.\n- Scanned member bytes for **187 distinct nonempty private command hashes**, and recursively inspected **1,278 JSON members** for the private inventory’s **445 process triples**. **0 matches**. The 67,907-byte private inventory is excluded and matches its declared identity.\n- Stream-hashed **289 historical archives / 823,771,563 bytes** against their preservation ledger. **0 mismatches**. Its scope correctly says **POSTsoftware preservation**, not retroactive prepins.\n\nHistory preservation also passed:\n\n- New history: **80,946 bytes**, SHA256 `80dfb89ed0e51e639bd6b24b115cbcd3c444b967614e2e8334d55962c262b824`.\n- Embedded **62,676-character prompt exactly equals the current automation TOML prompt**, with SHA256 `d412a51263d462c02e8959bee4ec881fb4943b80d72b82346a3293f6834ceaa1`.\n- Source TOML: **80,175 bytes**, SHA256 `4cb9f349211cf6406008f6b2b26b7bbcf45052e9b80d7b81427929b52fd1587d`; preserved settings match.\n- Original history remains **89,359 bytes**, SHA256 `c88840b6f58dea4e7e4931683c4993b4fc3b8eb55887807994b6381ef6c2b989`.\n\nThe recorder artifacts support the report:\n\n- Review RED: **6 failed, 62 passed, 1 skipped**—missing postwalk partials, four impossible-environment cases, and control-bearing SONAME.\n- Later RED: **3 failed, 70 passed, 1 skipped**—VDSO control name and two UTC-field cases.\n- Final recorded verification: **73 passed, 1 skipped in 3.13s**, Ruff exit 0, `git diff --check` exit 0.\n- Checked recorder source snapshots match their recorded hashes; final verification source identities match current files.\n- The event-bound finding is honestly identified as a **test-coverage correction**, not an invented implementation RED. Earlier missing-module and import-trap failures remain separately classified.\n\nThe sealed plan has **two Task1 boxes complete and its publication box pending**; all **13 Task2–5 boxes remain pending**. Four subsequently created files—`independent-review-original.txt`, `pr-before.json`, `stage.py`, and `staged-software-audit.json`—are outside this ZIP, consistent with the receipt’s explicit postseal-review/publication scope.\n\nDeclined: native execution authenticity, actual Linux/loader acceptance, cold dependency-import behavior, pending producer/runtime/bootstrap integration, physical qualification, and final publication state. I ran no tests, target commands, consumed-v3 code, or native dispatcher, and changed no checkout files.\n"
+  },
+  "historical_zip_count": 289,
+  "historical_zip_bytes": 823771563,
+  "historical_sha_unchanged": true,
+  "historical_audit_scope": "POSTsoftware, not prepin",
+  "history_externalization": {
+    "path": "evidence\\flydrones-history-through-loader-path-research-dev-1701.json",
+    "bytes": 80946,
+    "sha256": "80dfb89ed0e51e639bd6b24b115cbcd3c444b967614e2e8334d55962c262b824",
+    "source_toml_sha256": "4cb9f349211cf6406008f6b2b26b7bbcf45052e9b80d7b81427929b52fd1587d",
+    "prompt_characters": 62676,
+    "prompt_utf8_sha256": "d412a51263d462c02e8959bee4ec881fb4943b80d72b82346a3293f6834ceaa1",
+    "exact_readback": true,
+    "reason": "next substantial update exceeds64000 character limit; old original history unchanged"
+  },
+  "product_before_count": 807,
+  "old_product_modified": [
+    "tools/benchmark/software_process_boundary.py"
+  ],
+  "new_product_files": [
+    "tools/benchmark/native_loader_paths_v4.py",
+    "tests/benchmark/test_native_loader_paths_v4.py"
+  ],
+  "other_consumed_product_bytes_unchanged": true,
+  "consumed_v3_status": "CONSUMED_FAILED_UNADMITTED_HARNESS_ESCAPE",
+  "escaped_closure": "UNKNOWN",
+  "v4_native_dispatch": false,
+  "v4_fixed_study_claim_scope": false,
+  "physical_fixed_attempt": false,
+  "qualification": {
+    "source": false,
+    "clock": false,
+    "measured_calibration": false,
+    "accuracy": false,
+    "teacher": false,
+    "fusion": false,
+    "training": false,
+    "flight": false
+  },
+  "runtime_graph_frozen": false,
+  "physical_dispatch_ready": false,
+  "postseal_boundary": "receipt/stage/original-review-copy/archive-audit/commit/publication/PR/automation/NEXT_PHASE helpers are separate from immutable canonicalZIP"
+}

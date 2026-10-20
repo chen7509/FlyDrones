@@ -1,0 +1,146 @@
+{
+  "archive": "openvins-independent-clock-dev-1701.zip",
+  "sha256": "c3d5a71785e00efe39bb2e1f3675aaf19044d9087060ca636d3391f8134d1bcb",
+  "bytes": 47422,
+  "member_count": 33,
+  "members": {
+    "results/openvins-independent-clock-dev-1701/arrival-green.txt": {
+      "bytes": 101,
+      "sha256": "0f352e49a257f6933a6a637fdd8d8d5131982b64053578a431dee4c18a1a35c8"
+    },
+    "results/openvins-independent-clock-dev-1701/arrival-red.txt": {
+      "bytes": 2271,
+      "sha256": "48a7c5f71c367ae457f0665ece9831cb16226f06641d177fad0d46a74a0033e7"
+    },
+    "results/openvins-independent-clock-dev-1701/dependency-final.txt": {
+      "bytes": 194,
+      "sha256": "2256e2f75db1996872c7b902fa6d54b13d1ec5c53b7d909817bca3ac4a46c2b0"
+    },
+    "results/openvins-independent-clock-dev-1701/dependency-tests.txt": {
+      "bytes": 194,
+      "sha256": "cf591ffa5dd99cd0d203a972f7d2d25d62a3bf510161c88a7f71d5a5f48ac4a0"
+    },
+    "results/openvins-independent-clock-dev-1701/diff-check.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "results/openvins-independent-clock-dev-1701/drv_hrt.cpp": {
+      "bytes": 14338,
+      "sha256": "eb826fde8a1eaae3eef98c8f37c686bc21f62ad061d9cc86c8d2fa2a1ea1ede2"
+    },
+    "results/openvins-independent-clock-dev-1701/gazebo-metadata.json": {
+      "bytes": 6483,
+      "sha256": "3a817dcd65f4573fab4f914faa5c745df04176fc93e91d666f838937807a240e"
+    },
+    "results/openvins-independent-clock-dev-1701/GZBridge.cpp": {
+      "bytes": 31553,
+      "sha256": "8f6f1d7e450e341137be573a51674c6ffc518ef63badbdaa71667d0f462b8dfd"
+    },
+    "results/openvins-independent-clock-dev-1701/inspect_clock_api.py": {
+      "bytes": 962,
+      "sha256": "f501aef6956a4ced347b24a7b8bd60e012fad37d107c37f47efc824aa7c84e9b"
+    },
+    "results/openvins-independent-clock-dev-1701/installed-clock-api.json": {
+      "bytes": 932,
+      "sha256": "aaddd8340ed4ae618def8968e0ce5e0e2619920d33546c61b78da0ec5f848638"
+    },
+    "results/openvins-independent-clock-dev-1701/next-composition.md": {
+      "bytes": 1603,
+      "sha256": "1d69d5633f97de9735bff36121d292f3c0e6d0e04b19e387c195ac198b049450"
+    },
+    "results/openvins-independent-clock-dev-1701/px4-metadata.json": {
+      "bytes": 6300,
+      "sha256": "1508b894a8e43f199775b885036f51821a64c90f6e3855c373e914aed73c8841"
+    },
+    "results/openvins-independent-clock-dev-1701/research-errors.md": {
+      "bytes": 518,
+      "sha256": "5fc5f27228104e14af4ce5e94cf5a1bb7719542886b1827d27b62540b4ffc195"
+    },
+    "results/openvins-independent-clock-dev-1701/research-manifest.json": {
+      "bytes": 1387,
+      "sha256": "58924cf3647ac7803b1fcdf6e42b926a66af0a903503b7b250bb39657e94ae92"
+    },
+    "results/openvins-independent-clock-dev-1701/research-retry.txt": {
+      "bytes": 1389,
+      "sha256": "b07538040d06d7331ccc2712a55f33f6c66ff94a43088effbd16f8a58a436e74"
+    },
+    "results/openvins-independent-clock-dev-1701/research.py": {
+      "bytes": 1335,
+      "sha256": "d91e2ed9a556bb7404aafc4a55f00dba4eb4a3906da09dd615fde689ee429018"
+    },
+    "results/openvins-independent-clock-dev-1701/review-deterministic-red.txt": {
+      "bytes": 2971,
+      "sha256": "07dccd615649f13b7c2a7ee49335d378214b842b1d6c0013e474fca448208a15"
+    },
+    "results/openvins-independent-clock-dev-1701/review-green.txt": {
+      "bytes": 101,
+      "sha256": "481075dbcf8becf5eee4a50e65268b74923d71d88a09b5c1727c09932b913ae2"
+    },
+    "results/openvins-independent-clock-dev-1701/review-red.txt": {
+      "bytes": 2988,
+      "sha256": "d318a0039d9ac4c8c2a6dc34836723b017fc2ca4996a4976195b2e3f5ac1086f"
+    },
+    "results/openvins-independent-clock-dev-1701/review.md": {
+      "bytes": 887,
+      "sha256": "4ab5ee08c80e4be532a4d7c93cdc946c7d8944a28e8f1396f8570d463d0d3791"
+    },
+    "results/openvins-independent-clock-dev-1701/ruff-final.txt": {
+      "bytes": 19,
+      "sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18"
+    },
+    "results/openvins-independent-clock-dev-1701/seal.py": {
+      "bytes": 2225,
+      "sha256": "b0436fa8912587f3adfc1a1984eeeefc844db6334441182c15cbd542f3146ee8"
+    },
+    "results/openvins-independent-clock-dev-1701/targeted-first.txt": {
+      "bytes": 101,
+      "sha256": "899339e9540827f04eb7c940cc1bbd94eed6c1062d0b3a0a51e078469d4105c6"
+    },
+    "results/openvins-independent-clock-dev-1701/targeted-red.txt": {
+      "bytes": 1102,
+      "sha256": "a88deb3c3907dac06e733af83f54de5d6e7de62bb34ce3ada3a358ceb390cf45"
+    },
+    "results/openvins-independent-clock-dev-1701/UpdateInfo.html": {
+      "bytes": 14244,
+      "sha256": "537f55d115ed5828f73ee9d9f9de2467da3dab522ce0751f59246531ccf3cb11"
+    },
+    "results/openvins-independent-clock-dev-1701/verify_seal.py": {
+      "bytes": 1344,
+      "sha256": "6da462e1ace6538cb2e16e42c0aa08067a59709824cb1315f0401313562187a8"
+    },
+    "results/openvins-independent-clock-dev-1701/wsl-wire-regression.txt": {
+      "bytes": 253,
+      "sha256": "19378f05cc1d06d7ca3ed1a6380aa891501c5aaee3fea39e8f81aeb90999099f"
+    },
+    "tools/benchmark/openvins_simulation_clock.py": {
+      "bytes": 8776,
+      "sha256": "bc5d0ebf5792fcfd46e0b36ded260104e10f408dc5e3af9cfab2262966537940"
+    },
+    "tests/benchmark/test_openvins_simulation_clock.py": {
+      "bytes": 9897,
+      "sha256": "6b00d58563638223a9d86f9ab40f9e3bc9112019d4b8269396799f2d75b78a5c"
+    },
+    "docs/OPENVINS_INDEPENDENT_CLOCK_REPORT.md": {
+      "bytes": 6693,
+      "sha256": "e9ef452e619c039960796eea573723f745ba94f47b32e673d837a96cbb486397"
+    },
+    "docs/superpowers/specs/2026-10-08-independent-simulation-clock-design.md": {
+      "bytes": 4676,
+      "sha256": "65d7143796f8f96c34d70756da01da56eee9498b19c968b47e5acdc1c1a92f81"
+    },
+    "docs/superpowers/plans/2026-10-08-independent-simulation-clock.md": {
+      "bytes": 2220,
+      "sha256": "8010d42bae9dfd1a96a61886990a006fed3772b039a6419c365619e9fda1207b"
+    },
+    ".superpowers/sdd/2026-10-08-independent-simulation-clock/progress.md": {
+      "bytes": 1080,
+      "sha256": "005f58b49508ae54be49290ed86ac82776d03292a0e2a9508dd91c45d0685f84"
+    }
+  },
+  "source_commit": "06c4e2f1d392598be2c82e62f50f3288b635b837",
+  "production_commit": "dcc54fb",
+  "previous_archive_unchanged": true,
+  "runtime_source_proven": false,
+  "network_authorized": false,
+  "fusion_qualified": false
+}

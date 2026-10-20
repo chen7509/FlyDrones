@@ -1,0 +1,107 @@
+{
+  "schema": "capture-startup-authorization-v1",
+  "source_manifest": {
+    "requested": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/estimator-physical-refusal-diagnosis-dev-1701/study-v7/study-manifest.json",
+    "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/estimator-physical-refusal-diagnosis-dev-1701/study-v7/study-manifest.json",
+    "links": [],
+    "identity": {
+      "device": 68,
+      "inode": 30962247439711216,
+      "mode": 33279,
+      "size": 13773,
+      "mtime_ns": 1791305195902763500,
+      "ctime_ns": 1791305195902763500
+    },
+    "path_identity": {
+      "device": 68,
+      "inode": 30962247439711216,
+      "mode": 33279,
+      "size": 13773,
+      "mtime_ns": 1791305195902763500,
+      "ctime_ns": 1791305195902763500
+    },
+    "bytes": 13773,
+    "sha256": "672356fa5a24c37919c7232d2a0c951d289e7504ab316cafb2b50a1a60fce768"
+  },
+  "source_audit": {
+    "requested": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/estimator-physical-refusal-diagnosis-dev-1701/study-v7-audit.json",
+    "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/estimator-physical-refusal-diagnosis-dev-1701/study-v7-audit.json",
+    "links": [],
+    "identity": {
+      "device": 68,
+      "inode": 30962247439711218,
+      "mode": 33279,
+      "size": 363,
+      "mtime_ns": 1791305202428560600,
+      "ctime_ns": 1791305202428560600
+    },
+    "path_identity": {
+      "device": 68,
+      "inode": 30962247439711218,
+      "mode": 33279,
+      "size": 363,
+      "mtime_ns": 1791305202428560600,
+      "ctime_ns": 1791305202428560600
+    },
+    "bytes": 363,
+    "sha256": "8d0fa97fa7f865bce2a40625840ba346efe9e831f89950b254c8aa36b00f9def"
+  },
+  "startup_result": {
+    "requested": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/estimator-physical-refusal-diagnosis-dev-1701/study-v7/startup-preflight-v1/result.json",
+    "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/estimator-physical-refusal-diagnosis-dev-1701/study-v7/startup-preflight-v1/result.json",
+    "links": [],
+    "identity": {
+      "device": 68,
+      "inode": 25614222882212246,
+      "mode": 33279,
+      "size": 1093,
+      "mtime_ns": 1791305231415800100,
+      "ctime_ns": 1791305231415800100
+    },
+    "path_identity": {
+      "device": 68,
+      "inode": 25614222882212246,
+      "mode": 33279,
+      "size": 1093,
+      "mtime_ns": 1791305231415800100,
+      "ctime_ns": 1791305231415800100
+    },
+    "bytes": 1093,
+    "sha256": "f00863c87986074b2191949bf0f12b4766dc38ec05b48c25773f07ac4cb64e55"
+  },
+  "startup_audit": {
+    "requested": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/estimator-physical-refusal-diagnosis-dev-1701/startup-preflight-v2-audit.json",
+    "resolved": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/estimator-physical-refusal-diagnosis-dev-1701/startup-preflight-v2-audit.json",
+    "links": [],
+    "identity": {
+      "device": 68,
+      "inode": 27021597765765532,
+      "mode": 33279,
+      "size": 1094,
+      "mtime_ns": 1791305259342718400,
+      "ctime_ns": 1791305259342718400
+    },
+    "path_identity": {
+      "device": 68,
+      "inode": 27021597765765532,
+      "mode": 33279,
+      "size": 1094,
+      "mtime_ns": 1791305259342718400,
+      "ctime_ns": 1791305259342718400
+    },
+    "bytes": 1094,
+    "sha256": "610394c1e03dda7908fcc23b7d07a14a0a56cafd766ddea63be2a844a8cfcc87"
+  },
+  "startup_phases": [
+    "postgraph",
+    "bootstrap"
+  ],
+  "physical_run": false,
+  "physical_execution_qualified": false,
+  "runtime_mapping_coverage_verified": false,
+  "runtime_closure_qualified": false,
+  "vio_accuracy_qualified": false,
+  "estimator_health_qualified": false,
+  "fusion_eligible": false,
+  "flight_ready": false
+}

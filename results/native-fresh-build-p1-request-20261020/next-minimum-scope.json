@@ -1,0 +1,21 @@
+{
+  "schema": "native-fresh-build-p1-next-minimum-scope-v1",
+  "status": "PROPOSED_ONLY_NOT_AUTHORIZED_NOT_EXECUTED",
+  "scope_goal": "Close only P1-M1 actual Linux manifest pin context, not all P2-P8",
+  "exact_target": "/mnt/c/Users/yuche/.codex/worktrees/FlyDrones/track-eligibility/results/native-offset-run-plan-20261018/upstream-build-source-manifest.json",
+  "target_count": 1,
+  "known_contract_sha256": "19b343211b5ae6b25d9c565095e812f32a265c32997b27100e7eb6bbd3a0ec7f",
+  "first_choice": "Reuse an existing exact-path actual-Linux receipt if explicitly located in saved metadata; no broad search or old payload audit",
+  "if_no_reusable_receipt": "Separately authorize one exact regular-file Linux context readback; known content reobservation, not new independent payload",
+  "constraints": [
+    "Current human forbids repeat collection: this proposal does not authorize that readback",
+    "No guessed resolved endpoint, byte length or Linux receipt from a known Windows SHA",
+    "No 128-source/143-source/header/compiler/library re-read or directory enumeration",
+    "No old library/build objects/logs, native once attempt probe, resources, configure/compiler/link/SDK/target",
+    "Use original observer caps without expansion; stop on mismatch, missing, redirect, partial, cap or cleanup unknown; no retry",
+    "One manifest pin closes only that exact gap; it grants no review or build/run permission"
+  ],
+  "subsequent_nonexecuting_scope": "Then select the P2 host/WSL/environment declaration boundary from saved metadata; P4/P5/P6/P7/P8 remain separate",
+  "all_qualifications": false,
+  "dispatchable": false
+}

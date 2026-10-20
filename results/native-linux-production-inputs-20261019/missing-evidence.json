@@ -1,0 +1,103 @@
+{
+  "schema": "production-toolchain-input-frontier-v1",
+  "linux_production_source_binding": "128 observed files; required12 covered; static local graph only",
+  "toolchain": "native declaration prepared with13 observed tool refs; final Linux readback pending",
+  "named_group_entries": {
+    "tools": 20,
+    "system_headers": 1828,
+    "cmake_modules": 1204,
+    "link_implicit": 20,
+    "libraries": 99,
+    "packages": 234
+  },
+  "static_elf_files": 127,
+  "needed_edges": 370,
+  "needed_names_without_observed_candidates": {
+    "libaudit.so.1": [
+      "/usr/lib/x86_64-linux-gnu/libpam.so.0.85.1"
+    ]
+  },
+  "actual_consumption_and_completeness_blockers": [
+    "New35-TU actual system depfiles, selected compiler builtins/specs/search inputs and actual CMake trace/config selections do not exist before a separately admitted build.",
+    "Loader cache path strings and ELF SONAME candidates are not actual context/hwcaps/search/symbol-version/lazy-loaded maps proof; no native program was run.",
+    "ld.so.conf include glob directory was not enumerated; only indexed exact loader configuration files were observed.",
+    "Static Python local graph has2 dynamic-loading sites and external module names; complete runtime Python/SDK/FFI inputs are not authenticated.",
+    "Observed package status/list/md5 bytes do not authenticate signed origin or establish an atomic/future-fresh environment."
+  ],
+  "dynamic_import_sites": [
+    {
+      "file": "tools/benchmark/native_reference_probe.py",
+      "line": 27,
+      "expression": "importlib.util.spec_from_file_location('_fly_native_reference', path)"
+    },
+    {
+      "file": "tools/connectome/audit_px4_logger_diagnostic.py",
+      "line": 15,
+      "expression": "importlib.util.spec_from_file_location('px4_logger_diagnostic_profile', MODULE)"
+    }
+  ],
+  "external_module_names": [
+    "__future__",
+    "abc",
+    "argparse",
+    "ast",
+    "base64",
+    "bisect",
+    "cflib",
+    "collections",
+    "contextlib",
+    "copy",
+    "ctypes",
+    "dataclasses",
+    "datetime",
+    "decimal",
+    "djitellopy",
+    "fcntl",
+    "google",
+    "gz",
+    "hashlib",
+    "importlib",
+    "io",
+    "itertools",
+    "json",
+    "math",
+    "numpy",
+    "os",
+    "pathlib",
+    "platform",
+    "posixpath",
+    "psutil",
+    "pymavlink",
+    "pyulog",
+    "queue",
+    "re",
+    "resource",
+    "scipy",
+    "sdformat14",
+    "secrets",
+    "select",
+    "shlex",
+    "shutil",
+    "signal",
+    "socket",
+    "stat",
+    "struct",
+    "subprocess",
+    "sys",
+    "sysconfig",
+    "tarfile",
+    "tempfile",
+    "threading",
+    "time",
+    "typing",
+    "xml",
+    "yaml",
+    "zipfile"
+  ],
+  "full_input_closure_complete": false,
+  "fresh_build_admission_granted": false,
+  "resource_cgroup_pidfd_gates_not_refreshed": true,
+  "old_library_history_unknown": true,
+  "all_qualifications": false,
+  "dispatchable": false
+}

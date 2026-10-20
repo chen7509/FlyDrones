@@ -1,0 +1,9 @@
+{
+  "executable": "/home/yuchen7509/PX4-Autopilot/build/px4_sitl_default/bin/px4",
+  "pgrp": 505,
+  "pid": 678,
+  "role": "px4",
+  "session": 505,
+  "start_ticks": 7389,
+  "state": "R"
+}

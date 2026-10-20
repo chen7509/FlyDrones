@@ -1,0 +1,20 @@
+{
+  "reviewer": "/root/executor_review",
+  "mode": "independent read-only; no test or producer rerun",
+  "canonical_archive_sha256": "9ac9f0377ce9c71b204c37cf92b72dfe29587a7cde01fbf2fd5f5513603239de",
+  "canonical_members": 186,
+  "canonical_bytes": 2119843,
+  "all_CRC_length_SHA_currentbyte_passed": true,
+  "original_archive_sha256": "efe06f99532fec028551347063025591067affe6ef450533a4ce16bb20bfa895",
+  "original_members": 182,
+  "common_member_changes": [
+    "docs/PX4_CAMERA_FILE_PRODUCER_REPORT.md"
+  ],
+  "Critical": 0,
+  "Important": 0,
+  "Minor": 0,
+  "correction_sidecar_verified": true,
+  "completed_stage": "file-consuming source/calibration-candidate binding and conditional geometry production only",
+  "all_runtime_clock_calibration_training_flight_qualifications": false,
+  "plan_in_archive": "prepublication; final review/publication ledger external"
+}

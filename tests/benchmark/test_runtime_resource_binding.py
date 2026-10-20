@@ -45,6 +45,47 @@ def start(doc, generated, source, output, **kwargs):
     return obj
 
 
+def test_binding_accepts_only_declared_mesa_cache_control(tmp_path):
+    doc, _, _, _ = fixture(tmp_path)
+    doc['environment']['MESA_SHADER_CACHE_DISABLE'] = 'true'
+    assert binding.validate_binding(doc)['environment']['MESA_SHADER_CACHE_DISABLE'] == 'true'
+    doc['environment']['MESA_SHADER_CACHE_DISABLE'] = 'false'
+    with pytest.raises(ValueError, match='lookup keys'):
+        binding.validate_binding(doc)
+
+
+def test_v3_accepts_a_predeclared_restarted_openvins_owned_role(tmp_path, monkeypatch):
+    doc, _, _, _ = fixture(tmp_path)
+    doc = v3(doc)
+    monkeypatch.setattr(binding, 'validate_response', lambda *_args, **_kwargs: None)
+    for role in ('graph:resolver', 'graph:source', 'graph:dependencies'):
+        selected = tmp_path / role.replace(':', '-')
+        selected.write_text(role)
+        doc['inventory'][role] = [str(selected)]
+    doc['baseline'] = snapshot(doc['inventory'])
+    doc['runtime_maps']['owned_roles']['openvins'] = ['ready', 'prestop']
+    doc['runtime_maps']['owned_roles']['openvins-restart'] = ['ready', 'prestop']
+    assert binding.validate_binding(doc)['runtime_maps']['owned_roles'] == {
+        'px4': ['ready', 'prestop'],
+        'openvins': ['ready', 'prestop'],
+        'openvins-restart': ['ready', 'prestop'],
+    }
+
+
+def test_start_compares_declared_optional_mesa_cache_control(tmp_path):
+    doc, generated, source, output = fixture(tmp_path)
+    doc['environment']['MESA_SHADER_CACHE_DISABLE'] = 'true'
+    environment = {key: None for key in binding.ENV_KEYS}
+    environment['MESA_SHADER_CACHE_DISABLE'] = 'true'
+    obj = binding.RuntimeBinding(doc, output, map_reader=lambda: '')
+    obj.start(generated, environment, [source])
+    assert obj.pre_recorded is True
+    doc['environment'].pop('MESA_SHADER_CACHE_DISABLE')
+    doc['environment']['UNDECLARED_RENDERER_SETTING'] = 'true'
+    with pytest.raises(ValueError, match='lookup keys'):
+        binding.validate_binding(doc)
+
+
 def test_pre_and_post_records_without_claiming_full_closure(tmp_path):
     doc, generated, source, output = fixture(tmp_path)
     obj = start(doc, generated, source, output)

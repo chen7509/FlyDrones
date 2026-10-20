@@ -14,7 +14,77 @@ import threading
 import time
 from contextlib import ExitStack
 
+import numpy as np
+
 from tools.benchmark.openvins_causal_input import CausalInput, InputRefusal
+from tools.benchmark.openvins_health_contract import CovarianceProfile, OpenVinsHealthContract
+
+MOTION_INTENT_ACTION_FIELDS = {
+    "kind",
+    "sample_ns",
+    "source_arrival_ns",
+    "session_id",
+    "clock_id",
+    "command_sequence",
+    "intent_sha256",
+}
+MOTION_INTENT_NATIVE_ACK_FIELDS = {
+    "sequence",
+    "kind",
+    "sample_ns",
+    "receive_ns",
+    "start_ns",
+    "end_ns",
+    "acknowledged_ns",
+    "source_arrival_ns",
+    "dispatch_ns",
+    "intent_sha256",
+    "estimator_session_sha256",
+    "clock_id_sha256",
+    "command_sequence",
+    "internal_initialized",
+    "has_moved_since_zupt",
+    "motion_intent_applied",
+    "try_zupt",
+    "zupt_only_at_beginning",
+    "reset_counter",
+    "fusion_eligible",
+    "quality",
+}
+CAMERA_HEALTH_ACK_FIELDS = {
+    "sequence",
+    "kind",
+    "sample_ns",
+    "receive_ns",
+    "start_ns",
+    "end_ns",
+    "gray_first",
+    "internal_initialized",
+    "public_initialized",
+    "initializer_time_s",
+    "state_time_s",
+    "last_regular_update_s",
+    "zupt_flag_latched",
+    "has_moved_since_zupt",
+    "imu_state",
+    "imu_covariance15",
+    "fusion_eligible",
+    "quality",
+    "reset_counter",
+}
+CAMERA_HEALTH_TRANSPORT_FIELDS = {"acknowledged_ns", "source_arrival_ns", "dispatch_ns"}
+
+
+def _sha256_text(value, name):
+    if not isinstance(value, str) or not value or any(character.isspace() for character in value):
+        raise ValueError("invalid " + name)
+    return hashlib.sha256(value.encode()).hexdigest()
+
+
+def _sha256_digest(value, name):
+    if not isinstance(value, str) or not re.fullmatch(r"[0-9a-f]{64}", value):
+        raise ValueError("invalid " + name)
+    return value
 
 
 def _integer(value, *, minimum=1):
@@ -24,6 +94,8 @@ def _integer(value, *, minimum=1):
 
 
 def encode_packet(action, *, sequence, dispatch_ns, pixels=None):
+    if not isinstance(action, dict):
+        raise ValueError("invalid native action")
     _integer(sequence, minimum=0)
     sample = _integer(action["sample_ns"])
     arrival = _integer(action["source_arrival_ns"])
@@ -44,9 +116,118 @@ def encode_packet(action, *, sequence, dispatch_ns, pixels=None):
         if len(packet) > 512:
             raise ValueError("oversized header")
         return packet
+    if action["kind"] == "motion_intent":
+        if set(action) != MOTION_INTENT_ACTION_FIELDS or pixels is not None:
+            raise ValueError("invalid motion-intent action schema")
+        command_sequence = _integer(action["command_sequence"], minimum=0)
+        if command_sequence != 0:
+            raise ValueError("invalid motion-intent command sequence")
+        intent = _sha256_digest(action["intent_sha256"], "motion-intent hash")
+        session = _sha256_text(action["session_id"], "estimator session")
+        clock = _sha256_text(action["clock_id"], "clock domain")
+        packet = f"M {prefix} {command_sequence} {intent} {session} {clock}\n".encode("ascii")
+        if len(packet) > 512:
+            raise ValueError("oversized header")
+        return packet
     if action["kind"] != "camera" or type(pixels) is not bytes or len(pixels) != 57600:
         raise ValueError("invalid owned RGB bytes")
     return f"C {prefix} 57600\n".encode("ascii") + pixels
+
+
+def project_motion_intent_ack(row, action):
+    """Project one exact native M acknowledgement into MotionIntentGate's schema."""
+    if not isinstance(row, dict) or set(row) != MOTION_INTENT_NATIVE_ACK_FIELDS:
+        raise ValueError("invalid native motion-intent acknowledgement schema")
+    if not isinstance(action, dict) or set(action) != MOTION_INTENT_ACTION_FIELDS:
+        raise ValueError("invalid motion-intent action schema")
+    expected_session = _sha256_text(action["session_id"], "estimator session")
+    expected_clock = _sha256_text(action["clock_id"], "clock domain")
+    if (
+        row["kind"] != "M"
+        or row["sample_ns"] != action["sample_ns"]
+        or row["intent_sha256"] != _sha256_digest(action["intent_sha256"], "motion-intent hash")
+        or row["estimator_session_sha256"] != expected_session
+        or row["clock_id_sha256"] != expected_clock
+        or row["command_sequence"] != action["command_sequence"]
+        or row["internal_initialized"] is not True
+        or row["has_moved_since_zupt"] is not True
+        or row["motion_intent_applied"] is not True
+        or row["try_zupt"] is not True
+        or row["zupt_only_at_beginning"] is not True
+        or row["reset_counter"] is not None
+        or row["fusion_eligible"] is not False
+        or row["quality"] is not None
+    ):
+        raise ValueError("native motion-intent acknowledgement mismatch")
+    return {
+        "kind": "M",
+        "native_sequence": _integer(row["sequence"], minimum=0),
+        "sample_ns": _integer(row["sample_ns"]),
+        "intent_sha256": row["intent_sha256"],
+        "estimator_session_sha256": row["estimator_session_sha256"],
+        "clock_id_sha256": row["clock_id_sha256"],
+        "command_sequence": row["command_sequence"],
+        "receive_ns": _integer(row["receive_ns"]),
+        "start_ns": _integer(row["start_ns"]),
+        "end_ns": _integer(row["end_ns"]),
+        "acknowledged_ns": _integer(row["acknowledged_ns"]),
+        "internal_initialized": True,
+        "has_moved_since_zupt": True,
+        "motion_intent_applied": True,
+        "try_zupt": True,
+        "zupt_only_at_beginning": True,
+        "reset_counter": None,
+    }
+
+
+def project_camera_health_row(row, *, session_id):
+    """Validate one native camera acknowledgement and project health inputs."""
+    if not isinstance(row, dict) or set(row) not in (
+        CAMERA_HEALTH_ACK_FIELDS,
+        CAMERA_HEALTH_ACK_FIELDS | CAMERA_HEALTH_TRANSPORT_FIELDS,
+    ):
+        raise ValueError("invalid native camera acknowledgement schema")
+    if not isinstance(session_id, str) or not session_id.strip() or any(character.isspace() for character in session_id):
+        raise ValueError("invalid estimator session identity")
+    if (
+        row["kind"] != "C"
+        or type(row["internal_initialized"]) is not bool
+        or type(row["public_initialized"]) is not bool
+        or row["public_initialized"] and not row["internal_initialized"]
+        or row["fusion_eligible"] is not False
+        or row["quality"] is not None
+        or row["reset_counter"] is not None
+    ):
+        raise ValueError("invalid native camera health flags")
+    if row["internal_initialized"]:
+        covariance = np.asarray(row["imu_covariance15"], dtype=float)
+        if covariance.shape != (15, 15) or not np.all(np.isfinite(covariance)):
+            raise ValueError("invalid native camera covariance")
+        scale = max(1.0, float(np.max(np.abs(covariance))))
+        if not np.allclose(covariance, covariance.T, rtol=0, atol=1e-10 * scale):
+            raise ValueError("invalid native camera covariance")
+        if float(np.linalg.eigvalsh((covariance + covariance.T) * 0.5)[0]) < -1e-12 * scale:
+            raise ValueError("invalid native camera covariance")
+        covariance_value = covariance.tolist()
+    else:
+        if row["imu_state"] is not None or row["imu_covariance15"] is not None:
+            raise ValueError("uninitialized native camera has state")
+        covariance_value = None
+    for name in ("sample_ns", "receive_ns", "start_ns", "end_ns"):
+        _integer(row[name])
+    for name in ("state_time_s", "last_regular_update_s"):
+        if type(row[name]) is bool or not isinstance(row[name], (int, float)) or not math.isfinite(row[name]):
+            raise ValueError("invalid native camera state time")
+    return {
+        "kind": "C",
+        "session_id": session_id,
+        "sample_ns": row["sample_ns"],
+        "internal_initialized": row["internal_initialized"],
+        "public_initialized": row["public_initialized"],
+        "state_time_s": row["state_time_s"],
+        "last_regular_update_s": row["last_regular_update_s"],
+        "imu_covariance15": covariance_value,
+    }
 
 
 def validate_ack(ack, *, sequence, kind, dispatch_ns, acknowledged_ns):
@@ -122,7 +303,9 @@ class SourceWatchdog:
                 raise ValueError("source arrival clock regressed")
             self.last[kind] = now
             if self.ready_ns is None and set(self.last) == {"imu", "rgb", "info"}:
-                self.ready_ns = max(self.last.values())
+                newest = max(self.last.values())
+                if newest - min(self.last.values()) <= self.timeout_ns:
+                    self.ready_ns = newest
 
     def snapshot(self):
         with self.lock:
@@ -142,7 +325,13 @@ class SourceWatchdog:
                 raise ValueError("watchdog clock regressed")
             if self.ready_ns is None:
                 if now - self.started > self.startup_timeout_ns:
-                    raise TimeoutError("source startup: " + ",".join(k for k in ["imu", "rgb", "info"] if k not in self.last))
+                    missing = [kind for kind in ["imu", "rgb", "info"] if kind not in self.last]
+                    stale = [
+                        kind
+                        for kind in ["imu", "rgb", "info"]
+                        if kind in self.last and now - self.last[kind] > self.timeout_ns
+                    ]
+                    raise TimeoutError("source startup: " + ",".join(missing + stale))
                 return
             missing = [k for k in ["imu", "rgb", "info"] if now - self.last.get(k, self.started) > self.timeout_ns]
             if missing:
@@ -252,6 +441,9 @@ class NativeClient:
             self.acks.flush()
             raise
 
+    def send_motion_intent(self, action):
+        return project_motion_intent_ack(self.send(action), action)
+
     def finish(self):
         if self.closed:
             raise RuntimeError("native client already closed")
@@ -280,11 +472,123 @@ class NativeClient:
         )
 
 
+class OnlineHealthEvidence:
+    """Journal derived health without altering native acknowledgements."""
+
+    def __init__(self, output, *, session_id, profile=None):
+        self.output = output
+        self.contract = OpenVinsHealthContract(
+            session_id,
+            profile=profile if profile is not None else CovarianceProfile(),
+        )
+        self.records = (output / "health-evidence.jsonl").open("x", encoding="utf8")
+        self.closed = False
+        self.last = None
+        self.session_count = 1
+
+    @staticmethod
+    def _healthy_source():
+        return {
+            "source_healthy": True,
+            "native_healthy": True,
+            "source_failure": None,
+            "native_failure": None,
+        }
+
+    def _write(self, record):
+        self.records.write(json.dumps(record, allow_nan=False, sort_keys=True) + "\n")
+        self.records.flush()
+
+    def observe_camera(self, native_row, source_health=None):
+        if self.closed:
+            raise RuntimeError("health evidence already closed")
+        projected = project_camera_health_row(native_row, session_id=self.contract.session_id)
+        health = self.contract.accept_camera(
+            projected,
+            self._healthy_source() if source_health is None else source_health,
+        )
+        self.last = copy.deepcopy(health)
+        self._write(
+            {
+                "event": "camera_health",
+                "native_sequence": native_row["sequence"],
+                "sample_ns": native_row["sample_ns"],
+                "projected": projected,
+                "health": health,
+                "fusion_eligible": False,
+            }
+        )
+        return copy.deepcopy(health)
+
+    def fail(self, reason):
+        if self.closed:
+            raise RuntimeError("health evidence already closed")
+        health = self.contract.fail(reason)
+        self.last = copy.deepcopy(health)
+        self._write(
+            {
+                "event": "health_failure",
+                "reason": reason,
+                "health": health,
+                "fusion_eligible": False,
+            }
+        )
+        return copy.deepcopy(health)
+
+    def replace_session(self, new_session_id):
+        if self.closed:
+            raise RuntimeError("health evidence already closed")
+        previous = self.contract.session_id
+        self.contract = self.contract.replace_session(new_session_id)
+        self.session_count += 1
+        transition = {
+            "schema": "openvins-health-session-transition-v1",
+            "previous_session_id": previous,
+            "session_id": self.contract.session_id,
+            "quality": 0,
+            "reset_total": self.contract.reset_total,
+            "reset_counter": self.contract.reset_total % 256,
+            "covariance_profile": self.contract.profile.name,
+            "covariance_sim_domain_qualified": self.contract.profile.sim_domain_qualified,
+            "fusion_eligible": False,
+        }
+        self.last = copy.deepcopy(transition)
+        self._write({"event": "session_replacement", "transition": transition, "fusion_eligible": False})
+        return copy.deepcopy(transition)
+
+    def finish(self):
+        if self.closed:
+            raise RuntimeError("health evidence already closed")
+        self.closed = True
+        self.records.close()
+        result = {
+            "schema": "openvins-online-health-result-v1",
+            "session_id": self.contract.session_id,
+            "session_count": self.session_count,
+            "reset_total": self.contract.reset_total,
+            "reset_counter": self.contract.reset_total % 256,
+            "last_quality": self.last["quality"] if self.last is not None else 0,
+            "last_health": self.last,
+            "covariance_profile": self.contract.profile.name,
+            "covariance_sim_domain_qualified": self.contract.profile.sim_domain_qualified,
+            "fusion_eligible": False,
+        }
+        with (self.output / "health-result.json").open("x", encoding="utf8") as stream:
+            json.dump(result, stream, indent=2, sort_keys=True, allow_nan=False)
+            stream.write("\n")
+        return result
+
+
 class ShadowInput:
     """Recorder-thread-only adapter. On failure, stop native delivery but retain raw recording."""
 
-    def __init__(self, client, output, *, session_id, now=time.monotonic_ns):
+    def __init__(self, client, output, *, session_id, now=time.monotonic_ns, health=None):
         self.client, self.output, self.now = client, output, now
+        if health is not None and not isinstance(health, OnlineHealthEvidence):
+            raise ValueError("invalid online health evidence")
+        if health is not None and health.contract.session_id != session_id:
+            raise ValueError("health and shadow session mismatch")
+        self.health = health
         self.causal = CausalInput(session_id=session_id, clock_id="gazebo-sim+linux-monotonic")
         self.sequence, self.skipped, self.delivered = 0, 0, 0
         self.pixels, self.failure = {}, None
@@ -324,14 +628,18 @@ class ShadowInput:
                 pixels = self.pixels[action["sample_ns"]] if action["kind"] == "camera" else None
                 acknowledgement = self.client.send(action, pixels)
                 self.delivery_acks.append(copy.deepcopy(acknowledgement))
+                if action["kind"] == "camera" and self.health is not None:
+                    self.health.observe_camera(acknowledgement)
                 self.delivered += 1
                 if action["kind"] == "camera":
                     self.pixels.pop(action["sample_ns"])
                 undelivered.pop(0)
                 attempted = False
-            self.causal.tick(self.now())
+            # accept() advances the causal watermark from captured source-arrival clocks.
+            # Local recording/native service time is bounded elsewhere and is not source silence.
         except Exception as exc:
             self.failure = repr(exc)
+            health_last = self.health.fail("shadow_failure") if self.health is not None else None
             for index, action in enumerate(undelivered):
                 pixels = self.pixels.get(action["sample_ns"]) if action["kind"] == "camera" else None
                 self.released_unacknowledged.append(
@@ -352,12 +660,39 @@ class ShadowInput:
                         failure=self.failure,
                         wall_ns=self.now(),
                         input_refusal=exc.disposition if isinstance(exc, InputRefusal) else None,
+                        health=health_last,
                     ),
                     allow_nan=False,
                 )
                 + "\n"
             )
             self.failures.flush()
+
+    def tick_idle(self, wall_monotonic_ns):
+        """Advance pending age only at an externally proven empty source FIFO boundary."""
+        if self.failure:
+            return False
+        try:
+            self.causal.tick(wall_monotonic_ns)
+        except Exception as exc:
+            self.failure = repr(exc)
+            self.failures.write(
+                json.dumps(
+                    dict(
+                        event={"kind": "source_idle_tick", "wall_monotonic_ns": wall_monotonic_ns},
+                        input_sequence=self.sequence,
+                        released_unacknowledged=self.released_unacknowledged,
+                        failure=self.failure,
+                        wall_ns=wall_monotonic_ns,
+                        input_refusal=None,
+                    ),
+                    allow_nan=False,
+                )
+                + "\n"
+            )
+            self.failures.flush()
+            return False
+        return True
 
     def finish(self):
         result = dict(
@@ -372,6 +707,7 @@ class ShadowInput:
             quality=None,
             reset_counter=None,
             last_delivery_acks=copy.deepcopy(self.delivery_acks),
+            health_last=copy.deepcopy(self.health.last) if self.health is not None else None,
         )
         self.failures.close()
         with (self.output / "shadow-input-result.json").open("x") as stream:

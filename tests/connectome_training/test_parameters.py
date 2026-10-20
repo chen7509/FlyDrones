@@ -1,12 +1,17 @@
+from dataclasses import replace
+
 import numpy as np
 import pytest
 from scipy import sparse
 
 from flydrones.brain.connectome import Connectome
+from flydrones.connectome_training.features import MASKED_FEATURE_NAMES
 from flydrones.connectome_training.parameters import (
+    StructureIdentity,
     build_structure_identity,
     initial_parameter_set,
     load_parameter_set,
+    parameter_mapping_digest,
     save_parameter_set,
 )
 
@@ -79,3 +84,30 @@ def test_input_neuron_assignments_must_be_unique():
             input_feature_index=np.array([0, 1]),
             input_neuron_index=np.array([2, 2]),
         )
+
+
+def test_masked_profile_requires_every_feature_mapped_to_a_neuron():
+    identity = StructureIdentity("tiny", "a" * 64, "b" * 64, 20, 0, ("A",))
+    with pytest.raises(ValueError, match="masked.*coverage"):
+        initial_parameter_set(
+            identity, MASKED_FEATURE_NAMES, ("vx",), 1,
+            input_feature_index=np.arange(14),
+            input_neuron_index=np.arange(14),
+        )
+
+
+def test_masked_mapping_digest_binds_feature_order_but_legacy_digest_stays_frozen():
+    identity = StructureIdentity("tiny", "a" * 64, "b" * 64, 20, 0, ("A",))
+    masked = initial_parameter_set(identity, MASKED_FEATURE_NAMES, ("vx",), 1)
+    assert parameter_mapping_digest(masked) != parameter_mapping_digest(
+        replace(masked, input_features=tuple(reversed(MASKED_FEATURE_NAMES)))
+    )
+    legacy = initial_parameter_set(
+        identity, ("depth_left", "goal_x"), ("vx", "yaw_rate"),
+        output_neurons=np.array([2, 1]),
+        input_feature_index=np.array([0, 0, 1]),
+        input_neuron_index=np.array([0, 2, 1]),
+    )
+    assert parameter_mapping_digest(legacy) == (
+        "a2726b5b04e211ad8809f48b692a670808f2cef2e0e019d6de11fc25bffe79eb"
+    )

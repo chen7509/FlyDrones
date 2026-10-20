@@ -1,0 +1,89 @@
+{
+  "schema": "native-offset-current-file-binding-candidates-v1",
+  "bindings": {
+    "pinned_cmake": {
+      "path": "/usr/bin/cmake",
+      "evidenced_file": "/usr/bin/cmake",
+      "sha256": "1c5227af4edd22d8d689def545e18ee458260c0fd579eba2187967f38817e638",
+      "bytes": 11796472,
+      "state": "current_regular_file_candidate_not_admitted",
+      "same_as_unresolved_alias_proven": false
+    },
+    "pinned_gxx": {
+      "path": "/usr/bin/x86_64-linux-gnu-g++-13",
+      "evidenced_file": "/usr/bin/x86_64-linux-gnu-g++-13",
+      "sha256": "1353e9bdd29a7295c7226bf6c63abccce056d8cac31f112e5cdbecc3f28c2769",
+      "bytes": 1027128,
+      "state": "current_regular_file_candidate_not_admitted",
+      "same_as_unresolved_alias_proven": false
+    },
+    "pinned_make": {
+      "path": "/usr/bin/make",
+      "evidenced_file": "/usr/bin/make",
+      "sha256": "d78b8f1d099fbcfb6f2f49ab87223b9b68fb3956642f92d6ec6de812e8afa965",
+      "bytes": 259808,
+      "state": "current_regular_file_candidate_not_admitted",
+      "same_as_unresolved_alias_proven": false
+    },
+    "pinned_python": {
+      "path": "/usr/bin/python3.12",
+      "evidenced_file": "/usr/bin/python3.12",
+      "sha256": "e50d468e8b0adfb05733f5b87b3cff34829c4a8c1aea50c865aa8bdfe4bb150f",
+      "bytes": 8020928,
+      "state": "current_regular_file_candidate_not_admitted",
+      "same_as_unresolved_alias_proven": false
+    },
+    "eigen_config_dir": {
+      "path": "/usr/share/eigen3/cmake",
+      "evidenced_file": "/usr/share/eigen3/cmake/Eigen3Config.cmake",
+      "sha256": "c74a58d3437cd9b1d5503d627962a323f8b9a8f884bfae65f8206e63560a45a4",
+      "bytes": 1339,
+      "state": "current_regular_file_candidate_not_admitted",
+      "same_as_unresolved_alias_proven": false
+    },
+    "opencv4_config_dir": {
+      "path": "/usr/lib/x86_64-linux-gnu/cmake/opencv4",
+      "evidenced_file": "/usr/lib/x86_64-linux-gnu/cmake/opencv4/OpenCVConfig.cmake",
+      "sha256": "afdadc76baea958f8fb9d6893888f9337cb0f6ecd8984df43bfcc1011c5ddb25",
+      "bytes": 15343,
+      "state": "current_regular_file_candidate_not_admitted",
+      "same_as_unresolved_alias_proven": false
+    },
+    "boost_config_dir": {
+      "path": "/usr/lib/x86_64-linux-gnu/cmake/Boost-1.83.0",
+      "evidenced_file": "/usr/lib/x86_64-linux-gnu/cmake/Boost-1.83.0/BoostConfig.cmake",
+      "sha256": "3a61cbc15e41800f27ea20e7084a41be79bc3eb7f58db8c23228a55f04aa15f4",
+      "bytes": 9622,
+      "state": "current_regular_file_candidate_not_admitted",
+      "same_as_unresolved_alias_proven": false
+    },
+    "ceres_config_dir": {
+      "path": "/usr/lib/x86_64-linux-gnu/cmake/Ceres",
+      "evidenced_file": "/usr/lib/x86_64-linux-gnu/cmake/Ceres/CeresConfig.cmake",
+      "sha256": "8882cb7a47a346bc6c98ea2ecc351b8a78debb64855032e077283ced616be7b8",
+      "bytes": 15192,
+      "state": "current_regular_file_candidate_not_admitted",
+      "same_as_unresolved_alias_proven": false
+    }
+  },
+  "upstream_source_tree": {
+    "path": "/home/yuchen7509/flydrones-upstream/open_vins",
+    "actual_matching_source_files": 141,
+    "required_missing_files": [
+      "LICENSE",
+      "ReadMe.md"
+    ]
+  },
+  "existing_library": {
+    "path": "/home/yuchen7509/flydrones-upstream/open_vins/ov_msckf/build/libov_msckf_lib.so",
+    "bytes": 291717384,
+    "sha256": null,
+    "bound": false
+  },
+  "new_toolchain_written": false,
+  "original45binding_template_modified": false,
+  "admission_granted": false,
+  "dispatchable": false,
+  "all_qualifications": false,
+  "note": "The versioned g++ candidate is not evidence that historical /usr/bin/c++ selected it. Config bytes do not prove all referenced headers/libraries/modules were acquired."
+}

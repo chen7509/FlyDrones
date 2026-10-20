@@ -1,0 +1,11 @@
+{
+  "pid": 678,
+  "args": [
+    "/home/yuchen7509/PX4-Autopilot/build/px4_sitl_default/bin/px4",
+    "-i",
+    "8",
+    "-d",
+    "/home/yuchen7509/PX4-Autopilot/build/px4_sitl_default/etc"
+  ],
+  "started_wall_ns": 1791323836425555938
+}

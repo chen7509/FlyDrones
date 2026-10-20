@@ -1,0 +1,9 @@
+{
+  "archive": "evidence/openvins-health-contract-dev-1701.zip",
+  "bytes": 18878316,
+  "crc_verified": true,
+  "first_bad_member": null,
+  "member_count": 334,
+  "schema": "openvins-health-contract-evidence-archive-audit-v1",
+  "sha256": "88c11d16ec19b52d590cd07622def74262d33837abf611cbf97bfe84f8d99347"
+}
